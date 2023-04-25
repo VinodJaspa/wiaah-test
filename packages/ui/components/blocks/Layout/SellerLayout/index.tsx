@@ -30,6 +30,7 @@ import {
   usePaginationControls,
   useGetRecentStories,
   useGetDiscoverHashtags,
+  SocialLayout,
 } from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -179,96 +180,95 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   return (
     <Root>
-      <SocialReportModal />
-      <SocialShareCotentModal />
-      <SocialPostSettingsPopup />
-      <SocialPostMentionsModal />
-      <MasterLocationMapModal />
-      {sideBar && (
-        <SellerNavigationSideBar
-          headerElement={
-            <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
-          }
-          onLinkClick={handleLinkClick}
-          activeLink={route}
-        >
-          <div className="flex flex-col gap-4">
-            <UsersProfiles
-              maxNarrowItems={5}
-              users={
-                stories?.map((v) => ({
-                  id: v.userId,
-                  profession: v.user?.profile?.profession || "",
-                  name: v.user?.profile?.username || "",
-                  userPhotoSrc: v.user?.profile?.photo || "",
-                })) || []
-              }
-            />
-            {stories && stories.length > 0 ? <Divider /> : null}
-            <div className="text-white flex flex-col gap-4">
+      <SocialLayout>
+        {sideBar && (
+          <SellerNavigationSideBar
+            headerElement={
+              <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
+            }
+            onLinkClick={handleLinkClick}
+            activeLink={route}
+          >
+            <div className="flex flex-col gap-4">
+              <UsersProfiles
+                maxNarrowItems={5}
+                users={
+                  stories?.map((v) => ({
+                    id: v.userId,
+                    profession: v.user?.profile?.profession || "",
+                    name: v.user?.profile?.username || "",
+                    userPhotoSrc: v.user?.profile?.photo || "",
+                  })) || []
+                }
+              />
+              {stories && stories.length > 0 ? <Divider /> : null}
+              <div className="text-white flex flex-col gap-4">
+                <ScrollableContainer
+                  containerProps={{ className: "gap-4" }}
+                  autoShowAll
+                  maxInitialItems={5}
+                >
+                  {placesPlaceholder.map((place, i) => (
+                    <LocationButton
+                      iconProps={{ className: "text-black" }}
+                      name={place}
+                      key={i}
+                    />
+                  ))}
+                </ScrollableContainer>
+              </div>
+              <Divider />
               <ScrollableContainer
                 containerProps={{ className: "gap-4" }}
                 autoShowAll
                 maxInitialItems={5}
               >
-                {placesPlaceholder.map((place, i) => (
-                  <LocationButton
-                    iconProps={{ className: "text-black" }}
-                    name={place}
-                    key={i}
-                  />
-                ))}
+                {hashtags?.map((tag, i) => (
+                  <HStack className="text-white gap-[1rem]" key={i}>
+                    <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
+                    <p>{tag}</p>
+                  </HStack>
+                )) || []}
               </ScrollableContainer>
             </div>
-            <Divider />
-            <ScrollableContainer
-              containerProps={{ className: "gap-4" }}
-              autoShowAll
-              maxInitialItems={5}
+          </SellerNavigationSideBar>
+        )}
+        <Container
+          noContainer={true}
+          className={`${
+            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
+          } h-full`}
+        >
+          {header && header !== null && showHeader ? (
+            <div
+              className={`bg-white fixed z-40 w-full top-0 left-0 ${
+                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+              }`}
+              ref={headerRef}
             >
-              {hashtags?.map((tag, i) => (
-                <HStack className="text-white gap-[1rem]" key={i}>
-                  <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
-                  <p>{tag}</p>
-                </HStack>
-              )) || []}
-            </ScrollableContainer>
+              <HeaderSwitcher
+                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+                headerType={header}
+              />
+            </div>
+          ) : null}
+          <div className="w-full h-full gap-4 flex flex-col justify-between">
+            <main
+              style={{
+                paddingTop: showHeader
+                  ? `calc(${headerHeight || 0}px + 2rem)`
+                  : undefined,
+              }}
+              className={`${
+                containerProps?.className || ""
+              } overflow-hidden h-[max(fit,100%)]`}
+              {...containerProps}
+            >
+              {children}
+            </main>
           </div>
-        </SellerNavigationSideBar>
-      )}
-      <Container
-        noContainer={true}
-        className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"} h-full`}
-      >
-        {header && header !== null && showHeader ? (
-          <div
-            className={`bg-white fixed z-50 w-full top-0 left-0 ${
-              isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-            }`}
-            ref={headerRef}
-          >
-            <HeaderSwitcher
-              links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
-              headerType={header}
-            />
-          </div>
-        ) : null}
-        <div className="w-full h-full gap-4 flex flex-col justify-between">
-          <main
-            style={{
-              paddingTop: showHeader
-                ? `calc(${headerHeight || 0}px + 2rem)`
-                : undefined,
-            }}
-            className={`${
-              containerProps?.className || ""
-            } overflow-hidden h-[max(fit,100%)]`}
-            {...containerProps}
-          >
-            {children}
-          </main>
-        </div>
-      </Container>
+        </Container>
+      </SocialLayout>
     </Root>
   );
 };

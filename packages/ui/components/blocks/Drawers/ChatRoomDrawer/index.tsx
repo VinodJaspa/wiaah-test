@@ -4,7 +4,6 @@ import {
   Drawer,
   DrawerProps,
   DrawerContent,
-  DrawerHeader,
   DrawerOverlay,
 } from "@UI";
 
@@ -19,10 +18,9 @@ export const ChatRoomDrawer: React.FC<ChatRoomDrawerProps> = ({
   ...rest
 }) => {
   return (
-    <Drawer onOpen={onOpen} {...rest} onClose={onClose} position="bottom">
+    <Drawer {...rest} onOpen={onOpen} onClose={onClose} position="bottom">
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerHeader></DrawerHeader>
         <ChatRoom roomId={roomId} />
       </DrawerContent>
     </Drawer>

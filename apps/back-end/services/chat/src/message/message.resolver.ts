@@ -9,11 +9,7 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Account } from '@room/entities/extends';
-import {
-  AuthorizationDecodedUser,
-  ExtractPagination,
-  GqlCurrentUser,
-} from 'nest-utils';
+import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 import { SendMessageCommand, SendMessageToUserCommand } from './commands';
@@ -86,6 +82,14 @@ export class MessageResolver {
     return message.mentionsUserIds.map((id) => ({
       __typename: 'Account',
       id,
+    }));
+  }
+
+  @ResolveField(() => [Account])
+  seenByUsers(@Parent() msg: ChatMessage) {
+    return msg.seenBy.map((v) => ({
+      __typename: 'Account',
+      id: v.userId,
     }));
   }
 }

@@ -1,11 +1,33 @@
 import React from "react";
-import { Divider, Button, Input, InputGroup, InputRightElement } from "@UI";
+import {
+  Divider,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  HStack,
+  CameraFillIcon,
+  useNewMessage,
+  SmilingFaceEmoji,
+  MicrophoneFillIcon,
+  PaperPlaneIcon,
+  SmilingFaceFillEmoji,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  emojiUnicodeList,
+  convertEmojiToHtml,
+} from "@UI";
 import { BiMicrophone, BiPaperclip } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 import { IconList } from "types";
 import { FiSend } from "react-icons/fi";
+import { mapArray, useForm } from "@UI/../utils/src";
 
-export interface ChatRoomInputProps {}
+export interface ChatRoomInputProps {
+  roomId: string;
+}
 
 const inputIcons: IconList = [
   {
@@ -35,37 +57,42 @@ const inputIcons: IconList = [
   },
 ];
 
-export const ChatRoomInput: React.FC<ChatRoomInputProps> = () => {
+export const ChatRoomInput: React.FC<ChatRoomInputProps> = ({ roomId }) => {
+  const { form, inputProps, handleChange } = useForm<{}>({});
+
   const [msg, setMsg] = React.useState<string>("");
   const { t } = useTranslation();
+
   return (
-    <div className="px-8 py-4">
-      <InputGroup>
-        <InputRightElement>
-          <div className="flex w-full px-2 gap-2">
-            {inputIcons.map((icon, i) => (
-              <div className="flex gap-2">
-                {i === inputIcons.length - 1 && (
-                  <Divider className="h-full border-l-[1px]" />
-                )}
-                <Button
-                  colorScheme="white"
-                  style={{
-                    fill: icon.fillColor ? icon.fillColor : "gray",
-                  }}
-                >
-                  {icon.icon({})}
-                </Button>
-              </div>
+    <HStack className="text-xl gap-4 text-primary">
+      <CameraFillIcon className="min-w-fit" />
+      <Input
+        placeholder={t("Type message") + "....."}
+        className="placeholder:text-sm border-none placeholder:-translate-y-1"
+      />
+      <Menu>
+        <MenuButton>
+          <SmilingFaceFillEmoji className="min-w-fit" />
+        </MenuButton>
+        <MenuList
+          className="-translate-y-[100%] max-h-48 overflow-y-scroll thinScroll w-72 "
+          origin="bottom right"
+        >
+          <div className="grid grid-cols-5">
+            {mapArray(emojiUnicodeList["Smileys & People"], (v, i) => (
+              <span
+                // &#x1F44D;
+                className="text-xs"
+                dangerouslySetInnerHTML={{
+                  __html: "",
+                }}
+              ></span>
             ))}
           </div>
-        </InputRightElement>
-        <Input
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          placeholder={t("your_messages", "Your messages")}
-        />
-      </InputGroup>
-    </div>
+        </MenuList>
+      </Menu>
+      <MicrophoneFillIcon className="min-w-fit" />
+      <PaperPlaneIcon className="min-w-fit" />
+    </HStack>
   );
 };

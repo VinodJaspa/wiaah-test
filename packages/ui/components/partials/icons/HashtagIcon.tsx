@@ -18,3 +18,25 @@ export const HashtagIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const HashtagCircleIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 42 42"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="21" cy="21" r="17.5" fill="white" stroke="#EFEFEF" />
+      <path
+        d="M25.7251 13.1251L22.5751 28.8751M19.4251 13.1251L16.2751 28.8751M14.7001 17.8501H28.8751M13.1251 24.1501H27.3001"
+        stroke="currentColor"
+        stroke-width="1.14286"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

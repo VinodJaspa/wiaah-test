@@ -142,3 +142,8 @@ export * from "./PersonGroupIcon";
 export * from "./MoneyHandIcon";
 export * from "./CashBackIcon";
 export * from "./VolumeIcon";
+export * from "./MicrophoneIcon";
+export * from "./CheckIcon";
+export * from "./LocationDistanceIcon";
+export * from "./digitalCamera";
+export * from "./ExclamationCircle";

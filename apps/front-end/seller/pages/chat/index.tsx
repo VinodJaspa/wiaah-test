@@ -28,11 +28,10 @@ const messages: React.FC<MessagesPageProps> = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Messages</title>
+        <title></title>
       </Head>
       <SellerLayout
-        header={isMobile ? null : "main"}
-        sideBar={false}
+        sideBar={isMobile}
         containerProps={{ className: "h-[100%]" }}
       >
         <ChatView />

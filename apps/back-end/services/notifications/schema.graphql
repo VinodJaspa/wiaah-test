@@ -53,6 +53,9 @@ enum NotificationType {
   commentMention
   info
   warning
+  orderCanceled
+  orderDelivered
+  actionPosted
 }
 
 type NotificationPaginationResponse {

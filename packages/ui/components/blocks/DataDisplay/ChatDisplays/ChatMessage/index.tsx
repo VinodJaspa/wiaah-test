@@ -1,16 +1,28 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useUserData, DisplayDate, useLocale, Avatar } from "@UI";
+import {
+  useUserData,
+  DisplayDate,
+  useLocale,
+  Avatar,
+  useResponsive,
+  CheckmarkCircleFillIcon,
+  CheckmarkCircleOutlineIcon,
+} from "@UI";
 import { ChatMessageAttachment } from "@UI";
-import { MessageAttachmentType } from "@features/API";
+import { AttachmentType, MessageAttachmentType } from "@features/API";
+import { mapArray } from "@UI/../utils/src";
 
 export interface ChatMessageType {
   id: string;
+  userId: string;
   username: string;
   userPhoto: string;
   sendDate: string | number;
   messageContent?: string;
   messageAttachments?: ChatMessageAttachmentType[];
+  seen: boolean;
+  showUser: boolean;
 }
 
 export interface ChatMessageAttachmentType {
@@ -23,10 +35,11 @@ export interface ChatMessageProps {
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
-  if (!messageData) return null;
   const { locale } = useLocale();
   const { user } = useUserData();
   const { t } = useTranslation();
+  if (!messageData) return null;
+  const { isMobile } = useResponsive();
 
   const {
     id,
@@ -35,8 +48,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
     messageAttachments,
     messageContent,
     userPhoto,
+    seen,
+    showUser,
+    userId,
   } = messageData;
-  const isUser = user && user.id === id;
+  const isUser = user && user.id === userId;
 
   const justifyPos = isUser ? "justify-end" : "justify-start";
 
@@ -46,12 +62,59 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
 
   const name = isUser ? t("You") : username;
 
-  const msgBgColor = isUser ? "bg-primary" : "bg-gray-200";
+  const msgBgColor = isUser ? "bg-primary" : "bg-[#F4F4F4]";
   const msgTextColor = isUser ? "text-white" : "text-black";
   const msgRadius = isUser
     ? "rounded-tr-none rounded-xl"
     : "rounded-tl-none rounded-xl";
-  return (
+
+  return isMobile ? (
+    <div className={`${justifyPos} w-full flex`}>
+      <div className={`${justifyPos} ${flexDir} flex gap-2`}>
+        <div className={`${alignPos} flex flex-col gap-1`}>
+          {messageContent && messageContent.length > 0 ? (
+            <p
+              className={`${msgBgColor} ${msgTextColor} w-fit px-4 py-2 rounded-full`}
+            >
+              {messageContent}
+            </p>
+          ) : null}
+
+          {mapArray(messageAttachments, (attachment, i) => (
+            <div
+              className={` ${
+                attachment.type === MessageAttachmentType.VoiceMessage
+                  ? ""
+                  : "max-w-[min(100%,10rem)]"
+              } `}
+              key={i}
+            >
+              <ChatMessageAttachment attachment={attachment} />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-end h-full">
+          {!showUser ? (
+            <div className="min-w-[1.75rem]" />
+          ) : isUser ? (
+            seen ? (
+              <CheckmarkCircleFillIcon className="text-black fill-white stroke-white" />
+            ) : (
+              <CheckmarkCircleOutlineIcon className="text-black" />
+            )
+          ) : (
+            <Avatar
+              className="min-w-[1.75rem]"
+              src={userPhoto}
+              alt={username}
+              name={username}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className={`${justifyPos} w-full flex`}>
       <div className={`${flexDir} ${justifyPos} flex gap-2`}>
         <div className={`${alignPos} flex flex-col gap-2 justify-center`}>
@@ -74,7 +137,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
           {Array.isArray(messageAttachments) &&
             messageAttachments.map((attachment, i) => (
               <div
-                className={`py-1 px-2 max-w-[min(100%,20rem)]  ${msgBgColor} ${msgRadius}`}
+                className={`py-1 px-2 ${
+                  attachment.type === MessageAttachmentType.VoiceMessage
+                    ? ""
+                    : "max-w-[min(100%,20rem)]"
+                }  ${msgBgColor} ${msgRadius}`}
                 key={i}
               >
                 <ChatMessageAttachment attachment={attachment} />

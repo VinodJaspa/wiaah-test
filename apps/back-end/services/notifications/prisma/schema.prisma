@@ -25,6 +25,9 @@ enum NotificationType {
   commentMention
   info
   warning
+  orderCanceled
+  orderDelivered
+  actionPosted
 }
 
 model Notification {

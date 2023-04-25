@@ -751,9 +751,17 @@ export type ChatMessage = {
   mentions: Array<Account>;
   mentionsUserIds: Array<Scalars["ID"]>;
   roomId: Scalars["ID"];
+  seenBy: Array<ChatMessageSeenBy>;
+  seenByUsers: Array<Account>;
   updatedAt: Scalars["DateTime"];
   user: Account;
   userId: Scalars["ID"];
+};
+
+export type ChatMessageSeenBy = {
+  __typename?: "ChatMessageSeenBy";
+  seenAt: Scalars["String"];
+  userId: Scalars["String"];
 };
 
 export type ChatRoom = {
@@ -3338,12 +3346,15 @@ export enum NotificationSettingsEnum {
 export enum NotificationType {
   DmMessage = "DmMessage",
   ShopPromotion = "ShopPromotion",
+  ActionPosted = "actionPosted",
   CommentCommented = "commentCommented",
   CommentMention = "commentMention",
   CommentReacted = "commentReacted",
   Follow = "follow",
   FollowRequest = "followRequest",
   Info = "info",
+  OrderCanceled = "orderCanceled",
+  OrderDelivered = "orderDelivered",
   PostCommented = "postCommented",
   PostMention = "postMention",
   PostReacted = "postReacted",

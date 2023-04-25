@@ -82,10 +82,9 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
         <div
           style={{
             gridAutoRows: rowSize,
+            gridTemplateColumns: `repeat(${preset.cols}, minmax(0, 1fr))`,
           }}
-          className={`grid gap-[${gap}rem] ${
-            preset ? `grid-cols-${preset.cols || 1}` : ""
-          }`}
+          className={`grid gap-[${gap}rem] ${preset ? `` : ""}`}
         >
           {preset
             ? Array.isArray(preset.points)

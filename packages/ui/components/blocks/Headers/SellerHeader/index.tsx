@@ -1,11 +1,8 @@
-import { HiMenu } from "react-icons/hi";
 import React from "react";
 import {
   Avatar,
   SearchInput,
   WavingHand,
-  useNewPost,
-  SellerDrawerOpenState,
   ShoppingCart,
   NotifiactionsMenu,
   useGeneralSearchModal,
@@ -21,11 +18,10 @@ import {
   MessageOutlineIcon,
   SquarePlusOutlineIcon,
   useUserData,
-  AddNewPostModal,
   useMasterLocationMapModal,
   Image,
+  useSocialControls,
 } from "@UI";
-import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive } from "hooks";
 import { HtmlDivProps, TranslationTextType } from "types";
@@ -49,13 +45,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   props,
   headerNavLinks = [],
 }) => {
+  const { openSocialNewPostModal, openNotifications } = useSocialControls();
   const { SearchForLocations } = useMasterLocationMapModal();
   const { user } = useUserData();
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const router = useRouter();
-  const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
-  const { OpenModal } = useNewPost();
   const { t } = useTranslation();
 
   return (
@@ -102,14 +97,20 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         <>
           <SquarePlusOutlineIcon
             className="text-icon text-lightBlack"
-            onClick={() => OpenModal()}
+            onClick={() => openSocialNewPostModal()}
           />
-          <AddNewPostModal />
         </>
         {/* ) : null} */}
-        <NotifiactionsMenu>
-          <BellOutlineIcon className="text-icon text-lightBlack" />
-        </NotifiactionsMenu>
+        {isMobile ? (
+          <BellOutlineIcon
+            onClick={() => openNotifications()}
+            className="cursor-pointer text-icon text-lightBlack"
+          />
+        ) : (
+          <NotifiactionsMenu>
+            <BellOutlineIcon className="text-icon text-lightBlack" />
+          </NotifiactionsMenu>
+        )}
 
         <div className="relative" onClick={() => router.push("/chat")}>
           <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">

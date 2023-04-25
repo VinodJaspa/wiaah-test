@@ -1,9 +1,24 @@
 import React from "react";
 import { HtmlSvgProps } from "types";
 
+export const DiscoverOldIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 23 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M11.5 0.952423C17.7727 0.952423 22.8636 6.04333 22.8636 12.3161C22.8636 18.6002 17.7727 23.6797 11.5 23.6797C5.2159 23.6797 0.136353 18.6002 0.136353 12.3161C0.136353 6.04333 5.2159 0.952423 11.5 0.952423ZM15.875 8.57742C16 8.1797 15.6364 7.8047 15.2386 7.9297L9.42044 9.74788C9.18181 9.82742 8.98863 10.0092 8.92044 10.2479L7.10226 16.0774C6.97726 16.4638 7.35226 16.8388 7.73863 16.7138L13.5341 14.8956C13.7727 14.8274 13.9659 14.6342 14.0341 14.3956L15.875 8.57742Z" />
+    </svg>
+  );
+};
+
 export const DiscoverIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
+      {...props}
       width="1em"
       height="1em"
       viewBox="0 0 20 20"

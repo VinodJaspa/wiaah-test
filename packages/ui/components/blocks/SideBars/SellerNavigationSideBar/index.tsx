@@ -7,24 +7,21 @@ import {
   Divider,
   LogoutIcon,
   Button,
-  HStack,
   Image,
   HomeIcon,
-  HomeOutlineIcon,
   DiscoverIcon,
-  DiscoverOutlineIcon,
-  VideosOutlinePlayIcon,
   ShoppingCartIcon,
-  ShoppingCartOutlineIcon,
   ServicesIcon,
-  ServicesOutlineIcon,
   AffiliationIcon,
-  AffiliationIconOutline,
   Avatar,
   useUserData,
-  useGetMyProfileData,
-  useGetSocialProfile,
   VideosPlayIcon,
+  HomeOutlineIcon,
+  DiscoverOutlineIcon,
+  VideosOutlinePlayIcon,
+  ShoppingCartOutlineIcon,
+  ServicesOutlineIcon,
+  AffiliationIconOutline,
 } from "@UI";
 import { runIfFn } from "@UI/../utils/src";
 
@@ -96,7 +93,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
 
   return (
     <div
-      className={`${className} flex z-20 fixed ${
+      className={`${className} flex z-50 fixed ${
         isMobile
           ? "flex-row z-10 left-0 bottom-0 w-full bg-white"
           : "flex-col left-0 w-52 z-[51] h-screen top-0 bg-primary"
@@ -125,11 +122,12 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               >
                 <span
                   className={`${
-                    isMobile
-                      ? "text-black fill-black"
-                      : active
-                      ? "text-black fill-black"
-                      : "text-white fill-white"
+                    "text-black"
+                    // active
+                    //   ? "text-black fill-black"
+                    //   : isMobile
+                    //   ? "text-gray-400 fill-gray-400"
+                    //   : "text-white fill-white"
                   } text-icon`}
                 >
                   {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}
@@ -157,7 +155,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
           })}
           {isMobile ? (
             <Avatar
-              className="min-w-[2rem]"
+              className="min-w-[1.5rem]"
               src={user?.photoSrc}
               alt={user?.name}
             />

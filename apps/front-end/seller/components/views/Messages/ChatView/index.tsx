@@ -1,23 +1,27 @@
 import {
+  ArrowLeftIcon,
   Button,
   ChatMessagesSideBar,
   ChatRoom,
-  ChatRoomDrawer,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  HStack,
   NewMessageModal,
   Text,
   VStack,
+  useGetChatRoomQuery,
+  useUserData,
+  useResponsive,
 } from "ui";
 import React from "react";
-import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { useResponsive } from "ui";
-import { getParamFromAsPath } from "utils";
 import { useRouting } from "routing";
 
 export const ChatView: React.FC = () => {
-  const { visit } = useRouting();
-  const router = useRouter();
-  const roomId = getParamFromAsPath(router.asPath, "roomId");
+  const { visit, getParam, getCurrentPath, getQuery } = useRouting();
+  const roomId = getParam("roomId");
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
@@ -25,9 +29,12 @@ export const ChatView: React.FC = () => {
     visit((r) => r.addQuery({ roomId }));
   }
 
-  function handleCloseChatRoom() {
-    router.push(router.asPath.split("?")[0]);
-  }
+  function handleCloseChatRoom() {}
+
+  console.log({ roomId }, getCurrentPath(), getQuery());
+
+  const { data } = useGetChatRoomQuery(roomId);
+  const { user } = useUserData();
 
   return (
     <div className="flex flex-col md:flex-row gap-2 mx-auto sm:w-4/5 pb-4 h-full">
@@ -39,14 +46,24 @@ export const ChatView: React.FC = () => {
       {/* chatroom  */}
       {isMobile ? (
         <>
-          <ChatRoomDrawer
-            roomId={roomId}
+          <Drawer
+            spaceBottom="2.5rem"
+            onClose={() => handleCloseChatRoom()}
+            onOpen={() => {}}
             isOpen={!!roomId}
-            onClose={handleCloseChatRoom}
-          />
+            full
+            position="bottom"
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <ChatRoom roomId={roomId} />
+            </DrawerContent>
+          </Drawer>
         </>
       ) : roomId ? (
-        <ChatRoom roomId={roomId} />
+        <>
+          <ChatRoom roomId={roomId} />
+        </>
       ) : (
         <div className="flex justify-center items-center min-h-[15rem] shadow-md w-full h-full">
           <VStack>

@@ -13,3 +13,4 @@ export * from "./SidebarContext";
 export * from "./getParamFromPath";
 export * from "./getFileSrcData";
 export * from "./getRouteAfter";
+export * from "./emojiUnicodeList";

@@ -1,8 +1,10 @@
+import { HtmlSvgProps } from "@UI/../types/src";
 import React from "react";
 
-export const EditNoteIcon: React.FC = () => {
+export const EditNoteIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
+      {...props}
       width="1.5625em"
       height="1.5em"
       viewBox="0 0 25 24"

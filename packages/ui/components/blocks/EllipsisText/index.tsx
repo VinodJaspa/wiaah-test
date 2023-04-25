@@ -71,8 +71,6 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
     }
   }, [MaxLines]);
 
-  console.log({ textEllipsising, showMore });
-
   return (
     <div className="relative font-semibold flex flex-col">
       <p
@@ -94,12 +92,8 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         <p></p>
       ) : showMore === true ? (
         <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
-          <div
-            className={`${
-              showMoreColor ? showMoreColor : "bg-white"
-            } flex gap-2`}
-          >
-            <p className="text-black" ref={EllipsisRef}>
+          <div className={`${showMoreColor ? showMoreColor : "bg-white"} flex`}>
+            <p className="text-primary" ref={EllipsisRef}>
               ...
             </p>
             <p className="cursor-pointer" onClick={handleShowMore}>

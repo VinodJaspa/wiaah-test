@@ -72,5 +72,6 @@ export const useRouting = () => {
     getUrl,
     routes: MainRoutes,
     back,
+    getQuery,
   };
 };

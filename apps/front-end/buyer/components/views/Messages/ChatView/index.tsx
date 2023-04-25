@@ -42,6 +42,7 @@ export const ChatView: React.FC = () => {
       {isMobile ? (
         <>
           <ChatRoomDrawer
+            spaceBottom="2rem"
             roomId={roomId}
             isOpen={!!roomId}
             onClose={handleCloseChatRoom}

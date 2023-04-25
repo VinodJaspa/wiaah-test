@@ -13,6 +13,15 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 
 /**
+ * Model ChatMessageSeenBy
+ * 
+ */
+export type ChatMessageSeenBy = {
+  userId: string
+  seenAt: Date
+}
+
+/**
  * Model RoomMember
  * 
  */
@@ -56,6 +65,7 @@ export type Message = {
   updatedAt: Date
   content: string
   attachments: MessageAttachment[]
+  seenBy: ChatMessageSeenBy[]
   mentionsUserIds: string[]
   storyId: string | null
 }
@@ -842,6 +852,109 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model ChatMessageSeenBy
+   */
+
+
+
+
+
+  export type ChatMessageSeenBySelect = {
+    userId?: boolean
+    seenAt?: boolean
+  }
+
+  export type ChatMessageSeenByGetPayload<
+    S extends boolean | null | undefined | ChatMessageSeenByArgs,
+    U = keyof S
+      > = S extends true
+        ? ChatMessageSeenBy
+    : S extends undefined
+    ? never
+    : S extends ChatMessageSeenByArgs
+    ?'include' extends U
+    ? ChatMessageSeenBy 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof ChatMessageSeenBy ? ChatMessageSeenBy[P] : never
+  } 
+    : ChatMessageSeenBy
+  : ChatMessageSeenBy
+
+
+
+  export interface ChatMessageSeenByDelegate<GlobalRejectSettings> {
+
+
+
+
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatMessageSeenBy.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ChatMessageSeenByClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * ChatMessageSeenBy without action
+   */
+  export type ChatMessageSeenByArgs = {
+    /**
+     * Select specific fields to fetch from the ChatMessageSeenBy
+     * 
+    **/
+    select?: ChatMessageSeenBySelect | null
+  }
+
+
 
   /**
    * Model RoomMember
@@ -2167,6 +2280,7 @@ export namespace Prisma {
     updatedAt?: boolean
     content?: boolean
     attachments?: boolean | MessageAttachmentArgs
+    seenBy?: boolean | ChatMessageSeenByArgs
     mentionsUserIds?: boolean
     storyId?: boolean
   }
@@ -2187,13 +2301,15 @@ export namespace Prisma {
     ? Message  & {
     [P in TrueKeys<S['include']>]:
         P extends 'room' ? RoomGetPayload<S['include'][P]> :
-        P extends 'attachments' ? Array < MessageAttachmentGetPayload<S['include'][P]>>  :  never
+        P extends 'attachments' ? Array < MessageAttachmentGetPayload<S['include'][P]>>  :
+        P extends 'seenBy' ? Array < ChatMessageSeenByGetPayload<S['include'][P]>>  :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
         P extends 'room' ? RoomGetPayload<S['select'][P]> :
-        P extends 'attachments' ? Array < MessageAttachmentGetPayload<S['select'][P]>>  :  P extends keyof Message ? Message[P] : never
+        P extends 'attachments' ? Array < MessageAttachmentGetPayload<S['select'][P]>>  :
+        P extends 'seenBy' ? Array < ChatMessageSeenByGetPayload<S['select'][P]>>  :  P extends keyof Message ? Message[P] : never
   } 
     : Message
   : Message
@@ -2563,6 +2679,8 @@ export namespace Prisma {
     room<T extends RoomArgs = {}>(args?: Subset<T, RoomArgs>): CheckSelect<T, Prisma__RoomClient<Room | null >, Prisma__RoomClient<RoomGetPayload<T> | null >>;
 
     attachments<T extends MessageAttachmentArgs = {}>(args?: Subset<T, MessageAttachmentArgs>): CheckSelect<T, PrismaPromise<Array<MessageAttachment>>, PrismaPromise<Array<MessageAttachmentGetPayload<T>>>>;
+
+    seenBy<T extends ChatMessageSeenByArgs = {}>(args?: Subset<T, ChatMessageSeenByArgs>): CheckSelect<T, PrismaPromise<Array<ChatMessageSeenBy>>, PrismaPromise<Array<ChatMessageSeenByGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -3034,6 +3152,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
     content?: StringFilter | string
     attachments?: XOR<MessageAttachmentCompositeListFilter, Enumerable<MessageAttachmentObjectEqualityInput>>
+    seenBy?: XOR<ChatMessageSeenByCompositeListFilter, Enumerable<ChatMessageSeenByObjectEqualityInput>>
     mentionsUserIds?: StringNullableListFilter
     storyId?: StringNullableFilter | string | null
   }
@@ -3047,6 +3166,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     content?: SortOrder
     attachments?: MessageAttachmentOrderByCompositeAggregateInput
+    seenBy?: ChatMessageSeenByOrderByCompositeAggregateInput
     mentionsUserIds?: SortOrder
     storyId?: SortOrder
   }
@@ -3147,6 +3267,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3159,6 +3280,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3170,6 +3292,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3181,6 +3304,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3193,6 +3317,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3203,6 +3328,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3214,6 +3340,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3363,6 +3490,20 @@ export namespace Prisma {
     src: string
   }
 
+  export type ChatMessageSeenByCompositeListFilter = {
+    equals?: Enumerable<ChatMessageSeenByObjectEqualityInput>
+    every?: ChatMessageSeenByWhereInput
+    some?: ChatMessageSeenByWhereInput
+    none?: ChatMessageSeenByWhereInput
+    isEmpty?: boolean
+    isSet?: boolean
+  }
+
+  export type ChatMessageSeenByObjectEqualityInput = {
+    userId: string
+    seenAt: Date | string
+  }
+
   export type StringNullableListFilter = {
     equals?: Enumerable<string> | null
     has?: string | null
@@ -3388,6 +3529,10 @@ export namespace Prisma {
   }
 
   export type MessageAttachmentOrderByCompositeAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatMessageSeenByOrderByCompositeAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3524,6 +3669,15 @@ export namespace Prisma {
     src: string
   }
 
+  export type ChatMessageSeenByListCreateEnvelopeInput = {
+    set?: Enumerable<ChatMessageSeenByCreateInput>
+  }
+
+  export type ChatMessageSeenByCreateInput = {
+    userId: string
+    seenAt: Date | string
+  }
+
   export type MessageCreatementionsUserIdsInput = {
     set: Enumerable<string>
   }
@@ -3545,6 +3699,13 @@ export namespace Prisma {
     push?: Enumerable<MessageAttachmentCreateInput>
     updateMany?: MessageAttachmentUpdateManyInput
     deleteMany?: MessageAttachmentDeleteManyInput
+  }
+
+  export type ChatMessageSeenByListUpdateEnvelopeInput = {
+    set?: Enumerable<ChatMessageSeenByCreateInput>
+    push?: Enumerable<ChatMessageSeenByCreateInput>
+    updateMany?: ChatMessageSeenByUpdateManyInput
+    deleteMany?: ChatMessageSeenByDeleteManyInput
   }
 
   export type MessageUpdatementionsUserIdsInput = {
@@ -3659,6 +3820,14 @@ export namespace Prisma {
     src?: StringFilter | string
   }
 
+  export type ChatMessageSeenByWhereInput = {
+    AND?: Enumerable<ChatMessageSeenByWhereInput>
+    OR?: Enumerable<ChatMessageSeenByWhereInput>
+    NOT?: Enumerable<ChatMessageSeenByWhereInput>
+    userId?: StringFilter | string
+    seenAt?: DateTimeFilter | Date | string
+  }
+
   export type NestedStringNullableFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -3711,6 +3880,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3722,6 +3892,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3823,6 +3994,15 @@ export namespace Prisma {
     where: MessageAttachmentWhereInput
   }
 
+  export type ChatMessageSeenByUpdateManyInput = {
+    where: ChatMessageSeenByWhereInput
+    data: ChatMessageSeenByUpdateInput
+  }
+
+  export type ChatMessageSeenByDeleteManyInput = {
+    where: ChatMessageSeenByWhereInput
+  }
+
   export type IntFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -3853,6 +4033,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     content: string
     attachments?: XOR<MessageAttachmentListCreateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListCreateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageCreatementionsUserIdsInput | Enumerable<string>
     storyId?: string | null
   }
@@ -3869,6 +4050,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3879,6 +4061,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3889,6 +4072,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     content?: StringFieldUpdateOperationsInput | string
     attachments?: XOR<MessageAttachmentListUpdateEnvelopeInput, Enumerable<MessageAttachmentCreateInput>>
+    seenBy?: XOR<ChatMessageSeenByListUpdateEnvelopeInput, Enumerable<ChatMessageSeenByCreateInput>>
     mentionsUserIds?: MessageUpdatementionsUserIdsInput | Enumerable<string>
     storyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -3897,6 +4081,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumMessageAttachmentTypeFieldUpdateOperationsInput | MessageAttachmentType
     src?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ChatMessageSeenByUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    seenAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NestedBoolFilter = {
