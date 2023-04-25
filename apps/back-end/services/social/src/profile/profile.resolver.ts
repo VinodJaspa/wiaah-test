@@ -3,8 +3,10 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  NoEditPremissionPublicError,
+  accountType,
 } from 'nest-utils';
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
   Profile,
   ProfilePaginatedResponse,
@@ -20,11 +22,15 @@ import {
   UpdateProfileInput,
 } from '@input';
 import { SearchPopularProfilesInput } from './dto';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Profile)
 @UseGuards(new GqlAuthorizationGuard([]))
 export class ProfileResolver {
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(
+    private readonly profileService: ProfileService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   // Profile CRUD //
 
@@ -46,6 +52,21 @@ export class ProfileResolver {
   }
 
   @Query(() => Profile)
+  async getProfileDetails(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('userId') userId: string,
+  ) {
+    await this.validateEditRequestedProfile(user, userId);
+    const res = await this.prisma.profile.findUnique({
+      where: {
+        ownerId: userId,
+      },
+    });
+
+    return res;
+  }
+
+  @Query(() => Profile)
   async myProfile(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Profile> {
@@ -58,14 +79,12 @@ export class ProfileResolver {
   }
 
   @Mutation(() => Profile)
-  async updateMyProfile(
-    @Args('updateProfileInput') updateProfileInput: UpdateProfileInput,
+  async updateUserProfile(
+    @Args('args') input: UpdateProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Profile> {
-    return await this.profileService.updateMyProfile(
-      updateProfileInput,
-      user.id,
-    );
+    await this.validateEditRequestedProfile(user, input.userId);
+    return await this.profileService.updateUserProfile(input, user.id);
   }
 
   @Mutation(() => Profile)
@@ -87,6 +106,12 @@ export class ProfileResolver {
       args.cursor,
       args.take,
     );
+  }
+
+  validateEditRequestedProfile(user: AuthorizationDecodedUser, userId: string) {
+    const valid = userId === user.id || user.accountType === accountType.ADMIN;
+
+    if (!valid) throw new NoEditPremissionPublicError();
   }
 
   // Profile CRUD //

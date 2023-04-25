@@ -37,9 +37,12 @@ export const useCursorScrollPagination = (props?: {
   };
 };
 
-export const ScrollPaginationWrapper: React.FC<{
-  controls: usePaginationControlsOptions;
-}> = ({ children, controls }) => {
+export const ScrollPaginationWrapper: React.FC<
+  {
+    controls: usePaginationControlsOptions;
+    axis?: "x" | "y";
+  } & HtmlDivProps
+> = ({ children, controls, ...rest }) => {
   const [endTriggered, setEndTriggered] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -63,7 +66,11 @@ export const ScrollPaginationWrapper: React.FC<{
     });
   }
 
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div {...rest} ref={ref}>
+      {children}
+    </div>
+  );
 };
 
 interface ScrollCursorPaginationWrapperProps extends HtmlDivProps {

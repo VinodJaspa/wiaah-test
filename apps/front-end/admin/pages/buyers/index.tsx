@@ -162,6 +162,13 @@ const buyers: NextPage = () => {
               </Td>
             </Tr>
           ))}
+          {!Array.isArray(buyers) || buyers.length === 0 ? (
+            <Tr>
+              <Td colSpan={11}>
+                <p className="text-xl font-semibold">{t("No records found")}</p>
+              </Td>
+            </Tr>
+          ) : null}
         </TBody>
       </Table>
       <Pagination controls={controls} />

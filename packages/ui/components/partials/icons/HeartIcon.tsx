@@ -1,5 +1,6 @@
 import React from "react";
 import { HtmlSvgProps } from "types";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 export const HeartIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
@@ -20,4 +21,12 @@ export const HeartIcon: React.FC<HtmlSvgProps> = (props) => {
       />
     </svg>
   );
+};
+
+export const HeartOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
+  return <BsHeart />;
+};
+
+export const HeartFillIcon: React.FC<HtmlSvgProps> = (props) => {
+  return <BsHeartFill />;
 };

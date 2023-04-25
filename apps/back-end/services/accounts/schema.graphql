@@ -150,6 +150,7 @@ type Query {
   getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
   adminGetStaffAccounts(args: AdminGetStaffAccountsInput!): [Account!]!
+  getUserAccount(userId: String!): Account!
   adminGetAccountVerification(accountId: String!): IdentityVerification!
   getMyVerificationRequest: IdentityVerification!
 }
@@ -368,6 +369,7 @@ input UpdateAccountInput {
   birthDate: String
   gender: AccountGenderEnum
   phone: String
+  id: ID!
 }
 
 input CreateIdentityVerificationInput {

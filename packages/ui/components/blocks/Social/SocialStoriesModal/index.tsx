@@ -2,12 +2,8 @@ import React from "react";
 import { SocialStoryViewer } from "../SocialStoryViewer";
 import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
 import { useTypedReactPubsub } from "@libs";
-import {
-  Profile,
-  Story,
-  useGetPrevStory,
-  useGetProfileStory,
-} from "@features/Social";
+import { useGetPrevStory, useGetProfileStory } from "@features/Social";
+import { Profile, Story } from "@features/API";
 
 export const useStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(

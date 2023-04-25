@@ -6,6 +6,7 @@ import {
   Args,
   ResolveField,
   Parent,
+  Query,
 } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -13,18 +14,20 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_EVENTS,
+  NoEditPremissionPublicError,
+  NoReadPremissionPublicError,
   SERVICES,
   StripeService,
+  accountType,
 } from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
-import { Account, Balance } from './entities';
+import { Account } from './entities';
 import { PrismaService } from 'prismaService';
 import { AccountDeletionRequestStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
 import { AccountDeletionRequestCreatedEvent } from './events';
-import * as bcrypt from 'bcrypt';
 import { NewAccountCreatedEvent } from 'nest-dto';
 import { Shop } from './entities/shop.extends.entity';
 
@@ -130,11 +133,22 @@ export class AccountsResolver {
 
   @Mutation(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))
-  editAccount(
+  async editAccount(
     @Args('editAccountInput') input: UpdateAccountInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
+    await this.validateEditPremissions(user, input.id);
     return this.accountsService.updateProtected(input, user.id);
+  }
+
+  @Query(() => Account)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async getUserAccount(
+    @Args('userId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    await this.validateReadPremissions(user, id);
+    return this.accountsService.findOne(id);
   }
 
   @ResolveField(() => Shop)
@@ -148,5 +162,23 @@ export class AccountsResolver {
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
     return this.accountsService.findOne(ref.id);
+  }
+
+  async validateEditPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    const valid = user.id === userId || user.accountType === accountType.ADMIN;
+
+    if (!valid) throw new NoEditPremissionPublicError();
+  }
+
+  async validateReadPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    const valid = user.id === userId || user.accountType === accountType.ADMIN;
+
+    if (!valid) throw new NoReadPremissionPublicError();
   }
 }

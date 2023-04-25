@@ -9,7 +9,10 @@ export class UpdateAccountInput extends PartialType(
     'email',
     'accountType',
   ]),
-) {}
+) {
+  @Field(() => ID)
+  id: string;
+}
 
 @InputType()
 export class UpdateSellerAccountAdminInput extends PartialType(

@@ -1,6 +1,10 @@
 import React from "react";
 import { BreadCrumb, ProductImageGallery, SpinnerFallback } from "@UI";
-import { ProductDescription, SellerCard, useGetServiceDataQuery } from "@UI";
+import {
+  ProductDescription,
+  SellerCard,
+  useGetServiceMetadataQuery,
+} from "@UI";
 import { ServiceRightView } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
@@ -88,7 +92,7 @@ export interface ServiceViewProps {
 }
 
 export const ServiceView: React.FC<ServiceViewProps> = ({ serviceId }) => {
-  const { data, isLoading, isError } = useGetServiceDataQuery(serviceId);
+  const { data, isLoading, isError } = useGetServiceMetadataQuery(serviceId);
 
   const { t } = useTranslation();
   const router = useRouter();

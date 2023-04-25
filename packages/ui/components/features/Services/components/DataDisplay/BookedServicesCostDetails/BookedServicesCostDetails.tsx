@@ -9,19 +9,15 @@ export interface BookedServicesCostDetailsProps {
   vat: number;
   title: string;
   deposit?: number;
+  subTotal: number;
+  total: number;
+  vatAmount: number;
 }
 
 export const BookedServicesCostDetails: React.FC<
   BookedServicesCostDetailsProps
-> = ({ vat, children, title, deposit }) => {
-  const { visit } = useRouting();
-  const { bookedServices } = useGetBookedServicesState();
+> = ({ vat, children, title, deposit, subTotal, total, vatAmount }) => {
   const { t } = useTranslation();
-  const Subtotal = bookedServices.reduce(
-    (acc, curr) => acc + curr.price * curr.qty,
-    0
-  );
-  const vatCost = CalculateVat(Subtotal, vat);
 
   return (
     <Stack col divider={<Divider />}>
@@ -34,7 +30,7 @@ export const BookedServicesCostDetails: React.FC<
         <p className="text-black font-medium text-sm">{t("Subtotal")}</p>
         <PriceDisplay
           // className="text-black text-sm text-opacity-50 font-medium"
-          price={Subtotal}
+          price={subTotal}
         />
       </div>
       <div
@@ -44,7 +40,7 @@ export const BookedServicesCostDetails: React.FC<
         <p className="">{`${t("Vat")}(${vat}%)`}</p>
         <PriceDisplay
           // className="text-black text-sm text-opacity-50 font-medium"
-          price={vatCost}
+          price={vatAmount}
         />
       </div>
       <div
@@ -54,7 +50,7 @@ export const BookedServicesCostDetails: React.FC<
         <p>{t("Total")}</p>
         <PriceDisplay
           // className="text-black text-sm text-opacity-50 font-medium"
-          price={Subtotal + vatCost}
+          price={subTotal + vatAmount}
         />
       </div>
     </Stack>

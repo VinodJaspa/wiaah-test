@@ -7,6 +7,8 @@ import {
   useGetChatRoomQuery,
   useGetChatRoomMessagesQuery,
   useSubscribeToMyRoomsUpdates,
+  useUserData,
+  useSocialControls,
 } from "@UI";
 import { ActiveStatus } from "@features/API";
 export interface ChatRoomProps {
@@ -25,20 +27,30 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
 
   useSubscribeToMyRoomsUpdates();
 
+  const { user } = useUserData();
+
+  const member = data
+    ? data.members.filter((v) => v.id !== user?.id).at(0)
+    : null;
+
+  const { closeChat } = useSocialControls();
+
   return (
-    <div className="flex justify-between h-full p-4 flex-col">
+    <div className="flex justify-between h-full p-2 pt-4 flex-col">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {data && (
           <>
             <ChatRoomHeader
-              roomData={{
-                roomId,
-                onlineMembers: data.members.filter(
-                  (v) => v.profile?.activeStatus === ActiveStatus.Active
-                ).length,
-                roomMembers: data.members.length,
-                roomName: data.members.at(0)?.profile?.username || "",
-                roomImage: data.members.at(0)?.profile?.photo || "",
+              onCloseRoom={() => closeChat()}
+              data={{
+                activeStatus:
+                  member?.profile?.activeStatus || ActiveStatus.InActive,
+                lastActive: member?.profile?.lastActive,
+                id: data.id,
+                name: member?.profile?.username || "",
+                thumbnail: member?.profile?.photo || "",
+                userId: member?.id || "",
+                verified: member?.profile?.verified || false,
               }}
             />
             <SpinnerFallback isLoading={isLoading} isError={isError}>
@@ -59,7 +71,9 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                 />
               ) : null}
             </SpinnerFallback>
-            <ChatRoomInput />
+            <div className="px-2">
+              <ChatRoomInput roomId={roomId} />
+            </div>
           </>
         )}
       </SpinnerFallback>

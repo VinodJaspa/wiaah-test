@@ -1,5 +1,13 @@
 import { createGraphqlRequestClient } from "@UI/../api";
-import { Exact, Scalars, Shop } from "@features/API";
+import { isDev } from "@UI/../utils/src";
+import {
+  BusinessType,
+  Exact,
+  Scalars,
+  ServiceType,
+  Shop,
+  StoreType,
+} from "@features/API";
 import { useUserData } from "@src/index";
 import { UseQueryOptions, useQuery } from "react-query";
 
@@ -10,7 +18,7 @@ export type GetUserShopTypeQueryVariables = Exact<{
 export type GetUserShopTypeQuery = { __typename?: "Query" } & {
   getUserShop: { __typename?: "Shop" } & Pick<
     Shop,
-    "type" | "businessType" | "createdAt" | "id" | "storeType"
+    "type" | "businessType" | "createdAt" | "id" | "storeType" | "ownerId"
   >;
 };
 
@@ -21,6 +29,17 @@ export const useGetUserShopType = (
   return useQuery(
     ["get-user-shop-type", { args }],
     async () => {
+      if (isDev) {
+        const mockRes: GetUserShopTypeQuery["getUserShop"] = {
+          businessType: BusinessType.Individual,
+          createdAt: new Date(),
+          id: "",
+          storeType: StoreType.Product,
+          type: ServiceType.Hotel,
+          ownerId: "",
+        };
+      }
+
       const client = createGraphqlRequestClient();
 
       const res = await client
@@ -33,6 +52,7 @@ query getUserShopType($userId:String!){
     createdAt
     id
     storeType
+    ownerId
   }
 }
     `

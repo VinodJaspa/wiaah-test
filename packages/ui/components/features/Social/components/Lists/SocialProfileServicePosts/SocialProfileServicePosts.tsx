@@ -13,8 +13,7 @@ export const SocialProfileServicePosts: React.FC<{
     <ScrollPaginationWrapper controls={controls}>
       <SocialServicePostsList
         posts={
-          data?.map((v) => ({ postInfo: v, profileInfo: v.user.profile! })) ||
-          []
+          data?.map((v) => ({ id: v.id, thumbnail: v.service.thumbnail })) || []
         }
       />
     </ScrollPaginationWrapper>

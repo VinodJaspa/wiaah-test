@@ -274,7 +274,6 @@ export const DraggableSlider = React.forwardRef(
           }px)`)
         : null;
     }
-    console.log({ dimensions });
     return (
       <div className="w-full h-full">
         <div

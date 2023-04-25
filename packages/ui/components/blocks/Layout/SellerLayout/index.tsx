@@ -15,12 +15,7 @@ import {
   Root,
   Container,
   UsersProfiles,
-  HomeIcon,
-  DiscoverIcon,
-  AffiliationIcon,
-  ShoppingCartIcon,
   ServicesIcon,
-  PlayButtonFillIcon,
   HStack,
   HashtagIcon,
   LocationButton,
@@ -35,10 +30,11 @@ import {
   usePaginationControls,
   useGetRecentStories,
   useGetDiscoverHashtags,
+  SocialLayout,
 } from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
-import { getRouting } from "routing";
+import { getRouting, useRouting } from "routing";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
 import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
@@ -146,41 +142,10 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   sideBar = true,
   noContainer = false,
 }) => {
-  const NavigationLinks: NavigationLinkType[] = [
-    {
-      name: "Home",
-      icon: HomeIcon,
-      url: "",
-    },
-    {
-      name: "discover",
-      icon: DiscoverIcon,
-      url: "discover",
-    },
-    {
-      name: "action",
-      icon: PlayButtonFillIcon,
-      url: "action",
-    },
-    {
-      name: "shop",
-      icon: ShoppingCartIcon,
-      url: "shop",
-    },
-    {
-      name: "service",
-      icon: ServicesIcon,
-      url: "services",
-    },
-    {
-      name: "affiliation",
-      icon: AffiliationIcon,
-      url: "affiliation",
-    },
-  ];
+  const { isMobile } = useResponsive();
+  const { getCurrentPath } = useRouting();
   const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  const { isMobile } = useResponsive();
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
   const router = useRouter();
@@ -211,99 +176,99 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     pagination: hashtagPagi,
   });
 
+  const showHeader = !isMobile || getCurrentPath() === "/";
+
   return (
     <Root>
-      <SocialReportModal />
-      <SocialShareCotentModal />
-      <SocialPostSettingsPopup />
-      <SocialPostMentionsModal />
-      <MasterLocationMapModal />
-      {sideBar && (
-        <SellerNavigationSideBar
-          headerElement={
-            <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
-          }
-          links={NavigationLinks}
-          onLinkClick={handleLinkClick}
-          activeLink={route}
-        >
-          <div className="flex flex-col gap-4">
-            <UsersProfiles
-              maxNarrowItems={5}
-              users={
-                stories?.map((v) => ({
-                  id: v.userId,
-                  profession: v.user?.profile?.profession || "",
-                  name: v.user?.profile?.username || "",
-                  userPhotoSrc: v.user?.profile?.photo || "",
-                })) || []
-              }
-            />
-            {stories && stories.length > 0 ? <Divider /> : null}
-            <div className="text-white flex flex-col gap-4">
+      <SocialLayout>
+        {sideBar && (
+          <SellerNavigationSideBar
+            headerElement={
+              <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
+            }
+            onLinkClick={handleLinkClick}
+            activeLink={route}
+          >
+            <div className="flex flex-col gap-4">
+              <UsersProfiles
+                maxNarrowItems={5}
+                users={
+                  stories?.map((v) => ({
+                    id: v.userId,
+                    profession: v.user?.profile?.profession || "",
+                    name: v.user?.profile?.username || "",
+                    userPhotoSrc: v.user?.profile?.photo || "",
+                  })) || []
+                }
+              />
+              {stories && stories.length > 0 ? <Divider /> : null}
+              <div className="text-white flex flex-col gap-4">
+                <ScrollableContainer
+                  containerProps={{ className: "gap-4" }}
+                  autoShowAll
+                  maxInitialItems={5}
+                >
+                  {placesPlaceholder.map((place, i) => (
+                    <LocationButton
+                      iconProps={{ className: "text-black" }}
+                      name={place}
+                      key={i}
+                    />
+                  ))}
+                </ScrollableContainer>
+              </div>
+              <Divider />
               <ScrollableContainer
                 containerProps={{ className: "gap-4" }}
                 autoShowAll
                 maxInitialItems={5}
               >
-                {placesPlaceholder.map((place, i) => (
-                  <LocationButton
-                    iconProps={{ className: "text-black" }}
-                    name={place}
-                    key={i}
-                  />
-                ))}
+                {hashtags?.map((tag, i) => (
+                  <HStack className="text-white gap-[1rem]" key={i}>
+                    <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
+                    <p>{tag}</p>
+                  </HStack>
+                )) || []}
               </ScrollableContainer>
             </div>
-            <Divider />
-            <ScrollableContainer
-              containerProps={{ className: "gap-4" }}
-              autoShowAll
-              maxInitialItems={5}
-            >
-              {hashtags?.map((tag, i) => (
-                <HStack className="text-white gap-[1rem]" key={i}>
-                  <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
-                  <p>{tag}</p>
-                </HStack>
-              )) || []}
-            </ScrollableContainer>
-          </div>
-        </SellerNavigationSideBar>
-      )}
-      <Container
-        noContainer={true}
-        className={`${
-          isMobile ? "px-4" : sideBar ? "pl-56 pr-4" : "px-8"
-        } h-full`}
-      >
-        {header && header !== null && (
-          <div
-            className={`bg-white fixed z-10 w-full top-0 left-0 ${
-              isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-            }`}
-            ref={headerRef}
-          >
-            <HeaderSwitcher
-              links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
-              headerType={header}
-            />
-          </div>
+          </SellerNavigationSideBar>
         )}
-        <div className="w-full h-full gap-4 flex flex-col justify-between">
-          <main
-            style={{
-              paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
-            }}
-            className={`${
-              containerProps?.className || ""
-            } overflow-hidden h-[max(fit,100%)]`}
-            {...containerProps}
-          >
-            {children}
-          </main>
-        </div>
-      </Container>
+        <Container
+          noContainer={true}
+          className={`${
+            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
+          } h-full`}
+        >
+          {header && header !== null && showHeader ? (
+            <div
+              className={`bg-white fixed z-40 w-full top-0 left-0 ${
+                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+              }`}
+              ref={headerRef}
+            >
+              <HeaderSwitcher
+                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+                headerType={header}
+              />
+            </div>
+          ) : null}
+          <div className="w-full h-full gap-4 flex flex-col justify-between">
+            <main
+              style={{
+                paddingTop: showHeader
+                  ? `calc(${headerHeight || 0}px + 2rem)`
+                  : undefined,
+              }}
+              className={`${
+                containerProps?.className || ""
+              } overflow-hidden h-[max(fit,100%)]`}
+              {...containerProps}
+            >
+              {children}
+            </main>
+          </div>
+        </Container>
+      </SocialLayout>
     </Root>
   );
 };

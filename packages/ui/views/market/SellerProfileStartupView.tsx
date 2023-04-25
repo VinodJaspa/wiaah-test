@@ -27,6 +27,8 @@ import {
   MyVerificationSection,
   BillingAccount,
   ServicePoliciesInputSection,
+  NewServiceStepper,
+  useGetMyShopType,
 } from "@UI";
 
 import { ServicesType, StepperStepType } from "types";
@@ -134,12 +136,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     {
       key: 6,
       stepName: t("Listing"),
-      stepComponent: (
-        <SellerListing
-          getNextFn={(v) => (v ? addSubmitRequest(7, v) : null)}
-          getPrevFn={() => {}}
-        />
-      ),
+      stepComponent: <SellerListingForm />,
     },
     {
       stepName: t("Payment_Gate", "Payment Gate"),
@@ -243,201 +240,34 @@ export const SellerProfileStartupView: React.FC = ({}) => {
   );
 };
 
-const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
-  {
-    key: "restaurant",
-    component: RestaurantServiceDetailsForm,
-    schema: NewServiceSchemas.restaurantDetailsSchema,
-  },
-  {
-    key: "hotel",
-    component: ServiceGeneralDetails,
-    schema: NewServiceSchemas.serviceGeneralDetailsSchema,
-  },
-  {
-    key: "healthCenter",
-    component: HealthCenterServiceDetailsForm,
-    schema: NewServiceSchemas.healthCenterDetailsSchema,
-  },
-  {
-    key: "vehicle",
-    component: VehicleServiceDetailsForm,
-    schema: NewServiceSchemas.vehicleDetailsSchema,
-  },
-  {
-    key: "beautyCenter",
-    component: BeautyCenterServiceDetailsForm,
-    schema: NewServiceSchemas.beautyCenterDetailsSchema,
-  },
-  {
-    key: "holidayRentals",
-    component: HolidayRentalsGeneralDetailsForm,
-    schema: NewServiceSchemas.beautyCenterDetailsSchema,
-  },
-];
-
-const includedServiceSections: ServiceSectionWithSchemaType[] = [
-  {
-    key: "hotel",
-    component: IncludedServices,
-    schema: NewServiceSchemas.hotelIncludedServicesSchema,
-  },
-  {
-    key: "restaurant",
-    component: RestaurantIncludedServicesSection,
-    schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
-  },
-  {
-    key: "holidayRentals",
-    component: IncludedServices,
-    schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
-  },
-  {
-    key: "healthCenter",
-    component: HealthCenterIncludedServices,
-    schema: NewServiceSchemas.HealthcenterIncludedServicesSchema,
-  },
-];
-
-const SellerListing = ({
-  getNextFn,
-  getPrevFn,
-}: {
-  getNextFn?: (fn: (() => any) | null) => any;
-  getPrevFn?: (fn: (() => any) | null) => any;
-}) => {
-  const { t } = useTranslation();
-  const [serviceType, setServiceType] = React.useState<ServiceType>(
-    ServiceType.Hotel
-  );
-  const includedServiceSection = includedServiceSections.find(
-    (s) => s.key === serviceType
-  ) || {
-    key: "Vehicle",
-    component: IncludedServices,
-    schema: NewServiceSchemas.hotelIncludedServicesSchema,
-  };
-
-  const detailsSection = ServicesDetailsSections.find(
-    (section) => section.key === serviceType
-  );
-
-  React.useEffect(() => {
-    return () => {
-      if (getNextFn) {
-        getNextFn(null);
-      }
-      if (getPrevFn) {
-        getPrevFn(null);
-      }
-    };
-  }, []);
-
-  const steps = [
+const SellerListingForm = React.forwardRef(
+  (
     {
-      key: "generalDetails",
-      stepComponent: (
-        <StepperFormHandler
-          validationSchema={detailsSection?.schema}
-          handlerKey="generalDetails"
-        >
-          {({ validate }) => {
-            return <>{detailsSection ? <detailsSection.component /> : null}</>;
-          }}
-        </StepperFormHandler>
-      ),
-      stepName: {
-        translationKey: "Service general details",
-        fallbackText: "Service general details",
-      },
+      onSuccess,
+    }: {
+      onSuccess: () => any;
     },
-    {
-      key: "servicePolicies",
-      stepComponent: (
-        <StepperFormHandler handlerKey="servicePolicies">
-          {({ validate }) => (
-            <>
-              <ServicePoliciesInputSection />
-            </>
-          )}
-        </StepperFormHandler>
-      ),
-      stepName: {
-        translationKey: "Service Policy Details",
-        fallbackText: "Service Policy Details",
-      },
-    },
-    {
-      key: "includedServices",
-      stepComponent: (
-        <StepperFormHandler
-          handlerKey="includedServices"
-          validationSchema={includedServiceSection?.schema}
-        >
-          {({ validate }) => {
-            return includedServiceSection ? (
-              <includedServiceSection.component onChange={validate} />
-            ) : null;
-          }}
-        </StepperFormHandler>
-      ),
-      stepName: {
-        translationKey: "Included Service",
-        fallbackText: "Included Service",
-      },
-    },
-    {
-      key: "extraServiceOptions",
-      stepComponent: (
-        <StepperFormHandler
-          handlerKey="extraServiceOptions"
-          validationSchema={NewServiceSchemas.extraSreivce}
-        >
-          <ExtraServiceOptions onChange={() => {}} />
-        </StepperFormHandler>
-      ),
-      stepName: {
-        translationKey: "Extra Service",
-      },
-    },
-    {
-      key: "discount",
-      stepComponent: (
-        <StepperFormHandler
-          handlerKey="discount"
-          validationSchema={NewServiceSchemas.discount}
-        >
-          <NewProductDiscountOptions onChange={() => {}} />
-        </StepperFormHandler>
-      ),
-      stepName: {
-        translationKey: "Discount",
-      },
-    },
-  ];
-  const { mutate } = useCreateServiceMutation();
+    ref
+  ) => {
+    const { t } = useTranslation();
 
-  return (
-    <div className="flex flex-col gap-4 h-full justify-between">
-      <StepperFormController
-        lock={false}
-        stepsNum={steps.length}
-        onFormComplete={(data) => {
-          mutate({ serviceType: serviceType as ServicesType, ...data });
-        }}
-      >
-        {({ nextStep, currentStepIdx, goToStep, previousStep }) => {
-          return (
-            <>
-              <CheckMarkStepper
-                currentStepIdx={1}
-                onStepChange={(step) => goToStep(step)}
-                steps={steps}
-              />
-            </>
-          );
-        }}
-      </StepperFormController>
-    </div>
-  );
-};
+    const { data: shop } = useGetMyShopType();
+    const { mutate } = useCreateServiceMutation();
+
+    React.useImperativeHandle(ref, () => {
+      return {
+        submit: () => {
+          mutate();
+        },
+      };
+    });
+
+    return (
+      <div className="flex flex-col gap-4 h-full justify-between">
+        {shop ? (
+          <NewServiceStepper isEdit={false} sellerId={shop?.ownerId} />
+        ) : null}
+      </div>
+    );
+  }
+);

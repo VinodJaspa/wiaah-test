@@ -4,6 +4,7 @@ import {
   ServiceType,
   ShopPaymentMethods,
   ShopStatus,
+  StoreFor,
   StoreType,
   TargetGenders,
 } from '@prisma-client';
@@ -78,6 +79,9 @@ export class CreateShopInput {
 
   @Field((type) => BusinessType)
   businessType: BusinessType;
+
+  @Field(() => [StoreFor])
+  storeFor: StoreFor[];
 
   @Field((type) => [TargetGenders])
   targetGenders: TargetGenders[];

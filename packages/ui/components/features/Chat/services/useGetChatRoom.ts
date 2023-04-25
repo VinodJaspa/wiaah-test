@@ -1,9 +1,13 @@
+import { SubtractFromDate, isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   Account,
+  ActiveStatus,
   ChatRoom,
   Exact,
   Maybe,
   Profile,
+  RoomTypes,
   Scalars,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
@@ -23,7 +27,12 @@ export type GetChatRoomQuery = { __typename?: "Query" } & {
             profile?: Maybe<
               { __typename?: "Profile" } & Pick<
                 Profile,
-                "id" | "username" | "photo" | "activeStatus"
+                | "id"
+                | "username"
+                | "photo"
+                | "activeStatus"
+                | "lastActive"
+                | "verified"
               >
             >;
           }
@@ -64,6 +73,32 @@ query getChatRoom(
   return useQuery(
     ["chat", "room", id],
     async () => {
+      if (isDev) {
+        const mockRes: GetChatRoomQuery["getChatRoom"] = {
+          id: "i".toString(),
+          createdAt: new Date().toDateString(),
+          members: [
+            {
+              id: "",
+              profile: {
+                id: "",
+                username: "Nike",
+                activeStatus: ActiveStatus.Active,
+                photo: getRandomImage(),
+                lastActive: SubtractFromDate(new Date(), {
+                  minutes: 10,
+                }).toString(),
+                verified: true,
+              },
+            },
+          ],
+          roomType: RoomTypes.Group,
+          unSeenMessages: 2,
+          updatedAt: new Date().toDateString(),
+        };
+
+        return mockRes;
+      }
       const res = await client.send<GetChatRoomQuery>();
 
       return res.data.getChatRoom;

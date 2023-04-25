@@ -18,19 +18,29 @@ const SimpleTabsContext = React.createContext<SimpleTabsCtxType>({
   setCurrIdx(idx) {},
 });
 
-interface SimpleTabsProps {}
+interface SimpleTabsProps {
+  onChange: (idx: number) => any;
+  value: number;
+}
 
-export const SimpleTabs: React.FC<SimpleTabsProps> = (props) => {
+export const SimpleTabs: React.FC<SimpleTabsProps> = ({
+  onChange: _onChange,
+  value: _value,
+  children,
+}) => {
   const [idx, setIdx] = React.useState<number>(0);
+
+  const value = _value ?? idx;
+  const onChange = _onChange ?? setIdx;
   return (
     <SimpleTabsContext.Provider
       value={{
-        currIdx: idx,
+        currIdx: value,
         setCurrIdx(idx) {
-          setIdx(idx);
+          onChange(idx);
         },
       }}
-      {...props}
+      children={children}
     />
   );
 };
@@ -43,9 +53,14 @@ interface SimpleTabHeadProps {
   children: MaybeFn<SimpleTabHeadChildProps>;
 }
 
-export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
-  console.log("tab childs", children);
+export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
+  children: _children,
+}) => {
+  const children = _children
+    ? React.Children.toArray(_children).filter((v) => !!v)
+    : [];
   const { setCurrIdx, currIdx } = React.useContext(SimpleTabsContext);
+  console.log("simple tab head", { children });
   return (
     <>
       {mapArray(Array.isArray(children) ? children : [children], (c, i) => (
@@ -60,7 +75,10 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
   );
 };
 
-export const SimpleTabItemList: React.FC = ({ children }) => {
+export const SimpleTabItemList: React.FC = ({ children: _children }) => {
+  const children = _children
+    ? React.Children.toArray(_children).filter((v) => !!v)
+    : [];
   const { currIdx } = React.useContext(SimpleTabsContext);
   return <>{React.Children.toArray(children).at(currIdx)}</>;
 };

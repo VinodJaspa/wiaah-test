@@ -124,6 +124,7 @@ model Shop {
   location        Location
   storeType       StoreType
   businessType    BusinessType
+  storeFor        StoreFor[]
   targetGenders   TargetGenders[]
   vat             VatSettings?
   status          ShopStatus           @default(inActive)
@@ -328,4 +329,11 @@ enum ProductStatus {
 type TranslationText {
   langId String
   value  String
+}
+
+enum StoreFor {
+  men
+  women
+  children
+  babies
 }

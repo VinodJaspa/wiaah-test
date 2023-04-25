@@ -17,7 +17,9 @@ export const StepperContext = React.createContext<StepperContextValues>({
   setStepsLength: () => {},
 });
 
-type StepperPassedProps = StepperContextValues & {};
+type StepperPassedProps = StepperContextValues & {
+  goToStep: (idx: number) => any;
+};
 
 export interface StepperProps {
   children: MaybeFn<StepperPassedProps>;
@@ -55,6 +57,7 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
       return current - 1 < 0 ? current : current - 1;
     });
   }
+
   return (
     <StepperContext.Provider
       value={{
@@ -71,6 +74,7 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
         currentStepIdx,
         setStepsLength,
         stepsLength,
+        goToStep: (v) => setCurrentStep(v),
       })}
     </StepperContext.Provider>
   );

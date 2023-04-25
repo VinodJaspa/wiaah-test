@@ -26,6 +26,7 @@ export const useRouting = () => {
     const routes = fn({ ...MainRoutes });
     const route =
       routes.route.length > 1 ? routes.route : getCurrentPath().split("?")[0];
+
     const presistedQuery = presistQuery ? GetQuery() : {};
     const query = { ...presistedQuery, ...routes.query };
     const queries = Object.entries(query);
@@ -71,5 +72,6 @@ export const useRouting = () => {
     getUrl,
     routes: MainRoutes,
     back,
+    getQuery,
   };
 };

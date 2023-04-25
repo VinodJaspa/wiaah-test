@@ -12,47 +12,65 @@ import {
   SocialProfileOptionsDropdown,
   HorizontalDotsIcon,
   VerifiedIcon,
+  ArrowLeftIcon,
+  VStack,
+  useUserData,
+  ArrowDownIcon,
+  CalenderIcon,
+  useGetUserShopType,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
 } from "@UI";
-import { mapArray, NumberShortner } from "utils";
+import { NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
-import { SocialStoryState } from "@src/state";
 import { useDisclouser } from "hooks";
 import { useSendFollowRequestMutation } from "@features/Social";
 
 import { useUnFollowProfileMutation } from "@features/Social";
-import { Profile, ProfileVisibility } from "@features/API";
+import { StoreType } from "@features/API";
+import { useRouting } from "@UI/../routing";
 
 export interface SocialProfileProps {
-  profileInfo: Pick<
-    Profile,
-    | "visibility"
-    | "id"
-    | "photo"
-    | "username"
-    | "bio"
-    | "profession"
-    | "verified"
-    | "publications"
-    | "followers"
-    | "following"
-  > & { isFollowed: boolean };
+  profileInfo: {
+    id: string;
+    photo: string;
+    username: string;
+    profession: string;
+    verified: boolean;
+    publications: number;
+    followers: number;
+    following: number;
+    bio: string;
+    ownerId: string;
+    shopId: string;
+  };
+  isFollowed: boolean;
+  isPublic: boolean;
+  storeType: StoreType;
 }
 
 export const SocialProfile: React.FC<SocialProfileProps> = ({
   profileInfo,
+  isFollowed,
+  isPublic,
+  storeType,
 }) => {
   const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
+  const { visit } = useRouting();
 
   const { mutate: unFollowProfile } = useUnFollowProfileMutation();
   const { mutate: followProfile } = useUnFollowProfileMutation();
   const { mutate: sendFollowReq } = useSendFollowRequestMutation();
 
-  const isProfilePublic = profileInfo.visibility === ProfileVisibility.Public;
+  const isProfilePublic = isPublic;
+
+  const { user } = useUserData();
+
+  const ownProfile = user?.id === profileInfo?.ownerId;
 
   function handleFollowProfile() {
-    if (profileInfo.isFollowed) {
+    if (isFollowed) {
       unFollowProfile({ profileId: profileInfo.id });
       return;
     }
@@ -66,6 +84,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     sendFollowReq(profileInfo.id);
   }
 
+  const isProductShop = storeType === StoreType.Product;
+
   const { isOpen, handleClose, handleOpen } = useDisclouser();
 
   const {
@@ -74,120 +94,169 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     handleClose: subscriptionsOnClose,
   } = useDisclouser();
 
+  const isPrivateForUser = !isFollowed && !isPublic;
+
   if (!profileInfo) return null;
 
   return (
-    <div className="flex flex-col w-full bg-primary h-[30rem] md:h-80 relative rounded-2xl ">
-      <div className="absolute right-10 text-white text-xl top-2">
+    <div className="flex flex-col w-full md:h-80 relative">
+      <div className="flex text-white justify-between px-4 items-center absolute top-0 left-0 z-10 w-full">
+        <ArrowLeftIcon className="text-xl w-10" />
+        <HStack className="text-lg">
+          {ownProfile ? (
+            <>
+              <p className=" whitespace-nowrap font-semibold">
+                {profileInfo.username}
+              </p>
+              {profileInfo.verified ? (
+                <ArrowDownIcon className="text-xl" />
+              ) : null}
+            </>
+          ) : (
+            <>
+              <p className=" whitespace-nowrap font-semibold">
+                {profileInfo.username}
+              </p>
+              {profileInfo.verified ? (
+                <VerifiedIcon className="text-xs" />
+              ) : null}
+            </>
+          )}
+        </HStack>
         <SocialProfileOptionsDropdown profileId={profileInfo.id}>
-          <HorizontalDotsIcon className="cursor-pointer" />
+          <HorizontalDotsIcon className="cursor-pointer w-10" />
         </SocialProfileOptionsDropdown>
       </div>
 
-      <div className="flex flex-col md:h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">
-        <div className="flex flex-col gap-3 items-center">
-          <QrcodeDisplay
-            value={profileInfo.id}
-            color="#ffffff"
-            transparentBg
-            className={"w-16 fill-white"}
-          />
-          <p>{t("Show on map")}</p>
-        </div>
-      </div>
       {storyProfileId && <SocialStoryModal profileId={storyProfileId} />}
       <SubscribersPopup
-        title={t("subscribers", "subscribers")}
+        title={t("subscribers")}
         isOpen={isOpen}
         onClose={handleClose}
       />
       <SubscribersPopup
-        title={t("subscriptions", "subscriptions")}
+        title={t("subscriptions")}
         isOpen={subscriptionsIsOpen}
         onClose={subscriptionsOnClose}
       />
-      <div
-        style={{
-          boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.08)",
-        }}
-        className="absolute w-full flex-wrap md:flex-nowrap bg-white border-2 border-white bottom-0 left-0 md:h-36 pl-2 md:pl-14 pr-8 py-6 flex gap-12"
-      >
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-4">
-            <div className="absolute left-2 md:left-14 top-0 -translate-y-1/2">
-              <Avatar
-                onClick={() => setStoryProfileId(profileInfo.id)}
-                className="w-[6.75rem]"
-                src={profileInfo.photo}
-                name={profileInfo.username}
-              />
-            </div>
-            <div className="w-24 h-full"></div>
+      <div className="items-center w-full pt-16 flex-wrap md:flex-nowrap bg-white border-2 border-white bottom-0 left-0 md:h-36 px-2 md:pl-14 py-6 flex flex-col gap-4">
+        <div className="relative">
+          <div className="w-[500px] -bottom-[40%] left-1/2 -translate-x-1/2 h-[500px] skew-x-[55deg] rotate-[-27deg] bg-primary absolute rounded-full"></div>
+          <Avatar
+            onClick={() => setStoryProfileId(profileInfo.id)}
+            className="w-[8.625rem] border-4  border-white shadow-md z-10"
+            src={profileInfo.photo}
+            name={profileInfo.username}
+          ></Avatar>
+        </div>
 
-            <HStack>
-              <p className="text-xl whitespace-nowrap font-bold">
-                {profileInfo.username}
-              </p>
-              <p className="text-sm font-light text-grayText">
-                {profileInfo.profession}
-              </p>
-              {profileInfo.verified ? (
-                <VerifiedIcon className="text-lg text-primary" />
-              ) : null}
-            </HStack>
-          </div>
-          <Stack divider={<Divider variant="vert" className="mx-[1.25rem]" />}>
-            <HStack>
-              <p className="font-bold text-lg">
+        <HStack>
+          <p className="text-2xl font-bold">{profileInfo.username}</p>
+
+          <>
+            {profileInfo.verified ? (
+              <VerifiedIcon className="text-lg text-primary" />
+            ) : null}
+          </>
+        </HStack>
+
+        <div className="flex flex-col gap-4">
+          <Stack
+            divider={<Divider variant="vert" className="mx-[1.25rem]" />}
+            className="w-[fit-content]"
+          >
+            <VStack
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
+            >
+              <p className="font-medium text-sm">{t("Posts")}</p>
+              <p className="font-bold text-xl">
                 {NumberShortner(profileInfo.publications)}
               </p>
-              <p>{t("Posts")}</p>
-            </HStack>
+            </VStack>
 
-            <HStack className="cursor-pointer" onClick={() => handleOpen()}>
-              <p className="font-bold text-lg">
+            <VStack
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer`}
+              onClick={() => handleOpen()}
+            >
+              <p className="font-medium text-sm">{t("Followers")}</p>
+              <p className="font-bold text-xl">
                 {NumberShortner(profileInfo.followers)}
               </p>
-              <p>{t("Followers")}</p>
-            </HStack>
+            </VStack>
 
-            <HStack
-              className="cursor-pointer"
+            <VStack
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
               onClick={() => subscriptionsOnOpen()}
             >
-              <p className="font-bold text-lg">
+              <p className="font-medium text-sm">{t("Following")}</p>
+              <p className="font-bold text-xl">
                 {NumberShortner(profileInfo.following)}
               </p>
-              <p>{t("Following")}</p>
-            </HStack>
+            </VStack>
           </Stack>
+          {ownProfile ? (
+            <HStack className="gap-6">
+              <Button colorScheme="gray">{t("Modify Profile")}</Button>
+              <Button colorScheme="gray">{t("Share Profile")}</Button>
+            </HStack>
+          ) : (
+            <>
+              <HStack className="gap-4">
+                <Button
+                  colorScheme="darkbrown"
+                  onClick={handleFollowProfile}
+                  className="whitespace-nowrap w-full"
+                >
+                  {isFollowed
+                    ? t("Unfollow")
+                    : isProfilePublic
+                    ? t("Follow")
+                    : t("Ask To Follow")}
+                </Button>
+
+                <Button
+                  disabled={isPrivateForUser}
+                  colorScheme="darkbrown"
+                  onClick={handleFollowProfile}
+                  className="whitespace-nowrap w-full"
+                >
+                  {t("Message")}
+                </Button>
+              </HStack>
+
+              <Button
+                onClick={() => {
+                  visit((r) => r.visitShop({ id: profileInfo.shopId }));
+                }}
+                disabled={isPrivateForUser}
+                colorScheme="darkbrown"
+              >
+                <HStack className="justify-center">
+                  {isProductShop ? (
+                    <>
+                      <ShoppingCartIcon />
+                      <p>{t("Shopping")}</p>
+                    </>
+                  ) : (
+                    <>
+                      <CalenderIcon />
+                      <p>{t("Booking")}</p>
+                    </>
+                  )}
+                </HStack>
+              </Button>
+            </>
+          )}
         </div>
 
-        <div className="flex flex-col w-full gap-1">
-          <p className="font-semibold text-lg">{t("Bio")}</p>
-          <p className="font-light text-base text-lightBlack">
-            {profileInfo.bio}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {mapArray([], (link, i) => (
-              <HStack key={i} className="flex gap-2">
-                <LinkIcon className="text-base text-primary" />
-                <p className="text-base text-black font-light underline underline-offset-4">
-                  {link}
-                </p>
-              </HStack>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 items-center">
-          <Button onClick={handleFollowProfile} className="whitespace-nowrap">
-            {profileInfo.isFollowed
-              ? t("Unfollow")
-              : isProfilePublic
-              ? t("Follow")
-              : t("Ask To Follow")}
-          </Button>
-        </div>
+        {/* <div className="flex flex-col "> */}
+        <p className="">"{profileInfo.bio}"</p>
       </div>
     </div>
   );

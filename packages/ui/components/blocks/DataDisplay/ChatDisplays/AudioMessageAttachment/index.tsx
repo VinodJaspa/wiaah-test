@@ -1,5 +1,5 @@
 import React from "react";
-import { DurationDisplay } from "@UI";
+import { DurationDisplay, PlayButtonFillIcon, PlayFillIcon } from "@UI";
 import { useTranslation } from "react-i18next";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import { HtmlAudioProps } from "types";
@@ -51,7 +51,7 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
     setPlay((play) => !play);
   }
   return (
-    <div className="relative p-2 rounded-xl">
+    <div className="relative px-4 py-2 bg-[#F4F4F4] rounded-xl">
       <div className="absolute hidden">
         <audio
           onTimeUpdate={handleChangeCurrentTime}
@@ -64,15 +64,8 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
         />
       </div>
       <div className="gap-2 flex items-center">
-        <div
-          className="p-1 text-primary-700 rounded-full bg-primary-300"
-          onClick={handleTogglePlaying}
-        >
-          {play ? (
-            <BsPauseFill className="rounded-full" />
-          ) : (
-            <BsPlayFill className="rounded-full" />
-          )}
+        <div className="text-xs text-primary" onClick={handleTogglePlaying}>
+          {play ? <BsPauseFill /> : <PlayFillIcon />}
         </div>
         <div className="flex items-center gap-[0.1rem]">
           {audioTicks.map((h, i) => (
@@ -88,7 +81,7 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
           ))}
         </div>
         {audioRef.current && audioRef.current.duration !== NaN && (
-          <p className="text-gray-300">
+          <p className="text-black">
             <DurationDisplay duration={audioRef.current.duration} />
           </p>
         )}

@@ -13,6 +13,17 @@ exports.GqlAuthorizationGuard = void 0;
 const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 const constants_1 = require("../constants");
+const knownError_1 = require("../Errors/knownError");
+class AuthorizationRequired extends knownError_1.KnownError {
+    constructor(msg) {
+        super(msg, knownError_1.PublicErrorCodes.unAuthorized);
+    }
+}
+class PremissionDenied extends knownError_1.KnownError {
+    constructor(msg) {
+        super(msg, knownError_1.PublicErrorCodes.premissionDenied);
+    }
+}
 let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     constructor(roles) {
         this.roles = [];
@@ -21,21 +32,20 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const user = ctx.getContext().user;
-        console.log("user", { user });
         const isPublic = this.roles.includes(constants_1.accountType.PUBLIC);
         if (!user || typeof user !== "object" || typeof user.id !== "string") {
             if (isPublic) {
                 return true;
             }
             else {
-                throw new common_1.UnauthorizedException("this account can not preform this action");
+                throw new AuthorizationRequired("you need to sign in to preform this action");
             }
         }
         if (this.roles) {
             if (this.roles.length === 0)
                 return true;
             if (!user.accountType || !this.roles.includes(user.accountType)) {
-                throw new common_1.UnauthorizedException("this account can not preform this action");
+                throw new PremissionDenied("this account can not preform this action");
             }
         }
         else {

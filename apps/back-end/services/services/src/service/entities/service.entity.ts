@@ -3,6 +3,7 @@ import {
   ServiceDiscount,
   ServiceExtra,
   ServicePropertyMeasurements,
+  TranslationText,
 } from '@entities';
 import {
   Directive,
@@ -136,6 +137,9 @@ export class Service {
   @Field(() => RentalPropertyType, { nullable: true })
   propertyType?: RentalPropertyType;
 
+  @Field(() => Float, { nullable: true })
+  cleaningFee?: number;
+
   // hotel and rental
   @Field(() => [Adaptation], { nullable: true })
   adaptedFor: Adaptation[];
@@ -155,6 +159,24 @@ export class Service {
 
   @Field(() => String, { nullable: true })
   model?: string;
+
+  @Field(() => Int, { nullable: true })
+  seats?: number;
+
+  @Field(() => Int, { nullable: true })
+  windows?: number;
+
+  @Field(() => Int, { nullable: true })
+  maxSpeedInKm?: number;
+
+  @Field(() => Int, { nullable: true })
+  lugaggeCapacity?: number;
+
+  @Field(() => Boolean, { nullable: true })
+  gpsAvailable?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  airCondition?: boolean;
 
   @Field(() => String, { nullable: true })
   vehicleCategoryId?: string;
@@ -185,4 +207,34 @@ export class Service {
 
   @Field(() => RestaurantDishType, { nullable: true })
   menuType?: RestaurantDishType;
+}
+
+@ObjectType()
+export class RawService {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => String)
+  sellerId: string;
+
+  @Field(() => [TranslationText])
+  name: TranslationText[];
+
+  @Field(() => [TranslationText])
+  description: TranslationText[];
+
+  @Field(() => Float)
+  price: number;
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => Int)
+  reviews: number;
+
+  @Field(() => ServiceDiscount)
+  discount: ServiceDiscount;
 }

@@ -3,6 +3,8 @@ import { createGraphqlRequestClient } from "api";
 import { GetUserServicesPostsInput, Profile, ServicePost } from "@features/API";
 import { Service } from "@features/API";
 import { useQuery } from "react-query";
+import { isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetProfileServicePostsQueryVariables = Exact<{
   args: GetUserServicesPostsInput;
@@ -10,28 +12,10 @@ export type GetProfileServicePostsQueryVariables = Exact<{
 
 export type GetProfileServicePostsQuery = { __typename?: "Query" } & {
   getUserServicePosts: Array<
-    { __typename?: "ServicePost" } & Pick<
-      ServicePost,
-      | "id"
-      | "userId"
-      | "comments"
-      | "reactionNum"
-      | "serviceId"
-      | "shares"
-      | "createdAt"
-      | "views"
-    > & {
-        user: { __typename?: "Account" } & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<
-              Profile,
-              "photo" | "username" | "id" | "profession"
-            >
-          >;
-        };
+    { __typename?: "ServicePost" } & Pick<ServicePost, "id" | "userId"> & {
         service: { __typename?: "Service" } & Pick<
           Service,
-          "id" | "thumbnail" | "title" | "hashtags"
+          "id" | "thumbnail" | "name"
         >;
       }
   >;
@@ -51,25 +35,10 @@ export const useGetProfileServicePostQuery = (
             ){
                 id
                 userId
-                comments
-                reactionNum
-                serviceId
-                shares
-                createdAt
-                views
-                user{
-                  profile{
-                      photo
-                      username
-                      id
-                      profession
-                  }
-                }
                 service {
                     id
                     thumbnail
-                    title
-                    hashtags
+                    name
                 }
             }
         }
@@ -80,6 +49,21 @@ export const useGetProfileServicePostQuery = (
   });
 
   return useQuery(["get-profile-services-posts", { args }], async () => {
+    if (isDev) {
+      const mockRes: GetProfileServicePostsQuery["getUserServicePosts"] = [
+        ...Array(15),
+      ].map(() => ({
+        id: "",
+        service: {
+          id: "",
+          name: "",
+          thumbnail: getRandomImage(),
+        },
+        userId: "",
+      }));
+
+      return mockRes;
+    }
     const res = await client.send<GetProfileServicePostsQuery>();
 
     return res.data.getUserServicePosts;

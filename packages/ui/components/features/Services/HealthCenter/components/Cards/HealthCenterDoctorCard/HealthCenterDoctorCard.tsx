@@ -18,8 +18,8 @@ export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
       <div className="flex gap-2">
         <Avatar src={doctor.thumbnail} alt={doctor.name} />
         <div className="flex flex-col ">
-          <p className="font-semibold">{doctor.name}</p>
-          <p>{doctor.speciality}</p>
+          <p className="font-semibold text-lg">{doctor.name}</p>
+          <p className="text-gray-400">{doctor.speciality.name}</p>
         </div>
       </div>
       <PriceDisplay price={doctor.price} />

@@ -284,6 +284,48 @@ query getRestaurant($args:GetRestaurantInput!){
           lowest_price: 20,
           menus: [
             {
+              name: "Starter",
+              dishs: [
+                {
+                  name: "Fried Calamari",
+                  ingredients: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  thumbnail: "/dish-1.png",
+                  id: "",
+                },
+                {
+                  name: "Shrimp cocktail",
+                  ingredients: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  thumbnail: "/dish-2.png",
+                  id: "",
+                },
+              ],
+              id: "",
+            },
+            {
+              dishs: [
+                {
+                  id: "54321",
+                  ingredients: ["tomatoes", "basil", "mozzarella"],
+                  price: 12,
+                  name: "Margherita Pizza",
+                  thumbnail:
+                    "https://www.foodandwine.com/thmb/EuorRdLisZJ5XCD1ZJJnGXGHP_4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/201012-ss-dishes-leeks-7624862883b54db29fbfa87295ba42ac.jpg",
+                },
+                {
+                  id: "67890",
+                  ingredients: ["pasta", "tomato sauce", "parmesan cheese"],
+                  price: 16,
+                  name: "Spaghetti Pomodoro",
+                  thumbnail:
+                    "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/10/4/1/FN_chain-restaurant-entrees_Applebees_Bourbon-Street-Chicken-Shrimp_s6x4.jpg.rend.hgtvcom.616.411.suffix/1538685780055.jpeg",
+                },
+              ],
+              id: "menu123",
+              name: "Dinner Menu",
+            },
+            {
               dishs: [
                 {
                   id: "54321",

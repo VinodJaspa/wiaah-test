@@ -74,9 +74,30 @@ export const HotelDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServicePoliciesSection
-                    title={"Check-in Checsdkout Terms"}
+                    title={"Check-in Checout Terms"}
                     // deposit={15}
-                    policies={res.policies}
+                    policies={[
+                      {
+                        policyTitle: "Check-in and Check-out",
+                        terms: [
+                          "Check-in time is after 3:00 PM",
+                          "Check-out time is before 12:00 PM",
+                          "Early check-in or late check-out may be available upon request and subject to availability",
+                        ],
+                      },
+                      {
+                        policyTitle: "Cancellation",
+                        terms: [
+                          "Cancellation policy varies depending on the rate plan booked",
+                          "Some rate plans may be non-refundable",
+                          "Cancellation requests must be made by 6:00 PM local time on the day prior to arrival to avoid cancellation fees",
+                        ],
+                      },
+                      {
+                        policyTitle: "Pets",
+                        terms: ["Pets are not allowed in the hotel"],
+                      },
+                    ]}
                   />
                 </>
               ) : null}

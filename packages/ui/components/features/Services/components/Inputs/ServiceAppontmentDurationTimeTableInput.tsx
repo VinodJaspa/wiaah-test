@@ -15,6 +15,7 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
   onWeekChange: (v: Date) => any;
   week: Date;
   selectionContainerProps?: HtmlDivProps;
+  input?: boolean;
 }> = ({
   workingDates,
   onChange,
@@ -22,6 +23,7 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
   onWeekChange,
   week,
   selectionContainerProps,
+  input,
 }) => {
   const [_value, setValue] = React.useState<Record<number, Date[]>>({});
 
@@ -68,41 +70,47 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
 
   return (
     <div className="flex flex-col h-full gap-4 select-none p-4 rounded-lg shadow">
-      <HStack>
-        <ExclamationCircleIcon />
-        <p className="font-bold">
-          {t("Select the duration of your service single session in minutes")}
-        </p>
-      </HStack>
-      <HStack className="flex-wrap">
-        {mapArray(defaultSessionDuration, (v, i) => (
-          <Button
-            onClick={() => handleChange("sessionDurationMin", v.duration)}
-            colorScheme={
-              form.sessionDurationMin === v.duration ? "primary" : "white"
-            }
-            key={i}
-          >
-            {v.label}
-          </Button>
-        ))}
-        <HStack>
-          <p>{t("or")}</p>
-          <Input
-            type="number"
-            value={
-              defaultSessionDuration
-                .map((v) => v.duration)
-                .includes(form.sessionDurationMin)
-                ? ""
-                : form.sessionDurationMin
-            }
-            onChange={(v) =>
-              handleChange("sessionDurationMin", parseInt(v.target.value))
-            }
-          />
-        </HStack>
-      </HStack>
+      {input ? (
+        <>
+          <HStack>
+            <ExclamationCircleIcon />
+            <p className="font-bold">
+              {t(
+                "Select the duration of your service single session in minutes"
+              )}
+            </p>
+          </HStack>
+          <HStack className="flex-wrap">
+            {mapArray(defaultSessionDuration, (v, i) => (
+              <Button
+                onClick={() => handleChange("sessionDurationMin", v.duration)}
+                colorScheme={
+                  form.sessionDurationMin === v.duration ? "primary" : "white"
+                }
+                key={i}
+              >
+                {v.label}
+              </Button>
+            ))}
+            <HStack>
+              <p>{t("or")}</p>
+              <Input
+                type="number"
+                value={
+                  defaultSessionDuration
+                    .map((v) => v.duration)
+                    .includes(form.sessionDurationMin)
+                    ? ""
+                    : form.sessionDurationMin
+                }
+                onChange={(v) =>
+                  handleChange("sessionDurationMin", parseInt(v.target.value))
+                }
+              />
+            </HStack>
+          </HStack>
+        </>
+      ) : null}
       <div className="mx-auto">
         <WeekSwitcher
           date={week}
@@ -114,14 +122,16 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
           }}
         />
       </div>
-      <HStack>
-        <ExclamationCircleIcon />
-        <p className="font-bold">
-          {t(
-            "Select the sessions you would like to be available to book or unSelect sessions you would not."
-          )}
-        </p>
-      </HStack>
+      {input ? (
+        <HStack>
+          <ExclamationCircleIcon />
+          <p className="font-bold">
+            {t(
+              "Select the sessions you would like to be available to book or unSelect sessions you would not."
+            )}
+          </p>
+        </HStack>
+      ) : null}
 
       <HStack className="justify-between">
         {mapArray([...Array(7)], (_, i) => {

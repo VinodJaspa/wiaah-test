@@ -1,12 +1,13 @@
-import { PostCardPlaceHolder } from "placeholder";
 import React from "react";
 import {
+  AspectRatio,
   GridListOrganiser,
+  Image,
   SocialServicesPostCard,
-  ServicePost,
   SocialServicesPostCardProps,
+  useResponsive,
 } from "@UI";
-import { randomNum } from "utils";
+import { mapArray } from "@UI/../utils/src";
 
 const servicesData = [
   {
@@ -36,8 +37,8 @@ const servicesData = [
 ];
 
 type ServicePostData = {
-  postInfo: SocialServicesPostCardProps["postInfo"];
-  profileInfo: SocialServicesPostCardProps["profileInfo"];
+  thumbnail: string;
+  id: string;
 };
 
 export interface SocialServicesPostsListProps {
@@ -49,113 +50,127 @@ export const SocialServicePostsList: React.FC<SocialServicesPostsListProps> = ({
   grid = false,
   posts,
 }) => {
+  const { isMobile } = useResponsive();
   return (
     <>
       {Array.isArray(posts) ? (
-        <GridListOrganiser
-          rowSize="14.5rem"
-          presets={[
-            {
-              cols: 5,
-              points: [
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-              ],
-            },
-            {
-              cols: 5,
-              points: [
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 2 },
-                { c: 2, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-              ],
-            },
-            {
-              cols: 5,
-              points: [
-                {
-                  c: 2,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-              ],
-            },
-          ]}
-        >
-          {posts.map((post) => {
-            return <SocialServicesPostCard {...post} />;
-          })}
-        </GridListOrganiser>
+        isMobile ? (
+          <div className="grid grid-cols-3 gap-[1px]">
+            {mapArray(posts, (v, i) => (
+              <AspectRatio ratio={1}>
+                <Image
+                  src={v.thumbnail}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </AspectRatio>
+            ))}
+          </div>
+        ) : (
+          <GridListOrganiser
+            rowSize="14.5rem"
+            presets={[
+              {
+                cols: 5,
+                points: [
+                  {
+                    c: 2,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                ],
+              },
+              {
+                cols: 5,
+                points: [
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 2 },
+                  { c: 2, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                ],
+              },
+              {
+                cols: 5,
+                points: [
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                  {
+                    c: 2,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                ],
+              },
+            ]}
+          >
+            {posts.map((post) => {
+              return <SocialServicesPostCard {...post} />;
+            })}
+          </GridListOrganiser>
+        )
       ) : null}
     </>
   );

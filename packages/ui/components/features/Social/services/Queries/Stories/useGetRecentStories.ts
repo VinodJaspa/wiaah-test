@@ -3,6 +3,7 @@ import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
 import { GetRecentStoriesInput, Profile, RecentStory } from "@features/API";
 import { Account } from "@features/API";
+import { getRandomName, isDev } from "@UI/../utils/src";
 
 export type GetRecentStoriesQueryVariables = Exact<{
   args: GetRecentStoriesInput;
@@ -56,8 +57,8 @@ export const useGetRecentStories = (input: GetRecentStoriesInput) => {
   });
 
   return useQuery(["recent-story", { input }], async () => {
-    return [
-      {
+    if (isDev) {
+      return [...Array(10)].map(() => ({
         userId: "teasd",
         newStory: true,
         user: {
@@ -66,11 +67,14 @@ export const useGetRecentStories = (input: GetRecentStoriesInput) => {
             id: "Teasd",
             photo: "/profile (1).jfif",
             profession: "prof",
-            username: "username",
+            username: `${getRandomName().firstName} ${
+              getRandomName().lastName
+            }`,
           },
         },
-      },
-    ];
+      }));
+    }
+
     const res = await client.send<GetRecentStoriesQuery>();
     return res.data.getRecentStories;
   });

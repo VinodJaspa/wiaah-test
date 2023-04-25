@@ -108,6 +108,7 @@ model Service {
   // <= moved to category
   propertyType RentalPropertyType?
   //  <= moved to category
+  cleaningFee  Float?
 
   // hotel + rentals + vehicle
   deposit       Boolean?
@@ -574,13 +575,13 @@ type PropertyMeasurements {
 }
 
 type ServiceDailyPrices {
-  mo Int
-  tu Int
-  we Int
-  th Int
-  fr Int
-  sa Int
-  su Int
+  mo Int?
+  tu Int?
+  we Int?
+  th Int?
+  fr Int?
+  sa Int?
+  su Int?
 }
 
 type ServiceExtra {

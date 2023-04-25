@@ -49,3 +49,23 @@ export const ShareIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const ShareOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 19 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17.6429 0.817139L8.5 9.99771M8.5 9.99771L11.9286 19.1429L17.6429 0.857139L0.5 6.57142L8.5 9.99771Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

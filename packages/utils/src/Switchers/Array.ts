@@ -1,6 +1,12 @@
 export function mapArray<T, P>(
   array: T[] | undefined,
-  cb: (data: T, index: number) => P
+  cb: (data: T, index: number) => P,
+  emptyArrayFallback: boolean = false,
+  emptyArrayFallbackComp: React.ReactNode = "no records found"
 ): P[] {
-  return Array.isArray(array) ? array.map(cb) : [];
+  return Array.isArray(array)
+    ? emptyArrayFallback && array.length < 1
+      ? emptyArrayFallbackComp
+      : array.map(cb)
+    : [];
 }

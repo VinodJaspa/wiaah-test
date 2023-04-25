@@ -1,5 +1,10 @@
 import { HiChevronDown } from "react-icons/hi";
-import { countries, getCountryByCode, getCitiesOfCountry } from "utils";
+import {
+  countries,
+  getCountryByCode,
+  getCitiesOfCountry,
+  useForm,
+} from "utils";
 import { Form, Formik } from "formik";
 import React from "react";
 import { FlagIcon } from "react-flag-kit";
@@ -32,29 +37,47 @@ import {
   useUpdateAccountSettingsMutation,
   PhoneNumberInput,
 } from "@UI";
-import { useAccountType } from "hooks";
 import { accountTypes } from "@UI";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";
-  accountId?: string;
+  accountId: string;
 }
 
 export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   variant = "seller",
   accountId,
 }) => {
-  // if(accountId)
-  const isBuyer = variant === "buyer";
-  const isSeller = variant === "seller";
-  const { t } = useTranslation();
-  const { uploadImage } = useFileUploadModal();
-  const { data } = useGetAccountSettingsQuery();
+  const { data } = useGetAccountSettingsQuery({ userId: accountId });
+  const { form: AccForm } = useForm<
+    Parameters<typeof mutate>[0]["accountArgs"]
+  >({ id: accountId, ...data?.account });
+  const { form: ProfileForm } = useForm<
+    Parameters<typeof mutate>[0]["profileArgs"]
+  >({ userId: accountId, ...data?.profile });
+  const { form: shopForm } = useForm<Parameters<typeof mutate>[0]["shopArgs"]>({
+    userId: accountId,
+    ...data?.shop,
+  });
+
+  const { form: updateForm } = useForm<Parameters<typeof mutate>[0]>(
+    { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm },
+    { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm }
+  );
   const { mutate } = useUpdateAccountSettingsMutation();
+
+  const { t } = useTranslation();
+
+  const { uploadImage } = useFileUploadModal();
 
   function handleProfilePhotoChange() {
     uploadImage();
   }
+
+  const UpdateChanges = () => {
+    mutate(updateForm);
+  };
+
   return (
     <div className="w-full gap-4 flex flex-col">
       <SectionHeader sectionTitle={t("account", "Account")} />

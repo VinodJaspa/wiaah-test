@@ -1,11 +1,8 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { GqlPaginationInput } from 'nest-utils';
+import { GqlCursorPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetUserActionsInput {
+export class GetUserActionsInput extends GqlCursorPaginationInput {
   @Field(() => ID)
   userId: string;
-
-  @Field(() => GqlPaginationInput)
-  pagination: GqlPaginationInput;
 }

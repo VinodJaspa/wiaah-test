@@ -1,4 +1,4 @@
-export function getDatesInRange(start: Date, end: Date): Date[] {
+export function getDatesInRangeHours(start: Date, end: Date): Date[] {
   const dates = [];
   let currentDate = new Date(start);
 

@@ -1,9 +1,8 @@
-import { GqlPaginationInput } from 'nest-utils';
+import { GetUserActionsInput } from '@action/dto';
 
 export class GetUserActionsQuery {
   constructor(
-    public readonly userId: string,
-    public readonly pagination: GqlPaginationInput,
+    public readonly args: GetUserActionsInput,
     public readonly requesterId?: string,
   ) {}
 }

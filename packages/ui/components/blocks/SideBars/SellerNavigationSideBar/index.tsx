@@ -3,17 +3,35 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
 import { NavigationLinkType } from "types";
-import { Divider, LogoutIcon, Button, HStack, Image } from "@UI";
+import {
+  Divider,
+  LogoutIcon,
+  Button,
+  Image,
+  HomeIcon,
+  DiscoverIcon,
+  ShoppingCartIcon,
+  ServicesIcon,
+  AffiliationIcon,
+  Avatar,
+  useUserData,
+  VideosPlayIcon,
+  HomeOutlineIcon,
+  DiscoverOutlineIcon,
+  VideosOutlinePlayIcon,
+  ShoppingCartOutlineIcon,
+  ServicesOutlineIcon,
+  AffiliationIconOutline,
+} from "@UI";
+import { runIfFn } from "@UI/../utils/src";
 
 export interface SellerSideBarProps extends HtmlDivProps {
-  links: NavigationLinkType[];
   onLinkClick?: (link: NavigationLinkType) => any;
   activeLink?: string;
   headerElement?: React.ReactElement;
 }
 
 export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
-  links,
   onLinkClick,
   activeLink,
   headerElement,
@@ -25,25 +43,69 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick && onLinkClick(link);
   }
-  const { isMobile, screenWidth } = useResponsive();
+  const { isMobile } = useResponsive();
 
-  console.log({ screenWidth });
+  const links: NavigationLinkType[] = [
+    {
+      name: "Home",
+      icon: HomeOutlineIcon,
+      activeIcon: HomeIcon,
+      url: "",
+    },
+    {
+      name: "discover",
+      icon: DiscoverOutlineIcon,
+      activeIcon: DiscoverIcon,
+      url: "discover",
+    },
+    {
+      name: "action",
+      icon: VideosOutlinePlayIcon,
+      activeIcon: VideosPlayIcon,
+      url: "action",
+    },
+    {
+      name: "shop",
+      icon: ShoppingCartOutlineIcon,
+      activeIcon: ShoppingCartIcon,
+      url: "shop",
+    },
+  ].concat(
+    isMobile
+      ? []
+      : [
+          {
+            name: "service",
+            icon: ServicesOutlineIcon,
+            activeIcon: ServicesIcon,
+            url: "services",
+          },
+          {
+            name: "affiliation",
+            icon: AffiliationIconOutline,
+            activeIcon: AffiliationIcon,
+            url: "affiliation",
+          },
+        ]
+  );
+
+  const { user } = useUserData();
 
   return (
     <div
-      className={`${className} bg-primary flex z-20 fixed ${
+      className={`${className} flex z-50 fixed ${
         isMobile
-          ? "flex-row z-10 left-0 bottom-0 w-full"
-          : "flex-col left-0 w-52 h-screen top-0"
+          ? "flex-row z-10 left-0 bottom-0 w-full bg-white"
+          : "flex-col left-0 w-52 z-[51] h-screen top-0 bg-primary"
       } items-center flex py-3`}
       {...props}
     >
-      <div className="overflow-y-scroll noScroll">
+      <div className="overflow-y-scroll noScroll w-full">
         <div
-          className={`w-full flex flex-wrap bg-primary ${
+          className={`w-full flex flex-wrap ${
             isMobile
-              ? "justify-around flex-row gap-2 text-3xl"
-              : "flex-col gap-12"
+              ? "justify-around flex-row gap-2 text-3xl bg-white"
+              : "flex-col gap-12 bg-primary"
           }`}
         >
           {!isMobile && <Image src="/logo.svg" className="w-full pl-8 pr-16" />}
@@ -51,17 +113,24 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             const active = link.url === activeLink;
             return (
               <div
-                className="flex gap-4 items-center cursor-pointer relative pl-8"
+                className={`flex gap-4 items-center cursor-pointer relative ${
+                  isMobile ? "" : "pl-8"
+                }`}
                 data-testid="NavigationSideBarLink"
                 onClick={() => handleLinkClick && handleLinkClick(link)}
                 key={i}
               >
                 <span
                   className={`${
-                    active ? "text-black fill-black" : "text-white fill-white"
+                    "text-black"
+                    // active
+                    //   ? "text-black fill-black"
+                    //   : isMobile
+                    //   ? "text-gray-400 fill-gray-400"
+                    //   : "text-white fill-white"
                   } text-icon`}
                 >
-                  {typeof link.icon === "function" ? link.icon() : null}
+                  {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}
                 </span>
                 {!isMobile && (
                   <>
@@ -84,6 +153,13 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               </div>
             );
           })}
+          {isMobile ? (
+            <Avatar
+              className="min-w-[1.5rem]"
+              src={user?.photoSrc}
+              alt={user?.name}
+            />
+          ) : null}
         </div>
         {!isMobile && (
           <div className="flex flex-col h-full justify-between w-full px-6">

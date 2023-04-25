@@ -158,7 +158,6 @@ enum ActiveStatus {
 
 enum ProfileVisibility {
   public
-  followers
   private
 }
 
@@ -212,6 +211,7 @@ enum ContentHostType {
   comment
   action
   story
+  chat_message
 }
 
 type PaginationCommentsResponse {
@@ -436,14 +436,22 @@ type HashtagTopAffiliationPost {
 type Action {
   id: ID!
   src: String!
+  cover: String!
   link: String!
   userId: ID!
   reactionNum: Int!
   comments: Int!
+  views: Int!
   shares: Int!
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
+}
+
+type GetActionsCursorResponse {
+  data: [Action!]!
+  cursor: String!
+  hasMore: Boolean!
 }
 
 type ServicePostHashtagSearch {
@@ -513,6 +521,7 @@ type ProfileVisitsDetails {
 
 type Query {
   findAll: ProfilePaginatedResponse!
+  getProfileDetails(userId: String!): Profile!
   myProfile: Profile!
   getProfile(id: String!): Profile!
   searchPopularUsers(args: SearchPopularProfilesInput!): ProfilePaginatedResponse!
@@ -554,7 +563,8 @@ type Query {
   getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
   getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
   getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
-  getUserActions(args: GetUserActionsInput!): [Action!]!
+  getUserActions(args: GetUserActionsInput!): GetActionsCursorResponse!
+  getMyRecommendedAction: Action!
   getAction(id: String!): [Action!]!
   getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
@@ -694,8 +704,9 @@ input GetRecommendedAffiliationPostsInput {
 }
 
 input GetUserActionsInput {
+  take: Int!
+  cursor: String
   userId: ID!
-  pagination: GqlPaginationInput!
 }
 
 input GetUserServicesPostsInput {
@@ -756,7 +767,7 @@ input GetTopProfilePostsInput {
 
 type Mutation {
   createProfile(createProfileInput: CreateProfileInput!): Profile!
-  updateMyProfile(updateProfileInput: UpdateProfileInput!): Profile!
+  updateUserProfile(args: UpdateProfileInput!): Profile!
   deleteMyProfile: Profile!
   sendFollowRequest(profileId: String!): Boolean!
   followProfile(followUserInput: FollowProfileInput!): Boolean!
@@ -783,6 +794,8 @@ type Mutation {
   updateAccountPrivacySettings(args: UpdateMyPrivacyInput!, id: String!): PrivacySettings!
   updateMyPrivacySettings(args: UpdateMyPrivacyInput!): PrivacySettings!
   createAction(args: CreateActionInput!): Boolean!
+  UploadActionCover(file: Upload!): String!
+  uploadActionVideo(src: Upload!): String!
   hideContent(args: HideContentInput!): Boolean!
 }
 
@@ -802,6 +815,7 @@ input UpdateProfileInput {
   visibility: ProfileVisibility
   username: String
   gender: ProfileReachedGender
+  userId: String!
 }
 
 input FollowProfileInput {
@@ -859,7 +873,8 @@ input UpdateProfileAdminInput {
   visibility: ProfileVisibility
   username: String
   gender: ProfileReachedGender
-  profileId: ID
+  userId: String
+  accountId: ID
 }
 
 input UpdatePostAdminInput {
@@ -946,8 +961,8 @@ input UpdateMyPrivacyInput {
 }
 
 input CreateActionInput {
-  src: Upload!
-  cover: Upload!
+  srcUploadId: String!
+  coverUploadId: String!
   mentions: [String!] = []
   tags: [String!] = []
   link: String
@@ -956,14 +971,14 @@ input CreateActionInput {
   allowedActions: [ActionType!]!
 }
 
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
-
 enum ActionType {
   duet
   stitch
   comment
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input HideContentInput {
   id: ID!

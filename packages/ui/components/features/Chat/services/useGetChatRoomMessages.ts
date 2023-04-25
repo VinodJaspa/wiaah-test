@@ -1,3 +1,5 @@
+import { isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   Account,
   ChatMessage,
@@ -5,6 +7,7 @@ import {
   GetMessagesByRoomIdInput,
   Maybe,
   MessageAttachment,
+  MessageAttachmentType,
   Profile,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
@@ -86,14 +89,159 @@ query getChatRoomMessage(
 
   return useInfiniteQuery(
     ["chat", "room", "messages", { id: input.roomId }],
-    async (cusor) => {
+    async (cursor) => {
+      if (isDev) {
+        const mockRes: GetChatRoomMessageQuery["getRoomMessages"] = [
+          {
+            content: "test",
+            createdAt: new Date().toDateString(),
+            attachments: [
+              {
+                id: "",
+                src: getRandomImage(),
+                type: MessageAttachmentType.Image,
+              },
+            ],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test",
+            createdAt: new Date().toDateString(),
+            attachments: [
+              {
+                id: "",
+                src: "/video.mp4",
+                type: MessageAttachmentType.VoiceMessage,
+              },
+            ],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test 1",
+            createdAt: new Date().toDateString(),
+            attachments: [],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test 2",
+            createdAt: new Date().toDateString(),
+            attachments: [],
+            id: "",
+            mentions: [],
+
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test",
+            createdAt: new Date().toDateString(),
+            attachments: [
+              {
+                id: "",
+                src: getRandomImage(),
+                type: MessageAttachmentType.Image,
+              },
+            ],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test",
+            createdAt: new Date().toDateString(),
+            attachments: [
+              {
+                id: "",
+                src: "/video.mp4",
+                type: MessageAttachmentType.VoiceMessage,
+              },
+            ],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test 1",
+            createdAt: new Date().toDateString(),
+            attachments: [],
+            id: "",
+            mentions: [],
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+          {
+            content: "test 2",
+            createdAt: new Date().toDateString(),
+            attachments: [],
+            id: "",
+            mentions: [],
+
+            user: {
+              id: "",
+              profile: {
+                photo: getRandomImage(),
+                username: "test user name",
+              },
+            },
+          },
+        ];
+
+        return mockRes;
+      }
+
       const res = await client
         .setVariables<GetChatRoomMessageQueryVariables>({
           args: {
             roomId: input.roomId,
             pagination: {
               take: input.pagination.take,
-              cursor: cusor.pageParam,
+              cursor: cursor.pageParam,
             },
           },
         })

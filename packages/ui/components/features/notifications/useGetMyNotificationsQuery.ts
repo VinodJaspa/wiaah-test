@@ -1,9 +1,12 @@
+import { SubtractFromDate, getRandomName, isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   Account,
   Exact,
   Maybe,
   Notification,
   NotificationPaginationResponse,
+  NotificationType,
   Profile,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
@@ -45,10 +48,158 @@ export type GetMyNotificationsQueryQuery = { __typename?: "Query" } & {
 };
 
 export const useGetMyNotificationsQuery = () =>
-  useQuery(["get-my-notifications"], async () => {
-    const client = createGraphqlRequestClient();
+  useQuery(
+    ["get-my-notifications"],
+    async () => {
+      if (isDev) {
+        const mockRes: GetMyNotificationsQueryQuery["getMyNotifications"] = {
+          data: [
+            {
+              authorId: "",
+              content: "",
+              createdAt: new Date().toUTCString(),
+              id: "",
+              type: NotificationType.Follow,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 1 }),
+              id: "",
+              type: NotificationType.OrderCanceled,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 1 }),
+              id: "",
+              type: NotificationType.OrderDelivered,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 1 }),
+              id: "",
+              type: NotificationType.Follow,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              id: "",
+              type: NotificationType.PostReacted,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              id: "",
+              type: NotificationType.PostCommented,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              id: "",
+              type: NotificationType.PostMention,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              content: "",
+              createdAt: SubtractFromDate(new Date(), { days: 8 }),
+              id: "",
+              type: NotificationType.StoryReacted,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+          ],
+          total: 4,
+        };
 
-    client.setQuery(`
+        return mockRes;
+      }
+
+      const client = createGraphqlRequestClient();
+
+      client.setQuery(`
     query getMyNotificationsQuery{
 	getMyNotifications{total
     data{
@@ -72,7 +223,9 @@ export const useGetMyNotificationsQuery = () =>
   }
 }
     `);
-    const res = await client.send<GetMyNotificationsQueryQuery>();
+      const res = await client.send<GetMyNotificationsQueryQuery>();
 
-    return res.data.getMyNotifications;
-  });
+      return res?.data?.getMyNotifications;
+    },
+    { cacheTime: 0 }
+  );

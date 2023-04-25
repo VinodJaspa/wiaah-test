@@ -1,5 +1,13 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { MessageAttachmentType } from '@prisma-client';
+@ObjectType()
+export class ChatMessageSeenBy {
+  @Field(() => String)
+  userId: string;
+
+  @Field(() => String)
+  seenAt: Date;
+}
 
 @ObjectType()
 export class ChatMessage {
@@ -26,6 +34,9 @@ export class ChatMessage {
 
   @Field(() => [ID])
   mentionsUserIds: string[];
+
+  @Field(() => [ChatMessageSeenBy])
+  seenBy: ChatMessageSeenBy[];
 }
 
 @ObjectType()

@@ -307,6 +307,7 @@ export const TreatmentsCheckoutList: React.FC<{
     thumbnail: string;
     price: number;
     name: string;
+    qty: number;
   }[];
 }> = ({ treatments }) => {
   const { t } = useTranslation();
@@ -319,8 +320,9 @@ export const TreatmentsCheckoutList: React.FC<{
             <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
             <p className="font-semibold text-lg">{v.name}</p>
           </div>
-          <div className="flex items-center text-xl font-semibold">
+          <div className="flex whitespace-nowrap gap-1 items-center text-xl font-semibold">
             <PriceDisplay price={v.price}></PriceDisplay>
+            <p className="flex items-center"> x {v.qty}</p>
           </div>
         </div>
       ))}

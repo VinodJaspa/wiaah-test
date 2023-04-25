@@ -58,7 +58,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
           outline:
             "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
           solid:
-            "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+            "bg-[#E5E5E5] border-gray-400 text-black hover:bg-gray-600 active:bg-gray-700",
         };
       case "white":
         return {
@@ -72,12 +72,13 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
           outline:
             "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
           solid:
-            "bg-lightGray border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+            "bg-lightGray border-gray-400 text-black hover:bg-gray-600 active:bg-gray-700",
         };
       case "darkbrown":
         return {
           outline: "border border-brownBtn text-brownBtn",
-          solid: "bg-brownBtn text-white",
+          solid:
+            "bg-brownBtn disabled:bg-[#D3D3D3] disabled:text-[#969696]  text-white",
         };
       default:
         return {
@@ -91,7 +92,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     <button
       {...props}
       onClick={(e) => {
-        loading ? undefined : onClick && onClick(e);
+        loading || !!props?.disabled ? undefined : onClick && onClick(e);
       }}
       className={` ${className ? className : ""} ${
         outline ? colors(colorScheme).outline : colors(colorScheme).solid

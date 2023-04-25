@@ -19,3 +19,53 @@ export function getTime(date: number, eventDurationInMinutes: number) {
     timeZone
   )}`;
 }
+
+const todayDate = new Date();
+
+export const isToday = (date: Date) => {
+  return (
+    date >
+    new Date(
+      todayDate.getFullYear(),
+      todayDate.getMonth(),
+      todayDate.getDate(),
+      0,
+      0,
+      0
+    )
+  );
+};
+
+export const isYesterday = (date: Date) => {
+  return (
+    date >
+    new Date(
+      todayDate.getFullYear(),
+      todayDate.getMonth(),
+      todayDate.getDate() - 1,
+      0,
+      0,
+      0
+    )
+  );
+};
+
+export const isThisWeek = (date: Date) => {
+  return (
+    date >
+    new Date(
+      todayDate.getFullYear(),
+      todayDate.getMonth(),
+      todayDate.getDate() - todayDate.getDay(),
+      0,
+      0,
+      0
+    )
+  );
+};
+
+export const isThisMonth = (date: Date) => {
+  return (
+    date > new Date(todayDate.getFullYear(), todayDate.getMonth(), 0, 0, 0, 0)
+  );
+};

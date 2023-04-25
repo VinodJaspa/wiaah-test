@@ -4,11 +4,15 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ProfileService } from '@profile-service';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class ProfileAdminResolver {
-  constructor(private service: ProfileService) {}
+  constructor(
+    private service: ProfileService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => Profile)
   async getAdminProfile(@Args('id') id: string) {
@@ -19,7 +23,12 @@ export class ProfileAdminResolver {
   async updateProfile(
     @Args('updateProfileInput') input: UpdateProfileAdminInput,
   ) {
-    const { profileId, ...rest } = input;
-    return this.service.updateMyProfile(rest, profileId);
+    const { accountId, ...rest } = input;
+    return this.prisma.profile.update({
+      where: {
+        ownerId: accountId,
+      },
+      data: rest,
+    });
   }
 }

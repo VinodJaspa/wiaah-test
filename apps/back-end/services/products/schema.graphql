@@ -160,6 +160,11 @@ type Filter {
   sortOrder: Int!
 }
 
+type TranslationText {
+  langId: String!
+  value: String!
+}
+
 type Location {
   lat: Float!
   long: Float!
@@ -186,6 +191,7 @@ type Shop {
   storeType: StoreType!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
+  storeFor: [StoreFor!]!
   status: ShopStatus!
   payment_methods: [ShopPaymentMethod!]!
   type: ServiceType
@@ -216,6 +222,13 @@ enum TargetGenders {
   female
 }
 
+enum StoreFor {
+  men
+  women
+  children
+  babies
+}
+
 enum ShopStatus {
   inActive
   active
@@ -237,6 +250,32 @@ enum ServiceType {
   health_center
   beauty_center
   vehicle
+}
+
+type RawShop {
+  id: ID!
+  ownerId: String!
+  banner: String!
+  verified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phone: String!
+  email: String!
+  thumbnail: String!
+  location: Location!
+  storeType: StoreType!
+  businessType: BusinessType!
+  targetGenders: [TargetGenders!]!
+  storeFor: [StoreFor!]!
+  status: ShopStatus!
+  payment_methods: [ShopPaymentMethod!]!
+  type: ServiceType
+  videos: [String!]!
+  images: [String!]!
+  reviews: Int!
+  rating: Float!
+  description: [TranslationText!]!
+  name: [TranslationText!]!
 }
 
 type ShopDayWorkingHours {
@@ -311,6 +350,7 @@ type Query {
   getMyWorkingSchedule: ShopWorkingSchedule!
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
   getUserShop(userId: String!): Shop!
+  getUserRawShop(userId: String!): RawShop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
@@ -418,7 +458,7 @@ type Mutation {
   updateMyWorkingSchedule(args: UpdateWorkingScheduleInput!): ShopWorkingSchedule!
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
-  updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
+  updateShop(args: UpdateUserShopInput!): Shop!
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
   updateProduct(updateProductArgs: UpdateProductInput!): Product!
   deleteProduct(productId: ID!): Product!
@@ -475,6 +515,7 @@ input CreateShopInput {
   location: LocationInput!
   storeType: StoreType!
   businessType: BusinessType!
+  storeFor: [StoreFor!]!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
   status: ShopStatus!
@@ -505,7 +546,7 @@ input VatSettingsPartialInput {
   location: LocationInput
 }
 
-input UpdateShopInput {
+input UpdateUserShopInput {
   name: [TranslationTextInput!]
   description: [TranslationTextInput!]
   banner: String
@@ -515,6 +556,7 @@ input UpdateShopInput {
   location: LocationInput
   storeType: StoreType
   businessType: BusinessType
+  storeFor: [StoreFor!]
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput
   status: ShopStatus
@@ -523,6 +565,7 @@ input UpdateShopInput {
   vidoes: [String!]
   images: [String!]
   hashtags: [String!]
+  userId: String!
 }
 
 input CreateProductInput {

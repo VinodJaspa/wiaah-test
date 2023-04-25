@@ -22,6 +22,7 @@ import {
   useDeleteServiceMutation,
   useUserData,
   Th,
+  TBody,
 } from "@UI";
 import { ServiceType } from "@features/API";
 export interface MyServicesListProps {}
@@ -46,25 +47,25 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
   const { t } = useTranslation();
 
   const { data } = useGetMyShopType();
+  const serviceType = data?.type || ServiceType.Hotel;
 
-  const showOn = (v: ServiceType[]) =>
-    v.includes((data?.type || "") as ServiceType);
+  const showOn = (v: ServiceType[]) => v.includes(serviceType);
 
   return (
     <div className="flex flex-col gap-8 w-full">
-      <Button onClick={() => AddNewService()} className="self-end">
+      <Button onClick={() => AddNewService()} className="self-end mr-4">
         {t("Add new service")}
       </Button>
       <ScrollCursorPaginationWrapper controls={controls}>
-        <Table className="w-full">
+        <Table TdProps={{ align: "center" }} className="w-full">
           <THead>
-            <Th>
+            <Th align="center">
               <Checkbox></Checkbox>
             </Th>
             <Th>{t("Image")}</Th>
             <Th>
               {(() => {
-                switch (data?.type) {
+                switch (serviceType) {
                   case ServiceType.Hotel:
                     return `${t("Room")}`;
                   case ServiceType.Restaurant:
@@ -111,65 +112,72 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
               </>
             ) : null}
             <Th>{t("Date")}</Th>
-            <Th>{t("action")}</Th>
+            <Th align="right">{t("Action")}</Th>
           </THead>
+          <TBody>
+            {res
+              ? res.data.map((service, i) => {
+                  return (
+                    <Tr>
+                      <Td>
+                        <Checkbox />
+                      </Td>
+                      <Td>
+                        <Image src={service.thumbnail} className="w-24 h-16" />
+                      </Td>
+                      <Td>{service.name}</Td>
+                      <Td>{service.price}</Td>
+                      {showOn([ServiceType.Restaurant]) ? (
+                        <>
+                          <Td>{service.menuType}</Td>
+                        </>
+                      ) : null}
+                      {showOn([
+                        ServiceType.Hotel,
+                        ServiceType.HolidayRentals,
+                      ]) ? (
+                        <>
+                          <Td>{service.num_of_rooms}</Td>
+                          <Td>{service.beds}</Td>
+                          <Td>{service.bathrooms}</Td>
+                        </>
+                      ) : null}
+                      {showOn([ServiceType.HealthCenter]) ? (
+                        <>
+                          <Td>{service.speciality}</Td>
+                        </>
+                      ) : null}
+                      {showOn([ServiceType.BeautyCenter]) ? (
+                        <>
+                          <Td>{service.treatmentCategory}</Td>
+                        </>
+                      ) : null}
+                      <Td>{new Date(service.createdAt).toDateString()}</Td>
+                      <Td align="right">
+                        <HStack>
+                          <Button
+                            onClick={() => setDeleteId(service.id)}
+                            center
+                            className="p-2"
+                            colorScheme="danger"
+                          >
+                            <TrashIcon />
+                          </Button>
+                          <Button
+                            onClick={() => EditService(service.id)}
+                            center
+                            className="p-2"
+                          >
+                            <EditIcon />
+                          </Button>
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  );
+                })
+              : null}
+          </TBody>
         </Table>
-        {res
-          ? res.data.map((service, i) => {
-              return (
-                <Tr>
-                  <Td>
-                    <Checkbox />
-                  </Td>
-                  <Td>
-                    <Image src={service.thumbnail} className="w-24 h-16" />
-                  </Td>
-                  <Td>{service.name}</Td>
-                  <Td>{service.price}</Td>
-                  {showOn([ServiceType.Restaurant]) ? (
-                    <>
-                      <Td>{service.menuType}</Td>
-                    </>
-                  ) : null}
-                  {showOn([ServiceType.Hotel]) ? (
-                    <>
-                      <Td>{service.num_of_rooms}</Td>
-                      <Td>{service.beds}</Td>
-                      <Td>{service.bathrooms}</Td>
-                    </>
-                  ) : null}
-                  {showOn([ServiceType.HealthCenter]) ? (
-                    <>
-                      <Td>{service.speciality}</Td>
-                    </>
-                  ) : null}
-                  {showOn([ServiceType.BeautyCenter]) ? (
-                    <>
-                      <Td>{service.treatmentCategory}</Td>
-                    </>
-                  ) : null}
-                  <Td>{new Date(service.createdAt).toDateString()}</Td>
-                  <Td>
-                    <Button
-                      onClick={() => setDeleteId(service.id)}
-                      center
-                      className="p-2"
-                      colorScheme="danger"
-                    >
-                      <TrashIcon />
-                    </Button>
-                    <Button
-                      onClick={() => EditService(service.id)}
-                      center
-                      className="p-2"
-                    >
-                      <EditIcon />
-                    </Button>
-                  </Td>
-                </Tr>
-              );
-            })
-          : null}
       </ScrollCursorPaginationWrapper>
 
       <Modal isOpen={!!deleteId} onClose={() => setDeleteId(undefined)}>

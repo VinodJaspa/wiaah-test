@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ChatMessage, Divider } from "@UI";
+import { ChatMessage, Divider, useUserData } from "@UI";
 import { MessageAttachmentType } from "@features/API";
 
 export interface ChatMessageType {
@@ -10,6 +10,7 @@ export interface ChatMessageType {
   sendDate: string | number;
   messageContent?: string;
   messageAttachments?: ChatMessageAttachmentType[];
+  userId: string;
 }
 
 export interface ChatMessageAttachmentType {
@@ -28,6 +29,8 @@ export const ChatRoomContent: React.FC<ChatRoomContentProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const { user } = useUserData();
+
   const dates = messages.reduce((acc, curr, idx) => {
     const notSame =
       new Date(acc.lastDate).getDate() !== new Date(curr.sendDate).getDate();
@@ -44,22 +47,33 @@ export const ChatRoomContent: React.FC<ChatRoomContentProps> = ({
   }, {} as { lastDate: Date; dates: Record<number, Date | null> });
 
   return (
-    <div className="justify-end gap-4 w-full p-4 bg-[#fefefe] inline-grid thinScroll overflow-y-scroll">
-      {messages.map((msg, i) => {
-        const d = dates.dates[i];
-        return (
-          <>
-            {d ? (
+    <div className="flex flex-col py-4 justify-end gap-1 h-full w-full  overflow-y-scroll">
+      {[...messages, { ...messages[0], userId: user?.id || "1" }].map(
+        (msg, i) => {
+          const d = dates.dates[i];
+          return (
+            <>
+              {/* {d ? (
               <div className="flex items-center gap-2">
                 <Divider />
                 <span className="text-center w-full">{d.toDateString()}</span>
                 <Divider />
               </div>
-            ) : null}
-            <ChatMessage messageData={msg} key={i} />
-          </>
-        );
-      })}
+            ) : null} */}
+              <ChatMessage
+                messageData={{
+                  ...msg,
+                  seen: true,
+                  showUser:
+                    messages[i + 1]?.userId !== msg.userId ||
+                    typeof messages[i + 1] !== "object",
+                }}
+                key={i}
+              />
+            </>
+          );
+        }
+      )}
     </div>
   );
 };

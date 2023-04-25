@@ -6,7 +6,10 @@ export const useUserData = () => {
   const [user, setUser] = useRecoilState(UserDataState);
 
   function initUserData(userData: CurrentUserDataType) {
-    setUser(userData);
+    setUser({
+      ...userData,
+      id: "test1",
+    });
   }
 
   return {

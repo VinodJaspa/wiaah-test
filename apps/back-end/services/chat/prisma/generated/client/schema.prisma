@@ -29,8 +29,14 @@ model Message {
   updatedAt       DateTime            @updatedAt
   content         String
   attachments     MessageAttachment[]
+  seenBy          ChatMessageSeenBy[]
   mentionsUserIds String[]
   storyId         String?
+}
+
+type ChatMessageSeenBy {
+  userId String
+  seenAt DateTime
 }
 
 type RoomMember {

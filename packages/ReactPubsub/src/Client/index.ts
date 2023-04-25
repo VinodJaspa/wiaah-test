@@ -16,6 +16,8 @@ export class ReactPubsubClient {
       "key"
     );
 
+    // console.log("subscried", key);
+
     this.Subscribers = updatedSubscribers;
   }
 
@@ -24,7 +26,6 @@ export class ReactPubsubClient {
   }
 
   Publish(key: string, props?: any) {
-    console.log("published", this.Subscribers);
     const findSubscriber = this.Subscribers.find((sub) => sub.key === key);
     if (findSubscriber) {
       findSubscriber.cbFn(props);

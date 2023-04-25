@@ -9,10 +9,9 @@ import { ShopDetailsView } from "@components";
 import { StoreType } from "@features/API";
 import { GetServerSideProps } from "next";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { QueryClient, dehydrate } from "react-query";
 import { useRouting } from "routing";
-import { setQueryClientServerSideProps } from "../../utils";
+import { setQueryClientServerSideProps } from "../../helpers";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context?.params["id"] as string;
@@ -29,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   } else {
     return {
-      props: {}, // will be passed to the page component as props
+      props: {},
       notFound: true,
       redirect: "/",
     };

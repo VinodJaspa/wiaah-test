@@ -1,21 +1,16 @@
 import React from "react";
-import {
-  CalenderIcon,
-  PersonIcon,
-  ArrowRightIcon,
-  TriangleRightIcon,
-  ClockIcon,
-} from "@UI";
+import { ArrowRightIcon, TriangleRightIcon } from "@UI";
 import { runIfFn } from "utils";
 
 export interface ResturantFindTableFilterStepperHeaderProps {
   currentStepIdx: number;
+  onChange?: (idx: number) => any;
   steps: { icon: React.ReactElement; name: string }[];
 }
 
 export const ResturantFindTableFilterStepperHeader: React.FC<
   ResturantFindTableFilterStepperHeaderProps
-> = ({ currentStepIdx = 0, steps }) => {
+> = ({ currentStepIdx = 0, steps, onChange }) => {
   const stepsLen = steps.length;
   return (
     <div className="relative overflow-hidden h-8 flex items-center w-full">
@@ -26,7 +21,8 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
                 <div
                   className={`${
                     currentStepIdx >= i ? "text-white fill-white" : ""
-                  } flex items-center gap-2`}
+                  } flex items-center gap-2 cursor-pointer`}
+                  onClick={() => onChange && onChange(i)}
                 >
                   <span className="text-xl">
                     {currentStepIdx <= i ? runIfFn(icon, {}) : null}
