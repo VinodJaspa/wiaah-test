@@ -1,62 +1,41 @@
-import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { t } from "i18next";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import {
+  Button,
   ShopCardsListWrapper,
   SocialPostHeader,
+  SocialProfileShopPostsList,
   SocialShopCard,
-  SocialStoriesModal,
 } from "ui";
 
 import { SocialShopOtherPostsState, SocialShopPostState } from "@src/state";
+import { useBreakpointValue } from "utils";
+import { useTranslation } from "react-i18next";
 
 export interface ShopProductViewProps {}
 
 export const ShopProductView: React.FC<ShopProductViewProps> = ({}) => {
+  const { t } = useTranslation();
   const product = useRecoilValue(SocialShopPostState);
   const otherProducts = useRecoilValue(SocialShopOtherPostsState);
 
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   return (
-    <Flex py="4rem" gap="2rem" direction={"column"}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap="2rem"
-        mb="6rem"
-        align={"start"}
-      >
-        <SocialStoriesModal />
+    <div className="flex py-16 gap-8 flex-col px-2">
+      <div className="flex flex-col gap-8 md:flex-row mb-24 items-start">
         <SocialPostHeader
           name={product.user.name}
           thumbnail={product.user.thumbnail}
         />
         <SocialShopCard showComments shopCardInfo={product} />
-      </Flex>
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+      </div>
+      <p className="text-2xl font-bold w-full text-center capitalize">
         {t("view", "view")} {product.user.name}{" "}
         {t("other_posts", "other posts")}
-      </Text>
-      <ShopCardsListWrapper cols={cols} items={otherProducts} />
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
-      >
-        {t("view_more", "view more")}
-      </Button>
-    </Flex>
+      </p>
+      <SocialProfileShopPostsList userId="" />
+      <Button>{t("view_more", "view more")}</Button>
+    </div>
   );
 };

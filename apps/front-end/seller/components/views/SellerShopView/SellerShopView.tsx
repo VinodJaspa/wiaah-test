@@ -3,7 +3,6 @@ import { ServiceType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { usePreferedCurrency } from "state";
 import {
   useGetRecommendedShopPostsQuery,
   SimpleTabs,
@@ -29,6 +28,13 @@ import {
   VehicleFillIcon,
   BeautyCenterOutlineIcon,
   BeautyCenterFillIcon,
+  useGetServicesData,
+  useGetRecommendedServices,
+  ScrollCursorPaginationWrapper,
+  LocationOutlineIcon,
+  VStack,
+  RestaurantFillIcon,
+  Stack,
 } from "ui";
 import { mapArray, runIfFn, useBreakpointValue } from "utils";
 
@@ -45,6 +51,17 @@ export const SellerShopView: React.FC = () => {
 
   const { t } = useTranslation();
   const { data } = useGetRecommendedShopPostsQuery({});
+
+  const {
+    data: recommendedServices,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetRecommendedServices(
+    { type: serviceType, take: 30 },
+    {
+      getNextPageParam: (last) => last.nextCursor,
+    }
+  );
   const { viewProductDetails } = useSocialControls();
 
   const services: {
@@ -66,8 +83,8 @@ export const SellerShopView: React.FC = () => {
       label: t("Holiday Rentals"),
     },
     {
-      icon: <HealthCenterFillIcon />,
-      activeIcon: <HealthCenterOutlineIcon />,
+      icon: <HealthCenterOutlineIcon />,
+      activeIcon: <HealthCenterFillIcon />,
       key: ServiceType.HealthCenter,
       label: t("Health Center"),
     },
@@ -83,10 +100,18 @@ export const SellerShopView: React.FC = () => {
       key: ServiceType.BeautyCenter,
       label: t("Beauty Center"),
     },
+    {
+      icon: <RestaurantFillIcon />,
+      activeIcon: <RestaurantFillIcon />,
+      key: ServiceType.Restaurant,
+      label: t("Restaurant"),
+    },
   ];
 
+  const showOn = (types: ServiceType[]) => types.includes(serviceType);
+
   return (
-    <div className="py-4">
+    <div className="py-4 font-sf">
       <SimpleTabs
         onChange={(v) => {
           if (v === 0) setType("product");
@@ -175,30 +200,264 @@ export const SellerShopView: React.FC = () => {
               </div>
             ))}
           </div>
-          <div className="flex flex-col gap-4 p-4">
-            <HStack className="w-fit overflow-x-scroll noScroll gap-4">
+          <div className="flex flex-col w-full gap-4 p-4">
+            <HStack className="w-full overflow-x-scroll noScroll gap-4">
               {mapArray(services, (v) => (
                 <div
                   key={v.key}
-                  className={` ${
-                    v.key === serviceType
-                      ? "text-black font-medium"
-                      : "text-[#707070]"
-                  } flex flex-col items-center gap-1`}
+                  onClick={() => setServiceType(v.key)}
+                  className={`flex flex-col items-center gap-1`}
                 >
                   <div
                     className={`w-10 h-10 text-2xl flex justify-center items-center rounded-lg ${
-                      v.key === serviceType ? "bg-black" : "bg-white"
+                      v.key === serviceType ? "" : "bg-white"
                     }`}
                   >
                     {v.key === serviceType
                       ? runIfFn(v.activeIcon)
                       : runIfFn(v.icon)}
                   </div>
-                  <p className={` whitespace-nowrap`}>{v.label}</p>
+                  <p
+                    className={` ${
+                      v.key === serviceType
+                        ? "text-black font-medium"
+                        : "text-[#707070]"
+                    }  whitespace-nowrap`}
+                  >
+                    {v.label}
+                  </p>
                 </div>
               ))}
             </HStack>
+
+            <ScrollCursorPaginationWrapper
+              controls={{ hasMore: hasNextPage, next: fetchNextPage }}
+            >
+              <div
+                className={`${
+                  showOn([
+                    ServiceType.Hotel,
+                    ServiceType.HealthCenter,
+                    ServiceType.Restaurant,
+                  ])
+                    ? "grid-cols-2 gap-6"
+                    : showOn([
+                        ServiceType.HolidayRentals,
+                        ServiceType.BeautyCenter,
+                      ])
+                    ? "grid-cols-1"
+                    : "grid-cols-3 gap-3"
+                } grid gap-3`}
+              >
+                {mapArray(recommendedServices?.pages, (v, i) => (
+                  <React.Fragment key={i}>
+                    {mapArray(v?.data, (v, i) => (
+                      <div key={v.id} className="flex flex-col">
+                        <AspectRatio
+                          className="overflow-hidden"
+                          ratio={
+                            showOn([ServiceType.Hotel])
+                              ? 0.7
+                              : showOn([ServiceType.Vehicle])
+                              ? 1.15
+                              : showOn([ServiceType.HealthCenter])
+                              ? 1.04
+                              : showOn([
+                                  ServiceType.HolidayRentals,
+                                  ServiceType.BeautyCenter,
+                                ])
+                              ? 0.58
+                              : 1
+                          }
+                        >
+                          <Image
+                            className="w-full h-full rounded-md object-cover"
+                            src={v.thumbnail}
+                          />
+                          <HStack className="absolute top-1 left-1 gap-1">
+                            <Avatar
+                              className="min-w-[.75rem]"
+                              src={v.owner.profile.photo}
+                            ></Avatar>
+                            <p className="text-semibold text-white text-[0.625rem]">
+                              {v.owner.profile.username}
+                            </p>
+                            <Verified className="text-[0.5rem] text-blue-500"></Verified>
+                          </HStack>
+                          <SaveFlagFIllIcon className="absolute text-primary right-1 -top-1 text-3xl"></SaveFlagFIllIcon>
+                          {showOn([
+                            ServiceType.Vehicle,
+                            ServiceType.Restaurant,
+                          ]) ? (
+                            <HStack className="text-[0.625rem] absolute bottom-1 left-1">
+                              <LocationOutlineIcon className="text-primary" />
+                              <p className="text-white">
+                                {v?.owner?.shop?.location?.country}
+                              </p>
+                            </HStack>
+                          ) : null}
+                        </AspectRatio>
+                        {showOn([ServiceType.Hotel]) ? (
+                          <HStack className="justify-between p-1">
+                            <div>
+                              <p className="font-medium text-sm">{v.name}</p>
+                              <HStack className="text-xs">
+                                <LocationOutlineIcon className="text-primary" />
+                                <p className="text-[#525252]">
+                                  {v?.owner?.shop?.location?.country}
+                                </p>
+                              </HStack>
+                            </div>
+                            <VStack className="gap-0">
+                              <p className="flex text-sm font-medium">
+                                <PriceDisplay
+                                  decimel
+                                  price={v.price}
+                                  symbolProps={{
+                                    className: "text-primary font-bold",
+                                  }}
+                                />
+                                /
+                              </p>
+                              <p className="text-xs font-normal">
+                                {t("Night")}
+                              </p>
+                            </VStack>
+                          </HStack>
+                        ) : null}
+
+                        {showOn([ServiceType.HolidayRentals]) ? (
+                          <div>
+                            <p className="text-lg font-medium">{v.name}</p>
+                            <p className="text-[0.813rem]">{v.description}</p>
+                            <HStack className="justify-between">
+                              <HStack className="text-[0.813rem] text-[#525252]">
+                                <LocationOutlineIcon className="text-primary" />
+                                <p>
+                                  {v.owner?.shop?.location?.address},{" "}
+                                  {v.owner.shop.location.city},{" "}
+                                  {v?.owner?.shop?.location?.country}
+                                </p>
+                              </HStack>
+
+                              <VStack className="gap-0">
+                                <p className="flex text-sm font-semibold">
+                                  <PriceDisplay
+                                    decimel
+                                    price={v.price}
+                                    symbolProps={{
+                                      className: "text-primary font-bold",
+                                    }}
+                                  />
+                                  /
+                                </p>
+                                <p>{t("Day")}</p>
+                              </VStack>
+                            </HStack>
+                          </div>
+                        ) : null}
+
+                        {showOn([ServiceType.HealthCenter]) ? (
+                          <HStack className="justify-between p-1">
+                            <div>
+                              <p className="text-sm font-semibold text-[#525252]">
+                                {v.name}
+                              </p>
+                              <p>{v.speciality}</p>
+                            </div>
+                            <VStack className="gap-0">
+                              <p className="flex text-sm font-semibold">
+                                <PriceDisplay
+                                  decimel
+                                  price={v.price}
+                                  symbolProps={{
+                                    className: "text-primary font-bold",
+                                  }}
+                                />
+                                /
+                              </p>
+                              <p className="text-xs">{t("Consultation")}</p>
+                            </VStack>
+                          </HStack>
+                        ) : null}
+
+                        {showOn([ServiceType.Vehicle]) ? (
+                          <div className="p-1 flex flex-col gap-[0.375rem]">
+                            <p className="text-sm font-medium">
+                              {v.name.length > 30
+                                ? v.name.slice(0, 29) + "..."
+                                : v.name}
+                            </p>
+                            <p className="flex text-[0.813rem] items-end font-semibold">
+                              <PriceDisplay
+                                decimel
+                                price={v.price}
+                                symbolProps={{
+                                  className: "text-primary font-bold",
+                                }}
+                              />
+                              /
+                              <span className="font-normal text-[0.625rem]">
+                                {t("Day")}
+                              </span>
+                            </p>
+                          </div>
+                        ) : null}
+
+                        {showOn([ServiceType.BeautyCenter]) ? (
+                          <div className="p-1">
+                            <p className="text-lg font-semibold">{v.name}</p>
+                            <HStack className="justify-between">
+                              <HStack className="text-[#525252] text-[0.813rem]">
+                                <LocationOutlineIcon className="text-primary" />
+                                <p>{v?.owner?.shop?.location?.country}</p>
+                              </HStack>
+                              <PriceDisplay
+                                decimel
+                                price={v.price}
+                                symbolProps={{
+                                  className: "text-primary font-bold",
+                                }}
+                              />
+                            </HStack>
+                          </div>
+                        ) : null}
+
+                        {showOn([ServiceType.Restaurant]) ? (
+                          <div className="p-1">
+                            <p className="text-sm font-semibold">{v.name}</p>
+                            <Stack
+                              className="items-center gap-1"
+                              divider={
+                                <span className="w-1 h-1 bg-[#525252] rounded-full"></span>
+                              }
+                            >
+                              {["Chinese", "American"].map((v, i) => (
+                                <span key={i}>{v}</span>
+                              ))}
+                            </Stack>
+                            <p className="text-xs font-semibold text-[#525252] ">
+                              {mapArray(v.ingredients, (v, i) => (
+                                <span key={i}>{v}</span>
+                              ))}
+                            </p>
+                            <HStack className="justify-end">
+                              <PriceDisplay
+                                decimel
+                                price={v.price}
+                                symbolProps={{
+                                  className: "text-primary font-bold",
+                                }}
+                              />
+                            </HStack>
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </div>
+            </ScrollCursorPaginationWrapper>
           </div>
         </SimpleTabItemList>
       </SimpleTabs>

@@ -5,6 +5,11 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "~antd/dist/antd.css";
 
+@font-face {
+  font-family: "SF Pro Display";
+  src: local("Sf Pro Display"), url(./sf-400.OTF) format("otf");
+}
+
 @layer components {
   .hstack {
     @apply flex items-center gap-2;

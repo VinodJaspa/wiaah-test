@@ -10,7 +10,7 @@ export const PaymentPortal: React.FC<PaymentPortalProps> = () => {
   return (
     <div>
       <h2 className="hidden text-xl font-bold lg:block">
-        {t("Enter_paymen_details", "Enter payment details")}
+        {t("Enter payment details")}
       </h2>
       <div className="rounded-md border-2 border-gray-300 px-4 py-6 lg:mt-8">
         <h3 className="text-lg font-bold">{t("Payment", "Payment")}</h3>

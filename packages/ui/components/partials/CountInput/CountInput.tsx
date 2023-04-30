@@ -33,18 +33,20 @@ export const CountInput: React.FC<CountInputProps> = ({
   }, [count]);
 
   return (
-    <div className="whitespace-nowrap flex items-center gap-1">
+    <div className="whitespace-nowrap flex items-center gap-2">
       <MinusIcon
         {...setTestid("DecrementCountBtn")}
-        className={`${count === min ? "opacity-50" : ""} cursor-pointer`}
+        className={`${
+          count === min ? "opacity-50" : ""
+        } cursor-pointer text-primary`}
         onClick={() => decrement()}
       />
-      <p className="w-10 select-none text-center whitespace-nowrap">{count}</p>
+      <p className="select-none text-center whitespace-nowrap">{count}</p>
       <RoundedPlusIcon
         {...setTestid("IncrementCountBtn")}
         className={`${
-          count === max ? "opacity-50" : "border-black"
-        } cursor-pointer`}
+          count === max ? "opacity-50" : ""
+        } cursor-pointer text-primary`}
         onClick={() => increment()}
       />
     </div>

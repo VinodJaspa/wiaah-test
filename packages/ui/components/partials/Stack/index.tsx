@@ -14,7 +14,6 @@ export const Stack: React.FC<StackProps> = ({
   className,
   ...props
 }) => {
-  console.log({ children });
   return (
     <div
       {...props}

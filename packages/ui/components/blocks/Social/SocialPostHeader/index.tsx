@@ -1,7 +1,6 @@
-import { Button, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "@UI";
+import { Avatar, Button, VStack } from "@UI";
 import { useStory } from "@src/Hooks";
 export interface SocialPostHeaderProps {
   thumbnail: string;
@@ -17,15 +16,7 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
   const { t } = useTranslation();
   const { OpenStories, newStory } = useStory();
   return (
-    <VStack
-      rounded={"lg"}
-      color="white"
-      bg={"primary.main"}
-      px="3rem"
-      py="1.5rem"
-      gap="0.5rem"
-      w={{ base: "100%", md: "fit-content" }}
-    >
+    <VStack className="rounded-lg text-white bg-primary px-12 py-6 gap-2 w-full md:w-fit">
       <Avatar
         onClick={OpenStories}
         newStory={newStory}
@@ -33,17 +24,11 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
         name={name}
         className="w-[3rem] h-[3rem]"
       />
-      <Text fontSize={"lg"}>{name}</Text>
+      <p className="text-lg">{name}</p>
       <Button
-        _focus={{ ring: "0" }}
-        colorScheme={"primary"}
-        bgColor="primary.main"
-        boxShadow={"lg"}
-        textTransform={"capitalize"}
-        px="3rem"
-        borderWidth={"1px"}
-        borderColor={"blackAlpha.500"}
-        textColor="white"
+        colorScheme={"white"}
+        outline
+        className="px-12 text-white capitalize"
         onClick={() => onViewProfile && onViewProfile()}
       >
         {t("view_profile", "view profile")}

@@ -15,29 +15,9 @@ import { PostCardPlaceHolder } from "placeholder";
 import { MasterLayout } from "@components";
 import { ShopProductView } from "@components";
 
-interface SocialShopPostPageProps {
-  shopProductPost: ShopCardInfo;
-  otherPosts: ShopCardInfo[];
-}
-
-export const getServerSideProps: GetServerSideProps<
-  SocialShopPostPageProps
-> = async () => {
-  // get post info
+const socialShopPost: NextPage = ({}) => {
   const shopProductPost: ShopCardInfo = ShopCardsInfoPlaceholder[2];
   const otherPosts: ShopCardInfo[] = ShopCardsInfoPlaceholder;
-  return {
-    props: {
-      shopProductPost,
-      otherPosts,
-    },
-  };
-};
-
-const socialShopPost: NextPage<SocialShopPostPageProps> = ({
-  shopProductPost,
-  otherPosts,
-}) => {
   const setPost = useSetRecoilState(SocialShopPostState);
   const setOtherPosts = useSetRecoilState(SocialShopOtherPostsState);
 

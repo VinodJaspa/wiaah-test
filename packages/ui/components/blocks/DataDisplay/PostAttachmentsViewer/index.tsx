@@ -8,6 +8,7 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@UI";
+import { AttachmentType } from "@features/API";
 export interface PostAttachmentsViewerProps {
   attachments: PostAttachmentType[];
   profileInfo?: ProfileInfo;
@@ -25,7 +26,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
 }) => {
   const [active, setActive] = React.useState<number>();
   return (
-    <div className="h-full">
+    <div className="h-full overflow-hidden">
       {attachments && !renderOne && attachments.length > 1 ? (
         <Slider
           leftArrowComponent={() => (
@@ -39,7 +40,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
           {attachments.map((attachment, i) => (
             <PostAttachment
               key={attachment.src + i}
-              type={attachment.type}
+              type={AttachmentType.Img}
               src={attachment.src}
               alt={attachment.postLocation}
               footer={

@@ -2,6 +2,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import {
   Attachment,
+  AttachmentType,
   Hashtag,
   NewsfeedPost,
   PostLocation,
@@ -10,6 +11,8 @@ import {
   Profile,
 } from "@features/API";
 import { Exact, Maybe, Scalars } from "types";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetNewsfeedPostQueryVariables = Exact<{
   id: Scalars["String"];
@@ -46,7 +49,13 @@ export type GetNewsfeedPostQuery = { __typename?: "Query" } & {
       publisher?: Maybe<
         { __typename?: "Profile" } & Pick<
           Profile,
-          "id" | "verified" | "username" | "photo" | "profession" | "createdAt"
+          | "id"
+          | "verified"
+          | "username"
+          | "photo"
+          | "profession"
+          | "createdAt"
+          | "ownerId"
         >
       >;
       tags: Array<{ __typename?: "PostTag" } & Pick<PostTag, "userId">>;
@@ -109,6 +118,43 @@ export const useGetNewsfeedPostQuery = (id: string) => {
   client.setVariables<GetNewsfeedPostQueryVariables>({ id });
 
   return useQuery(["get-post", { id }], async () => {
+    if (isDev) {
+      const mockRes: GetNewsfeedPostQuery["getNewsfeedPostById"] = {
+        id: "",
+        attachments: [{ src: getRandomImage(), type: AttachmentType.Img }],
+        authorProfileId: "",
+        comments: 45,
+        content: "Test",
+        createdAt: new Date().toString(),
+        reactionNum: 26,
+        updatedAt: new Date().toUTCString(),
+        views: randomNum(1500),
+        publisher: {
+          id: "",
+          ownerId: "",
+          photo: getRandomImage(),
+          profession: "profe",
+          username: getRandomName().firstName,
+          createdAt: new Date().toUTCString(),
+          verified: true,
+        },
+        shares: 54,
+        tags: [],
+        title: "title",
+        userId: "",
+        hashtags: [],
+        mentions: [],
+        location: {
+          city: "",
+          country: "",
+          address: "",
+          state: "",
+        },
+      };
+
+      return mockRes;
+    }
+
     const res = await client.send<GetNewsfeedPostQuery>();
 
     return res.data.getNewsfeedPostById;

@@ -18,3 +18,27 @@ export const PaperPlaneIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const PaperPlaneAngleIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M24.6666 3.28662L14 13.9973ZM18 24.6666L14 13.9973L4.66663 9.99995L24.6666 3.33329L18 24.6666Z"
+        fill="currentColor"
+      />
+      <path
+        d="M24.6666 3.28662L14 13.9973M14 13.9973L18 24.6666L24.6666 3.33329L4.66663 9.99995L14 13.9973Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

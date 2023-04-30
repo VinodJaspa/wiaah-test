@@ -6,6 +6,8 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProfileController } from './profile.controller';
 import { AccountProfileResolver } from './Account-Profile.resolver';
+import { profileResolvers } from './resolvers';
+import { ShopProfileResolver } from './resolvers/profile.shop.resolver';
 
 @Module({
   imports: [
@@ -26,7 +28,12 @@ import { AccountProfileResolver } from './Account-Profile.resolver';
       },
     ]),
   ],
-  providers: [ProfileResolver, ProfileService, AccountProfileResolver],
+  providers: [
+    ProfileResolver,
+    ProfileService,
+    AccountProfileResolver,
+    ShopProfileResolver,
+  ],
   exports: [ProfileService],
   controllers: [ProfileController],
 })

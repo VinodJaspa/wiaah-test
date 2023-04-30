@@ -229,6 +229,7 @@ export const BillingAccount = React.forwardRef(
           <Input {...addressInput("state")} />
           <Input {...addressInput("postal_code")} />
         </div>
+        <p>{t("Card details")}</p>
         <Elements stripe={stripePromise}>
           <CardElement onChange={(v) => console.log({ v })} />
         </Elements>

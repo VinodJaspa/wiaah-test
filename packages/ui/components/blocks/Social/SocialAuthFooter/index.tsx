@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, VStack } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiUser } from "react-icons/hi";
@@ -14,39 +14,30 @@ export const SocialAuthFooter: React.FC<AuthFooterProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <VStack p="2rem" gap="0.5rem" bgColor={"primary.main"}>
-      <Text fontWeight={"bold"} fontSize={"xl"} textTransform={"capitalize"}>
+    <VStack className="p-8 gap-2 bg-primary">
+      <p className="text-xl font-bold capitalize">
         {t("view_more_content", "view more content on wiaah")}
-      </Text>
-      <HStack gap="0.5rem">
+      </p>
+      <HStack>
         <Button
-          w="10rem"
-          boxShadow={"main"}
-          bgColor={"white"}
+          className="uppercase w-40 text-black justify-start"
           color="black"
-          textTransform={"uppercase"}
           colorScheme={"white"}
-          justifyContent="start"
           onClick={() => onLoginClick && onLoginClick()}
         >
           <HStack>
-            <Icon fontSize={"lg"} as={HiUser} />
-            <Text>{t("login", "login")}</Text>
+            <HiUser className="text-lg" />
+            <p>{t("login", "login")}</p>
           </HStack>
         </Button>
         <Button
-          w="10rem"
-          boxShadow={"main"}
-          color={"primary.main"}
-          bgColor="black"
-          colorScheme={"black"}
-          textTransform={"uppercase"}
-          justifyContent="start"
+          className="w-40 text-primary bg-black justify-start"
+          colorScheme={"darkbrown"}
           onClick={() => onSignupClick && onSignupClick()}
         >
           <HStack>
-            <Icon fontSize={"lg"} as={HiUser} />
-            <Text>{t("sign_up", "sign up")}</Text>
+            <HiUser className="text-lg" />
+            <p>{t("sign_up", "sign up")}</p>
           </HStack>
         </Button>
       </HStack>

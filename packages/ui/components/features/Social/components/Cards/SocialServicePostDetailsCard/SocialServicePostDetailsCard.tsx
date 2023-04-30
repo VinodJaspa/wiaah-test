@@ -43,7 +43,7 @@ export const SocialServicePostDetailsCard: React.FC<
                 <SocialServicePostAttachment
                   id={post.id}
                   alt={post.service.title}
-                  attachments={post.service.presentation || []}
+                  attachments={att}
                 />
               ))
             : null}

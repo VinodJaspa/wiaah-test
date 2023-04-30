@@ -31,6 +31,8 @@ import { FriendsModule } from '@friends/friends.module';
 import { PlacesModule } from '@places/places.module';
 import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
 import { ProfileStatisticsModule } from './profile-statistics/profile-statistics.module';
+import { Shop } from '@profile/resolvers/profile.shop.resolver';
+import { Account } from './entities/extends';
 
 @Module({
   imports: [
@@ -38,6 +40,9 @@ import { ProfileStatisticsModule } from './profile-statistics/profile-statistics
     ProfileModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
+      buildSchemaOptions: {
+        orphanedTypes: [Shop, Account],
+      },
       autoSchemaFile: 'schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);

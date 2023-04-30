@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<
 const ServicePostPage: NextPage<ServicePostPageProps> = ({ data }) => {
   const { t } = useTranslation();
   const { getCurrentPath } = useRouting();
-  const firstPostAttachement = data.data.attachements[0];
+  const firstPostAttachement = data?.data?.attachements[0];
   return (
     <>
       <MetaTitle

@@ -2,16 +2,18 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   SocialPostHeader,
-  SocialStoriesModal,
-  SocialServicePostCard,
   useGetServicePostDetailsQuery,
   useSearchFilters,
-  SocialServicePostsList,
   Button,
   SpinnerFallback,
   ShowMapButton,
   SocialServicePostDetailsCard,
+  SocialProfileServicePosts,
+  ServicePresentationType,
+  getRandomImage,
+  Divider,
 } from "ui";
+import { randomNum } from "utils";
 
 export const ServicePostView: React.FC = () => {
   const { t } = useTranslation();
@@ -22,10 +24,9 @@ export const ServicePostView: React.FC = () => {
     isError,
   } = useGetServicePostDetailsQuery(filters);
   return (
-    <div className="py-2 md:py-16 gap-8 flex flex-col">
-      <div className="flex items-center md:items-start flex-col gap-8 mb-24 md:flex-row">
-        <SocialStoriesModal />
-        <div className="flex flex-col gap-4">
+    <div className="p-2 md:py-16 gap-8 flex flex-col">
+      <div className="flex items-center md:items-start flex-col gap-4 mb-24 md:flex-row">
+        <div className="flex flex-col w-full gap-4">
           <SpinnerFallback isError={isError} isLoading={isLoading}>
             {res ? (
               <SocialPostHeader
@@ -36,13 +37,26 @@ export const ServicePostView: React.FC = () => {
           </SpinnerFallback>
           <ShowMapButton onClick={() => {}} />
         </div>
+        <Divider></Divider>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
-          {res ? (
-            <SocialServicePostDetailsCard
-              user={res.data.profileInfo}
-              {...res.data}
-            />
-          ) : null}
+          <SocialServicePostDetailsCard
+            post={{
+              id: "",
+              comments: randomNum(150),
+              reactionNum: randomNum(150),
+              service: {
+                title:
+                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It ",
+                hashtags: ["hotel"],
+                presentation: [
+                  {
+                    src: getRandomImage(),
+                    type: ServicePresentationType.Img,
+                  },
+                ],
+              },
+            }}
+          />
         </SpinnerFallback>
       </div>
       <p className="text-3xl font-bold w-full text-center">
@@ -55,7 +69,7 @@ export const ServicePostView: React.FC = () => {
           ) : null}
         </SpinnerFallback>
       </p>
-      <SocialServicePostsList />
+      <SocialProfileServicePosts userId="" />
       <Button outline>{t("view_more", "view more")}</Button>
     </div>
   );

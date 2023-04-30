@@ -28,12 +28,13 @@ export type GetProfileStoryQuery = { __typename?: "Query" } & {
     };
 };
 
-export const useGetProfileStory = (
-  profileId: string,
+export const useGetUserStory = (
+  userId: string,
   opts?: UseQueryOptions<
-    GetProfileStoryQueryVariables,
+    any,
     unknown,
-    GetProfileStoryQuery["getUserStory"]
+    GetProfileStoryQuery["getUserStory"],
+    any
   >
 ) => {
   const client = createGraphqlRequestClient();
@@ -64,12 +65,16 @@ export const useGetProfileStory = (
     `);
 
   client.setVariables<GetProfileStoryQueryVariables>({
-    id: profileId,
+    id: userId,
   });
 
-  return useQuery(["get-profile-story", { profileId }], async () => {
-    const res = await client.send<GetProfileStoryQuery>();
+  return useQuery(
+    ["get-profile-story", { userId }],
+    async () => {
+      const res = await client.send<GetProfileStoryQuery>();
 
-    return res.data.getUserStory;
-  });
+      return res.data.getUserStory;
+    },
+    opts
+  );
 };

@@ -114,7 +114,7 @@ export const useGetUserServicesQuery = (
     async () => {
       if (isDev) {
         const mockRes: GetUserServicesQuery["getUserServices"] = {
-          data: [...Array(10)].map((_, i) => ({
+          data: [...Array(2)].map((_, i) => ({
             id: i.toString(),
             createdAt: new Date().toString(),
             description: "hotel room description placeholder",
@@ -144,7 +144,7 @@ export const useGetUserServicesQuery = (
             },
             adaptedFor: [ServiceAdaptation.Children, ServiceAdaptation.NewBorn],
             treatmentCategory: "Facial",
-            includedAmenities: ["wi-fi", "pool"],
+            includedAmenities: ["wifi", "pool"],
             extras: [
               { name: "parking", cost: 40 },
               { name: "breakfast", cost: 20 },

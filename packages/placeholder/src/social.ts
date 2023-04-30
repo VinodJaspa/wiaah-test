@@ -651,13 +651,9 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     ...shopCardInfoPlaceholder,
     id: "1",
     attachments: [
-      // {
-      //   type: "image",
-      //   src: "/verticalImage.jpg",
-      // },
       {
-        src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        type: "video",
+        type: "image",
+        src: "/verticalImage.jpg",
       },
     ],
     title: stringplaceholder.substring(0, randomNum(30)),

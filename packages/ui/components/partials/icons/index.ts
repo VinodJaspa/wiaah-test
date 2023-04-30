@@ -152,3 +152,4 @@ export * from "./HolidayRentalsIcon";
 export * from "./HealthCenterIcon";
 export * from "./VehicleIcon";
 export * from "./BeautyCenterIcon";
+export * from "./RestaurantIcon";

@@ -276,6 +276,12 @@ type Product {
   id: ID!
 }
 
+type Shop {
+  ownerId: String!
+  profile: Profile
+  sellerProfile: Profile!
+}
+
 type TopHashtagNewsfeedPosts {
   viewed: NewsfeedPost!
   liked: NewsfeedPost!
@@ -382,6 +388,13 @@ enum StoryType {
   service
 }
 
+type StoryCursorPaginationResponse {
+  data: Story!
+  cursor: String!
+  nextCursor: String!
+  hasMore: Boolean!
+}
+
 type StoryView {
   id: ID!
   viewerId: ID!
@@ -451,6 +464,7 @@ type Action {
 type GetActionsCursorResponse {
   data: [Action!]!
   cursor: String!
+  nextCursor: String!
   hasMore: Boolean!
 }
 
@@ -546,7 +560,7 @@ type Query {
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
   adminGetAccountSavedPosts(args: GetMySavedPostsInput!, accountId: String!): UserSavedPostsGroup!
   getStory(storyId: String!): Story!
-  getUserStory(userId: String!): Story!
+  getUserStory(args: GetUserStoryInput!): StoryCursorPaginationResponse!
   getAdminFilteredStories(args: GetAdminFilteredStoriesInput!): [Story!]!
   getUserPrevStory(storyId: String!): Story!
   getMyStories: [Story!]!
@@ -654,6 +668,13 @@ input GetHashtagNewsfeedPostsInput {
 
 input GetMySavedPostsInput {
   pagination: GqlPaginationInput!
+}
+
+input GetUserStoryInput {
+  cursor: String
+  userId: String!
+  dir: Int!
+  nextCursor: String
 }
 
 input GetAdminFilteredStoriesInput {

@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   Args,
+  Field,
   Mutation,
   Parent,
   Query,
@@ -12,6 +13,10 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KnownError,
+  NoReadPremissionPublicError,
+  SubtractFromDate,
+  accountType,
 } from 'nest-utils';
 
 import {
@@ -30,6 +35,7 @@ import {
   NewsfeedPost,
   ServicePost,
   Story,
+  StoryCursorPaginationResponse,
 } from '@story/entities';
 import {
   GetMyStoriesQuery,
@@ -40,6 +46,7 @@ import { StoryType } from './const';
 import { ProductPost } from '@product-post/entities';
 import { PrismaService } from 'prismaService';
 import { Prisma } from 'prismaClient';
+import { GetUserStoryInput } from './dto/get-user-story.input';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -62,14 +69,50 @@ export class StoryResolver {
     });
   }
 
-  @Query(() => Story)
-  getUserStory(
-    @Args('userId') publisherId: string,
+  @Query(() => StoryCursorPaginationResponse)
+  async getUserStory(
+    @Args('args') args: GetUserStoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.querybus.execute<ViewUserStoryQuery, Story>(
-      new ViewUserStoryQuery(publisherId, user),
-    );
+  ): Promise<StoryCursorPaginationResponse> {
+    await this.validateUserReadPremissions(user, args.userId);
+
+    if (args.cursor) {
+      const story = await this.prisma.story.findMany({
+        where: {
+          publisherId: args.userId,
+          createdAt: {
+            gte: SubtractFromDate(new Date(), { days: 1 }),
+          },
+        },
+        cursor: {
+          id: args.cursor,
+        },
+        orderBy: {
+          createdAt: args.dir > 0 ? 'desc' : 'asc',
+        },
+        take: 2,
+      });
+
+      return {
+        cursor: args.cursor,
+        data: story[0],
+        hasMore: story.length > 1,
+        nextCursor: story.length > 1 ? story.at(1).id : undefined,
+      };
+    } else {
+      const lastStory = await this.prisma.follow.findUnique({
+        where: {
+          followRelation: {
+            followerUserId: user.id,
+            followingUserId: args.userId,
+          },
+        },
+      });
+
+      lastStory.followerLastStorySeenAt;
+    }
+
+    return null;
   }
 
   @Query(() => [Story])
@@ -199,5 +242,13 @@ export class StoryResolver {
       __typename: 'ServicePost',
       id: story.referenceId,
     };
+  }
+
+  async validateUserReadPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    if (user.id !== userId || user.accountType !== accountType.ADMIN)
+      throw new NoReadPremissionPublicError();
   }
 }

@@ -1,6 +1,6 @@
 import { FormatedSearchableFilter } from "src/types";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
+import { getRandomName, randomNum } from "utils";
 import {
   ServicePostDataValidationSchema,
   ServicePostDataApiResponseValidationSchema,
@@ -44,7 +44,7 @@ export const getServicePostDataFetcher = async (
         profession: "profession",
         accountType: "seller",
         id: "1263",
-        name: "seller name",
+        name: getRandomName().firstName,
         public: true,
         thumbnail: "/shop-2.jpeg",
         verified: true,
@@ -62,5 +62,5 @@ export const getServicePostDataFetcher = async (
     },
   };
 
-  return CheckValidation(ServicePostDataApiResponseValidationSchema, res);
+  return res;
 };

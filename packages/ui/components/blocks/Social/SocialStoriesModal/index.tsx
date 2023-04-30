@@ -2,7 +2,7 @@ import React from "react";
 import { SocialStoryViewer } from "../SocialStoryViewer";
 import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
 import { useTypedReactPubsub } from "@libs";
-import { useGetPrevStory, useGetProfileStory } from "@features/Social";
+import { useGetPrevStory, useGetUserStory } from "@features/Social";
 import { Profile, Story } from "@features/API";
 
 export const useStoryModal = () => {
@@ -39,7 +39,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
   const [story, setStory] = React.useState<Story>();
   const { close } = useStoryModal();
 
-  const { refetch } = useGetProfileStory(profileId, {
+  const { refetch } = useGetUserStory(profileId, {
     onSuccess(data) {
       setStory({ ...data, views: [], publisher: data.publisher as Profile });
     },

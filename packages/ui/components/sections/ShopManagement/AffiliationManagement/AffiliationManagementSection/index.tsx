@@ -34,6 +34,7 @@ export const AffiliationManagementSection: React.FC<
           onSubmit={(v) => {
             mutate({ args: v });
           }}
+          onBack={() => handleCancelNew()}
         />
       ) : (
         <AffiliationListSection />

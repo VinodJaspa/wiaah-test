@@ -241,7 +241,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         >
           {header && header !== null && showHeader ? (
             <div
-              className={`bg-white fixed z-40 w-full top-0 left-0 ${
+              className={`bg-white fixed z-[35] w-full top-0 left-0 ${
                 isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
               }`}
               ref={headerRef}

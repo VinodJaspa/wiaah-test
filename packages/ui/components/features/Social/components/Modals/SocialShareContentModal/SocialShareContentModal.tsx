@@ -14,6 +14,7 @@ import {
   LinkedInLogoIcon,
   AtEmailIcon,
   Divider,
+  useSocialControls,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { mapArray, runIfFn } from "utils";
@@ -50,7 +51,7 @@ export const useShareModal = (subscribe: boolean = false) => {
 };
 
 export const SocialShareCotentModal: React.FC = () => {
-  const { close, isOpen, url } = useShareModal(true);
+  const { value, cancelShareLink } = useSocialControls("shareLink");
   const { t } = useTranslation();
 
   const sharablePlatforms: {
@@ -74,7 +75,7 @@ export const SocialShareCotentModal: React.FC = () => {
       label: t("Facebook"),
       onClick() {
         if (typeof window !== "undefined") {
-          window.location.href = `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${url}`;
+          window.location.href = `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${value}`;
         }
       },
     },
@@ -116,7 +117,7 @@ export const SocialShareCotentModal: React.FC = () => {
   ];
 
   return (
-    <Modal isOpen={isOpen} onClose={close} isLazy>
+    <Modal isOpen={!!value} onClose={cancelShareLink} isLazy>
       <ModalOverlay />
       <ModalContent>
         <div className="flex p-4 h-full gap-8 flex-col w-full">

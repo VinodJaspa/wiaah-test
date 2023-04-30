@@ -49,3 +49,53 @@ export const BedIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const BedOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 25 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.5 6.5C4.5 5.67155 5.17158 5 6 5H19C19.8285 5 20.5 5.67155 20.5 6.5V12H4.5V6.5Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M3.5 18V20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M21.5 18V20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10.5 9.5H7.5C6.67155 9.5 6 10.1715 6 11V12H12V11C12 10.1715 11.3285 9.5 10.5 9.5Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M17.5 9.5H14.5C13.6715 9.5 13 10.1715 13 11V12H19V11C19 10.1715 18.3285 9.5 17.5 9.5Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M2.5 13.5C2.5 12.6715 3.17158 12 4 12H21C21.8285 12 22.5 12.6715 22.5 13.5V18H2.5V13.5Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

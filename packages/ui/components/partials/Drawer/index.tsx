@@ -12,6 +12,7 @@ interface DrawerCtxValues {
   spaceBottom?: string;
   active?: boolean;
   full?: boolean;
+  overlap?: boolean;
   onClose: () => any;
   onOpen: () => any;
 }
@@ -41,12 +42,22 @@ export const Drawer: React.FC<DrawerProps> = ({
   active = true,
   full,
   spaceBottom = "0px",
+  overlap,
   ...props
 }) => {
   return (
     <DrawerCtx.Provider
       {...props}
-      value={{ isOpen, onClose, onOpen, position, active, spaceBottom, full }}
+      value={{
+        isOpen,
+        onClose,
+        onOpen,
+        position,
+        active,
+        spaceBottom,
+        full,
+        overlap,
+      }}
     />
   );
 };
@@ -58,7 +69,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   className,
   ...props
 }) => {
-  const { isOpen, position, active, full, spaceBottom } =
+  const { isOpen, position, active, full, spaceBottom, overlap } =
     React.useContext(DrawerCtx);
 
   const setPositionClasses = (): {
@@ -68,8 +79,13 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
     switch (position) {
       case "bottom":
         return {
-          className: `${isOpen ? "" : "translate-y-full"} w-full left-0`,
+          className: `${
+            isOpen ? "" : `translate-y-[calc(105%)]`
+          } w-full left-0`,
           styles: {
+            transform: isOpen
+              ? undefined
+              : `translate(0,calc(100% + ${spaceBottom}))`,
             height: full
               ? `calc(100% - ${spaceBottom})`
               : `calc(100% - calc(20rem - ${spaceBottom}))`,
@@ -103,7 +119,11 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   return active ? (
     <div
       {...props}
-      style={{ ...setPositionClasses().styles, ...props.style }}
+      style={{
+        ...setPositionClasses().styles,
+        ...props.style,
+        zIndex: overlap ? 100 : undefined,
+      }}
       className={`${className || ""} ${
         setPositionClasses().className
       } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}

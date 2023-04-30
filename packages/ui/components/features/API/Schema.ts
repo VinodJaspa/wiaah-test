@@ -1488,6 +1488,7 @@ export type GetActionsCursorResponse = {
   cursor: Scalars["String"];
   data: Array<Action>;
   hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export type GetAddableHashtagsInput = {
@@ -1885,6 +1886,12 @@ export type GetRecommendedServicePostsInput = {
   serviceType: Scalars["String"];
 };
 
+export type GetRecommendedServicesInput = {
+  cursor?: Maybe<Scalars["String"]>;
+  take: Scalars["Int"];
+  type: ServiceType;
+};
+
 export type GetRefundableOrdersInput = {
   pagination: GqlPaginationInput;
 };
@@ -1992,6 +1999,13 @@ export type GetUserProductPostsInput = {
 export type GetUserServicesPostsInput = {
   pagination: GqlCursorPaginationInput;
   userId: Scalars["ID"];
+};
+
+export type GetUserStoryInput = {
+  cursor?: Maybe<Scalars["String"]>;
+  dir: Scalars["Int"];
+  nextCursor?: Maybe<Scalars["String"]>;
+  userId: Scalars["String"];
 };
 
 export type GetVouchersInput = {
@@ -3956,11 +3970,13 @@ export type Query = {
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
   getRecommendedProductPosts: Array<ProductPost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getRecommendedServices: ServicesCursorPaginationResponse;
   getRefundRequests: Array<Refund>;
   getRefundableOrders: Array<Order>;
   getRegistrations: Array<Registeration>;
   getReports: Array<Report>;
   getRoomMessages: Array<ChatMessage>;
+  getRoomWithUser: ChatRoom;
   getSalesDurningPeriod: Array<OrderItem>;
   getSellerProducts: ProductsCursorPaginationResponse;
   getServiceCategories: Array<ServiceCategory>;
@@ -3998,7 +4014,7 @@ export type Query = {
   getUserServices: ServicesCursorPaginationResponse;
   getUserServicesByIds: Array<Service>;
   getUserShop: Shop;
-  getUserStory: Story;
+  getUserStory: StoryCursorPaginationResponse;
   getUserWishelist: Array<WishedItem>;
   getWisherslist: Array<Wisherslist>;
   getWithdrawCurrencies: Array<WithdrawCurrency>;
@@ -4513,6 +4529,10 @@ export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
 };
 
+export type QueryGetRecommendedServicesArgs = {
+  args: GetRecommendedServicesInput;
+};
+
 export type QueryGetRefundRequestsArgs = {
   args: GetFilteredRefundsInput;
 };
@@ -4527,6 +4547,10 @@ export type QueryGetReportsArgs = {
 
 export type QueryGetRoomMessagesArgs = {
   args: GetMessagesByRoomIdInput;
+};
+
+export type QueryGetRoomWithUserArgs = {
+  userId: Scalars["String"];
 };
 
 export type QueryGetSalesDurningPeriodArgs = {
@@ -4669,7 +4693,7 @@ export type QueryGetUserShopArgs = {
 };
 
 export type QueryGetUserStoryArgs = {
-  userId: Scalars["String"];
+  args: GetUserStoryInput;
 };
 
 export type QueryGetUserWishelistArgs = {
@@ -5400,6 +5424,7 @@ export type ServicesCursorPaginationResponse = {
   cursor: Scalars["String"];
   data: Array<Service>;
   hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export type ShippingAddress = {
@@ -5493,8 +5518,10 @@ export type Shop = {
   ownerId: Scalars["String"];
   payment_methods: Array<ShopPaymentMethod>;
   phone: Scalars["String"];
+  profile?: Maybe<Profile>;
   rating: Scalars["Float"];
   reviews: Scalars["Int"];
+  sellerProfile: Profile;
   status: ShopStatus;
   storeFor: Array<StoreFor>;
   storeType: StoreType;
@@ -5629,6 +5656,14 @@ export type Story = {
   updatedAt: Scalars["DateTime"];
   views: Array<StoryView>;
   viewsCount: Scalars["Int"];
+};
+
+export type StoryCursorPaginationResponse = {
+  __typename?: "StoryCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Story;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export enum StoryType {

@@ -8,7 +8,8 @@ import {
   ContentHostType,
 } from "@features/API";
 import { useQuery } from "react-query";
-import { isDev, randomNum } from "@UI/../utils/src";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetContentCommentsQueryVariables = Exact<{
   args: GetContentCommentsInput;
@@ -25,6 +26,11 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
       | "userId"
       | "hostId"
       | "hostType"
+      | "createdAt"
+      | "replies"
+      | "authorProfileId"
+      | "updatedAt"
+      | "attachment"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -88,9 +94,10 @@ export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
         hostType: ContentHostType.PostNewsfeed,
         likes: randomNum(150),
         userId: "",
+        createdAt: new Date().toUTCString(),
         author: {
-          photo: `/profile (${i % 9}).jfif`,
-          username: `username ${i}`,
+          photo: getRandomImage(),
+          username: getRandomName().firstName,
           verified: i % 2 === 0,
         },
       }));

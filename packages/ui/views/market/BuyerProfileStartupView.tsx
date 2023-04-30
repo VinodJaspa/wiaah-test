@@ -7,13 +7,16 @@ import {
   FindYourFriendsStep,
   Container,
   Button,
+  AccountSignEmailVerificationStep,
 } from "@UI";
 import { StepperStepType } from "types";
 import {
   AddProfilePictureStep,
   MultiStepFromHandle,
+  PaymentMethodForm,
   PaymentPortal,
 } from "../../components";
+import { AccountSignup } from "@features/Auth/views";
 
 export const BuyerProfileStartUpView: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -22,9 +25,27 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
 
   const BuyerSignupSteps: StepperStepType[] = [
     {
-      stepName: t("Add_Profile_Pic", "Add Profile Pic"),
-      stepComponent: AddProfilePictureStep,
+      stepName: t("Signup"),
+      stepComponent: <AccountSignup onSuccess={() => {}} />,
       key: "3",
+    },
+    {
+      stepName: t("Email Verification"),
+      key: 1,
+      stepComponent: (
+        <AccountSignEmailVerificationStep
+        // onSuccess={handleNextStep}
+        // ref={(v: { submit: () => any }) => {
+        //   if (
+        //     v &&
+        //     typeof v.submit === "function" &&
+        //     typeof submitRequests[1] !== "function"
+        //   ) {
+        //     addSubmitRequest(1, v.submit);
+        //   }
+        // }}
+        />
+      ),
     },
     {
       stepName: t("Personal_information", "Personal information"),
@@ -32,8 +53,8 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
       key: "1",
     },
     {
-      stepName: t("Payment_Gate", "Payment Gate"),
-      stepComponent: PaymentPortal,
+      stepName: t("Add Payment Method"),
+      stepComponent: <PaymentMethodForm />,
       key: 7,
     },
     {

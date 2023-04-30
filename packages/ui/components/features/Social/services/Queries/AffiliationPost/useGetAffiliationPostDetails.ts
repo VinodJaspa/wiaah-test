@@ -3,11 +3,15 @@ import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
 import {
   AffiliationPost,
+  AffiliationStatus,
   GetAffiliationPostInput,
+  PresentationType,
   Profile,
 } from "@features/API";
 import { Affiliation } from "@features/API";
 import { Account } from "@features/API";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetAffiliationPostDetailsQueryVariables = Exact<{
   args: GetAffiliationPostInput;
@@ -41,13 +45,7 @@ export type GetAffiliationPostDetailsQuery = { __typename?: "Query" } & {
             profile?: Maybe<
               { __typename?: "Profile" } & Pick<
                 Profile,
-                | "id"
-                | "username"
-                | "followers"
-                | "verified"
-                | "photo"
-                | "ownerId"
-                | "profession"
+                "id" | "username" | "verified" | "photo" | "ownerId"
               >
             >;
           }
@@ -94,7 +92,58 @@ export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {
     args,
   });
 
-  return useQuery(["get-affiliation-post-details"], async () => {
+  return useQuery(["get-affiliation-post-details", { args }], async () => {
+    if (isDev) {
+      const mockRes: GetAffiliationPostDetailsQuery["getAffiliationPost"] = {
+        id: "",
+        comments: randomNum(51),
+        affiliationId: "",
+        createdAt: new Date().toUTCString(),
+        reactionNum: randomNum(150),
+        shares: randomNum(250),
+        userId: "",
+        views: randomNum(2650),
+        affiliation: {
+          commision: 15,
+          createdAt: new Date().toUTCString(),
+          itemType: "product",
+          id: "",
+          itemId: "",
+          status: AffiliationStatus.Active,
+          product: {
+            thumbnail: getRandomImage(),
+            presentations: [
+              {
+                src: getRandomImage(),
+                type: PresentationType.Image,
+              },
+              {
+                src: getRandomImage(),
+                type: PresentationType.Image,
+              },
+            ],
+            title: "product title",
+            price: randomNum(51),
+          },
+          service: {
+            name: "product title",
+            thumbnail: getRandomImage(),
+            price: randomNum(51),
+          },
+        },
+        user: {
+          id: "",
+          profile: {
+            id: "",
+            ownerId: "",
+            photo: getRandomImage(),
+            username: getRandomName().firstName,
+            verified: true,
+          },
+        },
+      };
+      return mockRes;
+    }
     const res = await client.send<GetAffiliationPostDetailsQuery>();
     return res.data.getAffiliationPost;
   });

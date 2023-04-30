@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Container } from "@UI";
 import { StepperStepType } from "types";
+import { runIfFn } from "@UI/../utils/src";
 
 export type MultiStepFromHandle = {
   handleNextStep: () => any;
@@ -39,7 +40,7 @@ const Formcomponent: React.ForwardRefRenderFunction<
 
   const primaryColor = __cssVars["--chakra-colors-primary-main"];
 
-  let [formStep, setFormStep] = React.useState(0);
+  let [formStep, setFormStep] = React.useState(4);
 
   const CanNext = stepsData[formStep] !== null;
 
@@ -127,17 +128,17 @@ const Formcomponent: React.ForwardRefRenderFunction<
           </div>
         </Container>
       </div>
-      <div className="overflow-scroll thinScroll h-full pl-4 py-4 md:pl-8 md:py-8">
+      <div className="overflow-scroll thinScroll h-full px-4 py-4 md:pl-8 md:py-8">
         {steps.map((step, i) => {
           if (formStep !== i) return null;
           const Comp = step.stepComponent;
           return (
             <React.Fragment key={i}>
-              <Comp
-                isValid={(data: FormStepIsValidData) => {
+              {runIfFn(Comp, {
+                isValid: (data: FormStepIsValidData) => {
                   handleFormStepValid(data, i);
-                }}
-              />
+                },
+              })}
             </React.Fragment>
           );
         })}

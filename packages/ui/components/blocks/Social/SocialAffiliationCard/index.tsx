@@ -19,6 +19,7 @@ import {
   AffiliationPost,
   ProductPresentation,
   Profile,
+  ServicePresentationType,
 } from "@features/API";
 
 export interface SocialAffiliationCardProps {
@@ -47,13 +48,7 @@ export interface SocialAffiliationCardProps {
     user: {
       profile: Pick<
         Profile,
-        | "id"
-        | "username"
-        | "followers"
-        | "verified"
-        | "photo"
-        | "ownerId"
-        | "profession"
+        "id" | "username" | "verified" | "photo" | "ownerId"
       >;
     };
   };
@@ -94,25 +89,29 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
     name: string;
     price: number;
   } =
-    post.affiliation.itemType === "service"
+    post?.affiliation?.itemType === "service"
       ? {
-          name: post.affiliation.service?.title || "",
+          name: post.affiliation.service?.name || "",
           price: post.affiliation.service?.price || 0,
           presentations:
-            post.affiliation.service?.presentation ||
-            ([] as ServicePresentation[]),
+            [
+              {
+                src: post.affiliation.service?.thumbnail || "",
+                type: ServicePresentationType.Img,
+              },
+            ] || ([] as ServicePresentation[]),
         }
       : {
-          name: post.affiliation.product?.title || "",
-          price: post.affiliation.product?.price || 0,
+          name: post?.affiliation?.product?.title || "",
+          price: post?.affiliation?.product?.price || 0,
           presentations:
-            post.affiliation.product?.presentations ||
+            post?.affiliation?.product?.presentations ||
             ([] as ProductPresentation[]),
         };
 
   return (
     <div
-      className="text-white gap-4 rounded-lg max-h-full max-w-full flex flex-col bg-primary p-4"
+      className="text-white w-full gap-4 rounded-lg max-h-full max-w-full flex flex-col bg-primary p-4"
       data-testid="socialAffiliationContainer"
       onClick={() => onCardClick && onCardClick(post.id)}
     >
@@ -139,7 +138,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <Button>{t("folow", "follow")}</Button>
             </div>
             <div className="flex gap-1">
-              <p>{t("Win")}</p> <p>{post.affiliation.commision}%</p>
+              <p>{t("Win")}</p> <p>{post.affiliation?.commision}%</p>
               <p>{t("of commision by affiliating it")}</p>
             </div>
           </div>
@@ -160,7 +159,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
             </div>
           </div>
           <div
-            className="flex text-black bg-white gap-2 flex-col"
+            className="flex text-black p-1 rounded bg-white gap-2 flex-col"
             ref={detailsRef}
           >
             <p className="font-bold">{prod.name}</p>

@@ -4,7 +4,6 @@ import React from "react";
 export const HealthCenterFillIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
-      {...props}
       width="1em"
       height="1em"
       viewBox="0 0 24 24"
@@ -23,7 +22,6 @@ export const HealthCenterFillIcon: React.FC<HtmlSvgProps> = (props) => {
 export const HealthCenterOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
-      {...props}
       width="1em"
       height="1em"
       viewBox="0 0 25 24"

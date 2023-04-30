@@ -41,7 +41,7 @@ export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
     "pet-friendly": PetPawIcon,
     breakfast: CupIcon,
     laundry: LaundryIcon,
-    free_wifi: WifiIcon,
+    wifi: WifiIcon,
     gym: DumbbellIcon,
     bar: BarGlassIcon,
     "24/7_front_desk": DeskIcon,

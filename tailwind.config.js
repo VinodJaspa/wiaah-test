@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "./packages/ui/**/*.{js,ts,jsx,tsx}",
@@ -6,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        sf: ["SF Pro Display", ...defaultTheme.fontFamily.sans],
+      },
       transitionProperty: {
         height: "height",
       },

@@ -36,24 +36,6 @@ export const TimeClockDisplay: React.FC<TimeClockDisplayProps> = ({
   const circlePercentage = fromHour12Format / 12;
   const circleDeg = circlePercentage * 360 - 90;
 
-  console.log({
-    percentage,
-    dayMins,
-    fromMins,
-    toMins,
-    circleDashArray,
-    circleDashoffset,
-    circlePercentage,
-    circleDeg,
-    fromHourInt,
-    fromHour12Format,
-    toHourInt,
-    toHour12Format,
-    diff,
-    ringDashArray,
-    ringDashoffset,
-  });
-
   const fromHourRotation = circlePercentage * 360;
   const toHourRotation = circlePercentage * 360 + percentage * 360;
 

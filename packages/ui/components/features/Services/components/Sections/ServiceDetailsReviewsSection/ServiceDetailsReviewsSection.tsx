@@ -1,6 +1,13 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ReviewLevel, ReviewLevelData, Avatar, StarIcon } from "@UI";
+import {
+  ReviewLevel,
+  ReviewLevelData,
+  Avatar,
+  StarIcon,
+  Stack,
+  Divider,
+} from "@UI";
 import { mapArray, setTestid } from "utils";
 
 export interface ServiceDetailsReviewsSectionProps {
@@ -27,23 +34,26 @@ export const ServiceDetailsReviewsSection: React.FC<
           {overAllRating.toFixed(1)}
         </p>
       </div>
-      <div className="flex flex-col w-full gap-10">
-        <div className="grid gap-y-3 gap-9 grid-cols-1 md:grid-cols-2">
+      <Stack col divider={<Divider variant="vert" />} className="w-full">
+        {/* <div className="grid gap-y-3 gap-9 grid-cols-1 md:grid-cols-2">
           {mapArray(ratingLevels, (rate, i) => (
             <ReviewLevel {...setTestid("ReviewLevel")} {...rate} key={i} />
           ))}
-        </div>
+        </div> */}
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
           {mapArray(reviews, ({ content, date, name, thumbnail }, i) => (
             <div
               {...setTestid("ReviewComment")}
               className="flex flex-col gap-4"
             >
-              <div className="flex items-center gap-4">
-                <Avatar src={thumbnail} />
+              <div className="flex items-center gap-3">
+                <Avatar
+                  className="min-w-[2.125rem] border-primary"
+                  src={thumbnail}
+                />
                 <div className="flex flex-col gap-1">
-                  <p className="text-sm font-bold text-title">{name}</p>
-                  <p className="text-xs text-grayText font-medium">
+                  <p className="text-sm font-medium text-title">{name}</p>
+                  <p className="text-xs text-grayText">
                     {new Date(date).toLocaleDateString("en", {
                       month: "short",
                       day: "numeric",
@@ -52,11 +62,13 @@ export const ServiceDetailsReviewsSection: React.FC<
                   </p>
                 </div>
               </div>
-              <p className="text-sm font-normal text-lightBlack">{content}</p>
+              <p className="text-[0.813rem] font-normal text-[#2D2D2D]">
+                {content}
+              </p>
             </div>
           ))}
         </div>
-      </div>
+      </Stack>
     </div>
   );
 };
