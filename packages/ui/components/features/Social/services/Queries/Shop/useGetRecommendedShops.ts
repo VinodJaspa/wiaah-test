@@ -11,7 +11,7 @@ import {
 } from "@features/API";
 import { Product } from "@features/API";
 import { Account } from "@features/API";
-import { randomNum } from "utils";
+import { isDev, randomNum } from "utils";
 import { getRandomImage } from "@UI/placeholder";
 
 export type GetShopRecommendedPostsQueryVariables = Exact<{
@@ -39,13 +39,7 @@ export type GetShopRecommendedPostsQuery = { __typename?: "Query" } & {
         >;
         product: { __typename?: "Product" } & Pick<
           Product,
-          | "id"
-          | "cashback"
-          | "presentations"
-          | "title"
-          | "discount"
-          | "hashtags"
-          | "price"
+          "id" | "title" | "discount" | "price" | "thumbnail"
         >;
         user?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id"> & {
@@ -87,6 +81,13 @@ export const useGetRecommendedShopPostsQuery = (
         }
         product {
             id
+            title
+            price
+            discount{
+              units
+              amount
+            }
+            thumbnail
         }
         userId
         createdAt
@@ -109,46 +110,42 @@ export const useGetRecommendedShopPostsQuery = (
     args,
   });
   return useQuery(["get-recommended-shop-posts", { args }], async () => {
-    return [...Array(15)].map((_, i) => ({
-      id: i.toString(),
-      comments: randomNum(150),
-      createdAt: new Date().toString(),
-      product: {
-        hashtags: [],
-        id: i.toString(),
-        presentations: [
-          { src: getRandomImage(), type: PresentationType.Image },
-        ],
-        price: randomNum(15),
-        title: "title",
-        cashback: {
-          amount: randomNum(5),
+    if (isDev) {
+      const mockRes: GetShopRecommendedPostsQuery["getRecommendedProductPosts"] =
+        [...Array(15)].map((_, i) => ({
           id: i.toString(),
-          units: 5,
-          type: CashbackType.Cash,
-        },
-        discount: {
-          amount: randomNum(54),
-          id: i.toString(),
-          units: randomNum(56),
-        },
-      },
-      productId: i.toString(),
-      reactionNum: randomNum(56),
-      shares: randomNum(5),
-      userId: i.toString(),
-      views: randomNum(546),
-      user: {
-        id: i.toString(),
-        profile: {
-          id: i.toString(),
-          photo: getRandomImage(),
-          profession: "profession",
-          username: "name",
-          verified: true,
-        },
-      },
-    }));
+          comments: randomNum(150),
+          createdAt: new Date().toString(),
+          product: {
+            id: i.toString(),
+            price: randomNum(15),
+            title:
+              "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galle",
+            discount: {
+              amount: randomNum(54),
+              id: i.toString(),
+              units: randomNum(56),
+            },
+            thumbnail: getRandomImage(),
+          },
+          productId: i.toString(),
+          reactionNum: randomNum(56),
+          shares: randomNum(5),
+          userId: i.toString(),
+          views: randomNum(546),
+          user: {
+            id: i.toString(),
+            profile: {
+              id: i.toString(),
+              photo: getRandomImage(),
+              profession: "profession",
+              username: "Nike",
+              verified: true,
+            },
+          },
+        }));
+      return mockRes;
+    }
 
     const res = await client.send<GetShopRecommendedPostsQuery>();
 

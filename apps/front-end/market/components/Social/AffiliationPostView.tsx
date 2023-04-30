@@ -1,63 +1,41 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import {
-  SocialAffiliationOffersState,
-  SocialAffiliationOfferState,
-} from "@src/state";
-import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import {
   SocialPostHeader,
   SocialAffiliationCard,
-  AffiliationOffersCardListWrapper,
-  SocialStoriesModal,
+  Button,
+  SocialProfileAffiliationPostsList,
+  useGetAffiliationPostQuery,
 } from "ui";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
-export interface AffiliationPostViewProps {}
+export interface AffiliationPostViewProps {
+  id: string;
+}
 
-export const AffiliationPostView: React.FC<AffiliationPostViewProps> = () => {
-  const product = useRecoilValue(SocialAffiliationOfferState);
-  const products = useRecoilValue(SocialAffiliationOffersState);
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+export const AffiliationPostView: React.FC<AffiliationPostViewProps> = ({
+  id,
+}) => {
+  const { t } = useTranslation();
+  const { data: post } = useGetAffiliationPostQuery({ id });
   return (
-    <Flex py="4rem" gap="2rem" direction={"column"}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap="2rem"
-        mb="6rem"
-        align={"start"}
-      >
-        <SocialStoriesModal />
+    <div className="flex flex-col py-16 gap-8">
+      <div className="flex flex-col md:flex-row gap-8 mb-24 items-start">
         <SocialPostHeader
-          name={product.user.name}
-          thumbnail={product.user.thumbnail}
+          name={post?.user?.profile?.username}
+          thumbnail={post?.user?.profile?.photo}
         />
-        <SocialAffiliationCard showComments {...product} />
-      </Flex>
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
-        {t("view", "view")} {product.user.name}{" "}
-        {t("other_posts", "other posts")}
-      </Text>
-      <AffiliationOffersCardListWrapper cols={cols} items={products} />
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
-      >
-        {t("view_more", "view more")}
-      </Button>
-    </Flex>
+        {post ? (
+          <SocialAffiliationCard
+            showComments
+            post={{ ...post, user: { profile: post?.user?.profile! } }}
+          />
+        ) : null}
+      </div>
+      <p className="text-2xl font-bold w-full text-center capitalize">
+        {t("view")} {post?.user?.profile?.username || "user"} {t("other posts")}
+      </p>
+      <SocialProfileAffiliationPostsList userId="" />
+      <Button outline>{t("view_more", "view more")}</Button>
+    </div>
   );
 };

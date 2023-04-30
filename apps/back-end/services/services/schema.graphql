@@ -351,6 +351,7 @@ type BookingCost {
 type ServicesCursorPaginationResponse {
   data: [Service!]!
   cursor: String!
+  nextCursor: String!
   hasMore: Boolean!
 }
 
@@ -601,6 +602,7 @@ type Query {
   getServiceRawData(id: String!): RawService!
   getServiceDetails(id: String!, isClick: Boolean!): Service
   getUserServicesByIds(sellerId: String!, servicesIds: [String!]!): [Service!]!
+  getRecommendedServices(args: GetRecommendedServicesInput!): ServicesCursorPaginationResponse!
   getHotelAvailablity(id: String!, monthDate: String!): HotelAvailablity!
   getBookingCost(args: GetBookingCostInput!): BookingCost
   adminGetAccountService(accountId: String!): Service!
@@ -625,6 +627,12 @@ type Query {
 input GqlCursorPaginationInput {
   take: Int!
   cursor: String
+}
+
+input GetRecommendedServicesInput {
+  take: Int!
+  cursor: String
+  type: ServiceType!
 }
 
 input GetBookingCostInput {

@@ -12,8 +12,6 @@ import {
   Stack,
   Divider,
   Image,
-  Checkbox,
-  Badge,
   CloseIcon,
 } from "@UI";
 import {

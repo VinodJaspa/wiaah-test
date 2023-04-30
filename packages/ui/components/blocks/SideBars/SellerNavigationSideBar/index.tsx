@@ -93,7 +93,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
 
   return (
     <div
-      className={`${className} flex z-50 fixed ${
+      className={`${className} flex z-[36] fixed ${
         isMobile
           ? "flex-row z-10 left-0 bottom-0 w-full bg-white"
           : "flex-col left-0 w-52 z-[51] h-screen top-0 bg-primary"
@@ -122,12 +122,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               >
                 <span
                   className={`${
-                    "text-black"
-                    // active
-                    //   ? "text-black fill-black"
-                    //   : isMobile
-                    //   ? "text-gray-400 fill-gray-400"
-                    //   : "text-white fill-white"
+                    isMobile ? "text-black" : "text-white"
                   } text-icon`}
                 >
                   {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}

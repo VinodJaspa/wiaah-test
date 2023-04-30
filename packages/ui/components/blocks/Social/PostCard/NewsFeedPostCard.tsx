@@ -26,6 +26,8 @@ import {
   NewsfeedPost,
   Profile,
 } from "@features/API";
+import { NumberShortner } from "@UI/../utils/src";
+import { useSocialControls } from "@blocks/Layout";
 
 export interface PostCardProps {
   profileInfo: Pick<
@@ -51,7 +53,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   postInfo,
   profileInfo,
 }) => {
-  const { open } = useShareModal();
+  const { shareLink } = useSocialControls();
   const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
   const { open: openPostMentions } = useSocialPostMentionsModal();
@@ -163,7 +165,9 @@ export const PostCard: React.FC<PostCardProps> = ({
               >
                 <HeartIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.reactionNum}</p>
+              <p className="font-bold text-base">
+                {NumberShortner(postInfo.reactionNum)}
+              </p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -175,18 +179,22 @@ export const PostCard: React.FC<PostCardProps> = ({
               >
                 <CommentIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.comments}</p>
+              <p className="font-bold text-base">
+                {NumberShortner(postInfo.comments)}
+              </p>
             </div>
             <div className="flex gap-2 items-center">
               <span
                 onClick={() =>
-                  open(getUrl((r) => r.visitNewsfeedPostPage(postInfo)))
+                  shareLink(getUrl((r) => r.visitNewsfeedPostPage(postInfo)))
                 }
                 className="cursor-pointer w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
                 <ShareIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.shares}</p>
+              <p className="font-bold text-base">
+                {NumberShortner(postInfo.shares)}
+              </p>
             </div>
           </div>
           <div className="flex gap-4">

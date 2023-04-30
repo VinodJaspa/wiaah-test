@@ -51,7 +51,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { visit, back } = useRouting();
-  const { chatWith, msgNewUser } = useSocialControls();
+  const { chatWith, msgNewUser, viewUserStory } = useSocialControls();
   const { isMobile } = useResponsive();
 
   const { data } = useUserProfile();
@@ -90,6 +90,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
         <ScrollPaginationWrapper axis="x" controls={controls}>
           <div className="flex items-start gap-2 w-full overflow-x-scroll noScroll">
             <ChatStory
+              onClick={() => {}}
               userId={profile?.ownerId || ""}
               name={profile?.username || t("Me")}
               newStory={true}
@@ -98,6 +99,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
             />
             {mapArray(stories || [], (v, i) => (
               <ChatStory
+                onClick={() => viewUserStory(v.userId)}
                 userId={v.userId}
                 isLive={false}
                 key={i}
@@ -253,13 +255,13 @@ export const ChatStory: React.FC<{
   photo: string;
   newStory: boolean;
   isLive: boolean;
-}> = ({ name, newStory, photo, isLive, userId }) => {
-  const { viewUserStory } = useSocialControls();
+  onClick: () => any;
+}> = ({ name, newStory, photo, isLive, userId, onClick }) => {
   const { data } = useUserProfile();
   const { t } = useTranslation();
   return (
     <div
-      onClick={() => viewUserStory(userId)}
+      onClick={() => onClick && onClick()}
       className="flex flex-col cursor-pointer w-[3.875rem] justify-center items-center gap-1"
     >
       <div

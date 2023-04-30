@@ -56,26 +56,58 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
         {t("Enter shipping details")}
       </h2>
       <div className="flex flex-col gap-4">
+        <label>{t("Countries")}</label>
+        <MultiChooseInput
+          onChange={(e) => {
+            handleSetForm(
+              "countries",
+              e.map((v) => ({
+                code: v,
+                name: countriesArray.find((c) => c.value === v)?.label || v,
+              }))
+            );
+          }}
+          value={form?.countries?.map((v) => v.name) || []}
+          suggestions={countriesArray.map((v, i) => ({
+            label: v.label,
+            value: v.value,
+          }))}
+          placeholder={t("Country")}
+        />
+
+        <label htmlFor="">{t("Delivery_Time", "Delivery Time")}</label>
+        <Select placeholder={t("Delivery_Time", "Delivery Time")}>
+          <SelectOption value="1-3">1-3 {t("days", "days")}</SelectOption>
+          <SelectOption value="3-5">3-5 {t("days", "days")}</SelectOption>
+          <SelectOption value="7">7 {t("days", "days")}</SelectOption>
+          <SelectOption value="1-2weeks">
+            1-2 {t("Weeks", "Weeks")}
+          </SelectOption>
+          <SelectOption value="2-3weeks">
+            2-3 {t("Weeks", "Weeks")}
+          </SelectOption>
+          <SelectOption value="3-4weeks">
+            3-4 {t("Weeks", "Weeks")}
+          </SelectOption>
+        </Select>
+
+        <div>
+          <label htmlFor="">{t("Price", "Price")}</label>
+          <Input placeholder={t("Price", "Price")} />
+        </div>
+
+        <Button
+          className="w-fit"
+          onClick={() => {
+            setShippingMethod(true);
+          }}
+        >
+          {t("Add_Method", "Add Method")}
+        </Button>
         {/* <div className="flex justify-between lg:mt-6">
           <div className="mr-2 w-6/12">
-            <label htmlFor="">{t("Sending Countries")}</label>
-            <MultiChooseInput
-              onChange={(e) => {
-                handleSetForm(
-                  "countries",
-                  e.map((v) => ({
-                    code: v,
-                    name: countriesArray.find((c) => c.value === v)?.label || v,
-                  }))
-                );
-              }}
-              value={form?.countries?.map((v) => v.code) || []}
-              suggestions={countriesArray.map((v, i) => ({
-                label: v.label,
-                value: v.value,
-              }))}
-              placeholder={t("Country")}
-            />
+
+  
           </div>
           <div className="ml-2 w-6/12">
             <label htmlFor="">{t("Treatment_Time", "Treatment Time")}</label>
@@ -109,7 +141,7 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
             </Select>
           </div>
         </div> */}
-        <div className="flex flex-col gap-4 w-full rounded-lg bg-slate-100 ">
+        {/* <div className="flex flex-col gap-4 w-full rounded-lg bg-slate-100 ">
           <div>
             <label htmlFor="">{t("Destination", "Destination")}</label>
             <Select
@@ -127,23 +159,7 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
             <label htmlFor="">{t("Transporter", "Transporter")}</label>
             <Input placeholder={t("Name", "Name") + "*"} />
           </div>
-          <div className="">
-            <label htmlFor="">{t("Delivery_Time", "Delivery Time")}</label>
-            <Select placeholder={t("Delivery_Time", "Delivery Time")}>
-              <SelectOption value="1-3">1-3 {t("days", "days")}</SelectOption>
-              <SelectOption value="3-5">3-5 {t("days", "days")}</SelectOption>
-              <SelectOption value="7">7 {t("days", "days")}</SelectOption>
-              <SelectOption value="1-2weeks">
-                1-2 {t("Weeks", "Weeks")}
-              </SelectOption>
-              <SelectOption value="2-3weeks">
-                2-3 {t("Weeks", "Weeks")}
-              </SelectOption>
-              <SelectOption value="3-4weeks">
-                3-4 {t("Weeks", "Weeks")}
-              </SelectOption>
-            </Select>
-          </div>
+          <div className=""></div>
           <div className="">
             <label htmlFor="">
               {t("Type_of_Shipping", "Type of Shipping")}
@@ -153,10 +169,7 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
               <SelectOption value="3-5">{t("Two", "Two")}</SelectOption>
             </Select>
           </div>
-          <div>
-            <label htmlFor="">{t("Price", "Price")}</label>
-            <Input placeholder={t("Price", "Price")} />
-          </div>
+
           <div>
             <label htmlFor="">
               {t("Price_by_Additional_Item", "Price by Additional Item")}
@@ -165,8 +178,8 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
               className="mb-4 mt-2 rounded-md border-gray-300"
               placeholder={t("Price", "Price")}
             />
-          </div>
-          {/* <div className="w-full justify-between flex gap-4">
+          </div> */}
+        {/* <div className="w-full justify-between flex gap-4">
             <Button
               className="bg-red-400 hover:bg-red-500 active:bg-red-600"
               onClick={() => {
@@ -182,18 +195,11 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
               {t("Save", "Save")}
             </Button>
           </div> */}
-        </div>
-        {/* {!shippingMethode && (
-          <Button
-            className="w-fit"
-            onClick={() => {
-              setShippingMethod(true);
-            }}
-          >
-            {t("Add_Method", "Add Method")}
-          </Button>
-        )} */}
       </div>
+      {/* {!shippingMethode && (
+
+        )} */}
+      {/* </div> */}
     </div>
   );
 };

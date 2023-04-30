@@ -53,7 +53,10 @@ export const AffiliationListSection: React.FC<
         )}
       </SectionHeader>
       <TableContainer>
-        <Table className="w-full overflow-scroll">
+        <Table
+          ThProps={{ className: "whitespace-nowrap" }}
+          className="w-full overflow-scroll"
+        >
           <Th>{t("product_image", "Product Image")}</Th>
           <Th>{t("product_id", "Product Id")}</Th>
           <Th>{t("product_name", "Product Name")}</Th>
@@ -75,7 +78,7 @@ export const AffiliationListSection: React.FC<
                 <Td>{link.itemId}</Td>
                 <Td>{link.product?.title}</Td>
                 <Td>{link.commision}</Td>
-                <Td>{link.expireAt}</Td>
+                <Td>{new Date(link.expireAt).toDateString()}</Td>
                 <Td>
                   <Button
                     onClick={() =>

@@ -9,6 +9,7 @@ import { CashBack, HtmlDivProps, PostAttachmentTypes } from "types";
 import { Interactions } from "types";
 import { PostAttachment, CashbackBadge } from "@UI";
 import { PostAttachmentProps } from "../PostAttachment";
+import { AttachmentType } from "@features/API";
 
 export interface ShopCardAttachmentProps {
   cashback?: CashBack;
@@ -39,7 +40,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
       <PostAttachment
         src={src || ""}
-        type={type || "image"}
+        type={AttachmentType.Img}
         alt={alt}
         {...attachmentProps}
       />

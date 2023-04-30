@@ -52,6 +52,7 @@ import { GraphQLUpload, Upload } from 'graphql-upload';
 import { BookingCost } from './entities/booking-cost.entity';
 import { GetBookingCostInput } from './dto/get-booking-cost.input';
 import { Weekdays } from './utils';
+import { GetRecommendedServicesInput } from './dto/get-recommended-services';
 
 enum weekdaysNum {
   su = 0,
@@ -128,9 +129,15 @@ export class ServiceResolver {
     });
 
     return {
-      cursor: res[res.length - 1].id,
-      data: res.map((v) => this.formatService(v, userLang)),
+      cursor: pagination.cursor,
+      data:
+        res.length > pagination.take
+          ? res
+              .slice(0, res.length - 2)
+              .map((v) => this.formatService(v, userLang))
+          : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
+      nextCursor: res.at(res.length - 1).id,
     };
   }
 
@@ -348,6 +355,28 @@ export class ServiceResolver {
     });
 
     return true;
+  }
+
+  @Query(() => ServicesCursorPaginationResponse)
+  async getRecommendedServices(
+    @Args('args', { type: () => GetRecommendedServicesInput })
+    args: GetRecommendedServicesInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<ServicesCursorPaginationResponse> {
+    const services = await this.prisma.service.findMany({
+      where: {
+        status: 'active',
+      },
+      cursor: args.cursor ? { id: args.cursor } : undefined,
+      take: args.take,
+    });
+
+    return {
+      cursor: args.cursor!,
+      data: [],
+      hasMore: false,
+      nextCursor: services.at(args.take - 1)?.id,
+    };
   }
 
   @Query(() => HotelAvailablity)

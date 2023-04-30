@@ -34,6 +34,7 @@ import { FilteredShopsInput } from './dto/filter-shops.input';
 import { UpdateUserShopInput } from './dto';
 import { PrismaService } from 'prismaService';
 import { ShopWorkingSchedule } from 'src/working-schedule/entities';
+import { Profile } from './entities/extends';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -143,6 +144,14 @@ export class ShopResolver implements OnModuleInit {
       },
     });
   }
+
+  // @ResolveField(() => Profile)
+  // profile(@Parent() shop: Shop) {
+  //   return {
+  //     __typename: 'Profile',
+  //     userId: shop.ownerId,
+  //   };
+  // }
 
   async onModuleInit() {
     this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);

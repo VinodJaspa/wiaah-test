@@ -83,7 +83,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
   }
 
   return (
-    <div className="w-full flex items-center gap-4 text-gray-500 justify-end">
+    <div className="w-full flex whitespace-nowrap items-center gap-4 text-gray-500 justify-end">
       <p>{t("items_per_page", "Items Per Page")}</p>
       <Select
         onOptionSelect={handleItemsPerPageChange}
@@ -95,7 +95,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
           </SelectOption>
         ))}
       </Select>
-      <p>
+      <p className="flex">
         {page} {t("of", "of")}{" "}
         {totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : "Unkown"}
       </p>

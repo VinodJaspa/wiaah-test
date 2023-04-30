@@ -58,3 +58,21 @@ export const SaveFlagOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const SaveFlagFIllIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="0.54em"
+      height="1em"
+      viewBox="0 0 12 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.38462 -3.05176e-05H9.69231C10.0595 -3.05176e-05 10.4117 0.145848 10.6714 0.405514C10.931 0.66518 11.0769 1.01736 11.0769 1.38458V18L5.53846 12.4615L0 18V1.38458C0 1.01736 0.145879 0.66518 0.405545 0.405514C0.66521 0.145848 1.01739 -3.05176e-05 1.38462 -3.05176e-05Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};

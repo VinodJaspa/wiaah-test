@@ -19,8 +19,8 @@ const SimpleTabsContext = React.createContext<SimpleTabsCtxType>({
 });
 
 interface SimpleTabsProps {
-  onChange: (idx: number) => any;
-  value: number;
+  onChange?: (idx: number) => any;
+  value?: number;
 }
 
 export const SimpleTabs: React.FC<SimpleTabsProps> = ({

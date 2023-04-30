@@ -1074,11 +1074,13 @@ export type CreateProductInput = {
   brand: Scalars["String"];
   cashback: CashBackInput;
   categoryId: Scalars["ID"];
+  colors: Array<Scalars["String"]>;
   condition: ProductCondition;
   description: Array<StringTranslationField>;
   discount: DiscountInput;
   presentations: Array<Scalars["Upload"]>;
   price: Scalars["Float"];
+  sizes: Array<ProductSize>;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
   title: Array<StringTranslationField>;
@@ -1465,6 +1467,7 @@ export type GetActionsCursorResponse = {
   cursor: Scalars["String"];
   data: Array<Action>;
   hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export type GetAddableHashtagsInput = {
@@ -1862,6 +1865,12 @@ export type GetRecommendedServicePostsInput = {
   serviceType: Scalars["String"];
 };
 
+export type GetRecommendedServicesInput = {
+  cursor?: Maybe<Scalars["String"]>;
+  take: Scalars["Int"];
+  type: ServiceType;
+};
+
 export type GetRefundableOrdersInput = {
   pagination: GqlPaginationInput;
 };
@@ -1889,6 +1898,12 @@ export type GetSalesDurningPeriodInput = {
   searchPeriod?: Maybe<OrderSearchPeriod>;
   seller?: Maybe<Scalars["String"]>;
   status?: Maybe<OrderStatusEnum>;
+};
+
+export type GetSellerProductsInput = {
+  idCursor?: Maybe<Scalars["String"]>;
+  sellerId: Scalars["String"];
+  take: Scalars["Int"];
 };
 
 export type GetShopRecommendedPostsInput = {
@@ -1963,6 +1978,13 @@ export type GetUserProductPostsInput = {
 export type GetUserServicesPostsInput = {
   pagination: GqlCursorPaginationInput;
   userId: Scalars["ID"];
+};
+
+export type GetUserStoryInput = {
+  cursor?: Maybe<Scalars["String"]>;
+  dir: Scalars["Int"];
+  nextCursor?: Maybe<Scalars["String"]>;
+  userId: Scalars["String"];
 };
 
 export type GetVouchersInput = {
@@ -3520,6 +3542,7 @@ export type Product = {
   cashbackId?: Maybe<Scalars["String"]>;
   category?: Maybe<Category>;
   categoryId: Scalars["ID"];
+  colors: Array<Scalars["String"]>;
   condition: ProductCondition;
   createdAt: Scalars["String"];
   description: Scalars["String"];
@@ -3540,6 +3563,7 @@ export type Product = {
   sellerId: Scalars["ID"];
   shippingDetails?: Maybe<ShippingDetails>;
   shippingRulesIds: Array<Scalars["ID"]>;
+  sizes: Array<ProductSize>;
   status: ProductStatus;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
@@ -3631,6 +3655,16 @@ export type ProductReview = {
   updatedAt: Scalars["DateTime"];
 };
 
+export enum ProductSize {
+  L = "l",
+  M = "m",
+  S = "s",
+  Xl = "xl",
+  Xxl = "xxl",
+  Xxxl = "xxxl",
+  Xxxxl = "xxxxl",
+}
+
 export enum ProductStatus {
   Active = "active",
   Deleted = "deleted",
@@ -3648,6 +3682,14 @@ export enum ProductUsageStatus {
   New = "new",
   Used = "used",
 }
+
+export type ProductsCursorPaginationResponse = {
+  __typename?: "ProductsCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Array<Product>;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
+};
 
 export type Profession = {
   __typename?: "Profession";
@@ -3907,12 +3949,15 @@ export type Query = {
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
   getRecommendedProductPosts: Array<ProductPost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getRecommendedServices: ServicesCursorPaginationResponse;
   getRefundRequests: Array<Refund>;
   getRefundableOrders: Array<Order>;
   getRegistrations: Array<Registeration>;
   getReports: Array<Report>;
   getRoomMessages: Array<ChatMessage>;
+  getRoomWithUser: ChatRoom;
   getSalesDurningPeriod: Array<OrderItem>;
+  getSellerProducts: ProductsCursorPaginationResponse;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryByType: Array<ServiceCategory>;
@@ -3948,7 +3993,7 @@ export type Query = {
   getUserServices: ServicesCursorPaginationResponse;
   getUserServicesByIds: Array<Service>;
   getUserShop: Shop;
-  getUserStory: Story;
+  getUserStory: StoryCursorPaginationResponse;
   getUserWishelist: Array<WishedItem>;
   getWisherslist: Array<Wisherslist>;
   getWithdrawCurrencies: Array<WithdrawCurrency>;
@@ -4463,6 +4508,10 @@ export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
 };
 
+export type QueryGetRecommendedServicesArgs = {
+  args: GetRecommendedServicesInput;
+};
+
 export type QueryGetRefundRequestsArgs = {
   args: GetFilteredRefundsInput;
 };
@@ -4479,8 +4528,16 @@ export type QueryGetRoomMessagesArgs = {
   args: GetMessagesByRoomIdInput;
 };
 
+export type QueryGetRoomWithUserArgs = {
+  userId: Scalars["String"];
+};
+
 export type QueryGetSalesDurningPeriodArgs = {
   args: GetSalesDurningPeriodInput;
+};
+
+export type QueryGetSellerProductsArgs = {
+  args: GetSellerProductsInput;
 };
 
 export type QueryGetServiceCategoryByIdArgs = {
@@ -4615,7 +4672,7 @@ export type QueryGetUserShopArgs = {
 };
 
 export type QueryGetUserStoryArgs = {
-  userId: Scalars["String"];
+  args: GetUserStoryInput;
 };
 
 export type QueryGetUserWishelistArgs = {
@@ -5346,6 +5403,7 @@ export type ServicesCursorPaginationResponse = {
   cursor: Scalars["String"];
   data: Array<Service>;
   hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export type ShippingAddress = {
@@ -5439,8 +5497,10 @@ export type Shop = {
   ownerId: Scalars["String"];
   payment_methods: Array<ShopPaymentMethod>;
   phone: Scalars["String"];
+  profile?: Maybe<Profile>;
   rating: Scalars["Float"];
   reviews: Scalars["Int"];
+  sellerProfile: Profile;
   status: ShopStatus;
   storeFor: Array<StoreFor>;
   storeType: StoreType;
@@ -5575,6 +5635,14 @@ export type Story = {
   updatedAt: Scalars["DateTime"];
   views: Array<StoryView>;
   viewsCount: Scalars["Int"];
+};
+
+export type StoryCursorPaginationResponse = {
+  __typename?: "StoryCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Story;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export enum StoryType {
@@ -5897,6 +5965,7 @@ export type UpdateProductInput = {
   brand?: Maybe<Scalars["String"]>;
   cashback?: Maybe<CashBackInput>;
   categoryId?: Maybe<Scalars["ID"]>;
+  colors?: Maybe<Array<Scalars["String"]>>;
   condition?: Maybe<ProductCondition>;
   description?: Maybe<Array<StringTranslationField>>;
   discount?: Maybe<DiscountInput>;
@@ -5904,6 +5973,7 @@ export type UpdateProductInput = {
   oldPresentations: Array<ProductPresentationInput>;
   presentations?: Maybe<Array<Scalars["Upload"]>>;
   price?: Maybe<Scalars["Float"]>;
+  sizes?: Maybe<Array<ProductSize>>;
   stock?: Maybe<Scalars["Int"]>;
   thumbnail?: Maybe<Scalars["String"]>;
   title?: Maybe<Array<StringTranslationField>>;

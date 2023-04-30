@@ -8,14 +8,16 @@ import {
 } from "@blocks/Modals";
 import { PostViewPopup } from "@blocks/Popups";
 import { MasterLocationMapModal } from "@features/GeoLocation";
+import { ProductDetailsDrawer } from "@features/Products";
 import {
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
   SocialReportModal,
   SocialShareCotentModal,
+  SocialStoryDrawer,
 } from "@features/Social";
 import { NotifciationsDrawer } from "@features/notifications";
-import { useSetNewPost } from "@src/index";
+import { useResponsive } from "@src/index";
 import React from "react";
 import {
   atom,
@@ -23,6 +25,12 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+
+export enum ReportContentType {
+  story = "story",
+  post = "post",
+  action = "action",
+}
 
 interface SocialAtomValue {
   newPost: boolean;
@@ -32,6 +40,10 @@ interface SocialAtomValue {
   newStory?: boolean;
   unknown: unknown;
   msgNewUser?: boolean;
+  productDetailsId?: string;
+  shareLink?: string;
+  reportContent?: { id: string; type: ReportContentType };
+  serviceDetailsId?: string;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -44,6 +56,10 @@ const socialAtom = atom<SocialAtomValue>({
     newStory: false,
     unknown: null,
     msgNewUser: false,
+    productDetailsId: undefined,
+    shareLink: undefined,
+    reportContent: undefined,
+    serviceDetailsId: undefined,
   },
 });
 
@@ -71,7 +87,6 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     TKey extends keyof SocialAtomValue,
     TValue extends SocialAtomValue[TKey]
   >(key: TKey, value: TValue) {
-    console.log("set COntrols", key, value);
     setState((v) => ({ ...v, [key]: value }));
   }
 
@@ -89,6 +104,7 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("chatRoomId", undefined);
     },
     viewUserStory: (userId: string) => {
+      console.log("view user story", userId);
       setControls("userStory", userId);
     },
     closeStory: () => {
@@ -109,21 +125,34 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     },
     msgNewUser: () => setControls("msgNewUser", true),
     cancelMsgNewUser: () => setControls("msgNewUser", false),
+    viewProductDetails: (id: string) => setControls("productDetailsId", id),
+    cancelViewProductDetails: () => setControls("productDetailsId", undefined),
+    shareLink: (link: string) => setControls("shareLink", link),
+    cancelShareLink: () => setControls("shareLink", undefined),
+    reportContent: (id: string, type: ReportContentType) =>
+      setControls("reportContent", { id, type }),
+    cancelReportContent: () => setControls("reportContent", undefined),
+    viewServiceDetails: (serviceId: string) =>
+      setControls("serviceDetailsId", serviceId),
+    closeServiceDetails: () => setControls("serviceDetailsId", undefined),
     value,
   };
 }
 
 export const SocialLayout: React.FC = ({ children }) => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      <NotifciationsDrawer />
+      {/* {isMobile ? <NotifciationsDrawer /> : null} */}
+      <SocialStoryDrawer />
+
       <SocialReportModal />
-      <SocialShareCotentModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       <MasterLocationMapModal />
+      <ProductDetailsDrawer />
       <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

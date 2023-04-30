@@ -48,6 +48,25 @@ export class RoomResolver {
     });
   }
 
+  @Query(() => ChatRoom)
+  getRoomWithUser(
+    @Args('userId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.prisma.room.findFirst({
+      where: {
+        members: {
+          every: {
+            userId: {
+              in: [id, user.id],
+            },
+          },
+        },
+        roomType: 'private',
+      },
+    });
+  }
+
   @ResolveField(() => [ChatMessage])
   messages(@Args('args') args: GqlPaginationInput, @Parent() room: ChatRoom) {
     const { skip, take } = ExtractPagination(args);

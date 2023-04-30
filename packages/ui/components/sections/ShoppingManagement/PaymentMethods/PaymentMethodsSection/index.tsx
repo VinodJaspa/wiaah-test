@@ -10,9 +10,11 @@ import {
   SelectOption,
   SectionHeader,
   SelectProps,
+  Input,
 } from "@UI";
 import * as yup from "yup";
 import { randomNum } from "utils";
+import { t } from "i18next";
 
 const paymentValidationSchema = yup.object().shape({});
 
@@ -44,57 +46,7 @@ export const PaymentMethodsSection: React.FC = () => {
           </Button>
         </div>
       )}
-      {addNew && (
-        <Formik
-          validationSchema={paymentValidationSchema}
-          initialValues={addNewInitial}
-          onSubmit={() => setAddNew(false)}
-        >
-          {({ setFieldValue }) => {
-            return (
-              <Form className="grid grid-cols-2 gap-8">
-                <FormikInput
-                  placeholder={t("card_number", "Card Number")}
-                  name="cardNumber"
-                />
-                <FormikInput
-                  placeholder={t("card_holder_name", "Card Holder Name")}
-                  name="cardHolderName"
-                />
-                <FormikInput<SelectProps>
-                  onOptionSelect={(value) =>
-                    setFieldValue("expiryMonth", value)
-                  }
-                  as={Select}
-                  placeholder={t("expiry_month", "Expiry Month")}
-                  name="expiryMonth"
-                >
-                  {[...Array(12)].map((_, i) => (
-                    <SelectOption value={i + 1}>{i + 1}</SelectOption>
-                  ))}
-                </FormikInput>
-                <FormikInput
-                  placeholder={t("expiry_year", "Expiry Year")}
-                  name="expiryYear"
-                />
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    onChange={(e) =>
-                      setFieldValue("setDefault", e.target.checked)
-                    }
-                  />
-                  {t("set_as_default_payment", "Set As Default Payment")}
-                </div>
-                <div className="w-full flex justify-end">
-                  <Button type="submit" className="w-fit">
-                    {t("submit", "Submit")}
-                  </Button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      )}
+      {addNew && <PaymentMethodForm></PaymentMethodForm>}
     </div>
   );
 };
@@ -188,3 +140,78 @@ const CardNumber = ({ lastNumbers }: { lastNumbers: number }) => {
 const paymentCardProviders: string[] = paymentProdviders.concat([
   "/discover.svg",
 ]);
+
+export const PaymentMethodForm = () => {
+  return (
+    <div className="rounded-md border-2 border-gray-300 px-4 py-6 lg:mt-8">
+      <h3 className="text-lg font-bold">{t("Payment", "Payment")}</h3>
+      <div className="flex flex-wrap items-center">
+        {/* <Input type="radio" checked /> */}
+        <span className="ml-4">
+          {t("Credit_Debit_card", "Credit / Debit card")}
+        </span>
+        <img className="ml-2 inline h-8" src="/visa-logo.png" alt="visa logo" />
+        <img
+          className="ml-2 inline h-8"
+          src="/master-card-logo.png"
+          alt="master card logo"
+        />
+        <img
+          className="ml-2 inline h-8"
+          src="/american_express.png"
+          alt="american express logo"
+        />
+        <img
+          className="ml-2 inline h-8"
+          src="/discover.png"
+          alt="discover network logo"
+        />
+      </div>
+      <div className="mt-4">
+        <label htmlFor="">{t("Name_on_Card", "Name on Card")}</label>
+        <Input
+          className="mt-2 mb-4 rounded-md border-gray-300"
+          placeholder={t("Enter_Name", "Enter name")}
+          name="name-on-card"
+          id="name-on-card"
+          type="text"
+        />
+      </div>
+      <div className="mt-4">
+        <label htmlFor="">{t("Card_Number", "Card Number")}</label>
+        <Input
+          className="mt-2 mb-4 rounded-md border-gray-300"
+          placeholder="2222 2222 2222 2222"
+          name="name-on-card"
+          id="name-on-card"
+          type="text"
+        />
+      </div>
+      <div className="mt-4 flex justify-between">
+        <div className="mr-2 w-6/12">
+          <label htmlFor="">{t("Expiry_Date", "Expiry Date")}</label>
+          <Input
+            className="mt-2 mb-4 rounded-md border-gray-300"
+            placeholder="MM/YY"
+            name="name-on-card"
+            id="name-on-card"
+            type="text"
+          />
+        </div>
+        <div className="ml-2 w-6/12">
+          <label htmlFor="">CVC/CVV</label>
+          <Input
+            className="mt-2 mb-4 rounded-md border-gray-300"
+            placeholder="123"
+            name="name-on-card"
+            id="name-on-card"
+            type="text"
+          />
+        </div>
+      </div>
+      <div className="flex justify-end">
+        <Button>{t("Add")}</Button>
+      </div>
+    </div>
+  );
+};

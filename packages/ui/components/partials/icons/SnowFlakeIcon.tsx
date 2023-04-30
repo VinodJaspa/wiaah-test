@@ -18,3 +18,20 @@ export const SnowFlakeIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const SnowFlakeOutlineIcon: React.FC<HtmlSvgProps> = () => {
+  return (
+    <svg
+      width="1em"
+      height="1em"
+      viewBox="0 0 18 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11.5 22V17.85L8.25 21.05L6.85 19.65L11.5 15V13H9.5L4.85 17.65L3.45 16.25L6.65 13H2.5V11H6.65L3.45 7.75L4.85 6.35L9.5 11H11.5V9L6.85 4.35L8.25 2.95L11.5 6.15V2H13.5V6.15L16.75 2.95L18.15 4.35L13.5 9V11H15.5L20.15 6.35L21.55 7.75L18.35 11H22.5V13H18.35L21.55 16.25L20.15 17.65L15.5 13H13.5V15L18.15 19.65L16.75 21.05L13.5 17.85V22H11.5Z"
+        stroke="currentColor"
+      />
+    </svg>
+  );
+};

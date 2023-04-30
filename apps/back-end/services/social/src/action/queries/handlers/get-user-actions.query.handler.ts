@@ -31,11 +31,9 @@ export class GetUserActionsQueryHandler
 
     return {
       cursor,
-      data:
-        res.length > take
-          ? res.slice(0, res.length - 2)
-          : res.slice(0, res.length - 1),
+      data: res.length > take ? res.slice(0, res.length - 2) : res,
       hasMore: res.length > take,
+      nextCursor: res.at(res.length - 1)?.id,
     };
   }
 }

@@ -17,6 +17,8 @@ import {
   CreateAffiliationInput,
   usePaginationControls,
   ScrollPaginationWrapper,
+  useResponsive,
+  ArrowLeftAlt1Icon,
 } from "@UI";
 import * as yup from "yup";
 import { useGetMyProducts } from "@features/Products";
@@ -36,26 +38,33 @@ export function NewAffiliationLinkSection({
   values,
   onBack,
 }: NewAffiliationLinkSectionProps) {
+  const { isMobile } = useResponsive();
   const { pagination, controls } = usePaginationControls();
   const { data: prods } = useGetMyProducts({ pagination });
   const { t } = useTranslation();
   const { cancelNew } = React.useContext(AffiliationManagementContext);
   const isEdit = !!values;
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 py-2">
       <div className="flex flex-col gap-2 w-full">
-        <div className="flex flex-col sm:flex-row w-full justify-between items-center">
-          <p className="text-4xl ">
+        <div className="flex w-full gap-2 sm:justify-between items-center">
+          <ArrowLeftAlt1Icon
+            className="cursor-pointer text-lg"
+            onClick={() => onBack && onBack()}
+          />
+          <p className="text-lg sm:text-2xl xl:text-4xl ">
             {isEdit ? t("Edit Affiliation") : t("Create New Affiliation")}
           </p>
-          <Button
-            onClick={() => {
-              cancelNew();
-              onBack && onBack();
-            }}
-          >
-            {t("back", "Back")}
-          </Button>
+          {isMobile ? null : (
+            <Button
+              onClick={() => {
+                cancelNew();
+                onBack && onBack();
+              }}
+            >
+              {t("back", "Back")}
+            </Button>
+          )}
         </div>
         <Divider className="border-primary" />
       </div>

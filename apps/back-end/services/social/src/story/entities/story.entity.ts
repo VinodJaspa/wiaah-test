@@ -5,6 +5,7 @@ import { StoryType } from 'prismaClient';
 
 import { AffiliationPost, NewsfeedPost, ServicePost } from './extends';
 import { StoryView } from './story-view.entity';
+import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 
 registerEnumType(StoryType, { name: 'StoryType' });
 
@@ -57,4 +58,20 @@ export class Story {
 
   @Field(() => ServicePost, { nullable: true })
   servicePost?: ServicePost;
+}
+
+@ObjectType()
+export class StoryCursorPaginationResponse {
+  @Field(() => Story)
+  // and here the generic type
+  data: Story;
+
+  @Field(() => String)
+  cursor: string;
+
+  @Field(() => String)
+  nextCursor: string;
+
+  @Field()
+  hasMore: boolean;
 }

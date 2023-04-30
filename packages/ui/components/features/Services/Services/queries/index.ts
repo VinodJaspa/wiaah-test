@@ -7,3 +7,4 @@ export * from "./useGetMyAppointmentsQuery";
 export * from "./useGetAppointmentDetailsQuery";
 export * from "./useGetMyBookingHistoryQuery";
 export * from "./useGetMyWorkingHoursQuery";
+export * from "./useGetRecommendedServices";

@@ -20,7 +20,7 @@ export interface NotifiactionCardProps {
   orderId?: string;
   thumbnail?: string;
   createdAt: string;
-  seen?: string;
+  seen?: boolean;
 }
 
 export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
@@ -131,6 +131,29 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
                   <p>
                     <span className="text-primary">{username}</span>{" "}
                     <span>{t("has liked your post")}</span>
+                  </p>
+                );
+
+              case NotificationType.PostCommented:
+                return (
+                  <p>
+                    <span className="text-primary">{username}</span>{" "}
+                    <span>{t("has commented on your post")}</span>
+                  </p>
+                );
+
+              case NotificationType.PostMention:
+                return (
+                  <p>
+                    <span className="text-primary">{username}</span>{" "}
+                    <span>{t("has mentioned you on a post")}</span>
+                  </p>
+                );
+              case NotificationType.StoryReacted:
+                return (
+                  <p>
+                    <span className="text-primary">{username}</span>{" "}
+                    <span>{t("has liked your story")}</span>
                   </p>
                 );
 

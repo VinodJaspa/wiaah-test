@@ -2,10 +2,14 @@ import { useForm } from "utils";
 import React, { forwardRef, useImperativeHandle } from "react";
 import { useSignupMutation } from "../services";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
-import { Button, HStack, Input, Radio } from "@partials";
+import { Button, Divider, HStack, Input, Radio } from "@partials";
 import { DateFormInput } from "@blocks";
 import { useTranslation } from "react-i18next";
+import { MdOutlineClose } from "react-icons/md";
+import Webcam from "react-webcam";
+import { Field } from "formik";
 
+const NO_PROFIL_PIC_URL = "/person-icon.png";
 export const AccountSignup = forwardRef(
   (
     {
@@ -65,6 +69,7 @@ export const AccountSignup = forwardRef(
           <Input {...inputProps("firstName")} />
           <Input {...inputProps("lastName")} />
         </HStack>
+        <Input {...inputProps("username")} />
         <Input {...inputProps("email")} />
         <Input {...inputProps("phone")} />
         <Input {...inputProps("password")} />
@@ -94,6 +99,62 @@ export const AccountSignup = forwardRef(
             <Button onClick={submit}>{t("Submit")}</Button>
           </HStack>
         ) : null}
+        <p className="font-semibold text-xl">Profile Picture</p>
+        <div className="flex  flex-col items-center justify-center md:p-0 lg:flex-row lg:p-12">
+          <div className="mb-4 justify-center lg:w-4/12">
+            <div className="relative h-80 w-80 overflow-hidden rounded-xl lg:h-96 lg:w-96">
+              <>
+                <img
+                  className="h-full w-full object-cover"
+                  src={NO_PROFIL_PIC_URL}
+                  alt=""
+                />
+                {/* {!(profilePicSrc == NO_PROFIL_PIC_URL) && (
+                <div
+                  onClick={() => {
+                    // setProfilePicSrc(NO_PROFIL_PIC_URL);
+                  }}
+                  className="absolute left-2 top-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black"
+                >
+                  <MdOutlineClose className="text-xl text-white" />
+                </div> */}
+                {/* )} */}
+              </>
+            </div>
+          </div>
+          <Input
+            type="file"
+            hidden
+            onChange={(e: any) => {}}
+            name="photo"
+            accept="image/png, image/jpeg"
+          />
+          <div className="w-full justify-center px-4 lg:w-full">
+            <div className="flex flex-col items-center cursor-pointer justify-center">
+              <Button
+                className={`w-[min(100%,15rem)] rounded-full`}
+                onClick={() => {}}
+              >
+                {t("Upload_a_photo", "Upload a photo")}
+              </Button>
+              <div className="hidden text-center text-gray-500 lg:block">
+                {t("From_your_computer", "From your computer")}
+              </div>
+            </div>
+            <Divider className="my-4" />
+            <div className="w-full flex flex-col items-center cursor-pointer justify-center">
+              <Button
+                className={`w-[min(100%,15rem)] rounded-full`}
+                onClick={() => {}}
+              >
+                {t("Take_a_Photo", "Take a Photo")}
+              </Button>
+              <div className="hidden text-center text-gray-500 lg:block">
+                {t("with your webcam")}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

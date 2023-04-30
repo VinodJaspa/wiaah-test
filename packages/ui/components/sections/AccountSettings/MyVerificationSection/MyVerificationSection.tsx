@@ -189,7 +189,7 @@ export const AccountVerifciationForm: React.FC<{
                     onClick={() => verificationCodeUpload()}
                     className="w-48 h-48 justify-center items-center flex flex-col gap-1"
                   >
-                    <PlusIcon className="text-4xl" />
+                    <PlusIcon className="text-4xl text-primary" />
                   </Button>
                 </>
               ) : null}

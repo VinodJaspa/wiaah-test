@@ -1,28 +1,15 @@
 import React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { Container } from "ui";
+import { Container, HashTagView } from "ui";
 import { MasterLayout } from "@components";
-import { HashTagView } from "@components";
-import { hashTagCardsInfoPlaceholder } from "placeholder";
-import { HashTagCardInfo } from "types";
-import { useSetRecoilState } from "recoil";
-import { SocialHashTagTopPosts } from "@src/state";
+import { useRouting } from "routing";
 
-export interface HashTagPageProps {
-  topPosts: HashTagCardInfo[];
-}
+export interface HashTagPageProps {}
 
-// export const getServerSideProps: GetServerSideProps<HashTagPageProps> = async ({
-//   query,
-// }) => {
-//   const tag = query.tag;
-//   // get posts by tag
-// };
-
-const hashTag: NextPage<HashTagPageProps> = ({ topPosts }) => {
-  const setTopPosts = useSetRecoilState(SocialHashTagTopPosts);
-  setTopPosts(hashTagCardsInfoPlaceholder);
+const hashTag: NextPage<HashTagPageProps> = () => {
+  const { getParam } = useRouting();
+  const tag = getParam("tag");
   return (
     <>
       <Head>
@@ -30,7 +17,7 @@ const hashTag: NextPage<HashTagPageProps> = ({ topPosts }) => {
       </Head>
       <MasterLayout social>
         <Container>
-          <HashTagView />
+          <HashTagView tag={tag} />
         </Container>
       </MasterLayout>
     </>

@@ -1,5 +1,6 @@
 import { createGraphqlRequestClient } from "@UI/../api";
 import { getRandomName, isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import { Exact, Profile } from "@features/API";
 import { useQuery } from "react-query";
 
@@ -18,7 +19,7 @@ export const getUserDataQueryFetcher = async () => {
   if (isDev) {
     const mockRes: GetUserDataQuery["myProfile"] = {
       ownerId: "ownerid",
-      photo: "/wiaah_logo.png",
+      photo: getRandomImage(),
       username: `${getRandomName().firstName} ${getRandomName().lastName}`,
     };
 

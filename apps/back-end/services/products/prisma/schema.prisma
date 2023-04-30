@@ -94,6 +94,18 @@ model Product {
   updatedAt             DateTime              @updatedAt
   discount              Discount?             @relation(fields: [discountId], references: [id])
   condition             ProductCondition
+  sizes                 ProductSize[]
+  colors                String[]
+}
+
+enum ProductSize {
+  s
+  m
+  l
+  xl
+  xxl
+  xxxl
+  xxxxl
 }
 
 model ProductDayExternalClicks {

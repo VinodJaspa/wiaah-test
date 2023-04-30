@@ -1,17 +1,19 @@
-import { isDev } from "@UI/../utils/src";
+import { getRandomName, isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   BusinessType,
   Exact,
   Location,
   Maybe,
+  Profile,
   Scalars,
   ServiceType,
   Shop,
+  ShopDayWorkingHours,
+  ShopSpecialDayWorkingHours,
   ShopWorkingSchedule,
-  SpecialDayWorkingHours,
   StoreType,
 } from "@features/API";
-import { ServiceDayWorkingHours } from "@features/Services";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
@@ -30,6 +32,7 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
     | "description"
     | "email"
     | "id"
+    | "ownerId"
     | "name"
     | "phone"
     | "rating"
@@ -38,67 +41,70 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
     | "type"
     | "storeType"
     | "verified"
-    | "ownerId"
   > & {
+      sellerProfile: { __typename?: "Profile" } & Pick<
+        Profile,
+        "photo" | "username" | "ownerId"
+      >;
       location: { __typename?: "Location" } & Pick<
         Location,
         "address" | "city" | "country" | "lat" | "long" | "postalCode" | "state"
       >;
-      workingSchedule: { __typename?: "WorkingSchedule" } & Pick<
+      workingSchedule: { __typename?: "ShopWorkingSchedule" } & Pick<
         ShopWorkingSchedule,
         "sellerId" | "id"
       > & {
-          weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+          weekdays: { __typename?: "ShopWeekdaysWorkingHours" } & {
             fr?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             mo?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             sa?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             su?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             th?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             tu?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
             we?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
+              { __typename?: "ShopDayWorkingHours" } & Pick<
+                ShopDayWorkingHours,
                 "periods"
               >
             >;
           };
           specialDays: Array<
-            { __typename?: "SpecialDayWorkingHours" } & Pick<
-              SpecialDayWorkingHours,
+            { __typename?: "ShopSpecialDayWorkingHours" } & Pick<
+              ShopSpecialDayWorkingHours,
               "date"
             > & {
-                workingHours: { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
+                workingHours: { __typename?: "ShopDayWorkingHours" } & Pick<
+                  ShopDayWorkingHours,
                   "periods"
                 >;
               }
@@ -106,6 +112,7 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
         };
     };
 };
+
 export const getShopDetailsQueryKey = (userId: string) => [
   "shopDetails",
   { userId },
@@ -115,15 +122,21 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
   if (isDev) {
     const resMock: GetShopDetailsQuery["getUserShop"] = {
       storeType: StoreType.Service,
-      type: ServiceType.HolidayRentals,
+      type: ServiceType.BeautyCenter,
       ownerId: "",
       banner: "",
       businessType: BusinessType.Individual,
       createdAt: new Date().toUTCString(),
-      description: "test shop description",
+      description:
+        "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",
       email: "test@email.com",
       id: "testid",
-      images: [],
+      images: [...Array(10)].map(() => getRandomImage()),
+      sellerProfile: {
+        ownerId: "",
+        photo: getRandomImage(),
+        username: getRandomName().firstName,
+      },
       location: {
         address: "address 1",
         city: "city",
@@ -137,7 +150,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
       phone: "1324658",
       rating: 5,
       reviews: 160,
-      thumbnail: "",
+      thumbnail: getRandomImage(),
       verified: true,
       videos: [],
       workingSchedule: {
@@ -146,25 +159,46 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
         specialDays: [],
         weekdays: {
           mo: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           tu: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           we: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           th: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           fr: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           sa: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
           su: {
-            periods: [new Date().toUTCString(), new Date().toUTCString()],
+            periods: [
+              new Date(2023, 4, 15, 10).toUTCString(),
+              new Date(2023, 4, 15, 18).toUTCString(),
+            ],
           },
         },
       },
@@ -184,6 +218,11 @@ query getShopDetails($userId:String!){
     videos
     createdAt
     description
+		sellerProfile {
+      photo
+      username
+      ownerId
+    }
     location{
       address
       city
@@ -228,6 +267,7 @@ query getShopDetails($userId:String!){
           periods
         }
       }
+      
       sellerId
       id
       specialDays{

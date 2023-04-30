@@ -30,10 +30,7 @@ const messages: React.FC<MessagesPageProps> = () => {
       <Head>
         <title></title>
       </Head>
-      <SellerLayout
-        sideBar={isMobile}
-        containerProps={{ className: "h-[100%]" }}
-      >
+      <SellerLayout sideBar={true} containerProps={{ className: "h-[100%]" }}>
         <ChatView />
       </SellerLayout>
     </>

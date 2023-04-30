@@ -26,7 +26,6 @@ import {
   ServiceType,
   ShopStatus,
   StoreType,
-  TypeOfSeller,
 } from "@features/API";
 import { useForm } from "utils";
 
@@ -85,6 +84,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> =
       targetGenders: [],
       thumbnail: "",
       vidoes: [],
+      storeFor: [],
       type: ServiceType.Hotel,
     });
     const { mutate, isLoading } = useCreateShopMutation();
@@ -131,7 +131,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> =
       serviceType && types.includes(serviceType);
 
     return (
-      <div>
+      <div className="pr-2">
         <h2 className="hidden text-xl font-bold lg:block">
           {t("Fill out shop information")}
         </h2>
@@ -222,17 +222,17 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> =
                 />
               </SelectOption>
             </Select>
-            <Select placeholder={t("Type of Seller")} className=" w-full ">
-              <SelectOption value="one">{t("Professional")}</SelectOption>
-              <SelectOption value="two">{t("Individual")}</SelectOption>
-            </Select>
             <Select
               placeholder={t("Type of Shop")}
               {...selectProps("storeType")}
               className=" w-full "
             >
-              <SelectOption value="prodcuts">{t("Products Shop")}</SelectOption>
-              <SelectOption value="services">{t("Services Shop")}</SelectOption>
+              <SelectOption value={StoreType.Product}>
+                {t("Products Shop")}
+              </SelectOption>
+              <SelectOption value={StoreType.Service}>
+                {t("Services Shop")}
+              </SelectOption>
             </Select>
             {form.storeType === StoreType.Service ? (
               <Select
@@ -254,11 +254,11 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> =
 
             {form.storeType === StoreType.Product ? (
               <>
-                <div className="flex gap-2 items-end">
-                  <span className="font-semibold text-lg">
+                <div className="flex gap-2">
+                  <span className="font-semibold whitespace-nowrap lg:text-lg">
                     {t("Store for")}:
                   </span>
-                  <div className="mt-2 flex gap-2">
+                  <div className="mt-2 flex gap-2 flex-wrap">
                     <Checkbox
                       checked={isAllAvailableInArray(
                         storeForOptions.map((opt) => opt.value),

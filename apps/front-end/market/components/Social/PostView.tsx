@@ -2,42 +2,50 @@ import React from "react";
 import {
   PostCard,
   PostCardsListWrapper,
-  SocialStoryModal,
   SocialPostHeader,
   Button,
+  useGetNewsfeedPostQuery,
+  useGetNewsFeedPostQuery,
+  useGetMyNewsfeedPostsQuery,
+  CommentsViewer,
+  useGetContentCommentsQuery,
+  SocialProfileNewsfeedPosts,
 } from "ui";
-import { useRecoilValue } from "recoil";
-import {
-  SocialNewsfeedOtherPostsState,
-  SocialNewsfeedPostState,
-} from "ui/src/state";
 import { useTranslation } from "react-i18next";
 import { useBreakpointValue } from "utils";
+import { PostCommentPlaceholder } from "placeholder";
 
 export const PostView: React.FC = () => {
-  const postCardInfo = useRecoilValue(SocialNewsfeedPostState);
-  const otherPosts = useRecoilValue(SocialNewsfeedOtherPostsState);
+  const { data: post } = useGetNewsfeedPostQuery("");
+  const { data: posts } = useGetMyNewsfeedPostsQuery({
+    pagination: { page: 1, take: 10 },
+  });
+  const { data: comments } = useGetContentCommentsQuery({ id: "" });
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { t } = useTranslation();
   return (
-    <div className="py-2 md:py-16 gap-8 flex flex-col">
+    <div className="p-2 md:py-16 gap-8 flex flex-col">
       <div className="flex items-center flex-col gap-8 mb-24 md:flex-row">
-        <SocialPostHeader
-          name={postCardInfo.profileInfo.name}
-          thumbnail={postCardInfo.profileInfo.thumbnail}
-        />
-        <PostCard
-          postInfo={postCardInfo.postInfo}
-          profileInfo={postCardInfo.profileInfo}
-        />
+        {post?.publisher && (
+          <SocialPostHeader
+            name={post?.publisher.username}
+            thumbnail={post?.publisher.photo}
+          />
+        )}
+        {post ? (
+          <>
+            <PostCard postInfo={post} profileInfo={post?.publisher} />
+            <CommentsViewer comments={comments || []} />
+          </>
+        ) : null}
       </div>
       <p className="text-3xl font-bold w-full text-center">
         <>
-          {t("view", "view")} {postCardInfo.profileInfo.name}{" "}
+          {t("view", "view")} {post?.publisher.username}{" "}
           {t("other_posts", "other posts")}
         </>
       </p>
-      <PostCardsListWrapper cols={cols} posts={otherPosts} />
+      <SocialProfileNewsfeedPosts grid userId={post?.userId} />
       <Button outline>{t("view_more", "view more")}</Button>
     </div>
   );

@@ -31,7 +31,7 @@ export const NotifciationsDrawer: React.FC = () => {
       onClose={closeNotifications}
     >
       <DrawerContent>
-        <DrawerHeader className="p-4 relative flex justify-center items-center">
+        <div className="p-4 relative flex justify-center items-center">
           <div className="absolute top-1/2 left-4 -translate-y-1/2">
             <DrawerCloseButton>
               <ArrowLeftAlt1Icon />
@@ -40,7 +40,7 @@ export const NotifciationsDrawer: React.FC = () => {
           <p className="text-lg font-semibold w-full text-center">
             {t("Notifications")}
           </p>
-        </DrawerHeader>
+        </div>
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           <div className="px-2 flex flex-col gap-5">
             {mapArray(data?.data, (v, i) => {
@@ -105,9 +105,11 @@ export const NotifciationsDrawer: React.FC = () => {
                   <NotifiactionCard
                     username={v.author?.profile?.username}
                     createdAt={v.createdAt}
+                    orderId={"18642"}
                     type={v.type}
                     count={1}
                     thumbnail={v.author?.profile?.photo}
+                    seen={!isToday(new Date(v.createdAt))}
                   />
                 </div>
               );

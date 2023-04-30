@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        sf: ["SF Pro Display", ...defaultTheme.fontFamily.sans],
       },
       transitionProperty: {
         height: "height",

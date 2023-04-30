@@ -35,6 +35,9 @@ export function CreateGqlCursorPaginatedResponse<TData>(
     @Field(() => String)
     cursor: string;
 
+    @Field(() => String)
+    nextCursor: string;
+
     @Field()
     hasMore: boolean;
   }

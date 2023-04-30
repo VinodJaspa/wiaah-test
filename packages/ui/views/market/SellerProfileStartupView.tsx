@@ -5,43 +5,27 @@ import { Progress } from "antd";
 import {
   ShopInformationStep,
   SelectPackageStep,
-  PaymentPortal,
   NewShippingSettings,
   FindYourFriendsStep,
   Container,
-  StepperFormController,
-  StepperFormHandler,
-  CheckMarkStepper,
-  NewProductDiscountOptions,
-  ServiceGeneralDetails,
-  IncludedServices,
-  ExtraServiceOptions,
-  RestaurantServiceDetailsForm,
-  HealthCenterServiceDetailsForm,
-  VehicleServiceDetailsForm,
-  BeautyCenterServiceDetailsForm,
-  RestaurantIncludedServicesSection,
-  HolidayRentalsGeneralDetailsForm,
-  HealthCenterIncludedServices,
-  ServiceSectionWithSchemaType,
-  MyVerificationSection,
   BillingAccount,
-  ServicePoliciesInputSection,
   NewServiceStepper,
   useGetMyShopType,
+  Input,
+  EmailArrowDownIcon,
+  AccountVerifciationForm,
+  PaymentMethodForm,
 } from "@UI";
 
-import { ServicesType, StepperStepType } from "types";
+import { StepperStepType } from "types";
 import { Button } from "@UI";
 import { runIfFn } from "utils";
-import { NewServiceSchemas } from "validation";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
-import { ServiceType } from "@features/API";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = React.useState<number>(2);
+  const [currentStep, setCurrentStep] = React.useState<number>(0);
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
@@ -80,24 +64,24 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         />
       ),
     },
-    // {
-    //   stepName: t("Email Verification"),
-    //   key: 1,
-    //   stepComponent: (
-    //     <AccountSignup
-    //       onSuccess={handleNextStep}
-    //       ref={(v: { submit: () => any }) => {
-    //         if (
-    //           v &&
-    //           typeof v.submit === "function" &&
-    //           typeof submitRequests[1] !== "function"
-    //         ) {
-    //           addSubmitRequest(1, v.submit);
-    //         }
-    //       }}
-    //     />
-    //   ),
-    // },
+    {
+      stepName: t("Email Verification"),
+      key: 1,
+      stepComponent: (
+        <AccountSignEmailVerificationStep
+        // onSuccess={handleNextStep}
+        // ref={(v: { submit: () => any }) => {
+        //   if (
+        //     v &&
+        //     typeof v.submit === "function" &&
+        //     typeof submitRequests[1] !== "function"
+        //   ) {
+        //     addSubmitRequest(1, v.submit);
+        //   }
+        // }}
+        />
+      ),
+    },
     {
       key: 2,
       stepComponent: (
@@ -124,7 +108,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     {
       stepName: t("Verify Your Identity"),
       key: 4,
-      stepComponent: <MyVerificationSection />,
+      stepComponent: <AccountVerifciationForm verificationCode="1354" />,
     },
     {
       stepName: t("Select a plan"),
@@ -139,8 +123,8 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       stepComponent: <SellerListingForm />,
     },
     {
-      stepName: t("Payment_Gate", "Payment Gate"),
-      stepComponent: <PaymentPortal />,
+      stepName: t("Add Payment Method"),
+      stepComponent: <PaymentMethodForm />,
       key: 7,
     },
     {
@@ -201,7 +185,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             </div>
           </Container>
         </div>
-        <div className="overflow-scroll thinScroll h-full pl-4 py-4 md:pl-8 md:py-8">
+        <div className="overflow-scroll thinScroll h-full p-4 py-4 md:pl-8 md:py-8">
           {runIfFn(currentStepComp?.stepComponent)}
         </div>
 
@@ -264,10 +248,24 @@ const SellerListingForm = React.forwardRef(
 
     return (
       <div className="flex flex-col gap-4 h-full justify-between">
-        {shop ? (
-          <NewServiceStepper isEdit={false} sellerId={shop?.ownerId} />
-        ) : null}
+        {/* {shop ? ( */}
+        <NewServiceStepper isEdit={false} sellerId={shop?.ownerId || ""} />
+        {/* ) : null} */}
       </div>
     );
   }
 );
+
+export const AccountSignEmailVerificationStep: React.FC = () => {
+  return (
+    <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
+      <p className="text-xl font-semibold">
+        {"An verification code has been sent to your email"}
+      </p>
+      <div className="p-16 rounded-xl shadow border border-gray-100 ">
+        <EmailArrowDownIcon className="text-7xl" />
+      </div>
+      <Input placeholder="123456" label="Verification code" />
+    </div>
+  );
+};

@@ -58,7 +58,6 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
       onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
       data-testid="ShopCardContainer"
     >
-      <div></div>
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
         <ControlledCarousel onCurrentActiveChange={setActive}>
           {shopCardInfo.attachments.map((attachment, i) => (

@@ -65,11 +65,10 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
 
   const { mutate } = useCreateServiceMutation();
 
-
   const isEdit = typeof ServiceIdFormState === "string";
 
-  const { } = usegetService
- 
+  const {} = usegetService;
+
   const { user } = useUserData();
 
   return (
@@ -209,7 +208,7 @@ export const NewServiceStepper: React.FC<{
     };
   });
 
-  const serviceType = shop?.type || ServiceType.BeautyCenter;
+  const serviceType = shop?.type || ServiceType.Hotel;
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
@@ -329,7 +328,7 @@ export const NewServiceStepper: React.FC<{
 
                 {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
                   <>
-                    <div className="flex gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
                       <HotelBedsInput
                         {...inputProps("beds", undefined, undefined, (v) => v)}
                       />

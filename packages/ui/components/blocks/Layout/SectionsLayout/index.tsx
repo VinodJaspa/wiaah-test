@@ -129,11 +129,11 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         </div>
         <div
           style={{
-            width: `calc(100% - ${opened ? 320 : 96}px)`,
-            paddingRight: minGap,
-            paddingLeft: minGap,
+            width: `calc(100% - ${isMobile ? 0 : opened ? 320 : 96}px)`,
+            paddingRight: isMobile ? undefined : minGap,
+            paddingLeft: isMobile ? undefined : minGap,
           }}
-          className={`h-full`}
+          className={`h-full p-2`}
         >
           <>{CurrentSection()}</>
         </div>

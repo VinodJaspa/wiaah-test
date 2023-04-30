@@ -14,19 +14,29 @@ import {
   accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
   KafkaMessageHandler,
   SERVICES,
+  UserPreferedLang,
 } from 'nest-utils';
 import { UploadService } from '@wiaah/upload';
 import { CommandBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
-import { Discount, Product, Cashback } from '@products/entities';
-import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';
+import {
+  Discount,
+  Product,
+  Cashback,
+  ProductsCursorPaginationResponse,
+} from '@products/entities';
+import {
+  CreateProductInput,
+  GetFilteredProductsInput,
+  GetSellerProductsInput,
+} from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
-
 import { DeleteProductCommand } from '@products/command';
 import { PrismaService } from 'prismaService';
 import { Prisma } from '@prisma-client';
@@ -221,6 +231,34 @@ export class ProductsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Product> {
     return this.productsService.updateProduct(user.id, input);
+  }
+
+  @Query(() => ProductsCursorPaginationResponse)
+  async getSellerProducts(
+    @Args('args') args: GetSellerProductsInput,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<ProductsCursorPaginationResponse> {
+    const res = await this.prisma.product.findMany({
+      where: {
+        status: 'active',
+        sellerId: args.sellerId,
+      },
+      take: args.take + 1,
+      cursor: args.idCursor
+        ? {
+            id: args.idCursor,
+          }
+        : undefined,
+    });
+
+    return {
+      cursor: args.idCursor,
+      data: (res.length > args.take ? res.slice(0, res.length - 2) : res).map(
+        (v) => this.productsService.formatProduct(v, lang),
+      ),
+      hasMore: res.length > args.take,
+      nextCursor: res.at(res.length - 1).id,
+    };
   }
 
   @ResolveReference()
