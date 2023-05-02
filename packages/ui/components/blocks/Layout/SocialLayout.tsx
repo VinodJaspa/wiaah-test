@@ -9,6 +9,7 @@ import {
 import { PostViewPopup } from "@blocks/Popups";
 import { MasterLocationMapModal } from "@features/GeoLocation";
 import { ProductDetailsDrawer } from "@features/Products";
+import { ServiceBookingDrawer } from "@features/Services";
 import {
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
@@ -44,6 +45,7 @@ interface SocialAtomValue {
   shareLink?: string;
   reportContent?: { id: string; type: ReportContentType };
   serviceDetailsId?: string;
+  serviceBooking?: { sellerId?: string; servicesIds?: string[] };
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -135,6 +137,9 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     viewServiceDetails: (serviceId: string) =>
       setControls("serviceDetailsId", serviceId),
     closeServiceDetails: () => setControls("serviceDetailsId", undefined),
+    cancelBooking: () => setControls("serviceBooking", undefined),
+    bookServices: (props: SocialAtomValue["serviceBooking"]) =>
+      setControls("serviceBooking", props),
     value,
   };
 }
@@ -145,9 +150,9 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      {/* {isMobile ? <NotifciationsDrawer /> : null} */}
+      {isMobile ? <NotifciationsDrawer /> : null}
       <SocialStoryDrawer />
-
+      <ServiceBookingDrawer />
       <SocialReportModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />

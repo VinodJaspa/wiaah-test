@@ -11,13 +11,11 @@ import {
   HStack,
   Button,
   SocialServicePostsList,
+  getRandomImage,
 } from "ui";
 import {
-  newsfeedPosts,
   ShopCardsInfoPlaceholder,
   hashTagCardsInfoPlaceholder,
-  actionsPlaceholders,
-  getRandomImage,
 } from "placeholder";
 import { useBreakpointValue } from "utils";
 import { AttachmentType } from "@features/API";
@@ -161,9 +159,104 @@ export const HashtagsView: React.FC = () => {
       name: t("Shop"),
       component: (
         <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
+          <HashTagPostsListWrapper
+            hashtags={[
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most liked post",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most commented post",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most liked video",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most viewed video",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+            ]}
+          />
           <Divider />
-          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+          <ShopCardsListWrapper cols={cols} items={[]} />
         </div>
       ),
     },
@@ -171,9 +264,104 @@ export const HashtagsView: React.FC = () => {
       name: t("Service"),
       component: (
         <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
+          <HashTagPostsListWrapper
+            hashtags={[
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most liked post",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most commented post",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most liked video",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+              {
+                id: "",
+                attachments: [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ],
+                authorProfileId: "",
+                comments: 45,
+                content: "Test",
+                createdAt: new Date().toString(),
+                listTitle: "Most viewed video",
+                reactionNum: 26,
+                profile: {
+                  id: "",
+                  ownerId: "",
+                  photo: getRandomImage(),
+                  profession: "profe",
+                  username: "name",
+                },
+                shares: 54,
+                tags: [],
+                title: "title",
+                userId: "",
+              },
+            ]}
+          />
           <Divider />
-          <SocialServicePostsList />
+          <SocialServicePostsList posts={[]} />
         </div>
       ),
     },
@@ -189,7 +377,7 @@ export const HashtagsView: React.FC = () => {
     // },
   ];
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col p-4 items-center">
       <HStack className="px-2 w-full justify-between">
         <div></div>
         <p className="font-bold text-[3em]">#{tag}</p>

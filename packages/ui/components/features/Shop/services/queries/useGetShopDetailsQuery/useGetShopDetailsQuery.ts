@@ -122,7 +122,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
   if (isDev) {
     const resMock: GetShopDetailsQuery["getUserShop"] = {
       storeType: StoreType.Service,
-      type: ServiceType.BeautyCenter,
+      type: ServiceType.Vehicle,
       ownerId: "",
       banner: "",
       businessType: BusinessType.Individual,
@@ -138,11 +138,11 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
         username: getRandomName().firstName,
       },
       location: {
-        address: "address 1",
-        city: "city",
-        country: "country",
-        lat: 45,
-        long: 65,
+        address: "Burj Al Arab Jumeirah Jumeira Road Umm Suqeim 3",
+        city: "Dubai",
+        country: "United Arab Emirates",
+        lat: 45.464664,
+        long: 9.18854,
         postalCode: "1546",
         state: "state",
       },

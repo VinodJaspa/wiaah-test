@@ -11,7 +11,7 @@ import {
   ResolveReference,
 } from '@nestjs/graphql';
 import { RawService, Service } from './entities/service.entity';
-import { ServiceStatus, ServiceType } from 'prismaClient';
+import { ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import {
   BadRequestException,
@@ -53,6 +53,7 @@ import { BookingCost } from './entities/booking-cost.entity';
 import { GetBookingCostInput } from './dto/get-booking-cost.input';
 import { Weekdays } from './utils';
 import { GetRecommendedServicesInput } from './dto/get-recommended-services';
+import { ObjectId } from 'mongodb';
 
 enum weekdaysNum {
   su = 0,
@@ -191,6 +192,10 @@ export class ServiceResolver {
         ...rest,
         sellerId: user.id,
         thumbnail: thumb[0].src,
+        extras: rest.extras.map((v) => ({
+          ...v,
+          id: new ObjectId().toHexString(),
+        })),
         // presentations: servicePresenetations.map((v) => ({
         //   src: v.src,
         //   type:
@@ -474,8 +479,15 @@ export class ServiceResolver {
     @Args('args') input: GetBookingCostInput,
     @GetLang() lang: UserPreferedLang,
   ): Promise<BookingCost> {
-    const { checkinDate, checkoutDate, extrasIds, servicesIds, checkinTime } =
-      input;
+    const {
+      checkinDate,
+      checkoutDate,
+      extrasIds,
+      servicesIds,
+      checkinTime,
+      adults,
+      children,
+    } = input;
 
     if (servicesIds.length < 1) return null;
 

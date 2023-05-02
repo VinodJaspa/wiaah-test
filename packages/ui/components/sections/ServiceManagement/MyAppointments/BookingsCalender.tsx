@@ -4,11 +4,6 @@ import {
   SectionHeader,
   HStack,
   useGetMyAppointmentsQuery,
-  Slider,
-  Button,
-  DraggableSlider,
-  ArrowUpIcon,
-  ArrowDownIcon,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -18,14 +13,10 @@ import {
   Th,
   TBody,
   Td,
-  TableContainer,
-  ArrowLeftIcon,
   WeekSwitcher,
 } from "@UI";
 import { ServiceType } from "@features/API";
 import {
-  AddToDate,
-  SubtractFromDate,
   isDate,
   mapArray,
   randomNum,
@@ -34,9 +25,8 @@ import {
   weekDayLong,
 } from "utils";
 import { BookDetailsSection, BookingsSectionCtx } from ".";
-import { random } from "lodash";
 import { ArrElement } from "@UI/../types/src";
-import { BiCalendar, BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { BiCalendar } from "react-icons/bi";
 import { FaClock } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 

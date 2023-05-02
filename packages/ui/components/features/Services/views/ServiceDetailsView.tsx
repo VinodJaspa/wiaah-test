@@ -49,18 +49,16 @@ import {
   AccordionItem,
   AccordionPanel,
   ArrowRightIcon,
-  Checkbox,
-  DotIcon,
   VStack,
   BedOutlineIcon,
   BathtubOutlineIcon,
   WifiOutlineIcon,
   CarOutlineIcon,
-  DurationDisplay,
-  Counter,
+  useSocialControls,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import {
+  RestaurantDishType,
   Service,
   ServiceAdaptation,
   ServiceCancelationType,
@@ -69,7 +67,6 @@ import {
   ServiceType,
 } from "@features/API";
 import { mapArray, runIfFn } from "@UI/../utils/src";
-import { useRouting } from "@UI/../routing";
 import { ImCheckmark } from "react-icons/im";
 import { startCase } from "lodash";
 
@@ -77,14 +74,8 @@ export const ServiceDetailsView: React.FC<{
   userId: string;
 }> = ({ userId }) => {
   const { isMobile } = useResponsive();
+  const { bookServices } = useSocialControls();
   const { data: shop } = useGetShopDetailsQuery(userId);
-  // const {
-  //   data: services,
-  //   isError,
-  //   isLoading,
-  // } = useGetMyServicesQuery(serviceId);
-
-  const { visit } = useRouting();
 
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { data: services, isLoading: sericesIsLoading } =
@@ -127,7 +118,7 @@ export const ServiceDetailsView: React.FC<{
   }, [] as { menuName: string; dishs: typeof services["data"] }[]);
 
   return isMobile ? (
-    <div className="flex flex-col gap-6 pb-12 p-4 w-full font-sf">
+    <div className="flex flex-col overflow-x-hidden gap-6 pb-12 p-4 w-full font-sf">
       <AspectRatio className="overflow-hidden" ratio={1}>
         <Image
           className="w-full rounded-2xl h-full object-cover"
@@ -236,7 +227,8 @@ export const ServiceDetailsView: React.FC<{
           {showOn([ServiceType.BeautyCenter]) ? t("Treatments") : ""}
           {showOn([ServiceType.HealthCenter]) ? t("Doctors") : ""}
         </p>
-        {showOn([ServiceType.Hotel]) ? (
+
+        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
           <div className="flex flex-col gap-4">
             {mapArray(services?.data || [], (v, i) => (
               <div
@@ -282,7 +274,7 @@ export const ServiceDetailsView: React.FC<{
                 <ServiceDetailsFacilities service={v} />
 
                 <Accordion>
-                  <AccordionItem itemkey={"t&p"}>
+                  <AccordionItem itemkey={`t&p-${v.id}`}>
                     <AccordionButton>
                       <HStack className="justify-between">
                         <p className="text-lg font-semibold">
@@ -375,6 +367,13 @@ export const ServiceDetailsView: React.FC<{
                   </VStack>
                 </HStack>
                 <Button
+                  onClick={() => {
+                    console.log("book hotel");
+                    bookServices({
+                      sellerId: v.sellerId,
+                      servicesIds: [v.id],
+                    });
+                  }}
                   className="flex w-fit self-end items-center"
                   colorScheme="darkbrown"
                 >
@@ -391,7 +390,7 @@ export const ServiceDetailsView: React.FC<{
               <HStack key={v.id + i}>
                 <Image
                   src={v.thumbnail}
-                  className="w-[9.25rem] h-[6.25rem] rounded-lg"
+                  className="w-[9.25rem] h-[6.25rem] object-cover rounded-lg"
                 />
                 <div className="flex flex-col w-full justify-between">
                   <div className="flex flex-col gap-3">
@@ -407,7 +406,17 @@ export const ServiceDetailsView: React.FC<{
                       symbolProps={{ className: "text-primary font-bold" }}
                       className="text-xl font-semibold"
                     />
-                    <Button className="text-xs">{t("Select")}</Button>
+                    <Button
+                      onClick={() => {
+                        bookServices({
+                          sellerId: shop?.ownerId,
+                          servicesIds: [v.id],
+                        });
+                      }}
+                      className="text-xs"
+                    >
+                      {t("Select")}
+                    </Button>
                   </HStack>
                 </div>
               </HStack>
@@ -460,6 +469,12 @@ export const ServiceDetailsView: React.FC<{
                     /<p className="text-sm">{t("Day")}</p>
                   </div>
                   <Button
+                    onClick={() => {
+                      bookServices({
+                        sellerId: shop?.ownerId,
+                        servicesIds: [v.id],
+                      });
+                    }}
                     colorScheme="darkbrown"
                     className="text-sm flex items-cneter font-semibold"
                   >
@@ -474,16 +489,16 @@ export const ServiceDetailsView: React.FC<{
 
         {showOn([ServiceType.BeautyCenter]) ? (
           <div className="flex flex-col gap-4 w-full rounded-lg px-2 pt-2 py-4 border border-gray-200 border-opacity-75">
-            {mapArray(services?.data || [], (v, i) => (
+            {mapArray(services?.data || [], (s, i) => (
               <div className="flex gap-3" key={i}>
                 <Image
-                  src={v.thumbnail}
+                  src={s.thumbnail}
                   className="w-[9.25rem] h-[8rem] rounded-lg object-cover"
                 />
 
                 <div className="justify-between flex flex-col w-full">
                   <div className="flex flex-col w-full gap-2">
-                    <p className="text-[0.938rem] font-medium">{v.name}</p>
+                    <p className="text-[0.938rem] font-medium">{s.name}</p>
                     <HStack className="justify-between">
                       <div className="flex flex-col gap-1">
                         <p className="text-[0.688rem] text-[#646464]">
@@ -491,7 +506,7 @@ export const ServiceDetailsView: React.FC<{
                         </p>
                         <p className="text-primary text-[0.813rem]">
                           <TimeRangeDisplay
-                            rangeInMinutes={[v.duration || 0]}
+                            rangeInMinutes={[s.duration || 0]}
                           />
                         </p>
                       </div>
@@ -499,19 +514,31 @@ export const ServiceDetailsView: React.FC<{
                       <div className="flex flex-col items-center justify-center">
                         <PriceDisplay
                           className="text-xl font-semibold"
-                          price={v.price}
+                          price={s.price}
                           symbolProps={{ className: "text-primary font-bold" }}
                         />
                         <UnDiscountedPriceDisplay
                           className="text-[#ADADAD]"
-                          amount={v.price}
-                          discount={v.discount?.value || 0}
+                          amount={s.price}
+                          discount={s.discount?.value || 0}
                         />
                       </div>
                     </HStack>
                   </div>
                   <div className="self-end w-fit">
-                    <CountInput />
+                    <CountInput
+                      count={
+                        selectedServicesids.filter((v) => v === s.id).length ||
+                        0
+                      }
+                      onCountChange={(c) =>
+                        setSelectedServicesIds((old) =>
+                          old
+                            .filter((v) => v !== s.id)
+                            .concat([...Array(c)].map(() => s.id))
+                        )
+                      }
+                    />
                   </div>
                 </div>
               </div>
@@ -522,8 +549,17 @@ export const ServiceDetailsView: React.FC<{
                 className="text-xl font-semibold"
                 symbolProps={{ className: "text-primary font-bold" }}
                 price={150}
-              ></PriceDisplay>
-              <Button className="flex items-center" colorScheme="darkbrown">
+              />
+              <Button
+                onClick={() => {
+                  bookServices({
+                    sellerId: shop?.ownerId,
+                    servicesIds: selectedServicesids,
+                  });
+                }}
+                className="flex items-center"
+                colorScheme="darkbrown"
+              >
                 <p>{t("Book now")}</p>
                 <ArrowRightIcon className="text-xl" />
               </Button>
@@ -532,7 +568,87 @@ export const ServiceDetailsView: React.FC<{
         ) : null}
 
         {showOn([ServiceType.Restaurant]) ? (
-          <div className="flex flex-col gap-4"></div>
+          <div className="flex flex-col gap-4 w-full">
+            {mapArray(
+              [
+                RestaurantDishType.Starter,
+                RestaurantDishType.Main,
+                RestaurantDishType.Dessert,
+                RestaurantDishType.Drinks,
+              ],
+              (v, i) => (
+                <div className="flex flex-col w-full gap-3" key={i}>
+                  <p className="text-lg font-semibold">{startCase(v)}</p>
+                  <div className="flex flex-col w-full gap-4">
+                    {mapArray(
+                      services?.data.filter((e) => e.menuType === v),
+                      (s) => (
+                        <HStack key={s.id}>
+                          <Image
+                            className="w-[9.125rem] h-[6.25rem] rounded-[0.625rem]"
+                            src={s.thumbnail}
+                          />
+                          <div className="flex flex-col justify-between w-full gap-1">
+                            <div>
+                              <p className="text-lg font-semibold">{s.name}</p>
+                              <p className="text-[#868686] font-medium text-[0.813rem]">
+                                {(s.ingredients || [])?.join(",")}
+                              </p>
+                            </div>
+                            <HStack className="justify-between">
+                              <PriceDisplay
+                                price={s.price}
+                                className="text-xl font-semibold"
+                                symbolProps={{
+                                  className: "text-primary font-bold",
+                                }}
+                              />
+
+                              <CountInput
+                                count={
+                                  selectedServicesids.filter((v) => v === s.id)
+                                    .length || 0
+                                }
+                                onCountChange={(c) =>
+                                  setSelectedServicesIds((old) =>
+                                    old
+                                      .filter((v) => v !== s.id)
+                                      .concat([...Array(c)].map(() => s.id))
+                                  )
+                                }
+                              />
+                            </HStack>
+                          </div>
+                        </HStack>
+                      )
+                    )}
+                  </div>
+                </div>
+              )
+            )}
+
+            <HStack className="justify-between">
+              <PriceDisplay
+                className="text-xl font-semibold"
+                price={950}
+                symbolProps={{ className: "text-primary font-bold" }}
+              />
+              <Button
+                onClick={() =>
+                  bookServices({
+                    sellerId: shop?.ownerId,
+                    servicesIds: selectedServicesids,
+                  })
+                }
+                className="flex items-center"
+                colorScheme="darkbrown"
+              >
+                <p>{t("Book now")}</p>
+
+                <ArrowRightIcon className="text-lg" />
+              </Button>
+            </HStack>
+          </div>
         ) : null}
       </div>
 
@@ -1224,30 +1340,32 @@ export const ServiceDetailsFacilities: React.FC<{
         },
         {
           icon: WifiOutlineIcon,
-          label: `${v.beds || 0} ${t("24h WIFI")}`,
+          label: `${t("24h WIFI")}`,
         },
         {
           icon: CarOutlineIcon,
-          label: `${v.beds || 0} ${t("3 Cars 24h")}`,
+          label: `${t("3 Cars 24h")}`,
         },
       ]
     : [];
 
   return (
     <Accordion>
-      <AccordionButton>
-        <p className="text-lg font-semibold">{t("Facilities")}</p>
-      </AccordionButton>
-      <AccordionItem itemkey={"facilities"}>
+      <AccordionItem itemkey={`facilities-${v.id}`}>
+        <AccordionButton>
+          <p className="text-lg font-semibold">{t("Facilities")}</p>
+        </AccordionButton>
         <AccordionPanel>
-          <HStack className="gap-4">
+          <HStack className="gap-4 overflow-scroll noScroll pb-2 ">
             {mapArray(facilities, (v, i) => (
               <div
                 key={i}
-                className="flex flex-col gap-2 w-[4.875rem] h-[3.625rem] border-2 rounded-lg border-primary"
+                className="flex flex-col px-2 min-w-[4.875rem] h-[3.625rem] items-center justify-center border-2 rounded-lg border-primary"
               >
                 <span className="text-2xl">{runIfFn(v.icon)}</span>
-                <p className="text-xs font-medium">{v.label}</p>
+                <p className="text-xs whitespace-nowrap font-medium">
+                  {v.label}
+                </p>
               </div>
             ))}
           </HStack>

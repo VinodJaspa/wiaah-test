@@ -1554,9 +1554,11 @@ export type GetBannedCountriesAdminInput = {
 };
 
 export type GetBookingCostInput = {
+  adults?: Maybe<Scalars["Int"]>;
   checkinDate: Scalars["String"];
   checkinTime?: Maybe<Scalars["String"]>;
   checkoutDate?: Maybe<Scalars["String"]>;
+  children?: Maybe<Scalars["Int"]>;
   extrasIds?: Maybe<Array<Scalars["String"]>>;
   servicesIds: Array<Scalars["String"]>;
 };
@@ -5172,6 +5174,7 @@ export type ServiceDiscovery = {
 export type ServiceExtra = {
   __typename?: "ServiceExtra";
   cost: Scalars["Int"];
+  id: Scalars["String"];
   name: Scalars["String"];
 };
 

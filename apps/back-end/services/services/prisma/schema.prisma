@@ -587,6 +587,7 @@ type ServiceDailyPrices {
 type ServiceExtra {
   name TranslationText[]
   cost Int
+  id   String
 }
 
 type ServiceCancelationPolicy {

@@ -119,10 +119,7 @@ export const ServiceReservastionForm: React.FC<{
           <div className="flex gap-2">
             <Image
               className="w-20 h-16 rounded-lg"
-              src={
-                service?.thumbnail ||
-                "https://www.amaviacollection.com/wp-content/uploads/2022/05/Villa-Gaia-1-scaled.jpeg"
-              }
+              src={service?.thumbnail}
               alt={service?.name}
             />
             <div className="flex h-full flex-col font-medium gap-1">

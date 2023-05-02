@@ -21,16 +21,11 @@ import {
   LocationButton,
   Divider,
   ScrollableContainer,
-  SocialReportModal,
-  SocialPostSettingsPopup,
-  MasterLocationMapModal,
-  SocialShareCotentModal,
-  SocialPostMentionsModal,
-  StarOutlineIcon,
   usePaginationControls,
   useGetRecentStories,
   useGetDiscoverHashtags,
   SocialLayout,
+  StarOutlineIcon,
 } from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";

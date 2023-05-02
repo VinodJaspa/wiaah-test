@@ -32,6 +32,7 @@ export interface DrawerProps
   position?: DrawerPositions;
   active?: boolean;
   onOpen?: () => any;
+  isLazy?: boolean;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -43,6 +44,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   full,
   spaceBottom = "0px",
   overlap,
+  isLazy,
   ...props
 }) => {
   return (

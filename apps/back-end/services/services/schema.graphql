@@ -71,6 +71,7 @@ type ServiceCancelationPolicy {
 }
 
 type ServiceExtra {
+  id: String!
   name: String!
   cost: Int!
 }
@@ -641,6 +642,8 @@ input GetBookingCostInput {
   checkinDate: String!
   checkinTime: String
   checkoutDate: String
+  adults: Int
+  children: Int
 }
 
 input AdminGetDishsInput {
