@@ -9,7 +9,9 @@ import {
 import { PostViewPopup } from "@blocks/Popups";
 import { MasterLocationMapModal } from "@features/GeoLocation";
 import { ProductDetailsDrawer } from "@features/Products";
+import { ServiceBookingDrawer } from "@features/Services";
 import {
+  CreateActionDrawer,
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
   SocialReportModal,
@@ -44,6 +46,8 @@ interface SocialAtomValue {
   shareLink?: string;
   reportContent?: { id: string; type: ReportContentType };
   serviceDetailsId?: string;
+  serviceBooking?: { sellerId?: string; servicesIds?: string[] };
+  createAction?: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -60,6 +64,7 @@ const socialAtom = atom<SocialAtomValue>({
     shareLink: undefined,
     reportContent: undefined,
     serviceDetailsId: undefined,
+    createAction: false,
   },
 });
 
@@ -104,14 +109,12 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("chatRoomId", undefined);
     },
     viewUserStory: (userId: string) => {
-      console.log("view user story", userId);
       setControls("userStory", userId);
     },
     closeStory: () => {
       setControls("userStory", undefined);
     },
     openNotifications: () => {
-      console.log("open notifications");
       setControls("viewNotifications", true);
     },
     closeNotifications: () => {
@@ -135,6 +138,12 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     viewServiceDetails: (serviceId: string) =>
       setControls("serviceDetailsId", serviceId),
     closeServiceDetails: () => setControls("serviceDetailsId", undefined),
+    cancelBooking: () => setControls("serviceBooking", undefined),
+    bookServices: (props: SocialAtomValue["serviceBooking"]) =>
+      setControls("serviceBooking", props),
+    createAction: () => setControls("createAction", true),
+    cancelCreateAction: () => setControls("createAction", false),
+
     value,
   };
 }
@@ -145,14 +154,15 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      {/* {isMobile ? <NotifciationsDrawer /> : null} */}
+      {isMobile ? <NotifciationsDrawer /> : null}
       <SocialStoryDrawer />
-
+      <ServiceBookingDrawer />
       <SocialReportModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       <MasterLocationMapModal />
       <ProductDetailsDrawer />
+      <CreateActionDrawer />
       <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

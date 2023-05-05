@@ -22,6 +22,7 @@ import {
   ShoppingCartOutlineIcon,
   ServicesOutlineIcon,
   AffiliationIconOutline,
+  AccountsProfileOptions,
 } from "@UI";
 import { runIfFn } from "@UI/../utils/src";
 
@@ -149,11 +150,13 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             );
           })}
           {isMobile ? (
-            <Avatar
-              className="min-w-[1.5rem]"
-              src={user?.photoSrc}
-              alt={user?.name}
-            />
+            <AccountsProfileOptions>
+              <Avatar
+                className="min-w-[1.5rem]"
+                src={user?.photoSrc}
+                alt={user?.name}
+              />
+            </AccountsProfileOptions>
           ) : null}
         </div>
         {!isMobile && (

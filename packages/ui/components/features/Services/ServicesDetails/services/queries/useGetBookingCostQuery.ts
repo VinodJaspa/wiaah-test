@@ -5,9 +5,14 @@ import {
   Exact,
   GetBookingCostInput,
   Maybe,
+  RestaurantDishType,
   Service,
+  ServiceExtra,
+  ServiceType,
 } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
+import { isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage, getRandomServiceImage } from "@UI/placeholder";
 
 export type GetBookingCostQueryVariables = Exact<{
   args: GetBookingCostInput;
@@ -31,12 +36,20 @@ export type GetBookingCostQuery = { __typename?: "Query" } & {
                 | "type"
                 | "name"
                 | "num_of_rooms"
-                | "bathrooms"
                 | "beds"
-                | "price"
-                | "ingredients"
+                | "bathrooms"
                 | "menuType"
-              >;
+                | "price"
+              > & {
+                  extras?: Maybe<
+                    Array<
+                      { __typename?: "ServiceExtra" } & Pick<
+                        ServiceExtra,
+                        "cost" | "name" | "id"
+                      >
+                    >
+                  >;
+                };
             }
         >;
       }
@@ -50,6 +63,34 @@ export const getBookingCostQueryKey = (args: args) => [
 ];
 
 export const getBookingCostQueryFetcher = async (args: args) => {
+  if (isDev) {
+    const mockRes: GetBookingCostQuery["getBookingCost"] = {
+      services: [...Array(4)].map(() => {
+        const menuType =
+          Object.values(RestaurantDishType)[
+            randomNum(Object.values(RestaurantDishType).length)
+          ];
+        return {
+          qty: 3,
+          service: {
+            id: "test",
+            name: "Dr. Margaret E. Carswell",
+            price: 50,
+            thumbnail: getRandomServiceImage(ServiceType.Vehicle, menuType),
+            type: ServiceType.Vehicle,
+            menuType,
+          },
+        };
+      }),
+      subTotal: 150,
+      vatAmount: 15,
+      total: 165,
+      vatPercent: 10,
+    };
+
+    return mockRes;
+  }
+
   const client = createGraphqlRequestClient();
 
   const res = await client
@@ -73,6 +114,11 @@ query getBookingCost($args:GetBookingCostInput!) {
         bathrooms
         menuType
         price
+        extras {
+          cost
+          name
+          id
+        }
       }
     }
   }

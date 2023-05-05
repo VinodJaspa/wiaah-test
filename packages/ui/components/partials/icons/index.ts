@@ -153,3 +153,7 @@ export * from "./HealthCenterIcon";
 export * from "./VehicleIcon";
 export * from "./BeautyCenterIcon";
 export * from "./RestaurantIcon";
+export * from "./StarsIcon";
+export * from "./MusicNote";
+export * from "./TimerIcon";
+export * from "./VideoUplaodIcon";

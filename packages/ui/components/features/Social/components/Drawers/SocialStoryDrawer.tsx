@@ -13,6 +13,7 @@ import {
   CloseIcon,
   Drawer,
   DrawerContent,
+  EyeIcon,
   HStack,
   HorizontalDotsIcon,
   Image,
@@ -58,6 +59,8 @@ export const SocialStoryDrawer: React.FC = () => {
   const { mutate: getUserRoom } = useGetUserChatRoomQuery();
   const { mutate } = useSendChatMessageMutation();
 
+  const isStoryPublisher = true;
+
   return (
     <Drawer full position="bottom" isOpen={!!value} onClose={closeStory}>
       <DrawerContent className="p-4 max-h-[100vh] noScroll flex flex-col gap-6 bg-[#000]">
@@ -83,39 +86,46 @@ export const SocialStoryDrawer: React.FC = () => {
             currentStory={0}
           />
         </div>
-        <HStack className="w-full self-end gap-6 bg-black">
-          <InputGroup className="w-full rounded-full px-2 pr-4">
-            <Input
-              {...inputProps("content")}
-              className="bg-black placeholder:text-white"
-              placeholder={t("Write a message....")}
-            />
+        {isStoryPublisher ? (
+          <HStack className="px-3 py-1 rounded-full w-fit self-center border text-white border-white">
+            <EyeIcon className="text-lg" />
+            <p>{t("Views")}</p>
+          </HStack>
+        ) : (
+          <HStack className="w-full self-end gap-6 bg-black">
+            <InputGroup className="w-full rounded-full px-2 pr-4">
+              <Input
+                {...inputProps("content")}
+                className="bg-black placeholder:text-white"
+                placeholder={t("Write a message....")}
+              />
 
-            <InputRightElement>
-              <SmilingFaceFillEmoji className="text-white text-xl" />
-            </InputRightElement>
-          </InputGroup>
-          <PaperPlaneAngleIcon
-            className="text-3xl text-white cursor-pointer"
-            onClick={() => {
-              if (typeof value === "string") {
-                getUserRoom(
-                  {
-                    userId: value,
-                  },
-                  {
-                    onSuccess(data) {
-                      mutate({
-                        ...form,
-                        roomId: data.id,
-                      });
+              <InputRightElement>
+                <SmilingFaceFillEmoji className="text-white text-xl" />
+              </InputRightElement>
+            </InputGroup>
+            <PaperPlaneAngleIcon
+              className="text-3xl text-white cursor-pointer"
+              onClick={() => {
+                if (typeof value === "string") {
+                  getUserRoom(
+                    {
+                      userId: value,
                     },
-                  }
-                );
-              }
-            }}
-          />
-        </HStack>
+                    {
+                      onSuccess(data) {
+                        mutate({
+                          ...form,
+                          roomId: data.id,
+                        });
+                      },
+                    }
+                  );
+                }
+              }}
+            />
+          </HStack>
+        )}
       </DrawerContent>
     </Drawer>
   );

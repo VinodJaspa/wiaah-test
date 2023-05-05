@@ -44,6 +44,7 @@ export class HotelService {
         policies: input.policies,
         presentations: input.presentations,
         serviceMetaInfo: input.serviceMetaInfo,
+        //@ts-ignore
         rooms:
           input.rooms.length > 0
             ? {
@@ -58,11 +59,13 @@ export class HotelService {
       },
     });
     this.eventBus.publish(new HotelCreatedEvent(input));
-    hotel.rooms?.forEach((v) => {
-      this.eventBus.publish(
-        new HotelRoomCreatedEvent({ hotel, room: v, userId }),
-      );
-    });
+    // hotel.rooms?.forEach((v) => {
+    //   this.eventBus.publish(
+    //     new HotelRoomCreatedEvent({ hotel, room: v, userId }),
+    //   );
+    // });
+
+    //@ts-ignore
     return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, langId);
   }
 
@@ -165,6 +168,7 @@ export class HotelService {
         langId,
         resource: hotel.serviceMetaInfo,
       }),
+      //@ts-ignore
       rooms: hotel.rooms?.map((v) => ({
         ...v,
         includedAmenities: getTranslatedResource({

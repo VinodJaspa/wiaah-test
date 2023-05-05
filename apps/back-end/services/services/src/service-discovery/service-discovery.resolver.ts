@@ -360,24 +360,24 @@ export class ServiceDiscoveryResolver {
   async updateHotelAdmin(@Args('args') args: updateHotelAdminInput) {
     const { id, ...rest } = args;
 
-    await this.prisma.hotelService.update({
-      where: {
-        id,
-      },
-      data: {
-        ...rest,
-        rooms: {
-          updateMany: rest.rooms.map((v) => ({
-            where: {
-              id: v.id,
-            },
-            data: {
-              ...v,
-            },
-          })),
-        },
-      },
-    });
+    // await this.prisma.hotelService.update({
+    //   where: {
+    //     id,
+    //   },
+    //   data: {
+    //     ...rest,
+    //     rooms: {
+    //       updateMany: rest.rooms.map((v) => ({
+    //         where: {
+    //           id: v.id,
+    //         },
+    //         data: {
+    //           ...v,
+    //         },
+    //       })),
+    //     },
+    //   },
+    // });
 
     return true;
   }
@@ -386,14 +386,14 @@ export class ServiceDiscoveryResolver {
   async updateRestaurantAdmin(@Args('args') args: updateRestaurantAdminInput) {
     const { id, ...rest } = args;
 
-    await this.prisma.restaurantService.update({
-      where: {
-        id,
-      },
-      data: {
-        ...rest,
-      },
-    });
+    // await this.prisma.restaurantService.update({
+    //   where: {
+    //     id,
+    //   },
+    //   data: {
+    //     ...rest,
+    //   },
+    // });
 
     return true;
   }

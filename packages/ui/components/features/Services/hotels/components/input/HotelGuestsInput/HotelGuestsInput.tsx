@@ -16,7 +16,7 @@ export const HotelGuestsInput: React.FC<HotelGuestsInputProps> = ({
     <div className="flex items-center w-full bg-white justify-between">
       <div className="flex flex-col gap-1">
         <p className="font-bold">{name || ""}</p>
-        <p className="font-medium">{description || ""}</p>
+        <p className="font-medium text-[#868686]">{description || ""}</p>
       </div>
       <div className="text-xl">
         <CountInput

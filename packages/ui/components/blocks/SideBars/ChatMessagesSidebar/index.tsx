@@ -51,7 +51,8 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { visit, back } = useRouting();
-  const { chatWith, msgNewUser, viewUserStory } = useSocialControls();
+  const { chatWith, msgNewUser, viewUserStory, createAction } =
+    useSocialControls();
   const { isMobile } = useResponsive();
 
   const { data } = useUserProfile();
@@ -90,7 +91,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
         <ScrollPaginationWrapper axis="x" controls={controls}>
           <div className="flex items-start gap-2 w-full overflow-x-scroll noScroll">
             <ChatStory
-              onClick={() => {}}
+              onClick={() => createAction()}
               userId={profile?.ownerId || ""}
               name={profile?.username || t("Me")}
               newStory={true}

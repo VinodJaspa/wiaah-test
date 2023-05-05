@@ -56,7 +56,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
       <div className="flex flex-col gap-5 w-full">
         {contacts.map(({ icon, label, value }, i) => (
           <HStack className="gap-5">
-            <div className="rounded-full fill-primary bg-primary-100 text-primary text-xl lg:text-3xl w-10 h-10 lg:h-[3.125rem] lg:w-[3.125rem] flex items-center justify-center">
+            <div className="rounded-full fill-primary bg-primary-100 text-primary text-xl lg:text-3xl min-w-[2.5rem] h-10 lg:h-[3.125rem] lg:w-[3.125rem] flex items-center justify-center">
               {runIfFn(icon)}
             </div>
             <div className="flex flex-col text-lightBlack">

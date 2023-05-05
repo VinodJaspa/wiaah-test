@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class GetBookingCostInput {
@@ -17,5 +17,9 @@ export class GetBookingCostInput {
   @Field(() => String, { nullable: true })
   checkoutDate?: string;
 
-  // @Field(()=> )
+  @Field(() => Int, { nullable: true })
+  adults?: number;
+
+  @Field(() => Int, { nullable: true })
+  children?: number;
 }

@@ -6,7 +6,6 @@ import {
   ID,
   ResolveField,
   Parent,
-  Field,
 } from '@nestjs/graphql';
 import { BookServiceService } from '@book-service/book-service.service';
 import {
