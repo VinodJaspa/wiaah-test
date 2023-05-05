@@ -29,6 +29,27 @@ export const CheckmarkCircleFillIcon: React.FC<HtmlSvgProps> = (props) => {
   );
 };
 
+export const CheckmarkCircleWhiteFillIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="1em" height="1em" rx="14" fill="white" />
+      <path
+        d="M7 15.75L11.6271 19.3489C11.9725 19.6175 12.4696 19.5588 12.743 19.2171L21.5833 8.16666"
+        stroke="currentColor"
+        stroke-width="1.41"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};
+
 export const CheckmarkCircleOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
@@ -50,6 +71,26 @@ export const CheckmarkCircleOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke="currentColor"
         stroke-linecap="round"
         stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const CheckmarkIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1.18em"
+      height="1em"
+      viewBox="0 0 19 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.00024 10L6.37735 14.1822C6.72274 14.4508 7.21986 14.3922 7.4932 14.0505L17.6669 1.33334"
+        stroke="currentColor"
+        stroke-width="1.41"
+        stroke-linecap="round"
       />
     </svg>
   );

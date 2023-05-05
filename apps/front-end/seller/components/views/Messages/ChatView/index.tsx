@@ -14,6 +14,7 @@ import {
   useGetChatRoomQuery,
   useUserData,
   useResponsive,
+  useSocialControls,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -30,8 +31,6 @@ export const ChatView: React.FC = () => {
   }
 
   function handleCloseChatRoom() {}
-
-  console.log({ roomId }, getCurrentPath(), getQuery());
 
   const { data } = useGetChatRoomQuery(roomId);
   const { user } = useUserData();
