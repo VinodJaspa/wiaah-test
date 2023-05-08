@@ -1,6 +1,5 @@
 import { useRecoilState } from "recoil";
 import { SavedItemsState } from "../state";
-import { LoginPopupState } from "../state/Recoil/LoginPopup";
 
 export const useSavedItems = () => {
   const [savedItems, setSavedItems] = useRecoilState(SavedItemsState);

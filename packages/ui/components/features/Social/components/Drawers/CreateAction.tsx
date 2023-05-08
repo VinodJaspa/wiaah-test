@@ -2,7 +2,7 @@ import { HtmlDivProps } from "@UI/../types/src";
 import { PassPropsToFnOrElem, getRandomName, mapArray } from "@UI/../utils/src";
 import { CameraSwitchOutlineIcon } from "@UI/components/partials/icons/CameraSwitchIcon";
 import { useSocialControls } from "@blocks";
-import { useSecondsCountdown } from "hooks";
+import { useResponsive, useSecondsCountdown } from "hooks";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -12,7 +12,6 @@ import {
   CheckmarkIcon,
   CloseIcon,
   Drawer,
-  DrawerCloseButton,
   DrawerContent,
   HStack,
   Image,
@@ -25,17 +24,76 @@ import {
   MusicNoteFillIcon,
   SaveFlagOutlineIcon,
   SearchIcon,
+  SettingsOutlineIcon,
   StarsIcon,
   TimerOutlineIcon,
   VideoCameraUplaodOutlineIcon,
 } from "@partials";
 import { useOutsideClick } from "@src/index";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getRandomImage } from "@UI/placeholder";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
 
-const gradients: { from: string; to: string }[] = [];
+const gradients: { from: string; to: string }[] = [
+  {
+    from: "#4E59D0",
+    to: "#4EB1D0",
+  },
+  {
+    from: "#FFCA00",
+    to: "#4EB1D0",
+  },
+
+  {
+    from: "#4EB1D0",
+    to: "#4EB1D0",
+  },
+  {
+    from: "#5EFF00",
+    to: "#4EB1D0",
+  },
+  {
+    from: "#33D4B6",
+    to: "#4EB1D0",
+  },
+  {
+    from: "#CF20EC",
+    to: "#4EB1D0",
+  },
+  {
+    from: "#1C00C7",
+    to: "#4EB1D0",
+  },
+];
+
+const fonts: { label: string; font: string }[] = [
+  {
+    label: "Classic",
+    font: "SF Pro Display",
+  },
+  {
+    label: "Sevillana",
+    font: "Sevillana",
+  },
+
+  {
+    label: "Scada",
+    font: "Scada",
+  },
+  {
+    label: "Ubuntu",
+    font: "Ubuntu",
+  },
+  {
+    label: "Rufina",
+    font: "Rufina",
+  },
+  {
+    label: "SimSun",
+    font: "SimSun",
+  },
+];
 
 const StorySettingsAtom = atom<{
   mediaType: "video" | "image" | "text";
@@ -43,11 +101,14 @@ const StorySettingsAtom = atom<{
   duration: number;
   countDown: number;
   speed: number;
+  selectEffect: boolean;
   cameraType: "front" | "back";
   textBgGradient?: {
     from: string;
     to: string;
   };
+  fontSize: number;
+  textContent: string;
 }>({
   default: {
     mediaType: "video",
@@ -57,6 +118,9 @@ const StorySettingsAtom = atom<{
     countDown: 0,
     cameraType: "back",
     textBgGradient: gradients[0],
+    selectEffect: false,
+    fontSize: 1,
+    textContent: "",
   },
   key: "CreateStorySettings",
 });
@@ -64,25 +128,6 @@ const StorySettingsAtom = atom<{
 export const CreateActionDrawer: React.FC = () => {
   const { value, cancelCreateAction } = useSocialControls("createAction");
   const setSettings = useSetRecoilState(StorySettingsAtom);
-  const [tab, setTab] = React.useState<number>(0);
-  const { t } = useTranslation();
-
-  const tabs: { key: number; label: string }[] = [
-    {
-      label: t("Video"),
-      key: 0,
-    },
-    {
-      label: t("Photo"),
-      key: 1,
-    },
-    {
-      label: t("Text"),
-      key: 2,
-    },
-  ];
-
-  const showOn = (tabs: number[]) => tabs.includes(tab);
 
   return (
     <Drawer
@@ -95,75 +140,117 @@ export const CreateActionDrawer: React.FC = () => {
         <div className="w-full h-full relative">
           <StoryMediaCapture />
           <div className="absolute top-8 left-0 w-full">
-            <HStack className="justify-between px-4 text-white">
-              <DrawerCloseButton>
-                <ActionIcon>
-                  <CloseIcon className="text-[1.75rem]" />
-                </ActionIcon>
-              </DrawerCloseButton>
-
-              <ActionIcon>
-                <CameraSwitchOutlineIcon className="text-[1.75rem]" />
-              </ActionIcon>
-            </HStack>
+            <StoryUpperControls onClose={cancelCreateAction} />
           </div>
-          <div className="absolute bottom-0 left-0  w-full pt-4 bg-black bg-opacity-30 ">
-            {showOn([0, 1]) ? (
-              <div className="text-white w-[min(100%,17.25rem)] mx-auto flex justify-between items-center p-4">
-                {showOn([1]) ? (
-                  <ActionIcon>
-                    <ImageUploadIcon className="text-[1.75rem]" />
-                  </ActionIcon>
-                ) : (
-                  <ActionIcon>
-                    <VideoCameraUplaodOutlineIcon className="text-[1.75rem]" />
-                  </ActionIcon>
-                )}
-
-                <div className="w-16 h-16 flex justify-center items-center border-4 rounded-full border-white">
-                  <div
-                    className={`w-11 h-11 ${
-                      showOn([0]) ? "bg-red-500" : "bg-white"
-                    } rounded-full`}
-                  ></div>
-                </div>
-
-                <Image
-                  src={
-                    "https://s3-alpha-sig.figma.com/img/9ceb/196b/85f04912be00c8732cd6067602a84c78?Expires=1684108800&Signature=WKyllV~m9EkodeBRsvzf1AvtdyQ5We8SBZD-h~OwE1U3I77NeNRBjPWuUh562a9PXFUQ95-mb~Eqpw-bH2m8eJ4cx063GMx-~lhSiJm6FPrCW8Zbsl98OkbA5N~8iyff1oSApDLJi8xsck-BTxseN6m9do4-U0uH0F8O8Go6iUaWYH4zvWHJL4naN4yY9CclGr~sWtz1161Gn8lFk09Gp~MHgexg~kQUWa3sLVsofLifJRxjAqR2He2E8tQK1A36LUHjZqKqEKU6nqf1KHXKsL76SzJk00Ie3b~kTp6f4B2FgjHPnflgkPYpHVUE1ZFOT4ywM-Pl4oaNbfPuxJqXjw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-                  }
-                  className="w-10 h-10 rounded-full border border-white"
-                />
-              </div>
-            ) : null}
-            {showOn([2]) ? <HStack></HStack> : null}
-            <HStack className="mx-auto w-fit gap-5 pb-4">
-              {mapArray(tabs, (v, i) => (
-                <p
-                  onClick={() => setTab(v.key)}
-                  key={i}
-                  className={`${
-                    tab === v.key ? "border-b-primary" : "border-b-transparent"
-                  } pb-1 border-b text-white`}
-                >
-                  {v.label}
-                </p>
-              ))}
-            </HStack>
-          </div>
-
-          <div className="absolute right-4 bottom-1/4 ">
-            <CameraActionSettings />
-          </div>
-          <div className="absolute bottom-0 left-0 h-full flex w-full">
-            <VideoEffectList />
-          </div>
+          <StoryBottomControls />
+          <CameraActionSettings />
+          <VideoEffectList />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CameraCountDown count={150} onFinish={() => {}} />
+            <CameraCountDown onFinish={() => {}} />
           </div>
         </div>
       </DrawerContent>
     </Drawer>
+  );
+};
+
+const StoryBottomControls: React.FC = () => {
+  const [settings, setSettings] = useRecoilState(StorySettingsAtom);
+
+  const { t } = useTranslation();
+
+  const tabs: { key: typeof settings.mediaType; label: string }[] = [
+    {
+      label: t("Video"),
+      key: "video",
+    },
+    {
+      label: t("Photo"),
+      key: "image",
+    },
+    {
+      label: t("Text"),
+      key: "text",
+    },
+  ];
+
+  const showOn = (tabs: typeof settings.mediaType[]) =>
+    tabs.map((v) => v).includes(settings.mediaType);
+
+  return (
+    <div className="absolute bottom-0 left-0  w-full pt-4 bg-black bg-opacity-30 ">
+      {showOn(["video", "video"]) ? (
+        <div className="text-white w-[min(100%,17.25rem)] mx-auto flex justify-between items-center p-4">
+          {showOn(["image"]) ? (
+            <ActionIcon>
+              <ImageUploadIcon className="text-[1.75rem]" />
+            </ActionIcon>
+          ) : (
+            <ActionIcon>
+              <VideoCameraUplaodOutlineIcon className="text-[1.75rem]" />
+            </ActionIcon>
+          )}
+
+          <div className="w-16 h-16 flex justify-center items-center border-4 rounded-full border-white">
+            <div
+              className={`w-11 h-11 ${
+                showOn(["video"]) ? "bg-red-500" : "bg-white"
+              } rounded-full`}
+            ></div>
+          </div>
+
+          <Image
+            src={
+              "https://s3-alpha-sig.figma.com/img/9ceb/196b/85f04912be00c8732cd6067602a84c78?Expires=1684108800&Signature=WKyllV~m9EkodeBRsvzf1AvtdyQ5We8SBZD-h~OwE1U3I77NeNRBjPWuUh562a9PXFUQ95-mb~Eqpw-bH2m8eJ4cx063GMx-~lhSiJm6FPrCW8Zbsl98OkbA5N~8iyff1oSApDLJi8xsck-BTxseN6m9do4-U0uH0F8O8Go6iUaWYH4zvWHJL4naN4yY9CclGr~sWtz1161Gn8lFk09Gp~MHgexg~kQUWa3sLVsofLifJRxjAqR2He2E8tQK1A36LUHjZqKqEKU6nqf1KHXKsL76SzJk00Ie3b~kTp6f4B2FgjHPnflgkPYpHVUE1ZFOT4ywM-Pl4oaNbfPuxJqXjw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+            }
+            className="w-10 h-10 rounded-full border border-white"
+          />
+        </div>
+      ) : null}
+
+      {showOn(["text"]) ? (
+        <HStack className="gap-4 overflow-x-scroll noScroll m-4">
+          {mapArray(gradients, (v, i) => (
+            <div
+              onClick={() =>
+                setSettings((old) => ({
+                  ...old,
+                  textBgGradient: { from: v.from, to: v.to },
+                }))
+              }
+              style={{
+                background: `linear-gradient(180deg, ${v.from} 0%, ${v.to} 100%)`,
+              }}
+              className="cursor-pointer min-w-[2.25rem] h-9 rounded border-2 border-white relative isolate"
+            >
+              {settings.textBgGradient?.from === v.from &&
+              settings.textBgGradient.to === v.to ? (
+                <CheckmarkIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white" />
+              ) : null}
+            </div>
+          ))}
+        </HStack>
+      ) : null}
+
+      <HStack className="mx-auto w-fit gap-5 pb-4">
+        {mapArray(tabs, (v, i) => (
+          <p
+            onClick={() => {
+              console.log("tab clicked", v.key);
+              setSettings((old) => ({ ...old, mediaType: v.key }));
+            }}
+            key={i}
+            className={`${
+              settings.mediaType === v.key
+                ? "border-b-primary"
+                : "border-b-transparent"
+            } pb-1 border-b text-white`}
+          >
+            {v.label}
+          </p>
+        ))}
+      </HStack>
+    </div>
   );
 };
 
@@ -220,154 +307,220 @@ const CameraActionSettings: React.FC<{}> = () => {
     types.includes(settings.mediaType);
 
   return (
-    <div className="flex text-white flex-col gap-4">
-      <CameraActionListMenu
-        onOpen={() => setActive(0)}
-        onClose={() => setActive(undefined)}
-        btn={
-          <ActionIcon>
-            <MusicNoteFillIcon className="text-[1.75rem]" />
-          </ActionIcon>
-        }
-      ></CameraActionListMenu>
+    <>
+      <div className="absolute right-4 bottom-1/4 ">
+        <div className="flex text-white flex-col gap-4">
+          {showOn(["image", "video"]) ? (
+            <>
+              <CameraActionListMenu
+                onOpen={() => setActive(0)}
+                onClose={() => setActive(undefined)}
+                btn={
+                  <ActionIcon>
+                    <MusicNoteFillIcon className="text-[1.75rem]" />
+                  </ActionIcon>
+                }
+              ></CameraActionListMenu>
 
-      <CameraActionListMenu
-        onOpen={() => setActive(1)}
-        onClose={() => setActive(undefined)}
-        btn={
-          <ActionIcon>
-            <StarsIcon className="text-[1.75rem]" />
-          </ActionIcon>
-        }
-      ></CameraActionListMenu>
+              <CameraActionListMenu
+                onOpen={() => setActive(1)}
+                onClose={() => setActive(undefined)}
+                btn={
+                  <ActionIcon>
+                    <StarsIcon className="text-[1.75rem]" />
+                  </ActionIcon>
+                }
+              ></CameraActionListMenu>
 
-      <CameraActionListMenu
-        onOpen={() => setActive(2)}
-        onClose={() => setActive(undefined)}
-        btn={
-          <ActionIcon>
-            <div className="w-7 h-7 border-2 border-white rounded-full flex justify-center items-center">
-              <p className="font-semibold text-[0.65rem]">
-                {Durations.find((v) => v.duration === settings.duration)?.label}
-              </p>
-            </div>
-          </ActionIcon>
-        }
-      >
-        <HStack className="gap-4 bg-white bg-opacity-80 rounded-full p-2">
-          {mapArray(Durations.reverse(), ({ duration, label }) => (
-            <p
-              className={`${
-                duration === settings.duration
-                  ? "bg-primary text-white"
-                  : "text-black"
-              } w-10 h-10 text-sm cursor-pointer font-medium flex justify-center items-center rounded-full`}
-              onClick={() => setSettings((v) => ({ ...v, duration: duration }))}
-            >
-              {label}
-            </p>
-          ))}
-        </HStack>
-      </CameraActionListMenu>
+              <CameraActionListMenu
+                onOpen={() => setActive(2)}
+                onClose={() => setActive(undefined)}
+                btn={
+                  <ActionIcon>
+                    <div className="w-7 h-7 border-2 border-white rounded-full flex justify-center items-center">
+                      <p className="font-semibold text-[0.65rem]">
+                        {
+                          Durations.find(
+                            (v) => v.duration === settings.duration
+                          )?.label
+                        }
+                      </p>
+                    </div>
+                  </ActionIcon>
+                }
+              >
+                <HStack className="gap-4 bg-white bg-opacity-80 rounded-full p-2">
+                  {mapArray(Durations.reverse(), ({ duration, label }) => (
+                    <p
+                      className={`${
+                        duration === settings.duration
+                          ? "bg-primary text-white"
+                          : "text-black"
+                      } w-10 h-10 text-sm cursor-pointer font-medium flex justify-center items-center rounded-full`}
+                      onClick={() =>
+                        setSettings((v) => ({ ...v, duration: duration }))
+                      }
+                    >
+                      {label}
+                    </p>
+                  ))}
+                </HStack>
+              </CameraActionListMenu>
 
-      <CameraActionListMenu
-        onOpen={() => setActive(3)}
-        onClose={() => setActive(undefined)}
-        btn={
-          <ActionIcon>
-            <TimerOutlineIcon className="text-[1.75rem]" />
-          </ActionIcon>
-        }
-      >
-        <HStack className="bg-white bg-opacity-80 p-4 gap-3 rounded-xl">
-          <div className="flex flex-col gap-5 items-center">
-            <ArrowUpIcon
-              className="text-primary text-2xl"
-              onClick={() =>
-                setSettings((v) => ({ ...v, countDown: v.countDown + 1 }))
-              }
-            ></ArrowUpIcon>
-            <p className="text-black font-semibold text-lg">
-              {settings?.countDown}
-            </p>
-            <ArrowDownIcon
-              className="text-primary text-2xl"
-              onClick={() =>
-                setSettings((v) => ({
-                  ...v,
-                  countDown: Math.max(v.countDown - 1, 0),
+              <CameraActionListMenu
+                onOpen={() => setActive(3)}
+                onClose={() => setActive(undefined)}
+                btn={
+                  <ActionIcon>
+                    <TimerOutlineIcon className="text-[1.75rem]" />
+                  </ActionIcon>
+                }
+              >
+                <HStack className="bg-white bg-opacity-80 p-4 gap-3 rounded-xl">
+                  <div className="flex flex-col gap-5 items-center">
+                    <ArrowUpIcon
+                      className="text-primary text-2xl"
+                      onClick={() =>
+                        setSettings((v) => ({
+                          ...v,
+                          countDown: v.countDown + 1,
+                        }))
+                      }
+                    ></ArrowUpIcon>
+                    <p className="text-black font-semibold text-lg">
+                      {settings?.countDown}
+                    </p>
+                    <ArrowDownIcon
+                      className="text-primary text-2xl"
+                      onClick={() =>
+                        setSettings((v) => ({
+                          ...v,
+                          countDown: Math.max(v.countDown - 1, 0),
+                        }))
+                      }
+                    ></ArrowDownIcon>
+                  </div>
+                  <p className="text-black text-sm">{t("Seconds")}</p>
+                  <Button className="whitespace-nowrap">
+                    {t("Start now")}
+                  </Button>
+                </HStack>
+              </CameraActionListMenu>
+
+              {showOn(["video"]) ? (
+                <CameraActionListMenu
+                  btn={
+                    <ActionIcon>
+                      <div className="w-7 h-7 flex justify-center items-center rounded-full border-2 border-white">
+                        <p className="text-white font-medium text-xs">{`${settings.speed}X`}</p>
+                      </div>
+                    </ActionIcon>
+                  }
+                >
+                  <HStack className="gap-4 bg-white bg-opacity-80 p-2 rounded-full">
+                    {mapArray([0.5, 1, 1.5, 2], (v, i) => (
+                      <p
+                        onClick={() =>
+                          setSettings((old) => ({
+                            ...old,
+                            speed: v,
+                          }))
+                        }
+                        className={`${
+                          settings.speed === v
+                            ? "bg-primary text-white"
+                            : "text-black"
+                        } w-10 h-10 rounded-full flex justify-center items-center cursor-pointer text-xs`}
+                        key={i}
+                      >
+                        {v}X
+                      </p>
+                    ))}
+                  </HStack>
+                </CameraActionListMenu>
+              ) : null}
+
+              <CameraActionListMenu
+                btn={
+                  <ActionIcon>
+                    <LinkIcon className="text-[1.75rem]" />
+                  </ActionIcon>
+                }
+              >
+                <HStack className="bg-white bg-opacity-80 rounded-full py-1 px-2">
+                  <div className="flex items-center">
+                    <LinkIcon className="text-blue-500 text-[1.75rem]"></LinkIcon>
+                    <Input
+                      className="w-40 bg-transparent border-transparent border-0 ring-transparent text-black stroke-transparent"
+                      placeholder={t("Paste or type link") + "...."}
+                    />
+                  </div>
+                  <HStack className="gap-4">
+                    <CheckmarkCircleWhiteFillIcon className="text-primary text-[1.75rem]" />
+                    <div className="w-7 h-7 bg-white rounded-full">
+                      <CloseIcon className="text-[1.75rem] text-secondaryRed" />
+                    </div>
+                  </HStack>
+                </HStack>
+              </CameraActionListMenu>
+
+              <ActionIcon onClick={() => setOpen((v) => !!v)}>
+                {open ? (
+                  <ArrowUpIcon className="text-[1.75rem]" />
+                ) : (
+                  <ArrowDownIcon className="text-[1.75rem]" />
+                )}
+              </ActionIcon>
+            </>
+          ) : null}
+
+          {showOn(["text"]) ? (
+            <>
+              <ActionIcon>
+                <></>
+              </ActionIcon>
+            </>
+          ) : null}
+        </div>
+      </div>
+      {showOn(["text"]) ? (
+        <div className="absolute w-8 left-4 top-1/2">
+          <div className="relative">
+            <input
+              type="range"
+              min={1}
+              max={5}
+              step={0.25}
+              value={settings.fontSize}
+              onChange={(v) =>
+                setSettings((old) => ({
+                  ...old,
+                  fontSize: parseInt(v.target.value),
                 }))
               }
-            ></ArrowDownIcon>
-          </div>
-          <p className="text-black text-sm">{t("Seconds")}</p>
-          <Button className="whitespace-nowrap">{t("Start now")}</Button>
-        </HStack>
-      </CameraActionListMenu>
-
-      {showOn(["video"]) ? (
-        <CameraActionListMenu
-          btn={
-            <ActionIcon>
-              <div className="w-7 h-7 flex justify-center items-center rounded-full border-2 border-white">
-                <p className="text-white font-medium text-xs">{`${settings.speed}X`}</p>
-              </div>
-            </ActionIcon>
-          }
-        >
-          <HStack className="gap-4 bg-white bg-opacity-80 p-2 rounded-full">
-            {mapArray([0.5, 1, 1.5, 2], (v, i) => (
-              <p
-                onClick={() =>
-                  setSettings((old) => ({
-                    ...old,
-                    speed: v,
-                  }))
-                }
-                className={`${
-                  settings.speed === v ? "bg-primary text-white" : "text-black"
-                } w-10 h-10 rounded-full flex justify-center items-center cursor-pointer text-xs`}
-                key={i}
-              >
-                {v}X
-              </p>
-            ))}
-          </HStack>
-        </CameraActionListMenu>
-      ) : null}
-
-      <CameraActionListMenu
-        btn={
-          <ActionIcon>
-            <LinkIcon className="text-[1.75rem]" />
-          </ActionIcon>
-        }
-      >
-        <HStack className="bg-white bg-opacity-80 rounded-full py-1 px-2">
-          <div className="flex items-center">
-            <LinkIcon className="text-blue-500 text-[1.75rem]"></LinkIcon>
-            <Input
-              className="w-40 bg-transparent border-transparent border-0 ring-transparent text-black stroke-transparent"
-              placeholder={t("Paste or type link") + "...."}
+              className="noInputTrack -rotate-90 transform-cpu origin-left"
             />
-          </div>
-          <HStack className="gap-4">
-            <CheckmarkCircleWhiteFillIcon className="text-primary text-[1.75rem]" />
-            <div className="w-7 h-7 bg-white rounded-full">
-              <CloseIcon className="text-[1.75rem] text-secondaryRed" />
-            </div>
-          </HStack>
-        </HStack>
-      </CameraActionListMenu>
 
-      <ActionIcon onClick={() => setOpen((v) => !!v)}>
-        {open ? (
-          <ArrowUpIcon className="text-[1.75rem]" />
-        ) : (
-          <ArrowDownIcon className="text-[1.75rem]" />
-        )}
-      </ActionIcon>
-    </div>
+            <svg
+              className="absolute top-0 left-0 pointer-events-none -translate-x-1/2 -translate-y-[85%]"
+              width="22"
+              height="142"
+              viewBox="0 0 22 142"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M22 11.0011C22 11.0007 22 11.0004 22 11L22.0001 10.9998H22C21.9999 4.92476 17.0751 0 11 0C4.92487 0 0 4.92487 0 11C0 11.6359 0.0539532 12.2591 0.157531 12.8655L10.9998 141.37L21.8429 12.8629C21.9461 12.2577 21.9999 11.6357 22 11.0011Z"
+                fill="white"
+                fill-opacity="0.6"
+              />
+            </svg>
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -411,10 +564,12 @@ const CameraActionListMenu: React.FC<{
 };
 
 const CameraCountDown = React.forwardRef(
-  ({ count = 0, onFinish }: { count: number; onFinish: () => any }, ref) => {
+  ({ onFinish }: { onFinish: () => any }, ref) => {
     const [settings, setSettings] = useRecoilState(StorySettingsAtom);
     const dateRef = React.useRef(
-      new Date(new Date().setSeconds(new Date().getSeconds() + count))
+      new Date(
+        new Date().setSeconds(new Date().getSeconds() + settings.countDown || 0)
+      )
     );
     const seconds = useSecondsCountdown(dateRef.current, (v) => {
       if (v > 0) {
@@ -425,18 +580,19 @@ const CameraCountDown = React.forwardRef(
       }
     });
 
-    return (
+    return settings.starting ? (
       <div className="relative rounded-full border-2 border-white bg-white bg-opacity-40 w-80 h-80 ">
         <div className="text-white text-9xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           {seconds}
         </div>
       </div>
-    );
+    ) : null;
   }
 );
 
 const VideoEffectList: React.FC = () => {
   const { t } = useTranslation();
+  const [settings, setSettings] = useRecoilState(StorySettingsAtom);
   const [full, setFull] = React.useState<boolean>(true);
   const [filter, setFilter] = React.useState<string>();
   const [selectedEffect, setSelectedEffect] = React.useState<string>();
@@ -469,82 +625,86 @@ const VideoEffectList: React.FC = () => {
     id: i.toString(),
   }));
 
-  return (
-    <div
-      className={`flex flex-col gap-2 w-full ${
-        full ? "h-full" : "self-end"
-      } bg-black bg-opacity-30`}
-    >
-      {full ? (
-        <HStack className="p-4 backdrop-blur gap-4">
-          <InputGroup className="bg-white rounded-full w-full">
-            <InputLeftElement>
-              <SearchIcon className="text-xl"></SearchIcon>
-            </InputLeftElement>
-            <Input placeholder={t("Type effect name...")} />
-            <InputRightElement className="pr-2">
-              <CloseIcon className="text-xl"></CloseIcon>
-            </InputRightElement>
-          </InputGroup>
-          <p onClick={() => setFull(false)} className="text-white">
-            {t("Cancel")}
-          </p>
-        </HStack>
-      ) : (
-        <>
-          <HStack className="w-full pt-2 justify-between">
-            <HStack className="justify-between w-full gap-4 px-4">
-              <div className="w-8 h-8 bg-white rounded-full">
-                <CloseIcon className="text-[2rem] text-secondaryRed" />
-              </div>
-              <HStack className="gap-8">
-                <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                  <SaveFlagOutlineIcon className="text-4xl " />
+  return settings.selectEffect ? (
+    <div className="absolute bottom-0 left-0 h-full flex w-full">
+      <div
+        className={`flex flex-col gap-2 w-full ${
+          full ? "h-full" : "self-end"
+        } bg-black bg-opacity-30`}
+      >
+        {full ? (
+          <HStack className="p-4 backdrop-blur gap-4">
+            <InputGroup className="bg-white rounded-full w-full">
+              <InputLeftElement>
+                <SearchIcon className="text-xl"></SearchIcon>
+              </InputLeftElement>
+              <Input placeholder={t("Type effect name...")} />
+              <InputRightElement className="pr-2">
+                <CloseIcon className="text-xl"></CloseIcon>
+              </InputRightElement>
+            </InputGroup>
+            <p onClick={() => setFull(false)} className="text-white">
+              {t("Cancel")}
+            </p>
+          </HStack>
+        ) : (
+          <>
+            <HStack className="w-full pt-2 justify-between">
+              <HStack className="justify-between w-full gap-4 px-4">
+                <div className="w-8 h-8 bg-white rounded-full">
+                  <CloseIcon className="text-[2rem] text-secondaryRed" />
                 </div>
+                <HStack className="gap-8">
+                  <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
+                    <SaveFlagOutlineIcon className="text-4xl " />
+                  </div>
+                  <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
+                    <SearchIcon className="text-4xl" />
+                  </div>
+                </HStack>
                 <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                  <SearchIcon className="text-4xl" />
+                  <CheckmarkIcon className="text-primary text-base" />
                 </div>
               </HStack>
-              <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                <CheckmarkIcon className="text-primary text-base" />
-              </div>
             </HStack>
-          </HStack>
-          <HStack className="w-full justify-center gap-6 pb-4">
-            {mapArray(filters, (v, i) => (
-              <p
-                onClick={() => setFilter(v.key)}
-                className={`${
-                  v.key === filter ? "border-b-primary" : "border-transparent"
-                } border-b-2 pb-2 text-white`}
-                key={i}
-              >
-                {v.label}
-              </p>
-            ))}
-          </HStack>
-        </>
-      )}
-      <div
-        className={`${
-          full ? "full" : "h-56"
-        } px-4 overflow-y-scroll noScroll grid grid-cols-4 gap-3`}
-      >
-        {mapArray(effects, (v, i) => (
-          <div
-            onClick={() => setSelectedEffect(v.id)}
-            key={i}
-            className={`${
-              v.id === selectedEffect ? "border-primary" : "border-transparent"
-            } border-2 flex flex-col gap-2 bg-black bg-opacity-50 w-full py-4 rounded-lg items-center`}
-          >
-            <Avatar className="min-w-[3.25rem]" src={v.photo} />
-            <p className="text-white text-xs">{v.name}</p>
-          </div>
-        ))}
+            <HStack className="w-full justify-center gap-6 pb-4">
+              {mapArray(filters, (v, i) => (
+                <p
+                  onClick={() => setFilter(v.key)}
+                  className={`${
+                    v.key === filter ? "border-b-primary" : "border-transparent"
+                  } border-b-2 pb-2 text-white`}
+                  key={i}
+                >
+                  {v.label}
+                </p>
+              ))}
+            </HStack>
+          </>
+        )}
+        <div
+          className={`${
+            full ? "full" : "h-56"
+          } px-4 overflow-y-scroll noScroll grid grid-cols-4 gap-3`}
+        >
+          {mapArray(effects, (v, i) => (
+            <div
+              onClick={() => setSelectedEffect(v.id)}
+              key={i}
+              className={`${
+                v.id === selectedEffect
+                  ? "border-primary"
+                  : "border-transparent"
+              } border-2 flex flex-col gap-2 bg-black bg-opacity-50 w-full py-4 rounded-lg items-center`}
+            >
+              <Avatar className="min-w-[3.25rem]" src={v.photo} />
+              <p className="text-white text-xs">{v.name}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 const StoryMediaCapture: React.FC = () => {
@@ -554,16 +714,25 @@ const StoryMediaCapture: React.FC = () => {
   const [streaming, setStreaming] = React.useState<boolean>(false);
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const recorderRef = React.useRef<MediaRecorder | null>(null);
+  const { isMobile } = useResponsive();
 
   const getCameraStream = () => {
     try {
       if (typeof window !== "undefined" && "MediaRecorder" in window) {
         setSupported(true);
-        if (streaming) return;
         navigator.mediaDevices
-          .getUserMedia({ audio: true, video: true })
+          .getUserMedia({
+            audio: true,
+            video: {
+              facingMode:
+                isMobile || settings.cameraType === "back"
+                  ? "environment"
+                  : "user",
+            },
+          })
           .then((stream) => {
             setStreaming(true);
+
             const recorder = new MediaRecorder(stream, {
               mimeType: "video/mp4",
             });
@@ -613,8 +782,92 @@ const StoryMediaCapture: React.FC = () => {
       );
 
     case "text":
-      return <></>;
+      return (
+        <div
+          className="w-full h-full flex justify-center items-center px-8"
+          style={{
+            background: `linear-gradient(180deg, ${settings.textBgGradient?.from} 0%, ${settings.textBgGradient?.to} 100%)`,
+          }}
+        >
+          <p
+            onInput={(v: any) =>
+              setSettings((old) => ({
+                ...old,
+                textContent: v.target.innerText,
+              }))
+            }
+            style={{
+              fontSize: `${settings.fontSize}rem`,
+            }}
+            className="text-white relative flex justify-center items-center w-full h-full focus-visible:ring-0 focus-visible:stroke-0 outline-none focus-visible:border-0 overflow-y-scroll noScroll"
+            contentEditable
+          >
+            {settings.textContent}
+          </p>
+          <span
+            style={{
+              fontSize: `${settings.fontSize}rem`,
+            }}
+            className="text-white pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
+            {settings.textContent.length < 1 ? t("Tap here to type") : null}
+          </span>
+          {/* <Textarea
+            style={{
+              fontSize: `${settings.fontSize}rem`,
+            }}
+            placeholder={t("Tap here to type")}
+            className="bg-transparent placeholder:text-white text-center h-full border-transparent ring-transparent text-black"
+            onChange={(v) => setText(v.target.value)}
+            value={text}
+          /> */}
+        </div>
+      );
     default:
       return null;
   }
+};
+
+export const StoryUpperControls: React.FC<{ onClose: () => any }> = ({
+  onClose,
+}) => {
+  const { t } = useTranslation();
+  const [settings, setSettings] = useRecoilState(StorySettingsAtom);
+
+  const showOn = (types: typeof settings.mediaType[]) =>
+    types.includes(settings.mediaType);
+
+  return (
+    <HStack className="justify-between px-4 text-white">
+      {showOn(["image", "video"]) ? (
+        <ActionIcon onClick={onClose}>
+          <CloseIcon className="text-[1.75rem]" />
+        </ActionIcon>
+      ) : null}
+
+      {showOn(["text"]) ? (
+        <CloseIcon onClick={onClose} className="text-[1.75rem]" />
+      ) : null}
+
+      {showOn(["image", "video"]) ? (
+        <ActionIcon
+          onClick={() =>
+            setSettings((v) => ({
+              ...v,
+              cameraType: v.cameraType === "front" ? "back" : "front",
+            }))
+          }
+        >
+          <CameraSwitchOutlineIcon className="text-[1.75rem]" />
+        </ActionIcon>
+      ) : null}
+
+      {showOn(["text"]) ? (
+        <>
+          <SettingsOutlineIcon className="text-[1.75rem]" />
+          <p className="cursor-pointer font-medium">{t("Share")}</p>
+        </>
+      ) : null}
+    </HStack>
+  );
 };

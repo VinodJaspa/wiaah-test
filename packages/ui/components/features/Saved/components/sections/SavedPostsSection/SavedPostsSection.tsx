@@ -7,6 +7,7 @@ import {
   usePaginationControls,
   PostCardsListWrapper,
   ScrollPaginationWrapper,
+  useResponsive,
 } from "@UI";
 
 export const SavedPostsSection: React.FC = () => {
@@ -15,11 +16,15 @@ export const SavedPostsSection: React.FC = () => {
   const { data } = useGetMySavedPostsQuery({
     pagination,
   });
+  const { isMobile } = useResponsive();
   return (
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
       <ScrollPaginationWrapper controls={controls}>
-        <PostCardsListWrapper cols={4} posts={data?.posts || []} />
+        <PostCardsListWrapper
+          cols={isMobile ? 1 : 4}
+          posts={data?.posts || []}
+        />
       </ScrollPaginationWrapper>
       {!data || data.posts.length < 1 ? (
         <div className="text-black font-bold text-2xl text-center py-60">

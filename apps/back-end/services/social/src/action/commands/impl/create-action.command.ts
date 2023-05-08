@@ -8,6 +8,7 @@ export class CreateActionCommand {
       location?: PostLocationInput;
       commentsVisibility?: CommentsVisibility;
       link?: string;
+      music?: string;
       allowedActions: ActionType[];
       actionSrc: string;
       actionCoverSrc: string;

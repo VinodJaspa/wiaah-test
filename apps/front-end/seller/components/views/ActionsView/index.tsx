@@ -1,22 +1,23 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BsCameraFill } from "react-icons/bs";
 import {
   Avatar,
   Button,
   CommentIcon,
-  CommentOutlineIcon,
   DigitalCamera,
   EllipsisText,
   HStack,
   HeartFillIcon,
-  HeartOutlineIcon,
   Image,
+  LocationAddressDisplay,
+  LocationOutlineIcon,
+  LoopIcon,
+  MusicNoteFillIcon,
   SaveFlagOutlineIcon,
   ShareIcon,
-  ShareOutlineIcon,
   ShoppingCartOutlinePlusIcon,
   Slider,
+  StarsIcon,
   VStack,
   Verified,
   VerticalDotsIcon,
@@ -24,6 +25,7 @@ import {
   getRandomImage,
   useGetPeronalizedActionsQuery,
   useGetSimillarActionsQuery,
+  useSocialControls,
 } from "ui";
 import { NumberShortner, mapArray, randomNum } from "utils";
 
@@ -31,6 +33,7 @@ export const ActionsView: React.FC = () => {
   const { t } = useTranslation();
   const { data } = useGetPeronalizedActionsQuery();
   const { data: simillar } = useGetSimillarActionsQuery({});
+  const { createRemixAction } = useSocialControls();
 
   const actions = data ? [data] : [];
   const mockRes = [...Array(15)].map((_, i) => ({
@@ -39,7 +42,7 @@ export const ActionsView: React.FC = () => {
     shares: randomNum(123456),
     src: "/action.mp4",
     thumbnail: getRandomImage(),
-    id: "",
+    id: `${i}`,
   }));
 
   const hasProduct = true;
@@ -53,6 +56,12 @@ export const ActionsView: React.FC = () => {
       }
     : null;
 
+  const actionBadges: {
+    label: string;
+    onClick: () => any;
+    icon: React.ReactNode;
+  }[] = [];
+
   return (
     <div className="h-screen">
       {/* actions View */}
@@ -61,12 +70,21 @@ export const ActionsView: React.FC = () => {
           <div key={i} className="w-full h-full relative">
             <video src={v.src} className="w-full h-full object-cover" />
             <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 w-full h-full flex flex-col justify-between">
-              <div className="flex justify-between">
-                <DigitalCamera />
-                <HStack className="gap-4">
-                  <VolumeIcon className="text-lg" />
-                  <VerticalDotsIcon className="text-sm" />
-                </HStack>
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between">
+                  <DigitalCamera />
+                  <div className="px-2 py-1 bg-black bg-opacity-40 flex items-center gap-2">
+                    <MusicNoteFillIcon />
+                    <p className="text-xs font-medium">{v.music}</p>
+                  </div>
+                  <HStack className="gap-4">
+                    <VolumeIcon className="text-lg" />
+                    <VerticalDotsIcon className="text-sm" />
+                  </HStack>
+                </div>
+                <Button colorScheme="gray" className="self-end px-4">
+                  <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
+                </Button>
               </div>
               <div className="flex flex-col gap-4">
                 {/* interations */}
@@ -95,26 +113,60 @@ export const ActionsView: React.FC = () => {
                   </VStack>
                 </div>
 
-                {/* product ref */}
-                {product ? (
-                  <div className="flex flex-col gap-2">
-                    <HStack>
-                      <Avatar className="w-11" src={product.photo} />
-                      <p className="font-bold text-xl font-semibold">
-                        {t("Nike")}
-                      </p>
-                      {product.verified ? <Verified /> : null}
-                    </HStack>
-                    <div className="flex text-sm gap-2 text-white">
-                      <EllipsisText maxLines={2}>
-                        {product.prodTitle.slice(0, 79)}
-                      </EllipsisText>
-                      <Button>
-                        <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
-                      </Button>
+                <div className="flex flex-col gap-2">
+                  <HStack className="flex-wrap gap-2">
+                    {[
+                      {
+                        icon: <LoopIcon />,
+                        label: t("Remix"),
+                        onClick: () => {
+                          console.log("remix click", v.id);
+                          createRemixAction(v.id);
+                        },
+                      },
+                      {
+                        icon: <StarsIcon />,
+                        label: v.effect.name,
+                      },
+                    ].map((v) => (
+                      <HStack
+                        onClick={v.onClick}
+                        className="rounded-full cursor-pointer bg-black bg-opacity-40 py-1 px-2"
+                      >
+                        {v.icon}
+                        <p className="text-xs font-semibold text-white">
+                          {v.label}
+                        </p>
+                      </HStack>
+                    ))}
+                  </HStack>
+                  <HStack>
+                    <Avatar className="w-11" src={v?.profile?.photo} />
+                    <div className="flex flex-col">
+                      <HStack>
+                        <p className="font-semibold">{v?.profile?.username}</p>
+                        {v?.profile?.verified ? (
+                          <Verified className="text-primary text-sm" />
+                        ) : null}
+                      </HStack>
+                      <HStack>
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
+                          <LocationOutlineIcon />
+                          <LocationAddressDisplay
+                            address={v.location.address}
+                            city={v.location.city}
+                            country={v.location.country}
+                          />
+                        </HStack>
+                      </HStack>
                     </div>
+                  </HStack>
+                  <div className="flex text-sm gap-2 text-white">
+                    <EllipsisText maxLines={2}>
+                      {product.prodTitle.slice(0, 79)}
+                    </EllipsisText>
                   </div>
-                ) : null}
+                </div>
 
                 {/* recommended actions */}
                 <div className="pb-3">

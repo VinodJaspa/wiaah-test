@@ -122,15 +122,24 @@ export type Action = {
   comments: Scalars["Int"];
   commentsVisibility: CommentsVisibility;
   cover: Scalars["String"];
+  effect: ActionEffect;
+  effectId?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   link: Scalars["String"];
   location: PostLocation;
+  music: Scalars["String"];
+  profile: Profile;
   reactionNum: Scalars["Int"];
   shares: Scalars["Int"];
   src: Scalars["String"];
   userId: Scalars["ID"];
   views: Scalars["Int"];
   visibility: PostVisibility;
+};
+
+export type ActionEffect = {
+  __typename?: "ActionEffect";
+  name: Scalars["String"];
 };
 
 export enum ActionType {

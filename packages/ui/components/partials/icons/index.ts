@@ -157,3 +157,7 @@ export * from "./StarsIcon";
 export * from "./MusicNote";
 export * from "./TimerIcon";
 export * from "./VideoUplaodIcon";
+export * from "./LoopIcon";
+export * from "./SettingsIcon";
+export * from "./MediaPauseIcon";
+export * from "./SunIcon";

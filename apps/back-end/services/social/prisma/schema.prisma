@@ -201,6 +201,8 @@ model Action {
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
   tags               PostTag[]
+  music              String?
+  effectId           String?
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
 }

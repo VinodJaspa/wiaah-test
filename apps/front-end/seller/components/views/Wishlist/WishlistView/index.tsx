@@ -10,6 +10,7 @@ import {
   TipTextContainer,
   useGetWishlistItemsData,
   SpinnerFallback,
+  getRandomImage,
 } from "ui";
 import WishlistEmpty from "../WishlistEmpty";
 
@@ -40,12 +41,17 @@ export const WishlistView: React.FC = () => {
                   key={i}
                   onButtonClick={() => handleAddToCart(item)}
                   onDelete={() => handleLoginPopup()}
-                  postion="delete"
+                  position="delete"
                   forceHover={true}
                   buttonText={type > 50 ? "Add to Cart" : "Book now"}
-                  {...item}
-                  imageUrl={item.imgUrl}
                   variant={type > 50 ? "product" : "service"}
+                  id=""
+                  cashback={15}
+                  discount={10}
+                  price={150}
+                  rate={4.8}
+                  thumbnail={getRandomImage()}
+                  liked
                 />
               );
             })}

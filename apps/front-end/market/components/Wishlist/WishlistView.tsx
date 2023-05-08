@@ -1,15 +1,23 @@
 import React from "react";
-import { Spacer, useLoginPopup, useShoppingCart, useSavedItems } from "ui";
+import {
+  Spacer,
+  useLoginPopup,
+  useShoppingCart,
+  useSavedItems,
+  getRandomImage,
+} from "ui";
 import { TipTextContainer } from "ui/components/blocks/TipTextContainer";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { ProductCard } from "ui/components/blocks/ProductCard";
 import WishlistEmpty from "./WishlistEmpty";
 import { WishlistItem } from "@features/API";
+import { useTranslation } from "react-i18next";
 
 export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();
   const { OpenShoppingCart } = useShoppingCart();
   const { DeleteItem, savedItems } = useSavedItems();
+  const { t } = useTranslation();
   function handleAddToCart(item: WishlistItem) {
     const id = String(Math.random() * 100);
     OpenShoppingCart();
@@ -29,7 +37,7 @@ export const WishlistView: React.FC = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <span className="flex h-24 w-full items-center justify-center text-3xl font-bold">
-        Saved Items
+        {t("Wishlist")}
       </span>
       <GridContainerPager componentsLimit={10}>
         {savedItems.map((item, i) => {
@@ -39,12 +47,17 @@ export const WishlistView: React.FC = () => {
               key={i}
               onButtonClick={() => handleAddToCart(item)}
               onDelete={(id) => DeleteItem(id)}
-              postion="delete"
+              position="delete"
               forceHover={true}
               buttonText={type > 50 ? "Add to Cart" : "Book now"}
-              {...item}
-              imageUrl={item.imgUrl}
               variant={type > 50 ? "product" : "service"}
+              id=""
+              cashback={15}
+              discount={10}
+              price={150}
+              rate={4.8}
+              thumbnail={getRandomImage()}
+              liked
             />
           );
         })}

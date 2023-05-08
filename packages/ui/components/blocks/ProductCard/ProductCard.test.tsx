@@ -174,7 +174,7 @@ describe("productCard callback function tests", () => {
         cashback="15%"
         onLike={onLikeCbMock}
         onDelete={onDeleteCbMock}
-        postion="save"
+        position="save"
       />
     );
     const actionButton = component.find("[data-test='actionButton']");
@@ -196,7 +196,7 @@ describe("productCard callback function tests", () => {
         cashback="15%"
         onLike={onLikeCbMock}
         onDelete={onDeleteCbMock}
-        postion="delete"
+        position="delete"
       />
     );
     const actionButton = component.find("[data-test='actionButton']");
@@ -260,7 +260,7 @@ describe("productCard snapshot tests", () => {
         forceHover={true}
         liked={true}
         oldPrice={20}
-        postion="delete"
+        position="delete"
         rating={5}
         variant="service"
       />

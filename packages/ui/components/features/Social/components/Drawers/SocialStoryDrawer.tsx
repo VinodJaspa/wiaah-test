@@ -1,6 +1,6 @@
 import { getRandomName, useForm } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { ReportContentType, useSocialControls } from "@blocks";
+import { SocialContentType, useSocialControls } from "@blocks";
 import { MessageAttachmentType } from "@features/API";
 import { useSendChatMessageMutation } from "@features/Chat/services/useSendChatMessage";
 import {
@@ -207,7 +207,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
           <MenuList>
             <MenuItem
               onClick={() => {
-                reportContent(story.id, ReportContentType.story);
+                reportContent(story.id, SocialContentType.story);
               }}
             >
               <p>{t("Report")}</p>
