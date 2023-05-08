@@ -92,11 +92,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
       </Text>
       {textEllipsising && !displayShowMore ? null : showMore === true ? (
         <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
-          <div
-            className={`${
-              showMoreColor ? showMoreColor : "bg-white"
-            } flex gap-1`}
-          >
+          <div className={`${showMoreColor ? showMoreColor : ""} flex gap-1`}>
             <p className="text-primary" ref={EllipsisRef}>
               ...
             </p>

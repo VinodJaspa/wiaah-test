@@ -1,6 +1,17 @@
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { Action, GetActionsCursorResponse } from '@action/entities';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
+import {
+  Action,
+  ActionEffect,
+  GetActionsCursorResponse,
+} from '@action/entities';
 import { CreateActionInput, GetUserActionsInput } from '@action/dto';
 import {
   AuthorizationDecodedUser,
@@ -16,6 +27,7 @@ import { UploadService } from '@wiaah/upload';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrismaService } from 'prismaService';
 import { ContentHostType } from 'prismaClient';
+import { Profile } from '@entities';
 
 @Resolver(() => Action)
 export class ActionResolver {
@@ -180,5 +192,22 @@ export class ActionResolver {
     return this.commandbus.execute<GetActionByIdQuery>(
       new GetActionByIdQuery(id, user.id),
     );
+  }
+
+  @ResolveField(() => ActionEffect)
+  async effect(@Parent() action: Action): Promise<ActionEffect> {
+    // TODO: get effect by id (action.effectId)
+    return {
+      name: 'effect name',
+    };
+  }
+
+  @ResolveField(() => Profile)
+  profile(@Parent() action: Action) {
+    return this.prisma.profile.findUnique({
+      where: {
+        ownerId: action.userId,
+      },
+    });
   }
 }

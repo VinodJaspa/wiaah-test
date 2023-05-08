@@ -4,6 +4,12 @@ import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
 
 @ObjectType()
+export class ActionEffect {
+  @Field(() => String)
+  name: string;
+}
+
+@ObjectType()
 export class Action {
   @Field(() => ID)
   id: string;
@@ -40,6 +46,12 @@ export class Action {
 
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
+
+  @Field(() => String)
+  music: string;
+
+  @Field(() => String, { nullable: true })
+  effectId?: string;
 }
 
 @ObjectType()

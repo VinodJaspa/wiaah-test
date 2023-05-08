@@ -1,28 +1,31 @@
 import React from "react";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
-import { ProductType } from "api";
 import { usePreferedCurrency } from "state";
-import { Image, PriceDisplay, Product, Rate } from "@UI";
+import { Image, PriceDisplay, Rate } from "@UI";
+import { Product } from "@features/API";
 
-export interface ProductCardProps extends Product {
+export interface ProductCardProps {
   buttonText?: string;
   forceHover?: boolean | undefined;
-  postion?: "save" | "delete";
+  position?: "save" | "delete";
   full?: boolean;
   liked?: boolean;
   onLike?: (id: string) => void;
   onButtonClick?: (id: string) => void;
   onDelete?: (id: string) => void;
+  id: string;
+  price: number;
+  thumbnail: string;
+  cashback: number;
+  discount: number;
+  rate: number;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   id,
-  title,
   price,
-  presentations,
-  shopId,
-  attributes,
-  postion = "save",
+  thumbnail,
+  position: postion = "save",
   liked,
   forceHover,
   buttonText,
@@ -83,11 +86,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               className="bg-red-400 bg-opacity-70 px-4 text-white flex gap-2"
             >
               {/* cash ack */}
-              {cashback.type === "cash" ? (
-                <PriceDisplay priceObject={{ amount: cashback.amount }} />
-              ) : (
-                `${cashback.amount}%`
-              )}{" "}
+              <PriceDisplay priceObject={{ amount: cashback }} />
               Cashback
             </div>
           )}
@@ -138,7 +137,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {buttonText && buttonText}
           </span>
         </div>
-        <Image src={presentations.find((v) => v.type === "image")?.src} />
+        <Image className="w-full h-full object-cover" src={thumbnail} />
       </div>
       <div className="p-2">
         {/* name */}
@@ -163,7 +162,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               >
                 {/* old price */}
                 {preferedCurrency.currencySymbol}
-                {(price / ((discount.amount - 100) / 100)).toFixed(2)}
+                {(price / ((discount - 100) / 100)).toFixed(2)}
               </span>
             ) : null}
           </div>

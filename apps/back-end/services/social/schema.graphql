@@ -446,6 +446,10 @@ type HashtagTopAffiliationPost {
   commented: AffiliationPost
 }
 
+type ActionEffect {
+  name: String!
+}
+
 type Action {
   id: ID!
   src: String!
@@ -459,6 +463,10 @@ type Action {
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
+  music: String!
+  effectId: String
+  effect: ActionEffect!
+  profile: Profile!
 }
 
 type GetActionsCursorResponse {

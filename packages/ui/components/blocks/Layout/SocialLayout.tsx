@@ -7,17 +7,23 @@ import {
   CommentReportModal,
 } from "@blocks/Modals";
 import { PostViewPopup } from "@blocks/Popups";
-import { MasterLocationMapModal } from "@features/GeoLocation";
+import {
+  LocationSearchDrawer,
+  MasterLocationMapModal,
+} from "@features/GeoLocation";
 import { ProductDetailsDrawer } from "@features/Products";
 import { ServiceBookingDrawer } from "@features/Services";
 import {
   CreateActionDrawer,
+  CreateActionRemix,
+  ProfileOptionsDrawer,
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
   SocialReportModal,
   SocialShareCotentModal,
   SocialStoryDrawer,
 } from "@features/Social";
+import { EditMusicDrawer } from "@features/Social/components/Drawers/EditMusicDrawer";
 import { NotifciationsDrawer } from "@features/notifications";
 import { useResponsive } from "@src/index";
 import React from "react";
@@ -28,7 +34,7 @@ import {
   useSetRecoilState,
 } from "recoil";
 
-export enum ReportContentType {
+export enum SocialContentType {
   story = "story",
   post = "post",
   action = "action",
@@ -44,10 +50,19 @@ interface SocialAtomValue {
   msgNewUser?: boolean;
   productDetailsId?: string;
   shareLink?: string;
-  reportContent?: { id: string; type: ReportContentType };
+  reportContent?: { id: string; type: SocialContentType };
   serviceDetailsId?: string;
   serviceBooking?: { sellerId?: string; servicesIds?: string[] };
   createAction?: boolean;
+  editMusicId?: string;
+  remixActionId?: string;
+  searchMap: boolean;
+  profileIdOptions?: string;
+  showMyProfileNav: boolean;
+  showTaggedProfiles?: {
+    contentId: string;
+    contentType: SocialContentType;
+  };
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -65,6 +80,8 @@ const socialAtom = atom<SocialAtomValue>({
     reportContent: undefined,
     serviceDetailsId: undefined,
     createAction: false,
+    searchMap: false,
+    showMyProfileNav: false,
   },
 });
 
@@ -132,7 +149,7 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     cancelViewProductDetails: () => setControls("productDetailsId", undefined),
     shareLink: (link: string) => setControls("shareLink", link),
     cancelShareLink: () => setControls("shareLink", undefined),
-    reportContent: (id: string, type: ReportContentType) =>
+    reportContent: (id: string, type: SocialContentType) =>
       setControls("reportContent", { id, type }),
     cancelReportContent: () => setControls("reportContent", undefined),
     viewServiceDetails: (serviceId: string) =>
@@ -143,6 +160,23 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("serviceBooking", props),
     createAction: () => setControls("createAction", true),
     cancelCreateAction: () => setControls("createAction", false),
+    editMusic: (id: string) => setControls("editMusicId", id),
+    cancelEditMusic: () => setControls("editMusicId", undefined),
+    createRemixAction: (actionId: string) =>
+      setControls("remixActionId", actionId),
+    cancelRemixAction: () => setControls("remixActionId", undefined),
+    openSearchMap: () => setControls("searchMap", true),
+    closeSearchMap: () => setControls("searchMap", false),
+    openProfileOptions: (id: string) => setControls("profileIdOptions", id),
+    closeProfileOptions: () => setControls("profileIdOptions", undefined),
+    openMyProfileNav: () => setControls("showMyProfileNav", true),
+    closeMyProfileNav: () => setControls("showMyProfileNav", false),
+    showContentTaggedProfiles: (
+      contentId: string,
+      contentType: SocialContentType
+    ) => setControls("showTaggedProfiles", { contentId, contentType }),
+    hideContentTaggedProfiles: () =>
+      setControls("showTaggedProfiles", undefined),
 
     value,
   };
@@ -163,6 +197,10 @@ export const SocialLayout: React.FC = ({ children }) => {
       <MasterLocationMapModal />
       <ProductDetailsDrawer />
       <CreateActionDrawer />
+      <EditMusicDrawer />
+      <CreateActionRemix />
+      <ProfileOptionsDrawer />
+      <LocationSearchDrawer />
       <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

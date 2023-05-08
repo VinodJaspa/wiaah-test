@@ -22,6 +22,7 @@
 * {
   scroll-behavior: smooth;
 }
+
 .thinScroll::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -86,6 +87,67 @@
   -webkit-appearance: none;
   cursor: pointer;
 }
+
+.noInputTrack {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.noInputTrack::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  border-radius: 100%;
+  /* margin-top: -12px; */
+  /* Centers thumb on the track */
+  background-color: white;
+  height: 1.125rem;
+  width: 1.125rem;
+}
+
+.audioRangeInput {
+  /* -webkit-appearance: none; */
+  width: 100%;
+  height: 2px;
+  border-radius: 5px;
+  background-color: #20eca7;
+  outline: none;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* .audioRangeInput::-webkit-slider-thumb {
+  pointer-events: all;
+  z-index: 5;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  border: 0 none;
+  background-color: black;
+  -webkit-appearance: none;
+  cursor: pointer;
+} */
+
+.audioRangeInput > input[type="”range”"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 6px;
+  width: 6px;
+  border-radius: 3px;
+  background: #eb0c0c;
+  cursor: pointer;
+}
+
+/* .audioRangeInput::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+  cursor: pointer;
+  background: #d9d9d9;
+  border-radius: 5px; */
+/* } */
+
 input {
   outline: none;
   outline-style: none;

@@ -33,6 +33,7 @@ import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
 import { ProfileStatisticsModule } from './profile-statistics/profile-statistics.module';
 import { Shop } from '@profile/resolvers/profile.shop.resolver';
 import { Account } from './entities/extends';
+import { SocialTagModule } from './social-tag/social-tag.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { Account } from './entities/extends';
     PlacesModule,
     MarketingTagModule,
     ProfileStatisticsModule,
+    SocialTagModule,
   ],
 })
 export class AppModule {}

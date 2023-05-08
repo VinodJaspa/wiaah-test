@@ -16,6 +16,7 @@ import {
   useRemoveItemFromWishlistMutation,
   SpinnerFallback,
   Button,
+  Pagination,
 } from "@UI";
 import { HiShoppingCart } from "react-icons/hi";
 import { IoTrash } from "react-icons/io5";
@@ -53,7 +54,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
           DeletingId={deleteIsLoading ? variables?.itemId : undefined}
         ></WishlistTable>
       </SpinnerFallback>
-      <ItemsPagination controls={controls} />
+      <Pagination controls={controls} />
     </div>
   );
 };
@@ -61,7 +62,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
 export const WishlistTable: React.FC<{
   items: (Pick<WishedItem, "id" | "itemId"> & {
     product: Pick<Product, "id" | "thumbnail" | "title" | "stock" | "price">;
-    service: Pick<Service, "thumbnail" | "title" | "id" | "price">;
+    service: Pick<Service, "thumbnail" | "name" | "id" | "price">;
   })[];
   onDelete: (id: string) => any;
   onAdd: (id: string) => any;
@@ -87,11 +88,11 @@ export const WishlistTable: React.FC<{
                     {...setTestid("item-thumbnail")}
                     className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
                     src={item.product?.thumbnail || item.service?.thumbnail}
-                    alt={item.product?.title || item.service?.title}
+                    alt={item.product?.title || item.service?.name}
                   />
                 </Td>
                 <Td {...setTestid("item-title")}>
-                  {item.product?.title || item.service?.title}
+                  {item.product?.title || item.service?.name}
                 </Td>
                 <Td {...setTestid("item-stock")}>
                   {item.product?.stock || t("Avaiable")}

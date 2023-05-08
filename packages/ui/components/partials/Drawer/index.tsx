@@ -15,6 +15,7 @@ interface DrawerCtxValues {
   overlap?: boolean;
   onClose: () => any;
   onOpen: () => any;
+  draggable?: boolean;
 }
 
 const DrawerCtx = React.createContext<DrawerCtxValues>({
@@ -25,6 +26,7 @@ const DrawerCtx = React.createContext<DrawerCtxValues>({
   full: false,
   onClose: () => {},
   onOpen: () => {},
+  draggable: false,
 });
 
 export interface DrawerProps
@@ -45,6 +47,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   spaceBottom = "0px",
   overlap,
   isLazy,
+  draggable = false,
   ...props
 }) => {
   return (
@@ -59,6 +62,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         spaceBottom,
         full,
         overlap,
+        draggable,
       }}
     />
   );
@@ -71,7 +75,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   className,
   ...props
 }) => {
-  const { isOpen, position, active, full, spaceBottom, overlap } =
+  const { isOpen, position, active, full, spaceBottom, overlap, draggable } =
     React.useContext(DrawerCtx);
 
   const setPositionClasses = (): {
@@ -125,11 +129,54 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         ...setPositionClasses().styles,
         ...props.style,
         zIndex: overlap ? 100 : undefined,
+        overflowY: draggable ? "visible" : "hidden",
       }}
       className={`${className || ""} ${
         setPositionClasses().className
       } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
     >
+      {draggable ? (
+        <>
+          <div
+            style={{
+              bottom: `calc(100% - 1px)`,
+            }}
+            className="absolute left-1/2 -translate-x-1/2"
+          >
+            <svg
+              width="5.18em"
+              height="1em"
+              className="text-xl text-white"
+              viewBox="0 0 1862 359"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M480.5 0C432.727 0 394 38.7274 394 86.5C394 134.273 432.727 173 480.5 173H1380.5C1428.27 173 1467 134.273 1467 86.5C1467 38.7274 1428.27 0 1380.5 0H480.5ZM222.899 86H0V359H1862V86H1641.3C1614.07 86 1592 108.074 1592 135.303C1592 223.225 1520.72 294.5 1432.8 294.5H431.399C342.261 294.5 270 222.239 270 133.101C270 107.088 248.912 86 222.899 86Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div
+            style={{
+              width: `calc(50% - 3rem)`,
+              height: `calc(1rem - 1px)`,
+              bottom: `calc(100% - 1px)`,
+            }}
+            className="rounded-tl-3xl bg-white absolute bottom-full left-0"
+          ></div>
+          <div
+            style={{
+              width: `calc(50% - 3rem)`,
+              height: `calc(1rem - 1px)`,
+              bottom: `calc(100% - 1px)`,
+            }}
+            className="rounded-tr-3xl bg-white absolute right-0"
+          ></div>
+        </>
+      ) : null}
       {children}
     </div>
   ) : (

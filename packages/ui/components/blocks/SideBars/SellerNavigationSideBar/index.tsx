@@ -23,6 +23,7 @@ import {
   ServicesOutlineIcon,
   AffiliationIconOutline,
   AccountsProfileOptions,
+  useSocialControls,
 } from "@UI";
 import { runIfFn } from "@UI/../utils/src";
 
@@ -40,6 +41,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   className,
   ...props
 }) => {
+  const { openMyProfileNav } = useSocialControls();
   const { t } = useTranslation();
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick && onLinkClick(link);
@@ -109,7 +111,12 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               : "flex-col gap-12 bg-primary"
           }`}
         >
-          {!isMobile && <Image src="/logo.svg" className="w-full pl-8 pr-16" />}
+          {!isMobile && (
+            <Image
+              src="/logo.svg"
+              className="cursor-pointer w-full pl-8 pr-16"
+            />
+          )}
           {links.map((link, i) => {
             const active = link.url === activeLink;
             return (
@@ -150,13 +157,12 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             );
           })}
           {isMobile ? (
-            <AccountsProfileOptions>
-              <Avatar
-                className="min-w-[1.5rem]"
-                src={user?.photoSrc}
-                alt={user?.name}
-              />
-            </AccountsProfileOptions>
+            <Avatar
+              onClick={() => openMyProfileNav()}
+              className="min-w-[1.5rem]"
+              src={user?.photoSrc}
+              alt={user?.name}
+            />
           ) : null}
         </div>
         {!isMobile && (
