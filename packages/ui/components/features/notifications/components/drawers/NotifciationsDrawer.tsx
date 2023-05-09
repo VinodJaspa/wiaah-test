@@ -75,17 +75,6 @@ export const NotifciationsDrawer: React.FC = () => {
               const __isThisMonth =
                 isThisMonth(date) && lastDate && lastDate > date;
 
-              console.log(v.author?.profile?.username, {
-                __isToday,
-                __isYesterday,
-                __isThisWeek,
-                __isThisMonth,
-                lastIsToday,
-                lastIsYesterday,
-                lastIsThisWeek,
-                lastIsThisMonth,
-              });
-
               const dateLabel = __isToday
                 ? t("Today")
                 : __isYesterday

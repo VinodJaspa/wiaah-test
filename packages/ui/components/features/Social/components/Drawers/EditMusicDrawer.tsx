@@ -183,7 +183,7 @@ const AudioEditor = () => {
         <input
           type="range"
           min={0}
-          max={100}
+          max={duration}
           className="w-full audioRangeInput"
         />
         <p className="text-sm font-medium">

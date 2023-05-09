@@ -1,12 +1,9 @@
-import { PostCardInfo } from "@UI/../types/src";
-import { newsfeedPosts } from "@UI/placeholder";
-import { PostAttachmentsViewer } from "@blocks/DataDisplay";
 import {
   AddNewPostModal,
   AddNewStoryModal,
   CommentReportModal,
 } from "@blocks/Modals";
-import { PostViewPopup } from "@blocks/Popups";
+import { ContentHostType } from "@features/API";
 import {
   LocationSearchDrawer,
   MasterLocationMapModal,
@@ -24,6 +21,8 @@ import {
   SocialStoryDrawer,
 } from "@features/Social";
 import { EditMusicDrawer } from "@features/Social/components/Drawers/EditMusicDrawer";
+import { SocialMusicDrawer } from "@features/Social/components/Drawers/SocialMusicDrawer";
+import { TaggedProfilesDrawer } from "@features/Social/components/Drawers/TaggedProfilesDrawer";
 import { NotifciationsDrawer } from "@features/notifications";
 import { useResponsive } from "@src/index";
 import React from "react";
@@ -34,11 +33,8 @@ import {
   useSetRecoilState,
 } from "recoil";
 
-export enum SocialContentType {
-  story = "story",
-  post = "post",
-  action = "action",
-}
+export const SocialContentType = ContentHostType;
+export type SocialContentType = ContentHostType;
 
 interface SocialAtomValue {
   newPost: boolean;
@@ -63,6 +59,8 @@ interface SocialAtomValue {
     contentId: string;
     contentType: SocialContentType;
   };
+  showMusicId?: string;
+  showMusicSearch: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -82,6 +80,7 @@ const socialAtom = atom<SocialAtomValue>({
     createAction: false,
     searchMap: false,
     showMyProfileNav: false,
+    showMusicSearch: false,
   },
 });
 
@@ -178,6 +177,10 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     hideContentTaggedProfiles: () =>
       setControls("showTaggedProfiles", undefined),
 
+    openMusicDetails: (musicId: string) => setControls("showMusicId", musicId),
+    closeMusicDetails: () => setControls("showMusicId", undefined),
+    openMusicSearch: () => setControls("showMusicSearch", true),
+    closeMusicSearch: () => setControls("showMusicSearch", false),
     value,
   };
 }
@@ -201,7 +204,9 @@ export const SocialLayout: React.FC = ({ children }) => {
       <CreateActionRemix />
       <ProfileOptionsDrawer />
       <LocationSearchDrawer />
-      <PostViewPopup
+      <TaggedProfilesDrawer />
+      <SocialMusicDrawer />
+      {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;
           const post = newsfeedPosts.find((post) => post.postInfo.id === id);
@@ -220,7 +225,7 @@ export const SocialLayout: React.FC = ({ children }) => {
             />
           );
         }}
-      />
+      /> */}
       {/* <StoryModal /> */}
       <AddNewPostModal />
       <AddNewStoryModal />

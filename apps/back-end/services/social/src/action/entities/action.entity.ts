@@ -1,4 +1,4 @@
-import { Attachment, PostLocation } from '@entities';
+import { Attachment, PostLocation, PostTag } from '@entities';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
@@ -52,6 +52,9 @@ export class Action {
 
   @Field(() => String, { nullable: true })
   effectId?: string;
+
+  @Field(() => [PostTag])
+  tags: PostTag[];
 }
 
 @ObjectType()

@@ -13,7 +13,7 @@ export const Divider: React.FC<DividerProps> = ({
       {...props}
       className={`${className || "border-[#C1C1C1]"} ${
         variant === "vert" ? "border-l h-full mx-2" : "border-b  w-full my-2"
-      } border-opacity-50`}
+      } border-opacity-30`}
     ></div>
   );
 };

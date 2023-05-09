@@ -43,6 +43,7 @@ export const SaveIcon: React.FC<HtmlSvgProps> = (props) => {
 export const SaveFlagOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
+      {...props}
       width="0.65em"
       height="1em"
       viewBox="0 0 13 20"

@@ -289,6 +289,7 @@ model Story {
   views        StoryView[]
   likes        StoryLike[]
   mentions     PostMention[]
+  tags         PostTag[]
   profileId    String        @db.ObjectId()
 }
 
