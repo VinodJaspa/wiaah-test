@@ -27,13 +27,19 @@ import {
   InputLeftElement,
   Input,
   ModalFooter,
+  ArrowLeftAlt1Icon,
+  Avatar,
+  VerifiedIcon,
+  PayCheckIcon,
+  PlusIcon,
+  MinusIcon,
 } from "@partials";
 
 import { FinancialCard } from "@blocks/Cards";
 
 import { SectionHeader } from "@sections";
 
-import { mapArray } from "utils";
+import { getDateLabel, mapArray } from "utils";
 
 import {
   useGetMyBalanceQuery,
@@ -44,7 +50,7 @@ import {
 import { usePaginationControls } from "@blocks";
 import { TransactionStatus } from "@features/API";
 import { useUserData } from "@UI";
-import { useDisclouser } from "hooks";
+import { useDisclouser, useResponsive } from "hooks";
 import { Form, Formik } from "formik";
 
 export interface TransactionsHistorySectionProps {}
@@ -52,6 +58,7 @@ export interface TransactionsHistorySectionProps {}
 export const TransactionsHistorySection: React.FC<
   TransactionsHistorySectionProps
 > = () => {
+  const { isMobile } = useResponsive();
   const { user } = useUserData();
   const { handleClose, handleOpen, isOpen } = useDisclouser();
 
@@ -66,7 +73,99 @@ export const TransactionsHistorySection: React.FC<
   const { data: balance } = useGetMyBalanceQuery();
 
   const { t } = useTranslation();
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <HStack className="justify-center relative p-4">
+        <p className="text-lg font-semibold">{t("Transactions")}</p>
+        <ArrowLeftAlt1Icon className="left-0 top-1/2 absolute -translate-y-1/2" />
+      </HStack>
+      <div className="flex flex-col gap-6">
+        <HStack className="p-6 rounded-xl bg-primary text-black">
+          <div className="flex flex-col gap-4">
+            <p className="font-medium">{t("Current Balance")}</p>
+            <PriceDisplay className="text-2xl font-bold">
+              {(balance?.pendingBalance || 0) +
+                (balance?.withdrawableBalance || 0)}
+            </PriceDisplay>
+          </div>
+        </HStack>
+
+        <HStack className="p-6 justify-between rounded-xl bg-primary text-black">
+          <div className="flex flex-col gap-4">
+            <p className="font-medium">{t("Current Balance")}</p>
+            <PriceDisplay className="text-2xl font-bold">
+              {balance?.withdrawableBalance}
+            </PriceDisplay>
+          </div>
+          <Button className="text-sm font-semibold" colorScheme="darkbrown">
+            {t("Withdraw")}
+          </Button>
+        </HStack>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        {mapArray(transactions, (v, i) => {
+          const dateLabel = getDateLabel(
+            new Date(v.createdAt).toUTCString(),
+            new Date(transactions?.at(i - 1)?.createdAt).toUTCString()
+          );
+          return (
+            <>
+              {dateLabel ? (
+                <p className=" text-xs text-grayText">{t(`${dateLabel}`)}</p>
+              ) : null}
+              <HStack className="justify-between">
+                <HStack onClick={() => {}} className="cursor-pointer p-2">
+                  <Avatar
+                    className="min-w-[2.375rem]"
+                    src={
+                      v.amount > 0
+                        ? v.fromUser.profile?.photo
+                        : v.toUser.profile?.photo
+                    }
+                  />
+                  <div className="flex flex-col gap-1">
+                    <HStack className="gap-1">
+                      <p className="font-semibold">
+                        {v.fromUser.profile?.username}
+                      </p>
+                      <VerifiedIcon className="text-xs text-secondaryBlue" />
+                    </HStack>
+                    <p className="text-xs font-medium text-grayText">
+                      {new Date(v.createdAt).toLocaleDateString("en-us", {
+                        month: "long",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </HStack>
+
+                <HStack>
+                  <PayCheckIcon
+                    className={`${
+                      v.amount > 0 ? "text-primary" : "text-secondaryRed"
+                    } text-xs`}
+                  />
+                  <p className="text-xs font-medium">{v.paymentType}</p>
+                </HStack>
+                <HStack className="text-lg gap-1 font-semibold">
+                  <p
+                    className={`${
+                      v.amount > 0 ? "text-primary" : "text-secondaryRed"
+                    } text-xs `}
+                  >
+                    {v.amount > 0 ? <PlusIcon /> : <MinusIcon />}
+                  </p>
+                  <PriceDisplay price={v.amount} />
+                </HStack>
+              </HStack>
+            </>
+          );
+        })}
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("Your Finances")}>
         <Button className="flex gap-2 items-center">

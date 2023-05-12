@@ -6,7 +6,7 @@ import {
   CreateCommentInput,
   Profile,
   Comment,
-} from "@features/Social/services/types";
+} from "@features/API";
 
 export type CommentOnContentMutationVariables = Exact<{
   args: CreateCommentInput;
@@ -37,7 +37,11 @@ export const useCommentOnContent = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-
+mutation createComment($args:CreateCommentInput!){
+  createComment(createCommentInput:$args){
+    id
+  }
+}
     `);
 
   return useMutation<

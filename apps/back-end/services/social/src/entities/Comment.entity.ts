@@ -1,7 +1,10 @@
 import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Attachment, Profile } from '@entities';
 import { ContentHostType } from 'prismaClient';
-import { CreateGqlPaginatedResponse } from 'nest-utils';
+import {
+  CreateGqlCursorPaginatedResponse,
+  CreateGqlPaginatedResponse,
+} from 'nest-utils';
 
 registerEnumType(ContentHostType, { name: 'ContentHostType' });
 
@@ -49,5 +52,10 @@ export class Comment {
 
 @ObjectType()
 export class PaginationCommentsResponse extends CreateGqlPaginatedResponse(
+  Comment,
+) {}
+
+@ObjectType()
+export class CommentsCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
   Comment,
 ) {}

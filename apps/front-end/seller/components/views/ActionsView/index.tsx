@@ -90,7 +90,10 @@ export const ActionsView: React.FC = () => {
                     <VerticalDotsIcon className="text-sm" />
                   </HStack>
                 </div>
-                <Button colorScheme="gray" className="self-end px-4">
+                <Button
+                  colorScheme="gray"
+                  className="self-end px-4 bg-white bg-opacity-30"
+                >
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>

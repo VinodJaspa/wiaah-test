@@ -15,6 +15,7 @@ import {
 } from "@features/API";
 import {
   Button,
+  Checkbox,
   HStack,
   Input,
   Select,
@@ -34,12 +35,7 @@ import {
 } from "@features/Admin";
 import { DateFormInput } from "@blocks";
 import { useGetMyPayoutAccountQuery } from "../services/useGetMyPayoutAccount";
-import {
-  CardElement,
-  Elements,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "@features/Stripe/stripeClient";
 
 export const BillingAccount = React.forwardRef(
@@ -147,7 +143,7 @@ export const BillingAccount = React.forwardRef(
       account?.companyMembers || []
     );
 
-    const { form, inputProps, selectProps } = useForm<
+    const { form, inputProps, selectProps, dateInputProps } = useForm<
       Parameters<typeof mutate>[0]
     >(
       {
@@ -171,7 +167,6 @@ export const BillingAccount = React.forwardRef(
     const { mutate } = useUpdateMyBillingAccountMutation();
 
     const submit = () => {
-      console.log("submit");
       mutate(
         {
           ...form,
@@ -212,10 +207,6 @@ export const BillingAccount = React.forwardRef(
           {isIndividual ? t("Personal Location") : t("Company Location")}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            className="col-span-1 sm:col-span-2"
-            {...addressInput("line1")}
-          />
           <Select {...addressSelect("country")}>
             {mapArray(countries, (v) => (
               <SelectOption value={v.code}>{v.name}</SelectOption>
@@ -226,8 +217,15 @@ export const BillingAccount = React.forwardRef(
               <SelectOption value={v.code}>{v.name}</SelectOption>
             ))}
           </Select>
-          <Input {...addressInput("state")} />
-          <Input {...addressInput("postal_code")} />
+          <HStack>
+            <Input {...addressInput("state")} />
+            <Input {...addressInput("postal_code")} />
+          </HStack>
+          <Input
+            className="col-span-1 sm:col-span-2"
+            {...addressInput("line1")}
+            label={t("Address")}
+          />
         </div>
         <p>{t("Card details")}</p>
         <Elements stripe={stripePromise}>
@@ -267,88 +265,60 @@ export const BillingAccount = React.forwardRef(
         {form.business_type === BillingAccountBusinessType.Company ? (
           <div className="flex flex-col gap-2 w-full">
             <p className="font-bold">{t("Company Details")}</p>
-            <HStack className="gap-4">
-              <Input {...companyInput("name")} />
-              <Input {...companyInput("phone")} />
-            </HStack>
+            <Input {...companyInput("name")} label={t("Company name")} />
+            <Input {...companyInput("phone")} />
             <Input {...companyInput("tax_id")} />
 
-            <p className="font-bold">{t("Company Members")}</p>
-            <TableContainer>
-              <Table
-                ThProps={{
-                  align: "left",
-                  className: "whitespace-nowrap min-w-[12rem]",
-                }}
-              >
-                <Tr>
-                  <Th>{t("First Name")}</Th>
-                  <Th>{t("Last Name")}</Th>
-                  <Th>{t("Email")}</Th>
-                  <Th>{t("Phone")}</Th>
-                  <Th>{t("Birth Date")}</Th>
-                  <Th>{t("ID Number")}</Th>
-                  <Th>{t("Line 1")}</Th>
-                  <Th>{t("Country")}</Th>
-                  <Th>{t("City")}</Th>
-                  <Th>{t("State")}</Th>
-                  <Th>{t("Postal Code")}</Th>
-                  <Th>{t("is Owner")}</Th>
-                  <Th>{t("is Representative")}</Th>
-                  <Th>{t("is director")}</Th>
-                  <Th>{t("is executive")}</Th>
-                  <Th>{t("Action")}</Th>
-                </Tr>
-                {mapArray(members, (v, i) => (
-                  <CompanyMemberRow
-                    onDelete={() => {}}
-                    onChange={() => {}}
-                    member={v}
-                    key={i}
-                  />
+            <p className="font-bold">{t("Company Members Details")}</p>
+
+            <div className="flex flex-col gap-4">
+              <div>
+                <p>{t("Member type")}</p>
+                <HStack className="flex-wrap">
+                  {["director", "executive", "owner", "representative"].map(
+                    (v, i) => (
+                      <Checkbox
+                        checked={false}
+                        onChange={(e) => e.target.checked}
+                        key={i}
+                      >
+                        {startCase(v)}
+                      </Checkbox>
+                    )
+                  )}
+                </HStack>
+              </div>
+
+              <HStack>
+                <Input {...inputProps("firstName")} />
+                <Input {...inputProps("lastName")} />
+              </HStack>
+              <Input {...inputProps("email")} />
+              <Input {...inputProps("phone")} />
+              <HStack>
+                <DateFormInput {...dateInputProps("dob")} />
+                <Input type="number" {...dateInputProps("id_number")} />
+              </HStack>
+              <Select {...addressSelect("country")}>
+                {mapArray(countries, (v) => (
+                  <SelectOption value={v.code}>{v.name}</SelectOption>
                 ))}
-                <Tr>
-                  <Td className="col-span-[16]">
-                    <Button
-                      onClick={() =>
-                        setMembers((v) => [
-                          ...v,
-                          {
-                            address: {
-                              city: "",
-                              country: "",
-                              line1: "",
-                              postal_code: "",
-                              state: "",
-                            },
-                            dob: {
-                              day: 5,
-                              month: 0,
-                              year: 1995,
-                            },
-                            email: "",
-                            first_name: "",
-                            id: "",
-                            id_number: "",
-                            last_name: "",
-                            phone: "",
-                            relationship: {
-                              director: false,
-                              executive: false,
-                              owner: false,
-                              representative: false,
-                              title: "",
-                            },
-                          },
-                        ])
-                      }
-                    >
-                      {t("Add New")}
-                    </Button>
-                  </Td>
-                </Tr>
-              </Table>
-            </TableContainer>
+              </Select>
+              <Select {...addressSelect("city")}>
+                {mapArray(cities, (v) => (
+                  <SelectOption value={v.code}>{v.name}</SelectOption>
+                ))}
+              </Select>
+              <HStack>
+                <Input {...addressInput("state")} />
+                <Input {...addressInput("postal_code")} />
+              </HStack>
+              <Input
+                className="col-span-1 sm:col-span-2"
+                {...addressInput("line1")}
+                label={t("Address")}
+              />
+            </div>
           </div>
         ) : null}
       </div>

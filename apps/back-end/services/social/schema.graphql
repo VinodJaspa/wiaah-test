@@ -244,6 +244,13 @@ type PaginationCommentsResponse {
   hasMore: Boolean!
 }
 
+type CommentsCursorPaginationResponse {
+  data: [Comment!]!
+  cursor: String!
+  nextCursor: String!
+  hasMore: Boolean!
+}
+
 type ContentReaction {
   id: ID!
   hostId: ID!
@@ -592,7 +599,8 @@ type Query {
   getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
   adminGetNewsfeedPost(id: String!): AdminNewsfeedPost!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
-  getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
+  getContentComments(getContentCommentsArgs: GetContentCommentsInput!): CommentsCursorPaginationResponse!
+  getContentCommentsCount(id: String!, type: ContentHostType!): Int!
   adminGetContentComments(args: AdminGetContentCommentsInput!): [Comment!]!
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!

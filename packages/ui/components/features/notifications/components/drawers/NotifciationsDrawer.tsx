@@ -1,10 +1,4 @@
-import {
-  isThisMonth,
-  isThisWeek,
-  isToday,
-  isYesterday,
-  mapArray,
-} from "@UI/../utils/src";
+import { getDateLabel, isToday, mapArray } from "@UI/../utils/src";
 import { NotifiactionCard, SpinnerFallback, useSocialControls } from "@blocks";
 import { useGetMyNotificationsQuery } from "@features/notifications/useGetMyNotificationsQuery";
 import {
@@ -12,7 +6,6 @@ import {
   Drawer,
   DrawerCloseButton,
   DrawerContent,
-  DrawerHeader,
 } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -44,51 +37,15 @@ export const NotifciationsDrawer: React.FC = () => {
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           <div className="px-2 flex flex-col gap-5">
             {mapArray(data?.data, (v, i) => {
-              const date = new Date(v.createdAt);
-
-              const lastNoti = data?.data[i - 1];
-              const lastDate = lastNoti ? new Date(lastNoti.createdAt) : null;
-
-              const lastIsToday = lastNoti
-                ? isToday(lastNoti?.createdAt)
-                : null;
-
-              const lastIsYesterday = lastNoti
-                ? isYesterday(lastNoti?.createdAt)
-                : null;
-
-              const lastIsThisWeek = lastNoti
-                ? isThisWeek(lastNoti?.createdAt)
-                : null;
-
-              const lastIsThisMonth = lastNoti
-                ? isThisMonth(lastNoti?.createdAt)
-                : null;
-
-              const __isToday = isToday(date) && !lastIsToday;
-
-              const __isYesterday = isYesterday(date) && !lastIsYesterday;
-
-              const __isThisWeek =
-                isThisWeek(date) && lastDate && lastDate > date;
-
-              const __isThisMonth =
-                isThisMonth(date) && lastDate && lastDate > date;
-
-              const dateLabel = __isToday
-                ? t("Today")
-                : __isYesterday
-                ? t("Yesterday")
-                : __isThisWeek
-                ? t("This week")
-                : __isThisMonth
-                ? t("This month")
-                : null;
+              const label = getDateLabel(
+                new Date(v.createdAt).toUTCString(),
+                new Date(data?.data.at(i - 1)?.createdAt).toUTCString()
+              );
               return (
                 <div>
-                  {dateLabel ? (
+                  {label ? (
                     <div className="mb-2 text-[0.813rem] text-[#7E7E7E]">
-                      <p>{dateLabel}</p>
+                      <p>{label}</p>
                     </div>
                   ) : null}
                   <NotifiactionCard

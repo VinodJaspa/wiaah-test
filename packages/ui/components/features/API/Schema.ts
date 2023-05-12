@@ -821,6 +821,14 @@ export type CommentMentionInput = {
   userId: Scalars["ID"];
 };
 
+export type CommentsCursorPaginationResponse = {
+  __typename?: "CommentsCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Array<Comment>;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
+};
+
 export enum CommentsVisibility {
   Hidden = "hidden",
   Public = "public",
@@ -3924,7 +3932,8 @@ export type Query = {
   getCitites: Array<City>;
   getCommunityPosts: Array<Community>;
   getConnectedAccounts: Scalars["Boolean"];
-  getContentComments: Array<Comment>;
+  getContentComments: CommentsCursorPaginationResponse;
+  getContentCommentsCount: Scalars["Int"];
   getContentTaggedProfile?: Maybe<SocialTag>;
   getCookiesSettings: Array<CookiesSetting>;
   getCountries: Array<Country>;
@@ -4312,6 +4321,11 @@ export type QueryGetCommunityPostsArgs = {
 
 export type QueryGetContentCommentsArgs = {
   getContentCommentsArgs: GetContentCommentsInput;
+};
+
+export type QueryGetContentCommentsCountArgs = {
+  id: Scalars["String"];
+  type: ContentHostType;
 };
 
 export type QueryGetContentTaggedProfileArgs = {

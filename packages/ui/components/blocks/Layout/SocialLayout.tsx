@@ -19,7 +19,9 @@ import {
   SocialReportModal,
   SocialShareCotentModal,
   SocialStoryDrawer,
+  WithdrawalDrawer,
 } from "@features/Social";
+import { CommentsDrawer } from "@features/Social/components/Drawers/CommentsDrawer";
 import { EditMusicDrawer } from "@features/Social/components/Drawers/EditMusicDrawer";
 import { SocialMusicDrawer } from "@features/Social/components/Drawers/SocialMusicDrawer";
 import { TaggedProfilesDrawer } from "@features/Social/components/Drawers/TaggedProfilesDrawer";
@@ -61,6 +63,11 @@ interface SocialAtomValue {
   };
   showMusicId?: string;
   showMusicSearch: boolean;
+  showWithdraw: boolean;
+  showSocialContentComments?: {
+    type: SocialContentType;
+    id: string;
+  };
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -81,6 +88,7 @@ const socialAtom = atom<SocialAtomValue>({
     searchMap: false,
     showMyProfileNav: false,
     showMusicSearch: false,
+    showWithdraw: false,
   },
 });
 
@@ -181,6 +189,15 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     closeMusicDetails: () => setControls("showMusicId", undefined),
     openMusicSearch: () => setControls("showMusicSearch", true),
     closeMusicSearch: () => setControls("showMusicSearch", false),
+    showWithdraw: () => setControls("showWithdraw", true),
+    closeWithdraw: () => setControls("showWithdraw", false),
+    showContentComments: (contentType: SocialContentType, contentId: string) =>
+      setControls("showSocialContentComments", {
+        id: contentId,
+        type: contentType,
+      }),
+    hideContentComments: () =>
+      setControls("showSocialContentComments", undefined),
     value,
   };
 }
@@ -206,6 +223,8 @@ export const SocialLayout: React.FC = ({ children }) => {
       <LocationSearchDrawer />
       <TaggedProfilesDrawer />
       <SocialMusicDrawer />
+      <WithdrawalDrawer />
+      <CommentsDrawer />
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

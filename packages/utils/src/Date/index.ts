@@ -9,3 +9,4 @@ export * from "./subtractFromDate";
 export * from "./getDividedDateRange";
 export * from "./isSameDate";
 export * from "./getNearstNextDate";
+export * from "./dateLabel";

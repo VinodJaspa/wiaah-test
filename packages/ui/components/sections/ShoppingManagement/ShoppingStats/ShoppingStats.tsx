@@ -293,7 +293,7 @@ export const ShoppingStats: React.FC<{
         </div>
       </div>
       <div className="flex flex-col col-span-7 gap-6">
-        {/* recent orders */}
+        {/* recent cashback */}
         <div className="h-[32rem] p-4 rounded-[0.625rem] bg-white overflow-hidden">
           <p className="font-semibold  text-[1.375rem]">
             {t("Recent Cashback")}

@@ -156,12 +156,13 @@ const MusicController: React.FC<{ src: string }> = ({ src }) => {
         )}
         <input
           className="audioRangeInput w-full"
+          type="range"
           min={0}
           max={duration}
-          value={progress}
-          onChange={(v) => {
-            goTo(parseInt(v.target.value));
-          }}
+          // value={progress}
+          // onChange={(v) => {
+          //   goTo(parseInt(v.target.value));
+          // }}
         />
         <p className="text-xs font-medium">
           {Intl.NumberFormat("en-us", { minimumIntegerDigits: 2 }).format(
