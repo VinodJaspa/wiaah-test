@@ -15,22 +15,30 @@ import {
   EmailArrowDownIcon,
   AccountVerifciationForm,
   PaymentMethodForm,
+  useVerifyEmailMutation,
+  useResponsive,
+  HStack,
+  TranslationText,
+  ArrowLeftAlt1Icon,
 } from "@UI";
 
 import { StepperStepType } from "types";
 import { Button } from "@UI";
-import { runIfFn } from "utils";
+import { runIfFn, useForm } from "utils";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const { isMobile } = useResponsive();
+  const [currentStep, setCurrentStep] = React.useState<number>(2);
+
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
 
   const handleNextStep = () => setCurrentStep((v) => v + 1);
+
   const requestSkipStep = () => setCurrentStep((v) => v + 1);
 
   const addSubmitRequest = (key: string | number, fn: () => any) =>
@@ -43,6 +51,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       submitFn();
     }
   };
+
   const requestPrevStep = () => {};
 
   const steps: StepperStepType[] = [
@@ -69,16 +78,16 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       key: 1,
       stepComponent: (
         <AccountSignEmailVerificationStep
-        // onSuccess={handleNextStep}
-        // ref={(v: { submit: () => any }) => {
-        //   if (
-        //     v &&
-        //     typeof v.submit === "function" &&
-        //     typeof submitRequests[1] !== "function"
-        //   ) {
-        //     addSubmitRequest(1, v.submit);
-        //   }
-        // }}
+          onSuccess={handleNextStep}
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[1] !== "function"
+            ) {
+              addSubmitRequest(1, v.submit);
+            }
+          }}
         />
       ),
     },
@@ -141,7 +150,28 @@ export const SellerProfileStartupView: React.FC = ({}) => {
 
   const currentStepComp = steps.at(currentStep) || null;
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-2 w-full h-full">
+      <HStack className="relative justify-between m-4 text-lg font-semibold">
+        <button onClick={() => requestPrevStep()}>
+          <ArrowLeftAlt1Icon className="" />
+        </button>
+        <TranslationText translationObject={currentStepComp?.stepName || ""} />
+        <button onClick={() => requestSkipStep()}>{t("Skip")}</button>
+      </HStack>
+
+      <div className="h-full px-4 overflow-y-scroll">
+        {currentStepComp?.stepComponent}
+      </div>
+
+      <Button
+        className="m-4 text-sm font-normal"
+        onClick={() => requestNextStep()}
+      >
+        {t("Next")}
+      </Button>
+    </div>
+  ) : (
     <>
       <div className="py-28 lg:py-20 h-full">
         <div className="fixed top-0 left-0 z-10 w-full">
@@ -241,7 +271,7 @@ const SellerListingForm = React.forwardRef(
     React.useImperativeHandle(ref, () => {
       return {
         submit: () => {
-          mutate();
+          mutate({}, { onSuccess });
         },
       };
     });
@@ -256,7 +286,20 @@ const SellerListingForm = React.forwardRef(
   }
 );
 
-export const AccountSignEmailVerificationStep: React.FC = () => {
+export const AccountSignEmailVerificationStep: React.FC<{
+  onSuccess: () => any;
+}> = React.forwardRef(({ onSuccess }, ref) => {
+  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
+    code: "",
+  });
+  const { mutate } = useVerifyEmailMutation();
+
+  React.useImperativeHandle(ref, () => ({
+    submit: () => {
+      mutate(form, { onSuccess });
+    },
+  }));
+
   return (
     <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
       <p className="text-xl font-semibold">
@@ -265,7 +308,11 @@ export const AccountSignEmailVerificationStep: React.FC = () => {
       <div className="p-16 rounded-xl shadow border border-gray-100 ">
         <EmailArrowDownIcon className="text-7xl" />
       </div>
-      <Input placeholder="123456" label="Verification code" />
+      <Input
+        {...inputProps("code")}
+        placeholder="123456"
+        label="Verification code"
+      />
     </div>
   );
-};
+});

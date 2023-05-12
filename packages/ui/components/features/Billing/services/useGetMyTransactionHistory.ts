@@ -1,3 +1,5 @@
+import { isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   Account,
   Exact,
@@ -21,7 +23,7 @@ export type GetMyTransactionsQuery = { __typename?: "Query" } & {
       | "amount"
       | "createdAt"
       | "description"
-      | "from"
+      | "fromId"
       | "id"
       | "status"
       | "updatedAt"
@@ -31,12 +33,18 @@ export type GetMyTransactionsQuery = { __typename?: "Query" } & {
     > & {
         toUser: { __typename?: "Account" } & Pick<Account, "id"> & {
             profile?: Maybe<
-              { __typename?: "Profile" } & Pick<Profile, "id" | "username">
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                "id" | "username" | "photo"
+              >
             >;
           };
         fromUser: { __typename?: "Account" } & Pick<Account, "id"> & {
             profile?: Maybe<
-              { __typename?: "Profile" } & Pick<Profile, "id" | "username">
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                "id" | "username" | "photo"
+              >
             >;
           };
       }
@@ -58,7 +66,7 @@ query getMyTransactions(
     amount
     createdAt
     description
-    from
+    fromId
     id
     status
     updatedAt
@@ -70,6 +78,7 @@ query getMyTransactions(
       profile {
         id
         username
+        photo
       }
     }
     fromUser{
@@ -77,6 +86,7 @@ query getMyTransactions(
       profile{
         id
         username
+        photo
       }
     }
   }
@@ -88,36 +98,41 @@ query getMyTransactions(
   });
 
   return useQuery(["my-transactions-history", { input }], async () => {
-    const mockRes: GetMyTransactionsQuery["getMyTransactions"] = [
-      ...Array(5),
-    ].map((v, i) => ({
-      amount: 30,
-      createdAt: new Date().toString(),
-      currency: "USD",
-      description: "desc",
-      from: "test",
-      fromUser: {
-        id: "test",
-        profile: {
+    if (isDev) {
+      const mockRes: GetMyTransactionsQuery["getMyTransactions"] = [
+        ...Array(5),
+      ].map((v, i) => ({
+        amount: 30,
+        createdAt: new Date().toString(),
+        currency: "USD",
+        description: "desc",
+        from: "test",
+        fromId: i.toString(),
+        fromUser: {
           id: "test",
-          username: "User name",
+          profile: {
+            id: "test",
+            username: "User name",
+            photo: getRandomImage(),
+          },
         },
-      },
-      id: "test",
-      status: TransactionStatus.Success,
-      toUser: {
         id: "test",
-        profile: {
+        status: TransactionStatus.Success,
+        toUser: {
           id: "test",
-          username: "User name",
+          profile: {
+            id: "test",
+            username: "User name",
+            photo: getRandomImage(),
+          },
         },
-      },
-      paymentType: "Paypal",
-      updatedAt: new Date().toString(),
-      userId: "test",
-    }));
+        paymentType: "Paypal",
+        updatedAt: new Date().toString(),
+        userId: "test",
+      }));
 
-    return mockRes;
+      return mockRes;
+    }
 
     const res = await client.send<GetMyTransactionsQuery>();
 

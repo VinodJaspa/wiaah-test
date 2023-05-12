@@ -106,8 +106,7 @@
   width: 1.125rem;
 }
 
-.audioRangeInput {
-  /* -webkit-appearance: none; */
+/* .audioRangeInput {
   width: 100%;
   height: 2px;
   border-radius: 5px;
@@ -117,7 +116,7 @@
   transition: opacity 0.2s;
   pointer-events: none;
   z-index: 3;
-}
+} */
 
 /* .audioRangeInput::-webkit-slider-thumb {
   pointer-events: all;
@@ -131,22 +130,102 @@
   cursor: pointer;
 } */
 
-.audioRangeInput > input[type="”range”"]::-webkit-slider-thumb {
+/* .audioRangeInput::-webkit-slider-thumb,
+.audioRangeInput::-ms-thumb {
   -webkit-appearance: none;
-  height: 6px;
-  width: 6px;
+  appearance: none;
+  height: 2px;
+  width: 2px;
   border-radius: 3px;
   background: #eb0c0c;
   cursor: pointer;
 }
 
-/* .audioRangeInput::-webkit-slider-runnable-track {
+.audioRangeInput::-webkit-slider-runnable-track {
   width: 100%;
   height: 2px;
   cursor: pointer;
   background: #d9d9d9;
-  border-radius: 5px; */
-/* } */
+  border-radius: 5px;
+} */
+
+/********** Range Input Styles **********/
+/*Range Reset*/
+.audioRangeInput {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 15rem;
+}
+
+/* Removes default focus */
+.audioRangeInput:focus {
+  outline: none;
+}
+
+/***** Chrome, Safari, Opera and Edge Chromium styles *****/
+/* slider track */
+.audioRangeInput::-webkit-slider-runnable-track {
+  height: 2px;
+  cursor: pointer;
+  background: #d9d9d9;
+  border-radius: 5px;
+}
+
+.audioRangeInput::-webkit-slider-runnable-track::before {
+  /* width: 50%; */
+  height: 2px;
+  cursor: pointer;
+  background: greenyellow;
+  border-radius: 5px;
+  margin-right: 20%;
+}
+
+/* slider thumb */
+.audioRangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -1.5px;
+  height: 6px;
+  width: 6px;
+  border-radius: 3px;
+  background: black;
+  cursor: pointer;
+}
+
+/* .audioRangeInput:focus::-webkit-slider-thumb {
+  border: 1px solid #053a5f;
+  outline: 3px solid #053a5f;
+  outline-offset: 0.125rem;
+} */
+
+/******** Firefox styles ********/
+/* slider track */
+.audioRangeInput::-moz-range-track {
+  background-color: #053a5f;
+  border-radius: 0.5rem;
+  height: 0.5rem;
+}
+
+/* slider thumb */
+.audioRangeInput::-moz-range-thumb {
+  border: none; /*Removes extra border that FF applies*/
+  border-radius: 0; /*Removes default border-radius that FF applies*/
+
+  /*custom styles*/
+  height: 6px;
+  width: 6px;
+  border-radius: 3px;
+  background: black;
+  cursor: pointer;
+}
+
+/* .audioRangeInput:focus::-moz-range-thumb {
+  border: 1px solid #053a5f;
+  outline: 3px solid #053a5f;
+  outline-offset: 0.125rem;
+} */
 
 input {
   outline: none;

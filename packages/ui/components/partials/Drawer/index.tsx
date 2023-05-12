@@ -135,7 +135,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         setPositionClasses().className
       } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
     >
-      {draggable ? (
+      {draggable && isOpen ? (
         <>
           <div
             style={{

@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "@UI/../api";
 import { Exact } from "types";
-import { FollowProfileInput, Mutation } from "@features/Social";
 import { useMutation } from "react-query";
+import { FollowProfileInput, Mutation } from "@features/API";
 
 export type FollowProfileMutationVariables = Exact<{
   args: FollowProfileInput;

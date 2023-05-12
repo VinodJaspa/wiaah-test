@@ -1,3 +1,4 @@
+import { ContentHostType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,6 +14,7 @@ import {
   LocationOutlineIcon,
   LoopIcon,
   MusicNoteFillIcon,
+  PersonGroupIcon,
   SaveFlagOutlineIcon,
   ShareIcon,
   ShoppingCartOutlinePlusIcon,
@@ -33,7 +35,8 @@ export const ActionsView: React.FC = () => {
   const { t } = useTranslation();
   const { data } = useGetPeronalizedActionsQuery();
   const { data: simillar } = useGetSimillarActionsQuery({});
-  const { createRemixAction } = useSocialControls();
+  const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
+    useSocialControls();
 
   const actions = data ? [data] : [];
   const mockRes = [...Array(15)].map((_, i) => ({
@@ -73,7 +76,12 @@ export const ActionsView: React.FC = () => {
               <div className="flex flex-col gap-6">
                 <div className="flex justify-between">
                   <DigitalCamera />
-                  <div className="px-2 py-1 bg-black bg-opacity-40 flex items-center gap-2">
+                  <div
+                    onClick={() => {
+                      openMusicDetails(v.music);
+                    }}
+                    className="cursor-pointer px-2 py-1 bg-black bg-opacity-40 flex items-center gap-2"
+                  >
                     <MusicNoteFillIcon />
                     <p className="text-xs font-medium">{v.music}</p>
                   </div>
@@ -82,7 +90,10 @@ export const ActionsView: React.FC = () => {
                     <VerticalDotsIcon className="text-sm" />
                   </HStack>
                 </div>
-                <Button colorScheme="gray" className="self-end px-4">
+                <Button
+                  colorScheme="gray"
+                  className="self-end px-4 bg-white bg-opacity-30"
+                >
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>
@@ -120,7 +131,6 @@ export const ActionsView: React.FC = () => {
                         icon: <LoopIcon />,
                         label: t("Remix"),
                         onClick: () => {
-                          console.log("remix click", v.id);
                           createRemixAction(v.id);
                         },
                       },
@@ -157,6 +167,20 @@ export const ActionsView: React.FC = () => {
                             city={v.location.city}
                             country={v.location.country}
                           />
+                        </HStack>
+                        <HStack
+                          onClick={() =>
+                            showContentTaggedProfiles(
+                              v.id,
+                              ContentHostType.Action
+                            )
+                          }
+                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2"
+                        >
+                          <PersonGroupIcon />
+                          <p>
+                            {v.tags.length} {t("people")}
+                          </p>
                         </HStack>
                       </HStack>
                     </div>

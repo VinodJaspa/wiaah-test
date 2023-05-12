@@ -15,7 +15,7 @@ export type GetSuggestedActionsQueryVariables = Exact<{ [key: string]: never }>;
 export type GetSuggestedActionsQuery = { __typename?: "Query" } & {
   getMyRecommendedAction: { __typename?: "Action" } & Pick<
     Action,
-    "src" | "reactionNum" | "comments" | "shares" | "id" | "music"
+    "src" | "reactionNum" | "comments" | "shares" | "id" | "music" | "tags"
   > & {
       effect: { __typename?: "ActionEffect" } & Pick<ActionEffect, "name">;
       location: { __typename?: "PostLocation" } & Pick<
@@ -42,6 +42,7 @@ export const getPeronalizedActionsQueryFetcher = async () => {
       src: "/action.mp4",
       id: "Teasdasd",
       music: "Kafir - Nile",
+      tags: [{ userId: "" }, { userId: "" }, { userId: "" }],
       effect: {
         name: "Clarendon",
       },
@@ -76,6 +77,9 @@ query getSuggestedActions{
     shares
     id
     music
+    tags {
+      userId
+    }
     effect{
       name
     }

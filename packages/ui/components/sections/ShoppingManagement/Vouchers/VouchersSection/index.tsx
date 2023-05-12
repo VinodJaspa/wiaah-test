@@ -18,12 +18,25 @@ import {
   ItemsPagination,
   usePaginationControls,
   useGetMyBalanceQuery,
+  useResponsive,
+  HStack,
+  ArrowLeftAlt1Icon,
+  PriceDisplay,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Divider,
 } from "@UI";
-import { mapArray, randomNum } from "utils";
-import { useGetMyVouchersQuery } from "@features/Vouchers";
+import { mapArray, useForm } from "utils";
+import {
+  useCreateVoucherMutation,
+  useGetMyVouchersQuery,
+} from "@features/Vouchers";
+import { VoucherStatus } from "@features/API";
 
 export const VouchersSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
   const {
     changeTotalItems,
     controls,
@@ -34,7 +47,96 @@ export const VouchersSection: React.FC = () => {
 
   const { data: balance } = useGetMyBalanceQuery();
 
-  return (
+  const { form, inputProps, selectProps } = useForm<
+    Parameters<typeof mutate>[0]
+  >({ amount: 0, currency: "", code: "" });
+
+  const { mutate } = useCreateVoucherMutation();
+
+  return isMobile ? (
+    <div className="flex flex-col gap-6 p-2">
+      <HStack className="relative justify-center">
+        <p>{t("Vouchers")}</p>
+        <ArrowLeftAlt1Icon className="absolute top-1/2 left-0" />
+      </HStack>
+
+      <div className="bg-primary px-6 h-[4.75rem] flex items-center justify-between rounded-xl">
+        <p className="font-medium">{t("Available Balance")}:</p>
+
+        <PriceDisplay
+          className="text-lg font-bold"
+          price={balance?.withdrawableBalance}
+        />
+      </div>
+
+      <div>
+        <p>{t("Amount to convert")}</p>
+        <InputGroup>
+          <InputLeftElement>
+            <Select {...selectProps("currency")} className="border-0">
+              <SelectOption value={"usd"}>USD</SelectOption>
+              <SelectOption value={"eur"}>EUR</SelectOption>
+            </Select>
+          </InputLeftElement>
+          <Input {...inputProps("amount")} />
+        </InputGroup>
+      </div>
+
+      <div className="fex flex-col gap-2">
+        <HStack className="justify-between">
+          <p>{t("Currency")}</p>
+          <p className="text-sm font-semibold uppercase">{form.currency}</p>
+        </HStack>
+        <HStack className="justify-between">
+          <p>{t("Fees")}</p>
+          <PriceDisplay className="text-sm font-semibold" price={form.amount} />
+        </HStack>
+        <Divider />
+        <HStack className="justify-between">
+          <p>{t("Converted Amount")}</p>
+          <PriceDisplay className="text-lg font-bold" price={form.amount} />
+        </HStack>
+      </div>
+
+      <Button onClick={() => mutate(form)} colorScheme="darkbrown">
+        {t("Convert into voucher")}
+      </Button>
+
+      <div className="flex flex-col">
+        <p>{t("Vouchers")}</p>
+
+        {mapArray(data, ({ amount, code, createdAt, currency, status }) => (
+          <HStack className="justify-between shadow-sm p-2">
+            <div className="flex flex-col gap-2">
+              <p className="font-medium">{code}</p>
+              <p className="text-xs text-grayText">
+                {new Date(createdAt).toLocaleDateString("en-us", {
+                  year: "numeric",
+                  month: "long",
+                  weekday: "short",
+                  day: "2-digit",
+                })}
+              </p>
+            </div>
+
+            <HStack className="font-semibold">
+              {amount} {currency}
+            </HStack>
+
+            <p
+              className={`${
+                status === VoucherStatus.Active
+                  ? "text-primary"
+                  : "text-secondaryRed"
+              } text-xs font-medium`}
+            >
+              {status === VoucherStatus.Active ? t("Active") : t("Inactive")}
+            </p>
+          </HStack>
+        ))}
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("Vouchers")} />
       <div className="w-full grid grid-cols-2">

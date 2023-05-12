@@ -22,7 +22,6 @@ import {
   ShoppingCartOutlineIcon,
   ServicesOutlineIcon,
   AffiliationIconOutline,
-  AccountsProfileOptions,
   useSocialControls,
 } from "@UI";
 import { runIfFn } from "@UI/../utils/src";

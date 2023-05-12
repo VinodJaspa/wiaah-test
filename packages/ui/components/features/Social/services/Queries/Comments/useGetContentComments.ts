@@ -6,8 +6,14 @@ import {
   Attachment,
   Profile,
   ContentHostType,
+  AttachmentType,
+  CommentsCursorPaginationResponse,
 } from "@features/API";
-import { useQuery } from "react-query";
+import {
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
 import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
 
@@ -16,45 +22,100 @@ export type GetContentCommentsQueryVariables = Exact<{
 }>;
 
 export type GetContentCommentsQuery = { __typename?: "Query" } & {
-  getContentComments: Array<
-    { __typename?: "Comment" } & Pick<
-      Comment,
-      | "id"
-      | "content"
-      | "commentedAt"
-      | "likes"
-      | "userId"
-      | "hostId"
-      | "hostType"
-      | "createdAt"
-      | "replies"
-      | "authorProfileId"
-      | "updatedAt"
-      | "attachment"
-    > & {
-        attachments: Array<
-          { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-        >;
-        author?: Maybe<
-          { __typename?: "Profile" } & Pick<
-            Profile,
-            "username" | "photo" | "verified"
-          >
-        >;
-      }
-  >;
+  getContentComments: {
+    __typename?: "CommentsCursorPaginationResponse";
+  } & Pick<
+    CommentsCursorPaginationResponse,
+    "cursor" | "hasMore" | "nextCursor"
+  > & {
+      data: Array<
+        { __typename?: "Comment" } & Pick<
+          Comment,
+          | "id"
+          | "content"
+          | "commentedAt"
+          | "likes"
+          | "userId"
+          | "hostId"
+          | "hostType"
+          | "updatedAt"
+        > & {
+            attachment: { __typename?: "Attachment" } & Pick<
+              Attachment,
+              "src" | "type"
+            >;
+            author?: Maybe<
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                "username" | "photo" | "verified"
+              >
+            >;
+          }
+      >;
+    };
 };
 
-export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
-  const client = createGraphqlRequestClient();
+export const useGetContentCommentsQuery = (
+  args: GetContentCommentsInput,
+  options?: UseInfiniteQueryOptions<
+    GetContentCommentsQuery["getContentComments"],
+    unknown,
+    GetContentCommentsQuery["getContentComments"],
+    unknown,
+    any
+  >
+) => {
+  return useInfiniteQuery(
+    ["get-content-comments", { args }],
+    async ({ meta, queryKey, pageParam }) => {
+      if (isDev) {
+        const res: GetContentCommentsQuery["getContentComments"] = {
+          cursor: pageParam || args.cursor,
+          hasMore: true,
+          nextCursor: args.cursor || "",
+          data: [...Array(10)].map((_, i) => ({
+            id: "",
+            attachments: [],
+            commentedAt: new Date().toString(),
+            content:
+              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
+            hostId: "",
+            hostType: ContentHostType.PostNewsfeed,
+            likes: randomNum(150),
+            userId: "",
+            createdAt: new Date().toUTCString(),
+            author: {
+              photo: getRandomImage(),
+              username: getRandomName().firstName,
+              verified: i % 2 === 0,
+            },
+            attachment: {
+              src: "",
+              type: AttachmentType.Img,
+              marketingTags: [],
+            },
+            authorProfileId: "",
+            replies: 10,
+            updatedAt: new Date().toUTCString(),
+          })),
+        };
 
-  client.setQuery(`
-    query getContentComments(
+        return res;
+      }
+
+      const client = createGraphqlRequestClient();
+
+      client.setQuery(`
+query getContentComments(
         $args:GetContentCommentsInput!
     ){
         getContentComments(
             getContentCommentsArgs:$args
         ){
+        cursor
+        hasMore
+        nextCursor
+        data{
             id
             attachment{
                 src
@@ -73,40 +134,22 @@ export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
             hostType
             updatedAt
         }
+        }
     }
   `);
 
-  client.setVariables<GetContentCommentsQueryVariables>({
-    args,
-  });
-
-  return useQuery(["get-content-comments", { args }], async () => {
-    if (isDev) {
-      const res: GetContentCommentsQuery["getContentComments"] = [
-        ...Array(10),
-      ].map((_, i) => ({
-        id: "",
-        attachments: [],
-        commentedAt: new Date().toString(),
-        content:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
-        hostId: "",
-        hostType: ContentHostType.PostNewsfeed,
-        likes: randomNum(150),
-        userId: "",
-        createdAt: new Date().toUTCString(),
-        author: {
-          photo: getRandomImage(),
-          username: getRandomName().firstName,
-          verified: i % 2 === 0,
+      client.setVariables<GetContentCommentsQueryVariables>({
+        args: {
+          id: args.id,
+          cursor: pageParam || args.cursor,
+          take: args.take,
         },
-      }));
+      });
 
-      return res;
-    }
+      const res = await client.send<GetContentCommentsQuery>();
 
-    const res = await client.send<GetContentCommentsQuery>();
-
-    return res.data.getContentComments;
-  });
+      return res.data.getContentComments;
+    },
+    options
+  );
 };

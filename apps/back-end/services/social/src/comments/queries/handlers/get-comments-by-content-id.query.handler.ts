@@ -5,7 +5,8 @@ import {
   GetUsersActivityScoresQuery,
 } from '@comments/queries/impl';
 import { CommentsRepository } from '@comments/repository';
-import { Comment } from '@entities';
+import { Comment, CommentsCursorPaginationResponse } from '@entities';
+import { PrismaService } from 'prismaService';
 
 export class QueryHandlerBase {
   querybus: QueryBus;
@@ -24,7 +25,11 @@ export class GetCommentsByContentIdQueryHandler
   extends QueryHandlerBase
   implements IQueryHandler<GetCommentsByContentId>
 {
-  constructor(private readonly repo: CommentsRepository, querybus: QueryBus) {
+  constructor(
+    private readonly repo: CommentsRepository,
+    querybus: QueryBus,
+    private prisma: PrismaService,
+  ) {
     super(querybus);
   }
 
@@ -33,14 +38,25 @@ export class GetCommentsByContentIdQueryHandler
     userId,
     cursor,
     take,
-  }: GetCommentsByContentId): Promise<Comment[]> {
+  }: GetCommentsByContentId): Promise<CommentsCursorPaginationResponse> {
     await this.validateCommentsQuery(contentId, userId);
     const friendsScores = await this.querybus.execute<
       GetUserFriendsIdsQuery,
       { id: string; score: number }[]
     >(new GetUserFriendsIdsQuery(userId));
 
-    const res = await this.repo.getAllByHostId(contentId);
+    const countPromise = this.prisma.comment.count({
+      where: {
+        hostId: contentId,
+      },
+    });
+
+    const res = await this.prisma.comment.findMany({
+      where: {
+        hostId: contentId,
+      },
+      take,
+    });
 
     const notFriendsIds = res.filter(
       (v) => !friendsScores.find((f) => f.id === v.id),
@@ -58,11 +74,19 @@ export class GetCommentsByContentIdQueryHandler
       res.find((c) => c.userId === v),
     );
 
-    return cursor
+    const comments = cursor
       ? sortedComments.splice(
           sortedComments.findIndex((v) => v.id === cursor),
-          take,
+          take + 1,
         )
       : sortedComments.splice(0, take);
+
+    const countRes = await countPromise;
+    return {
+      cursor,
+      data: comments,
+      hasMore: comments.length > take,
+      nextCursor: comments.at(comments.length - 1).id,
+    };
   }
 }

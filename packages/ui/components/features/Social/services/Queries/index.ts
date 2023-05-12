@@ -17,3 +17,4 @@ export * from "./Block";
 export * from "./Privacy";
 export * from "./MySaves";
 export * from "./Action";
+export * from "./Tags";

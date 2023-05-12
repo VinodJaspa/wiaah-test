@@ -221,7 +221,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                       />
                     </Td>
                     <Td>{id}</Td>
-                    <Td>{service.title}</Td>
+                    <Td>{"Service name"}</Td>
                     <Td>
                       <p>
                         {shopping
@@ -244,7 +244,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                       })}
                     </Td>
                     <Td>
-                      <PriceDisplay price={service.price} />
+                      <PriceDisplay price={150} />
                     </Td>
                     <Td>
                       <Badge

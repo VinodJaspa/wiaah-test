@@ -3,6 +3,7 @@ import { useResponsive, useDimensions } from "hooks";
 import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
 import {
+  ArrowLeftAlt1Icon,
   ArrowLeftIcon,
   ArrowRightIcon,
   Button,
@@ -63,16 +64,25 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
     } else {
       if (isMobile)
         return (
-          <SettingsSectionsSidebar
-            currentActive={null}
-            onPanelClick={(url) =>
-              url &&
-              url.length > 0 &&
-              handleSectionChange &&
-              handleSectionChange(url)
-            }
-            panelsInfo={sections}
-          />
+          <div className="flex flex-col p-2 gap-4">
+            <HStack className="justify-center relative">
+              <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
+              <TranslationText
+                className="text-lg font-semibold"
+                translationObject={name}
+              />
+            </HStack>
+            <SettingsSectionsSidebar
+              currentActive={null}
+              onPanelClick={(url) =>
+                url &&
+                url.length > 0 &&
+                handleSectionChange &&
+                handleSectionChange(url)
+              }
+              panelsInfo={sections}
+            />
+          </div>
         );
       return <>not found</>;
     }

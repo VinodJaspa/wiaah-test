@@ -5,6 +5,7 @@ import {
   ID,
   registerEnumType,
   Directive,
+  IntersectionType,
 } from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse, CreateGqlResponse } from 'nest-utils';
 import { ActiveStatus, ProfileVisibility } from 'prismaClient';
@@ -90,6 +91,12 @@ export class Profile {
 
   @Field(() => Int)
   visits: number;
+}
+
+@ObjectType()
+export class ProfileFollow extends Profile {
+  @Field(() => Boolean)
+  isFollowed: boolean;
 }
 
 @ObjectType()

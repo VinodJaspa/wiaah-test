@@ -78,8 +78,8 @@ export const LocationSearchDrawer: React.FC = () => {
     <Drawer
       full
       position="bottom"
-      // isOpen={!!value}
-      isOpen={true}
+      isOpen={!!value}
+      // isOpen={true}
       onClose={closeSearchMap}
       draggable
     >

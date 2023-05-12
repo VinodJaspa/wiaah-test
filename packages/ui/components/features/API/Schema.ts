@@ -111,6 +111,7 @@ export type Action = {
   reactionNum: Scalars["Int"];
   shares: Scalars["Int"];
   src: Scalars["String"];
+  tags: Array<PostTag>;
   userId: Scalars["ID"];
   views: Scalars["Int"];
   visibility: PostVisibility;
@@ -797,6 +798,14 @@ export type Comment = {
 export type CommentMentionInput = {
   profileId: Scalars["ID"];
   userId: Scalars["ID"];
+};
+
+export type CommentsCursorPaginationResponse = {
+  __typename?: "CommentsCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Array<Comment>;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
 };
 
 export enum CommentsVisibility {
@@ -1590,6 +1599,11 @@ export type GetContentCommentsInput = {
   cursor?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   take?: Maybe<Scalars["Int"]>;
+};
+
+export type GetContentTaggedProfilesInput = {
+  contentId: Scalars["String"];
+  contentType: Scalars["String"];
 };
 
 export type GetDesignByPlacementInput = {
@@ -3734,6 +3748,31 @@ export type Profile = {
   visits: Scalars["Int"];
 };
 
+export type ProfileFollow = {
+  __typename?: "ProfileFollow";
+  activeStatus: ActiveStatus;
+  bio: Scalars["String"];
+  coverPhoto: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  followers: Scalars["Int"];
+  followersData?: Maybe<Array<Follow>>;
+  following: Scalars["Int"];
+  followingData?: Maybe<Array<Follow>>;
+  id: Scalars["ID"];
+  isFollowed: Scalars["Boolean"];
+  lastActive: Scalars["DateTime"];
+  ownerId: Scalars["ID"];
+  photo: Scalars["String"];
+  profession: Scalars["String"];
+  publications: Scalars["Int"];
+  updatedAt: Scalars["DateTime"];
+  user?: Maybe<Account>;
+  username: Scalars["String"];
+  verified: Scalars["Boolean"];
+  visibility: ProfileVisibility;
+  visits: Scalars["Int"];
+};
+
 export type ProfileMeta = {
   __typename?: "ProfileMeta";
   id: Scalars["ID"];
@@ -3872,7 +3911,9 @@ export type Query = {
   getCitites: Array<City>;
   getCommunityPosts: Array<Community>;
   getConnectedAccounts: Scalars["Boolean"];
-  getContentComments: Array<Comment>;
+  getContentComments: CommentsCursorPaginationResponse;
+  getContentCommentsCount: Scalars["Int"];
+  getContentTaggedProfile?: Maybe<SocialTag>;
   getCookiesSettings: Array<CookiesSetting>;
   getCountries: Array<Country>;
   getCurrencies: Array<Currency>;
@@ -4259,6 +4300,15 @@ export type QueryGetCommunityPostsArgs = {
 
 export type QueryGetContentCommentsArgs = {
   getContentCommentsArgs: GetContentCommentsInput;
+};
+
+export type QueryGetContentCommentsCountArgs = {
+  id: Scalars["String"];
+  type: ContentHostType;
+};
+
+export type QueryGetContentTaggedProfileArgs = {
+  args: GetContentTaggedProfilesInput;
 };
 
 export type QueryGetCountriesArgs = {
@@ -5599,6 +5649,13 @@ export type SiteInformation = {
   slug: Scalars["String"];
   sortOrder: Scalars["Int"];
   title: Scalars["String"];
+};
+
+export type SocialTag = {
+  __typename?: "SocialTag";
+  contentId: Scalars["String"];
+  taggedProfiles: Array<ProfileFollow>;
+  taggedUserIds: Array<Scalars["String"]>;
 };
 
 export type SpecialDayWorkingHours = {

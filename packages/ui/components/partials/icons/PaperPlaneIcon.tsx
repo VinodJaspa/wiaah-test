@@ -42,3 +42,23 @@ export const PaperPlaneAngleIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+
+export const PaperPlaneAngleOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 19 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17.8382 1L8.85781 10.0174M8.85781 10.0174L12.2254 19L17.8382 1.03929L1 6.65201L8.85781 10.0174Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

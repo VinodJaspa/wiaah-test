@@ -1,5 +1,5 @@
 import React from "react";
-import { BookDetailsSection } from "@UI";
+import { BookDetailsSection, useGetMyProfileQuery, useUserData } from "@UI";
 import { BookingsHistorySection } from "./BookingsHistory";
 
 export const bookingsHistoryCtx = React.createContext<{
@@ -18,6 +18,8 @@ export const BookingsHistory: React.FC<{
   shopping?: boolean;
 }> = ({ shopping }) => {
   const [appointmentId, setAppointmentId] = React.useState<string | null>(null);
+
+  const { data } = useGetMyProfileQuery();
 
   function viewAppointment(id: string) {
     setAppointmentId(id);
@@ -41,7 +43,7 @@ export const BookingsHistory: React.FC<{
           bookId={appointmentId}
         />
       ) : (
-        <BookingsHistorySection />
+        data && <BookingsHistorySection accountId={data?.ownerId} />
       )}
     </bookingsHistoryCtx.Provider>
   );

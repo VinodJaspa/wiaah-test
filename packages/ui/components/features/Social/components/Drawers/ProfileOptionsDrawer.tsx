@@ -14,12 +14,13 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { CgShoppingBag } from "react-icons/cg";
 import { BiWallet } from "react-icons/bi";
-import { getRouting } from "@UI/../routing";
+import { getRouting, useRouting } from "@UI/../routing";
 import { mapArray, runIfFn } from "@UI/../utils/src";
 
 import React from "react";
 
 export const ProfileOptionsDrawer = () => {
+  const { visit } = useRouting();
   const { value, closeProfileOptions } = useSocialControls("showMyProfileNav");
 
   const BuyerNavLinks: HeaderNavLink[] = [
@@ -171,7 +172,13 @@ export const ProfileOptionsDrawer = () => {
       <DrawerContent style={{ overflow: "visible" }} className="p-4">
         <Stack col divider={<Divider className="my-4" />}>
           {mapArray(links, ({ icon, link }) => (
-            <HStack className="font-medium">
+            <HStack
+              onClick={() => {
+                visit((r) => r.addPath(link.href));
+                closeProfileOptions();
+              }}
+              className="font-medium cursor-pointer"
+            >
               {runIfFn(icon)}
               <TranslationText translationObject={link.name} />
             </HStack>

@@ -161,6 +161,30 @@ enum ProfileVisibility {
   private
 }
 
+type ProfileFollow {
+  user: Account
+  id: ID!
+  ownerId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  username: String!
+  activeStatus: ActiveStatus!
+  lastActive: DateTime!
+  bio: String!
+  photo: String!
+  coverPhoto: String!
+  followers: Int!
+  followingData: [Follow!]
+  following: Int!
+  followersData: [Follow!]
+  publications: Int!
+  profession: String!
+  visibility: ProfileVisibility!
+  verified: Boolean!
+  visits: Int!
+  isFollowed: Boolean!
+}
+
 type ProfilePaginatedResponse {
   data: [Profile!]!
   total: Int!
@@ -217,6 +241,13 @@ enum ContentHostType {
 type PaginationCommentsResponse {
   data: [Comment!]!
   total: Int!
+  hasMore: Boolean!
+}
+
+type CommentsCursorPaginationResponse {
+  data: [Comment!]!
+  cursor: String!
+  nextCursor: String!
   hasMore: Boolean!
 }
 
@@ -465,6 +496,7 @@ type Action {
   commentsVisibility: CommentsVisibility!
   music: String!
   effectId: String
+  tags: [PostTag!]!
   effect: ActionEffect!
   profile: Profile!
 }
@@ -541,6 +573,12 @@ type ProfileVisitsDetails {
   countries: [ProfileVisitDetails!]!
 }
 
+type SocialTag {
+  contentId: String!
+  taggedUserIds: [String!]!
+  taggedProfiles: [ProfileFollow!]!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   getProfileDetails(userId: String!): Profile!
@@ -561,7 +599,8 @@ type Query {
   getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
   adminGetNewsfeedPost(id: String!): AdminNewsfeedPost!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
-  getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
+  getContentComments(getContentCommentsArgs: GetContentCommentsInput!): CommentsCursorPaginationResponse!
+  getContentCommentsCount(id: String!, type: ContentHostType!): Int!
   adminGetContentComments(args: AdminGetContentCommentsInput!): [Comment!]!
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
@@ -602,6 +641,7 @@ type Query {
   getProfileVisitsDetails(args: GetProfileVisitsDetailsInput!): ProfileVisitsDetails!
   getTopProfileStories(args: GetTopProfilePostsInput!): [Story!]!
   getTopProfilePosts(args: GetTopProfilePostsInput!): [NewsfeedPost!]!
+  getContentTaggedProfile(args: GetContentTaggedProfilesInput!): SocialTag
 }
 
 input SearchPopularProfilesInput {
@@ -792,6 +832,11 @@ input GetTopProfilePostsInput {
   profileId: ID!
   pagination: GqlPaginationInput!
   sinceHours: Int!
+}
+
+input GetContentTaggedProfilesInput {
+  contentId: String!
+  contentType: String!
 }
 
 type Mutation {
