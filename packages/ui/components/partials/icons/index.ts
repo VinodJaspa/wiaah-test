@@ -163,3 +163,5 @@ export * from "./MediaPauseIcon";
 export * from "./SunIcon";
 export * from "./PayCheckIcon";
 export * from "./PenWritingIcon";
+export * from "./ArrowRefreshIcon";
+export * from "./MoneyHandIcon";

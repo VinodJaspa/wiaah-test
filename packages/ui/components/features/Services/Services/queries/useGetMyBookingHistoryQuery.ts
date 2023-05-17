@@ -1,26 +1,19 @@
 import {
-  BeautyCenterTreatmentCategory,
   BookedService,
   BookedServiceStatus,
   Cashback,
   CashbackType,
   Discount,
-  Dish,
-  Doctor,
   Exact,
   GetBookingsHistoryInput,
-  HealthCenterSpecialty,
-  HotelRoom,
   Insurance,
   Maybe,
   Profile,
   Service,
-  ServiceCancelationPolicy,
-  ServiceLocation,
   ServiceType,
-  Treatment,
 } from "@features/API";
-import { randomNum } from "@UI/../utils/src";
+import { isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -32,7 +25,15 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
   getBookingHistory: Array<
     { __typename?: "BookedService" } & Pick<
       BookedService,
-      "id" | "checkout" | "checkin" | "status" | "type" | "guests" | "payment"
+      | "id"
+      | "checkout"
+      | "checkin"
+      | "status"
+      | "type"
+      | "guests"
+      | "total"
+      | "originalTotal"
+      | "payment"
     > & {
         discount: { __typename?: "Cashback" } & Pick<
           Cashback,
@@ -44,46 +45,24 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
         >;
         buyer: { __typename?: "Account" } & {
           profile?: Maybe<
-            { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              "username" | "photo" | "verified"
+            >
           >;
         };
         seller: { __typename?: "Account" } & {
           profile?: Maybe<
-            { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              "username" | "photo" | "verified"
+            >
           >;
         };
-        room?: Maybe<
-          { __typename?: "HotelRoom" } & Pick<
-            HotelRoom,
-            | "bathrooms"
-            | "beds"
-            | "createdAt"
-            | "dailyPrice"
-            | "description"
-            | "pricePerNight"
-          > & {
-              cancelationPolicies: Array<
-                { __typename?: "ServiceCancelationPolicy" } & Pick<
-                  ServiceCancelationPolicy,
-                  "cost" | "duration"
-                >
-              >;
-            }
-        >;
-        dishs: Array<
+        service?: Maybe<
           { __typename?: "Service" } & Pick<
             Service,
-            "id" | "name" | "price" | "thumbnail" | "ingredients"
-          >
-        >;
-        doctor: { __typename?: "Service" } & Pick<
-          Service,
-          "id" | "name" | "speciality" | "thumbnail" | "rating" | "price"
-        >;
-        treatments: Array<
-          { __typename?: "Service" } & Pick<
-            Service,
-            "id" | "duration" | "price" | "name"
+            "thumbnail" | "name" | "id"
           >
         >;
         insurance?: Maybe<
@@ -125,48 +104,24 @@ query getMyBookings(
       profile{
         username
         photo
+        verified
       }
     }
     seller{
       profile{
         username
         photo
+        verified
       }
     }
+    service {
+      thumbnail
+      name
+      id
+    }
+    total
+    originalTotal
     payment
-    room{
-      bathrooms
-      beds
-      cancelationPolicies{
-        cost
-        duration
-      }
-      createdAt
-      dailyPrice
-      description
-      pricePerNight
-    }
-    dishs{
-      id
-      name
-      price
-      thumbnail
-      ingredients
-    }
-    doctor{
-      id
-      name
-      speciality
-      thumbnail
-      rating
-      price
-    }
-    treatments{
-      id
-      duration
-      price
-      name
-    }
     insurance{
       amount
       id
@@ -182,76 +137,56 @@ query getMyBookings(
   return useQuery<unknown, unknown, GetMyBookingsQuery["getBookingHistory"]>(
     ["my-booking-history", { args }],
     async () => {
-      const mockRes: GetMyBookingsQuery["getBookingHistory"] = [
-        ...Array(2),
-      ].map((v, i) => ({
-        id: "test",
-        cashback: {
-          amount: 5,
+      if (isDev) {
+        const mockRes: GetMyBookingsQuery["getBookingHistory"] = [
+          ...Array(2),
+        ].map((v, i) => ({
           id: "test",
-          units: 15,
-        },
-        buyer: {
-          profile: {
-            photo: "/profile (2).jfif",
-            username: "buyer name",
-          },
-        },
-        checkin: new Date().toString(),
-        discount: {
-          amount: 15,
-          id: "test",
-          units: 5,
-          type: CashbackType.Cash,
-        },
-        dishs: [],
-        guests: 1,
-        seller: {
-          profile: {
-            photo: "profile (3).jfif",
-            username: "seller name",
-          },
-        },
-        service: {
-          price: 48,
-          title: "test service name",
-        },
-        status: BookedServiceStatus.Completed,
-        treatments: [],
-        type: ServiceType.Hotel,
-        doctor: {
-          name: "doc name",
-          price: randomNum(150),
-          rating: 4,
-          thumbnail:
-            "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*",
-          speciality: {
-            description: "eye",
+          cashback: {
+            amount: 5,
             id: "test",
-            name: "Eye",
+            units: 15,
           },
-        },
-        room: {
-          bathrooms: 2,
-          beds: 4,
-          cancelationPolicies: [
-            {
-              cost: 4,
-              duration: 2,
+          buyer: {
+            profile: {
+              photo: "/profile (2).jfif",
+              username: "buyer name",
+              verified: true,
             },
-          ],
-          createdAt: new Date().toString(),
-          dailyPrice: true,
-          pricePerNight: 150,
-          description: "room desc",
-        },
-        checkout: new Date(),
-        insurance: {
-          amount: randomNum(150),
-        },
-      }));
+          },
+          checkin: new Date().toString(),
+          discount: {
+            amount: 15,
+            id: "test",
+            units: 5,
+            type: CashbackType.Cash,
+          },
+          guests: 1,
+          seller: {
+            profile: {
+              photo: "profile (3).jfif",
+              username: "seller name",
+              verified: true,
+            },
+          },
+          service: {
+            price: 48,
+            name: "test service name",
+            id: "",
+            thumbnail: getRandomImage(),
+          },
+          status: BookedServiceStatus.Completed,
+          treatments: [],
+          type: ServiceType.Hotel,
+          checkout: new Date(),
+          insurance: {
+            id: "",
+            amount: randomNum(150),
+          },
+        }));
 
-      return mockRes;
+        return mockRes;
+      }
 
       const res = await client.send<GetMyBookingsQuery>();
 

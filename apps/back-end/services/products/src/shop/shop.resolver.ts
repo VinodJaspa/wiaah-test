@@ -64,6 +64,7 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @Query(() => RawShop)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   async getUserRawShop(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('userId') id: string,
@@ -85,8 +86,8 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.getFilteredShops(filteredShopsInput, lang);
   }
 
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
   @Mutation(() => Shop)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createShop(
     @Args('createShopInput') createShopInput: CreateShopInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

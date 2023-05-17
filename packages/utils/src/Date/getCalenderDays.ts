@@ -131,3 +131,60 @@ export function getHistoryMonths(): HistoryMonth[] {
   }
   return months;
 }
+
+export const getMonthCalenderDays = (monthDate: Date) => {
+  const currentMonthLastDayDate = new Date(
+    monthDate.getFullYear(),
+    monthDate.getMonth() + 1,
+    0
+  );
+  const currentMonthFirstDayDate = new Date(
+    monthDate.getFullYear(),
+    monthDate.getMonth(),
+    1
+  );
+
+  const currentMonthDayNum = currentMonthLastDayDate.getDate();
+
+  const currentMonthFirstDayPositionInWeek = currentMonthFirstDayDate.getDay();
+  const currentMonthLastDayPositionInWeek = currentMonthLastDayDate.getDay();
+
+  const lastMonthDates = [...Array(currentMonthFirstDayPositionInWeek)].map(
+    (_, i) =>
+      new Date(
+        new Date(currentMonthFirstDayDate).setDate(
+          currentMonthFirstDayDate.getDate() - (i + 1)
+        )
+      )
+  );
+
+  const nextMonthDates = [
+    ...Array(Math.abs(currentMonthLastDayPositionInWeek - 6)),
+  ].map(
+    (_, i) =>
+      new Date(
+        new Date(currentMonthLastDayDate).setDate(
+          currentMonthLastDayDate.getDate() + (i + 1)
+        )
+      )
+  );
+
+  const currentDates = [...Array(currentMonthDayNum)].map(
+    (_, i) =>
+      new Date(
+        new Date(currentMonthFirstDayDate).setDate(
+          currentMonthFirstDayDate.getDate() + i
+        )
+      )
+  );
+
+  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const allDates: { currentMonth: boolean; date: Date }[] = [
+    ...lastMonthDates.reverse().map((v) => ({ currentMonth: false, date: v })),
+    ...currentDates.map((v) => ({ currentMonth: true, date: v })),
+    ...nextMonthDates.map((v) => ({ currentMonth: false, date: v })),
+  ];
+
+  return { allDates, weekdays };
+};

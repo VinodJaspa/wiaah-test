@@ -2,6 +2,8 @@ import React from "react";
 import { startCase } from "lodash";
 import * as yup from "yup";
 
+type ValidationFormErrors<T> = Record<keyof T, string>;
+
 export function useForm<TForm>(
   initial: TForm,
   constents?: Partial<TForm>,
@@ -13,9 +15,34 @@ export function useForm<TForm>(
 ) {
   const [data, setData] = React.useState<TForm>(initial);
 
-  const [errors, setErros] = React.useState<Record<string, string>>({});
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const schema = options?.yupSchema;
+
+  function validate(): [boolean, Record<string, string>] {
+    try {
+      const validationSchema = options?.yupSchema;
+
+      if (validationSchema) {
+        validationSchema.validateSync(data, {
+          abortEarly: false,
+        });
+      }
+      return [true, {} as ValidationFormErrors<TForm>];
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errors = error.inner.reduce((acc, curr) => {
+          if (curr instanceof yup.ValidationError) {
+            return { ...acc, [curr.path!]: curr.message };
+          } else return acc;
+        }, {}) as ValidationFormErrors<TForm>;
+
+        return [false, errors];
+      } else {
+        return [false, { unknown: "unknown" } as ValidationFormErrors<TForm>];
+      }
+    }
+  }
 
   function handleChange<Tkey extends keyof TForm, Tvalue extends TForm[Tkey]>(
     key: Tkey,
@@ -24,15 +51,15 @@ export function useForm<TForm>(
     setData((old) => {
       const newV = { ...old, [key]: v, ...constents };
       if (schema) {
-        const res = schema.validateSync(newV);
-
         // TODO: get errors and setErrros with the key:error pair
+        const [valid, errors] = validate();
+        setErrors(errors);
       }
 
       return newV;
     });
   }
-
+  console.log({ errors });
   function inputProps<Tkey extends keyof TForm>(
     key: Tkey,
     valueKey: string = "value",
@@ -69,7 +96,7 @@ export function useForm<TForm>(
 
     const onChange = (e: any) => {
       const value = mapOnChange(e);
-      console.log(stateTrans);
+
       handleChange(key, [
         ...stateTrans.filter((v) => v.langId !== lang),
         { langId: lang, value },
@@ -157,5 +184,6 @@ export function useForm<TForm>(
     switchInputProps,
     setValue: (v: TForm) => setData({ ...v, constents }),
     translationInputProps,
+    isValid: () => validate()[0],
   };
 }

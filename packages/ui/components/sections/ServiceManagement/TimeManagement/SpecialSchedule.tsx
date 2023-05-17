@@ -116,7 +116,7 @@ type ScheduledDay = {
   day: number;
 };
 
-const Calender: React.FC<CalenderProps> = ({
+export const Calender: React.FC<CalenderProps> = ({
   monthDetails,
   onDaySelect,
   mulitipleSelection,

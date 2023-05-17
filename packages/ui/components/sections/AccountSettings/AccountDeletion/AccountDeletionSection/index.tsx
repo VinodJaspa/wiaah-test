@@ -1,6 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useModalDisclouser } from "@UI";
+import {
+  ArrowLeftAlt1Icon,
+  HStack,
+  useModalDisclouser,
+  useResponsive,
+  useSocialControls,
+} from "@UI";
 import {
   AccountDeletionModal,
   Modal,
@@ -15,13 +21,62 @@ import {
 } from "@UI";
 import { useDeleteMyAccountMutation } from "@features/Accounts/services/useDeleteMyAccount";
 import { setTestid } from "utils";
+import { useRouting } from "@UI/../routing";
 
 export const AccountDeletionSection: React.FC = () => {
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
+  const { back } = useRouting();
   const { mutate, data } = useSuspendAccountMutation();
   const { mutate: deleteAccount } = useDeleteMyAccountMutation();
+  const { showAccountDeletionConfirmation, showAccountSuspendConfirmation } =
+    useSocialControls();
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-10 p-2">
+      <HStack className="justify-center relative">
+        <button
+          onClick={() => back()}
+          className="absolute left-1 top-1/2 -translate-y-1/2"
+        >
+          <ArrowLeftAlt1Icon />
+        </button>
+        <p className="text-lg font-semibold">{t("Account Deletion")}</p>
+      </HStack>
+
+      <div className="flex flex-col gap-4">
+        <HStack className="p-4 justify-between">
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-lg">{t("Delete Account")}</p>
+            <p className="text-sm">
+              {t("We do our best to give you a great experience")}
+            </p>
+          </div>
+          <Button
+            onClick={() => showAccountDeletionConfirmation()}
+            className="min-w-[7rem]"
+            colorScheme="danger"
+          >
+            {t("Delete")}
+          </Button>
+        </HStack>
+        <HStack className="p-4 justify-between">
+          <div className="flex flex-col gap-3">
+            <p className="text-lg font-semibold">{t("Suspend Account")}</p>
+            <p className="text-sm">{t("You can suspend your account")}</p>
+          </div>
+          <Button
+            onClick={() => showAccountSuspendConfirmation()}
+            className="min-w-[7rem]"
+            outline
+            colorScheme="danger"
+          >
+            {t("Suspend")}
+          </Button>
+        </HStack>
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("Account Deletion")} />
       <div className="flex flex-col gap-4">
@@ -32,17 +87,17 @@ export const AccountDeletionSection: React.FC = () => {
             </span>
             <span>{t("We do our best to give you a great experience")}</span>
           </div>
-          <ModalExtendedWrapper modalKey="5">
-            <ModalButton>
-              <Button className="px-7" colorScheme="danger">
-                {t("delete", "Delete")}
-              </Button>
-            </ModalButton>
-            <AccountDeletionModal
-              {...setTestid("delete-modal")}
-              onSubmit={(data) => deleteAccount(data)}
-            />
-          </ModalExtendedWrapper>
+          <Button
+            onClick={() => showAccountDeletionConfirmation()}
+            className="px-7"
+            colorScheme="danger"
+          >
+            {t("delete", "Delete")}
+          </Button>
+          <AccountDeletionModal
+            {...setTestid("delete-modal")}
+            onSubmit={(data) => deleteAccount(data)}
+          />
         </div>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col gap-2">
@@ -51,7 +106,7 @@ export const AccountDeletionSection: React.FC = () => {
           </div>
           <Button
             data-testid="SuspendAccountBtn"
-            onClick={() => mutate()}
+            onClick={() => showAccountSuspendConfirmation()}
             className="w-24"
             outline
             colorScheme="danger"
@@ -69,10 +124,18 @@ export interface DeleteAccountConfirmationModalProps {}
 export const DeleteAccountConfirmationModal: React.FC<
   DeleteAccountConfirmationModalProps
 > = () => {
-  const { handleClose, handleOpen, isOpen } = useModalDisclouser({});
+  const {
+    value,
+    showAccountDeletionConfirmation,
+    hideAccountDeletionConfirmation,
+  } = useSocialControls("showAccountDeletionConfirmation");
   const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onOpen={handleOpen} onClose={handleClose}>
+    <Modal
+      isOpen={!!value}
+      onOpen={showAccountDeletionConfirmation}
+      onClose={hideAccountDeletionConfirmation}
+    >
       <ModalOverlay />
       <ModalContent className="w-[min(100%,25rem)]">
         <div className="flex flex-col gap-4">

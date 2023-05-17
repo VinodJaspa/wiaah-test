@@ -15,7 +15,7 @@ import { mapArray } from "@UI/../utils/src";
 import { ServicePropertiesSwticher } from "@features/Services/components/Switchers";
 import { ServiceRefundableTypeDescription } from "@features/Services/components/DataDisplay";
 
-export interface HotelCheckoutCardProps {
+export interface ServiceCheckoutCardProps {
   thumbnail: string;
   name: string;
   shopName: string;
@@ -34,7 +34,12 @@ export interface HotelCheckoutCardProps {
     speciality: string;
     price: number;
   }[];
-  treatments?: { name: string; price: number; thumbnail: string }[];
+  treatments?: {
+    name: string;
+    price: number;
+    thumbnail: string;
+    qty: number;
+  }[];
   menus?: {
     name: string;
     dishs: {
@@ -47,7 +52,7 @@ export interface HotelCheckoutCardProps {
   }[];
 }
 
-export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
+export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   amenities,
   cancelationPolicy,
   extras,

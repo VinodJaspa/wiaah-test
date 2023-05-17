@@ -9,6 +9,7 @@ import { BookingQueryHandlers } from './queries';
 import { BookingsEventHandlers } from './events';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { ServiceModule } from '@service/service.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
         },
       },
     ]),
+    ServiceModule,
   ],
   providers: [
     BookServiceResolver,

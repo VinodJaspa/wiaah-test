@@ -1,5 +1,8 @@
 import React from "react";
-import { HotelCheckoutCard, HotelCheckoutCardProps } from "./HotelCheckoutCard";
+import {
+  HotelCheckoutCard,
+  ServiceCheckoutCardProps,
+} from "./HotelCheckoutCard";
 import { shallow, ShallowWrapper } from "enzyme";
 import { getTestId, randomNum } from "utils";
 
@@ -10,7 +13,7 @@ const testids = {
 
 describe("HotelCheckoutCard tests", () => {
   let wrapper: ShallowWrapper;
-  let props: HotelCheckoutCardProps;
+  let props: ServiceCheckoutCardProps;
   beforeEach(() => {
     props = {
       serviceType: "hotel",

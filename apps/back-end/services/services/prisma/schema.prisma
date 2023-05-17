@@ -216,12 +216,7 @@ model BookedService {
   checkin       DateTime
   checkout      DateTime?
   guests        Int
-  dishsIds      String[]
   extrasIds     String[]
-  treatmentsIds String[]
-  roomId        String?
-  doctorId      String?
-  vehicleId     String?
   discountId    String?
   cashbackId    String?
 }

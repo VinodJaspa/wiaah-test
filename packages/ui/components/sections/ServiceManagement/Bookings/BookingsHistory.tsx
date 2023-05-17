@@ -40,12 +40,23 @@ import {
   QrcodeDisplay,
   useGetAppointmentDetailsQuery,
   usePaybackServiceInsuranceMutation,
+  ArrowLeftAlt1Icon,
+  InputRightElement,
+  CloseIcon,
+  Select,
+  VerifiedIcon,
+  Image,
+  MoneyHandIcon,
+  ServicePendingAppointmentCard,
+  ServiceBookingCardVariant,
 } from "@UI";
-import { useCancelAppointmentMutation } from "@src/Hooks";
+import { useCancelAppointmentMutation, useResponsive } from "@src/Hooks";
 import { bookingsHistoryCtx } from ".";
 import { BookedServiceStatus, CashbackType, ServiceType } from "@features/API";
-import { useForm } from "@UI/../utils/src";
+import { mapArray, useForm } from "@UI/../utils/src";
 import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
+import { startCase } from "lodash";
+import { useRouting } from "@UI/../routing";
 
 const BookingHistoryAtom = atom<{
   paybackId?: {
@@ -65,17 +76,28 @@ const BookingHistoryAtom = atom<{
 
 export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const { shopping } = React.useContext(bookingsHistoryCtx);
-
+  const { isMobile } = useResponsive();
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
-  const [q, setQ] = React.useState<string>("");
   const { t } = useTranslation();
+  const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
-  const { refetch } = useGetMyBookingsHistoryQuery({
-    status: Filter,
-    pagination,
-    q,
-  });
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useGetMyBookingsHistoryQuery>[0]
+  >(
+    {
+      status: Filter,
+      pagination,
+      q: "",
+    },
+    {
+      status: Filter,
+      pagination,
+    }
+  );
+
+  const { refetch } = useGetMyBookingsHistoryQuery(form);
 
   React.useEffect(() => {
     refetch();
@@ -127,7 +149,229 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
     })
   );
 
-  return (
+  return isMobile ? (
+    shopping ? (
+      <div className="flex flex-col gap-6 w-full">
+        <HStack className="justify-center relative">
+          <button
+            className="absolute top-1/2 -translate-y-1/2 left-1"
+            onClick={() => back()}
+          >
+            <ArrowLeftAlt1Icon />
+          </button>
+          <p className="text-lg font-semibold">{t("Bookings")}</p>
+          <p className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-secondaryRed">{`(${
+            data.length
+          }) ${t("Bookings")}`}</p>
+        </HStack>
+
+        {mapArray(data, (book, i) => (
+          <div
+            style={{ boxShadow: "0px 0px 20px -17px black" }}
+            key={book.id + i}
+            className="p-2 flex flex-col gap-2"
+          >
+            <p className="text-center text-xl font-semibold">
+              {t("Check in details")}
+            </p>
+            <HStack className="gap-8 py-3 px-2 justify-between">
+              <QrcodeDisplay
+                style={{ width: "min(100%, 12.5rem)" }}
+                value={book.id}
+              />
+              <div className="flex flex-col gap-5">
+                <Button className="whitespace-nowrap" colorScheme="darkbrown">
+                  {t("Save QR")}
+                </Button>
+                <Button
+                  className="whitespace-nowrap"
+                  colorScheme="primary"
+                  outline
+                >
+                  {t("Share QR")}
+                </Button>
+              </div>
+            </HStack>
+            <p>
+              {t("Booking Number")}:{" "}
+              <span className="font-semibold">{book.id}</span>
+            </p>
+            <div className="flex gap-6">
+              <div className="flex flex-col w-28 gap-1">
+                <p>{t("Check in")}:</p>
+                <div className="flex flex-col rounded border border-primary">
+                  <p className="bg-primary text-xs text-black text-center">
+                    {new Date(book.checkin).toLocaleDateString("en-us", {
+                      weekday: "long",
+                    })}
+                  </p>
+                  <div className="flex px-2 font-semibold pt-1 flex-col">
+                    <p className="text-black text-center">
+                      {new Date(book.checkin).toLocaleDateString("en-us", {
+                        day: "2-digit",
+                      })}
+                    </p>
+                    <p className="text-black text-center">
+                      {new Date(book.checkin).toLocaleDateString("en-us", {
+                        month: "long",
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col w-28 gap-1">
+                <p>{t("Check out")}:</p>
+                <div className="flex flex-col rounded border border-primary">
+                  <p className="bg-primary text-xs text-black text-center">
+                    {new Date(book.checkout).toLocaleDateString("en-us", {
+                      weekday: "long",
+                    })}
+                  </p>
+                  <div className="flex px-2 font-semibold pt-1 flex-col">
+                    <p className="text-black text-center">
+                      {new Date(book.checkout).toLocaleDateString("en-us", {
+                        day: "2-digit",
+                      })}
+                    </p>
+                    <p className="text-black text-center">
+                      {new Date(book.checkout).toLocaleDateString("en-us", {
+                        month: "long",
+                      })}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ServicePendingAppointmentCard
+              variant={ServiceBookingCardVariant.buyer}
+              shopName="Padma Resort Legian"
+              amenities={[
+                { slug: "wifi", label: "Free WIFI" },
+                { label: "Free Movies", slug: "movies" },
+              ]}
+              cancelationPolicy={{
+                cost: 50,
+                duration: 15,
+              }}
+              checkin={new Date()}
+              checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
+              extras={[{ cost: 50, name: "Mini-bar-20" }]}
+              fullAddress="No.1 PO BOX 1107, legian, Indonesia"
+              guests={{
+                adults: 2,
+                childrens: 1,
+              }}
+              name="Standard room"
+              thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
+              total={500}
+              serviceType={ServiceType.Hotel}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="flex flex-col gap-2 w-full">
+        <HStack className="justify-center relative">
+          <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
+          <p>{t("Bookings")}</p>
+        </HStack>
+
+        <InputGroup>
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+          <Input
+            {...inputProps("q")}
+            placeholder={t("Type order ID, customer name, date...")}
+          />
+          <InputRightElement>
+            <CloseIcon />
+          </InputRightElement>
+        </InputGroup>
+
+        <HStack className="justify-between">
+          <HStack className="gap-1">
+            <p>{t("Month")}:</p>
+            <Select></Select>
+          </HStack>
+          <HStack className="gap-1">
+            <p>{t("Year")}:</p>
+            <Select></Select>
+          </HStack>
+        </HStack>
+
+        {mapArray(data, (v, i) => (
+          <div className="flex flex-col w-full">
+            <HStack className="justify-between">
+              <HStack>
+                <Avatar
+                  src={v.buyer.profile?.photo}
+                  name={v.buyer.profile?.username}
+                  alt={v.buyer.profile?.username}
+                />
+                <div className="flex flex-col">
+                  <HStack>
+                    <p>{v.buyer.profile?.username}</p>
+                    {v.buyer.profile?.verified ? (
+                      <VerifiedIcon className="text-xs text-secondaryBlue" />
+                    ) : null}
+                  </HStack>
+                </div>
+              </HStack>
+              <Badge
+                value={v.status}
+                cases={{
+                  fail: BookedServiceStatus.CanceledByBuyer,
+                  info: BookedServiceStatus.Continuing,
+                  success: BookedServiceStatus.Completed,
+                }}
+              >
+                {startCase(v.status)}
+              </Badge>
+            </HStack>
+            <Divider />
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Image
+                  src={v.service?.thumbnail}
+                  className="w-12 h-10 rounded-md"
+                />
+                <p className="text-sm font-medium">{v.service?.name}</p>
+              </div>
+              <HStack>
+                <p className="text-sm">{t("Payment method")}:</p>
+                <p className="text-sm font-semibold">{v.payment}</p>
+              </HStack>
+              <HStack>
+                <p className="text-sm">{t("View")}:</p>
+                <EyeIcon></EyeIcon>
+              </HStack>
+              <HStack>
+                <p className="text-sm">{t("Payback")}:</p>
+                <MoneyHandIcon />
+              </HStack>
+            </div>
+            <Divider />
+
+            <HStack className="justify-between">
+              <HStack className="text-sm">
+                <p>{t("Date")}:</p>
+                <p className="font-semibold text-base">
+                  {new Date(v.checkin).toLocaleDateString("en-us", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </p>
+              </HStack>
+
+              <PriceDisplay price={v.total || 0} />
+            </HStack>
+          </div>
+        ))}
+      </div>
+    )
+  ) : (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("Bookings")} />
       <TabsHeader className="flex-wrap" />

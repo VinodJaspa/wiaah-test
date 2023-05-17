@@ -545,7 +545,7 @@ enum ServiceTypeOfSeller {
 
 type BookedService {
   id: ID!
-  serviceId: ID!
+  serviceId: [ID!]!
   ownerId: ID!
   type: String!
   providerId: ID!
@@ -555,23 +555,16 @@ type BookedService {
   checkout: DateTime
   duration: Int
   guests: Int!
-  dishsIds: [ID!]
   extrasIds: [ID!]
-  treatmentsIds: [ID!]
-  roomId: ID
-  doctorId: ID
   discountId: String
   cashbackId: String
+  total: Int
+  originalTotal: Int
   buyer: Account!
   seller: Account!
-  service: Service!
-  treatments: [Service!]!
-  dishs: [Service!]!
-  doctor: Service!
+  service: Service
   cashback: Discount!
   discount: Cashback!
-  room: HotelRoom
-  dish: Dish
   insurance: Insurance
 }
 

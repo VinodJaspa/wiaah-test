@@ -1,5 +1,5 @@
 import React from "react";
-import { BookDetailsSection, useGetMyProfileQuery, useUserData } from "@UI";
+import { BookDetailsSection, useGetMyProfileQuery } from "@UI";
 import { BookingsHistorySection } from "./BookingsHistory";
 
 export const bookingsHistoryCtx = React.createContext<{

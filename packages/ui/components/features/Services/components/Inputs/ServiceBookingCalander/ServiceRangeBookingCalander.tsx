@@ -1,5 +1,6 @@
 import { useOutsideHover } from "@UI/../hooks";
 import {
+  getMonthCalenderDays,
   getNextNearestDate,
   isDate,
   isSameDay,
@@ -23,50 +24,7 @@ export const ServiceRangeBookingCalander: React.FC<
 > = ({ date, ...rest }) => {
   const [currentDate, setCurrentDate] = React.useState<Date>(new Date(date));
 
-  const currentMonthLastDayDate = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  );
-  const currentMonthFirstDayDate = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  );
-
-  const currentMonthDayNum = currentMonthLastDayDate.getDate();
-
-  const currentMonthFirstDayPositionInWeek = currentMonthFirstDayDate.getDay();
-  const currentMonthLastDayPositionInWeek = currentMonthLastDayDate.getDay();
-
-  const lastMonthDates = [...Array(currentMonthFirstDayPositionInWeek)].map(
-    (_, i) =>
-      new Date(
-        new Date(currentMonthFirstDayDate).setDate(
-          currentMonthFirstDayDate.getDate() - (i + 1)
-        )
-      )
-  );
-
-  const nextMonthDates = [
-    ...Array(Math.abs(currentMonthLastDayPositionInWeek - 6)),
-  ].map(
-    (_, i) =>
-      new Date(
-        new Date(currentMonthLastDayDate).setDate(
-          currentMonthLastDayDate.getDate() + (i + 1)
-        )
-      )
-  );
-
-  const currentDates = [...Array(currentMonthDayNum)].map(
-    (_, i) =>
-      new Date(
-        new Date(currentMonthFirstDayDate).setDate(
-          currentMonthFirstDayDate.getDate() + i
-        )
-      )
-  );
+  const { allDates, weekdays } = getMonthCalenderDays(new Date(currentDate));
 
   function nextMonth() {
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
@@ -75,14 +33,6 @@ export const ServiceRangeBookingCalander: React.FC<
   function prevMonth() {
     setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
   }
-
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-  const allDates: { currentMonth: boolean; date: Date }[] = [
-    ...lastMonthDates.reverse().map((v) => ({ currentMonth: false, date: v })),
-    ...currentDates.map((v) => ({ currentMonth: true, date: v })),
-    ...nextMonthDates.map((v) => ({ currentMonth: false, date: v })),
-  ];
 
   return (
     <div className="select-none w-full">

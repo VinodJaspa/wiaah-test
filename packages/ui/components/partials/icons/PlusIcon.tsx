@@ -1,9 +1,10 @@
 import React from "react";
 import { IconBaseProps } from "react-icons";
 
-export const PlusIcon: React.FC<IconBaseProps> = ({ className, ...props }) => {
+export const PlusIcon: React.FC<IconBaseProps> = ({ ...props }) => {
   return (
     <svg
+      {...props}
       width="1em"
       height="1em"
       viewBox="0 0 6 6"

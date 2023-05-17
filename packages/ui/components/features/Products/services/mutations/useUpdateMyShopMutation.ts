@@ -1,13 +1,13 @@
-import { Exact, Shop, UpdateShopInput } from "@features/API";
+import { Exact, Shop, UpdateUserShopInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type UpdateMyShopMutationVariables = Exact<{
-  args: UpdateShopInput;
+  args: UpdateUserShopInput;
 }>;
 
 export type UpdateMyShopMutation = { __typename?: "Mutation" } & {
-  updateMyShop: { __typename?: "Shop" } & Pick<Shop, "id">;
+  updateShop: { __typename?: "Shop" } & Pick<Shop, "id">;
 };
 
 export const useUpdateMyShopMutation = () => {
@@ -24,7 +24,7 @@ mutation updateMyShop($args:UpdateShopInput!) {
 `);
 
   return useMutation<
-    UpdateMyShopMutation["updateMyShop"],
+    UpdateMyShopMutation["updateShop"],
     unknown,
     UpdateMyShopMutationVariables["args"]
   >(["update-shop"], async (data) => {
@@ -34,6 +34,6 @@ mutation updateMyShop($args:UpdateShopInput!) {
       })
       .send<UpdateMyShopMutation>();
 
-    return res.data.updateMyShop;
+    return res.data.updateShop;
   });
 };

@@ -7,6 +7,7 @@ import {
   ProfileVisibility,
   VisibilityEnum,
 } from "@features/API";
+import { isDev } from "@UI/../utils/src";
 
 export type GetMyProfileQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -57,23 +58,25 @@ export const useGetMyProfileQuery = () => {
     `);
 
   return useQuery(["my-profile"], async () => {
-    return {
-      id: "",
-      activeStatus: ActiveStatus.Active,
-      bio: "My Social Profile Bio",
-      createdAt: new Date().toString(),
-      followers: 150,
-      following: 150,
-      lastActive: new Date().toString(),
-      ownerId: "",
-      photo: "/profile (4).jfif",
-      profession: "prof",
-      publications: 150,
-      updatedAt: new Date().toString(),
-      username: "name",
-      verified: true,
-      visibility: ProfileVisibility.Public,
-    } as GetMyProfileQuery["myProfile"];
+    if (isDev) {
+      return {
+        id: "",
+        activeStatus: ActiveStatus.Active,
+        bio: "My Social Profile Bio",
+        createdAt: new Date(2023, 1, 1, 1).toString(),
+        followers: 150,
+        following: 150,
+        lastActive: new Date().toString(),
+        ownerId: "",
+        photo: "/profile (4).jfif",
+        profession: "prof",
+        publications: 150,
+        updatedAt: new Date().toString(),
+        username: "name",
+        verified: true,
+        visibility: ProfileVisibility.Public,
+      } as GetMyProfileQuery["myProfile"];
+    }
 
     const res = await client.send<GetMyProfileQuery>();
 
