@@ -16,7 +16,7 @@ export type GetMyBlocklistQuery = { __typename?: "Query" } & {
         blockedProfile?: Maybe<
           { __typename?: "Profile" } & Pick<
             Profile,
-            "photo" | "username" | "id"
+            "photo" | "username" | "id" | "verified"
           >
         >;
       }
@@ -40,6 +40,7 @@ export const useGetMyBlockListQuery = () => {
             photo
             username
             id
+            verified
         }
     }
 }`);
@@ -54,6 +55,7 @@ export const useGetMyBlockListQuery = () => {
           id: "test",
           photo: "/profile (3).jfif",
           username: "user-" + i,
+          verified: true,
         },
       })
     );

@@ -59,7 +59,6 @@ export function useForm<TForm>(
       return newV;
     });
   }
-  console.log({ errors });
   function inputProps<Tkey extends keyof TForm>(
     key: Tkey,
     valueKey: string = "value",
@@ -175,6 +174,25 @@ export function useForm<TForm>(
     };
   }
 
+  function radioInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "checked",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) =>
+      e.target.checked === true ? e.target.value : undefined
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errorMessage: errors[key as string],
+    };
+  }
+
   return {
     form: data,
     handleChange,
@@ -185,5 +203,6 @@ export function useForm<TForm>(
     setValue: (v: TForm) => setData({ ...v, constents }),
     translationInputProps,
     isValid: () => validate()[0],
+    radioInputProps,
   };
 }

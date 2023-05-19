@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   Args,
@@ -43,23 +43,35 @@ export class NewsletterResolver {
       },
     });
   }
+
+  @Query(() => NewsletterSettings)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async getUserNewsletterSettings(
+    @Args('accountId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    await this.validateReadPremissions(id, user);
+    return this.prisma.newsletter.findUnique({
+      where: {
+        ownerId: id,
+      },
+    });
+  }
+
   @Mutation(() => Boolean)
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  @UseGuards(new GqlAuthorizationGuard([]))
   async changeUserNewsletterSettings(
     @Args('args') args: UpdateNewsletterInput,
     @Args('accountId') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    try {
-      await this.prisma.newsletter.update({
-        where: {
-          ownerId: id,
-        },
-        data: args,
-      });
-    } catch (error) {
-      return false;
-    }
+    await this.validateWritePremissions(id, user);
+    await this.prisma.newsletter.update({
+      where: {
+        ownerId: id,
+      },
+      data: args,
+    });
   }
 
   @Mutation(() => Boolean)
@@ -113,5 +125,21 @@ export class NewsletterResolver {
       __typename: 'Account',
       id: data.ownerId,
     };
+  }
+
+  async validateWritePremissions(
+    userId: string,
+    user: AuthorizationDecodedUser,
+  ) {
+    if (userId !== user.id && user.accountType !== accountType.ADMIN)
+      throw new UnauthorizedException();
+  }
+
+  async validateReadPremissions(
+    userId: string,
+    user: AuthorizationDecodedUser,
+  ) {
+    if (userId !== user.id && user.accountType !== accountType.ADMIN)
+      throw new UnauthorizedException();
   }
 }

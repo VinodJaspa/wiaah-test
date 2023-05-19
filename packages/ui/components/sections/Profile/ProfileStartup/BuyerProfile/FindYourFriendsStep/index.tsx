@@ -45,7 +45,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
         <div className="flex flex-col gap-6 p-4">
           <div className="flex flex-col gap-4">
             <HStack>
-              <Image src={v.image} />
+              <Image className="h-6 w-8 object-cover" src={v.image} />
               <p>{v.name}</p>
             </HStack>
             <Input placeholder={t("Email")} />

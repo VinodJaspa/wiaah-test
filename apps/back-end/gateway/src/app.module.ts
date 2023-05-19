@@ -10,7 +10,7 @@ import {
   VerifyAndGetUserFromContext,
 } from 'nest-utils';
 import { subgraphs } from '@lib';
-import { client } from './main';
+// import { client } from './main';
 import { ObjectId } from 'mongodb';
 
 @Module({
@@ -26,12 +26,12 @@ import { ObjectId } from 'mongodb';
           const _user = VerifyAndGetUserFromContext(ctx);
 
           const userId = _user?.id;
-          const user = userId
-            ? await client
-                .db()
-                .collection('Account')
-                .findOne({ _id: new ObjectId(userId) })
-            : {};
+          const user = {};
+          // ? await client
+          //     .db()
+          //     .collection('Account')
+          //     .findOne({ _id: new ObjectId(userId) })
+          // : {};
 
           return {
             ...ctx,

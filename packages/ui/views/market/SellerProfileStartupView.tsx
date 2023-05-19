@@ -20,6 +20,8 @@ import {
   HStack,
   TranslationText,
   ArrowLeftAlt1Icon,
+  ArrowRightIcon,
+  ArrowRightAltIcon,
 } from "@UI";
 
 import { StepperStepType } from "types";
@@ -31,7 +33,7 @@ import { AccountSignup } from "@features/Auth/views";
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const [currentStep, setCurrentStep] = React.useState<number>(2);
+  const [currentStep, setCurrentStep] = React.useState<number>(0);
 
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
@@ -149,27 +151,82 @@ export const SellerProfileStartupView: React.FC = ({}) => {
   ];
 
   const currentStepComp = steps.at(currentStep) || null;
+  const nextStep = steps.at(currentStep + 1) || null;
 
   return isMobile ? (
-    <div className="flex flex-col gap-2 w-full h-full">
-      <HStack className="relative justify-between m-4 text-lg font-semibold">
-        <button onClick={() => requestPrevStep()}>
-          <ArrowLeftAlt1Icon className="" />
-        </button>
-        <TranslationText translationObject={currentStepComp?.stepName || ""} />
-        <button onClick={() => requestSkipStep()}>{t("Skip")}</button>
+    <div className="flex flex-col gap-2 w-full h-full p-2">
+      <HStack className="p-2">
+        <div className="relative flex justify-center items-center">
+          <svg
+            className="absolute text-darkerGray text-5xl"
+            width="1em"
+            height="1em"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r="48.5"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+          </svg>
+
+          <svg
+            className="absolute -rotate-90 text-primary text-5xl"
+            width="1em"
+            strokeDasharray={300 + ((currentStep + 1) / steps.length) * 300}
+            strokeDashoffset={300}
+            height="1em"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="50"
+              cy="50"
+              r="48.5"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+          </svg>
+          <div className="bg-primary rounded-full w-10 h-10 text-2xl flex justify-center items-center">
+            {currentStep + 1}
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <p className="text-lg font-semibold">{currentStepComp?.stepName}</p>
+          <p className="text-xs text-primary">
+            {t("Next")} : {nextStep?.stepName}
+          </p>
+        </div>
       </HStack>
 
       <div className="h-full px-4 overflow-y-scroll">
         {currentStepComp?.stepComponent}
       </div>
 
-      <Button
-        className="m-4 text-sm font-normal"
-        onClick={() => requestNextStep()}
-      >
-        {t("Next")}
-      </Button>
+      <HStack className="px-4 justify-between">
+        <Button colorScheme="darkbrown" outline>
+          <HStack>
+            <ArrowLeftAlt1Icon />
+            <p>{t("Previous")}</p>
+          </HStack>
+        </Button>
+
+        <Button
+          className="m-4 text-sm font-normal"
+          onClick={() => requestNextStep()}
+          colorScheme="darkbrown"
+        >
+          <HStack>
+            <p>{t("Next")}</p>
+            <ArrowRightAltIcon />
+          </HStack>
+        </Button>
+      </HStack>
     </div>
   ) : (
     <>

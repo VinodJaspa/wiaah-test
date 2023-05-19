@@ -4050,6 +4050,8 @@ export type Query = {
   getUserAffiliationsPurchases: Array<AffiliationPurchase>;
   getUserBookingHistory: Array<BookedService>;
   getUserMembership?: Maybe<MembershipSubscription>;
+  getUserNewsletterSettings: NewsletterSettings;
+  getUserNotificationsSettings: UserNotificationSettings;
   getUserOrders: Array<Order>;
   getUserPayoutAccount: BillingAccount;
   getUserPrevStory: Story;
@@ -4706,6 +4708,14 @@ export type QueryGetUserBookingHistoryArgs = {
 
 export type QueryGetUserMembershipArgs = {
   id: Scalars["String"];
+};
+
+export type QueryGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryGetUserNotificationsSettingsArgs = {
+  userId: Scalars["String"];
 };
 
 export type QueryGetUserOrdersArgs = {

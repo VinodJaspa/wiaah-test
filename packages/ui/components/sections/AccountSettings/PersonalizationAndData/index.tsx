@@ -3,10 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
+  Divider,
   HStack,
   SectionHeader,
   Switch,
   useGetCookiesSettingsQuery,
+  useResponsive,
   useUpdateCookiesSettings,
 } from "@UI";
 import { TranslationTextType } from "types";
@@ -18,11 +20,41 @@ export const PersonalizationAndDataSection: React.FC<
 > = ({}) => {
   const { data } = useGetCookiesSettingsQuery();
   const { mutate } = useUpdateCookiesSettings();
+  const { isMobile } = useResponsive();
 
   const { t } = useTranslation();
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <SectionHeader sectionTitle={t("Cookies")} />
+      <div>
+        <p>
+          {t(
+            "We use cookies to help provide, personalize and improve your experience, including the ads you see, help business with analytics and measuring ad performance, and to provide a sager experience for you. You can learn more about how we use cookies in our Cookie Policy. We’ll remember your cookie choices and apply them anywhere you’re logged into instagram and where you use your accounts to log into other Facebook products. You can review or change your choices at any time in your cookie settings."
+          )}
+        </p>
+        <Divider className="my-4" />
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <HStack className="justify-between">
+              <p className="text-lg font-semibold">{t("Essential Cookies")}</p>
+              <Switch variant="alt" />
+            </HStack>
+            <p className="text-xs">
+              {t(
+                "(These cookies are required to use Wiaah Company Products. They’re necessary for these sites to work as intended.)"
+              )}
+            </p>
+          </div>
+          <HStack className="justify-between">
+            <p className="text-lg font-semibold">{t("Optional Cookies")}</p>
+            <Switch variant="alt" />
+          </HStack>
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col gap-8">
-      <SectionHeader sectionTitle={t("cookies", "Cookies")} />
+      <SectionHeader sectionTitle={t("Cookies")} />
       <p>
         {t(
           "We use cookies to help provide, personalize and improve your experience,including the ads you see,help businesses with analytics and measuring ad performance,and to provideasafer experience for you.You can learn more about how we use cookies in our Cookie Policy. We'll remember your cookie choices and apply them anywhere you're logged into Instagram and where you use your accounts to log into other Facebook products.You can review or change your choices at any time in your cookie settings."
