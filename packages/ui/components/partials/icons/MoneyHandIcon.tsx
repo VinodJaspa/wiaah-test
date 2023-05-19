@@ -1,7 +1,7 @@
 import { HtmlSvgProps } from "@UI/../types/src";
 import React from "react";
 
-const MoneyHandIcon: React.FC<HtmlSvgProps> = (props) => {
+export const MoneyHandIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
       {...props}

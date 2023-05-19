@@ -38,5 +38,6 @@ import { PrismaService } from 'prismaService';
     PrismaService,
     ...resolvers,
   ],
+  exports: [ServiceService],
 })
 export class ServiceModule {}

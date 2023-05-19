@@ -14,10 +14,16 @@ import {
   TBody,
   Td,
   WeekSwitcher,
+  useResponsive,
+  ArrowLeftIcon,
+  AspectRatio,
+  DotIcon,
 } from "@UI";
 import { ServiceType } from "@features/API";
 import {
+  getMonthCalenderDays,
   isDate,
+  isSameDay,
   mapArray,
   randomNum,
   runIfFn,
@@ -38,7 +44,7 @@ export const BookingsCalenderSection: React.FC<
   BookingCalenderSectionProps
 > = () => {
   const { t } = useTranslation();
-  const { setBookId } = React.useContext(BookingsSectionCtx);
+  const { isMobile } = useResponsive();
   const [now] = React.useState(new Date());
   const [activeWeek, setActiveWeek] = React.useState(0);
   const [bookDetailsId, setBookDetialsId] = React.useState<string>();
@@ -126,7 +132,14 @@ export const BookingsCalenderSection: React.FC<
     );
   }
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-6">
+      <HStack className="relative justify-center">
+        <p>{t("My Appointments")}</p>
+        <ArrowLeftIcon className="absolute left-1" />
+      </HStack>
+    </div>
+  ) : (
     <div className="flex flex-col w-full gap-4">
       <Modal
         isOpen={!!bookDetailsId}
@@ -405,5 +418,65 @@ export const CalenderBookingsList: React.FC<{
         </p>
       ) : null}
     </>
+  );
+};
+
+export const NotificationCalender: React.FC<{
+  value: string;
+  onChange: (dateUTC: string) => any;
+  notificationDates: string[];
+  monthDate: string;
+}> = ({ onChange, value, notificationDates, monthDate }) => {
+  const { t } = useTranslation();
+  const { allDates, weekdays } = getMonthCalenderDays(new Date(monthDate));
+
+  return (
+    <Table ThProps={{ align: "center" }}>
+      <Tr>
+        {mapArray(weekdays, (v, i) => (
+          <Th className="text-xs font-medium" key={i}>
+            {t(v)}
+          </Th>
+        ))}
+      </Tr>
+      {[...Array(weekdays.length)].map((_, i) => {
+        const days = allDates.slice(
+          i * (weekdays.length - 1),
+          (i + 1) * (weekdays.length - 1)
+        );
+        return (
+          <Tr>
+            {mapArray(days, (v, i) => {
+              const isSelected = isSameDay(new Date(value), v.date);
+              const notification = notificationDates.find((n) =>
+                isSameDay(new Date(n), v.date)
+              );
+              return (
+                <Td
+                  className={`${
+                    isSelected ? "border-black border" : ""
+                  } rounded-full p-1`}
+                  key={i}
+                >
+                  <AspectRatio
+                    className={`${
+                      isSelected
+                        ? "bg-black text-white"
+                        : notification
+                        ? "bg-[#CCCCCC] text-white"
+                        : "text-black"
+                    } rounded-full w-7 h-7`}
+                    ratio={1}
+                  >
+                    {new Date(v.date).getDate()}
+                    <DotIcon className="w-1 h-1 bg-secondaryRed absolute bottom-3/4 left-3/4" />
+                  </AspectRatio>
+                </Td>
+              );
+            })}
+          </Tr>
+        );
+      })}
+    </Table>
   );
 };

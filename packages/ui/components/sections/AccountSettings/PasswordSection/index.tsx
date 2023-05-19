@@ -6,70 +6,130 @@ import {
   Button,
   SectionHeader,
   useChangePasswordMutation,
-  ChangePasswordInput,
   setTestid,
+  Input,
+  useResponsive,
+  HStack,
+  ArrowLeftIcon,
 } from "@UI";
+import { useForm } from "@UI/../utils/src";
+import { useRouting } from "@UI/../routing";
+import * as yup from "yup";
 
 export interface PasswordSectionProps {}
 
 export const PasswordSection: React.FC<PasswordSectionProps> = () => {
   const { t } = useTranslation();
-  const { mutate } = useChangePasswordMutation();
-  return (
-    <>
-      <Formik<ChangePasswordInput>
-        initialValues={{
-          confirmNewPassword: "",
-          currentPassword: "",
-          newPassword: "",
-        }}
-        onSubmit={(data) => {
-          mutate(data);
-        }}
+  const { isMobile } = useResponsive();
+  const { back } = useRouting();
+  const { mutate, isLoading } = useChangePasswordMutation();
+  const { inputProps, form } = useForm<Parameters<typeof mutate>[0]>(
+    {
+      confirmNewPassword: "",
+      currentPassword: "",
+      newPassword: "",
+    },
+    {},
+    {
+      addLabel: true,
+      yupSchema: yup.object({
+        currentPassword: yup.string().min(6).max(30),
+        confirmNewPassword: yup.string().min(6).max(30),
+        newPassword: yup.string().min(6).max(30),
+      }),
+    }
+  );
+
+  return isMobile ? (
+    <div className="flex flex-col gap-6 p-2">
+      <HStack className="justify-center relative">
+        <p className="text-lg font-semibold">{t("Password")}</p>
+        <button
+          className="absolute top-1/2 -translate-y-1/2 left-0"
+          onClick={() => back()}
+        >
+          <ArrowLeftIcon className="text-2xl" />
+        </button>
+        {/* <button
+          className="absolute top-1/2 -translate-y-1/2 right-0"
+          onClick={() => {}}
+        >
+          {t("Finish")}
+        </button> */}
+      </HStack>
+
+      <Input
+        {...inputProps("currentPassword")}
+        placeholder={t("Type password") + "..."}
+        isPassword
+      ></Input>
+      <HStack className="justify-end">
+        <button onClick={() => {}}>
+          <p className="text-sm text-primary">{t("Forgot Password?")}</p>
+        </button>
+      </HStack>
+      <div className="flex flex-col gap-4">
+        <Input
+          {...inputProps("newPassword")}
+          placeholder={t("Type password") + "..."}
+          isPassword
+        ></Input>
+        <Input
+          {...inputProps("confirmNewPassword")}
+          placeholder={t("Type password") + "..."}
+          isPassword
+        ></Input>
+      </div>
+      <Button
+        loading={isLoading}
+        onClick={() => mutate(form)}
+        className="w-full mt-3"
+        colorScheme="darkbrown"
       >
-        {() => (
-          <Form style={{ width: "100%" }}>
-            <div className="flex flex-col gap-4">
-              <SectionHeader sectionTitle={t("password", "Password")} />
-              <FormikInput
-                label={{
-                  translationKey: "current_password",
-                  fallbackText: "Current Password",
-                }}
-                {...setTestid("current_password")}
-                name="currentPassword"
-              />
-              <FormikInput
-                label={{
-                  translationKey: "new_password",
-                  fallbackText: "New Password",
-                }}
-                {...setTestid("new_password")}
-                name="newPassword"
-              />
-              <FormikInput
-                label={{
-                  translationKey: "confirm_password",
-                  fallbackText: "Confirm Password",
-                }}
-                {...setTestid("confirm_password")}
-                name="confirmPassword"
-              />
-            </div>
-            <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
-              <span
-                {...setTestid("forgot_password")}
-                className="text-primary cursor-pointer"
-              >
-                {t("forgot_password", "Forgot Password")}
-              </span>
-              <Button {...setTestid("submit")} type="submit">
-                {t("Change Password")}
-              </Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+        {t("Change Password")}
+      </Button>
+    </div>
+  ) : (
+    <>
+      <div className="flex flex-col gap-4">
+        <SectionHeader sectionTitle={t("password", "Password")} />
+        <FormikInput
+          label={{
+            translationKey: "current_password",
+            fallbackText: "Current Password",
+          }}
+          {...inputProps("currentPassword")}
+          {...setTestid("current_password")}
+          name="currentPassword"
+        />
+        <Input
+          label={t("New Password")}
+          {...inputProps("newPassword")}
+          {...setTestid("new_password")}
+        />
+        <Input
+          label={t("Confirm Password")}
+          {...inputProps("confirmNewPassword")}
+          {...setTestid("confirm_password")}
+        />
+      </div>
+      <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
+        <span
+          {...setTestid("forgot_password")}
+          className="text-primary cursor-pointer"
+        >
+          {t("forgot_password", "Forgot Password")}
+        </span>
+        <Button
+          {...setTestid("submit")}
+          onClick={() => {
+            mutate(form);
+          }}
+          type="submit"
+        >
+          {t("Change Password")}
+        </Button>
+      </div>
     </>
   );
 };

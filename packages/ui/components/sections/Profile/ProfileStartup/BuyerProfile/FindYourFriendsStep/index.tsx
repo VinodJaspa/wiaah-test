@@ -1,7 +1,15 @@
 import React from "react";
-import { Button, SectionHeader, Input } from "@UI";
+import {
+  Button,
+  SectionHeader,
+  Input,
+  useResponsive,
+  Image,
+  HStack,
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { Field, Form, Formik } from "formik";
+import { mapArray } from "@UI/../utils/src";
 
 export interface FindYourFriendsStepProps {}
 
@@ -26,10 +34,29 @@ const MAIL_SERVICES: { name: string; image: string }[] = [
 
 export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
   const { t } = useTranslation();
-
+  const { isMobile } = useResponsive();
   let [mailService, setMailService] = React.useState(0);
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4">
+      <SectionHeader sectionTitle={t("Find friends on Wiaah")} />
+
+      {mapArray(MAIL_SERVICES, (v, i) => (
+        <div className="flex flex-col gap-6 p-4">
+          <div className="flex flex-col gap-4">
+            <HStack>
+              <Image className="h-6 w-8 object-cover" src={v.image} />
+              <p>{v.name}</p>
+            </HStack>
+            <Input placeholder={t("Email")} />
+          </div>
+          <Button className="self-end" colorScheme="darkbrown">
+            {t("Find Friends")}
+          </Button>
+        </div>
+      ))}
+    </div>
+  ) : (
     <div className="w-full flex flex-col gap-2">
       <SectionHeader
         sectionTitle={t("Find_friends_on_Wiaah", "Find friends on Wiaah")}

@@ -14,8 +14,10 @@ import {
   useMediaUploadControls,
   Image,
   useGetMyVerificationRequest,
+  Input,
+  useResponsive,
+  UploadIcon,
 } from "@UI";
-import { useTypedReactPubsub } from "@libs";
 
 export interface MyVerificationSectionProps {}
 
@@ -31,7 +33,9 @@ export const MyVerificationSection: React.FC<
 
   return (
     <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("My Verification")} />
+      <SectionHeader sectionTitle={t("My Verification")}>
+        {t("Submit")}
+      </SectionHeader>
       <AccountVerifciationForm
         onSubmit={(v) => request(v)}
         verificationCode={data?.VVC}
@@ -72,6 +76,8 @@ export const AccountVerifciationForm: React.FC<{
   const { controls: idBackControls, uploadImage: idBackUpload } =
     useMediaUploadControls();
 
+  const { isMobile } = useResponsive();
+
   const {
     controls: addressProofBillControls,
     uploadImage: addressProofBillUpload,
@@ -101,80 +107,124 @@ export const AccountVerifciationForm: React.FC<{
       {({ values: _values, setFieldValue }) => {
         const values = readOnly ? initialValue : _values;
         return (
-          <Form className="flex flex-col w-full gap-4">
+          <Form className="flex flex-col w-full gap-4 p-2">
+            <p className="text-lg font-semibold border-b border-primary">
+              {t("Basic Information")}
+            </p>
             <div className="flex gap-4">
-              <FormikInput name="firstName" label={t("First Name")} />
-              <FormikInput name="lastName" label={t("Last Name")} />
+              <div>
+                <p className="text-xs lg:text-base font-medium">
+                  {t("First Name")}
+                </p>
+                <Input placeholder={t("Type here") + "..."} />
+              </div>
+              <div>
+                <p className="text-xs lg:text-base font-medium">
+                  {t("Last Name")}
+                </p>
+                <Input placeholder={t("Type here") + "..."} />
+              </div>
             </div>
             <div>
-              <FormikInput name="address" label={t("Full address")} />
+              <p className="text-xs lg:text-base font-medium">
+                {t("Full address")}
+              </p>
+              <Input placeholder={t("Type here")} />
             </div>
             <div>
-              <FormikInput
-                as={DateFormInput}
-                name="date_of_birth"
-                label={t("Date of birth")}
-              />
+              <p className="text-xs lg:text-base font-medium">
+                {t("Date of birth")}
+              </p>
+              <DateFormInput placeholder={"DD/MM/YYYY"} />
             </div>
             <Divider />
             <div className="flex flex-col gap-2">
-              <p className="font-bold text-lg">{t("Proof of Address")}</p>
-              <p className="font-semibold text-lg">
+              <p className="font-semibold text-lg border-b border-primary">
+                {t("Proof of Address")}
+              </p>
+              <p className="font-semibold text-secondaryRed lg:text-lg text-sm">
                 {t(
-                  "Please provide a house bill or electricity bill that validate your address, the document must be less than 3 months old"
+                  "Please provide a house bill or electricity bill that validate your address, the document must be less than 3 months old*"
                 )}
               </p>
-              <div className="flex gap-4">
-                <Button
-                  outline
-                  onClick={() => addressProofBillUpload()}
-                  className="w-48 h-48 justify-center items-center flex flex-col gap-1"
-                >
-                  {values?.addressProofBill &&
-                  values.addressProofBill.length > 0 ? (
-                    <Image src={values.addressProofBill} />
-                  ) : (
-                    <>
-                      <p>{t("Upload Document")}</p>
-                      <PlusIcon className="text-4xl" />
-                    </>
-                  )}
-                </Button>
-              </div>
+              {isMobile ? (
+                <button onClick={() => addressProofBillUpload()}>
+                  <div className="flex font-semibold text-iconGray justify-center items-center flex-col gap-4 py-10">
+                    <UploadIcon className="text-5xl" />
+                    <p>{t("Tap to upload")}</p>
+                  </div>
+                </button>
+              ) : (
+                <div className="flex gap-4">
+                  <Button
+                    outline
+                    onClick={() => addressProofBillUpload()}
+                    className="w-48 h-48 justify-center items-center flex flex-col gap-1"
+                  >
+                    {values?.addressProofBill &&
+                    values.addressProofBill.length > 0 ? (
+                      <Image src={values.addressProofBill} />
+                    ) : (
+                      <>
+                        <p>{t("Upload Document")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
             </div>
             <Divider />
             <div className="flex flex-col gap-2">
               <p className="font-bold text-lg">{t("ID Verification")}</p>
-              <div className="flex gap-4">
-                <Button
-                  outline
-                  onClick={() => idFrontUpload()}
-                  className="w-48 h-48 justify-center items-center flex flex-col gap-1"
-                >
-                  {values?.id_front && values.id_front.length > 0 ? (
-                    <Image src={values.id_front} />
-                  ) : (
-                    <>
-                      <p>{t("Front Side")}</p>
-                      <PlusIcon className="text-4xl" />
-                    </>
-                  )}
-                </Button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                {isMobile ? (
+                  <button onClick={() => idFrontUpload()}>
+                    <div className="flex font-semibold text-iconGray justify-center items-center flex-col gap-4 py-10">
+                      <UploadIcon className="text-5xl" />
+                      <p>{t("Tap to upload")}</p>
+                    </div>
+                  </button>
+                ) : (
+                  <Button
+                    outline
+                    onClick={() => idFrontUpload()}
+                    className="w-48 h-48 justify-center items-center flex flex-col gap-1"
+                  >
+                    {values?.id_front && values.id_front.length > 0 ? (
+                      <Image src={values.id_front} />
+                    ) : (
+                      <>
+                        <p>{t("Front Side")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
+                  </Button>
+                )}
 
-                <Button
-                  outline
-                  onClick={() => idBackUpload()}
-                  className="w-48 h-48 justify-center items-center flex flex-col gap-1"
-                >
-                  {values?.id_back && values.id_back.length > 0 ? (
-                    <Image src={values.id_back} />
-                  ) : (
-                    <>
-                      <p>{t("Back Side")}</p>
-                      <PlusIcon className="text-4xl" />
-                    </>
-                  )}
-                </Button>
+                {isMobile ? (
+                  <button onClick={() => idBackUpload()}>
+                    <div className="flex font-semibold text-iconGray justify-center items-center flex-col gap-4 py-10">
+                      <UploadIcon className="text-5xl" />
+                      <p>{t("Tap to upload")}</p>
+                    </div>
+                  </button>
+                ) : (
+                  <Button
+                    outline
+                    onClick={() => idBackUpload()}
+                    className="w-48 h-48 justify-center items-center flex flex-col gap-1"
+                  >
+                    {values?.id_back && values.id_back.length > 0 ? (
+                      <Image src={values.id_back} />
+                    ) : (
+                      <>
+                        <p>{t("Back Side")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
+                  </Button>
+                )}
               </div>
               {verificationCode ? (
                 <>
@@ -194,7 +244,7 @@ export const AccountVerifciationForm: React.FC<{
                 </>
               ) : null}
             </div>
-            {verificationCode ? null : (
+            {!isMobile && verificationCode ? null : (
               <Button type="submit" className="self-end">
                 {t("Submit")}
               </Button>

@@ -15,17 +15,17 @@ import {
   TabsHeader,
   TabList,
   SubscriptionPlanCard,
-  PriceDisplay,
+  HStack,
+  ArrowLeftIcon,
 } from "@UI";
-import { PriceType } from "types";
 import {
-  CommissionType,
   useGetMembershipsQuery,
   useGetMyMembershipQuery,
 } from "@features/Membership";
 import { mapArray } from "utils";
 import { CommissionOn, MembershipTurnoverRuleType } from "@features/API";
 import { startCase } from "lodash";
+import { useRouting } from "@UI/../routing";
 
 function getObjectByAmount<
   TObj extends Record<string, any>,
@@ -54,6 +54,7 @@ type FormatedMembershipExpense = {
 export const MembershipSection: React.FC<MembershipSectionProps> = () => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
+  const { back } = useRouting();
   const { data } = useGetMembershipsQuery();
   const { data: myMembership } = useGetMyMembershipQuery();
 
@@ -99,7 +100,42 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
     [] as FormatedMembershipExpense[]
   );
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <HStack className="relative justify-center">
+        <p className="text-lg font-semibold">{t("Your Membership")}</p>
+        <button
+          className="absolute top-1/2 -translate-y-1/2 left-1"
+          onClick={() => back()}
+        >
+          <ArrowLeftIcon className="text-lg" />
+        </button>
+      </HStack>
+
+      <Table
+        TdProps={{ align: "center" }}
+        ThProps={{ className: "font-semibold text-sm" }}
+      >
+        <Tr>
+          <Th>{t("Package Name")}</Th>
+          <Th>{t("End Date")}</Th>
+          <Th>{t("Price")}</Th>
+        </Tr>
+        {mapArray(formatedExpenses, (v, i) => (
+          <Tr>
+            <Td className="text-primary">{v.name}</Td>
+            <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
+            <Td>{v.price}</Td>
+          </Tr>
+        ))}
+      </Table>
+
+      <div className="flex flex-col gap-4">
+        <p className="text-lg font-medium">{t("Select a plan")}</p>
+        <SelectPackageStep shopType={""} />
+      </div>
+    </div>
+  ) : (
     <div className="w-full flex flex-col">
       <SectionHeader sectionTitle={t("Your Membership")} />
       <div className="border-[1px] border-black border-opacity-10 shadow-md flex flex-col py-4">
@@ -132,42 +168,8 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
         </TableContainer>
       </div>
       <Divider className="my-2" />
-      {isMobile ? (
-        <Tabs>
-          {({ currentTabIdx, setCurrentTabIdx }) => (
-            <>
-              <TabsHeader>
-                <TabTitle
-                  className={`${
-                    currentTabIdx === 0 ? "text-black" : "text-gray-400"
-                  }`}
-                  onClick={() => setCurrentTabIdx(0)}
-                >
-                  {t("Free Plan")}
-                </TabTitle>
-                <TabTitle
-                  className={`${
-                    currentTabIdx === 1 ? "text-black" : "text-gray-400"
-                  }`}
-                  onClick={() => setCurrentTabIdx(1)}
-                >
-                  {t("Paid plan")}
-                </TabTitle>
-              </TabsHeader>
-              <TabList>
-                {mapArray(data, (data) => (
-                  <SubscriptionPlanCard
-                    price={data.turnover_rules[0].commission}
-                    benifits={data.includings.map((data) => data.title)}
-                  />
-                ))}
-              </TabList>
-            </>
-          )}
-        </Tabs>
-      ) : (
-        <SelectPackageStep value="" onChange={() => {}} shopType="" />
-      )}
+
+      <SelectPackageStep shopType={""} />
     </div>
   );
 };

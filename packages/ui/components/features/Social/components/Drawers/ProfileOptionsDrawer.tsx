@@ -21,7 +21,7 @@ import React from "react";
 
 export const ProfileOptionsDrawer = () => {
   const { visit } = useRouting();
-  const { value, closeProfileOptions } = useSocialControls("showMyProfileNav");
+  const { value, closeMyProfileNav } = useSocialControls("showMyProfileNav");
 
   const BuyerNavLinks: HeaderNavLink[] = [
     {
@@ -165,7 +165,7 @@ export const ProfileOptionsDrawer = () => {
     <Drawer
       position="bottom"
       isOpen={!!value}
-      onClose={closeProfileOptions}
+      onClose={closeMyProfileNav}
       draggable
     >
       <DrawerOverlay />
@@ -175,7 +175,7 @@ export const ProfileOptionsDrawer = () => {
             <HStack
               onClick={() => {
                 visit((r) => r.addPath(link.href));
-                closeProfileOptions();
+                closeMyProfileNav();
               }}
               className="font-medium cursor-pointer"
             >

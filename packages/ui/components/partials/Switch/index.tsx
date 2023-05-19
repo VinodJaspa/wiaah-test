@@ -11,7 +11,7 @@ export interface SwitchProps extends Omit<HtmlDivProps, "onChange"> {
   onChange?: (checked: boolean) => void;
   checked?: boolean;
   label?: string;
-  variant?: "basic" | "buttons";
+  variant?: "basic" | "buttons" | "alt";
 }
 
 export const Switch: React.FC<SwitchProps> = ({
@@ -24,45 +24,72 @@ export const Switch: React.FC<SwitchProps> = ({
   function handleToggle() {
     onChange && onChange(!checked);
   }
-  return variant === "basic" ? (
-    <div
-      {...props}
-      onClick={handleToggle}
-      data-testid="SwitchButton"
-      className={`${className} ${
-        checked ? "bg-primary" : "bg-gray-300"
-      }  cursor-pointer w-fit rounded-full p-1 transition-all`}
-    >
-      <div className="w-8 h-4">
+  switch (variant) {
+    case "basic":
+      return (
         <div
-          className={`${
-            checked ? "translate-x-full text-primary" : "text-gray-300"
-          } h-4 w-4 transform flex justify-center text-2xl  items-center rounded-full bg-white transition-all`}
+          {...props}
+          onClick={handleToggle}
+          data-testid="SwitchButton"
+          className={`${className} ${
+            checked ? "bg-primary" : "bg-gray-300"
+          }  cursor-pointer w-fit rounded-full p-1 transition-all`}
         >
-          {checked ? <IoCheckmark /> : <MdClose />}
+          <div className="w-8 h-4">
+            <div
+              className={`${
+                checked ? "translate-x-full text-primary" : "text-gray-300"
+              } h-4 w-4 transform flex justify-center text-2xl  items-center rounded-full bg-white transition-all`}
+            >
+              {checked ? <IoCheckmark /> : <MdClose />}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  ) : (
-    <HStack>
-      <Button
-        onClick={() => onChange && onChange(true)}
-        outline={!checked}
-        center
-        colorScheme="primary"
-        className="p-2 rounded-[100%]"
-      >
-        <IoCheckmark />
-      </Button>
-      <Button
-        onClick={() => onChange && onChange(false)}
-        outline={checked}
-        center
-        colorScheme="danger"
-        className="p-2 rounded-[100%]"
-      >
-        <CloseIcon />
-      </Button>
-    </HStack>
-  );
+      );
+    case "buttons":
+      return (
+        <HStack>
+          <Button
+            onClick={() => onChange && onChange(true)}
+            outline={!checked}
+            center
+            colorScheme="primary"
+            className="p-2 rounded-[100%]"
+          >
+            <IoCheckmark />
+          </Button>
+          <Button
+            onClick={() => onChange && onChange(false)}
+            outline={checked}
+            center
+            colorScheme="danger"
+            className="p-2 rounded-[100%]"
+          >
+            <CloseIcon />
+          </Button>
+        </HStack>
+      );
+
+    case "alt":
+      return (
+        <div
+          {...props}
+          onClick={handleToggle}
+          data-testid="SwitchButton"
+          className={`${className} ${
+            checked ? "bg-primary" : "bg-secondaryRed"
+          }  cursor-pointer w-fit rounded-full p-1 transition-all`}
+        >
+          <div className="w-8 h-4">
+            <div
+              className={`${
+                checked ? "translate-x-full text-primary" : "text-gray-300"
+              } h-4 w-4 transform flex justify-center text-2xl  items-center rounded-full bg-white transition-all`}
+            ></div>
+          </div>
+        </div>
+      );
+    default:
+      break;
+  }
 };

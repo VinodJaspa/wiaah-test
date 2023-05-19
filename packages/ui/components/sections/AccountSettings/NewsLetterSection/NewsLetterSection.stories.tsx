@@ -1,9 +1,9 @@
-import { storybookSectionsTitle, NewsLetterSection } from "@UI";
+import { storybookSectionsTitle, AccountNewsLetterSettingsSection } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {
   title: storybookSectionsTitle + "NewsLetterSection",
-  component: NewsLetterSection,
-} as ComponentMeta<typeof NewsLetterSection>;
+  component: AccountNewsLetterSettingsSection,
+} as ComponentMeta<typeof AccountNewsLetterSettingsSection>;
 
-export const Default = () => <NewsLetterSection />;
+export const Default = () => <AccountNewsLetterSettingsSection />;

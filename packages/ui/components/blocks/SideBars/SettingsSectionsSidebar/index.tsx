@@ -9,9 +9,6 @@ import {
   TranslationText,
 } from "@partials";
 import { PassPropsToFnOrElem } from "utils";
-import { IoMdReturnLeft } from "react-icons/io";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "@UI/../routing";
 import { useResponsive } from "@src/index";
 
 export interface SettingsSectionsSidebarProps {

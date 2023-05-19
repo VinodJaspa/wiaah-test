@@ -17,7 +17,7 @@ import {
   BlocklistSection,
   FindYourFriendsStep,
   MembershipSection,
-  NewsLetterSection,
+  AccountNewsLetterSettingsSection,
   NotificationsSettingsSection,
   PasswordSection,
   PrivacySection,
@@ -31,6 +31,7 @@ import {
   VatIcon,
   VatSection,
   MyProfileStatistics,
+  useGetMyProfileQuery,
 } from "ui";
 import { ImBlocked, ImProfile } from "react-icons/im";
 import { useResponsive } from "hooks";
@@ -74,13 +75,40 @@ export const NotFoundSection = () => {
   return <div>not found</div>;
 };
 
+export const MyAccountNotificationSettings = () => {
+  const { data } = useGetMyProfileQuery();
+
+  return data ? (
+    <NotificationsSettingsSection accountId={data.ownerId} />
+  ) : null;
+};
+
+export const MyAccountSettingsSection = () => {
+  const { data } = useGetMyProfileQuery();
+
+  return data ? <AccountSettingsSection accountId={data.ownerId} /> : null;
+};
+
+export const MyVatSection = () => {
+  const { data } = useGetMyProfileQuery();
+
+  return data ? <VatSection accountId={data.ownerId} /> : null;
+};
+
+export const MyNewsletterSettingsSection = () => {
+  const { data } = useGetMyProfileQuery();
+  return data ? (
+    <AccountNewsLetterSettingsSection userId={data.ownerId} />
+  ) : null;
+};
+
 const sections: SettingsSectionType[] = [
   {
     panelName: "Account",
     panelIcon: FiSettings,
     panelUrl: "/account",
 
-    panelComponent: <AccountSettingsSection />,
+    panelComponent: <MyAccountSettingsSection />,
   },
   {
     panelName: "Password",
@@ -101,21 +129,21 @@ const sections: SettingsSectionType[] = [
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
-    panelComponent: <MyProfileStatistics />,
+    panelComponent: <MyAccountNotificationSettings />,
   },
   {
     panelName: "My Profile Statistics",
     panelIcon: ImProfile,
     panelUrl: "/my-profile-statistics",
 
-    panelComponent: <NotificationsSettingsSection />,
+    panelComponent: <MyProfileStatistics />,
   },
   {
     panelName: "Newsletter",
     panelIcon: IoNewspaperOutline,
     panelUrl: "/newsletter",
 
-    panelComponent: <NewsLetterSection />,
+    panelComponent: <MyNewsletterSettingsSection />,
   },
   {
     panelName: "Share Your Wiaah Qr",
@@ -163,6 +191,6 @@ const sections: SettingsSectionType[] = [
     panelName: "Vat settings",
     panelIcon: VatIcon,
     panelUrl: "/vat",
-    panelComponent: <VatSection />,
+    panelComponent: <MyVatSection />,
   },
 ];

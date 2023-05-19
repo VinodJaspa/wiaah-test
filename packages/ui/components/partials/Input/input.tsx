@@ -3,6 +3,7 @@ import React from "react";
 import { useContext } from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
 import { CallbackAfter, MapChildren, MaybeFn, runIfFn } from "utils";
+import { EyeIcon, EyeIconSlash } from "../icons";
 
 interface InputContextValue {
   isInputGroup: boolean;
@@ -30,6 +31,7 @@ export interface InputProps extends HtmlInputProps {
   description?: string;
   label?: string;
   error?: string;
+  isPassword?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -38,28 +40,56 @@ export const Input: React.FC<InputProps> = ({
   description,
   label,
   error,
+  isPassword,
   ...props
 }) => {
   const { isInputGroup, setFocused } = React.useContext(InputContext);
+  const [passShow, setPassShow] = React.useState<boolean>(false);
 
   return (
     <div className="w-full">
       {label ? <p className="font-medium">{label}</p> : null}
-      <input
-        onFocus={(e) => {
-          props.onFocus && props.onFocus(e);
-          setFocused && setFocused(true);
-        }}
-        {...props}
-        className={`${className || ""} ${
-          isInputGroup
-            ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
-            : flushed
-            ? "border-b-2 border-t-0 border-l-0 border-r-0"
-            : "border-2"
-        }
-      focus:border-primary-200 border-[#EDEDED] rounded-xl px-3 w-full h-10`}
-      />
+      <div className="relative">
+        <input
+          type={
+            isPassword
+              ? passShow
+                ? "text"
+                : "password"
+              : props.type || undefined
+          }
+          onFocus={(e) => {
+            props.onFocus && props.onFocus(e);
+            setFocused && setFocused(true);
+          }}
+          {...props}
+          className={`${className || ""} ${
+            isInputGroup
+              ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
+              : flushed
+              ? "border-b-2 border-t-0 border-l-0 border-r-0"
+              : "border-2"
+          }
+        focus:border-primary-200 border-[#EDEDED] rounded-lg px-3 w-full h-10`}
+        />
+        {isPassword ? (
+          passShow ? (
+            <button
+              className="absolute top-1/2 -translate-y-1/2 right-4"
+              onClick={() => setPassShow(false)}
+            >
+              <EyeIcon className="text-lg" />
+            </button>
+          ) : (
+            <button
+              className="absolute top-1/2 -translate-y-1/2 right-4"
+              onClick={() => setPassShow(true)}
+            >
+              <EyeIconSlash className="text-lg" />
+            </button>
+          )
+        ) : null}
+      </div>
       {description ? <p>{description}</p> : null}
       {error ? (
         <p className="font-semibold text-red-500 text-lg pt-1">{error}</p>

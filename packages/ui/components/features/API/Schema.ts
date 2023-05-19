@@ -631,27 +631,20 @@ export type BookedService = {
   checkout?: Maybe<Scalars["DateTime"]>;
   discount: Cashback;
   discountId?: Maybe<Scalars["String"]>;
-  dish?: Maybe<Dish>;
-  dishs: Array<Service>;
-  dishsIds?: Maybe<Array<Scalars["ID"]>>;
-  doctor: Service;
-  doctorId?: Maybe<Scalars["ID"]>;
   duration?: Maybe<Scalars["Int"]>;
   extrasIds?: Maybe<Array<Scalars["ID"]>>;
   guests: Scalars["Int"];
   id: Scalars["ID"];
   insurance?: Maybe<Insurance>;
+  originalTotal?: Maybe<Scalars["Int"]>;
   ownerId: Scalars["ID"];
   payment?: Maybe<Scalars["String"]>;
   providerId: Scalars["ID"];
-  room?: Maybe<HotelRoom>;
-  roomId?: Maybe<Scalars["ID"]>;
   seller: Account;
-  service: Service;
-  serviceId: Scalars["ID"];
+  service?: Maybe<Service>;
+  serviceId: Array<Scalars["ID"]>;
   status: BookedServiceStatus;
-  treatments: Array<Service>;
-  treatmentsIds?: Maybe<Array<Scalars["ID"]>>;
+  total?: Maybe<Scalars["Int"]>;
   type: Scalars["String"];
 };
 
@@ -4036,6 +4029,8 @@ export type Query = {
   getUserAffiliationsPurchases: Array<AffiliationPurchase>;
   getUserBookingHistory: Array<BookedService>;
   getUserMembership?: Maybe<MembershipSubscription>;
+  getUserNewsletterSettings: NewsletterSettings;
+  getUserNotificationsSettings: UserNotificationSettings;
   getUserOrders: Array<Order>;
   getUserPayoutAccount: BillingAccount;
   getUserPrevStory: Story;
@@ -4692,6 +4687,14 @@ export type QueryGetUserBookingHistoryArgs = {
 
 export type QueryGetUserMembershipArgs = {
   id: Scalars["String"];
+};
+
+export type QueryGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryGetUserNotificationsSettingsArgs = {
+  userId: Scalars["String"];
 };
 
 export type QueryGetUserOrdersArgs = {

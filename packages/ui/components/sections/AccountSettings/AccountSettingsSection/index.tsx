@@ -36,8 +36,18 @@ import {
   useGetAccountSettingsQuery,
   useUpdateAccountSettingsMutation,
   PhoneNumberInput,
+  useUserProfile,
+  useResponsive,
+  HStack,
+  ArrowLeftIcon,
+  Image,
+  PlusIcon,
+  ImageIcon,
+  Input,
+  ImageOutlineIcon,
 } from "@UI";
 import { accountTypes } from "@UI";
+import { StoreFor } from "@features/API";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";
@@ -48,6 +58,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   variant = "seller",
   accountId,
 }) => {
+  const { isMobile } = useResponsive();
   const { data } = useGetAccountSettingsQuery({ userId: accountId });
   const { form: AccForm } = useForm<
     Parameters<typeof mutate>[0]["accountArgs"]
@@ -59,6 +70,9 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
     userId: accountId,
     ...data?.shop,
   });
+
+  const isBuyer = variant === "buyer";
+  const isSeller = variant === "seller";
 
   const { form: updateForm } = useForm<Parameters<typeof mutate>[0]>(
     { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm },
@@ -78,7 +92,107 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
     mutate(updateForm);
   };
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <HStack className="relative justify-center">
+        <ArrowLeftIcon className="text-xl left-0 absolute top-1/2 -translate-y-1/2" />
+        <p>{t("Account")}</p>
+      </HStack>
+
+      {/* profile image */}
+      <div className="flex flex-col gap-3">
+        <p className="text-xs font-medium">{t("Profile Image")}</p>
+        <div className="flex justify-center">
+          <div className="w-32 h-32 flex items-center justify-center rounded-full relative">
+            {data?.profile.photo ? (
+              <Image
+                src={data.profile.photo}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <ImageOutlineIcon className="text-[5.625rem] text-[#D6D6D6]" />
+            )}
+            <div className="absolute w-6 h-6 top-3/4 left-3/4 flex justify-center items-center rounded-full bg-primary">
+              <PlusIcon className="text-xs text-white" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* input fields */}
+
+      <div className="grid grid-cols-6 gap-6">
+        <p className="col-span-2">{t("Name")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("Username")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("Bio")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("Company Registration Number")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("Address")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("2nd Address")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("Type here") + "..."} flushed />
+        </div>
+        <p className="col-span-2">{t("Country/region")}</p>
+        <div className="col-span-4">
+          <Select></Select>
+        </div>
+        <p className="col-span-2">{t("City")}</p>
+        <div className="col-span-4">
+          <Select></Select>
+        </div>
+        <p className="col-span-2">{t("Contact")}</p>
+        <div className="col-span-4">
+          <Input placeholder={t("(978) 858-0266") + "..."} flushed />
+        </div>
+
+        {isSeller ? (
+          <>
+            <p className="col-span-2">{t("Shop Type")}</p>
+            <div className="col-span-4">
+              <Select
+                placeholder={t("Select shop type")}
+                className="col-span-4"
+              ></Select>
+            </div>
+
+            <p className="col-span-2">{t("Client Type")}</p>
+            <div className="col-span-4">
+              <Select
+                placeholder={t("Select client type")}
+                className="col-span-4"
+              ></Select>
+            </div>
+
+            <p className="col-span-2">{t("Store for")}</p>
+            <div className="col-span-4 flex flex-wrap gap-4">
+              {Object.values(StoreFor).map((v) => (
+                <Checkbox>{v}</Checkbox>
+              ))}
+            </div>
+
+            <p className="col-span-2">{t("Brand Description")}</p>
+            <div className="col-span-4">
+              <Input placeholder={t("(978) 858-0266") + "..."} flushed />
+            </div>
+          </>
+        ) : null}
+      </div>
+    </div>
+  ) : (
     <div className="w-full gap-4 flex flex-col">
       <SectionHeader sectionTitle={t("account", "Account")} />
       <div className="flex flex-col">
@@ -109,12 +223,11 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
             photoSrc: "",
             storeFor: [],
             username: "",
+            profilePhoto: "",
             shopType: "",
           }
         }
-        onSubmit={(data) => {
-          mutate(data);
-        }}
+        onSubmit={(data) => {}}
       >
         {({ handleChange, values, setFieldValue }) => (
           <Form>

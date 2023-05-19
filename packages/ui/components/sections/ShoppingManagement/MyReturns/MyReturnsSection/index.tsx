@@ -125,12 +125,12 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   const { isMobile } = useResponsive();
   return isMobile ? (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
-      <div className="w-full text-2xl items-center py-2 flex justify-between">
+      <div className="w-full text-3xl items-center flex justify-between">
         <ArrowLeftIcon onClick={onReturn} />
-        <span>{sectionTitle}</span>
+        <p className="text-lg font-semibold">{sectionTitle}</p>
         <span className="text-base">{children}</span>
       </div>
-      <Divider />
+      <Divider className="my-0" />
     </div>
   ) : (
     <div {...props} className={`${className || ""} flex flex-col gap-3`}>

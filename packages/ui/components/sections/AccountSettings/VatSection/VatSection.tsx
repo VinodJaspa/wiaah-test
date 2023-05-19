@@ -2,24 +2,84 @@ import { SectionHeader } from "@sections/ShoppingManagement";
 import { useTranslation } from "react-i18next";
 import {
   AddressInputs,
+  ArrowLeftIcon,
   Button,
   Divider,
+  HStack,
   Input,
   Radio,
+  Select,
+  SelectOption,
   UpdateMyShopMutationVariables,
+  useResponsive,
   useUpdateMyShopMutation,
 } from "@UI";
 import React from "react";
+import { useForm } from "@UI/../utils/src";
+import { useRouting } from "@UI/../routing";
+import { ServiceTypeOfSeller } from "@features/API";
 
-export const VatSection: React.FC = () => {
+export const VatSection: React.FC<{ accountId: string }> = ({ accountId }) => {
   const { t } = useTranslation();
-  const [form, setForm] = React.useState<UpdateMyShopMutationVariables["args"]>(
-    {}
+  const { form, inputProps } = useForm<UpdateMyShopMutationVariables["args"]>(
+    { userId: accountId },
+    { userId: accountId }
   );
 
+  const { isMobile } = useResponsive();
+  const { back } = useRouting();
   const { mutate } = useUpdateMyShopMutation();
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <HStack className="relative justify-center">
+        <button
+          className="absolute min-w-fit min-h-fit top-1/2 -translate-y-1/2 left-0"
+          onClick={() => back()}
+        >
+          <ArrowLeftIcon className="text-2xl" />
+        </button>
+
+        <p className="text-lg font-semibold">{t("Vat Setting")}</p>
+
+        <p className="absolute top-1/2 -translate-y-1/2 right-0">
+          {t("Finish")}
+        </p>
+      </HStack>
+      <div className="flex flex-col gap-3">
+        <p className="text-lg font-medium">{t("Type of seller")}</p>
+        <Select>
+          {Object.values(ServiceTypeOfSeller).map((v, i) => (
+            <SelectOption value={v} key={i}>
+              {v}
+            </SelectOption>
+          ))}
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-lg font-medium">{t("Type of seller")}</p>
+        <Select>
+          {Object.values(ServiceTypeOfSeller).map((v, i) => (
+            <SelectOption value={v} key={i}>
+              {v}
+            </SelectOption>
+          ))}
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <p className="text-lg font-medium">{t("Type of seller")}</p>
+        <Select>
+          {Object.values(ServiceTypeOfSeller).map((v, i) => (
+            <SelectOption value={v} key={i}>
+              {v}
+            </SelectOption>
+          ))}
+        </Select>
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col w-full">
       <SectionHeader sectionTitle={t("Vat Settings")}></SectionHeader>
       <div className=" flex flex-col gap-4">
@@ -35,18 +95,7 @@ export const VatSection: React.FC = () => {
       </div>
       <Divider />
       <AddressInputs
-        onChange={(d) => {
-          setForm((e) => ({
-            ...e,
-            vat: {
-              ...e?.vat,
-              location: {
-                ...d,
-                state: d.city,
-              },
-            },
-          }));
-        }}
+        onChange={(d) => {}}
         askBillingAddress={false}
         askShippingAddress={false}
       />
@@ -61,12 +110,7 @@ export const VatSection: React.FC = () => {
         </p>
         <Input
           value={form?.vat?.VatID || ""}
-          onChange={(v) =>
-            setForm((e) => ({
-              ...e,
-              vat: { ...e?.vat, VatID: v.target.value },
-            }))
-          }
+          onChange={(v) => {}}
           placeholder={`e.g. GB123456789`}
         />
       </div>

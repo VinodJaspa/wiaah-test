@@ -68,6 +68,8 @@ interface SocialAtomValue {
     type: SocialContentType;
     id: string;
   };
+  showAccountDeletionConfirmation: boolean;
+  showAccountSuspendConfirmation: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -89,6 +91,8 @@ const socialAtom = atom<SocialAtomValue>({
     showMyProfileNav: false,
     showMusicSearch: false,
     showWithdraw: false,
+    showAccountDeletionConfirmation: false,
+    showAccountSuspendConfirmation: false,
   },
 });
 
@@ -198,6 +202,14 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       }),
     hideContentComments: () =>
       setControls("showSocialContentComments", undefined),
+    showAccountDeletionConfirmation: () =>
+      setControls("showAccountDeletionConfirmation", true),
+    hideAccountDeletionConfirmation: () =>
+      setControls("showAccountDeletionConfirmation", false),
+    showAccountSuspendConfirmation: () =>
+      setControls("showAccountSuspendConfirmation", true),
+    hideAccountSuspendConfirmation: () =>
+      setControls("showAccountSuspendConfirmation", false),
     value,
   };
 }
@@ -215,16 +227,20 @@ export const SocialLayout: React.FC = ({ children }) => {
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       <MasterLocationMapModal />
-      <ProductDetailsDrawer />
-      <CreateActionDrawer />
-      <EditMusicDrawer />
-      <CreateActionRemix />
-      <ProfileOptionsDrawer />
-      <LocationSearchDrawer />
-      <TaggedProfilesDrawer />
-      <SocialMusicDrawer />
-      <WithdrawalDrawer />
-      <CommentsDrawer />
+      {isMobile ? (
+        <>
+          <ProductDetailsDrawer />
+          <CreateActionDrawer />
+          <EditMusicDrawer />
+          <CreateActionRemix />
+          <ProfileOptionsDrawer />
+          <LocationSearchDrawer />
+          <TaggedProfilesDrawer />
+          <SocialMusicDrawer />
+          <WithdrawalDrawer />
+          <CommentsDrawer />
+        </>
+      ) : null}
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

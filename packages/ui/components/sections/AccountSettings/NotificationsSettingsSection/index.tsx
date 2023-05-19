@@ -2,15 +2,68 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType, TranslationTextType } from "types";
-import { FormikRadio, SectionHeader } from "@UI";
+import {
+  Divider,
+  FormikRadio,
+  HStack,
+  Radio,
+  SectionHeader,
+  Stack,
+  TranslationText,
+  useGetUserNotificationsSettingsQuery,
+  useResponsive,
+  useUpdateUserNotificationSettingsMutation,
+} from "@UI";
+import { mapArray, useForm } from "@UI/../utils/src";
 
-export interface NotificationsSettingsSectionProps {}
+export interface NotificationsSettingsSectionProps {
+  accountId: string;
+}
 
 export const NotificationsSettingsSection: React.FC<
   NotificationsSettingsSectionProps
-> = ({}) => {
+> = ({ accountId }) => {
   const { t } = useTranslation();
-  return (
+  const { isMobile } = useResponsive();
+  const { data: notificationSettings } = useGetUserNotificationsSettingsQuery(
+    { userId: accountId },
+    { enabled: !!accountId }
+  );
+  const { mutate } = useUpdateUserNotificationSettingsMutation();
+  const { radioInputProps } = useForm<Parameters<typeof mutate>[0]>({
+    ...(notificationSettings || {}),
+  });
+
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-2">
+      <SectionHeader sectionTitle={t("Notifications")} />
+      <Stack col divider={<Divider className="my-4" />}>
+        {mapArray(notificationsOptions, (opt, i) => (
+          <div className="flex flex-col gap-3">
+            <TranslationText
+              translationObject={opt.label}
+              className="text-lg font-semibold border-b border-b-primary w-fit"
+            />
+            <div className="flex flex-col gap-4 w-full">
+              {mapArray(opt.opts, (option, i) => (
+                <HStack key={i} className="justify-between">
+                  <TranslationText
+                    className="text-[0.937rem]"
+                    translationObject={option.name}
+                  />
+                  <Radio
+                    {...radioInputProps(opt.name as any)}
+                    name={opt.name}
+                    value={option.value}
+                  />
+                </HStack>
+              ))}
+            </div>
+          </div>
+        ))}
+      </Stack>
+    </div>
+  ) : (
     <div className="w-full gap-8 flex flex-col">
       <SectionHeader sectionTitle={t("notifications", "Notifications")} />
       <Formik
@@ -244,6 +297,7 @@ const RemindersOpts: FormOptionType[] = [
 
 const notificationsOptions: {
   label: TranslationTextType;
+
   opts: FormOptionType[];
   name: string;
 }[] = [

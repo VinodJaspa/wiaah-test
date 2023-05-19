@@ -406,7 +406,9 @@ export class ServiceResolver {
       where: {
         AND: [
           {
-            serviceId: id,
+            serviceId: {
+              in: [id],
+            },
           },
           {
             OR: [

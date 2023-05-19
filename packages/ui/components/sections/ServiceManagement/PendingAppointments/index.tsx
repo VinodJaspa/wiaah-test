@@ -15,20 +15,31 @@ import {
   ScrollPaginationWrapper,
   useAcceptPendingAppointmentMutation,
   useDeclinePendingAppointmentMutation,
+  useResponsive,
+  HStack,
+  ArrowLeftAlt1Icon,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { PendingAppointmentData } from "api";
 import { DeclinePendingAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";
-import { BookedServiceStatus } from "@features/API";
+import { BookedServiceStatus, ServiceType } from "@features/API";
+import { mapArray } from "@UI/../utils/src";
+import {
+  ServiceBookingCardVariant,
+  ServicePendingAppointmentCard,
+} from "@features/Services/components/Cards/ServicePendingAppointmentCard";
+import { useRouting } from "@UI/../routing";
 
 export interface PendingAppointmentsSectionProps {}
 
 export const PendingAppointmentsSection: React.FC<
   PendingAppointmentsSectionProps
 > = () => {
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
+  const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
   const { data } = useGetMyBookingsHistoryQuery({
@@ -37,7 +48,49 @@ export const PendingAppointmentsSection: React.FC<
     q: "",
   });
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-4">
+      <HStack className="justify-center relative">
+        <p className="text-lg font-semibold">{t("Pending Appointments")}</p>
+        <button onClick={() => back()}>
+          <ArrowLeftAlt1Icon className="absolute top-1/2 -translate-y-1/2 left-4" />
+        </button>
+      </HStack>
+
+      <p className="font-medium text-center text-secondaryRed">{`(${
+        data?.length
+      }) ${t("Approval pending")}`}</p>
+
+      <div className="flex flex-col gap-6 w-full p-2">
+        {mapArray(data, (v, i) => (
+          <ServicePendingAppointmentCard
+            variant={ServiceBookingCardVariant.sellerd}
+            shopName="Padma Resort Legian"
+            amenities={[
+              { slug: "wifi", label: "Free WIFI" },
+              { label: "Free Movies", slug: "movies" },
+            ]}
+            cancelationPolicy={{
+              cost: 50,
+              duration: 15,
+            }}
+            checkin={new Date()}
+            checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
+            extras={[{ cost: 50, name: "Mini-bar-20" }]}
+            fullAddress="No.1 PO BOX 1107, legian, Indonesia"
+            guests={{
+              adults: 2,
+              childrens: 1,
+            }}
+            name="Standard room"
+            thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
+            total={500}
+            serviceType={ServiceType.Hotel}
+          />
+        ))}
+      </div>
+    </div>
+  ) : (
     <div className="flex flex-col gap-4">
       <SectionHeader
         sectionTitle={t("pending_appointments", "Pending Appointments")}
@@ -66,12 +119,12 @@ export const PendingAppointmentsSection: React.FC<
                         from: v.checkin,
                         to: v.checkout,
                       },
-                      bookedMenus: v.dishs.map((d) => ({
+                      bookedMenus: v.dishs?.map((d) => ({
                         price: d.price,
                         qty: 1,
                         title: d.name,
                       })),
-                      bookedTreatments: v.treatments.map((t) => ({
+                      bookedTreatments: v.treatments?.map((t) => ({
                         category: t.category?.title || "",
                         durationInMinutes: t.duration,
                         id: t.id,
@@ -86,21 +139,21 @@ export const PendingAppointmentsSection: React.FC<
                       guests: v.guests,
                       discount: v.discount.amount,
                       serviceType: v.type as any,
-                      title: v.service.title,
-                      doctor: {
-                        id: v.doctor.id,
-                        name: v.doctor.name,
-                        photo: v.doctor.thumbnail,
-                        price: v.doctor.price,
-                        specialty: v.doctor.speciality?.name,
-                      },
+                      // title: v.service.title,
+                      // doctor: {
+                      //   id: v.doctor.id,
+                      //   name: v.doctor.name,
+                      //   photo: v.doctor.thumbnail,
+                      //   price: v.doctor.price,
+                      //   specialty: v.doctor.speciality?.name,
+                      // },
                       description: "",
                       duration: "",
                       extras: [],
-                      location: v.service.location,
+                      // location: v.service.location,
                       id: v.id,
-                      name: v.service.title,
-                      price: v.service.price,
+                      // name: v.service.title,
+                      // price: v.service.price,
                     },
                   }}
                 />

@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { BookedServiceStatus } from 'prismaClient';
 import { GqlCursorPaginationResponse } from 'nest-utils';
 
@@ -7,7 +7,7 @@ export class BookedService {
   @Field(() => ID)
   id: string;
 
-  @Field(() => ID)
+  @Field(() => [ID])
   serviceId: string;
 
   @Field(() => ID)
@@ -38,40 +38,19 @@ export class BookedService {
   guests: number;
 
   @Field(() => [ID], { nullable: true })
-  dishsIds?: string[];
-
-  @Field(() => [ID], { nullable: true })
   extrasIds?: string[];
-
-  @Field(() => [ID], { nullable: true })
-  treatmentsIds?: string[];
-
-  @Field(() => ID, { nullable: true })
-  roomId?: string;
-
-  @Field(() => ID, { nullable: true })
-  doctorId?: string;
-
-  // @Field(() => HotelRoom, { nullable: true })
-  // room?: HotelRoom;
-
-  // @Field(() => Restaurant, { nullable: true })
-  // restaurant?: Restaurant;
-
-  // @Field(() => HealthCenter, { nullable: true })
-  // healthCenter?: HealthCenter;
-
-  // @Field(() => BeautyCenter, { nullable: true })
-  // beautyCenter?: BeautyCenter;
-
-  // @Field(() => Vehicle, { nullable: true })
-  // vehicle?: Vehicle;
 
   @Field(() => String, { nullable: true })
   discountId?: string;
 
   @Field(() => String, { nullable: true })
   cashbackId?: string;
+
+  @Field(() => Int, { nullable: true })
+  total?: number;
+
+  @Field(() => Int, { nullable: true })
+  originalTotal?: number;
 }
 
 @ObjectType()

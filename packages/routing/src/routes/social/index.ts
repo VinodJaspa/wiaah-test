@@ -5,6 +5,7 @@ export type SocialRoutesType = {
   visitBuyerSocialProfile: (props: Record<string, any>) => RoutesType;
   visitSocialPostAuthorProfile: (props: Record<string, any>) => RoutesType;
   visitMyProfile: () => RoutesType;
+  visitSocialProfile: (userId: string) => RoutesType;
   visitNewsfeedPostPage: (props: Record<string, any>) => RoutesType;
   visitNewsfeedAccountsPostPage: (props: Record<string, any>) => RoutesType;
   visitUserHashtagPage: (props: Record<string, any>) => RoutesType;
@@ -33,6 +34,9 @@ export const SocialRoutes = {
 
   visitSellerHashtagPage(hashtag) {
     return this.hashtag().addPath(hashtag);
+  },
+  visitSocialProfile(userId) {
+    return this.profile().id(userId);
   },
 
   visitSocialPostAuthorProfile(props) {

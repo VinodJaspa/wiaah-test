@@ -24,9 +24,9 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
   return (
     <div className="w-full flex flex-col h-full justify-center gap-4">
       <h2 className="hidden text-xl font-bold lg:block">
-        {t("Select_a_plan", "Select a plan")}
+        {t("Select a plan")}
       </h2>
-      <div className="flex flex-col h-[30rem] gap-4 justify-between lg:flex-row">
+      <div className="flex flex-col  lg:h-[30rem] gap-4 justify-between lg:flex-row">
         {mapArray(data, (data) => (
           <div
             onClick={() => {
@@ -34,7 +34,7 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
             }}
             className={`${
               plan == data.id ? "border-8" : ""
-            } w-full flex flex-col justify-between border-primary cursor-pointer rounded-xl bg-slate-900 p-6 `}
+            } w-full flex flex-col justify-between border-primary cursor-pointer rounded-xl bg-slate-900 p-4 `}
           >
             <div>
               <div className="flex items-center">
@@ -63,7 +63,7 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
                 </div>
               ))}
             </div>
-            <div className="mt-9 mb-6">
+            <div className="mt-9 lg:mb-6">
               <Button onClick={() => setPlan(data.id)} className="w-full">
                 {t("Choose a plan")}
               </Button>
