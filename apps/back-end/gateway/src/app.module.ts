@@ -50,7 +50,7 @@ import { ObjectId } from 'mongodb';
 
           const isKnownError = values.includes(exception.code);
 
-          console.log({ isKnownError, values, code: exception.code });
+          console.log({ isKnownError, values, code: exception.code }, error);
           if (isKnownError) {
             console.log('true', exception.code);
             return error;

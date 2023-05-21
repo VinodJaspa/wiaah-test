@@ -26,16 +26,17 @@ const places: NextPage<PlacesPageProps> = ({ places }) => {
 
 export default places;
 
-export const getServerSideProps: GetServerSideProps<PlacesPageProps> =
-  async () => {
-    // get places server side and pass it with react query
-    // hyderation
+export const getServerSideProps: GetServerSideProps<
+  PlacesPageProps
+> = async () => {
+  // get places server side and pass it with react query
+  // hyderation
 
-    const places = [];
+  const places = [];
 
-    return {
-      props: {
-        places,
-      },
-    };
+  return {
+    props: {
+      places,
+    },
   };
+};

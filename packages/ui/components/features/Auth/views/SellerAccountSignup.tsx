@@ -4,7 +4,6 @@ import { useSignupMutation } from "../services";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
 import {
   Button,
-  CameraFillIcon,
   CameraOutlineIcon,
   Divider,
   HStack,
@@ -15,6 +14,8 @@ import {
 import { DateFormInput } from "@blocks";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@src/index";
+
+import * as yup from "yup";
 
 const NO_PROFIL_PIC_URL = "/person-icon.png";
 export const AccountSignup = forwardRef(
@@ -46,6 +47,23 @@ export const AccountSignup = forwardRef(
       {
         addLabel: true,
         addPlaceholder: true,
+        yupSchema: yup.object({
+          email: yup.string().email().required(),
+          firstName: yup.string().min(3).max(20),
+          lastName: yup.string().min(3).max(20),
+          password: yup.string().min(6).max(30),
+          gender: yup
+            .string()
+            .oneOf([AccountGenderEnum.Female, AccountGenderEnum.Male])
+            .required(),
+          confirmPassword: yup
+            .string()
+            .oneOf(
+              [yup.ref("password"), null],
+              "confirm password and password does'nt match!"
+            )
+            .required("Required"),
+        }),
       }
     );
 

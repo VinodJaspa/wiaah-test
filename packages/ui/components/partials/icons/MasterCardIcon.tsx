@@ -1,8 +1,10 @@
+import { HtmlSvgProps } from "@UI/../types/src";
 import React from "react";
 
-export const MasterCardIcon: React.FC = () => {
+export const MasterCardIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
+      {...props}
       width="1.636em"
       height="1em"
       viewBox="0 0 90 55"

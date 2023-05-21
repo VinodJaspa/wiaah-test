@@ -30,6 +30,10 @@ import { EventBus } from '@nestjs/cqrs';
 import { AccountDeletionRequestCreatedEvent } from './events';
 import { NewAccountCreatedEvent } from 'nest-dto';
 import { Shop } from './entities/shop.extends.entity';
+import {
+  ConfirmPasswordDoesNotMatchException,
+  EmailAlreadyExistsException,
+} from './exceptions';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -64,13 +68,11 @@ export class AccountsResolver {
     });
 
     if (emailExists) {
-      throw new NotAcceptableException('this email is already used');
+      throw new EmailAlreadyExistsException();
     }
 
     if (confirmPassword !== password) {
-      throw new NotAcceptableException(
-        'confirm password and password fields must match',
-      );
+      throw new ConfirmPasswordDoesNotMatchException();
     }
 
     const hashedPassword = await this.accountsService.hashPassword(password);
@@ -125,7 +127,7 @@ export class AccountsResolver {
     return true;
   }
 
-  @Mutation(() => Account)
+  @Query(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))
   getMyAccount(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.accountsService.findOne(user.id);

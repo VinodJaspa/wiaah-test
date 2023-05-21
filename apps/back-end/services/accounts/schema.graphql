@@ -150,6 +150,7 @@ type Query {
   getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
   adminGetStaffAccounts(args: AdminGetStaffAccountsInput!): [Account!]!
+  getMyAccount: Account!
   getUserAccount(userId: String!): Account!
   adminGetAccountVerification(accountId: String!): IdentityVerification!
   getMyVerificationRequest: IdentityVerification!
@@ -242,7 +243,6 @@ type Mutation {
   adminUpdateStaffAccount(args: AdminUpdateAdminAccountInput!): Boolean!
   register(RegisterInput: CreateAccountInput!): String!
   requestAccountDeletion(args: DeleteAccountRequestInput!): Boolean!
-  getMyAccount: Account!
   editAccount(editAccountInput: UpdateAccountInput!): Account!
   requestIdVerification(requestInput: CreateIdentityVerificationInput!): String!
   provideVVCPicture(pic: String!): Boolean!

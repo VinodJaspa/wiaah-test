@@ -18,10 +18,11 @@ import {
   useVerifyEmailMutation,
   useResponsive,
   HStack,
-  TranslationText,
   ArrowLeftAlt1Icon,
-  ArrowRightIcon,
   ArrowRightAltIcon,
+  useGetMyAccountQuery,
+  useRequestAccountVerification,
+  AccountVerificationFormData,
 } from "@UI";
 
 import { StepperStepType } from "types";
@@ -29,11 +30,13 @@ import { Button } from "@UI";
 import { runIfFn, useForm } from "utils";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
+import { useSubscribeToMembershipMutation } from "@features/Membership";
+import { StoreType } from "@features/API";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const [currentStep, setCurrentStep] = React.useState<number>(8);
 
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
@@ -113,25 +116,75 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     },
     {
       stepName: t("Shop information"),
-      stepComponent: <ShopInformationStep />,
+      stepComponent: (
+        <ShopInformationStep
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[2] !== "function"
+            ) {
+              addSubmitRequest(2, v.submit);
+            }
+          }}
+          onSuccess={handleNextStep}
+        />
+      ),
       key: 3,
     },
     {
       stepName: t("Verify Your Identity"),
       key: 4,
-      stepComponent: <AccountVerifciationForm verificationCode="1354" />,
+      stepComponent: (
+        <SignupAccountVerificationStep
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[2] !== "function"
+            ) {
+              addSubmitRequest(2, v.submit);
+            }
+          }}
+          onSuccess={handleNextStep}
+        />
+      ),
     },
     {
       stepName: t("Select a plan"),
       stepComponent: (
-        <SelectPackageStep shopType="" value="" onChange={() => {}} />
+        <SellerSignupPlansStep
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[2] !== "function"
+            ) {
+              addSubmitRequest(2, v.submit);
+            }
+          }}
+          onSuccess={handleNextStep}
+        />
       ),
       key: 5,
     },
     {
       key: 6,
       stepName: t("Listing"),
-      stepComponent: <SellerListingForm />,
+      stepComponent: (
+        <SellerListingForm
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[2] !== "function"
+            ) {
+              addSubmitRequest(2, v.submit);
+            }
+          }}
+          onSuccess={handleNextStep}
+        />
+      ),
     },
     {
       stepName: t("Add Payment Method"),
@@ -320,8 +373,10 @@ const SellerListingForm = React.forwardRef(
     },
     ref
   ) => {
-    const { t } = useTranslation();
-
+    const stepperRef = React.useRef<{
+      next: () => any;
+      prev: () => any;
+    }>(null);
     const { data: shop } = useGetMyShopType();
     const { mutate } = useCreateServiceMutation();
 
@@ -336,40 +391,140 @@ const SellerListingForm = React.forwardRef(
     return (
       <div className="flex flex-col gap-4 h-full justify-between">
         {/* {shop ? ( */}
-        <NewServiceStepper isEdit={false} sellerId={shop?.ownerId || ""} />
+        <NewServiceStepper
+          ref={stepperRef}
+          isEdit={false}
+          sellerId={shop?.ownerId || ""}
+        />
         {/* ) : null} */}
       </div>
     );
   }
 );
 
-export const AccountSignEmailVerificationStep: React.FC<{
-  onSuccess: () => any;
-}> = React.forwardRef(({ onSuccess }, ref) => {
-  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
-    code: "",
-  });
-  const { mutate } = useVerifyEmailMutation();
-
-  React.useImperativeHandle(ref, () => ({
-    submit: () => {
-      mutate(form, { onSuccess });
+export const AccountSignEmailVerificationStep = React.forwardRef(
+  (
+    {
+      onSuccess,
+    }: {
+      onSuccess: () => any;
     },
-  }));
+    ref
+  ) => {
+    const { t } = useTranslation();
+    const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
+      code: "",
+    });
+    const { mutate } = useVerifyEmailMutation();
+    const { data: user } = useGetMyAccountQuery();
+    React.useImperativeHandle(ref, () => ({
+      submit: () => {
+        mutate(form, { onSuccess });
+      },
+    }));
+    const { isMobile } = useResponsive();
 
-  return (
-    <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
-      <p className="text-xl font-semibold">
-        {"An verification code has been sent to your email"}
-      </p>
-      <div className="p-16 rounded-xl shadow border border-gray-100 ">
-        <EmailArrowDownIcon className="text-7xl" />
+    return isMobile ? (
+      <div className="h-full w-full flex flex-col justify-center items-center gap-10">
+        <p className="text-xl font-semibold text-center">
+          {t("An verification code has been sent to your email")}. (
+          {user?.email})
+        </p>
+
+        <label>
+          <Input
+            className="absolute opacity-0 pointer-events-none"
+            {...inputProps("code")}
+          />
+          <div className="flex items-center gap-4">
+            {[...Array(5)].map((v, i) => (
+              <div
+                className={`w-12 h-12 rounded-lg ${
+                  typeof form.code.at(i) === "string"
+                    ? "bg-primary border-primary text-white"
+                    : "bg-white border-black text-black"
+                } text-3xl border flex justify-center items-center`}
+              >
+                <p>{form.code.at(i)}</p>
+              </div>
+            ))}
+          </div>
+        </label>
+
+        <div className="flex flex-col gap-2">
+          <p>{t("Didn’t receive code?")}</p>
+          <button className="text-primary font-semibold">{t("RESEND")}</button>
+        </div>
+
+        <Button colorScheme="darkbrown" className="w-full">
+          {t("Verify")}
+        </Button>
       </div>
-      <Input
-        {...inputProps("code")}
-        placeholder="123456"
-        label="Verification code"
+    ) : (
+      <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
+        <p className="text-xl font-semibold">
+          {t("An verification code has been sent to your email")}. (
+          {user?.email})
+        </p>
+        <div className="p-16 rounded-xl shadow border border-gray-100 ">
+          <EmailArrowDownIcon className="text-7xl" />
+        </div>
+        <Input
+          {...inputProps("code")}
+          placeholder="123456"
+          label="Verification code"
+        />
+      </div>
+    );
+  }
+);
+
+export const SignupAccountVerificationStep = React.forwardRef(
+  ({ onSuccess }: { onSuccess: () => any }, ref) => {
+    const [data, setData] = React.useState<AccountVerificationFormData>();
+    const { mutate } = useRequestAccountVerification();
+
+    React.useImperativeHandle(ref, () => ({
+      submit: () => {
+        if (data) {
+          mutate(data, { onSuccess });
+        }
+      },
+    }));
+
+    return (
+      <AccountVerifciationForm
+        onChange={(data) => setData(data)}
+        value={data}
       />
-    </div>
-  );
-});
+    );
+  }
+);
+
+export const SellerSignupPlansStep = React.forwardRef(
+  ({ onSuccess }: { onSuccess: () => any }, ref) => {
+    const [packageId, setPackageId] = React.useState<string>();
+
+    const { mutate } = useSubscribeToMembershipMutation();
+    const { data } = useGetMyShopType();
+    React.useImperativeHandle(ref, () => ({
+      submit: () => {
+        if (!packageId) return;
+        mutate(
+          { id: packageId },
+          {
+            onSuccess,
+          }
+        );
+      },
+    }));
+
+    return (
+      <SelectPackageStep
+        value={packageId || ""}
+        shopType={data?.storeType || StoreType.Product}
+        onChange={(id) => setPackageId(id)}
+      ></SelectPackageStep>
+    );
+  }
+);

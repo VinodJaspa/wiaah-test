@@ -7,6 +7,8 @@ export enum PublicErrorCodes {
   deletePremissionDenied = 5,
   internalServiceError = 6,
   badMediaFormat = 7,
+  resourceAlreadyExsits = 8,
+  badRequestData = 9,
 }
 
 export enum PrivateErrorCodes {}

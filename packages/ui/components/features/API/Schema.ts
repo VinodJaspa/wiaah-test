@@ -2511,7 +2511,6 @@ export type Mutation = {
   enableComingSoon: Scalars["Boolean"];
   enableMaintenanceMode: Scalars["Boolean"];
   followProfile: Scalars["Boolean"];
-  getMyAccount: Account;
   hideContent: Scalars["Boolean"];
   likeStory: Scalars["Boolean"];
   login: GqlStatusResponse;
@@ -3955,6 +3954,7 @@ export type Query = {
   getLatestOrders: Array<Order>;
   getLocalisation: Localization;
   getMaintenancePages: Array<Maintenance>;
+  getMyAccount: Account;
   getMyAffiliations: Array<Affiliation>;
   getMyBalance: Balance;
   getMyBillingAddresses: Array<BillingAddress>;
@@ -5512,7 +5512,6 @@ export type ShippingCountry = {
 
 export type ShippingCountryInput = {
   code: Scalars["String"];
-  name: Scalars["String"];
 };
 
 export type ShippingDeliveryTimeRange = {

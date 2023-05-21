@@ -1,6 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CountInput, CloseIcon, AddBadgeButton, Input, AddBedInput } from "@UI";
+import {
+  CountInput,
+  CloseIcon,
+  AddBadgeButton,
+  Input,
+  AddBedInput,
+  Button,
+  PlusIcon,
+} from "@UI";
 
 type BedType = {
   name: string;
@@ -29,21 +37,19 @@ export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <p className="text-gray-400 font-semibold">
-        {beds} {beds > 1 ? t("beds") : t("bed")}
-      </p>
       {Array.isArray(value)
         ? value.map((v, idx) => (
             <div className="flex text-xl items-center justify-between">
               <div className="flex items-center gap-2">
                 {v.required ? null : (
                   <CloseIcon
+                    className="text-xs"
                     onClick={() =>
                       onChange && onChange(value.filter((_, i) => i !== idx))
                     }
                   />
                 )}
-                <p className="font-semibold">{t(v.name)}</p>
+                <p className="text-sm font-semibold">{t(v.name)}</p>
               </div>
               <CountInput
                 count={v.amount}
@@ -71,9 +77,13 @@ export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
           }}
         />
       ) : (
-        <AddBadgeButton onClick={() => setAdd(true)}>
-          {t("Add another bed")}
-        </AddBadgeButton>
+        <Button
+          className="gap-2 justify-center w-full flex items-center"
+          onClick={() => setAdd(true)}
+        >
+          <PlusIcon />
+          <p>{t("Add another bed")}</p>
+        </Button>
       )}
     </div>
   );

@@ -9,8 +9,17 @@ import {
   MultiChooseInput,
   useUpdateShippingRuleMutation,
   useCreateShippingRulesMutation,
+  HStack,
+  InputGroup,
+  InputLeftElement,
+  SearchIcon,
+  Badge,
+  FlagIcon,
+  CloseIcon,
 } from "@UI";
 import { Country } from "country-state-city";
+import { mapArray, useForm } from "@UI/../utils/src";
+import { ShippingType } from "@features/API";
 
 export interface ShippingSettingsProps {}
 
@@ -33,71 +42,91 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
     cancelAddNew();
   }
 
-  const [form, setForm] = React.useState<Parameters<typeof addRule>[0]>(
-    {} as Parameters<typeof addRule>[0]
-  );
-
-  function handleSetForm<
-    TKey extends keyof Required<typeof form>,
-    TNewValue extends Required<typeof form>[TKey]
-  >(key: TKey, v: TNewValue) {
-    setForm(
-      (old) =>
-        ({
-          ...old,
-          [key]: v,
-        } as typeof form)
-    );
-  }
+  const { form, handleChange } = useForm<Parameters<typeof addRule>[0]>({
+    cost: 0,
+    countries: [],
+    deliveryTimeRange: { from: 0, to: 1 },
+    name: "",
+    shippingType: ShippingType.Paid,
+  });
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <h2 className="hidden text-xl font-bold lg:block">
         {t("Enter shipping details")}
       </h2>
-      <div className="flex flex-col gap-4">
-        <label>{t("Countries")}</label>
+      <InputGroup>
+        <InputLeftElement>
+          <SearchIcon></SearchIcon>
+        </InputLeftElement>
         <MultiChooseInput
           onChange={(e) => {
-            handleSetForm(
+            handleChange(
               "countries",
-              e.map((v) => ({
-                code: v,
-                name: countriesArray.find((c) => c.value === v)?.label || v,
-              }))
+              form.countries.concat(e.map((v) => ({ code: v })))
             );
           }}
-          value={form?.countries?.map((v) => v.name) || []}
+          value={[]}
           suggestions={countriesArray.map((v, i) => ({
             label: v.label,
             value: v.value,
           }))}
-          placeholder={t("Country")}
+          placeholder={t("Search for countries")}
         />
-
-        <label htmlFor="">{t("Delivery_Time", "Delivery Time")}</label>
-        <Select placeholder={t("Delivery_Time", "Delivery Time")}>
-          <SelectOption value="1-3">1-3 {t("days", "days")}</SelectOption>
-          <SelectOption value="3-5">3-5 {t("days", "days")}</SelectOption>
-          <SelectOption value="7">7 {t("days", "days")}</SelectOption>
-          <SelectOption value="1-2weeks">
-            1-2 {t("Weeks", "Weeks")}
-          </SelectOption>
-          <SelectOption value="2-3weeks">
-            2-3 {t("Weeks", "Weeks")}
-          </SelectOption>
-          <SelectOption value="3-4weeks">
-            3-4 {t("Weeks", "Weeks")}
-          </SelectOption>
-        </Select>
-
-        <div>
-          <label htmlFor="">{t("Price", "Price")}</label>
-          <Input placeholder={t("Price", "Price")} />
+        {/* <Input
+          /> */}
+      </InputGroup>
+      <div className="flex flex-col gap-2">
+        <label>{t("Selected Countries")}</label>
+        <div className="flex flex-wrap gap-2">
+          {mapArray(form.countries, (v, i) => (
+            <Badge className="w-fit gap-2">
+              <FlagIcon size={24} key={i} code={v.code}></FlagIcon>
+              <p className="text-sm">
+                {countriesArray.find((c) => c.value === v.code)?.label}
+              </p>
+              <button
+                onClick={() =>
+                  handleChange(
+                    "countries",
+                    form.countries.filter((c) => c.code !== v.code)
+                  )
+                }
+              >
+                <CloseIcon className="text-white bg-black rounded-full" />
+              </button>
+            </Badge>
+          ))}
         </div>
 
+        <HStack>
+          <div className="w-full">
+            <label htmlFor="">{t("Delivery_Time", "Delivery Time")}</label>
+            <Select placeholder={t("Delivery_Time", "Delivery Time")}>
+              <SelectOption value="1-3">1-3 {t("days", "days")}</SelectOption>
+              <SelectOption value="3-5">3-5 {t("days", "days")}</SelectOption>
+              <SelectOption value="7">7 {t("days", "days")}</SelectOption>
+              <SelectOption value="1-2weeks">
+                1-2 {t("Weeks", "Weeks")}
+              </SelectOption>
+              <SelectOption value="2-3weeks">
+                2-3 {t("Weeks", "Weeks")}
+              </SelectOption>
+              <SelectOption value="3-4weeks">
+                3-4 {t("Weeks", "Weeks")}
+              </SelectOption>
+            </Select>
+          </div>
+
+          <div className="w-full">
+            <label htmlFor="">{t("Price", "Price")}</label>
+            <Input placeholder={t("Price", "Price")} />
+          </div>
+        </HStack>
+
         <Button
-          className="w-fit"
+          colorScheme="darkbrown"
+          className="w-fit self-end mt-4"
           onClick={() => {
             setShippingMethod(true);
           }}
@@ -106,7 +135,7 @@ export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
         </Button>
         {/* <div className="flex justify-between lg:mt-6">
           <div className="mr-2 w-6/12">
-
+          
   
           </div>
           <div className="ml-2 w-6/12">

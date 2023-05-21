@@ -1,6 +1,6 @@
 import React from "react";
 import { PostAttachment, ProfileInfo } from "types";
-import { ActionHeader, ActionHeaderProps } from "@UI";
+import { ActionHeader, ActionHeaderProps, Image } from "@UI";
 import { PostAttachmentsViewer } from "@UI";
 import { useRouter } from "next/router";
 
@@ -42,7 +42,10 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
     <div
       className={`relative isolate overflow-hidden rounded-xl bg-black w-full max-w-[30rem]`}
     >
-      <PostAttachmentsViewer attachments={placeAttachments} />
+      <Image
+        className="h-64 w-full object-cover"
+        src={placeAttachments.at(0)?.src}
+      ></Image>
       {openFrom && openTo && (
         <div className="absolute bg-black bg-opacity-60 text-2xl font-bold gap-1 flex flex-col items-center top-1/2 left-0 just-ce text-white transform -translate-y-1/2 w-full">
           <div className="flex items-center gap-2">
