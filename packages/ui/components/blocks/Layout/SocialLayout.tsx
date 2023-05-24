@@ -3,6 +3,7 @@ import {
   AddNewStoryModal,
   CommentReportModal,
 } from "@blocks/Modals";
+import { SocialStoryModal } from "@blocks/Social";
 import { ContentHostType } from "@features/API";
 import {
   LocationSearchDrawer,
@@ -218,18 +219,18 @@ export const SocialLayout: React.FC = ({ children }) => {
   const { isMobile } = useResponsive();
   return (
     <>
-      {/* <AddNewPostModal /> */}
-      {/* <SocialShareCotentModal /> */}
+      <AddNewPostModal />
+      <SocialShareCotentModal />
       {isMobile ? <NotifciationsDrawer /> : null}
-      {/* <SocialStoryDrawer /> */}
-      {/* <ServiceBookingDrawer /> */}
-      {/* <SocialReportModal /> */}
-      {/* <SocialPostSettingsPopup /> */}
-      {/* <SocialPostMentionsModal /> */}
-      {/* <MasterLocationMapModal /> */}
+      <SocialStoryDrawer />
+      <ServiceBookingDrawer />
+      <SocialReportModal />
+      <SocialPostSettingsPopup />
+      <SocialPostMentionsModal />
+      <MasterLocationMapModal />
       {isMobile ? (
         <>
-          {/* <ProductDetailsDrawer />
+          <ProductDetailsDrawer />
           <CreateActionDrawer />
           <EditMusicDrawer />
           <CreateActionRemix />
@@ -238,7 +239,7 @@ export const SocialLayout: React.FC = ({ children }) => {
           <TaggedProfilesDrawer />
           <SocialMusicDrawer />
           <WithdrawalDrawer />
-          <CommentsDrawer /> */}
+          <CommentsDrawer />
         </>
       ) : null}
       {/* <PostViewPopup
@@ -261,10 +262,10 @@ export const SocialLayout: React.FC = ({ children }) => {
           );
         }}
       /> */}
-      {/* <StoryModal /> */}
-      {/* <AddNewPostModal /> */}
-      {/* <AddNewStoryModal /> */}
-      {/* <CommentReportModal /> */}
+      <SocialStoryModal />
+      <AddNewPostModal />
+      <AddNewStoryModal />
+      <CommentReportModal />
       <>{children}</>
     </>
   );

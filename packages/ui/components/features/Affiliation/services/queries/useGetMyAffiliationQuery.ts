@@ -11,6 +11,7 @@ import {
 } from "@features/API";
 import { random } from "lodash";
 import { getRandomImage } from "@UI/placeholder";
+import { isDev } from "@UI/../utils/src";
 
 export type GetAffiliationsQueryVariables = Exact<{
   args: GetMyAffiliationsInput;
@@ -37,7 +38,10 @@ export type GetAffiliationsQuery = { __typename?: "Query" } & {
           >
         >;
         service?: Maybe<
-          { __typename?: "Service" } & Pick<Service, "id" | "serviceType">
+          { __typename?: "Service" } & Pick<
+            Service,
+            "id" | "type" | "thumbnail" | "name"
+          >
         >;
       }
   >;
@@ -59,13 +63,14 @@ export const useGetMyAffiliationQuery = (input: GetMyAffiliationsInput) => {
             id
             itemId
             itemType
-            product{
+            product {
                 id
             }
             sellerId
-            service{
+            service {
                 id
                 type
+                name
             }
             updatedAt
         }
@@ -77,30 +82,34 @@ export const useGetMyAffiliationQuery = (input: GetMyAffiliationsInput) => {
   });
 
   return useQuery(["my-affiliations"], async () => {
-    const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [
-      ...Array(10),
-    ].map((v, i) => ({
-      commision: random(5, 4),
-      createdAt: new Date().toString(),
-      expireAt: new Date().toString(),
-      id: "test",
-      itemId: "test",
-      itemType: "Product",
-      sellerId: "test",
-      status: AffiliationStatus.Active,
-      updatedAt: new Date().toString(),
-      product: {
+    if (isDev) {
+      const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [
+        ...Array(10),
+      ].map((v, i) => ({
+        commision: random(5, 4),
+        createdAt: new Date().toString(),
+        expireAt: new Date().toString(),
         id: "test",
-        thumbnail: getRandomImage(),
-        title: "prod name",
-      },
-      service: {
-        id: "test",
-        serviceType: ServiceType.Hotel,
-      },
-    }));
+        itemId: "test",
+        itemType: "Product",
+        sellerId: "test",
+        status: AffiliationStatus.Active,
+        updatedAt: new Date().toString(),
+        product: {
+          id: "test",
+          thumbnail: getRandomImage(),
+          title: "product name",
+        },
+        service: {
+          id: "test",
+          name: "Body treatment - back pain treatment",
+          type: ServiceType.Hotel,
+          thumbnail: getRandomImage(),
+        },
+      }));
 
-    return mockRes;
+      return mockRes;
+    }
 
     const res = await client.send<GetAffiliationsQuery>();
 

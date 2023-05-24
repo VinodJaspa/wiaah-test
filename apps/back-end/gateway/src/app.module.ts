@@ -12,6 +12,7 @@ import {
 import { subgraphs } from '@lib';
 // import { client } from './main';
 import { ObjectId } from 'mongodb';
+import { client } from './main';
 
 @Module({
   imports: [
@@ -24,14 +25,14 @@ import { ObjectId } from 'mongodb';
         },
         context: async (ctx) => {
           const _user = VerifyAndGetUserFromContext(ctx);
-
+          console.log({ _user });
           const userId = _user?.id;
-          const user = {};
-          // ? await client
-          //     .db()
-          //     .collection('Account')
-          //     .findOne({ _id: new ObjectId(userId) })
-          // : {};
+          const user = userId
+            ? await client
+                .db()
+                .collection('Account')
+                .findOne({ _id: new ObjectId(userId) })
+            : {};
 
           return {
             ...ctx,
@@ -69,7 +70,6 @@ import { ObjectId } from 'mongodb';
                 const contentType = (context as any)?.req?.headers[
                   'content-type'
                 ];
-                console.log({ contentType });
                 if (
                   contentType &&
                   contentType.startsWith('multipart/form-data')

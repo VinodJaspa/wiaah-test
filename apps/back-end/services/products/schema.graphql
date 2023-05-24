@@ -324,7 +324,6 @@ type ShopWorkingSchedule {
 }
 
 type ShippingCountry {
-  name: String!
   code: String!
 }
 
@@ -760,7 +759,6 @@ input CreateShippingRuleInput {
 }
 
 input ShippingCountryInput {
-  name: String!
   code: String!
 }
 

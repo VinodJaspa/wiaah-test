@@ -104,6 +104,10 @@ model NewsfeedPost {
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
   legend             String
+  affiliationId      String?
+  productId          String?
+  serviceId          String?
+  type               PostType
 }
 
 model MediaUpload {

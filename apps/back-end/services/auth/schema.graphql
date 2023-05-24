@@ -40,7 +40,7 @@ type Mutation {
   login(LoginInput: LoginDto!): GqlStatusResponse!
   verifyLoginOTP(args: LoginWithOtpInput!): GqlStatusResponse!
   verifyEmail(EmailVerificationInput: VerifyEmailDto!): Boolean!
-  resendRegisterationCode(email: String!): Boolean!
+  resendRegisterationCode: Boolean!
   resetPassword(ResetPasswordArgs: ForgotPasswordEmailInput!): Boolean!
   verifyNewPassword(verifyNewPassword: ConfirmPasswordChangeInput!): Boolean!
   adminLogin(args: LoginDto!): GqlStatusResponse!

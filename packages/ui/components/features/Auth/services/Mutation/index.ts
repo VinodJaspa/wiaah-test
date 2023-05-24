@@ -3,3 +3,4 @@ export * from "./useBuyerSignupMutation";
 export * from "./useSigninMutation";
 export * from "./useVerifyEmailMutation";
 export * from "./useChangePassword";
+export * from "./useResendRegisterationCode";

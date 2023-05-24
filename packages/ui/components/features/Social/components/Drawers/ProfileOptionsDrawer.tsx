@@ -174,7 +174,7 @@ export const ProfileOptionsDrawer = () => {
           {mapArray(links, ({ icon, link }) => (
             <HStack
               onClick={() => {
-                visit((r) => r.addPath(link.href));
+                visit((r) => r.addPath(link.href), false);
                 closeMyProfileNav();
               }}
               className="font-medium cursor-pointer"

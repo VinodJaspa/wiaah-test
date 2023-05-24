@@ -1,13 +1,14 @@
 import { useCreateNewAffiliationMutation } from "@features/Affiliation";
 import React from "react";
 import { AffiliationListSection } from "../AffiliationsListSection";
-import { NewAffiliationLinkSection } from "../NewAffiliationLinkSection";
+import { AffiliationForm } from "../NewAffiliationLinkSection";
 export interface AffiliationManagementSection {}
 
 export const AffiliationManagementContext = React.createContext({
   isAddNew: false,
   addNew: () => {},
   cancelNew: () => {},
+  edit: (id: string) => {},
 });
 
 export const AffiliationManagementSection: React.FC<
@@ -15,6 +16,7 @@ export const AffiliationManagementSection: React.FC<
 > = () => {
   const { mutate } = useCreateNewAffiliationMutation();
   const [isAddNew, setIsAddNew] = React.useState<boolean>(false);
+  const [editId, setEditId] = React.useState<string | true>();
 
   function handleAddNew() {
     setIsAddNew(true);
@@ -25,12 +27,21 @@ export const AffiliationManagementSection: React.FC<
     console.log(isAddNew);
   }
 
+  function Edit(id: string) {
+    setEditId(id);
+  }
+
   return (
     <AffiliationManagementContext.Provider
-      value={{ isAddNew, addNew: handleAddNew, cancelNew: handleCancelNew }}
+      value={{
+        isAddNew,
+        addNew: handleAddNew,
+        cancelNew: handleCancelNew,
+        edit: Edit,
+      }}
     >
-      {isAddNew ? (
-        <NewAffiliationLinkSection
+      {isAddNew || typeof editId === "string" ? (
+        <AffiliationForm
           onSubmit={(v) => {
             mutate({ args: v });
           }}

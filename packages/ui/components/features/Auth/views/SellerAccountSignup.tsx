@@ -1,6 +1,6 @@
 import { useForm } from "utils";
 import React, { forwardRef, useImperativeHandle } from "react";
-import { useSignupMutation } from "../services";
+import { useSigninMutation, useSignupMutation } from "../services";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
 import {
   Button,
@@ -43,7 +43,8 @@ export const AccountSignup = forwardRef(
         password: "",
         gender: AccountGenderEnum.Male,
       },
-      { accountType: RegisterAccountType.Seller },
+      // TODO: remove username when added to the api
+      { accountType: RegisterAccountType.Seller, username: undefined },
       {
         addLabel: true,
         addPlaceholder: true,
@@ -67,16 +68,22 @@ export const AccountSignup = forwardRef(
       }
     );
 
+    console.log({ form });
+
     const { isMobile } = useResponsive();
     const [error, setError] = React.useState("");
 
     const { mutate: Signup } = useSignupMutation();
+    const { mutate: SignIn } = useSigninMutation();
 
-    const submit = () =>
+    const submit = () => {
+      console.log("submit", form);
       Signup(form, {
         onSuccess(data, variables, context) {
-          console.log("success");
-          onSuccess();
+          SignIn(
+            { email: variables.email, password: variables.password },
+            { onSuccess }
+          );
         },
 
         onError: (err) => {
@@ -84,6 +91,7 @@ export const AccountSignup = forwardRef(
           setError(_err.message);
         },
       });
+    };
 
     useImperativeHandle(ref, () => ({
       submit,
@@ -163,16 +171,6 @@ export const AccountSignup = forwardRef(
                       src={NO_PROFIL_PIC_URL}
                       alt=""
                     />
-                    {/* {!(profilePicSrc == NO_PROFIL_PIC_URL) && (
-                  <div
-                  onClick={() => {
-                    // setProfilePicSrc(NO_PROFIL_PIC_URL);
-                  }}
-                  className="absolute left-2 top-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black"
-                  >
-                  <MdOutlineClose className="text-xl text-white" />
-                </div> */}
-                    {/* )} */}
                   </>
                 </div>
               </div>

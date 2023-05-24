@@ -33,6 +33,7 @@ export class PrismaModule {}
       autoSchemaFile: 'schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);
+        console.log({ user });
         return { req, res, user };
       },
     }),

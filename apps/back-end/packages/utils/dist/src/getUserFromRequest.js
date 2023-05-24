@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifyAndGetUserFromContext = exports.getUserFromRequest = void 0;
 const test_1 = require("./test");
 const mongodb_1 = require("mongodb");
-const CookiesParser_1 = require("./CookiesParser");
 const jwt = require("jsonwebtoken");
+const cookie_1 = require("cookie");
 function getUserFromRequest(req, mock = false, _mockedUser) {
     var _a;
     const user = ((_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.user) ? JSON.parse(req.headers.user) : null;
@@ -16,15 +16,15 @@ function getUserFromRequest(req, mock = false, _mockedUser) {
 }
 exports.getUserFromRequest = getUserFromRequest;
 function VerifyAndGetUserFromContext(ctx) {
-    var _a, _b, _c;
+    var _a, _b;
     if (typeof ctx["req"] !== "undefined") {
         if (((_a = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _a === void 0 ? void 0 : _a.headers) && ((_b = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _b === void 0 ? void 0 : _b.headers["cookie"])) {
             const rawCookies = ctx.req.headers["cookie"];
-            const parsedCookies = (0, CookiesParser_1.parseCookies)(rawCookies);
+            const parsedCookies = (0, cookie_1.parse)(rawCookies);
             const cookiesKey = process.env.COOKIES_KEY || "Auth_cookie";
             const jwtSecret = process.env.JWT_SERCERT || "secret";
             if (typeof cookiesKey === "string") {
-                const authToken = (_c = parsedCookies.find((cookie) => (cookie === null || cookie === void 0 ? void 0 : cookie.cookieName) === cookiesKey)) === null || _c === void 0 ? void 0 : _c.cookieValue;
+                const authToken = parsedCookies[cookiesKey];
                 if (authToken) {
                     try {
                         const user = jwt.verify(authToken, jwtSecret);

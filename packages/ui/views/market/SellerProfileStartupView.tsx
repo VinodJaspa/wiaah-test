@@ -23,6 +23,7 @@ import {
   useGetMyAccountQuery,
   useRequestAccountVerification,
   AccountVerificationFormData,
+  useResendRegisterationCodeMutation,
 } from "@UI";
 
 import { StepperStepType } from "types";
@@ -36,7 +37,7 @@ import { StoreType } from "@features/API";
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const [currentStep, setCurrentStep] = React.useState<number>(8);
+  const [currentStep, setCurrentStep] = React.useState<number>(0);
 
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
@@ -59,149 +60,151 @@ export const SellerProfileStartupView: React.FC = ({}) => {
 
   const requestPrevStep = () => {};
 
-  const steps: StepperStepType[] = [
-    {
-      stepName: t("Signup"),
-      key: 0,
-      stepComponent: (
-        <AccountSignup
-          onSuccess={handleNextStep}
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[0] !== "function"
-            ) {
-              addSubmitRequest(0, v.submit);
-            }
-          }}
-        />
-      ),
-    },
-    {
-      stepName: t("Email Verification"),
-      key: 1,
-      stepComponent: (
-        <AccountSignEmailVerificationStep
-          onSuccess={handleNextStep}
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[1] !== "function"
-            ) {
-              addSubmitRequest(1, v.submit);
-            }
-          }}
-        />
-      ),
-    },
-    {
-      key: 2,
-      stepComponent: (
-        <BillingAccount
-          onSuccess={handleNextStep}
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[2] !== "function"
-            ) {
-              addSubmitRequest(2, v.submit);
-            }
-          }}
-        />
-      ),
-      stepName: t("Payout"),
-    },
-    {
-      stepName: t("Shop information"),
-      stepComponent: (
-        <ShopInformationStep
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[2] !== "function"
-            ) {
-              addSubmitRequest(2, v.submit);
-            }
-          }}
-          onSuccess={handleNextStep}
-        />
-      ),
-      key: 3,
-    },
-    {
-      stepName: t("Verify Your Identity"),
-      key: 4,
-      stepComponent: (
-        <SignupAccountVerificationStep
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[2] !== "function"
-            ) {
-              addSubmitRequest(2, v.submit);
-            }
-          }}
-          onSuccess={handleNextStep}
-        />
-      ),
-    },
-    {
-      stepName: t("Select a plan"),
-      stepComponent: (
-        <SellerSignupPlansStep
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[2] !== "function"
-            ) {
-              addSubmitRequest(2, v.submit);
-            }
-          }}
-          onSuccess={handleNextStep}
-        />
-      ),
-      key: 5,
-    },
-    {
-      key: 6,
-      stepName: t("Listing"),
-      stepComponent: (
-        <SellerListingForm
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[2] !== "function"
-            ) {
-              addSubmitRequest(2, v.submit);
-            }
-          }}
-          onSuccess={handleNextStep}
-        />
-      ),
-    },
-    {
-      stepName: t("Add Payment Method"),
-      stepComponent: <PaymentMethodForm />,
-      key: 7,
-    },
-    {
-      stepName: t("Shipping Settings", "Shipping Settings"),
-      stepComponent: <NewShippingSettings />,
-      key: 8,
-    },
-    {
-      stepName: t("Find_your_freinds", "Find your freinds"),
-      stepComponent: <FindYourFriendsStep />,
-      key: 9,
-    },
-  ];
+  const steps: StepperStepType[] = React.useMemo(
+    () => [
+      {
+        stepName: t("Signup"),
+        key: 0,
+        stepComponent: (
+          <AccountSignup
+            onSuccess={handleNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(0, v.submit);
+              }
+            }}
+          />
+        ),
+      },
+      {
+        stepName: t("Email Verification"),
+        key: 1,
+        stepComponent: (
+          <AccountSignEmailVerificationStep
+            onSuccess={handleNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(1, v.submit);
+              }
+            }}
+          />
+        ),
+      },
+      {
+        key: 2,
+        stepComponent: (
+          <BillingAccount
+            onSuccess={handleNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(2, v.submit);
+              }
+            }}
+          />
+        ),
+        stepName: t("Payout"),
+      },
+      {
+        stepName: t("Shop information"),
+        stepComponent: (
+          <ShopInformationStep
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(3, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+        key: 3,
+      },
+      {
+        stepName: t("Verify Your Identity"),
+        key: 4,
+        stepComponent: (
+          <SignupAccountVerificationStep
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(4, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+      },
+      {
+        stepName: t("Select a plan"),
+        stepComponent: (
+          <SellerSignupPlansStep
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(5, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+        key: 5,
+      },
+      {
+        key: 6,
+        stepName: t("Listing"),
+        stepComponent: (
+          <SellerListingForm
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(6, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+      },
+      {
+        stepName: t("Add Payment Method"),
+        stepComponent: (
+          <PaymentMethodForm
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(7, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+        key: 7,
+      },
+      {
+        stepName: t("Shipping Settings"),
+        stepComponent: (
+          <NewShippingSettings
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(8, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+        key: 8,
+      },
+      {
+        stepName: t("Find your freinds"),
+        stepComponent: (
+          <FindYourFriendsStep
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(9, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+        ),
+        key: 9,
+      },
+    ],
+    []
+  );
 
   const currentStepComp = steps.at(currentStep) || null;
   const nextStep = steps.at(currentStep + 1) || null;
@@ -416,6 +419,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
       code: "",
     });
     const { mutate } = useVerifyEmailMutation();
+    const { mutate: resendCode } = useResendRegisterationCodeMutation();
     const { data: user } = useGetMyAccountQuery();
     React.useImperativeHandle(ref, () => ({
       submit: () => {
@@ -437,7 +441,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
             {...inputProps("code")}
           />
           <div className="flex items-center gap-4">
-            {[...Array(5)].map((v, i) => (
+            {[...Array(6)].map((v, i) => (
               <div
                 className={`w-12 h-12 rounded-lg ${
                   typeof form.code.at(i) === "string"
@@ -453,7 +457,12 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
 
         <div className="flex flex-col gap-2">
           <p>{t("Didn’t receive code?")}</p>
-          <button className="text-primary font-semibold">{t("RESEND")}</button>
+          <button
+            onClick={() => resendCode()}
+            className="text-primary font-semibold"
+          >
+            {t("RESEND")}
+          </button>
         </div>
 
         <Button colorScheme="darkbrown" className="w-full">

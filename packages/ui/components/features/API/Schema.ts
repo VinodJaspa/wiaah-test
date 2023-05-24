@@ -338,6 +338,8 @@ export type AdminGetUserWishlistInput = {
 
 export type AdminNewsfeedPost = {
   __typename?: "AdminNewsfeedPost";
+  affiliation: Affiliation;
+  affiliationId?: Maybe<Scalars["String"]>;
   attachments: Array<Scalars["String"]>;
   authorProfileId: Scalars["ID"];
   comments: Scalars["Int"];
@@ -349,11 +351,16 @@ export type AdminNewsfeedPost = {
   id: Scalars["ID"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
+  product: Product;
+  productId?: Maybe<Scalars["String"]>;
   publisher?: Maybe<Profile>;
   reactionNum: Scalars["Int"];
+  service: Service;
+  serviceId?: Maybe<Scalars["String"]>;
   shares: Scalars["Int"];
   tags: Array<PostTag>;
   title: Scalars["String"];
+  type: PostType;
   updatedAt: Scalars["String"];
   userId: Scalars["ID"];
   views: Scalars["Int"];
@@ -874,6 +881,7 @@ export enum ContentHostType {
   PostService = "post_service",
   PostShop = "post_shop",
   Story = "story",
+  SocialPost = "social_post",
 }
 
 export type ContentReaction = {
@@ -1090,14 +1098,18 @@ export type CreateMessageInput = {
 };
 
 export type CreateNewsfeedPostInput = {
+  affiliationId?: Maybe<Scalars["String"]>;
   attachments: Array<Scalars["String"]>;
   commentsVisibility?: Maybe<CommentsVisibility>;
   content: Scalars["String"];
   enableComments?: Maybe<Scalars["Boolean"]>;
   hashtags: Array<HashtagInput>;
   location?: Maybe<PostLocationInput>;
+  productId?: Maybe<Scalars["String"]>;
+  serviceId?: Maybe<Scalars["String"]>;
   tags: Array<PostTagInput>;
   title: Scalars["String"];
+  type?: Maybe<PostType>;
   visibility?: Maybe<PostVisibility>;
 };
 
@@ -3057,10 +3069,6 @@ export type MutationRequestInsurancePayBackArgs = {
   bookId: Scalars["ID"];
 };
 
-export type MutationResendRegisterationCodeArgs = {
-  email: Scalars["String"];
-};
-
 export type MutationResetPasswordArgs = {
   ResetPasswordArgs: ForgotPasswordEmailInput;
 };
@@ -3315,6 +3323,8 @@ export type NewsfeedHashtagSearch = {
 
 export type NewsfeedPost = {
   __typename?: "NewsfeedPost";
+  affiliation: Affiliation;
+  affiliationId?: Maybe<Scalars["String"]>;
   attachments: Array<Scalars["String"]>;
   authorProfileId: Scalars["ID"];
   comments: Scalars["Int"];
@@ -3326,11 +3336,16 @@ export type NewsfeedPost = {
   id: Scalars["ID"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
+  product: Product;
+  productId?: Maybe<Scalars["String"]>;
   publisher?: Maybe<Profile>;
   reactionNum: Scalars["Int"];
+  service: Service;
+  serviceId?: Maybe<Scalars["String"]>;
   shares: Scalars["Int"];
   tags: Array<PostTag>;
   title: Scalars["String"];
+  type: PostType;
   updatedAt: Scalars["String"];
   userId: Scalars["ID"];
   views: Scalars["Int"];
@@ -3549,6 +3564,13 @@ export type PostTag = {
 export type PostTagInput = {
   userId: Scalars["String"];
 };
+
+export enum PostType {
+  AffiliationPost = "affiliation_post",
+  NewsfeedPost = "newsfeed_post",
+  ServicePost = "service_post",
+  ShopPost = "shop_post",
+}
 
 export enum PostVisibility {
   Followers = "followers",
@@ -4035,6 +4057,7 @@ export type Query = {
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
   getShippingTypeRule: ShippingTypeRule;
   getSiteInfomrationsOfPlacement: Array<SiteInformation>;
+  getSocialPostById: NewsfeedPost;
   getStory: Story;
   getStoryViews: Array<StoryView>;
   getSubscriableMemberships: Array<Membership>;
@@ -4656,6 +4679,10 @@ export type QueryGetShippingTypeRuleArgs = {
 
 export type QueryGetSiteInfomrationsOfPlacementArgs = {
   placement: Scalars["String"];
+};
+
+export type QueryGetSocialPostByIdArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetStoryArgs = {
@@ -5507,7 +5534,6 @@ export type ShippingAddress = {
 export type ShippingCountry = {
   __typename?: "ShippingCountry";
   code: Scalars["String"];
-  name: Scalars["String"];
 };
 
 export type ShippingCountryInput = {
@@ -6012,6 +6038,7 @@ export type UpdateMyPrivacyInput = {
 };
 
 export type UpdateNewsfeedPostInput = {
+  affiliationId?: Maybe<Scalars["String"]>;
   attachments?: Maybe<Array<Scalars["String"]>>;
   commentsVisibility?: Maybe<CommentsVisibility>;
   content?: Maybe<Scalars["String"]>;
@@ -6019,8 +6046,11 @@ export type UpdateNewsfeedPostInput = {
   hashtags?: Maybe<Array<HashtagInput>>;
   id: Scalars["ID"];
   location?: Maybe<PostLocationInput>;
+  productId?: Maybe<Scalars["String"]>;
+  serviceId?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<PostTagInput>>;
   title?: Maybe<Scalars["String"]>;
+  type?: Maybe<PostType>;
   visibility?: Maybe<PostVisibility>;
 };
 
@@ -6039,6 +6069,7 @@ export type UpdateNotificationSettingInput = {
 };
 
 export type UpdatePostAdminInput = {
+  affiliationId?: Maybe<Scalars["String"]>;
   attachments?: Maybe<Array<Scalars["String"]>>;
   commentsVisibility?: Maybe<CommentsVisibility>;
   content?: Maybe<Scalars["String"]>;
@@ -6046,8 +6077,11 @@ export type UpdatePostAdminInput = {
   hashtags?: Maybe<Array<HashtagInput>>;
   id: Scalars["ID"];
   location?: Maybe<PostLocationInput>;
+  productId?: Maybe<Scalars["String"]>;
+  serviceId?: Maybe<Scalars["String"]>;
   tags?: Maybe<Array<PostTagInput>>;
   title?: Maybe<Scalars["String"]>;
+  type?: Maybe<PostType>;
   userId: Scalars["ID"];
   visibility?: Maybe<PostVisibility>;
 };

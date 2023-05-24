@@ -6,6 +6,7 @@ export type SocialRoutesType = {
   visitSocialPostAuthorProfile: (props: Record<string, any>) => RoutesType;
   visitMyProfile: () => RoutesType;
   visitSocialProfile: (userId: string) => RoutesType;
+  visitSocialPost: (postId: string) => RoutesType;
   visitNewsfeedPostPage: (props: Record<string, any>) => RoutesType;
   visitNewsfeedAccountsPostPage: (props: Record<string, any>) => RoutesType;
   visitUserHashtagPage: (props: Record<string, any>) => RoutesType;
