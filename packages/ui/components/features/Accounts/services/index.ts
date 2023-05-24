@@ -14,3 +14,4 @@ export * from "./buyers";
 export * from "./useGetMyVerificationRequest";
 export * from "./useAdminGetAccountVerification";
 export * from "./useAdminUpdateAccount";
+export * from "./useGetMyAccount.query";

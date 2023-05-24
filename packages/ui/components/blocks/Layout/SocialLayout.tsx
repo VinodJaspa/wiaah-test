@@ -3,6 +3,7 @@ import {
   AddNewStoryModal,
   CommentReportModal,
 } from "@blocks/Modals";
+import { SocialStoryModal } from "@blocks/Social";
 import { ContentHostType } from "@features/API";
 import {
   LocationSearchDrawer,
@@ -261,7 +262,7 @@ export const SocialLayout: React.FC = ({ children }) => {
           );
         }}
       /> */}
-      {/* <StoryModal /> */}
+      <SocialStoryModal />
       <AddNewPostModal />
       <AddNewStoryModal />
       <CommentReportModal />

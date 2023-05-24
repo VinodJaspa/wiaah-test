@@ -1,14 +1,7 @@
-import { CancelOrderDto } from "dto";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import {
-  FormOptionType,
-  OrdersFilter,
-  PriceType,
-  TranslationTextType,
-} from "types";
 import {
   TranslationText,
   Table,
@@ -24,7 +17,6 @@ import {
   PriceDisplay,
   SearchIcon,
   Button,
-  ControlledModal,
   ModalButton,
   ModalCloseButton,
   ModalExtendedWrapper,
@@ -230,7 +222,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                 );
               })}
           </TBody>
-          <OrderDetailsModal />
+          {/* <OrderDetailsModal /> */}
         </Table>
       </TableContainer>
       <Pagination controls={controls} />

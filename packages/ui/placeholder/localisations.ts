@@ -88,6 +88,6 @@ export const placesWithCostum = costumPH.concat(
   }))
 );
 
-export const placesPH = [...Array(9)].map(() => ({
+export const placesPH = [...Array(20)].map(() => ({
   ...placeCardPlaceholder,
 }));

@@ -93,18 +93,18 @@ export const PlacesView: React.FC<PlaceViewProps> = ({}) => {
         <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
       </HStack>
       <Divider borderColor={"black"} my="1rem" />
-      {isLoading ? (
+      {/* {isLoading ? (
         <Center>
           <Spinner colorScheme={"primary"} />
         </Center>
-      ) : (
-        <ListWrapper cols={cols}>
-          {placesPH &&
-            placesPH.map((place, i) => (
-              <PlaceCard fixedHeight="17rem" key={i} {...place} />
-            ))}
-        </ListWrapper>
-      )}
+      ) : ( */}
+      <ListWrapper cols={cols}>
+        {placesPH &&
+          placesPH.map((place, i) => (
+            <PlaceCard fixedHeight="17rem" key={i} {...place} />
+          ))}
+      </ListWrapper>
+      {/* )} */}
     </Flex>
   );
 };

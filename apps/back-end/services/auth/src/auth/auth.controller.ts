@@ -10,10 +10,11 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
-  handleAccountCreated(
+  async handleAccountCreated(
     @Payload() { value }: { value: NewAccountCreatedEvent },
   ) {
-    this.authService.register({
+    console.log('registeration event auth', value);
+    await this.authService.register({
       accountType: value.input.accountType as RegisterAccountType,
       email: value.input.email,
       firstName: value.input.firstName,

@@ -27,6 +27,7 @@ export type GetMyAffiliatiomHistoryQuery = { __typename?: "Query" } & {
       | "sellerId"
       | "paidCommissionAmount"
       | "paidCommissionPercent"
+      | "itemType"
     > & {
         product?: Maybe<
           { __typename?: "Product" } & Pick<
@@ -37,7 +38,7 @@ export type GetMyAffiliatiomHistoryQuery = { __typename?: "Query" } & {
         service?: Maybe<
           { __typename?: "Service" } & Pick<
             Service,
-            "id" | "serviceType" | "thumbnail" | "title" | "price"
+            "id" | "type" | "thumbnail" | "name" | "price"
           >
         >;
         affiliator: { __typename?: "Account" } & Pick<Account, "id"> & {
@@ -71,26 +72,36 @@ export const useGetMyAffiliationHistoryQuery = (
                 sellerId
                 paidCommissionAmount
                 paidCommissionPercent
-                product {
-                    id 
-                }
+                itemType
                 purchaserId
                 sellerId
                 service{
                     id
                     type
+                    name
+                    thumbnail
+                    price
                 }
                 product {
                     id
+                    thumbnail
+                    title
+                    price
                 }
                 affiliator{
                     id
+                    profile {
+                      username
+                    }
                 }
                 seller{
                     id
                 }
                 purchaser{
                     id
+                    profile {
+                      username
+                    }
                 }
             }
         }

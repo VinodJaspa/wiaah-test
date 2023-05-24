@@ -1,6 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Table, Tr, Th, Td, TBody, THead, Input } from "@UI";
+import {
+  Table,
+  Tr,
+  Td,
+  TBody,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  DollarIcon,
+} from "@UI";
 
 type DailyPriceData = Record<number, number>;
 
@@ -42,32 +51,36 @@ export const DailyPriceInput: React.FC<DailyPriceInputProps> = ({
     : [];
   return (
     <div className="flex flex-col w-full gap-2">
-      <p className="font-bold">{t("Daily Price")}</p>
-      <Table className="border" ThProps={{ align: "left" }}>
-        <THead className="border-b">
+      <Table TdProps={{ className: "p-0 py-2" }}>
+        {/* <THead className="border-b">
           <Tr>
             <Th>{t("Daily")}</Th>
             <Th>{t("Price")}</Th>
           </Tr>
-        </THead>
+        </THead> */}
         <TBody>
           {formatedDays.map((d, i) => (
             <Tr>
               <Td>
-                <p className="font-semibold">{t(d.name || "")}</p>
+                <p className="font-semibold text-sm">{t(d.name || "")}</p>
               </Td>
-              <Td>
-                <Input
-                  type={"number"}
-                  value={d.price}
-                  onChange={(e) =>
-                    onChange &&
-                    onChange({
-                      ...value,
-                      [d.ogKey]: parseInt(e.target.value),
-                    })
-                  }
-                />
+              <Td className="text-iconGray">
+                <InputGroup>
+                  <InputLeftElement>
+                    <DollarIcon className="text-xl" />
+                  </InputLeftElement>
+                  <Input
+                    type={"number"}
+                    value={d.price}
+                    onChange={(e) =>
+                      onChange &&
+                      onChange({
+                        ...value,
+                        [d.ogKey]: parseInt(e.target.value),
+                      })
+                    }
+                  />
+                </InputGroup>
               </Td>
             </Tr>
           ))}

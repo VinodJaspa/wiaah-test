@@ -59,13 +59,27 @@ type NewsfeedPost {
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
+  productId: String
+  serviceId: String
+  affiliationId: String
+  type: PostType!
   publisher: Profile
   authorProfileId: ID!
+  affiliation: Affiliation!
+  product: Product!
+  service: Service!
 }
 
 enum CommentsVisibility {
   hidden
   public
+}
+
+enum PostType {
+  newsfeed_post
+  shop_post
+  service_post
+  affiliation_post
 }
 
 type AdminNewsfeedPost {
@@ -86,8 +100,15 @@ type AdminNewsfeedPost {
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
+  productId: String
+  serviceId: String
+  affiliationId: String
+  type: PostType!
   publisher: Profile
   authorProfileId: ID!
+  affiliation: Affiliation!
+  product: Product!
+  service: Service!
   visibility: PostVisibility!
 }
 
@@ -320,23 +341,6 @@ type TopHashtagNewsfeedPosts {
   shared: NewsfeedPost!
 }
 
-type ProductPost {
-  id: ID!
-  userId: ID!
-  user: Account
-  productId: ID!
-  reactionNum: Int!
-  comments: Int!
-  shares: Int!
-  views: Int!
-  visibility: PostVisibility!
-  location: PostLocation
-  commentsVisibility: CommentsVisibility!
-  product: Product!
-  createdAt: String!
-  updatedAt: String!
-}
-
 type Affiliation {
   id: ID!
 }
@@ -387,6 +391,23 @@ enum TypeOfService {
   healthCenterTreatment
   beautyCenterTreatment
   vehicle
+}
+
+type ProductPost {
+  id: ID!
+  userId: ID!
+  user: Account
+  productId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  views: Int!
+  visibility: PostVisibility!
+  location: PostLocation
+  commentsVisibility: CommentsVisibility!
+  product: Product!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Story {
@@ -593,6 +614,7 @@ type Query {
   getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
+  getSocialPostById(id: String!): NewsfeedPost!
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
   getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
@@ -910,6 +932,10 @@ input CreateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
+  productId: String
+  serviceId: String
+  affiliationId: String
+  type: PostType = newsfeed_post
 }
 
 input HashtagInput {
@@ -937,6 +963,10 @@ input UpdateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
+  productId: String
+  serviceId: String
+  affiliationId: String
+  type: PostType = newsfeed_post
   id: ID!
 }
 
@@ -961,6 +991,10 @@ input UpdatePostAdminInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
+  productId: String
+  serviceId: String
+  affiliationId: String
+  type: PostType = newsfeed_post
   id: ID!
   userId: ID!
 }

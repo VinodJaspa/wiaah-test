@@ -167,8 +167,8 @@ export class AuthResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
-  resendRegisterationCode(@Args('email') email: string) {
-    return this.authService.resendRegisterationToken(email);
+  resendRegisterationCode(@GqlCurrentUser() user:AuthorizationDecodedUser) {
+    return this.authService.resendRegisterationToken(user.email);
   }
 
   @Mutation((type) => Boolean)

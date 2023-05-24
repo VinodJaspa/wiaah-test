@@ -85,9 +85,7 @@ export function Select<ValueType = string>({
   return (
     <div className="w-full flex flex-col gap-1">
       {label ? (
-        <p className={`${labelClassName ? labelClassName : "font-semibold"}`}>
-          {label}
-        </p>
+        <p className={`${labelClassName ? labelClassName : ""}`}>{label}</p>
       ) : null}
       <div
         {...props}

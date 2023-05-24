@@ -38,7 +38,7 @@ export const CountInput: React.FC<CountInputProps> = ({
         {...setTestid("DecrementCountBtn")}
         className={`${
           count === min ? "opacity-50" : ""
-        } cursor-pointer text-primary`}
+        } cursor-pointer text-black`}
         onClick={() => decrement()}
       />
       <p className="select-none text-center whitespace-nowrap">{count}</p>
@@ -46,7 +46,7 @@ export const CountInput: React.FC<CountInputProps> = ({
         {...setTestid("IncrementCountBtn")}
         className={`${
           count === max ? "opacity-50" : ""
-        } cursor-pointer text-primary`}
+        } cursor-pointer text-black`}
         onClick={() => increment()}
       />
     </div>

@@ -5,9 +5,6 @@ import { ArrayNotEmpty } from 'class-validator';
 @InputType()
 export class ShippingCountryInput {
   @Field((type) => String)
-  name: string;
-
-  @Field((type) => String)
   code: string;
 }
 

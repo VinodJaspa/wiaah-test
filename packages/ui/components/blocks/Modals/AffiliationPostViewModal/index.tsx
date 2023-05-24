@@ -63,7 +63,7 @@ export const AffiliationPostViewModal: React.FC<
           {isError && <p>something went wrong :{error}</p>}
           {postDetails && (
             <SocialAffiliationCard
-              innerProps={{ h: "100%", justify: "space-between" }}
+              innerProps={{ className: "h-full justify-between" }}
               interactionsProps={{
                 onInteraction: handleInteraction,
               }}

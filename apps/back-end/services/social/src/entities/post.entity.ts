@@ -12,10 +12,12 @@ import { Hashtag } from '@entities';
 import {
   CommentsVisibility,
   MarketingTagType,
+  PostType,
   PostVisibility,
 } from 'prismaClient';
 
 registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
+// registerEnumType(PostType, { name: 'CommentsVisiblity' });
 
 @ObjectType()
 export class PostTag {
@@ -111,6 +113,18 @@ export class SocialPost {
 
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
+
+  @Field(() => String, { nullable: true })
+  productId?: string;
+
+  @Field(() => String, { nullable: true })
+  serviceId?: string;
+
+  @Field(() => String, { nullable: true })
+  affiliationId?: string;
+
+  @Field(() => PostType, { defaultValue: PostType.newsfeed_post })
+  type: PostType;
 }
 
 @ObjectType()

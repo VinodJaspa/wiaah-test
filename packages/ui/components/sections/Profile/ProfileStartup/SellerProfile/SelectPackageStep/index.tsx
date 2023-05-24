@@ -58,8 +58,9 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
               </div>
               <div className="my-4 h-px bg-white opacity-50"></div>
               {mapArray(data.includings, (data) => (
-                <div className="mb-2 flex items-center text-lg text-white">
-                  <AiFillCheckCircle className="mr-2 text-xl" /> {data.title}
+                <div className="mb-2 flex text-lg text-white">
+                  <AiFillCheckCircle className="mr-2 mt-1 text-xl" />{" "}
+                  {data.title}
                 </div>
               ))}
             </div>

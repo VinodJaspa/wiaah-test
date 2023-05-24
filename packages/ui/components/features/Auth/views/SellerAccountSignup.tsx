@@ -1,10 +1,9 @@
 import { useForm } from "utils";
 import React, { forwardRef, useImperativeHandle } from "react";
-import { useSignupMutation } from "../services";
+import { useSigninMutation, useSignupMutation } from "../services";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
 import {
   Button,
-  CameraFillIcon,
   CameraOutlineIcon,
   Divider,
   HStack,
@@ -15,6 +14,8 @@ import {
 import { DateFormInput } from "@blocks";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@src/index";
+
+import * as yup from "yup";
 
 const NO_PROFIL_PIC_URL = "/person-icon.png";
 export const AccountSignup = forwardRef(
@@ -42,23 +43,47 @@ export const AccountSignup = forwardRef(
         password: "",
         gender: AccountGenderEnum.Male,
       },
-      { accountType: RegisterAccountType.Seller },
+      // TODO: remove username when added to the api
+      { accountType: RegisterAccountType.Seller, username: undefined },
       {
         addLabel: true,
         addPlaceholder: true,
+        yupSchema: yup.object({
+          email: yup.string().email().required(),
+          firstName: yup.string().min(3).max(20),
+          lastName: yup.string().min(3).max(20),
+          password: yup.string().min(6).max(30),
+          gender: yup
+            .string()
+            .oneOf([AccountGenderEnum.Female, AccountGenderEnum.Male])
+            .required(),
+          confirmPassword: yup
+            .string()
+            .oneOf(
+              [yup.ref("password"), null],
+              "confirm password and password does'nt match!"
+            )
+            .required("Required"),
+        }),
       }
     );
+
+    console.log({ form });
 
     const { isMobile } = useResponsive();
     const [error, setError] = React.useState("");
 
     const { mutate: Signup } = useSignupMutation();
+    const { mutate: SignIn } = useSigninMutation();
 
-    const submit = () =>
+    const submit = () => {
+      console.log("submit", form);
       Signup(form, {
         onSuccess(data, variables, context) {
-          console.log("success");
-          onSuccess();
+          SignIn(
+            { email: variables.email, password: variables.password },
+            { onSuccess }
+          );
         },
 
         onError: (err) => {
@@ -66,6 +91,7 @@ export const AccountSignup = forwardRef(
           setError(_err.message);
         },
       });
+    };
 
     useImperativeHandle(ref, () => ({
       submit,
@@ -145,16 +171,6 @@ export const AccountSignup = forwardRef(
                       src={NO_PROFIL_PIC_URL}
                       alt=""
                     />
-                    {/* {!(profilePicSrc == NO_PROFIL_PIC_URL) && (
-                  <div
-                  onClick={() => {
-                    // setProfilePicSrc(NO_PROFIL_PIC_URL);
-                  }}
-                  className="absolute left-2 top-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black"
-                  >
-                  <MdOutlineClose className="text-xl text-white" />
-                </div> */}
-                    {/* )} */}
                   </>
                 </div>
               </div>

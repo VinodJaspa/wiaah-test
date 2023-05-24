@@ -5,13 +5,13 @@ import { graphqlUploadExpress } from 'graphql-upload';
 require('dotenv').config();
 
 const uri = process.env.ACCOUNTS_DB_URI || '';
-// export const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-// });
+export const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

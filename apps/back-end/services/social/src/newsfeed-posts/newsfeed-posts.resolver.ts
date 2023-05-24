@@ -8,11 +8,10 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { NewsfeedPostsService } from './newsfeed-posts.service';
-import { MarketingTag, NewsfeedPost } from '@entities';
+import { NewsfeedPost, Product } from '@entities';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { UseGuards } from '@nestjs/common';
 import {
-  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -21,6 +20,8 @@ import { GetNewsfeedPostsByUserIdInput } from './dto';
 import { TopHashtagNewsfeedPosts } from './entity';
 import { PrismaService } from 'prismaService';
 import { GetMyNewsfeedPostsInput } from './dto/get-my-newsfeed-posts.input';
+import { Affiliation } from '@affiliation-post/entities';
+import { Service } from 'src/service-post/entities/service-post.entity';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -63,6 +64,11 @@ export class NewsfeedPostsResolver {
 
   @Query(() => NewsfeedPost)
   getNewsfeedPostById(@Args('id') id: string) {
+    return this.newsfeedPostsService.getNewsfeedPostById(id);
+  }
+
+  @Query(() => NewsfeedPost)
+  getSocialPostById(@Args('id') id: string) {
     return this.newsfeedPostsService.getNewsfeedPostById(id);
   }
 
@@ -127,5 +133,27 @@ export class NewsfeedPostsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.newsfeedPostsService.deleteNewsfeedPost(id, user.id);
+  }
+
+  @ResolveField(() => Affiliation)
+  affiliation(@Parent() post: NewsfeedPost) {
+    return {
+      __typename: 'affiliation',
+      id: post.affiliationId,
+    };
+  }
+  @ResolveField(() => Product)
+  product(@Parent() post: NewsfeedPost) {
+    return {
+      __typename: 'product',
+      id: post.productId,
+    };
+  }
+  @ResolveField(() => Service)
+  service(@Parent() post: NewsfeedPost) {
+    return {
+      __typename: 'service',
+      id: post.serviceId,
+    };
   }
 }

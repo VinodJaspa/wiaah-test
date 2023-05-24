@@ -3,6 +3,7 @@ import { HtmlImgProps } from "types";
 
 export interface ImageProps extends HtmlImgProps {
   onDimLoad?: (dim: { h: number; w: number; x: number; y: number }) => any;
+  isLoading?: boolean;
 }
 
 export const Image: React.FC<ImageProps> = ({ onDimLoad, ...props }) => {

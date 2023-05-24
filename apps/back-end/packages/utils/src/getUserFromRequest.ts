@@ -3,6 +3,7 @@ import { AuthorizationDecodedUser } from "./types";
 import { ObjectId } from "mongodb";
 import { parseCookies } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
+import { parse } from "cookie";
 
 export function getUserFromRequest<T = AuthorizationDecodedUser>(
   req: any,
@@ -26,13 +27,11 @@ export function VerifyAndGetUserFromContext(
     if (ctx?.req?.headers && ctx?.req?.headers["cookie"]) {
       // @ts-ignore
       const rawCookies = ctx.req.headers["cookie"];
-      const parsedCookies = parseCookies(rawCookies);
+      const parsedCookies = parse(rawCookies);
       const cookiesKey = process.env.COOKIES_KEY || "Auth_cookie";
       const jwtSecret = process.env.JWT_SERCERT || "secret";
       if (typeof cookiesKey === "string") {
-        const authToken = parsedCookies.find(
-          (cookie) => cookie?.cookieName === cookiesKey
-        )?.cookieValue;
+        const authToken = parsedCookies[cookiesKey];
         if (authToken) {
           try {
             const user = jwt.verify(authToken, jwtSecret);

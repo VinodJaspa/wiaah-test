@@ -28,13 +28,15 @@ export const ChooseWithInput: React.FC<ChooseWithInputProps> = ({
     onOptionChange && onOptionChange(opt);
   }, [opt]);
   return (
-    <div className="flex gap-2">
-      <TranslationText translationObject={title} />:
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
+      <div className="flex">
+        <TranslationText translationObject={title} />:
+      </div>
+      <div className="flex gap-2">
         {options.map(({ key, title, input }, i) => (
           <HStack key={i}>
-            <TranslationText translationObject={title} />
             <Radio name={name} onChange={(e) => setOpt(key)} />
+            <TranslationText translationObject={title} />
             {opt === key && input ? (
               <>
                 <Input defaultChecked={i === 0} {...input} />

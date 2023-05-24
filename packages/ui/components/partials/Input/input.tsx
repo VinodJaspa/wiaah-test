@@ -140,7 +140,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
           isGroup ? (flushed ? "border-b-2" : "border-2") : ""
         } ${
           focused ? "border-primary-200" : "border-[#EDEDED]"
-        } flex gap-1 items-center relative`}
+        } flex gap-1 items-center rounded-md relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}
         {MapChildren<InputContextValue>(children, {
