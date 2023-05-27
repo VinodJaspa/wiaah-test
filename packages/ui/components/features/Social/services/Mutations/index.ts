@@ -3,3 +3,4 @@ export * from "./useUnFollowProfileMutation";
 export * from "./useSendFollowRequestMutation";
 export * from "./useCommentContent";
 export * from "./useLikeContent";
+export * from "./useSavePostMutation";

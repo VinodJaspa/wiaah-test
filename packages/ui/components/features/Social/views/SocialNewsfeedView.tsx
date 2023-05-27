@@ -60,6 +60,7 @@ const SocialNewsfeedView = () => {
             {mapArray(data, (v, i) => (
               <SocialNewsfeedPostMobileCard
                 post={{
+                  id: v.id,
                   comments: v.comments,
                   content: v.content,
                   createdAt: v.createdAt,

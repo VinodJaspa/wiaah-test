@@ -1,4 +1,4 @@
-import { ContentData, ContentDiscoveryService } from '@content-discovery';
+import { ContentDiscoveryService } from '@content-discovery';
 import { UserSavedPostsGroup } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { ExtractPagination } from 'nest-utils';
@@ -34,5 +34,16 @@ export class SavedPostsService {
       posts,
       userId,
     };
+  }
+
+  async savePost(postId: string, userId: string) {
+    const res = await this.prisma.savedPost.create({
+      data: {
+        postId,
+        userId,
+      },
+    });
+
+    return !!res;
   }
 }

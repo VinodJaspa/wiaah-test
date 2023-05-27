@@ -1,8 +1,14 @@
 import React from "react";
-import { ChakraCarousel, CarouselPreviewer } from "@UI";
+import {
+  ChakraCarousel,
+  CarouselPreviewer,
+  Slider,
+  SocialServicePostAttachment,
+} from "@UI";
 import { ProductGalleryItem } from "types";
 import { useResponsive } from "hooks";
 import { PostAttachment } from "@UI";
+import { AttachmentType } from "@features/API";
 
 export interface ProductImageGalleryProps {
   images?: ProductGalleryItem[];
@@ -55,17 +61,14 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
               Cashback {cashback}%
             </div>
           )}
-          <ChakraCarousel
-            activeItem={currentComponent}
-            setActiveItem={setCurrentComponent}
-            h={"100%"}
-            arrows
-            swipe
+          <Slider
+            currentItemIdx={currentComponent}
+            onSliderChange={setCurrentComponent}
           >
             {images.map(({ type, original }, i) => (
-              <PostAttachment type="image" src={original} />
+              <PostAttachment type={AttachmentType.Img} src={original} />
             ))}
-          </ChakraCarousel>
+          </Slider>
         </div>
       </div>
     </>

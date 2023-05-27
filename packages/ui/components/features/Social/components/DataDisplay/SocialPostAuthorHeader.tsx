@@ -1,7 +1,7 @@
 import { useRouting } from "@UI/../routing";
 import { useSocialControls } from "@blocks";
 import { useGetSocialProfileQuery } from "@features/Social/services";
-import { AspectRatio, Button, HStack, Image } from "@partials";
+import { AspectRatio, Button, HStack, Image, VerifiedIcon } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +16,7 @@ export const SocialPostAuthorHeader: React.FC<{ userId: string }> = ({
   return (
     <HStack>
       <button
+        className="w-24"
         onClick={() => {
           if (data?.ownerId) {
             viewUserStory(data?.ownerId);
@@ -26,14 +27,21 @@ export const SocialPostAuthorHeader: React.FC<{ userId: string }> = ({
           <Image
             isLoading={isLoading}
             src={data?.photo}
-            className={`${newStory ? "border border-primary" : ""} w-24 h-full`}
+            className={`${
+              newStory ? "border border-primary" : ""
+            } w-full h-full rounded-full`}
           />
         </AspectRatio>
       </button>
 
       <div className="flex flex-col gap-4">
-        <p className="text-2xl font-semibold">{data?.username}</p>
-        <p className="text-xs text-iconGray">{data?.profession}</p>
+        <div>
+          <HStack>
+            <p className="text-2xl font-semibold">{data?.username}</p>
+            <VerifiedIcon className="text-secondaryBlue" />
+          </HStack>
+          <p className="text-xs text-iconGray">{data?.profession}</p>
+        </div>
 
         <HStack>
           <Button

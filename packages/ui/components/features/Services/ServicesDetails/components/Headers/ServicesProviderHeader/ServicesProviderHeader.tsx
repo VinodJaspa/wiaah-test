@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Rate, HeartIcon, ShareIcon } from "@UI";
+import { Rate, HeartIcon, ShareIcon, Button } from "@UI";
 import { DateDetails } from "utils";
 
 export interface ServicesProviderHeaderProps {
@@ -69,6 +69,8 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           ) : null}
         </div>
       </div> */}
+
+      <Button>{t("View Seller's site")}</Button>
     </div>
   );
 };

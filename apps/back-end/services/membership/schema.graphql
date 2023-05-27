@@ -84,6 +84,11 @@ enum MembershipSubscriptionStatus {
   expired
 }
 
+type Product {
+  id: ID!
+  isExternalShopping: Boolean!
+}
+
 type Query {
   adminGetMemberships(args: AdminGetMembershipsInput!): [Membership!]!
   getSubscriableMemberships: [Membership!]!

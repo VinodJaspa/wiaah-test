@@ -1,8 +1,7 @@
-import { ProductSearchView } from "@components";
 import { NextPage } from "next";
 import React from "react";
 import { MetaTitle } from "react-seo";
-import { SellerLayout } from "ui";
+import { ProductSearchView, SellerLayout } from "ui";
 
 const ProductSearchPage: NextPage = () => {
   return (

@@ -59,10 +59,7 @@ export const ServiceReservastionForm: React.FC<{
       isDate(bookingForm.checkinDate),
   });
 
-  const services = React.useMemo(
-    () => costData?.services.map((v) => v.service) || [],
-    [costData]
-  );
+  const services = costData?.services.map((v) => v.service) || [];
 
   const service = Array.isArray(services) ? services[0] : ({} as Service);
 
@@ -119,7 +116,9 @@ export const ServiceReservastionForm: React.FC<{
           <div className="flex gap-2">
             <Image
               className="w-20 h-16 rounded-lg"
-              src={service?.thumbnail}
+              src={
+                "https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?b=1&s=612x612&w=0&k=20&c=vcCQ5L9Tt2ZurwFhtodR6njSUnMsEn_ZqEmsa0hs9lM="
+              }
               alt={service?.name}
             />
             <div className="flex h-full flex-col font-medium gap-1">

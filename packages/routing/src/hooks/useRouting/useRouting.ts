@@ -64,6 +64,14 @@ export const useRouting = () => {
     return GetQuery();
   }
 
+  function push(url: string) {
+    visit((r) => r.addPath(url));
+  }
+
+  function replace(url: string) {
+    visit((r) => r.addPath(url));
+  }
+
   return {
     visit,
     getCurrentPath,
@@ -73,5 +81,7 @@ export const useRouting = () => {
     routes: MainRoutes,
     back,
     getQuery,
+    push,
+    replace,
   };
 };

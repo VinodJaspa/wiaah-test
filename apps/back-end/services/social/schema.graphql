@@ -68,6 +68,9 @@ type NewsfeedPost {
   affiliation: Affiliation!
   product: Product!
   service: Service!
+  isLiked: Boolean!
+  isCommented: Boolean!
+  isSaved: Boolean!
 }
 
 enum CommentsVisibility {
@@ -109,6 +112,9 @@ type AdminNewsfeedPost {
   affiliation: Affiliation!
   product: Product!
   service: Service!
+  isLiked: Boolean!
+  isCommented: Boolean!
+  isSaved: Boolean!
   visibility: PostVisibility!
 }
 
@@ -881,6 +887,7 @@ type Mutation {
   removeComment(id: Int!): Comment!
   adminDeleteComment(commentId: String!): Boolean!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
+  savePost(postId: String!): Boolean!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
   likeStory(likeStoryInput: LikeStoryInput!): Boolean!

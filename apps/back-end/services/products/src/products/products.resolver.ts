@@ -52,7 +52,6 @@ import { ClientKafka } from '@nestjs/microservices';
 export class ProductsResolver {
   constructor(
     private readonly productsService: ProductsService,
-    private readonly uploadService: UploadService,
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
@@ -216,7 +215,7 @@ export class ProductsResolver {
   }
 
   @Mutation(() => Product)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createNewProduct(
     @Args('createNewProductInput') createProductInput: CreateProductInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -225,7 +224,7 @@ export class ProductsResolver {
   }
 
   @Mutation(() => Product)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   updateProduct(
     @Args('updateProductArgs') input: UpdateProductInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

@@ -58,12 +58,8 @@ import { useResponsive, useUserData } from "@src/index";
 
 export interface AddNewServiceProps {}
 export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
-  const {
-    AddNewService,
-    CancelAddingNewService,
-    EditService,
-    ServiceIdFormState,
-  } = useContext(MyServicesCtx);
+  const { CancelAddingNewService, ServiceIdFormState } =
+    useContext(MyServicesCtx);
 
   const { t } = useTranslation();
   const [lang, setLang] = React.useState<string>("en");
@@ -110,7 +106,8 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
             sellerId={user?.id || ""}
             onFinish={(data) => mutate(data)}
             isEdit={isEdit || false}
-            data={data}
+            // TODO
+            data={{}}
           />
         </FormTranslationWrapper>
         <div className="w-full justify-between flex">
@@ -123,10 +120,12 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           </Button>
 
           <HStack className="justify-end">
-            <Button onClick={() => previousStep()} outline colorScheme="gray">
+            {/* TODO */}
+            <Button onClick={() => {}} outline colorScheme="gray">
               {t("Back")}
             </Button>
-            <Button className="w-fit self-end" onClick={() => nextStep()}>
+            {/* TODO */}
+            <Button className="w-fit self-end" onClick={() => {}}>
               {t("Next")}
             </Button>
           </HStack>
@@ -280,6 +279,14 @@ export const NewServiceStepper = React.forwardRef(
                     <p className="font-medium">{t("Description")}</p>
                     <Textarea {...translationInputProps("description", lang)} />
                   </div>
+                  <div>
+                    <p className="font-medium">{t("Source site url")}</p>
+                    <Input
+                      {...translationInputProps("description", lang)}
+                      placeholder={t("Source site url")}
+                      label={undefined}
+                    />
+                  </div>
 
                   {showOn([ServiceType.Restaurant]) ? (
                     <>
@@ -396,15 +403,17 @@ export const NewServiceStepper = React.forwardRef(
                   {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
                     <>
                       <div className="flex flex-col md:flex-row gap-4">
-                        <p className="font-medium">{t("Number of beds")}</p>
-                        <HotelBedsInput
-                          {...inputProps(
-                            "beds",
-                            undefined,
-                            undefined,
-                            (v) => v
-                          )}
-                        />
+                        <div className="w-full">
+                          <p className="font-medium">{t("Number of beds")}</p>
+                          <HotelBedsInput
+                            {...inputProps(
+                              "beds",
+                              undefined,
+                              undefined,
+                              (v) => v
+                            )}
+                          />
+                        </div>
                         <div className="flex flex-col gap-4 w-full">
                           <p className="font-medium">
                             {t("Number of Bathrooms")}

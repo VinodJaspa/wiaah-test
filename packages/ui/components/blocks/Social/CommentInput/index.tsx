@@ -2,7 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaCamera } from "react-icons/fa";
 import { MdSend } from "react-icons/md";
-import { InputGroup, InputLeftElement, InputRightElement, Input } from "@UI";
+import {
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Input,
+  HStack,
+} from "@UI";
 export interface CommentInputProps {
   onCameraClick?: () => void;
   onCommentSubmit?: (comment: string) => void;
@@ -21,28 +27,27 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     onCommentSubmit && onCommentSubmit(input);
   }
   return (
-    <InputGroup className="rounded-full px-1">
-      <InputLeftElement
-        data-testid="CommentCameraBtn"
-        onClick={handleCameraClick}
-        className={"cursor-pointer"}
-      >
-        <FaCamera className="text-2xl" />
-      </InputLeftElement>
-      <Input
-        className="rounded-full"
-        data-testid="CommentInput"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder={t("Enter comment")}
-      />
-      <InputRightElement
-        data-testid="CommentSubmitBtn"
-        onClick={handleCommentSubmit}
-        className={"cursor-pointer"}
-      >
+    <HStack>
+      <InputGroup className="rounded-full w-full px-1">
+        <InputLeftElement
+          data-testid="CommentCameraBtn"
+          onClick={handleCameraClick}
+          className={"cursor-pointer"}
+        >
+          <FaCamera className="text-2xl" />
+        </InputLeftElement>
+        <Input
+          className="rounded-full"
+          data-testid="CommentInput"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={t("Enter comment")}
+        />
+      </InputGroup>
+      <button></button>
+      <button onClick={handleCommentSubmit}>
         <MdSend className="text-2xl" />
-      </InputRightElement>
-    </InputGroup>
+      </button>
+    </HStack>
   );
 };

@@ -22,9 +22,11 @@ import { EllipsisText } from "@blocks";
 import { useDateDiff } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { SocialPostOptionsDropdown } from "../DataDisplay";
 
 interface SocialNewsfeedPostMobileCardProps {
   post: {
+    id: string;
     userPhoto: string;
     username: string;
     verified: boolean;
@@ -107,16 +109,11 @@ export const SocialNewsfeedPostMobileCard: React.FC<
             </p>
           </div>
         </HStack>
-        <Menu>
-          <MenuButton>
-            <div className="px-2">
-              <VerticalDotsIcon />
-            </div>
-          </MenuButton>
-          <MenuList>
-            <MenuItem>test</MenuItem>
-          </MenuList>
-        </Menu>
+        <SocialPostOptionsDropdown postId={post.id}>
+          <div className="px-2">
+            <VerticalDotsIcon />
+          </div>
+        </SocialPostOptionsDropdown>
       </HStack>
 
       <div className="flex flex-col gap-2">

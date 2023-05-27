@@ -4,6 +4,8 @@ import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   CanPreformProductActionMessage,
   CanPreformProductActionMessageReply,
+  GetIsExternalSeller,
+  GetIsExternalSellerReply,
   GetUserMembershipPriceIdMessage,
   GetUserMembershipPriceIdMessageReply,
   SubscriptionPaidEvent,
@@ -16,6 +18,7 @@ import { membershipPreformAction } from '@membership/const';
 import { Membership } from './entities';
 import { CommissionOn } from 'prismaClient';
 import { PrismaService } from 'prismaService';
+import { MembershipService } from './membership.service';
 
 @Controller()
 export class MembershipController {
@@ -23,6 +26,7 @@ export class MembershipController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
     private readonly prisma: PrismaService,
+    private readonly service: MembershipService,
   ) {}
 
   @EventPattern(
@@ -129,5 +133,30 @@ export class MembershipController {
       data: canPreform,
       error: null,
     });
+  }
+
+  @MessagePattern(KAFKA_MESSAGES.MEMBERSHIP_MESSAGES.isExternalSeller)
+  async getIsExternalSeller(
+    @Payload() payload: GetIsExternalSeller,
+  ): Promise<GetIsExternalSellerReply> {
+    try {
+      const isExternalSeller = await this.service.isPayPerClick(
+        payload.input.sellerId,
+      );
+
+      return new GetIsExternalSellerReply({
+        data: {
+          isExternal: isExternalSeller,
+        },
+        error: null,
+        success: true,
+      });
+    } catch (error) {
+      return new GetIsExternalSellerReply({
+        data: null,
+        error,
+        success: false,
+      });
+    }
   }
 }
