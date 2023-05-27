@@ -70,6 +70,9 @@ export class StringTranslationField extends CreateInputGqlTranslationInputField(
 
 @InputType()
 export class CreateProductInput {
+  @Field(() => String, { nullable: true })
+  external_link?: string;
+
   @Field(() => ProdcutType)
   type: ProdcutType;
 

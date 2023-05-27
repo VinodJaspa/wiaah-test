@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
@@ -17,6 +18,8 @@ import {
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
   NewProductCreatedEvent,
+  GetIsExternalSeller,
+  GetIsExternalSellerReply,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
@@ -55,6 +58,14 @@ export class ProductsService {
     createProductInput: CreateProductInput,
     user: AuthorizationDecodedUser,
   ) {
+    const isExternalSeller = await this.isExternalSeller(user.id);
+
+    if (
+      isExternalSeller &&
+      typeof createProductInput.external_link !== 'string'
+    )
+      throw new BadRequestException('external link is required');
+
     const { shopId } = user;
 
     const res = await this.uploadService.uploadFiles(
@@ -482,5 +493,27 @@ export class ProductsService {
     });
 
     return filters;
+  }
+
+  private async isExternalSeller(sellerId: string) {
+    const {
+      results: { data, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetIsExternalSeller,
+      GetIsExternalSellerReply
+    >(
+      this.eventClient,
+      KAFKA_MESSAGES.MEMBERSHIP_MESSAGES.isExternalSeller,
+      new GetIsExternalSeller({
+        sellerId,
+      }),
+    );
+
+    if (success) {
+      return data.isExternal;
+    } else {
+      return false;
+    }
   }
 }

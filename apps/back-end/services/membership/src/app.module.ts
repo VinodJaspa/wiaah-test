@@ -9,6 +9,7 @@ import { getUserFromRequest, MockedAdminUser, StripeModule } from 'nest-utils';
 import { MembershipModule } from './membership/membership.module';
 import { PrismaService } from 'prismaService';
 import { Account } from './membership/entities';
+import { Product } from '@membership/extendedResolvers/product.extends.resolver';
 
 @Global()
 @Module({
@@ -25,7 +26,7 @@ export class PrismaModule {}
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
       buildSchemaOptions: {
-        orphanedTypes: [Account],
+        orphanedTypes: [Account, Product],
       },
       context: (ctx) => ({
         ...ctx,

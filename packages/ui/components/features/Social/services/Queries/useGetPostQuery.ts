@@ -1,9 +1,12 @@
 import { createGraphqlRequestClient } from "@UI/../api";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import {
   Affiliation,
   Exact,
   Maybe,
   NewsfeedPost,
+  PostType,
   Product,
   Profile,
   Scalars,
@@ -18,7 +21,17 @@ export type GetSocialPostQueryVariables = Exact<{
 export type GetSocialPostQuery = { __typename?: "Query" } & {
   getSocialPostById: { __typename?: "NewsfeedPost" } & Pick<
     NewsfeedPost,
-    "type" | "createdAt" | "views" | "reactionNum" | "comments" | "shares"
+    | "type"
+    | "createdAt"
+    | "views"
+    | "reactionNum"
+    | "comments"
+    | "shares"
+    | "userId"
+    | "id"
+    | "isLiked"
+    | "isSaved"
+    | "isCommented"
   > & {
       affiliation: { __typename?: "Affiliation" } & Pick<
         Affiliation,
@@ -61,9 +74,51 @@ export const getSocialPostQueryKey = (args: args) => [
 ];
 
 export const getSocialPostQueryFetcher = async (args: args) => {
+  if (isDev) {
+    const mockRes: GetSocialPostQuery["getSocialPostById"] = {
+      id: "342",
+      comments: randomNum(150),
+      createdAt: new Date().toUTCString(),
+      product: {
+        price: randomNum(13),
+        thumbnail: getRandomImage(),
+        title: "test product",
+      },
+      service: {
+        name: "service name",
+        price: randomNum(160),
+        thumbnail: getRandomImage(),
+      },
+      reactionNum: randomNum(1600),
+      shares: randomNum(1700),
+      userId: "tesat1321",
+      views: randomNum(20000),
+      type: PostType.NewsfeedPost,
+      publisher: {
+        id: "134",
+        ownerId: "134",
+        photo: getRandomImage(),
+        username: getRandomName().firstName,
+        verified: true,
+      },
+      affiliation: {
+        commision: randomNum(10),
+        itemType: "product",
+        product: {
+          thumbnail: getRandomImage(),
+          price: randomNum(150),
+          title: "product title",
+        },
+      },
+      isCommented: true,
+      isLiked: true,
+      isSaved: true,
+    };
+    return mockRes;
+  }
+
   const client = createGraphqlRequestClient();
 
-  // TODO: add query and vars after creating a the graphql shared posts query
   const res = await client
     .setQuery(
       `
@@ -75,6 +130,8 @@ query getSocialPost($id:String!){
     reactionNum
     comments
     shares
+    userId
+    id
     affiliation{
       product {
         price

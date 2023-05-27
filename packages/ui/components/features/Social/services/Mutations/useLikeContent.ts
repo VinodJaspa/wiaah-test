@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
-import { Mutation, CreateReactionInput } from "@features/Social/services/types";
 import { Exact } from "types";
 import { useMutation } from "react-query";
+import { CreateReactionInput, Mutation } from "@features/API";
 
 export type LikeContentMutationVariables = Exact<{
   args: CreateReactionInput;

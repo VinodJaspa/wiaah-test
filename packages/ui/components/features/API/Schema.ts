@@ -328,6 +328,9 @@ export type AdminNewsfeedPost = {
   enableComments: Scalars["Boolean"];
   hashtags: Array<Hashtag>;
   id: Scalars["ID"];
+  isCommented: Scalars["Boolean"];
+  isLiked: Scalars["Boolean"];
+  isSaved: Scalars["Boolean"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
   product: Product;
@@ -860,7 +863,6 @@ export enum ContentHostType {
   PostService = "post_service",
   PostShop = "post_shop",
   Story = "story",
-  SocialPost = "social_post",
 }
 
 export type ContentReaction = {
@@ -2534,6 +2536,7 @@ export type Mutation = {
   resendRegisterationCode: Scalars["Boolean"];
   resetPassword: Scalars["Boolean"];
   reviewProduct: ProductReview;
+  savePost: Scalars["Boolean"];
   sendFollowRequest: Scalars["Boolean"];
   sendGeneralMail: Scalars["Boolean"];
   sendMessage: ChatMessage;
@@ -3056,6 +3059,10 @@ export type MutationReviewProductArgs = {
   args: CreateProductReviewInput;
 };
 
+export type MutationSavePostArgs = {
+  postId: Scalars["String"];
+};
+
 export type MutationSendFollowRequestArgs = {
   profileId: Scalars["String"];
 };
@@ -3313,6 +3320,9 @@ export type NewsfeedPost = {
   enableComments: Scalars["Boolean"];
   hashtags: Array<Hashtag>;
   id: Scalars["ID"];
+  isCommented: Scalars["Boolean"];
+  isLiked: Scalars["Boolean"];
+  isSaved: Scalars["Boolean"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
   product: Product;

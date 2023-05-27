@@ -156,4 +156,14 @@ export class NewsfeedPostsResolver {
       id: post.serviceId,
     };
   }
+
+  // TODO: implement this
+  @ResolveField(() => Boolean)
+  isLiked() {}
+
+  @ResolveField(() => Boolean)
+  isCommented() {}
+
+  @ResolveField(() => Boolean)
+  isSaved() {}
 }

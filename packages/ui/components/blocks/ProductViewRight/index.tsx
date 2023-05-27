@@ -1,5 +1,12 @@
 import React from "react";
-import { FlexStack, WishListIcon, Rate, Select, SelectOption } from "@UI";
+import {
+  FlexStack,
+  WishListIcon,
+  Rate,
+  Select,
+  SelectOption,
+  HStack,
+} from "@UI";
 import { useMutateShoppingCart, Button } from "@UI";
 import { useCartSummary, useProductDescTabs } from "@src/Hooks";
 import { CartSummaryItem } from "types";
@@ -125,23 +132,28 @@ export const ProductViewRight: React.FC<ProductProps> = ({
             <SelectOption value="small">{t("Small", "Small")}</SelectOption>
           </Select>
         </div>
-        <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
-          <Button
-            onClick={() =>
-              handleNewItem({
-                id,
-                name,
-                price,
-                qty: 1,
-                imageUrl: imgUrl || "",
-                type: "product",
-              })
-            }
-          >
-            {t("Add_To_Cart", "Add To Cart")}
+        <div className="flex justify-between">
+          <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
+            <Button
+              onClick={() =>
+                handleNewItem({
+                  id,
+                  name,
+                  price,
+                  qty: 1,
+                  imageUrl: imgUrl || "",
+                  type: "product",
+                })
+              }
+            >
+              {t("Add To Cart")}
+            </Button>
+            <WishListIcon onClick={handleAddToWishList} />
+          </FlexStack>
+          <Button className="whitespace-nowrap">
+            {t("View Seller's site")}
           </Button>
-          <WishListIcon onClick={handleAddToWishList} />
-        </FlexStack>
+        </div>
       </div>
     </div>
   );

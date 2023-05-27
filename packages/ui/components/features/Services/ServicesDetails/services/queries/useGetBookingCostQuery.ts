@@ -76,8 +76,9 @@ export const getBookingCostQueryFetcher = async (args: args) => {
             id: "test",
             name: "Dr. Margaret E. Carswell",
             price: 50,
-            thumbnail: getRandomServiceImage(ServiceType.Vehicle, menuType),
-            type: ServiceType.Vehicle,
+            thumbnail:
+              "https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?b=1&s=612x612&w=0&k=20&c=vcCQ5L9Tt2ZurwFhtodR6njSUnMsEn_ZqEmsa0hs9lM=",
+            type: ServiceType.HolidayRentals,
             menuType,
           },
         };

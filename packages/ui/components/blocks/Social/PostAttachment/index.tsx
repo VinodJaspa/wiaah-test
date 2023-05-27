@@ -50,7 +50,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           <Image
             className={`${cover ? "object-cover" : "object-contain"} ${
               blur ? "absolute" : ""
-            }  max-w-full max-h-full`}
+            }  w-full max-h-full`}
             alt={alt && alt}
             src={src}
             data-testid="PostAttachmentImage"

@@ -285,7 +285,9 @@ export const KAFKA_MESSAGES = {
     getShippingMethod: (key: string = "", regex?: boolean) =>
       makeKafkaDynamicEvent(`get.shipping.method.${key}`, regex),
   },
-  MEMBERSHIP_MESSAGES: {},
+  MEMBERSHIP_MESSAGES: {
+    isExternalSeller: "is.external.seller",
+  },
   CAN_PREFORM_ACTION_MESSAGES: {
     canPreformProductAction: (actionType: string) =>
       `can.preform.product.action.${actionType}`,

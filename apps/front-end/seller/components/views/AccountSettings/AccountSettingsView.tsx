@@ -155,7 +155,7 @@ const sections: SettingsSectionType[] = [
     panelName: "Invite Friends",
     panelIcon: HiUserGroup,
     panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep />,
+    panelComponent: <FindYourFriendsStep onSuccess={() => {}} />,
   },
   {
     panelName: "Your Membership",

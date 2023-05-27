@@ -26,6 +26,8 @@ export type MainRouterInterface = {
   checkout: () => RoutesType;
   visitCheckout: () => RoutesType;
   visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
+  visitChangePassword: () => RoutesType;
+  visitRegister: () => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
   ShopRoutesType &
@@ -93,5 +95,11 @@ export const MainRoutes: MainRouterInterface = {
   },
   visitCheckout() {
     return this.checkout();
+  },
+  visitChangePassword() {
+    return this.addPath("auth").addPath("change-password");
+  },
+  visitRegister() {
+    return this.addPath("auth").addPath("register");
   },
 };

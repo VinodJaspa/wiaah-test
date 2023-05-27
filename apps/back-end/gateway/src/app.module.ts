@@ -3,14 +3,12 @@ import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import {
-  KnownError,
   parseCookies,
   PublicErrorCodes,
   UnknownError,
   VerifyAndGetUserFromContext,
 } from 'nest-utils';
 import { subgraphs } from '@lib';
-// import { client } from './main';
 import { ObjectId } from 'mongodb';
 import { client } from './main';
 
@@ -25,7 +23,7 @@ import { client } from './main';
         },
         context: async (ctx) => {
           const _user = VerifyAndGetUserFromContext(ctx);
-          console.log({ _user });
+
           const userId = _user?.id;
           const user = userId
             ? await client
@@ -51,18 +49,15 @@ import { client } from './main';
 
           const isKnownError = values.includes(exception.code);
 
-          console.log({ isKnownError, values, code: exception.code }, error);
           if (isKnownError) {
-            console.log('true', exception.code);
             return error;
           } else {
-            console.log('false', exception?.code);
             return new UnknownError();
           }
         },
       },
       gateway: {
-        buildService({ url, name }) {
+        buildService({ url }) {
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ context, request, kind }) {
@@ -74,14 +69,13 @@ import { client } from './main';
                   contentType &&
                   contentType.startsWith('multipart/form-data')
                 ) {
-                  console.log({ contentType });
                   request.http.headers.set('content-type', contentType);
                 }
               } catch (error) {
                 console.error('will send request error', { error });
               }
               const user = context['user'];
-              console.log({ uSer: user });
+
               request.http.headers.set(
                 'user',
                 typeof user === 'object'

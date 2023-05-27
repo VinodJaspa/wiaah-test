@@ -1,6 +1,6 @@
 import { UserSavedPostsGroup } from '@entities';
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -21,6 +21,15 @@ export class SavedPostsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.savedPostsService.getUserSavedPosts(args, user.id);
+  }
+
+  @Mutation(() => Boolean)
+  async savePost(
+    @Args('postId') postId: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const saved = await this.savedPostsService.savePost(postId, user.id);
+    return true;
   }
 
   @Query(() => UserSavedPostsGroup)

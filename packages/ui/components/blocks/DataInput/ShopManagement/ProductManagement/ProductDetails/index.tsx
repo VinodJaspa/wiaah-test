@@ -97,6 +97,12 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 {t("Price & Attributes")}
               </span>
 
+              <FormikInput<InputProps>
+                name="external url"
+                value={values["external_url"]}
+                placeholder={t("Source Site Url")}
+              />
+
               <Select
                 value={values["condition"]}
                 placeholder={t("Select type of item")}

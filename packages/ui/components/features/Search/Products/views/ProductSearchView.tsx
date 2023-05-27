@@ -1,3 +1,4 @@
+import { mapArray, useForm } from "@UI/../utils/src";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,18 +15,140 @@ import {
   BrandSelectInput,
   FilterSelectInput,
   NumberInput,
-  ProductSearchLocationInputProps,
-  ProductColorSelectInputProps,
-  CategoriesSelectInputProps,
   FilterSelectInputProps,
   StatusSelectInputProps,
   BrandSelectInputProps,
   ProductSearchCard,
+  useResponsive,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  SectionHeader,
+  HStack,
+  BoxIcon,
+  FourBoxesIcon,
+  Accordion,
+  AccordionButton,
+  AccordionPanel,
+  randomNum,
+  getRandomImage,
+  AspectRatioImage,
+  StarIcon,
+  PriceDisplay,
+  ShoppingCartIcon,
 } from "ui";
 
-export const ProductSearchView: React.FC = () => {
+export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
+  searchSlug,
+}) => {
+  const { isMobile } = useResponsive();
+  const [isGrid, setIsGrid] = React.useState<boolean>(false);
+
+  const { inputProps, form } = useForm<{
+    q: string;
+  }>({ q: "" });
+
   const { t } = useTranslation();
-  return (
+
+  const products: {
+    name: string;
+    rate: number;
+    reviews: number;
+    price: number;
+    discount: number;
+    id: string;
+    thumbnail: string;
+  }[] = [...Array(50)].map((_, i) => ({
+    id: i.toString(),
+    discount: randomNum(150),
+    name: "hotel",
+    price: randomNum(300),
+    rate: randomNum(5),
+    reviews: randomNum(150),
+    thumbnail: getRandomImage(),
+  }));
+
+  return isMobile ? (
+    <div className="flex flex-col gap-4 p-4">
+      {typeof searchSlug === "string" ? (
+        <>
+          <SectionHeader sectionTitle={searchSlug} />
+
+          <Accordion>
+            <HStack className="justify-between">
+              <AccordionButton>
+                <HStack>
+                  <p className="text-sm">{t("Filter & Sort")}</p>
+                  <></>
+                </HStack>
+              </AccordionButton>
+              <HStack className="gap-4">
+                <button
+                  className={`${
+                    isGrid ? "text-black" : "bg-primary text-white"
+                  } h-6 w-6 flex justify-center items-center`}
+                  onClick={() => setIsGrid(false)}
+                >
+                  <BoxIcon />
+                </button>
+                <button
+                  className={`${
+                    isGrid ? "bg-primary text-white" : "text-black"
+                  } h-6 w-6 flex justify-center items-center`}
+                  onClick={() => setIsGrid(true)}
+                >
+                  <FourBoxesIcon />
+                </button>
+              </HStack>
+            </HStack>
+            <AccordionPanel></AccordionPanel>
+          </Accordion>
+
+          <div
+            className={`${isGrid ? "grid-cols-2" : "grid-cols-1"} gap-2 grid`}
+          >
+            {mapArray(products, (prod, i) => (
+              <div className="flex flex-col shadow bg-white rounded-lg gap-2 p-2">
+                <AspectRatioImage
+                  className="rounded-lg overflow-hidden"
+                  key={prod.id}
+                  ratio={0.9411764705882353}
+                  alt={prod.name}
+                  src={prod.thumbnail}
+                />
+
+                <p className="font-medium">{prod.name}</p>
+                <HStack>
+                  <StarIcon className="text-sm fill-yellow-300" />
+                  <p className="text-grayText text-xs">
+                    {prod.rate}/5 {`(${prod.reviews})`}
+                  </p>
+                </HStack>
+                <HStack className="mt-2 justify-between">
+                  <PriceDisplay
+                    className="text-2xl font-semibold"
+                    price={prod.price}
+                    symbolProps={{ className: "text-primary" }}
+                  />
+
+                  <Button colorScheme="darkbrown" onClick={() => {}}>
+                    <ShoppingCartIcon className="text-white text-xl" />
+                  </Button>
+                </HStack>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <InputGroup className="rounded-xl bg-lightGray">
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+          <Input {...inputProps("q")} className="bg-transparent" />
+        </InputGroup>
+      )}
+    </div>
+  ) : (
     <div className="flex flex-col gap-14 w-full">
       <Formik initialValues={{}} onSubmit={() => {}}>
         {() => (

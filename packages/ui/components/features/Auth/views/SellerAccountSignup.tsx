@@ -68,8 +68,6 @@ export const AccountSignup = forwardRef(
       }
     );
 
-    console.log({ form });
-
     const { isMobile } = useResponsive();
     const [error, setError] = React.useState("");
 
@@ -77,7 +75,6 @@ export const AccountSignup = forwardRef(
     const { mutate: SignIn } = useSigninMutation();
 
     const submit = () => {
-      console.log("submit", form);
       Signup(form, {
         onSuccess(data, variables, context) {
           SignIn(
