@@ -9,13 +9,18 @@ import {
   TimeInput,
   ResturantReplacableTimeComponent,
   AspectRatio,
+  CalenderIcon,
+  ClockIcon,
+  PersonIcon,
 } from "@UI";
 import { FilterAndAddToArray } from "utils";
+import { useTranslation } from "react-i18next";
 export interface ResturantFindTableFilterStepper {}
 
 export const ResturantFindTableFilterStepper: React.FC<
   ResturantFindTableFilterStepper
 > = ({}) => {
+  const { t } = useTranslation();
   const [filters, setFilters] = React.useState<FormatedSearchableFilter[]>([]);
 
   return (
@@ -31,6 +36,20 @@ export const ResturantFindTableFilterStepper: React.FC<
           <div className="flex flex-col gap-4 w-full">
             <ResturantFindTableFilterStepperHeader
               currentStepIdx={currentStepIdx}
+              steps={[
+                {
+                  icon: <CalenderIcon />,
+                  name: t("Date"),
+                },
+                {
+                  icon: <ClockIcon />,
+                  name: t("Time"),
+                },
+                {
+                  icon: <PersonIcon />,
+                  name: t("Guests"),
+                },
+              ]}
             />
             <StepperContent>
               <DateInput

@@ -30,14 +30,14 @@ export const HomeView: React.FC = () => {
 
   return (
     <>
-      <div className="block w-full space-y-6 p-4">
+      <div className="block w-full space-y-6 p-4 flex flex-col gap-4">
         <Formik initialValues={{} as Record<string, any>} onSubmit={() => {}}>
           {({ setFieldValue, values, setValues }) => {
             if (JSON.stringify(values) !== JSON.stringify(filters)) {
               setFilters(values);
             }
             return (
-              <Form>
+              <Form className="flex flex-col gap-4">
                 <div className="grid w-full grid-cols-1 gap-4 rounded-lg bg-primary p-4 md:grid-cols-3 lg:grid-cols-6">
                   <label htmlFor="Category" className="relative flex">
                     <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-primary" />
@@ -120,7 +120,7 @@ export const HomeView: React.FC = () => {
                   </Button>
                 </div>
 
-                <ShopsAndServicesRecommendationsList shops={res?.data || []} />
+                <ShopsAndServicesRecommendationsList shops={res || []} />
                 <Pagination controls={controls} />
               </Form>
             );

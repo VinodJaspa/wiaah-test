@@ -12,25 +12,33 @@ import {
 import { SeperatedStringArray } from "utils";
 
 export interface BeautyCenterRecommendedSearchCardProps {
-  treatment: BeautyCenterTreatment & { center: BeautyCenter };
+  treatment: {
+    title: string;
+    price: number;
+    duration: number;
+    id: string;
+    category: string;
+    thumbnail: string;
+    rate: number;
+    reviews: number;
+  };
 }
 
 export const BeautyCenterRecommendedSearchCard: React.FC<
   BeautyCenterRecommendedSearchCardProps
 > = ({ treatment }) => {
-  const { title, price, center, discount, duration, id, treatmentCategoryId } =
-    treatment;
-
   const { visit } = useRouting();
 
   const { t } = useTranslation();
+
+  if (!treatment) return null;
 
   return (
     <div className="flex flex-col shadow">
       <AspectRatioImage
         className="group"
-        src={center.presentations.find((v) => v.type === "img")?.src || ""}
-        alt={title}
+        src={treatment.thumbnail}
+        alt={treatment.title}
         ratio={3 / 4}
       >
         <div
@@ -53,12 +61,12 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
         </div>
       </AspectRatioImage>
       <div className="px-2 py-4 flex flex-col gap-2">
-        <p className="font-bold">{title}</p>
-        <p className="">{t(treatment.category?.title || "")}</p>
+        <p className="font-bold">{treatment.title}</p>
+        <p className="">{treatment.category}</p>
         <div className="flex gap-4">
-          <Rate rating={center.rating} />
+          <Rate rating={treatment.rate} />
           <p>
-            {center.totalReviews} {t("review")}
+            {treatment.reviews} {t("review")}
           </p>
         </div>
         <div className="flex gap-4">

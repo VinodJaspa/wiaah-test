@@ -115,9 +115,7 @@ model Service {
   depositAmount Int?
 
   adaptedFor  Adaptation[]
-  //  <= moved to category
   restriction Restriction[]
-  // <= moved to category
 
   // vehicle
   brand             String?
@@ -132,7 +130,6 @@ model Service {
 
   // health center
   speakingLanguages     HealthCenterDoctorSpeakingLanguage[]
-  // <= moved to category
   sessionDurationMins   Int?
   availableAppointments DateTime[]
   specialityId          String?

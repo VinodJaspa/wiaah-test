@@ -1,3 +1,4 @@
+import { ServiceType } from "@features/API";
 import {
   FormatedSearchableFilter,
   getServiceSearchFiltersFetcher,
@@ -6,12 +7,12 @@ import {
 import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetServiceSearchFiltersQuery = (
-  filters: FormatedSearchableFilter,
+  serviceType: ServiceType,
   options?: UseQueryOptions<unknown, unknown, SearchFilterType[], any>
 ) => {
   return useQuery(
     ["serviceSearchFilters"],
-    () => getServiceSearchFiltersFetcher(filters),
+    () => getServiceSearchFiltersFetcher(serviceType),
     options
   );
 };

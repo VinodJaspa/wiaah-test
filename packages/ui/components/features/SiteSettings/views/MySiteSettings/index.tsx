@@ -9,6 +9,7 @@ import { HiOutlineQuestionMarkCircle } from "react-icons/hi";
 import { MdOutlinePolicy } from "react-icons/md";
 import { useRouting } from "routing";
 import { SettingsSectionType } from "types";
+import { MySiteLanguage } from "./SiteLanguage";
 
 export const MySiteSettingsView: React.FC<{}> = () => {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ export const MySiteSettingsView: React.FC<{}> = () => {
     },
     {
       panelName: t("Language"),
-      panelComponent: <></>,
+      panelComponent: <MySiteLanguage />,
       panelIcon: <></>,
       panelUrl: "/language",
     },

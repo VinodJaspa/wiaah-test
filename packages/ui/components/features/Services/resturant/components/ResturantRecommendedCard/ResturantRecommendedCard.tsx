@@ -6,35 +6,31 @@ import {
   PriceConverter,
   PercentIcon,
   CommentIcon,
-  InfoText,
   PriceLevelDisplay,
   Button,
   ServicesRequestKeys,
-  Restaurant,
 } from "@UI";
 import { BiStar } from "react-icons/bi";
 import { useRouting } from "routing";
 
-export interface ResturantRecommendedCardProps extends Restaurant {
+export interface ResturantRecommendedCardProps {
+  price: number;
+  thumbnail: string;
+  title: string;
+  rating: number;
+  reviews: number;
+  location: {
+    city: string;
+    country: string;
+    address: string;
+  };
+  hashtags: string[];
   minimal?: boolean;
 }
 
 export const ResturantRecommendedCard: React.FC<
   ResturantRecommendedCardProps
 > = (props) => {
-  const {
-    presentations,
-    highest_price,
-    lowest_price,
-    serviceMetaInfo,
-    rating,
-    reviews,
-    location,
-    id,
-    minimal = false,
-  } = props;
-
-  const averagePrice = (highest_price + lowest_price) / 2;
   const isGoodDeal = true;
 
   const { visit } = useRouting();
@@ -42,11 +38,7 @@ export const ResturantRecommendedCard: React.FC<
   return (
     <div className="flex flex-col gap-2 w-full">
       <AspectRatio className="w-full group" ratio={3 / 4}>
-        <ImageSlider
-          images={presentations
-            .filter((v) => v.type === "img")
-            .map((v) => v.src)}
-        />
+        <ImageSlider images={[props.thumbnail]} />
         {isGoodDeal ? (
           <span className="px-2 flex gap-1 items-center bg-slate-200 absolute top-4 left-4">
             <PercentIcon />
@@ -68,15 +60,15 @@ export const ResturantRecommendedCard: React.FC<
       </AspectRatio>
       <div className="flex flex-col gap-2 w-full">
         <p className="font-semibold uppercase">
-          {location?.city}, {location?.country}
+          {props.location?.city}, {props.location?.country}
         </p>
         <div className="flex justify-between w-full">
           <div className="flex flex-col gap-2 text-lg text-gray-600">
-            <p className="text-xl font-bold">{serviceMetaInfo.title}</p>
-            <p>{location?.address}</p>
+            <p className="text-xl font-bold">{props.title}</p>
+            <p>{props.location?.address}</p>
             <p>
               {t("Average price")}{" "}
-              {PriceConverter({ amount: averagePrice, symbol: true })}
+              {PriceConverter({ amount: props.price, symbol: true })}
             </p>
             {/* <InfoText variant="fail">
               {discount.amount}% ${discount.rule}
@@ -84,25 +76,25 @@ export const ResturantRecommendedCard: React.FC<
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl flex gap-1 items-center font-bold">
-              <BiStar /> {rating}
+              <BiStar /> {props.rating}
             </p>
             <div className="flex gap-1 items-center">
               <CommentIcon />
-              <p>{reviews}</p>
+              <p>{props.reviews}</p>
             </div>
           </div>
         </div>
         <div className="flex gap-2 sm:font-lg flex-wrap font-semibold">
-          {Array.isArray(serviceMetaInfo.hashtags)
-            ? serviceMetaInfo.hashtags.map((tag, i) => (
+          {Array.isArray(props.hashtags)
+            ? props.hashtags.map((tag, i) => (
                 <p key={i}>
                   {tag}
-                  {i + 1 < serviceMetaInfo.hashtags.length ? "," : ""}
+                  {i + 1 < props.hashtags.length ? "," : ""}
                 </p>
               ))
             : null}
           {"-"}
-          <PriceLevelDisplay amount={averagePrice} levels={[20, 40, 60]} />
+          <PriceLevelDisplay amount={props.price} levels={[20, 40, 60]} />
         </div>
       </div>
     </div>

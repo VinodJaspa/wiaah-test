@@ -24,7 +24,31 @@ export const ServicePresentationCarosuel: React.FC<{
       {Array.isArray(data) ? (
         <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}>
           <div className="w-full gap-[1.875rem] flex h-full flex-col md:flex-row">
+            <div
+              style={{
+                // height: isMobile ? "4rem" : "654px",
+                height: "100%",
+                width: "15rem",
+                // overflow: "hidden",
+              }}
+            >
+              <Slider
+                containerProps={{ className: "overflow-hidden" }}
+                itemsCount={4}
+                variant={"vertical"}
+                gap={16}
+              >
+                {data.map((img, i) => (
+                  <Image
+                    className="w-full h-full object-cover rounded md:rounded-[1.25rem]"
+                    key={i}
+                    src={img.src}
+                  />
+                ))}
+              </Slider>
+            </div>
             <Slider
+              containerProps={{ className: "overflow-hidden rounded-3xl" }}
               gap={4}
               leftArrowComponent={<ArrowLeftIcon />}
               rightArrowComponent={<ArrowRightIcon />}
@@ -42,22 +66,6 @@ export const ServicePresentationCarosuel: React.FC<{
                 />
               ))}
             </Slider>
-            <div
-              style={{
-                height: isMobile ? "4rem" : "654px",
-                width: "calc(100% - 10rem)",
-              }}
-            >
-              <Slider itemsCount={4} variant={"vertical"} gap={16}>
-                {data.map((img, i) => (
-                  <Image
-                    className="w-full h-full object-cover rounded md:rounded-[1.25rem]"
-                    key={i}
-                    src={img.src}
-                  />
-                ))}
-              </Slider>
-            </div>
           </div>
         </AspectRatio>
       ) : null}

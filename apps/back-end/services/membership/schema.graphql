@@ -85,7 +85,7 @@ enum MembershipSubscriptionStatus {
 }
 
 type Product {
-  id: ID!
+  sellerId: ID!
   isExternalShopping: Boolean!
 }
 

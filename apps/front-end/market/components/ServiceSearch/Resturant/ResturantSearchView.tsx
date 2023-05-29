@@ -4,7 +4,9 @@ import {
   ResturantSearchInput,
   ResturantSearchList,
   ServicesRequestKeys,
+  getRandomImage,
 } from "ui";
+import { randomNum } from "utils";
 
 export const ResturantSearchView: React.FC = () => {
   const { visit } = useRouting();
@@ -23,7 +25,22 @@ export const ResturantSearchView: React.FC = () => {
         />
       </div>
 
-      <ResturantSearchList />
+      <ResturantSearchList
+        restaurants={[...Array(20)].map(() => ({
+          hashtags: [],
+          location: {
+            address: "address",
+            city: "city",
+            country: "country",
+          },
+          price: randomNum(150),
+          rating: randomNum(5),
+          reviews: randomNum(200),
+          thumbnail:
+            "https://media-cdn.tripadvisor.com/media/photo-s/1a/8e/55/e6/variety-of-choices.jpg",
+          title: "Dish name",
+        }))}
+      />
     </div>
   );
 };

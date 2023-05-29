@@ -10,11 +10,29 @@ import {
   RateTextPresentation,
 } from "@UI";
 
-export interface HotelDetailedSearchCardProps
-  extends FilteredHotelsMetaDataType {
+export interface HotelDetailedSearchCardProps {
   onShowOnMap?: (id: string, cords?: LocationCords) => any;
   vertical?: boolean;
   minimal?: boolean;
+  description: string;
+  sellerName: string;
+  rate: number;
+  reviews: number;
+  name: string;
+  thumbnail: string;
+  price: number;
+  location: {
+    address: string;
+    city: string;
+    country: string;
+    state: string;
+    cords: {
+      lat: number;
+      lng: number;
+    };
+  };
+  id: string;
+  taxesAndFeesIncluded: boolean;
 }
 
 export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
@@ -22,22 +40,19 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
 ) => {
   const {
     description,
-    provider,
     rate,
     thumbnail,
-    title,
-    serviceClass,
     reviews = 0,
-    date,
     id,
-    pricePerNight,
-    taxesAndFeesIncluded,
-    totalPrice,
     location,
     onShowOnMap,
     vertical,
     minimal,
     children,
+    name,
+    price,
+    sellerName,
+    taxesAndFeesIncluded,
   } = props;
   const { t } = useTranslation();
 
@@ -48,14 +63,14 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
       } flex gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
       <div className="relative w-[min(100%,30rem)]">
-        <AspectRatioImage src={thumbnail} alt={title} ratio={1} />
+        <AspectRatioImage src={thumbnail} alt={name} ratio={1} />
         {minimal ? null : (
           <HeartIcon className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer" />
         )}
       </div>
       <div className="flex flex-col gap-2 w-full">
         <span className="text-primary-500  underline cursor-pointer">
-          {provider}
+          {sellerName}
         </span>
         {minimal ? (
           <p>
@@ -64,9 +79,9 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
         ) : (
           <>
             <span className="text-black text-sm md:text-lg">
-              <EllipsisText maxLines={2}>{title}</EllipsisText>
+              <p>{name}</p>
             </span>
-            <EllipsisText maxLines={3}>{description}</EllipsisText>
+            <p>{description}</p>
           </>
         )}
       </div>
@@ -90,7 +105,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
                 {reviews} {t("reviews")}
               </span>
             </div>
-            <span className="bg-primary h-fit p-1 text-xl rounded-lg text-white">
+            <span className="bg-primary w-10 h-10 flex justify-center items-center text-xl rounded-lg text-white">
               {rate}
             </span>
           </div>
@@ -107,13 +122,8 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
               {t("Show on map")}
             </span>
             <div className="flex gap-2">
-              <PriceDisplay
-                className="text-md font-bold"
-                priceObject={{ amount: totalPrice }}
-              />
               <span className="whitespace-nowrap flex gap-1">
-                <PriceDisplay priceObject={{ amount: pricePerNight }} />/
-                {t("night")}
+                <PriceDisplay priceObject={{ amount: price }} />/{t("night")}
               </span>
             </div>
             {taxesAndFeesIncluded ? (
@@ -121,17 +131,6 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
                 {t("includes taxes & fees")}
               </span>
             ) : null}
-            <span className="whitespace-nowrap font-semibold">
-              {new Date(date.from).toLocaleDateString("en-us", {
-                month: "short",
-                day: "numeric",
-              })}{" "}
-              {"-"}{" "}
-              {new Date(date.to).toLocaleDateString("en-us", {
-                month: "short",
-                day: "numeric",
-              })}
-            </span>
           </div>
         </div>
       )}

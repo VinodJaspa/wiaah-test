@@ -1,5 +1,6 @@
 import { createGraphqlRequestClient } from "@UI/../api";
 import { isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 import { Exact, RestaurantDishType, Scalars, Service } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
@@ -19,6 +20,7 @@ export type GetShopServicesByIdsQuery = { __typename?: "Query" } & {
       | "treatmentCategory"
       | "ingredients"
       | "price"
+      | "extras"
     >
   >;
 };
@@ -35,11 +37,18 @@ export const getShopServicesQueryFetcher = async (args: args) => {
     const mockRes: GetShopServicesByIdsQuery["getUserServicesByIds"] = [
       {
         id: "",
-        name: "Body treatment - back pain treatment",
+        name: "Hotel  romm with double bed",
         price: 100,
-        thumbnail: "/treatment-back.png",
+        thumbnail: getRandomImage(),
         ingredients: ["Tomato", "Mozzarella", "Basil"],
         menuType: RestaurantDishType.Starter,
+        extras: [
+          {
+            cost: 4,
+            id: "",
+            name: "Parking",
+          },
+        ],
       },
     ];
 

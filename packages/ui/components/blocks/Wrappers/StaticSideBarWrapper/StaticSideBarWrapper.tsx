@@ -37,7 +37,7 @@ export const FixedScrollingWrapper: React.FC = ({ children }) => {
     <div ref={WrapperRef} className={`w-full relative h-full`}>
       <div
         style={{
-          top: `${Math.abs(y ?? 0) + 16 || 0}px`,
+          top: `${Math.abs(0) + 16 || 0}px`,
         }}
         className={`${
           passed ? `absolute left-0` : ""

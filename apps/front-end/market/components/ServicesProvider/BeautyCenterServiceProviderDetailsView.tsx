@@ -16,6 +16,7 @@ import {
   SectionsScrollTabList,
   useGetBeautyCenterDetailsQuery,
   BeautyCenterTreatmentsList,
+  WorkingDaysCalender,
 } from "ui";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
@@ -33,54 +34,56 @@ export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
-            rating={res.data.getBeautyCenterById.rating}
-            reviewsCount={res.data.getBeautyCenterById.totalReviews}
-            serviceTitle={res.data.getBeautyCenterById.serviceMetaInfo.title}
+            rating={res.rating}
+            reviewsCount={res.totalReviews}
+            serviceTitle={res.serviceMetaInfo.title}
           />
         ) : null}
       </SpinnerFallback>
       <Divider />
-      <ServicePresentationCarosuel
-        data={res ? res.data.getBeautyCenterById.presentations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={null}>
+      <StaticSideBarWrapper
+        sidebar={
+          <div className="w-full h-full overflow-hidden">
+            <WorkingDaysCalender
+              workingDates={
+                res
+                  ? Object.values(res.workingHours.weekdays).map((value) => ({
+                      date: new Date().toString(),
+                      workingHoursRanges:
+                        typeof value === "object"
+                          ? [{ from: value.periods[0], to: value.periods[1] }]
+                          : [],
+                    }))
+                  : []
+              }
+            />
+          </div>
+        }
+      >
         {res ? (
           <>
             <ServicesProviderDescriptionSection
-              description={
-                res.data.getBeautyCenterById.serviceMetaInfo.description
-              }
+              description={res.serviceMetaInfo.description}
             />
             <Divider />
             <BeautyCenterTreatmentsList
-              cancelation={
-                res.data.getBeautyCenterById.cancelationPolicies || []
-              }
-              treatments={res.data.getBeautyCenterById.treatments}
+              cancelation={res.cancelationPolicies || []}
+              treatments={res.treatments}
             />
             <ServiceReachOutSection
-              email={res.data.getBeautyCenterById.contact.email}
-              location={res.data.getBeautyCenterById.location}
-              telephone={res.data.getBeautyCenterById.contact.phone}
+              email={res.contact.email}
+              location={res.location}
+              telephone={res.contact.phone}
             />
 
-            <ServiceWorkingHoursSection
-              workingHours={res.data.getBeautyCenterById.workingHours}
-            />
-            <ServicePoliciesSection
-              policies={res.data.getBeautyCenterById.policies}
-              title=""
-            />
-            <ServiceOnMapLocalizationSection
-              location={res.data.getBeautyCenterById.location}
-            />
+            <ServiceWorkingHoursSection workingHours={res.workingHours} />
+            <ServicePoliciesSection policies={res.policies} title="" />
+            <ServiceOnMapLocalizationSection location={res.location} />
           </>
         ) : null}
-        <Reviews
-          id={res?.data.getBeautyCenterById.id || ""}
-          reviews={reviews}
-        />
+        <Reviews id={res?.id || ""} reviews={reviews} />
       </StaticSideBarWrapper>
     </div>
   );

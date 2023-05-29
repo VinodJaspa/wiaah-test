@@ -71,6 +71,7 @@ type NewsfeedPost {
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
+  thumbnail: String!
 }
 
 enum CommentsVisibility {
@@ -115,6 +116,7 @@ type AdminNewsfeedPost {
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
+  thumbnail: String!
   visibility: PostVisibility!
 }
 
@@ -319,6 +321,12 @@ type NewsfeedHashtagSearch {
   mostViewedVideo: NewsfeedPost!
 }
 
+type UserSavedPost {
+  postId: ID!
+  postType: PostType!
+  post: NewsfeedPost!
+}
+
 type UserSavedPostsGroup {
   id: ID!
   userId: ID!
@@ -397,6 +405,15 @@ enum TypeOfService {
   healthCenterTreatment
   beautyCenterTreatment
   vehicle
+}
+
+type SavesCollection {
+  id: ID!
+  userId: String!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+  recentSaves: [UserSavedPost!]!
 }
 
 type ProductPost {
@@ -633,6 +650,7 @@ type Query {
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
+  getUserSaveCollections(userId: String!): [SavesCollection!]!
   adminGetAccountSavedPosts(args: GetMySavedPostsInput!, accountId: String!): UserSavedPostsGroup!
   getStory(storyId: String!): Story!
   getUserStory(args: GetUserStoryInput!): StoryCursorPaginationResponse!
@@ -887,7 +905,9 @@ type Mutation {
   removeComment(id: Int!): Comment!
   adminDeleteComment(commentId: String!): Boolean!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
-  savePost(postId: String!): Boolean!
+  createSavesCollection(name: String!): Boolean!
+  deleteSavesCollection(id: String!): Boolean!
+  savePost(postId: String!, collectionId: String!): Boolean!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
   likeStory(likeStoryInput: LikeStoryInput!): Boolean!

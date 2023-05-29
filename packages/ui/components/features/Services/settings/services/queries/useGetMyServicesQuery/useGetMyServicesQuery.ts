@@ -129,11 +129,8 @@ export const useGetUserServicesQuery = (
               price: 130,
               rating: 4.5,
               reviews: 162,
-              thumbnail: getRandomServiceImage(
-                ServiceType.HolidayRentals,
-                menuType
-              ),
-              type: ServiceType.HolidayRentals,
+              thumbnail: getRandomServiceImage(ServiceType.Hotel, menuType),
+              type: ServiceType.Hotel,
               bathrooms: 3,
               beds: 4,
               brand: "Brand",

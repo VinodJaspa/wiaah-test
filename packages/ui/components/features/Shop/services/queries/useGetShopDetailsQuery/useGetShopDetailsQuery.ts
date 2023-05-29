@@ -122,7 +122,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
   if (isDev) {
     const resMock: GetShopDetailsQuery["getUserShop"] = {
       storeType: StoreType.Service,
-      type: ServiceType.Vehicle,
+      type: ServiceType.Hotel,
       ownerId: "",
       banner: "",
       businessType: BusinessType.Individual,

@@ -39,7 +39,7 @@ export const getVehicleSearchDataFetcher = async (
       pricePerDay: 111,
       cancelationPolicies: [],
       thumbnail:
-        "https://www.autocar.co.uk/sites/autocar.co.uk/files/images/car-reviews/first-drives/legacy/1_rangerover_tracking.jpg",
+        "https://hips.hearstapps.com/hmg-prod/images/2023-mclaren-artura-101-1655218102.jpg?crop=1.00xw:0.847xh;0,0.153xh&resize=1200:*",
 
       vehicleProps: [
         {

@@ -11,6 +11,7 @@ import {
   VehicleSearchCardProps,
   DisplayFoundServices,
 } from "@UI";
+import { PresentationType } from "@features/API";
 
 export const VehicleSearchList: React.FC = () => {
   const { take, page } = usePagination(12);
@@ -26,7 +27,13 @@ export const VehicleSearchList: React.FC = () => {
         <ServicesSearchGrid<VehicleSearchData, VehicleSearchCardProps>
           data={res?.data || []}
           component={VehicleSearchCard}
-          handlePassData={(props) => ({ ...props, showTotal: false })}
+          handlePassData={(props) => ({
+            ...props,
+            showTotal: false,
+            presentations: [
+              { src: props.thumbnail, type: PresentationType.Image },
+            ],
+          })}
         />
       </SpinnerFallback>
     </PaginationWrapper>

@@ -2,8 +2,7 @@ import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { HotelDetailsView, MasterLayout } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
-import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
-import { useRouter } from "next/router";
+import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import { getServiceDetailsDataSwitcher } from "api";
 import {
@@ -54,7 +53,7 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
 }) => {
   return (
     <>
-      {data && data.data ? (
+      {/* {data && data.data ? (
         <>
           <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
           <MetaDescription content={data.data.description} />
@@ -66,10 +65,10 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
           <MetaAuthor author={data.data.name} />
           <RequiredSocialMediaTags />
         </>
-      ) : null}
+      ) : null} */}
       <MasterLayout>
         <Container>
-          <HotelDetailsView />
+          <HotelDetailsView id={""} />
         </Container>
       </MasterLayout>
     </>

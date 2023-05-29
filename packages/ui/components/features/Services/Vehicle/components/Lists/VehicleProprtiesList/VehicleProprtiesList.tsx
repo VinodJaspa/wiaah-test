@@ -20,13 +20,15 @@ export const VehicleProprtiesList: React.FC<VehicleProprtiesListProps> = ({
 }) => {
   return (
     <HStack className="flex-wrap">
-      {Object.entries(VehicleProps).map(([key, value], i) => (
-        <VehicleProprtiesSwticher
-          key={`${randomNum(50)}--${i}`}
-          vehicleProp={key as keyof VehicleProperties}
-          value={value}
-        />
-      ))}
+      {VehicleProps
+        ? Object.entries(VehicleProps).map(([key, value], i) => (
+            <VehicleProprtiesSwticher
+              key={`${randomNum(50)}--${i}`}
+              vehicleProp={key as keyof VehicleProperties}
+              value={value}
+            />
+          ))
+        : null}
     </HStack>
   );
 };

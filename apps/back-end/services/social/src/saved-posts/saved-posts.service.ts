@@ -1,7 +1,15 @@
 import { ContentDiscoveryService } from '@content-discovery';
 import { UserSavedPostsGroup } from '@entities';
 import { Injectable } from '@nestjs/common';
-import { ExtractPagination } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  ExtractPagination,
+  KnownError,
+  NoReadPremissionPublicError,
+  NotOwnerOfResourcePublicError,
+  PublicErrorCodes,
+  accountType,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { GetMySavedPostsInput } from './dto';
 
@@ -36,14 +44,35 @@ export class SavedPostsService {
     };
   }
 
-  async savePost(postId: string, userId: string) {
+  async savePost(postId: string, collectionId: string, requestUserId: string) {
+    const collection = await this.prisma.savesCollection.findUnique({
+      where: {
+        id: collectionId,
+      },
+    });
+
+    if (!collection)
+      throw new KnownError(
+        'save collection was not found',
+        PublicErrorCodes.resourceNotFound,
+      );
+
+    if (collection.userId !== requestUserId)
+      throw new NotOwnerOfResourcePublicError();
+
     const res = await this.prisma.savedPost.create({
       data: {
         postId,
-        userId,
+        collectionId,
+        userId: collection.userId,
       },
     });
 
     return !!res;
+  }
+
+  async validateReadPremission(userId: string, user: AuthorizationDecodedUser) {
+    if (userId !== user.id && user.accountType !== accountType.ADMIN)
+      throw new NoReadPremissionPublicError();
   }
 }

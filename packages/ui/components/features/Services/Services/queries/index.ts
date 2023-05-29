@@ -8,3 +8,5 @@ export * from "./useGetAppointmentDetailsQuery";
 export * from "./useGetMyBookingHistoryQuery";
 export * from "./useGetMyWorkingHoursQuery";
 export * from "./useGetRecommendedServices";
+export * from "./useGetServiceFilters.query";
+export * from "./useGetSearchServicesQuery";

@@ -1,4 +1,3 @@
-import { ResturantMetaDataType } from "api";
 import { usePagination } from "hooks";
 import React from "react";
 import {
@@ -10,13 +9,13 @@ import {
   useResturantsDataState,
   useSetResturantsDataState,
   ServicesSearchGrid,
-  DisplayFoundServices,
   usePaginationControls,
   Restaurant,
+  ResturantRecommendedCardProps,
 } from "@UI";
 
 export const ResturantSearchList: React.FC<{
-  restaurants: Restaurant[];
+  restaurants: ResturantRecommendedCardProps[];
 }> = ({ restaurants }) => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
   const { controls, pagination } = usePaginationControls();

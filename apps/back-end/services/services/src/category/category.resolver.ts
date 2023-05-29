@@ -1,6 +1,9 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CategoryService } from './category.service';
-import { ServiceCategory } from './entities/category.entity';
+import {
+  ServiceCategory,
+  ServiceCategoryFilter,
+} from './entities/category.entity';
 import { CreateServiceCategoryInput } from './dto/create-category.input';
 import { UpdateServiceCategoryInput } from './dto/update-category.input';
 import {
@@ -8,6 +11,7 @@ import {
   GqlAuthorizationGuard,
   AuthorizationDecodedUser,
   accountType,
+  GetLang,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
@@ -29,19 +33,20 @@ export class CategoryResolver {
     return this.categoryService.getCategoryById(id, user.id);
   }
 
-  @Query(() => [ServiceCategory])
+  @Query(() => ServiceCategory)
   async getServiceCategoryByType(
     @Args('type', { type: () => ServiceType }) type: ServiceType,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ServiceCategory[]> {
-    const res = await this.prisma.serviceCategory.findMany({
+    @GetLang() langId: string,
+  ): Promise<ServiceCategory> {
+    const res = await this.prisma.serviceCategory.findFirst({
       where: {
         type,
         status: 'active',
       },
     });
 
-    return res;
+    return this.categoryService.formatServiceCategory(res, langId);
   }
 
   @Query(() => [ServiceCategory])

@@ -2,11 +2,11 @@ import React from "react";
 import {
   BeautyCenterRecommendedSearchCard,
   ServicesSearchGrid,
-  BeautyCenterTreatment,
+  BeautyCenterRecommendedSearchCardProps,
 } from "@UI";
 
 export interface BeautyCenterSearchListProps {
-  treatments: BeautyCenterTreatment[];
+  treatments: BeautyCenterRecommendedSearchCardProps["treatment"][];
 }
 
 export const RecommendedBeautyCenterSearchList: React.FC<
@@ -16,7 +16,7 @@ export const RecommendedBeautyCenterSearchList: React.FC<
     <ServicesSearchGrid
       data={treatments}
       component={BeautyCenterRecommendedSearchCard}
-      handlePassData={(props) => props}
+      handlePassData={(props) => ({ treatment: props })}
     />
   );
 };

@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'prismaClient';
+import { Prisma, ServiceCategory } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { CreateServiceCategoryInput } from './dto/create-category.input';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
 import { UpdateServiceCategoryInput } from './dto/update-category.input';
+import { ServiceCategory as ServiceCategoryEntity } from './entities/category.entity';
+import { getTranslatedResource } from 'nest-utils';
 
 @Injectable()
 export class CategoryService {
@@ -74,5 +76,45 @@ export class CategoryService {
     return this.prisma.serviceCategory.findMany(
       filters.length > 0 ? { where: { AND: filters } } : undefined,
     );
+  }
+
+  formatServiceCategory(
+    category: ServiceCategory,
+    langId: string,
+  ): ServiceCategoryEntity {
+    return {
+      ...category,
+      description: getTranslatedResource({
+        langId,
+        resource: category.description,
+      }),
+      name: getTranslatedResource({
+        langId,
+        resource: category.name,
+      }),
+      seo: getTranslatedResource({
+        langId,
+        resource: category.seo,
+      }),
+      metaTagTitle: getTranslatedResource({
+        langId,
+        resource: category.metaTagTitle,
+      }),
+      metaTagDescription: getTranslatedResource({
+        langId,
+        resource: category.metaTagDescription,
+      }),
+      metaTagKeywords: getTranslatedResource({
+        langId,
+        resource: category.metaTagKeywords,
+      }),
+      filters: category.filters.map((v, i) => ({
+        ...v,
+        name: getTranslatedResource({
+          langId,
+          resource: v.name,
+        }),
+      })),
+    };
   }
 }

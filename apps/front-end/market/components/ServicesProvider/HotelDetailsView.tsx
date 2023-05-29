@@ -12,52 +12,67 @@ import {
   ServicePoliciesSection,
   ServicePresentationCarosuel,
   ServiceReachOutSection,
-  ServiceReservastion,
   MarketServicesProviderHeader,
   ServiceWorkingHoursSection,
   StaticSideBarWrapper,
   SectionTabType,
   HotelMarketDescriptionSection,
+  useGetShopDetailsQuery,
+  useGetShopServicesQuery,
+  ServiceReservastionForm,
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
+import { PresentationType } from "@features/API";
 
 export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
-  const { data: res, isError, isLoading } = useGetServicesProviderQuery(id);
+  const { data: res, isError, isLoading } = useGetShopDetailsQuery(id);
+  const { data } = useGetShopServicesQuery({
+    ids: [],
+    sellerId: res?.ownerId || "",
+  });
   const { t } = useTranslation();
   console.log({ res });
-  const rating =
-    res?.data?.getHotelService?.rooms.reduce((acc, curr) => {
-      return acc + curr.rating;
-    }, 0) || 0;
+  const rating = res?.rating;
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       {res ? (
         <MarketServicesProviderHeader
-          name={res.data.getHotelService.owner.firstName}
-          rating={rating / res.data.getHotelService.rooms.length}
-          reviewsCount={res.data.getHotelService.rooms.reduce(
-            (acc, curr) => acc + curr.reviews,
-            0
-          )}
-          thumbnail={res.data.getHotelService.owner.photo}
+          name={res.sellerProfile.username}
+          rating={res.rating}
+          reviewsCount={res.reviews}
+          thumbnail={res.sellerProfile.photo}
         />
       ) : null}
       <Divider />
       <ServicePresentationCarosuel
-        data={res ? res.data.getHotelService.presentations || [] : []}
+        data={
+          res
+            ? res.images.map((v) => ({
+                src: v,
+                type: PresentationType.Image,
+              })) || []
+            : []
+        }
       />
       <SpinnerFallback isLoading={isLoading} isError={isError} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={ServiceReservastion}>
+      <StaticSideBarWrapper
+        sidebar={
+          <ServiceReservastionForm
+            sellerId={res?.ownerId! || ""}
+            selectedServicesIds={[]}
+          />
+        }
+      >
         {res ? (
           <>
             <HotelMarketDescriptionSection
-              description={res.data.getHotelService.serviceMetaInfo.description}
-              name={res.data.getHotelService.serviceMetaInfo.title}
+              description={res.description}
+              name={res.name}
               proprtyType={t("Hotel")}
             />
             <Divider />
@@ -65,36 +80,33 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
               <PopularAmenitiesSection
                 cols={2}
                 amenities={
-                  res?.data?.getHotelService?.rooms[0]?.popularAmenities.map(
-                    ({ label, value }) => ({ name: label, slug: value })
-                  ) || []
+                  // res?.data?.getHotelService?.rooms[0]?.popularAmenities.map(
+                  // ({ label, value }) => ({ name: label, slug: value })
+                  // ) || []
+                  []
                 }
               />
               <Divider />
               <ServiceReachOutSection
-                email={res.data.getHotelService.contact.email}
-                location={res.data.getHotelService.location}
-                telephone={res.data.getHotelService.contact.phone}
+                email={res.email}
+                location={res.location}
+                telephone={res.phone}
               />
-              <HotelServiceRoomsSection
-                rooms={res.data.getHotelService.rooms}
-              />
-              {res.data.getHotelService.workingHours ? (
+              <HotelServiceRoomsSection rooms={data} />
+              {res.workingSchedule.weekdays ? (
                 <ServiceWorkingHoursSection
-                  workingHours={res.data.getHotelService.workingHours}
+                  workingHours={res.workingSchedule}
                 />
               ) : null}
               <ServicePoliciesSection
                 title={t("Hotel Polices")}
-                policies={res.data.getHotelService.policies}
+                policies={[]}
               />
-              <ServiceOnMapLocalizationSection
-                location={res.data.getHotelService.location}
-              />
+              <ServiceOnMapLocalizationSection location={res.location} />
             </Accordion>
           </>
         ) : null}
-        <Reviews id={res?.data.getHotelService.id || ""} reviews={reviews} />
+        <Reviews id={res?.ownerId || ""} reviews={reviews} />
       </StaticSideBarWrapper>
     </div>
   );

@@ -323,6 +323,11 @@ type ShopWorkingSchedule {
   specialDays: [ShopSpecialDayWorkingHours!]!
 }
 
+type Service {
+  sellerId: ID!
+  shop: Shop!
+}
+
 type ShippingCountry {
   code: String!
 }
@@ -594,6 +599,7 @@ input UpdateUserShopInput {
 }
 
 input CreateProductInput {
+  external_link: String
   type: ProductType!
   title: [StringTranslationField!]!
   description: [StringTranslationField!]!
@@ -638,6 +644,7 @@ input CashBackInput {
 scalar Upload
 
 input UpdateProductInput {
+  external_link: String
   type: ProductType
   title: [StringTranslationField!]
   description: [StringTranslationField!]

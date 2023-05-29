@@ -166,4 +166,9 @@ export class NewsfeedPostsResolver {
 
   @ResolveField(() => Boolean)
   isSaved() {}
+
+  @ResolveField(() => String)
+  thumbnail(@Parent() post: NewsfeedPost) {
+    return post.attachments[0];
+  }
 }
