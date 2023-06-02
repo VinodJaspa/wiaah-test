@@ -23,13 +23,19 @@ export type GetMyWishListQuery = { __typename?: "Query" } & {
             product?: Maybe<
               { __typename?: "Product" } & Pick<
                 Product,
-                "title" | "price" | "stock" | "thumbnail"
+                | "title"
+                | "price"
+                | "stock"
+                | "thumbnail"
+                | "isExternalShopping"
+                | "vendor_external_link"
+                | "id"
               >
             >;
             service?: Maybe<
               { __typename?: "Service" } & Pick<
                 Service,
-                "title" | "thumbnail" | "price"
+                "name" | "thumbnail" | "price" | "id"
               >
             >;
           }
@@ -53,9 +59,12 @@ query getMyWishList {
         price
         stock
         thumbnail
+        vendor_external_link
+        id
       }
       service{
-        title
+        name
+        id
         thumbnail
         price
       }

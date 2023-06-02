@@ -9,7 +9,7 @@ import { useRouting } from "routing";
 
 export interface ShoppingCartProps {}
 
-export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
+export const ShoppingCart: React.FC<ShoppingCartProps> = ({ children }) => {
   const cartRef = React.useRef<HTMLDivElement>(null);
   const [total, setTotal] = React.useState<number>(0);
   const { data: res, isLoading, isError } = useGetMyShoppingCartQuery();
@@ -69,7 +69,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = () => {
         onClick={() => handleToggleOpen()}
         className="relative cursor-pointer select-none"
       >
-        <ShoppingCartOutlineIcon className="text-icon text-white h-6 w-6" />
+        {children}
         <div className="w-4 h-4 absolute bottom-0 right-0 border-2 border-white translate-x-1/3 translate-y-1/3 flex items-center justify-center rounded-full bg-red-500 text-[0.5rem] text-white">
           {items.length}
         </div>

@@ -15,6 +15,10 @@ import {
   PostType,
   PostVisibility,
 } from 'prismaClient';
+import {
+  CreateGqlCursorPaginatedResponse,
+  CreateGqlPaginatedResponse,
+} from 'nest-utils';
 
 registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 // registerEnumType(PostType, { name: 'CommentsVisiblity' });
@@ -136,6 +140,11 @@ export class NewsfeedPost extends SocialPost {
   @Field(() => ID)
   authorProfileId: string;
 }
+
+@ObjectType()
+export class NewsfeedPostsPaginationResponse extends CreateGqlCursorPaginatedResponse(
+  NewsfeedPost,
+) {}
 
 @ObjectType()
 export class AdminNewsfeedPost extends NewsfeedPost {

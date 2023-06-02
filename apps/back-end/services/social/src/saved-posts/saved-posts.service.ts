@@ -12,6 +12,7 @@ import {
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { GetMySavedPostsInput } from './dto';
+import { SavedItemType } from 'prismaClient';
 
 @Injectable()
 export class SavedPostsService {
@@ -60,10 +61,11 @@ export class SavedPostsService {
     if (collection.userId !== requestUserId)
       throw new NotOwnerOfResourcePublicError();
 
-    const res = await this.prisma.savedPost.create({
+    const res = await this.prisma.savedItem.create({
       data: {
-        postId,
+        itemId: postId,
         collectionId,
+        itemType: SavedItemType.post,
         userId: collection.userId,
       },
     });

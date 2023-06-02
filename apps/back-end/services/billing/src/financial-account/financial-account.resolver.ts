@@ -1,5 +1,12 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { FinancialAccountType } from '@prisma-client';
 import { StripeService } from 'nest-utils';
 import {
@@ -167,6 +174,21 @@ export class FinancialAccountResolver {
       console.log('financial acc update error', error);
       return false;
     }
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  async cardLast4(@Parent() account: FinancialAccount) {
+    const acc = await this.prisma.financialAccount.findUnique({
+      where: {
+        id: account.id,
+      },
+    });
+    return account.type === FinancialAccountType.card
+      ? acc.card_number.slice(
+          acc.card_number.length - 4,
+          acc.card_number.length,
+        )
+      : undefined;
   }
 
   async validateUser(user: AuthorizationDecodedUser, id: string) {

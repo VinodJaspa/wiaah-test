@@ -41,9 +41,6 @@ class optional {
   card_exp_year: string;
 
   @Field(() => String)
-  card_number: string;
-
-  @Field(() => String)
   card_cvc: string;
 
   @Field(() => String)

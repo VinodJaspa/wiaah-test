@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   SectionWrapper,
   SectionHeader,
-  usePaginationControls,
   useResponsive,
   useGetUserSavedCollections,
   useGetMyAccountQuery,
@@ -14,7 +13,7 @@ import { mapArray } from "@UI/../utils/src";
 
 export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();
-  const { pagination, controls } = usePaginationControls();
+
   const { data: account } = useGetMyAccountQuery();
   const { data } = useGetUserSavedCollections(
     { userId: account?.id! },

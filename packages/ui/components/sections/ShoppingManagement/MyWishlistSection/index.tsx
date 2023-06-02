@@ -17,17 +17,28 @@ import {
   SpinnerFallback,
   Button,
   Pagination,
+  useResponsive,
+  AspectRatioImage,
+  HStack,
+  AddToCartButton,
 } from "@UI";
 import { HiShoppingCart } from "react-icons/hi";
 import { IoTrash } from "react-icons/io5";
 import { mapArray, setTestid } from "utils";
-import { Product, Service, WishedItem } from "@features/API";
+import {
+  Product,
+  Service,
+  ShoppingCartItemType,
+  WishedItem,
+  WishlistItemType,
+} from "@features/API";
 
 export interface MyWishListSectionProps {}
 
 export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   const { t } = useTranslation();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
+  const { isMobile } = useResponsive();
 
   const { data, isLoading, isError } = useGetMyWishlistQuery();
 
@@ -45,16 +56,85 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
 
   return (
     <div className="flex flex-col">
-      <SectionHeader sectionTitle={t("My Wish List")} />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <WishlistTable
-          items={data?.wishedItems || []}
-          onAdd={(id) => handleAddItemToCart(id)}
-          onDelete={(id) => handleItemDelete(id)}
-          DeletingId={deleteIsLoading ? variables?.itemId : undefined}
-        ></WishlistTable>
-      </SpinnerFallback>
-      <Pagination controls={controls} />
+      <SectionHeader sectionTitle={t("My Wishlist")} />
+      {isMobile ? (
+        <div className="flex flex-col gap-4">
+          {mapArray(data?.wishedItems, (item, i) => {
+            const thumbnail =
+              item.itemType === WishlistItemType.Product
+                ? item.product?.thumbnail
+                : item.service?.thumbnail;
+            const title =
+              item.itemType === WishlistItemType.Product
+                ? item.product?.title
+                : item.service?.name;
+
+            const price =
+              item.itemType === WishlistItemType.Product
+                ? item.product?.price
+                : item.service?.price;
+            const id =
+              item.itemType === WishlistItemType.Product
+                ? item.product?.id
+                : item.service?.id;
+
+            const available = (item.product?.stock || 0) > 0;
+
+            return (
+              <div className="flex gap-3">
+                <AspectRatioImage
+                  src={thumbnail || ""}
+                  ratio={0.9}
+                  alt={title || ""}
+                />
+                <div className="flex flex-col w-full justify-between">
+                  <div className="flex flex-col gap-4">
+                    <p className="text-lg font-medium">{title}</p>
+                    {item.itemType === WishlistItemType.Product ? (
+                      <HStack>
+                        <p className="text-sm">{t("Stock")}:</p>
+                        <div
+                          className={`${
+                            available ? "border-primary" : "border-secondaryRed"
+                          } border px-2 py-1`}
+                        >
+                          {available ? t("Available") : t("Unavailable")}
+                        </div>
+                      </HStack>
+                    ) : null}
+                  </div>
+
+                  <HStack className="justify-between">
+                    <PriceDisplay price={price}></PriceDisplay>
+                    <AddToCartButton
+                      isExternal={item.product?.isExternalShopping || false}
+                      externalUrl={item.product?.vendor_external_link || ""}
+                      itemId={id || ""}
+                      itemType={
+                        item.itemType === WishlistItemType.Product
+                          ? ShoppingCartItemType.Product
+                          : ShoppingCartItemType.Service
+                      }
+                    />
+                  </HStack>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <>
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <WishlistTable
+              items={data?.wishedItems || []}
+              onAdd={(id) => handleAddItemToCart(id)}
+              onDelete={(id) => handleItemDelete(id)}
+              DeletingId={deleteIsLoading ? variables?.itemId : undefined}
+            ></WishlistTable>
+          </SpinnerFallback>
+          <Pagination controls={controls} />
+        </>
+      )}
     </div>
   );
 };

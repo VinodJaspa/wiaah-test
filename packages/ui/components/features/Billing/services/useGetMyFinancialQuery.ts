@@ -8,7 +8,17 @@ export type GetMyFinAccountsQuery = { __typename?: "Query" } & {
   getMyFinancialAccounts: Array<
     { __typename?: "FinancialAccount" } & Pick<
       FinancialAccount,
-      "financialId" | "label" | "type" | "id"
+      | "financialId"
+      | "label"
+      | "type"
+      | "id"
+      | "bank_country"
+      | "bank_number"
+      | "card_exp_month"
+      | "card_exp_year"
+      | "cardLast4"
+      | "currency"
+      | "ownerId"
     >
   >;
 };
@@ -23,6 +33,13 @@ query getMyFinAccounts {
     label
     type
     id
+    bank_country
+    bank_number
+    card_exp_month
+    card_exp_year
+    cardLast4
+    currency
+    ownerId
   }
 }
     `);

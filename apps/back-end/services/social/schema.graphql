@@ -86,6 +86,13 @@ enum PostType {
   affiliation_post
 }
 
+type NewsfeedPostsPaginationResponse {
+  data: [NewsfeedPost!]!
+  cursor: String!
+  nextCursor: String!
+  hasMore: Boolean!
+}
+
 type AdminNewsfeedPost {
   id: ID!
   userId: ID!
@@ -634,6 +641,7 @@ type Query {
   getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   isFollowed(profileId: String!): Boolean!
+  getTrendingHashtagPosts(args: GetPostsByHashtagInput!): NewsfeedPostsPaginationResponse!
   getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
@@ -708,6 +716,12 @@ input GqlPaginationInput {
 
 input GetMyProfileFollowersMetaInput {
   pagination: GqlPaginationInput!
+}
+
+input GetPostsByHashtagInput {
+  take: Int!
+  cursor: String
+  hashtag: String!
 }
 
 input GetMyNewsfeedPostsInput {

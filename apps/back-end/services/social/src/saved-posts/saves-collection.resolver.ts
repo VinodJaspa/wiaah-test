@@ -9,7 +9,7 @@ export class SavesCollectionResolver {
 
   @ResolveField(() => [UserSavedPost])
   async recentSaves(@Parent() collection: SavesCollection) {
-    const posts = await this.prisma.savedPost.findMany({
+    const posts = await this.prisma.savedItem.findMany({
       where: {
         collectionId: collection.id,
       },

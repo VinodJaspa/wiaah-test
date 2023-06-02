@@ -1454,10 +1454,10 @@ export type FinancialAccount = {
   __typename?: "FinancialAccount";
   bank_country?: Maybe<Scalars["String"]>;
   bank_number?: Maybe<Scalars["String"]>;
+  cardLast4?: Maybe<Scalars["String"]>;
   card_cvc?: Maybe<Scalars["String"]>;
   card_exp_month?: Maybe<Scalars["String"]>;
   card_exp_year?: Maybe<Scalars["String"]>;
-  card_number?: Maybe<Scalars["String"]>;
   currency: Scalars["String"];
   financialId: Scalars["String"];
   id: Scalars["ID"];
@@ -1869,6 +1869,12 @@ export type GetNewsfeedPostsByUserIdInput = {
 
 export type GetPlaceSuggestionInput = {
   pagination: GqlPaginationInput;
+};
+
+export type GetPostsByHashtagInput = {
+  cursor?: Maybe<Scalars["String"]>;
+  hashtag: Scalars["String"];
+  take: Scalars["Int"];
 };
 
 export type GetProfileFollowersMetaInput = {
@@ -3315,6 +3321,14 @@ export type NewsfeedPost = {
   views: Scalars["Int"];
 };
 
+export type NewsfeedPostsPaginationResponse = {
+  __typename?: "NewsfeedPostsPaginationResponse";
+  cursor: Scalars["String"];
+  data: Array<NewsfeedPost>;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
+};
+
 export type Order = {
   __typename?: "Order";
   billing: BillingAddress;
@@ -3955,6 +3969,7 @@ export type Query = {
   getTopHashtags: Array<Hashtag>;
   getTopProfilePosts: Array<NewsfeedPost>;
   getTopProfileStories: Array<Story>;
+  getTrendingHashtagPosts: NewsfeedPostsPaginationResponse;
   getUserAccount: Account;
   getUserActions: GetActionsCursorResponse;
   getUserAffiliationHistory: Array<AffiliationPurchase>;
@@ -4580,6 +4595,10 @@ export type QueryGetTopProfileStoriesArgs = {
   args: GetTopProfilePostsInput;
 };
 
+export type QueryGetTrendingHashtagPostsArgs = {
+  args: GetPostsByHashtagInput;
+};
+
 export type QueryGetUserAccountArgs = {
   userId: Scalars["String"];
 };
@@ -4735,6 +4754,7 @@ export type RecentStory = {
 
 export type Refund = {
   __typename?: "Refund";
+  adminStatus: RefundStatusType;
   amount: Scalars["Float"];
   createdAt: Scalars["String"];
   fullAmount: Scalars["Boolean"];

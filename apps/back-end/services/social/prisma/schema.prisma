@@ -108,6 +108,7 @@ model NewsfeedPost {
   productId          String?
   serviceId          String?
   type               PostType
+  popularity         Float              @default(0)
 }
 
 model MediaUpload {
@@ -249,14 +250,15 @@ model UserSavedPostsGroup {
   posts  UserSavedPost[]
 }
 
-model SavedPost {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String   @db.ObjectId
-  postId       String   @db.ObjectId
-  collectionId String   @db.ObjectId
-  createdAt    DateTime @default(now())
+model SavedItem {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String        @db.ObjectId
+  itemId       String        @db.ObjectId
+  itemType     SavedItemType
+  collectionId String        @db.ObjectId
+  createdAt    DateTime      @default(now())
 
-  @@unique([postId, userId])
+  @@unique([userId])
 }
 
 model SavesCollection {
@@ -265,6 +267,12 @@ model SavesCollection {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum SavedItemType {
+  product
+  service
+  post
 }
 
 model Comment {

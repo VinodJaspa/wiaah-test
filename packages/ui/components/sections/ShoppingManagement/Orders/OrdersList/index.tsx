@@ -30,6 +30,10 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
+  Divider,
+  HStack,
+  NotAllowedIcon,
+  Badge,
 } from "@partials";
 
 import {
@@ -38,13 +42,13 @@ import {
   UpdateProductStatusModal,
 } from "@sections";
 import { FormikInput, usePaginationControls } from "@blocks";
-import { OrderDetailsModal } from "@features";
 
-import { AddToDate, DateDetails, randomNum } from "utils";
+import { AddToDate, DateDetails, mapArray, randomNum } from "utils";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { useTypedReactPubsub } from "@libs";
 import { useAskForRefundMutation, useGetMyOrdersQuery } from "@features/Orders";
 import { OrderStatusEnum, RefundType } from "@features/API";
+import { useResponsive } from "@UI/../hooks";
 
 export interface OrdersListProps {}
 
@@ -53,6 +57,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
   const { emit: openOrderDetailsModal } = useTypedReactPubsub(
     (keys) => keys.openOrderDetailsModal
   );
+  const { isMobile } = useResponsive();
   const { visit } = useRouting();
   const { shopping } = React.useContext(OrderContext);
   const { pagination, controls } = usePaginationControls();
@@ -65,9 +70,90 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
   const [refundOrderId, setRefundOrderId] = React.useState<string>();
   const { mutate, isLoading: RefundLoading } = useAskForRefundMutation();
 
-  return (
+  return isMobile ? (
     <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("orders", "Orders")} />
+      <SectionHeader sectionTitle={t("Orders")}></SectionHeader>
+      <InputGroup>
+        <InputLeftElement>
+          <SearchIcon />
+        </InputLeftElement>
+        <Input
+          placeholder={t("Search for order id, customer, order status")}
+        ></Input>
+      </InputGroup>
+      <div className="flex flex-col w-full h-full overflow-y-scroll noScroll gap-4">
+        {mapArray(orders, (order, i) => (
+          <div key={order.id + i} className="flex flex-col w-full">
+            <HStack className="justify-between">
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-medium">
+                  {t("Seller name")}:{" "}
+                  <span className="font-semibold">
+                    {order.seller?.profile?.username}
+                  </span>
+                </p>
+                <p className="text-sm font-medium">
+                  {t("Order ID")}:{" "}
+                  <span className="font-semibold">{order.id}</span>
+                </p>
+              </div>
+              <Badge
+                value={order.status.of}
+                cases={{
+                  fail: [OrderStatusEnum.Canceled],
+                  success: OrderStatusEnum.Compeleted,
+                }}
+              />
+            </HStack>
+
+            <Divider className="my-3" />
+
+            <p className="text-sm font-medium">
+              {t("Delivery pricing")}:{" "}
+              <span className="font-bold">
+                <PriceDisplay price={order.paid} />
+              </span>
+            </p>
+            <p className="text-sm font-medium">
+              {t("Payment")}:{" "}
+              <span className="font-bold">
+                <PriceDisplay price={order.paid} />
+              </span>
+            </p>
+
+            <HStack className="mt-6 gap-8">
+              <button>
+                <p className="text-sm">
+                  {t("Tracking")}:{" "}
+                  <span>
+                    <LinkIcon className="text-base" />
+                  </span>
+                </p>
+              </button>
+              <button>
+                <p className="text-sm">
+                  {t("View")}:{" "}
+                  <span>
+                    <EyeIcon className="text-base" />
+                  </span>
+                </p>
+              </button>
+              <button>
+                <p className="text-sm">
+                  {t("Action")}:{" "}
+                  <span>
+                    <NotAllowedIcon className="text-base" />
+                  </span>
+                </p>
+              </button>
+            </HStack>
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div className="flex flex-col gap-4">
+      <SectionHeader sectionTitle={t("Orders")} />
       <InputGroup>
         <InputLeftElement>
           <SearchIcon />

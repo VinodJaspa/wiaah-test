@@ -22,17 +22,20 @@ export type GetReturnedOrdersQuery = { __typename?: "Query" } & {
       | "amount"
       | "fullAmount"
       | "id"
+      | "adminStatus"
       | "reason"
       | "rejectReason"
       | "requestedById"
       | "sellerId"
       | "type"
       | "status"
-      | "orderItemId"
     > & {
         product: { __typename?: "Product" } & Pick<
           Product,
           "id" | "title" | "thumbnail"
+        >;
+        orderItem?: Maybe<
+          { __typename?: "OrderItem" } & Pick<OrderItem, "paid">
         >;
       }
   >;
@@ -54,7 +57,10 @@ export const useGetMyReturnedProductsQuery = (
               amount
               fullAmount
               id
-              productId
+              product{
+                id
+              }
+          adminStatus
               reason
               rejectReason
               requestedById
@@ -66,6 +72,9 @@ export const useGetMyReturnedProductsQuery = (
                   title
                   thumbnail
               }
+          orderItem{
+            paid
+          }
               fullAmount
           }
       }

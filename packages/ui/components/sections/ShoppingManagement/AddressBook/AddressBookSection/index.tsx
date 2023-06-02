@@ -10,16 +10,33 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
+  useResponsive,
+  HStack,
+  HomeIcon,
+  CheckmarkCircleFillIcon,
+  CheckmarkCircleOutlineIcon,
+  Button,
+  TrashIcon,
+  EditIcon,
+  LocationIcon,
+  PhoneHandleIcon,
+  RoundedPlusIcon,
 } from "@UI";
 import { BsMailbox2 } from "react-icons/bs";
 import { mapArray, setTestid } from "utils";
 
-export interface AddressBookSectionProps {}
+export interface AddressBookSectionProps {
+  accountId: string;
+}
 
-export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
+export const AddressBookSection: React.FC<AddressBookSectionProps> = ({
+  accountId,
+}) => {
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
   const [addressSelected, setAddressSelected] = React.useState<number>();
   const [addNewAddress, setAddNewAddress] = React.useState<boolean>(false);
+
   function handleAddNewSuccess() {
     setAddNewAddress(false);
   }
@@ -32,7 +49,80 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
 
   const { data } = useGetMyShippingAddressesQuery();
 
-  return (
+  return isMobile ? (
+    <div className="p-4 h-full flex flex-col gap-4">
+      <SectionHeader sectionTitle={t("address_book", "Address Book")} />
+      {mapArray(data, (address, i) => {
+        const isDefault = i === 0;
+        return (
+          <div
+            className={`${
+              addressSelected
+                ? "border border-primary"
+                : "border border-transparent"
+            } p-2 rounded-lg flex flex-col gap-8`}
+          >
+            <div className="flex flex-col gap-6">
+              <HStack className="flex justify-between items-center">
+                <HStack>
+                  <div className="relative w-9 h-9 flex justify-center items-center border border-primary rounded-full">
+                    <CheckmarkCircleFillIcon className="text-primary absolute top-3/4 right-3/4 -translate-x-1/2 -translate-y-1/2" />
+                    <HomeIcon className="text-primary" />
+                  </div>
+                  <p className="text-xl font-medium">{t("Home")}</p>
+                </HStack>
+
+                {isDefault ? (
+                  <HStack className="border px-2 border-primary text-primary">
+                    <p>{t("Default Address")}</p>
+                    <CheckmarkCircleOutlineIcon />
+                  </HStack>
+                ) : null}
+              </HStack>
+              <div className="flex flex-col gap-4">
+                <HStack>
+                  <LocationIcon className="text-lg" />
+                  <p>
+                    <span>{address.location.address}</span>
+                    {", "}
+                    <span>{address.location.city}</span>
+                    {", "}
+                    <span>{address.location.country}</span>
+                  </p>
+                </HStack>
+
+                <HStack>
+                  <PhoneHandleIcon className="text-xl" />
+                  <p>{address.phone}</p>
+                </HStack>
+              </div>
+            </div>
+
+            <HStack className="gap-6 justify-end">
+              <Button onClick={() => {}} colorScheme="danger" outline>
+                <HStack>
+                  <TrashIcon />
+                  <p>{t("Remove")}</p>
+                </HStack>
+              </Button>
+              <Button onClick={() => {}} colorScheme="darkbrown">
+                <HStack>
+                  <EditIcon />
+                  <p>{t("Edit")}</p>
+                </HStack>
+              </Button>
+            </HStack>
+          </div>
+        );
+      })}
+      <Button onClick={handleAddNew} className="w-full">
+        <HStack className="text-white">
+          <RoundedPlusIcon />
+          <p>{t("Add new address")}</p>
+        </HStack>
+      </Button>
+    </div>
+  ) : (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("address_book", "Address Book")} />
       <div className="flex flex-wrap gap-4">

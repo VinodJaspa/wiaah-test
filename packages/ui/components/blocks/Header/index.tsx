@@ -9,6 +9,7 @@ import {
   Button,
   LocationIcon,
   useMasterLocationMapModal,
+  ShoppingBagIcon,
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -126,8 +127,10 @@ export const Header: React.FC<HeaderProps> = () => {
               <li className="cursor-pointer">
                 <FaHeart className="h-8 w-8" />
               </li>
-              <li className="fill-white text-2xl">
-                <ShoppingCart />
+              <li className="fill-white text-white text-2xl">
+                <ShoppingCart>
+                  <ShoppingBagIcon />
+                </ShoppingCart>
               </li>
             </ul>
           </div>

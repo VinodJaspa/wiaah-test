@@ -11,6 +11,7 @@ export const useResponsive = (cb?: () => any) => {
     ) {
       cb && cb();
       setScreenWidth(window.innerWidth);
+      console.log("responsive", window.innerWidth);
     } else {
       CallbackAfter(100, HandleScreenSize);
     }

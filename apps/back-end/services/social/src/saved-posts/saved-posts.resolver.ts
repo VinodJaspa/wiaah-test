@@ -79,7 +79,7 @@ export class SavedPostsResolver {
       },
     });
 
-    await this.prisma.savedPost.deleteMany({
+    await this.prisma.savedItem.deleteMany({
       where: {
         collectionId: collection.id,
       },
