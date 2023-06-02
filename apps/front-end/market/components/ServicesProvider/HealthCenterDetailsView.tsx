@@ -35,68 +35,57 @@ export const HealthCenterDetailsView: React.FC<{ id: string }> = ({ id }) => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
-            serviceTitle={res.data.getHealthCenter.serviceMetaInfo.title}
-            rating={res.data.getHealthCenter.rating}
-            reviewsCount={res.data.getHealthCenter.totalReviews}
+            serviceTitle={res.serviceMetaInfo.title}
+            rating={res.rating}
+            reviewsCount={res.totalReviews}
           />
         ) : null}
       </SpinnerFallback>
       <Divider />
-      <ServicePresentationCarosuel
-        data={res ? res.data.getHealthCenter.presentations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <WorkingDaysCalender
-            workingDates={
-              res
-                ? Object.values(
-                    res.data.getHealthCenter.workingHours.weekdays
-                  ).map((value) => ({
-                    date: new Date().toString(),
-                    workingHoursRanges:
-                      typeof value === "object"
-                        ? [{ from: value.periods[0], to: value.periods[1] }]
-                        : [],
-                  }))
-                : []
-            }
-          />
+          <div className="w-full h-full overflow-hidden">
+            <WorkingDaysCalender
+              workingDates={
+                res
+                  ? Object.values(res.workingHours.weekdays).map((value) => ({
+                      date: new Date().toString(),
+                      workingHoursRanges:
+                        typeof value === "object"
+                          ? [{ from: value.periods[0], to: value.periods[1] }]
+                          : [],
+                    }))
+                  : []
+              }
+            />
+          </div>
         }
       >
         {res ? (
           <>
             <Accordion>
               <ServicesProviderDescriptionSection
-                description={
-                  res.data.getHealthCenter.serviceMetaInfo.description
-                }
+                description={res.serviceMetaInfo.description}
               />
               <Divider />
               <HealthCenterDoctorsList
-                cancelation={res.data.getHealthCenter.cancelationPolicies || []}
-                doctors={res.data.getHealthCenter.doctors || []}
+                cancelation={res.cancelationPolicies || []}
+                doctors={res.doctors || []}
               />
               <ServiceReachOutSection
-                email={res.data.getHealthCenter.contact.email}
-                location={res.data.getHealthCenter.location}
-                telephone={res.data.getHealthCenter.contact.phone}
+                email={res.contact.email}
+                location={res.location}
+                telephone={res.contact.phone}
               />
-              <ServiceWorkingHoursSection
-                workingHours={res.data.getHealthCenter.workingHours}
-              />
-              <ServicePoliciesSection
-                title=""
-                policies={res.data.getHealthCenter.policies}
-              />
-              <ServiceOnMapLocalizationSection
-                location={res.data.getHealthCenter.location}
-              />
+              <ServiceWorkingHoursSection workingHours={res.workingHours} />
+              <ServicePoliciesSection title="" policies={res.policies} />
+              <ServiceOnMapLocalizationSection location={res.location} />
             </Accordion>
           </>
         ) : null}
-        <Reviews id={res?.data.getHealthCenter.id || ""} reviews={reviews} />
+        <Reviews id={res?.id || ""} reviews={reviews} />
       </StaticSideBarWrapper>
     </div>
   );

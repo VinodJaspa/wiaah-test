@@ -15,10 +15,10 @@ import {
   SelectOption,
   SelectProps,
   ServiceSearchFilter,
-  HotelsSearchList,
   ServicesSearchResultsFiltersSidebar,
   useMutateSearchFilters,
   useGetFilteredHotelRoomsQuery,
+  useGetServiceFiltersQuery,
 } from "ui";
 import { useResponsive } from "hooks";
 
@@ -28,6 +28,7 @@ export const HotelsSearchResultsView: React.FC = () => {
   const router = useRouter();
   const { isTablet } = useResponsive();
   const { data } = useGetFilteredHotelRoomsQuery({});
+  const { data: filters } = useGetServiceFiltersQuery({ type: "" });
 
   React.useEffect(() => {
     if (typeof router.query.location === "string") {
@@ -129,7 +130,7 @@ export const HotelsSearchResultsView: React.FC = () => {
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
 
-      <HotelsSearchList rooms={data} total={data?.length || 0} />
+      {/* <HotelsSearchList rooms={data} total={data?.length || 0} /> */}
     </div>
   );
 };

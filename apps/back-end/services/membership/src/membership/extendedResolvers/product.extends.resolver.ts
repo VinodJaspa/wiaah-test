@@ -11,11 +11,11 @@ import {
 
 @ObjectType()
 @Directive('@extends')
-@Directive('@keys(fields:"ownerId")')
+@Directive('@keys(fields:"sellerId")')
 export class Product {
   @Field(() => ID)
   @Directive('@external')
-  ownerId: string;
+  sellerId: string;
 }
 
 @Resolver(() => Product)
@@ -26,6 +26,6 @@ export class ProductExtendedResolver {
   isExternalShopping(@Parent() prod: Product) {
     // TODO: compare user membership id and check if it falls under pay per click plans
 
-    return this.service.isPayPerClick(prod.ownerId);
+    return this.service.isPayPerClick(prod.sellerId);
   }
 }

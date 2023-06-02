@@ -6,8 +6,8 @@ registerEnumType(ServiceCategoryStatus, { name: 'ServiceCategoryStatus' });
 
 @ObjectType()
 export class ServiceCategoryFilterValue {
-  @Field(() => [TranslationText])
-  name: TranslationText[];
+  @Field(() => String)
+  name: string;
 
   @Field(() => String)
   filteringValue: string;
@@ -33,6 +33,45 @@ export class ServiceCategoryFilter {
 
 @ObjectType()
 export class ServiceCategory {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => String)
+  name: String;
+
+  @Field(() => Int)
+  sortOrder: number;
+
+  @Field(() => ServiceCategoryStatus)
+  status: ServiceCategoryStatus;
+
+  @Field(() => ServiceType)
+  type: ServiceType;
+
+  @Field(() => [ServiceCategoryFilterValue])
+  filters: ServiceCategoryFilterValue[];
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => String)
+  description: string;
+
+  @Field(() => String)
+  metaTagDescription: string;
+
+  @Field(() => String)
+  metaTagTitle: string;
+
+  @Field(() => String)
+  metaTagKeywords: string;
+
+  @Field(() => String)
+  seo: string;
+}
+
+@ObjectType()
+export class ServiceCategoryRaw {
   @Field(() => ID)
   id: string;
 

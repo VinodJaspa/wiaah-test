@@ -12,6 +12,15 @@ export class UpdateAccountInput extends PartialType(
 ) {
   @Field(() => ID)
   id: string;
+
+  @Field(() => String, { nullable: true })
+  lang?: string;
+
+  @Field(() => String, { nullable: true })
+  currency?: string;
+
+  @Field(() => String, { nullable: true })
+  country?: string;
 }
 
 @InputType()

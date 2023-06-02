@@ -158,7 +158,7 @@ export class ProfileStatisticsResolver {
         },
       }),
 
-      this.prisma.savedPost.count({
+      this.prisma.savedItem.count({
         where: {
           AND: [
             {
@@ -170,7 +170,7 @@ export class ProfileStatisticsResolver {
         },
       }),
 
-      this.prisma.savedPost.count({
+      this.prisma.savedItem.count({
         where: {
           AND: [
             {

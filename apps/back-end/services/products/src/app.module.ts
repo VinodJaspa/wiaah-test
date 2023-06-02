@@ -20,6 +20,7 @@ import { ShippingDetailsModule } from './shipping-details/shipping-details.modul
 import { DiscountModule } from './discount/discount.module';
 import { CashbackModule } from './cashback/cashback.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
+import { Service } from '@shop/entities/extends';
 
 @Global()
 @Module({
@@ -49,6 +50,9 @@ export class PrismaGlobalModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
+      buildSchemaOptions: {
+        orphanedTypes: [Service],
+      },
       context({ req, res }) {
         const user = getUserFromRequest(req);
         console.log({ user });

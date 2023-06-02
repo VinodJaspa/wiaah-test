@@ -71,6 +71,7 @@ type NewsfeedPost {
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
+  thumbnail: String!
 }
 
 enum CommentsVisibility {
@@ -83,6 +84,13 @@ enum PostType {
   shop_post
   service_post
   affiliation_post
+}
+
+type NewsfeedPostsPaginationResponse {
+  data: [NewsfeedPost!]!
+  cursor: String!
+  nextCursor: String!
+  hasMore: Boolean!
 }
 
 type AdminNewsfeedPost {
@@ -115,6 +123,7 @@ type AdminNewsfeedPost {
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
+  thumbnail: String!
   visibility: PostVisibility!
 }
 
@@ -319,6 +328,12 @@ type NewsfeedHashtagSearch {
   mostViewedVideo: NewsfeedPost!
 }
 
+type UserSavedPost {
+  postId: ID!
+  postType: PostType!
+  post: NewsfeedPost!
+}
+
 type UserSavedPostsGroup {
   id: ID!
   userId: ID!
@@ -397,6 +412,15 @@ enum TypeOfService {
   healthCenterTreatment
   beautyCenterTreatment
   vehicle
+}
+
+type SavesCollection {
+  id: ID!
+  userId: String!
+  name: String!
+  createdAt: String!
+  updatedAt: String!
+  recentSaves: [UserSavedPost!]!
 }
 
 type ProductPost {
@@ -617,6 +641,7 @@ type Query {
   getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   isFollowed(profileId: String!): Boolean!
+  getTrendingHashtagPosts(args: GetPostsByHashtagInput!): NewsfeedPostsPaginationResponse!
   getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
@@ -633,6 +658,7 @@ type Query {
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
+  getUserSaveCollections(userId: String!): [SavesCollection!]!
   adminGetAccountSavedPosts(args: GetMySavedPostsInput!, accountId: String!): UserSavedPostsGroup!
   getStory(storyId: String!): Story!
   getUserStory(args: GetUserStoryInput!): StoryCursorPaginationResponse!
@@ -690,6 +716,12 @@ input GqlPaginationInput {
 
 input GetMyProfileFollowersMetaInput {
   pagination: GqlPaginationInput!
+}
+
+input GetPostsByHashtagInput {
+  take: Int!
+  cursor: String
+  hashtag: String!
 }
 
 input GetMyNewsfeedPostsInput {
@@ -887,7 +919,9 @@ type Mutation {
   removeComment(id: Int!): Comment!
   adminDeleteComment(commentId: String!): Boolean!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
-  savePost(postId: String!): Boolean!
+  createSavesCollection(name: String!): Boolean!
+  deleteSavesCollection(id: String!): Boolean!
+  savePost(postId: String!, collectionId: String!): Boolean!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
   likeStory(likeStoryInput: LikeStoryInput!): Boolean!

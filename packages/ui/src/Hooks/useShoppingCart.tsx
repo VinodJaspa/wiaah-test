@@ -1,9 +1,9 @@
-import { ShoppingCartItemType } from "api";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { getMyShoppingCartQueryKey } from "@UI";
 import { ShoppingCartToggleState } from "@UI";
+import { ShoppingCartItemType } from "@features/API";
 
 export const useShoppingCart = () => {
   const [ShoppingCartOpen, setShoppingCartOpen] = useRecoilState(
@@ -24,17 +24,24 @@ export const useShoppingCart = () => {
     closeShoppingCart,
   };
 };
+
+type ShoppingCartItemInput = {
+  itemType: ShoppingCartItemType;
+  itemId: string;
+  qty: number;
+};
+
 export const useMutateShoppingCart = () => {
   const queryclient = useQueryClient();
   const { mutate } = useMutation(
-    async (item: ShoppingCartItemType) => {
+    async (item: ShoppingCartItemInput) => {
       return item;
     },
     {
       onSuccess: (data, vars) => {
         queryclient.setQueryData(
           getMyShoppingCartQueryKey(),
-          (old?: ShoppingCartItemType[]) => {
+          (old?: ShoppingCartItemInput[]) => {
             if (old) {
               return [...old, data];
             }
@@ -54,7 +61,7 @@ export const useMutateShoppingCart = () => {
     setShoppingCartOpen(false);
   }
 
-  function addShoppingCartItem(item: ShoppingCartItemType) {
+  function addShoppingCartItem(item: ShoppingCartItemInput) {
     mutate(item);
   }
 

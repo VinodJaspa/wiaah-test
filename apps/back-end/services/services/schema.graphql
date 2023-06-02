@@ -183,24 +183,24 @@ type Hotel {
 }
 
 type ServiceCategoryFilterValue {
-  name: [TranslationText!]!
+  name: String!
   filteringValue: String!
   sortOrder: Int!
 }
 
 type ServiceCategory {
   id: ID!
-  name: [TranslationText!]!
+  name: String!
   sortOrder: Int!
   status: ServiceCategoryStatus!
   type: ServiceType!
   filters: [ServiceCategoryFilterValue!]!
   thumbnail: String!
-  description: [TranslationText!]!
-  metaTagDescription: [TranslationText!]!
-  metaTagTitle: [TranslationText!]!
-  metaTagKeywords: [TranslationText!]!
-  seo: [TranslationText!]!
+  description: String!
+  metaTagDescription: String!
+  metaTagTitle: String!
+  metaTagKeywords: String!
+  seo: String!
 }
 
 enum ServiceCategoryStatus {
@@ -593,6 +593,7 @@ type Cashback {
 
 type Query {
   getUserServices(userId: String!, pagination: GqlCursorPaginationInput!): ServicesCursorPaginationResponse!
+  searchServices(args: SearchServicesInput!): [Service!]!
   getServiceRawData(id: String!): RawService!
   getServiceDetails(id: String!, isClick: Boolean!): Service
   getUserServicesByIds(sellerId: String!, servicesIds: [String!]!): [Service!]!
@@ -606,7 +607,7 @@ type Query {
   getFilteredServices(args: GetFilteredServicesAdminInput!): [ServiceDiscovery!]!
   adminGetRawService(id: String!): ServiceShopRaw
   getServiceCategoryById(categoryId: String!): ServiceCategory!
-  getServiceCategoryByType(type: ServiceType!): [ServiceCategory!]!
+  getServiceCategoryByType(type: ServiceType!): ServiceCategory!
   getServiceCategories: [ServiceCategory!]!
   getFilteredServiceCategories(args: GetFilteredCategoriesInput): [ServiceCategory!]!
   adminGetUserBookings(args: GetMyBookingsInput!, accountId: String!): [BookedService!]!
@@ -621,6 +622,10 @@ type Query {
 input GqlCursorPaginationInput {
   take: Int!
   cursor: String
+}
+
+input SearchServicesInput {
+  q: String!
 }
 
 input GetRecommendedServicesInput {

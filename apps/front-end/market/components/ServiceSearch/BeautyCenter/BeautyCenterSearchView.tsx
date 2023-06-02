@@ -4,10 +4,15 @@ import {
   RecommendedBeautyCenterSearchList,
   LocationSearchInput,
   ServicesRequestKeys,
+  useGetRecommendedBeautyCentersQuery,
+  getRandomImage,
+  Pagination,
 } from "ui";
+import { randomNum } from "utils";
 
 export const BeautyCenterSearchView: React.FC = () => {
   const { visit } = useRouting();
+  const { data } = useGetRecommendedBeautyCentersQuery({ page: 1, take: 10 });
   return (
     <div className="flex flex-col items-center gap-8">
       <LocationSearchInput
@@ -21,7 +26,20 @@ export const BeautyCenterSearchView: React.FC = () => {
         }}
       />
 
-      <RecommendedBeautyCenterSearchList />
+      <RecommendedBeautyCenterSearchList
+        treatments={[...Array(10)].map(() => ({
+          title: "treatment title",
+          category: "Facial",
+          duration: 45,
+          id: "",
+          price: randomNum(40),
+          rate: 4,
+          reviews: 150,
+          thumbnail:
+            "https://media.istockphoto.com/id/501398614/photo/face-skin-care-facial-hydro-microdermabrasion-peeling-treatment.jpg?s=612x612&w=0&k=20&c=8sB-63Okl1ZlF1aHNRtJb7aVzf3qCezOnphkgnW_shY=",
+        }))}
+      />
+      <Pagination />
     </div>
   );
 };

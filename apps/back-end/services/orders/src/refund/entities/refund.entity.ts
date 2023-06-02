@@ -42,6 +42,9 @@ export class Refund {
   @Field(() => RefundStatusType)
   status: RefundStatusType;
 
+  @Field(() => RefundStatusType)
+  adminStatus: RefundStatusType;
+
   @Field(() => String, { nullable: true })
   rejectReason?: string;
 

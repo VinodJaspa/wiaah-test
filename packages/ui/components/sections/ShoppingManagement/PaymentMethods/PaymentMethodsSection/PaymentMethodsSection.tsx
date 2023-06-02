@@ -10,23 +10,62 @@ import {
   DiscoverCreditCardIcon,
   AmericanExpressCreditCardIcon,
   HStack,
+  useGetMyAccountQuery,
+  useGetMyFinancialAccountsQuery,
+  CardIntelIcon,
+  useResponsive,
+  RoundedPlusIcon,
 } from "@UI";
 import { mapArray, randomNum } from "utils";
-
 export const PaymentMethodsSection: React.FC = () => {
+  const { data } = useGetMyAccountQuery();
+  return data ? (
+    <AccountPaymentMethodsSection
+      accountId={data.id}
+    ></AccountPaymentMethodsSection>
+  ) : null;
+};
+
+export const AccountPaymentMethodsSection: React.FC<{ accountId: string }> = ({
+  accountId,
+}) => {
   const { t } = useTranslation();
   const [addNew, setAddNew] = React.useState<boolean>(true);
-  const [addNewInitial, setAddNewInitial] = React.useState({});
-  return (
+  const { isMobile } = useResponsive();
+
+  const { data } = useGetMyFinancialAccountsQuery();
+
+  return isMobile ? (
+    <div className="flex flex-col p-9 gap-4">
+      <SectionHeader sectionTitle={t("Payment methods")} />
+
+      <div className="flex flex-col w-full h-full overflow-y-scroll noScroll gap-4">
+        {mapArray(data, (item) => (
+          <ColouredPaymentCard
+            last4={parseInt(item.cardLast4!)}
+            expiryMonth={parseInt(item.card_exp_month!)}
+            expiryYear={parseInt(item.card_exp_year!)}
+          />
+        ))}
+      </div>
+
+      <Button colorScheme="darkbrown" onClick={() => setAddNew(true)}>
+        <HStack>
+          <RoundedPlusIcon />
+          <p>{t("Create new method")}</p>
+        </HStack>
+      </Button>
+    </div>
+  ) : (
     <div className="flex flex-col w-full gap-6">
-      <SectionHeader sectionTitle={t("payment_methods", "Payment Methods")} />
+      <SectionHeader sectionTitle={t("Payment Methods")} />
       <div className="flex gap-2 items-start">
         <span className="items-end flex gap-2 text-4xl font-semibold">
           <MdPayment />
-          {t("credit", "Credit")}/{t("debit", "Debit")} {t("cards", "Cards")}
+          {t("Credit")}/{t("Debit")} {t("Cards")}
         </span>
         {paymentProdviders.map((provider, i) => (
-          <img className="h-14 w-auto" src={provider} />
+          <img key={i} className="h-14 w-auto" src={provider} />
         ))}
       </div>
       <div className="flex flex-wrap gap-4">
@@ -36,12 +75,10 @@ export const PaymentMethodsSection: React.FC = () => {
       </div>
       {!addNew && (
         <div className="flex w-full justify-end">
-          <Button onClick={() => setAddNew(true)}>
-            {t("add_new", "Add New")}
-          </Button>
+          <Button onClick={() => setAddNew(true)}>{t("Add New")}</Button>
         </div>
       )}
-      {addNew && <PaymentMethodForm></PaymentMethodForm>}
+      {addNew && <PaymentMethodForm onSuccess={() => {}}></PaymentMethodForm>}
     </div>
   );
 };
@@ -232,3 +269,33 @@ export const PaymentMethodForm = React.forwardRef(
     );
   }
 );
+
+export const ColouredPaymentCard: React.FC<{
+  last4: number;
+  expiryMonth: number;
+  expiryYear: number;
+}> = ({ expiryMonth, expiryYear, last4 }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex rounded-2xl flex-col w-full gap-10">
+      <HStack className="justify-between">
+        <CardIntelIcon className="text-4xl" />
+        <VisaIcon />
+      </HStack>
+      <p className="text-2xl font-bold">
+        {["****", "****", "****", `${last4}`].join(" ")}
+      </p>
+      <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-2"></div>
+
+        <div className="flex flex-col items-start gap-2">
+          <p className="font-medium">{t("Expiry Date")}</p>
+          <p className="text-xl font-medium">
+            {`${expiryMonth > 9 ? expiryMonth : `0${expiryMonth}`}`}/
+            {`${expiryYear - 2000}`}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

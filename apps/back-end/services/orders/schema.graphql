@@ -105,6 +105,7 @@ type Refund {
   fullAmount: Boolean!
   qty: Int!
   status: RefundStatusType!
+  adminStatus: RefundStatusType!
   rejectReason: String
   opened: Boolean!
   createdAt: String!

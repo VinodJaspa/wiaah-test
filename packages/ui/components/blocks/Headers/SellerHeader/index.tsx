@@ -23,6 +23,7 @@ import {
   useSocialControls,
   StarOutlineIcon,
   ServicesIcon,
+  ShoppingCartOutlineIcon,
 } from "@UI";
 import { BsShop } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -129,7 +130,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <MessageOutlineIcon className="text-lightBlack text-icon" />
         </div>
         <div className="text-lightBlack">
-          <ShoppingCart />
+          <ShoppingCart>
+            <ShoppingCartOutlineIcon className="text-icon text-lightBlack h-6 w-6" />
+          </ShoppingCart>
         </div>
         {!isMobile && (
           <AccountsProfileOptions>

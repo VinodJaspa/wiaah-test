@@ -9,7 +9,6 @@ import {
   WorkingDaysCalender,
   ServicesRequestKeys,
   HealthCenterDoctor,
-  Location,
   HealthCenter,
 } from "@UI";
 import { setTestid } from "utils";
@@ -71,7 +70,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
           {t("Book now")}
         </Button>
       </div>
-      <div className="flex flex-col gap-2 thinScroll py-4">
+      <div className="flex w-1/2 h-full overflow-hidden flex-col gap-2 thinScroll py-4">
         <WorkingDaysCalender
           hoursLimit={hoursLimit}
           workingDates={workingDates}

@@ -56,7 +56,9 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
       leftArrowComponent={ArrowLeftIcon}
       itemsCount={5}
       gap={8}
-      containerProps={{ style: { overflow: "visible" } }}
+      containerProps={{
+        style: { overflow: "visible" },
+      }}
       childsWrapperProps={{
         className: "max-h-64 overflow-y-scroll thinScroll",
       }}

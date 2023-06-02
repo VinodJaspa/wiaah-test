@@ -25,13 +25,17 @@ import {
   useGetMyReturnedProductsQuery,
   usePaginationControls,
   Pagination,
+  Badge,
+  Button,
+  RoundedPlusIcon,
 } from "@UI";
-import { Product, ReturnedOrder } from "@features/API";
+import { Product, RefundStatusType, ReturnedOrder } from "@features/API";
 
 export interface MyReturnsSectionProps {}
 
 export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
 
   const { pagination, controls } = usePaginationControls();
   const { data } = useGetMyReturnedProductsQuery({ pagination });
@@ -39,26 +43,108 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("My Returns")} />
-      <HStack className="justify-between">
-        <Select className="text-lg w-96" placeholder={t("Filter Returns")}>
-          <SelectOption value={"pending"}>{t("Pending")}</SelectOption>
-          <SelectOption value={"accepted"}>{t("Accepted")}</SelectOption>
-          <SelectOption value={"rejected"}>{t("Rejceted")}</SelectOption>
-        </Select>
-        <ModalExtendedWrapper>
-          <ModalButton>
-            <AddIcon className="text-xl cursor-pointer" />
-          </ModalButton>
-          <AskForReturnModal />
-        </ModalExtendedWrapper>
-      </HStack>
+      {isMobile ? (
+        <div className="flex flex-col gap-4">
+          <Select>
+            <SelectOption value={0}>{t("Most Recent")}</SelectOption>
+          </Select>
 
-      <ProductReturnsList items={data}></ProductReturnsList>
-      <Pagination></Pagination>
+          <div className="flex flex-col gap-4 h-full overflow-y-scroll noScroll">
+            {mapArray(data, (returnedProduct) => (
+              <div className="flex gap-3">
+                <Image
+                  src={returnedProduct.product.thumbnail}
+                  className="h-full w-32 object-cover"
+                />
+                <div className="flex flex-col gap-3">
+                  <p>
+                    {returnedProduct.product.title} X {returnedProduct.qty}
+                  </p>
+                  <p>
+                    {t("Return reason")}: <span>{returnedProduct.reason}</span>
+                  </p>
+                  <p>
+                    {t("Paid amount")}:{" "}
+                    <span>{returnedProduct.fullAmount}</span>
+                  </p>
+                  <p>
+                    {t("Admin status")}:{" "}
+                    <span>
+                      <Badge
+                        cases={{
+                          fail: [
+                            RefundStatusType.Rejected,
+                            RefundStatusType.Closed,
+                          ],
+                          success: [
+                            RefundStatusType.Accepted,
+                            RefundStatusType.Refunded,
+                          ],
+                          off: RefundStatusType.Pending,
+                        }}
+                        value={returnedProduct.status}
+                      />
+                    </span>
+                  </p>
+                  <p>
+                    {t("Seller status")}:{" "}
+                    <span>
+                      <Badge
+                        cases={{
+                          fail: [
+                            RefundStatusType.Rejected,
+                            RefundStatusType.Closed,
+                          ],
+                          success: [
+                            RefundStatusType.Accepted,
+                            RefundStatusType.Refunded,
+                          ],
+                          off: RefundStatusType.Pending,
+                        }}
+                        value={returnedProduct.adminStatus}
+                      />
+                    </span>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <ModalExtendedWrapper>
+            <ModalButton>
+              <Button colorScheme="darkbrown">
+                <HStack>
+                  <RoundedPlusIcon />
+                  <p>{t("Ask for refund")}</p>
+                </HStack>
+              </Button>
+            </ModalButton>
+            <AskForReturnModal />
+          </ModalExtendedWrapper>
+        </div>
+      ) : (
+        <>
+          <HStack className="justify-between">
+            <Select className="text-lg w-96" placeholder={t("Filter Returns")}>
+              <SelectOption value={"pending"}>{t("Pending")}</SelectOption>
+              <SelectOption value={"accepted"}>{t("Accepted")}</SelectOption>
+              <SelectOption value={"rejected"}>{t("Rejceted")}</SelectOption>
+            </Select>
+            <ModalExtendedWrapper>
+              <ModalButton>
+                <AddIcon className="text-xl cursor-pointer" />
+              </ModalButton>
+              <AskForReturnModal />
+            </ModalExtendedWrapper>
+          </HStack>
 
-      {!data || data.length < 1 ? (
-        <span className="text-xl">{t("No Records Found")}</span>
-      ) : null}
+          <ProductReturnsList items={data}></ProductReturnsList>
+          <Pagination></Pagination>
+
+          {!data || data.length < 1 ? (
+            <span className="text-xl">{t("No Records Found")}</span>
+          ) : null}
+        </>
+      )}
     </div>
   );
 };
@@ -113,12 +199,14 @@ export const ProductReturnsList: React.FC<{
 
 export interface SectionHeaderProps extends HtmlDivProps {
   sectionTitle: string;
+  onBack?: () => any;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
   sectionTitle,
   children,
   className,
+  onBack,
   ...props
 }) => {
   const { onReturn } = React.useContext(SectionContext);
@@ -126,7 +214,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return isMobile ? (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
       <div className="w-full text-3xl items-center flex justify-between">
-        <ArrowLeftIcon onClick={onReturn} />
+        <ArrowLeftIcon onClick={onBack ? onBack : onReturn} />
         <p className="text-lg font-semibold">{sectionTitle}</p>
         <span className="text-base">{children}</span>
       </div>

@@ -3,51 +3,34 @@ import React from "react";
 import Head from "next/head";
 import { MasterLayout } from "@components";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import {
-  ExtractParamFromQuery,
-  ExtractServiceTypeFromQuery,
-  getServiceView,
-  ServicesTypeSwitcher,
-} from "utils";
-import { ServicesViewsList } from "@data";
-import { NotFound, Container, useMutateSearchFilters, BreadCrumb } from "ui";
+import { Container, BreadCrumb, MarketServiceSearchResaultsView } from "ui";
+import { ServiceType } from "@features/API";
+import { useRouting } from "routing";
 
 const filtered: NextPage = () => {
   const { t } = useTranslation();
-  const router = useRouter();
-  const { addFilter } = useMutateSearchFilters();
-  const serviceType = ExtractServiceTypeFromQuery(router.query);
-  const searchLocation = ExtractParamFromQuery(router.query, "location");
-
-  if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
-    addFilter((keys) => [keys.serviceType, serviceType]);
-  }
-
-  if (typeof searchLocation === "string") {
-    addFilter((keys) => [keys.location, searchLocation]);
-  }
+  const { getParam, getCurrentPath } = useRouting();
+  const serviceType = getParam("serviceType");
+  const searchLocation = getParam("location");
 
   return (
     <>
       <Head>
         <title>
-          {t("Service Search")} | {router.query.location || ""}
+          {t("Service Search")} | {searchLocation || ""}
         </title>
       </Head>
       <MasterLayout>
         <Container className="px-4 py-8">
           <BreadCrumb
-            links={router.asPath
+            links={getCurrentPath()
               .split("/")
               .filter((link) => link.length > 0)
               .map((link, i) => ({ text: link, url: link }))}
           />
-          <ServicesTypeSwitcher
-            serviceType={serviceType}
-            get={getServiceView.RESAULTS}
-            fallbackComponent={NotFound}
-            servicesList={ServicesViewsList}
+          <MarketServiceSearchResaultsView
+            searchQuery={searchLocation}
+            serviceType={serviceType as ServiceType}
           />
         </Container>
       </MasterLayout>

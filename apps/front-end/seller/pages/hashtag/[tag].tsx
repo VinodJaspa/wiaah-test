@@ -1,9 +1,9 @@
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { SellerLayout, useResponsive } from "ui";
+import { SellerLayout, useResponsive, HashTagView } from "ui";
 import { dehydrate, QueryClient } from "react-query";
-import { HashtagsView } from "@components";
+import { useRouting } from "routing";
 
 interface HashtagPageProps {}
 function getHashtags() {
@@ -25,13 +25,15 @@ export const getServerSideProps: GetServerSideProps<
 
 const HashtagPage: NextPage<HashtagPageProps> = () => {
   const { isMobile } = useResponsive();
+  const { getParam } = useRouting();
+  const tag = getParam("tag");
   return (
     <>
       <Head>
         <title>seller | hashtags</title>
       </Head>
       <SellerLayout header={isMobile ? "minimal" : "main"}>
-        <HashtagsView />
+        <HashTagView tag={tag} />
       </SellerLayout>
     </>
   );

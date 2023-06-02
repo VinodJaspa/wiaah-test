@@ -62,4 +62,10 @@ export class Account {
 
   @Field(() => String)
   lastActiveAt: Date;
+
+  @Field(() => String)
+  lang: string;
+
+  @Field(() => String)
+  currency: string;
 }

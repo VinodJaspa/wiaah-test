@@ -3,32 +3,55 @@ import { useTranslation } from "react-i18next";
 import {
   SectionWrapper,
   SectionHeader,
-  useGetMySavedPostsQuery,
-  usePaginationControls,
-  PostCardsListWrapper,
-  ScrollPaginationWrapper,
   useResponsive,
+  useGetUserSavedCollections,
+  useGetMyAccountQuery,
+  AspectRatio,
+  Image,
 } from "@UI";
+import { mapArray } from "@UI/../utils/src";
 
 export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();
-  const { pagination, controls } = usePaginationControls();
-  const { data } = useGetMySavedPostsQuery({
-    pagination,
-  });
+
+  const { data: account } = useGetMyAccountQuery();
+  const { data } = useGetUserSavedCollections(
+    { userId: account?.id! },
+    { enabled: !!account?.id }
+  );
   const { isMobile } = useResponsive();
   return (
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
-      <ScrollPaginationWrapper controls={controls}>
-        <PostCardsListWrapper
-          cols={isMobile ? 1 : 4}
-          posts={data?.posts || []}
-        />
-      </ScrollPaginationWrapper>
-      {!data || data.posts.length < 1 ? (
+      <div className="grid grid-cols-2 md:grid-cols-3">
+        {mapArray(data, (collection, i) => (
+          <div key={collection.id + i} className="flex fle-col gap-2">
+            <AspectRatio ratio={1}>
+              {collection.recentSaves.length === 4 ? (
+                <div className="grid grid-col-2">
+                  {mapArray(collection.recentSaves, (savedPost, i) => (
+                    <Image
+                      key={i}
+                      src={savedPost.post.thumbnail}
+                      className="w-full h-full"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Image
+                  src={collection.recentSaves.at(0)?.post.thumbnail}
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </AspectRatio>
+            <p>{collection.name}</p>
+          </div>
+        ))}
+      </div>
+
+      {!data || data.length < 1 ? (
         <div className="text-black font-bold text-2xl text-center py-60">
-          You Dont Have Any Saved Posts
+          {t("You Dont Have Any Saved Collections")}
         </div>
       ) : null}
     </SectionWrapper>

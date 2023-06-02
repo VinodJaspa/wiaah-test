@@ -54,6 +54,7 @@ import { GetBookingCostInput } from './dto/get-booking-cost.input';
 import { Weekdays } from './utils';
 import { GetRecommendedServicesInput } from './dto/get-recommended-services';
 import { ObjectId } from 'mongodb';
+import { SearchServicesInput } from './dto/search-services.input';
 
 enum weekdaysNum {
   su = 0,
@@ -207,6 +208,14 @@ export class ServiceResolver {
     });
 
     return true;
+  }
+
+  @Query(() => [Service])
+  async searchServices(
+    @Args('args', { type: () => SearchServicesInput })
+    searchArgs: SearchServicesInput,
+  ) {
+    // TODO
   }
 
   @Query(() => RawService)

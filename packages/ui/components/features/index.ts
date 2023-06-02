@@ -30,3 +30,4 @@ export * from "./MediaEditing";
 export * from "./Statistics";
 export * from "./Settings";
 export * from "./SiteSettings";
+export * from "./Hashtag";

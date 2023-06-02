@@ -44,9 +44,8 @@ export const ResturantSearchResultsView: React.FC = () => {
           location={getLocationFilterQuery || ""}
           servicesNum={randomNum(500)}
         />
-        <Pagination controls={controls}>
-          <ResturantSearchList restaurants={restaurants} />
-        </Pagination>
+
+        <Pagination controls={controls} />
       </div>
     </div>
   );

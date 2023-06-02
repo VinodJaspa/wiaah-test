@@ -49,7 +49,6 @@ export const HealthCenterSearchResultsView: React.FC = () => {
                         <StepperHeader>
                           <ResturantFindTableFilterStepperHeader
                             currentStepIdx={currentStepIdx}
-                            stepsLen={2}
                           />
                         </StepperHeader>
                         <StepperContent>

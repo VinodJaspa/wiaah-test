@@ -21,7 +21,7 @@ export function ServicesSearchGrid<TData, TProps>({
       style={{
         gridTemplateColumns: gridRule
           ? gridRule
-          : `repeat(auto-fill,minmax(15rem, calc(${100 / cols}% - 1rem)))`,
+          : `repeat(auto-fill,minmax(13rem, calc(${100 / cols}% - 1rem)))`,
       }}
       className="w-full justify-center gap-y-8 gap-x-4 grid"
     >

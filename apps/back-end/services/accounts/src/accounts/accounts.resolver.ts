@@ -1,4 +1,4 @@
-import { Inject, NotAcceptableException, UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   ResolveReference,

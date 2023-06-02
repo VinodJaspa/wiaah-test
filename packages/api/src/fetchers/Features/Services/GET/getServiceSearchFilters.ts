@@ -1,5 +1,5 @@
 import { FormatedSearchableFilter } from "../../../../";
-import { SERVICESTYPE_INDEXKEY } from "ui";
+import { SERVICESTYPE_INDEXKEY, ServiceType } from "ui";
 import { ServicesType } from "types";
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";
@@ -710,21 +710,162 @@ const BeautyCenterFilters: SearchFilterType[] = [
   },
 ];
 
+const RestaurantFilters: SearchFilterType[] = [
+  {
+    filterTitle: "Price range",
+    filterSlug: "price_range",
+    filterType: "range",
+    maxRange: 10000,
+    minRange: 10,
+  },
+  {
+    filterTitle: "Setting and ambience",
+    filterSlug: "type_of_seller",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "Family",
+        optSlug: "",
+      },
+      {
+        optName: "Romantice",
+        optSlug: "",
+      },
+    ],
+  },
+  {
+    filterTitle: "Cusinie type",
+    filterSlug: "type_of_seller",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "French",
+        optSlug: "french",
+      },
+      {
+        optName: "American",
+        optSlug: "american",
+      },
+      {
+        optName: "Asturalian",
+        optSlug: "ast",
+      },
+      {
+        optName: "Japanseian",
+        optSlug: "japan",
+      },
+    ],
+  },
+  {
+    filterTitle: "Michlen guide",
+    filterSlug: "beauty_center_type",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "1 Star",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "2 Star",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "3 Star",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "4 Star",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "5 Star",
+        optSlug: "hair_salon",
+      },
+    ],
+  },
+  {
+    filterTitle: "Price range",
+    filterSlug: "price_range",
+    filterType: "range",
+    maxRange: 15000,
+    minRange: 15,
+  },
+  {
+    filterTitle: "Rating",
+    filterSlug: "rating",
+    filterDisplay: "rate",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+  {
+    filterTitle: "Cancellation option",
+    filterSlug: "cancellation_option",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Free cancellation",
+        optSlug: "free_cancellation",
+      },
+      {
+        optName: "Paid cancellation",
+        optSlug: "paid_cancellation",
+      },
+    ],
+  },
+  {
+    filterTitle: "Sepcial offer",
+    filterSlug: "special_offer",
+    filterDisplay: "text",
+    filterType: "radio",
+    filterOptions: [],
+  },
+];
+
 export const getServiceSearchFiltersFetcher = async (
-  filter: FormatedSearchableFilter
+  serviceType: ServiceType
 ): Promise<SearchFilterType[]> => {
-  switch (filter[SERVICESTYPE_INDEXKEY] as ServicesType) {
-    case "health_center":
+  switch (serviceType as ServiceType) {
+    case ServiceType.HealthCenter:
       return HealthCenterFilters;
 
-    case "general":
-      return generalFilters;
-
-    case "vehicle":
+    case ServiceType.Vehicle:
       return VehicleFilters;
-    case "beauty_center":
+
+    case ServiceType.BeautyCenter:
       return BeautyCenterFilters;
-    default:
+
+    case ServiceType.Hotel:
       return filters;
+
+    case ServiceType.Restaurant:
+      return RestaurantFilters;
+
+    default:
+      return [];
   }
 };

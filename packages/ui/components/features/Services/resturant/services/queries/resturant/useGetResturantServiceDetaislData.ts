@@ -290,14 +290,16 @@ query getRestaurant($args:GetRestaurantInput!){
                   name: "Fried Calamari",
                   ingredients: ["Tomato", "Mozzarella", "Basil"],
                   price: 100,
-                  thumbnail: "/dish-1.png",
+                  thumbnail:
+                    "https://howtofeedaloon.com/wp-content/uploads/2015/04/calamari-IG.jpg",
                   id: "",
                 },
                 {
                   name: "Shrimp cocktail",
                   ingredients: ["Tomato", "Mozzarella", "Basil"],
                   price: 100,
-                  thumbnail: "/dish-2.png",
+                  thumbnail:
+                    "https://laurenfromscratch.com/wp-content/uploads/2022/05/cajun-shrimp-cocktail-featured-image.jpg",
                   id: "",
                 },
               ],
@@ -428,6 +430,14 @@ query getRestaurant($args:GetRestaurantInput!){
           presentations: [
             {
               src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_nuit_v2-scaled.jpg",
+              type: ServicePresentationType.Img,
+            },
+            {
+              src: "https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg",
+              type: ServicePresentationType.Img,
+            },
+            {
+              src: "https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg",
               type: ServicePresentationType.Img,
             },
             {

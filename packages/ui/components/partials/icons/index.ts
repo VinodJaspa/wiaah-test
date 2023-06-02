@@ -168,3 +168,6 @@ export * from "./MoneyHandIcon";
 export * from "./UploadIcon";
 export * from "./DollarIcon";
 export * from "./BoxIcon";
+export * from "./PhoneHandleIcon";
+export * from "./CardIntel";
+export * from "./VisaIcon";

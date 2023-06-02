@@ -1,5 +1,4 @@
 import {
-  FormatedSearchableFilter,
   getServiceSearchFiltersFetcher,
   SearchFilterType,
 } from "api";

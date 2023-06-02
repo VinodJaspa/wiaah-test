@@ -3,8 +3,7 @@ import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
-import { SellerLayout } from "ui";
-import { SavedView } from "@components";
+import { SavedView, SellerLayout } from "ui";
 import { ServerSideQueryClientProps } from "types";
 
 export const getServerSideProps: GetServerSideProps<

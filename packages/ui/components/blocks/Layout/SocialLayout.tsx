@@ -71,6 +71,7 @@ interface SocialAtomValue {
   };
   showAccountDeletionConfirmation: boolean;
   showAccountSuspendConfirmation: boolean;
+  searchMixShopAndService?: string;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -164,8 +165,7 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     reportContent: (id: string, type: SocialContentType) =>
       setControls("reportContent", { id, type }),
     cancelReportContent: () => setControls("reportContent", undefined),
-    viewServiceDetails: (serviceId: string) =>
-      setControls("serviceDetailsId", serviceId),
+    viewShop: (serviceId: string) => setControls("serviceDetailsId", serviceId),
     closeServiceDetails: () => setControls("serviceDetailsId", undefined),
     cancelBooking: () => setControls("serviceBooking", undefined),
     bookServices: (props: SocialAtomValue["serviceBooking"]) =>
@@ -211,6 +211,10 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("showAccountSuspendConfirmation", true),
     hideAccountSuspendConfirmation: () =>
       setControls("showAccountSuspendConfirmation", false),
+    searchMixedShopsServices: (searchQ: string) =>
+      setControls("searchMixShopAndService", searchQ),
+    cancelSearchMixedShopsServices: () =>
+      setControls("searchMixShopAndService", undefined),
     value,
   };
 }

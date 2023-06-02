@@ -7,6 +7,7 @@ export type SliderVariants = "vertical" | "horizontal";
 
 export interface SliderProps {
   itemsCount?: number;
+  className?: string;
   childsWrapperProps?: HtmlDivProps;
   leftArrowComponent?: React.ReactNode;
   rightArrowComponent?: React.ReactNode;
@@ -39,6 +40,7 @@ export const Slider: React.FC<SliderProps> = ({
   onSliderChange,
   draggingActive,
   keepLast,
+  className,
 }) => {
   const childrenCount = Array.isArray(children)
     ? children.filter((c) => !!c).length

@@ -2,7 +2,6 @@ import { Formik, Form } from "formik";
 import React from "react";
 import {
   RecommendedBeautyCenterSearchList,
-  ResturantFindTableFilterStepper,
   SearchFilter,
   ServicesSearchResultsFiltersSidebar,
   useGetServiceSearchFiltersQuery,

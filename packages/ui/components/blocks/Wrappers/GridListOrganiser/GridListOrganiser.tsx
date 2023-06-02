@@ -112,3 +112,92 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
     </>
   );
 };
+
+export const GridOrganiserPresets = {
+  socialPostsGrid: [
+    {
+      cols: 5,
+      points: [
+        {
+          c: 2,
+          r: 2,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 2,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+      ],
+    },
+    {
+      cols: 5,
+      points: [
+        { c: 1, r: 1 },
+        { c: 1, r: 1 },
+        { c: 1, r: 1 },
+        { c: 1, r: 1 },
+        { c: 1, r: 2 },
+        { c: 2, r: 1 },
+        { c: 1, r: 1 },
+        { c: 1, r: 1 },
+      ],
+    },
+
+    {
+      cols: 4,
+      points: [
+        {
+          c: 2,
+          r: 1,
+        },
+        {
+          c: 2,
+          r: 2,
+        },
+        {
+          c: 1,
+          r: 2,
+        },
+        {
+          c: 1,
+          r: 2,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 1,
+          r: 1,
+        },
+        {
+          c: 2,
+          r: 1,
+        },
+      ],
+    },
+  ],
+};

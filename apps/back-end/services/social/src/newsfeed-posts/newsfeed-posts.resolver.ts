@@ -8,7 +8,11 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { NewsfeedPostsService } from './newsfeed-posts.service';
-import { NewsfeedPost, Product } from '@entities';
+import {
+  NewsfeedPost,
+  NewsfeedPostsPaginationResponse,
+  Product,
+} from '@entities';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { UseGuards } from '@nestjs/common';
 import {
@@ -16,7 +20,7 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
-import { GetNewsfeedPostsByUserIdInput } from './dto';
+import { GetNewsfeedPostsByUserIdInput, GetPostsByHashtagInput } from './dto';
 import { TopHashtagNewsfeedPosts } from './entity';
 import { PrismaService } from 'prismaService';
 import { GetMyNewsfeedPostsInput } from './dto/get-my-newsfeed-posts.input';
@@ -30,6 +34,27 @@ export class NewsfeedPostsResolver {
     private readonly newsfeedPostsService: NewsfeedPostsService,
     private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => NewsfeedPostsPaginationResponse)
+  getTrendingHashtagPosts(@Args('args') args: GetPostsByHashtagInput) {
+    return this.prisma.newsfeedPost.findMany({
+      take: args.take,
+      cursor: {
+        id: args.cursor,
+      },
+      where: {
+        hashtags: {
+          some: {
+            tag: args.hashtag,
+          },
+        },
+      },
+
+      orderBy: {
+        popularity: 'desc',
+      },
+    });
+  }
 
   @Mutation(() => NewsfeedPost)
   createNewsfeedPost(
@@ -166,4 +191,9 @@ export class NewsfeedPostsResolver {
 
   @ResolveField(() => Boolean)
   isSaved() {}
+
+  @ResolveField(() => String)
+  thumbnail(@Parent() post: NewsfeedPost) {
+    return post.attachments[0];
+  }
 }

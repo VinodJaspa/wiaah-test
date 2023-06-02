@@ -9,6 +9,7 @@ export enum PublicErrorCodes {
   badMediaFormat = 7,
   resourceAlreadyExsits = 8,
   badRequestData = 9,
+  resourceNotFound = 10,
 }
 
 export enum PrivateErrorCodes {}
@@ -83,5 +84,11 @@ export class InternalServerPublicError extends KnownError {
 export class BadMediaFormatPublicError extends KnownError {
   constructor(msg: string = "Wrong media format") {
     super(msg, PublicErrorCodes.badMediaFormat);
+  }
+}
+
+export class NotOwnerOfResourcePublicError extends KnownError {
+  constructor(msg: string = "not owner of resource") {
+    super(msg, PublicErrorCodes.unAuthorized);
   }
 }

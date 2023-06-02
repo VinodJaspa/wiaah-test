@@ -27,7 +27,7 @@ export type GetFilteredServicesQuery = { __typename?: "Query" } & {
   >;
 };
 
-export const useGetFilteredServicesQuery = (
+export const useGetAdminAdminFilteredServicesQuery = (
   input: GetFilteredServicesAdminInput
 ) => {
   const client = createGraphqlRequestClient();

@@ -18,14 +18,14 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
   const { price, properties, presentations, showTotal = false, title } = props;
   const { visit } = useRouting();
   const { t } = useTranslation();
-  const thumbnail = presentations.find(({ type }) => type === "img")?.src;
+  const thumbnail = presentations?.find(({ type }) => type === "img")?.src;
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="w-full">
         <AspectRatio className="group" ratio={3 / 4}>
           <Image
             className="w-full h-full rounded object-cover"
-            src={presentations.at(0)?.src}
+            src={presentations?.at(0)?.src}
             alt={title}
           />
           <div

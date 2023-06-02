@@ -9,6 +9,7 @@ import {
   Button,
   LocationIcon,
   useMasterLocationMapModal,
+  ShoppingBagIcon,
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -126,8 +127,10 @@ export const Header: React.FC<HeaderProps> = () => {
               <li className="cursor-pointer">
                 <FaHeart className="h-8 w-8" />
               </li>
-              <li className="fill-white text-2xl">
-                <ShoppingCart />
+              <li className="fill-white text-white text-2xl">
+                <ShoppingCart>
+                  <ShoppingBagIcon />
+                </ShoppingCart>
               </li>
             </ul>
           </div>
@@ -188,7 +191,7 @@ export const MainHeaderSearchBar: React.FC<{
         placeholder={t("Search")}
       />
       <div className="flex">
-        <SelectDropdown
+        {/* <SelectDropdown
           className="appearance-none hidden sm:block w-full border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
           options={
             Array.isArray(categories)
@@ -198,7 +201,7 @@ export const MainHeaderSearchBar: React.FC<{
                 }))
               : []
           }
-        />
+        /> */}
         <Button className="rounded-none text-xl">
           <FaSearch className="h-5 w-5 text-white" />
         </Button>

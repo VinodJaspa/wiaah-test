@@ -2,7 +2,6 @@ import React from "react";
 import {
   ServicesProviderHeader,
   SpinnerFallback,
-  useSearchFilters,
   Divider,
   ServiceOnMapLocalizationSection,
   ServiceReachOutSection,
@@ -33,18 +32,22 @@ export const RestaurantDetailsView: React.FC<{ id: string }> = ({ id }) => {
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={4}
+            reviewsCount={156}
+            serviceTitle="Restaurant name"
+          />
+        ) : null}
       </SpinnerFallback>
       <Divider />
-      <ServicePresentationCarosuel
-        data={res ? res.data.getRestaurant.presentations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
             <ServicesProviderDescriptionSection
-              description={res.data.getRestaurant.serviceMetaInfo.description}
+              description={res.serviceMetaInfo.description}
             />
           ) : null}
         </SpinnerFallback>
@@ -53,47 +56,86 @@ export const RestaurantDetailsView: React.FC<{ id: string }> = ({ id }) => {
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ServiceReachOutSection
-                email={res.data.getRestaurant.contact.email}
-                location={res.data.getRestaurant.location}
-                telephone={res.data.getRestaurant.contact.phone}
+                email={res.contact.email}
+                location={res.location}
+                telephone={res.contact.phone}
               />
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ResturantMenuListSection
-                cancelation={res.data.getRestaurant.cancelationPolicies || []}
-                menus={res.data.getRestaurant.menus}
+                cancelation={res.cancelationPolicies || []}
+                menus={res.menus}
               />
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ServiceWorkingHoursSection
-                workingHours={res.data.getRestaurant.workingHours}
+                workingHours={{
+                  id: "",
+                  weekdays: {
+                    fr: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    mo: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    sa: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    su: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    th: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    tu: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                    we: {
+                      periods: [
+                        new Date().toUTCString(),
+                        new Date().toUTCString(),
+                      ],
+                    },
+                  },
+                }}
               />
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
-              <ServicePoliciesSection
-                policies={res.data.getRestaurant.policies}
-                title=""
-              />
+              <ServicePoliciesSection policies={res.policies} title="" />
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
-              <ServiceOnMapLocalizationSection
-                location={res.data.getRestaurant.location}
-              />
+              <ServiceOnMapLocalizationSection location={res.location} />
             ) : null}
           </SpinnerFallback>
         </Accordion>
         <SpinnerFallback isLoading={isLoading} isError={isError}>
-          {res ? (
-            <Reviews id={res?.data.getRestaurant.id || ""} reviews={reviews} />
-          ) : null}
+          {res ? <Reviews id={res?.id || ""} reviews={reviews} /> : null}
         </SpinnerFallback>
       </StaticSideBarWrapper>
     </div>

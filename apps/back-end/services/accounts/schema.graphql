@@ -29,6 +29,8 @@ type Account {
   phone: String
   ips: [String!]!
   lastActiveAt: String!
+  lang: String!
+  currency: String!
   shop: Shop!
 }
 
@@ -370,6 +372,9 @@ input UpdateAccountInput {
   gender: AccountGenderEnum
   phone: String
   id: ID!
+  lang: String
+  currency: String
+  country: String
 }
 
 input CreateIdentityVerificationInput {

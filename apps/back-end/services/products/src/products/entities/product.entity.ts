@@ -76,6 +76,7 @@ export class ProductAttribute {
 
 @ObjectType()
 @Directive('@key(fields: "id")')
+@Directive('@key(fields: "sellerId")')
 export class Product {
   @Field((type) => ID)
   id: string;

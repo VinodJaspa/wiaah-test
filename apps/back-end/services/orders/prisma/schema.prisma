@@ -37,6 +37,7 @@ model RefundRequest {
   fullAmount    Boolean
   qty           Int
   status        RefundStatusType @default(pending)
+  adminStatus   RefundStatusType @default(pending)
   rejectReason  String?
   opened        Boolean
   createdAt     DateTime         @default(now())

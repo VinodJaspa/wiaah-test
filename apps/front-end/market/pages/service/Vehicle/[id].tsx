@@ -31,14 +31,12 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "vehicle";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  })) as AsyncReturnType<typeof getVehicleServiceProviderDetailsFetcher>;
+  const data = {};
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data
-  );
+  // queryClient.prefetchQuery(
+  //   GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
+  //   () => data
+  // );
 
   return {
     props: {
@@ -53,7 +51,7 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
 }) => {
   return (
     <>
-      {data && data ? (
+      {/* {data && data ? (
         <>
           <MetaTitle
             content={`Wiaah | Service Details by ${data.serviceMetaInfo.title}`}
@@ -67,7 +65,7 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
           <MetaAuthor author={data.owner.name} />
           <RequiredSocialMediaTags />
         </>
-      ) : null}
+      ) : null} */}
       <MasterLayout>
         <Container>
           <VehicleServiceDetailsView />

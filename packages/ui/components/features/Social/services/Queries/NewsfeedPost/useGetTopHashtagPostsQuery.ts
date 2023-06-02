@@ -11,7 +11,7 @@ export type GetTopHashtagNewsfeedPostsQuery = { __typename?: "Query" } & {
   getTopHashtagNewsfeed: { __typename?: "TopHashtagNewsfeedPosts" } & {
     commented: { __typename?: "NewsfeedPost" } & Pick<
       NewsfeedPost,
-      "id" | "content"
+      "id" | "content" | "thumbnail"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -19,7 +19,7 @@ export type GetTopHashtagNewsfeedPostsQuery = { __typename?: "Query" } & {
       };
     liked: { __typename?: "NewsfeedPost" } & Pick<
       NewsfeedPost,
-      "id" | "content"
+      "id" | "content" | "thumbnail"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -27,7 +27,7 @@ export type GetTopHashtagNewsfeedPostsQuery = { __typename?: "Query" } & {
       };
     shared: { __typename?: "NewsfeedPost" } & Pick<
       NewsfeedPost,
-      "id" | "content"
+      "id" | "content" | "thumbnail"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -35,7 +35,7 @@ export type GetTopHashtagNewsfeedPostsQuery = { __typename?: "Query" } & {
       };
     viewed: { __typename?: "NewsfeedPost" } & Pick<
       NewsfeedPost,
-      "id" | "content"
+      "id" | "content" | "thumbnail"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -57,6 +57,7 @@ export const useGetTopHashtagPostsQuery = () => {
                 type
             }
             content
+            thumbnail
         }
         liked{
             id
@@ -65,6 +66,7 @@ export const useGetTopHashtagPostsQuery = () => {
                 type
             }
             content
+            thumbnail
         }
         shared{
             id
@@ -73,6 +75,7 @@ export const useGetTopHashtagPostsQuery = () => {
                 type
             }
             content
+            thumbnail
         }
         viewed{
             id
@@ -81,6 +84,7 @@ export const useGetTopHashtagPostsQuery = () => {
                 type
             }
             content
+            thumbnail
         }
     }
 }  

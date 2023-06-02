@@ -42,7 +42,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchHorizontalList: null,
   },
   {
-    slug: "restaurant",
+    slug: "resturant",
     search: ResturantSearchView,
     searchResaults: ResturantSearchResultsView,
     searchList: ResturantSearchList,
