@@ -7,36 +7,33 @@ import { ChatView } from "../../components";
 
 interface MessagesPageProps {}
 
-export const getServerSideProps: GetServerSideProps<MessagesPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  MessagesPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    // get messages page data with
-    // queryClient.prefetchQuery
+  // get messages page data with
+  // queryClient.prefetchQuery
 
-    return {
-      props: {
-        dehydratedProps: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedProps: dehydrate(queryClient),
+    },
   };
+};
 
-const messages: React.FC<MessagesPageProps> = () => {
+const Messages: React.FC<MessagesPageProps> = () => {
   const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>Wiaah | Messages</title>
       </Head>
-      <SellerLayout
-        header={isMobile ? null : "main"}
-        sideBar={false}
-        containerProps={{ h: "100%" }}
-      >
+      <SellerLayout header={isMobile ? null : "main"} sideBar={false}>
         <ChatView />
       </SellerLayout>
     </>
   );
 };
 
-export default messages;
+export default Messages;

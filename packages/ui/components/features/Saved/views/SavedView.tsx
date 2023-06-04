@@ -20,6 +20,14 @@ export const SavedView: React.FC = () => {
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
   }
+  const SavedSections: SettingsSectionType[] = [
+    {
+      panelName: "Posts",
+      panelIcon: ImageIcon,
+      panelUrl: "/posts",
+      panelComponent: <SavedPostsSection />,
+    },
+  ];
   return (
     <SectionsLayout
       name={{
@@ -35,12 +43,3 @@ export const SavedView: React.FC = () => {
     />
   );
 };
-
-const SavedSections: SettingsSectionType[] = [
-  {
-    panelName: "Posts",
-    panelIcon: ImageIcon,
-    panelUrl: "/posts",
-    panelComponent: <SavedPostsSection />,
-  },
-];

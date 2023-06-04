@@ -9,7 +9,14 @@ export type GetMyAccountQueryVariables = Exact<{ [key: string]: never }>;
 export type GetMyAccountQuery = { __typename?: "Query" } & {
   getMyAccount: { __typename?: "Account" } & Pick<
     Account,
-    "email" | "firstName" | "lastName" | "id" | "photo" | "lang" | "currency"
+    | "email"
+    | "firstName"
+    | "lastName"
+    | "id"
+    | "photo"
+    | "lang"
+    | "currency"
+    | "createdAt"
   >;
 };
 
@@ -24,6 +31,7 @@ export const getMyAccountQueryFetcher = async () => {
       firstName: "first",
       lastName: "last",
       lang: "en",
+      createdAt: new Date().toDateString(),
       photo: getRandomImage(),
     };
 
@@ -44,6 +52,7 @@ query getMyAccount{
     photo
     lang
     currency
+    createdAt
   }
 }
   `

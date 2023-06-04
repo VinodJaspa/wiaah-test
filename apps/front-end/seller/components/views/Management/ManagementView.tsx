@@ -39,8 +39,8 @@ export const ManagementView: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="flex gap-8 h-full items-center">
-      {links.map((v) => (
-        <div className="flex w-full">
+      {links.map((v, i) => (
+        <div key={i} className="flex w-full">
           <AspectRatio ratio={1}>
             <div
               onClick={() => visit((r) => r.addPath(v.url))}

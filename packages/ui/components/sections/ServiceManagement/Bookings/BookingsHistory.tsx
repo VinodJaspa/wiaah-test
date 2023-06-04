@@ -49,14 +49,22 @@ import {
   MoneyHandIcon,
   ServicePendingAppointmentCard,
   ServiceBookingCardVariant,
+  SelectOption,
+  useGetMyAccountQuery,
 } from "@UI";
 import { useCancelAppointmentMutation, useResponsive } from "@src/Hooks";
 import { bookingsHistoryCtx } from ".";
 import { BookedServiceStatus, CashbackType, ServiceType } from "@features/API";
-import { mapArray, useForm } from "@UI/../utils/src";
+import {
+  getAllMonthsOfYear,
+  isDate,
+  mapArray,
+  useForm,
+} from "@UI/../utils/src";
 import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
 import { startCase } from "lodash";
 import { useRouting } from "@UI/../routing";
+import { useDateManipulation } from "@UI/../hooks";
 
 const BookingHistoryAtom = atom<{
   paybackId?: {
@@ -80,6 +88,8 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
   const { t } = useTranslation();
   const { back } = useRouting();
+  const [date, setDate] = React.useState<Date>(new Date());
+  const months = getAllMonthsOfYear(date.getFullYear());
 
   const { pagination, controls } = usePaginationControls();
 
@@ -98,6 +108,11 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   );
 
   const { refetch } = useGetMyBookingsHistoryQuery(form);
+  const { data: account } = useGetMyAccountQuery();
+
+  const yearsDiff = isDate(account?.createdAt)
+    ? new Date(account?.createdAt).getFullYear() - new Date().getFullYear()
+    : 0;
 
   React.useEffect(() => {
     refetch();
@@ -149,20 +164,40 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
     })
   );
 
+  const startSearchYear = new Date().getFullYear() - yearsDiff;
+  const yearsToAdd = new Date().getFullYear() - yearsDiff;
+
   return isMobile ? (
     shopping ? (
       <div className="flex flex-col gap-6 w-full">
-        <HStack className="justify-center relative">
-          <button
-            className="absolute top-1/2 -translate-y-1/2 left-1"
-            onClick={() => back()}
-          >
-            <ArrowLeftAlt1Icon />
-          </button>
-          <p className="text-lg font-semibold">{t("Bookings")}</p>
-          <p className="absolute top-1/2 -translate-y-1/2 right-1 font-medium text-secondaryRed">{`(${
-            data.length
-          }) ${t("Bookings")}`}</p>
+        <SectionHeader sectionTitle={t("Bookings")} />
+        <HStack className="justify-between">
+          <HStack>
+            <p>{t("Month")}:</p>{" "}
+            <Select>
+              {mapArray(months, (month, i) => (
+                <SelectOption key={i} value={month.month.idx}>
+                  {month.month.name}
+                </SelectOption>
+              ))}
+            </Select>
+          </HStack>
+
+          <HStack>
+            <p>{t("Year")}:</p>{" "}
+            <Select>
+              {mapArray(
+                [...Array(yearsToAdd)].map(
+                  (_, i) => new Date(startSearchYear + i)
+                ),
+                (date, i) => (
+                  <SelectOption key={i} value={date}>
+                    {new Date(date).getFullYear()}
+                  </SelectOption>
+                )
+              )}
+            </Select>
+          </HStack>
         </HStack>
 
         {mapArray(data, (book, i) => (
