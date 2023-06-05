@@ -6,3 +6,4 @@ export * from "./useAdminGetFilteredOrders";
 export * from "./useAdminGetReturnedOrders";
 export * from "./useAdminGetReturnedOrder";
 export * from "./useGetAdminFilteredRefundRequests";
+export * from "./useGetRefundRequestQuery";
