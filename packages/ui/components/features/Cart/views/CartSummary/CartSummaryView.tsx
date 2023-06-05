@@ -8,6 +8,7 @@ import {
   Button,
   Checkbox,
   Divider,
+  Draggable,
   FlexStack,
   HStack,
   Image,
@@ -23,7 +24,7 @@ import { CartSummaryTotalPriceState } from "@src/state";
 import { CartSummaryFilled } from "./CartSummaryFilled";
 import { EmptyCartSummary } from "./EmptyCartSummary";
 import { mapArray } from "@UI/../utils/src";
-import { CartProduct } from "@features/API";
+import { CartProduct, ShoppingCartItemType } from "@features/API";
 
 export interface CartSummaryViewProps {}
 
@@ -47,18 +48,11 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-4">
         {mapArray(cartItems, (item) => (
-          <HStack>
-            <Checkbox />
-            <div className="flex gap-1">
-              <Image
-                src={item.product?.thumbnail}
-                className="h-full object-cover w-24"
-              ></Image>
-              <div className="flex flex-col gap-2">
-                <p className="text-lg font-medium">{item.product?.title}</p>
-              </div>
-            </div>
-          </HStack>
+          // TODO: bind props
+          <ShoppingCartMobileItem
+            thumbnail={item.product?.thumbnail || ""}
+            title={item.product?.title || ""}
+          />
         ))}
       </div>
     </div>
@@ -128,6 +122,40 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
         </div>
       </FlexStack>
     </FlexStack>
+  );
+};
+
+const ShoppingCartMobileItem: React.FC<{
+  thumbnail: string;
+  title: string;
+  checkin: Date;
+  checkout?: Date;
+  duration?: number;
+  guests?: number;
+  type: ShoppingCartItemType;
+}> = ({
+  checkin,
+  thumbnail,
+  title,
+  checkout,
+  children,
+  duration,
+  guests,
+  type,
+}) => {
+  const [] = React.useState<boolean>();
+  return (
+    <Draggable onChange={({ x, y }) => {}} direction="horizontal">
+      <HStack>
+        <Checkbox />
+        <div className="flex gap-1">
+          <Image src={thumbnail} className="h-full object-cover w-24"></Image>
+          <div className="flex flex-col gap-2">
+            <p className="text-lg font-medium">{title}</p>
+          </div>
+        </div>
+      </HStack>
+    </Draggable>
   );
 };
 

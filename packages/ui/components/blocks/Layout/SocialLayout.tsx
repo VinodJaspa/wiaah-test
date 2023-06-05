@@ -76,6 +76,7 @@ interface SocialAtomValue {
   searchMixShopAndService?: string;
   requestRefundId?: string;
   showNewsletterRegisteration: boolean;
+  showContactUs: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -101,6 +102,7 @@ const socialAtom = atom<SocialAtomValue>({
     showAccountSuspendConfirmation: false,
     requestRefundId: "",
     showNewsletterRegisteration: false,
+    showContactUs: false,
   },
 });
 
@@ -227,6 +229,8 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("showNewsletterRegisteration", true),
     hideNewsletterRegisteration: () =>
       setControls("showNewsletterRegisteration", false),
+    showContactUs: () => setControls("showContactUs", true),
+    hideContactUs: () => setControls("showContactUs", false),
     value,
   };
 }

@@ -25,7 +25,7 @@ export const PostAttachmentInput: React.FC<{
       <div className="absolute border top-0 left-0 border-red-500 w-full h-full">
         <div className="w-full h-full relative">
           {mapArray(Object.entries(value), ([key, data], idx) => (
-            <Draggable
+            <PostAttachmentDraggable
               data-testid="drag"
               key={idx}
               getPos={({ parentH, parentW }) => ({
@@ -50,7 +50,7 @@ export const PostAttachmentInput: React.FC<{
                 value={data.value}
                 onClick={() => {}}
               ></PostAttachmentTag>
-            </Draggable>
+            </PostAttachmentDraggable>
           ))}
         </div>
       </div>
@@ -95,7 +95,11 @@ interface DraggableProps {
   }) => any;
 }
 
-const Draggable: React.FC<DraggableProps> = ({ children, getPos, setPos }) => {
+const PostAttachmentDraggable: React.FC<DraggableProps> = ({
+  children,
+  getPos,
+  setPos,
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -168,6 +172,7 @@ const Draggable: React.FC<DraggableProps> = ({ children, getPos, setPos }) => {
     parentY:
       wrapperRef.current?.parentElement?.getBoundingClientRect().top || 0,
   });
+  React.useEffect(() => {}, [wrapperRef.current]);
 
   return (
     <div
@@ -184,4 +189,4 @@ const Draggable: React.FC<DraggableProps> = ({ children, getPos, setPos }) => {
   );
 };
 
-export default Draggable;
+export default PostAttachmentDraggable;
