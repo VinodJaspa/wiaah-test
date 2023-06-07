@@ -13,6 +13,7 @@ import {
   HStack,
   Image,
   Padding,
+  PriceDisplay,
   Spacer,
   Text,
   useCartSummary,
@@ -24,7 +25,7 @@ import { CartSummaryTotalPriceState } from "@src/state";
 import { CartSummaryFilled } from "./CartSummaryFilled";
 import { EmptyCartSummary } from "./EmptyCartSummary";
 import { mapArray } from "@UI/../utils/src";
-import { CartProduct, ShoppingCartItemType } from "@features/API";
+import { CartItem, ServiceType, ShoppingCartItemType } from "@features/API";
 
 export interface CartSummaryViewProps {}
 
@@ -38,7 +39,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
   const deliveryFee = 0;
   const { isMobile } = useResponsive();
 
-  const cartItems = [] as CartProduct[];
+  const cartItems = [] as CartItem[];
 
   function handleCheckout() {
     router.push("/checkout");
@@ -52,6 +53,12 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
           <ShoppingCartMobileItem
             thumbnail={item.product?.thumbnail || ""}
             title={item.product?.title || ""}
+            checkin={new Date(item.checkin!)}
+            serviceType={item.service?.type}
+            type={item.itemType}
+            checkout={new Date(item.checkout!)}
+            duration={item.service?.duration || 0}
+            guests={item.guests || 0}
           />
         ))}
       </div>
@@ -109,7 +116,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
                   <Text size="xl">
                     <FlexStack justify="between">
                       <BoldText>{t("Total (VAT included)")}</BoldText>
-                      <BoldText>${totalPrice}</BoldText>
+                      <PriceDisplay />
                     </FlexStack>
                   </Text>
                   <Button onClick={handleCheckout}>
@@ -128,11 +135,12 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
 const ShoppingCartMobileItem: React.FC<{
   thumbnail: string;
   title: string;
-  checkin: Date;
+  checkin?: Date;
   checkout?: Date;
   duration?: number;
   guests?: number;
   type: ShoppingCartItemType;
+  serviceType?: ServiceType;
 }> = ({
   checkin,
   thumbnail,

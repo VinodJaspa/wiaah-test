@@ -5,7 +5,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
-import { ShoppingCart, CartProduct } from '@entities';
+import { ShoppingCart, CartItem } from '@entities';
 import {
   AuthorizationDecodedUser,
   DBErrorException,
@@ -27,6 +27,7 @@ import {
   ApplyVoucherInput,
   RemoveShoppingCartItemInput,
 } from '@dto';
+import { ShoppingCartItemType } from '@prisma-client';
 
 @Injectable()
 export class ShoppingCartService {
@@ -80,7 +81,7 @@ export class ShoppingCartService {
   async addProduct(
     user: AuthorizationDecodedUser,
     product: AddShoppingCartItemInput,
-  ): Promise<CartProduct> {
+  ): Promise<CartItem> {
     const {
       results: { data, error, success },
     } = await KafkaMessageHandler<
@@ -98,11 +99,12 @@ export class ShoppingCartService {
     );
     if (!success) throw error;
 
-    const res = await this.prisma.cartProduct.create({
+    const res = await this.prisma.cartItem.create({
       data: {
         ownerId: user.id,
-        attributesJson: product.attributesJson,
-        productId: product.itemId,
+        attributes: product.attributes,
+        itemId: product.itemId,
+        itemType: ShoppingCartItemType.product,
         shippingRuleId: product.shippingRuleId,
       },
     });
@@ -110,11 +112,11 @@ export class ShoppingCartService {
     return res;
   }
 
-  async removeShoppingCartProduct(
+  async removeShoppingCartItem(
     user: AuthorizationDecodedUser,
     input: RemoveShoppingCartItemInput,
   ) {
-    const res = await this.prisma.cartProduct.delete({
+    const res = await this.prisma.cartItem.delete({
       where: {
         id: input.itemId,
       },
@@ -125,7 +127,7 @@ export class ShoppingCartService {
 
   async clearShoppingCart(ownerId: string): Promise<boolean> {
     await this.prisma.$transaction([
-      this.prisma.cartProduct.deleteMany({
+      this.prisma.cartItem.deleteMany({
         where: {
           ownerId,
         },

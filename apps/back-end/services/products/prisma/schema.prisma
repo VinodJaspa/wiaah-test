@@ -45,8 +45,25 @@ enum ProdcutType {
 }
 
 type ProductAttribute {
-  name   String
-  values String[]
+  name          TranslationText[]
+  values        ProductAttributeValue[]
+  selectionType ProductAttributeSelectionType
+  displayType   ProductAttributeDisplayType
+}
+
+type ProductAttributeValue {
+  value String
+  price Float?
+}
+
+enum ProductAttributeSelectionType {
+  single
+  multiple
+}
+
+enum ProductAttributeDisplayType {
+  text
+  color
 }
 
 enum ProductUsageStatus {

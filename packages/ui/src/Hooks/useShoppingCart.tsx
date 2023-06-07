@@ -3,7 +3,12 @@ import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { getMyShoppingCartQueryKey } from "@UI";
 import { ShoppingCartToggleState } from "@UI";
-import { ShoppingCartItemType } from "@features/API";
+import {
+  AddShoppingCartItemInput,
+  Exact,
+  ShoppingCartItemType,
+} from "@features/API";
+import { createGraphqlRequestClient } from "@UI/../api";
 
 export const useShoppingCart = () => {
   const [ShoppingCartOpen, setShoppingCartOpen] = useRecoilState(
@@ -25,29 +30,42 @@ export const useShoppingCart = () => {
   };
 };
 
-type ShoppingCartItemInput = {
-  itemType: ShoppingCartItemType;
-  itemId: string;
-  qty: number;
+export type AddShoppingCartItemMutationVariables = Exact<{
+  args: AddShoppingCartItemInput;
+}>;
+
+export type AddShoppingCartItemMutation = {
+  __typename?: "Mutation";
+  addProductToCart: { __typename?: "CartItem"; id: string };
 };
+
+type args = AddShoppingCartItemMutationVariables["args"];
 
 export const useMutateShoppingCart = () => {
   const queryclient = useQueryClient();
   const { mutate } = useMutation(
-    async (item: ShoppingCartItemInput) => {
-      return item;
+    async (args: args) => {
+      const client = createGraphqlRequestClient();
+      const res = await client
+        .setQuery(
+          `
+mutation addShoppingCartItem($args: AddShoppingCartItemInput!) {
+  addProductToCart(addItemToCartArgs: $args) {
+    id
+  }
+}
+      `
+        )
+        .setVariables<AddShoppingCartItemMutationVariables>({ args })
+        .send<AddShoppingCartItemMutation>();
+
+      return res.data.addProductToCart;
     },
     {
       onSuccess: (data, vars) => {
-        queryclient.setQueryData(
-          getMyShoppingCartQueryKey(),
-          (old?: ShoppingCartItemInput[]) => {
-            if (old) {
-              return [...old, data];
-            }
-            return [data];
-          }
-        );
+        queryclient.invalidateQueries({
+          queryKey: getMyShoppingCartQueryKey(),
+        });
       },
     }
   );
@@ -61,7 +79,7 @@ export const useMutateShoppingCart = () => {
     setShoppingCartOpen(false);
   }
 
-  function addShoppingCartItem(item: ShoppingCartItemInput) {
+  function addShoppingCartItem(item: args) {
     mutate(item);
   }
 

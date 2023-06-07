@@ -78,7 +78,24 @@ type Discount {
 
 type ProductAttribute {
   name: String!
-  values: [String!]!
+  values: [ProductAttributeValue!]!
+  selectionType: ProductAttributeSelectionType!
+  displayType: ProductAttributeDisplayType!
+}
+
+enum ProductAttributeSelectionType {
+  single
+  multiple
+}
+
+enum ProductAttributeDisplayType {
+  text
+  color
+}
+
+type ProductAttributeValue {
+  value: String!
+  price: Float!
 }
 
 type Product {
@@ -165,18 +182,6 @@ type ProductsCursorPaginationResponse {
   cursor: String!
   nextCursor: String!
   hasMore: Boolean!
-}
-
-type ProductFilterGroupValue {
-  name: String!
-  sortOrder: Int!
-}
-
-type Filter {
-  id: ID!
-  name: String!
-  values: [ProductFilterGroupValue!]!
-  sortOrder: Int!
 }
 
 type TranslationText {
@@ -326,6 +331,18 @@ type ShopWorkingSchedule {
 type Service {
   sellerId: ID!
   shop: Shop!
+}
+
+type ProductFilterGroupValue {
+  name: String!
+  sortOrder: Int!
+}
+
+type Filter {
+  id: ID!
+  name: String!
+  values: [ProductFilterGroupValue!]!
+  sortOrder: Int!
 }
 
 type ShippingCountry {
@@ -625,8 +642,15 @@ input StringTranslationField {
 }
 
 input ProductAttributeInput {
-  name: String!
-  values: [String!]!
+  name: [TranslationTextInput!]!
+  values: [ProductAttributeValueInput!]!
+  selectionType: ProductAttributeSelectionType!
+  displayType: ProductAttributeDisplayType!
+}
+
+input ProductAttributeValueInput {
+  value: String!
+  price: Float!
 }
 
 input DiscountInput {

@@ -1,5 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ShoppingCart, CartProduct } from '@entities';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
+import { ShoppingCart, CartItem } from '@entities';
 import {
   Inject,
   OnModuleDestroy,
@@ -11,7 +19,9 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
+  NoReadPremissionPublicError,
   SERVICES,
+  accountType,
 } from 'nest-utils';
 import {
   AddShoppingCartItemInput,
@@ -21,6 +31,9 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 
 import { ShoppingCartService } from './shopping-cart.service';
+import { PrismaService } from 'prismaService';
+import { Service } from 'src/entities/extends';
+import { ShoppingCartItemType } from '@prisma-client';
 
 type Hooks = OnModuleInit & OnModuleDestroy;
 
@@ -31,42 +44,63 @@ export class ShoppingCartResolver implements Hooks {
     private readonly shoppingCartService: ShoppingCartService,
     @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly prisma: PrismaService,
   ) {}
 
-  @Query((type) => ShoppingCart)
+  @Query(() => ShoppingCart)
   MyShoppingCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ShoppingCart> {
     return this.shoppingCartService.getShoppingCartByOwnerId(user.id);
   }
 
-  @Mutation((type) => ShoppingCart)
+  @Query(() => [CartItem])
+  async getUserShoppingCartItems(
+    @Args('userId') userId: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<CartItem[]> {
+    await this.validateReadPremission(user, userId);
+    const res = await this.prisma.cartItem.findMany({
+      where: {
+        ownerId: userId,
+      },
+    });
+
+    return res;
+  }
+
+  @Mutation(() => ShoppingCart)
   clearShoppingCart(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.shoppingCartService.clearShoppingCart(user.id);
   }
 
-  @Mutation((type) => CartProduct)
+  @Mutation(() => CartItem)
   addProductToCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('addItemToCartArgs') input: AddShoppingCartItemInput,
-  ): Promise<CartProduct> {
+  ): Promise<CartItem> {
     return this.shoppingCartService.addProduct(user, input);
   }
 
-  @Mutation((type) => Boolean)
+  @Mutation(() => Boolean)
   removeProductFromCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('removeItemFromCartArgs') input: RemoveShoppingCartItemInput,
   ): Promise<boolean> {
-    return this.shoppingCartService.removeShoppingCartProduct(user, input);
+    return this.shoppingCartService.removeShoppingCartItem(user, input);
   }
 
-  @Mutation((type) => ShoppingCart)
+  @Mutation(() => ShoppingCart)
   applyVoucher(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('args') input: ApplyVoucherInput,
   ): Promise<ShoppingCart> {
     return this.shoppingCartService.applyVoucher(user.id, input);
+  }
+
+  validateReadPremission(user: AuthorizationDecodedUser, ownerId: string) {
+    if (user.accountType !== accountType.ADMIN && user.id !== ownerId)
+      throw new NoReadPremissionPublicError();
   }
 
   async onModuleInit() {
