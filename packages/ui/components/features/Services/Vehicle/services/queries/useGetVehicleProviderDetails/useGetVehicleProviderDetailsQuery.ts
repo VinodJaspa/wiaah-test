@@ -17,10 +17,7 @@ import {
 } from "@features/API";
 import { useQuery } from "react-query";
 import { Account } from "@features/API";
-import {
-  createGraphqlRequestClient,
-  FormatedSearchableFilter,
-} from "@UI/../api";
+import { createGraphqlRequestClient, FormatedSearchableFilter } from "api";
 import { random } from "lodash";
 
 export type GetVehicleQueryVariables = Exact<{

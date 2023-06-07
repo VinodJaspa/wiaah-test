@@ -32,7 +32,7 @@ import {
 } from "@features/API";
 import { useQuery } from "react-query";
 import { random } from "lodash";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 
 export type GetServiceDetailsQueryVariables = Exact<{
   id: Scalars["String"];
@@ -506,7 +506,7 @@ query GetServiceDetails($id:String!){
               duration: 60,
             },
           ],
-          presentations:[],
+          presentations: [],
           reviews: 15,
           rating: 4.5,
           createdAt: "2023-03-05T00:00:00Z",

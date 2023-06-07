@@ -3,7 +3,7 @@ import {
   UpdateWorkingScheduleInput,
   WorkingSchedule,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useMutation, useQuery } from "react-query";
 
 export type UpdateWorkingScheduleMutationVariables = Exact<{

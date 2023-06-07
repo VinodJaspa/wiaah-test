@@ -8,7 +8,7 @@ import {
   ServiceContact,
   ServiceLocation,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetAppointmentDetailsQueryVariables = Exact<{

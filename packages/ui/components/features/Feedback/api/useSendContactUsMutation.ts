@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export const useSendContactUsMutation = () =>

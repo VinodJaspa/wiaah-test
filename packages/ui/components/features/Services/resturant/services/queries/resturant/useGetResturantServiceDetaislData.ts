@@ -20,7 +20,7 @@ import {
   ServicePresentation,
   WorkingSchedule,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { isDev } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 

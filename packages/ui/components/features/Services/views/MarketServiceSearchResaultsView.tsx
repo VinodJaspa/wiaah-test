@@ -33,7 +33,7 @@ import {
   VehicleSearchCardProps,
   VehicleSearchList,
 } from "../Vehicle";
-import { VehicleSearchData } from "@UI/../api";
+import { VehicleSearchData } from "api";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;

@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact, NewsletterSettings, Scalars } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 

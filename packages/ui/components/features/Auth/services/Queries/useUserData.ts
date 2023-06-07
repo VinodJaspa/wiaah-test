@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { getRandomName, isDev } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
 import { Exact, Profile } from "@features/API";

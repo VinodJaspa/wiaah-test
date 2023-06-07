@@ -8,7 +8,7 @@ import {
   Exact,
   ShoppingCartItemType,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 
 export const useShoppingCart = () => {
   const [ShoppingCartOpen, setShoppingCartOpen] = useRecoilState(

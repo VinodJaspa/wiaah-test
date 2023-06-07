@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { isDev } from "@UI/../utils/src";
 import { ContentHostType, Exact, Query, Scalars } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";

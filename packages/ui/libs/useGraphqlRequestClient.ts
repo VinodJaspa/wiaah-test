@@ -1,4 +1,4 @@
-import { GraphqlRequestClient, createGraphqlRequestClient } from "@UI/../api";
+import { GraphqlRequestClient, createGraphqlRequestClient } from "api";
 import { atom, useRecoilState } from "recoil";
 
 export const graphqlRequestCtx = atom<GraphqlRequestClient>({

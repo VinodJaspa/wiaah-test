@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import {
   GetFilteredServicesAdminInput,

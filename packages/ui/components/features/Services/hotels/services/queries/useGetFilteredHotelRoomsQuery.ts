@@ -2,7 +2,7 @@ import {
   HotelRoom,
   SearchHotelRoomLocationInput,
 } from "@features/Services/Services";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { GqlResponse } from "@UI/../types/src";
 import { isDev } from "@UI/../utils/src";
 import { useQuery } from "react-query";
