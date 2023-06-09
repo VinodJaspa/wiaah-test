@@ -8,6 +8,8 @@ import {
   Maybe,
   PresentationType,
   Product,
+  ProductAttributeDisplayType,
+  ProductAttributeSelectionType,
   ProductPresentation,
   ProductSize,
   Profile,
@@ -16,31 +18,46 @@ import {
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetProductDetailsQueryVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["input"];
 }>;
 
-export type GetProductDetailsQuery = { __typename?: "Query" } & {
-  getProduct: { __typename?: "Product" } & Pick<
-    Product,
-    "id" | "colors" | "sizes" | "price" | "title"
-  > & {
-      seller: { __typename?: "Account" } & Pick<Account, "id"> & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<
-              Profile,
-              "username" | "verified" | "photo"
-            >
-          >;
-        };
-      presentations: Array<
-        { __typename?: "ProductPresentation" } & Pick<
-          ProductPresentation,
-          "src" | "type"
-        >
-      >;
+export type GetProductDetailsQuery = {
+  __typename?: "Query";
+  getProduct: {
+    __typename?: "Product";
+    id: string;
+    colors: Array<string>;
+    sizes: Array<ProductSize>;
+    price: number;
+    title: string;
+    seller: {
+      __typename?: "Account";
+      id: string;
+      profile?: {
+        __typename?: "Profile";
+        username: string;
+        verified: boolean;
+        photo: string;
+      } | null;
     };
+    presentations: Array<{
+      __typename?: "ProductPresentation";
+      src: string;
+      type: PresentationType;
+    }>;
+    attributes: Array<{
+      __typename?: "ProductAttribute";
+      displayType: ProductAttributeDisplayType;
+      name: string;
+      selectionType: ProductAttributeSelectionType;
+      values: Array<{
+        __typename?: "ProductAttributeValue";
+        price: number;
+        value: string;
+      }>;
+    }>;
+  };
 };
-
 type args = GetProductDetailsQueryVariables;
 export const getProductQueryDetailsKey = (args: args) => [
   "product-details",
@@ -62,6 +79,23 @@ export const getProductqueryDetailsQueryFetcher = async (args: args) => {
           verified: true,
         },
       },
+      attributes: [
+        {
+          name: "Color",
+          displayType: ProductAttributeDisplayType.Color,
+          selectionType: ProductAttributeSelectionType.Single,
+          values: [
+            {
+              price: 0,
+              value: "#fff",
+            },
+            {
+              price: 0,
+              value: "#000",
+            },
+          ],
+        },
+      ],
       sizes: [
         ProductSize.S,
         ProductSize.M,
@@ -92,6 +126,15 @@ query getProductDetails($id:ID!){
     presentations{
       src
       type
+    }
+    attributes{
+        displayType
+        name
+        selectionType
+        values{
+            price
+            value
+        }
     }
     colors
     sizes

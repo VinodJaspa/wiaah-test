@@ -31,3 +31,4 @@ export * from "./Statistics";
 export * from "./Settings";
 export * from "./SiteSettings";
 export * from "./Hashtag";
+export * from "./Places";

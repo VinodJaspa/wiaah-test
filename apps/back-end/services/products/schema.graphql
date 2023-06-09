@@ -25,6 +25,168 @@ enum ProductCategoryStatus {
   inActive
 }
 
+type TranslationText {
+  langId: String!
+  value: String!
+}
+
+type Location {
+  lat: Float!
+  long: Float!
+  address: String!
+  country: String!
+  city: String!
+  state: String!
+  postalCode: String!
+}
+
+type Shop {
+  id: ID!
+  ownerId: String!
+  storeCategoryId: String!
+  name: String!
+  banner: String!
+  description: String!
+  verified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phone: String!
+  email: String!
+  thumbnail: String!
+  location: Location!
+  storeType: StoreType!
+  businessType: BusinessType!
+  targetGenders: [TargetGenders!]!
+  storeFor: [StoreFor!]!
+  status: ShopStatus!
+  payment_methods: [ShopPaymentMethod!]!
+  type: ServiceType
+  videos: [String!]!
+  images: [String!]!
+  reviews: Int!
+  rating: Float!
+  workingSchedule: ShopWorkingSchedule!
+  storeCategory: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum StoreType {
+  product
+  service
+}
+
+enum BusinessType {
+  company
+  individual
+}
+
+enum TargetGenders {
+  male
+  female
+}
+
+enum StoreFor {
+  men
+  women
+  children
+  babies
+}
+
+enum ShopStatus {
+  inActive
+  active
+  suspended
+}
+
+enum ShopPaymentMethod {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
+enum ServiceType {
+  hotel
+  holiday_rentals
+  restaurant
+  health_center
+  beauty_center
+  vehicle
+}
+
+type RawShop {
+  id: ID!
+  ownerId: String!
+  storeCategoryId: String!
+  banner: String!
+  verified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phone: String!
+  email: String!
+  thumbnail: String!
+  location: Location!
+  storeType: StoreType!
+  businessType: BusinessType!
+  targetGenders: [TargetGenders!]!
+  storeFor: [StoreFor!]!
+  status: ShopStatus!
+  payment_methods: [ShopPaymentMethod!]!
+  type: ServiceType
+  videos: [String!]!
+  images: [String!]!
+  reviews: Int!
+  rating: Float!
+  description: [TranslationText!]!
+  name: [TranslationText!]!
+}
+
+type ShopCursorPaginationResponse {
+  data: [Shop!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+}
+
+type ShopDayWorkingHours {
+  periods: [String!]!
+}
+
+type ShopSpecialDayWorkingHours {
+  date: String!
+  workingHours: ShopDayWorkingHours!
+}
+
+type ShopWeekdaysWorkingHours {
+  mo: ShopDayWorkingHours
+  tu: ShopDayWorkingHours
+  we: ShopDayWorkingHours
+  th: ShopDayWorkingHours
+  fr: ShopDayWorkingHours
+  sa: ShopDayWorkingHours
+  su: ShopDayWorkingHours
+}
+
+type ShopWorkingSchedule {
+  id: ID!
+  sellerId: ID!
+  weekdays: ShopWeekdaysWorkingHours!
+  specialDays: [ShopSpecialDayWorkingHours!]!
+  isOpen: Boolean!
+  openFrom: String!
+  openTo: String!
+}
+
+type Service {
+  sellerId: ID!
+  shop: Shop!
+}
+
 type ShippingDeliveryTimeRange {
   from: Int!
   to: Int!
@@ -179,158 +341,9 @@ enum ProductCondition {
 
 type ProductsCursorPaginationResponse {
   data: [Product!]!
-  cursor: String!
-  nextCursor: String!
+  cursor: String
+  nextCursor: String
   hasMore: Boolean!
-}
-
-type TranslationText {
-  langId: String!
-  value: String!
-}
-
-type Location {
-  lat: Float!
-  long: Float!
-  address: String!
-  country: String!
-  city: String!
-  state: String!
-  postalCode: String!
-}
-
-type Shop {
-  id: ID!
-  ownerId: String!
-  name: String!
-  banner: String!
-  description: String!
-  verified: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  phone: String!
-  email: String!
-  thumbnail: String!
-  location: Location!
-  storeType: StoreType!
-  businessType: BusinessType!
-  targetGenders: [TargetGenders!]!
-  storeFor: [StoreFor!]!
-  status: ShopStatus!
-  payment_methods: [ShopPaymentMethod!]!
-  type: ServiceType
-  videos: [String!]!
-  images: [String!]!
-  reviews: Int!
-  rating: Float!
-  workingSchedule: ShopWorkingSchedule!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-enum StoreType {
-  product
-  service
-}
-
-enum BusinessType {
-  company
-  individual
-}
-
-enum TargetGenders {
-  male
-  female
-}
-
-enum StoreFor {
-  men
-  women
-  children
-  babies
-}
-
-enum ShopStatus {
-  inActive
-  active
-  suspended
-}
-
-enum ShopPaymentMethod {
-  credit_card
-  visa
-  mastercard
-  check
-  cash
-}
-
-enum ServiceType {
-  hotel
-  holiday_rentals
-  restaurant
-  health_center
-  beauty_center
-  vehicle
-}
-
-type RawShop {
-  id: ID!
-  ownerId: String!
-  banner: String!
-  verified: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  phone: String!
-  email: String!
-  thumbnail: String!
-  location: Location!
-  storeType: StoreType!
-  businessType: BusinessType!
-  targetGenders: [TargetGenders!]!
-  storeFor: [StoreFor!]!
-  status: ShopStatus!
-  payment_methods: [ShopPaymentMethod!]!
-  type: ServiceType
-  videos: [String!]!
-  images: [String!]!
-  reviews: Int!
-  rating: Float!
-  description: [TranslationText!]!
-  name: [TranslationText!]!
-}
-
-type ShopDayWorkingHours {
-  periods: [String!]!
-}
-
-type ShopSpecialDayWorkingHours {
-  date: String!
-  workingHours: ShopDayWorkingHours!
-}
-
-type ShopWeekdaysWorkingHours {
-  mo: ShopDayWorkingHours
-  tu: ShopDayWorkingHours
-  we: ShopDayWorkingHours
-  th: ShopDayWorkingHours
-  fr: ShopDayWorkingHours
-  sa: ShopDayWorkingHours
-  su: ShopDayWorkingHours
-}
-
-type ShopWorkingSchedule {
-  id: ID!
-  sellerId: ID!
-  weekdays: ShopWeekdaysWorkingHours!
-  specialDays: [ShopSpecialDayWorkingHours!]!
-}
-
-type Service {
-  sellerId: ID!
-  shop: Shop!
 }
 
 type ProductFilterGroupValue {
@@ -392,6 +405,7 @@ type Query {
   getUserShop(userId: String!): Shop!
   getUserRawShop(userId: String!): RawShop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
+  getCursorFilteredShops(args: FilteredShopsCursorInput!): ShopCursorPaginationResponse!
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
@@ -418,6 +432,9 @@ input GetNearShopsInput {
 }
 
 input FilteredShopsInput {
+  searchQuery: String
+  locationQuery: String
+  categoryQuery: String
   storeType: StoreType
   businessType: BusinessType
   targetGender: TargetGenders
@@ -429,6 +446,19 @@ input FilteredShopsInput {
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input FilteredShopsCursorInput {
+  take: Int!
+  cursor: String
+  searchQuery: String
+  locationQuery: String
+  categoryQuery: String
+  storeType: StoreType
+  businessType: BusinessType
+  targetGender: TargetGenders
+  country: String
+  city: String
 }
 
 input GetFilteredProductsInput {
@@ -509,9 +539,9 @@ type Mutation {
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
   updateProduct(updateProductArgs: UpdateProductInput!): Product!
   deleteProduct(productId: ID!): Product!
-  createProductCategory(createCategoryInput: CreateCategoryInput!): Category!
-  deleteProductCategory(deleteCategoryId: String!): Category!
-  updateProductCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
+  createProductCategory(createCategoryInput: CreateCategoryInput!): Boolean!
+  deleteProductCategory(deleteCategoryId: String!): Boolean!
+  updateProductCategory(updateCategoryArgs: UpdateCategoryInput!): Boolean!
   createFilter(createFilterGroupArgs: CreateFilterInput): Filter!
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
@@ -555,6 +585,7 @@ input SpecialDayWorkingHoursInput {
 input CreateShopInput {
   name: [TranslationTextInput!]!
   description: [TranslationTextInput!]!
+  storeCategoryId: String
   banner: String!
   phone: String!
   email: String!
@@ -596,6 +627,7 @@ input VatSettingsPartialInput {
 input UpdateUserShopInput {
   name: [TranslationTextInput!]
   description: [TranslationTextInput!]
+  storeCategoryId: String
   banner: String
   phone: String
   email: String
@@ -697,14 +729,14 @@ input ProductPresentationInput {
 
 input CreateCategoryInput {
   parantId: ID
-  name: String!
+  name: [TranslationTextInput!]!
   sortOrder: Int!
   status: ProductCategoryStatus!
 }
 
 input UpdateCategoryInput {
   parantId: ID
-  name: String
+  name: [TranslationTextInput!]
   sortOrder: Int
   status: ProductCategoryStatus
   id: ID!

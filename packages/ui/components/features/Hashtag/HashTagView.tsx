@@ -19,13 +19,23 @@ import {
   GridOrganiserPresets,
   useGetTrendingHashtagPosts,
   Image,
-  SectionHeader,
   TabsViewer,
+  AspectRatio,
+  Avatar,
+  Verified,
+  LocationOutlineIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { mapArray, randomNum, useBreakpointValue, useForm } from "utils";
-import { PostType } from "@features/API";
+import {
+  isDate,
+  mapArray,
+  randomNum,
+  useBreakpointValue,
+  useForm,
+} from "utils";
+import { PostType, StoreType } from "@features/API";
 import { startCase } from "lodash";
+import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";
 
 export interface HashTagViewProps {
   tag: string;
@@ -36,7 +46,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   const { isMobile } = useResponsive();
   const [idx, setIdx] = React.useState(0);
 
-  const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery();
+  const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery(tag);
   const { data: servicePostHashtagPosts } = useGetTopHashtagServicePost({
     tag,
   });
@@ -160,7 +170,7 @@ export const HashtagPostsView: React.FC<{
 }> = ({ postType, tag }) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const { data } = useGetTopHashtagPostsQuery();
+  const { data } = useGetTopHashtagPostsQuery(tag);
   const { form } = useForm<Parameters<typeof useGetTrendingHashtagPosts>[0]>({
     hashtag: tag,
     take: 10,
@@ -171,6 +181,8 @@ export const HashtagPostsView: React.FC<{
       getNextPageParam: (old) => old.nextCursor,
     }
   );
+
+  const {} = useGetTopHashtagProductPosts({ tag });
 
   return isMobile ? (
     <div className="flex flex-col gap-4">
@@ -210,4 +222,60 @@ export const HashtagPostsView: React.FC<{
       </GridListOrganiser>
     </div>
   ) : null;
+};
+
+export const HashtagSearchProdcutCard: React.FC<{
+  thumbnail: string;
+  title: string;
+  verified: boolean;
+  id: string;
+  sellerId: string;
+  categoryLabel: string;
+  sellerThumbnail: string;
+  location: string;
+  storeType: StoreType;
+}> = ({
+  id,
+  sellerId,
+  thumbnail,
+  title,
+  sellerThumbnail,
+  verified,
+  categoryLabel,
+  location,
+  storeType,
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <AspectRatio ratio={1.2}>
+        <Image src={thumbnail} className="w-full h-full object-cover" />
+        <div className="absolute text-xs top-1 left-1 bg-black/30 text-white">
+          {categoryLabel}
+        </div>
+      </AspectRatio>
+
+      <div className="flex gap-2">
+        <Avatar
+          className="max-w-[1.5rem] max-h-[1.5rem]"
+          src={sellerThumbnail}
+        />
+        <p>{title}</p>
+
+        {verified ? <Verified className="text-secondaryBlue" /> : null}
+      </div>
+
+      <HStack className="text-xs">
+        <LocationOutlineIcon />
+        <p>{location}</p>
+      </HStack>
+
+      <Button
+        onClick={() => {}}
+        className="w-full"
+        colorScheme="darkbrown"
+      ></Button>
+    </div>
+  );
 };

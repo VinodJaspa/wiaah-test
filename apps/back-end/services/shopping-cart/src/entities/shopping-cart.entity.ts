@@ -33,8 +33,8 @@ export class CartItemAttribute {
   @Field(() => String)
   id: string;
 
-  @Field(() => String)
-  value: string;
+  @Field(() => [String])
+  value: string[];
 }
 
 @ObjectType()

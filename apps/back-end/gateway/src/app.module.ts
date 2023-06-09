@@ -39,6 +39,8 @@ import { client } from './main';
         },
         formatError(error) {
           const exception = error?.extensions?.exception;
+          const isSchemaValidationError =
+            error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED';
 
           const errorCodesValues = Object.values(PublicErrorCodes);
 
@@ -49,7 +51,9 @@ import { client } from './main';
 
           const isKnownError = values.includes(exception.code);
 
-          if (isKnownError) {
+          console.log({ isSchemaValidationError, isKnownError, error });
+
+          if (isKnownError || isSchemaValidationError) {
             return error;
           } else {
             return new UnknownError();

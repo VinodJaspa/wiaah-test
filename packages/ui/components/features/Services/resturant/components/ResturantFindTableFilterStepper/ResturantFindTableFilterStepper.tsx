@@ -69,8 +69,7 @@ export const ResturantFindTableFilterStepper: React.FC<
                     );
                     return filteredState;
                   });
-                  // nextStep();
-                  // nextStep();
+                  nextStep();
                 }}
               />
               <TimeInput
@@ -89,13 +88,13 @@ export const ResturantFindTableFilterStepper: React.FC<
                       "exclude",
                       "reservationTime"
                     );
-                    // nextStep();
                     return filteredState;
                   });
+                  nextStep();
                 }}
               />
               <div className="grid grid-cols-5  gap-2 h-fit w-full">
-                {[...Array(20)].map((_, i) => {
+                {[...Array(5)].map((_, i) => {
                   return (
                     <div className="w-full">
                       <AspectRatio ratio={1}>

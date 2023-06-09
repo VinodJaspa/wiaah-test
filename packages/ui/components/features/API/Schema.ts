@@ -740,12 +740,12 @@ export type CartItem = {
 export type CartItemAttribute = {
   __typename?: "CartItemAttribute";
   id: Scalars["String"]["output"];
-  value: Scalars["String"]["output"];
+  value: Array<Scalars["String"]["output"]>;
 };
 
 export type CartItemAttributeInput = {
   id: Scalars["String"]["input"];
-  value: Scalars["String"]["input"];
+  value: Array<Scalars["String"]["input"]>;
 };
 
 export type CashBackInput = {
@@ -853,10 +853,10 @@ export type CommentMentionInput = {
 
 export type CommentsCursorPaginationResponse = {
   __typename?: "CommentsCursorPaginationResponse";
-  cursor: Scalars["String"]["output"];
+  cursor?: Maybe<Scalars["String"]["output"]>;
   data: Array<Comment>;
   hasMore: Scalars["Boolean"]["output"];
-  nextCursor: Scalars["String"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export enum CommentsVisibility {
@@ -1018,7 +1018,7 @@ export type CreateBlockInput = {
 };
 
 export type CreateCategoryInput = {
-  name: Scalars["String"]["input"];
+  name: Array<TranslationTextInput>;
   parantId?: InputMaybe<Scalars["ID"]["input"]>;
   sortOrder: Scalars["Int"]["input"];
   status: ProductCategoryStatus;
@@ -1308,6 +1308,7 @@ export type CreateShopInput = {
   payment_methods: Array<ShopPaymentMethod>;
   phone: Scalars["String"]["input"];
   status: ShopStatus;
+  storeCategoryId?: InputMaybe<Scalars["String"]["input"]>;
   storeFor: Array<StoreFor>;
   storeType: StoreType;
   targetGenders: Array<TargetGenders>;
@@ -1472,11 +1473,27 @@ export type Filter = {
   values: Array<ProductFilterGroupValue>;
 };
 
-export type FilteredShopsInput = {
+export type FilteredShopsCursorInput = {
   businessType?: InputMaybe<BusinessType>;
+  categoryQuery?: InputMaybe<Scalars["String"]["input"]>;
   city?: InputMaybe<Scalars["String"]["input"]>;
   country?: InputMaybe<Scalars["String"]["input"]>;
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+  locationQuery?: InputMaybe<Scalars["String"]["input"]>;
+  searchQuery?: InputMaybe<Scalars["String"]["input"]>;
+  storeType?: InputMaybe<StoreType>;
+  take: Scalars["Int"]["input"];
+  targetGender?: InputMaybe<TargetGenders>;
+};
+
+export type FilteredShopsInput = {
+  businessType?: InputMaybe<BusinessType>;
+  categoryQuery?: InputMaybe<Scalars["String"]["input"]>;
+  city?: InputMaybe<Scalars["String"]["input"]>;
+  country?: InputMaybe<Scalars["String"]["input"]>;
+  locationQuery?: InputMaybe<Scalars["String"]["input"]>;
   pagination: GqlPaginationInput;
+  searchQuery?: InputMaybe<Scalars["String"]["input"]>;
   storeType?: InputMaybe<StoreType>;
   targetGender?: InputMaybe<TargetGenders>;
 };
@@ -1539,10 +1556,10 @@ export type GetAccountVerificationRequestsInput = {
 
 export type GetActionsCursorResponse = {
   __typename?: "GetActionsCursorResponse";
-  cursor: Scalars["String"]["output"];
+  cursor?: Maybe<Scalars["String"]["output"]>;
   data: Array<Action>;
   hasMore: Scalars["Boolean"]["output"];
-  nextCursor: Scalars["String"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type GetAddableHashtagsInput = {
@@ -2489,7 +2506,7 @@ export type Mutation = {
   createNewAffiliationProduct: Affiliation;
   createNewProduct: Product;
   createNewsfeedPost: NewsfeedPost;
-  createProductCategory: Category;
+  createProductCategory: Scalars["Boolean"]["output"];
   createProfession: Scalars["Boolean"]["output"];
   createProfile: Profile;
   createReaction: Scalars["Boolean"]["output"];
@@ -2516,7 +2533,7 @@ export type Mutation = {
   deleteMaintenancePage: Scalars["Boolean"]["output"];
   deleteMyProfile: Profile;
   deleteProduct: Product;
-  deleteProductCategory: Category;
+  deleteProductCategory: Scalars["Boolean"]["output"];
   deleteSavesCollection: Scalars["Boolean"]["output"];
   deleteService: Scalars["Boolean"]["output"];
   deleteShippingAddress: Scalars["Boolean"]["output"];
@@ -2596,7 +2613,7 @@ export type Mutation = {
   updatePayoutAccount: Scalars["Boolean"]["output"];
   updateProduct: Product;
   updateProductAdmin: Scalars["Boolean"]["output"];
-  updateProductCategory: Category;
+  updateProductCategory: Scalars["Boolean"]["output"];
   updateProfession: Scalars["Boolean"]["output"];
   updateProfile: Profile;
   updateRequiredAction: RequiredAction;
@@ -3354,10 +3371,10 @@ export type NewsfeedPost = {
 
 export type NewsfeedPostsPaginationResponse = {
   __typename?: "NewsfeedPostsPaginationResponse";
-  cursor: Scalars["String"]["output"];
+  cursor?: Maybe<Scalars["String"]["output"]>;
   data: Array<NewsfeedPost>;
   hasMore: Scalars["Boolean"]["output"];
-  nextCursor: Scalars["String"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type Order = {
@@ -3709,10 +3726,10 @@ export enum ProductUsageStatus {
 
 export type ProductsCursorPaginationResponse = {
   __typename?: "ProductsCursorPaginationResponse";
-  cursor: Scalars["String"]["output"];
+  cursor?: Maybe<Scalars["String"]["output"]>;
   data: Array<Product>;
   hasMore: Scalars["Boolean"]["output"];
-  nextCursor: Scalars["String"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type Profession = {
@@ -3916,6 +3933,7 @@ export type Query = {
   getCountries: Array<Country>;
   getCurrencies: Array<Currency>;
   getCurrencyData: Currency;
+  getCursorFilteredShops: ShopCursorPaginationResponse;
   getDesignByPlacement: Array<Design>;
   getFilteredAffiliations: Array<Affiliation>;
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
@@ -4021,7 +4039,7 @@ export type Query = {
   getStoryViews: Array<StoryView>;
   getSubscriableMemberships: Array<Membership>;
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
-  getTopHashtagPosts: HashtagProductPost;
+  getTopHashtagProductPosts: HashtagProductPost;
   getTopHashtags: Array<Hashtag>;
   getTopProfilePosts: Array<NewsfeedPost>;
   getTopProfileStories: Array<Story>;
@@ -4312,6 +4330,10 @@ export type QueryGetCountriesArgs = {
 
 export type QueryGetCurrencyDataArgs = {
   currencyCode: Scalars["String"]["input"];
+};
+
+export type QueryGetCursorFilteredShopsArgs = {
+  args: FilteredShopsCursorInput;
 };
 
 export type QueryGetDesignByPlacementArgs = {
@@ -4637,7 +4659,11 @@ export type QueryGetStoryViewsArgs = {
   getStoryViewsInput: GetStorySeenByInput;
 };
 
-export type QueryGetTopHashtagPostsArgs = {
+export type QueryGetTopHashtagNewsfeedArgs = {
+  tag: Scalars["String"]["input"];
+};
+
+export type QueryGetTopHashtagProductPostsArgs = {
   tag: Scalars["String"]["input"];
 };
 
@@ -4801,6 +4827,7 @@ export type RawShop = {
   rating: Scalars["Float"]["output"];
   reviews: Scalars["Int"]["output"];
   status: ShopStatus;
+  storeCategoryId: Scalars["String"]["output"];
   storeFor: Array<StoreFor>;
   storeType: StoreType;
   targetGenders: Array<TargetGenders>;
@@ -5460,10 +5487,10 @@ export type ServiceWorkingSchedule = {
 
 export type ServicesCursorPaginationResponse = {
   __typename?: "ServicesCursorPaginationResponse";
-  cursor: Scalars["String"]["output"];
+  cursor?: Maybe<Scalars["String"]["output"]>;
   data: Array<Service>;
   hasMore: Scalars["Boolean"]["output"];
-  nextCursor: Scalars["String"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ShippingAddress = {
@@ -5560,6 +5587,8 @@ export type Shop = {
   reviews: Scalars["Int"]["output"];
   sellerProfile: Profile;
   status: ShopStatus;
+  storeCategory: Scalars["String"]["output"];
+  storeCategoryId: Scalars["String"]["output"];
   storeFor: Array<StoreFor>;
   storeType: StoreType;
   targetGenders: Array<TargetGenders>;
@@ -5569,6 +5598,14 @@ export type Shop = {
   verified: Scalars["Boolean"]["output"];
   videos: Array<Scalars["String"]["output"]>;
   workingSchedule: ShopWorkingSchedule;
+};
+
+export type ShopCursorPaginationResponse = {
+  __typename?: "ShopCursorPaginationResponse";
+  cursor?: Maybe<Scalars["String"]["output"]>;
+  data: Array<Shop>;
+  hasMore: Scalars["Boolean"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type ShopDayWorkingHours = {
@@ -5610,6 +5647,9 @@ export type ShopWeekdaysWorkingHours = {
 export type ShopWorkingSchedule = {
   __typename?: "ShopWorkingSchedule";
   id: Scalars["ID"]["output"];
+  isOpen: Scalars["Boolean"]["output"];
+  openFrom: Scalars["String"]["output"];
+  openTo: Scalars["String"]["output"];
   sellerId: Scalars["ID"]["output"];
   specialDays: Array<ShopSpecialDayWorkingHours>;
   weekdays: ShopWeekdaysWorkingHours;
@@ -5871,7 +5911,7 @@ export type UpdateBeautyCenterTreatmentInput = {
 
 export type UpdateCategoryInput = {
   id: Scalars["ID"]["input"];
-  name?: InputMaybe<Scalars["String"]["input"]>;
+  name?: InputMaybe<Array<TranslationTextInput>>;
   parantId?: InputMaybe<Scalars["ID"]["input"]>;
   sortOrder?: InputMaybe<Scalars["Int"]["input"]>;
   status?: InputMaybe<ProductCategoryStatus>;
@@ -6247,6 +6287,7 @@ export type UpdateUserShopInput = {
   payment_methods?: InputMaybe<Array<ShopPaymentMethod>>;
   phone?: InputMaybe<Scalars["String"]["input"]>;
   status?: InputMaybe<ShopStatus>;
+  storeCategoryId?: InputMaybe<Scalars["String"]["input"]>;
   storeFor?: InputMaybe<Array<StoreFor>>;
   storeType?: InputMaybe<StoreType>;
   targetGenders?: InputMaybe<Array<TargetGenders>>;

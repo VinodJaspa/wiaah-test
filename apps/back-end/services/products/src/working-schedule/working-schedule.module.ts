@@ -5,12 +5,14 @@ import { workingScheduleEventHandlers } from './events';
 import { workingScheduleQueryHandlers } from './queries';
 import { WorkingScheduleRepository } from './repository';
 import { WorkingScheduleResolver } from './working-schedule.resolver';
+import { ShopWorkingScheduleResolver } from './shop-working-schedule.resolver';
 
 @Module({
   imports: [CqrsModule],
   providers: [
     WorkingScheduleResolver,
     WorkingScheduleRepository,
+    ShopWorkingScheduleResolver,
     ...workingScheduleCommandHandlers,
     ...workingScheduleQueryHandlers,
     ...workingScheduleEventHandlers,

@@ -6,6 +6,7 @@ import { UpdateCategoryInput } from './dto/update-category.input';
 import {
   accountType,
   AuthorizationDecodedUser,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
@@ -25,20 +26,21 @@ export class CategoryResolver {
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getFilteredProductCategories(
     @Args('args', { nullable: true }) args: GetFilteredCategory,
+    @GetLang() lang: string,
   ) {
-    return this.categoryService.getAllCategories(args);
+    return this.categoryService.getAllCategories(args, lang);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   createProductCategory(
     @Args('createCategoryInput') args: CreateCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<Category> {
+  ): Promise<boolean> {
     return this.categoryService.createCategory(args, user.id);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   deleteProductCategory(
     @Args('deleteCategoryId') id: string,
@@ -47,7 +49,7 @@ export class CategoryResolver {
     return this.categoryService.deleteCategory(id, user.id);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateProductCategory(
     @Args('updateCategoryArgs') args: UpdateCategoryInput,

@@ -17,7 +17,10 @@ import {
   StoreType,
   TargetGenders,
 } from '@prisma-client';
-import { CreateObjectGqlTranslationInputField } from 'nest-utils';
+import {
+  CreateGqlCursorPaginatedResponse,
+  CreateObjectGqlTranslationInputField,
+} from 'nest-utils';
 
 registerEnumType(StoreType, { name: 'StoreType' });
 registerEnumType(TargetGenders, { name: 'TargetGenders' });
@@ -75,6 +78,9 @@ export class Shop {
 
   @Field((type) => String)
   ownerId: string;
+
+  @Field((type) => String)
+  storeCategoryId: string;
 
   @Field((type) => String)
   name: string;
@@ -151,3 +157,8 @@ export class RawShop extends OmitType(Shop, ['description', 'name']) {
   @Field(() => [TranslationText])
   name: TranslationText[];
 }
+
+@ObjectType()
+export class ShopCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
+  Shop,
+) {}

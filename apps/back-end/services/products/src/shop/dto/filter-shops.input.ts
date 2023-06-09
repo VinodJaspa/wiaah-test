@@ -1,9 +1,18 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType, IntersectionType, OmitType } from '@nestjs/graphql';
 import { TargetGenders, StoreType, BusinessType } from '@prisma-client';
-import { GqlPaginationInput } from 'nest-utils';
+import { GqlCursorPaginationInput, GqlPaginationInput } from 'nest-utils';
 
 @InputType()
 export class FilteredShopsInput {
+  @Field(() => String, { nullable: true })
+  searchQuery?: string;
+
+  @Field(() => String, { nullable: true })
+  locationQuery?: string;
+
+  @Field(() => String, { nullable: true })
+  categoryQuery: string;
+
   @Field((type) => StoreType, { nullable: true })
   storeType?: StoreType;
 
@@ -22,3 +31,9 @@ export class FilteredShopsInput {
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
 }
+
+@InputType()
+export class FilteredShopsCursorInput extends IntersectionType(
+  GqlCursorPaginationInput,
+  OmitType(FilteredShopsInput, ['pagination']),
+) {}

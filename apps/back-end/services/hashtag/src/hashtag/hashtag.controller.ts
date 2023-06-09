@@ -14,14 +14,14 @@ import { Hashtag } from './entities';
 export class HashtagController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @EventPattern(KAFKA_EVENTS.HASHTAG.hashtagUnUsed)
+  @EventPattern(KAFKA_EVENTS.HASHTAG.hashtagUsed)
   handleHashtagUsedEvent(@Payload() value: HashtagUsedEvent) {
     return this.commandBus.execute<IncrementHashtagUsageCommand, Hashtag>(
       new IncrementHashtagUsageCommand(value.input.id),
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.HASHTAG.hashtagUsed)
+  @EventPattern(KAFKA_EVENTS.HASHTAG.hashtagUnUsed)
   handleHashtagUnUsedEvent(@Payload() value: HashtagUnUsedEvent) {
     return this.commandBus.execute<DecrementHashtagUsageCommand, Hashtag>(
       new DecrementHashtagUsageCommand(value.input.id),

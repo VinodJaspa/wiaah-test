@@ -62,7 +62,7 @@ mutation addShoppingCartItem($args: AddShoppingCartItemInput!) {
       return res.data.addProductToCart;
     },
     {
-      onSuccess: (data, vars) => {
+      onSuccess: () => {
         queryclient.invalidateQueries({
           queryKey: getMyShoppingCartQueryKey(),
         });

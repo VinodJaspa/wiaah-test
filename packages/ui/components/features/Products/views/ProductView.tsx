@@ -12,14 +12,23 @@ import {
   Slider,
 } from "@partials";
 import { mapArray, useForm } from "@UI/../utils/src";
-import { PresentationType } from "@features/API";
+import { PresentationType, ShoppingCartItemType } from "@features/API";
+import { ProductAttributeDisplay } from "../components/ProductAttributeDisplay";
 
 export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
   const { data } = useGetProductDetailsQuery({ id: productId });
   const [productImgIdx, setProductIdx] = useState<number>(0);
-  
-  const { addShoppingCartItem } = useMutateShoppingCart()
-  const { } = useForm<Parameters<typeof addShoppingCartItem>[0]>({})
+
+  const { addShoppingCartItem } = useMutateShoppingCart();
+  const { handleChange, form } = useForm<
+    Parameters<typeof addShoppingCartItem>[0]
+  >({
+    itemId: "",
+    quantity: 1,
+    shippingRuleId: "",
+    type: ShoppingCartItemType.Product,
+    attributes: [],
+  });
 
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
@@ -64,12 +73,27 @@ export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
             <PaperPlaneAngleIcon />
           </HStack>
         </HStack>
-        <div>
-          <p>{t("Select Colour")}</p>
-          {mapArray(data?.colors, (color,i) => (
-            <button key={i} className={`${} w-8 h-8 rounded-xl`} style={{backgroundColor:`#${color}`}}></button>
-          ))}
-        </div>
+        {mapArray(data?.attributes, (att, i) => (
+          <div key={i}>
+            <p>
+              {t("Select")} {att.name}
+            </p>
+            <HStack className="flex-wrap">
+              <ProductAttributeDisplay
+                {...att}
+                onChange={(value) => {
+                  handleChange(
+                    "attributes",
+                    form.attributes
+                      ?.filter((v) => v.id !== att.name)
+                      .concat([{ id: att.name, value }])
+                  );
+                }}
+                value={[]}
+              />
+            </HStack>
+          </div>
+        ))}
       </div>
     </div>
   ) : null;

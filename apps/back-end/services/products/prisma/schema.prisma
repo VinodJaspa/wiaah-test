@@ -13,13 +13,20 @@ datasource db {
 
 model ProductCategory {
   id                 String                @id @default(auto()) @map("_id") @db.ObjectId
-  name               String
+  name               TranslationText[]
   sortOrder          Int
   status             ProductCategoryStatus
   thumbnail          String?
   metaTagTitle       TranslationText[]
   metaTagDescription TranslationText[]
   parantId           String?
+}
+
+model StoreCategory {
+  id        String                @id @default(auto()) @map("_id") @db.ObjectId
+  name      TranslationText[]
+  sortOrder Int
+  status    ProductCategoryStatus
 }
 
 enum ProductCategoryStatus {
@@ -152,6 +159,7 @@ model Shop {
   thumbnail       String
   location        Location
   storeType       StoreType
+  storeCategoryId String?              @db.ObjectId
   businessType    BusinessType
   storeFor        StoreFor[]
   targetGenders   TargetGenders[]
