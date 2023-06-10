@@ -40,6 +40,7 @@ export const PlaceView: React.FC<{
     <div>
       {isMobile ? <SectionHeader sectionTitle={t("Localization")} /> : null}
       <HStack className="justify-between">
+        <div></div>
         <div className="flex gap-2">
           <LocationIcon className="text-2xl" />
           <div className="flex flex-col">

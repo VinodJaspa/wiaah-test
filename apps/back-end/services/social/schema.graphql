@@ -559,6 +559,13 @@ type GetActionsCursorResponse {
   hasMore: Boolean!
 }
 
+type ActionTopHashtagResponse {
+  viewed: Action
+  liked: Action
+  shared: Action
+  commented: Action
+}
+
 type ServicePostHashtagSearch {
   viewed: ServicePost
   liked: ServicePost
@@ -678,6 +685,7 @@ type Query {
   getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
   getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
   getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
+  getTopHashtagActions(tag: String!): ActionTopHashtagResponse!
   getUserActions(args: GetUserActionsInput!): GetActionsCursorResponse!
   getMyRecommendedAction: Action!
   getAction(id: String!): [Action!]!

@@ -37,7 +37,6 @@ export interface EditServicePresentationSectionProps {}
 export const EditServicePresentationSection: React.FC<
   EditServicePresentationSectionProps
 > = () => {
-  const { uploadImage, uploadVideo, controls } = useMediaUploadControls();
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
@@ -91,12 +90,15 @@ export const EditServicePresentationSection: React.FC<
   return isMobile ? (
     <div className="flex flex-col gap-6">
       <MediaUploadModal />
-      <HStack className="relative justify-center">
-        <p className="text-lg font-semibold">{t("Service Presentation")}</p>
-        <button onClick={() => back()}>
-          <ArrowLeftAlt1Icon className="absolute left-1 top-1/2 -translate-y-1/2" />
-        </button>
-      </HStack>
+      <SectionHeader sectionTitle={t("Service Presentation")}>
+        <Button
+          onClick={handleSubmit}
+          colorScheme="darkbrown"
+          className="font-semibold w-full"
+        >
+          {t("Finish")}
+        </Button>
+      </SectionHeader>
       <div className="flex flex-wrap gap-x-4 gap-y-2">
         {mapArray(WiaahLanguageCountries, ({ code, langId, name }) => (
           <button key={langId} onClick={() => setLang(langId)}>
@@ -188,14 +190,6 @@ export const EditServicePresentationSection: React.FC<
           </p>
         ) : null}
       </div>
-
-      <Button
-        onClick={handleSubmit}
-        colorScheme="darkbrown"
-        className="font-semibold w-full"
-      >
-        {t("Done")}
-      </Button>
     </div>
   ) : (
     <div className="flex flex-col pb-4 gap-8 w-full">

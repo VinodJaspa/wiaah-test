@@ -28,6 +28,7 @@ import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrismaService } from 'prismaService';
 import { ContentHostType } from 'prismaClient';
 import { Profile } from '@entities';
+import { ActionTopHashtagResponse } from './entities/action-hashtag';
 
 @Resolver(() => Action)
 export class ActionResolver {
@@ -165,6 +166,61 @@ export class ActionResolver {
     });
 
     return Res.id;
+  }
+
+  @Query(() => ActionTopHashtagResponse)
+  async getTopHashtagActions(@Args('tag') tag: string) {
+    const topViewed = await this.prisma.action.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+        visibility: 'public',
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topCommented = await this.prisma.action.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+        visibility: 'public',
+      },
+      orderBy: {
+        comments: 'desc',
+      },
+    });
+    const topLiked = await this.prisma.action.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+        visibility: 'public',
+      },
+      orderBy: {
+        reactionNum: 'desc',
+      },
+    });
+    const topShared = await this.prisma.action.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+        visibility: 'public',
+      },
+      orderBy: {
+        shares: 'desc',
+      },
+    });
+
+    return {
+      commented: topCommented,
+      liked: topLiked,
+      shared: topShared,
+      viewed: topViewed,
+    };
   }
 
   @Query(() => GetActionsCursorResponse)

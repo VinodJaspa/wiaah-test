@@ -24,9 +24,16 @@ import {
   Avatar,
   Verified,
   LocationOutlineIcon,
+  AddToCartButton,
+  AddToCartProductButton,
+  CarOutlineIcon,
+  BookServiceButton,
+  ScrollCursorPaginationWrapper,
+  EyeIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import {
+  NumberShortner,
   isDate,
   mapArray,
   randomNum,
@@ -36,6 +43,7 @@ import {
 import { PostType, StoreType } from "@features/API";
 import { startCase } from "lodash";
 import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";
+import { useGetTopHashtagActionsQuery } from "@features/Social/services/Queries/Action/useGetTopHashtagActions";
 
 export interface HashTagViewProps {
   tag: string;
@@ -165,57 +173,94 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
 };
 
 export const HashtagPostsView: React.FC<{
-  postType: PostType;
+  postType: PostType | "action";
   tag: string;
 }> = ({ postType, tag }) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const { data } = useGetTopHashtagPostsQuery(tag);
   const { form } = useForm<Parameters<typeof useGetTrendingHashtagPosts>[0]>({
     hashtag: tag,
     take: 10,
   });
-  const { data: trendingPosts, fetchNextPage } = useGetTrendingHashtagPosts(
-    form,
-    {
-      getNextPageParam: (old) => old.nextCursor,
-    }
+  const {
+    data: trendingPosts,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetTrendingHashtagPosts(form, {
+    getNextPageParam: (old) => old.nextCursor,
+  });
+
+  const { data: topNewsfeed } = useGetTopHashtagPostsQuery(tag);
+  const { data: topProducts } = useGetTopHashtagProductPosts({ tag });
+  const { data: topServices } = useGetTopHashtagServicePost({ tag });
+  const { data: topActions } = useGetTopHashtagActionsQuery(
+    { tag },
+    { enabled: postType === "action" }
   );
 
-  const {} = useGetTopHashtagProductPosts({ tag });
+  const TopPosts =
+    postType === PostType.NewsfeedPost
+      ? topNewsfeed
+      : postType === PostType.ShopPost
+      ? topProducts
+      : postType === PostType.ServicePost
+      ? topServices
+      : topActions;
 
   return isMobile ? (
     <div className="flex flex-col gap-4">
       <div className="flex items-center">
-        {data
-          ? Object.entries(data).map(([key, value]) =>
-              typeof value !== "string" ? (
+        {topNewsfeed
+          ? Object.entries(TopPosts).map(([key, value]) => {
+              const thumbnail =
+                postType === PostType.NewsfeedPost
+                  ? value.thumbnail
+                  : postType === PostType.ShopPost
+                  ? value.product.thumbnail
+                  : postType === PostType.ServicePost
+                  ? value.service.thumbnail
+                  : value.cover;
+
+              const views = value.views;
+              return typeof value !== "string" ? (
                 <div className="flex flex-col">
                   <AspectRatioImage
-                    src={value.thumbnail}
-                    alt={value.content}
+                    src={thumbnail}
+                    alt={""}
                     className="w-40 rounded-xl"
                     ratio={0.84}
-                  />
+                  >
+                    <HStack className="text-sm">
+                      <EyeIcon />
+                      <p>{NumberShortner(views)}</p>
+                    </HStack>
+                  </AspectRatioImage>
                   <p className="text-center p-2">
                     {t("Top")} {t(startCase(key))} {t("Post")}
                   </p>
                 </div>
-              ) : null
-            )
+              ) : null;
+            })
           : null}
       </div>
 
       <p>{t("All Posts")}</p>
+      <ScrollCursorPaginationWrapper
+        controls={{ hasMore: hasNextPage || false, next: fetchNextPage }}
+      ></ScrollCursorPaginationWrapper>
       <GridListOrganiser presets={GridOrganiserPresets.socialPostsGrid}>
         {mapArray(trendingPosts?.pages, (page, i) => (
           <React.Fragment key={i}>
             {mapArray(page.data, (post) => (
-              <Image
+              <AspectRatioImage
+                ratio={1.2}
+                alt={post.id}
                 src={post.thumbnail}
                 className="w-full h-full object-cover"
                 key={post.id}
-              ></Image>
+              >
+                <p>{NumberShortner(post.views)}</p>
+              </AspectRatioImage>
             ))}
           </React.Fragment>
         ))}
@@ -271,11 +316,28 @@ export const HashtagSearchProdcutCard: React.FC<{
         <p>{location}</p>
       </HStack>
 
-      <Button
-        onClick={() => {}}
-        className="w-full"
-        colorScheme="darkbrown"
-      ></Button>
+      {storeType === StoreType.Product ? (
+        <AddToCartProductButton
+          productId={id}
+          className="w-full"
+          colorScheme="darkbrown"
+        >
+          <HStack>
+            <CarOutlineIcon />
+            <p>{t("Add to cart")}</p>
+          </HStack>
+        </AddToCartProductButton>
+      ) : (
+        <BookServiceButton
+          className="w-full"
+          colorScheme="darkbrown"
+          serviceId={id}
+        >
+          <HStack>
+            <p>{t("Book now")}</p>
+          </HStack>
+        </BookServiceButton>
+      )}
     </div>
   );
 };

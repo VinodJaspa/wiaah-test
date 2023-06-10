@@ -157,6 +157,14 @@ export type ActionEffect = {
   name: Scalars["String"]["output"];
 };
 
+export type ActionTopHashtagResponse = {
+  __typename?: "ActionTopHashtagResponse";
+  commented?: Maybe<Action>;
+  liked?: Maybe<Action>;
+  shared?: Maybe<Action>;
+  viewed?: Maybe<Action>;
+};
+
 export enum ActionType {
   Comment = "comment",
   Duet = "duet",
@@ -4038,6 +4046,7 @@ export type Query = {
   getStory: Story;
   getStoryViews: Array<StoryView>;
   getSubscriableMemberships: Array<Membership>;
+  getTopHashtagActions: ActionTopHashtagResponse;
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getTopHashtagProductPosts: HashtagProductPost;
   getTopHashtags: Array<Hashtag>;
@@ -4657,6 +4666,10 @@ export type QueryGetStoryArgs = {
 
 export type QueryGetStoryViewsArgs = {
   getStoryViewsInput: GetStorySeenByInput;
+};
+
+export type QueryGetTopHashtagActionsArgs = {
+  tag: Scalars["String"]["input"];
 };
 
 export type QueryGetTopHashtagNewsfeedArgs = {
@@ -5541,6 +5554,7 @@ export type ShippingRule = {
   countries: Array<ShippingCountry>;
   deliveryTimeRange: ShippingDeliveryTimeRange;
   id: Scalars["ID"]["output"];
+  listing: Scalars["Float"]["output"];
   name: Scalars["String"]["output"];
   sellerId: Scalars["ID"]["output"];
   shippingType: ShippingType;

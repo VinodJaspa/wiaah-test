@@ -20,6 +20,9 @@ import {
   useGetMyShippingRules,
   FlagIcon,
   Pagination,
+  HStack,
+  EditIcon,
+  TrashIcon,
 } from "@UI";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -37,71 +40,71 @@ export const ShippingSettings: React.FC = () => {
           <FiPlusSquare className="text-2xl" onClick={addNew} />
         ) : (
           <Button onClick={addNew} outline>
-            {t("add_shipping", "Add Shipping")}
+            {t("Add Shipping")}
           </Button>
         )}
       </SectionHeader>
       <p className="lg:text-xl ">
         {t("Define your shipping regions and how rates are calculated.")}{" "}
-        <span className="text-primary cursor-pointer">
-          {t("learn_more", "Learn more")}
-        </span>
+        <span className="text-primary cursor-pointer">{t("Learn more")}</span>
       </p>
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {({}) => {
-          return (
-            <Form>
-              <TableContainer>
-                <Table className="w-full">
+      <TableContainer>
+        <Table className="w-full">
+          <Tr>
+            <Th></Th>
+            <Th>{t("Shipping Name")}</Th>
+            <Th>{t("Processing Time")}</Th>
+            <Th>{t("Listings")}</Th>
+            <Th>{t("Action")}</Th>
+          </Tr>
+          <TBody>
+            {data
+              ? data.map((method, i) => (
                   <Tr>
-                    <Th></Th>
-                    <Th>{t("Shipping Type")}</Th>
-                    <Th>{t("Shipping Calculation")}</Th>
-                    <Th></Th>
-                    <Th></Th>
+                    <Td className="pl-0">
+                      <HStack>
+                        {method?.countries?.at(0)?.code ? (
+                          <FlagIcon
+                            size={"48"}
+                            code={method.countries.at(0)!.code}
+                          />
+                        ) : null}
+                        <p>{method.name}</p>
+                      </HStack>
+                    </Td>
+                    <Td>
+                      {`${method.deliveryTimeRange.from}-${
+                        method.deliveryTimeRange.to
+                      } ${t("days")}`}
+                    </Td>
+                    <Td>{method.listing}</Td>
+                    <Td className="text-primary">
+                      <HStack>
+                        <Button
+                          colorScheme="darkbrown"
+                          onClick={() => {
+                            // TODO: edit
+                          }}
+                        >
+                          <EditIcon />
+                        </Button>
+                        <Button
+                          colorScheme="danger"
+                          onClick={() => {
+                            // TODO:delete
+                          }}
+                        >
+                          <TrashIcon />
+                        </Button>
+                      </HStack>
+                    </Td>
                   </Tr>
-                  <TBody>
-                    {data
-                      ? data.map((method, i) => (
-                          <Tr>
-                            <Td className="pl-0">
-                              {method?.countries?.at(0)?.code ? (
-                                <FlagIcon
-                                  size={"48"}
-                                  code={method.countries.at(0)!.code}
-                                />
-                              ) : null}
-                            </Td>
-                            <Td>{method.name}</Td>
-                            <Td>
-                              {method.cost > 1 ? (
-                                <PriceDisplay price={method.cost} />
-                              ) : (
-                                t("Free Shipping")
-                              )}
-                            </Td>
-                            <Td className="text-primary">
-                              <div className="flex gap-2 items-center">
-                                <BiEdit className="text-lg" />
-                                {t("Edit Shipping Rule")}
-                              </div>
-                            </Td>
-                            <Td className="pr-0">
-                              <div className="flex justify-end w-full">
-                                <Switch />
-                              </div>
-                            </Td>
-                          </Tr>
-                        ))
-                      : null}
-                  </TBody>
-                </Table>
-              </TableContainer>
-              <Pagination></Pagination>
-            </Form>
-          );
-        }}
-      </Formik>
+                ))
+              : null}
+          </TBody>
+        </Table>
+      </TableContainer>
+      <Pagination />
     </div>
   );
 };

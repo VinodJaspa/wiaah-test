@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { Scalars } from "@features/API";
-import { useQuery } from "react-query";
+import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetTopHashtagNewsfeedPostsQueryVariables = Exact<{
   tag: Scalars["String"]["input"];
@@ -42,7 +42,10 @@ export type GetTopHashtagNewsfeedPostsQuery = {
   };
 };
 
-export const useGetTopHashtagPostsQuery = (tag: string) => {
+export const useGetTopHashtagPostsQuery = (
+  tag: string,
+  options?: UseQueryOptions<any, any, any, any>
+) => {
   const client = createGraphqlRequestClient();
 
   client
@@ -82,9 +85,13 @@ query getTopHashtagNewsfeedPosts($tag: String!) {
     )
     .setVariables<GetTopHashtagNewsfeedPostsQueryVariables>({ tag });
 
-  return useQuery(["get-top-hashtag-posts"], async () => {
-    const res = await client.send<GetTopHashtagNewsfeedPostsQuery>();
+  return useQuery(
+    ["get-top-hashtag-posts"],
+    async () => {
+      const res = await client.send<GetTopHashtagNewsfeedPostsQuery>();
 
-    return res.data.getTopHashtagNewsfeed;
-  });
+      return res.data.getTopHashtagNewsfeed;
+    },
+    options
+  );
 };

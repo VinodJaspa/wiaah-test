@@ -370,6 +370,7 @@ type ShippingRule {
   cost: Float!
   shippingType: ShippingType!
   deliveryTimeRange: ShippingDeliveryTimeRange!
+  listing: Float!
 }
 
 type ShippingAddress {

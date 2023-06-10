@@ -104,3 +104,19 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     </button>
   );
 };
+
+export const AddToCartProductButton: React.FC<
+  ButtonProps & {
+    productId: string;
+  }
+> = ({ productId, ...props }) => {
+  return <Button {...props} />;
+};
+
+export const BookServiceButton: React.FC<
+  ButtonProps & {
+    serviceId: string;
+  }
+> = ({ serviceId, ...props }) => {
+  return <Button {...props} />;
+};

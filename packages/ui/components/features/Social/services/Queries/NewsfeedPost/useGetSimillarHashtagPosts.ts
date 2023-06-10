@@ -23,7 +23,10 @@ export type GetTrendingPostsByHashtagQuery = { __typename?: "Query" } & {
     "hasMore" | "nextCursor" | "cursor"
   > & {
       data: Array<
-        { __typename?: "NewsfeedPost" } & Pick<NewsfeedPost, "id" | "thumbnail">
+        { __typename?: "NewsfeedPost" } & Pick<
+          NewsfeedPost,
+          "id" | "thumbnail" | "views"
+        >
       >;
     };
 };
@@ -47,6 +50,7 @@ query getTrendingPostsByHashtag($args:GetPostsByHashtagInput!){
     data{
       id
       thumbnail
+      views
     }
   }
 }

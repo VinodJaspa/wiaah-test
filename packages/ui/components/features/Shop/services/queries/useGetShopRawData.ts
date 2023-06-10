@@ -75,12 +75,7 @@ query getRawShop($id:String!){
 
 export const useGetShopRawData = (
   args: args,
-  options?: UseQueryOptions<
-    GetRawShopQueryVariables,
-    unknown,
-    GetRawShopQuery,
-    any
-  >
+  options?: UseQueryOptions<any, unknown, any, any>
 ) =>
   useQuery(
     getShopRawDataQueryKey(args),

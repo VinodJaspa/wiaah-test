@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
-import { useQuery } from "react-query";
+import { UseQueryOptions, useQuery } from "react-query";
 import { GetHashtagTopServicePostsInput, ServicePost } from "@features/API";
 import { Service } from "@features/API";
 
@@ -9,10 +9,7 @@ export type GetTopServiceHashtagPostsQueryVariables = Exact<{
 }>;
 
 type ServiceArg = Maybe<
-  { __typename?: "Service" } & Pick<
-    Service,
-    "id" | "hashtags" | "price" | "presentation" | "title" | "serviceType"
-  >
+  { __typename?: "Service" } & Pick<Service, "id" | "price" | "name" | "type">
 >;
 
 export type GetTopServiceHashtagPostsQuery = { __typename?: "Query" } & {
@@ -41,7 +38,8 @@ export type GetTopServiceHashtagPostsQuery = { __typename?: "Query" } & {
 };
 
 export const useGetTopHashtagServicePost = (
-  input: GetHashtagTopServicePostsInput
+  input: GetHashtagTopServicePostsInput,
+  options?: UseQueryOptions
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -106,5 +104,6 @@ query getTopServiceHashtagPosts(
 
   return useQuery(["use-get-top-hashtag-service-post"], async () => {
     const res = await client.send();
+    return res.data;
   });
 };

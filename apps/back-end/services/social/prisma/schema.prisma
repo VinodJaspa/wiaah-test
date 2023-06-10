@@ -204,6 +204,7 @@ model Action {
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  hashtags           String[]
   mentions           PostMention[]
   tags               PostTag[]
   music              String?

@@ -1,5 +1,4 @@
 import { NumberShortner, isDate, mapArray, randomNum } from "@UI/../utils/src";
-import { usePaginationControls } from "@blocks";
 import { StoreType } from "@features/API";
 import { useGetFilteredShopsInfiniteQuery } from "@features/Shop";
 import {
