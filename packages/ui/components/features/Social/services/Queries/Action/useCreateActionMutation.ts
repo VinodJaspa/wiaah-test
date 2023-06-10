@@ -1,5 +1,5 @@
 import { CreateActionInput, Exact, Mutation } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type CreateActionMutationVariables = Exact<{

@@ -34,16 +34,13 @@ import {
   HStack,
   NotAllowedIcon,
   Badge,
+  Stack,
 } from "@partials";
 
-import {
-  OrderContext,
-  SectionHeader,
-  UpdateProductStatusModal,
-} from "@sections";
+import { OrderContext, SectionHeader, UpdateProductStatusModal } from "@UI";
 import { FormikInput, usePaginationControls } from "@blocks";
 
-import { AddToDate, DateDetails, mapArray, randomNum } from "utils";
+import { AddToDate, DateDetails, mapArray } from "utils";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { useTypedReactPubsub } from "@libs";
 import { useAskForRefundMutation, useGetMyOrdersQuery } from "@features/Orders";
@@ -59,7 +56,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
   );
   const { isMobile } = useResponsive();
   const { visit } = useRouting();
-  const { shopping } = React.useContext(OrderContext);
+  const shopping = React.useContext(OrderContext);
   const { pagination, controls } = usePaginationControls();
   const { data: orders } = useGetMyOrdersQuery({
     status: filter,
@@ -81,21 +78,27 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           placeholder={t("Search for order id, customer, order status")}
         ></Input>
       </InputGroup>
-      <div className="flex flex-col w-full h-full overflow-y-scroll noScroll gap-4">
+      <Stack
+        divider={<Divider />}
+        className="flex flex-col w-full h-full overflow-y-scroll noScroll gap-4"
+      >
         {mapArray(orders, (order, i) => (
-          <div key={order.id + i} className="flex flex-col w-full">
+          <div
+            key={order.id + i}
+            className="flex shadow px-2 py-4 flex-col w-full"
+          >
             <HStack className="justify-between">
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-medium">
-                  {t("Seller name")}:{" "}
+                <HStack>
+                  <p className="text-sm font-medium">{t("Seller name")}: </p>
                   <span className="font-semibold">
                     {order.seller?.profile?.username}
                   </span>
-                </p>
-                <p className="text-sm font-medium">
-                  {t("Order ID")}:{" "}
+                </HStack>
+                <HStack>
+                  <p className="text-sm font-medium">{t("Order ID")}: </p>
                   <span className="font-semibold">{order.id}</span>
-                </p>
+                </HStack>
               </div>
               <Badge
                 value={order.status.of}
@@ -108,48 +111,42 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
 
             <Divider className="my-3" />
 
-            <p className="text-sm font-medium">
-              {t("Delivery pricing")}:{" "}
+            <HStack>
+              <p className="text-sm font-medium">{t("Delivery pricing")}: </p>
               <span className="font-bold">
                 <PriceDisplay price={order.paid} />
               </span>
-            </p>
-            <p className="text-sm font-medium">
-              {t("Payment")}:{" "}
+            </HStack>
+            <HStack>
+              <p className="text-sm font-medium">{t("Payment")}: </p>
               <span className="font-bold">
                 <PriceDisplay price={order.paid} />
               </span>
-            </p>
+            </HStack>
 
             <HStack className="mt-6 gap-8">
               <button>
-                <p className="text-sm">
-                  {t("Tracking")}:{" "}
-                  <span>
-                    <LinkIcon className="text-base" />
-                  </span>
-                </p>
+                <HStack>
+                  <p className="inline text-sm">{t("Tracking")}: </p>
+                  <LinkIcon className="text-base" />
+                </HStack>
               </button>
               <button>
-                <p className="text-sm">
-                  {t("View")}:{" "}
-                  <span>
-                    <EyeIcon className="text-base" />
-                  </span>
-                </p>
+                <HStack>
+                  <p className="text-sm">{t("View")}: </p>
+                  <EyeIcon className="text-base" />
+                </HStack>
               </button>
               <button>
-                <p className="text-sm">
-                  {t("Action")}:{" "}
-                  <span>
-                    <NotAllowedIcon className="text-base" />
-                  </span>
-                </p>
+                <HStack>
+                  <p className="text-sm">{t("Action")}: </p>
+                  <NotAllowedIcon className="text-base" />
+                </HStack>
               </button>
             </HStack>
           </div>
         ))}
-      </div>
+      </Stack>
     </div>
   ) : (
     <div className="flex flex-col gap-4">
@@ -308,7 +305,6 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                 );
               })}
           </TBody>
-          {/* <OrderDetailsModal /> */}
         </Table>
       </TableContainer>
       <Pagination controls={controls} />

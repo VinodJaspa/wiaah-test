@@ -8,7 +8,7 @@ import {
   Maybe,
   Profile,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { isDev, randomNum } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 

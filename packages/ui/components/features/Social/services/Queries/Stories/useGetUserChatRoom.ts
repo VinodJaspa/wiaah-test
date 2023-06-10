@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { ChatRoom, Exact, Scalars } from "@features/API";
 import { UseQueryOptions, useMutation, useQuery } from "react-query";
 

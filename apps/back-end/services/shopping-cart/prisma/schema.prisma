@@ -17,12 +17,28 @@ model Cart {
   appliedVoucherId String?
 }
 
-model CartProduct {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
+model CartItem {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
   ownerId        String
-  attributesJson String
-  productId      String
-  shippingRuleId String
+  itemId         String
+  itemType       ShoppingCartItemType
+  attributes     CartItemAttribute[]
+  shippingRuleId String?
+  checkin        DateTime?
+  checkout       DateTime?
+  guests         Int?
+  color          String?
+  size           String?
+}
+
+type CartItemAttribute {
+  id    String
+  value String[]
+}
+
+enum ShoppingCartItemType {
+  product
+  service
 }
 
 type AppliedVoucher {

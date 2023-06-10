@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useGraphqlRequestClient } from "@UI/libs/useGraphqlRequestClient";
 import { Exact, Mutation } from "@features/API";
 import { useMutation } from "react-query";

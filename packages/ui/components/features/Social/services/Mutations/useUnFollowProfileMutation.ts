@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { Mutation, UnFollowProfileInput } from "@features/Social";
 import { useMutation } from "react-query";

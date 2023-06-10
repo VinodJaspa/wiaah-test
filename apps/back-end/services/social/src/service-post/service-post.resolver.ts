@@ -331,7 +331,7 @@ export class ServicePostResolver {
         hashtags: {
           has: args.tag,
         },
-        commentsVisibility: 'public',
+        visibility: 'public',
       },
       orderBy: {
         views: 'desc',
@@ -342,7 +342,7 @@ export class ServicePostResolver {
         hashtags: {
           has: args.tag,
         },
-        commentsVisibility: 'public',
+        visibility: 'public',
       },
       orderBy: {
         comments: 'desc',
@@ -353,7 +353,7 @@ export class ServicePostResolver {
         hashtags: {
           has: args.tag,
         },
-        commentsVisibility: 'public',
+        visibility: 'public',
       },
       orderBy: {
         reactionNum: 'desc',
@@ -364,7 +364,7 @@ export class ServicePostResolver {
         hashtags: {
           has: args.tag,
         },
-        commentsVisibility: 'public',
+        visibility: 'public',
       },
       orderBy: {
         shares: 'desc',

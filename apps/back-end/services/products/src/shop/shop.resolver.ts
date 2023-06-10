@@ -23,18 +23,26 @@ import {
   GetLang,
   UserPreferedLang,
   accountType,
+  getTranslatedResource,
+  ExtractPagination,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
 import { ShopService } from './shop.service';
-import { RawShop, Shop } from './entities/shop.entity';
+import {
+  RawShop,
+  Shop,
+  ShopCursorPaginationResponse,
+} from './entities/shop.entity';
 import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
-import { FilteredShopsInput } from './dto/filter-shops.input';
+import {
+  FilteredShopsCursorInput,
+  FilteredShopsInput,
+} from './dto/filter-shops.input';
 import { UpdateUserShopInput } from './dto';
 import { PrismaService } from 'prismaService';
 import { ShopWorkingSchedule } from 'src/working-schedule/entities';
-import { Profile } from './entities/extends';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -84,6 +92,73 @@ export class ShopResolver implements OnModuleInit {
     @GetLang() lang: UserPreferedLang,
   ) {
     return this.shopService.getFilteredShops(filteredShopsInput, lang);
+  }
+
+  @Query(() => ShopCursorPaginationResponse)
+  async getCursorFilteredShops(
+    @Args('args') input: FilteredShopsCursorInput,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<ShopCursorPaginationResponse> {
+    const searchQueries = [];
+
+    if (input.storeType) {
+      searchQueries.push({
+        storeType: {
+          has: input.storeType,
+        },
+      });
+    }
+    if (input.targetGender) {
+      searchQueries.push({
+        targetGenders: {
+          has: input.targetGender,
+        },
+      });
+    }
+    if (input.businessType) {
+      searchQueries.push({
+        vendorType: {
+          has: input.businessType,
+        },
+      });
+    }
+    if (input.country) {
+      searchQueries.push({
+        location: {
+          is: {
+            country: input.country,
+          },
+        },
+      });
+    }
+    if (input.city) {
+      searchQueries.push({
+        location: {
+          is: {
+            city: input.city,
+          },
+        },
+      });
+    }
+
+    const shops = await this.prisma.shop.findMany({
+      where: {
+        AND: searchQueries,
+      },
+      cursor: input.cursor
+        ? {
+            id: input.cursor,
+          }
+        : undefined,
+      take: input.take + 1,
+    });
+
+    return {
+      cursor: input.cursor,
+      nextCursor: shops.at(shops.length - 1)?.id,
+      hasMore: shops.length > input.take,
+      data: shops.map((shop) => this.shopService.formatShopData(shop, lang)),
+    };
   }
 
   @Mutation(() => Shop)
@@ -144,6 +219,20 @@ export class ShopResolver implements OnModuleInit {
         sellerId: shop.ownerId,
       },
     });
+  }
+
+  @ResolveField(() => String)
+  async storeCategory(
+    @Parent() shop: Shop,
+    @GetLang() langId: string,
+  ): Promise<string> {
+    const category = await this.prisma.storeCategory.findUnique({
+      where: {
+        id: shop.storeCategoryId,
+      },
+    });
+
+    return getTranslatedResource({ langId, resource: category.name });
   }
 
   // @ResolveField(() => Profile)

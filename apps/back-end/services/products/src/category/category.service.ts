@@ -1,22 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma-client';
+import { Prisma, ProductCategory } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 import { GetFilteredCategory } from './dto';
 
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import { Category } from './entities';
+import { UserPreferedLang, getTranslatedResource } from 'nest-utils';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllCategories(filter?: GetFilteredCategory): Promise<Category[]> {
+  async getAllCategories(
+    filter?: GetFilteredCategory,
+    langId: UserPreferedLang = 'en',
+  ): Promise<Category[]> {
     const filters: Prisma.ProductCategoryWhereInput[] = [];
 
     if (filter?.name)
       filters.push({
-        name: { contains: filter.name },
+        name: {
+          some: {
+            value: {
+              contains: filter.name,
+            },
+          },
+        },
       });
 
     if (filter?.sortOrder)
@@ -24,49 +34,75 @@ export class CategoryService {
         sortOrder: filter.sortOrder,
       });
 
-    return this.prisma.productCategory.findMany(
+    const res = await this.prisma.productCategory.findMany(
       filters.length > 0 ? { where: { AND: filters } } : undefined,
     );
+    return res.map((v) => this.formatCategory(v, langId));
   }
 
   async createCategory(
     input: CreateCategoryInput,
     userId: string,
-  ): Promise<Category> {
-    return this.prisma.productCategory.create({
-      data: input,
-    });
+  ): Promise<boolean> {
+    try {
+      await this.prisma.productCategory.create({
+        data: input,
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async updateCategory(
     input: UpdateCategoryInput,
     userId: string,
-  ): Promise<Category> {
-    const { id, ...rest } = input;
+  ): Promise<boolean> {
+    try {
+      const { id, ...rest } = input;
 
-    return this.prisma.productCategory.update({
-      where: {
-        id,
-      },
-      data: rest,
-    });
+      await this.prisma.productCategory.update({
+        where: {
+          id,
+        },
+        data: rest,
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
-  async deleteCategory(id: string, userId: string): Promise<Category> {
-    const deletedCategory = await this.prisma.productCategory.delete({
-      where: {
-        id,
-      },
-    });
+  async deleteCategory(id: string, userId: string): Promise<boolean> {
+    try {
+      const deletedCategory = await this.prisma.productCategory.delete({
+        where: {
+          id,
+        },
+      });
 
-    // delete sub categories
+      //TODO: delete sub categories
 
-    await this.prisma.productCategory.deleteMany({
-      where: {
-        parantId: deletedCategory.id,
-      },
-    });
+      await this.prisma.productCategory.deleteMany({
+        where: {
+          parantId: deletedCategory.id,
+        },
+      });
 
-    return deletedCategory;
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  formatCategory(rawCategory: ProductCategory, langId: string): Category {
+    return {
+      ...rawCategory,
+      name: getTranslatedResource({
+        langId,
+        resource: rawCategory.name,
+      }),
+    };
   }
 }

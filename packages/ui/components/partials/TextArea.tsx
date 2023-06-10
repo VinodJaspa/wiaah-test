@@ -4,7 +4,9 @@ export interface TextAreaProps
   extends DetailedHTMLProps<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
-  > {}
+  > {
+  label?: string;
+}
 
 export const Textarea: FC<TextAreaProps> = ({ className, ...props }) => {
   return (

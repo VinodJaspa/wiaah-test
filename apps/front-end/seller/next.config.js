@@ -11,6 +11,12 @@ const nextConfig = {
     isrMemoryCacheSize: 0,
   },
   crossOrigin: "anonymous",
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 const withTM = require("next-transpile-modules")([

@@ -245,7 +245,7 @@ export class ProductPostResolver {
   }
 
   @Query(() => HashtagProductPost)
-  async getTopHashtagPosts(
+  async getTopHashtagProductPosts(
     @Args('tag') tag: string,
   ): Promise<HashtagProductPost> {
     const topViewed = await this.prisma.productPost.findFirst({

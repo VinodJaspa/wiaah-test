@@ -14,6 +14,7 @@ export const useGetMyShoppingCartQuery = (
 ) => {
   return useQuery(
     getMyShoppingCartQueryKey(),
+    // replace with graphql request fetcher
     () => getMyShoppingCartFetcher(),
     options
   );

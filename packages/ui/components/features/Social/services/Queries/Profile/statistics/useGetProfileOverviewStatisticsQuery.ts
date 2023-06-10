@@ -3,7 +3,7 @@ import {
   GetProfileStatisticsInput,
   ProfileOverviewStatistics,
 } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetProfileOverviewStatsQueryVariables = Exact<{

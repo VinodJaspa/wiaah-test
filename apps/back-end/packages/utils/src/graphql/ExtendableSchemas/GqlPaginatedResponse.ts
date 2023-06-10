@@ -32,11 +32,11 @@ export function CreateGqlCursorPaginatedResponse<TData>(
     // and here the generic type
     data: TData[];
 
-    @Field(() => String)
-    cursor: string;
+    @Field(() => String, { nullable: true })
+    cursor?: string;
 
-    @Field(() => String)
-    nextCursor: string;
+    @Field(() => String, { nullable: true })
+    nextCursor?: string;
 
     @Field()
     hasMore: boolean;

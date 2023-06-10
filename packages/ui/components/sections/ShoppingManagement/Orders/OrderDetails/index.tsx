@@ -30,7 +30,6 @@ import {
   ModalContent,
   ModalButton,
   ModalCloseButton,
-  statusOptions,
   HStack,
   ModalOverlay,
   CloseIcon,

@@ -6,17 +6,26 @@ import {
   BoldText,
   BoxShadow,
   Button,
+  Checkbox,
   Divider,
+  Draggable,
   FlexStack,
+  HStack,
+  Image,
   Padding,
+  PriceDisplay,
   Spacer,
   Text,
   useCartSummary,
+  useGetMyShoppingCartQuery,
+  useResponsive,
   useScreenWidth,
 } from "ui";
 import { CartSummaryTotalPriceState } from "@src/state";
 import { CartSummaryFilled } from "./CartSummaryFilled";
 import { EmptyCartSummary } from "./EmptyCartSummary";
+import { mapArray } from "@UI/../utils/src";
+import { CartItem, ServiceType, ShoppingCartItemType } from "@features/API";
 
 export interface CartSummaryViewProps {}
 
@@ -25,14 +34,36 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { cartSummaryItems } = useCartSummary();
+  const { data } = useGetMyShoppingCartQuery();
   const totalPrice = useRecoilValue(CartSummaryTotalPriceState);
   const deliveryFee = 0;
+  const { isMobile } = useResponsive();
+
+  const cartItems = [] as CartItem[];
 
   function handleCheckout() {
     router.push("/checkout");
   }
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
+        {mapArray(cartItems, (item) => (
+          // TODO: bind props
+          <ShoppingCartMobileItem
+            thumbnail={item.product?.thumbnail || ""}
+            title={item.product?.title || ""}
+            checkin={new Date(item.checkin!)}
+            serviceType={item.service?.type}
+            type={item.itemType}
+            checkout={new Date(item.checkout!)}
+            duration={item.service?.duration || 0}
+            guests={item.guests || 0}
+          />
+        ))}
+      </div>
+    </div>
+  ) : (
     <FlexStack direction="vertical" fullWidth horizontalSpacingInRem={1}>
       <Spacer spaceInRem={2} />
       <FlexStack
@@ -81,17 +112,15 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
                       <BoldText>${deliveryFee}</BoldText>
                     </FlexStack>
                   </Text>
-                  <Divider marginY={{ value: 0.9 }} />
+                  <Divider />
                   <Text size="xl">
                     <FlexStack justify="between">
-                      <BoldText>
-                        {t("total_vat", "Total (VAT included)")}
-                      </BoldText>
-                      <BoldText>${totalPrice}</BoldText>
+                      <BoldText>{t("Total (VAT included)")}</BoldText>
+                      <PriceDisplay />
                     </FlexStack>
                   </Text>
-                  <Button paddingY={{ value: 0.5 }} onClick={handleCheckout}>
-                    {t("go_to_checkout", "GO TO CHECKOUT")}
+                  <Button onClick={handleCheckout}>
+                    {t("GO TO CHECKOUT")}
                   </Button>
                 </FlexStack>
               </Padding>
@@ -100,6 +129,41 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
         </div>
       </FlexStack>
     </FlexStack>
+  );
+};
+
+const ShoppingCartMobileItem: React.FC<{
+  thumbnail: string;
+  title: string;
+  checkin?: Date;
+  checkout?: Date;
+  duration?: number;
+  guests?: number;
+  type: ShoppingCartItemType;
+  serviceType?: ServiceType;
+}> = ({
+  checkin,
+  thumbnail,
+  title,
+  checkout,
+  children,
+  duration,
+  guests,
+  type,
+}) => {
+  const [] = React.useState<boolean>();
+  return (
+    <Draggable onChange={({ x, y }) => {}} direction="horizontal">
+      <HStack>
+        <Checkbox />
+        <div className="flex gap-1">
+          <Image src={thumbnail} className="h-full object-cover w-24"></Image>
+          <div className="flex flex-col gap-2">
+            <p className="text-lg font-medium">{title}</p>
+          </div>
+        </div>
+      </HStack>
+    </Draggable>
   );
 };
 

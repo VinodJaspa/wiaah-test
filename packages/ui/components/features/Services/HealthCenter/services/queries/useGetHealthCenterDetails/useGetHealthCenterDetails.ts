@@ -23,7 +23,7 @@ import {
   WorkingSchedule,
 } from "@features/API";
 import { useQuery } from "react-query";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { random } from "lodash";
 
 export type GetHealthCenterQueryVariables = Exact<{

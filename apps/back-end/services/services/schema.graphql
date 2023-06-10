@@ -351,8 +351,8 @@ type BookingCost {
 
 type ServicesCursorPaginationResponse {
   data: [Service!]!
-  cursor: String!
-  nextCursor: String!
+  cursor: String
+  nextCursor: String
   hasMore: Boolean!
 }
 

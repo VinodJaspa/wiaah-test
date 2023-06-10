@@ -11,6 +11,8 @@ import {
 import {
   CashbackType,
   PresentationType,
+  ProductAttributeDisplayType,
+  ProductAttributeSelectionType,
   ProductCondition,
   ProductSize,
   ProductStatus,
@@ -18,6 +20,7 @@ import {
   VisibilityEnum,
 } from '@prisma-client';
 import { ShippingDetails } from '@products/entities/extends';
+import { TranslationText } from '@shop';
 import {
   CreateGqlCursorPaginatedResponse,
   CreateGqlPaginatedResponse,
@@ -26,6 +29,12 @@ import {
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
 registerEnumType(ProductUsageStatus, { name: 'ProductUsageStatus' });
 registerEnumType(ProductCondition, { name: 'ProductCondition' });
+registerEnumType(ProductAttributeSelectionType, {
+  name: 'ProductAttributeSelectionType',
+});
+registerEnumType(ProductAttributeDisplayType, {
+  name: 'ProductAttributeDisplayType',
+});
 
 @ObjectType()
 export class ProductPresentation {
@@ -68,10 +77,25 @@ export class Discount {
 @ObjectType()
 export class ProductAttribute {
   @Field(() => String)
-  name: string;
+  name: String;
 
-  @Field(() => [String])
-  values: string[];
+  @Field(() => [ProductAttributeValue])
+  values: ProductAttributeValue[];
+
+  @Field(() => ProductAttributeSelectionType)
+  selectionType: ProductAttributeSelectionType;
+
+  @Field(() => ProductAttributeDisplayType)
+  displayType: ProductAttributeDisplayType;
+}
+
+@ObjectType()
+export class ProductAttributeValue {
+  @Field(() => String)
+  value: string;
+
+  @Field(() => Float)
+  price?: number;
 }
 
 @ObjectType()

@@ -1,61 +1,116 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { isDev } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { Exact, FilteredShopsInput, Shop, StoreType } from "@features/API";
-import { useQuery } from "react-query";
+import {
+  Exact,
+  FilteredShopsCursorInput,
+  FilteredShopsInput,
+  ServiceType,
+  StoreType,
+} from "@features/API";
+import {
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
 
 export type GetShopsQueryVariables = Exact<{
   input: FilteredShopsInput;
 }>;
 
-export type GetShopsQuery = { __typename?: "Query" } & {
-  getFilteredShops: Array<
-    { __typename?: "Shop" } & Pick<
-      Shop,
-      "id" | "banner" | "name" | "ownerId" | "verified" | "storeType"
-    >
-  >;
+export type GetShopsQuery = {
+  __typename?: "Query";
+  getFilteredShops: Array<{
+    __typename?: "Shop";
+    id: string;
+    banner: string;
+    name: string;
+    ownerId: string;
+    verified: boolean;
+    storeType: StoreType;
+    type?: ServiceType | null;
+    thumbnail: string;
+    storeCategory: string;
+    workingSchedule: {
+      __typename?: "ShopWorkingSchedule";
+      isOpen: boolean;
+      openFrom: string;
+      openTo: string;
+    };
+  }>;
 };
 
-export const useGetFilteredShopsQuery = (input: FilteredShopsInput) => {
+type args = GetShopsQueryVariables["input"];
+
+export const getFilteredShopsQueryKey = (args: args) => [
+  "get-filtered-shops",
+  { args },
+];
+
+export const getFilteredShopsQueryFetcher = async (args: args) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-  query getShops(
+query getShops(
     $input:FilteredShopsInput!
+){
+    getFilteredShops(
+        filteredShopsArgs:$input
     ){
-        getFilteredShops(
-            filteredShopsArgs:$input
-        ){
-            id
-            banner
-            name
-            ownerId
-            verified
-            storeType
+        id
+        banner
+        name
+        ownerId
+        verified
+        storeType
+        type
+        thumbnail
+        storeCategory
+        workingSchedule {
+            isOpen
+            openFrom
+            openTo
         }
     }
+}
 `);
 
-  client.setVariables(input);
+  client.setVariables<GetShopsQueryVariables>({ input: args });
 
-  return useQuery("filtered-products", async () => {
-    if (isDev) {
-      const mockres: GetShopsQuery["getFilteredShops"] = [...Array(15)].map(
-        () => ({
-          banner: getRandomImage(),
-          id: "",
-          name: "Service name",
-          ownerId: "",
-          storeType: StoreType.Product,
-          verified: true,
-        })
-      );
-      return mockres;
-    }
+  if (isDev) {
+    const mockres: GetShopsQuery["getFilteredShops"] = [...Array(15)].map(
+      () => ({
+        banner: getRandomImage(),
+        id: "",
+        name: "Service name",
+        ownerId: "",
+        storeType: StoreType.Product,
+        verified: true,
+      })
+    );
+    return mockres;
+  }
 
-    const res = await client.send<GetShopsQuery>();
+  const res = await client.send<GetShopsQuery>();
 
-    return res.data.getFilteredShops;
-  });
+  return useQuery<any, unknown, { data: Shop[] }>("filtered-products", () =>
+    client.send()
+  );
 };
+
+export const useGetFilteredShopsInfiniteQuery = (
+  args: args1,
+  options?: UseInfiniteQueryOptions<
+    GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+    unknown,
+    GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+    GetFilteredShopsCursorQueryVariables["args"],
+    any
+  >
+) =>
+  useInfiniteQuery(
+    getFilteredCursorShopsQuery(args),
+    ({ pageParam }) =>
+      getFilteredCursorShopsQueryFetcher({ ...args, cursor: pageParam }),
+    options
+  );

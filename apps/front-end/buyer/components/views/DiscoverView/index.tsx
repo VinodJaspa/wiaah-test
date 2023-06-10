@@ -67,6 +67,7 @@ export const DiscoverView: React.FC = ({}) => {
           <ListWrapper>
             {discoverPlacesPlaceHolder.map((place, i) => (
               <LocationButton
+                key={i}
                 iconProps={{ className: "text-primary" }}
                 name={place}
                 key={i}

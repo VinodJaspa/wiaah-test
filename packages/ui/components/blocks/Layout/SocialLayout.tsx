@@ -9,6 +9,8 @@ import {
   LocationSearchDrawer,
   MasterLocationMapModal,
 } from "@features/GeoLocation";
+import { NewsletterDrawer } from "@features/Newsletter";
+import { RequestRefundDrawer } from "@features/Orders";
 import { ProductDetailsDrawer } from "@features/Products";
 import { ServiceBookingDrawer } from "@features/Services";
 import {
@@ -72,6 +74,9 @@ interface SocialAtomValue {
   showAccountDeletionConfirmation: boolean;
   showAccountSuspendConfirmation: boolean;
   searchMixShopAndService?: string;
+  requestRefundId?: string;
+  showNewsletterRegisteration: boolean;
+  showContactUs: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -95,6 +100,9 @@ const socialAtom = atom<SocialAtomValue>({
     showWithdraw: false,
     showAccountDeletionConfirmation: false,
     showAccountSuspendConfirmation: false,
+    requestRefundId: "",
+    showNewsletterRegisteration: false,
+    showContactUs: false,
   },
 });
 
@@ -215,6 +223,14 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("searchMixShopAndService", searchQ),
     cancelSearchMixedShopsServices: () =>
       setControls("searchMixShopAndService", undefined),
+    requestRefund: (orderId: string) => setControls("requestRefundId", orderId),
+    cancelRequestRefund: () => setControls("requestRefundId", undefined),
+    showNewsletterRegisteration: () =>
+      setControls("showNewsletterRegisteration", true),
+    hideNewsletterRegisteration: () =>
+      setControls("showNewsletterRegisteration", false),
+    showContactUs: () => setControls("showContactUs", true),
+    hideContactUs: () => setControls("showContactUs", false),
     value,
   };
 }
@@ -244,6 +260,8 @@ export const SocialLayout: React.FC = ({ children }) => {
           <SocialMusicDrawer />
           <WithdrawalDrawer />
           <CommentsDrawer />
+          <RequestRefundDrawer />
+          <NewsletterDrawer />
         </>
       ) : null}
       {/* <PostViewPopup

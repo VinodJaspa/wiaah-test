@@ -1,98 +1,97 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import { Attachment, NewsfeedPost } from "@features/API";
-import { useQuery } from "react-query";
+import { Scalars } from "@features/API";
+import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetTopHashtagNewsfeedPostsQueryVariables = Exact<{
-  [key: string]: never;
+  tag: Scalars["String"]["input"];
 }>;
 
-export type GetTopHashtagNewsfeedPostsQuery = { __typename?: "Query" } & {
-  getTopHashtagNewsfeed: { __typename?: "TopHashtagNewsfeedPosts" } & {
-    commented: { __typename?: "NewsfeedPost" } & Pick<
-      NewsfeedPost,
-      "id" | "content" | "thumbnail"
-    > & {
-        attachments: Array<
-          { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-        >;
-      };
-    liked: { __typename?: "NewsfeedPost" } & Pick<
-      NewsfeedPost,
-      "id" | "content" | "thumbnail"
-    > & {
-        attachments: Array<
-          { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-        >;
-      };
-    shared: { __typename?: "NewsfeedPost" } & Pick<
-      NewsfeedPost,
-      "id" | "content" | "thumbnail"
-    > & {
-        attachments: Array<
-          { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-        >;
-      };
-    viewed: { __typename?: "NewsfeedPost" } & Pick<
-      NewsfeedPost,
-      "id" | "content" | "thumbnail"
-    > & {
-        attachments: Array<
-          { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-        >;
-      };
+export type GetTopHashtagNewsfeedPostsQuery = {
+  __typename?: "Query";
+  getTopHashtagNewsfeed: {
+    __typename?: "TopHashtagNewsfeedPosts";
+    commented: {
+      __typename?: "NewsfeedPost";
+      id: string;
+      attachments: Array<string>;
+      content: string;
+      thumbnail: string;
+    };
+    liked: {
+      __typename?: "NewsfeedPost";
+      id: string;
+      attachments: Array<string>;
+      content: string;
+      thumbnail: string;
+    };
+    shared: {
+      __typename?: "NewsfeedPost";
+      id: string;
+      attachments: Array<string>;
+      content: string;
+      thumbnail: string;
+    };
+    viewed: {
+      __typename?: "NewsfeedPost";
+      id: string;
+      attachments: Array<string>;
+      content: string;
+      thumbnail: string;
+    };
   };
 };
 
-export const useGetTopHashtagPostsQuery = () => {
+export const useGetTopHashtagPostsQuery = (
+  tag: string,
+  options?: UseQueryOptions<any, any, any, any>
+) => {
   const client = createGraphqlRequestClient();
 
-  client.setQuery(`
-      query getTopHashtagNewsfeedPosts{
-    getTopHashtagNewsfeed {
-        commented {
-            id
-            attachments{
-                src
-                type
-            }
-            content
-            thumbnail
-        }
-        liked{
-            id
-            attachments{
-                src
-                type
-            }
-            content
-            thumbnail
-        }
-        shared{
-            id
-            attachments{
-                src
-                type
-            }
-            content
-            thumbnail
-        }
-        viewed{
-            id
-            attachments{
-                src
-                type
-            }
-            content
-            thumbnail
-        }
+  client
+    .setQuery(
+      `
+query getTopHashtagNewsfeedPosts($tag: String!) {
+  getTopHashtagNewsfeed(tag: $tag) {
+    commented {
+      id
+      attachments
+      content
+      thumbnail
     }
-}  
-    `);
+    liked {
+      id
+      attachments 
+      content
+      thumbnail
+    }
+    shared {
+      id
+      attachments
+      content
+      thumbnail
+    }
+    viewed {
+      id
+      attachments
+      content
+      thumbnail
+    }
+  }
+}
 
-  return useQuery(["get-top-hashtag-posts"], async () => {
-    const res = await client.send<GetTopHashtagNewsfeedPostsQuery>();
+ 
+    `
+    )
+    .setVariables<GetTopHashtagNewsfeedPostsQueryVariables>({ tag });
 
-    return res.data.getTopHashtagNewsfeed;
-  });
+  return useQuery(
+    ["get-top-hashtag-posts"],
+    async () => {
+      const res = await client.send<GetTopHashtagNewsfeedPostsQuery>();
+
+      return res.data.getTopHashtagNewsfeed;
+    },
+    options
+  );
 };

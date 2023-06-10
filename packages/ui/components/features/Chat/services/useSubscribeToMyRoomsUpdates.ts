@@ -1,5 +1,5 @@
 import { ActiveStatus, Exact } from "@features/API";
-import { createGraphQlSubscriptionClient } from "@UI/../api";
+import { createGraphQlSubscriptionClient } from "api";
 import React from "react";
 import { useQueryClient } from "react-query";
 

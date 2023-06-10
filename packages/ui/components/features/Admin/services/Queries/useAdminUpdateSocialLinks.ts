@@ -1,5 +1,5 @@
 import { Exact, Mutation, UpdateSiteSocialInput } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type AdminUpdateSocialLinksMutationVariables = Exact<{

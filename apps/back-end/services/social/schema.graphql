@@ -88,8 +88,8 @@ enum PostType {
 
 type NewsfeedPostsPaginationResponse {
   data: [NewsfeedPost!]!
-  cursor: String!
-  nextCursor: String!
+  cursor: String
+  nextCursor: String
   hasMore: Boolean!
 }
 
@@ -282,8 +282,8 @@ type PaginationCommentsResponse {
 
 type CommentsCursorPaginationResponse {
   data: [Comment!]!
-  cursor: String!
-  nextCursor: String!
+  cursor: String
+  nextCursor: String
   hasMore: Boolean!
 }
 
@@ -554,9 +554,16 @@ type Action {
 
 type GetActionsCursorResponse {
   data: [Action!]!
-  cursor: String!
-  nextCursor: String!
+  cursor: String
+  nextCursor: String
   hasMore: Boolean!
+}
+
+type ActionTopHashtagResponse {
+  viewed: Action
+  liked: Action
+  shared: Action
+  commented: Action
 }
 
 type ServicePostHashtagSearch {
@@ -646,7 +653,7 @@ type Query {
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
   getSocialPostById(id: String!): NewsfeedPost!
-  getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
+  getTopHashtagNewsfeed(tag: String!): TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
   getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
@@ -673,11 +680,12 @@ type Query {
   getMyPrivacySettings: PrivacySettings!
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
   getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
-  getTopHashtagPosts(tag: String!): HashtagProductPost!
+  getTopHashtagProductPosts(tag: String!): HashtagProductPost!
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
   getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
   getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
   getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
+  getTopHashtagActions(tag: String!): ActionTopHashtagResponse!
   getUserActions(args: GetUserActionsInput!): GetActionsCursorResponse!
   getMyRecommendedAction: Action!
   getAction(id: String!): [Action!]!

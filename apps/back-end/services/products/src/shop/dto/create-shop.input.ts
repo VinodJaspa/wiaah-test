@@ -8,7 +8,7 @@ import {
   StoreType,
   TargetGenders,
 } from '@prisma-client';
-import { CreateInputGqlTranslationInputField } from 'nest-utils';
+import { CreateInputGqlTranslationInputField, FieldRequired } from 'nest-utils';
 
 @InputType()
 export class TranslationTextInput extends CreateInputGqlTranslationInputField(
@@ -59,6 +59,10 @@ export class CreateShopInput {
   @Field(() => [TranslationTextInput])
   description: TranslationTextInput[];
 
+  @FieldRequired('storeType', StoreType.product)
+  @Field(() => String, { nullable: true })
+  storeCategoryId?: string;
+
   @Field(() => String)
   banner: string;
 
@@ -95,6 +99,7 @@ export class CreateShopInput {
   @Field(() => [ShopPaymentMethods])
   payment_methods: ShopPaymentMethods[];
 
+  @FieldRequired('storeType', StoreType.service)
   @Field(() => ServiceType, { nullable: true })
   type: ServiceType;
 

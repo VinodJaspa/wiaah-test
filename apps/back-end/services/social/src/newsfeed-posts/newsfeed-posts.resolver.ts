@@ -107,7 +107,9 @@ export class NewsfeedPostsResolver {
   }
 
   @Query(() => TopHashtagNewsfeedPosts)
-  async getTopHashtagNewsfeed(): Promise<TopHashtagNewsfeedPosts> {
+  async getTopHashtagNewsfeed(
+    @Args('tag') tag: string,
+  ): Promise<TopHashtagNewsfeedPosts> {
     const topViewed = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',

@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact, RawShop, Scalars, TranslationText } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
@@ -75,12 +75,7 @@ query getRawShop($id:String!){
 
 export const useGetShopRawData = (
   args: args,
-  options?: UseQueryOptions<
-    GetRawShopQueryVariables,
-    unknown,
-    GetRawShopQuery,
-    any
-  >
+  options?: UseQueryOptions<any, unknown, any, any>
 ) =>
   useQuery(
     getShopRawDataQueryKey(args),

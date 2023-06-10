@@ -8,10 +8,11 @@ import {
   MyReturnsSection,
   MyShoppingStats,
   MyWishListSection,
-  OrdersSection,
   PaymentMethodsSection,
   SectionsLayout,
+  useGetMyAccountQuery,
 } from "ui";
+import { OrdersSection } from "@UI/components/sections/ShoppingManagement/Orders/OrdersSection";
 
 import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
@@ -22,6 +23,52 @@ import { getRouting } from "routing";
 import { FcStatistics } from "react-icons/fc";
 
 export const ShoppingManagementView: React.FC = () => {
+  const { data } = useGetMyAccountQuery();
+  const sections: SettingsSectionType[] = [
+    {
+      panelName: "My Wishlist",
+      panelIcon: MdList({}),
+      panelUrl: "/my-wishlist",
+      panelComponent: <MyWishListSection />,
+    },
+    {
+      panelName: "Shopping Statistics",
+      panelIcon: <FcStatistics />,
+      panelUrl: "/shopping-stats",
+      panelComponent: <MyShoppingStats />,
+    },
+    {
+      panelName: "Orders",
+      panelIcon: BsBoxArrowInUp({}),
+      panelUrl: "/orders",
+      panelComponent: <OrdersSection shopping />,
+    },
+    {
+      panelName: "Bookings",
+      panelIcon: RiBookLine({}),
+      panelUrl: "/bookings",
+      panelComponent: <BookingsHistory shopping />,
+    },
+    {
+      panelName: "My Returns",
+      panelIcon: IoReturnUpBackSharp({}),
+      panelUrl: "/my-returns",
+      panelComponent: <MyReturnsSection />,
+    },
+    {
+      panelName: "Payment Meothds",
+      panelIcon: MdPayment({}),
+      panelUrl: "/payment-motheds",
+      panelComponent: <PaymentMethodsSection />,
+    },
+    {
+      panelName: "Address Book",
+      panelIcon: GiPostStamp({}),
+      panelUrl: "/address-book",
+      panelComponent: <AddressBookSection accountId={data?.id} />,
+    },
+  ];
+
   const baseRoute = getRouting((r) => r.visitShoppingManagement());
   const router = useRouter();
   const { section } = router.query;
@@ -46,48 +93,3 @@ export const ShoppingManagementView: React.FC = () => {
     />
   );
 };
-
-const sections: SettingsSectionType[] = [
-  {
-    panelName: "My Wishlist",
-    panelIcon: MdList({}),
-    panelUrl: "/my-wishlist",
-    panelComponent: <MyWishListSection />,
-  },
-  {
-    panelName: "Shopping Statistics",
-    panelIcon: <FcStatistics />,
-    panelUrl: "/shopping-stats",
-    panelComponent: <MyShoppingStats />,
-  },
-  {
-    panelName: "Orders",
-    panelIcon: BsBoxArrowInUp({}),
-    panelUrl: "/orders",
-    panelComponent: <OrdersSection shopping />,
-  },
-  {
-    panelName: "Bookings",
-    panelIcon: RiBookLine({}),
-    panelUrl: "/bookings",
-    panelComponent: <BookingsHistory shopping />,
-  },
-  {
-    panelName: "My Returns",
-    panelIcon: IoReturnUpBackSharp({}),
-    panelUrl: "/my-returns",
-    panelComponent: <MyReturnsSection />,
-  },
-  {
-    panelName: "Payment Meothds",
-    panelIcon: MdPayment({}),
-    panelUrl: "/payment-motheds",
-    panelComponent: <PaymentMethodsSection />,
-  },
-  {
-    panelName: "Address Book",
-    panelIcon: GiPostStamp({}),
-    panelUrl: "/address-book",
-    panelComponent: <AddressBookSection />,
-  },
-];

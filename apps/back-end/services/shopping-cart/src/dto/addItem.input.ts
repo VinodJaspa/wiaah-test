@@ -1,11 +1,16 @@
 import { Field, ID, InputType, Int, registerEnumType } from '@nestjs/graphql';
-
-export enum ShoppingCartItemType {
-  product = 'product',
-  service = 'service',
-}
+import { ShoppingCartItemType } from '@prisma-client';
 
 registerEnumType(ShoppingCartItemType, { name: 'ShoppingCartItemType' });
+
+@InputType()
+export class CartItemAttributeInput {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => [String])
+  value: string[];
+}
 
 @InputType()
 export class AddShoppingCartItemInput {
@@ -21,6 +26,6 @@ export class AddShoppingCartItemInput {
   @Field((type) => Int)
   quantity: number;
 
-  @Field(() => String, { nullable: true })
-  attributesJson?: string;
+  @Field(() => [CartItemAttributeInput], { nullable: true })
+  attributes?: CartItemAttributeInput[];
 }

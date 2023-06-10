@@ -1,5 +1,5 @@
 import { Balance, Exact } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetMyBalanceQueryVariables = Exact<{ [key: string]: never }>;
