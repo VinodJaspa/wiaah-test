@@ -143,6 +143,7 @@ type Query {
   requiredAction(id: Int!): RequiredAction!
   getMyContacts: UserContact!
   getAccountVerificationRequests(args: GetAccountVerificationRequestsInput!): [AccountVerification!]!
+  adminGetProfileVerificationRequest(id: String!): AccountVerification!
   acceptAccountVerification(id: String!): Boolean!
   getCookiesSettings: [CookiesSetting!]!
   getMyCookiesSettings: UserCookiesSettings!

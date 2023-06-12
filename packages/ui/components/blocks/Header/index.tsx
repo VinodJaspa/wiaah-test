@@ -10,6 +10,9 @@ import {
   LocationIcon,
   useMasterLocationMapModal,
   ShoppingBagIcon,
+  HeartOutlineIcon,
+  ShoppingCartOutlineAltIcon,
+  PersonOutlineIcon,
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -119,17 +122,16 @@ export const Header: React.FC<HeaderProps> = () => {
               <li className="flex cursor-pointer items-center text-sm">
                 <Link href="/login">
                   <div className="flex items-center gap-4">
-                    {t("Sign In")}{" "}
-                    <FaUser className="ml-0 inline-flex h-8 w-8" />
+                    {t("Sign In")} <PersonOutlineIcon className="text-2xl" />
                   </div>
                 </Link>
               </li>
               <li className="cursor-pointer">
-                <FaHeart className="h-8 w-8" />
+                <HeartOutlineIcon className="text-2xl" />
               </li>
               <li className="fill-white text-white text-2xl">
                 <ShoppingCart>
-                  <ShoppingBagIcon />
+                  <ShoppingCartOutlineAltIcon className="text-2xl" />
                 </ShoppingCart>
               </li>
             </ul>

@@ -10,3 +10,4 @@ export * from "./useGetMyWorkingHoursQuery";
 export * from "./useGetRecommendedServices";
 export * from "./useGetServiceFilters.query";
 export * from "./useGetSearchServicesQuery";
+export * from "./useGetFilteredServices.query";

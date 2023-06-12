@@ -97,7 +97,6 @@ export class ServiceResolver {
     console.log({ file });
 
     const res = await file.file.promise;
-    console.log({ res });
 
     const stream = file.file.file.createReadStream();
     return true;

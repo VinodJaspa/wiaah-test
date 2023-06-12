@@ -5,7 +5,7 @@ import {
   useSearchFilters,
   PaginationWrapper,
   ServicesSearchGrid,
-  useGetServicesData,
+  useGetServicesQuery,
   ServicesSearchCard,
   ServicesSearchCardProps,
 } from "@UI";
@@ -14,7 +14,7 @@ export const ServicesSearchResultsList: React.FC = () => {
   const { take, page } = usePagination();
   const { filters } = useSearchFilters();
   const [services, setServices] = React.useState<ServiceData[]>([]);
-  const { data } = useGetServicesData({ page, take }, filters, {
+  const { data } = useGetServicesQuery({ page, take }, filters, {
     onSuccess: (d) => {
       setServices(d.data);
     },

@@ -625,7 +625,8 @@ input GqlCursorPaginationInput {
 }
 
 input SearchServicesInput {
-  q: String!
+  q: String
+  locationQuery: String
 }
 
 input GetRecommendedServicesInput {

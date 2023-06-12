@@ -1,31 +1,24 @@
-import { AdminListTable, AdminTableCellTypeEnum } from "@components";
+import {
+  useAdminGetAccountVerifficationRequest,
+  useAdminGetProfileVerificationQuery,
+} from "@UI";
+import { AdminListTable } from "@components";
 import { Avatar, Image, Table, Td, Tr } from "@partials";
-import { getRandomImage } from "placeholder";
+import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
-interface AccountVerification {
-  photo: string;
-  username: string;
-  fullName: string;
-  idPhoto: string;
-  id: string;
-}
-
-const View = () => {
+const View: NextPage = () => {
   const { getParam, back } = useRouting();
   const { t } = useTranslation();
 
   const id = getParam("id");
 
-  const account: AccountVerification = {
-    id: "1",
-    fullName: "test full name",
-    photo: getRandomImage(),
-    idPhoto: getRandomImage(),
-    username: "test username",
-  };
+  const { data: request } = useAdminGetProfileVerificationQuery(
+    { id },
+    { enabled: typeof id === "string" }
+  );
 
   return (
     <section>
@@ -39,23 +32,23 @@ const View = () => {
           <Tr>
             <Td>{t("Photo")}</Td>
             <Td>
-              <Avatar className="w-[3rem]" src={account.photo} />
+              <Avatar className="w-[3rem]" src={request.idPhoto} />
             </Td>
           </Tr>
           <Tr>
             <Td>{t("username")}</Td>
-            <Td>{account.username}</Td>
+            <Td>{request.username}</Td>
           </Tr>
           <Tr>
             <Td>{t("full name")}</Td>
-            <Td>{account.fullName}</Td>
+            <Td>{request.fullName}</Td>
           </Tr>
           <Tr>
             <Td>{t("ID Photo")}</Td>
             <Td>
               <Image
                 className="w-[9rem] h-[7rem]"
-                src={account.idPhoto}
+                src={request.idPhoto}
               ></Image>
             </Td>
           </Tr>

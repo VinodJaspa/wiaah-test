@@ -3904,6 +3904,7 @@ export type Query = {
   adminGetNewsfeedPost: AdminNewsfeedPost;
   adminGetProduct?: Maybe<Product>;
   adminGetProfessions: Array<Profession>;
+  adminGetProfileVerificationRequest: AccountVerification;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetRefundRequest: Refund;
   adminGetReturnedOrders: Array<ReturnedOrder>;
@@ -4194,6 +4195,10 @@ export type QueryAdminGetProductArgs = {
 
 export type QueryAdminGetProfessionsArgs = {
   args: AdminGetProfessionInput;
+};
+
+export type QueryAdminGetProfileVerificationRequestArgs = {
+  id: Scalars["String"]["input"];
 };
 
 export type QueryAdminGetRawServiceArgs = {
@@ -5050,7 +5055,8 @@ export type SearchPopularProfilesInput = {
 };
 
 export type SearchServicesInput = {
-  q: Scalars["String"]["input"];
+  locationQuery?: InputMaybe<Scalars["String"]["input"]>;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SellerProductsRating = {
