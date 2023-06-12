@@ -272,6 +272,10 @@ export type AdminGetDishsInput = {
   type?: InputMaybe<RestaurantDishType>;
 };
 
+export type AdminGetIdentitiyVerificationRequestsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetLanguagesInput = {
   code?: InputMaybe<Scalars["String"]["input"]>;
   locale?: InputMaybe<Scalars["String"]["input"]>;
@@ -1193,7 +1197,6 @@ export type CreateProfileInput = {
 };
 
 export type CreateReactionInput = {
-  authorProfileId: Scalars["ID"]["input"];
   contentId: Scalars["ID"]["input"];
   contentType: ContentHostType;
 };
@@ -1293,7 +1296,9 @@ export type CreateShippingRuleInput = {
   cost: Scalars["Float"]["input"];
   countries: Array<ShippingCountryInput>;
   deliveryTimeRange: ShippingDeliveryTimeRangeInput;
+  destination: ShippingDestination;
   name: Scalars["String"]["input"];
+  shippingCompanyName: Scalars["String"]["input"];
   shippingType: ShippingType;
 };
 
@@ -3877,6 +3882,7 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"]["output"];
   adminGetAccount: Account;
   adminGetAccountBookingHistory: Array<BookedService>;
+  adminGetAccountIdentityVerificationRequests: Array<IdentityVerification>;
   adminGetAccountOrderById: Order;
   adminGetAccountPrivacySettings: PrivacySettings;
   adminGetAccountProducts: Array<Product>;
@@ -4099,6 +4105,10 @@ export type QueryAdminGetAccountBookingHistoryArgs = {
   accountId: Scalars["String"]["input"];
   accountType: Scalars["String"]["input"];
   args: GetBookingsHistoryInput;
+};
+
+export type QueryAdminGetAccountIdentityVerificationRequestsArgs = {
+  args: AdminGetIdentitiyVerificationRequestsInput;
 };
 
 export type QueryAdminGetAccountOrderByIdArgs = {
@@ -5518,11 +5528,6 @@ export type ShippingAddress = {
   zipCode?: Maybe<Scalars["String"]["output"]>;
 };
 
-export type ShippingCountry = {
-  __typename?: "ShippingCountry";
-  code: Scalars["String"]["output"];
-};
-
 export type ShippingCountryInput = {
   code: Scalars["String"]["input"];
 };
@@ -5538,6 +5543,11 @@ export type ShippingDeliveryTimeRangeInput = {
   to: Scalars["Int"]["input"];
 };
 
+export enum ShippingDestination {
+  Local = "local",
+  National = "national",
+}
+
 export type ShippingDetails = {
   __typename?: "ShippingDetails";
   available: Scalars["Boolean"]["output"];
@@ -5551,12 +5561,13 @@ export type ShippingDetails = {
 export type ShippingRule = {
   __typename?: "ShippingRule";
   cost: Scalars["Float"]["output"];
-  countries: Array<ShippingCountry>;
   deliveryTimeRange: ShippingDeliveryTimeRange;
+  destination: ShippingDestination;
   id: Scalars["ID"]["output"];
   listing: Scalars["Float"]["output"];
   name: Scalars["String"]["output"];
   sellerId: Scalars["ID"]["output"];
+  shippingCompanyName: Scalars["String"]["output"];
   shippingType: ShippingType;
 };
 
@@ -5570,6 +5581,7 @@ export type ShippingRuleGeoZone = {
 
 export enum ShippingType {
   ClickAndCollect = "click_and_collect",
+  Free = "free",
   Paid = "paid",
 }
 
@@ -6241,8 +6253,10 @@ export type UpdateShippingRuleInput = {
   cost?: InputMaybe<Scalars["Float"]["input"]>;
   countries?: InputMaybe<Array<ShippingCountryInput>>;
   deliveryTimeRange?: InputMaybe<ShippingDeliveryTimeRangeInput>;
+  destination?: InputMaybe<ShippingDestination>;
   id: Scalars["ID"]["input"];
   name?: InputMaybe<Scalars["String"]["input"]>;
+  shippingCompanyName?: InputMaybe<Scalars["String"]["input"]>;
   shippingType?: InputMaybe<ShippingType>;
 };
 

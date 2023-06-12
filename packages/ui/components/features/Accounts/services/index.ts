@@ -16,3 +16,5 @@ export * from "./useAdminGetAccountVerification";
 export * from "./useAdminUpdateAccount";
 export * from "./useGetMyAccount.query";
 export * from "./useUpdateMyAccount";
+export * from "./useAdminGetAccountIdentityVerificationRequests.query";
+export * from "./useAdminGetAccountVerificationRequests";

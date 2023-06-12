@@ -313,15 +313,22 @@ model ShippingSettings {
 }
 
 model ShippingRule {
-  id                String            @id @default(auto()) @map("_id") @db.ObjectId
-  sellerId          String
-  name              String
-  countries         ShippingCountry[]
-  cost              Float
-  deliveryTimeRange DeliveryTimeRange
-  shippingType      ShippingType
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt()
+  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId            String
+  shippingCompanyName String
+  name                String
+  // countries         ShippingCountry[]
+  destination         ShippingDestination
+  cost                Float
+  deliveryTimeRange   DeliveryTimeRange
+  shippingType        ShippingType
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt()
+}
+
+enum ShippingDestination {
+  local
+  national
 }
 
 model ShippingTypeRule {
@@ -352,6 +359,7 @@ type ShippingCountry {
 enum ShippingType {
   paid
   click_and_collect
+  free
 }
 
 enum ProductStatus {

@@ -506,6 +506,13 @@ export const AdminNavigationSidebar: React.FC<{
       slug: "account-verification",
     },
     {
+      icon: <VerifiedIcon />,
+      name: t("Account Identity Verifications"),
+      onClick() {},
+      subLinks: [],
+      slug: "account-identity-verification",
+    },
+    {
       icon: <BiDish />,
       name: t("Food"),
       onClick() {},

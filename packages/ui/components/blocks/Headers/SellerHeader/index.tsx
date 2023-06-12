@@ -35,6 +35,7 @@ import { runIfFn } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
+
 export interface HeaderNavLink {
   link: {
     name: TranslationTextType;
@@ -42,6 +43,7 @@ export interface HeaderNavLink {
   };
   icon: React.ReactNode;
 }
+
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
   props?: HtmlDivProps;
@@ -138,7 +140,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <AccountsProfileOptions>
             <div className="flex flex-col justify-center">
               <Avatar
-                className=""
+                className="text-2xl"
                 showBorder={false}
                 name="wiaah"
                 src="/wiaah_logo.png"

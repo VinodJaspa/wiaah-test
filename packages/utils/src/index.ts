@@ -22,4 +22,4 @@ export * from "./compare";
 export * from "./passPropsToFnOrElem";
 export * from "./mocks";
 
-export const isDev = false;
+export const isDev = true ;

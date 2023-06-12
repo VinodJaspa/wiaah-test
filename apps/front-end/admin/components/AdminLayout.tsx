@@ -17,7 +17,7 @@ export const AdminLayout: React.FC = ({ children }) => {
         <div className="flex pb-8 thinScroll flex-col h-screen overflow-y-scroll px-12 w-full gap-4 col-span-5">
           <>
             <AdminHeader
-              title={getCurrentPath().split("/")[1].replace("-", " ")}
+              title={getCurrentPath().split("/")[1].split("-").join(" ")}
             />
             {children}
           </>

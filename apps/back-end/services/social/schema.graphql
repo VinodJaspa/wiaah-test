@@ -1051,7 +1051,6 @@ input UpdatePostAdminInput {
 input CreateReactionInput {
   contentId: ID!
   contentType: ContentHostType!
-  authorProfileId: ID!
 }
 
 input RemoveReactionInput {

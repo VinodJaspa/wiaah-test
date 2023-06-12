@@ -24,13 +24,13 @@ export class ShippingDetailsResolver {
       },
       where: {
         AND: [
-          {
-            countries: {
-              some: {
-                code: ref.country,
-              },
-            },
-          },
+          // {
+          //   countries: {
+          //     some: {
+          //       code: ref.country,
+          //     },
+          //   },
+          // },
           {
             id: {
               in: ref.shippingRulesIds,

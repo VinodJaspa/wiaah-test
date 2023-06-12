@@ -106,17 +106,6 @@ export const MarketServiceSearchResaultsView: React.FC<{
       <div className="flex flex-col w-full gap-4">
         {serviceType === ServiceType.Hotel ? (
           <div className="flex flex-col gap-2">
-            <div className="w-full justify-start ">
-              <div className="flex items-end justify-between w-full">
-                <div className="flex gap-4">
-                  <Input name="title" label={t("Title")} />
-                  <Input name="rate" type={"number"} label={t("Rating")} />
-                  <Input name="price" type="number" label={t("Price")} />
-                  <Input name="seller" label={t("Seller")} />
-                </div>
-                <Button>{t("Search")}</Button>
-              </div>
-            </div>
             <div className="w-full flex flex-col gap-4 justify-center">
               <DisplayFoundServices
                 location={searchQuery}

@@ -5,6 +5,7 @@ import { CreateIdentityVerificationInput } from './dto';
 import {
   accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
@@ -14,6 +15,7 @@ import {
 } from './commands';
 import { UseGuards } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
+import { AdminGetIdentitiyVerificationRequestsInput } from './dto/admin-get-identitiy-verification-requests';
 
 @Resolver(() => IdentityVerification)
 export class IdentityVerificationResolver {
@@ -31,6 +33,21 @@ export class IdentityVerificationResolver {
       where: {
         userId: id,
       },
+    });
+  }
+
+  @Query(() => [IdentityVerification])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetAccountIdentityVerificationRequests(
+    @Args('args') args: AdminGetIdentitiyVerificationRequestsInput,
+  ): Promise<IdentityVerification[]> {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.userIdenityVerificationRequest.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip,
+      take,
     });
   }
 

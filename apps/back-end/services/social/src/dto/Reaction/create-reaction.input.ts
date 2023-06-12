@@ -8,7 +8,4 @@ export class CreateReactionInput {
 
   @Field(() => ContentHostType)
   contentType: ContentHostType;
-
-  @Field(() => ID)
-  authorProfileId: string;
 }

@@ -1,20 +1,14 @@
-import { Form, Formik } from "formik";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiEdit } from "react-icons/bi";
 import { FiPlusSquare } from "react-icons/fi";
-import { PriceType } from "types";
 import {
-  Divider,
   Button,
   Table,
   Tr,
   Td,
   Th,
   TBody,
-  Switch,
-  PriceDisplay,
   TableContainer,
   SectionHeader,
   useGetMyShippingRules,
@@ -23,6 +17,7 @@ import {
   HStack,
   EditIcon,
   TrashIcon,
+  Checkbox,
 } from "@UI";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -46,7 +41,9 @@ export const ShippingSettings: React.FC = () => {
       </SectionHeader>
       <p className="lg:text-xl ">
         {t("Define your shipping regions and how rates are calculated.")}{" "}
-        <span className="text-primary cursor-pointer">{t("Learn more")}</span>
+        <button className="text-primary cursor-pointer">
+          {t("Learn more")}
+        </button>
       </p>
       <TableContainer>
         <Table className="w-full">
@@ -60,7 +57,10 @@ export const ShippingSettings: React.FC = () => {
           <TBody>
             {data
               ? data.map((method, i) => (
-                  <Tr>
+                  <Tr key={method.id + i}>
+                    <Td>
+                      <Checkbox />
+                    </Td>
                     <Td className="pl-0">
                       <HStack>
                         {method?.countries?.at(0)?.code ? (

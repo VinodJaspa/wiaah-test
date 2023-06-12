@@ -155,6 +155,7 @@ type Query {
   getMyAccount: Account!
   getUserAccount(userId: String!): Account!
   adminGetAccountVerification(accountId: String!): IdentityVerification!
+  adminGetAccountIdentityVerificationRequests(args: AdminGetIdentitiyVerificationRequestsInput!): [IdentityVerification!]!
   getMyVerificationRequest: IdentityVerification!
 }
 
@@ -224,6 +225,10 @@ input AdminGetStaffAccountsInput {
 enum StaffAccountType {
   admin
   moderator
+}
+
+input AdminGetIdentitiyVerificationRequestsInput {
+  pagination: GqlPaginationInput!
 }
 
 type Mutation {

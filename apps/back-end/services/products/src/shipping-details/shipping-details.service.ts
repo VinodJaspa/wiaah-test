@@ -18,13 +18,13 @@ export class ShippingDetailsService {
               in: shippingRulesIds,
             },
           },
-          {
-            countries: {
-              some: {
-                code: countryCode,
-              },
-            },
-          },
+          // {
+          //   countries: {
+          //     some: {
+          //       code: countryCode,
+          //     },
+          //   },
+          // },
         ],
       },
       take: shippingRulesIds.length,

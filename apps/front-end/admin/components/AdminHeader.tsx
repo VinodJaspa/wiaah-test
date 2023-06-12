@@ -25,11 +25,7 @@ export const AdminHeader: React.FC<{ title: string }> = ({ title = "" }) => {
         </InputGroup>
         <div className="flex items-center gap-4 text-black">
           <BellOutlineIcon className="text-icon" />
-          <Avatar
-            className="w-[2.5rem]"
-            src={user?.photoSrc}
-            alt={user?.name}
-          />
+          <Avatar className="text-3xl" src={user?.photoSrc} alt={user?.name} />
         </div>
       </div>
     </div>

@@ -155,11 +155,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     setDrawerOpen(false);
   };
 
-  const { pagination } = usePaginationControls();
-  const { data } = useGetDiscoverPlaces({
-    pagination,
-  });
-
   const { pagination: storiesPagination } = usePaginationControls();
 
   const { data: stories } = useGetRecentStories({
