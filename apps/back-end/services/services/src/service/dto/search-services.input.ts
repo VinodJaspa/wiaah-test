@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { ExtendableGqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class SearchServicesInput {
+export class SearchServicesInput extends ExtendableGqlPaginationInput {
   @Field(() => String, { nullable: true })
   q?: string;
 

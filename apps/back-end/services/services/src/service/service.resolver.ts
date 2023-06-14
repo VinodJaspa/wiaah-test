@@ -10,7 +10,11 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { RawService, Service } from './entities/service.entity';
+import {
+  RawService,
+  Service,
+  ServiceSearchResponse,
+} from './entities/service.entity';
 import { ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import {
@@ -129,6 +133,13 @@ export class ServiceResolver {
       take: pagination.take + 1,
     });
 
+    const count = await this.prisma.service.count({
+      where: {
+        sellerId: userId,
+        status: 'active',
+      },
+    });
+
     return {
       cursor: pagination.cursor,
       data:
@@ -139,6 +150,7 @@ export class ServiceResolver {
           : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
       nextCursor: res.at(res.length - 1).id,
+      total: count,
     };
   }
 
@@ -209,7 +221,7 @@ export class ServiceResolver {
     return true;
   }
 
-  @Query(() => [Service])
+  @Query(() => ServiceSearchResponse)
   async searchServices(
     @Args('args', { type: () => SearchServicesInput })
     searchArgs: SearchServicesInput,
@@ -384,11 +396,18 @@ export class ServiceResolver {
       take: args.take,
     });
 
+    const count = await this.prisma.service.count({
+      where: {
+        status: 'active',
+      },
+    });
+
     return {
       cursor: args.cursor!,
       data: [],
       hasMore: false,
       nextCursor: services.at(args.take - 1)?.id,
+      total: count,
     };
   }
 

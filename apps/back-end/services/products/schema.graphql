@@ -151,6 +151,7 @@ type ShopCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ShopDayWorkingHours {
@@ -345,6 +346,7 @@ type ProductsCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ProductFilterGroupValue {

@@ -1,22 +1,14 @@
 import { NextPage } from "next";
 import React from "react";
-import {
-  Container,
-  NotFound,
-  useMutateSearchFilters,
-  useSearchFilters,
-} from "ui";
+import { Container, MarketServiceSearchView, useMutateSearchFilters } from "ui";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 import { MasterLayout } from "@components";
 import { useRouter } from "next/router";
-import {
-  ExtractServiceTypeFromQuery,
-  getServiceView,
-  ServicesTypeSwitcher,
-} from "utils";
+import { ExtractServiceTypeFromQuery } from "utils";
 import { ServicesViewsList } from "@data";
-import { SERVICESTYPE_INDEXKEY } from "ui";
+import { SERVICESTYPE_INDEXKEY, MarketServiceSearchResaultsView } from "ui";
+import { ServiceType } from "@features/API";
 
 const ServiceCategory: NextPage = () => {
   const { t } = useTranslation();
@@ -37,12 +29,7 @@ const ServiceCategory: NextPage = () => {
         }}
       >
         <Container className="px-4 py-8">
-          <ServicesTypeSwitcher
-            serviceType={serviceType}
-            get={getServiceView.SEARCH}
-            fallbackComponent={NotFound}
-            servicesList={ServicesViewsList}
-          />
+          <MarketServiceSearchView slug={""} serviceType={serviceType as ServiceType} />
         </Container>
       </MasterLayout>
     </>

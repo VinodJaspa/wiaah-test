@@ -3,7 +3,12 @@ import React from "react";
 import Head from "next/head";
 import { MasterLayout } from "@components";
 import { useTranslation } from "react-i18next";
-import { Container, BreadCrumb, MarketServiceSearchResaultsView } from "ui";
+import {
+  Container,
+  BreadCrumb,
+  MarketServiceSearchResaultsView,
+  MarketServiceSearchView,
+} from "ui";
 import { ServiceType } from "@features/API";
 import { useRouting } from "routing";
 
@@ -26,7 +31,7 @@ const filtered: NextPage = () => {
             links={getCurrentPath()
               .split("/")
               .filter((link) => link.length > 0)
-              .map((link, i) => ({ text: link, url: link }))}
+              .map((link) => ({ text: link, url: link }))}
           />
           <MarketServiceSearchResaultsView
             searchQuery={searchLocation}

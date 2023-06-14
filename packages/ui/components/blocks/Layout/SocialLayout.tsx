@@ -4,7 +4,7 @@ import {
   CommentReportModal,
 } from "@blocks/Modals";
 import { SocialStoryModal } from "@blocks/Social";
-import { ContentHostType } from "@features/API";
+import { ContentHostType, ServiceType } from "@features/API";
 import {
   LocationSearchDrawer,
   MasterLocationMapModal,
@@ -77,6 +77,7 @@ interface SocialAtomValue {
   requestRefundId?: string;
   showNewsletterRegisteration: boolean;
   showContactUs: boolean;
+  marketServiceSearchResultsFilters?: ServiceType;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -231,6 +232,10 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("showNewsletterRegisteration", false),
     showContactUs: () => setControls("showContactUs", true),
     hideContactUs: () => setControls("showContactUs", false),
+    showServiceSearchResultsFilter: (serviceType: ServiceType) =>
+      setControls("marketServiceSearchResultsFilters", serviceType),
+    hideServiceSearchResultsFilter: () =>
+      setControls("marketServiceSearchResultsFilters", undefined),
     value,
   };
 }

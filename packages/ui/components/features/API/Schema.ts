@@ -869,6 +869,7 @@ export type CommentsCursorPaginationResponse = {
   data: Array<Comment>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export enum CommentsVisibility {
@@ -1573,6 +1574,7 @@ export type GetActionsCursorResponse = {
   data: Array<Action>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type GetAddableHashtagsInput = {
@@ -3388,6 +3390,7 @@ export type NewsfeedPostsPaginationResponse = {
   data: Array<NewsfeedPost>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type Order = {
@@ -3743,6 +3746,7 @@ export type ProductsCursorPaginationResponse = {
   data: Array<Product>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type Profession = {
@@ -4089,7 +4093,7 @@ export type Query = {
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
   searchPopularUsers: ProfilePaginatedResponse;
-  searchServices: Array<Service>;
+  searchServices: ServiceSearchResponse;
   sendContactUsMessage: Scalars["Boolean"]["output"];
   updateComment: PaginationCommentsResponse;
 };
@@ -5056,6 +5060,7 @@ export type SearchPopularProfilesInput = {
 
 export type SearchServicesInput = {
   locationQuery?: InputMaybe<Scalars["String"]["input"]>;
+  pagination: GqlPaginationInput;
   q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -5431,6 +5436,13 @@ export enum ServiceRestriction {
   Smoking = "smoking",
 }
 
+export type ServiceSearchResponse = {
+  __typename?: "ServiceSearchResponse";
+  data: Array<Service>;
+  hasMore: Scalars["Boolean"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
 export type ServiceServiceDayWorkingHours = {
   __typename?: "ServiceServiceDayWorkingHours";
   periods: Array<Scalars["String"]["output"]>;
@@ -5520,6 +5532,7 @@ export type ServicesCursorPaginationResponse = {
   data: Array<Service>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type ShippingAddress = {
@@ -5638,6 +5651,7 @@ export type ShopCursorPaginationResponse = {
   data: Array<Shop>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type ShopDayWorkingHours = {

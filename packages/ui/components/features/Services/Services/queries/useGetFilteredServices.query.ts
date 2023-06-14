@@ -7,42 +7,57 @@ import {
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
-export type SearchServicesQueryVariables = Exact<{
+export type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
 }>;
 
-export type SearchServicesQuery = {
+export type SearchServiceQuery = {
   __typename?: "Query";
-  searchServices: Array<{
-    __typename?: "Service";
-    id: string;
-    name: string;
-    price: number;
-    type: ServiceType;
-    adaptedFor?: Array<ServiceAdaptation> | null;
-    airCondition?: boolean | null;
-    bathrooms?: number | null;
-    beds?: number | null;
-    brand?: string | null;
-    rating: number;
-    description: string;
-    thumbnail: string;
-    shop: {
-      __typename?: "Shop";
-      location: {
-        __typename?: "Location";
-        address: string;
-        city: string;
-        country: string;
-        lat: number;
-        long: number;
-        state: string;
+  searchServices: {
+    __typename?: "ServiceSearchResponse";
+    hasMore: boolean;
+    total: number;
+    data: Array<{
+      __typename?: "Service";
+      id: string;
+      name: string;
+      price: number;
+      beds?: number | null;
+      bathrooms?: number | null;
+      adaptedFor?: Array<ServiceAdaptation> | null;
+      airCondition?: boolean | null;
+      brand?: string | null;
+      description: string;
+      ingredients?: Array<string> | null;
+      cleaningFee?: number | null;
+      reviews: number;
+      thumbnail: string;
+      rating: number;
+      sellerId: string;
+      type: ServiceType;
+      shop: {
+        __typename?: "Shop";
+        id: string;
+        location: {
+          __typename?: "Location";
+          address: string;
+          city: string;
+          country: string;
+          lat: number;
+          long: number;
+          state: string;
+        };
+        sellerProfile: {
+          __typename?: "Profile";
+          username: string;
+          photo: string;
+        };
       };
-    };
-  }>;
+    }>;
+  };
 };
 
-type args = SearchServicesQueryVariables["args"];
+type args = SearchServiceQueryVariables["args"];
 export const getFilteredServicesQuery = (args: args) => [
   "get-filtered-services",
   { args },
@@ -55,37 +70,51 @@ export const useGetFilteredServicesQuery = (args: args) =>
     const res = await client
       .setQuery(
         `
-query searchServices($args: SearchServicesInput!) {
-  searchServices(args: $args) {
-    id
-    name
-    price
-    type
-    adaptedFor
-    airCondition
-    bathrooms
-    beds
-    brand
-    rating
-    thumbnail
-    shop {
-      location {
-        address
-        city
-        country
-        lat
-        long
-        state
+query SearchService($args:SearchServicesInput!){
+  searchServices(args:$args){
+    data {      
+        id
+        name
+        price
+        beds
+        bathrooms
+        adaptedFor
+        airCondition
+        brand
+        description
+        ingredients
+        cleaningFee
+        reviews
+        thumbnail
+        rating
+        type
+        shop {
+        id
+        location {
+            address
+            city
+            country
+            lat
+            long
+            state
+        }
+        sellerProfile {
+            username
+            photo
+        }
       }
+      sellerId
     }
+    hasMore
+    total
   }
 }
     `
       )
-      .setVariables<SearchServicesQueryVariables>({
+      .setVariables<SearchServiceQueryVariables>({
         args,
       })
-      .send<SearchServicesQuery>();
+      .send<SearchServiceQuery>();
 
     return res.data.searchServices;
   });

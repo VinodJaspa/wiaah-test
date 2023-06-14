@@ -1,20 +1,45 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "@UI/../routing";
 import { useResponsive } from "@UI/../hooks";
-import { useGetSearchServicesQuery } from "../Services";
+import {
+  useGetFilteredServicesQuery,
+  useGetSearchServicesQuery,
+} from "../Services";
 import {
   DisplayFoundServices,
   ServicesSearchGrid,
   ServicesSearchResultsFiltersSidebar,
 } from "../components";
-import { Button, Input, Pagination, Select, SelectOption } from "@partials";
-import { DateFormInput, ServiceSearchFilter, SpinnerFallback } from "@blocks";
+import {
+  Accordion,
+  AspectRatio,
+  AspectRatioImage,
+  Button,
+  DotIcon,
+  Drawer,
+  HStack,
+  Input,
+  LocationIcon,
+  Modal,
+  ModalContent,
+  Pagination,
+  PriceDisplay,
+  Select,
+  SelectOption,
+  StarIcon,
+} from "@partials";
+import {
+  DateFormInput,
+  ServiceSearchFilter,
+  SpinnerFallback,
+  usePaginationControls,
+  useSocialControls,
+} from "@blocks";
 import {
   HealthCenterDoctorAvailablityStatus,
   PresentationType,
+  ServicePresentationType,
   ServiceType,
-  Vehicle,
 } from "@features/API";
 import { getRandomName, mapArray, randomNum, useForm } from "@UI/../utils/src";
 import { HotelDetailedSearchCard } from "../hotels";
@@ -23,36 +48,93 @@ import {
   ResturantSearchList,
 } from "../resturant";
 import { HealthCenterServiceSearchResultsList } from "../HealthCenter";
-import {
-  RecommendedBeautyCenterSearchList,
-  useGetFilteredBeautyCenterTreatmentsQuery,
-} from "../beautyCenter";
+import { RecommendedBeautyCenterSearchList } from "../beautyCenter";
 import { getRandomServiceImage } from "@UI/placeholder";
+import { VehicleSearchCard } from "../Vehicle";
+import { SectionHeader } from "@sections/ShoppingManagement";
+import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
 import {
-  VehicleSearchCard,
-  VehicleSearchCardProps,
-  VehicleSearchList,
-} from "../Vehicle";
-import { VehicleSearchData } from "api";
+  MarketHotelServiceSearchCardAlt,
+  MarketRestaurantServiceSearchCardAlt,
+} from "./MarketServiceSearchView";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
   const { t } = useTranslation();
-  const { isTablet } = useResponsive();
-  const { form } = useForm<Parameters<typeof useGetSearchServicesQuery>[0]>({
-    q: "",
+  const { isTablet, isMobile } = useResponsive();
+  const { showServiceSearchResultsFilter } = useSocialControls();
+  const { controls, pagination } = usePaginationControls();
+  const { form } = useForm<Parameters<typeof useGetFilteredServicesQuery>[0]>({
+    pagination,
   });
   const {
     data: services,
     isLoading,
     isError,
-  } = useGetSearchServicesQuery(form);
+  } = useGetFilteredServicesQuery(form);
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
-  return (
+  return isMobile ? (
+    <div className="flex flex-col gap-4">
+      <SectionHeader
+        sectionTitle={t(`${services?.total} ${t("results found")}`)}
+      >
+        <button onClick={() => showServiceSearchResultsFilter(serviceType)}>
+          <FilterIcon />
+        </button>
+      </SectionHeader>
+
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
+        <div className="grid grid-cols-2 gap-2">
+          {mapArray(
+            services?.data,
+            ({
+              name,
+              price,
+              rating,
+              shop,
+              thumbnail,
+              description,
+              reviews,
+            }) => {
+              switch (serviceType) {
+                case ServiceType.Hotel:
+                  return (
+                    <MarketHotelServiceSearchCardAlt
+                      description={description}
+                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                      name={name}
+                      price={price}
+                      rating={rating}
+                      thumbnail={thumbnail}
+                    />
+                  );
+
+                case ServiceType.Restaurant:
+                  return (
+                    <MarketRestaurantServiceSearchCardAlt
+                      reviews={reviews}
+                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                      name={name}
+                      price={price}
+                      rating={rating}
+                      thumbnail={thumbnail}
+                    />
+                  );
+                default:
+                  break;
+              }
+            }
+          )}
+        </div>
+      </SpinnerFallback>
+
+      <MarketServiceSearchResultsFiltersModal />
+    </div>
+  ) : (
     <div
       className={`${
         isTablet ? "flex-col gap-4" : "flex-row gap-12"
@@ -109,36 +191,38 @@ export const MarketServiceSearchResaultsView: React.FC<{
             <div className="w-full flex flex-col gap-4 justify-center">
               <DisplayFoundServices
                 location={searchQuery}
-                servicesNum={services?.length || 0}
+                servicesNum={services?.data.length || 0}
               />
-              {/* {services?.length || 0 < 1 ? (
+              {(services?.data?.length || 0) < 1 ? (
                 <div className="w-fit h-48 flex just-center items-center text-2xl">
-                <span>{t("no services found")}</span>
+                  <span>{t("no services found")}</span>
                 </div>
-            ) : ( */}
-              {mapArray(services, (service, i) => (
-                <HotelDetailedSearchCard
-                  name={service.name}
-                  price={service.price}
-                  rate={service.rating}
-                  reviews={service.reviews}
-                  sellerName={service?.shop?.sellerProfile?.username}
-                  description={service.description}
-                  id={service.id}
-                  location={{
-                    ...service.shop.location,
-                    cords: {
-                      lat: service.shop.location.lat,
-                      lng: service.shop.location.long,
-                    },
-                  }}
-                  taxesAndFeesIncluded
-                  thumbnail={service.thumbnail}
-                  vertical={isTablet}
-                  key={i}
-                />
-              ))}
-              {/* )} */}
+              ) : (
+                <>
+                  {mapArray(services?.data, (service, i) => (
+                    <HotelDetailedSearchCard
+                      name={service.name}
+                      price={service.price}
+                      rate={service.rating}
+                      reviews={service.reviews}
+                      sellerName={service?.shop?.sellerProfile?.username}
+                      description={service.description}
+                      id={service.id}
+                      location={{
+                        ...service.shop.location,
+                        cords: {
+                          lat: service.shop.location.lat,
+                          lng: service.shop.location.long,
+                        },
+                      }}
+                      taxesAndFeesIncluded
+                      thumbnail={service.thumbnail}
+                      vertical={isTablet}
+                      key={i}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           </div>
         ) : null}
@@ -233,32 +317,30 @@ export const MarketServiceSearchResaultsView: React.FC<{
 
         {showOn([ServiceType.Vehicle]) ? (
           <ServicesSearchGrid
-            data={
-              [...Array(24)].map(() => ({
-                id: "",
-                title: "Vehicle Name",
-                brand: "",
-                model: "",
-                price: randomNum(150),
-                cancelationPolicies: [],
-                presentations: [
-                  {
-                    src: getRandomServiceImage(ServiceType.Vehicle),
-                    type: PresentationType.Image,
-                  },
-                ],
-                thumbnail:
-                  "https://d.newsweek.com/en/full/2203419/2023-ford-expedition.jpg?w=1600&h=1600&q=88&f=1f6dd5c5cc318e1239e31777f34a50d2",
-                properties: {
-                  airCondition: true,
-                  gpsAvailable: true,
-                  lugaggeCapacity: 4,
-                  maxSpeedInKm: 150,
-                  seats: 4,
-                  windows: 4,
+            data={[...Array(24)].map(() => ({
+              id: "",
+              title: "Vehicle Name",
+              brand: "",
+              model: "",
+              price: randomNum(150),
+              cancelationPolicies: [],
+              presentations: [
+                {
+                  src: getRandomServiceImage(ServiceType.Vehicle),
+                  type: ServicePresentationType.Img,
                 },
-              })) as Vehicle[]
-            }
+              ],
+              thumbnail:
+                "https://d.newsweek.com/en/full/2203419/2023-ford-expedition.jpg?w=1600&h=1600&q=88&f=1f6dd5c5cc318e1239e31777f34a50d2",
+              properties: {
+                airCondition: true,
+                gpsAvailable: true,
+                lugaggeCapacity: 4,
+                maxSpeedInKm: 150,
+                seats: 4,
+                windows: 4,
+              },
+            }))}
             component={VehicleSearchCard}
             handlePassData={(props) => ({
               ...props,
@@ -273,5 +355,33 @@ export const MarketServiceSearchResaultsView: React.FC<{
         <Pagination />
       </div>
     </div>
+  );
+};
+
+export const MarketServiceSearchResultsFiltersModal: React.FC = () => {
+  const { hideServiceSearchResultsFilter, value: serviceType } =
+    useSocialControls("marketServiceSearchResultsFilters");
+  const { t } = useTranslation();
+  const isOpen = Object.values(ServiceType).includes(
+    serviceType as ServiceType
+  );
+
+  return (
+    <Drawer
+      full
+      position="bottom"
+      isLazy
+      onClose={hideServiceSearchResultsFilter}
+      isOpen={isOpen}
+    >
+      <ModalContent>
+        <SectionHeader
+          onBack={hideServiceSearchResultsFilter}
+          sectionTitle={`${t("Filter")}`}
+        >
+          <button>{t("Clear all")}</button>
+        </SectionHeader>
+      </ModalContent>
+    </Drawer>
   );
 };

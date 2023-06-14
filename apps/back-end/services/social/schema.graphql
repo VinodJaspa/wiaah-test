@@ -91,6 +91,7 @@ type NewsfeedPostsPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type AdminNewsfeedPost {
@@ -285,6 +286,7 @@ type CommentsCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ContentReaction {
@@ -557,6 +559,7 @@ type GetActionsCursorResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ActionTopHashtagResponse {
