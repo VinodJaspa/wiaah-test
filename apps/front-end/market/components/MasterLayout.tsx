@@ -12,6 +12,7 @@ import {
   CommentReportModal,
   RootProps,
   MasterLocationMapModal,
+  SocialLayout,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -49,6 +50,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
       <CommentReportModal />
       <MasterLocationMapModal />
       <AuthPopup />
+      <SocialLayout />
       {!social && <Header />}
       {social && <SocialHeader />}
       <main className="flex w-full flex-col">

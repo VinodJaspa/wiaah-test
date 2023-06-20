@@ -20,6 +20,7 @@ import { ServiceDiscoveryModule } from './service-discovery/service-discovery.mo
 import { ServiceDiscountModule } from './service-discount/service-discount.module';
 import { ServiceCashbackModule } from './service-cashback/service-cashback.module';
 import { BookServiceModule } from '@book-service/book-service.module';
+import { ServiceFiltersModule } from './service-filters/service-filters.module';
 
 @Global()
 @Module({
@@ -31,6 +32,7 @@ import { BookServiceModule } from '@book-service/book-service.module';
         username: 'admin',
       },
     }),
+    ServiceFiltersModule,
   ],
   exports: [ElasticsearchModule],
   providers: [],

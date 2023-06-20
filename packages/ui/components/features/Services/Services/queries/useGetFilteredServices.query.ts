@@ -26,6 +26,12 @@ export type SearchServiceQuery = {
       bathrooms?: number | null;
       adaptedFor?: Array<ServiceAdaptation> | null;
       airCondition?: boolean | null;
+      gpsAvailable?: boolean | null;
+      seats?: number | null;
+      windows?: number | null;
+      lugaggeCapacity?: number | null;
+      treatmentCategory?: string | null;
+      maxSpeedInKm?: number | null;
       brand?: string | null;
       description: string;
       ingredients?: Array<string> | null;
@@ -33,8 +39,12 @@ export type SearchServiceQuery = {
       reviews: number;
       thumbnail: string;
       rating: number;
-      sellerId: string;
       type: ServiceType;
+      speciality?: string | null;
+      availableAppointments?: Array<string> | null;
+      healthCenterBookedAppointments: Array<string>;
+      saved: boolean;
+      sellerId: string;
       shop: {
         __typename?: "Shop";
         id: string;
@@ -50,6 +60,7 @@ export type SearchServiceQuery = {
         sellerProfile: {
           __typename?: "Profile";
           username: string;
+          verified: boolean;
           photo: string;
         };
       };
@@ -70,37 +81,48 @@ export const useGetFilteredServicesQuery = (args: args) =>
     const res = await client
       .setQuery(
         `
-query SearchService($args:SearchServicesInput!){
-  searchServices(args:$args){
-    data {      
-        id
-        name
-        price
-        beds
-        bathrooms
-        adaptedFor
-        airCondition
-        brand
-        description
-        ingredients
-        cleaningFee
-        reviews
-        thumbnail
-        rating
-        type
-        shop {
+query SearchService($args: SearchServicesInput!) {
+  searchServices(args: $args) {
+    data {
+      id
+      name
+      price
+      beds
+      bathrooms
+      adaptedFor
+      airCondition
+      gpsAvailable
+      seats
+      windows
+      lugaggeCapacity
+      treatmentCategory
+      maxSpeedInKm
+      brand
+      description
+      ingredients
+      cleaningFee
+      reviews
+      thumbnail
+      rating
+      type
+      speciality
+      availableAppointments
+      healthCenterBookedAppointments
+      saved
+      shop {
         id
         location {
-            address
-            city
-            country
-            lat
-            long
-            state
+          address
+          city
+          country
+          lat
+          long
+          state
         }
         sellerProfile {
-            username
-            photo
+          username
+          verified
+          photo
         }
       }
       sellerId
@@ -109,6 +131,7 @@ query SearchService($args:SearchServicesInput!){
     total
   }
 }
+
     `
       )
       .setVariables<SearchServiceQueryVariables>({

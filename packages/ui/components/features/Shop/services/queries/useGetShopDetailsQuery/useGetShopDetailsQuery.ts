@@ -44,7 +44,7 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
   > & {
       sellerProfile: { __typename?: "Profile" } & Pick<
         Profile,
-        "photo" | "username" | "ownerId"
+        "photo" | "username" | "ownerId" | "id"
       >;
       location: { __typename?: "Location" } & Pick<
         Location,
@@ -133,6 +133,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
       id: "testid",
       images: [...Array(10)].map(() => getRandomImage()),
       sellerProfile: {
+        id: "",
         ownerId: "",
         photo: getRandomImage(),
         username: getRandomName().firstName,
@@ -219,6 +220,7 @@ query getShopDetails($userId:String!){
     createdAt
     description
 		sellerProfile {
+      id
       photo
       username
       ownerId

@@ -13,6 +13,7 @@ import {
   useInfiniteQuery,
   useQuery,
 } from "react-query";
+import { getRandomHotelRoomName } from "@features/Statistics";
 
 export type GetShopsQueryVariables = Exact<{
   input: FilteredShopsInput;
@@ -82,9 +83,10 @@ query getShops(
       () => ({
         banner: getRandomImage(),
         id: "",
-        name: "Service name",
+        name: getRandomHotelRoomName(),
         ownerId: "",
         storeType: StoreType.Product,
+        type: ServiceType.Hotel,
         verified: true,
       })
     );

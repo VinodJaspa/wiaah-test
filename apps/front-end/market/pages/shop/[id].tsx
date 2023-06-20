@@ -1,17 +1,21 @@
+import React from "react";
+import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import MasterLayout from "../../components/MasterLayout";
+import { ShopView } from "../../components/Shop/ShopView";
 import {
-  SellerLayout,
+  Container,
   ServiceDetailsView,
+  ShopDetailsView,
   getShopDetailsQueryFetcher,
   getShopDetailsQueryKey,
   setQueryClientServerSideProps,
   useGetShopDetailsQuery,
-} from "@UI";
+} from "ui";
+import { Collaboration } from "ui/components/blocks/Collaboration";
 import { StoreType } from "@features/API";
-import { GetServerSideProps } from "next";
-import React from "react";
-import { QueryClient, dehydrate } from "react-query";
 import { useRouting } from "routing";
-import { ShopDetailsView } from "@components";
+import { QueryClient, dehydrate } from "react-query";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context?.params["id"] as string;
@@ -35,22 +39,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-const ShopView: React.FC = () => {
+const ServiceDetailPage: NextPage = () => {
   const { getParam } = useRouting();
 
   const id = getParam("id");
-
   const { data: shop } = useGetShopDetailsQuery(id, { enabled: !!id });
 
+  // get product details from api
   return (
-    <SellerLayout>
-      {shop.storeType === StoreType.Service ? (
-        <ServiceDetailsView id={id} />
-      ) : (
-        <ShopDetailsView accountId={id} />
-      )}
-    </SellerLayout>
+    <>
+      <Head>
+        <title>Wiaah | Shop</title>
+      </Head>
+      <MasterLayout>
+        {shop?.storeType === StoreType.Service ? (
+          <ServiceDetailsView id={id} />
+        ) : (
+          <ShopDetailsView id={id} />
+        )}
+        <Container>
+          <Collaboration />
+        </Container>
+      </MasterLayout>
+    </>
   );
 };
 
-export default ShopView;
+export default ServiceDetailPage;

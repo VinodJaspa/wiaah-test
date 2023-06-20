@@ -94,6 +94,7 @@ export class ServiceResolver {
   ) {}
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
   async uploadFile(
     @Args({ name: 'file', type: () => TestUploadFile })
     file: TestUploadFile,
@@ -107,6 +108,7 @@ export class ServiceResolver {
   }
 
   @Query(() => ServicesCursorPaginationResponse)
+  @UseGuards(new GqlAuthorizationGuard([]))
   async getUserServices(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('userId') userId: string,
@@ -411,6 +413,42 @@ export class ServiceResolver {
     };
   }
 
+  @Mutation(() => Boolean)
+  async toggleSaveService(
+    @Args('serviceId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    try {
+      const saved = await this.prisma.savedService.findUnique({
+        where: {
+          serviceId_userId: {
+            serviceId: id,
+            userId: user.id,
+          },
+        },
+      });
+
+      if (saved) {
+        await this.prisma.savedService.delete({
+          where: {
+            id: saved.id,
+          },
+        });
+      } else {
+        await this.prisma.savedService.create({
+          data: {
+            serviceId: id,
+            userId: user.id,
+          },
+        });
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   @Query(() => HotelAvailablity)
   async getHotelAvailablity(
     @Args('id') id: string,
@@ -685,6 +723,45 @@ export class ServiceResolver {
     if (!res) return null;
 
     return getTranslatedResource({ langId, resource: res.title });
+  }
+
+  @ResolveField(() => [String])
+  async healthCenterBookedAppointments(
+    @Parent() service: Service,
+  ): Promise<Date[]> {
+    const now = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate(),
+    );
+    const booked = await this.prisma.bookedService.findMany({
+      where: {
+        serviceId: service.id,
+        checkin: {
+          gte: now,
+          lte: AddToDate(now, { days: 7 }),
+        },
+      },
+    });
+
+    return booked.map((service) => service.checkin);
+  }
+
+  @ResolveField(() => Boolean)
+  async saved(
+    @Parent() service: Service,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const savedRecord = await this.prisma.savedService.findUnique({
+      where: {
+        serviceId_userId: {
+          serviceId: service.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!savedRecord;
   }
 
   // @ResolveField(() => RestaurantEstablishmentType)

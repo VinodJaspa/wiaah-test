@@ -1,32 +1,21 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@UI/../hooks";
-import {
-  useGetFilteredServicesQuery,
-  useGetSearchServicesQuery,
-} from "../Services";
+import { useGetFilteredServicesQuery } from "../Services";
 import {
   DisplayFoundServices,
   ServicesSearchGrid,
   ServicesSearchResultsFiltersSidebar,
 } from "../components";
 import {
-  Accordion,
-  AspectRatio,
-  AspectRatioImage,
   Button,
-  DotIcon,
   Drawer,
   HStack,
   Input,
-  LocationIcon,
-  Modal,
   ModalContent,
   Pagination,
-  PriceDisplay,
   Select,
   SelectOption,
-  StarIcon,
 } from "@partials";
 import {
   DateFormInput,
@@ -38,6 +27,7 @@ import {
 import {
   HealthCenterDoctorAvailablityStatus,
   PresentationType,
+  ServiceFilterSelectionType,
   ServicePresentationType,
   ServiceType,
 } from "@features/API";
@@ -54,9 +44,14 @@ import { VehicleSearchCard } from "../Vehicle";
 import { SectionHeader } from "@sections/ShoppingManagement";
 import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
 import {
+  MarketBeautyCenterSearchCardAlt,
+  MarketHealthCenterServiceCardAlt,
+  MarketHolidayRentalsServiceSearchCardAlt,
   MarketHotelServiceSearchCardAlt,
   MarketRestaurantServiceSearchCardAlt,
+  MarketVehicleServiceSearchCardAlt,
 } from "./MarketServiceSearchView";
+import { useGetServiceCategoryFiltersQuery } from "../Services/queries/getServiceCategoryFilters.fetcher";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
@@ -66,8 +61,11 @@ export const MarketServiceSearchResaultsView: React.FC<{
   const { isTablet, isMobile } = useResponsive();
   const { showServiceSearchResultsFilter } = useSocialControls();
   const { controls, pagination } = usePaginationControls();
-  const { form } = useForm<Parameters<typeof useGetFilteredServicesQuery>[0]>({
+  const { form, handleChange } = useForm<
+    Parameters<typeof useGetFilteredServicesQuery>[0]
+  >({
     pagination,
+    filters: [],
   });
   const {
     data: services,
@@ -99,6 +97,17 @@ export const MarketServiceSearchResaultsView: React.FC<{
               thumbnail,
               description,
               reviews,
+              speciality,
+              availableAppointments,
+              healthCenterBookedAppointments,
+              airCondition,
+              gpsAvailable,
+              lugaggeCapacity,
+              seats,
+              windows,
+              id,
+              treatmentCategory,
+              saved,
             }) => {
               switch (serviceType) {
                 case ServiceType.Hotel:
@@ -124,6 +133,59 @@ export const MarketServiceSearchResaultsView: React.FC<{
                       thumbnail={thumbnail}
                     />
                   );
+                case ServiceType.HealthCenter:
+                  return (
+                    <MarketHealthCenterServiceCardAlt
+                      bookedAppointments={healthCenterBookedAppointments}
+                      title={name}
+                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                      thumbnail={thumbnail}
+                      speciality={speciality || ""}
+                      appointments={availableAppointments || []}
+                    />
+                  );
+                case ServiceType.Vehicle:
+                  return (
+                    <MarketVehicleServiceSearchCardAlt
+                      title={name}
+                      airCondition={!!airCondition}
+                      gps={!!gpsAvailable}
+                      thumbnail={thumbnail}
+                      luggage={lugaggeCapacity || 0}
+                      pricePerDay={price}
+                      windows={windows || 0}
+                      passengers={seats || 0}
+                    />
+                  );
+
+                case ServiceType.BeautyCenter:
+                  return (
+                    <MarketBeautyCenterSearchCardAlt
+                      title={name}
+                      thumbnail={thumbnail}
+                      id={id}
+                      rate={rating}
+                      reviews={reviews}
+                      category={treatmentCategory!}
+                    />
+                  );
+                case ServiceType.HolidayRentals:
+                  return (
+                    <MarketHolidayRentalsServiceSearchCardAlt
+                      title={name}
+                      thumbnail={thumbnail}
+                      reviews={reviews}
+                      description={description}
+                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                      monthlyPrice={price}
+                      rating={rating}
+                      saved={saved}
+                      sellerName={shop.sellerProfile.username}
+                      sellerThumbnail={shop.sellerProfile.photo}
+                      sellerVerified={shop.sellerProfile.verified}
+                    />
+                  );
+
                 default:
                   break;
               }
@@ -132,7 +194,11 @@ export const MarketServiceSearchResaultsView: React.FC<{
         </div>
       </SpinnerFallback>
 
-      <MarketServiceSearchResultsFiltersModal />
+      <MarketServiceSearchResultsFiltersModal
+        onApply={(filters) => {
+          handleChange("filters", filters);
+        }}
+      />
     </div>
   ) : (
     <div
@@ -358,13 +424,62 @@ export const MarketServiceSearchResaultsView: React.FC<{
   );
 };
 
-export const MarketServiceSearchResultsFiltersModal: React.FC = () => {
+export const MarketServiceSearchResultsFiltersModal: React.FC<{
+  onApply: (
+    filters: {
+      id: string;
+      value: string[];
+    }[]
+  ) => void;
+}> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
   const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
     serviceType as ServiceType
   );
+
+  const { data: filters } = useGetServiceCategoryFiltersQuery(
+    { serviceType: serviceType! },
+    { enabled: isOpen }
+  );
+
+  const [selectedValues, setSelectedValues] = React.useState<
+    {
+      id: string;
+      value: string[];
+    }[]
+  >([]);
+
+  const isSelected = (id: string, value: string): boolean => {
+    const values = selectedValues.find((v) => v.id === id)?.value;
+
+    if (values) {
+      return values.includes(value);
+    } else {
+      return false;
+    }
+  };
+
+  const toggleSelect = (id: string, value: string, multiple?: boolean) => {
+    const values = selectedValues.find((v) => v.id === id)?.value;
+
+    if (values) {
+      if (values.includes(value)) {
+        setSelectedValues((old) => [
+          ...old.filter((v) => v.id !== id),
+          { id, value: values.filter((v) => v !== value) },
+        ]);
+      } else {
+        setSelectedValues((old) => [
+          ...old.filter((v) => v.id !== id),
+          { id, value: [...values, value] },
+        ]);
+      }
+    } else {
+      setSelectedValues((old) => [...old, { id, value: [value] }]);
+    }
+  };
 
   return (
     <Drawer
@@ -381,6 +496,55 @@ export const MarketServiceSearchResultsFiltersModal: React.FC = () => {
         >
           <button>{t("Clear all")}</button>
         </SectionHeader>
+
+        <div className="flex flex-col gap-6">
+          {mapArray(filters, (filter) => (
+            <div className="flex flex-col gap-4">
+              <p>{filter.filterGroupName}</p>
+              {filter.selectionType ===
+              ServiceFilterSelectionType.MultiSelect ? (
+                <HStack className="w-full overflow-x-scroll">
+                  {mapArray(filter.filterValues, (value, i) => (
+                    <Button
+                      onClick={() =>
+                        toggleSelect(filter.id, value.filteringValue, true)
+                      }
+                      outline={!isSelected(filter.id, value.filteringValue)}
+                      key={value.filteringValue + i}
+                    >
+                      {value.name}
+                    </Button>
+                  ))}
+                </HStack>
+              ) : filter.selectionType ===
+                ServiceFilterSelectionType.SingleSelect ? (
+                <HStack className="w-full overflow-x-scroll">
+                  {mapArray(filter.filterValues, (value, i) => (
+                    <Button
+                      onClick={() =>
+                        toggleSelect(filter.id, value.filteringValue, false)
+                      }
+                      outline={!isSelected(filter.id, value.filteringValue)}
+                      key={value.filteringValue + i}
+                    >
+                      {value.name}
+                    </Button>
+                  ))}
+                </HStack>
+              ) : (
+                // TODO: add range input
+                <></>
+              )}
+            </div>
+          ))}
+          <Button
+            onClick={() => onApply && onApply(selectedValues)}
+            outline
+            colorScheme="darkbrown"
+          >
+            {t("Apply Filters")}
+          </Button>
+        </div>
       </ModalContent>
     </Drawer>
   );

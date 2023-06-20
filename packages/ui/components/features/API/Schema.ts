@@ -2601,6 +2601,7 @@ export type Mutation = {
   suspenseAccount: Scalars["Boolean"]["output"];
   suspenseContent: Scalars["Boolean"]["output"];
   suspenseReportedContent: Scalars["Boolean"]["output"];
+  toggleSaveService: Scalars["Boolean"]["output"];
   unBanBuyersCities: Scalars["Boolean"]["output"];
   unBanSellersCities: Scalars["Boolean"]["output"];
   unFollow: Scalars["Boolean"]["output"];
@@ -3140,6 +3141,10 @@ export type MutationSuspenseContentArgs = {
 
 export type MutationSuspenseReportedContentArgs = {
   id: Scalars["String"]["input"];
+};
+
+export type MutationToggleSaveServiceArgs = {
+  serviceId: Scalars["String"]["input"];
 };
 
 export type MutationUnBanBuyersCitiesArgs = {
@@ -4045,6 +4050,7 @@ export type Query = {
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryByType: ServiceCategory;
+  getServiceCategoryFilters: Array<ServiceFilter>;
   getServiceDetails?: Maybe<Service>;
   getServiceInsuranceHistory: Array<Insurance>;
   getServicePost: ServicePost;
@@ -4642,6 +4648,10 @@ export type QueryGetServiceCategoryByTypeArgs = {
   type: ServiceType;
 };
 
+export type QueryGetServiceCategoryFiltersArgs = {
+  category: ServiceType;
+};
+
 export type QueryGetServiceDetailsArgs = {
   id: Scalars["String"]["input"];
   isClick: Scalars["Boolean"]["input"];
@@ -5058,7 +5068,13 @@ export type SearchPopularProfilesInput = {
   take?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type SearchServicesFilterInput = {
+  id: Scalars["String"]["input"];
+  value: Array<Scalars["String"]["input"]>;
+};
+
 export type SearchServicesInput = {
+  filters: Array<SearchServicesFilterInput>;
   locationQuery?: InputMaybe<Scalars["String"]["input"]>;
   pagination: GqlPaginationInput;
   q?: InputMaybe<Scalars["String"]["input"]>;
@@ -5099,6 +5115,7 @@ export type Service = {
   duration?: Maybe<Scalars["Int"]["output"]>;
   extras?: Maybe<Array<ServiceExtra>>;
   gpsAvailable?: Maybe<Scalars["Boolean"]["output"]>;
+  healthCenterBookedAppointments: Array<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   includedAmenities?: Maybe<Array<Scalars["String"]["output"]>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
@@ -5117,6 +5134,7 @@ export type Service = {
   rating: Scalars["Float"]["output"];
   restriction?: Maybe<Array<ServiceRestriction>>;
   reviews: Scalars["Int"]["output"];
+  saved: Scalars["Boolean"]["output"];
   seats?: Maybe<Scalars["Int"]["output"]>;
   sellerId: Scalars["ID"]["output"];
   sessionDurationMins?: Maybe<Scalars["Int"]["output"]>;
@@ -5283,6 +5301,36 @@ export type ServiceExtraInput = {
 export type ServiceExtraNameTranslationInput = {
   langId: Scalars["String"]["input"];
   value: Scalars["String"]["input"];
+};
+
+export type ServiceFilter = {
+  __typename?: "ServiceFilter";
+  filterGroupName: Scalars["String"]["output"];
+  filterValues: Array<ServiceFilterValue>;
+  filteringKey: Scalars["String"]["output"];
+  id: Scalars["String"]["output"];
+  selectionType: ServiceFilterSelectionType;
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export enum ServiceFilterSelectionType {
+  MultiSelect = "multiSelect",
+  Range = "range",
+  SingleSelect = "singleSelect",
+}
+
+export type ServiceFilterValue = {
+  __typename?: "ServiceFilterValue";
+  filteringValue: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export type ServiceFilterValueRaw = {
+  __typename?: "ServiceFilterValueRaw";
+  filteringValue: Scalars["String"]["output"];
+  name: Array<TranslationText>;
+  sortOrder: Scalars["Int"]["output"];
 };
 
 export type ServiceIncludedAmenitiesInput = {

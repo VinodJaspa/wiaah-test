@@ -7,6 +7,7 @@ import { SocialStoryModal } from "@blocks/Social";
 import { ContentHostType, ServiceType } from "@features/API";
 import {
   LocationSearchDrawer,
+  MarketMapSearchDrawer,
   MasterLocationMapModal,
 } from "@features/GeoLocation";
 import { NewsletterDrawer } from "@features/Newsletter";
@@ -78,6 +79,8 @@ interface SocialAtomValue {
   showNewsletterRegisteration: boolean;
   showContactUs: boolean;
   marketServiceSearchResultsFilters?: ServiceType;
+  marketShowServiceDetails?: string;
+  marketShowMapSearch: boolean;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -104,6 +107,7 @@ const socialAtom = atom<SocialAtomValue>({
     requestRefundId: "",
     showNewsletterRegisteration: false,
     showContactUs: false,
+    marketShowMapSearch: false,
   },
 });
 
@@ -236,6 +240,12 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("marketServiceSearchResultsFilters", serviceType),
     hideServiceSearchResultsFilter: () =>
       setControls("marketServiceSearchResultsFilters", undefined),
+    showMarketServiceDetails: (id: string) =>
+      setControls("marketShowServiceDetails", id),
+    hideMarketServiceDetails: () =>
+      setControls("marketShowServiceDetails", undefined),
+    showMarketMapSearch: () => setControls("marketShowMapSearch", true),
+    hideMarketMapSearch: () => setControls("marketShowMapSearch", false),
     value,
   };
 }
@@ -246,15 +256,14 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      {isMobile ? <NotifciationsDrawer /> : null}
       <SocialStoryDrawer />
       <ServiceBookingDrawer />
       <SocialReportModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
-      <MasterLocationMapModal />
       {isMobile ? (
         <>
+          <NotifciationsDrawer />
           <ProductDetailsDrawer />
           <CreateActionDrawer />
           <EditMusicDrawer />
@@ -267,8 +276,13 @@ export const SocialLayout: React.FC = ({ children }) => {
           <CommentsDrawer />
           <RequestRefundDrawer />
           <NewsletterDrawer />
+          <MarketMapSearchDrawer />
         </>
-      ) : null}
+      ) : (
+        <>
+          <MasterLocationMapModal />
+        </>
+      )}
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

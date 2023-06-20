@@ -204,5 +204,6 @@ export function useForm<TForm>(
     translationInputProps,
     isValid: () => validate()[0],
     radioInputProps,
+    reset: () => setData(initial),
   };
 }

@@ -1,4 +1,5 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { FilteredShopsInput } from './filter-shops.input';
 
 @InputType()
 export class GetNearShopsInput {

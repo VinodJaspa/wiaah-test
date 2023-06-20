@@ -1,54 +1,48 @@
 import React from "react";
-import { FormatedWorkingDaysType, WorkingDate } from "types";
 import { WorkingDayColumn } from "./WorkingDayColumn";
 import { Slider, ArrowLeftIcon, ArrowRightIcon } from "@UI";
+import { isSameMinute } from "utils";
 
 export interface WorkingDaysCalenderProps {
-  workingDates: WorkingDate[];
-  hoursLimit?: number;
+  workingDates: string[];
+  takenDates: string[];
+}
+
+interface SplitDay {
+  day: Date;
+  dates: Date[];
+}
+
+function splitDatesByDay(dates: Date[]): SplitDay[] {
+  dates.sort((a, b) => a.getTime() - b.getTime());
+
+  const splitDays: SplitDay[] = [];
+  let currentDay: Date | null = null;
+  let currentDayIndex = -1;
+
+  for (const date of dates) {
+    const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    if (currentDay === null || day.getTime() !== currentDay.getTime()) {
+      currentDay = day;
+      currentDayIndex++;
+      splitDays[currentDayIndex] = {
+        day: new Date(date),
+        dates: [],
+      };
+    }
+
+    splitDays[currentDayIndex].dates.push(new Date(date));
+  }
+
+  return splitDays;
 }
 
 export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
-  hoursLimit = 5,
+  takenDates,
 }) => {
-  const [formatedWorkingDays, setFormatedWorkingDays] = React.useState<
-    FormatedWorkingDaysType[]
-  >([]);
-
-  function FormatWorkingDates() {
-    const dates: FormatedWorkingDaysType[] = workingDates.map((date, i) => {
-      const { date: dayDate, workingHoursRanges } = date;
-
-      const day = new Date(dayDate);
-
-      const weekday = day.toLocaleDateString("en-us", {
-        weekday: "long",
-      });
-
-      const monthName = day.toLocaleDateString("en-us", {
-        month: "short",
-      });
-      const numiricDay = day.toLocaleDateString("en-us", {
-        day: "numeric",
-      });
-
-      return {
-        dayNum: parseInt(numiricDay),
-        monthName: monthName,
-        weekday,
-        times: workingHoursRanges,
-      };
-    });
-
-    setFormatedWorkingDays(dates);
-  }
-
-  React.useEffect(() => {
-    if (Array.isArray(workingDates)) {
-      FormatWorkingDates();
-    }
-  }, [workingDates]);
+  const dates = splitDatesByDay(workingDates.map((d) => new Date(d)));
 
   return (
     <Slider
@@ -69,12 +63,18 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
         className: "top-[1rem] text-4xl translate-x-[calc(70%)] text-primary",
       }}
     >
-      {Array.isArray(formatedWorkingDays)
-        ? formatedWorkingDays.map((day, i) => (
+      {Array.isArray(dates)
+        ? dates.map((date, i) => (
             <WorkingDayColumn
-              hoursLimit={formatedWorkingDays.length}
+              dates={date.dates.map((date) => ({
+                date,
+                available: !!takenDates.find((d) =>
+                  isSameMinute(new Date(d), date)
+                ),
+              }))}
+              onClick={() => {}}
+              dayDate={date.day}
               key={i}
-              {...day}
             />
           ))
         : null}

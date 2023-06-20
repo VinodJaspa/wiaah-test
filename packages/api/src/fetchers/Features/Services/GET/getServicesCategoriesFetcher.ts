@@ -9,7 +9,7 @@ export const getServicesCategoriesFetcher = (
   return [
     { name: "holidays rentals", slug: "holidays_rentals" },
     { name: "hotels", slug: "hotel" },
-    { name: "resturants", slug: "resturant" },
+    { name: "resturants", slug: "restaurant" },
     {
       name: "health center",
       slug: "health_center",

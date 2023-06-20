@@ -7,7 +7,6 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   NoDeletePremissionPublicError,
-  NotOwnerOfResourcePublicError,
 } from 'nest-utils';
 import { GetMySavedPostsInput } from './dto';
 import { SavedPostsService } from './saved-posts.service';

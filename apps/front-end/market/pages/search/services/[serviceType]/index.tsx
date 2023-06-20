@@ -7,7 +7,7 @@ import { MasterLayout } from "@components";
 import { useRouter } from "next/router";
 import { ExtractServiceTypeFromQuery } from "utils";
 import { ServicesViewsList } from "@data";
-import { SERVICESTYPE_INDEXKEY, MarketServiceSearchResaultsView } from "ui";
+import { SERVICESTYPE_INDEXKEY } from "ui";
 import { ServiceType } from "@features/API";
 
 const ServiceCategory: NextPage = () => {
@@ -29,7 +29,7 @@ const ServiceCategory: NextPage = () => {
         }}
       >
         <Container className="px-4 py-8">
-          <MarketServiceSearchView slug={""} serviceType={serviceType as ServiceType} />
+          <MarketServiceSearchView serviceType={serviceType as ServiceType} />
         </Container>
       </MasterLayout>
     </>
