@@ -24,7 +24,6 @@ import {
   UserPreferedLang,
   accountType,
   getTranslatedResource,
-  ExtractPagination,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 

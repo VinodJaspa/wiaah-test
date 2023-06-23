@@ -12,26 +12,17 @@ export interface SearchInputProps {
   innerProps?: InputGroupProps;
   onValueChange?: (value: string) => any;
   value?: string;
+  placeholder?: string;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   innerProps,
   onValueChange,
   value,
+  placeholder,
 }) => {
-  const [searchInputValue, setSearchInputValue] = React.useState<string>("");
-
-  React.useEffect(() => {
-    onValueChange && onValueChange(searchInputValue);
-  }, [searchInputValue]);
-
-  React.useEffect(() => {
-    if (value) {
-      setSearchInputValue(value);
-    }
-  }, [value]);
   function handleSearchInputChange(value: string) {
-    setSearchInputValue(value);
+    onValueChange && onValueChange(value);
   }
   const { t } = useTranslation();
   return (
@@ -45,10 +36,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         <SearchIcon className="text-lightBlack text-icon" />
       </InputRightElement>
       <Input
-        value={searchInputValue}
+        value={value}
         onChange={(e) => handleSearchInputChange(e.target.value)}
         className="rounded-xl bg-transparent py-0 w-full"
-        placeholder={t("Type to search") + "..."}
+        placeholder={placeholder || t("Type to search") + "..."}
       />
     </InputGroup>
   );

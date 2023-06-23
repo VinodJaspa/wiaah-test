@@ -1,9 +1,9 @@
-import { useOutsideClick } from "hooks";
 import React from "react";
 import { useContext } from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
 import { CallbackAfter, MapChildren, MaybeFn, runIfFn } from "utils";
 import { EyeIcon, EyeIconSlash } from "../icons";
+import { useOutsideClick } from "hooks";
 
 interface InputContextValue {
   isInputGroup: boolean;
@@ -140,7 +140,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
           isGroup ? (flushed ? "border-b-2" : "border-2") : ""
         } ${
           focused ? "border-primary-200" : "border-[#EDEDED]"
-        } flex gap-1 items-center rounded-md relative`}
+        } flex gap-1 bg-white items-center rounded-md relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}
         {MapChildren<InputContextValue>(children, {

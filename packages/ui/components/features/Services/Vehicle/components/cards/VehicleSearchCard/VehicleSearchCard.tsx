@@ -47,22 +47,20 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="font-semibold text-lg">{name}</p>
+        <p className="font-semibold text-lg">{title}</p>
         {price ? (
           <div className="flex flex-col font-bold gap-2">
             <span className="text-lg text-primary flex whitespace-nowrap gap-2">
               <PriceDisplay price={price} /> | {t("day")}
             </span>
-            {/* {showTotal ? (
-              <span className="flex gap-2">
-                <PriceDisplay
-                  priceObject={{
-                    amount: pricePerDay * 3,
-                  }}
-                />
-                {t("total")}
-              </span>
-            ) : null} */}
+            <span className="flex gap-2">
+              <PriceDisplay
+                priceObject={{
+                  amount: price * 3,
+                }}
+              />
+              {t("total")}
+            </span>
           </div>
         ) : null}
         <span className="text-lg">

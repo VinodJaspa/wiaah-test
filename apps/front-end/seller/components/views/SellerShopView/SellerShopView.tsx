@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { ServiceType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -28,13 +27,13 @@ import {
   VehicleFillIcon,
   BeautyCenterOutlineIcon,
   BeautyCenterFillIcon,
-  useGetServicesData,
   useGetRecommendedServices,
   ScrollCursorPaginationWrapper,
   LocationOutlineIcon,
   VStack,
   RestaurantFillIcon,
   Stack,
+  Text,
 } from "ui";
 import { mapArray, runIfFn, useBreakpointValue } from "utils";
 
@@ -114,6 +113,7 @@ export const SellerShopView: React.FC = () => {
     <div className="py-4 font-sf">
       <SimpleTabs
         onChange={(v) => {
+          console.log("tab change", { v });
           if (v === 0) setType("product");
           if (v === 1) setType("service");
         }}
@@ -121,30 +121,34 @@ export const SellerShopView: React.FC = () => {
       >
         <HStack className="justify-around">
           <SimpleTabHead>
-            <p
-              className={`${
-                type === "product"
-                  ? "text-black font-semibold border-black"
-                  : "text-[#707070] border-white"
-              } border-b-2 pb-2`}
-            >
-              {t("Shop")}
-            </p>
-            <p
-              className={`${
-                type === "service"
-                  ? "text-black font-semibold border-black"
-                  : "text-[#707070] border-white"
-              } border-b-2 pb-2`}
-            >
-              {t("Service")}
-            </p>
+            <button>
+              <p
+                className={`${
+                  type === "product"
+                    ? "text-black font-semibold border-black"
+                    : "text-[#707070] border-white"
+                } border-b-2 pb-2`}
+              >
+                {t("Shop")}
+              </p>
+            </button>
+            <button>
+              <p
+                className={`${
+                  type === "service"
+                    ? "text-black font-semibold border-black"
+                    : "text-[#707070] border-white"
+                } border-b-2 pb-2`}
+              >
+                {t("Service")}
+              </p>
+            </button>
           </SimpleTabHead>
         </HStack>
         <SimpleTabItemList>
           <div className="grid grid-cols-2 gap-4 p-4">
             {mapArray(data, (v, i) => (
-              <div className="flex flex-col gap-2">
+              <div key={v.id + i} className="flex flex-col gap-2">
                 <AspectRatio
                   onClick={() => viewProductDetails(v.id)}
                   className="cursor-pointer"
@@ -171,7 +175,7 @@ export const SellerShopView: React.FC = () => {
                 </AspectRatio>
                 <div className="flex gap-4 justify-between">
                   <div className="text-[0.813rem]">
-                    <Text noOfLines={2}>{v.product?.title}</Text>
+                    <Text maxLines={2}>{v.product?.title}</Text>
                   </div>
                   <span>
                     <SaveFlagFIllIcon className="text-primary text-lg pr-1" />
@@ -210,7 +214,9 @@ export const SellerShopView: React.FC = () => {
                 >
                   <div
                     className={`w-10 h-10 text-2xl flex justify-center items-center rounded-lg ${
-                      v.key === serviceType ? "" : "bg-white"
+                      v.key === serviceType
+                        ? "bg-black fill-white text-white"
+                        : "bg-white fill-iconGray text-iconGray"
                     }`}
                   >
                     {v.key === serviceType

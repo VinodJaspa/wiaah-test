@@ -3,6 +3,7 @@ import {
   AspectRatio,
   Avatar,
   CommentIcon,
+  CommentOutlineIcon,
   HStack,
   HeartFillIcon,
   HeartIcon,
@@ -11,6 +12,9 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  PaperPlaneAngleIcon,
+  PaperPlaneAngleOutlineIcon,
+  SaveFlagFIllIcon,
   SaveFlagOutlineIcon,
   ShareIcon,
   Slider,
@@ -18,11 +22,14 @@ import {
   VerifiedIcon,
   VerticalDotsIcon,
 } from "@partials";
-import { EllipsisText } from "@blocks";
+import { EllipsisText, useSocialControls } from "@blocks";
 import { useDateDiff } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { SocialPostOptionsDropdown } from "../DataDisplay";
+import { useLikeContent, useSavePostMutation } from "@features/Social/services";
+import { useRouting } from "routing";
+import { ContentHostType } from "@features/API";
 
 interface SocialNewsfeedPostMobileCardProps {
   post: {
@@ -50,36 +57,58 @@ export const SocialNewsfeedPostMobileCard: React.FC<
 > = ({ post }) => {
   const { t } = useTranslation();
   const [activeImage, setActiveImage] = React.useState<number>(0);
+  const { mutate: like } = useLikeContent();
+  const { shareLink } = useSocialControls();
+  const { mutate: savePost } = useSavePostMutation();
+  const { visit, getUrl } = useRouting();
 
   const interactions: {
     value: string;
     icon: React.ReactNode;
     activeIcon: React.ReactNode;
     active: boolean;
+    onClick?: () => void;
   }[] = [
     {
       value: NumberShortner(post.likes),
-      active: false,
+      active: post?.liked,
       icon: HeartIcon,
       activeIcon: HeartFillIcon,
+      onClick: () => {
+        like({
+          args: {
+            contentId: post.id,
+            contentType: ContentHostType.PostNewsfeed,
+          },
+        });
+      },
     },
     {
       value: NumberShortner(post.comments),
       active: false,
-      icon: CommentIcon,
-      activeIcon: null,
+      icon: CommentOutlineIcon,
+      activeIcon: CommentIcon,
+      onClick: () => {
+        visit((r) => r.visitSocialPost(post.id));
+      },
     },
     {
       value: NumberShortner(post.shares),
       active: false,
-      icon: ShareIcon,
-      activeIcon: null,
+      icon: PaperPlaneAngleOutlineIcon,
+      activeIcon: PaperPlaneAngleIcon,
+      onClick: () => {
+        shareLink(getUrl((r) => r.visitSocialPost(post.id)));
+      },
     },
     {
       value: post.saved ? t("Saved") : t("Save"),
-      active: false,
+      active: post?.saved,
       icon: SaveFlagOutlineIcon,
-      activeIcon: SaveFlagOutlineIcon,
+      activeIcon: SaveFlagFIllIcon,
+      onClick: () => {
+        savePost({ postId: post.id });
+      },
     },
   ];
 

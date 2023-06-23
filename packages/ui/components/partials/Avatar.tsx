@@ -1,5 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlImgProps } from "types";
+import { twMerge } from "tailwind-merge";
 import { AspectRatio, Image } from "@UI";
 export interface AvatarProps extends HtmlImgProps {
   name?: string;
@@ -29,9 +30,11 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <div
-      className={`${
-        className || ""
-      } rounded-full overflow-hidden bg-black relative min-w-[3rem] h-fit`}
+      {...props}
+      className={twMerge(
+        `rounded-full overflow-hidden bg-black relative w-[1em] h-[1em] text-5xl`,
+        className
+      )}
     >
       <AspectRatio ratio={1}>
         <Image

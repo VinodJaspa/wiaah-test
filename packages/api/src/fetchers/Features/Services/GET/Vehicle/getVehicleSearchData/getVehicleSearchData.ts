@@ -1,12 +1,7 @@
-import {
-  FormatedSearchableFilter,
-  InValidDataSchemaError,
-  QueryPaginationInputs,
-} from "api";
+import { FormatedSearchableFilter, QueryPaginationInputs } from "api";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {
-  CheckValidation,
   InferType,
   VehicleSearchDataValidationSchema,
   VehicleSearchApiResponseValidationSchema,
@@ -35,37 +30,23 @@ export const getVehicleSearchDataFetcher = async (
     hasMore: false,
     data: [...Array(pagination.take)].map((_, i) => ({
       id: `${i}`,
-      name: "Lucky Dip Car",
-      pricePerDay: 111,
+      title: "Lucky Dip Car",
+      price: 111,
       cancelationPolicies: [],
       thumbnail:
         "https://hips.hearstapps.com/hmg-prod/images/2023-mclaren-artura-101-1655218102.jpg?crop=1.00xw:0.847xh;0,0.153xh&resize=1200:*",
 
-      vehicleProps: [
-        {
-          type: "a/c",
-          value: true,
-        },
-        {
-          type: "gps",
-          value: true,
-        },
-        {
-          type: "passengers",
-          value: 5,
-        },
-        {
-          type: "windows",
-          value: 4,
-        },
-        {
-          type: "bags",
-          value: 3,
-        },
-      ],
+      properties: {
+        seats: 5,
+        windows: 4,
+        lugaggeCapacity: 4,
+        maxSpeedInKm: 120,
+        airCondition: true,
+        gpsAvailable: true,
+      },
     })),
     total: randomNum(500),
   };
 
-  return CheckValidation(VehicleSearchApiResponseValidationSchema, data);
+  return data;
 };

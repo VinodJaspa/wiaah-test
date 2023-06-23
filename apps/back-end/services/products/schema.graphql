@@ -151,6 +151,7 @@ type ShopCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ShopDayWorkingHours {
@@ -204,6 +205,7 @@ type ShippingDetails {
 enum ShippingType {
   paid
   click_and_collect
+  free
 }
 
 type Account {
@@ -344,6 +346,7 @@ type ProductsCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ProductFilterGroupValue {
@@ -358,19 +361,21 @@ type Filter {
   sortOrder: Int!
 }
 
-type ShippingCountry {
-  code: String!
-}
-
 type ShippingRule {
   id: ID!
   sellerId: ID!
   name: String!
-  countries: [ShippingCountry!]!
+  shippingCompanyName: String!
+  destination: ShippingDestination!
   cost: Float!
   shippingType: ShippingType!
   deliveryTimeRange: ShippingDeliveryTimeRange!
   listing: Float!
+}
+
+enum ShippingDestination {
+  local
+  national
 }
 
 type ShippingAddress {
@@ -817,6 +822,8 @@ input UpdateShippingRuleGeoZoneInput {
 input CreateShippingRuleInput {
   countries: [ShippingCountryInput!]!
   name: String!
+  shippingCompanyName: String!
+  destination: ShippingDestination!
   cost: Float!
   shippingType: ShippingType!
   deliveryTimeRange: ShippingDeliveryTimeRangeInput!
@@ -834,6 +841,8 @@ input ShippingDeliveryTimeRangeInput {
 input UpdateShippingRuleInput {
   countries: [ShippingCountryInput!]
   name: String
+  shippingCompanyName: String
+  destination: ShippingDestination
   cost: Float
   shippingType: ShippingType
   deliveryTimeRange: ShippingDeliveryTimeRangeInput

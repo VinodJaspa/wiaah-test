@@ -1,15 +1,22 @@
 import React from "react";
-import { FaSearch, FaUser, FaHeart, FaAlignJustify } from "react-icons/fa";
+import { FaSearch, FaAlignJustify } from "react-icons/fa";
 import {
-  MultiStepDrawer,
   ShoppingCart,
-  SelectDropdown,
   Container,
-  Step,
   Button,
   LocationIcon,
   useMasterLocationMapModal,
-  ShoppingBagIcon,
+  HeartOutlineIcon,
+  ShoppingCartOutlineAltIcon,
+  PersonOutlineIcon,
+  InputGroup,
+  Input,
+  HStack,
+  useGetMyProfileQuery,
+  useUserData,
+  ShoppingCartOutlineIcon,
+  SearchIcon,
+  SearchInput,
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -27,6 +34,8 @@ import { useBreakpointValue } from "utils";
 export interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
+  const { data: profile } = useGetMyProfileQuery();
+
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isopen, setisopen] = React.useState(false);
@@ -41,57 +50,8 @@ export const Header: React.FC<HeaderProps> = () => {
   } = useGetServicesCategoriesQuery({ page, take });
   const { data: serviceCategories } = useGetServiceCategoriesQuery();
 
-  const steps: Step[] = Array.isArray(categories)
-    ? categories.map((cate, i) => ({
-        label: cate.name,
-        url: cate.slug,
-        steps: [
-          {
-            label: t("Clothing", "Clothing"),
-            url: "/clothing",
-            steps: [
-              {
-                label: t("Women_s", "Womsen's"),
-                url: "womens",
-                steps: [
-                  {
-                    label: t("Dresses", "Dreasses"),
-                    url: "/dresses",
-                    steps: [
-                      {
-                        label: t("Dresses", "Dresses"),
-                        url: "/dresses",
-                        steps: [],
-                      },
-                      {
-                        label: t("Shirts", "Shirts"),
-                        url: "/shirts",
-                      },
-                    ],
-                  },
-                  {
-                    label: t("Shirts", "Shidrts"),
-                    url: "/shirts",
-                  },
-                ],
-              },
-              {
-                label: t("Men_s", "Men's"),
-                url: "/mens",
-              },
-            ],
-          },
-          {
-            label: t("Home_&_Living", "Home & Living"),
-            url: "/home-and-living",
-          },
-        ],
-      }))
-    : [];
-  const { SearchForLocations } = useMasterLocationMapModal();
-
   return (
-    <nav className="w-full bg-black">
+    <nav className="w-full bg-white">
       {/* Top Navbar */}
 
       <Container className="h-[auto]">
@@ -107,37 +67,38 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
 
           <div className="hidden md:flex gap-2 items-center">
-            <MainHeaderSearchBar categories={serviceCategories || []} />
-            <LocationIcon
-              onClick={() => SearchForLocations([])}
-              className="cursour-pointer text-white text-4xl"
-            />
+            <SearchInput />
+            {/* <InputGroup>
+              <Input placeholder={t("Search product")} />
+              <SearchIcon />
+            </InputGroup> */}
           </div>
 
-          <div className="flex text-white">
-            <ul className="inline-flex items-center gap-8">
-              <li className="flex cursor-pointer items-center text-sm">
-                <Link href="/login">
-                  <div className="flex items-center gap-4">
-                    {t("Sign In")}{" "}
-                    <FaUser className="ml-0 inline-flex h-8 w-8" />
-                  </div>
-                </Link>
-              </li>
-              <li className="cursor-pointer">
-                <FaHeart className="h-8 w-8" />
-              </li>
-              <li className="fill-white text-white text-2xl">
-                <ShoppingCart>
-                  <ShoppingBagIcon />
-                </ShoppingCart>
-              </li>
-            </ul>
-          </div>
+          <HStack className="gap-6">
+            <Button
+              colorScheme="darkbrown"
+              onClick={() =>
+                profile
+                  ? visit((r) => r.visitLogout())
+                  : visit((r) => r.visitSignin())
+              }
+              className="flex items-center gap-2"
+            >
+              {profile ? t("Logout") : t("Sign in")}
+              <PersonOutlineIcon className="text-xl text-white fill-white stroke-white" />
+            </Button>
+            <button onClick={() => visit((r) => r.visitMarketSavedItems())}>
+              <HeartOutlineIcon className="text-xl" />
+            </button>
+
+            <ShoppingCart>
+              <ShoppingCartOutlineIcon className="text-2xl" />
+            </ShoppingCart>
+          </HStack>
         </div>
       </Container>
 
-      <div className="flex w-full bg-gray-800 p-4 text-white">
+      <div className="flex w-full bg-white p-4 text-black">
         <Container className="flex">
           <ul className="no-scrollBar inline-flex w-full items-center space-x-10 overflow-x-scroll">
             <li
@@ -158,7 +119,7 @@ export const Header: React.FC<HeaderProps> = () => {
                   onClick={() =>
                     visit((routes) => routes.visitServiceSearch(cate))
                   }
-                  className="hover:text-primary text-white hover:underline cursor-pointer"
+                  className="hover:text-primary text-black hover:underline cursor-pointer"
                   key={i}
                 >
                   <p>{t(cate.name)}</p>
@@ -170,11 +131,11 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
         </Container>
       </div>
-      <MultiStepDrawer
+      {/* <MultiStepDrawer
         isOpen={isopen}
         onClose={() => setisopen(false)}
         steps={steps}
-      />
+      /> */}
     </nav>
   );
 };

@@ -15,6 +15,9 @@ export class Design {
   src: string;
 
   @Field(() => String)
+  distenation: string;
+
+  @Field(() => String)
   name: string;
 
   @Field(() => DesignType)

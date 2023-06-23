@@ -1,6 +1,5 @@
 import {
   Exact,
-  ShippingCountry,
   ShippingDeliveryTimeRange,
   ShippingRule,
   ShippingType,
@@ -39,21 +38,19 @@ export const useGetMyShippingRules = () => {
 query getMyShippingSettings {
   getMyShippingRules {
     cost
-    countries {
-      code
-    }
     deliveryTimeRange {
       from
       to
     }
     id
     name
+    destination
+    shippingCompanyName
     sellerId
     shippingType
     listing
   }
 }
-
 
     `);
 

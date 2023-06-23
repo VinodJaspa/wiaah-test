@@ -56,6 +56,16 @@ export class AccountVerificationResolver {
     });
   }
 
+  @Query(() => AccountVerification)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetProfileVerificationRequest(
+    @Args('id') id: string,
+  ): Promise<AccountVerification> {
+    return this.prisma.userAccountVerificationRequest.findUnique({
+      where: { id },
+    });
+  }
+
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async refuseAccountVerification(

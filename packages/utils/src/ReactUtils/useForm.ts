@@ -102,8 +102,6 @@ export function useForm<TForm>(
       ]);
     };
 
-    console.log({ data });
-
     return {
       [valueKey]: value,
       [onChangeKey]: onChange,
@@ -204,5 +202,6 @@ export function useForm<TForm>(
     translationInputProps,
     isValid: () => validate()[0],
     radioInputProps,
+    reset: () => setData(initial),
   };
 }

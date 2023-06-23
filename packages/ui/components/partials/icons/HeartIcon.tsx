@@ -24,7 +24,27 @@ export const HeartIcon: React.FC<HtmlSvgProps> = (props) => {
 };
 
 export const HeartOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
-  return <BsHeart />;
+  return <BsHeart {...props} />;
+};
+
+export const HeartOutlineAltIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12.0491 5.87308C12.6738 2.43514 17.4754 2.21924 19.5457 4.4979C21.5486 6.70231 21.4199 10.4579 19.5457 12.749L12.0491 21L4.55242 12.749C3.55841 11.6547 3 10.1708 3 8.62343C3 7.0761 3.55841 5.59212 4.55242 4.4979C6.48906 2.36638 11.4243 2.43514 12.0491 5.87308Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
 };
 
 export const HeartFillIcon: React.FC<HtmlSvgProps> = (props) => {

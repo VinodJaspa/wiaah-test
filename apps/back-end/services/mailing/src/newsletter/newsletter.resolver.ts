@@ -119,6 +119,14 @@ export class NewsletterResolver {
     }
   }
 
+  @Mutation(() => Boolean)
+  subscribeToNewsletter(
+    @Args('email') email: string,
+    @Args('name') name: string,
+  ) {
+    // TODO
+  }
+
   @ResolveField(() => Account)
   user(@Parent() data: NewsletterSubscriber) {
     return {

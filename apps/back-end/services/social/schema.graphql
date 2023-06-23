@@ -91,6 +91,7 @@ type NewsfeedPostsPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type AdminNewsfeedPost {
@@ -183,6 +184,7 @@ type Profile {
   visibility: ProfileVisibility!
   verified: Boolean!
   visits: Int!
+  newStory: Boolean!
 }
 
 enum ActiveStatus {
@@ -218,6 +220,7 @@ type ProfileFollow {
   visibility: ProfileVisibility!
   verified: Boolean!
   visits: Int!
+  newStory: Boolean!
   isFollowed: Boolean!
 }
 
@@ -234,9 +237,17 @@ type ProfileMeta {
 }
 
 type ProfileMetaPaginatedResponse {
-  data: [ProfileMeta!]!
+  data: [Profile!]!
   total: Int!
   hasMore: Boolean!
+}
+
+type ProfileMetaCursorPaginatedResponse {
+  data: [Profile!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
 }
 
 type Follow {
@@ -285,6 +296,7 @@ type CommentsCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ContentReaction {
@@ -557,6 +569,7 @@ type GetActionsCursorResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type ActionTopHashtagResponse {
@@ -644,6 +657,8 @@ type Query {
   getProfile(id: String!): Profile!
   searchPopularUsers(args: SearchPopularProfilesInput!): ProfilePaginatedResponse!
   getFollowersByProfileId(getFollowersMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
+  getCursorPaginationFollowersByProfileId(getFollowersMetaInput: GetProfileFollowersMetaCursorInput!): ProfileMetaCursorPaginatedResponse!
+  getCursorPaginationFollowingsByProfileId(getFollowersMetaInput: GetProfileFollowersMetaCursorInput!): ProfileMetaCursorPaginatedResponse!
   getFollowingByProfileId(getFollowingMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
@@ -720,6 +735,12 @@ input GetProfileFollowersMetaInput {
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetProfileFollowersMetaCursorInput {
+  take: Int!
+  cursor: String
+  userId: String!
 }
 
 input GetMyProfileFollowersMetaInput {
@@ -1051,7 +1072,6 @@ input UpdatePostAdminInput {
 input CreateReactionInput {
   contentId: ID!
   contentType: ContentHostType!
-  authorProfileId: ID!
 }
 
 input RemoveReactionInput {

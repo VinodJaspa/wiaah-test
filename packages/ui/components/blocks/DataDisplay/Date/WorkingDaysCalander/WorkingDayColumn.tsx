@@ -1,61 +1,50 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormatedWorkingDaysType } from "types";
 
-export interface WorkingDayColumnProps extends FormatedWorkingDaysType {
-  hoursLimit: number;
+export interface WorkingDayColumnProps {
+  dayDate: Date;
+  dates: {
+    date: Date;
+    available: boolean;
+  }[];
+  onClick: (date: Date) => void;
 }
 
 export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
-  dayNum,
-  monthName,
-  times,
-  weekday,
-  hoursLimit,
+  dates,
+  dayDate,
+  onClick,
 }) => {
+  const date = new Date(dayDate);
   const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center w-full flex-col">
-        <p className="font-bold text-xs">{t(weekday)}</p>
+        <p className="font-bold text-xs">
+          {date.toLocaleDateString("en-us", { weekday: "short" })}
+        </p>
         <p className="whitespace-nowrap">
-          {dayNum} {t(monthName)}
+          {date.getDate()}{" "}
+          {date.toLocaleDateString("en-us", { month: "short" })}
         </p>
       </div>
       <div className="flex flex-col gap-2 w-full">
-        {[...Array(hoursLimit)].map((_, i) => {
-          const time = times[i];
+        {dates.map((date, i) => {
+          const time = date.date.toLocaleDateString("en-us", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
           return (
-            <React.Fragment key={i}>
-              <div
-                className={`${
-                  time ? "bg-primary-100" : ""
-                } w-full h-8 flex justify-center items-center rounded font-bold`}
-              >
-                {time ? (
-                  <>
-                    {new Date(time.from).getHours()}:
-                    {new Date(time.from).getMinutes()}
-                  </>
-                ) : (
-                  "--"
-                )}
-              </div>
-              <div
-                className={`${
-                  time ? "bg-primary-100" : ""
-                } w-full h-8 flex justify-center items-center rounded font-bold`}
-              >
-                {time ? (
-                  <>
-                    {new Date(time.to).getHours()}:
-                    {new Date(time.to).getMinutes()}
-                  </>
-                ) : (
-                  "--"
-                )}
-              </div>
-            </React.Fragment>
+            <button
+              onClick={date.available ? () => onClick(date.date) : undefined}
+              key={i}
+              className={`${
+                date.available ? "bg-primary-100" : "bg-gray-100"
+              } w-full h-8 flex justify-center items-center rounded font-bold`}
+            >
+              {time ?? "--"}
+            </button>
           );
         })}
       </div>

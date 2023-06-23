@@ -1,28 +1,39 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   NoEditPremissionPublicError,
+  NoReadPremissionPublicError,
   accountType,
 } from 'nest-utils';
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import {
   Profile,
   ProfilePaginatedResponse,
   ProfileMetaPaginatedResponse,
+  ProfileMetaCursorPaginatedResponse,
 } from '@entities';
 import { ProfileService, ProfileSortKeys } from './profile.service';
 import {
   CreateProfileInput,
   FollowProfileInput,
   GetMyProfileFollowersMetaInput,
+  GetProfileFollowersMetaCursorInput,
   GetProfileFollowersMetaInput,
   UnFollowProfileInput,
   UpdateProfileInput,
 } from '@input';
 import { SearchPopularProfilesInput } from './dto';
 import { PrismaService } from 'prismaService';
+import { ProfileVisibility } from 'prismaClient';
 
 @Resolver(() => Profile)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -114,6 +125,15 @@ export class ProfileResolver {
     if (!valid) throw new NoEditPremissionPublicError();
   }
 
+  @ResolveField(() => Boolean)
+  newStory(
+    @Parent() profile: Profile,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    //TODO: get if user has new story based on profile visiablity and follow
+    return false;
+  }
+
   // Profile CRUD //
   // ------------------------------ //
   // Follow system //
@@ -137,6 +157,86 @@ export class ProfileResolver {
       args.profileId,
       user.id,
     );
+  }
+
+  @Query(() => ProfileMetaCursorPaginatedResponse)
+  async getCursorPaginationFollowersByProfileId(
+    @Args('getFollowersMetaInput') args: GetProfileFollowersMetaCursorInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<ProfileMetaCursorPaginatedResponse> {
+    await this.ValidateReadPermissionsProfile(args.userId, user);
+    const [res, count] = await this.prisma.$transaction([
+      this.prisma.follow.findMany({
+        where: {
+          followingUserId: args.userId,
+        },
+        cursor: {
+          id: args.cursor,
+        },
+        take: args.take + 1,
+      }),
+      this.prisma.follow.count({
+        where: {
+          followingUserId: args.userId,
+        },
+      }),
+    ]);
+
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        id: {
+          in: res.map((follow) => follow.followerProfileId),
+        },
+      },
+    });
+
+    return {
+      data: profiles,
+      hasMore: res.length > args.take,
+      cursor: args.cursor,
+      nextCursor: res.length > args.take ? res.at(res.length)?.id : undefined,
+      total: count,
+    };
+  }
+
+  @Query(() => ProfileMetaCursorPaginatedResponse)
+  async getCursorPaginationFollowingsByProfileId(
+    @Args('getFollowersMetaInput') args: GetProfileFollowersMetaCursorInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<ProfileMetaCursorPaginatedResponse> {
+    await this.ValidateReadPermissionsProfile(args.userId, user);
+    const [res, count] = await this.prisma.$transaction([
+      this.prisma.follow.findMany({
+        where: {
+          followerUserId: args.userId,
+        },
+        cursor: {
+          id: args.cursor,
+        },
+        take: args.take + 1,
+      }),
+      this.prisma.follow.count({
+        where: {
+          followerUserId: args.userId,
+        },
+      }),
+    ]);
+
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        id: {
+          in: res.map((follow) => follow.followerProfileId),
+        },
+      },
+    });
+
+    return {
+      data: profiles,
+      hasMore: res.length > args.take,
+      cursor: args.cursor,
+      nextCursor: res.length > args.take ? res.at(res.length)?.id : undefined,
+      total: count,
+    };
   }
 
   @Query(() => ProfileMetaPaginatedResponse)
@@ -195,4 +295,21 @@ export class ProfileResolver {
 
   // Follow system //
   // ------------------------------------- //
+
+  async ValidateReadPermissionsProfile(
+    profileUserId: string,
+    user: AuthorizationDecodedUser,
+  ) {
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        ownerId: profileUserId,
+      },
+    });
+    if (
+      user.id !== profile.ownerId &&
+      user.accountType !== accountType.ADMIN &&
+      profile.visibility !== ProfileVisibility.public
+    )
+      throw new NoReadPremissionPublicError();
+  }
 }

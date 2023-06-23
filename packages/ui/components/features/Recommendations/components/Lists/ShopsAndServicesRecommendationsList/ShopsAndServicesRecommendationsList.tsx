@@ -1,13 +1,7 @@
-import { usePagination } from "hooks";
 import React from "react";
 import { useRouting } from "routing";
-import {
-  SpinnerFallback,
-  PaginationWrapper,
-  RecommendedShopCard,
-  useGetFilteredShopsQuery,
-  Shop,
-} from "@UI";
+import { RecommendedShopCard } from "@UI";
+import { Shop, StoreType } from "@features/API";
 
 export interface ShopsAndServicesRecommendationsList {
   shops: Shop[];
@@ -31,8 +25,10 @@ export const ShopsAndServicesRecommendationsList: React.FC<
                 imgUrl={data.banner}
                 name={data.name}
                 id={data.id}
-                type={data.storeType[0]}
-                label={data.name}
+                label={
+                  data.storeType[0] === StoreType.Product ? "Store" : data.type
+                }
+                // label={data.name}
               />
             );
           })

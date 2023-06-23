@@ -32,7 +32,7 @@ export class ReactionService {
     createReactionInput: CreateReactionInput,
     userId: string,
   ): Promise<ContentReaction> {
-    const { contentId, contentType, authorProfileId } = createReactionInput;
+    const { contentId, contentType } = createReactionInput;
 
     // make sure the required content is avaiable in the database
     const content = await this.contentDiscoveryService.getContent(
@@ -41,6 +41,8 @@ export class ReactionService {
     );
 
     if (!content) throw new ContentNotFoundException();
+
+    const authorProfileId = content.authorProfileId;
 
     // validate the user have the right premission to react on this content
     const profileId = await this.profileService.getProfileIdByUserId(userId);

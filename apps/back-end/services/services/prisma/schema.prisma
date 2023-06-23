@@ -17,11 +17,20 @@ type ServiceCategoryFilterValue {
   sortOrder      Int
 }
 
-type ServiceCategoryFilter {
+model ServiceCategoryFilter {
+  id              String                       @id @default(auto()) @map("_id") @db.ObjectId
+  categoryId      String                       @db.ObjectId
   filterGroupName TranslationText[]
   filteringKey    String
   filterValues    ServiceCategoryFilterValue[]
+  selectionType   ServiceFilterSelectionType
   sortOrder       Int
+}
+
+enum ServiceFilterSelectionType {
+  multiSelect
+  singleSelect
+  range
 }
 
 model ServiceCategory {
@@ -39,7 +48,15 @@ model ServiceCategory {
   filters            ServiceCategoryFilterValue[]
   status             ServiceCategoryStatus        @default(active)
   sortOrder          Int                          @default(1)
-  type               ServiceType
+  type               ServiceType                  @unique
+}
+
+model SavedService {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId String @db.ObjectId
+  userId    String @db.ObjectId
+
+  @@unique([serviceId, userId])
 }
 
 enum ServiceCategoryStatus {
@@ -84,11 +101,12 @@ model Service {
   updatedAt         DateTime                     @updatedAt
   dayClicksId       String?
   status            ServiceStatus                @default(inActive)
-  // presentations     ServicePresentation[]
+  presentations     ServicePresentation[]
   policies          ServiceTranslationPolicies[]
   payment_methods   ServicePaymentMethods[]
   vat               Int
   suspensionReason  String?
+  discountId        String?
 
   // hotel
   includedServices  TranslationArrayText[]
@@ -132,7 +150,8 @@ model Service {
   speakingLanguages     HealthCenterDoctorSpeakingLanguage[]
   sessionDurationMins   Int?
   availableAppointments DateTime[]
-  specialityId          String?
+
+  specialityId String?
 
   // restaurant table
   ingredients TranslationArrayText[]

@@ -271,6 +271,8 @@ type Service {
   owner: Account!
   speciality: String
   treatmentCategory: String
+  healthCenterBookedAppointments: [String!]!
+  saved: Boolean!
 }
 
 enum ServiceCancelationType {
@@ -330,6 +332,12 @@ type RawService {
   discount: ServiceDiscount!
 }
 
+type ServiceSearchResponse {
+  data: [Service!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
 type HotelAvailablity {
   bookedDates: [String!]!
 }
@@ -354,6 +362,7 @@ type ServicesCursorPaginationResponse {
   cursor: String
   nextCursor: String
   hasMore: Boolean!
+  total: Int!
 }
 
 type RestaurantMenu {
@@ -591,9 +600,37 @@ type Cashback {
   id: ID!
 }
 
+type ServiceFilterValueRaw {
+  name: [TranslationText!]!
+  filteringValue: String!
+  sortOrder: Int!
+}
+
+type ServiceFilterValue {
+  name: String!
+  filteringValue: String!
+  sortOrder: Int!
+}
+
+type ServiceFilter {
+  id: String!
+  filterGroupName: String!
+  filteringKey: String!
+  sortOrder: Int!
+  filterValues: [ServiceFilterValue!]!
+  selectionType: ServiceFilterSelectionType!
+}
+
+enum ServiceFilterSelectionType {
+  multiSelect
+  singleSelect
+  range
+}
+
 type Query {
+  getServiceCategoryFilters(category: ServiceType!): [ServiceFilter!]!
   getUserServices(userId: String!, pagination: GqlCursorPaginationInput!): ServicesCursorPaginationResponse!
-  searchServices(args: SearchServicesInput!): [Service!]!
+  searchServices(args: SearchServicesInput!): ServiceSearchResponse!
   getServiceRawData(id: String!): RawService!
   getServiceDetails(id: String!, isClick: Boolean!): Service
   getUserServicesByIds(sellerId: String!, servicesIds: [String!]!): [Service!]!
@@ -625,7 +662,20 @@ input GqlCursorPaginationInput {
 }
 
 input SearchServicesInput {
-  q: String!
+  pagination: GqlPaginationInput!
+  q: String
+  locationQuery: String
+  filters: [SearchServicesFilterInput!]!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input SearchServicesFilterInput {
+  id: String!
+  value: [String!]!
 }
 
 input GetRecommendedServicesInput {
@@ -652,11 +702,6 @@ input AdminGetDishsInput {
   city: String
   sales: Int
   pagination: GqlPaginationInput!
-}
-
-input GqlPaginationInput {
-  page: Int!
-  take: Int!
 }
 
 input GetInsurancesInput {
@@ -726,6 +771,7 @@ type Mutation {
   uploadFile(file: TestUploadFile!): Boolean!
   createService(args: CreateServiceInput!): Boolean!
   deleteService(id: String!): Boolean!
+  toggleSaveService(serviceId: String!): Boolean!
   adminUpdateServiceById(args: UpdateServiceInput!): Boolean!
   requestInsurancePayBack(bookId: ID!): Boolean!
   refuseInsurancePayBackRequest(bookId: ID!): Boolean!

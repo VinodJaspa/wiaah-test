@@ -38,8 +38,11 @@ export function CreateGqlCursorPaginatedResponse<TData>(
     @Field(() => String, { nullable: true })
     nextCursor?: string;
 
-    @Field()
+    @Field(() => Boolean)
     hasMore: boolean;
+
+    @Field(() => Int, { defaultValue: 0 })
+    total?: number;
   }
   return PaginatedResponseClass;
 }

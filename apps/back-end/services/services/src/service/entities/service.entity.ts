@@ -15,6 +15,10 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import {
+  CreateGqlCursorPaginatedResponse,
+  CreateGqlPaginatedResponse,
+} from 'nest-utils';
+import {
   Adaptation,
   CancelationType,
   HealthCenterDoctorSpeakingLanguage,
@@ -238,3 +242,8 @@ export class RawService {
   @Field(() => ServiceDiscount)
   discount: ServiceDiscount;
 }
+
+@ObjectType()
+export class ServiceSearchResponse extends CreateGqlPaginatedResponse(
+  Service,
+) {}

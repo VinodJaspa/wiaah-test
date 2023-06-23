@@ -6,7 +6,7 @@ import {
 import { useQuery, UseQueryOptions } from "react-query";
 import { AsyncReturnType } from "types";
 
-export const useGetServicesData = (
+export const useGetServicesQuery = (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<

@@ -115,3 +115,40 @@ export const ShoppingCartOutlinePlusIcon: React.FC<HtmlSvgProps> = (props) => {
     </svg>
   );
 };
+export const ShoppingCartOutlineAltIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 21C8.55228 21 9 20.5523 9 20C9 19.4477 8.55228 19 8 19C7.44772 19 7 19.4477 7 20C7 20.5523 7.44772 21 8 21Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M19 21C19.5523 21 20 20.5523 20 20C20 19.4477 19.5523 19 19 19C18.4477 19 18 19.4477 18 20C18 20.5523 18.4477 21 19 21Z"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M1 3H4.30435L6.78261 17H20"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M6.70937 14H20.0339C20.1328 14.0001 20.2286 13.9641 20.305 13.8981C20.3815 13.8322 20.4339 13.7404 20.4533 13.6383L21.9917 5.53831C22.0041 5.473 22.0026 5.4056 21.9873 5.34097C21.9719 5.27634 21.9432 5.21611 21.9031 5.16461C21.8629 5.11311 21.8125 5.07163 21.7553 5.04316C21.6981 5.0147 21.6356 4.99995 21.5724 5H5"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};

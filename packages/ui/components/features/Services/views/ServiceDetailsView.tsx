@@ -71,8 +71,8 @@ import { ImCheckmark } from "react-icons/im";
 import { startCase } from "lodash";
 
 export const ServiceDetailsView: React.FC<{
-  userId: string;
-}> = ({ userId }) => {
+  id: string;
+}> = ({ id: userId }) => {
   const { isMobile } = useResponsive();
   const { bookServices } = useSocialControls();
   const { data: shop } = useGetShopDetailsQuery(userId);

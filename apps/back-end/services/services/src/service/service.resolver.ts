@@ -10,7 +10,11 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { RawService, Service } from './entities/service.entity';
+import {
+  RawService,
+  Service,
+  ServiceSearchResponse,
+} from './entities/service.entity';
 import { ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import {
@@ -90,6 +94,7 @@ export class ServiceResolver {
   ) {}
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
   async uploadFile(
     @Args({ name: 'file', type: () => TestUploadFile })
     file: TestUploadFile,
@@ -97,13 +102,13 @@ export class ServiceResolver {
     console.log({ file });
 
     const res = await file.file.promise;
-    console.log({ res });
 
     const stream = file.file.file.createReadStream();
     return true;
   }
 
   @Query(() => ServicesCursorPaginationResponse)
+  @UseGuards(new GqlAuthorizationGuard([]))
   async getUserServices(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('userId') userId: string,
@@ -130,6 +135,13 @@ export class ServiceResolver {
       take: pagination.take + 1,
     });
 
+    const count = await this.prisma.service.count({
+      where: {
+        sellerId: userId,
+        status: 'active',
+      },
+    });
+
     return {
       cursor: pagination.cursor,
       data:
@@ -140,6 +152,7 @@ export class ServiceResolver {
           : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
       nextCursor: res.at(res.length - 1).id,
+      total: count,
     };
   }
 
@@ -210,7 +223,7 @@ export class ServiceResolver {
     return true;
   }
 
-  @Query(() => [Service])
+  @Query(() => ServiceSearchResponse)
   async searchServices(
     @Args('args', { type: () => SearchServicesInput })
     searchArgs: SearchServicesInput,
@@ -385,12 +398,55 @@ export class ServiceResolver {
       take: args.take,
     });
 
+    const count = await this.prisma.service.count({
+      where: {
+        status: 'active',
+      },
+    });
+
     return {
       cursor: args.cursor!,
       data: [],
       hasMore: false,
       nextCursor: services.at(args.take - 1)?.id,
+      total: count,
     };
+  }
+
+  @Mutation(() => Boolean)
+  async toggleSaveService(
+    @Args('serviceId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    try {
+      const saved = await this.prisma.savedService.findUnique({
+        where: {
+          serviceId_userId: {
+            serviceId: id,
+            userId: user.id,
+          },
+        },
+      });
+
+      if (saved) {
+        await this.prisma.savedService.delete({
+          where: {
+            id: saved.id,
+          },
+        });
+      } else {
+        await this.prisma.savedService.create({
+          data: {
+            serviceId: id,
+            userId: user.id,
+          },
+        });
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   @Query(() => HotelAvailablity)
@@ -667,6 +723,45 @@ export class ServiceResolver {
     if (!res) return null;
 
     return getTranslatedResource({ langId, resource: res.title });
+  }
+
+  @ResolveField(() => [String])
+  async healthCenterBookedAppointments(
+    @Parent() service: Service,
+  ): Promise<Date[]> {
+    const now = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate(),
+    );
+    const booked = await this.prisma.bookedService.findMany({
+      where: {
+        serviceId: service.id,
+        checkin: {
+          gte: now,
+          lte: AddToDate(now, { days: 7 }),
+        },
+      },
+    });
+
+    return booked.map((service) => service.checkin);
+  }
+
+  @ResolveField(() => Boolean)
+  async saved(
+    @Parent() service: Service,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const savedRecord = await this.prisma.savedService.findUnique({
+      where: {
+        serviceId_userId: {
+          serviceId: service.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!savedRecord;
   }
 
   // @ResolveField(() => RestaurantEstablishmentType)

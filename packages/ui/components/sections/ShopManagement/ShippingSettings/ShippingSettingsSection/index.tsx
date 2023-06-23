@@ -27,8 +27,6 @@ export const ShippingSettingsSection: React.FC<
     setId(undefined);
   }
 
-  const isEdit = id === null ? undefined : id;
-
   return (
     <ShippingSettingsContext.Provider
       value={{
@@ -36,10 +34,14 @@ export const ShippingSettingsSection: React.FC<
         addNew: handleAddNew,
         cancelAddNew: handleCancelAddNew,
         edit: (id) => setId(id),
-        editId: isEdit,
+        editId: id === null ? undefined : id,
       }}
     >
-      {id !== undefined ? <AddNewShippingMothed /> : <ShippingSettings />}
+      {typeof id === "string" || id === null ? (
+        <AddNewShippingMothed />
+      ) : (
+        <ShippingSettings />
+      )}
     </ShippingSettingsContext.Provider>
   );
 };

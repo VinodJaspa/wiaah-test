@@ -137,9 +137,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
                 {!isMobile && (
                   <>
                     <p
-                      className={`${
-                        active ? "text-black" : "text-white"
-                      } capitalize font-bold text-sm`}
+                      className={`${"text-white"} capitalize font-bold text-sm`}
                       data-testid="NavigationSideBarLinkLabel"
                     >
                       {link.name}
@@ -158,7 +156,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
           {isMobile ? (
             <Avatar
               onClick={() => openMyProfileNav()}
-              className="min-w-[1.5rem]"
+              className="text-2xl"
               src={user?.photoSrc}
               alt={user?.name}
             />

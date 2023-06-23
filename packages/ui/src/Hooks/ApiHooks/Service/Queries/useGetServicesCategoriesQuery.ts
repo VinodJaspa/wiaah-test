@@ -1,3 +1,4 @@
+import { ServiceType } from "@features/API";
 import { getServicesCategoriesFetcher, QueryPaginationInputs } from "api";
 import { useQuery } from "react-query";
 
@@ -5,6 +6,24 @@ export const useGetServicesCategoriesQuery = (
   pagination: QueryPaginationInputs
 ) => {
   return useQuery(["service_categories", { pagination }], () => {
-    return getServicesCategoriesFetcher(pagination);
+    const res: Array<{ name: string; slug: ServiceType }> = [
+      { name: "holidays rentals", slug: ServiceType.HolidayRentals },
+      { name: "hotels", slug: ServiceType.Hotel },
+      { name: "resturants", slug: ServiceType.Restaurant },
+      {
+        name: "health center",
+        slug: ServiceType.HealthCenter,
+      },
+      {
+        name: "vehicle",
+        slug: ServiceType.Vehicle,
+      },
+      {
+        name: "beauty center",
+        slug: ServiceType.BeautyCenter,
+      },
+    ];
+
+    return res;
   });
 };

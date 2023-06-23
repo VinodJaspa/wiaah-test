@@ -9,7 +9,6 @@ import {
   SpinnerFallback,
   VehicleSearchCard,
   VehicleSearchCardProps,
-  DisplayFoundServices,
 } from "@UI";
 import { PresentationType } from "@features/API";
 

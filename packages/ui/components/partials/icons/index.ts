@@ -171,3 +171,4 @@ export * from "./BoxIcon";
 export * from "./PhoneHandleIcon";
 export * from "./CardIntel";
 export * from "./VisaIcon";
+export * from "./FilterIcon";

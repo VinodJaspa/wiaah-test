@@ -3,15 +3,15 @@ import {
   Field,
   Float,
   ID,
-  Int,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { ShippingType } from '@prisma-client';
+import { ShippingDestination, ShippingType } from '@prisma-client';
 import { ShippingDeliveryTimeRange } from '@shipping-details';
 import { ShippingCountry } from './country.entity';
 
 registerEnumType(ShippingType, { name: 'ShippingType' });
+registerEnumType(ShippingDestination, { name: 'ShippingDestination' });
 
 @ObjectType()
 @Directive('@key(fields:"id")')
@@ -25,13 +25,19 @@ export class ShippingRule {
   @Field(() => String)
   name: string;
 
-  @Field((type) => [ShippingCountry])
-  countries: ShippingCountry[];
+  @Field(() => String)
+  shippingCompanyName: string;
 
-  @Field((type) => Float)
+  @Field(() => ShippingDestination)
+  destination: ShippingDestination;
+
+  // @Field(() => [ShippingCountry])
+  // countries: ShippingCountry[];
+
+  @Field(() => Float)
   cost: number;
 
-  @Field((type) => ShippingType)
+  @Field(() => ShippingType)
   shippingType: ShippingType;
 
   @Field(() => ShippingDeliveryTimeRange)

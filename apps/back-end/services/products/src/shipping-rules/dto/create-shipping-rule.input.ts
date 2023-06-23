@@ -1,5 +1,5 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
-import { ShippingType } from '@prisma-client';
+import { ShippingDestination, ShippingType } from '@prisma-client';
 import { ArrayNotEmpty } from 'class-validator';
 
 @InputType()
@@ -25,6 +25,12 @@ export class CreateShippingRuleInput {
 
   @Field(() => String)
   name: string;
+
+  @Field(() => String)
+  shippingCompanyName: string;
+
+  @Field(() => ShippingDestination)
+  destination: ShippingDestination;
 
   @Field((type) => Float)
   cost: number;

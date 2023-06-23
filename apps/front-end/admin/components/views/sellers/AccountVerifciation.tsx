@@ -1,5 +1,4 @@
 import {
-  AccountDeletionModal,
   AccountVerifciationForm,
   useAdminGetAccountVerifficationRequest,
 } from "@UI";

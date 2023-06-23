@@ -74,6 +74,8 @@ export const LocationSearchDrawer: React.FC = () => {
     thumbnails: [...Array(20)].map(() => getRandomImage()),
   }));
 
+  // TODO: replace static content with dynamic content
+
   return (
     <Drawer
       full

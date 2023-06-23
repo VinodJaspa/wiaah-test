@@ -16,6 +16,8 @@ export type SocialRoutesType = {
   newsfeed: () => RoutesType;
   post: () => RoutesType;
   hashtag: () => RoutesType;
+  chat: () => RoutesType;
+  visitChatRoomByProfileId: (profileId: string) => RoutesType;
 };
 
 export const SocialRoutes = {
@@ -31,6 +33,13 @@ export const SocialRoutes = {
   },
   post() {
     return this.addPath("post");
+  },
+  chat() {
+    return this.addPath("chat");
+  },
+
+  visitChatRoomByProfileId(profileId) {
+    return this.chat().id(profileId);
   },
 
   visitSellerHashtagPage(hashtag) {

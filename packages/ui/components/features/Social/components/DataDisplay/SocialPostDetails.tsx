@@ -26,19 +26,22 @@ import React from "react";
 import { SocialPostOptionsDropdown } from "./DropdownOptions";
 import { NumberShortner, mapArray } from "@UI/../utils/src";
 import { useTranslation } from "react-i18next";
-import { CommentInput } from "@blocks";
+import { CommentInput, useSocialControls } from "@blocks";
 import { PostCommentsList } from "../Lists";
 import { ContentHostType, PostType } from "@features/API";
 import { getRandomImage } from "@UI/placeholder";
+import { useRouting } from "routing";
 
 export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
   const { data, isLoading } = useGetSocialPostQuery({ id: postId });
+  const { shareLink } = useSocialControls();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(data?.createdAt || new Date()),
     to: new Date(Date.now()),
   });
   const { mutate } = useLikeContent();
+  const { getUrl } = useRouting();
   const Since = getSince();
   const { data: myProfile } = useGetMyProfileQuery();
   const { mutate: savePost } = useSavePostMutation();
@@ -61,7 +64,6 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
               args: {
                 contentId: postId,
                 contentType: ContentHostType.PostNewsfeed,
-                authorProfileId: myProfile?.id,
               },
             })
           : null,
@@ -78,7 +80,9 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
       activeIcon: <PaperPlaneAngleIcon />,
       isActive: false,
       label: `${NumberShortner(data?.shares || 0)}`,
-      onClick: () => {},
+      onClick: () => {
+        shareLink(getUrl((r) => r.visitSocialPost(postId)));
+      },
     },
     {
       icon: <SaveFlagOutlineIcon />,

@@ -1,5 +1,5 @@
 import React from "react";
-import { FlagIcon as FlagKitIcon, FlagIconCode } from "react-flag-kit";
+import * as Flags from "country-flag-icons/react/3x2";
 
 export interface FlagIconProps {
   code: string;
@@ -7,5 +7,8 @@ export interface FlagIconProps {
 }
 
 export const FlagIcon: React.FC<FlagIconProps> = ({ code, size }) => {
-  return <FlagKitIcon size={size as number} code={code as FlagIconCode} />;
+  // @ts-ignore
+  const Flag = Flags[code];
+
+  return <Flag className="w-6 h-6" code={code} />;
 };

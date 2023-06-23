@@ -272,6 +272,10 @@ export type AdminGetDishsInput = {
   type?: InputMaybe<RestaurantDishType>;
 };
 
+export type AdminGetIdentitiyVerificationRequestsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetLanguagesInput = {
   code?: InputMaybe<Scalars["String"]["input"]>;
   locale?: InputMaybe<Scalars["String"]["input"]>;
@@ -865,6 +869,7 @@ export type CommentsCursorPaginationResponse = {
   data: Array<Comment>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export enum CommentsVisibility {
@@ -1193,7 +1198,6 @@ export type CreateProfileInput = {
 };
 
 export type CreateReactionInput = {
-  authorProfileId: Scalars["ID"]["input"];
   contentId: Scalars["ID"]["input"];
   contentType: ContentHostType;
 };
@@ -1293,7 +1297,9 @@ export type CreateShippingRuleInput = {
   cost: Scalars["Float"]["input"];
   countries: Array<ShippingCountryInput>;
   deliveryTimeRange: ShippingDeliveryTimeRangeInput;
+  destination: ShippingDestination;
   name: Scalars["String"]["input"];
+  shippingCompanyName: Scalars["String"]["input"];
   shippingType: ShippingType;
 };
 
@@ -1568,6 +1574,7 @@ export type GetActionsCursorResponse = {
   data: Array<Action>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type GetAddableHashtagsInput = {
@@ -1931,6 +1938,12 @@ export type GetPostsByHashtagInput = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   hashtag: Scalars["String"]["input"];
   take: Scalars["Int"]["input"];
+};
+
+export type GetProfileFollowersMetaCursorInput = {
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+  take: Scalars["Int"]["input"];
+  userId: Scalars["String"]["input"];
 };
 
 export type GetProfileFollowersMetaInput = {
@@ -2594,6 +2607,7 @@ export type Mutation = {
   suspenseAccount: Scalars["Boolean"]["output"];
   suspenseContent: Scalars["Boolean"]["output"];
   suspenseReportedContent: Scalars["Boolean"]["output"];
+  toggleSaveService: Scalars["Boolean"]["output"];
   unBanBuyersCities: Scalars["Boolean"]["output"];
   unBanSellersCities: Scalars["Boolean"]["output"];
   unFollow: Scalars["Boolean"]["output"];
@@ -3135,6 +3149,10 @@ export type MutationSuspenseReportedContentArgs = {
   id: Scalars["String"]["input"];
 };
 
+export type MutationToggleSaveServiceArgs = {
+  serviceId: Scalars["String"]["input"];
+};
+
 export type MutationUnBanBuyersCitiesArgs = {
   args: BanCitiesInput;
 };
@@ -3383,6 +3401,7 @@ export type NewsfeedPostsPaginationResponse = {
   data: Array<NewsfeedPost>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type Order = {
@@ -3738,6 +3757,7 @@ export type ProductsCursorPaginationResponse = {
   data: Array<Product>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type Profession = {
@@ -3760,6 +3780,7 @@ export type Profile = {
   followingData?: Maybe<Array<Follow>>;
   id: Scalars["ID"]["output"];
   lastActive: Scalars["DateTime"]["output"];
+  newStory: Scalars["Boolean"]["output"];
   ownerId: Scalars["ID"]["output"];
   photo: Scalars["String"]["output"];
   profession: Scalars["String"]["output"];
@@ -3785,6 +3806,7 @@ export type ProfileFollow = {
   id: Scalars["ID"]["output"];
   isFollowed: Scalars["Boolean"]["output"];
   lastActive: Scalars["DateTime"]["output"];
+  newStory: Scalars["Boolean"]["output"];
   ownerId: Scalars["ID"]["output"];
   photo: Scalars["String"]["output"];
   profession: Scalars["String"]["output"];
@@ -3804,9 +3826,18 @@ export type ProfileMeta = {
   username: Scalars["String"]["output"];
 };
 
+export type ProfileMetaCursorPaginatedResponse = {
+  __typename?: "ProfileMetaCursorPaginatedResponse";
+  cursor?: Maybe<Scalars["String"]["output"]>;
+  data: Array<Profile>;
+  hasMore: Scalars["Boolean"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
+};
+
 export type ProfileMetaPaginatedResponse = {
   __typename?: "ProfileMetaPaginatedResponse";
-  data: Array<ProfileMeta>;
+  data: Array<Profile>;
   hasMore: Scalars["Boolean"]["output"];
   total: Scalars["Int"]["output"];
 };
@@ -3877,6 +3908,7 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"]["output"];
   adminGetAccount: Account;
   adminGetAccountBookingHistory: Array<BookedService>;
+  adminGetAccountIdentityVerificationRequests: Array<IdentityVerification>;
   adminGetAccountOrderById: Order;
   adminGetAccountPrivacySettings: PrivacySettings;
   adminGetAccountProducts: Array<Product>;
@@ -3898,6 +3930,7 @@ export type Query = {
   adminGetNewsfeedPost: AdminNewsfeedPost;
   adminGetProduct?: Maybe<Product>;
   adminGetProfessions: Array<Profession>;
+  adminGetProfileVerificationRequest: AccountVerification;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetRefundRequest: Refund;
   adminGetReturnedOrders: Array<ReturnedOrder>;
@@ -3942,6 +3975,8 @@ export type Query = {
   getCurrencies: Array<Currency>;
   getCurrencyData: Currency;
   getCursorFilteredShops: ShopCursorPaginationResponse;
+  getCursorPaginationFollowersByProfileId: ProfileMetaCursorPaginatedResponse;
+  getCursorPaginationFollowingsByProfileId: ProfileMetaCursorPaginatedResponse;
   getDesignByPlacement: Array<Design>;
   getFilteredAffiliations: Array<Affiliation>;
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
@@ -4034,6 +4069,7 @@ export type Query = {
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryByType: ServiceCategory;
+  getServiceCategoryFilters: Array<ServiceFilter>;
   getServiceDetails?: Maybe<Service>;
   getServiceInsuranceHistory: Array<Insurance>;
   getServicePost: ServicePost;
@@ -4082,7 +4118,7 @@ export type Query = {
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
   searchPopularUsers: ProfilePaginatedResponse;
-  searchServices: Array<Service>;
+  searchServices: ServiceSearchResponse;
   sendContactUsMessage: Scalars["Boolean"]["output"];
   updateComment: PaginationCommentsResponse;
 };
@@ -4099,6 +4135,10 @@ export type QueryAdminGetAccountBookingHistoryArgs = {
   accountId: Scalars["String"]["input"];
   accountType: Scalars["String"]["input"];
   args: GetBookingsHistoryInput;
+};
+
+export type QueryAdminGetAccountIdentityVerificationRequestsArgs = {
+  args: AdminGetIdentitiyVerificationRequestsInput;
 };
 
 export type QueryAdminGetAccountOrderByIdArgs = {
@@ -4184,6 +4224,10 @@ export type QueryAdminGetProductArgs = {
 
 export type QueryAdminGetProfessionsArgs = {
   args: AdminGetProfessionInput;
+};
+
+export type QueryAdminGetProfileVerificationRequestArgs = {
+  id: Scalars["String"]["input"];
 };
 
 export type QueryAdminGetRawServiceArgs = {
@@ -4343,6 +4387,14 @@ export type QueryGetCurrencyDataArgs = {
 
 export type QueryGetCursorFilteredShopsArgs = {
   args: FilteredShopsCursorInput;
+};
+
+export type QueryGetCursorPaginationFollowersByProfileIdArgs = {
+  getFollowersMetaInput: GetProfileFollowersMetaCursorInput;
+};
+
+export type QueryGetCursorPaginationFollowingsByProfileIdArgs = {
+  getFollowersMetaInput: GetProfileFollowersMetaCursorInput;
 };
 
 export type QueryGetDesignByPlacementArgs = {
@@ -4621,6 +4673,10 @@ export type QueryGetServiceCategoryByIdArgs = {
 
 export type QueryGetServiceCategoryByTypeArgs = {
   type: ServiceType;
+};
+
+export type QueryGetServiceCategoryFiltersArgs = {
+  category: ServiceType;
 };
 
 export type QueryGetServiceDetailsArgs = {
@@ -5035,8 +5091,16 @@ export type SearchPopularProfilesInput = {
   take?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type SearchServicesFilterInput = {
+  id: Scalars["String"]["input"];
+  value: Array<Scalars["String"]["input"]>;
+};
+
 export type SearchServicesInput = {
-  q: Scalars["String"]["input"];
+  filters: Array<SearchServicesFilterInput>;
+  locationQuery?: InputMaybe<Scalars["String"]["input"]>;
+  pagination: GqlPaginationInput;
+  q?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SellerProductsRating = {
@@ -5074,6 +5138,7 @@ export type Service = {
   duration?: Maybe<Scalars["Int"]["output"]>;
   extras?: Maybe<Array<ServiceExtra>>;
   gpsAvailable?: Maybe<Scalars["Boolean"]["output"]>;
+  healthCenterBookedAppointments: Array<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   includedAmenities?: Maybe<Array<Scalars["String"]["output"]>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
@@ -5092,6 +5157,7 @@ export type Service = {
   rating: Scalars["Float"]["output"];
   restriction?: Maybe<Array<ServiceRestriction>>;
   reviews: Scalars["Int"]["output"];
+  saved: Scalars["Boolean"]["output"];
   seats?: Maybe<Scalars["Int"]["output"]>;
   sellerId: Scalars["ID"]["output"];
   sessionDurationMins?: Maybe<Scalars["Int"]["output"]>;
@@ -5260,6 +5326,36 @@ export type ServiceExtraNameTranslationInput = {
   value: Scalars["String"]["input"];
 };
 
+export type ServiceFilter = {
+  __typename?: "ServiceFilter";
+  filterGroupName: Scalars["String"]["output"];
+  filterValues: Array<ServiceFilterValue>;
+  filteringKey: Scalars["String"]["output"];
+  id: Scalars["String"]["output"];
+  selectionType: ServiceFilterSelectionType;
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export enum ServiceFilterSelectionType {
+  MultiSelect = "multiSelect",
+  Range = "range",
+  SingleSelect = "singleSelect",
+}
+
+export type ServiceFilterValue = {
+  __typename?: "ServiceFilterValue";
+  filteringValue: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  sortOrder: Scalars["Int"]["output"];
+};
+
+export type ServiceFilterValueRaw = {
+  __typename?: "ServiceFilterValueRaw";
+  filteringValue: Scalars["String"]["output"];
+  name: Array<TranslationText>;
+  sortOrder: Scalars["Int"]["output"];
+};
+
 export type ServiceIncludedAmenitiesInput = {
   langId: Scalars["String"]["input"];
   value: Array<Scalars["String"]["input"]>;
@@ -5411,6 +5507,13 @@ export enum ServiceRestriction {
   Smoking = "smoking",
 }
 
+export type ServiceSearchResponse = {
+  __typename?: "ServiceSearchResponse";
+  data: Array<Service>;
+  hasMore: Scalars["Boolean"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
 export type ServiceServiceDayWorkingHours = {
   __typename?: "ServiceServiceDayWorkingHours";
   periods: Array<Scalars["String"]["output"]>;
@@ -5500,6 +5603,7 @@ export type ServicesCursorPaginationResponse = {
   data: Array<Service>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type ShippingAddress = {
@@ -5512,11 +5616,6 @@ export type ShippingAddress = {
   ownerId: Scalars["ID"]["output"];
   phone?: Maybe<Scalars["String"]["output"]>;
   zipCode?: Maybe<Scalars["String"]["output"]>;
-};
-
-export type ShippingCountry = {
-  __typename?: "ShippingCountry";
-  code: Scalars["String"]["output"];
 };
 
 export type ShippingCountryInput = {
@@ -5534,6 +5633,11 @@ export type ShippingDeliveryTimeRangeInput = {
   to: Scalars["Int"]["input"];
 };
 
+export enum ShippingDestination {
+  Local = "local",
+  National = "national",
+}
+
 export type ShippingDetails = {
   __typename?: "ShippingDetails";
   available: Scalars["Boolean"]["output"];
@@ -5547,12 +5651,13 @@ export type ShippingDetails = {
 export type ShippingRule = {
   __typename?: "ShippingRule";
   cost: Scalars["Float"]["output"];
-  countries: Array<ShippingCountry>;
   deliveryTimeRange: ShippingDeliveryTimeRange;
+  destination: ShippingDestination;
   id: Scalars["ID"]["output"];
   listing: Scalars["Float"]["output"];
   name: Scalars["String"]["output"];
   sellerId: Scalars["ID"]["output"];
+  shippingCompanyName: Scalars["String"]["output"];
   shippingType: ShippingType;
 };
 
@@ -5566,6 +5671,7 @@ export type ShippingRuleGeoZone = {
 
 export enum ShippingType {
   ClickAndCollect = "click_and_collect",
+  Free = "free",
   Paid = "paid",
 }
 
@@ -5616,6 +5722,7 @@ export type ShopCursorPaginationResponse = {
   data: Array<Shop>;
   hasMore: Scalars["Boolean"]["output"];
   nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type ShopDayWorkingHours = {
@@ -6237,8 +6344,10 @@ export type UpdateShippingRuleInput = {
   cost?: InputMaybe<Scalars["Float"]["input"]>;
   countries?: InputMaybe<Array<ShippingCountryInput>>;
   deliveryTimeRange?: InputMaybe<ShippingDeliveryTimeRangeInput>;
+  destination?: InputMaybe<ShippingDestination>;
   id: Scalars["ID"]["input"];
   name?: InputMaybe<Scalars["String"]["input"]>;
+  shippingCompanyName?: InputMaybe<Scalars["String"]["input"]>;
   shippingType?: InputMaybe<ShippingType>;
 };
 

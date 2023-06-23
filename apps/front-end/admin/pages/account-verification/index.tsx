@@ -17,7 +17,12 @@ import {
   TrashIcon,
   Radio,
 } from "@partials";
-import { ChooseWithInput } from "ui";
+import {
+  ChooseWithInput,
+  useAdminGetAccountIdentityRequestsQuery,
+  useAdminGetAccountVerifciationRequestsQuery,
+  useAdminGetAccountVerifficationRequest,
+} from "ui";
 import { NextPage } from "next";
 import { getRandomImage } from "placeholder";
 import React from "react";
@@ -28,6 +33,7 @@ import { startCase } from "lodash";
 import { usePaginationControls } from "@blocks";
 import { useRouting } from "routing";
 import { Form, Formik } from "formik";
+import { AccountVerificationStatus } from "@features/API";
 
 interface AccountVerificationRequest {
   id: string;
@@ -40,9 +46,7 @@ interface AccountVerificationRequest {
 
 const statues = ["pending", "refused", "accepted"] as const;
 
-const accountVerificationRequests: AccountVerificationRequest[] = [
-  ...Array(10),
-].map((_, i) => ({
+const _data: AccountVerificationRequest[] = [...Array(10)].map((_, i) => ({
   id: i.toString(),
   name: `name-${i}`,
   date: new Date().toISOString(),
@@ -54,7 +58,8 @@ const accountVerificationRequests: AccountVerificationRequest[] = [
 const AccountVerifications: NextPage = () => {
   const { t } = useTranslation();
   const [refuseId, setRefuseId] = React.useState<string>();
-  const { controls } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+  const { data } = useAdminGetAccountVerifciationRequestsQuery({ pagination });
   const { visit, getCurrentPath } = useRouting();
 
   return (
@@ -75,16 +80,16 @@ const AccountVerifications: NextPage = () => {
             value: t("Date"),
             type: AdminTableCellTypeEnum.date,
           },
-          {
-            value: t("Type of user"),
-            type: AdminTableCellTypeEnum.custom,
-            custom: (
-              <Select>
-                <SelectOption value={"seller"}>{t("Seller")}</SelectOption>
-                <SelectOption value={"buyer"}>{t("Buyer")}</SelectOption>
-              </Select>
-            ),
-          },
+          // {
+          //   value: t("Type of user"),
+          //   type: AdminTableCellTypeEnum.custom,
+          //   custom: (
+          //     <Select>
+          //       <SelectOption value={"seller"}>{t("Seller")}</SelectOption>
+          //       <SelectOption value={"buyer"}>{t("Buyer")}</SelectOption>
+          //     </Select>
+          //   ),
+          // },
           {
             value: t("Status"),
             type: AdminTableCellTypeEnum.custom,
@@ -101,70 +106,68 @@ const AccountVerifications: NextPage = () => {
             value: t("Action"),
           },
         ]}
-        data={accountVerificationRequests.map(
-          ({ id, date, name, photo, status, type }) => ({
-            id,
-            cols: [
-              {
-                type: AdminTableCellTypeEnum.avatar,
-                value: photo,
-              },
-              {
-                value: name,
-              },
-              {
-                value: new Date(date).toDateString(),
-              },
-              {
-                value: startCase(type),
-              },
-              {
-                type: AdminTableCellTypeEnum.custom,
-                custom: (
-                  <Badge
-                    cases={{
-                      off: "pending",
-                      fail: "refused",
-                      success: "accepted",
-                    }}
-                    value={status}
-                  >
-                    {startCase(status)}
-                  </Badge>
-                ),
-              },
-              {
-                type: AdminTableCellTypeEnum.action,
-                props: { align: "right" },
-                actionBtns: [
-                  <Button
-                    onClick={() =>
-                      visit((r) =>
-                        r.addPath(getCurrentPath()).addPath("view").addPath(id)
-                      )
-                    }
-                    colorScheme="info"
-                    center
-                    className="w-8 h-8"
-                  >
-                    <EyeIcon />
-                  </Button>,
-                  <Button colorScheme="primary" center className="w-8 h-8">
-                    <ImCheckmark />
-                  </Button>,
-                  <Button
-                    onClick={() => setRefuseId(id)}
-                    colorScheme="danger"
-                    center
-                    className="w-8 h-8"
-                  >
-                    <TrashIcon />
-                  </Button>,
-                ],
-              },
-            ],
-          })
-        )}
+        data={data.map(({ id, createdAt, fullName, idPhoto, status }) => ({
+          id,
+          cols: [
+            {
+              type: AdminTableCellTypeEnum.avatar,
+              value: idPhoto,
+            },
+            {
+              value: fullName,
+            },
+            {
+              value: new Date(createdAt).toDateString(),
+            },
+            // {
+            //   value: startCase(type),
+            // },
+            {
+              type: AdminTableCellTypeEnum.custom,
+              custom: (
+                <Badge
+                  cases={{
+                    off: AccountVerificationStatus.Pending,
+                    fail: AccountVerificationStatus.Rejected,
+                    success: AccountVerificationStatus.Accepted,
+                  }}
+                  value={status}
+                >
+                  {startCase(status)}
+                </Badge>
+              ),
+            },
+            {
+              type: AdminTableCellTypeEnum.action,
+              props: { align: "right" },
+              actionBtns: [
+                <Button
+                  onClick={() =>
+                    visit((r) =>
+                      r.addPath(getCurrentPath()).addPath("view").addPath(id)
+                    )
+                  }
+                  colorScheme="info"
+                  center
+                  className="w-8 h-8"
+                >
+                  <EyeIcon />
+                </Button>,
+                <Button colorScheme="primary" center className="w-8 h-8">
+                  <ImCheckmark />
+                </Button>,
+                <Button
+                  onClick={() => setRefuseId(id)}
+                  colorScheme="danger"
+                  center
+                  className="w-8 h-8"
+                >
+                  <TrashIcon />
+                </Button>,
+              ],
+            },
+          ],
+        }))}
       />
       <Modal isOpen={!!refuseId} onClose={() => setRefuseId(undefined)}>
         <ModalOverlay />

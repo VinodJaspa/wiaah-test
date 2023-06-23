@@ -1,5 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { CreateGqlPaginatedResponse, CreateGqlResponse } from 'nest-utils';
+import {
+  CreateGqlCursorPaginatedResponse,
+  CreateGqlPaginatedResponse,
+  CreateGqlResponse,
+} from 'nest-utils';
+import { Profile } from './profile.entity';
 
 @ObjectType()
 export class ProfileMeta {
@@ -15,7 +20,12 @@ export class ProfileMeta {
 
 @ObjectType()
 export class ProfileMetaPaginatedResponse extends CreateGqlPaginatedResponse(
-  ProfileMeta,
+  Profile,
+) {}
+
+@ObjectType()
+export class ProfileMetaCursorPaginatedResponse extends CreateGqlCursorPaginatedResponse(
+  Profile,
 ) {}
 
 @ObjectType()

@@ -76,6 +76,7 @@ model Design {
   src         String
   name        String
   distenation String
+  text        String
   type        DesignType
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt

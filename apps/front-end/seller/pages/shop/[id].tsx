@@ -3,15 +3,15 @@ import {
   ServiceDetailsView,
   getShopDetailsQueryFetcher,
   getShopDetailsQueryKey,
+  setQueryClientServerSideProps,
   useGetShopDetailsQuery,
 } from "@UI";
-import { ShopDetailsView } from "@components";
 import { StoreType } from "@features/API";
 import { GetServerSideProps } from "next";
 import React from "react";
 import { QueryClient, dehydrate } from "react-query";
 import { useRouting } from "routing";
-import { setQueryClientServerSideProps } from "../../helpers";
+import { ShopDetailsView } from "@components";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context?.params["id"] as string;
@@ -45,7 +45,7 @@ const ShopView: React.FC = () => {
   return (
     <SellerLayout>
       {shop.storeType === StoreType.Service ? (
-        <ServiceDetailsView userId={id} />
+        <ServiceDetailsView id={id} />
       ) : (
         <ShopDetailsView accountId={id} />
       )}

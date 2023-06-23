@@ -17,8 +17,6 @@ import { ProductDetails } from "types";
 import { categories } from "placeholder";
 import { ShopProfile } from "./ShopProfile";
 import { BuyerCommentProps } from "ui";
-import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import { usePagination } from "hooks";
 
 interface ShopViewProps {
@@ -27,8 +25,6 @@ interface ShopViewProps {
 }
 
 export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
-  const { t } = useTranslation();
-  const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 640 });
   const { filters } = useSearchFilters();
   const { page, take } = usePagination();
