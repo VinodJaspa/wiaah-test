@@ -1,7 +1,12 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import { useQuery } from "react-query";
 import {
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
+import {
+  GetProfileFollowersMetaCursorInput,
   GetProfileFollowersMetaInput,
   ProfileMeta,
   ProfileMetaPaginatedResponse,
@@ -44,7 +49,7 @@ export const useGetSocialProfileFollowers = (
             hasMore
             total
         }
-    }    
+    }
     `);
 
   client.setVariables<GetProfileFollowersQueryVariables>({
@@ -57,3 +62,75 @@ export const useGetSocialProfileFollowers = (
     return res.data.getFollowersByProfileId;
   });
 };
+
+export type GetProfileFollowersWithCursorQuery = {
+  __typename?: "Query";
+  getCursorPaginationFollowersByProfileId: {
+    __typename?: "ProfileMetaCursorPaginatedResponse";
+    hasMore: boolean;
+    total: number;
+    nextCursor?: string | null;
+    cursor?: string | null;
+    data: Array<{
+      __typename?: "Profile";
+      id: string;
+      photo: string;
+      username: string;
+      verified: boolean;
+      newStory: boolean;
+      ownerId: string;
+    }>;
+  };
+};
+export type GetProfileFollowersQueryCursorVariables = Exact<{
+  args: GetProfileFollowersMetaCursorInput;
+}>;
+
+type args = GetProfileFollowersQueryCursorVariables["args"];
+
+export const useGetSocialProfileFollowersInfiniteQuery = (
+  args: args,
+  options?: UseInfiniteQueryOptions<
+    GetProfileFollowersWithCursorQuery["getCursorPaginationFollowersByProfileId"],
+    unknown,
+    GetProfileFollowersWithCursorQuery["getCursorPaginationFollowersByProfileId"],
+    GetProfileFollowersWithCursorQuery["getCursorPaginationFollowersByProfileId"],
+    any
+  >
+) =>
+  useInfiniteQuery(
+    ["social-profile-followers-infinite", { args }],
+    async ({ pageParam }) => {
+      const client = createGraphqlRequestClient();
+
+      const res = await client
+        .setQuery(
+          `query getProfileFollowersWithCursor(
+  $args: GetProfileFollowersMetaCursorInput!
+) {
+  getCursorPaginationFollowersByProfileId(getFollowersMetaInput: $args) {
+    data {
+      id
+      photo
+      username
+      ownerId
+      newStory
+      verified
+    }
+    hasMore
+    total
+    nextCursor
+    cursor
+  }
+}
+`
+        )
+        .setVariables<GetProfileFollowersQueryCursorVariables>({
+          args: { ...args, cursor: pageParam },
+        })
+        .send<GetProfileFollowersWithCursorQuery>();
+
+      return res.data.getCursorPaginationFollowersByProfileId;
+    },
+    options
+  );

@@ -6,7 +6,7 @@ export const useGetSocialProfile = (profileId: string) => {
     ["SocialProfileData", { profileId }],
     () => getSocialProfileData(profileId),
     {
-      enabled: !!profileId,
+      enabled: typeof profileId === "string",
     }
   );
 };

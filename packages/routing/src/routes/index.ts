@@ -28,6 +28,11 @@ export type MainRouterInterface = {
   visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
   visitChangePassword: () => RoutesType;
   visitRegister: () => RoutesType;
+  visitLogout: () => RoutesType;
+  visitSignin: () => RoutesType;
+  visitMarketSavedItems: () => RoutesType;
+  visitContactUs: () => RoutesType;
+  visitHelpAndFaqs: () => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
   ShopRoutesType &
@@ -101,5 +106,21 @@ export const MainRoutes: MainRouterInterface = {
   },
   visitRegister() {
     return this.addPath("auth").addPath("register");
+  },
+  visitLogout() {
+    return this.addPath("auth").addPath("logout");
+  },
+  visitSignin() {
+    return this.addAffiliatorId("auth").addPath("sign-in");
+  },
+  visitMarketSavedItems() {
+    // TODO
+    return this;
+  },
+  visitContactUs() {
+    return this.addPath("contact-us");
+  },
+  visitHelpAndFaqs() {
+    return this.addPath("help-and-faqs");
   },
 };

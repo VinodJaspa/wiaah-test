@@ -5,3 +5,4 @@ export * from "./DropdownOptions";
 export * from "./SocialPostAuthorHeader";
 export * from "./SocialPostDetails";
 export * from "./SocialAuthorSimillarPosts";
+export * from "./SocialAvatarWithStory";

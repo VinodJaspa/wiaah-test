@@ -128,7 +128,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
 
   return (
     <>
-      <div className="text-primary mt-8 flex w-full justify-center md:justify-end">
+      <div className="text-white mt-8 flex w-full justify-center md:justify-end">
         <div
           onClick={() => showInternationalModal()}
           className="flex cursor-pointer border border-gray-400"

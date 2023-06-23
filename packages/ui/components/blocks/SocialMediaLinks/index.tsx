@@ -14,7 +14,7 @@ export const SocialMediaLinks: FC = () => {
   const { t, i18n } = useTranslation();
   return (
     <div className="block w-full space-y-4">
-      <p className="text-primary font-bold uppercase">
+      <p className="text-white font-bold uppercase">
         {t("Stay_Connected", "Stay Connected")}
       </p>
       <ul className="block space-y-4 text-sm text-gray-400">

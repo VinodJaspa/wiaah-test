@@ -102,8 +102,6 @@ export function useForm<TForm>(
       ]);
     };
 
-    console.log({ data });
-
     return {
       [valueKey]: value,
       [onChangeKey]: onChange,

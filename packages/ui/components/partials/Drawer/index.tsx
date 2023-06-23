@@ -1,8 +1,9 @@
 import React, { CSSProperties } from "react";
 import { HtmlDivProps } from "types";
 import { PassPropsToChild } from "utils";
-import { CloseIcon } from "@UI";
+import { ArrowLeftIcon, CloseIcon } from "@UI";
 import { bottom } from "./Drawer.stories";
+import { useResponsive } from "hooks";
 
 type DrawerPositions = "left" | "right" | "top" | "bottom";
 
@@ -217,20 +218,30 @@ export const DrawerCloseButton: React.FC<DrawerCloseButton> = ({
 
 export interface DrawerHeaderProps extends HtmlDivProps {
   closeButton?: boolean;
+  onBack?: () => any;
 }
 
 export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   className,
   children,
   closeButton = false,
+  onBack,
   ...props
 }) => {
+  const { isMobile } = useResponsive();
   const { active } = React.useContext(DrawerCtx);
   return active ? (
     <div
-      className={`${className || ""} flex justify-between items-center`}
+      className={`${
+        className || ""
+      } flex justify-between items-center relative`}
       {...props}
     >
+      {typeof onBack === "function" ? (
+        <div className="absolute top-1/2 -translate-y-1/2">
+          <ArrowLeftIcon className="text-2xl" />
+        </div>
+      ) : null}
       {children}
       {closeButton ? (
         <DrawerCloseButton>

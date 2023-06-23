@@ -81,6 +81,7 @@ interface SocialAtomValue {
   marketServiceSearchResultsFilters?: ServiceType;
   marketShowServiceDetails?: string;
   marketShowMapSearch: boolean;
+  showProfileFollowers?: string;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -246,6 +247,9 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
       setControls("marketShowServiceDetails", undefined),
     showMarketMapSearch: () => setControls("marketShowMapSearch", true),
     hideMarketMapSearch: () => setControls("marketShowMapSearch", false),
+    showProfileFollowers: (profileId: string) =>
+      setControls("showProfileFollowers", profileId),
+    hideProfileFollowers: () => setControls("showProfileFollowers", undefined),
     value,
   };
 }

@@ -1940,6 +1940,12 @@ export type GetPostsByHashtagInput = {
   take: Scalars["Int"]["input"];
 };
 
+export type GetProfileFollowersMetaCursorInput = {
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+  take: Scalars["Int"]["input"];
+  userId: Scalars["String"]["input"];
+};
+
 export type GetProfileFollowersMetaInput = {
   pagination: GqlPaginationInput;
   profileId: Scalars["String"]["input"];
@@ -3774,6 +3780,7 @@ export type Profile = {
   followingData?: Maybe<Array<Follow>>;
   id: Scalars["ID"]["output"];
   lastActive: Scalars["DateTime"]["output"];
+  newStory: Scalars["Boolean"]["output"];
   ownerId: Scalars["ID"]["output"];
   photo: Scalars["String"]["output"];
   profession: Scalars["String"]["output"];
@@ -3799,6 +3806,7 @@ export type ProfileFollow = {
   id: Scalars["ID"]["output"];
   isFollowed: Scalars["Boolean"]["output"];
   lastActive: Scalars["DateTime"]["output"];
+  newStory: Scalars["Boolean"]["output"];
   ownerId: Scalars["ID"]["output"];
   photo: Scalars["String"]["output"];
   profession: Scalars["String"]["output"];
@@ -3818,9 +3826,18 @@ export type ProfileMeta = {
   username: Scalars["String"]["output"];
 };
 
+export type ProfileMetaCursorPaginatedResponse = {
+  __typename?: "ProfileMetaCursorPaginatedResponse";
+  cursor?: Maybe<Scalars["String"]["output"]>;
+  data: Array<Profile>;
+  hasMore: Scalars["Boolean"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
+};
+
 export type ProfileMetaPaginatedResponse = {
   __typename?: "ProfileMetaPaginatedResponse";
-  data: Array<ProfileMeta>;
+  data: Array<Profile>;
   hasMore: Scalars["Boolean"]["output"];
   total: Scalars["Int"]["output"];
 };
@@ -3958,6 +3975,8 @@ export type Query = {
   getCurrencies: Array<Currency>;
   getCurrencyData: Currency;
   getCursorFilteredShops: ShopCursorPaginationResponse;
+  getCursorPaginationFollowersByProfileId: ProfileMetaCursorPaginatedResponse;
+  getCursorPaginationFollowingsByProfileId: ProfileMetaCursorPaginatedResponse;
   getDesignByPlacement: Array<Design>;
   getFilteredAffiliations: Array<Affiliation>;
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
@@ -4368,6 +4387,14 @@ export type QueryGetCurrencyDataArgs = {
 
 export type QueryGetCursorFilteredShopsArgs = {
   args: FilteredShopsCursorInput;
+};
+
+export type QueryGetCursorPaginationFollowersByProfileIdArgs = {
+  getFollowersMetaInput: GetProfileFollowersMetaCursorInput;
+};
+
+export type QueryGetCursorPaginationFollowingsByProfileIdArgs = {
+  getFollowersMetaInput: GetProfileFollowersMetaCursorInput;
 };
 
 export type QueryGetDesignByPlacementArgs = {
