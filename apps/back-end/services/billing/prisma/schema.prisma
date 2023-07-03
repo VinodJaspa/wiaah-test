@@ -100,6 +100,7 @@ model FinancialAccount {
   card_exp_year  String?
   card_number    String?
   card_cvc       String?
+  card_type      String?
   currency       String?
   bank_number    String?
   bank_country   String?

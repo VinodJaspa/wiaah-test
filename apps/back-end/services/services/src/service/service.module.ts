@@ -7,9 +7,12 @@ import { resolvers } from './resolvers';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { servicesEventHandlers } from './events/handlers';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     UploadModule.forRoot({
       secretKey: 'secret',
       serviceKey: 'servicekey',
@@ -37,6 +40,7 @@ import { PrismaService } from 'prismaService';
     AdminServiceResolver,
     PrismaService,
     ...resolvers,
+    ...servicesEventHandlers,
   ],
   exports: [ServiceService],
 })

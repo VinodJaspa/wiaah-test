@@ -41,12 +41,12 @@ export const ProductOptions: React.FC<ProductOptionsProps> = () => {
               className="cursor-pointer"
             />
           </div>
-          {opt.component({ onData: (data) => {} })}
+          <opt.component onData={() => {}} />
         </div>
       ))}
       <Select
         className="w-full min-w-32"
-        placeholder={"+" + t("add_option", "Add Option")}
+        placeholder={"+" + t("Add Option")}
         onOptionSelect={(v) => addOption(parseInt(v))}
       >
         {options.map((opt, i) => (
@@ -59,6 +59,45 @@ export const ProductOptions: React.FC<ProductOptionsProps> = () => {
   );
 };
 
+const AddProductColors = () => {
+  const { t } = useTranslation();
+  const [checked, setChecked] = React.useState<boolean>(false);
+  return (
+    <DropdownPanel className="w-[100%]" name={t("colors", "Colors")}>
+      {colors.map((color, i) => (
+        <div key={color + i} className="flex gap-4">
+          <Checkbox
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+          />
+          <span
+            style={{ backgroundColor: color }}
+            className={`w-8 h-8]`}
+          ></span>
+        </div>
+      ))}
+    </DropdownPanel>
+  );
+};
+
+const AddProductSizes = () => {
+  const [checked, setChecked] = React.useState<boolean>(false);
+  const { t } = useTranslation();
+  return (
+    <DropdownPanel className="w-[100%]" name={t("sizes", "sizes")}>
+      {sizes.map((size, i) => (
+        <div key={size + i} className="flex gap-4">
+          <Checkbox
+            checked={checked}
+            onChange={(e) => setChecked(e.target.checked)}
+          />
+          <span>{size}</span>
+        </div>
+      ))}
+    </DropdownPanel>
+  );
+};
+
 const options: FormOptWithCompType<string[]>[] = [
   {
     name: {
@@ -66,26 +105,7 @@ const options: FormOptWithCompType<string[]>[] = [
       fallbackText: "Colors",
     },
     value: "colors",
-    component: () => {
-      const { t } = useTranslation();
-      const [checked, setChecked] = React.useState<boolean>(false);
-      return (
-        <DropdownPanel className="w-[100%]" name={t("colors", "Colors")}>
-          {colors.map((color, i) => (
-            <div key={color + i} className="flex gap-4">
-              <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
-              />
-              <span
-                style={{ backgroundColor: color }}
-                className={`w-8 h-8]`}
-              ></span>
-            </div>
-          ))}
-        </DropdownPanel>
-      );
-    },
+    component: AddProductColors,
   },
   {
     name: {
@@ -93,23 +113,7 @@ const options: FormOptWithCompType<string[]>[] = [
       fallbackText: "Sizes",
     },
     value: "sizes",
-    component: () => {
-      const [checked, setChecked] = React.useState<boolean>(false);
-      const { t } = useTranslation();
-      return (
-        <DropdownPanel className="w-[100%]" name={t("sizes", "sizes")}>
-          {sizes.map((size, i) => (
-            <div key={size + i} className="flex gap-4">
-              <Checkbox
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
-              />
-              <span>{size}</span>
-            </div>
-          ))}
-        </DropdownPanel>
-      );
-    },
+    component: AddProductSizes,
   },
 ];
 

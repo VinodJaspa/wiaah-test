@@ -44,6 +44,10 @@ export class UploadService {
       jpg: "image/jpg",
       all: [] as string[],
     },
+    audio: {
+      mp3: "audio/mp3",
+      all: [] as string[],
+    },
     pdf: "application/pdf",
   };
 
@@ -88,9 +92,9 @@ export class UploadService {
 
   async uploadVideos(videoFile: VideoFile) {}
 
-  async uploadCloudFlareImages(imageFile: ImageFile[]) {
+  private async uploadCloudFlareImages(imageFile: ImageFile[]) {
     return true;
   }
 
-  async uploadCloudFlareVideos(videoFile: ImageFile[]) {}
+  private async uploadCloudFlareVideos(videoFile: ImageFile[]) {}
 }

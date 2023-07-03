@@ -20,12 +20,15 @@ import { AdminGetUserFinancialAccounts } from './dto/admn-get-user-financial-acc
 import { CreateFinancialAccountInput } from './dto/create-financial-account.input';
 import { UpdateFinancialAccountInput } from './dto/update-financial-account.input';
 import { FinancialAccount } from './entities/financial-account.entity';
+import { EventBus } from '@nestjs/cqrs';
+import { FinancialAccountCreatedEvent } from './events/impl/financialAccountCreated.event';
 
 @Resolver(() => FinancialAccount)
 export class FinancialAccountResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly stripeService: StripeService,
+    private readonly eventClient: EventBus,
   ) {}
 
   @Query(() => [FinancialAccount])
@@ -88,6 +91,22 @@ export class FinancialAccountResolver {
         },
       });
 
+      this.eventClient.publish(
+        new FinancialAccountCreatedEvent({
+          accountId: newAcc.id,
+          label: newAcc.label,
+          type: newAcc.type,
+          cardLast4:
+            newAcc.type === FinancialAccountType.card
+              ? newAcc.card_number.slice(
+                  newAcc.card_number.length - 4,
+                  newAcc.card_number.length,
+                )
+              : undefined,
+          userId,
+          cardType: newAcc.card_type,
+        }),
+      );
       return true;
     } catch (error) {
       console.log('financial acc create error', error);
@@ -164,6 +183,10 @@ export class FinancialAccountResolver {
         },
         data: {
           ...args,
+          card_type:
+            args.type === FinancialAccountType.card
+              ? this.detectCreditCardType(args.card_number)
+              : undefined,
           ownerId: userId,
           financialId: user.stripeId,
         },
@@ -193,5 +216,48 @@ export class FinancialAccountResolver {
 
   async validateUser(user: AuthorizationDecodedUser, id: string) {
     return user.id === id || user.accountType === accountType.ADMIN;
+  }
+
+  detectCreditCardType(cardNumber: string): string {
+    // Remove any spaces or dashes from the card number
+    const cleanedCardNumber = cardNumber.replace(/[\s-]/g, '');
+
+    // Define an array of objects with card type and corresponding pattern
+    const cardTypes = [
+      { name: 'Visa', pattern: /^4[0-9]{12}(?:[0-9]{3})?$/ },
+      { name: 'Mastercard', pattern: /^5[1-5][0-9]{14}$/ },
+      { name: 'American Express', pattern: /^3[47][0-9]{13}$/ },
+      { name: 'Discover', pattern: /^6(?:011|5[0-9]{2})[0-9]{12}$/ },
+      { name: 'Diners Club', pattern: /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/ },
+      { name: 'JCB', pattern: /^(?:2131|1800|35\d{3})\d{11}$/ },
+      { name: 'China UnionPay', pattern: /^(62[0-9]{14,17})$/ },
+      {
+        name: 'Maestro',
+        pattern: /^(?:5[0678]\d\d|6304|6390|67\d\d)\d{8,15}$/,
+      },
+      { name: 'Mir', pattern: /^(?:22[89]|2[3-6]\d|27[01]|2720)\d{12}$/ },
+      { name: 'Elo', pattern: /^(?:4[0356]|5[0-9]|6[0-9])\d{14}(?:\d{1,7})?$/ },
+      {
+        name: 'Hipercard',
+        pattern: /^(?:606282\d{10}(\d{3})?)|(?:3841\d{15})$/,
+      },
+      { name: 'Dankort', pattern: /^(5019|4571)\d+$/ },
+      { name: 'Carte Blanche', pattern: /^389[0-9]{11}$/ },
+      { name: 'Laser', pattern: /^(?:6304|6706|6709|6771)[0-9]{12,15}$/ },
+      {
+        name: 'RuPay',
+        pattern: /^(?:652[0-9]{2}|6011[0-9]{2}|64[0-9]{3})[0-9]{10}$/,
+      },
+    ];
+
+    // Check the card number against each pattern
+    for (const { name, pattern } of cardTypes) {
+      if (pattern.test(cleanedCardNumber)) {
+        return name;
+      }
+    }
+
+    // If no match is found, return "Unknown"
+    return 'Unknown';
   }
 }

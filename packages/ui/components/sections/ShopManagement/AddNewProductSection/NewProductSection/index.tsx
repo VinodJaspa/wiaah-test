@@ -1,5 +1,4 @@
 import React from "react";
-import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { StepperStepType } from "types";
 import {
@@ -19,6 +18,7 @@ import {
   FormTranslationWrapper,
   useCreateNewProductMutation,
   useEditProductData,
+  FlagIcon,
 } from "@UI";
 import { mapArray, PassPropsToFnOrElem } from "utils";
 
@@ -32,7 +32,7 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
 
   return (
     <div className="flex h-full flex-col gap-4 w-full">
-      <SectionHeader sectionTitle={t("add_product", "Add Product")} />
+      <SectionHeader sectionTitle={t("Add Product")} />
       {/* stepper */}
       <Tabs>
         <>
@@ -117,7 +117,7 @@ export const NewProductInputsSection: React.FC<{
                         key,
                         stepName,
                         stepComponent: () => (
-                          <StepperFormHandler handlerKey={key}>
+                          <StepperFormHandler handlerKey={String(key)}>
                             {({ validate }) => (
                               <>
                                 {PassPropsToFnOrElem(stepComponent, {
@@ -188,7 +188,7 @@ const steps: StepperStepType[] = [
 const addProductLanguagesSection: {
   language: {
     name: string;
-    countryCode: FlagIconCode;
+    countryCode: string;
   };
 }[] = [
   {

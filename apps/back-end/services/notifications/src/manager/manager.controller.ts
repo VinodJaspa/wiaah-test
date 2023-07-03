@@ -2,7 +2,6 @@ import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
   AccountSuspendedEvent,
-  AccountVerificationRequestAcceptedEvent,
   AccountVerificationRequestRejectedEvent,
   AppointmentRefusedEvent,
   CashbackAddedEvent,
@@ -11,11 +10,13 @@ import {
   ContentReactedEvent,
   ContentSuspendedEvent,
   LookForNearShopsPromotionsEvent,
+  NewShopCreatedEvent,
   OrderDeliveredEvent,
   OrderRefundRequestRejectedEvent,
   PromotionCreatedEvent,
   SellerAccountRefusedEvent,
   SellerProductsPurchasedEvent,
+  ServiceCreatedEvent,
   ShopNearPromotionsResolvedEvent,
   SocialContentCreatedEvent,
   UserCurrentLocationUpdateEvent,
@@ -36,11 +37,14 @@ import {
   GetCurrencyExchangeQueryRes,
 } from '@manager/queries';
 import { ContentType, NotificationTypes } from '@manager/const';
+import { NotificationType } from 'prismaClient';
 
 @Controller()
 export class ManagerController extends NotifciationBaseController {
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated)
-  handleCommentCreatedEvent(@Payload() data: { value: CommentCreatedEvent }) {
+  async handleCommentCreatedEvent(
+    @Payload() data: { value: CommentCreatedEvent },
+  ) {
     const {
       commentedByUserId,
       hostType,
@@ -48,7 +52,7 @@ export class ManagerController extends NotifciationBaseController {
       commentedByProfileId,
       contentOwnerUserId,
     } = data.value.input;
-    this.service.createNotification({
+    await this.service.createNotification({
       type: hostType === 'comment' ? 'commentCommented' : 'postCommented',
       authorId: commentedByUserId,
       content: '',
@@ -59,7 +63,7 @@ export class ManagerController extends NotifciationBaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentMentions)
-  handleCommentMentionsEvent(
+  async handleCommentMentionsEvent(
     @Payload() data: { value: CommentMentionedEvent },
   ) {
     const {
@@ -70,21 +74,25 @@ export class ManagerController extends NotifciationBaseController {
     } = data.value.input;
 
     Array.isArray(mentionedIds)
-      ? mentionedIds.map((id) => {
-          this.service.createNotification({
-            content: '',
-            type: 'commentMention',
-            authorId: mentionedByUserId,
-            authorProfileId: mentionedByProfileId,
-            contentOwnerUserId: id.userId,
-            contentId: mainHostId,
-          });
-        })
+      ? await Promise.all(
+          mentionedIds.map((id) =>
+            this.service.createNotification({
+              content: '',
+              type: 'commentMention',
+              authorId: mentionedByUserId,
+              authorProfileId: mentionedByProfileId,
+              contentOwnerUserId: id.userId,
+              contentId: mainHostId,
+            }),
+          ),
+        )
       : null;
   }
 
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*', true))
-  handleContentReactedEvent(@Payload() data: { value: ContentReactedEvent }) {
+  async handleContentReactedEvent(
+    @Payload() data: { value: ContentReactedEvent },
+  ) {
     const {
       contentAuthorUserId,
       contentId,
@@ -96,7 +104,7 @@ export class ManagerController extends NotifciationBaseController {
 
     const postsTypes = ['newsfeed-post'];
 
-    this.service.createNotification({
+    await this.service.createNotification({
       content: contentTitle,
       contentId,
       type: postsTypes.includes(contentType) ? 'postReacted' : 'commentReacted',
@@ -344,8 +352,10 @@ export class ManagerController extends NotifciationBaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.MODERATION.contentSuspensed('newsfeed-post'))
-  handlePostSuspension(@Payload() { value }: { value: ContentSuspendedEvent }) {
-    this.service.createNotification({
+  async handlePostSuspension(
+    @Payload() { value }: { value: ContentSuspendedEvent },
+  ) {
+    await this.service.createNotification({
       contentOwnerUserId: value.input.authorId,
       type: NotificationTypes.warning,
       content: {
@@ -356,10 +366,10 @@ export class ManagerController extends NotifciationBaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountSuspended)
-  handleAccountSuspension(
+  async handleAccountSuspension(
     @Payload() { value }: { value: AccountSuspendedEvent },
   ) {
-    this.service.createNotification({
+    await this.service.createNotification({
       contentOwnerUserId: value.input.id,
       type: NotificationTypes.warning,
       content: {
@@ -370,10 +380,10 @@ export class ManagerController extends NotifciationBaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountVerificationRequestRejected)
-  handleAccountVerificationRejected(
+  async handleAccountVerificationRejected(
     @Payload() { value }: { value: AccountVerificationRequestRejectedEvent },
   ) {
-    this.service.createNotification({
+    await this.service.createNotification({
       contentOwnerUserId: value.input.id,
       type: NotificationTypes.warning,
       content: {
@@ -384,8 +394,10 @@ export class ManagerController extends NotifciationBaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderDelivered())
-  handleRequestFeedback(@Payload() { value }: { value: OrderDeliveredEvent }) {
-    this.service.createNotification({
+  async handleRequestFeedback(
+    @Payload() { value }: { value: OrderDeliveredEvent },
+  ) {
+    await this.service.createNotification({
       contentOwnerUserId: value.input.buyerId,
       type: NotificationTypes.info,
       content: {
@@ -393,5 +405,59 @@ export class ManagerController extends NotifciationBaseController {
         value: `share your experince with your latest order by providing a feedback`,
       },
     });
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.serviceCreated('*', true))
+  async handleNewLocalizationServiceCreated(
+    @Payload() { value }: { value: ServiceCreatedEvent },
+  ) {
+    const {
+      input: { hashtags, id, type, userId, city, country, state },
+    } = value;
+
+    const followers = await this.prisma.localizationFollow.findMany({
+      where: {
+        localization: {
+          in: [city, state, country],
+        },
+      },
+    });
+
+    await Promise.all(
+      followers.map((follow) =>
+        this.service.createNotification({
+          authorId: follow.userId,
+          type: NotificationType.localizationService,
+          content: `A new service has been added in ${follow.localization}`,
+        }),
+      ),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.SEARCH)
+  async handleNewLocalizationShopCreated(
+    @Payload() { value }: { value: NewShopCreatedEvent },
+  ) {
+    const {
+      input: { city, country, state },
+    } = value;
+
+    const followers = await this.prisma.localizationFollow.findMany({
+      where: {
+        localization: {
+          in: [city, state, country],
+        },
+      },
+    });
+
+    await Promise.all(
+      followers.map((follow) =>
+        this.service.createNotification({
+          authorId: follow.userId,
+          type: NotificationType.localizationShop,
+          content: `A new shop has been added in ${follow.localization}`,
+        }),
+      ),
+    );
   }
 }

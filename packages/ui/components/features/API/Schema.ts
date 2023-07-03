@@ -397,6 +397,12 @@ export type AdminNewsfeedPost = {
   visibility: PostVisibility;
 };
 
+export type AdminSendMailToUsersInput = {
+  message: Scalars["String"]["input"];
+  subject: Scalars["String"]["input"];
+  userType: MailUserType;
+};
+
 export type AdminUpdateAdminAccountInput = {
   birthDate?: InputMaybe<Scalars["String"]["input"]>;
   confirmPassword?: InputMaybe<Scalars["String"]["input"]>;
@@ -784,8 +790,18 @@ export type Category = {
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
   parantId: Scalars["ID"]["output"];
+  sales: Scalars["Int"]["output"];
   sortOrder: Scalars["Int"]["output"];
   status: ProductCategoryStatus;
+};
+
+export type CategoryCursorResponse = {
+  __typename?: "CategoryCursorResponse";
+  cursor?: Maybe<Scalars["String"]["output"]>;
+  data: Array<Category>;
+  hasMore: Scalars["Boolean"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
 };
 
 export type ChangePasswordInput = {
@@ -1276,6 +1292,8 @@ export type CreateShippingAddressInput = {
   firstname: Scalars["String"]["input"];
   instractions?: InputMaybe<Scalars["String"]["input"]>;
   lastname: Scalars["String"]["input"];
+  lat: Scalars["Float"]["input"];
+  lng: Scalars["Float"]["input"];
   location: LocationInput;
   ownerId: Scalars["ID"]["input"];
   phone?: InputMaybe<Scalars["String"]["input"]>;
@@ -1414,6 +1432,7 @@ export type DeleteVoucherInput = {
 export type Design = {
   __typename?: "Design";
   createdAt: Scalars["String"]["output"];
+  distenation: Scalars["String"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
   placement: Array<Scalars["String"]["output"]>;
@@ -1743,6 +1762,11 @@ export type GetFilteredHashtagsInput = {
   usage?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type GetFilteredNewsletterInput = {
+  email?: InputMaybe<Scalars["String"]["input"]>;
+  pagination: GqlPaginationInput;
+};
+
 export type GetFilteredOrdersInput = {
   buyer?: InputMaybe<Scalars["String"]["input"]>;
   date_from?: InputMaybe<Scalars["String"]["input"]>;
@@ -1920,9 +1944,11 @@ export type GetMyWithdrawalRequestsInput = {
 };
 
 export type GetNearShopsInput = {
-  distance: Scalars["Float"]["input"];
+  distance?: InputMaybe<Scalars["Float"]["input"]>;
   lat: Scalars["Float"]["input"];
   lon: Scalars["Float"]["input"];
+  storeType?: InputMaybe<StoreType>;
+  take?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type GetNewsfeedPostsByUserIdInput = {
@@ -1937,6 +1963,11 @@ export type GetPlaceSuggestionInput = {
 export type GetPostsByHashtagInput = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   hashtag: Scalars["String"]["input"];
+  take: Scalars["Int"]["input"];
+};
+
+export type GetProductCategoriesCursorPaginationInput = {
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
   take: Scalars["Int"]["input"];
 };
 
@@ -2042,6 +2073,11 @@ export type GetTopProfilePostsInput = {
   pagination: GqlPaginationInput;
   profileId: Scalars["ID"]["input"];
   sinceHours: Scalars["Int"]["input"];
+};
+
+export type GetTopSalesProductsByCategoryPaginationInput = {
+  categoryId?: InputMaybe<Scalars["String"]["input"]>;
+  pagination: GqlPaginationInput;
 };
 
 export type GetTransactionsAdminInput = {
@@ -2335,8 +2371,6 @@ export type Location = {
   address: Scalars["String"]["output"];
   city: Scalars["String"]["output"];
   country: Scalars["String"]["output"];
-  lat: Scalars["Float"]["output"];
-  long: Scalars["Float"]["output"];
   postalCode: Scalars["String"]["output"];
   state: Scalars["String"]["output"];
 };
@@ -2345,6 +2379,7 @@ export type LocationInput = {
   address: Scalars["String"]["input"];
   city: Scalars["String"]["input"];
   country: Scalars["String"]["input"];
+  countryCode: Scalars["String"]["input"];
   lat?: InputMaybe<Scalars["Float"]["input"]>;
   long?: InputMaybe<Scalars["Float"]["input"]>;
   postalCode: Scalars["String"]["input"];
@@ -2360,6 +2395,14 @@ export type LoginWithOtpInput = {
   email: Scalars["String"]["input"];
   otp: Scalars["String"]["input"];
 };
+
+export enum MailUserType {
+  All = "all",
+  Buyers = "buyers",
+  Service = "service",
+  Shops = "shops",
+  Subscribers = "subscribers",
+}
 
 export type Maintenance = {
   __typename?: "Maintenance";
@@ -2509,7 +2552,9 @@ export type Mutation = {
   banSellersCities: Scalars["Boolean"]["output"];
   blockUser: Scalars["Boolean"]["output"];
   cancelServiceReservation: Scalars["Boolean"]["output"];
+  changeMyNewsletterSettings: Scalars["Boolean"]["output"];
   changePassword: Scalars["Boolean"]["output"];
+  changeUserNewsletterSettings: Scalars["Boolean"]["output"];
   clearBalance: Scalars["Boolean"]["output"];
   clearShoppingCart: ShoppingCart;
   clearVouchers: Scalars["Boolean"]["output"];
@@ -2585,6 +2630,7 @@ export type Mutation = {
   removeAllShops: Scalars["Boolean"]["output"];
   removeComment: Comment;
   removeNewsfeedPost: NewsfeedPost;
+  removeNewsletterSubscriber: Scalars["Boolean"]["output"];
   removeProductFromCart: Scalars["Boolean"]["output"];
   removeReaction: ContentReaction;
   removeReport: Scalars["Boolean"]["output"];
@@ -2601,9 +2647,11 @@ export type Mutation = {
   reviewProduct: ProductReview;
   savePost: Scalars["Boolean"]["output"];
   sendFollowRequest: Scalars["Boolean"]["output"];
+  sendGeneralMail: Scalars["Boolean"]["output"];
   sendMessage: ChatMessage;
   shareContent: ContentShare;
   subscribeMembership?: Maybe<Scalars["String"]["output"]>;
+  subscribeToNewsletter: Scalars["Boolean"]["output"];
   suspenseAccount: Scalars["Boolean"]["output"];
   suspenseContent: Scalars["Boolean"]["output"];
   suspenseReportedContent: Scalars["Boolean"]["output"];
@@ -2810,8 +2858,17 @@ export type MutationCancelServiceReservationArgs = {
   id: Scalars["String"]["input"];
 };
 
+export type MutationChangeMyNewsletterSettingsArgs = {
+  args: UpdateNewsletterInput;
+};
+
 export type MutationChangePasswordArgs = {
   changePasswordInput: ChangePasswordInput;
+};
+
+export type MutationChangeUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"]["input"];
+  args: UpdateNewsletterInput;
 };
 
 export type MutationCreateActionArgs = {
@@ -3064,6 +3121,10 @@ export type MutationRemoveNewsfeedPostArgs = {
   id: Scalars["Int"]["input"];
 };
 
+export type MutationRemoveNewsletterSubscriberArgs = {
+  id: Scalars["ID"]["input"];
+};
+
 export type MutationRemoveProductFromCartArgs = {
   removeItemFromCartArgs: RemoveShoppingCartItemInput;
 };
@@ -3125,6 +3186,10 @@ export type MutationSendFollowRequestArgs = {
   profileId: Scalars["String"]["input"];
 };
 
+export type MutationSendGeneralMailArgs = {
+  args: AdminSendMailToUsersInput;
+};
+
 export type MutationSendMessageArgs = {
   sendMessageInput: CreateMessageInput;
 };
@@ -3135,6 +3200,11 @@ export type MutationShareContentArgs = {
 
 export type MutationSubscribeMembershipArgs = {
   membershipId: Scalars["String"]["input"];
+};
+
+export type MutationSubscribeToNewsletterArgs = {
+  email: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
 };
 
 export type MutationSuspenseAccountArgs = {
@@ -3404,6 +3474,24 @@ export type NewsfeedPostsPaginationResponse = {
   total: Scalars["Int"]["output"];
 };
 
+export type NewsletterSettings = {
+  __typename?: "NewsletterSettings";
+  feedback: Scalars["Boolean"]["output"];
+  news: Scalars["Boolean"]["output"];
+  product: Scalars["Boolean"]["output"];
+  reminder: Scalars["Boolean"]["output"];
+};
+
+export type NewsletterSubscriber = {
+  __typename?: "NewsletterSubscriber";
+  createdAt: Scalars["String"]["output"];
+  emailSettings: NewsletterSettings;
+  id: Scalars["ID"]["output"];
+  ownerId: Scalars["ID"]["output"];
+  updatedAt: Scalars["String"]["output"];
+  user: Account;
+};
+
 export type Order = {
   __typename?: "Order";
   billing: BillingAddress;
@@ -3594,6 +3682,7 @@ export type Product = {
   external_clicks: Scalars["Int"]["output"];
   hashtags: Array<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
+  isExternalProduct: Scalars["Boolean"]["output"];
   isExternalShopping: Scalars["Boolean"]["output"];
   negitiveFeedback: Scalars["Int"]["output"];
   positiveFeedback: Scalars["Int"]["output"];
@@ -3602,6 +3691,7 @@ export type Product = {
   rate: Scalars["Int"]["output"];
   reviews: Scalars["Int"]["output"];
   sales: Scalars["Int"]["output"];
+  saved: Scalars["Boolean"]["output"];
   seller: Account;
   sellerId: Scalars["ID"]["output"];
   shippingDetails?: Maybe<ShippingDetails>;
@@ -3681,6 +3771,13 @@ export type ProductFilterGroupValueInput = {
   sortOrder: Scalars["Int"]["input"];
 };
 
+export type ProductPaginationResponse = {
+  __typename?: "ProductPaginationResponse";
+  data: Array<Product>;
+  hasMore: Scalars["Boolean"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
 export type ProductPost = {
   __typename?: "ProductPost";
   comments: Scalars["Int"]["output"];
@@ -3721,6 +3818,13 @@ export type ProductReview = {
   reviewer: Account;
   reviewerId: Scalars["ID"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type ProductSearchPaginationResponse = {
+  __typename?: "ProductSearchPaginationResponse";
+  data: Array<Product>;
+  hasMore: Scalars["Boolean"]["output"];
+  total: Scalars["Int"]["output"];
 };
 
 export enum ProductSize {
@@ -3943,6 +4047,7 @@ export type Query = {
   adminGetUserBlockList: Array<Block>;
   adminGetUserBookings: Array<BookedService>;
   adminGetUserFinancialAccounts: Array<FinancialAccount>;
+  adminGetUserNewsletterSettings: NewsletterSettings;
   adminGetUserReturnedOrders: Array<ReturnedOrder>;
   adminGetUserWishlist: Array<WishedItem>;
   canAccessRoom: Scalars["Boolean"]["output"];
@@ -4032,6 +4137,7 @@ export type Query = {
   getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: ShopWorkingSchedule;
   getNearShops: Array<Shop>;
+  getNewletterSubscribers: Array<NewsletterSubscriber>;
   getNewsfeedHashtagPosts: NewsfeedHashtagSearch;
   getNewsfeedPostById: NewsfeedPost;
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
@@ -4041,6 +4147,7 @@ export type Query = {
   getProduct: Product;
   getProductById: Product;
   getProductCategories: Array<Category>;
+  getProductRecommendation: ProductPaginationResponse;
   getProductReviewById: Array<ProductReview>;
   getProductsFilters: Array<Filter>;
   getProfessions: Array<Profession>;
@@ -4086,8 +4193,11 @@ export type Query = {
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getTopHashtagProductPosts: HashtagProductPost;
   getTopHashtags: Array<Hashtag>;
+  getTopProductCategories: CategoryCursorResponse;
   getTopProfilePosts: Array<NewsfeedPost>;
   getTopProfileStories: Array<Story>;
+  getTopSalesProducts: ProductSearchPaginationResponse;
+  getTopShops: Array<Shop>;
   getTrendingHashtagPosts: NewsfeedPostsPaginationResponse;
   getUserAccount: Account;
   getUserActions: GetActionsCursorResponse;
@@ -4096,6 +4206,7 @@ export type Query = {
   getUserAffiliationsPurchases: Array<AffiliationPurchase>;
   getUserBookingHistory: Array<BookedService>;
   getUserMembership?: Maybe<MembershipSubscription>;
+  getUserNewsletterSettings: NewsletterSettings;
   getUserOrders: Array<Order>;
   getUserPayoutAccount: BillingAccount;
   getUserPrevStory: Story;
@@ -4278,6 +4389,10 @@ export type QueryAdminGetUserBookingsArgs = {
 
 export type QueryAdminGetUserFinancialAccountsArgs = {
   args: AdminGetUserFinancialAccounts;
+};
+
+export type QueryAdminGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"]["input"];
 };
 
 export type QueryAdminGetUserReturnedOrdersArgs = {
@@ -4546,6 +4661,10 @@ export type QueryGetNearShopsArgs = {
   GetNearShopsInput: GetNearShopsInput;
 };
 
+export type QueryGetNewletterSubscribersArgs = {
+  args: GetFilteredNewsletterInput;
+};
+
 export type QueryGetNewsfeedHashtagPostsArgs = {
   hashtagSearchInput: GetHashtagNewsfeedPostsInput;
 };
@@ -4577,6 +4696,10 @@ export type QueryGetProductArgs = {
 export type QueryGetProductByIdArgs = {
   id: Scalars["String"]["input"];
   isClick: Scalars["Boolean"]["input"];
+};
+
+export type QueryGetProductRecommendationArgs = {
+  pagination: GqlPaginationInput;
 };
 
 export type QueryGetProductReviewByIdArgs = {
@@ -4740,12 +4863,24 @@ export type QueryGetTopHashtagsArgs = {
   args: GetTopHashtagsInput;
 };
 
+export type QueryGetTopProductCategoriesArgs = {
+  args: GetProductCategoriesCursorPaginationInput;
+};
+
 export type QueryGetTopProfilePostsArgs = {
   args: GetTopProfilePostsInput;
 };
 
 export type QueryGetTopProfileStoriesArgs = {
   args: GetTopProfilePostsInput;
+};
+
+export type QueryGetTopSalesProductsArgs = {
+  args: GetTopSalesProductsByCategoryPaginationInput;
+};
+
+export type QueryGetTopShopsArgs = {
+  take: Scalars["Int"]["input"];
 };
 
 export type QueryGetTrendingHashtagPostsArgs = {
@@ -4778,6 +4913,10 @@ export type QueryGetUserBookingHistoryArgs = {
 
 export type QueryGetUserMembershipArgs = {
   id: Scalars["String"]["input"];
+};
+
+export type QueryGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"]["input"];
 };
 
 export type QueryGetUserOrdersArgs = {
@@ -6153,6 +6292,13 @@ export type UpdateNewsfeedPostInput = {
   visibility?: InputMaybe<PostVisibility>;
 };
 
+export type UpdateNewsletterInput = {
+  feedback?: InputMaybe<Scalars["Boolean"]["input"]>;
+  news?: InputMaybe<Scalars["Boolean"]["input"]>;
+  product?: InputMaybe<Scalars["Boolean"]["input"]>;
+  reminder?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
 export type UpdatePostAdminInput = {
   affiliationId?: InputMaybe<Scalars["String"]["input"]>;
   attachments?: InputMaybe<Array<Scalars["String"]["input"]>>;
@@ -6328,6 +6474,8 @@ export type UpdateShippingAddressInput = {
   id: Scalars["ID"]["input"];
   instractions?: InputMaybe<Scalars["String"]["input"]>;
   lastname?: InputMaybe<Scalars["String"]["input"]>;
+  lat?: InputMaybe<Scalars["Float"]["input"]>;
+  lng?: InputMaybe<Scalars["Float"]["input"]>;
   location?: InputMaybe<LocationInput>;
   ownerId?: InputMaybe<Scalars["ID"]["input"]>;
   phone?: InputMaybe<Scalars["String"]["input"]>;

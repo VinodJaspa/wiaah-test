@@ -510,11 +510,6 @@ export class ProfileService {
           in: followers.map((f) => f.followerProfileId),
         },
       },
-      select: {
-        username: true,
-        id: true,
-        photo: true,
-      },
     });
     return {
       data: profiles,

@@ -5,4 +5,7 @@ export class ServiceCreatedEvent extends KafkaMessage<{
   userId: string;
   type: string;
   hashtags: string[];
+  country: string;
+  city: string;
+  state: string;
 }> {}

@@ -9,7 +9,7 @@ import {
   Parent,
   Int,
 } from '@nestjs/graphql';
-import { Inject, Logger, UseGuards } from '@nestjs/common';
+import { Inject, Ip, Logger, UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -17,12 +17,12 @@ import {
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  GqlPaginationInput,
   KAFKA_MESSAGES,
   KafkaMessageHandler,
   SERVICES,
   UserPreferedLang,
 } from 'nest-utils';
-import { UploadService } from '@wiaah/upload';
 import { CommandBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import {
@@ -30,6 +30,8 @@ import {
   Product,
   Cashback,
   ProductsCursorPaginationResponse,
+  ProductSearchPaginationResponse,
+  ProductPaginationResponse,
 } from '@products/entities';
 import {
   CreateProductInput,
@@ -39,7 +41,7 @@ import {
 import { UpdateProductInput } from '@products/dto';
 import { DeleteProductCommand } from '@products/command';
 import { PrismaService } from 'prismaService';
-import { Prisma } from '@prisma-client';
+import { Prisma, UserProductCategoryInteractions } from '@prisma-client';
 import { Account } from './entities/extends';
 import {
   BuyerToProductActionsType,
@@ -47,9 +49,21 @@ import {
   CanPreformProductActionMessageReply,
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
+import { GetTopSalesProductsByCategoryPaginationInput } from './dto/get-top-sales-products.input';
+import { lookup } from 'geoip-lite';
 
 @Resolver(() => Product)
 export class ProductsResolver {
+  // product recommendation weights
+  categoryPurchaseWeight = 5;
+  categoryVisitWeight = 2;
+  shopCountryWeight = 2;
+  shopRatingWeight = 1.2;
+  productRatingWeight = 1.5;
+  productSaleWeight = 0.05;
+  countryPurchasesWeight = 1.15;
+  countryVisitsWeight = 1.1;
+
   constructor(
     private readonly productsService: ProductsService,
     private readonly commandbus: CommandBus,
@@ -59,6 +73,112 @@ export class ProductsResolver {
   ) {}
 
   logger = new Logger('ProductResolver');
+
+  @Query(() => ProductPaginationResponse)
+  async getProductRecommendation(
+    @Args('pagination') pagination: GqlPaginationInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Ip() userIp: string,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<ProductPaginationResponse> {
+    const { page, skip, take, totalSearched } = ExtractPagination(pagination);
+    const userCountry = lookup(userIp).country;
+    const products = await this.prisma.product.findMany({
+      where: { status: 'active' },
+      select: {
+        categoryId: true,
+        sellerId: true,
+        id: true,
+        rate: true,
+        sales: true,
+      },
+    });
+
+    const shops = await this.prisma.shop.findMany({
+      where: {
+        ownerId: {
+          in: products.reduce(
+            (acc, curr) =>
+              acc.includes(curr.sellerId) ? acc : [...acc, curr.sellerId],
+            [] as string[],
+          ),
+        },
+      },
+      select: {
+        ownerId: true,
+        location: {
+          select: {
+            countryCode: true,
+          },
+        },
+      },
+    });
+
+    let userCategoryStats: UserProductCategoryInteractions | undefined;
+    if (user) {
+      userCategoryStats =
+        await this.prisma.userProductCategoryInteractions.findUnique({
+          where: {
+            userId: user.id,
+          },
+        });
+    }
+
+    const productScores = products.reduce((acc, curr) => {
+      let score = 0;
+
+      if (userCategoryStats) {
+        const cateStats = userCategoryStats.stats.find(
+          (cate) => cate.categoryId === curr.categoryId,
+        );
+        if (cateStats) {
+          const purchasesWeightScore =
+            cateStats.purchases * this.categoryPurchaseWeight;
+
+          const visitWeightScore = cateStats.visits * this.categoryVisitWeight;
+
+          score += purchasesWeightScore;
+          score += visitWeightScore;
+        }
+      }
+
+      const productShop = shops.find((shop) => shop.ownerId === curr.sellerId);
+      if (productShop && productShop.location.countryCode === userCountry) {
+        score += this.shopCountryWeight;
+      }
+
+      const ratingScore = curr.rate * this.productRatingWeight;
+      const salesScore = curr.sales * this.productSaleWeight;
+
+      score += ratingScore;
+      score += salesScore;
+
+      return [...acc, { productId: curr.id, score }];
+    }, [] as { productId: string; score: number }[]);
+
+    const sortedProds = productScores.sort(
+      (first, second) => first.score - second.score,
+    );
+
+    const prods = await this.prisma.product.findMany({
+      where: {
+        id: {
+          in: sortedProds
+            .slice(totalSearched, totalSearched + take)
+            .map((v) => v.productId),
+        },
+      },
+    });
+
+    return {
+      data: sortedProds
+        .map(({ productId }) => prods.find((prod) => prod.id === productId))
+        .filter((prod) => !!prod)
+        .map((prod) => this.productsService.formatProduct(prod, langId)),
+      total: 0,
+      hasMore: totalSearched < productScores.length,
+    };
+  }
 
   @Query(() => Product)
   async getProductById(
@@ -209,6 +329,43 @@ export class ProductsResolver {
     });
   }
 
+  @Query(() => ProductSearchPaginationResponse)
+  async getTopSalesProducts(
+    @Args('args')
+    args: GetTopSalesProductsByCategoryPaginationInput,
+    @GetLang() langId: string,
+  ): Promise<ProductSearchPaginationResponse> {
+    const { skip, take } = ExtractPagination(args.pagination);
+
+    const where: Prisma.ProductWhereInput = {
+      status: 'active',
+      categoryId: args.categoryId,
+    };
+
+    const res = await this.prisma.product.findMany({
+      where,
+      orderBy: {
+        sales: 'desc',
+      },
+      take: take + 1,
+      skip,
+    });
+
+    const total = await this.prisma.product.count({
+      where,
+    });
+
+    const hasMore = res.length > take;
+
+    return {
+      data: (hasMore ? res.slice(0, take) : res).map((prod) =>
+        this.productsService.formatProduct(prod, langId),
+      ),
+      hasMore,
+      total,
+    };
+  }
+
   @Query(() => Product)
   getProduct(@Args('id', { type: () => ID }) id: string) {
     return this.productsService.getProductById(id);
@@ -300,6 +457,29 @@ export class ProductsResolver {
       __typename: 'Account',
       id: prod.sellerId,
     };
+  }
+
+  @ResolveField(() => Boolean)
+  async saved(
+    @Parent() prod: Product,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const save = await this.prisma.savedProduct.findUnique({
+      where: {
+        productId_userId: {
+          productId: prod.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!save;
+  }
+
+  @ResolveField(() => Boolean)
+  async isExternalProduct() {
+    // TODO: get if user has pay per click membership
+    return true;
   }
 
   @ResolveField(() => Int)

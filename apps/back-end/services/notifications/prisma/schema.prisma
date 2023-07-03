@@ -28,6 +28,8 @@ enum NotificationType {
   orderCanceled
   orderDelivered
   actionPosted
+  localizationService
+  localizationShop
 }
 
 model Notification {
@@ -70,10 +72,16 @@ model SilentContent {
   id         String                   @id @default(auto()) @map("_id") @db.ObjectId
   contentId  String                   @db.ObjectId
   silentedBy UserNotificationSettings @relation(fields: [userId], references: [userId])
-  userId     String
+  userId     String                   @db.ObjectId
 }
 
 type TranslationText {
   lang  String
   value String
+}
+
+model LocalizationFollow {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String @db.ObjectId
+  localization String
 }

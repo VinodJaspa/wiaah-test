@@ -26,6 +26,7 @@ import { PrismaService } from 'prismaService';
 import { GetMyNewsfeedPostsInput } from './dto/get-my-newsfeed-posts.input';
 import { Affiliation } from '@affiliation-post/entities';
 import { Service } from 'src/service-post/entities/service-post.entity';
+import { ContentHostType, PostType } from 'prismaClient';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -186,13 +187,63 @@ export class NewsfeedPostsResolver {
 
   // TODO: implement this
   @ResolveField(() => Boolean)
-  isLiked() {}
+  async isLiked(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Parent() post: NewsfeedPost,
+  ) {
+    const like = await this.prisma.contentReaction.findUnique({
+      where: {
+        hostId_hostType_reactedByProfileId: {
+          hostId: post.id,
+          hostType:
+            post.type === PostType.newsfeed_post
+              ? ContentHostType.post_newsfeed
+              : post.type === PostType.shop_post
+              ? ContentHostType.post_shop
+              : post.type === PostType.service_post
+              ? ContentHostType.post_service
+              : post.type === PostType.affiliation_post
+              ? ContentHostType.post_affiliation
+              : undefined,
+          reactedByProfileId: user.id,
+        },
+      },
+    });
+
+    return !!like;
+  }
 
   @ResolveField(() => Boolean)
-  isCommented() {}
+  async isCommented(
+    @Parent() post: NewsfeedPost,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const comment = await this.prisma.comment.findFirst({
+      where: {
+        hostId: post.id,
+        userId: user.id,
+      },
+    });
+
+    return !!comment;
+  }
 
   @ResolveField(() => Boolean)
-  isSaved() {}
+  async isSaved(
+    @Parent() post: NewsfeedPost,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const saved = await this.prisma.savedItem.findUnique({
+      where: {
+        userId_itemId: {
+          itemId: post.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!saved;
+  }
 
   @ResolveField(() => String)
   thumbnail(@Parent() post: NewsfeedPost) {

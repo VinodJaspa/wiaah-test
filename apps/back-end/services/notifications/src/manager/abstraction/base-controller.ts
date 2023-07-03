@@ -3,6 +3,7 @@ import { Inject } from '@nestjs/common';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { ClientKafka } from '@nestjs/microservices';
 import { SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 export class NotifciationBaseController {
   constructor(
@@ -12,5 +13,6 @@ export class NotifciationBaseController {
     @Inject(SERVICES.NOTIFICATIONS.token)
     public eventClient: ClientKafka,
     public service: ManagerService,
+    public prisma: PrismaService,
   ) {}
 }

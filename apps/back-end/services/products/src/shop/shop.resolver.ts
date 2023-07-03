@@ -6,6 +6,7 @@ import {
   ResolveReference,
   ResolveField,
   Parent,
+  Int,
 } from '@nestjs/graphql';
 import {
   Inject,
@@ -57,6 +58,24 @@ export class ShopResolver implements OnModuleInit {
     @GetLang() langId: UserPreferedLang,
   ) {
     return this.shopService.getNearShops(getNearShopsInput, langId);
+  }
+
+  @Query(() => [Shop])
+  async getTopShops(
+    @Args('take', { type: () => Int }) take: number,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<Shop[]> {
+    const res = await this.prisma.shop.findMany({
+      where: {
+        status: 'active',
+      },
+      orderBy: {
+        score: 'desc',
+      },
+      take,
+    });
+
+    return res.map((shop) => this.shopService.formatShopData(shop, lang));
   }
 
   @Query(() => Shop)

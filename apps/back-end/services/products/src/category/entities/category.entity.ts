@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { ProductCategoryStatus } from '@prisma-client';
+import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 
 registerEnumType(ProductCategoryStatus, { name: 'ProductCategoryStatus' });
 
@@ -14,9 +15,17 @@ export class Category {
   @Field(() => Int)
   sortOrder: number;
 
+  @Field(() => Int)
+  sales: number;
+
   @Field(() => ProductCategoryStatus)
   status: ProductCategoryStatus;
 
   @Field(() => ID)
   parantId: string;
 }
+
+@ObjectType()
+export class CategoryCursorResponse extends CreateGqlCursorPaginatedResponse(
+  Category,
+) {}

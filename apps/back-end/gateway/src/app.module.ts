@@ -51,7 +51,7 @@ import { client } from './main';
 
           const isKnownError = values.includes(exception.code);
 
-          console.log({ isSchemaValidationError, isKnownError, error });
+          console.log({ isSchemaValidationError, isKnownError }, error);
 
           if (isKnownError || isSchemaValidationError) {
             return error;

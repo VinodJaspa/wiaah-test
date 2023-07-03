@@ -1,6 +1,6 @@
 import { Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
 import { BillingAddressService } from './billing-address.service';
-import { BillingAddress, BillingAddressCollection } from '@entities';
+import { BillingAddress } from '@entities';
 import {
   accountType,
   AuthorizationDecodedUser,

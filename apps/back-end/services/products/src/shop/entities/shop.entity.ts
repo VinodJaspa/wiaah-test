@@ -37,12 +37,6 @@ export class TranslationText extends CreateObjectGqlTranslationInputField(
 
 @ObjectType()
 export class Location {
-  @Field((type) => Float)
-  lat: number;
-
-  @Field((type) => Float)
-  long: number;
-
   @Field((type) => String)
   address: string;
 

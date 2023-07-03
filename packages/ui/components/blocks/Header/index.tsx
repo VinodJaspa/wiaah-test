@@ -1,21 +1,14 @@
 import React from "react";
-import { FaSearch, FaAlignJustify } from "react-icons/fa";
+import { FaAlignJustify } from "react-icons/fa";
 import {
   ShoppingCart,
   Container,
   Button,
-  LocationIcon,
-  useMasterLocationMapModal,
   HeartOutlineIcon,
-  ShoppingCartOutlineAltIcon,
   PersonOutlineIcon,
-  InputGroup,
-  Input,
   HStack,
   useGetMyProfileQuery,
-  useUserData,
   ShoppingCartOutlineIcon,
-  SearchIcon,
   SearchInput,
 } from "@UI";
 import Link from "next/link";
@@ -26,7 +19,6 @@ import {
   useGetServicesCategoriesQuery,
   useGetServiceCategoriesQuery,
 } from "@UI";
-import { Category as ServiceCategory } from "@features/Services/Services/types";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { useBreakpointValue } from "utils";
@@ -43,11 +35,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const { page, take } = usePagination();
   const { visit } = useRouting();
 
-  const {
-    data: categories,
-    isLoading,
-    isSuccess,
-  } = useGetServicesCategoriesQuery({ page, take });
+  const { data: categories } = useGetServicesCategoriesQuery({ page, take });
   const { data: serviceCategories } = useGetServiceCategoriesQuery();
 
   return (
@@ -66,26 +54,24 @@ export const Header: React.FC<HeaderProps> = () => {
             </Link>
           </div>
 
-          <div className="hidden md:flex gap-2 items-center">
-            <SearchInput />
-            {/* <InputGroup>
-              <Input placeholder={t("Search product")} />
-              <SearchIcon />
-            </InputGroup> */}
-          </div>
+          {isMobile ? null : (
+            <div className="hidden md:flex gap-2 items-center">
+              <SearchInput />
+            </div>
+          )}
 
           <HStack className="gap-6">
             <Button
-              colorScheme="darkbrown"
+              colorScheme={isMobile ? "white" : "darkbrown"}
               onClick={() =>
                 profile
                   ? visit((r) => r.visitLogout())
                   : visit((r) => r.visitSignin())
               }
-              className="flex items-center gap-2"
+              className="flex sm:text-sm items-center gap-2"
             >
               {profile ? t("Logout") : t("Sign in")}
-              <PersonOutlineIcon className="text-xl text-white fill-white stroke-white" />
+              <PersonOutlineIcon className="text-xl sm:text-lg text-white fill-white stroke-white" />
             </Button>
             <button onClick={() => visit((r) => r.visitMarketSavedItems())}>
               <HeartOutlineIcon className="text-xl" />
@@ -126,9 +112,11 @@ export const Header: React.FC<HeaderProps> = () => {
                 </li>
               ))}
           </ul>
-          <div className="block md:hidden">
-            <MainHeaderSearchBar categories={serviceCategories || []} />
-          </div>
+          {!isMobile ? null : (
+            <div className="hidden md:flex gap-2 items-center">
+              <SearchInput />
+            </div>
+          )}
         </Container>
       </div>
       {/* <MultiStepDrawer
@@ -137,36 +125,5 @@ export const Header: React.FC<HeaderProps> = () => {
         steps={steps}
       /> */}
     </nav>
-  );
-};
-
-export const MainHeaderSearchBar: React.FC<{
-  categories: Omit<ServiceCategory, "filters">[];
-}> = ({ categories }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="rounded-lg overflow-hidden max-w-[40rem] justify-items-stretch flex">
-      <input
-        className="w-60 appearance-none  border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-        placeholder={t("Search")}
-      />
-      <div className="flex">
-        {/* <SelectDropdown
-          className="appearance-none hidden sm:block w-full border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
-          options={
-            Array.isArray(categories)
-              ? categories.map((cate, i) => ({
-                  name: cate.name,
-                  value: cate.slug,
-                }))
-              : []
-          }
-        /> */}
-        <Button className="rounded-none text-xl">
-          <FaSearch className="h-5 w-5 text-white" />
-        </Button>
-      </div>
-    </div>
   );
 };

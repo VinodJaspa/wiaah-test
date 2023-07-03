@@ -110,6 +110,7 @@ export const AddToCartProductButton: React.FC<
     productId: string;
   }
 > = ({ productId, ...props }) => {
+  // TODO: switch if product is external
   return <Button {...props} />;
 };
 

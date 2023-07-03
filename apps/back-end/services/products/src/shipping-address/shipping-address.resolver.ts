@@ -32,7 +32,11 @@ export class ShippingAddressResolver {
   ) {
     try {
       const res = await this.prisma.shippingAddress.create({
-        data: { ...args, ownerId: user.id },
+        data: {
+          ...args,
+          ownerId: user.id,
+          geoLocation: { coordinates: [args.location.long, args.location.lat] },
+        },
       });
     } catch (error) {
       console.log({ error });

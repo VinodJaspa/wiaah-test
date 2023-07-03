@@ -34,6 +34,7 @@ import { ProfileStatisticsModule } from './profile-statistics/profile-statistics
 import { Shop } from '@profile/resolvers/profile.shop.resolver';
 import { Account } from './entities/extends';
 import { SocialTagModule } from './social-tag/social-tag.module';
+import { AudioModule } from './audio/audio.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { SocialTagModule } from './social-tag/social-tag.module';
     MarketingTagModule,
     ProfileStatisticsModule,
     SocialTagModule,
+    AudioModule,
   ],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 export interface SpinnerFallbackProps {
   isLoading?: boolean;
   isError?: boolean;
+  error?: any;
 }
 
 export const SpinnerFallback: React.FC<SpinnerFallbackProps> = ({

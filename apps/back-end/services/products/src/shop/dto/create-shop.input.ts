@@ -29,6 +29,9 @@ export class LocationInput {
   @Field((type) => String)
   country: string;
 
+  @Field((type) => String)
+  countryCode: string;
+
   @Field((typpe) => String)
   city: string;
 

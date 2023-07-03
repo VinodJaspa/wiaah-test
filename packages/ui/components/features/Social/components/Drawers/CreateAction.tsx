@@ -1,8 +1,13 @@
 import { HtmlDivProps } from "@UI/../types/src";
-import { PassPropsToFnOrElem, getRandomName, mapArray } from "@UI/../utils/src";
+import {
+  PassPropsToFnOrElem,
+  getRandomName,
+  mapArray,
+  useForm,
+} from "@UI/../utils/src";
 import { CameraSwitchOutlineIcon } from "@UI/components/partials/icons/CameraSwitchIcon";
 import { useSocialControls } from "@blocks";
-import { useResponsive, useSecondsCountdown } from "hooks";
+import { useResponsive } from "hooks";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -21,6 +26,9 @@ import {
   InputLeftElement,
   InputRightElement,
   LinkIcon,
+  Modal,
+  ModalContent,
+  ModalOverlay,
   MusicNoteFillIcon,
   SaveFlagOutlineIcon,
   SearchIcon,
@@ -30,10 +38,12 @@ import {
   VideoCameraUplaodOutlineIcon,
 } from "@partials";
 import { useOutsideClick } from "@src/index";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getRandomImage } from "@UI/placeholder";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { atom, useRecoilState } from "recoil";
+import { ChooseActionRemix, ChooseRemixPlacement } from "./CreateActionRemix";
+import { useCreateActionMutation } from "@features/Social/services";
 
 const gradients: { from: string; to: string }[] = [
   {
@@ -97,7 +107,7 @@ const fonts: { label: string; font: string }[] = [
 
 const StorySettingsAtom = atom<{
   mediaType: "video" | "image" | "text";
-  starting: boolean;
+  counting: boolean;
   duration: number;
   countDown: number;
   speed: number;
@@ -114,7 +124,7 @@ const StorySettingsAtom = atom<{
     mediaType: "video",
     speed: 1,
     duration: 30,
-    starting: false,
+    counting: false,
     countDown: 0,
     cameraType: "back",
     textBgGradient: gradients[0],
@@ -126,35 +136,66 @@ const StorySettingsAtom = atom<{
 });
 
 export const CreateActionDrawer: React.FC = () => {
-  const { value, cancelCreateAction } = useSocialControls("createAction");
-  const setSettings = useSetRecoilState(StorySettingsAtom);
+  const { isPortable } = useResponsive();
+  const { value, cancelCreateAction, createAction } =
+    useSocialControls("createAction");
+  const audioId = typeof value === "object" ? value.audioId : undefined;
+  const remixId = typeof value === "object" ? value.remixId : undefined;
+  const [placement, setPlacement] = useState<ChooseRemixPlacement>();
 
-  return (
+  const countingRef = useRef<{
+    startCountDown: () => any;
+  }>(null);
+
+  const {} = useForm<Parameters<typeof mutate>[0]>({
+    allowedActions: [],
+    coverUploadId: "",
+    srcUploadId: "",
+  });
+
+  const { mutate } = useCreateActionMutation();
+
+  const content = (
+    <>
+      <div className="w-full h-full relative">
+        <div></div>
+        <StoryMediaCapture />
+        <div className="absolute top-8 left-0 w-full">
+          <StoryUpperControls onClose={cancelCreateAction} />
+        </div>
+        <StoryBottomControls />
+        <CameraActionSettings />
+        <VideoEffectList />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <CameraCountDown ref={countingRef} onFinish={() => {}} />
+        </div>
+      </div>
+      <ChooseActionRemix
+        onCancel={() => createAction({ ...value, remixId: undefined })}
+        onSelect={() => {}}
+        actionId={remixId}
+      />
+    </>
+  );
+
+  return isPortable ? (
     <Drawer
       position="bottom"
       full
       isOpen={!!value}
       onClose={() => cancelCreateAction()}
     >
-      <DrawerContent className="noScroll">
-        <div className="w-full h-full relative">
-          <StoryMediaCapture />
-          <div className="absolute top-8 left-0 w-full">
-            <StoryUpperControls onClose={cancelCreateAction} />
-          </div>
-          <StoryBottomControls />
-          <CameraActionSettings />
-          <VideoEffectList />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <CameraCountDown onFinish={() => {}} />
-          </div>
-        </div>
-      </DrawerContent>
+      <DrawerContent className="noScroll">{content}</DrawerContent>
     </Drawer>
+  ) : (
+    <Modal isOpen={!!value} onClose={() => cancelCreateAction()}>
+      <ModalOverlay />
+      <ModalContent className="h-full">{content}</ModalContent>
+    </Modal>
   );
 };
 
-const StoryBottomControls: React.FC = () => {
+export const StoryBottomControls: React.FC = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 
   const { t } = useTranslation();
@@ -191,18 +232,18 @@ const StoryBottomControls: React.FC = () => {
             </ActionIcon>
           )}
 
-          <div className="w-16 h-16 flex justify-center items-center border-4 rounded-full border-white">
-            <div
-              className={`w-11 h-11 ${
-                showOn(["video"]) ? "bg-red-500" : "bg-white"
-              } rounded-full`}
-            ></div>
-          </div>
+          <button>
+            <div className="w-16 h-16 flex justify-center items-center border-4 rounded-full border-white">
+              <div
+                className={`w-11 h-11 ${
+                  showOn(["video"]) ? "bg-red-500" : "bg-white"
+                } rounded-full`}
+              ></div>
+            </div>
+          </button>
 
           <Image
-            src={
-              "https://s3-alpha-sig.figma.com/img/9ceb/196b/85f04912be00c8732cd6067602a84c78?Expires=1684108800&Signature=WKyllV~m9EkodeBRsvzf1AvtdyQ5We8SBZD-h~OwE1U3I77NeNRBjPWuUh562a9PXFUQ95-mb~Eqpw-bH2m8eJ4cx063GMx-~lhSiJm6FPrCW8Zbsl98OkbA5N~8iyff1oSApDLJi8xsck-BTxseN6m9do4-U0uH0F8O8Go6iUaWYH4zvWHJL4naN4yY9CclGr~sWtz1161Gn8lFk09Gp~MHgexg~kQUWa3sLVsofLifJRxjAqR2He2E8tQK1A36LUHjZqKqEKU6nqf1KHXKsL76SzJk00Ie3b~kTp6f4B2FgjHPnflgkPYpHVUE1ZFOT4ywM-Pl4oaNbfPuxJqXjw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-            }
+            src={""}
             className="w-10 h-10 rounded-full border border-white"
           />
         </div>
@@ -236,7 +277,6 @@ const StoryBottomControls: React.FC = () => {
         {mapArray(tabs, (v, i) => (
           <p
             onClick={() => {
-              console.log("tab clicked", v.key);
               setSettings((old) => ({ ...old, mediaType: v.key }));
             }}
             key={i}
@@ -308,7 +348,7 @@ const CameraActionSettings: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="absolute right-4 bottom-1/4 ">
+      <div className="absolute bg-black bg-opacity-20 p-2 rounded-full right-0 bottom-1/4 ">
         <div className="flex text-white flex-col gap-4">
           {showOn(["image", "video"]) ? (
             <>
@@ -566,21 +606,33 @@ const CameraActionListMenu: React.FC<{
 const CameraCountDown = React.forwardRef(
   ({ onFinish }: { onFinish: () => any }, ref) => {
     const [settings, setSettings] = useRecoilState(StorySettingsAtom);
-    const dateRef = React.useRef(
-      new Date(
-        new Date().setSeconds(new Date().getSeconds() + settings.countDown || 0)
-      )
-    );
-    const seconds = useSecondsCountdown(dateRef.current, (v) => {
-      if (v > 0) {
-        return true;
-      } else {
-        onFinish && onFinish();
-        return false;
-      }
-    });
+    const [seconds, setSeconds] = useState<number | null>(null);
+    const countdownInternavel = useRef<NodeJS.Timer>();
 
-    return settings.starting ? (
+    const counting = settings.counting;
+    const setCounting = (counting: boolean) =>
+      setSettings((settings) => ({ ...settings, counting }));
+
+    React.useImperativeHandle(ref, () => ({
+      startCountDown: () => {
+        countdownInternavel.current = setInterval(() => {
+          setSeconds((old) => {
+            if (old === null) {
+              setCounting(true);
+              return settings.countDown;
+            } else if (old <= 0) {
+              setCounting(false);
+              onFinish && onFinish();
+              return null;
+            } else {
+              return old - 1;
+            }
+          });
+        }, 1000);
+      },
+    }));
+
+    return counting ? (
       <div className="relative rounded-full border-2 border-white bg-white bg-opacity-40 w-80 h-80 ">
         <div className="text-white text-9xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           {seconds}
@@ -766,7 +818,7 @@ const StoryMediaCapture: React.FC = () => {
           src={recorderRef.current?.stream as any}
         />
       ) : (
-        <div className="w-full h-full flex justify-center items-center">
+        <div className="bg-black w-full h-full flex justify-center items-center">
           <div>
             <p className="text-white text-2xl font-medium">
               {t("Cannot Access Camera")}

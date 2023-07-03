@@ -8,3 +8,4 @@ export * from "./products-purchsed.event";
 export * from "./seller-service-purchased.event";
 export * from "./withdrawal-processed.event";
 export * from "./stripe-subscription-past-due.event";
+export * from "./FinancialAccountCreated.event";

@@ -8,11 +8,6 @@ const Market: NextPage = () => {
   return (
     <>
       <MasterLayout>
-        <AspectRatio ratio={6 / 16}>
-          <ImageSlider
-            images={["/shop.jpeg", "/shop-2.jpeg", "/shop-3.jpeg"]}
-          />
-        </AspectRatio>
         <Container>
           <HomeView />
         </Container>

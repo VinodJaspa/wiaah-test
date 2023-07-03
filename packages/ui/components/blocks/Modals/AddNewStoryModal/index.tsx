@@ -15,7 +15,6 @@ import {
   MediaUploadModal,
   Modal,
   ModalContent,
-  ModalCloseButton,
   ModalOverlay,
 } from "@UI";
 
@@ -142,7 +141,7 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
               />
             </HStack>
             <Button onClick={closeNewStoryModal} className="capitalize">
-              {t("post", "post")}
+              {t("post")}
             </Button>
           </div>
           <HStack className="overflow-hidden max-h-[40rem] justify-center gap-8">

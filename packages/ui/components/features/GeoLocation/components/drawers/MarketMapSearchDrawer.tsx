@@ -123,7 +123,7 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
   return (
     <>
       <Drawer
-        isOpen={true}
+        isOpen={!!value}
         onClose={hideMarketMapSearch}
         full
         position="bottom"

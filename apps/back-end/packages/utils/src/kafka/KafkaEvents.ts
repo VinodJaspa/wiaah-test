@@ -90,6 +90,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`seller.service.purchased`, regex),
     withdrawalProcessed: () =>
       makeKafkaDynamicEvent(`withdrawal.processed`, false),
+    financialAccountCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`financial.account.created.${type}`, regex),
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -151,6 +153,21 @@ export const KAFKA_EVENTS = {
     hashtagDeleted: "hashtag.deleted",
   },
   SEARCH: {},
+  LOCALIZATION: {
+    followedLocalizationCreated: (
+      type: string,
+      serviceType?: string,
+      regex?: boolean
+    ) =>
+      makeKafkaDynamicEvent(
+        `followed.localization.created.${type}.${serviceType}`,
+        regex
+      ),
+  },
+  SHOP: {
+    newShopCreated: (type: "products" | "services" | "*", regex?: boolean) =>
+      makeKafkaDynamicEvent(`shop.created.${type}`, regex),
+  },
   SUBSCRIPTIONS: {
     chatMessageSent: (roomId: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`chat.message.sent.${roomId}`, regex),

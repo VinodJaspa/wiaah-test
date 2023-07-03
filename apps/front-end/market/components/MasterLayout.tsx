@@ -16,11 +16,7 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
-import {
-  UserAddressesState,
-  VoucherState,
-  CheckoutProductsState,
-} from "@src/state";
+import { VoucherState } from "@src/state";
 import { useLoginPopup } from "ui";
 
 export interface MasterLayoutProps {

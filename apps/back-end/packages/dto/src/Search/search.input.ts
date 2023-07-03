@@ -5,10 +5,7 @@ import {
   Float,
   registerEnumType,
 } from "@nestjs/graphql";
-import {
-  CreateGqlPaginatedResponse,
-  ExtendableGqlPaginationInput,
-} from "nest-utils";
+import { ExtendableGqlPaginationInput } from "nest-utils";
 
 enum StockStatusFilter {
   "available",

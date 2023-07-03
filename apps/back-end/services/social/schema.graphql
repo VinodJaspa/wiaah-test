@@ -279,6 +279,7 @@ enum ContentHostType {
   post_newsfeed
   post_service
   post_shop
+  post_affiliation
   comment
   action
   story
@@ -557,7 +558,7 @@ type Action {
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
-  music: String!
+  musicId: String!
   effectId: String
   tags: [PostTag!]!
   effect: ActionEffect!

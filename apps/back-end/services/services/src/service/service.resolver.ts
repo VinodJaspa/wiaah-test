@@ -59,6 +59,8 @@ import { Weekdays } from './utils';
 import { GetRecommendedServicesInput } from './dto/get-recommended-services';
 import { ObjectId } from 'mongodb';
 import { SearchServicesInput } from './dto/search-services.input';
+import { EventBus } from '@nestjs/cqrs';
+import { ServiceCreatedEvent } from './events';
 
 enum weekdaysNum {
   su = 0,
@@ -91,6 +93,8 @@ export class ServiceResolver {
     private readonly uploadService: UploadService,
     @Inject(SERVICES.SERVICES_SERIVCE.token)
     private readonly eventClient: ClientKafka,
+
+    private readonly eventBus: EventBus,
   ) {}
 
   @Mutation(() => Boolean)
@@ -163,7 +167,7 @@ export class ServiceResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     const { ...rest } = args;
-
+    // TODO
     // const servicePresenetations = await this.uploadService.uploadFiles(
     //   presentations.map((v) => ({
     //     file: {
@@ -210,6 +214,7 @@ export class ServiceResolver {
           ...v,
           id: new ObjectId().toHexString(),
         })),
+        // TODO
         // presentations: servicePresenetations.map((v) => ({
         //   src: v.src,
         //   type:
@@ -219,6 +224,8 @@ export class ServiceResolver {
         // })),
       },
     });
+
+    this.eventBus.publish(new ServiceCreatedEvent(res, user));
 
     return true;
   }
