@@ -55,7 +55,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   props,
   headerNavLinks = [],
 }) => {
-  const { openSocialNewPostModal, openNotifications } = useSocialControls();
+  const { showNewPublish, openNotifications } = useSocialControls();
   const { SearchForLocations } = useMasterLocationMapModal();
   const { user } = useUserData();
   const { openModal: openSearchBox } = useGeneralSearchModal();
@@ -107,7 +107,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         <>
           <SquarePlusOutlineIcon
             className="text-icon text-lightBlack"
-            onClick={() => openSocialNewPostModal()}
+            onClick={() => showNewPublish()}
           />
         </>
         {/* ) : null} */}

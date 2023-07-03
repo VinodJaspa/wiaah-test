@@ -23,6 +23,7 @@
   "dependencies": {
     "@apollo/federation": "0.36.1",
     "@apollo/subgraph": "0.1.5",
+    "@ffmpeg/ffmpeg": "^0.11.6",
     "@nestjs/apollo": "9.2.5",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.2.0",
@@ -33,6 +34,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "3.15.2",
     "apollo-server-express": "3.8.2",
+    "apollo-upload-server": "^7.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "graphql": "15.8.0",

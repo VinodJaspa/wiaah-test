@@ -1,5 +1,5 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
-import { FilteredShopsInput } from './filter-shops.input';
+import { StoreType } from '@prisma-client';
 
 @InputType()
 export class GetNearShopsInput {
@@ -9,6 +9,12 @@ export class GetNearShopsInput {
   @Field((type) => Float)
   lon: number;
 
-  @Field((type) => Number)
-  distance: number;
+  @Field((type) => Number, { nullable: true })
+  distance?: number;
+
+  @Field(() => StoreType, { nullable: true })
+  storeType?: StoreType;
+
+  @Field(() => Int, { nullable: true })
+  take?: number;
 }

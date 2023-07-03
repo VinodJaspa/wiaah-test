@@ -7,6 +7,9 @@ import {
   AccountVerificationRequestAcceptedEvent,
   AppointmentRefusedEvent,
   ChangePasswordEvent,
+  FinancialAccountCreatedEvent,
+  GetAccountByIdMessage,
+  GetAccountByIdMessageReply,
   KafkaPayload,
   MembershipRenewalFailEvent,
   NewRegisterationTokenRequestedEvent,
@@ -16,7 +19,7 @@ import {
   ServiceBookedEvent,
   WithdrawalProcessedEvent,
 } from 'nest-dto';
-import { KAFKA_EVENTS } from 'nest-utils';
+import { KAFKA_EVENTS, KAFKA_MESSAGES, KafkaMessageHandler } from 'nest-utils';
 import { MailJetTemplateIds } from '@mailing/const';
 import { BaseController } from '@mailing/abstraction';
 import {
@@ -26,6 +29,7 @@ import {
   GetUserDataQueryRes,
 } from '@mailing/queries';
 import { renderFile } from 'ejs';
+import fs from 'fs';
 
 @Controller()
 export class MailingController extends BaseController {
@@ -249,5 +253,47 @@ export class MailingController extends BaseController {
       },
       to: [{ email: value.input.email, name: value.input.firstName }],
     });
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.financialAccountCreated('card'))
+  async handleSendNewFinancialAccountAdded(
+    @Payload() { value }: { value: FinancialAccountCreatedEvent },
+  ) {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetAccountByIdMessage,
+      GetAccountByIdMessageReply
+    >(
+      this.eventClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
+      new GetAccountByIdMessage({ accountId: value.input.userId }),
+    );
+
+    let logoBase64 = '';
+
+    if (success && typeof data.email === 'string') {
+      fs.readFile('./static/wiaah_logo.png', (err, data) => {
+        logoBase64 = Buffer.from(data).toString('base64');
+      });
+
+      await this.mailingService.sendRawTemplate({
+        to: [{ name: data.firstName, email: data.email }],
+        subject: 'New financial account added',
+        html: await renderFile('./templates/NewFinancialAccountTemplate.ejs', {
+          name: data.firstName,
+          logoUrl: logoBase64,
+          cardType: value.input.cardType,
+          cardLast4: value.input.last4,
+          paymentSettingsUrl: `${this.config.get(
+            'CLIENT_PAYMENT_SETTINGS_URL',
+          )}`,
+          accountName: `${data.firstName} ${data.lastName}`,
+          supportUrl: this.config.get('CLIENT_SUPPORT_URL'),
+          greenColor: this.config.get('CLIENT_PRIMARY_COLOR'),
+        }),
+      });
+    }
   }
 }

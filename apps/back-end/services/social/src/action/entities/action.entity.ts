@@ -1,4 +1,4 @@
-import { Attachment, PostLocation, PostTag } from '@entities';
+import { PostLocation, PostTag } from '@entities';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
@@ -7,6 +7,27 @@ import { CommentsVisibility, PostVisibility } from 'prismaClient';
 export class ActionEffect {
   @Field(() => String)
   name: string;
+}
+
+@ObjectType()
+export class ActionAudio {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  uploadId: string;
+
+  @Field(() => ID)
+  authorUserId: string;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  createdAt: string;
+
+  @Field(() => String)
+  updatedAt: string;
 }
 
 @ObjectType()
@@ -48,7 +69,7 @@ export class Action {
   commentsVisibility: CommentsVisibility;
 
   @Field(() => String)
-  music: string;
+  musicId: string;
 
   @Field(() => String, { nullable: true })
   effectId?: string;

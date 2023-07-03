@@ -16,6 +16,7 @@ type Category {
   id: ID!
   name: String!
   sortOrder: Int!
+  sales: Int!
   status: ProductCategoryStatus!
   parantId: ID!
 }
@@ -25,14 +26,20 @@ enum ProductCategoryStatus {
   inActive
 }
 
+type CategoryCursorResponse {
+  data: [Category!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
+}
+
 type TranslationText {
   langId: String!
   value: String!
 }
 
 type Location {
-  lat: Float!
-  long: Float!
   address: String!
   country: String!
   city: String!
@@ -304,6 +311,8 @@ type Product {
   discount: Discount!
   cashback: Cashback!
   seller: Account!
+  saved: Boolean!
+  isExternalProduct: Boolean!
   external_clicks: Int!
 }
 
@@ -339,6 +348,18 @@ enum ProductCondition {
   new
   used
   recondition
+}
+
+type ProductPaginationResponse {
+  data: [Product!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type ProductSearchPaginationResponse {
+  data: [Product!]!
+  total: Int!
+  hasMore: Boolean!
 }
 
 type ProductsCursorPaginationResponse {
@@ -408,15 +429,19 @@ type Query {
   adminGetAccountWorkingSchedule(accountId: String!): ShopWorkingSchedule!
   getMyWorkingSchedule: ShopWorkingSchedule!
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
+  getTopShops(take: Int!): [Shop!]!
   getUserShop(userId: String!): Shop!
   getUserRawShop(userId: String!): RawShop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getCursorFilteredShops(args: FilteredShopsCursorInput!): ShopCursorPaginationResponse!
+  getProductRecommendation(pagination: GqlPaginationInput!): ProductPaginationResponse!
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
+  getTopSalesProducts(args: GetTopSalesProductsByCategoryPaginationInput!): ProductSearchPaginationResponse!
   getProduct(id: ID!): Product!
   getSellerProducts(args: GetSellerProductsInput!): ProductsCursorPaginationResponse!
   getProductCategories: [Category!]!
+  getTopProductCategories(args: GetProductCategoriesCursorPaginationInput!): CategoryCursorResponse!
   getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
   getAdminProductsFilter(id: String!): Filter!
@@ -434,7 +459,9 @@ type Query {
 input GetNearShopsInput {
   lat: Float!
   lon: Float!
-  distance: Float!
+  distance: Float
+  storeType: StoreType
+  take: Int
 }
 
 input FilteredShopsInput {
@@ -486,10 +513,20 @@ enum ProductType {
   digital
 }
 
+input GetTopSalesProductsByCategoryPaginationInput {
+  pagination: GqlPaginationInput!
+  categoryId: String
+}
+
 input GetSellerProductsInput {
   sellerId: String!
   idCursor: String
   take: Int!
+}
+
+input GetProductCategoriesCursorPaginationInput {
+  take: Int!
+  cursor: String
 }
 
 input GetFilteredCategory {
@@ -620,6 +657,7 @@ input LocationInput {
   long: Float
   address: String!
   country: String!
+  countryCode: String!
   city: String!
   state: String!
   postalCode: String!
@@ -774,6 +812,8 @@ input CreateShippingAddressInput {
   zipCode: String
   instractions: String
   phone: String
+  lng: Float!
+  lat: Float!
 }
 
 input UpdateShippingAddressInput {
@@ -784,6 +824,8 @@ input UpdateShippingAddressInput {
   zipCode: String
   instractions: String
   phone: String
+  lng: Float
+  lat: Float
   id: ID!
 }
 

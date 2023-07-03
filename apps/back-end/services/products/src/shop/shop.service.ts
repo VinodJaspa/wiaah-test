@@ -41,7 +41,17 @@ export class ShopService {
 
     try {
       const createdShop = await this.prisma.shop.create({
-        data: { ...createShopInput, ownerId: user.id, verified: false },
+        data: {
+          ...createShopInput,
+          ownerId: user.id,
+          verified: false,
+          geoLocation: {
+            coordinates: [
+              createShopInput.location.long,
+              createShopInput.location.lat,
+            ],
+          },
+        },
       });
       this.eventBus.publish<ShopCreatedEvent>(
         new ShopCreatedEvent(user.id, createdShop),
@@ -111,34 +121,20 @@ export class ShopService {
     input: GetNearShopsInput,
     langId: UserPreferedLang,
   ): Promise<ShopEntity[]> {
-    const { maxLat, maxLon, minLat, minLon } = await createRadiusCoordsByKm({
-      lat: input.lat,
-      lon: input.lon,
-      distanceInKm: input.distance,
-    });
-
-    const shops = await this.prisma.shop.findMany({
-      where: {
-        location: {
-          is: {
-            AND: [
-              {
-                long: {
-                  lte: maxLon,
-                  gte: minLon,
-                },
-              },
-              {
-                lat: {
-                  lte: maxLat,
-                  gte: minLat,
-                },
-              },
-            ],
+    const shops = (await this.prisma.shop.aggregateRaw({
+      pipeline: [
+        {
+          $geoNear: {
+            near: { type: 'Point', coordinates: [input.lon, input.lat] },
+            spherical: true,
+            query: { storeType: input.storeType },
+            distanceField: 'distance',
           },
         },
-      },
-    });
+        { $limit: input.take },
+      ],
+    })) as unknown as Shop[];
+
     return shops.map((v, i) => this.formatShopData(v, langId));
   }
 

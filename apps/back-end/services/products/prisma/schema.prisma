@@ -17,9 +17,20 @@ model ProductCategory {
   sortOrder          Int
   status             ProductCategoryStatus
   thumbnail          String?
+  sales              Int                   @default(0)
   metaTagTitle       TranslationText[]
   metaTagDescription TranslationText[]
   parantId           String?
+}
+
+model SavedProduct {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, userId])
 }
 
 model StoreCategory {
@@ -122,6 +133,18 @@ model Product {
   colors                String[]
 }
 
+model UserProductCategoryInteractions {
+  id     String                 @id @default(auto()) @map("_id") @db.ObjectId
+  userId String                 @unique @db.ObjectId
+  stats  ProductCategoryStats[]
+}
+
+type ProductCategoryStats {
+  categoryId String
+  purchases  Int
+  visits     Int
+}
+
 enum ProductSize {
   s
   m
@@ -158,6 +181,7 @@ model Shop {
   email           String
   thumbnail       String
   location        Location
+  geoLocation     GeoLocation
   storeType       StoreType
   storeCategoryId String?              @db.ObjectId
   businessType    BusinessType
@@ -172,6 +196,16 @@ model Shop {
   reviews         Int                  @default(0)
   rating          Float                @default(0)
   hashtags        String[]
+  score           Float                @default(0)
+}
+
+type GeoLocation {
+  type        GeoLocationType @default(Point)
+  coordinates Float[]
+}
+
+enum GeoLocationType {
+  Point
 }
 
 model ServiceWorkingSchedule {
@@ -234,14 +268,15 @@ type VatSettings {
 }
 
 model ShippingAddress {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId      String   @db.ObjectId
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId      String      @db.ObjectId
   instractions String?
   phone        String?
   zipCode      String?
   firstname    String
   lastname     String
   location     Location
+  geoLocation  GeoLocation
 }
 
 model Discount {
@@ -279,14 +314,13 @@ enum PresentationType {
 }
 
 type Location {
-  lat        Float?
-  long       Float?
-  country    String
-  city       String
-  state      String
-  address    String
-  address2   String?
-  postalCode String
+  countryCode String
+  country     String
+  city        String
+  state       String
+  address     String
+  address2    String?
+  postalCode  String
 }
 
 enum StoreType {

@@ -1,22 +1,25 @@
 import { mapArray } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { useSocialControls } from "@blocks";
 import { Drawer, DrawerContent, DrawerOverlay, HStack, Image } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export const CreateActionRemix: React.FC = () => {
-  const { value, cancelRemixAction } = useSocialControls("remixActionId");
-  console.log("remix", value);
-  const isOpen = typeof value === "string" && value.length > 0;
+export type ChooseRemixPlacement = {
+  type: "pop-over" | "beside";
+  vPos: 0 | 1;
+  hPos: 0 | 1;
+  shape: "circle" | "rect";
+};
+
+export const ChooseActionRemix: React.FC<{
+  actionId?: string;
+  onSelect?: (placement: ChooseRemixPlacement) => any;
+  onCancel?: () => any;
+}> = ({ actionId, onCancel }) => {
+  const isOpen = typeof actionId === "string" && actionId.length > 0;
   const { t } = useTranslation();
 
-  const placements: {
-    type: "pop-over" | "beside";
-    vPos: 0 | 1;
-    hPos: 0 | 1;
-    shape: "circle" | "rect";
-  }[] = [
+  const placements: ChooseRemixPlacement[] = [
     {
       type: "beside",
       hPos: 0,
@@ -72,7 +75,7 @@ export const CreateActionRemix: React.FC = () => {
       position="bottom"
       isLazy
       isOpen={isOpen}
-      onClose={() => cancelRemixAction()}
+      onClose={() => onCancel && onCancel()}
       draggable
     >
       <DrawerOverlay />

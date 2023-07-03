@@ -112,12 +112,12 @@ model NewsfeedPost {
 }
 
 model MediaUpload {
-  id        String          @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String          @db.ObjectId
-  src       String
-  type      ContentHostType
-  mimeType  String
-  createdAt DateTime        @default(now())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  src        String
+  mimeType   String
+  isOriginal Boolean  @default(false)
+  createdAt  DateTime @default(now())
 }
 
 type MarketingTag {
@@ -207,10 +207,21 @@ model Action {
   hashtags           String[]
   mentions           PostMention[]
   tags               PostTag[]
-  music              String?
+  musicId            String?
   effectId           String?
+  usedAudioId        String?
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
+}
+
+model ActionAudio {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  authorUserId String @db.ObjectId
+  uploadId     String @db.ObjectId
+  name         String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum ActionType {
@@ -259,7 +270,7 @@ model SavedItem {
   collectionId String        @db.ObjectId
   createdAt    DateTime      @default(now())
 
-  @@unique([userId])
+  @@unique([userId, itemId])
 }
 
 model SavesCollection {
@@ -453,6 +464,7 @@ enum ContentHostType {
   post_newsfeed
   post_service
   post_shop
+  post_affiliation
   comment
   action
   story

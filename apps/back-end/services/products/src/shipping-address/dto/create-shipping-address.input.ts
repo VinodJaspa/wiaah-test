@@ -1,4 +1,4 @@
-import { InputType, Int, Field, ID } from '@nestjs/graphql';
+import { InputType, Int, Field, ID, Float } from '@nestjs/graphql';
 import { LocationInput } from '@shop';
 
 @InputType()
@@ -23,4 +23,10 @@ export class CreateShippingAddressInput {
 
   @Field(() => String, { nullable: true })
   phone?: string;
+
+  @Field(() => Float)
+  lng: number;
+
+  @Field(() => Float)
+  lat: number;
 }

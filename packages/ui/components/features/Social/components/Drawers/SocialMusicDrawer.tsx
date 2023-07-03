@@ -36,7 +36,10 @@ export const SocialMusicDrawer: React.FC = () => {
       <DrawerContent>
         <div className="flex flex-col h-full gap-4">
           <HStack className="px-4 pt-8 justify-between">
-            <ArrowLeftAlt1Icon onClick={() => {}} className="cursor-pointer" />
+            <ArrowLeftAlt1Icon
+              onClick={() => closeMusicDetails()}
+              className="cursor-pointer"
+            />
             <VerticalDotsIcon onClick={() => {}} className="cursor-pointer" />
           </HStack>
           <HStack className="gap-3 px-4">

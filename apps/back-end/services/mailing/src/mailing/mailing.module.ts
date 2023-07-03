@@ -6,10 +6,12 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { MailingResolver } from './mailing.resolver';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     CqrsModule,
+    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: SERVICES.MAILING_SERVICE.token,

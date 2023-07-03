@@ -16,7 +16,7 @@ import { ProductDetailsDrawer } from "@features/Products";
 import { ServiceBookingDrawer } from "@features/Services";
 import {
   CreateActionDrawer,
-  CreateActionRemix,
+  ChooseActionRemix,
   ProfileOptionsDrawer,
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
@@ -45,9 +45,11 @@ export type SocialContentType = ContentHostType;
 interface SocialAtomValue {
   newPost: boolean;
   chatRoomId?: string;
+  newStory?: boolean;
+  newAction?: boolean;
+  newPublish?: boolean;
   userStory?: string;
   viewNotifications: boolean;
-  newStory?: boolean;
   unknown: unknown;
   msgNewUser?: boolean;
   productDetailsId?: string;
@@ -55,7 +57,10 @@ interface SocialAtomValue {
   reportContent?: { id: string; type: SocialContentType };
   serviceDetailsId?: string;
   serviceBooking?: { sellerId?: string; servicesIds?: string[] };
-  createAction?: boolean;
+  createAction?: {
+    audioId?: string;
+    remixId?: string;
+  };
   editMusicId?: string;
   remixActionId?: string;
   searchMap: boolean;
@@ -105,7 +110,6 @@ const socialAtom = atom<SocialAtomValue>({
     showWithdraw: false,
     showAccountDeletionConfirmation: false,
     showAccountSuspendConfirmation: false,
-    requestRefundId: "",
     showNewsletterRegisteration: false,
     showContactUs: false,
     marketShowMapSearch: false,
@@ -184,8 +188,9 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     cancelBooking: () => setControls("serviceBooking", undefined),
     bookServices: (props: SocialAtomValue["serviceBooking"]) =>
       setControls("serviceBooking", props),
-    createAction: () => setControls("createAction", true),
-    cancelCreateAction: () => setControls("createAction", false),
+    createAction: (props: { audioId?: string; remixId?: string }) =>
+      setControls("createAction", props),
+    cancelCreateAction: () => setControls("createAction", undefined),
     editMusic: (id: string) => setControls("editMusicId", id),
     cancelEditMusic: () => setControls("editMusicId", undefined),
     createRemixAction: (actionId: string) =>
@@ -250,6 +255,13 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     showProfileFollowers: (profileId: string) =>
       setControls("showProfileFollowers", profileId),
     hideProfileFollowers: () => setControls("showProfileFollowers", undefined),
+
+    showNewAction: () => setControls("newAction", true),
+    hideNewAction: () => setControls("newAction", undefined),
+
+    showNewPublish: () => setControls("newPublish", true),
+    hideNewPublish: () => setControls("newPublish", undefined),
+
     value,
   };
 }
@@ -271,7 +283,7 @@ export const SocialLayout: React.FC = ({ children }) => {
           <ProductDetailsDrawer />
           <CreateActionDrawer />
           <EditMusicDrawer />
-          <CreateActionRemix />
+          <ChooseActionRemix />
           <ProfileOptionsDrawer />
           <LocationSearchDrawer />
           <TaggedProfilesDrawer />

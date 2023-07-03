@@ -1,0 +1,1 @@
+export * from "./newShopCreated.event";

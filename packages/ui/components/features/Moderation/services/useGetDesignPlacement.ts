@@ -1,6 +1,8 @@
+import { getRandomImage } from "@UI/placeholder";
 import { DesignType, Exact, GetDesignByPlacementInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
+import { isDev } from "utils";
 
 export type GetDesignByPlacementQueryVariables = Exact<{
   args: GetDesignByPlacementInput;
@@ -27,6 +29,21 @@ export const getDesignPlacementQueryKey = (args: args) => [
 ];
 
 export const getDesignPlacementQueryFetcher = async (args: args) => {
+  if (isDev) {
+    const res: GetDesignByPlacementQuery["getDesignByPlacement"] = [
+      ...Array(5),
+    ].map((_, i) => ({
+      distenation: "",
+      id: i.toString(),
+      name: i.toString(),
+      src: getRandomImage(),
+      text: "test ",
+      type: DesignType.Slideshow,
+    }));
+
+    return res;
+  }
+
   const client = createGraphqlRequestClient();
 
   const res = await client

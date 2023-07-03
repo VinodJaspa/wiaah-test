@@ -220,6 +220,10 @@ export class Product {
 }
 
 @ObjectType()
+export class ProductPaginationResponse extends CreateGqlPaginatedResponse(
+  Product,
+) {}
+@ObjectType()
 export class ProductSearchPaginationResponse extends CreateGqlPaginatedResponse(
   Product,
 ) {}

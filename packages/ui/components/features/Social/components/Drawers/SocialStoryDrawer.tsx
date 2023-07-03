@@ -207,7 +207,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
           <MenuList>
             <MenuItem
               onClick={() => {
-                reportContent(story.id, SocialContentType.story);
+                reportContent(story.id, SocialContentType.Story);
               }}
             >
               <p>{t("Report")}</p>

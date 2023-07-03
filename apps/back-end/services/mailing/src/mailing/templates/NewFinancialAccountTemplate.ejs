@@ -1,0 +1,38 @@
+<style>
+  .container {
+    font-weight: 500;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    font-size: large;
+  }
+  .logo {
+    height: 4rem;
+    width: auto;
+  }
+  a {
+    color: <%= greenColor %>;
+  }
+</style>
+
+<div class="container">
+  <img class="logo" src="<%= logoUrl %>" alt="wiaah logo" />
+
+  <p>Hi <%= name %></p>
+
+  <p>
+    A <%= cardType %> ending in <%= cardLast4 %> was added to financial account
+    <a href="<%= paymentSettingsUrl %>"><%= accountName %></a>
+  </p>
+
+  <p>
+    Please contact <a href="<%= supportUrl %>">Wiaah Support</a> if you did not
+    authorize this change.
+  </p>
+
+  <div></div>
+  <p>
+    Thanks, <br />
+    The Wiaah Team
+  </p>
+</div>

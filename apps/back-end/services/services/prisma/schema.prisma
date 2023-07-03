@@ -107,6 +107,7 @@ model Service {
   vat               Int
   suspensionReason  String?
   discountId        String?
+  hashtags          String[]
 
   // hotel
   includedServices  TranslationArrayText[]

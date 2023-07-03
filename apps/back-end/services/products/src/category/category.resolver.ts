@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CategoryService } from './category.service';
-import { Category } from './entities/category.entity';
+import { Category, CategoryCursorResponse } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import {
@@ -9,17 +9,55 @@ import {
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  UserPreferedLang,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { GetFilteredCategory } from './dto';
+import { GetProductCategoriesCursorPaginationInput } from './dto/get-category.input';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => [Category])
   getProductCategories(): Promise<Category[]> {
     return this.categoryService.getAllCategories();
+  }
+
+  @Query(() => CategoryCursorResponse)
+  async getTopProductCategories(
+    @Args('args') args: GetProductCategoriesCursorPaginationInput,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<CategoryCursorResponse> {
+    const res = await this.prisma.productCategory.findMany({
+      orderBy: {
+        sales: 'desc',
+      },
+      where: {
+        status: 'active',
+      },
+      cursor: args.cursor
+        ? {
+            id: args.cursor,
+          }
+        : undefined,
+      take: args.take + 1,
+    });
+
+    const hasMore = res.length > args.take;
+
+    return {
+      hasMore,
+      data: (hasMore ? res.slice(0, args.take) : res).map((c) =>
+        this.categoryService.formatCategory(c, langId),
+      ),
+      cursor: args.cursor,
+      nextCursor: res.at(args.take)?.id,
+    };
   }
 
   @Query(() => [Category])

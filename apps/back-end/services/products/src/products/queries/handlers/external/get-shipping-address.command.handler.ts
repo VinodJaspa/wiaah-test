@@ -21,7 +21,8 @@ export class GetShippingAddressCommandHandler
     });
     if (!res) return null;
     const {
-      location: { address, city, country, lat, long, state },
+      location: { address, city, country, state },
+      geoLocation,
       ownerId,
     } = res;
     return {
@@ -29,7 +30,10 @@ export class GetShippingAddressCommandHandler
       state,
       city,
       address,
-      coords: { lat, long },
+      coords: {
+        long: geoLocation.coordinates[0],
+        lat: geoLocation.coordinates[1],
+      },
       address_full: `${address}, ${state}, ${city}, ${country}`,
       ownerId,
     };
