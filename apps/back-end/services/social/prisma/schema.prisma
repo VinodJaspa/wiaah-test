@@ -214,14 +214,59 @@ model Action {
   updatedAt          DateTime           @updatedAt
 }
 
-model ActionAudio {
+model ContentAudio {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   authorUserId String @db.ObjectId
   uploadId     String @db.ObjectId
   name         String
+  usage        Int    @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CameraFilter {
+  id               String             @id @default(auto()) @map("_id") @db.ObjectId
+  name             TranslationText[]
+  filterStylesJSON String
+  usage            Int                @default(0)
+  thumbnail        String
+  status           CameraFilterStatus
+  categoryId       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContentEffect {
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  name         TranslationText[]
+  usage        Int               @default(0)
+  thumbnail    String
+  status       EffectStatus
+  srcUploadId  String
+  importedById String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CameraFilterCategory {
+  id   String            @id @default(auto()) @map("_id") @db.ObjectId
+  name TranslationText[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EffectStatus {
+  active
+  inActive
+}
+
+enum CameraFilterStatus {
+  active
+  inActive
 }
 
 enum ActionType {
@@ -324,6 +369,8 @@ model Story {
   mentions     PostMention[]
   tags         PostTag[]
   profileId    String        @db.ObjectId()
+  audioId      String?
+  effectId     String?
 }
 
 enum StoryType {
@@ -521,4 +568,9 @@ enum ProfileStatus {
   active
   paused
   pending
+}
+
+type TranslationText {
+  langId String
+  value  String
 }

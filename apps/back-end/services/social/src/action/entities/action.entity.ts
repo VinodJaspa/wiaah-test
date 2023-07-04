@@ -4,12 +4,6 @@ import { CreateGqlCursorPaginatedResponse } from 'nest-utils';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
 
 @ObjectType()
-export class ActionEffect {
-  @Field(() => String)
-  name: string;
-}
-
-@ObjectType()
 export class ActionAudio {
   @Field(() => ID)
   id: string;

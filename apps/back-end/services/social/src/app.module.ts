@@ -35,6 +35,8 @@ import { Shop } from '@profile/resolvers/profile.shop.resolver';
 import { Account } from './entities/extends';
 import { SocialTagModule } from './social-tag/social-tag.module';
 import { AudioModule } from './audio/audio.module';
+import { EffectModule } from './effect/effect.module';
+import { CameraFilterModule } from './camera-filter/camera-filter.module';
 
 @Module({
   imports: [
@@ -76,6 +78,8 @@ import { AudioModule } from './audio/audio.module';
     ProfileStatisticsModule,
     SocialTagModule,
     AudioModule,
+    EffectModule,
+    CameraFilterModule,
   ],
 })
 export class AppModule {}

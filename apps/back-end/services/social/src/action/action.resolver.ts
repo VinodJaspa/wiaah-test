@@ -7,19 +7,16 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import {
-  Action,
-  ActionEffect,
-  GetActionsCursorResponse,
-} from '@action/entities';
+import { Action, GetActionsCursorResponse } from '@action/entities';
 import { CreateActionInput, GetUserActionsInput } from '@action/dto';
 import {
   AuthorizationDecodedUser,
   BadMediaFormatPublicError,
-  ExtractPagination,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   InternalServerPublicError,
+  UserPreferedLang,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { CreateActionCommand } from '@action/commands';
@@ -31,8 +28,12 @@ import { Profile } from '@entities';
 import { ActionTopHashtagResponse } from './entities/action-hashtag';
 import { Readable } from 'stream';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import { ObjectId } from 'mongodb';
-import { GetActionByAudioIdInput } from './dto/getActionByAudioId.dto';
+import {
+  GetActionByAudioIdInput,
+  GetActionsByEffectIdInput,
+} from './dto/getActionByAudioId.dto';
+import { Effect } from 'src/effect/entities/effect.entity';
+import { EffectService } from 'src/effect/effect.service';
 
 @Resolver(() => Action)
 export class ActionResolver {
@@ -41,6 +42,7 @@ export class ActionResolver {
     private readonly querybus: QueryBus,
     private readonly uploadService: UploadService,
     private readonly prisma: PrismaService,
+    private readonly effectService: EffectService,
   ) {}
 
   @Mutation(() => Boolean)
@@ -223,7 +225,7 @@ export class ActionResolver {
     });
 
     console.log('audio media upload', { createdUpload });
-    const _res = await this.prisma.actionAudio.create({
+    const _res = await this.prisma.contentAudio.create({
       data: {
         authorUserId: createdUpload.userId,
         name: `${file.filename}`,
@@ -353,12 +355,51 @@ export class ActionResolver {
     };
   }
 
-  @ResolveField(() => ActionEffect)
-  async effect(@Parent() action: Action): Promise<ActionEffect> {
-    // TODO: get effect by id (action.effectId)
+  @Query(() => GetActionsCursorResponse)
+  async getActionByEffectId(
+    @Args('args') args: GetActionsByEffectIdInput,
+  ): Promise<GetActionsCursorResponse> {
+    const [count, audios] = await this.prisma.$transaction([
+      this.prisma.action.count({
+        where: {
+          effectId: args.id,
+        },
+      }),
+
+      this.prisma.action.findMany({
+        where: {
+          effectId: args.id,
+        },
+        cursor: args.cursor
+          ? {
+              id: args.cursor,
+            }
+          : undefined,
+        take: args.take + 1,
+        orderBy: {
+          views: 'desc',
+        },
+      }),
+    ]);
+
     return {
-      name: 'effect name',
+      data: audios,
+      hasMore: audios.length > args.take,
+      cursor: args.cursor,
+      nextCursor: audios?.at(args.take)?.id,
+      total: count,
     };
+  }
+
+  @ResolveField(() => Effect, { nullable: true })
+  async effect(
+    @Parent() action: Action,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<Effect> {
+    if (!action.effectId) return null;
+    const effect = await this.effectService.getEffect(action.effectId, langId);
+
+    return effect;
   }
 
   @ResolveField(() => Profile)
