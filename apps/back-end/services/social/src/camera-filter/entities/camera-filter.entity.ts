@@ -25,10 +25,10 @@ export class CameraFilter {
   status: CameraFilterStatus;
 
   @Field(() => String)
-  createdAt: string;
+  createdAt: Date;
 
   @Field(() => String)
-  updatedAt: string;
+  updatedAt: Date;
 }
 
 @ObjectType()

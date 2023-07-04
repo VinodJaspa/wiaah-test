@@ -112,6 +112,7 @@ const StorySettingsAtom = atom<{
   countDown: number;
   speed: number;
   selectEffect: boolean;
+  selectFilter: boolean;
   cameraType: "front" | "back";
   textBgGradient?: {
     from: string;
@@ -119,6 +120,7 @@ const StorySettingsAtom = atom<{
   };
   fontSize: number;
   textContent: string;
+  filterId?: string;
 }>({
   default: {
     mediaType: "video",
@@ -131,6 +133,7 @@ const StorySettingsAtom = atom<{
     selectEffect: false,
     fontSize: 1,
     textContent: "",
+    selectFilter: false,
   },
   key: "CreateStorySettings",
 });
@@ -193,6 +196,14 @@ export const CreateActionDrawer: React.FC = () => {
       <ModalContent className="h-full">{content}</ModalContent>
     </Modal>
   );
+};
+
+export const SelectVideoFilters: React.FC = () => {
+  const [settings, setSettings] = useRecoilState(StorySettingsAtom);
+
+  return <div className="absolute bottom-0 left-0 ">
+
+  </div>
 };
 
 export const StoryBottomControls: React.FC = () => {

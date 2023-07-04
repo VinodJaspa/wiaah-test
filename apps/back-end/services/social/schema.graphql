@@ -541,10 +541,6 @@ type HashtagTopAffiliationPost {
   commented: AffiliationPost
 }
 
-type ActionEffect {
-  name: String!
-}
-
 type Action {
   id: ID!
   src: String!
@@ -561,7 +557,7 @@ type Action {
   musicId: String!
   effectId: String
   tags: [PostTag!]!
-  effect: ActionEffect!
+  effect: Effect
   profile: Profile!
 }
 
@@ -578,6 +574,27 @@ type ActionTopHashtagResponse {
   liked: Action
   shared: Action
   commented: Action
+}
+
+type Effect {
+  id: ID!
+  name: String!
+  usage: Int!
+  thumbnail: String!
+  status: EffectStatus!
+}
+
+enum EffectStatus {
+  active
+  inActive
+}
+
+type EffectCursorPaginationResponse {
+  data: [Effect!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
 }
 
 type ServicePostHashtagSearch {
@@ -651,6 +668,43 @@ type SocialTag {
   taggedProfiles: [ProfileFollow!]!
 }
 
+type Audio {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type AudioCursorPaginationResponse {
+  data: [Audio!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
+}
+
+type CameraFilter {
+  id: ID!
+  name: String!
+  filterStylesJSON: String!
+  usage: Int!
+  thumbnail: String!
+  status: CameraFilterStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum CameraFilterStatus {
+  active
+  inActive
+}
+
+type CameraFiltersCursorResponse {
+  data: [CameraFilter!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   getProfileDetails(userId: String!): Profile!
@@ -705,6 +759,8 @@ type Query {
   getUserActions(args: GetUserActionsInput!): GetActionsCursorResponse!
   getMyRecommendedAction: Action!
   getAction(id: String!): [Action!]!
+  getActionByAudioId(args: GetActionByAudioIdInput!): GetActionsCursorResponse!
+  getActionByEffectId(args: GetActionsByEffectIdInput!): GetActionsCursorResponse!
   getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
   getRecommendedServicePosts(args: GetRecommendedServicePostsInput!): [ServicePost!]!
@@ -720,6 +776,10 @@ type Query {
   getTopProfileStories(args: GetTopProfilePostsInput!): [Story!]!
   getTopProfilePosts(args: GetTopProfilePostsInput!): [NewsfeedPost!]!
   getContentTaggedProfile(args: GetContentTaggedProfilesInput!): SocialTag
+  getMusicById(id: String!): AudioCursorPaginationResponse!
+  getEffect(id: String!): Effect
+  getTopEffects(args: GetEffectTopUsedActionsInput!): EffectCursorPaginationResponse!
+  getCameraFilters(args: GetCameraFiltersInput!): CameraFiltersCursorResponse!
 }
 
 input SearchPopularProfilesInput {
@@ -868,6 +928,18 @@ input GetUserActionsInput {
   userId: ID!
 }
 
+input GetActionByAudioIdInput {
+  take: Int!
+  cursor: String
+  id: ID!
+}
+
+input GetActionsByEffectIdInput {
+  take: Int!
+  cursor: String
+  id: ID!
+}
+
 input GetUserServicesPostsInput {
   userId: ID!
   pagination: GqlCursorPaginationInput!
@@ -927,6 +999,26 @@ input GetTopProfilePostsInput {
 input GetContentTaggedProfilesInput {
   contentId: String!
   contentType: String!
+}
+
+input GetEffectTopUsedActionsInput {
+  take: Int!
+  cursor: String
+  effetSearchTerm: EffectSearchTerm!
+  categoryId: ID
+  search: String
+}
+
+enum EffectSearchTerm {
+  recommended
+  new
+  cateogry
+}
+
+input GetCameraFiltersInput {
+  take: Int!
+  cursor: String
+  categoryId: ID!
 }
 
 type Mutation {

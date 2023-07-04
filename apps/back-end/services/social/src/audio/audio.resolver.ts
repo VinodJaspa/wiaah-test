@@ -12,7 +12,7 @@ export class AudioResolver {
 
   @Query(() => AudioCursorPaginationResponse)
   async getMusicById(@Args('id') id: string) {
-    return this.prisma.actionAudio.findUnique({
+    return this.prisma.contentAudio.findUnique({
       where: {
         id,
       },

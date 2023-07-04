@@ -8,6 +8,7 @@ import { ActionRepository } from './repository';
 import { ActionEventHandlers } from './events';
 import { kafkaModule } from '@kafkaModule';
 import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
+import { EffectService } from 'src/effect/effect.service';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
   providers: [
     ActionResolver,
     ActionRepository,
+    EffectService,
     ...ActionCommandHandlers,
     ...ActionQueryHandlers,
     ...ActionEventHandlers,
