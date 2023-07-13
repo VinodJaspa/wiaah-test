@@ -32,6 +32,7 @@ import {
   ProductsCursorPaginationResponse,
   ProductSearchPaginationResponse,
   ProductPaginationResponse,
+  ProductAttribute,
 } from '@products/entities';
 import {
   CreateProductInput,
@@ -51,6 +52,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { GetTopSalesProductsByCategoryPaginationInput } from './dto/get-top-sales-products.input';
 import { lookup } from 'geoip-lite';
+import { ProductAttributeService } from 'src/product-attribute/product-attribute.service';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -70,6 +72,7 @@ export class ProductsResolver {
     private readonly prisma: PrismaService,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly productAttributeService: ProductAttributeService,
   ) {}
 
   logger = new Logger('ProductResolver');
@@ -492,5 +495,35 @@ export class ProductsResolver {
     });
 
     if (!clicks) return 0;
+  }
+
+  @ResolveField(() => [ProductAttribute])
+  async attributes(
+    @Parent() prod: Product,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<ProductAttribute[]> {
+    const attributes = await this.prisma.productAttribute.findMany({
+      where: {
+        id: {
+          in: prod.selectableAttributes.map((att) => att.id),
+        },
+      },
+    });
+
+    return attributes
+      .map((att) => {
+        const attribute = prod.selectableAttributes.find(
+          (v) => v.id === att.id,
+        );
+        return {
+          ...att,
+          values: att.values.filter((value) =>
+            attribute.values.includes(value.id),
+          ),
+        };
+      })
+      .map((attribute) =>
+        this.productAttributeService.formatProductAttribute(attribute, langId),
+      );
   }
 }

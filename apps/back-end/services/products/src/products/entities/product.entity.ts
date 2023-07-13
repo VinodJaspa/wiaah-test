@@ -76,6 +76,9 @@ export class Discount {
 
 @ObjectType()
 export class ProductAttribute {
+  @Field(() => ID)
+  id: string;
+
   @Field(() => String)
   name: String;
 
@@ -90,12 +93,42 @@ export class ProductAttribute {
 }
 
 @ObjectType()
-export class ProductAttributeValue {
+export class ProductRawAttribute {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => [TranslationText])
+  name: TranslationText[];
+
+  @Field(() => [ProductRawAttributeValue])
+  values: ProductRawAttributeValue[];
+
+  @Field(() => ProductAttributeSelectionType)
+  selectionType: ProductAttributeSelectionType;
+
+  @Field(() => ProductAttributeDisplayType)
+  displayType: ProductAttributeDisplayType;
+}
+
+@ObjectType()
+export class ProductRawAttributeValue {
   @Field(() => String)
   value: string;
 
-  @Field(() => Float)
-  price?: number;
+  @Field(() => [TranslationText])
+  name: TranslationText[];
+}
+
+@ObjectType()
+export class ProductAttributeValue {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => String)
+  value: string;
+
+  @Field(() => String)
+  name: string;
 }
 
 @ObjectType()
@@ -129,8 +162,8 @@ export class Product {
   @Field((type) => Category, { nullable: true })
   category?: Category;
 
-  @Field(() => [ProductAttribute])
-  attributes: ProductAttribute[];
+  @Field(() => [ProductSelectAttribute])
+  selectableAttributes: ProductSelectAttribute[];
 
   @Field((type) => Int)
   stock: number;
@@ -217,6 +250,15 @@ export class Product {
   condition: ProductCondition;
 
   rateStarCount: number;
+}
+
+@ObjectType()
+export class ProductSelectAttribute {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => [ID])
+  values: string[];
 }
 
 @ObjectType()

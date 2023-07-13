@@ -4,6 +4,7 @@ import { KafkaMessage, KafkaMessageReply } from "../../Base";
 export class GetUserMostInteractionersMessage extends KafkaMessage<{
   userId: string;
   pagination: GqlPaginationInput;
+  usersWithin?: string[];
 }> {}
 
 export class GetUserMostInteractionersMessageReply extends KafkaMessageReply<{

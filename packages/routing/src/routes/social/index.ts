@@ -7,6 +7,7 @@ export type SocialRoutesType = {
   visitMyProfile: () => RoutesType;
   visitSocialProfile: (userId: string) => RoutesType;
   visitSocialPost: (postId: string) => RoutesType;
+  visitSocialAction: (actionId: string) => RoutesType;
   visitNewsfeedPostPage: (props: Record<string, any>) => RoutesType;
   visitNewsfeedAccountsPostPage: (props: Record<string, any>) => RoutesType;
   visitUserHashtagPage: (props: Record<string, any>) => RoutesType;
@@ -82,5 +83,8 @@ export const SocialRoutes = {
     const hashtag = props["tag"];
     if (!profileId || !hashtag) return this;
     return this.profile().id(profileId).hashtag().addPath(hashtag);
+  },
+  visitSocialAction(actionId) {
+    return this.addPath("action").id(actionId);
   },
 } as RoutesType;

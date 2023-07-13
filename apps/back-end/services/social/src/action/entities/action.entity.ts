@@ -36,6 +36,9 @@ export class Action {
   cover: string;
 
   @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => String)
   link: string;
 
   @Field(() => ID)
@@ -62,8 +65,11 @@ export class Action {
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
 
-  @Field(() => String)
-  musicId: string;
+  @Field(() => String, { nullable: true })
+  musicId?: string;
+
+  @Field(() => String, { nullable: true })
+  audioId?: string;
 
   @Field(() => String, { nullable: true })
   effectId?: string;

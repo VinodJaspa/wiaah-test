@@ -41,7 +41,7 @@ export const SocialProfileActionList: React.FC<{
     <ScrollCursorPaginationWrapper
       controls={{ ...controls, next: fetchNextPage }}
     >
-      <div className="grid grid-cols-3 gap-[1px] lg:grid-cols-6">
+      <div className="grid grid-cols-3 gap-[1px] sm:gap-4 lg:grid-cols-6">
         {mapArray(
           data?.pages.reduce(
             (acc, curr) => [...(acc || []), ...(curr.data || [])],

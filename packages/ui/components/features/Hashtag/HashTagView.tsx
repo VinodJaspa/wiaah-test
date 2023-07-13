@@ -30,6 +30,10 @@ import {
   BookServiceButton,
   ScrollCursorPaginationWrapper,
   EyeIcon,
+  SectionHeader,
+  HashTagPostsListWrapper,
+  SocialHashTagTopPosts,
+  SocialProfileActionList,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import {
@@ -106,7 +110,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col gap-16">
-          {/* <HashTagPostsListWrapper hashtags={topPosts} /> */}
+          <HashTagPostsListWrapper hashtags={SocialHashTagTopPosts} />
 
           <Divider />
 
@@ -114,10 +118,26 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
         </div>
       ),
     },
+    {
+      name: (
+        <HStack>
+          <p>{t("Action")}</p>
+        </HStack>
+      ),
+      component: (
+        <div className="flex flex-col gap-16">
+          <HashTagPostsListWrapper hashtags={[]} />
+
+          <Divider />
+
+          <SocialProfileActionList userId="" />
+        </div>
+      ),
+    },
   ];
   return isMobile ? (
     <div className="p-4 flex flex-col gap-12">
-      {/* <SectionHeader sectionTitle={``} /> */}
+      <SectionHeader sectionTitle={`#${tag}`} />
       <SimpleTabs
         onChange={(idx) => {
           setIdx(idx);
@@ -145,7 +165,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
           <HashtagPostsView postType={PostType.NewsfeedPost} tag={tag} />
           <HashtagPostsView postType={PostType.ShopPost} tag={tag} />
           <HashtagPostsView postType={PostType.ServicePost} tag={tag} />
-          <HashtagPostsView postType={PostType.AffiliationPost} tag={tag} />
+          <HashtagPostsView postType={"action"} tag={tag} />
         </SimpleTabItemList>
       </SimpleTabs>
     </div>
@@ -193,10 +213,7 @@ export const HashtagPostsView: React.FC<{
   const { data: topNewsfeed } = useGetTopHashtagPostsQuery(tag);
   const { data: topProducts } = useGetTopHashtagProductPosts({ tag });
   const { data: topServices } = useGetTopHashtagServicePost({ tag });
-  const { data: topActions } = useGetTopHashtagActionsQuery(
-    { tag },
-    { enabled: postType === "action" }
-  );
+  const { data: topActions } = useGetTopHashtagActionsQuery({ tag });
 
   const TopPosts =
     postType === PostType.NewsfeedPost
@@ -208,9 +225,9 @@ export const HashtagPostsView: React.FC<{
       : topActions;
 
   return isMobile ? (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center">
-        {topNewsfeed
+    <div className="flex flex-col ">
+      <div className="flex gap-2 ">
+        {TopPosts
           ? Object.entries(TopPosts).map(([key, value]) => {
               const thumbnail =
                 postType === PostType.NewsfeedPost
@@ -223,20 +240,20 @@ export const HashtagPostsView: React.FC<{
 
               const views = value.views;
               return typeof value !== "string" ? (
-                <div className="flex flex-col">
+                <div className="flex gap-2 flex-col">
                   <AspectRatioImage
                     src={thumbnail}
                     alt={""}
-                    className="w-40 rounded-xl"
-                    ratio={0.84}
+                    className="w-40 rounded-xl overflow-hidden"
+                    ratio={1}
                   >
-                    <HStack className="text-sm">
+                    <HStack className="text-white px-2 py-1 rounded absolute bottom-2 left-2 bg-black/25 text-sm">
                       <EyeIcon />
                       <p>{NumberShortner(views)}</p>
                     </HStack>
                   </AspectRatioImage>
-                  <p className="text-center p-2">
-                    {t("Top")} {t(startCase(key))} {t("Post")}
+                  <p className="text-center font-semibold p-2">
+                    {t("Top")} {t(startCase(key))} {t(`${startCase(postType)}`)}
                   </p>
                 </div>
               ) : null;
@@ -244,27 +261,30 @@ export const HashtagPostsView: React.FC<{
           : null}
       </div>
 
-      <p>{t("All Posts")}</p>
-      <ScrollCursorPaginationWrapper
+      <p className="font-medium text-lg">{t("All Posts")}</p>
+      {/* TODO: */}
+      <SocialProfileActionList userId="" />
+      {/* <ScrollCursorPaginationWrapper
         controls={{ hasMore: hasNextPage || false, next: fetchNextPage }}
-      ></ScrollCursorPaginationWrapper>
-      <GridListOrganiser presets={GridOrganiserPresets.socialPostsGrid}>
-        {mapArray(trendingPosts?.pages, (page, i) => (
-          <React.Fragment key={i}>
-            {mapArray(page.data, (post) => (
-              <AspectRatioImage
-                ratio={1.2}
-                alt={post.id}
-                src={post.thumbnail}
-                className="w-full h-full object-cover"
-                key={post.id}
-              >
-                <p>{NumberShortner(post.views)}</p>
-              </AspectRatioImage>
-            ))}
-          </React.Fragment>
-        ))}
-      </GridListOrganiser>
+      >
+        <GridListOrganiser presets={GridOrganiserPresets.socialPostsGrid}>
+          {mapArray(trendingPosts?.pages, (page, i) => (
+            <React.Fragment key={i}>
+              {mapArray(page.data, (post) => (
+                <AspectRatioImage
+                  ratio={1.2}
+                  alt={post.id}
+                  src={post.thumbnail}
+                  className="w-full h-full object-cover"
+                  key={post.id}
+                >
+                  <p>{NumberShortner(post.views)}</p>
+                </AspectRatioImage>
+              ))}
+            </React.Fragment>
+          ))}
+        </GridListOrganiser>
+      </ScrollCursorPaginationWrapper> */}
     </div>
   ) : null;
 };

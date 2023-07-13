@@ -545,6 +545,7 @@ type Action {
   id: ID!
   src: String!
   cover: String!
+  thumbnail: String!
   link: String!
   userId: ID!
   reactionNum: Int!
@@ -554,11 +555,14 @@ type Action {
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
-  musicId: String!
+  musicId: String
+  audioId: String
   effectId: String
   tags: [PostTag!]!
   effect: Effect
+  audio: Audio
   profile: Profile!
+  followedBy: [Profile!]!
 }
 
 type GetActionsCursorResponse {
@@ -591,6 +595,25 @@ enum EffectStatus {
 
 type EffectCursorPaginationResponse {
   data: [Effect!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
+}
+
+type Audio {
+  id: ID!
+  authorUserId: ID!
+  uploadId: ID!
+  name: String!
+  usage: Int!
+  createdAt: String!
+  updatedAt: String!
+  src: String
+}
+
+type AudioCursorPaginationResponse {
+  data: [Audio!]!
   cursor: String
   nextCursor: String
   hasMore: Boolean!
@@ -666,19 +689,6 @@ type SocialTag {
   contentId: String!
   taggedUserIds: [String!]!
   taggedProfiles: [ProfileFollow!]!
-}
-
-type Audio {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type AudioCursorPaginationResponse {
-  data: [Audio!]!
-  cursor: String
-  nextCursor: String
-  hasMore: Boolean!
-  total: Int!
 }
 
 type CameraFilter {
@@ -776,9 +786,10 @@ type Query {
   getTopProfileStories(args: GetTopProfilePostsInput!): [Story!]!
   getTopProfilePosts(args: GetTopProfilePostsInput!): [NewsfeedPost!]!
   getContentTaggedProfile(args: GetContentTaggedProfilesInput!): SocialTag
-  getMusicById(id: String!): AudioCursorPaginationResponse!
+  getAudioById(id: String!): AudioCursorPaginationResponse!
   getEffect(id: String!): Effect
-  getTopEffects(args: GetEffectTopUsedActionsInput!): EffectCursorPaginationResponse!
+  getTopEffects(args: GetTopEffectsInput!): EffectCursorPaginationResponse!
+  getCameraFilterById(id: String!): CameraFilter!
   getCameraFilters(args: GetCameraFiltersInput!): CameraFiltersCursorResponse!
 }
 
@@ -1001,7 +1012,7 @@ input GetContentTaggedProfilesInput {
   contentType: String!
 }
 
-input GetEffectTopUsedActionsInput {
+input GetTopEffectsInput {
   take: Int!
   cursor: String
   effetSearchTerm: EffectSearchTerm!
@@ -1233,6 +1244,7 @@ input UpdateMyPrivacyInput {
 input CreateActionInput {
   srcUploadId: String!
   coverUploadId: String!
+  thumbnailUploadId: String!
   mentions: [String!] = []
   tags: [String!] = []
   link: String

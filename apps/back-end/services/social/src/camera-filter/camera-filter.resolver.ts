@@ -15,6 +15,20 @@ export class CameraFilterResolver {
     private readonly service: CameraFilterService,
   ) {}
 
+  @Query(() => CameraFilter)
+  async getCameraFilterById(
+    @Args('id') id: string,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<CameraFilter> {
+    const res = await this.prisma.cameraFilter.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return this.service.formatFilter(res, langId);
+  }
+
   @Query(() => CameraFiltersCursorResponse)
   async getCameraFilters(
     @Args('args') args: GetCameraFiltersInput,

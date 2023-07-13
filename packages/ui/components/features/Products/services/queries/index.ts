@@ -12,3 +12,4 @@ export * from "./categories";
 export * from "./filters";
 export * from "./useGetProductQuery";
 export * from "./useGetUserProducts";
+export * from "./attributes";

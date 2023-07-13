@@ -9,6 +9,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { servicesEventHandlers } from './events/handlers';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ServiceSeederService } from './service.seeder';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     ServiceService,
     AdminServiceResolver,
     PrismaService,
+    ServiceSeederService,
     ...resolvers,
     ...servicesEventHandlers,
   ],

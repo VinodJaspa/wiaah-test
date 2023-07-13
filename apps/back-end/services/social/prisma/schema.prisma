@@ -194,6 +194,7 @@ model Action {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
   src                String
   cover              String
+  thumbnail          String
   userId             String             @db.ObjectId
   reactionNum        Int                @default(0)
   comments           Int                @default(0)

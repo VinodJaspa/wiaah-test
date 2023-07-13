@@ -59,17 +59,11 @@ export class DiscountInput {
 
 @InputType()
 export class ProductAttributeInput {
-  @Field(() => [TranslationTextInput])
-  name: TranslationTextInput[];
+  @Field(() => ID)
+  id: string;
 
-  @Field(() => [ProductAttributeValueInput])
-  values: ProductAttributeValueInput[];
-
-  @Field(() => ProductAttributeSelectionType)
-  selectionType: ProductAttributeSelectionType;
-
-  @Field(() => ProductAttributeDisplayType)
-  displayType: ProductAttributeDisplayType;
+  @Field(() => [ID])
+  values: string[];
 }
 
 @InputType()

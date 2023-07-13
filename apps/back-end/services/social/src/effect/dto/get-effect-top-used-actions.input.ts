@@ -10,7 +10,7 @@ export enum EffectSearchTerm {
 registerEnumType(EffectSearchTerm, { name: 'EffectSearchTerm' });
 
 @InputType()
-export class GetEffectTopUsedActionsInput extends GqlCursorPaginationInput {
+export class GetTopEffectsInput extends GqlCursorPaginationInput {
   @Field(() => EffectSearchTerm)
   effetSearchTerm: EffectSearchTerm;
 

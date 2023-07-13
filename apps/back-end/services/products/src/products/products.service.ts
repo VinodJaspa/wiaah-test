@@ -479,10 +479,7 @@ export class ProductsService {
         resource: prod.description,
         fallbackLangId: 'en',
       }),
-      attributes: prod.attributes.map((att) => ({
-        ...att,
-        name: getTranslatedResource({ langId: lang, resource: att.name }),
-      })),
+      selectableAttributes: prod.attributesIds,
     };
   }
 

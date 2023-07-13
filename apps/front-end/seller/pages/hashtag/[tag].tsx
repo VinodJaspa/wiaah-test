@@ -13,8 +13,7 @@ export const getServerSideProps: GetServerSideProps<
   HashtagPageProps
 > = async () => {
   const queryClient = new QueryClient();
-
-  queryClient.prefetchQuery("hashtags", getHashtags);
+  //TODO: SSR hashtag posts
 
   return {
     props: {

@@ -12,6 +12,7 @@ export class CreateActionCommand {
       allowedActions: ActionType[];
       actionSrc: string;
       actionCoverSrc: string;
+      thumbnailSrc: string;
     },
     public readonly userId: string,
   ) {}

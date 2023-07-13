@@ -4,7 +4,7 @@ import {
   EffectCursorPaginationResponse,
 } from './entities/effect.entity';
 import { PrismaService } from 'prismaService';
-import { GetEffectTopUsedActionsInput } from './dto/get-effect-top-used-actions.input';
+import { GetTopEffectsInput } from './dto/get-effect-top-used-actions.input';
 import { GetLang, UserPreferedLang } from 'nest-utils';
 import { EffectService } from './effect.service';
 
@@ -30,7 +30,7 @@ export class EffectResolver {
 
   @Query(() => EffectCursorPaginationResponse)
   async getTopEffects(
-    @Args('args') args: GetEffectTopUsedActionsInput,
+    @Args('args') args: GetTopEffectsInput,
     @GetLang() langId: UserPreferedLang,
   ): Promise<EffectCursorPaginationResponse> {
     const res = await this.prisma.contentEffect.findMany({

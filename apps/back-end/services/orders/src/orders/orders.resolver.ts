@@ -49,7 +49,6 @@ import {
   ShippingAddress,
   ShippingRule,
 } from './entities/extends';
-import { AdminGetAccountOrdersInput } from './dto/admin-get-account-orders.input';
 import { OrderStatusEnum } from '@prisma-client';
 
 @Resolver(() => Order)

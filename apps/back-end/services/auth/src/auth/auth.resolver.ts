@@ -167,7 +167,7 @@ export class AuthResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
-  resendRegisterationCode(@GqlCurrentUser() user:AuthorizationDecodedUser) {
+  resendRegisterationCode(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.authService.resendRegisterationToken(user.email);
   }
 
@@ -209,7 +209,7 @@ export class AuthResolver implements OnModuleInit {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail,
       new GetAdminAccountByEmailMesssage({ email: args.email }),
     );
-    if (!acc) throw new NotFoundException('Account not found');
+    if (!acc?.results?.data) throw new NotFoundException('Account not found');
 
     const compere = await bcrypt.compare(
       args.password,
@@ -246,6 +246,9 @@ export class AuthResolver implements OnModuleInit {
     );
     this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
+    );
+    this.eventsClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail,
     );
     await this.eventsClient.connect();
   }

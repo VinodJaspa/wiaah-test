@@ -1,49 +1,37 @@
 import { HtmlDivProps } from "@UI/../types/src";
-import {
-  PassPropsToFnOrElem,
-  getRandomName,
-  mapArray,
-  useForm,
-} from "@UI/../utils/src";
+import { PassPropsToFnOrElem, mapArray, useForm } from "@UI/../utils/src";
 import { CameraSwitchOutlineIcon } from "@UI/components/partials/icons/CameraSwitchIcon";
 import { useSocialControls } from "@blocks";
 import { useResponsive } from "hooks";
 import {
   ArrowDownIcon,
   ArrowUpIcon,
-  Avatar,
+  AspectRatioImage,
   Button,
   CheckmarkCircleWhiteFillIcon,
   CheckmarkIcon,
   CloseIcon,
-  Drawer,
-  DrawerContent,
   HStack,
   Image,
   ImageUploadIcon,
   Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   LinkIcon,
   Modal,
   ModalContent,
   ModalOverlay,
   MusicNoteFillIcon,
-  SaveFlagOutlineIcon,
-  SearchIcon,
   SettingsOutlineIcon,
-  StarsIcon,
   TimerOutlineIcon,
   VideoCameraUplaodOutlineIcon,
 } from "@partials";
 import { useOutsideClick } from "@src/index";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getRandomImage } from "@UI/placeholder";
 import { atom, useRecoilState } from "recoil";
 import { ChooseActionRemix, ChooseRemixPlacement } from "./CreateActionRemix";
 import { useCreateActionMutation } from "@features/Social/services";
+import { useGetCameraFiltersQuery } from "@features/Social/services/Queries/CameraFilters";
+import { useGetCameraFilterByIdQuery } from "@features/Social/services/Queries/CameraFilters/getCameraFilter";
 
 const gradients: { from: string; to: string }[] = [
   {
@@ -111,7 +99,6 @@ const StorySettingsAtom = atom<{
   duration: number;
   countDown: number;
   speed: number;
-  selectEffect: boolean;
   selectFilter: boolean;
   cameraType: "front" | "back";
   textBgGradient?: {
@@ -130,7 +117,6 @@ const StorySettingsAtom = atom<{
     countDown: 0,
     cameraType: "back",
     textBgGradient: gradients[0],
-    selectEffect: false,
     fontSize: 1,
     textContent: "",
     selectFilter: false,
@@ -139,7 +125,6 @@ const StorySettingsAtom = atom<{
 });
 
 export const CreateActionDrawer: React.FC = () => {
-  const { isPortable } = useResponsive();
   const { value, cancelCreateAction, createAction } =
     useSocialControls("createAction");
   const audioId = typeof value === "object" ? value.audioId : undefined;
@@ -168,7 +153,6 @@ export const CreateActionDrawer: React.FC = () => {
         </div>
         <StoryBottomControls />
         <CameraActionSettings />
-        <VideoEffectList />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <CameraCountDown ref={countingRef} onFinish={() => {}} />
         </div>
@@ -178,19 +162,11 @@ export const CreateActionDrawer: React.FC = () => {
         onSelect={() => {}}
         actionId={remixId}
       />
+      <SelectVideoFilters />
     </>
   );
 
-  return isPortable ? (
-    <Drawer
-      position="bottom"
-      full
-      isOpen={!!value}
-      onClose={() => cancelCreateAction()}
-    >
-      <DrawerContent className="noScroll">{content}</DrawerContent>
-    </Drawer>
-  ) : (
+  return (
     <Modal isOpen={!!value} onClose={() => cancelCreateAction()}>
       <ModalOverlay />
       <ModalContent className="h-full">{content}</ModalContent>
@@ -200,10 +176,74 @@ export const CreateActionDrawer: React.FC = () => {
 
 export const SelectVideoFilters: React.FC = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
+  const [categoryId, setCategoryId] = React.useState<string>();
 
-  return <div className="absolute bottom-0 left-0 ">
+  const { data } = useGetCameraFiltersQuery(
+    { categoryId: categoryId!, take: 10 },
+    {
+      enabled: typeof categoryId === "string",
+      getNextPageParam: (last) => last.nextCursor,
+    }
+  );
 
-  </div>
+  return (
+    <div className="absolute bg-black bg-opacity-30 bottom-0 left-0 w-full">
+      {/* TODO */}
+      <div className="flex gap-4">{/* categories */}</div>
+
+      <div className="flex gap-4 overflow-x-scroll noScroll">
+        {mapArray(data?.pages, (page, i) => (
+          <React.Fragment key={i}>
+            {mapArray(page.data, (filter, i) => (
+              <CamerafilterDisplay
+                name={filter.name}
+                thumbnail={filter.thumbnail}
+                onSelect={() =>
+                  setSettings((old) => ({ ...old, filterId: filter.id }))
+                }
+                isSelected={settings.filterId === filter.id}
+              />
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+
+      <div className="flex justify-between">
+        <div className="w-10 h-10 flex items-center justify-center bg-white bg-opacity-30">
+          <CloseIcon className="text-secondaryRed text-[1.750rem]" />
+        </div>
+
+        <div className="w-10 h-10 flex items-center justify-center bg-white bg-opacity-30">
+          <CheckmarkIcon className="text-primary text-[1.750rem]" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CamerafilterDisplay: React.FC<{
+  isSelected: boolean;
+  onSelect: () => any;
+  name: string;
+  thumbnail: string;
+}> = ({ isSelected, name, onSelect, thumbnail }) => {
+  return (
+    <button onClick={onSelect} className="flex flex-col gap-2">
+      <AspectRatioImage
+        src={thumbnail}
+        alt={name}
+        ratio={1}
+        className="rounded-xl"
+      >
+        {isSelected ? (
+          <div className="w-4/5 h-4/5 rounded-full bg-primary bg-opacity-30">
+            <CheckmarkIcon className="text-2xl" />
+          </div>
+        ) : null}
+      </AspectRatioImage>
+      <p>{name}</p>
+    </button>
+  );
 };
 
 export const StoryBottomControls: React.FC = () => {
@@ -369,16 +409,6 @@ const CameraActionSettings: React.FC<{}> = () => {
                 btn={
                   <ActionIcon>
                     <MusicNoteFillIcon className="text-[1.75rem]" />
-                  </ActionIcon>
-                }
-              ></CameraActionListMenu>
-
-              <CameraActionListMenu
-                onOpen={() => setActive(1)}
-                onClose={() => setActive(undefined)}
-                btn={
-                  <ActionIcon>
-                    <StarsIcon className="text-[1.75rem]" />
                   </ActionIcon>
                 }
               ></CameraActionListMenu>
@@ -653,122 +683,122 @@ const CameraCountDown = React.forwardRef(
   }
 );
 
-const VideoEffectList: React.FC = () => {
-  const { t } = useTranslation();
-  const [settings, setSettings] = useRecoilState(StorySettingsAtom);
-  const [full, setFull] = React.useState<boolean>(true);
-  const [filter, setFilter] = React.useState<string>();
-  const [selectedEffect, setSelectedEffect] = React.useState<string>();
+// const VideoEffectList: React.FC = () => {
+//   const { t } = useTranslation();
+//   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
+//   const [full, setFull] = React.useState<boolean>(true);
+//   const [filter, setFilter] = React.useState<string>();
+//   const [selectedEffect, setSelectedEffect] = React.useState<string>();
 
-  const filters: {
-    key: string;
-    label: string;
-  }[] = [
-    {
-      key: "for_you",
-      label: t("For you"),
-    },
-    {
-      key: "new",
-      label: t("New"),
-    },
-    {
-      key: "beauty",
-      label: t("Beauty"),
-    },
-  ];
+//   const filters: {
+//     key: string;
+//     label: string;
+//   }[] = [
+//     {
+//       key: "for_you",
+//       label: t("For you"),
+//     },
+//     {
+//       key: "new",
+//       label: t("New"),
+//     },
+//     {
+//       key: "beauty",
+//       label: t("Beauty"),
+//     },
+//   ];
 
-  const effects: {
-    photo: string;
-    name: string;
-    id: string;
-  }[] = [...Array(30)].map((_, i) => ({
-    name: getRandomName().firstName,
-    photo: getRandomImage(),
-    id: i.toString(),
-  }));
+//   const effects: {
+//     photo: string;
+//     name: string;
+//     id: string;
+//   }[] = [...Array(30)].map((_, i) => ({
+//     name: getRandomName().firstName,
+//     photo: getRandomImage(),
+//     id: i.toString(),
+//   }));
 
-  return settings.selectEffect ? (
-    <div className="absolute bottom-0 left-0 h-full flex w-full">
-      <div
-        className={`flex flex-col gap-2 w-full ${
-          full ? "h-full" : "self-end"
-        } bg-black bg-opacity-30`}
-      >
-        {full ? (
-          <HStack className="p-4 backdrop-blur gap-4">
-            <InputGroup className="bg-white rounded-full w-full">
-              <InputLeftElement>
-                <SearchIcon className="text-xl"></SearchIcon>
-              </InputLeftElement>
-              <Input placeholder={t("Type effect name...")} />
-              <InputRightElement className="pr-2">
-                <CloseIcon className="text-xl"></CloseIcon>
-              </InputRightElement>
-            </InputGroup>
-            <p onClick={() => setFull(false)} className="text-white">
-              {t("Cancel")}
-            </p>
-          </HStack>
-        ) : (
-          <>
-            <HStack className="w-full pt-2 justify-between">
-              <HStack className="justify-between w-full gap-4 px-4">
-                <div className="w-8 h-8 bg-white rounded-full">
-                  <CloseIcon className="text-[2rem] text-secondaryRed" />
-                </div>
-                <HStack className="gap-8">
-                  <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                    <SaveFlagOutlineIcon className="text-4xl " />
-                  </div>
-                  <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                    <SearchIcon className="text-4xl" />
-                  </div>
-                </HStack>
-                <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
-                  <CheckmarkIcon className="text-primary text-base" />
-                </div>
-              </HStack>
-            </HStack>
-            <HStack className="w-full justify-center gap-6 pb-4">
-              {mapArray(filters, (v, i) => (
-                <p
-                  onClick={() => setFilter(v.key)}
-                  className={`${
-                    v.key === filter ? "border-b-primary" : "border-transparent"
-                  } border-b-2 pb-2 text-white`}
-                  key={i}
-                >
-                  {v.label}
-                </p>
-              ))}
-            </HStack>
-          </>
-        )}
-        <div
-          className={`${
-            full ? "full" : "h-56"
-          } px-4 overflow-y-scroll noScroll grid grid-cols-4 gap-3`}
-        >
-          {mapArray(effects, (v, i) => (
-            <div
-              onClick={() => setSelectedEffect(v.id)}
-              key={i}
-              className={`${
-                v.id === selectedEffect
-                  ? "border-primary"
-                  : "border-transparent"
-              } border-2 flex flex-col gap-2 bg-black bg-opacity-50 w-full py-4 rounded-lg items-center`}
-            >
-              <Avatar className="min-w-[3.25rem]" src={v.photo} />
-              <p className="text-white text-xs">{v.name}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  ) : null;
-};
+//   return settings.selectEffect ? (
+//     <div className="absolute bottom-0 left-0 h-full flex w-full">
+//       <div
+//         className={`flex flex-col gap-2 w-full ${
+//           full ? "h-full" : "self-end"
+//         } bg-black bg-opacity-30`}
+//       >
+//         {full ? (
+//           <HStack className="p-4 backdrop-blur gap-4">
+//             <InputGroup className="bg-white rounded-full w-full">
+//               <InputLeftElement>
+//                 <SearchIcon className="text-xl"></SearchIcon>
+//               </InputLeftElement>
+//               <Input placeholder={t("Type effect name...")} />
+//               <InputRightElement className="pr-2">
+//                 <CloseIcon className="text-xl"></CloseIcon>
+//               </InputRightElement>
+//             </InputGroup>
+//             <p onClick={() => setFull(false)} className="text-white">
+//               {t("Cancel")}
+//             </p>
+//           </HStack>
+//         ) : (
+//           <>
+//             <HStack className="w-full pt-2 justify-between">
+//               <HStack className="justify-between w-full gap-4 px-4">
+//                 <div className="w-8 h-8 bg-white rounded-full">
+//                   <CloseIcon className="text-[2rem] text-secondaryRed" />
+//                 </div>
+//                 <HStack className="gap-8">
+//                   <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
+//                     <SaveFlagOutlineIcon className="text-4xl " />
+//                   </div>
+//                   <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
+//                     <SearchIcon className="text-4xl" />
+//                   </div>
+//                 </HStack>
+//                 <div className="w-8 h-8 flex justify-center items-center bg-white rounded-full">
+//                   <CheckmarkIcon className="text-primary text-base" />
+//                 </div>
+//               </HStack>
+//             </HStack>
+//             <HStack className="w-full justify-center gap-6 pb-4">
+//               {mapArray(filters, (v, i) => (
+//                 <p
+//                   onClick={() => setFilter(v.key)}
+//                   className={`${
+//                     v.key === filter ? "border-b-primary" : "border-transparent"
+//                   } border-b-2 pb-2 text-white`}
+//                   key={i}
+//                 >
+//                   {v.label}
+//                 </p>
+//               ))}
+//             </HStack>
+//           </>
+//         )}
+//         <div
+//           className={`${
+//             full ? "full" : "h-56"
+//           } px-4 overflow-y-scroll noScroll grid grid-cols-4 gap-3`}
+//         >
+//           {mapArray(effects, (v, i) => (
+//             <div
+//               onClick={() => setSelectedEffect(v.id)}
+//               key={i}
+//               className={`${
+//                 v.id === selectedEffect
+//                   ? "border-primary"
+//                   : "border-transparent"
+//               } border-2 flex flex-col gap-2 bg-black bg-opacity-50 w-full py-4 rounded-lg items-center`}
+//             >
+//               <Avatar className="min-w-[3.25rem]" src={v.photo} />
+//               <p className="text-white text-xs">{v.name}</p>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   ) : null;
+// };
 
 const StoryMediaCapture: React.FC = () => {
   const { t } = useTranslation();
@@ -778,6 +808,10 @@ const StoryMediaCapture: React.FC = () => {
   const [refresh, setRefresh] = React.useState<boolean>(false);
   const recorderRef = React.useRef<MediaRecorder | null>(null);
   const { isMobile } = useResponsive();
+
+  const { data: filter } = useGetCameraFilterByIdQuery(settings?.filterId!, {
+    enabled: !!settings?.filterId,
+  });
 
   const getCameraStream = () => {
     try {
@@ -825,6 +859,11 @@ const StoryMediaCapture: React.FC = () => {
     case "image":
       return supported ? (
         <video
+          style={
+            filter?.filterStylesJSON
+              ? JSON.parse(filter?.filterStylesJSON)
+              : undefined
+          }
           className="w-full h-full object-cover"
           src={recorderRef.current?.stream as any}
         />

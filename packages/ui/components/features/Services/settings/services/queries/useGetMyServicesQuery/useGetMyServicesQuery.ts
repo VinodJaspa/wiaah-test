@@ -115,7 +115,7 @@ export const useGetUserServicesQuery = (
     async () => {
       if (isDev) {
         const mockRes: GetUserServicesQuery["getUserServices"] = {
-          data: [...Array(2)].map((_, i) => {
+          data: [...Array(10)].map((_, i) => {
             const menuType =
               Object.values(RestaurantDishType)[
                 randomNum(Object.values(RestaurantDishType).length)
@@ -129,8 +129,11 @@ export const useGetUserServicesQuery = (
               price: 130,
               rating: 4.5,
               reviews: 162,
-              thumbnail: getRandomServiceImage(ServiceType.Hotel, menuType),
-              type: ServiceType.Hotel,
+              thumbnail: getRandomServiceImage(
+                ServiceType.BeautyCenter,
+                menuType
+              ),
+              type: ServiceType.BeautyCenter,
               bathrooms: 3,
               beds: 4,
               brand: "Brand",

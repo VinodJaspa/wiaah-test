@@ -12,9 +12,9 @@ import {
   useAdminUpdateProfessionMutation,
 } from "ui";
 import { NextPage } from "next";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useForm, WiaahLanguageCountries } from "utils";
+import { useForm, WiaahLangId, WiaahLanguageCountries } from "utils";
 import { useRouting } from "routing";
 import { ProfessionStatus } from "@features/API";
 
@@ -22,6 +22,7 @@ const addProfession: NextPage = () => {
   const { t } = useTranslation();
   const { back, getParam } = useRouting();
 
+  const [lang, setLang] = useState<WiaahLangId>(WiaahLangId.EN);
   const id = getParam("id");
 
   const isNew = id === "new";
@@ -30,11 +31,13 @@ const addProfession: NextPage = () => {
     form: updateForm,
     inputProps: updateprops,
     selectProps: updateselect,
+    translationInputProps: updateTranslationInputProps,
   } = useForm<Parameters<typeof update>[0]>({ id });
   const {
     form: createForm,
     inputProps: createprops,
     selectProps: createselect,
+    translationInputProps: createTranslationInputProps,
   } = useForm<Parameters<typeof create>[0]>({
     sortOrder: 0,
     status: ProfessionStatus.InActive,
@@ -46,6 +49,9 @@ const addProfession: NextPage = () => {
 
   const inputProps = isNew ? createprops : updateprops;
   const selectProps = isNew ? createselect : updateselect;
+  const translationInput = isNew
+    ? createTranslationInputProps
+    : updateTranslationInputProps;
 
   return (
     <section>
@@ -54,7 +60,7 @@ const addProfession: NextPage = () => {
         onSave={() => (isNew ? create(createForm) : update(updateForm))}
         data={[]}
         headers={[]}
-        title={t("Edit")}
+        title={isNew ? t("New") : t("Edit")}
       >
         <div className="grid grid-cols-4 gap-4">
           <HStack>
@@ -63,7 +69,11 @@ const addProfession: NextPage = () => {
           </HStack>
           <InputGroup className="col-span-3">
             <InputLeftElement>
-              <Select className="p-[0px] w-[5rem] border-[0px]">
+              <Select
+                value={lang}
+                onOptionSelect={(v: WiaahLangId) => setLang(v)}
+                className="p-[0px] w-[5rem] border-[0px]"
+              >
                 {WiaahLanguageCountries.map(({ code }) => (
                   <SelectOption value={code}>
                     <FlagIcon code={code} />
@@ -72,7 +82,7 @@ const addProfession: NextPage = () => {
               </Select>
             </InputLeftElement>
             <Input
-              {...inputProps("title")}
+              {...translationInput("title", lang)}
               placeholder={t("Profession name")}
             />
           </InputGroup>

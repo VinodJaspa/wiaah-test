@@ -16,9 +16,12 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   InternalServerPublicError,
+  KAFKA_MESSAGES,
+  KafkaMessageHandler,
+  SERVICES,
   UserPreferedLang,
 } from 'nest-utils';
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { CreateActionCommand } from '@action/commands';
 import { GetActionByIdQuery, GetUserActionsQuery } from '@action/queries';
 import { UploadService } from '@wiaah/upload';
@@ -34,6 +37,14 @@ import {
 } from './dto/getActionByAudioId.dto';
 import { Effect } from 'src/effect/entities/effect.entity';
 import { EffectService } from 'src/effect/effect.service';
+import { Audio } from 'src/audio/entities/audio.entity';
+import { ClientKafka } from '@nestjs/microservices';
+import {
+  GetBulkUserMostInteractionersMessage,
+  GetBulkUserMostInteractionersMessageReply,
+  GetUserMostInteractionersMessage,
+  GetUserMostInteractionersMessageReply,
+} from 'nest-dto';
 
 @Resolver(() => Action)
 export class ActionResolver {
@@ -43,6 +54,8 @@ export class ActionResolver {
     private readonly uploadService: UploadService,
     private readonly prisma: PrismaService,
     private readonly effectService: EffectService,
+    @Inject(SERVICES.SOCIAL_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   @Mutation(() => Boolean)
@@ -63,13 +76,23 @@ export class ActionResolver {
       },
     });
 
+    const thumbnailPromise = this.prisma.mediaUpload.findUnique({
+      where: {
+        id: args.thumbnailUploadId,
+      },
+    });
+
     const action = await actionPromise;
     const cover = await coverPromise;
+    const thumbnail = await thumbnailPromise;
 
-    if (!this.uploadService.mimetypes.videos.all.includes(action.mimeType))
+    if (!this.uploadService.mimetypes.videos.all.includes(action?.mimeType))
       throw new BadMediaFormatPublicError();
 
-    if (!this.uploadService.mimetypes.image.all.includes(cover.mimeType))
+    if (!this.uploadService.mimetypes.videos.all.includes(cover?.mimeType))
+      throw new BadMediaFormatPublicError();
+
+    if (!this.uploadService.mimetypes.image.all.includes(thumbnail?.mimeType))
       throw new BadMediaFormatPublicError();
 
     await this.commandbus.execute<CreateActionCommand, Action>(
@@ -77,6 +100,7 @@ export class ActionResolver {
         {
           actionCoverSrc: cover.src,
           actionSrc: action.src,
+          thumbnailSrc: thumbnail.src,
           ...args,
         },
         user.id,
@@ -402,6 +426,18 @@ export class ActionResolver {
     return effect;
   }
 
+  @ResolveField(() => Audio, { nullable: true })
+  async audio(@Parent() action: Action): Promise<Audio> {
+    if (!action.audioId) return null;
+    const audio = await this.prisma.contentAudio.findUnique({
+      where: {
+        id: action.audioId,
+      },
+    });
+
+    return audio;
+  }
+
   @ResolveField(() => Profile)
   profile(@Parent() action: Action) {
     return this.prisma.profile.findUnique({
@@ -409,6 +445,63 @@ export class ActionResolver {
         ownerId: action.userId,
       },
     });
+  }
+
+  @ResolveField(() => [Profile])
+  async followedBy(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Parent() action: Action,
+  ): Promise<Profile[]> {
+    const myFollowings = await this.prisma.follow.findMany({
+      where: {
+        followerUserId: user.id,
+      },
+    });
+
+    const actionUserFollowers = await this.prisma.follow.findMany({
+      where: {
+        followingUserId: action.userId,
+      },
+    });
+
+    // get mutual followers
+    const actionUserFollowersIds = actionUserFollowers.map((v) => v.id);
+    const sharedFollowers = myFollowings.filter((v) =>
+      actionUserFollowersIds.includes(v.id),
+    );
+
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetUserMostInteractionersMessage,
+      GetUserMostInteractionersMessageReply
+    >(
+      this.eventClient,
+      KAFKA_MESSAGES.ANALYTICS_MESSAGES.getBulkUserMostInteractioners(),
+      new GetUserMostInteractionersMessage({
+        pagination: {
+          page: 1,
+          take: 6,
+        },
+        userId: action.userId,
+        usersWithin: sharedFollowers.map((v) => v.followerUserId),
+      }),
+    );
+
+    if (!data) {
+      return [];
+    }
+
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        id: {
+          in: data.users.map((v) => v.id),
+        },
+      },
+    });
+
+    return profiles;
   }
 
   async streamToBuffer(stream: Readable): Promise<Buffer> {
