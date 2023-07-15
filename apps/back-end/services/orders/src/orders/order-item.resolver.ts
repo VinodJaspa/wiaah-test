@@ -21,6 +21,7 @@ import { Order, OrderItem } from './entities';
 import { Account, Product } from './entities/extends';
 
 @Resolver(() => OrderItem)
+@UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class OrderItemResolver {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -39,7 +40,6 @@ export class OrderItemResolver {
   }
 
   @Query(() => [OrderItem])
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getSalesDurningPeriod(
     @Args('args')
     args: GetSalesDurningPeriodInput,

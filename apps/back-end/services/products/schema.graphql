@@ -248,6 +248,7 @@ type Discount {
 }
 
 type ProductAttribute {
+  id: ID!
   name: String!
   values: [ProductAttributeValue!]!
   selectionType: ProductAttributeSelectionType!
@@ -264,9 +265,23 @@ enum ProductAttributeDisplayType {
   color
 }
 
-type ProductAttributeValue {
+type ProductRawAttribute {
+  id: ID!
+  name: [TranslationText!]!
+  values: [ProductRawAttributeValue!]!
+  selectionType: ProductAttributeSelectionType!
+  displayType: ProductAttributeDisplayType!
+}
+
+type ProductRawAttributeValue {
   value: String!
-  price: Float!
+  name: [TranslationText!]!
+}
+
+type ProductAttributeValue {
+  id: ID!
+  value: String!
+  name: String!
 }
 
 type Product {
@@ -279,7 +294,7 @@ type Product {
   hashtags: [String!]!
   categoryId: ID!
   category: Category
-  attributes: [ProductAttribute!]!
+  selectableAttributes: [ProductSelectAttribute!]!
   stock: Int!
   discountId: String
   cashbackId: String
@@ -314,6 +329,7 @@ type Product {
   saved: Boolean!
   isExternalProduct: Boolean!
   external_clicks: Int!
+  attributes: [ProductAttribute!]!
 }
 
 enum ProductSize {
@@ -348,6 +364,11 @@ enum ProductCondition {
   new
   used
   recondition
+}
+
+type ProductSelectAttribute {
+  id: ID!
+  values: [ID!]!
 }
 
 type ProductPaginationResponse {
@@ -425,6 +446,12 @@ type ShippingTypeRule {
   zones: [ShippingRuleGeoZone!]!
 }
 
+type ProductAttributesPaginationResponse {
+  data: [ProductAttribute!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
 type Query {
   adminGetAccountWorkingSchedule(accountId: String!): ShopWorkingSchedule!
   getMyWorkingSchedule: ShopWorkingSchedule!
@@ -446,6 +473,9 @@ type Query {
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
   getAdminProductsFilter(id: String!): Filter!
   getProductsFilters: [Filter!]!
+  getRawAttribute(id: String!): ProductRawAttribute!
+  adminGetAttributes(args: GetAdminProductAttributesPaginationInput!): ProductAttributesPaginationResponse!
+  getProductAttributesByProductCategory(categoryId: String!): ProductAttribute!
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   adminGetAccountProducts(args: AdminGetAccountProductsInput!): [Product!]!
   adminGetProduct(id: String!): Product
@@ -540,6 +570,11 @@ input GetFiltersInput {
   sortOrder: Int
 }
 
+input GetAdminProductAttributesPaginationInput {
+  pagination: GqlPaginationInput!
+  name: String!
+}
+
 input GetFilteredProductsAdminInput {
   title: String
   seller: String
@@ -588,6 +623,8 @@ type Mutation {
   createFilter(createFilterGroupArgs: CreateFilterInput): Filter!
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
+  updateAttribute(args: UpdateProductAttributeInput!): Boolean!
+  createAttribute(args: CreateProductAttributeInput!): Boolean!
   updateProductAdmin(args: UpdateProductInput!): Boolean!
   adminDeleteProduct(id: String!, reason: String!): Boolean!
   createShippingAddress(args: CreateShippingAddressInput!): Boolean!
@@ -718,15 +755,8 @@ input StringTranslationField {
 }
 
 input ProductAttributeInput {
-  name: [TranslationTextInput!]!
-  values: [ProductAttributeValueInput!]!
-  selectionType: ProductAttributeSelectionType!
-  displayType: ProductAttributeDisplayType!
-}
-
-input ProductAttributeValueInput {
-  value: String!
-  price: Float!
+  id: ID!
+  values: [ID!]!
 }
 
 input DiscountInput {
@@ -802,6 +832,32 @@ input UpdateFilterInput {
   sortOrder: Int
   values: [ProductFilterGroupValueInput!]
   id: ID!
+}
+
+input UpdateProductAttributeInput {
+  displayType: ProductAttributeDisplayType
+  selectionType: ProductAttributeSelectionType
+  name: [TranslationTextInput!]
+  id: ID!
+  values: [UpdateProductAttributeValueInput!]
+}
+
+input UpdateProductAttributeValueInput {
+  name: [TranslationTextInput!]
+  value: String
+  id: ID!
+}
+
+input CreateProductAttributeInput {
+  displayType: ProductAttributeDisplayType!
+  selectionType: ProductAttributeSelectionType!
+  name: [TranslationTextInput!]!
+  values: [ProductAttributeValueInput!]!
+}
+
+input ProductAttributeValueInput {
+  name: [TranslationTextInput!]!
+  value: String!
 }
 
 input CreateShippingAddressInput {

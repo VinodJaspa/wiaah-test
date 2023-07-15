@@ -30,7 +30,7 @@ export const NewShippingSettings = React.forwardRef(
     const { mutate: updateRule } = useUpdateShippingRuleMutation();
     const { mutate: addRule } = useCreateShippingRulesMutation();
 
-    const { form, inputProps, selectProps } = useForm<
+    const { form, inputProps, selectProps, handleChange } = useForm<
       Parameters<typeof addRule>[0]
     >({
       cost: 0,
@@ -112,6 +112,42 @@ export const NewShippingSettings = React.forwardRef(
                   </Select>
                 </Td>
               </Tr>
+
+              <Tr>
+                <Td>
+                  <p>{t("Shipping Time")}</p>
+                </Td>
+                <Td>
+                  <Select
+                    onOptionSelect={(v) => {
+                      handleChange("deliveryTimeRange", {
+                        from: parseInt(v[0]),
+                        to: parseInt(v[1]),
+                      });
+                    }}
+                    placeholder={t("Shipping Time")}
+                  >
+                    <SelectOption value={[1, 3]}>
+                      1-3 {t("days", "days")}
+                    </SelectOption>
+                    <SelectOption value={[3, 5]}>
+                      3-5 {t("days", "days")}
+                    </SelectOption>
+                    <SelectOption value={[5, 7]}>
+                      5-7 {t("days", "days")}
+                    </SelectOption>
+                    <SelectOption value={[7, 14]}>
+                      1-2 {t("Weeks", "Weeks")}
+                    </SelectOption>
+                    <SelectOption value={[14, 21]}>
+                      2-3 {t("Weeks", "Weeks")}
+                    </SelectOption>
+                    <SelectOption value={[21, 28]}>
+                      3-4 {t("Weeks", "Weeks")}
+                    </SelectOption>
+                  </Select>
+                </Td>
+              </Tr>
             </THead>
           </Table>
 
@@ -122,43 +158,7 @@ export const NewShippingSettings = React.forwardRef(
           >
             {isEdit ? t("Update Method") : t("Add Method")}
           </Button>
-          {/* <div className="flex justify-between lg:mt-6">
-          <div className="mr-2 w-6/12">
-          
-  
-          </div>
-          <div className="ml-2 w-6/12">
-            <label htmlFor="">{t("Treatment_Time", "Treatment Time")}</label>
-            <Select
-              onOptionSelect={(v) => {
-                handleSetForm("deliveryTimeRange", {
-                  from: parseInt(v[0]),
-                  to: parseInt(v[1]),
-                });
-              }}
-              placeholder={t("Treatment_Time", "Treatment Time")}
-            >
-              <SelectOption value={[1, 3]}>
-                1-3 {t("days", "days")}
-              </SelectOption>
-              <SelectOption value={[3, 5]}>
-                3-5 {t("days", "days")}
-              </SelectOption>
-              <SelectOption value={[5, 7]}>
-                5-7 {t("days", "days")}
-              </SelectOption>
-              <SelectOption value={[7, 14]}>
-                1-2 {t("Weeks", "Weeks")}
-              </SelectOption>
-              <SelectOption value={[14, 21]}>
-                2-3 {t("Weeks", "Weeks")}
-              </SelectOption>
-              <SelectOption value={[21, 28]}>
-                3-4 {t("Weeks", "Weeks")}
-              </SelectOption>
-            </Select>
-          </div>
-        </div> */}
+
           {/* <div className="flex flex-col gap-4 w-full rounded-lg bg-slate-100 ">
           <div>
             <label htmlFor="">{t("Destination", "Destination")}</label>

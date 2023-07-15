@@ -1,6 +1,7 @@
 import { ContentHostType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   Avatar,
   Button,
@@ -9,7 +10,6 @@ import {
   EllipsisText,
   HStack,
   HeartFillIcon,
-  Image,
   LocationAddressDisplay,
   LocationOutlineIcon,
   LoopIcon,
@@ -24,29 +24,23 @@ import {
   Verified,
   VerticalDotsIcon,
   VolumeIcon,
-  getRandomImage,
   useGetPeronalizedActionsQuery,
-  useGetSimillarActionsQuery,
+  useLikeContent,
   useSocialControls,
 } from "ui";
-import { NumberShortner, mapArray, randomNum } from "utils";
+import { NumberShortner, mapArray } from "utils";
 
 export const ActionsView: React.FC = () => {
   const { t } = useTranslation();
+  const { shareLink, showContentComments } = useSocialControls();
+  const { mutate } = useLikeContent();
+  const { getUrl } = useRouting();
+
   const { data } = useGetPeronalizedActionsQuery();
-  const { data: simillar } = useGetSimillarActionsQuery({});
   const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
     useSocialControls();
 
   const actions = data ? [data] : [];
-  const mockRes = [...Array(15)].map((_, i) => ({
-    comments: randomNum(123456),
-    reactionNum: randomNum(123456),
-    shares: randomNum(123456),
-    src: "/action.mp4",
-    thumbnail: getRandomImage(),
-    id: `${i}`,
-  }));
 
   const hasProduct = true;
   const product = hasProduct
@@ -59,31 +53,28 @@ export const ActionsView: React.FC = () => {
       }
     : null;
 
-  const actionBadges: {
-    label: string;
-    onClick: () => any;
-    icon: React.ReactNode;
-  }[] = [];
-
   return (
-    <div className="h-screen">
+    <div className="h-screen w-fit ">
       {/* actions View */}
       <Slider variant="vertical">
         {mapArray(actions, (v, i) => (
-          <div key={i} className="w-full h-full relative">
+          <div
+            key={i}
+            className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative"
+          >
             <video src={v.src} className="w-full h-full object-cover" />
-            <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 w-full h-full flex flex-col justify-between">
-              <div className="flex flex-col gap-6">
+            <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
+              <div className="flex flex-col w-full gap-6">
                 <div className="flex justify-between">
                   <DigitalCamera />
                   <div
                     onClick={() => {
-                      openMusicDetails(v.music);
+                      openMusicDetails(v.musicId);
                     }}
                     className="cursor-pointer px-2 py-1 bg-black bg-opacity-40 flex items-center gap-2"
                   >
                     <MusicNoteFillIcon />
-                    <p className="text-xs font-medium">{v.music}</p>
+                    <p className="text-xs font-medium">{v?.audio?.name}</p>
                   </div>
                   <HStack className="gap-4">
                     <VolumeIcon className="text-lg" />
@@ -97,31 +88,61 @@ export const ActionsView: React.FC = () => {
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>
-              <div className="flex flex-col gap-4">
-                {/* interations */}
-                <div className="flex flex-col gap-4 w-fit text-lg self-end">
+              <div className="flex flex-col  w-full gap-4">
+                {/* TODO: interations */}
+                <div className="flex flex-col gap-4 w-fit text-3xl self-end">
                   <VStack>
                     <SaveFlagOutlineIcon />
                     <p className="font-medium text-xs">{t("Save")}</p>
                   </VStack>
-                  <VStack>
-                    <HeartFillIcon />
-                    <p className="font-medium text-xs">
-                      {NumberShortner(data.reactionNum)}
-                    </p>
-                  </VStack>
-                  <VStack>
-                    <CommentIcon />
-                    <p className="font-medium text-xs">
-                      {NumberShortner(data.comments)}
-                    </p>
-                  </VStack>
-                  <VStack>
-                    <ShareIcon />
-                    <p className="text-xs font-medium">
-                      {NumberShortner(data.shares)}
-                    </p>
-                  </VStack>
+                  <button
+                    onClick={() =>
+                      mutate(
+                        {
+                          args: {
+                            contentId: data.id,
+                            contentType: ContentHostType.Action,
+                          },
+                        },
+                        {
+                          onSuccess(data, variables, context) {},
+                        }
+                      )
+                    }
+                  >
+                    <VStack>
+                      <HeartFillIcon />
+                      <p className="font-medium text-xs">
+                        {NumberShortner(data.reactionNum)}
+                      </p>
+                    </VStack>
+                  </button>
+                  <button
+                    onClick={() =>
+                      showContentComments(ContentHostType.Action, data.id)
+                    }
+                  >
+                    <VStack>
+                      <CommentIcon />
+                      <p className="font-medium text-xs">
+                        {NumberShortner(data.comments)}
+                      </p>
+                    </VStack>
+                  </button>
+                  <button
+                    onClick={() =>
+                      shareLink(
+                        getUrl((routes) => routes.visitSocialPost(data.id))
+                      )
+                    }
+                  >
+                    <VStack>
+                      <ShareIcon />
+                      <p className="text-xs font-medium">
+                        {NumberShortner(data.shares)}
+                      </p>
+                    </VStack>
+                  </button>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -190,18 +211,6 @@ export const ActionsView: React.FC = () => {
                       {product.prodTitle.slice(0, 79)}
                     </EllipsisText>
                   </div>
-                </div>
-
-                {/* recommended actions */}
-                <div className="pb-3">
-                  <HStack className="w-full overflow-x-visible gap-4">
-                    {mapArray(mockRes, (v) => (
-                      <Image
-                        className="object-cover w-[5.25rem] h-[8.438rem] rounded-2xl"
-                        src={v.thumbnail}
-                      />
-                    ))}
-                  </HStack>
                 </div>
               </div>
             </div>

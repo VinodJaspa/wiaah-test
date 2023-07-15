@@ -14,6 +14,9 @@ export class CreateActionInput {
   @Field(() => String)
   coverUploadId: string;
 
+  @Field(() => String)
+  thumbnailUploadId: string;
+
   @Field(() => [String], { nullable: true, defaultValue: [] })
   mentions: string[];
 

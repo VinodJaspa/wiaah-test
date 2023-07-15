@@ -21,6 +21,7 @@ model ProductCategory {
   metaTagTitle       TranslationText[]
   metaTagDescription TranslationText[]
   parantId           String?
+  attributeIds       String[]
 }
 
 model SavedProduct {
@@ -62,7 +63,8 @@ enum ProdcutType {
   digital
 }
 
-type ProductAttribute {
+model ProductAttribute {
+  id            String                        @id @default(auto()) @map("_id") @db.ObjectId
   name          TranslationText[]
   values        ProductAttributeValue[]
   selectionType ProductAttributeSelectionType
@@ -70,8 +72,9 @@ type ProductAttribute {
 }
 
 type ProductAttributeValue {
+  id    String
   value String
-  price Float?
+  name  TranslationText[]
 }
 
 enum ProductAttributeSelectionType {
@@ -90,7 +93,7 @@ enum ProductUsageStatus {
 }
 
 model Product {
-  id                    String                @id() @default(auto()) @map("_id") @db.ObjectId()
+  id                    String                   @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId              String
   vendor_external_link  String?
   todayProductClickId   String?
@@ -99,38 +102,43 @@ model Product {
   title                 TranslationText[]
   description           TranslationText[]
   price                 Int
-  status                ProductStatus         @default(active)
+  status                ProductStatus            @default(active)
   suspensionReason      String?
-  usageStatus           ProductUsageStatus    @default(new)
+  usageStatus           ProductUsageStatus       @default(new)
   vat                   Int
   categoryId            String
-  attributes            ProductAttribute[]
+  attributesIds         ProductSelectAttribute[]
   stock                 Int
-  rate                  Float                 @default(0)
-  reviews               Int                   @default(0)
-  rateStarCount         Int                   @default(0)
+  rate                  Float                    @default(0)
+  reviews               Int                      @default(0)
+  rateStarCount         Int                      @default(0)
   brand                 String
-  discountId            String?               @db.ObjectId
+  discountId            String?                  @db.ObjectId
   cashbackId            String?
-  shippingRulesIds      String[]              @db.ObjectId
+  shippingRulesIds      String[]                 @db.ObjectId
   presentations         ProductPresentation[]
   thumbnail             String
-  visibility            VisibilityEnum        @default(hidden)
-  sales                 Int                   @default(0)
-  earnings              Float                 @default(0)
-  totalOrdered          Int                   @default(0)
-  totalDiscounted       Int                   @default(0)
-  totalDiscountedAmount Int                   @default(0)
-  unitsRefunded         Int                   @default(0)
-  positiveFeedback      Int                   @default(0)
-  negitiveFeedback      Int                   @default(0)
-  views                 Int                   @default(0)
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt
-  discount              Discount?             @relation(fields: [discountId], references: [id])
+  visibility            VisibilityEnum           @default(hidden)
+  sales                 Int                      @default(0)
+  earnings              Float                    @default(0)
+  totalOrdered          Int                      @default(0)
+  totalDiscounted       Int                      @default(0)
+  totalDiscountedAmount Int                      @default(0)
+  unitsRefunded         Int                      @default(0)
+  positiveFeedback      Int                      @default(0)
+  negitiveFeedback      Int                      @default(0)
+  views                 Int                      @default(0)
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  discount              Discount?                @relation(fields: [discountId], references: [id])
   condition             ProductCondition
   sizes                 ProductSize[]
   colors                String[]
+}
+
+type ProductSelectAttribute {
+  id     String
+  values String[]
 }
 
 model UserProductCategoryInteractions {

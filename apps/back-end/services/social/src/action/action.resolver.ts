@@ -7,21 +7,21 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import {
-  Action,
-  ActionEffect,
-  GetActionsCursorResponse,
-} from '@action/entities';
+import { Action, GetActionsCursorResponse } from '@action/entities';
 import { CreateActionInput, GetUserActionsInput } from '@action/dto';
 import {
   AuthorizationDecodedUser,
   BadMediaFormatPublicError,
-  ExtractPagination,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   InternalServerPublicError,
+  KAFKA_MESSAGES,
+  KafkaMessageHandler,
+  SERVICES,
+  UserPreferedLang,
 } from 'nest-utils';
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { CreateActionCommand } from '@action/commands';
 import { GetActionByIdQuery, GetUserActionsQuery } from '@action/queries';
 import { UploadService } from '@wiaah/upload';
@@ -31,8 +31,20 @@ import { Profile } from '@entities';
 import { ActionTopHashtagResponse } from './entities/action-hashtag';
 import { Readable } from 'stream';
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
-import { ObjectId } from 'mongodb';
-import { GetActionByAudioIdInput } from './dto/getActionByAudioId.dto';
+import {
+  GetActionByAudioIdInput,
+  GetActionsByEffectIdInput,
+} from './dto/getActionByAudioId.dto';
+import { Effect } from 'src/effect/entities/effect.entity';
+import { EffectService } from 'src/effect/effect.service';
+import { Audio } from 'src/audio/entities/audio.entity';
+import { ClientKafka } from '@nestjs/microservices';
+import {
+  GetBulkUserMostInteractionersMessage,
+  GetBulkUserMostInteractionersMessageReply,
+  GetUserMostInteractionersMessage,
+  GetUserMostInteractionersMessageReply,
+} from 'nest-dto';
 
 @Resolver(() => Action)
 export class ActionResolver {
@@ -41,6 +53,9 @@ export class ActionResolver {
     private readonly querybus: QueryBus,
     private readonly uploadService: UploadService,
     private readonly prisma: PrismaService,
+    private readonly effectService: EffectService,
+    @Inject(SERVICES.SOCIAL_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   @Mutation(() => Boolean)
@@ -61,13 +76,23 @@ export class ActionResolver {
       },
     });
 
+    const thumbnailPromise = this.prisma.mediaUpload.findUnique({
+      where: {
+        id: args.thumbnailUploadId,
+      },
+    });
+
     const action = await actionPromise;
     const cover = await coverPromise;
+    const thumbnail = await thumbnailPromise;
 
-    if (!this.uploadService.mimetypes.videos.all.includes(action.mimeType))
+    if (!this.uploadService.mimetypes.videos.all.includes(action?.mimeType))
       throw new BadMediaFormatPublicError();
 
-    if (!this.uploadService.mimetypes.image.all.includes(cover.mimeType))
+    if (!this.uploadService.mimetypes.videos.all.includes(cover?.mimeType))
+      throw new BadMediaFormatPublicError();
+
+    if (!this.uploadService.mimetypes.image.all.includes(thumbnail?.mimeType))
       throw new BadMediaFormatPublicError();
 
     await this.commandbus.execute<CreateActionCommand, Action>(
@@ -75,6 +100,7 @@ export class ActionResolver {
         {
           actionCoverSrc: cover.src,
           actionSrc: action.src,
+          thumbnailSrc: thumbnail.src,
           ...args,
         },
         user.id,
@@ -223,7 +249,7 @@ export class ActionResolver {
     });
 
     console.log('audio media upload', { createdUpload });
-    const _res = await this.prisma.actionAudio.create({
+    const _res = await this.prisma.contentAudio.create({
       data: {
         authorUserId: createdUpload.userId,
         name: `${file.filename}`,
@@ -353,12 +379,63 @@ export class ActionResolver {
     };
   }
 
-  @ResolveField(() => ActionEffect)
-  async effect(@Parent() action: Action): Promise<ActionEffect> {
-    // TODO: get effect by id (action.effectId)
+  @Query(() => GetActionsCursorResponse)
+  async getActionByEffectId(
+    @Args('args') args: GetActionsByEffectIdInput,
+  ): Promise<GetActionsCursorResponse> {
+    const [count, audios] = await this.prisma.$transaction([
+      this.prisma.action.count({
+        where: {
+          effectId: args.id,
+        },
+      }),
+
+      this.prisma.action.findMany({
+        where: {
+          effectId: args.id,
+        },
+        cursor: args.cursor
+          ? {
+              id: args.cursor,
+            }
+          : undefined,
+        take: args.take + 1,
+        orderBy: {
+          views: 'desc',
+        },
+      }),
+    ]);
+
     return {
-      name: 'effect name',
+      data: audios,
+      hasMore: audios.length > args.take,
+      cursor: args.cursor,
+      nextCursor: audios?.at(args.take)?.id,
+      total: count,
     };
+  }
+
+  @ResolveField(() => Effect, { nullable: true })
+  async effect(
+    @Parent() action: Action,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<Effect> {
+    if (!action.effectId) return null;
+    const effect = await this.effectService.getEffect(action.effectId, langId);
+
+    return effect;
+  }
+
+  @ResolveField(() => Audio, { nullable: true })
+  async audio(@Parent() action: Action): Promise<Audio> {
+    if (!action.audioId) return null;
+    const audio = await this.prisma.contentAudio.findUnique({
+      where: {
+        id: action.audioId,
+      },
+    });
+
+    return audio;
   }
 
   @ResolveField(() => Profile)
@@ -368,6 +445,63 @@ export class ActionResolver {
         ownerId: action.userId,
       },
     });
+  }
+
+  @ResolveField(() => [Profile])
+  async followedBy(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Parent() action: Action,
+  ): Promise<Profile[]> {
+    const myFollowings = await this.prisma.follow.findMany({
+      where: {
+        followerUserId: user.id,
+      },
+    });
+
+    const actionUserFollowers = await this.prisma.follow.findMany({
+      where: {
+        followingUserId: action.userId,
+      },
+    });
+
+    // get mutual followers
+    const actionUserFollowersIds = actionUserFollowers.map((v) => v.id);
+    const sharedFollowers = myFollowings.filter((v) =>
+      actionUserFollowersIds.includes(v.id),
+    );
+
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetUserMostInteractionersMessage,
+      GetUserMostInteractionersMessageReply
+    >(
+      this.eventClient,
+      KAFKA_MESSAGES.ANALYTICS_MESSAGES.getBulkUserMostInteractioners(),
+      new GetUserMostInteractionersMessage({
+        pagination: {
+          page: 1,
+          take: 6,
+        },
+        userId: action.userId,
+        usersWithin: sharedFollowers.map((v) => v.followerUserId),
+      }),
+    );
+
+    if (!data) {
+      return [];
+    }
+
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        id: {
+          in: data.users.map((v) => v.id),
+        },
+      },
+    });
+
+    return profiles;
   }
 
   async streamToBuffer(stream: Readable): Promise<Buffer> {

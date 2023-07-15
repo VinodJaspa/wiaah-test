@@ -18,7 +18,11 @@ import { client } from './main';
       driver: ApolloGatewayDriver,
       server: {
         cors: {
-          origin: ['http://localhost:3000', 'http://localhost:3002'],
+          origin: [
+            'http://localhost:3000',
+            'http://localhost:3002',
+            'http://localhost:2999',
+          ],
           credentials: true,
         },
         context: async (ctx) => {
@@ -32,9 +36,13 @@ import { client } from './main';
                 .findOne({ _id: new ObjectId(userId) })
             : {};
 
+          console.log('context', { user, userId });
           return {
             ...ctx,
-            user: { ...user, id: (user['_id'] as ObjectId)?.toHexString() },
+            user: {
+              ...user,
+              id: user ? (user['_id'] as ObjectId)?.toHexString() : null,
+            },
           };
         },
         formatError(error) {
@@ -51,7 +59,11 @@ import { client } from './main';
 
           const isKnownError = values.includes(exception.code);
 
-          console.log({ isSchemaValidationError, isKnownError }, error);
+          console.log(
+            { isSchemaValidationError, isKnownError },
+            error,
+            exception,
+          );
 
           if (isKnownError || isSchemaValidationError) {
             return error;

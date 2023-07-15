@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { OnModuleInit, UseGuards } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@prisma-client';
@@ -31,7 +31,6 @@ import {
   AccountSuspendedEvent,
   SellerAccountRequestDeclinedEvent,
 } from './events';
-import * as bcrypt from 'bcrypt';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -41,7 +40,6 @@ export class AccountsAdminResolver {
     private eventBus: EventBus,
     private readonly accountsService: AccountsService,
   ) {}
-
   @Query(() => [Account])
   getFilteredSellers(
     @Args('getSellersInput') args: GetFilteredSellersAccountsInput,

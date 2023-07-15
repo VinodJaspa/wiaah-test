@@ -6,3 +6,9 @@ export class GetActionByAudioIdInput extends GqlCursorPaginationInput {
   @Field(() => ID)
   id: string;
 }
+
+@InputType()
+export class GetActionsByEffectIdInput extends GqlCursorPaginationInput {
+  @Field(() => ID)
+  id: string;
+}

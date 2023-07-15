@@ -40,6 +40,7 @@
     "graphql-tools": "8.2.12",
     "graphql-upload": "11",
     "kafkajs": "2.2.0",
+    "mongodb": "^5.7.0",
     "nest-dto": "*",
     "nest-utils": "*",
     "reflect-metadata": "^0.1.13",

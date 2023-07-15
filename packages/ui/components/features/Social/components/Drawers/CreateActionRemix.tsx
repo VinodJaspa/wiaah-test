@@ -1,5 +1,6 @@
 import { mapArray } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
+import { useGetActionQuery } from "@features/Social/services";
 import { Drawer, DrawerContent, DrawerOverlay, HStack, Image } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ export const ChooseActionRemix: React.FC<{
 }> = ({ actionId, onCancel }) => {
   const isOpen = typeof actionId === "string" && actionId.length > 0;
   const { t } = useTranslation();
+  const { data } = useGetActionQuery(actionId!, { enabled: isOpen });
 
   const placements: ChooseRemixPlacement[] = [
     {
@@ -100,9 +102,10 @@ export const ChooseActionRemix: React.FC<{
                   type === "pop-over" ? "absolute w-12 h-9" : "w-1/2 h-full"
                 } border-2 border-primary rounded overflow-hidden`}
               >
+                {/* TODO: add camera photo */}
                 <Image
                   className="w-full h-full object-cover"
-                  src={getRandomImage()}
+                  src={"/action_remix_camera.png"}
                 />
               </div>
 
@@ -110,7 +113,7 @@ export const ChooseActionRemix: React.FC<{
                 className={`${
                   type === "pop-over" ? "w-full" : "w-1/2"
                 } h-full object-cover`}
-                src={getRandomImage()}
+                src={data?.thumbnail}
               />
             </HStack>
           ))}

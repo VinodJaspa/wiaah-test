@@ -1,6 +1,8 @@
+import { getRandomImage } from "@UI/placeholder";
 import { createGraphqlRequestClient } from "api";
 import { UseQueryOptions, useQuery } from "react-query";
 import { Exact, Scalars } from "types";
+import { isDev, randomNum } from "utils";
 
 export type GetTopHashtagActionsQueryVariables = Exact<{
   tag: Scalars["String"];
@@ -45,6 +47,33 @@ export const getTopHashtagActionsQueryKey = (args: args) => [
 ];
 
 export const getTopHashtagActionsQueryFetcher = async (args: args) => {
+  if (isDev) {
+    const res: GetTopHashtagActionsQuery["getTopHashtagActions"] = {
+      liked: {
+        views: randomNum(15000),
+        id: "",
+        cover: getRandomImage(),
+      },
+      commented: {
+        views: randomNum(15000),
+        id: "",
+        cover: getRandomImage(),
+      },
+      shared: {
+        views: randomNum(15000),
+        id: "",
+        cover: getRandomImage(),
+      },
+      viewed: {
+        views: randomNum(15000),
+        id: "",
+        cover: getRandomImage(),
+      },
+    };
+
+    return res;
+  }
+
   const client = createGraphqlRequestClient();
 
   const res = await client

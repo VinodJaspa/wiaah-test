@@ -18,7 +18,7 @@ export const getStateByCodeAndCountry = (
   countryCode: string
 ) => State.getStateByCodeAndCountry(stateCode, countryCode);
 
-enum WiaahLangId {
+export enum WiaahLangId {
   EN = "en",
   FR = "fr",
   ES = "es",

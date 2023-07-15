@@ -19,7 +19,7 @@ export class OrdersController extends BaseController {
   async handleSellerProductPurchased(
     @Payload() { value }: { value: SellerProductsPurchasedEvent },
   ) {
-    this.commandbus.execute<CreateOrderCommand>(
+    await this.commandbus.execute<CreateOrderCommand>(
       new CreateOrderCommand(
         value.input.buyerId,
         value.input.sellerId,

@@ -20,6 +20,7 @@ import { CreateServiceInput } from './dto/create-service.input';
 import {
   BadRequestException,
   Inject,
+  OnModuleInit,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';

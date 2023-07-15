@@ -11,7 +11,12 @@ import {
   MessagePattern,
   Payload,
 } from '@nestjs/microservices';
-import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
+import {
+  KAFKA_MESSAGES,
+  KAFKA_EVENTS,
+  SERVICES,
+  accountType,
+} from 'nest-utils';
 import {
   AccountDeletedEvent,
   AccountVerifiedEvent,
@@ -20,6 +25,8 @@ import {
   EmailExistsMessageReply,
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
+  GetAdminAccountByEmailMessageReply,
+  GetAdminAccountByEmailMesssage,
   KafkaPayload,
   NewProductCreatedEvent,
   PasswordChangedEvent,
@@ -162,6 +169,37 @@ export class AccountsController implements OnModuleInit {
     }
   }
 
+  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail)
+  async getAdminAccountAccount(
+    @Payload() payload: { value: GetAdminAccountByEmailMesssage },
+  ): Promise<GetAdminAccountByEmailMessageReply> {
+    try {
+      if (!payload?.value?.input?.email) throw new Error('invalid arguments');
+      console.log('admin get email req', payload.value);
+      const res = await this.accountService.getByEmail(
+        payload?.value?.input.email,
+      );
+
+      console.log('admin got email', res);
+      if (res.accountType !== accountType.ADMIN)
+        throw new Error('admin account for this email was not found');
+
+      console.log('admin valid admin email', res);
+      return new GetAdminAccountByEmailMessageReply({
+        data: res,
+        error: null,
+        success: true,
+      });
+    } catch (error) {
+      console.log('admin get email error', error);
+      return new GetAdminAccountByEmailMessageReply({
+        data: null,
+        error: error,
+        success: false,
+      });
+    }
+  }
+
   @EventPattern(
     KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionActivated('membership'),
   )
@@ -171,37 +209,37 @@ export class AccountsController implements OnModuleInit {
     );
   }
 
-  // @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
-  // handleCreateSellerAccount(
-  //   @Payload() payload: KafkaPayload<SellerAccountRegisteredEvent>,
-  // ) {
-  //   this.accountService.createAccountRecord({
-  //     firstName: payload.value.input.firstName,
-  //     lastName: payload.value.input.lastName,
-  //     email: payload.value.input.email,
-  //     password: payload.value.input.password,
-  //     companyRegisterationNumber:
-  //       payload.value.input.companyRegisterationNumber,
-  //     type: 'seller',
-  //     status: 'pending',
-  //     birthDate: payload.value.input.birthDate,
-  //   });
-  // }
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
+  handleCreateSellerAccount(
+    @Payload() payload: KafkaPayload<SellerAccountRegisteredEvent>,
+  ) {
+    this.accountService.createAccountRecord({
+      firstName: payload.value.input.firstName,
+      lastName: payload.value.input.lastName,
+      email: payload.value.input.email,
+      password: payload.value.input.password,
+      companyRegisterationNumber:
+        payload.value.input.companyRegisterationNumber,
+      accountType: 'seller',
+      status: 'pending',
+      birthDate: payload.value.input.birthDate,
+    });
+  }
 
-  // @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.buyerAccountRegistered)
-  // handleCreateBuyerAccount(
-  //   @Payload() payload: KafkaPayload<BuyerAccountRegisteredEvent>,
-  // ) {
-  //   this.accountService.createAccountRecord({
-  //     firstName: payload.value.input.firstName,
-  //     lastName: payload.value.input.lastName,
-  //     email: payload.value.input.email,
-  //     password: payload.value.input.password,
-  //     type: 'buyer',
-  //     status: 'active',
-  //     birthDate: payload.value.input.birthDate,
-  //   });
-  // }
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.buyerAccountRegistered)
+  handleCreateBuyerAccount(
+    @Payload() payload: KafkaPayload<BuyerAccountRegisteredEvent>,
+  ) {
+    this.accountService.createAccountRecord({
+      firstName: payload.value.input.firstName,
+      lastName: payload.value.input.lastName,
+      email: payload.value.input.email,
+      password: payload.value.input.password,
+      accountType: 'buyer',
+      status: 'active',
+      birthDate: payload.value.input.birthDate,
+    });
+  }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountVerified)
   handleAccountVerified(

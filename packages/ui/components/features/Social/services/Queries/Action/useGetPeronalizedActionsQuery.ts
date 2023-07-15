@@ -1,32 +1,41 @@
 import { createGraphqlRequestClient } from "api";
 import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import {
-  Action,
-  ActionEffect,
-  Exact,
-  PostLocation,
-  Profile,
-} from "@features/API";
+import { Exact } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetSuggestedActionsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetSuggestedActionsQuery = { __typename?: "Query" } & {
-  getMyRecommendedAction: { __typename?: "Action" } & Pick<
-    Action,
-    "src" | "reactionNum" | "comments" | "shares" | "id" | "music" | "tags"
-  > & {
-      effect: { __typename?: "ActionEffect" } & Pick<ActionEffect, "name">;
-      location: { __typename?: "PostLocation" } & Pick<
-        PostLocation,
-        "address" | "city" | "country" | "state"
-      >;
-      profile: { __typename?: "Profile" } & Pick<
-        Profile,
-        "photo" | "username" | "verified" | "id" | "ownerId"
-      >;
+export type GetSuggestedActionsQuery = {
+  __typename?: "Query";
+  getMyRecommendedAction: {
+    __typename?: "Action";
+    src: string;
+    reactionNum: number;
+    comments: number;
+    shares: number;
+    id: string;
+    audioId?: string | null;
+    musicId?: string | null;
+    audio?: { __typename?: "Audio"; src?: string | null; name: string } | null;
+    tags: Array<{ __typename?: "PostTag"; userId: string }>;
+    effect?: { __typename?: "Effect"; name: string } | null;
+    location: {
+      __typename?: "PostLocation";
+      address?: string | null;
+      city: string;
+      country: string;
+      state?: string | null;
     };
+    profile: {
+      __typename?: "Profile";
+      photo: string;
+      username: string;
+      verified: boolean;
+      id: string;
+      ownerId: string;
+    };
+  };
 };
 
 type args = GetSuggestedActionsQueryVariables;
@@ -41,7 +50,7 @@ export const getPeronalizedActionsQueryFetcher = async () => {
       shares: randomNum(123456),
       src: "/action.mp4",
       id: "Teasdasd",
-      music: "Kafir - Nile",
+      musicId: "Kafir - Nile",
       tags: [{ userId: "" }, { userId: "" }, { userId: "" }],
       effect: {
         name: "Clarendon",
@@ -76,7 +85,12 @@ query getSuggestedActions{
     comments
     shares
     id
-    music
+    audioId
+    audio{
+        src
+        name
+    }
+    musicId
     tags {
       userId
     }

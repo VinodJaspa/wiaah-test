@@ -12,6 +12,7 @@ import { productEventHandlers } from './events';
 import { ProductCommandHandlers } from './command';
 import { ProductRepository } from './repository';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ProductAttributeService } from 'src/product-attribute/product-attribute.service';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     ProductsService,
     PrismaService,
     ProductRepository,
+    ProductAttributeService,
     ...productsQueryHandlers,
     ...productEventHandlers,
     ...ProductCommandHandlers,

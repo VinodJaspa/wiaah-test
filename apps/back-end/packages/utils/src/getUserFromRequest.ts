@@ -28,7 +28,7 @@ export function VerifyAndGetUserFromContext(
       // @ts-ignore
       const rawCookies = ctx.req.headers["cookie"];
       const parsedCookies = parse(rawCookies);
-      const cookiesKey = process.env.COOKIES_KEY || "Auth_cookie";
+      const cookiesKey = process.env.COOKIES_KEY || "jwt";
       const jwtSecret = process.env.JWT_SERCERT || "secret";
       if (typeof cookiesKey === "string") {
         const authToken = parsedCookies[cookiesKey];

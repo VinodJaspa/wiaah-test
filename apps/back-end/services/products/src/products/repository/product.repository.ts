@@ -100,13 +100,7 @@ export class ProductRepository {
         resource: prod.description,
         fallbackLangId: 'en',
       }),
-      attributes: prod.attributes.map((attr) => ({
-        ...attr,
-        name: getTranslatedResource({
-          langId: lang,
-          resource: attr.name,
-        }),
-      })),
+      selectableAttributes: prod.attributesIds,
     };
   }
 }

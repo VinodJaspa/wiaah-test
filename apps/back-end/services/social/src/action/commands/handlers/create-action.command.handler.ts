@@ -25,6 +25,7 @@ export class CreateActionCommandHandler
       userId,
       cover: input.actionCoverSrc,
       src: input.actionSrc,
+      thumbnail: input.thumbnailSrc,
     });
     this.eventbus.publish(new ActionCreatedEvent(res));
     return res;

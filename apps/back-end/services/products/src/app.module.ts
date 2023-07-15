@@ -21,6 +21,7 @@ import { DiscountModule } from './discount/discount.module';
 import { CashbackModule } from './cashback/cashback.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 import { Service } from '@shop/entities/extends';
+import { ProductAttributeModule } from './product-attribute/product-attribute.module';
 
 @Global()
 @Module({
@@ -32,6 +33,7 @@ import { Service } from '@shop/entities/extends';
         password: process.env.ELASTIC_PASSWORD,
       },
     }),
+    ProductAttributeModule,
   ],
   exports: [ElasticsearchModule],
 })

@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   Button,
   Input,
@@ -13,14 +14,26 @@ import {
 } from "ui";
 import { LogoIcon } from "ui/components/partials/icons/LogoIcon";
 import { useForm } from "utils";
+import * as yup from "yup";
 
 export const LoginView: React.FC = () => {
   const { t } = useTranslation();
+  const { push } = useRouting();
 
-  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
-    email: "",
-    password: "",
-  });
+  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>(
+    {
+      email: "",
+      password: "",
+    },
+    {},
+    {
+      addPlaceholder: true,
+      yupSchema: yup.object({
+        email: yup.string().email().required(),
+        password: yup.string().min(6).required(),
+      }),
+    }
+  );
   const { mutate } = useAdminLoginMutation();
 
   return (
@@ -28,40 +41,42 @@ export const LoginView: React.FC = () => {
       <div className="flex flex-col w-[min(98%,20rem)] uppercase gap-8">
         <LogoIcon className="text-[10rem] mb-4 text-white self-center" />
         <div className="flex flex-col gap-4">
-          <InputGroup className="border py-1 rounded border-white text-white">
+          <InputGroup className="border py-1 rounded border-white">
             <InputLeftElement className="px-2">
               <PersonIcon />
             </InputLeftElement>
-            <Input
-              {...inputProps("email")}
-              className="text-white placeholder-white bg-transparent"
-              placeholder={t("email")}
-            />
+            <Input {...inputProps("email")} placeholder={t("email")} />
           </InputGroup>
-          <InputGroup className="border py-1 rounded border-white text-white">
+          <InputGroup className="border py-1 rounded border-white">
             <InputLeftElement className="px-2">
               <LockIcon />
             </InputLeftElement>
-            <Input
-              {...inputProps("password")}
-              className="text-white placeholder-white bg-transparent"
-              placeholder={t("password")}
-            />
+            <Input {...inputProps("password")} placeholder={t("password")} />
           </InputGroup>
         </div>
         <div className="flex flex-col uppercase gap-2 w-full">
           <Button
+            onClick={() =>
+              mutate(form, {
+                onSuccess() {
+                  push("/");
+                },
+              })
+            }
             className="bg-white py-2 rounded uppercase"
             colorScheme="white"
           >
             {t("login")}
           </Button>
-          <p className="text-white normal-case text-right">
+          {/* TODO: display api errors */}
+
+          {/* TODO: can admin reset their password ? */}
+          {/* <p className="text-white normal-case text-right">
             {t("Forgot your password") + " ?"}
-          </p>
+          </p> */}
         </div>
       </div>
-      <div className="w-[50%] text-white text-opacity-10 absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2">
+      <div className="pointer-events-none w-[50%] text-white text-opacity-10 absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2">
         <AspectRatio ratio={1}>
           <svg
             width="100%"
@@ -82,7 +97,7 @@ export const LoginView: React.FC = () => {
           </svg>
         </AspectRatio>
       </div>
-      <div className="absolute w-[80vw] text-white text-opacity-10 top-0 right-0">
+      <div className="pointer-events-none absolute w-[80vw] text-white text-opacity-10 top-0 right-0">
         <AspectRatio ratio={83 / 100}>
           <svg
             width="100%"

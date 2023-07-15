@@ -21,7 +21,7 @@ function VerifyAndGetUserFromContext(ctx) {
         if (((_a = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _a === void 0 ? void 0 : _a.headers) && ((_b = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _b === void 0 ? void 0 : _b.headers["cookie"])) {
             const rawCookies = ctx.req.headers["cookie"];
             const parsedCookies = (0, cookie_1.parse)(rawCookies);
-            const cookiesKey = process.env.COOKIES_KEY || "Auth_cookie";
+            const cookiesKey = process.env.COOKIES_KEY || "jwt";
             const jwtSecret = process.env.JWT_SERCERT || "secret";
             if (typeof cookiesKey === "string") {
                 const authToken = parsedCookies[cookiesKey];

@@ -92,3 +92,9 @@ export class NotOwnerOfResourcePublicError extends KnownError {
     super(msg, PublicErrorCodes.unAuthorized);
   }
 }
+
+export class ResourceNotFoundPublicError extends KnownError {
+  constructor(msg: string = "requested resource was not found") {
+    super(msg, PublicErrorCodes.unAuthorized);
+  }
+}

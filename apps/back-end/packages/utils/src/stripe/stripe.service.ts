@@ -166,7 +166,7 @@ export class StripeService implements OnModuleInit {
     } catch (err) {
       //@ts-ignore
       console.log(`⚠️  Webhook signature verification failed.`, err.message);
-      return null;
+      return null as any;
     }
   }
 
@@ -271,7 +271,8 @@ export class StripeService implements OnModuleInit {
 
     _tiers.splice(tiers.length - 1, 1, {
       limit: "inf",
-      priceInCents: tiers.at(tiers.length - 1).priceInCents,
+      // @ts-ignore
+      priceInCents: tiers?.at(tiers.length - 1).priceInCents,
     });
 
     const price = await this.stripe.prices.create({
