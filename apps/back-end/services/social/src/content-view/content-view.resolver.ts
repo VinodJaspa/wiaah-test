@@ -6,6 +6,7 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  SubtractFromDate,
 } from 'nest-utils';
 import { ContentHostType } from 'prismaClient';
 
@@ -24,6 +25,9 @@ export class ContentViewResolver {
           in: [ContentHostType.post_newsfeed, ContentHostType.action],
         },
         contentOnwerId: user.id,
+        createdAt: {
+          gte: SubtractFromDate(new Date(), { days: 7 }),
+        },
       },
       include: {
         viewer: {
@@ -33,6 +37,8 @@ export class ContentViewResolver {
         },
       },
     });
+
+
 
     return views;
   }

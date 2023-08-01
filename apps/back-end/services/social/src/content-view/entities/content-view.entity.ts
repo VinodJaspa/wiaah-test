@@ -21,3 +21,15 @@ export class ContentView {
   @Field(() => String)
   updatedAt: Date;
 }
+
+@ObjectType()
+export class ContentHourlyAudinece {
+  @Field(() => String)
+  time: string;
+
+  @Field(() => Int)
+  maleAudiences: number;
+
+  @Field(() => Int)
+  femaleAudineces: number;
+}
