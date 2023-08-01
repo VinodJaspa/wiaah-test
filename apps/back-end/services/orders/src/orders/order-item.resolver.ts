@@ -11,21 +11,24 @@ import { Prisma } from '@prisma-client';
 import {
   accountType,
   ExtractPagination,
+  generateCursorPaginationResponse,
   GqlAuthorizationGuard,
+  setPrismaCursorPaginationProps,
   SubtractFromDate,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { GetSalesDurningPeriodInput, OrderSearchPeriod } from './dto';
 import { AdminGetSellerSalesInput } from './dto/admin-get-seller-sales';
-import { Order, OrderItem } from './entities';
+import { GetSellerRecentOrdersResponse, Order, OrderItem } from './entities';
 import { Account, Product } from './entities/extends';
+import { GetSellerRecentOrdersInput } from './dto/get-seller-recent-orders.input';
 
 @Resolver(() => OrderItem)
-@UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class OrderItemResolver {
   constructor(private readonly prisma: PrismaService) {}
 
   @Query(() => [OrderItem])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async adminGetSellerSales(@Args('args') args: AdminGetSellerSalesInput) {
     const { skip, take } = ExtractPagination(args.pagination);
     return this.prisma.orderItem.findMany({
@@ -40,6 +43,7 @@ export class OrderItemResolver {
   }
 
   @Query(() => [OrderItem])
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.ADMIN]))
   async getSalesDurningPeriod(
     @Args('args')
     args: GetSalesDurningPeriodInput,
@@ -85,6 +89,24 @@ export class OrderItemResolver {
     });
 
     return res;
+  }
+
+  @Query(() => GetSellerRecentOrdersResponse)
+  async getSellerRecentOrders(
+    @Args('args') args: GetSellerRecentOrdersInput,
+  ): Promise<GetSellerRecentOrdersResponse> {
+    const res = await this.prisma.orderItem.findMany({
+      where: {
+        Order: {
+          sellerId: args.sellerId,
+        },
+      },
+      ...setPrismaCursorPaginationProps(args.pagination),
+    });
+
+    return {
+      ...generateCursorPaginationResponse(args.pagination, res),
+    };
   }
 
   @Query(() => [OrderItem])

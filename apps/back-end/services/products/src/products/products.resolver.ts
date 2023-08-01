@@ -14,6 +14,7 @@ import {
   accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
+  generateCursorPaginationResponse,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -21,6 +22,7 @@ import {
   KAFKA_MESSAGES,
   KafkaMessageHandler,
   SERVICES,
+  setPrismaCursorPaginationProps,
   UserPreferedLang,
 } from 'nest-utils';
 import { CommandBus } from '@nestjs/cqrs';
@@ -53,6 +55,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { GetTopSalesProductsByCategoryPaginationInput } from './dto/get-top-sales-products.input';
 import { lookup } from 'geoip-lite';
 import { ProductAttributeService } from 'src/product-attribute/product-attribute.service';
+import { GetSellerTopSellingProductsInput } from './dto/get-seller-top-selling-products.input';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -367,6 +370,25 @@ export class ProductsResolver {
       hasMore,
       total,
     };
+  }
+
+  @Query(() => ProductsCursorPaginationResponse)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN, accountType.SELLER]))
+  async getSellerTopSellingProducts(
+    @Args('args') args: GetSellerTopSellingProductsInput,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<ProductsCursorPaginationResponse> {
+    const res = await this.prisma.product.findMany({
+      where: {
+        sellerId: args.sellerId,
+      },
+      ...setPrismaCursorPaginationProps(args.pagination),
+    });
+
+    return generateCursorPaginationResponse(
+      args.pagination,
+      res.map((prod) => this.productsService.formatProduct(prod, lang)),
+    );
   }
 
   @Query(() => Product)

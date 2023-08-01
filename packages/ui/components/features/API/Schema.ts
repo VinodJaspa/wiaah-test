@@ -41,7 +41,7 @@ export type AcceptRequestedOrderInput = {
 
 export type Account = {
   __typename?: "Account";
-  Membership: Membership;
+  Membership?: Maybe<Membership>;
   accountType: AccountType;
   companyRegisterationNumber?: Maybe<Scalars["String"]["output"]>;
   createdAt: Scalars["DateTime"]["output"];
@@ -59,10 +59,10 @@ export type Account = {
   photo?: Maybe<Scalars["String"]["output"]>;
   profile?: Maybe<Profile>;
   service: Service;
-  shop: Shop;
+  shop?: Maybe<Shop>;
   status: AccountStatus;
   stripeId?: Maybe<Scalars["String"]["output"]>;
-  subscribedPlan: MembershipSubscription;
+  subscribedPlan?: Maybe<MembershipSubscription>;
   updatedAt: Scalars["DateTime"]["output"];
   verified: Scalars["Boolean"]["output"];
 };
@@ -140,6 +140,7 @@ export type Action = {
   cover: Scalars["String"]["output"];
   effect?: Maybe<Effect>;
   effectId?: Maybe<Scalars["String"]["output"]>;
+  followedBy: Array<Profile>;
   id: Scalars["ID"]["output"];
   link: Scalars["String"]["output"];
   location: PostLocation;
@@ -2125,8 +2126,32 @@ export type GetSellerProductsInput = {
   take: Scalars["Int"]["input"];
 };
 
+export type GetSellerRecentOrdersInput = {
+  pagination: GqlPaginationInput;
+  sellerId: Scalars["String"]["input"];
+};
+
+export type GetSellerRecentOrdersResponse = {
+  __typename?: "GetSellerRecentOrdersResponse";
+  cursor?: Maybe<Scalars["String"]["output"]>;
+  data: Array<OrderItem>;
+  hasMore: Scalars["Boolean"]["output"];
+  nextCursor?: Maybe<Scalars["String"]["output"]>;
+  total: Scalars["Int"]["output"];
+};
+
+export type GetSellerTopSellingProductsInput = {
+  pagination: GqlPaginationInput;
+  sellerId: Scalars["String"]["input"];
+};
+
 export type GetShopRecommendedPostsInput = {
   q?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type GetSiteProfitInput = {
+  period: StatsRetrivePeriod;
+  type: ProfitStatsType;
 };
 
 export type GetStorySeenByInput = {
@@ -4088,6 +4113,11 @@ export type ProfileVisitsDetails = {
   countries: Array<ProfileVisitDetails>;
 };
 
+export enum ProfitStatsType {
+  Product = "product",
+  Service = "service",
+}
+
 export type Query = {
   __typename?: "Query";
   MyShoppingCart: ShoppingCart;
@@ -4260,7 +4290,11 @@ export type Query = {
   getRoomMessages: Array<ChatMessage>;
   getRoomWithUser: ChatRoom;
   getSalesDurningPeriod: Array<OrderItem>;
+  getSellerDailySalesStats: Array<SellerSalesStat>;
   getSellerProducts: ProductsCursorPaginationResponse;
+  getSellerRecentOrders: GetSellerRecentOrdersResponse;
+  getSellerStats: Array<SellerSalesStat>;
+  getSellerTopSellingProducts: ProductsCursorPaginationResponse;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryByType: ServiceCategory;
@@ -4273,6 +4307,8 @@ export type Query = {
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
   getShippingTypeRule: ShippingTypeRule;
   getSiteInfomrationsOfPlacement: Array<SiteInformation>;
+  getSiteProfit: SiteProfit;
+  getSiteSales: Array<SiteSale>;
   getSocialPostById: NewsfeedPost;
   getStory: Story;
   getStoryViews: Array<StoryView>;
@@ -4897,8 +4933,27 @@ export type QueryGetSalesDurningPeriodArgs = {
   args: GetSalesDurningPeriodInput;
 };
 
+export type QueryGetSellerDailySalesStatsArgs = {
+  period: Scalars["String"]["input"];
+  sellerId: Scalars["String"]["input"];
+};
+
 export type QueryGetSellerProductsArgs = {
   args: GetSellerProductsInput;
+};
+
+export type QueryGetSellerRecentOrdersArgs = {
+  args: GetSellerRecentOrdersInput;
+};
+
+export type QueryGetSellerStatsArgs = {
+  period: StatsRetrivePeriod;
+  sellerId: Scalars["String"]["input"];
+  type: SellerSalesType;
+};
+
+export type QueryGetSellerTopSellingProductsArgs = {
+  args: GetSellerTopSellingProductsInput;
 };
 
 export type QueryGetServiceCategoryByIdArgs = {
@@ -4944,6 +4999,14 @@ export type QueryGetShippingTypeRuleArgs = {
 
 export type QueryGetSiteInfomrationsOfPlacementArgs = {
   placement: Scalars["String"]["input"];
+};
+
+export type QueryGetSiteProfitArgs = {
+  args: GetSiteProfitInput;
+};
+
+export type QueryGetSiteSalesArgs = {
+  args: GetSiteProfitInput;
 };
 
 export type QueryGetSocialPostByIdArgs = {
@@ -5325,6 +5388,12 @@ export enum RoomTypes {
   Private = "private",
 }
 
+export type SalesCategory = {
+  __typename?: "SalesCategory";
+  categoryId: Scalars["ID"]["output"];
+  sales: Scalars["Int"]["output"];
+};
+
 export type SavesCollection = {
   __typename?: "SavesCollection";
   createdAt: Scalars["String"]["output"];
@@ -5360,6 +5429,26 @@ export type SellerProductsRating = {
   rating: Scalars["Float"]["output"];
   reviews: Scalars["Int"]["output"];
 };
+
+export type SellerSalesStat = {
+  __typename?: "SellerSalesStat";
+  affiliations: Scalars["Int"]["output"];
+  affiliationsAmount: Scalars["Float"]["output"];
+  id: Scalars["ID"]["output"];
+  purchases: Scalars["Int"]["output"];
+  purchasesAmount: Scalars["Float"]["output"];
+  returns: Scalars["Int"]["output"];
+  returnsAmount: Scalars["Float"]["output"];
+  sales: Scalars["Int"]["output"];
+  salesAmount: Scalars["Float"]["output"];
+  salesCategories: Array<SalesCategory>;
+  sellerId: Scalars["ID"]["output"];
+};
+
+export enum SellerSalesType {
+  Product = "product",
+  Service = "service",
+}
 
 export type SendContactUsMessageInput = {
   email: Scalars["String"]["input"];
@@ -6046,6 +6135,28 @@ export type SiteInformation = {
   title: Scalars["String"]["output"];
 };
 
+export type SiteProfit = {
+  __typename?: "SiteProfit";
+  affiliations: Scalars["Int"]["output"];
+  affiliationsAmount: Scalars["Float"]["output"];
+  lastAffiliationsAmount: Scalars["Float"]["output"];
+  lastPurchasesAmount: Scalars["Float"]["output"];
+  lastRefundsAmount: Scalars["Float"]["output"];
+  lastSalesAmount: Scalars["Float"]["output"];
+  purchases: Scalars["Int"]["output"];
+  purchasesAmount: Scalars["Float"]["output"];
+  refunds: Scalars["Int"]["output"];
+  refundsAmount: Scalars["Float"]["output"];
+  sales: Scalars["Int"]["output"];
+  salesAmount: Scalars["Float"]["output"];
+};
+
+export type SiteSale = {
+  __typename?: "SiteSale";
+  createdAt: Scalars["String"]["output"];
+  salesAmount: Scalars["Float"]["output"];
+};
+
 export type SocialTag = {
   __typename?: "SocialTag";
   contentId: Scalars["String"]["output"];
@@ -6067,6 +6178,13 @@ export type SpecialDayWorkingHoursInput = {
 export enum StaffAccountType {
   Admin = "admin",
   Moderator = "moderator",
+}
+
+export enum StatsRetrivePeriod {
+  Day = "day",
+  Month = "month",
+  Week = "week",
+  Year = "year",
 }
 
 export enum StoreFor {

@@ -55,3 +55,36 @@ export const ExtractPagination = (pagination: GqlPaginationInput) => {
     totalSearched,
   };
 };
+
+export function setPrismaCursorPaginationProps<
+  TModel extends { id: string },
+  Tkey extends keyof TModel
+  // @ts-ignore
+>(pagination: GqlCursorPaginationInput, cursorKey?: Tkey = "id") {
+  return {
+    take: pagination.take + 1,
+    cursor: {
+      [cursorKey]: pagination.cursor,
+    },
+  };
+}
+
+export function generateCursorPaginationResponse<TModel extends { id: string }>(
+  pagination: GqlCursorPaginationInput,
+  data: TModel[]
+): {
+  data: TModel[];
+  cursor?: string;
+  nextCursor?: string;
+  hasMore: boolean;
+  total?: number;
+} {
+  const hasMore = data.length > pagination.take;
+
+  return {
+    cursor: pagination?.cursor,
+    data: data.slice(0, pagination.take),
+    hasMore,
+    nextCursor: hasMore ? data.at(pagination.take).id : undefined,
+  };
+}

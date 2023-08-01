@@ -6,7 +6,6 @@ import {
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlCurrentUser,
-  GqlPaginationInput,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,

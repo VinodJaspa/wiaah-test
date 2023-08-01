@@ -1,11 +1,4 @@
-import {
-  NumberShortner,
-  calculateAmountPercentChange,
-  getRandomName,
-  mapArray,
-  randomNum,
-  runIfFn,
-} from "utils";
+import { NumberShortner, mapArray, randomNum } from "utils";
 import {
   Divider,
   EyeIcon,
@@ -14,13 +7,11 @@ import {
   Image,
   PaperShoppingBagOutlineIcon,
   PersonGroupIcon,
-  PriceConverter,
   PriceDisplay,
   ReturnArrowIcon,
   Select,
   SelectOption,
 } from "@partials";
-import { useUserData } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {

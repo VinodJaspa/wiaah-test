@@ -8,6 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { OrderStatusEnum } from '@prisma-client';
 import { Account, Product } from './extends';
+import {
+  CreateGqlCursorPaginatedResponse,
+  ExtendableGqlPaginationInput,
+} from 'nest-utils';
 
 registerEnumType(OrderStatusEnum, { name: 'OrderStatusEnum' });
 
@@ -112,3 +116,8 @@ export class Order {
   @Field(() => String, { nullable: true })
   trackingLink?: string;
 }
+
+@ObjectType()
+export class GetSellerRecentOrdersResponse extends CreateGqlCursorPaginatedResponse(
+  OrderItem,
+) {}

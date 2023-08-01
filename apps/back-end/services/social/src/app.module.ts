@@ -37,6 +37,7 @@ import { SocialTagModule } from './social-tag/social-tag.module';
 import { AudioModule } from './audio/audio.module';
 import { EffectModule } from './effect/effect.module';
 import { CameraFilterModule } from './camera-filter/camera-filter.module';
+import { ContentViewModule } from './content-view/content-view.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { CameraFilterModule } from './camera-filter/camera-filter.module';
     AudioModule,
     EffectModule,
     CameraFilterModule,
+    ContentViewModule,
   ],
 })
 export class AppModule {}

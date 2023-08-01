@@ -153,11 +153,12 @@ export class AccountsResolver {
     return this.accountsService.findOne(id);
   }
 
-  @ResolveField(() => Shop)
+  @ResolveField(() => Shop, { nullable: true })
   shop(@Parent() acc: Account) {
+    if (!acc?.id) return null;
     return {
       __typename: 'Shop',
-      ownerId: acc.id,
+      ownerId: acc?.id,
     };
   }
 

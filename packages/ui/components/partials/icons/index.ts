@@ -172,3 +172,5 @@ export * from "./PhoneHandleIcon";
 export * from "./CardIntel";
 export * from "./VisaIcon";
 export * from "./FilterIcon";
+export * from "./OpenBookIcon";
+export * from "./VideoReelIcon";

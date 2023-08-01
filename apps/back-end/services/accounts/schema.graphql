@@ -31,7 +31,7 @@ type Account {
   lastActiveAt: String!
   lang: String!
   currency: String!
-  shop: Shop!
+  shop: Shop
 }
 
 """

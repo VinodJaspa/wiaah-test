@@ -465,6 +465,7 @@ type Query {
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getTopSalesProducts(args: GetTopSalesProductsByCategoryPaginationInput!): ProductSearchPaginationResponse!
+  getSellerTopSellingProducts(args: GetSellerTopSellingProductsInput!): ProductsCursorPaginationResponse!
   getProduct(id: ID!): Product!
   getSellerProducts(args: GetSellerProductsInput!): ProductsCursorPaginationResponse!
   getProductCategories: [Category!]!
@@ -546,6 +547,11 @@ enum ProductType {
 input GetTopSalesProductsByCategoryPaginationInput {
   pagination: GqlPaginationInput!
   categoryId: String
+}
+
+input GetSellerTopSellingProductsInput {
+  pagination: GqlPaginationInput!
+  sellerId: String!
 }
 
 input GetSellerProductsInput {

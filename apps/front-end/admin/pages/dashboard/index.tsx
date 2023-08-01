@@ -86,11 +86,11 @@ const Dashboard: NextPage = () => {
         })} - ${to.toLocaleTimeString("en-us", {
           timeStyle: "short",
         })}`,
-        sellers: randomNum(150),
+        sellers: randomNum(10),
         // recentSellers.filter(
         //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
         // ).length,
-        buyers: randomNum(150),
+        buyers: randomNum(10),
         // recentBuyers.filter(
         //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
         // ).length,
@@ -98,7 +98,7 @@ const Dashboard: NextPage = () => {
     ];
   }, [] as { time: string; sellers: number; buyers: number }[]);
 
-  console.log({ charData, recentSellers, recentBuyers, dates, accounts });
+
 
   return (
     <div className="grid grid-cols-3 gap-4">

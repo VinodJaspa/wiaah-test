@@ -98,3 +98,9 @@ export class ResourceNotFoundPublicError extends KnownError {
     super(msg, PublicErrorCodes.unAuthorized);
   }
 }
+
+export class WrongInputPublicError extends KnownError {
+  constructor(msg: string = "provided invalid input") {
+    super(msg, PublicErrorCodes.badRequestData);
+  }
+}

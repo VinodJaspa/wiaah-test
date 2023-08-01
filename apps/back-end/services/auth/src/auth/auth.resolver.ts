@@ -4,7 +4,6 @@ import {
   BadRequestException,
   Inject,
   InternalServerErrorException,
-  NotFoundException,
   OnModuleInit,
   UseGuards,
 } from '@nestjs/common';
@@ -19,6 +18,8 @@ import {
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
+  ResourceNotFoundPublicError,
+  WrongInputPublicError,
 } from 'nest-utils';
 
 import {
@@ -209,16 +210,19 @@ export class AuthResolver implements OnModuleInit {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail,
       new GetAdminAccountByEmailMesssage({ email: args.email }),
     );
-    if (!acc?.results?.data) throw new NotFoundException('Account not found');
+
+    if (!acc?.results?.data)
+      throw new ResourceNotFoundPublicError('Account not found');
 
     const compere = await bcrypt.compare(
       args.password,
       acc.results.data.password,
     );
 
-    if (!compere) throw new BadRequestException('wrong password');
+    if (!compere) throw new WrongInputPublicError('wrong password');
 
     const { accountType, email, id } = acc.results.data;
+
     const data = await this.authService.generateAccessToken(
       id,
       email,

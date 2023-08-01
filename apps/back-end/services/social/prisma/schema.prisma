@@ -42,6 +42,7 @@ model Profile {
   Story          Story[]
   StoryView      StoryView[]
   BlockedUser    BlockedUser[]
+  ContentViews   ContentView[]
 }
 
 model FollowRequest {
@@ -461,6 +462,18 @@ model ProfileActivity {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   profileId String   @db.ObjectId
   createdAt DateTime @default(now())
+}
+
+model ContentView {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId       String          @db.ObjectId
+  contentOnwerId String          @db.ObjectId
+  contentId      String
+  contentType    ContentHostType
+  viewer         Profile         @relation(fields: [viewerId], references: [ownerId])
+
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 type Hashtag {

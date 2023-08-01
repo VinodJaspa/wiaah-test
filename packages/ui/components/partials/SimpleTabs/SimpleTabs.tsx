@@ -57,13 +57,13 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
   children: _children,
 }) => {
   const children = _children
-    ? React.Children.toArray(_children).filter((v) => !!v)
+    ? (Array.isArray(_children) ? _children : [_children]).filter((v) => !!v)
     : [];
   const { setCurrIdx, currIdx } = React.useContext(SimpleTabsContext);
-  console.log("simple tab head", { children });
+
   return (
     <>
-      {mapArray(Array.isArray(children) ? children : [children], (c, i) => (
+      {mapArray(children, (c, i) => (
         <>
           {runIfFn<SimpleTabHeadChildProps>(c, {
             onClick: () => setCurrIdx(i),

@@ -6,6 +6,8 @@ import {
   SimpleTabItemList,
   SimpleTabHead,
   useAdminGetProfileQuery,
+  SalesStatistics,
+  ShoppingStats,
 } from "ui";
 import { randomNum } from "utils";
 import { getRandomImage } from "placeholder";
@@ -35,20 +37,6 @@ const Edit = () => {
 
   const { data } = useAdminGetProfileQuery(id);
 
-  const posts = [...Array(10)].map(() => ({
-    id: randomNum(500000).toString(),
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It h",
-    hashtags: ["new", "sports", "fun", "world cup"],
-    comments: randomNum(500000),
-    likes: randomNum(50000),
-    views: randomNum(50000),
-    shares: randomNum(5000),
-    thumbnail: getRandomImage(),
-    type: "image",
-    createdAt: new Date(),
-  }));
-
   const tabsTitles = [
     "General",
     "Affiliation",
@@ -68,6 +56,7 @@ const Edit = () => {
     "Transactions",
     "Payout",
     "Vouchers",
+    "Shopping Statistics",
   ];
 
   return (
@@ -108,6 +97,7 @@ const Edit = () => {
           <AccountTransactions accountId={id} />
           <AccountPayouts accountId={id} />
           <AccountVouchers accountId={id} />
+          <ShoppingStats accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

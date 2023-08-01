@@ -525,8 +525,8 @@ export const ProfileStatistics: React.FC<{
       </div>
       <div className="grid w-full grid-cols-2">
         <div style={boxShadowStyles} className="flex p-8 flex-col">
-          <div className="flex justify-between w-full">
-            <p className="font-bold text-xl">{t("Age and Gender")}</p>
+          <div className="flex justify-between w-full  gap-2 ">
+            <p className="font-bold whitespace-nowrap text-xl">{t("Age and Gender")}</p>
             <Select {...selectProps("ageGender")} className="w-28">
               <SelectOption value={day}>{t("day")}</SelectOption>
               <SelectOption value={month}>{t("month")}</SelectOption>
@@ -626,8 +626,8 @@ export const ProfileStatistics: React.FC<{
         </div>
       </div>
       <div className="flex flex-col p-8" style={boxShadowStyles}>
-        <div className="flex justify-between w-full">
-          <p className="font-semibold">{t("Detials Level")}</p>
+        <div className="flex justify-between items-center w-full gap-2">
+          <p className="font-bold text-xl whitespace-nowrap">{t("Detials Level")}</p>
 
           <Select {...selectProps("details")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
@@ -750,8 +750,8 @@ export const ProfileStatistics: React.FC<{
         </div>
       </div>
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
-        <div className="flex justify-between w-full">
-          <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+        <div className="flex justify-between items-center gap-2 w-full">
+          <p className="font-bold text-xl whitespace-nowrap">{t("Most Popular Post")}</p>
           <Select {...selectProps("topPosts")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
             <SelectOption value={month}>{t("month")}</SelectOption>
