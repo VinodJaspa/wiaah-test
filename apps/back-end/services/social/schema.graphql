@@ -715,6 +715,15 @@ type CameraFiltersCursorResponse {
   total: Int!
 }
 
+type ContentView {
+  id: String!
+  viewerId: String!
+  contentOnwerId: String!
+  contentType: ContentHostType!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   getProfileDetails(userId: String!): Profile!
@@ -791,6 +800,7 @@ type Query {
   getTopEffects(args: GetTopEffectsInput!): EffectCursorPaginationResponse!
   getCameraFilterById(id: String!): CameraFilter!
   getCameraFilters(args: GetCameraFiltersInput!): CameraFiltersCursorResponse!
+  getAudienceTrendingHour: [ContentView!]!
 }
 
 input SearchPopularProfilesInput {

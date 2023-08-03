@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { mapArray, NumberShortner, randomNum, runIfFn, useForm } from "utils";
+import React from "react";
+import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
 import {
@@ -19,14 +19,9 @@ import {
   AspectRatio,
   BoxShadow,
   Button,
-  CommentIcon,
-  HeartFillIcon,
   HStack,
   Image,
-  LocationOnPointIcon,
   Pagination,
-  PersonPlusIcon,
-  SaveFlagFIllIcon,
   Select,
   SelectOption,
   Table,
@@ -250,17 +245,17 @@ export const ProfileStatistics: React.FC<{
     {
       name: t("female"),
       value: randomNum(2500000),
-      fill: "#FFD66B",
+      fill: "#EA4335",
     },
     {
       name: t("other"),
       value: totalAudienece,
-      fill: "#FF6B6B",
+      fill: "rgba(0, 0, 0, 0.0)",
     },
     {
       name: t("male"),
       value: randomNum(2500000),
-      fill: "#5B93FF",
+      fill: "#4285F4",
     },
   ];
 
@@ -351,48 +346,35 @@ export const ProfileStatistics: React.FC<{
   return (
     <div className="flex flex-col gap-14 w-full">
       <div>
-        <div className="flex gap-2 w-full justify-between">
+        <div className="flex justify-end w-full">
+          <Select {...selectProps("stats")} className="w-28">
+            <SelectOption value={day}>{t("day")}</SelectOption>
+            <SelectOption value={month}>{t("month")}</SelectOption>
+            <SelectOption value={year}>{t("year")}</SelectOption>
+          </Select>
+        </div>
+        <div className="flex gap-2 w-full">
           <StatisticsCard
-            icon={{
-              color: "#01D022",
-              node: LocationOnPointIcon,
-            }}
             amount={stats?.total_visits || 0}
             prevAmount={stats?.prev_total_visits || 0}
             title={t("Total of Visits")}
           />
           <StatisticsCard
-            icon={{
-              color: "#FFD66B",
-              node: PersonPlusIcon,
-            }}
             amount={stats?.total_followers || 0}
             prevAmount={stats?.prev_total_followers || 0}
             title={t("Total of Followers")}
           />
           <StatisticsCard
-            icon={{
-              color: "#E91010",
-              node: HeartFillIcon,
-            }}
             prevAmount={stats?.total_likes || 0}
             amount={stats?.prev_total_likes || 0}
             title={t("Total of Likes")}
           />
           <StatisticsCard
-            icon={{
-              color: "#1227E2",
-              node: CommentIcon,
-            }}
             amount={stats?.total_comments || 0}
             prevAmount={stats?.prev_total_comments || 0}
             title={t("Total of Comments")}
           />
           <StatisticsCard
-            icon={{
-              color: "#ACC418",
-              node: SaveFlagFIllIcon,
-            }}
             amount={stats?.total_saves || 0}
             prevAmount={stats?.prev_total_saves || 0}
             title={t("Total of Saved")}
@@ -400,13 +382,24 @@ export const ProfileStatistics: React.FC<{
         </div>
       </div>
       <div className="grid grid-cols-12 gap-4 w-full">
-        <div className="p-6 col-span-7 flex flex-col gap-4 h-full">
-          <p className="font-bold text-xl">{t("Overview")}</p>
+        <div
+          style={boxShadowStyles}
+          className="p-6 col-span-7 flex flex-col gap-4 h-full"
+        >
+          <div className="flex justify-between w-full">
+            <p className="font-bold text-xl">{t("Overview")}</p>
+            <Select {...selectProps("overview")} className="w-28">
+              <SelectOption value={day}>{t("day")}</SelectOption>
+              <SelectOption value={month}>{t("month")}</SelectOption>
+              <SelectOption value={year}>{t("year")}</SelectOption>
+            </Select>
+          </div>
           <div className="flex items-center justify-between">
+            <div></div>
             <div className="flex flex-wrap items-center gap-8">
-              <BarChartLegend color="#4339F2" name={t("Account Reached")} />
-              <BarChartLegend color="#34B53A" name={t("Account Engaged")} />
-              <BarChartLegend color="#FFB200" name={t("Profile Activity")} />
+              <BarChartLegend color="#4285F4" name={t("Account Reached")} />
+              <BarChartLegend color="#34A853" name={t("Account Engaged")} />
+              <BarChartLegend color="#EA4335" name={t("Profile Activity")} />
             </div>
           </div>
           <div ref={overviewRef} className="flex flex-col h-80 gap-4 w-full">
@@ -415,6 +408,7 @@ export const ProfileStatistics: React.FC<{
               height={overviewDims.h}
               data={overviewdata}
             >
+              <CartesianGrid vertical={false} />
               <XAxis axisLine={false} dataKey="name" />
               <YAxis axisLine={false} />
               <Tooltip />
@@ -424,14 +418,14 @@ export const ProfileStatistics: React.FC<{
                 dataKey="x"
                 stackId={"1"}
                 barSize={10}
-                fill="#4339F2"
+                fill="#4285F4"
               />
               <Bar
                 legendType="none"
                 dataKey="y"
                 stackId={"1"}
                 barSize={10}
-                fill="#34B53A"
+                fill="#34A853"
               />
               <Bar
                 radius={[10, 10, 0, 0]}
@@ -439,17 +433,44 @@ export const ProfileStatistics: React.FC<{
                 dataKey="z"
                 stackId={"1"}
                 barSize={10}
-                fill="#FFB200"
+                fill="#EA4335"
               />
             </BarChart>
           </div>
         </div>
-        <div className="p-6 col-span-5 h-full">
+        <div style={boxShadowStyles} className="p-6 col-span-5 h-full">
           <div className="flex flex-col gap-1 w-full h-full">
             <div className="flex justify-between w-full">
               <p className="text-xl font-bold">{t("Reached Audience")}</p>
+
+              <Select {...selectProps("audinece")} className="w-28">
+                <SelectOption value={day}>{t("day")}</SelectOption>
+                <SelectOption value={month}>{t("month")}</SelectOption>
+                <SelectOption value={year}>{t("year")}</SelectOption>
+              </Select>
             </div>
-            <div className="flex flex-col gap-2 h-full items-center">
+            <div className="flex gap-2 h-full items-center">
+              <div className="flex flex-col gap-4">
+                <BarChartLegend
+                  amount={
+                    (reachedAudience || []).filter(
+                      (v, i) => v.gender === ProfileReachedGender.Female
+                    ).length
+                  }
+                  color="#EA4335"
+                  name={t("Total of Women")}
+                />
+                <BarChartLegend
+                  amount={
+                    (reachedAudience || []).filter(
+                      (v, i) => v.gender === ProfileReachedGender.Male
+                    ).length
+                  }
+                  color="#4285F4"
+                  name={t("Total of Men")}
+                />
+              </div>
+
               <div
                 ref={reachedAudinesRef}
                 className="flex relative items-center justify-center h-full w-full"
@@ -465,6 +486,20 @@ export const ProfileStatistics: React.FC<{
                   </AspectRatio>
                 </div>
                 <PieChart width={reachedDims.h} height={reachedDims.h}>
+                  <Pie
+                    data={[
+                      {
+                        name: t("male"),
+                        value: 350,
+                        fill: "rgba(0, 0, 0, 0.12)",
+                      },
+                    ]}
+                    innerRadius={100}
+                    outerRadius={120}
+                    paddingAngle={0}
+                    dataKey={"value"}
+                    isAnimationActive={false}
+                  />
                   <Pie
                     data={reachedData}
                     innerRadius={100}
@@ -484,63 +519,19 @@ export const ProfileStatistics: React.FC<{
                   </Pie>
                 </PieChart>
               </div>
-
-              <div className="flex justify-around">
-                <BarChartLegend
-                  amount={
-                    (reachedAudience || []).filter(
-                      (v, i) => v.gender === ProfileReachedGender.Male
-                    ).length
-                  }
-                  color="#5B93FF"
-                  name={t("Total of Men")}
-                />
-                <BarChartLegend
-                  amount={
-                    (reachedAudience || []).filter(
-                      (v, i) => v.gender === ProfileReachedGender.Female
-                    ).length
-                  }
-                  color="#FFD66B"
-                  name={t("Total of Women")}
-                />
-
-                <BarChartLegend
-                  amount={
-                    (reachedAudience || []).filter(
-                      (v, i) => v.gender === ProfileReachedGender.Male
-                    ).length
-                  }
-                  color="#FF6B6B"
-                  name={t("Other")}
-                />
-              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="grid w-full grid-cols-2">
-        <div className="flex p-8 flex-col">
-          <div className="flex items-center justify-between">
-            <p className="font-bold whitespace-nowrap text-xl">
-              {t("Age & Gender")}
-            </p>
-            <HStack className="gap-4">
-              <HStack>
-                <div className="h-4 w-4 rounded-full bg-[#FFB200]" />
-                <p>{t("Men")}</p>
-              </HStack>
-
-              <HStack>
-                <div className="h-4 w-4 rounded-full bg-[#4339F2]" />
-                <p>{t("Women")}</p>
-              </HStack>
-
-              <HStack>
-                <div className="h-4 w-4 rounded-full bg-[#FF6B6B]" />
-                <p>{t("Other")}</p>
-              </HStack>
-            </HStack>
+        <div style={boxShadowStyles} className="flex p-8 flex-col">
+          <div className="flex justify-between w-full  gap-2 ">
+            <p className="font-bold whitespace-nowrap text-xl">{t("Age and Gender")}</p>
+            <Select {...selectProps("ageGender")} className="w-28">
+              <SelectOption value={day}>{t("day")}</SelectOption>
+              <SelectOption value={month}>{t("month")}</SelectOption>
+              <SelectOption value={year}>{t("year")}</SelectOption>
+            </Select>
           </div>
           <div className="h-12"></div>
           <div className="h-44" ref={ageGenderRef}>
@@ -550,13 +541,13 @@ export const ProfileStatistics: React.FC<{
               height={ageGenderDims.h}
               layout={"vertical"}
             >
-              {/* <XAxis type="number" hide />
+              <XAxis type="number" hide />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 type="category"
                 dataKey={"name"}
-              /> */}
+              />
               <Tooltip />
               <Bar
                 background={{ fill: "rgba(0, 0, 0, 0.08)" }}
@@ -581,6 +572,11 @@ export const ProfileStatistics: React.FC<{
               />
             </BarChart>
           </div>
+
+          <HStack>
+            <BarChartLegend color="#4285F4" name={t("Male")} />
+            <BarChartLegend color="#91D4EF" name={t("Female")} />
+          </HStack>
         </div>
 
         <div style={boxShadowStyles} className="flex p-8 flex-col">
@@ -631,9 +627,7 @@ export const ProfileStatistics: React.FC<{
       </div>
       <div className="flex flex-col p-8" style={boxShadowStyles}>
         <div className="flex justify-between items-center w-full gap-2">
-          <p className="font-bold text-xl whitespace-nowrap">
-            {t("Detials Level")}
-          </p>
+          <p className="font-bold text-xl whitespace-nowrap">{t("Detials Level")}</p>
 
           <Select {...selectProps("details")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
@@ -757,9 +751,7 @@ export const ProfileStatistics: React.FC<{
       </div>
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
         <div className="flex justify-between items-center gap-2 w-full">
-          <p className="font-bold text-xl whitespace-nowrap">
-            {t("Most Popular Post")}
-          </p>
+          <p className="font-bold text-xl whitespace-nowrap">{t("Most Popular Post")}</p>
           <Select {...selectProps("topPosts")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
             <SelectOption value={month}>{t("month")}</SelectOption>
@@ -868,48 +860,28 @@ export const StatisticsCard: React.FC<{
   amount: number;
   title: string;
   prevAmount: number;
-  icon: {
-    node: ReactNode;
-    color: string;
-  };
-}> = ({ amount, prevAmount, title, icon }) => {
+}> = ({ amount, prevAmount, title }) => {
   const change = (amount / prevAmount - 1) * 100;
   const positive = change > 0;
   return (
-    <div className="flex gap-2 px-3 py-6 bg-white rounded-xl">
-      <div className="flex gap-2 items-center">
-        <div className="relative">
+    <BoxShadow className="w-full">
+      <div className="w-full px-4 py-2 rounded bg-[#F3F3F3] min-h-[6rem] flex flex-col justify-between">
+        <p className="font-bold text-sm">{title}</p>
+        <div className="w-full items-center flex justify-between">
           <div
-            style={{
-              backgroundColor: icon.color,
-            }}
-            className={`text-xl opacity-10 h-16 rounded-full w-16`}
-          />
-          <div
-            style={{
-              color: icon.color,
-              fill: icon.color,
-            }}
-            className="absolute text-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className={`${
+              positive
+                ? "text-primary bg-primary-100"
+                : "text-secondaryRed bg-red-100"
+            } flex items-center px-1 rounded`}
           >
-            {runIfFn(icon.node)}
+            {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
+            {Math.floor(change)}%
           </div>
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <p className="text-xl font-extrabold">{NumberShortner(amount)}</p>
-          <p className="text-sm">{title}</p>
+          <p className="font-bold text-lg">{NumberShortner(amount)}</p>
         </div>
       </div>
-      <div
-        className={`${
-          positive ? "text-primary" : "text-secondaryRed"
-        } self-start text-[0.5rem] flex items-center px-1 rounded`}
-      >
-        {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
-        {Math.floor(change || 0)}%
-      </div>
-    </div>
+    </BoxShadow>
   );
 };
 
@@ -941,16 +913,5 @@ export const MyProfileStatistics = () => {
     <ProfileStatistics accountId={user?.id}></ProfileStatistics>
   ) : (
     <p>error</p>
-  );
-};
-
-const StatisticsAgeIndicator: React.FC<{
-  label: string;
-  value: number;
-}> = () => {
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="w-full justify-between flex items-center"></div>
-    </div>
   );
 };
