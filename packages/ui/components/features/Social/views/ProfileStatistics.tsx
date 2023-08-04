@@ -20,9 +20,11 @@ import {
   BoxShadow,
   Button,
   CommentIcon,
+  FilterInput,
   HeartFillIcon,
   HStack,
   Image,
+  Input,
   LocationOnPointIcon,
   Pagination,
   PersonPlusIcon,
@@ -544,280 +546,80 @@ export const ProfileStatistics: React.FC<{
           </div>
           <div className="h-12"></div>
           <div className="h-44" ref={ageGenderRef}>
+            <StatisticsAgeIndicator
+              min={15}
+              max={30}
+              label={"18-24"}
+              value={65}
+            />
+          </div>
+        </div>
+
+        <div className="flex p-8 flex-col">
+          <p className="font-bold text-xl">{t("Daily audience")}</p>
+
+          <div className=" w-full overflow-x-scroll overflow-y-hidden noScroll">
             <BarChart
-              data={ageGenderData}
-              width={ageGenderDims.w}
-              height={ageGenderDims.h}
-              layout={"vertical"}
+              width={overviewDims.w}
+              height={overviewDims.h}
+              data={overviewdata}
             >
-              {/* <XAxis type="number" hide />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                type="category"
-                dataKey={"name"}
-              /> */}
+              <XAxis axisLine={false} dataKey="name" />
+              <YAxis axisLine={false} />
               <Tooltip />
+              <Legend />
               <Bar
-                background={{ fill: "rgba(0, 0, 0, 0.08)" }}
-                radius={[4, 4, 0, 0]}
-                barSize={20}
-                fill="#4285F4"
-                dataKey={"male"}
-                stackId="1"
-              >
-                <LabelList
-                  content={({ width, value }) => (
-                    <p className="absolute">test</p>
-                  )}
-                />
-              </Bar>
+                legendType="none"
+                dataKey="x"
+                stackId={"1"}
+                barSize={10}
+                fill="#4339F2"
+              />
               <Bar
-                radius={[4, 4, 0, 0]}
-                barSize={20}
-                fill="#91D4EF"
-                dataKey={"female"}
-                stackId="1"
+                legendType="none"
+                dataKey="y"
+                stackId={"1"}
+                barSize={10}
+                fill="#FFD66B"
               />
             </BarChart>
           </div>
         </div>
-
-        <div style={boxShadowStyles} className="flex p-8 flex-col">
-          <p className="font-bold text-xl">{t("Popular Stories Views")}</p>
-          <HStack className="h-12">
-            {[...Array(6)].map((_, v) => (
-              <Button className="text-xs " colorScheme="white">
-                {new Date(
-                  new Date().setDate(new Date().getDate() - v)
-                ).toLocaleDateString("en-us", {
-                  weekday: "long",
-                })}
-              </Button>
-            ))}
-          </HStack>
-          <div className="h-44" ref={storiesViewsRef}>
-            <BarChart
-              data={storiesViewsData}
-              width={storiesViewsDims.w}
-              height={storiesViewsDims.h}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis tickLine={false} axisLine={false} dataKey={"name"} />
-              <YAxis tickLine={false} axisLine={false} />
-              <Tooltip />
-              <Bar
-                radius={[4, 4, 0, 0]}
-                barSize={20}
-                fill="#4285F4"
-                dataKey={"male"}
-                stackId="1"
-              />
-              <Bar
-                radius={[4, 4, 0, 0]}
-                barSize={20}
-                fill="#91D4EF"
-                dataKey={"female"}
-                stackId="1"
-              />
-            </BarChart>
-          </div>
-
-          <HStack>
-            <BarChartLegend color="#4285F4" name={t("Male")} />
-            <BarChartLegend color="#91D4EF" name={t("Female")} />
-          </HStack>
-        </div>
       </div>
-      <div className="flex flex-col p-8" style={boxShadowStyles}>
-        <div className="flex justify-between items-center w-full gap-2">
-          <p className="font-bold text-xl whitespace-nowrap">
-            {t("Detials Level")}
-          </p>
+      <div className="flex flex-col p-8">
+        <p className="font-bold text-xl whitespace-nowrap">
+          {t("Detials Level")}
+        </p>
 
-          <Select {...selectProps("details")} className="w-28">
-            <SelectOption value={day}>{t("day")}</SelectOption>
-            <SelectOption value={month}>{t("month")}</SelectOption>
-            <SelectOption value={year}>{t("year")}</SelectOption>
-          </Select>
-        </div>
-
-        <div className="grid grid-rows-4 grid-cols-12">
-          <div className="col-span-2 border-r pb-4 pr-4 border-b row-span-1 flex flex-col gap-2">
-            <Select
-              {...selectProps("viewsDetailsCountry")}
-              className="w-40 bg-[#F3F3F3]"
-              placeholder={`${t("Country")}/${t("Territory")}`}
-            >
-              <SelectOption value={"test"}>test</SelectOption>
-            </Select>
-          </div>
-          <div className="col-span-3 border-b row-span-1 grid grid-cols-3">
-            <div></div>
-            <div></div>
-            <div className="flex items-center">
-              <Button
-                onClick={() =>
-                  handleChange(
-                    "detailsOrderBy",
-                    form.detailsOrderBy < 0 ? 1 : -1
-                  )
-                }
-                className="bg-[#F3F3F3] text-black"
-              >
-                <HStack>
-                  <p>{t("Visits")}</p>
-                  {form.detailsOrderBy < 0 ? <BsArrowDown /> : <BsArrowUp />}
-                </HStack>
-              </Button>
-            </div>
-          </div>
-          <div className="col-span-7 border-l border-b row-span-1 items-center grid grid-cols-6">
-            <div className="col-span-2 flex justify-center items-center">
-              <p className="font-bold">{t("Visits")}</p>
-            </div>
-            <div className="col-span-4 justify-end flex gap-8 items-center">
-              <p>{t("Country/Territory contribution to total")}</p>
-              <Button
-                onClick={() =>
-                  handleChange(
-                    "detailsOrderBy",
-                    form.detailsOrderBy < 0 ? 1 : -1
-                  )
-                }
-                className="bg-[#F3F3F3] text-black"
-              >
-                <HStack>
-                  <p>{t("Visits")}</p>
-                  {form.detailsOrderBy < 0 ? <BsArrowDown /> : <BsArrowUp />}
-                </HStack>
-              </Button>
-            </div>
-          </div>
-          <div className="col-span-2 border-r row-span-3 pt-4 flex flex-col gap-4">
-            {countries.map((v, i) => (
-              <div className="flex gap-6 items-center">
-                <p className="font-bold">
-                  {(i + 1).toLocaleString("en-us", { minimumIntegerDigits: 2 })}
-                </p>
-                <HStack>
-                  <div
-                    style={{
-                      backgroundColor: v.color,
-                    }}
-                    className="w-5 h-5"
-                  />
-                  <p>{v.name}</p>
-                </HStack>
-              </div>
-            ))}
-          </div>
-          <div className="col-span-3 row-span-3 grid grid-cols-3">
-            <div></div>
-            <div></div>
-            <div className="flex flex-col pt-4 gap-4">
-              {countries.map((v, i) => (
-                <p className="font-semibold">
-                  {Intl.NumberFormat("en-us", {
-                    compactDisplay: "long",
-                  }).format(v.visits)}
-                </p>
-              ))}
-            </div>
-          </div>
-          <div className="col-span-7 row-span-3 border-l pt-4 grid grid-cols-6">
-            <div className="col-span-2 flex flex-col items-center gap-4">
-              {countriesPercentage.map((v, i) => (
-                <p className="font-semibold">{(v.visits * 100).toFixed(2)}%</p>
-              ))}
-            </div>
-            <div
-              ref={visitsPieRef}
-              className="col-span-4 flex justify-center items-center"
-            >
-              <PieChart width={visitsPieDims.w} height={visitsPieDims.h}>
-                <Pie
-                  data={countries}
-                  dataKey="visits"
-                  nameKey="name"
-                  cx={visitsPieDims.w / 2}
-                  cy={visitsPieDims.h / 2}
-                  outerRadius={90}
-                  fill="#82ca9d"
-                  label
-                >
-                  {countries.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
-        <div className="flex justify-between items-center gap-2 w-full">
-          <p className="font-bold text-xl whitespace-nowrap">
-            {t("Most Popular Post")}
-          </p>
-          <Select {...selectProps("topPosts")} className="w-28">
-            <SelectOption value={day}>{t("day")}</SelectOption>
-            <SelectOption value={month}>{t("month")}</SelectOption>
-            <SelectOption value={year}>{t("year")}</SelectOption>
-          </Select>
-        </div>
-        <Table
-          ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
-          TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
-          className="w-full"
-        >
+        <Table>
           <THead>
             <Tr>
-              <Th>{t("Post Image")}</Th>
-              <Th>{t("Date")}</Th>
-              <Th>{t("Name")}</Th>
-              <Th>{t("Total Views")}</Th>
-              <Th>{t("Total Likes")}</Th>
-              <Th>{t("Number of Visits")}</Th>
-              <Th>{t("Comments")}</Th>
+              <Th>No.</Th>
+              <Th>{t("Country/Terrorist")}</Th>
+              <Th>{t("Visits")}</Th>
+              <Th>{t("Visit Percentage")}</Th>
+              <Th>{t("Contribution Total")}</Th>
             </Tr>
           </THead>
+
           <TBody>
-            {mapArray(posts, (v, i) => (
+            {mapArray(visitsDetails?.countries, (item, idx) => (
               <Tr>
-                <Td>
-                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
-                </Td>
-                <Td>
-                  {new Date(v.date).toLocaleDateString("en-us", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
-                </Td>
-                <Td>{v.name}</Td>
-                <Td>{v.views}</Td>
-                <Td>{v.likes}</Td>
-                <Td>{v.likes}</Td>
-                <Td>{v.comments}</Td>
+                <Td>{idx + 1}</Td>
+                <Td>{item.country}</Td>
+                <Td>{item.visits}</Td>
+                <Td>{t("Visit Percentage")}</Td>
+                <Td>{t("Contribution Total")}</Td>
               </Tr>
             ))}
           </TBody>
         </Table>
-        <div className="self-center">
-          <Pagination></Pagination>
-        </div>
       </div>
+      <div className="flex flex-col p-8 gap-4">
+        <p className="font-bold text-xl whitespace-nowrap">
+          {t("Most Popular Post")}
+        </p>
 
-      <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
-        <div className="flex justify-between w-full">
-          <p className="font-bold text-xl">{t("Most Popular Stories")}</p>
-          <Select {...selectProps("topStories")} className="w-28">
-            <SelectOption value={day}>{t("day")}</SelectOption>
-            <SelectOption value={month}>{t("month")}</SelectOption>
-            <SelectOption value={year}>{t("year")}</SelectOption>
-          </Select>
-        </div>
         <Table
           ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
           TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
@@ -850,7 +652,7 @@ export const ProfileStatistics: React.FC<{
                 <Td>{v.name}</Td>
                 <Td>{v.views}</Td>
                 <Td>{v.likes}</Td>
-                <Td>{v.visits}</Td>
+                <Td>{v.likes}</Td>
                 <Td>{v.comments}</Td>
               </Tr>
             ))}
@@ -947,10 +749,49 @@ export const MyProfileStatistics = () => {
 const StatisticsAgeIndicator: React.FC<{
   label: string;
   value: number;
-}> = () => {
+  min: number;
+  max: number;
+}> = ({ label, value, max, min }) => {
+  const [trackStyles, setTrackStyles] = React.useState<React.CSSProperties>({});
+
+  function fillColor(minSlideValue: number, maxSlideValue: number) {
+    const minPercent = (minSlideValue / max) * 100;
+    const maxPercent = (maxSlideValue / max) * 100;
+    setTrackStyles((state) => ({
+      ...state,
+      right: `${100 - maxPercent}%`,
+      width: `${maxPercent - minPercent}%`,
+    }));
+  }
+
   return (
     <div className="flex flex-col gap-1">
-      <div className="w-full justify-between flex items-center"></div>
+      <div className="w-full justify-between flex items-center">
+        <div className="relative mt-2">
+          <span
+            style={trackStyles}
+            className="pointer-events-none absolute top-0 right-0 h-2 -translate-y-3/4 rounded-full bg-[#57bf9c] "
+          ></span>
+          <input
+            data-test="minRangeInput"
+            // min={min}
+            // max={max}
+            // value={minRange}
+            // onChange={(e) => handleMinChange(e)}
+            className="RangeInput absolute w-full"
+            type="range"
+          />
+          <input
+            // min={min}
+            data-test="maxRangeInput"
+            // max={max}
+            // value={maxRange}
+            // onChange={(e) => handleMaxChange(e)}
+            className="RangeInput absolute w-full"
+            type="range"
+          />
+        </div>
+      </div>
     </div>
   );
 };

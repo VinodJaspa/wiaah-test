@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import React from "react";
 import { HtmlInputProps } from "types";
 import { Checkbox } from "@UI";
 import { runIfFn } from "utils";
