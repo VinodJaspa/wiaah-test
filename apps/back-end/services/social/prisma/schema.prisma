@@ -476,6 +476,15 @@ model ContentView {
   updatedAt DateTime
 }
 
+model PinnedContent {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  contentId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 type Hashtag {
   tag String
 }
