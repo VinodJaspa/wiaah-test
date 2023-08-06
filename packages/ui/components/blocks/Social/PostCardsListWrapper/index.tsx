@@ -20,7 +20,7 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   cols?: number;
   grid?: boolean;
   onPostClick?: (postId: string) => any;
-  onProfileClick?: (postId: string) => any;
+  onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
 }
 
@@ -36,7 +36,11 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     posts &&
     posts.map((post, idx) => (
       <PostCard
-        onProfileClick={() => onProfileClick && onProfileClick(post?.id)}
+        onProfileClick={() =>
+          onProfileClick &&
+          post.publisher?.username &&
+          onProfileClick(post.publisher?.username)
+        }
         // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
         onPostClick={() => onPostClick && onPostClick(post.id)}
         postInfo={post}
