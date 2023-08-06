@@ -11,11 +11,13 @@ import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
 import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
+import { useRouting } from "routing";
 
 const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { open } = useStoryModal();
+  const { visit } = useRouting();
 
   const { openSocialNewPostModal } = useSocialControls();
 
