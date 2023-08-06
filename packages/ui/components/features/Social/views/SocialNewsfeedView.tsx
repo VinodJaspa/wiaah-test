@@ -12,7 +12,7 @@ import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
 import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 
-const SocialNewsfeedView = () => {
+const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { open } = useStoryModal();

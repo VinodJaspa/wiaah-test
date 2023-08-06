@@ -49,6 +49,7 @@ export class NewsfeedPostsResolver {
             tag: args.hashtag,
           },
         },
+        type: args.postType,
       },
 
       orderBy: {
@@ -76,14 +77,16 @@ export class NewsfeedPostsResolver {
   ) {
     return this.newsfeedPostsService.getNewsfeedPostsByUserId(
       user.id,
+      args.type,
       args.pagination,
     );
   }
 
   @Query(() => [NewsfeedPost])
-  getNewsfeedPostsByUserId(@Args('args') args: GetNewsfeedPostsByUserIdInput) {
+  getPostsByUserId(@Args('args') args: GetNewsfeedPostsByUserIdInput) {
     return this.newsfeedPostsService.getNewsfeedPostsByUserId(
       args.userId,
+      args.type,
       args.pagination,
     );
   }
@@ -114,6 +117,11 @@ export class NewsfeedPostsResolver {
     const topViewed = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         views: 'desc',
@@ -123,6 +131,11 @@ export class NewsfeedPostsResolver {
     const topReacted = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         reactionNum: 'desc',
@@ -132,6 +145,11 @@ export class NewsfeedPostsResolver {
     const topCommented = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         comments: 'desc',
@@ -141,6 +159,11 @@ export class NewsfeedPostsResolver {
     const topShared = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         shares: 'desc',
@@ -170,6 +193,7 @@ export class NewsfeedPostsResolver {
       id: post.affiliationId,
     };
   }
+
   @ResolveField(() => Product)
   product(@Parent() post: NewsfeedPost) {
     return {
@@ -177,6 +201,7 @@ export class NewsfeedPostsResolver {
       id: post.productId,
     };
   }
+
   @ResolveField(() => Service)
   service(@Parent() post: NewsfeedPost) {
     return {
@@ -185,7 +210,23 @@ export class NewsfeedPostsResolver {
     };
   }
 
-  // TODO: implement this
+  @ResolveField(() => Boolean)
+  async pinned(
+    @Parent() post: NewsfeedPost,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const pinned = await this.prisma.pinnedContent.findUnique({
+      where: {
+        userId_contentId: {
+          contentId: post.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!pinned;
+  }
+
   @ResolveField(() => Boolean)
   async isLiked(
     @GqlCurrentUser() user: AuthorizationDecodedUser,

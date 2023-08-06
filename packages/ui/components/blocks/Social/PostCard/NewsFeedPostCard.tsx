@@ -47,11 +47,17 @@ export interface PostCardProps {
     | "tags"
     | "shares"
   > & { attachments: Pick<Attachment, "src" | "type">[] };
+  onProfileClick?: () => any;
+  onPostClick?: () => any;
+  onLocationClick?: () => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   postInfo,
   profileInfo,
+  onPostClick,
+  onProfileClick,
+  onLocationClick,
 }) => {
   const { shareLink } = useSocialControls();
   const { visit, getUrl } = useRouting();
@@ -65,7 +71,6 @@ export const PostCard: React.FC<PostCardProps> = ({
     if (!profileInfo) return;
     mutate({
       args: {
-        authorProfileId: profileInfo.id,
         contentId: postInfo.id,
         contentType: ContentHostType.PostNewsfeed,
       },
@@ -103,20 +108,14 @@ export const PostCard: React.FC<PostCardProps> = ({
                   userPhotoSrc: profileInfo.photo,
                   id: profileInfo.id,
                 }}
-                onProfileClick={() =>
-                  visit((r) => r.visitSocialPostAuthorProfile(profileInfo))
-                }
+                onProfileClick={() => onProfileClick && onProfileClick()}
               />
             </div>
             <div className="flex w-full justify-between">
               <div className="flex flex-col">
                 <p className="font-bold">{profileInfo.username}</p>
                 <div
-                  onClick={() =>
-                    visit((r) =>
-                      r.visitLocalisation({ location: profileInfo.profession })
-                    )
-                  }
+                  onClick={() => onLocationClick && onLocationClick()}
                   className="cursor-pointer flex gap-1 items-center"
                 >
                   <LocationIcon className="text-white" />

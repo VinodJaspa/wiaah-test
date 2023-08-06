@@ -368,6 +368,7 @@ export type AdminNewsfeedPost = {
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
+  pinned: Scalars["Boolean"]["output"];
   product: Product;
   productId?: Maybe<Scalars["String"]["output"]>;
   publisher?: Maybe<Profile>;
@@ -1015,6 +1016,16 @@ export type ContentSharePaginationResponse = {
   total: Scalars["Int"]["output"];
 };
 
+export type ContentView = {
+  __typename?: "ContentView";
+  contentOnwerId: Scalars["String"]["output"];
+  contentType: ContentHostType;
+  createdAt: Scalars["String"]["output"];
+  id: Scalars["String"]["output"];
+  updatedAt: Scalars["String"]["output"];
+  viewerId: Scalars["String"]["output"];
+};
+
 export type CookiesSetting = {
   __typename?: "CookiesSetting";
   benefits: Array<Scalars["String"]["output"]>;
@@ -1206,6 +1217,11 @@ export type CreateNewsfeedPostInput = {
   title: Scalars["String"]["input"];
   type?: InputMaybe<PostType>;
   visibility?: InputMaybe<PostVisibility>;
+};
+
+export type CreatePinnedContentInput = {
+  contentId: Scalars["ID"]["input"];
+  userId: Scalars["ID"]["input"];
 };
 
 export type CreateProductAttributeInput = {
@@ -1988,6 +2004,7 @@ export type GetMyFriendSuggestionsInput = {
 
 export type GetMyNewsfeedPostsInput = {
   pagination: GqlPaginationInput;
+  type: PostType;
 };
 
 export type GetMyOrdersInput = {
@@ -2025,6 +2042,7 @@ export type GetNearShopsInput = {
 
 export type GetNewsfeedPostsByUserIdInput = {
   pagination: GqlPaginationInput;
+  type: PostType;
   userId: Scalars["ID"]["input"];
 };
 
@@ -2035,6 +2053,7 @@ export type GetPlaceSuggestionInput = {
 export type GetPostsByHashtagInput = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   hashtag: Scalars["String"]["input"];
+  postType: PostType;
   take: Scalars["Int"]["input"];
 };
 
@@ -2711,6 +2730,7 @@ export type Mutation = {
   likeStory: Scalars["Boolean"]["output"];
   login: GqlStatusResponse;
   loginAs: GqlStatusResponse;
+  pinContent: Scalars["Boolean"]["output"];
   processWithdrawalRequest: Scalars["Boolean"]["output"];
   provideVVCPicture: Scalars["Boolean"]["output"];
   refundInsurance: Scalars["Boolean"]["output"];
@@ -2753,6 +2773,7 @@ export type Mutation = {
   unBanBuyersCities: Scalars["Boolean"]["output"];
   unBanSellersCities: Scalars["Boolean"]["output"];
   unFollow: Scalars["Boolean"]["output"];
+  unPinContent: Scalars["Boolean"]["output"];
   unblockUser: Scalars["Boolean"]["output"];
   unsubscribe: Scalars["Boolean"]["output"];
   updateAccountPrivacySettings: PrivacySettings;
@@ -3148,6 +3169,10 @@ export type MutationLoginAsArgs = {
   userId: Scalars["String"]["input"];
 };
 
+export type MutationPinContentArgs = {
+  args: CreatePinnedContentInput;
+};
+
 export type MutationProcessWithdrawalRequestArgs = {
   id: Scalars["String"]["input"];
 };
@@ -3308,6 +3333,10 @@ export type MutationUnBanSellersCitiesArgs = {
 
 export type MutationUnFollowArgs = {
   unFollowProfileInput: UnFollowProfileInput;
+};
+
+export type MutationUnPinContentArgs = {
+  args: CreatePinnedContentInput;
 };
 
 export type MutationUnblockUserArgs = {
@@ -3528,6 +3557,7 @@ export type NewsfeedPost = {
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
+  pinned: Scalars["Boolean"]["output"];
   product: Product;
   productId?: Maybe<Scalars["String"]["output"]>;
   publisher?: Maybe<Profile>;
@@ -4105,6 +4135,7 @@ export enum ProfileVisibility {
 export type ProfileVisitDetails = {
   __typename?: "ProfileVisitDetails";
   country: Scalars["String"]["output"];
+  visitPercent: Scalars["Float"]["output"];
   visits: Scalars["Int"]["output"];
 };
 
@@ -4177,6 +4208,7 @@ export type Query = {
   getAdminProfile: Profile;
   getAffiliationPost: AffiliationPost;
   getAllShares: ContentSharePaginationResponse;
+  getAudienceTrendingHour: Array<ContentView>;
   getAudioById: AudioCursorPaginationResponse;
   getAuthorAffiliationPosts: Array<AffiliationPost>;
   getBannedCountries: Array<BannedCountry>;
@@ -4256,10 +4288,10 @@ export type Query = {
   getNewletterSubscribers: Array<NewsletterSubscriber>;
   getNewsfeedHashtagPosts: NewsfeedHashtagSearch;
   getNewsfeedPostById: NewsfeedPost;
-  getNewsfeedPostsByUserId: Array<NewsfeedPost>;
   getOrder: Order;
   getPendingSellers: Array<Account>;
   getPlaceSuggestions: PlaceSuggestions;
+  getPostsByUserId: Array<NewsfeedPost>;
   getProduct: Product;
   getProductAttributesByProductCategory: ProductAttribute;
   getProductById: Product;
@@ -4812,10 +4844,6 @@ export type QueryGetNewsfeedPostByIdArgs = {
   id: Scalars["String"]["input"];
 };
 
-export type QueryGetNewsfeedPostsByUserIdArgs = {
-  args: GetNewsfeedPostsByUserIdInput;
-};
-
 export type QueryGetOrderArgs = {
   id: Scalars["String"]["input"];
 };
@@ -4826,6 +4854,10 @@ export type QueryGetPendingSellersArgs = {
 
 export type QueryGetPlaceSuggestionsArgs = {
   args: GetPlaceSuggestionInput;
+};
+
+export type QueryGetPostsByUserIdArgs = {
+  args: GetNewsfeedPostsByUserIdInput;
 };
 
 export type QueryGetProductArgs = {

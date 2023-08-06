@@ -68,6 +68,7 @@ type NewsfeedPost {
   affiliation: Affiliation!
   product: Product!
   service: Service!
+  pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
@@ -121,6 +122,7 @@ type AdminNewsfeedPost {
   affiliation: Affiliation!
   product: Product!
   service: Service!
+  pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
@@ -679,6 +681,7 @@ type ProfileReachedAudience {
 type ProfileVisitDetails {
   country: String!
   visits: Int!
+  visitPercent: Float!
 }
 
 type ProfileVisitsDetails {
@@ -739,7 +742,7 @@ type Query {
   isFollowed(profileId: String!): Boolean!
   getTrendingHashtagPosts(args: GetPostsByHashtagInput!): NewsfeedPostsPaginationResponse!
   getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
-  getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
   getSocialPostById(id: String!): NewsfeedPost!
   getTopHashtagNewsfeed(tag: String!): TopHashtagNewsfeedPosts!
@@ -833,14 +836,17 @@ input GetPostsByHashtagInput {
   take: Int!
   cursor: String
   hashtag: String!
+  postType: PostType!
 }
 
 input GetMyNewsfeedPostsInput {
   pagination: GqlPaginationInput!
+  type: PostType!
 }
 
 input GetNewsfeedPostsByUserIdInput {
   userId: ID!
+  type: PostType!
   pagination: GqlPaginationInput!
 }
 
@@ -1077,6 +1083,8 @@ type Mutation {
   UploadActionCover(file: Upload!): String!
   uploadActionVideo(src: Upload!): String!
   hideContent(args: HideContentInput!): Boolean!
+  pinContent(args: CreatePinnedContentInput!): Boolean!
+  unPinContent(args: CreatePinnedContentInput!): Boolean!
 }
 
 input CreateProfileInput {
@@ -1274,4 +1282,9 @@ scalar Upload
 
 input HideContentInput {
   id: ID!
+}
+
+input CreatePinnedContentInput {
+  contentId: ID!
+  userId: ID!
 }

@@ -437,6 +437,19 @@ model ProfileVisit {
   city      String
 }
 
+model ProfileVisitStats {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String @db.ObjectId
+
+  country String
+  visits  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([profileId, country])
+}
+
 model ProfileReached {
   id                 String               @id @default(auto()) @map("_id") @db.ObjectId
   profileId          String               @db.ObjectId
@@ -483,6 +496,8 @@ model PinnedContent {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, contentId])
 }
 
 type Hashtag {

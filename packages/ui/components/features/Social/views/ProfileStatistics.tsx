@@ -1,11 +1,17 @@
 import React, { ReactNode } from "react";
-import { mapArray, NumberShortner, randomNum, runIfFn, useForm } from "utils";
+import {
+  getRandomContrastingColor,
+  mapArray,
+  NumberShortner,
+  randomNum,
+  runIfFn,
+  useForm,
+} from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Legend,
   Tooltip,
   XAxis,
@@ -13,24 +19,17 @@ import {
   PieChart,
   Pie,
   Cell,
-  LabelList,
 } from "recharts";
 import {
   AspectRatio,
-  BoxShadow,
-  Button,
   CommentIcon,
-  FilterInput,
   HeartFillIcon,
   HStack,
   Image,
-  Input,
   LocationOnPointIcon,
   Pagination,
   PersonPlusIcon,
   SaveFlagFIllIcon,
-  Select,
-  SelectOption,
   Table,
   TBody,
   Td,
@@ -38,11 +37,8 @@ import {
   THead,
   Tr,
 } from "@partials";
-import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import { getRandomImage } from "placeholder";
 import {
-  SpinnerFallback,
-  useGetMyProfileQuery,
   useGetProfileOverviewStatisticsQuery,
   useGetProfilePopularStoriesViewsQuery,
   useGetProfileReachedAudienceQuery,
@@ -54,6 +50,8 @@ import {
   useUserData,
 } from "@UI";
 import { ProfileReachedGender } from "@features/API";
+import { HtmlSvgProps } from "types";
+import { twMerge } from "tailwind-merge";
 
 export const ProfileStatistics: React.FC<{
   accountId: string;
@@ -458,7 +456,7 @@ export const ProfileStatistics: React.FC<{
               >
                 <div className="absolute w-2/4 top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2">
                   <AspectRatio ratio={1}>
-                    <div className="flex flex-col gap-2 justify-center h-full w-full items-center rounded-full bg-black bg-opacity-[0.12]">
+                    <div className="flex flex-col gap-2 justify-center h-full w-full items-center rounded-full">
                       <p>{t("Total of audience")}</p>
                       <p className="font-bold text-xl">
                         {NumberShortner((reachedAudience || [])?.length)}
@@ -466,25 +464,13 @@ export const ProfileStatistics: React.FC<{
                     </div>
                   </AspectRatio>
                 </div>
-                <PieChart width={reachedDims.h} height={reachedDims.h}>
-                  <Pie
-                    data={reachedData}
-                    innerRadius={100}
-                    outerRadius={120}
-                    paddingAngle={4}
-                    dataKey={"value"}
-                    cornerRadius={10}
-                    animationBegin={90}
-                  >
-                    {reachedData.map((entry, index) => (
-                      <Cell
-                        radius={100}
-                        key={`cell-${index}`}
-                        fill={entry.fill}
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
+
+                <EllipseStats
+                  fill="#5B93FF"
+                  thinkness={15}
+                  max={1200}
+                  value={1200}
+                />
               </div>
 
               <div className="flex justify-around">
@@ -497,6 +483,7 @@ export const ProfileStatistics: React.FC<{
                   color="#5B93FF"
                   name={t("Total of Men")}
                 />
+
                 <BarChartLegend
                   amount={
                     (reachedAudience || []).filter(
@@ -591,11 +578,11 @@ export const ProfileStatistics: React.FC<{
           {t("Detials Level")}
         </p>
 
-        <Table>
+        <Table TdProps={{ align: "center" }}>
           <THead>
             <Tr>
               <Th>No.</Th>
-              <Th>{t("Country/Terrorist")}</Th>
+              <Th align="left">{t("Country/Terrorist")}</Th>
               <Th>{t("Visits")}</Th>
               <Th>{t("Visit Percentage")}</Th>
               <Th>{t("Contribution Total")}</Th>
@@ -603,15 +590,33 @@ export const ProfileStatistics: React.FC<{
           </THead>
 
           <TBody>
-            {mapArray(visitsDetails?.countries, (item, idx) => (
-              <Tr>
-                <Td>{idx + 1}</Td>
-                <Td>{item.country}</Td>
-                <Td>{item.visits}</Td>
-                <Td>{t("Visit Percentage")}</Td>
-                <Td>{t("Contribution Total")}</Td>
-              </Tr>
-            ))}
+            {mapArray(visitsDetails?.countries, (item, idx) => {
+              const color = getRandomContrastingColor();
+              return (
+                <Tr>
+                  <Td>{idx + 1}</Td>
+                  <Td
+                    className="text-lg font-semibold"
+                    style={{ color }}
+                    align="left"
+                  >
+                    {item.country}
+                  </Td>
+                  <Td>{item.visits}</Td>
+                  <Td>
+                    <p>%{item.visitPercent / 100}</p>
+                  </Td>
+                  <Td>
+                    <EllipseStats
+                      value={item.visitPercent}
+                      max={100}
+                      fill={color}
+                      thinkness={5}
+                    />
+                  </Td>
+                </Tr>
+              );
+            })}
           </TBody>
         </Table>
       </div>
@@ -793,5 +798,45 @@ const StatisticsAgeIndicator: React.FC<{
         </div>
       </div>
     </div>
+  );
+};
+
+const EllipseStats: React.FC<{
+  max: number;
+  value: number;
+  fill: string;
+  thinkness: number;
+  className?: string;
+}> = ({ max, value, fill, thinkness, className }) => {
+  const fillPercent = value / max;
+
+  const dasharray = 530;
+
+  return (
+    <Ellipse
+      style={{
+        fill: "none",
+        strokeLinecap: "round",
+        strokeDasharray: dasharray,
+        strokeDashoffset: dasharray + 83 - fillPercent * dasharray,
+        strokeWidth: thinkness,
+        stroke: fill,
+      }}
+      className={twMerge("-rotate-90", className)}
+    />
+  );
+};
+
+const Ellipse: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      viewBox="0 0 172 172"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="85.9999" cy="85.9998" r="0.3em" />
+    </svg>
   );
 };

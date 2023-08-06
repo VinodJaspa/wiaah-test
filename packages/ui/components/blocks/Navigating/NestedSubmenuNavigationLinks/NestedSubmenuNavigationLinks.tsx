@@ -87,7 +87,7 @@ export const NestedSubmenuNavigationLinks: React.FC<{
               selected
                 ? `${
                     lastDeepNum === 0
-                      ? "bg-primary rounded text-white"
+                      ? "rounded text-indigo-500"
                       : "text-primary"
                   }`
                 : "text-black"

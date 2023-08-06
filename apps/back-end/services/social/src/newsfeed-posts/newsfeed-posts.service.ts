@@ -12,11 +12,12 @@ import {
   DBErrorException,
   ExtractPagination,
   GqlPaginationInput,
+  NotOwnerOfResourcePublicError,
 } from 'nest-utils';
 import { ContentManagementService } from '@content-management';
 import { EventBus } from '@nestjs/cqrs';
 import { PostCreatedEvent } from './events';
-import { PostStatus } from 'prismaClient';
+import { PostStatus, PostType } from 'prismaClient';
 
 @Injectable()
 export class NewsfeedPostsService {
@@ -83,16 +84,49 @@ export class NewsfeedPostsService {
 
   async getNewsfeedPostsByUserId(
     userId: string,
+    type: PostType,
     pagination: GqlPaginationInput,
+    sortPinned?: boolean,
   ) {
     const { skip, take } = ExtractPagination(pagination);
-    return this.prisma.newsfeedPost.findMany({
+
+    const pinned = await this.prisma.pinnedContent.findMany({
       where: {
         userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const pinnedPosts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        id: {
+          in: pinned.map((v) => v.contentId),
+        },
+        type,
+      },
+    });
+
+    const posts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        userId,
+        type,
+        id: {
+          not: {
+            in: pinnedPosts.map((v) => v.id),
+          },
+        },
       },
       take,
       skip,
     });
+
+    const sortedPinnedPosts = pinned
+      .map((v) => pinnedPosts.find((post) => post.id === v.contentId))
+      .filter((v) => !!v);
+
+    return sortedPinnedPosts.concat(posts);
   }
 
   async getProtectedNewsfeedPostsByUserId(
@@ -149,7 +183,7 @@ export class NewsfeedPostsService {
     const { id, ...rest } = input;
     const [isAuthor, post] = await this.isAuthorOfPost(id, userId);
     if (!isAuthor)
-      throw new UnauthorizedException(
+      throw new NotOwnerOfResourcePublicError(
         'you can only update posts you have published',
       );
     try {
@@ -199,7 +233,7 @@ export class NewsfeedPostsService {
   ): Promise<NewsfeedPost> {
     const isAuthor = await this.isAuthorOfPost(postId, userId);
     if (!isAuthor)
-      throw new UnauthorizedException(
+      throw new NotOwnerOfResourcePublicError(
         'you can only delete posts you have published',
       );
     try {
