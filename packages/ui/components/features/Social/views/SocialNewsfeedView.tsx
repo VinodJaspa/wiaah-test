@@ -19,7 +19,7 @@ const SocialNewsfeedView: React.FC = () => {
   const { open } = useStoryModal();
   const { visit } = useRouting();
 
-  const { openpost } = useSocialControls();
+  // const { openpost } = useSocialControls();
 
   const { pagination: storiesPagination } = usePaginationControls();
   const { data: recentStories } = useGetRecentStories({
@@ -86,7 +86,8 @@ const SocialNewsfeedView: React.FC = () => {
           <PostCardsListWrapper
             grid={true}
             onPostClick={(post) => {
-              openSocialPostModal(post.postInfo.id);
+              // TODO
+              // openSocialPostModal(post.postInfo.id);
             }}
             onProfileClick={(username) =>
               visit((r) => r.visitSocialProfile(username))

@@ -9,17 +9,7 @@ import {
 } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
-import {
-  Bar,
-  BarChart,
-  Legend,
-  Tooltip,
-  XAxis,
-  YAxis,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import { Bar, BarChart, Legend, Tooltip, XAxis, YAxis } from "recharts";
 import {
   AspectRatio,
   CommentIcon,
@@ -657,14 +647,62 @@ export const ProfileStatistics: React.FC<{
                 <Td>{v.name}</Td>
                 <Td>{v.views}</Td>
                 <Td>{v.likes}</Td>
-                <Td>{v.likes}</Td>
+                <Td>{v.visits}</Td>
                 <Td>{v.comments}</Td>
               </Tr>
             ))}
           </TBody>
         </Table>
         <div className="self-center">
-          <Pagination></Pagination>
+          <Pagination />
+        </div>
+      </div>
+
+      <div className="flex flex-col p-8 gap-4">
+        <p className="font-bold text-xl whitespace-nowrap">
+          {t("Most Popular Actions")}
+        </p>
+
+        <Table
+          ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
+          TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
+          className="w-full"
+        >
+          <THead>
+            <Tr>
+              <Th>{t("Post Image")}</Th>
+              <Th>{t("Name")}</Th>
+              <Th>{t("Date")}</Th>
+              <Th>{t("Total Views")}</Th>
+              <Th>{t("Total Likes")}</Th>
+              <Th>{t("Number of Visits")}</Th>
+              <Th>{t("Comments")}</Th>
+            </Tr>
+          </THead>
+          <TBody>
+            {mapArray(actions, (v, i) => (
+              <Tr>
+                <Td>
+                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
+                </Td>
+                <Td>{v.name}</Td>
+                <Td>
+                  {new Date(v.date).toLocaleDateString("en-us", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                  })}
+                </Td>
+                <Td>{v.views}</Td>
+                <Td>{v.likes}</Td>
+                <Td>{v.visits}</Td>
+                <Td>{v.comments}</Td>
+              </Tr>
+            ))}
+          </TBody>
+        </Table>
+        <div className="self-center">
+          <Pagination />
         </div>
       </div>
     </div>

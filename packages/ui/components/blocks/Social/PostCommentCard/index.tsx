@@ -26,7 +26,7 @@ export interface PostCommentCardProps {
   onLike?: () => void;
   main?: boolean;
   comment: Comment;
-}
+} 
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   comment,
@@ -53,7 +53,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   function handleLikeComment() {
     mutate({
       args: {
-        authorProfileId: comment?.author?.id || "",
         contentId: comment.id,
         contentType: ContentHostType.Comment,
       },
@@ -79,15 +78,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             <HStack>
               <Menu>
                 <MenuButton>
-                  {/* <Button
-                    onClick={() => {
-                      openModalWithId(id);
-                    }}
-                    size={"xs"}
-
-                  >
-                    {t("report", "Report")}
-                  </Button> */}
                   <HiDotsHorizontal className="cursor-pointer text-2xl fill-primary" />
                 </MenuButton>
                 <MenuList>

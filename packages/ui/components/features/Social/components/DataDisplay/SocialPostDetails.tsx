@@ -33,7 +33,7 @@ import { getRandomImage } from "@UI/placeholder";
 import { useRouting } from "routing";
 
 export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
-  const { data, isLoading } = useGetSocialPostQuery({ id: postId });
+  const { data } = useGetSocialPostQuery({ id: postId });
   const { shareLink } = useSocialControls();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({

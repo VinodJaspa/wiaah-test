@@ -8,7 +8,6 @@ const PostDetailsView: NextPage = () => {
   const { getParam } = useRouting();
 
   const postId = getParam("postId");
-  console.log("postId", postId);
   return (
     <SellerLayout>
       <SocialPostView postId={postId} />
