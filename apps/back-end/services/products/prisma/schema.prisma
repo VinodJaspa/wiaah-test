@@ -20,6 +20,7 @@ model ProductCategory {
   sales              Int                   @default(0)
   metaTagTitle       TranslationText[]
   metaTagDescription TranslationText[]
+  metaTagKeywords    TranslationText[]
   parantId           String?
   attributeIds       String[]
 }

@@ -810,6 +810,9 @@ input ProductPresentationInput {
 input CreateCategoryInput {
   parantId: ID
   name: [TranslationTextInput!]!
+  metaTagTitle: [TranslationTextInput!]!
+  metaTagDescription: [TranslationTextInput!]!
+  metaTagKeywords: [TranslationTextInput!]!
   sortOrder: Int!
   status: ProductCategoryStatus!
 }
@@ -817,6 +820,9 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   parantId: ID
   name: [TranslationTextInput!]
+  metaTagTitle: [TranslationTextInput!]
+  metaTagDescription: [TranslationTextInput!]
+  metaTagKeywords: [TranslationTextInput!]
   sortOrder: Int
   status: ProductCategoryStatus
   id: ID!

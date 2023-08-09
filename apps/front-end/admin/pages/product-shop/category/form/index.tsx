@@ -1,4 +1,4 @@
-import { CreateCategoryInput, ProductCategoryStatus } from "@features/API";
+import { CreateCategoryInput } from "@features/API";
 import { Formik } from "formik";
 import React from "react";
 import { FlagIconCode } from "react-flag-kit";
@@ -30,7 +30,6 @@ import {
   useCreateProductCategory,
 } from "ui";
 import {
-  WiaahLanguageCountries,
   WiaahLanguageCountriesIsoCodes,
   mapArray,
   runIfFn,
@@ -41,8 +40,11 @@ const EditCategory = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
-  const { form, inputProps, selectProps, translationInputProps, handleChange } =
-    useForm<Partial<CreateCategoryInput>>({});
+
+  const { form, inputProps, selectProps, translationInputProps } = useForm<
+    Partial<Parameters<typeof createCate>[0]>
+  >({});
+
   const [lang, changeLang] = React.useState<string>(
     WiaahLanguageCountriesIsoCodes.at(0)
   );
@@ -53,8 +55,10 @@ const EditCategory = () => {
       take: 1000,
     },
   });
+
   const { mutate: updateCate } = useUpdateProductCategoryMutation();
   const { mutate: createCate } = useCreateProductCategory();
+
   const handleSubmit = () => {
     if (CategoryId) {
       updateCate({ ...form, id: CategoryId });
@@ -90,15 +94,17 @@ const EditCategory = () => {
               {t("Meta Tag Title")}
             </p>
             <div className="col-span-7">
-              <Input {...translationInputProps("")} />
+              <Input {...translationInputProps("metaTagTitle", lang)} />
             </div>
             <p className="col-span-1">{t("Meta Tag Description")}</p>
             <Textarea
+              {...translationInputProps("metaTagDescription", lang)}
               className="col-span-7"
               placeholder={t("Meta Tag Description")}
             />
             <p className="col-span-1">{t("Meta Tag Keywords")}</p>
             <Textarea
+              {...translationInputProps("metaTagKeywords", lang)}
               className="col-span-7"
               placeholder={t("Meta Tag Keywords")}
             />
@@ -187,7 +193,7 @@ const EditCategory = () => {
             <p className="inline">
               <ExclamationCircleIcon className="inline mx-2" />
               {t(
-                "Do not use spaces, instead replace spaces with - and make sur the SEO URL is globally unique."
+                "Do not use spaces, instead replace spaces with - and make sure the SEO URL is globally unique."
               )}
             </p>
           </div>

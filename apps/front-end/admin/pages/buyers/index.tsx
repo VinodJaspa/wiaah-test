@@ -41,11 +41,15 @@ const buyers: NextPage = () => {
   const [qrcode, setQrCode] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();
 
-  const { form, handleChange, inputProps } = useForm<
+  const { form, inputProps } = useForm<
     Parameters<typeof useGetFilteredBuyers>[0]
   >({ pagination }, { pagination });
 
-  const { data: buyers } = useGetFilteredBuyers(form);
+  const { data: buyers, refetch } = useGetFilteredBuyers(form);
+
+  React.useEffect(() => {
+    refetch({});
+  }, [form]);
 
   return (
     <TableContainer>

@@ -47,40 +47,7 @@ export type GetAffiliationsQuery = { __typename?: "Query" } & {
   >;
 };
 
-export const useGetMyAffiliationQuery = (input: GetMyAffiliationsInput) => {
-  const client = createGraphqlRequestClient();
-
-  client.setQuery(`
-    query getAffiliations(
-        $args:GetMyAffiliationsInput!
-    ){
-        getMyAffiliations(
-            args:$args
-        ){
-            commision
-            createdAt
-            expireAt
-            id
-            itemId
-            itemType
-            product {
-                id
-            }
-            sellerId
-            service {
-                id
-                type
-                name
-            }
-            updatedAt
-        }
-    }
-    `);
-
-  client.setVariables<GetAffiliationsQueryVariables>({
-    args: input,
-  });
-
+export const useGetUserAffiliationQuery = (input: GetMyAffiliationsInput) => {
   return useQuery(["my-affiliations"], async () => {
     if (isDev) {
       const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [
@@ -110,6 +77,38 @@ export const useGetMyAffiliationQuery = (input: GetMyAffiliationsInput) => {
 
       return mockRes;
     }
+    const client = createGraphqlRequestClient();
+
+    client.setQuery(`
+    query getAffiliations(
+        $args:GetMyAffiliationsInput!
+    ){
+        getMyAffiliations(
+            args:$args
+        ){
+            commision
+            createdAt
+            expireAt
+            id
+            itemId
+            itemType
+            product {
+                id
+            }
+            sellerId
+            service {
+                id
+                type
+                name
+            }
+            updatedAt
+        }
+    }
+    `);
+
+    client.setVariables<GetAffiliationsQueryVariables>({
+      args: input,
+    });
 
     const res = await client.send<GetAffiliationsQuery>();
 

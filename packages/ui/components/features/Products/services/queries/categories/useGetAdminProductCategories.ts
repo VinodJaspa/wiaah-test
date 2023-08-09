@@ -1,4 +1,8 @@
-import { Category, Exact, GetFilteredCategory } from "@features/API";
+import {
+  Exact,
+  GetFilteredCategory,
+  ProductCategoryStatus,
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -6,13 +10,16 @@ export type GetProductCategoriesQueryVariables = Exact<{
   args: GetFilteredCategory;
 }>;
 
-export type GetProductCategoriesQuery = { __typename?: "Query" } & {
-  getFilteredProductCategories: Array<
-    { __typename?: "Category" } & Pick<
-      Category,
-      "id" | "name" | "parantId" | "sortOrder" | "status"
-    >
-  >;
+export type GetProductCategoriesQuery = {
+  __typename?: "Query";
+  getFilteredProductCategories: Array<{
+    __typename?: "Category";
+    id: string;
+    name: string;
+    parantId: string;
+    sortOrder: number;
+    status: ProductCategoryStatus;
+  }>;
 };
 
 type args = GetProductCategoriesQueryVariables["args"];
@@ -38,7 +45,6 @@ query getProductCategories(
     status
   }
 }
-
     `);
 
   client.setVariables<GetProductCategoriesQueryVariables>({

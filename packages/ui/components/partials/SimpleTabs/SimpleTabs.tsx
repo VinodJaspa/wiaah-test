@@ -65,7 +65,7 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
     <>
       {mapArray(children, (c, i) => (
         <>
-          {runIfFn<SimpleTabHeadChildProps>(c, {
+          {PassPropsToFnOrElem<SimpleTabHeadChildProps>(c, {
             onClick: () => setCurrIdx(i),
             selected: i === currIdx,
           })}

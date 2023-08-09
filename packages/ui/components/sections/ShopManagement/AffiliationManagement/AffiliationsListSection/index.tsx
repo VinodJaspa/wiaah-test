@@ -16,7 +16,7 @@ import {
   SectionHeader,
   Image,
   Badge,
-  useGetMyAffiliationQuery,
+  useGetUserAffiliationQuery,
   HStack,
   LinkIcon,
   Divider,
@@ -40,7 +40,8 @@ export const AffiliationListSection: React.FC<
   const { copy } = useClipboard();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { t } = useTranslation();
-  const { data: affiliations } = useGetMyAffiliationQuery({ pagination });
+
+  const { data: affiliations } = useGetUserAffiliationQuery({ pagination });
 
   React.useEffect(() => {
     changeTotalItems(affiliations?.length || 0);

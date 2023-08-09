@@ -13,12 +13,13 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  NoReadPremissionPublicError,
+  accountType,
 } from 'nest-utils';
-
 import { Account, Affiliation, Product, Service } from '@affiliation/entities';
 import {
   CreateAffiliationInput,
-  GetMyAffiliationsInput,
+  GetUserAffiliationsInput,
   UpdateAffiliationInput,
 } from '@affiliation/dto';
 import {
@@ -67,10 +68,11 @@ export class AffiliationResolver {
   }
 
   @Query(() => [Affiliation])
-  getMyAffiliations(
-    @Args('args') args: GetMyAffiliationsInput,
+  async getUserAffiliations(
+    @Args('args') args: GetUserAffiliationsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Affiliation[]> {
+    await this.validateViewPermissions(user, args.userId);
     return this.querybus.execute<GetAffliationsBySellerIdQuery, Affiliation[]>(
       new GetAffliationsBySellerIdQuery(user.id, args.pagination),
     );
@@ -99,5 +101,15 @@ export class AffiliationResolver {
       __typename: 'Account',
       id: aff.sellerId,
     };
+  }
+
+  async validateViewPermissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    const isValid =
+      user.accountType === accountType.ADMIN || userId === user.id;
+    if (!isValid) throw new NoReadPremissionPublicError();
+    return true;
   }
 }

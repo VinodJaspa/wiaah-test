@@ -564,11 +564,8 @@ export const AdminNavigationSidebar: React.FC<{
 
   return (
     <div className="flex max-h-[100vh] flex-col w-full border-r border-opacity-20 border-r-black h-full gap-4">
-      <div className="flex bg-white justify-center items-center h-24">
-        <HStack className="text-indigo-500 fill-indigo-500">
-          <StatisticsIcon className="text-5xl" />
-          <p className="text-2xl font-bold">{t("Wiaah")}</p>
-        </HStack>
+      <div className="flex bg-white justify-center items-center h-24 border-b border-opacity-20 border-b-black">
+        <LogoIcon className="text-8xl text-primary" />
       </div>
       <div className="px-4 h-full thinScroll overflow-y-scroll">
         <Accordion>

@@ -7,7 +7,7 @@ export class GetUserAffiliationsInput {
   pagination: GqlPaginationInput;
 
   @Field(() => ID)
-  id: string;
+  userId: string;
 }
 
 @InputType()

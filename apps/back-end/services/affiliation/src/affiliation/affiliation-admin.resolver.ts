@@ -1,20 +1,11 @@
-import { AffiliationPurchase } from '@affiliation-history/entities';
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { NoSchemaIntrospectionCustomRule } from 'graphql';
-import {
-  accountType,
-  ExtractPagination,
-  GqlAuthorizationGuard,
-  GqlPaginationInput,
-} from 'nest-utils';
-import { PrismaService } from 'prismaService';
+import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { UpdateAffiliationCommand } from './commands';
 import {
   GetFilteredAffiliationsInput,
   GetUserAffiliationsInput,
-  GetUserAffiliationsPurchasesInput,
   UpdateAffiliationAdminInput,
 } from './dto';
 import { Affiliation } from './entities';
@@ -26,16 +17,12 @@ import {
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class AffiliationAdminResolver {
-  constructor(
-    private commandbus: CommandBus,
-    private querybus: QueryBus,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private commandbus: CommandBus, private querybus: QueryBus) {}
 
   @Query(() => [Affiliation])
   getUserAffiliations(@Args('args') args: GetUserAffiliationsInput) {
     return this.querybus.execute(
-      new GetAffliationsBySellerIdQuery(args.id, args.pagination),
+      new GetAffliationsBySellerIdQuery(args.userId, args.pagination),
     );
   }
 

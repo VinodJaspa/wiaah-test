@@ -8,6 +8,7 @@ import {
   useAdminGetProfileQuery,
   SalesStatistics,
   ShoppingStats,
+  AccountSettingsSection,
 } from "ui";
 import { randomNum } from "utils";
 import { getRandomImage } from "placeholder";
@@ -34,8 +35,6 @@ const Edit = () => {
   const { getParam } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
-
-  const { data } = useAdminGetProfileQuery(id);
 
   const tabsTitles = [
     "General",
@@ -79,7 +78,7 @@ const Edit = () => {
         </div>
 
         <SimpleTabItemList>
-          <AccountGeneralView accountId={id} />
+          <AccountSettingsSection accountId={id} />
           <AccountAffiliation accountId={id} />
           <AccountOrderHistory accountId={id} />
           <AccountBookingsHistory accountId={id} />
