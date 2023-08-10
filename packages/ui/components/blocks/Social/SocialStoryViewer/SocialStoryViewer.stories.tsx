@@ -1,11 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialStoryViewer } from "@UI";
+import { SocialStoryViewer, useStorySeenBy } from "@UI";
 import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { PostCardPlaceHolder } from "placeholder";
 import { useSetRecoilState } from "recoil";
 import { SocialStoriesState } from "@src/state";
-import { useStorySeenBy } from "../../../../Hooks";
+
 export default {
   title: "UI/blocks/Social/SocialStoryViewer",
   component: SocialStoryViewer,

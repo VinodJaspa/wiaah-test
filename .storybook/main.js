@@ -20,7 +20,7 @@ const config = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@chakra-ui/storybook-addon",
+    // "@chakra-ui/storybook-addon",
     "storybook-react-i18next",
     {
       /**

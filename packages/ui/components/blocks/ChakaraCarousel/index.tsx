@@ -21,8 +21,8 @@ import {
   StackProps,
 } from "@chakra-ui/react";
 
-import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
+import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@partials";
 
 const MotionFlex = motion<FlexProps>(Flex);
 
@@ -330,7 +330,7 @@ const Slider: React.FC<SliderProps> = ({
             variant="link"
             minW={0}
           >
-            <ChevronLeftIcon boxSize={9} />
+            <DoubleChevronLeftIcon boxSize={9} />
           </Button>
           <Button
             onClick={handleIncrementClick}
@@ -347,7 +347,7 @@ const Slider: React.FC<SliderProps> = ({
             bgColor="whiteAlpha.600"
             minW={0}
           >
-            <ChevronRightIcon boxSize={9} />
+            <DoubleChevronRightIcon boxSize={9} />
           </Button>
         </>
       )}
