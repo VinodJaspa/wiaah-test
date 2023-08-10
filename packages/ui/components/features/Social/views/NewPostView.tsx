@@ -20,7 +20,7 @@ import {
   CheckMarkStepper,
   useCreateActionMutation,
   useSocialControls,
-  SellerLayout,
+  HashTagInput,
 } from "@UI";
 import { useUserData } from "hooks";
 import { mapArray, useForm } from "utils";
@@ -39,7 +39,7 @@ export const NewPostView: React.FC = () => {
   const isOpen = !!value;
   const CloseModal = hideNewPublish;
 
-  const { form, handleChange } = useForm<Parameters<typeof mutate>[0]>({
+  const { form, handleChange,inputProps } = useForm<Parameters<typeof mutate>[0]>({
     src: "",
     cover: "",
   });
@@ -158,7 +158,7 @@ export const NewPostView: React.FC = () => {
                   <div className="flex flex-col gap-1">
                     <p>{t("Tag")}</p>
                     <InputGroup>
-                      <Input></Input>
+                      <HashTagInput {...inputProps("tags")} />
                       <InputRightElement className="px-4">
                         <HashtagIcon />
                       </InputRightElement>
@@ -167,7 +167,7 @@ export const NewPostView: React.FC = () => {
                   <div className="flex flex-col gap-1">
                     <p>{t("User")}</p>
                     <InputGroup>
-                      <Input></Input>
+                      <Input {...inputProps("mentions")}></Input>
                       <InputRightElement className="px-4">
                         <FiAtSign></FiAtSign>
                       </InputRightElement>
@@ -184,7 +184,7 @@ export const NewPostView: React.FC = () => {
                   </div>
                   <div className="flex flex-col gap-1">
                     <p>{t("Link")}</p>
-                    <Input
+                    <HashTagInput
                       placeholder={t("You can add a wiaah product link only")}
                     />
                   </div>
@@ -385,3 +385,14 @@ export const NewPostView: React.FC = () => {
     </>
   );
 };
+
+
+
+
+
+
+export const ProductMultiSelect = ()=> {
+  
+
+  return null
+}

@@ -106,7 +106,7 @@ model NewsfeedPost {
   updatedAt          DateTime           @updatedAt
   legend             String
   affiliationId      String?
-  productId          String?
+  productIds         String[]
   serviceId          String?
   type               PostType
   popularity         Float              @default(0)
