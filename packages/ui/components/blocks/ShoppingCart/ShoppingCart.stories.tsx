@@ -2,13 +2,11 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 import { RecoilRoot } from "recoil";
 import { ShoppingCart } from "../";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { ShoppingCartItem } from "@UI/types/shoppingCart/shoppingCartItem.interface";
 
 export default {
   title: "UI/blocks/ShoppingCart",
   component: ShoppingCart,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ShoppingCart>;
 
 const Templete: ComponentStory<typeof ShoppingCart> = (args) => (

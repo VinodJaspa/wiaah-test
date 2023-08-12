@@ -2,7 +2,6 @@ import React, { CSSProperties } from "react";
 import { HtmlDivProps } from "types";
 import { PassPropsToChild } from "utils";
 import { ArrowLeftIcon, CloseIcon } from "@UI";
-import { bottom } from "./Drawer.stories";
 import { useResponsive } from "hooks";
 
 type DrawerPositions = "left" | "right" | "top" | "bottom";

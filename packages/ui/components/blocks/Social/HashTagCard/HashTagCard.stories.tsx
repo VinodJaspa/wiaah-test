@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { HashTagCard } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/HashTagCard",
   component: HashTagCard,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof HashTagCard>;
 
 const Template: ComponentStory<typeof HashTagCard> = (args) => (

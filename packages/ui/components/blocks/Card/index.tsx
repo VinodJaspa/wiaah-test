@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useRouting } from "routing";
-import { ServicesType } from "types";
 import { colorShades, AspectRatioImage } from "@UI";
 
-export interface CardProps {
+export interface RecommendedShopCardProps {
   imgUrl: string;
   id: string;
   name: string;
@@ -12,7 +10,7 @@ export interface CardProps {
   onShopClick?: (shopId: string) => void;
 }
 
-export const RecommendedShopCard: React.FC<CardProps> = ({
+export const RecommendedShopCard: React.FC<RecommendedShopCardProps> = ({
   imgUrl,
   name = "",
   id,

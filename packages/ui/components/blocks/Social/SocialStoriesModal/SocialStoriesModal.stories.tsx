@@ -1,7 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialStoryModal } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { useStory, useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
@@ -10,7 +9,6 @@ import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",
   component: SocialStoryModal,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SocialStoryModal>;
 
 const Template: ComponentStory<typeof SocialStoryModal> = (args) => {

@@ -1,6 +1,5 @@
 import React from "react";
 import { SellerNavigationDrawer } from ".";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Button } from "@chakra-ui/react";
@@ -22,7 +21,6 @@ import { t } from "i18next";
 export default {
   title: "UI/blocks/drawers/SellerNavigationDrawer",
   component: SellerNavigationDrawer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SellerNavigationDrawer>;
 
 const NavigationLinks: NavigationLinkType[] = [

@@ -103,7 +103,6 @@ const socialAtom = atom<SocialAtomValue>({
     shareLink: undefined,
     reportContent: undefined,
     serviceDetailsId: undefined,
-    createAction: false,
     searchMap: false,
     showMyProfileNav: false,
     showMusicSearch: false,

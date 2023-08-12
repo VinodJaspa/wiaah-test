@@ -51,7 +51,8 @@ export const NotifciationsDrawer: React.FC = () => {
                   <NotifiactionCard
                     username={v.author?.profile?.username}
                     createdAt={v.createdAt}
-                    orderId={"18642"}
+                    // TODO: bind order id from notification
+                    orderId={"132456"}
                     type={v.type}
                     count={1}
                     thumbnail={v.author?.profile?.photo}

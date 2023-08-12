@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { TabsViewer } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/TabsViewer",
   component: TabsViewer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof TabsViewer>;
 
 const Template: ComponentStory<typeof TabsViewer> = (args) => (

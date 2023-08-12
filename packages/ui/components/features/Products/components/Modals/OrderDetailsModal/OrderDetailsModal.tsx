@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useReactPubsub } from "react-pubsub";
 import {
   Modal,
   ModalContent,
@@ -35,12 +34,13 @@ import {
   AspectRatioImage,
 } from "@UI";
 import { setTestid } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export interface OrderDetailsModalProps {}
 
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
   const [id, setId] = React.useState<string>();
-  const { Listen } = useReactPubsub((keys) => keys.openOrderDetailsModal);
+  const { Listen } = useTypedReactPubsub((keys) => keys.openOrderDetailsModal);
   const {
     data: res,
     isLoading,
@@ -115,7 +115,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                {res.data.products.map(
+                {res?.data?.products.map(
                   (
                     {
                       cashback,
@@ -123,7 +123,6 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                       description,
                       discount,
                       id,
-                      location,
                       name,
                       price,
                       qty,

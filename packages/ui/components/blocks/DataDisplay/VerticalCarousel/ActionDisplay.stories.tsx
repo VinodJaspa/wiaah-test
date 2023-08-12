@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ActionsDisplay } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Data Display/ActionsDisplay",
   component: ActionsDisplay,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ActionsDisplay>;
 
 const Template: ComponentStory<typeof ActionsDisplay> = ({ h, ...args }) => (

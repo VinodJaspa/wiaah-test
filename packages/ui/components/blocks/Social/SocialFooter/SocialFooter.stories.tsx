@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialFooter } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/SocialFooter",
   component: SocialFooter,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SocialFooter>;
 
 const Template: ComponentStory<typeof SocialFooter> = (args) => (

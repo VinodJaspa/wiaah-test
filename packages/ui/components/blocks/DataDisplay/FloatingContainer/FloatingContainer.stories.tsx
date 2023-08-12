@@ -1,12 +1,10 @@
 import React from "react";
 import { FloatingContainer, storybookDataDisplayBlocksTitle } from "@UI";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 
 export default {
   title: storybookDataDisplayBlocksTitle + "FloatingContainer",
   component: FloatingContainer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof FloatingContainer>;
 
 const Templete: ComponentStory<typeof FloatingContainer> = (args) => (

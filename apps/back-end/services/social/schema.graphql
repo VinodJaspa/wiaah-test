@@ -1124,7 +1124,7 @@ input CreateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post
@@ -1155,7 +1155,7 @@ input UpdateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post
@@ -1183,7 +1183,7 @@ input UpdatePostAdminInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post

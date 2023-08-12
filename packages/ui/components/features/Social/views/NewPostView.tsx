@@ -21,12 +21,16 @@ import {
   useCreateActionMutation,
   useSocialControls,
   HashTagInput,
+  useCursorScrollPagination,
+  SearchFilterInput,
+  useGetProductsQuery,
 } from "@UI";
 import { useUserData } from "hooks";
 import { mapArray, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
 
 const MAX_UPLOAD_LIMIT = 5;
 
@@ -39,7 +43,9 @@ export const NewPostView: React.FC = () => {
   const isOpen = !!value;
   const CloseModal = hideNewPublish;
 
-  const { form, handleChange,inputProps } = useForm<Parameters<typeof mutate>[0]>({
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof mutate>[0]
+  >({
     src: "",
     cover: "",
   });
@@ -184,7 +190,7 @@ export const NewPostView: React.FC = () => {
                   </div>
                   <div className="flex flex-col gap-1">
                     <p>{t("Link")}</p>
-                    <HashTagInput
+                    <ProductMultiSelect
                       placeholder={t("You can add a wiaah product link only")}
                     />
                   </div>
@@ -386,13 +392,61 @@ export const NewPostView: React.FC = () => {
   );
 };
 
+export const ProductMultiSelect: React.FC<{
+  value: string[];
+  onChange: (value: string[]) => any;
+  placeholder?: string;
+}> = ({ onChange, value, placeholder }) => {
+  const { t } = useTranslation();
+  const [searchValue, setValue] = React.useState<string>("");
 
+  const { } = useGetProductsQuery({})
 
+  const { controls, getHasMore, getNextCursor, props } =
+    useCursorScrollPagination({ take: 10 });
 
+  function resetSearch() {
+    setValue("");
+  }
 
+  function addProduct(tag: string) {
+    onChange && onChange([...value, tag]);
+    resetSearch();
+  }
 
-export const ProductMultiSelect = ()=> {
-  
-
-  return null
-}
+  function removeProduct(tag: string) {
+    onChange && onChange(value.filter((Tag) => Tag !== tag));
+  }
+  return (
+    <div className="border rounded-xl flex gap-2 items-center px-2 border-gray-300">
+      {mapArray(value, (tag, i) => (
+        <span
+          key={tag + i}
+          className="bg-primary rounded py-1 text-white h-fit flex gap-2 px-2 items-center"
+        >
+          <p className="whitespace-nowrap">#{tag}</p>
+          <MdClose
+            onClick={() => removeProduct(tag)}
+            className="bg-green-800 rounded-full cursor-pointer"
+          />
+        </span>
+      ))}
+      <SearchFilterInput
+        controls={controls}
+        placeholder={t("Add Hashtag")}
+        value={searchValue}
+        onChange={(e) => setValue(e.target.value)}
+        className="border-none border-l-2 "
+        onSelection={addProduct}
+        onKeyDown={(e) => {
+          e.code === "Enter" ? addProduct(searchValue) : "";
+        }}
+        components={mapArray(prod || [], ({ tag }, i) => ({
+          name: `#${tag}`,
+          comp: <p>#{tag}</p>,
+          value: tag,
+        }))}
+      />
+    </div>
+  );
+};

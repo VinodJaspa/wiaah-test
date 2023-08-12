@@ -2,10 +2,7 @@ import { ArrElement } from "@UI/../types/src";
 import { mapArray } from "@UI/../utils/src";
 import { SpinnerFallback, useSocialControls } from "@blocks";
 import { PresentationType } from "@features/API";
-import {
-  useGetProductDetailsQuery,
-  useGetUserProducts,
-} from "@features/Products/services";
+import { useGetProductDetailsQuery, useGetUserProducts } from "@features";
 import {
   ArrowLeftAlt1Icon,
   ArrowLeftIcon,
@@ -27,7 +24,6 @@ import {
   Slider,
   Verified,
 } from "@partials";
-import { useShoppingCart } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -56,8 +52,6 @@ export const ProductDetailsDrawer = () => {
       getPreviousPageParam: (last) => last.cursor,
     }
   );
-
-  console.log({ data, error, sellerId: !!product?.seller.id });
 
   return (
     <Drawer
