@@ -1982,6 +1982,10 @@ export type GetInsurancesInput = {
   status: ServiceInsuranceStatusEnum;
 };
 
+export type GetLocalizationInput = {
+  query: Scalars["String"]["input"];
+};
+
 export type GetMessagesByRoomIdInput = {
   pagination: GqlCursorPaginationInput;
   roomId: Scalars["ID"]["input"];
@@ -2487,6 +2491,18 @@ export type Language = {
 
 export type LikeStoryInput = {
   storyId: Scalars["ID"]["input"];
+};
+
+export type Localization = {
+  __typename?: "Localization";
+  city: Scalars["String"]["output"];
+  id: Scalars["ID"]["output"];
+  isOpen: Scalars["Boolean"]["output"];
+  openTime: OpenTime;
+  propertyType: Scalars["String"]["output"];
+  seller?: Maybe<Seller>;
+  sellerId: Scalars["ID"]["output"];
+  thumbnail: Scalars["String"]["output"];
 };
 
 export type Location = {
@@ -3611,6 +3627,12 @@ export type NewsletterSubscriber = {
   user: Account;
 };
 
+export type OpenTime = {
+  __typename?: "OpenTime";
+  from: Scalars["DateTime"]["output"];
+  to: Scalars["DateTime"]["output"];
+};
+
 export type Order = {
   __typename?: "Order";
   billing: BillingAddress;
@@ -4208,6 +4230,7 @@ export type Query = {
   adminGetUserReturnedOrders: Array<ReturnedOrder>;
   canAccessRoom: Scalars["Boolean"]["output"];
   findAll: ProfilePaginatedResponse;
+  generalSearch: Array<Search>;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
   getAccountVerificationRequests: Array<AccountVerification>;
   getAction: Array<Action>;
@@ -4265,6 +4288,7 @@ export type Query = {
   getInvoiceRecord: InvoiceRecord;
   getLanguages: Array<Language>;
   getLatestOrders: Array<Order>;
+  getLocalisation: Localization;
   getMaintenancePages: Array<Maintenance>;
   getMyAccount: Account;
   getMyBalance: Balance;
@@ -4303,6 +4327,7 @@ export type Query = {
   getOrder: Order;
   getPendingSellers: Array<Account>;
   getPlaceSuggestions: PlaceSuggestions;
+  getPlaces: Localization;
   getPostsByUserId: Array<NewsfeedPost>;
   getProduct: Product;
   getProductAttributesByProductCategory: ProductAttribute;
@@ -4396,8 +4421,10 @@ export type Query = {
   myProfile: Profile;
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
+  searchHashtags: SearchHashtag;
   searchPopularUsers: ProfilePaginatedResponse;
   searchServices: ServiceSearchResponse;
+  searchUsers: SearchUsers;
   sendContactUsMessage: Scalars["Boolean"]["output"];
   updateComment: PaginationCommentsResponse;
 };
@@ -4577,6 +4604,10 @@ export type QueryAdminGetUserReturnedOrdersArgs = {
 
 export type QueryCanAccessRoomArgs = {
   roomId: Scalars["ID"]["input"];
+};
+
+export type QueryGeneralSearchArgs = {
+  args: SearchInput;
 };
 
 export type QueryGetAccountDeletionRequestsArgs = {
@@ -4785,6 +4816,10 @@ export type QueryGetLatestOrdersArgs = {
   take?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QueryGetLocalisationArgs = {
+  getLocalisationInput: GetLocalizationInput;
+};
+
 export type QueryGetMyBlockListArgs = {
   args: GetMyBlocklistInput;
 };
@@ -4871,6 +4906,10 @@ export type QueryGetPendingSellersArgs = {
 
 export type QueryGetPlaceSuggestionsArgs = {
   args: GetPlaceSuggestionInput;
+};
+
+export type QueryGetPlacesArgs = {
+  placeQuery: Scalars["String"]["input"];
 };
 
 export type QueryGetPostsByUserIdArgs = {
@@ -5216,12 +5255,20 @@ export type QueryRequiredActionArgs = {
   id: Scalars["Int"]["input"];
 };
 
+export type QuerySearchHashtagsArgs = {
+  query: Scalars["String"]["input"];
+};
+
 export type QuerySearchPopularUsersArgs = {
   args: SearchPopularProfilesInput;
 };
 
 export type QuerySearchServicesArgs = {
   args: SearchServicesInput;
+};
+
+export type QuerySearchUsersArgs = {
+  searchUserInput: SearchUserInput;
 };
 
 export type QuerySendContactUsMessageArgs = {
@@ -5457,6 +5504,22 @@ export type SavesCollection = {
   userId: Scalars["String"]["output"];
 };
 
+export type Search = {
+  __typename?: "Search";
+  thumbnail?: Maybe<Scalars["String"]["output"]>;
+  title: Scalars["String"]["output"];
+};
+
+export type SearchHashtag = {
+  __typename?: "SearchHashtag";
+  ids: Array<Scalars["ID"]["output"]>;
+  tags?: Maybe<Array<Hashtag>>;
+};
+
+export type SearchInput = {
+  searchQ: Scalars["String"]["input"];
+};
+
 export type SearchPopularProfilesInput = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   q: Scalars["String"]["input"];
@@ -5473,6 +5536,24 @@ export type SearchServicesInput = {
   locationQuery?: InputMaybe<Scalars["String"]["input"]>;
   pagination: GqlPaginationInput;
   q?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type SearchUserInput = {
+  query: Scalars["String"]["input"];
+};
+
+export type SearchUsers = {
+  __typename?: "SearchUsers";
+  resloveUsers: Array<Account>;
+  users?: Maybe<Array<Account>>;
+  usersIds: Array<Scalars["ID"]["output"]>;
+};
+
+export type Seller = {
+  __typename?: "Seller";
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  thumbnail: Scalars["String"]["output"];
 };
 
 export type SellerProductsRating = {

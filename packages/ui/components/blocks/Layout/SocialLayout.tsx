@@ -89,6 +89,7 @@ interface SocialAtomValue {
   showProfileFollowers?: string;
   showSocialPostProducts?: string;
   showMessageSettings?: true;
+  showGeneralSearch?: true;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -270,6 +271,9 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
 
     showMessageSettings: () => setControls("showMessageSettings", true),
     hideMessageSettings: () => setControls("showMessageSettings", undefined),
+
+    showGeneralSearch: () => setControls("showGeneralSearch", true),
+    hideGeneralSearch: () => setControls("showGeneralSearch", undefined),
 
     value,
   };

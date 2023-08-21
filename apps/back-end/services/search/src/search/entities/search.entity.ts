@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, Directive } from '@nestjs/graphql';
+import { ObjectType, Field, Directive } from '@nestjs/graphql';
 
 @ObjectType()
 export class Filter {
@@ -7,8 +7,10 @@ export class Filter {
 }
 
 @ObjectType()
-@Directive('@key(fields: "filter")')
 export class Search {
-  @Field((type) => String)
-  filter: string;
+  @Field(() => String)
+  title: string;
+
+  @Field(() => String, { nullable: true })
+  thumbnail?: string;
 }
