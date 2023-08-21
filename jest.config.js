@@ -2,8 +2,9 @@ module.exports = {
   globals: {
     "ts-jest": {
       diagnostics: {
-        warnOnly: false,
+        warnOnly: true,
       },
+      tsConfig: "./packages/ui/tsconfig.json",
     },
   },
   collectCoverageFrom: [

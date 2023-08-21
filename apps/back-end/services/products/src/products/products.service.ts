@@ -275,8 +275,6 @@ export class ProductsService {
     const { productId, rate } = input;
     const product = await this.getProtectedProductById(productId, userId);
 
-    console.log({ product }, await this.getAll());
-
     const newOverallRate =
       ((product.rateStarCount + rate) /
         ((product.reviews + 1) * this.maxRate)) *

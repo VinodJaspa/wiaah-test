@@ -12,6 +12,7 @@ import React from "react";
 import { useSigninMutation } from "../services";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
+import Recaptcha from "react-google-recaptcha";
 
 export const SellerSigninView: React.FC = () => {
   const { t } = useTranslation();
@@ -33,7 +34,12 @@ export const SellerSigninView: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col gap-10 w-[min(100%, 24rem)] p-8 h-full justify-center items-center">
+    <div
+      style={{
+        width: "min(100%,24rem)",
+      }}
+      className="flex flex-col gap-10 mx-auto p-8 h-full justify-center items-center"
+    >
       <LogoColouredIcon className="text-9xl" />
       <div className="flex flex-col gap-8 w-full">
         <div className="flex flex-col gap-4 w-full">
@@ -54,6 +60,7 @@ export const SellerSigninView: React.FC = () => {
           </Link>
         </HStack>
       </div>
+      <Recaptcha sitekey={"6Le6C70nAAAAAJTH4JRbMgmYx1LMRvbFMrxbkpxg"} />
       <Button
         onClick={() => signin(form)}
         className="font-medium w-full"

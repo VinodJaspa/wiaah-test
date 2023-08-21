@@ -4,17 +4,20 @@ import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "@UI/../utils/src";
 import { useGetHashtagsQuery } from "@features/Hashtag/services/useGetHashtagsQuery";
+import { twMerge } from "tailwind-merge";
 
 export interface HashTagInputProps {
   onChange?: (HashTags: string[]) => any;
   value?: string[];
   label?: string;
   error?: string;
+  className?: string;
 }
 
 export const HashTagInput: React.FC<HashTagInputProps> = ({
   onChange,
   value = [],
+  className,
 }) => {
   const { t } = useTranslation();
   const [searchValue, setValue] = React.useState<string>("");
@@ -37,7 +40,12 @@ export const HashTagInput: React.FC<HashTagInputProps> = ({
     onChange && onChange(value.filter((Tag) => Tag !== tag));
   }
   return (
-    <div className="border rounded-xl flex gap-2 items-center px-2 border-gray-300">
+    <div
+      className={twMerge(
+        "border rounded-xl flex gap-2 items-center px-2 border-gray-300",
+        className
+      )}
+    >
       {mapArray(value, (tag, i) => (
         <span
           key={tag + i}

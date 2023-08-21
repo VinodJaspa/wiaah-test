@@ -1,70 +1,58 @@
 import { createGraphqlRequestClient } from "api";
 import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import {
-  Affiliation,
-  Exact,
-  Maybe,
-  NewsfeedPost,
-  PostType,
-  Product,
-  Profile,
-  Scalars,
-  Service,
-} from "@features/API";
-import { useQuery } from "react-query";
+import { Exact, PostType } from "@features/API";
+import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetSocialPostQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: string;
 }>;
 
-export type GetSocialPostQuery = { __typename?: "Query" } & {
-  getSocialPostById: { __typename?: "NewsfeedPost" } & Pick<
-    NewsfeedPost,
-    | "type"
-    | "createdAt"
-    | "views"
-    | "reactionNum"
-    | "comments"
-    | "shares"
-    | "userId"
-    | "id"
-    | "isLiked"
-    | "isSaved"
-    | "isCommented"
-  > & {
-      affiliation: { __typename?: "Affiliation" } & Pick<
-        Affiliation,
-        "commision" | "itemType"
-      > & {
-          product?: Maybe<
-            { __typename?: "Product" } & Pick<
-              Product,
-              "price" | "thumbnail" | "title"
-            >
-          >;
-          service?: Maybe<
-            { __typename?: "Service" } & Pick<
-              Service,
-              "thumbnail" | "price" | "name"
-            >
-          >;
-        };
-      publisher?: Maybe<
-        { __typename?: "Profile" } & Pick<
-          Profile,
-          "photo" | "username" | "id" | "ownerId" | "verified"
-        >
-      >;
-      service: { __typename?: "Service" } & Pick<
-        Service,
-        "thumbnail" | "name" | "price"
-      >;
-      product: { __typename?: "Product" } & Pick<
-        Product,
-        "thumbnail" | "title" | "price"
-      >;
+export type GetSocialPostQuery = {
+  __typename?: "Query";
+  getSocialPostById: {
+    __typename?: "NewsfeedPost";
+    type: PostType;
+    createdAt: string;
+    views: number;
+    reactionNum: number;
+    comments: number;
+    shares: number;
+    userId: string;
+    id: string;
+    productIds?: Array<string> | null;
+    affiliation: {
+      __typename?: "Affiliation";
+      commision: number;
+      itemType: string;
+      product?: {
+        __typename?: "Product";
+        price: number;
+        thumbnail: string;
+        title: string;
+      } | null;
+      service?: {
+        __typename?: "Service";
+        thumbnail: string;
+        price: number;
+        name: string;
+      } | null;
     };
+    publisher?: {
+      __typename?: "Profile";
+      photo: string;
+      username: string;
+      id: string;
+      ownerId: string;
+      verified: boolean;
+    } | null;
+    service: {
+      __typename?: "Service";
+      thumbnail: string;
+      name: string;
+      price: number;
+    };
+  };
 };
 
 type args = GetSocialPostQueryVariables;
@@ -122,17 +110,18 @@ export const getSocialPostQueryFetcher = async (args: args) => {
   const res = await client
     .setQuery(
       `
-query getSocialPost($id:String!){
-  getSocialPostById(id:$id){
+query getSocialPost($id: String!) {
+  getSocialPostById(id: $id) {
     type
- 		createdAt
+    createdAt
     views
     reactionNum
     comments
     shares
     userId
     id
-    affiliation{
+    productIds
+    affiliation {
       product {
         price
         thumbnail
@@ -140,32 +129,27 @@ query getSocialPost($id:String!){
       }
       commision
       itemType
-      service{
+      service {
         thumbnail
         price
         name
       }
     }
-    publisher{
-     photo
+    publisher {
+      photo
       username
       id
       ownerId
       verified
     }
-    service{
+    service {
       thumbnail
       name
       price
     }
-    
-    product{
-      thumbnail
-      title
-      price
-    }
   }
 }
+
   `
     )
     .setVariables<args>(args)
@@ -174,8 +158,17 @@ query getSocialPost($id:String!){
   return res.data.getSocialPostById;
 };
 
-export const useGetSocialPostQuery = (args: args) => {
-  return useQuery(getSocialPostQueryKey(args), () =>
-    getSocialPostQueryFetcher(args)
+export const useGetSocialPostQuery = (
+  args: args,
+  options?: UseQueryOptions<
+    GetSocialPostQueryVariables,
+    any,
+    GetSocialPostQuery["getSocialPostById"]
+  >
+) => {
+  return useQuery(
+    getSocialPostQueryKey(args),
+    () => getSocialPostQueryFetcher(args),
+    options
   );
 };

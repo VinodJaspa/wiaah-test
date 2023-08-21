@@ -409,12 +409,20 @@ model StoryLike {
 }
 
 model PrivacySettings {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String  @unique @db.ObjectId
-  privateAccount  Boolean @default(false)
-  hideLikesNum    Boolean @default(false)
-  hideCommentsNum Boolean @default(false)
-  hideViewsNum    Boolean @default(false)
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String            @unique @db.ObjectId
+  privateAccount    Boolean           @default(false)
+  hideLikesNum      Boolean           @default(false)
+  hideCommentsNum   Boolean           @default(false)
+  hideViewsNum      Boolean           @default(false)
+  initialMessaging  MessagingSettings @default(all)
+  messageReadStatus Boolean           @default(false)
+}
+
+enum MessagingSettings {
+  all
+  follow
+  off
 }
 
 model HiddenContent {

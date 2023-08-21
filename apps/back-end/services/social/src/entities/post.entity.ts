@@ -118,8 +118,8 @@ export class SocialPost {
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
 
-  @Field(() => String, { nullable: true })
-  productId?: string;
+  @Field(() => [String], { nullable: true })
+  productIds?: string[];
 
   @Field(() => String, { nullable: true })
   serviceId?: string;

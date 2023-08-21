@@ -1,10 +1,7 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { ResourceNotFoundPublicError } from 'nest-utils';
 
-export class ProductNotFoundException extends HttpException {
+export class ProductNotFoundException extends ResourceNotFoundPublicError {
   constructor(fieldName: string = 'id') {
-    super(
-      `product with the given ${fieldName} was not found`,
-      HttpStatus.NOT_FOUND,
-    );
+    super(`product with the given ${fieldName} was not found`);
   }
 }

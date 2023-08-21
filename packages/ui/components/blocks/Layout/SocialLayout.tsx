@@ -87,6 +87,8 @@ interface SocialAtomValue {
   marketShowServiceDetails?: string;
   marketShowMapSearch: boolean;
   showProfileFollowers?: string;
+  showSocialPostProducts?: string;
+  showMessageSettings?: true;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -260,6 +262,14 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
 
     showNewPublish: () => setControls("newPublish", true),
     hideNewPublish: () => setControls("newPublish", undefined),
+
+    showSocialContentProducts: (id: string) =>
+      setControls("showSocialPostProducts", id),
+    hideSocialContentProducts: () =>
+      setControls("showSocialPostProducts", undefined),
+
+    showMessageSettings: () => setControls("showMessageSettings", true),
+    hideMessageSettings: () => setControls("showMessageSettings", undefined),
 
     value,
   };

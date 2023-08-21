@@ -49,29 +49,6 @@ interface Review {
   createdAt: string;
 }
 
-const reviewsData: Review[] = [...Array(10)].map((_, i) => ({
-  author: {
-    id: "test" + i,
-    name: "author name " + i,
-  },
-  createdAt: new Date().toDateString(),
-  id: "review " + i,
-  product: {
-    id: i.toString(),
-    sellerId: i.toString(),
-    thumbnail: getRandomImage(),
-    title: "title " + i,
-  },
-  comment:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen",
-  rating: randomNum(5),
-  status: "Active",
-  seller: {
-    id: i.toString(),
-    name: "seller name",
-  },
-}));
-
 const reviews: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
@@ -86,12 +63,12 @@ const reviews: NextPage = () => {
   return (
     <section>
       <div className="py-4 text-white gap-2 flex justify-end">
-        <PlusIcon
+        {/* <PlusIcon
           onClick={() =>
             visit((r) => r.addPath(getCurrentPath()).addPath("new"))
           }
           className="w-8 h-8 p-2 bg-sky-500"
-        />
+        /> */}
         <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
       </div>
       <Divider />
@@ -152,12 +129,12 @@ const reviews: NextPage = () => {
                   <Checkbox />
                 </Td>
                 <Td>
-                  <Image src={v.product.thumbnail} />
+                  <Image src={v?.product?.thumbnail} />
                 </Td>
-                <Td>{v.product.title.slice(0, 20)}</Td>
-                <Td>{v.product.id.slice(0, 10)}</Td>
+                <Td>{v.product?.title.slice(0, 20)}</Td>
+                <Td>{v.product?.id.slice(0, 10)}</Td>
                 <Td>{v.reviewer?.profile?.username.slice(0, 20)}</Td>
-                <Td>{v.product.seller.profile.username.slice(0, 20)}</Td>
+                <Td>{v.product?.seller?.profile?.username.slice(0, 20)}</Td>
                 <Td>{v.message.slice(0, 60)}...</Td>
                 <Td>
                   <Rate rating={v.rate} />

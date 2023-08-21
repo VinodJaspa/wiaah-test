@@ -163,8 +163,16 @@ export class AccountsResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
-    return this.accountsService.findOne(ref.id);
+  async resolveReference(ref: {
+    __typename: string;
+    id: string;
+  }): Promise<Account | null> {
+    try {
+      const res = await this.accountsService.findOne(ref.id);
+      return res;
+    } catch (error) {
+      return null;
+    }
   }
 
   async validateEditPremissions(

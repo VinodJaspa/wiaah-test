@@ -59,14 +59,14 @@ type NewsfeedPost {
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType!
   publisher: Profile
   authorProfileId: ID!
   affiliation: Affiliation!
-  product: Product!
+  products: [Product!]!
   service: Service!
   pinned: Boolean!
   isLiked: Boolean!
@@ -113,14 +113,14 @@ type AdminNewsfeedPost {
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType!
   publisher: Profile
   authorProfileId: ID!
   affiliation: Affiliation!
-  product: Product!
+  products: [Product!]!
   service: Service!
   pinned: Boolean!
   isLiked: Boolean!
@@ -527,6 +527,14 @@ type PrivacySettings {
   hideLikesNum: Boolean!
   hideCommentsNum: Boolean!
   hideViewsNum: Boolean!
+  initialMessaging: MessagingSettings!
+  messageReadStatus: Boolean!
+}
+
+enum MessagingSettings {
+  all
+  follow
+  off
 }
 
 type HashtagProductPost {
@@ -1257,6 +1265,8 @@ input UpdateMyPrivacyInput {
   hideLikesNum: Boolean
   hideCommentsNum: Boolean
   hideViewsNum: Boolean
+  initialMessaging: MessagingSettings
+  messageReadStatus: Boolean
 }
 
 input CreateActionInput {

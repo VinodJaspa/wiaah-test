@@ -21,6 +21,7 @@ import {
   UpdateShippingRuleInput,
 } from '@shipping-rules/dto';
 import { PrismaService } from 'prismaService';
+import { GetShippingRulesInput } from './dto/get-shipping-rules.input';
 
 @Resolver(() => ShippingRule)
 @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
@@ -31,8 +32,19 @@ export class ShippingRulesResolver {
   ) {}
 
   @Query(() => [ShippingRule])
-  getMyShippingRules(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+  getMyShippingRules(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('args') args: GetShippingRulesInput,
+  ) {
     return this.shippingRulesService.getShippingRulesBySellerId(user.id);
+  }
+
+  @Query(() => ShippingRule)
+  getShippingRuleById(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('id') id: string,
+  ) {
+    return this.shippingRulesService.getShippingRuleById(id);
   }
 
   @Mutation(() => ShippingRule)

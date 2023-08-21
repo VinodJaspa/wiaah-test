@@ -5,7 +5,7 @@ import React from "react";
 const NewPost: NextPage = () => {
   return (
     <SellerLayout>
-      <div className="w-3/4 mx-auto">
+      <div className="mx-auto">
         <NewPostView />
       </div>
     </SellerLayout>

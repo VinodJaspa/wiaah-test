@@ -11,11 +11,14 @@ export function useForm<TForm>(
     addLabel?: boolean;
     addPlaceholder?: boolean;
     yupSchema?: yup.AnyObjectSchema;
+    onChange?: (data: TForm) => any;
   }
 ) {
   const [data, setData] = React.useState<TForm>(initial);
 
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+
+  const [haveSetInitial, setHaveSetInitial] = React.useState<boolean>(false);
 
   const schema = options?.yupSchema;
 
@@ -39,6 +42,7 @@ export function useForm<TForm>(
 
         return [false, errors];
       } else {
+        //@ts-ignore
         return [false, { unknown: "unknown" } as ValidationFormErrors<TForm>];
       }
     }
@@ -56,6 +60,7 @@ export function useForm<TForm>(
         setErrors(errors);
       }
 
+      options?.onChange && options.onChange(newV);
       return newV;
     });
   }
@@ -90,12 +95,14 @@ export function useForm<TForm>(
     mapOnChange: (value: any) => any = (e) => e.target.value
   ) {
     if (!data) return {};
+    //@ts-ignore
     const stateTrans = (data[key] as { langId: string; value: any }[]) || [];
     const value = stateTrans.find((v) => v.langId === lang)?.value || "";
 
     const onChange = (e: any) => {
       const value = mapOnChange(e);
 
+      //@ts-ignore
       handleChange(key, [
         ...stateTrans.filter((v) => v.langId !== lang),
         { langId: lang, value },
@@ -174,6 +181,7 @@ export function useForm<TForm>(
 
   function radioInputProps<Tkey extends keyof TForm>(
     key: Tkey,
+    value: TForm[Tkey],
     valueKey: string = "checked",
     onChangeKey: string = "onChange",
     mapOnChange: (value: any) => any = (e) =>
@@ -181,7 +189,7 @@ export function useForm<TForm>(
   ) {
     if (!data) return {};
     return {
-      [valueKey]: data[key] as TForm[Tkey],
+      [valueKey]: data[key] === value,
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
       label:
         options?.addLabel && typeof key === "string"
@@ -189,6 +197,13 @@ export function useForm<TForm>(
           : undefined,
       errorMessage: errors[key as string],
     };
+  }
+
+  function setInitialData(data: TForm) {
+    if (!haveSetInitial) {
+      setData({ ...data, ...constents });
+      setHaveSetInitial(true);
+    }
   }
 
   return {
@@ -203,5 +218,6 @@ export function useForm<TForm>(
     isValid: () => validate()[0],
     radioInputProps,
     reset: () => setData(initial),
+    setInitialData,
   };
 }

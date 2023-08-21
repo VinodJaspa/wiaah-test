@@ -44,7 +44,7 @@ export class ProductReviewResolver implements OnModuleInit {
 
   @Query(() => [ProductReview])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  adminGetFilteredProductReviews(
+  async adminGetFilteredProductReviews(
     @Args('args') args: GetAdminFitleredProductReviewsInput,
   ) {
     const filters: Prisma.ProductReviewWhereInput[] = [];
@@ -101,11 +101,13 @@ export class ProductReviewResolver implements OnModuleInit {
       });
     }
 
-    return this.prisma.productReview.findMany({
+    const res = await this.prisma.productReview.findMany({
       where: {
         AND: filters,
       },
     });
+    console.log({ res });
+    return res;
   }
 
   @Mutation(() => Boolean)
@@ -157,14 +159,16 @@ export class ProductReviewResolver implements OnModuleInit {
     });
   }
 
-  @Query(() => [ProductReview])
+  @Query(() => ProductReview)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  getProductReviewById(@Args('id') id: string) {
-    return this.prisma.productReview.findUnique({
+  async adminGetProductReviewById(@Args('id') id: string) {
+    const res = await this.prisma.productReview.findUnique({
       where: {
         id: id,
       },
     });
+    console.log('get review', { id, res });
+    return res;
   }
 
   @Mutation(() => ProductReview)
@@ -198,7 +202,7 @@ export class ProductReviewResolver implements OnModuleInit {
     await this.eventClient.connect();
   }
 
-  @ResolveField(() => Account)
+  @ResolveField(() => Account, { nullable: true })
   reviewer(@Parent() review: ProductReview) {
     return {
       __typename: 'Account',
@@ -206,7 +210,7 @@ export class ProductReviewResolver implements OnModuleInit {
     };
   }
 
-  @ResolveField(() => Product)
+  @ResolveField(() => Product, { nullable: true })
   product(@Parent() review: ProductReview) {
     return {
       __typename: 'Product',

@@ -277,6 +277,18 @@ export class ProductsResolver {
   }
 
   @Query(() => [Product])
+  getProductsByIds(@Args('ids', { type: () => [String] }) ids: string[]) {
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        status: 'active',
+      },
+    });
+  }
+
+  @Query(() => [Product])
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   getMyProducts(@Args('filterInput') args: GetFilteredProductsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
@@ -443,8 +455,13 @@ export class ProductsResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }) {
-    return this.productsService.getProductById(ref.id);
+  async resolveReference(ref: { __typename: string; id: string }) {
+    try {
+      const res = await this.productsService.getProductById(ref.id);
+      return res;
+    } catch (error) {
+      return null;
+    }
   }
 
   @Mutation(() => Product)

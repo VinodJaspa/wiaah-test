@@ -1,4 +1,7 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import { MessagingSettings } from 'prismaClient';
+
+registerEnumType(MessagingSettings, { name: 'MessagingSettings' });
 
 @ObjectType()
 export class PrivacySettings {
@@ -19,4 +22,10 @@ export class PrivacySettings {
 
   @Field(() => Boolean)
   hideViewsNum: boolean;
+
+  @Field(() => MessagingSettings)
+  initialMessaging: MessagingSettings;
+
+  @Field(() => Boolean)
+  messageReadStatus: boolean;
 }

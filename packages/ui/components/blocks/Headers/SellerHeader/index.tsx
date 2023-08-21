@@ -24,6 +24,7 @@ import {
   StarOutlineIcon,
   ServicesIcon,
   ShoppingCartOutlineIcon,
+  SearchIcon,
 } from "@UI";
 import { BsShop } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -85,7 +86,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           </div>
         )}
       </div>
-      {!isMobile && (
+      {isMobile ? (
+        <SearchIcon />
+      ) : (
         <div className="flex items-center gap-2">
           <GeneralSearchModal>
             <SearchInput innerProps={{ onClick: openSearchBox }} />

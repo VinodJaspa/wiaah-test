@@ -194,11 +194,11 @@ export class NewsfeedPostsResolver {
     };
   }
 
-  @ResolveField(() => Product)
-  product(@Parent() post: NewsfeedPost) {
+  @ResolveField(() => [Product])
+  products(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'product',
-      id: post.productId,
+      id: post.productIds,
     };
   }
 

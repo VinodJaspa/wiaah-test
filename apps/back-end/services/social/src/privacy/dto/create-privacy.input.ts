@@ -1,4 +1,5 @@
 import { InputType, Int, Field, ID } from '@nestjs/graphql';
+import { MessagingSettings } from 'prismaClient';
 
 @InputType()
 export class CreatePrivacySettingsInput {
@@ -13,4 +14,10 @@ export class CreatePrivacySettingsInput {
 
   @Field(() => Boolean)
   hideViewsNum: boolean;
+
+  @Field(() => MessagingSettings)
+  initialMessaging: MessagingSettings;
+
+  @Field(() => Boolean)
+  messageReadStatus: boolean;
 }

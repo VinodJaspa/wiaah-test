@@ -463,6 +463,7 @@ type Query {
   getCursorFilteredShops(args: FilteredShopsCursorInput!): ShopCursorPaginationResponse!
   getProductRecommendation(pagination: GqlPaginationInput!): ProductPaginationResponse!
   getProductById(id: String!, isClick: Boolean!): Product!
+  getProductsByIds(ids: [String!]!): [Product!]!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getTopSalesProducts(args: GetTopSalesProductsByCategoryPaginationInput!): ProductSearchPaginationResponse!
   getSellerTopSellingProducts(args: GetSellerTopSellingProductsInput!): ProductsCursorPaginationResponse!
@@ -484,7 +485,8 @@ type Query {
   getShippingGeoZoneRules(args: AdminGetShippingGeoZoneRulesInput!): [ShippingTypeRule!]!
   getShippingTypeRule(id: String!): ShippingTypeRule!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
-  getMyShippingRules: [ShippingRule!]!
+  getMyShippingRules(args: GetShippingRulesInput!): [ShippingRule!]!
+  getShippingRuleById(id: String!): ShippingRule!
 }
 
 input GetNearShopsInput {
@@ -612,6 +614,11 @@ input AdminGetShippingGeoZoneRulesInput {
   name: String
   description: String
   pagination: GqlPaginationInput!
+}
+
+input GetShippingRulesInput {
+  page: Int!
+  take: Int!
 }
 
 type Mutation {
