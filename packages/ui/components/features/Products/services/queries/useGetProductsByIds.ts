@@ -1,6 +1,6 @@
 import { Exact } from "@features/API";
 import { createGraphqlRequestClient } from "api";
-import { useQuery } from "react-query";
+import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetProductsByIdsQueryVariables = Exact<{
   ids: string[];
@@ -46,7 +46,15 @@ query getProductsByIds($ids: [String!]!) {
   return res.data.getProductsByIds;
 };
 
-export const useGetProductsByIds = (args: args) =>
+export const useGetProductsByIds = (
+  args: args,
+  options?: UseQueryOptions<
+    GetProductsByIdsQuery["getProductsByIds"],
+    any,
+    any,
+    any
+  >
+) =>
   useQuery(getProductsByIdsQueryKey(args), () =>
     getProductsByIdsQueryFetcher(args)
   );

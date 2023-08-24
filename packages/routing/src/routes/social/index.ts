@@ -87,4 +87,7 @@ export const SocialRoutes = {
   visitSocialAction(actionId) {
     return this.addPath("action").id(actionId);
   },
+  visitSocialPost(id: string) {
+    return this.addPath("post").id(id);
+  },
 } as RoutesType;

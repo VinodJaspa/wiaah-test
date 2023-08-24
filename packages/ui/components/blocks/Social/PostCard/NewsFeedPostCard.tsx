@@ -11,7 +11,6 @@ import {
 } from "@UI/components/partials";
 import {
   useSocialPostSettingsPopup,
-  useShareModal,
   useSocialPostMentionsModal,
 } from "@UI/components/features";
 import { useLikeContent } from "@features/Social";
@@ -98,8 +97,11 @@ export const PostCard: React.FC<PostCardProps> = ({
         alt={postInfo.content}
       />
 
-      <div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
-        <div className="flex flex-col w-full ">
+      <div
+        onClick={() => visit((r) => r.visitSocialPost(postInfo.id))}
+        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
+      >
+        <div className="flex flex-col w-full">
           <div className="flex gap-2 items-center">
             <div className="min-w-[2.5rem] ">
               <UserProfileDisplay

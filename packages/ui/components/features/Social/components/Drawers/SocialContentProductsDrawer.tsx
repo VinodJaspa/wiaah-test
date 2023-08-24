@@ -1,6 +1,5 @@
 import { useSocialControls } from "@blocks";
 import { useGetProductsByIds } from "@features/Products/services/queries/useGetProductsByIds";
-import { useGetSocialPostQuery } from "@features/Social/services";
 import {
   Button,
   CountInput,
@@ -16,14 +15,16 @@ import { mapArray } from "utils";
 export const SocialContentProductsDrawer: React.FC = () => {
   const { t } = useTranslation();
   const { value, showSocialContentProducts, hideSocialContentProducts } =
-    useSocialControls("showSocialPostProducts");
-  const isOpen = typeof value === "string";
+    useSocialControls("showSocialContentProductsListing");
+  const isOpen =
+    Array.isArray(value) && value.every((v) => typeof v === "string");
 
-  const { data } = useGetSocialPostQuery({ id: value! }, { enabled: isOpen });
-
-  const { data: products } = useGetProductsByIds({
-    ids: data?.productIds || [],
-  });
+  const { data: products } = useGetProductsByIds(
+    {
+      ids: value || [],
+    },
+    { enabled: isOpen }
+  );
 
   return (
     <Drawer

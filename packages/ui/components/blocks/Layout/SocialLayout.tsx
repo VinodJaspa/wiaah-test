@@ -90,6 +90,7 @@ interface SocialAtomValue {
   showSocialPostProducts?: string;
   showMessageSettings?: true;
   showGeneralSearch?: true;
+  showSocialContentProductsListing?: string[];
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -274,6 +275,11 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
 
     showGeneralSearch: () => setControls("showGeneralSearch", true),
     hideGeneralSearch: () => setControls("showGeneralSearch", undefined),
+
+    showSocialContentProductsListing: (productIds: string[]) =>
+      setControls("showSocialContentProductsListing", productIds),
+    hideSocialContentProductsListing: () =>
+      setControls("showSocialContentProductsListing", undefined),
 
     value,
   };
