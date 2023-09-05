@@ -9,7 +9,7 @@ import { extractUserfromNextjsCookies } from "utils";
 import { getRouting } from "routing";
 
 interface ProfilePageProps {
-  profileId: string;
+  username: string;
 }
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
@@ -18,11 +18,11 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
 }) => {
   const user = await extractUserfromNextjsCookies(req.cookies);
 
-  const { profileId } = query;
+  const { username: _username } = query;
 
-  const id = Array.isArray(profileId) ? profileId[0] : profileId;
+  const username = Array.isArray(_username) ? _username[0] : _username;
 
-  const profileData = await getSocialProfileData(id);
+  const profileData = await getSocialProfileData(username);
 
   if (profileData?.data?.userId === user?.id) {
     return {
@@ -36,28 +36,25 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
   }
 
   const queryClient = new QueryClient();
-  queryClient.prefetchQuery(
-    ["SocialProfile", { profileId }],
-    () => profileData
-  );
+  queryClient.prefetchQuery(["SocialProfile", { username }], () => profileData);
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      profileId: id,
+      username,
     },
   };
 };
 
-const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
-  const { data } = useGetSocialProfile(profileId);
+const profile: NextPage<ProfilePageProps> = ({ username }) => {
+  const { data } = useGetSocialProfile(username);
   return (
     <>
       <Head>
         <title>{data ? data.data.name : "Seller | profile"}</title>
       </Head>
       <SellerLayout>
-        <SocialProfileView profileId={profileId} />
+        <SocialProfileView username={username} />
       </SellerLayout>
     </>
   );

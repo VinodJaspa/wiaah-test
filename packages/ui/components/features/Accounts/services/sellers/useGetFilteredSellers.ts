@@ -25,7 +25,7 @@ export type GetFilteredSellersQuery = { __typename?: "Query" } & {
       | "lastName"
       | "photo"
       | "verified"
-      | "type"
+      | "accountType"
       | "status"
       | "ips"
       | "membershipId"
@@ -64,7 +64,7 @@ query getFilteredSellers(
         lastName
         photo
     		verified
-        type
+        accountType
         verified
         status
     		ips
@@ -82,9 +82,6 @@ query getFilteredSellers(
         Membership {
           name
         }
-        balance {
-          withdrawableBalance
-        }
     }
 }
     `);
@@ -94,6 +91,7 @@ query getFilteredSellers(
   });
   return useQuery(["get-filtered-sellers", { input }], async () => {
     const res = await client.send<GetFilteredSellersQuery>();
+    console.log({ res });
     return res.data.getFilteredSellers;
   });
 };

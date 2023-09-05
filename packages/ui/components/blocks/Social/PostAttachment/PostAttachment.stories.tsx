@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PostAttachment } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/PostAttachment",
   component: PostAttachment,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof PostAttachment>;
 
 const Template: ComponentStory<typeof PostAttachment> = (args) => (

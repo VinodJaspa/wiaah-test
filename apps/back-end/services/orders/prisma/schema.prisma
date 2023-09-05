@@ -91,3 +91,34 @@ enum RefundType {
   money
   credit
 }
+
+model SellerSalesStatistics {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime        @default(now())
+  sellerId  String          @db.ObjectId
+  type      SellerSalesType
+
+  sales       Int
+  salesAmount Float
+
+  purchases       Int
+  purchasesAmount Float
+
+  returns       Int
+  returnsAmount Float
+
+  affiliations       Int
+  affiliationsAmount Float
+
+  salesCategories SalesCategory[]
+}
+
+enum SellerSalesType {
+  product
+  service
+}
+
+type SalesCategory {
+  categoryId String
+  sales      Int
+}

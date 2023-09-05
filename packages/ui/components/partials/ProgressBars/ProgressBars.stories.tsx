@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ProgressBars } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/partials/ProgressBars",
   component: ProgressBars,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ProgressBars>;
 
 const Template: ComponentStory<typeof ProgressBars> = (args) => (

@@ -18,19 +18,35 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
     publisher?: PostCardProps["profileInfo"] | null;
   })[];
   cols?: number;
-  onPostClick?: (post: PostCardInfo) => any;
   grid?: boolean;
+  onPostClick?: (postId: string) => any;
+  onProfileClick?: (username: string) => any;
+  onLocationClick?: (post: PostCardInfo) => any;
 }
 
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   posts,
   cols = 1,
   grid,
+  onLocationClick,
+  onPostClick,
+  onProfileClick,
 }) => {
   const childPosts =
     posts &&
     posts.map((post, idx) => (
-      <PostCard postInfo={post} profileInfo={post.publisher!} key={idx} />
+      <PostCard
+        onProfileClick={() =>
+          onProfileClick &&
+          post.publisher?.username &&
+          onProfileClick(post.publisher?.username)
+        }
+        // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
+        onPostClick={() => onPostClick && onPostClick(post.id)}
+        postInfo={post}
+        profileInfo={post.publisher!}
+        key={idx}
+      />
     ));
 
   const { isMobile, isTablet } = useResponsive();
@@ -41,7 +57,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
         // @ts-ignore
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;
-          console.log("idParam", queryKey);
+
           const post = newsfeedPosts.find((post) => post.postInfo.id === id);
           return post ? post : null;
         }}

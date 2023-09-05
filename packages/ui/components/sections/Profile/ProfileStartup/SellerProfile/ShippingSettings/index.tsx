@@ -11,6 +11,7 @@ import {
   Td,
   Select,
   SelectOption,
+  useGetShippingRuleById,
 } from "@UI";
 import { mapArray, useForm } from "@UI/../utils/src";
 import { ShippingDestination, ShippingType } from "@features/API";
@@ -21,18 +22,34 @@ export interface ShippingSettingsProps {
   id?: string;
 }
 
-export const NewShippingSettings = React.forwardRef(
-  ({ onSuccess, id }: ShippingSettingsProps, ref) => {
-    const { t } = useTranslation();
+export type ShippingSettingsRefProps = {
+  submit: () => any;
+};
 
-    const isEdit = typeof id === "string";
+export const NewShippingSettings = React.forwardRef<
+  ShippingSettingsRefProps,
+  any
+>(({ onSuccess, id }: ShippingSettingsProps, ref) => {
+  const { t } = useTranslation();
 
-    const { mutate: updateRule } = useUpdateShippingRuleMutation();
-    const { mutate: addRule } = useCreateShippingRulesMutation();
+  const isEdit = typeof id === "string";
 
-    const { form, inputProps, selectProps, handleChange } = useForm<
-      Parameters<typeof addRule>[0]
-    >({
+  const { mutate: updateRule } = useUpdateShippingRuleMutation();
+  const { mutate: addRule } = useCreateShippingRulesMutation();
+  const {} = useGetShippingRuleById(
+    { id: id! },
+    {
+      enabled: isEdit,
+      onSuccess: (data) =>
+        setInitialData({
+          ...data,
+          countries: [],
+        }),
+    }
+  );
+
+  const { form, inputProps, selectProps, handleChange, setInitialData } =
+    useForm<Parameters<typeof addRule>[0]>({
       cost: 0,
       destination: ShippingDestination.Local,
       countries: [],
@@ -42,124 +59,92 @@ export const NewShippingSettings = React.forwardRef(
       shippingType: ShippingType.Paid,
     });
 
-    function handleSubmit() {
-      if (isEdit) {
-        addRule(form, { onSuccess });
-      } else {
-        updateRule(
-          { ...form, id: id! },
-          {
-            onSuccess,
-          }
-        );
-      }
+  function handleSubmit() {
+    if (isEdit) {
+      addRule(form, { onSuccess });
+    } else {
+      updateRule(
+        { ...form, id: id! },
+        {
+          onSuccess,
+        }
+      );
     }
+  }
 
-    React.useImperativeHandle(ref, () => ({
-      submit: handleSubmit,
-    }));
+  React.useImperativeHandle<ShippingSettingsRefProps, any>(ref, () => ({
+    submit: handleSubmit,
+  }));
 
-    return (
-      <div className="flex flex-col gap-2">
-        <h2 className="hidden text-xl font-bold lg:block">
-          {t("Enter shipping details")}
-        </h2>
+  return (
+    <div className="flex flex-col px-2 gap-2">
+      <h2 className="hidden text-xl font-bold lg:block">
+        {t("Enter shipping details")}
+      </h2>
+
+      <div className="font-medium flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
+          <p>{t("Shipping name")}</p>
+          <Input {...inputProps("name")} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>{t("Shipping type")}</p>
+          <Select {...selectProps("shippingType")}>
+            {Object.values(ShippingType).map((v, i) => (
+              <SelectOption key={i} value={v}>
+                {startCase(v)}
+              </SelectOption>
+            ))}
+          </Select>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>{t("Shipping company name")}</p>
+          <Input {...inputProps("shippingCompanyName")} />
+        </div>
+        {form.shippingType === ShippingType.Paid ? (
+          <div className="flex flex-col gap-2">
+            <p>{t("Shipping fixed price")}</p>
+            <Input {...inputProps("cost")} />
+          </div>
+        ) : null}
+        <div className="flex flex-col gap-2">
+          <p>{t("Shipping destination")}</p>
+          <Select {...selectProps("destination")}>
+            {mapArray(Object.values(ShippingDestination), (v, i) => (
+              <SelectOption value={v} key={i}>
+                {v}
+              </SelectOption>
+            ))}
+          </Select>
+        </div>
 
         <div className="flex flex-col gap-2">
-          <Table>
-            <THead>
-              <Tr>
-                <Td>{t("Shipping name")}</Td>
-                <Td>
-                  <Input {...inputProps("name")} />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>{t("Shipping type")}</Td>
-                <Td>
-                  <Select {...selectProps("shippingType")}>
-                    {Object.values(ShippingType).map((v, i) => (
-                      <SelectOption key={i} value={v}>
-                        {startCase(v)}
-                      </SelectOption>
-                    ))}
-                  </Select>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>{t("Shipping company name")}</Td>
-                <Td>
-                  <Input {...inputProps("shippingCompanyName")} />
-                </Td>
-              </Tr>
-              {form.shippingType === ShippingType.Paid ? (
-                <Tr>
-                  <Td>{t("Shipping fixed price")}</Td>
-                  <Td>
-                    <Input {...inputProps("cost")} />
-                  </Td>
-                </Tr>
-              ) : null}
-              <Tr>
-                <Td>{t("Shipping destination")}</Td>
-                <Td>
-                  <Select {...selectProps("destination")}>
-                    {mapArray(Object.values(ShippingDestination), (v, i) => (
-                      <SelectOption value={v} key={i}>
-                        {v}
-                      </SelectOption>
-                    ))}
-                  </Select>
-                </Td>
-              </Tr>
-
-              <Tr>
-                <Td>
-                  <p>{t("Shipping Time")}</p>
-                </Td>
-                <Td>
-                  <Select
-                    onOptionSelect={(v) => {
-                      handleChange("deliveryTimeRange", {
-                        from: parseInt(v[0]),
-                        to: parseInt(v[1]),
-                      });
-                    }}
-                    placeholder={t("Shipping Time")}
-                  >
-                    <SelectOption value={[1, 3]}>
-                      1-3 {t("days", "days")}
-                    </SelectOption>
-                    <SelectOption value={[3, 5]}>
-                      3-5 {t("days", "days")}
-                    </SelectOption>
-                    <SelectOption value={[5, 7]}>
-                      5-7 {t("days", "days")}
-                    </SelectOption>
-                    <SelectOption value={[7, 14]}>
-                      1-2 {t("Weeks", "Weeks")}
-                    </SelectOption>
-                    <SelectOption value={[14, 21]}>
-                      2-3 {t("Weeks", "Weeks")}
-                    </SelectOption>
-                    <SelectOption value={[21, 28]}>
-                      3-4 {t("Weeks", "Weeks")}
-                    </SelectOption>
-                  </Select>
-                </Td>
-              </Tr>
-            </THead>
-          </Table>
-
-          <Button
-            colorScheme="darkbrown"
-            className="w-fit self-end mt-4"
-            onClick={handleSubmit}
+          <p>{t("Shipping Time")}</p>
+          <Select
+            onOptionSelect={(v) => {
+              handleChange("deliveryTimeRange", {
+                from: parseInt(v[0]),
+                to: parseInt(v[1]),
+              });
+            }}
+            placeholder={t("Shipping Time")}
           >
-            {isEdit ? t("Update Method") : t("Add Method")}
-          </Button>
+            <SelectOption value={[1, 3]}>1-3 {t("days", "days")}</SelectOption>
+            <SelectOption value={[3, 5]}>3-5 {t("days", "days")}</SelectOption>
+            <SelectOption value={[5, 7]}>5-7 {t("days", "days")}</SelectOption>
+            <SelectOption value={[7, 14]}>
+              1-2 {t("Weeks", "Weeks")}
+            </SelectOption>
+            <SelectOption value={[14, 21]}>
+              2-3 {t("Weeks", "Weeks")}
+            </SelectOption>
+            <SelectOption value={[21, 28]}>
+              3-4 {t("Weeks", "Weeks")}
+            </SelectOption>
+          </Select>
+        </div>
 
-          {/* <div className="flex flex-col gap-4 w-full rounded-lg bg-slate-100 ">
+        {/* <div className="flex flex-col gap-4 w-full rounded-lg bg-slate-100 ">
           <div>
             <label htmlFor="">{t("Destination", "Destination")}</label>
             <Select
@@ -197,7 +182,7 @@ export const NewShippingSettings = React.forwardRef(
               placeholder={t("Price", "Price")}
             />
           </div> */}
-          {/* <div className="w-full justify-between flex gap-4">
+        {/* <div className="w-full justify-between flex gap-4">
             <Button
               className="bg-red-400 hover:bg-red-500 active:bg-red-600"
               onClick={() => {
@@ -213,12 +198,11 @@ export const NewShippingSettings = React.forwardRef(
               {t("Save", "Save")}
             </Button>
           </div> */}
-        </div>
-        {/* {!shippingMethode && (
+      </div>
+      {/* {!shippingMethode && (
 
         )} */}
-        {/* </div> */}
-      </div>
-    );
-  }
-);
+      {/* </div> */}
+    </div>
+  );
+});

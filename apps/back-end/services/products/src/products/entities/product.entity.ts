@@ -16,7 +16,6 @@ import {
   ProductCondition,
   ProductSize,
   ProductStatus,
-  ProductUsageStatus,
   VisibilityEnum,
 } from '@prisma-client';
 import { ShippingDetails } from '@products/entities/extends';
@@ -27,7 +26,6 @@ import {
 } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
-registerEnumType(ProductUsageStatus, { name: 'ProductUsageStatus' });
 registerEnumType(ProductCondition, { name: 'ProductCondition' });
 registerEnumType(ProductAttributeSelectionType, {
   name: 'ProductAttributeSelectionType',
@@ -233,9 +231,6 @@ export class Product {
 
   @Field(() => ProductStatus)
   status: ProductStatus;
-
-  @Field(() => ProductUsageStatus)
-  usageStatus: ProductUsageStatus;
 
   @Field(() => String)
   createdAt: Date;

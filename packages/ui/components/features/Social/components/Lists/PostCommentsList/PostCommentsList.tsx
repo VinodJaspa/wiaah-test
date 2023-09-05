@@ -24,7 +24,12 @@ export const PostCommentsList: React.FC<PostCommentsListProps> = ({
       {data ? (
         <CommentsViewer
           maxInitailComments={4}
-          comments={(data as unknown as Comment[]) || []}
+          comments={
+            data.pages.reduce(
+              (acc, curr) => acc.concat(curr.data || []),
+              [] as Comment[]
+            ) || []
+          }
         />
       ) : null}
     </SpinnerFallback>

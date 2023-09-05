@@ -160,14 +160,16 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
     />
   );
 };
-export interface ModalHeaderProps extends HtmlDivProps {
-  title: string;
+export interface ModalHeaderProps extends Omit<HtmlDivProps, "title"> {
+  title: React.ReactNode;
+  centerTitle?: boolean;
 }
 
 export const ModalHeader: React.FC<ModalHeaderProps> = ({
   className,
   children,
   title,
+  centerTitle = false,
   ...props
 }) => {
   return (
@@ -175,6 +177,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
       {...props}
       className={`${className || ""} flex items-center gap-2 justify-between`}
     >
+      {centerTitle ? <div></div> : null}
       <span>{title}</span>
       <ModalCloseButton>
         <CloseIcon className="text-2xl" />

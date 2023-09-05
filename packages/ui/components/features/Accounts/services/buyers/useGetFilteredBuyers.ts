@@ -26,7 +26,7 @@ export type GetFilteredBuyersQuery = { __typename?: "Query" } & {
       | "lastName"
       | "photo"
       | "verified"
-      | "type"
+      | "accountType"
       | "status"
       | "ips"
       | "membershipId"
@@ -62,14 +62,14 @@ query getFilteredBuyers($args:GetBuyersAccountsInput!) {
   getFilteredBuyers(
     getBuyersInput:$args
   ) {
-    createdAt
+        createdAt
         email
         firstName
         id
         lastName
         photo
     		verified
-        type
+        accountType
         verified
         status
         profile{
@@ -87,9 +87,7 @@ query getFilteredBuyers($args:GetBuyersAccountsInput!) {
         Membership {
           name
         }
-        balance {
-          withdrawableBalance
-        }
+       
   }
 } 
     `);
@@ -102,7 +100,10 @@ query getFilteredBuyers($args:GetBuyersAccountsInput!) {
 };
 
 export const useGetFilteredBuyers = (args: args) => {
-  return useQuery(GetFilteredBuyersQueryKey(args), () =>
-    GetFilteredBuyersQueryFetcher(args)
+  console.log("get filtered buyers", { args });
+  return useQuery(
+    GetFilteredBuyersQueryKey(args),
+    () => GetFilteredBuyersQueryFetcher(args),
+    { enabled: args.name !== "" }
   );
 };

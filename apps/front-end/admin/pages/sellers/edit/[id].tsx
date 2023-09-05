@@ -40,6 +40,7 @@ import {
   SimpleTabHead,
   ProfileStatistics,
   useGetUserShopType,
+  SalesStatistics,
 } from "ui";
 
 const Edit = () => {
@@ -49,7 +50,8 @@ const Edit = () => {
 
   const { data: shop } = useGetUserShopType({ userId: id });
 
-  const isProducts = shop.storeType === StoreType.Product;
+  const isProducts =
+    (shop?.storeType || StoreType.Product) === StoreType.Product;
 
   const productsTitle = isProducts ? "Products" : "Services";
 
@@ -85,6 +87,7 @@ const Edit = () => {
     "Vouchers",
     "Statistics",
     "Security",
+    "Sales Statistics",
   ];
 
   return (
@@ -142,6 +145,7 @@ const Edit = () => {
           <AccountVouchers accountId={id} />
           <ProfileStatistics accountId={id} />
           <AccountSecuritySettings accountId={id} />
+          <SalesStatistics accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

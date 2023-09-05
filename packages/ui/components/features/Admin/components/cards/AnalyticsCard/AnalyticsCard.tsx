@@ -9,14 +9,14 @@ export interface AnalyticsCardProps {
   title: string;
   amount: number;
   percentage: number;
-  incress: boolean;
+  increase: boolean;
   className?: string;
 }
 
 export const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
   amount,
   icon,
-  incress,
+  increase: incress,
   percentage,
   title,
   className,

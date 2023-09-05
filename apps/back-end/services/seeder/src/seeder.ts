@@ -1,6 +1,7 @@
 import { seeder } from 'nestjs-seeder';
 import { AccountsSeeder } from 'src/seeders/account.seeder';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { ReviewSeeder } from './seeders/reviews.seeder';
 
 export const client = new MongoClient(
   'mongodb+srv://kerlos:1234@cluster0.4voto.mongodb.net/?retryWrites=true&w=majority',
@@ -23,6 +24,7 @@ export enum DatabaseConnections {
   moderation = 'wiaah-moderation',
   auth = 'wiaah-auth',
   shopping_cart = 'wiaah-shopping-cart',
+  reviews = 'wiaah-reviews',
 }
 
 seeder({
@@ -51,5 +53,9 @@ seeder({
       provide: DatabaseConnections.shopping_cart,
       useValue: client.db(DatabaseConnections.shopping_cart),
     },
+    {
+      provide: DatabaseConnections.reviews,
+      useValue: client.db(DatabaseConnections.reviews),
+    },
   ],
-}).run([AccountsSeeder]);
+}).run([AccountsSeeder, ReviewSeeder]);

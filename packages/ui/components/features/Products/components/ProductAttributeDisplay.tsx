@@ -12,7 +12,14 @@ export const ProductAttributeDisplay: React.FC<
     onChange: (value: string[]) => any;
     value: string[];
   }
-> = ({ displayType, name, selectionType, values, onChange, value: _value }) => {
+> = ({
+  displayType,
+  name,
+  selectionType,
+  values,
+  onChange,
+  value: _value = [],
+}) => {
   return (
     <>
       {mapArray(values, (value) => {

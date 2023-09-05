@@ -59,14 +59,11 @@ export class CommentsService {
     createCommentInput: CreateCommentInput,
     userId: string,
   ): Promise<Comment> {
-    const {
-      authorProfileId,
-      content,
-      contentId,
-      contentType,
-      mentions,
-      attachment,
-    } = createCommentInput;
+    const { content, contentId, contentType, mentions, attachment } =
+      createCommentInput;
+    const authorProfileId = await this.profileSerivce.getProfileIdByUserId(
+      userId,
+    );
 
     const canComment = await this.canCommentOnContentByUserId(
       contentType,
@@ -83,11 +80,10 @@ export class CommentsService {
       GetContentDataQuery,
       ContentData
     >(new GetContentDataQuery(contentId, contentType));
-
     try {
       const comment = await this.prisma.comment.create({
         data: {
-          hostProfileid: Content.authorProfileId,
+          hostProfileid: authorProfileId,
           hostUserId: Content.userId,
           content,
           hostId: contentId,

@@ -1,11 +1,4 @@
-import {
-  Exact,
-  GetAdminFitleredProductReviewsInput,
-  Maybe,
-  Product,
-  ProductReview,
-  Profile,
-} from "@features/API";
+import { Exact, GetAdminFitleredProductReviewsInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -13,29 +6,39 @@ export type AdminGetReviewsQueryVariables = Exact<{
   args: GetAdminFitleredProductReviewsInput;
 }>;
 
-export type AdminGetReviewsQuery = { __typename?: "Query" } & {
-  adminGetFilteredProductReviews: Array<
-    { __typename?: "ProductReview" } & Pick<
-      ProductReview,
-      "message" | "rate" | "createdAt" | "id"
-    > & {
-        product: { __typename?: "Product" } & Pick<
-          Product,
-          "id" | "thumbnail" | "title"
-        > & {
-            seller: { __typename?: "Account" } & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<Profile, "username">
-              >;
-            };
-          };
-        reviewer: { __typename?: "Account" } & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<Profile, "username">
-          >;
-        };
-      }
-  >;
+export type AdminGetReviewsQuery = {
+  __typename?: "Query";
+  adminGetFilteredProductReviews: Array<{
+    __typename?: "ProductReview";
+    message: string;
+    rate: number;
+    createdAt: any;
+    id: string;
+    product: {
+      __typename?: "Product";
+      title: string;
+      thumbnail: string;
+      id: string;
+      seller: {
+        __typename?: "Account";
+        id: string;
+        profile?: {
+          __typename?: "Profile";
+          photo: string;
+          username: string;
+        } | null;
+      };
+    };
+    reviewer: {
+      __typename?: "Account";
+      profile?: {
+        __typename?: "Profile";
+        username: string;
+        photo: string;
+        id: string;
+      } | null;
+    };
+  }>;
 };
 
 type args = AdminGetReviewsQueryVariables["args"];
@@ -49,17 +52,24 @@ export const adminGetReviewsFetcher = async (args: args) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-query adminGetReviews($args:GetAdminFitleredProductReviewsInput!) {
-  adminGetFilteredProductReviews(
-    args:$args
-  ){
-    product{
+query adminGetReviews($args: GetAdminFitleredProductReviewsInput!) {
+  adminGetFilteredProductReviews(args: $args) {
+    product {
       title
+      thumbnail
+      id
+      seller {
+        id
+        profile {
+          photo
+          username
+        }
+      }
     }
-    reviewer{
-      profile{
+    reviewer {
+      profile {
         username
-        thumbnail
+        photo
         id
       }
     }

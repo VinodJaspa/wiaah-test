@@ -1,5 +1,5 @@
 import { Field, Float, ID, InputType, Int, PartialType } from '@nestjs/graphql';
-import { ProdcutType, ProductStatus, ProductUsageStatus } from '@prisma-client';
+import { ProdcutType, ProductCondition, ProductStatus } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
@@ -28,8 +28,8 @@ class input {
   @Field(() => ProdcutType)
   type: ProdcutType;
 
-  @Field(() => ProductUsageStatus)
-  usageStatus: ProductUsageStatus;
+  @Field(() => ProductCondition)
+  condition: ProductCondition;
 }
 
 @InputType()
@@ -64,8 +64,8 @@ export class ProductFilteredInput {
   @Field(() => Boolean)
   inStock: boolean;
 
-  @Field(() => ProductUsageStatus)
-  usageStatus: ProductUsageStatus;
+  @Field(() => ProductCondition)
+  condition: ProductCondition;
 
   @Field(() => ProdcutType)
   type: ProdcutType;

@@ -6,7 +6,7 @@ export function mapArray<T, P>(
 ): P[] {
   return Array.isArray(array)
     ? emptyArrayFallback && array.length < 1
-      ? emptyArrayFallbackComp
+      ? (emptyArrayFallbackComp as P[])
       : array.map(cb)
     : [];
 }

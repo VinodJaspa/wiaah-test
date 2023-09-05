@@ -4,5 +4,5 @@ import React from "react";
 export const AccountGeneralView: React.FC<{ accountId: string }> = ({
   accountId,
 }) => {
-  return <AccountSettingsSection />;
+  return <AccountSettingsSection accountId={accountId} />;
 };

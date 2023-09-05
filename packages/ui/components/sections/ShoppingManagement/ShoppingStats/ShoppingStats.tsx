@@ -1,5 +1,5 @@
 import { useUserData } from "@UI/../hooks";
-import { getRandomName, mapArray, randomNum } from "@UI/../utils/src";
+import { getRandomName, mapArray, randomNum } from "utils";
 import {
   SalesStatisticsCard,
   CustomTooltip,
@@ -26,8 +26,9 @@ import { AreaChart, XAxis, YAxis, Tooltip, Area } from "recharts";
 import { ServiceType } from "@features/API";
 import MoneyHandIcon from "@UI/components/partials/icons/MoneyHandIcon";
 import { useResponsive } from "@src/index";
-import { getRandomImage } from "@UI/placeholder";
+
 import { useRouting } from "@UI/../routing";
+import { getRandomImage } from "placeholder";
 
 const services: {
   name: string;

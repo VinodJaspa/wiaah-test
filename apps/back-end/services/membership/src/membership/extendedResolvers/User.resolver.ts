@@ -12,7 +12,7 @@ export class UserResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @ResolveField(() => Membership)
+  @ResolveField(() => Membership, { nullable: true })
   Membership(
     @Parent() user: Account,
     @GqlCurrentUser() authUser: AuthorizationDecodedUser,
@@ -22,7 +22,7 @@ export class UserResolver {
     );
   }
 
-  @ResolveField(() => MembershipSubscription)
+  @ResolveField(() => MembershipSubscription, { nullable: true })
   subscribedPlan(@Parent() user: Account): Promise<MembershipSubscription> {
     return this.prisma.memberShipSubscription.findUnique({
       where: {

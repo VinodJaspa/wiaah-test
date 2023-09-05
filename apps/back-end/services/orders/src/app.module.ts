@@ -9,6 +9,7 @@ import { getUserFromRequest } from 'nest-utils';
 import { RefundModule } from './refund/refund.module';
 import { PrismaModule } from './prisma.module';
 import { ReturnedOrdersModule } from './returned-orders/returned-orders.module';
+import { SellerSalesStatsModule } from './seller-sales-stats/seller-sales-stats.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ReturnedOrdersModule } from './returned-orders/returned-orders.module';
     OrdersModule,
     RefundModule,
     ReturnedOrdersModule,
+    SellerSalesStatsModule,
   ],
   controllers: [],
   providers: [],

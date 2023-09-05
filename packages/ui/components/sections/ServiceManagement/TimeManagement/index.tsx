@@ -189,7 +189,7 @@ export const TimeManagementSection: React.FC<
   );
 };
 
-export const TimeInput: React.FC<{
+const TimeInput: React.FC<{
   date: Date;
   onChange: (date: Date) => any;
   label?: string;

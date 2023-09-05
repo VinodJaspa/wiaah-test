@@ -1,10 +1,9 @@
 import React from "react";
 import { useRouting } from "routing";
-import { RecommendedShopCard } from "@UI";
-import { Shop, StoreType } from "@features/API";
+import { RecommendedShopCard, RecommendedShopCardProps } from "@UI";
 
 export interface ShopsAndServicesRecommendationsList {
-  shops: Shop[];
+  shops: RecommendedShopCardProps[];
 }
 
 export const ShopsAndServicesRecommendationsList: React.FC<
@@ -18,17 +17,9 @@ export const ShopsAndServicesRecommendationsList: React.FC<
         ? shops.map((data, i) => {
             return (
               <RecommendedShopCard
-                key={`${data.id}-${i}`}
-                onShopClick={() => {
-                  visit((routes) => routes.visitRecommendedServiceOrShop(data));
-                }}
-                imgUrl={data.banner}
-                name={data.name}
-                id={data.id}
-                label={
-                  data.storeType[0] === StoreType.Product ? "Store" : data.type
-                }
-                // label={data.name}
+                onShopClick={() => visit((r) => r.visitShop(data))}
+                key={i}
+                {...data}
               />
             );
           })

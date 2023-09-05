@@ -56,13 +56,13 @@ export const useGetRecentBuyers = (
   };
   return useQuery(GetRecentBuyersQueryKey(args), () => {
     if (isDev) {
-      const res: GetRecentBuyersQuery["getFilteredBuyers"] = [...Array(5)].map(
+      const res: GetRecentBuyersQuery["getFilteredBuyers"] = [...Array(2)].map(
         (_, i) => ({
           createdAt: AddToDate(new Date(), { hours: i }),
           id: i.toString(),
         })
       );
-      console.log({ res });
+      
       return res;
     }
     return GetRecentBuyersQueryFetcher(args);

@@ -27,6 +27,7 @@ export class NewsfeedPostsAdminResolver {
     // TODO: use raw query to get data from newsfeedposts and action collections togather
     return this.service.getNewsfeedPostsByUserId(
       input.userId,
+      input.type,
       input.pagination,
     );
   }

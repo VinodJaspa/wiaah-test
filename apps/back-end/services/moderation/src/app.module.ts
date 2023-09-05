@@ -18,6 +18,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
 import { CountryModule } from './country/country.module';
 import { TaxRateModule } from './tax-rate/tax-rate.module';
 import { ContactusModule } from './contactus/contactus.module';
+import { SiteProfitModule } from './site-profit/site-profit.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ContactusModule } from './contactus/contactus.module';
     CountryModule,
     TaxRateModule,
     ContactusModule,
+    SiteProfitModule,
   ],
 })
 export class AppModule {}

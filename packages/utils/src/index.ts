@@ -18,8 +18,8 @@ export * from "./ReactUtils";
 export * from "./formaters";
 export * from "./calculations";
 export * from "./compare";
-
+export * from "./getRandomNumber";
 export * from "./passPropsToFnOrElem";
 export * from "./mocks";
 
-export const isDev = true ;
+export const isDev = false;

@@ -57,7 +57,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              followingProfileId: args.profileId,
+              followingUserId: args.userId,
             },
             {
               followedAt: {
@@ -72,7 +72,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              followingProfileId: args.profileId,
+              followingUserId: args.userId,
             },
             {
               followedAt: {
@@ -92,7 +92,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              hostProfileId: args.profileId,
+              hostUserId: args.userId,
             },
             {
               reactedAt: {
@@ -107,7 +107,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              hostProfileId: args.profileId,
+              hostUserId: args.userId,
             },
             {
               reactedAt: {
@@ -387,7 +387,7 @@ export class ProfileStatisticsResolver {
   ): Promise<ProfileVisitsDetails> {
     await this.validateAuthorite(user, args.profileId);
 
-    const res = await this.prisma.profileVisit.findMany({
+    const res = await this.prisma.profileVisitStats.findMany({
       where: {
         AND: [
           {
@@ -397,15 +397,21 @@ export class ProfileStatisticsResolver {
       },
     });
 
-    return {
-      countries: Object.entries(
-        res.reduce((acc, curr) => {
-          const country = acc[curr.country];
+    const totalProfileVisits = res.reduce((acc, curr) => acc + curr.visits, 0);
 
-          if (country) return { ...acc, [curr.country]: country + 1 };
-          return { ...acc, [args.country]: 1 };
-        }, {} as Record<string, number>),
-      ).map(([key, v]) => ({ visits: v, country: key } as ProfileVisitDetails)),
+    return {
+      countries: res.map((country) => ({
+        ...country,
+        visitPercent: country.visits / totalProfileVisits,
+      })),
+      // countries: Object.entries(
+      //   res.reduce((acc, curr) => {
+      //     const country = acc[curr.country];
+
+      //     if (country) return { ...acc, [curr.country]: country + 1 };
+      //     return { ...acc, [args.country]: 1 };
+      //   }, {} as Record<string, number>),
+      // ).map(([key, v]) => ({ visits: v, country: key } as ProfileVisitDetails)),
     };
   }
 
@@ -414,7 +420,7 @@ export class ProfileStatisticsResolver {
     @Args('args') args: GetTopProfilePostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Story[]> {
-    await this.validateAuthorite(user, args.profileId);
+    await this.validateAuthorite(user, args.userId);
     const { take, skip } = ExtractPagination(args.pagination);
 
     const firstPeriod = SubtractFromDate(new Date(), {
@@ -425,7 +431,7 @@ export class ProfileStatisticsResolver {
       where: {
         AND: [
           {
-            profileId: args.profileId,
+            publisherId: args.userId,
           },
           {
             createdAt: {
@@ -446,7 +452,7 @@ export class ProfileStatisticsResolver {
     @Args('args') args: GetTopProfilePostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<NewsfeedPost[]> {
-    await this.validateAuthorite(user, args.profileId);
+    await this.validateAuthorite(user, args.userId);
     const { take, skip } = ExtractPagination(args.pagination);
 
     const firstPeriod = SubtractFromDate(new Date(), {
@@ -457,7 +463,7 @@ export class ProfileStatisticsResolver {
       where: {
         AND: [
           {
-            authorProfileId: args.profileId,
+            userId: args.userId,
           },
           {
             createdAt: {

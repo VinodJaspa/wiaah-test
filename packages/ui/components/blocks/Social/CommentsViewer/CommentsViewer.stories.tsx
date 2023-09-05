@@ -3,11 +3,9 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { CommentsViewer } from "@UI";
 import { PostCardPlaceHolder } from "placeholder";
 
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/CommentsViewer",
   component: CommentsViewer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof CommentsViewer>;
 
 const Template: ComponentStory<typeof CommentsViewer> = (args) => (

@@ -1,13 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SubscribersPopup } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { Button } from "@chakra-ui/react";
 import { t } from "i18next";
 export default {
   title: "UI/blocks/Social/SubscribersPopup",
   component: SubscribersPopup,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SubscribersPopup>;
 
 const Template: ComponentStory<typeof SubscribersPopup> = ({

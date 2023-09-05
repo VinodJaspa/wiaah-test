@@ -10,6 +10,15 @@ export class CreateCategoryInput {
   @Field(() => [TranslationTextInput])
   name: TranslationTextInput[];
 
+  @Field(() => [TranslationTextInput])
+  metaTagTitle: TranslationTextInput[];
+
+  @Field(() => [TranslationTextInput])
+  metaTagDescription: TranslationTextInput[];
+
+  @Field(() => [TranslationTextInput])
+  metaTagKeywords: TranslationTextInput[];
+
   @Field(() => Int)
   sortOrder: number;
 

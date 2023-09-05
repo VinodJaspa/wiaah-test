@@ -86,6 +86,21 @@ export type Event = {
   causedToId: string
 }
 
+/**
+ * Model SalesStats
+ * 
+ */
+export type SalesStats = {
+  id: string
+  period: string
+  sales: number
+  salesAmount: number
+  refundeds: number
+  refundedAmount: number
+  affiliations: number
+  affiliationsAmount: number
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -246,6 +261,16 @@ export class PrismaClient<
     * ```
     */
   get event(): Prisma.EventDelegate<GlobalReject>;
+
+  /**
+   * `prisma.salesStats`: Exposes CRUD operations for the **SalesStats** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalesStats
+    * const salesStats = await prisma.salesStats.findMany()
+    * ```
+    */
+  get salesStats(): Prisma.SalesStatsDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -666,7 +691,8 @@ export namespace Prisma {
     ActivityScore: 'ActivityScore',
     UsersInteractions: 'UsersInteractions',
     UserInterest: 'UserInterest',
-    Event: 'Event'
+    Event: 'Event',
+    SalesStats: 'SalesStats'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -5531,6 +5557,959 @@ export namespace Prisma {
 
 
   /**
+   * Model SalesStats
+   */
+
+
+  export type AggregateSalesStats = {
+    _count: SalesStatsCountAggregateOutputType | null
+    _avg: SalesStatsAvgAggregateOutputType | null
+    _sum: SalesStatsSumAggregateOutputType | null
+    _min: SalesStatsMinAggregateOutputType | null
+    _max: SalesStatsMaxAggregateOutputType | null
+  }
+
+  export type SalesStatsAvgAggregateOutputType = {
+    sales: number | null
+    salesAmount: number | null
+    refundeds: number | null
+    refundedAmount: number | null
+    affiliations: number | null
+    affiliationsAmount: number | null
+  }
+
+  export type SalesStatsSumAggregateOutputType = {
+    sales: number | null
+    salesAmount: number | null
+    refundeds: number | null
+    refundedAmount: number | null
+    affiliations: number | null
+    affiliationsAmount: number | null
+  }
+
+  export type SalesStatsMinAggregateOutputType = {
+    id: string | null
+    period: string | null
+    sales: number | null
+    salesAmount: number | null
+    refundeds: number | null
+    refundedAmount: number | null
+    affiliations: number | null
+    affiliationsAmount: number | null
+  }
+
+  export type SalesStatsMaxAggregateOutputType = {
+    id: string | null
+    period: string | null
+    sales: number | null
+    salesAmount: number | null
+    refundeds: number | null
+    refundedAmount: number | null
+    affiliations: number | null
+    affiliationsAmount: number | null
+  }
+
+  export type SalesStatsCountAggregateOutputType = {
+    id: number
+    period: number
+    sales: number
+    salesAmount: number
+    refundeds: number
+    refundedAmount: number
+    affiliations: number
+    affiliationsAmount: number
+    _all: number
+  }
+
+
+  export type SalesStatsAvgAggregateInputType = {
+    sales?: true
+    salesAmount?: true
+    refundeds?: true
+    refundedAmount?: true
+    affiliations?: true
+    affiliationsAmount?: true
+  }
+
+  export type SalesStatsSumAggregateInputType = {
+    sales?: true
+    salesAmount?: true
+    refundeds?: true
+    refundedAmount?: true
+    affiliations?: true
+    affiliationsAmount?: true
+  }
+
+  export type SalesStatsMinAggregateInputType = {
+    id?: true
+    period?: true
+    sales?: true
+    salesAmount?: true
+    refundeds?: true
+    refundedAmount?: true
+    affiliations?: true
+    affiliationsAmount?: true
+  }
+
+  export type SalesStatsMaxAggregateInputType = {
+    id?: true
+    period?: true
+    sales?: true
+    salesAmount?: true
+    refundeds?: true
+    refundedAmount?: true
+    affiliations?: true
+    affiliationsAmount?: true
+  }
+
+  export type SalesStatsCountAggregateInputType = {
+    id?: true
+    period?: true
+    sales?: true
+    salesAmount?: true
+    refundeds?: true
+    refundedAmount?: true
+    affiliations?: true
+    affiliationsAmount?: true
+    _all?: true
+  }
+
+  export type SalesStatsAggregateArgs = {
+    /**
+     * Filter which SalesStats to aggregate.
+     * 
+    **/
+    where?: SalesStatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesStats to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: SalesStatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesStats from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesStats.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalesStats
+    **/
+    _count?: true | SalesStatsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SalesStatsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SalesStatsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalesStatsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalesStatsMaxAggregateInputType
+  }
+
+  export type GetSalesStatsAggregateType<T extends SalesStatsAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalesStats]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalesStats[P]>
+      : GetScalarType<T[P], AggregateSalesStats[P]>
+  }
+
+
+
+
+  export type SalesStatsGroupByArgs = {
+    where?: SalesStatsWhereInput
+    orderBy?: Enumerable<SalesStatsOrderByWithAggregationInput>
+    by: Array<SalesStatsScalarFieldEnum>
+    having?: SalesStatsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalesStatsCountAggregateInputType | true
+    _avg?: SalesStatsAvgAggregateInputType
+    _sum?: SalesStatsSumAggregateInputType
+    _min?: SalesStatsMinAggregateInputType
+    _max?: SalesStatsMaxAggregateInputType
+  }
+
+
+  export type SalesStatsGroupByOutputType = {
+    id: string
+    period: string
+    sales: number
+    salesAmount: number
+    refundeds: number
+    refundedAmount: number
+    affiliations: number
+    affiliationsAmount: number
+    _count: SalesStatsCountAggregateOutputType | null
+    _avg: SalesStatsAvgAggregateOutputType | null
+    _sum: SalesStatsSumAggregateOutputType | null
+    _min: SalesStatsMinAggregateOutputType | null
+    _max: SalesStatsMaxAggregateOutputType | null
+  }
+
+  type GetSalesStatsGroupByPayload<T extends SalesStatsGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<SalesStatsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalesStatsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalesStatsGroupByOutputType[P]>
+            : GetScalarType<T[P], SalesStatsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalesStatsSelect = {
+    id?: boolean
+    period?: boolean
+    sales?: boolean
+    salesAmount?: boolean
+    refundeds?: boolean
+    refundedAmount?: boolean
+    affiliations?: boolean
+    affiliationsAmount?: boolean
+  }
+
+  export type SalesStatsGetPayload<
+    S extends boolean | null | undefined | SalesStatsArgs,
+    U = keyof S
+      > = S extends true
+        ? SalesStats
+    : S extends undefined
+    ? never
+    : S extends SalesStatsArgs | SalesStatsFindManyArgs
+    ?'include' extends U
+    ? SalesStats 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof SalesStats ? SalesStats[P] : never
+  } 
+    : SalesStats
+  : SalesStats
+
+
+  type SalesStatsCountArgs = Merge<
+    Omit<SalesStatsFindManyArgs, 'select' | 'include'> & {
+      select?: SalesStatsCountAggregateInputType | true
+    }
+  >
+
+  export interface SalesStatsDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one SalesStats that matches the filter.
+     * @param {SalesStatsFindUniqueArgs} args - Arguments to find a SalesStats
+     * @example
+     * // Get one SalesStats
+     * const salesStats = await prisma.salesStats.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends SalesStatsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, SalesStatsFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'SalesStats'> extends True ? CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__SalesStatsClient<SalesStats | null >, Prisma__SalesStatsClient<SalesStatsGetPayload<T> | null >>
+
+    /**
+     * Find the first SalesStats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsFindFirstArgs} args - Arguments to find a SalesStats
+     * @example
+     * // Get one SalesStats
+     * const salesStats = await prisma.salesStats.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends SalesStatsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, SalesStatsFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'SalesStats'> extends True ? CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__SalesStatsClient<SalesStats | null >, Prisma__SalesStatsClient<SalesStatsGetPayload<T> | null >>
+
+    /**
+     * Find zero or more SalesStats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalesStats
+     * const salesStats = await prisma.salesStats.findMany()
+     * 
+     * // Get first 10 SalesStats
+     * const salesStats = await prisma.salesStats.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salesStatsWithIdOnly = await prisma.salesStats.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends SalesStatsFindManyArgs>(
+      args?: SelectSubset<T, SalesStatsFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<SalesStats>>, PrismaPromise<Array<SalesStatsGetPayload<T>>>>
+
+    /**
+     * Create a SalesStats.
+     * @param {SalesStatsCreateArgs} args - Arguments to create a SalesStats.
+     * @example
+     * // Create one SalesStats
+     * const SalesStats = await prisma.salesStats.create({
+     *   data: {
+     *     // ... data to create a SalesStats
+     *   }
+     * })
+     * 
+    **/
+    create<T extends SalesStatsCreateArgs>(
+      args: SelectSubset<T, SalesStatsCreateArgs>
+    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+
+    /**
+     * Create many SalesStats.
+     *     @param {SalesStatsCreateManyArgs} args - Arguments to create many SalesStats.
+     *     @example
+     *     // Create many SalesStats
+     *     const salesStats = await prisma.salesStats.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends SalesStatsCreateManyArgs>(
+      args?: SelectSubset<T, SalesStatsCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SalesStats.
+     * @param {SalesStatsDeleteArgs} args - Arguments to delete one SalesStats.
+     * @example
+     * // Delete one SalesStats
+     * const SalesStats = await prisma.salesStats.delete({
+     *   where: {
+     *     // ... filter to delete one SalesStats
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends SalesStatsDeleteArgs>(
+      args: SelectSubset<T, SalesStatsDeleteArgs>
+    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+
+    /**
+     * Update one SalesStats.
+     * @param {SalesStatsUpdateArgs} args - Arguments to update one SalesStats.
+     * @example
+     * // Update one SalesStats
+     * const salesStats = await prisma.salesStats.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends SalesStatsUpdateArgs>(
+      args: SelectSubset<T, SalesStatsUpdateArgs>
+    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+
+    /**
+     * Delete zero or more SalesStats.
+     * @param {SalesStatsDeleteManyArgs} args - Arguments to filter SalesStats to delete.
+     * @example
+     * // Delete a few SalesStats
+     * const { count } = await prisma.salesStats.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends SalesStatsDeleteManyArgs>(
+      args?: SelectSubset<T, SalesStatsDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalesStats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalesStats
+     * const salesStats = await prisma.salesStats.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends SalesStatsUpdateManyArgs>(
+      args: SelectSubset<T, SalesStatsUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SalesStats.
+     * @param {SalesStatsUpsertArgs} args - Arguments to update or create a SalesStats.
+     * @example
+     * // Update or create a SalesStats
+     * const salesStats = await prisma.salesStats.upsert({
+     *   create: {
+     *     // ... data to create a SalesStats
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalesStats we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends SalesStatsUpsertArgs>(
+      args: SelectSubset<T, SalesStatsUpsertArgs>
+    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+
+    /**
+     * Find zero or more SalesStats that matches the filter.
+     * @param {SalesStatsFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const salesStats = await prisma.salesStats.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: SalesStatsFindRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a SalesStats.
+     * @param {SalesStatsAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const salesStats = await prisma.salesStats.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: SalesStatsAggregateRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of SalesStats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsCountArgs} args - Arguments to filter SalesStats to count.
+     * @example
+     * // Count the number of SalesStats
+     * const count = await prisma.salesStats.count({
+     *   where: {
+     *     // ... the filter for the SalesStats we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalesStatsCountArgs>(
+      args?: Subset<T, SalesStatsCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalesStatsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalesStats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalesStatsAggregateArgs>(args: Subset<T, SalesStatsAggregateArgs>): PrismaPromise<GetSalesStatsAggregateType<T>>
+
+    /**
+     * Group by SalesStats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalesStatsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalesStatsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalesStatsGroupByArgs['orderBy'] }
+        : { orderBy?: SalesStatsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalesStatsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesStatsGroupByPayload<T> : PrismaPromise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalesStats.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__SalesStatsClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * SalesStats findUnique
+   */
+  export type SalesStatsFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * Throw an Error if a SalesStats can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which SalesStats to fetch.
+     * 
+    **/
+    where: SalesStatsWhereUniqueInput
+  }
+
+
+  /**
+   * SalesStats findFirst
+   */
+  export type SalesStatsFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * Throw an Error if a SalesStats can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which SalesStats to fetch.
+     * 
+    **/
+    where?: SalesStatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesStats to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalesStats.
+     * 
+    **/
+    cursor?: SalesStatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesStats from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesStats.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalesStats.
+     * 
+    **/
+    distinct?: Enumerable<SalesStatsScalarFieldEnum>
+  }
+
+
+  /**
+   * SalesStats findMany
+   */
+  export type SalesStatsFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * Filter, which SalesStats to fetch.
+     * 
+    **/
+    where?: SalesStatsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalesStats to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalesStats.
+     * 
+    **/
+    cursor?: SalesStatsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalesStats from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalesStats.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<SalesStatsScalarFieldEnum>
+  }
+
+
+  /**
+   * SalesStats create
+   */
+  export type SalesStatsCreateArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * The data needed to create a SalesStats.
+     * 
+    **/
+    data: XOR<SalesStatsCreateInput, SalesStatsUncheckedCreateInput>
+  }
+
+
+  /**
+   * SalesStats createMany
+   */
+  export type SalesStatsCreateManyArgs = {
+    /**
+     * The data used to create many SalesStats.
+     * 
+    **/
+    data: Enumerable<SalesStatsCreateManyInput>
+  }
+
+
+  /**
+   * SalesStats update
+   */
+  export type SalesStatsUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * The data needed to update a SalesStats.
+     * 
+    **/
+    data: XOR<SalesStatsUpdateInput, SalesStatsUncheckedUpdateInput>
+    /**
+     * Choose, which SalesStats to update.
+     * 
+    **/
+    where: SalesStatsWhereUniqueInput
+  }
+
+
+  /**
+   * SalesStats updateMany
+   */
+  export type SalesStatsUpdateManyArgs = {
+    /**
+     * The data used to update SalesStats.
+     * 
+    **/
+    data: XOR<SalesStatsUpdateManyMutationInput, SalesStatsUncheckedUpdateManyInput>
+    /**
+     * Filter which SalesStats to update
+     * 
+    **/
+    where?: SalesStatsWhereInput
+  }
+
+
+  /**
+   * SalesStats upsert
+   */
+  export type SalesStatsUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * The filter to search for the SalesStats to update in case it exists.
+     * 
+    **/
+    where: SalesStatsWhereUniqueInput
+    /**
+     * In case the SalesStats found by the `where` argument doesn't exist, create a new SalesStats with this data.
+     * 
+    **/
+    create: XOR<SalesStatsCreateInput, SalesStatsUncheckedCreateInput>
+    /**
+     * In case the SalesStats was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<SalesStatsUpdateInput, SalesStatsUncheckedUpdateInput>
+  }
+
+
+  /**
+   * SalesStats delete
+   */
+  export type SalesStatsDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+    /**
+     * Filter which SalesStats to delete.
+     * 
+    **/
+    where: SalesStatsWhereUniqueInput
+  }
+
+
+  /**
+   * SalesStats deleteMany
+   */
+  export type SalesStatsDeleteManyArgs = {
+    /**
+     * Filter which SalesStats to delete
+     * 
+    **/
+    where?: SalesStatsWhereInput
+  }
+
+
+  /**
+   * SalesStats findRaw
+   */
+  export type SalesStatsFindRawArgs = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     * 
+    **/
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * SalesStats aggregateRaw
+   */
+  export type SalesStatsAggregateRawArgs = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     * 
+    **/
+    pipeline?: Array<InputJsonValue>
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * SalesStats without action
+   */
+  export type SalesStatsArgs = {
+    /**
+     * Select specific fields to fetch from the SalesStats
+     * 
+    **/
+    select?: SalesStatsSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -5594,6 +6573,20 @@ export namespace Prisma {
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+  export const SalesStatsScalarFieldEnum: {
+    id: 'id',
+    period: 'period',
+    sales: 'sales',
+    salesAmount: 'salesAmount',
+    refundeds: 'refundeds',
+    refundedAmount: 'refundedAmount',
+    affiliations: 'affiliations',
+    affiliationsAmount: 'affiliationsAmount'
+  };
+
+  export type SalesStatsScalarFieldEnum = (typeof SalesStatsScalarFieldEnum)[keyof typeof SalesStatsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5866,6 +6859,65 @@ export namespace Prisma {
     key?: StringWithAggregatesFilter | string
     causedById?: StringNullableWithAggregatesFilter | string | null
     causedToId?: StringWithAggregatesFilter | string
+  }
+
+  export type SalesStatsWhereInput = {
+    AND?: Enumerable<SalesStatsWhereInput>
+    OR?: Enumerable<SalesStatsWhereInput>
+    NOT?: Enumerable<SalesStatsWhereInput>
+    id?: StringFilter | string
+    period?: StringFilter | string
+    sales?: IntFilter | number
+    salesAmount?: FloatFilter | number
+    refundeds?: IntFilter | number
+    refundedAmount?: FloatFilter | number
+    affiliations?: IntFilter | number
+    affiliationsAmount?: IntFilter | number
+  }
+
+  export type SalesStatsOrderByWithRelationInput = {
+    id?: SortOrder
+    period?: SortOrder
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+  }
+
+  export type SalesStatsWhereUniqueInput = {
+    id?: string
+  }
+
+  export type SalesStatsOrderByWithAggregationInput = {
+    id?: SortOrder
+    period?: SortOrder
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+    _count?: SalesStatsCountOrderByAggregateInput
+    _avg?: SalesStatsAvgOrderByAggregateInput
+    _max?: SalesStatsMaxOrderByAggregateInput
+    _min?: SalesStatsMinOrderByAggregateInput
+    _sum?: SalesStatsSumOrderByAggregateInput
+  }
+
+  export type SalesStatsScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
+    OR?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    period?: StringWithAggregatesFilter | string
+    sales?: IntWithAggregatesFilter | number
+    salesAmount?: FloatWithAggregatesFilter | number
+    refundeds?: IntWithAggregatesFilter | number
+    refundedAmount?: FloatWithAggregatesFilter | number
+    affiliations?: IntWithAggregatesFilter | number
+    affiliationsAmount?: IntWithAggregatesFilter | number
   }
 
   export type UserActivityStatsCreateInput = {
@@ -6161,6 +7213,79 @@ export namespace Prisma {
     key?: StringFieldUpdateOperationsInput | string
     causedById?: NullableStringFieldUpdateOperationsInput | string | null
     causedToId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SalesStatsCreateInput = {
+    id?: string
+    period: string
+    sales?: number
+    salesAmount?: number
+    refundeds?: number
+    refundedAmount?: number
+    affiliations?: number
+    affiliationsAmount?: number
+  }
+
+  export type SalesStatsUncheckedCreateInput = {
+    id?: string
+    period: string
+    sales?: number
+    salesAmount?: number
+    refundeds?: number
+    refundedAmount?: number
+    affiliations?: number
+    affiliationsAmount?: number
+  }
+
+  export type SalesStatsUpdateInput = {
+    period?: StringFieldUpdateOperationsInput | string
+    sales?: IntFieldUpdateOperationsInput | number
+    salesAmount?: FloatFieldUpdateOperationsInput | number
+    refundeds?: IntFieldUpdateOperationsInput | number
+    refundedAmount?: FloatFieldUpdateOperationsInput | number
+    affiliations?: IntFieldUpdateOperationsInput | number
+    affiliationsAmount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SalesStatsUncheckedUpdateInput = {
+    period?: StringFieldUpdateOperationsInput | string
+    sales?: IntFieldUpdateOperationsInput | number
+    salesAmount?: FloatFieldUpdateOperationsInput | number
+    refundeds?: IntFieldUpdateOperationsInput | number
+    refundedAmount?: FloatFieldUpdateOperationsInput | number
+    affiliations?: IntFieldUpdateOperationsInput | number
+    affiliationsAmount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SalesStatsCreateManyInput = {
+    id?: string
+    period: string
+    sales?: number
+    salesAmount?: number
+    refundeds?: number
+    refundedAmount?: number
+    affiliations?: number
+    affiliationsAmount?: number
+  }
+
+  export type SalesStatsUpdateManyMutationInput = {
+    period?: StringFieldUpdateOperationsInput | string
+    sales?: IntFieldUpdateOperationsInput | number
+    salesAmount?: FloatFieldUpdateOperationsInput | number
+    refundeds?: IntFieldUpdateOperationsInput | number
+    refundedAmount?: FloatFieldUpdateOperationsInput | number
+    affiliations?: IntFieldUpdateOperationsInput | number
+    affiliationsAmount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SalesStatsUncheckedUpdateManyInput = {
+    period?: StringFieldUpdateOperationsInput | string
+    sales?: IntFieldUpdateOperationsInput | number
+    salesAmount?: FloatFieldUpdateOperationsInput | number
+    refundeds?: IntFieldUpdateOperationsInput | number
+    refundedAmount?: FloatFieldUpdateOperationsInput | number
+    affiliations?: IntFieldUpdateOperationsInput | number
+    affiliationsAmount?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter = {
@@ -6534,6 +7659,57 @@ export namespace Prisma {
     _min?: NestedStringNullableFilter
     _max?: NestedStringNullableFilter
     isSet?: boolean
+  }
+
+  export type SalesStatsCountOrderByAggregateInput = {
+    id?: SortOrder
+    period?: SortOrder
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+  }
+
+  export type SalesStatsAvgOrderByAggregateInput = {
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+  }
+
+  export type SalesStatsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    period?: SortOrder
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+  }
+
+  export type SalesStatsMinOrderByAggregateInput = {
+    id?: SortOrder
+    period?: SortOrder
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
+  }
+
+  export type SalesStatsSumOrderByAggregateInput = {
+    sales?: SortOrder
+    salesAmount?: SortOrder
+    refundeds?: SortOrder
+    refundedAmount?: SortOrder
+    affiliations?: SortOrder
+    affiliationsAmount?: SortOrder
   }
 
   export type FloatFieldUpdateOperationsInput = {

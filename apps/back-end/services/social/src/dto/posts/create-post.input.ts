@@ -34,8 +34,8 @@ export class CreatePostInput {
   @Field(() => PostLocationInput, { nullable: true })
   location?: PostLocationInput;
 
-  @Field(() => String, { nullable: true })
-  productId?: string;
+  @Field(() => [String], { nullable: true })
+  productIds?: string[];
 
   @Field(() => String, { nullable: true })
   serviceId?: string;

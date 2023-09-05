@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   SectionWrapper,
   SectionHeader,
-  useResponsive,
   useGetUserSavedCollections,
   useGetMyAccountQuery,
   AspectRatio,
@@ -19,7 +18,7 @@ export const SavedPostsSection: React.FC = () => {
     { userId: account?.id! },
     { enabled: !!account?.id }
   );
-  const { isMobile } = useResponsive();
+
   return (
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>

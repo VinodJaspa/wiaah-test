@@ -63,8 +63,8 @@ type Account {
   membershipId: ID
   id: ID!
   membership: Membership
-  Membership: Membership!
-  subscribedPlan: MembershipSubscription!
+  Membership: Membership
+  subscribedPlan: MembershipSubscription
 }
 
 type MembershipSubscription {

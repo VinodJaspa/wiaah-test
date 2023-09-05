@@ -1,35 +1,38 @@
-import { Exact, Mutation, Scalars } from "@features/API";
+import { Exact, UpdateProductReviewInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
-export type AdminDeleteProductReviewMutationVariables = Exact<{
-  id: Scalars["String"];
+export type AdminUpdateReviewMutationVariables = Exact<{
+  args: UpdateProductReviewInput;
 }>;
 
-export type AdminDeleteProductReviewMutation = {
+export type AdminUpdateReviewMutation = {
   __typename?: "Mutation";
-} & Pick<Mutation, "adminDeleteProductReview">;
+  adminUpdateProductReview: boolean;
+};
 
 export const useAdminUpdateProductReviewMutation = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-mutation adminDeleteProductReview(
-  $id:String!
+mutation adminUpdateReview(
+    $args:UpdateProductReviewInput!
 ){
-  adminDeleteProductReview(id:$id)
+    adminUpdateProductReview(
+        args:$args
+    )
 }
 `);
 
   return useMutation<
     boolean,
     unknown,
-    AdminDeleteProductReviewMutationVariables["id"]
-  >(["admin-delete-review"], async (id) => {
+    AdminUpdateReviewMutationVariables["args"]
+  >(async (id) => {
     const res = await client
-      .setVariables<AdminDeleteProductReviewMutationVariables>({ id })
-      .send<AdminDeleteProductReviewMutation>();
+      .setVariables<AdminUpdateReviewMutationVariables>({ id })
+      .send<AdminUpdateReviewMutation>();
 
-    return res.data.adminDeleteProductReview;
+    return res.data.adminUpdateProductReview;
   });
 };

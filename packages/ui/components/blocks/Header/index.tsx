@@ -21,7 +21,7 @@ import {
 } from "@UI";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
-import { useBreakpointValue } from "utils";
+import { setTestid, useBreakpointValue } from "utils";
 
 export interface HeaderProps {}
 
@@ -62,6 +62,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
           <HStack className="gap-6">
             <Button
+              {...setTestid("auth-btn")}
               colorScheme={isMobile ? "white" : "darkbrown"}
               onClick={() =>
                 profile

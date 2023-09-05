@@ -146,3 +146,24 @@ model TaxRate {
   percent             Float
   appliedOnCountryIds String[]
 }
+
+model SalesStats {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  type      ProfitStatsType
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  sales              Int   @default(0)
+  salesAmount        Float @default(0)
+  purchases          Int
+  purchasesAmount    Float
+  refunds            Int   @default(0)
+  refundsAmount      Float @default(0)
+  affiliations       Int   @default(0)
+  affiliationsAmount Int   @default(0)
+}
+
+enum ProfitStatsType {
+  product
+  service
+}

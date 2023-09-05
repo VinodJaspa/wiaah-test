@@ -11,6 +11,7 @@ import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { LocalizationResolver } from './Localization.resolver';
 import { searchCommandHandlers } from './commands';
 import { SearchElasticRepository, SearchRepository } from './repository';
+import { SearchResolver } from './search.resolver';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SearchElasticRepository, SearchRepository } from './repository';
     LocalizationResolver,
     SearchElasticRepository,
     SearchRepository,
+    SearchResolver,
     ...searchCommandHandlers,
   ],
 })

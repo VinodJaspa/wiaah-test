@@ -1,13 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialStoryViewerHeader } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { PostCardPlaceHolder } from "../../../../placeholder";
 import { Box } from "@chakra-ui/react";
 export default {
   title: "UI/blocks/Social/SocialStoryViewerHeader",
   component: SocialStoryViewerHeader,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SocialStoryViewerHeader>;
 
 const Template: ComponentStory<typeof SocialStoryViewerHeader> = (args) => (

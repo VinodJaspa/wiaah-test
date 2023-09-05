@@ -3,6 +3,12 @@ const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 const path = require("path");
 
+const webpack = require("webpack");
+
+// @ts-check
+/**
+ * @type { import("@storybook/react/types").StorybookConfig}
+ */
 const config = {
   stories: [
     // "../apps/**/*.stories.mdx",
@@ -20,7 +26,6 @@ const config = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@chakra-ui/storybook-addon",
     "storybook-react-i18next",
     {
       /**
@@ -34,15 +39,22 @@ const config = {
         },
       },
     },
+    // "storybook-addon-module-mock",
+    "@storybook/addon-jest",
   ],
   core: {
     builder: "webpack5",
   },
+  // features: {
+  //   storyStoreV7: true,
+  //   interactionsDebugger: true,
+  // },
   webpackFinal: (config) => {
     /**
      * Add support for alias-imports
      * @see https://github.com/storybookjs/storybook/issues/11989#issuecomment-715524391
      */
+
     if (config.resolve) {
       config.resolve.alias = {
         ...config.resolve.alias,
@@ -92,6 +104,12 @@ const config = {
         }),
       ];
     }
+
+    // config.plugins.push(
+    //   new webpack.DefinePlugin({
+    //     global: "window",
+    //   })
+    // );
 
     /**
      * Fixes font import with /

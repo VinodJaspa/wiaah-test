@@ -119,7 +119,7 @@ query getProfileById(
         username: "Nike",
         verified: true,
         visibility: ProfileVisibility.Private,
-        isFollowed: false,
+        isFollowed: true,
         user: {
           shop: {
             id: "",

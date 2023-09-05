@@ -2,13 +2,10 @@ import React from "react";
 import {
   Container,
   SocialProfile,
-  TabsViewer,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SpinnerFallback,
   Divider,
-  HomeIcon,
-  ShoppingCartIcon,
   ServicesIcon,
   AffiliationIcon,
   HStack,
@@ -29,13 +26,11 @@ import {
   VideosOutlinePlayIcon,
   ServicesOutlineIcon,
   useUserData,
-  useGetUserShopType,
   SocialProfileActionList,
   LockOutlineCircleIcon,
 } from "@UI";
-import { TabType } from "types";
 import { useTranslation } from "react-i18next";
-import { runIfFn, useBreakpointValue } from "utils";
+import { runIfFn } from "utils";
 import { AccountType, ProfileVisibility, StoreType } from "@features/API";
 import { useRouting } from "@UI/../routing";
 

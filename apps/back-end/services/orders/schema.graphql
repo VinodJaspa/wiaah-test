@@ -94,6 +94,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type GetSellerRecentOrdersResponse {
+  data: [OrderItem!]!
+  cursor: String
+  nextCursor: String
+  hasMore: Boolean!
+  total: Int!
+}
+
 type Refund {
   id: ID!
   requestedById: ID!
@@ -140,6 +148,25 @@ type ReturnedOrder {
   orderItem: OrderItem!
 }
 
+type SellerSalesStat {
+  id: ID!
+  sellerId: ID!
+  sales: Int!
+  salesAmount: Float!
+  purchases: Int!
+  purchasesAmount: Float!
+  returns: Int!
+  returnsAmount: Float!
+  affiliations: Int!
+  affiliationsAmount: Float!
+  salesCategories: [SalesCategory!]!
+}
+
+type SalesCategory {
+  categoryId: ID!
+  sales: Int!
+}
+
 type Query {
   adminGetAccountOrderById(id: String!): Order!
   getRefundableOrders(args: GetRefundableOrdersInput!): [Order!]!
@@ -150,12 +177,15 @@ type Query {
   getLatestOrders(take: Int = 10): [Order!]!
   adminGetSellerSales(args: AdminGetSellerSalesInput!): [OrderItem!]!
   getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
+  getSellerRecentOrders(args: GetSellerRecentOrdersInput!): GetSellerRecentOrdersResponse!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
   adminGetRefundRequest(id: String!): Refund!
   getRefundRequests(args: GetFilteredRefundsInput!): [Refund!]!
   adminGetUserReturnedOrders(args: AdminGetUserReturnedOrdersInput!): [ReturnedOrder!]!
   adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
+  getSellerStats(sellerId: String!, period: StatsRetrivePeriod!, type: SellerSalesType!): [SellerSalesStat!]!
+  getSellerDailySalesStats(sellerId: String!, period: String!): [SellerSalesStat!]!
 }
 
 input GetRefundableOrdersInput {
@@ -216,6 +246,11 @@ enum OrderSearchPeriod {
   week
 }
 
+input GetSellerRecentOrdersInput {
+  pagination: GqlPaginationInput!
+  sellerId: String!
+}
+
 input GetMyReturnedOrdersInput {
   pagination: GqlPaginationInput!
 }
@@ -247,6 +282,18 @@ input AdminGetReturnedOrdersInput {
   shippingAmount: Float
   reason: String
   pagination: GqlPaginationInput!
+}
+
+enum StatsRetrivePeriod {
+  day
+  week
+  month
+  year
+}
+
+enum SellerSalesType {
+  product
+  service
 }
 
 type Mutation {

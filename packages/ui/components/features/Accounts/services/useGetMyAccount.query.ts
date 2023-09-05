@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { isDev } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { Account, Exact } from "@features/API";
+import { Account, AccountType, Exact } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetMyAccountQueryVariables = Exact<{ [key: string]: never }>;
@@ -17,6 +17,7 @@ export type GetMyAccountQuery = { __typename?: "Query" } & {
     | "lang"
     | "currency"
     | "createdAt"
+    | "accountType"
   >;
 };
 
@@ -33,6 +34,7 @@ export const getMyAccountQueryFetcher = async () => {
       lang: "en",
       createdAt: new Date().toDateString(),
       photo: getRandomImage(),
+      accountType: AccountType.Seller,
     };
 
     return mockres;
@@ -53,6 +55,7 @@ query getMyAccount{
     lang
     currency
     createdAt
+    accountType
   }
 }
   `

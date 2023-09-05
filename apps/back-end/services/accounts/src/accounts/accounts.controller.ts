@@ -129,6 +129,7 @@ export class AccountsController implements OnModuleInit {
     @Payload() payload: KafkaPayload<GetAccountMetaDataByEmailMessage>,
   ): Promise<GetAccountMetaDataByEmailMessageReply> {
     try {
+      console.log('account by email');
       const {
         value: {
           input: { email },
@@ -158,6 +159,7 @@ export class AccountsController implements OnModuleInit {
       });
     }
   }
+
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.isSellerAccount)
   async checkIsSellerAccount(@Payload() payload: { value: { id: string } }) {
     try {
@@ -174,24 +176,22 @@ export class AccountsController implements OnModuleInit {
     @Payload() payload: { value: GetAdminAccountByEmailMesssage },
   ): Promise<GetAdminAccountByEmailMessageReply> {
     try {
+      console.log('admin account', payload.value);
       if (!payload?.value?.input?.email) throw new Error('invalid arguments');
-      console.log('admin get email req', payload.value);
       const res = await this.accountService.getByEmail(
         payload?.value?.input.email,
       );
 
-      console.log('admin got email', res);
       if (res.accountType !== accountType.ADMIN)
         throw new Error('admin account for this email was not found');
 
-      console.log('admin valid admin email', res);
       return new GetAdminAccountByEmailMessageReply({
         data: res,
         error: null,
         success: true,
       });
     } catch (error) {
-      console.log('admin get email error', error);
+      console.log('error', error);
       return new GetAdminAccountByEmailMessageReply({
         data: null,
         error: error,

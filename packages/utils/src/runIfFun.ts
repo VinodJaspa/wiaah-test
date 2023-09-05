@@ -7,5 +7,6 @@ export function runIfFn<TProps, TReturn = React.ReactNode>(
   props: TProps = {} as TProps
 ): TReturn {
   const isFn = typeof valueOrFn === "function";
+
   return isFn ? valueOrFn(props) : valueOrFn;
 }

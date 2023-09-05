@@ -12,7 +12,7 @@ import { useUserData } from "@src/index";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetUserShopTypeQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: string;
 }>;
 
 export type GetUserShopTypeQuery = { __typename?: "Query" } & {

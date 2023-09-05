@@ -49,6 +49,7 @@ export class NewsfeedPostsResolver {
             tag: args.hashtag,
           },
         },
+        type: args.postType,
       },
 
       orderBy: {
@@ -74,16 +75,18 @@ export class NewsfeedPostsResolver {
     @Args('args') args: GetMyNewsfeedPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.newsfeedPostsService.getNewsfeedPostsByUserId(
+    return this.newsfeedPostsService.getUserNewsfeedPostsListing(
       user.id,
+      args.type,
       args.pagination,
     );
   }
 
   @Query(() => [NewsfeedPost])
-  getNewsfeedPostsByUserId(@Args('args') args: GetNewsfeedPostsByUserIdInput) {
+  getPostsByUserId(@Args('args') args: GetNewsfeedPostsByUserIdInput) {
     return this.newsfeedPostsService.getNewsfeedPostsByUserId(
       args.userId,
+      args.type,
       args.pagination,
     );
   }
@@ -114,6 +117,11 @@ export class NewsfeedPostsResolver {
     const topViewed = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         views: 'desc',
@@ -123,6 +131,11 @@ export class NewsfeedPostsResolver {
     const topReacted = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         reactionNum: 'desc',
@@ -132,6 +145,11 @@ export class NewsfeedPostsResolver {
     const topCommented = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         comments: 'desc',
@@ -141,6 +159,11 @@ export class NewsfeedPostsResolver {
     const topShared = await this.prisma.newsfeedPost.findFirst({
       where: {
         visibility: 'public',
+        hashtags: {
+          some: {
+            tag,
+          },
+        },
       },
       orderBy: {
         shares: 'desc',
@@ -163,21 +186,23 @@ export class NewsfeedPostsResolver {
     return this.newsfeedPostsService.deleteNewsfeedPost(id, user.id);
   }
 
-  @ResolveField(() => Affiliation)
+  @ResolveField(() => Affiliation, { nullable: true })
   affiliation(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'affiliation',
       id: post.affiliationId,
     };
   }
-  @ResolveField(() => Product)
-  product(@Parent() post: NewsfeedPost) {
+
+  @ResolveField(() => [Product], { nullable: true })
+  products(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'product',
-      id: post.productId,
+      id: post.productIds,
     };
   }
-  @ResolveField(() => Service)
+
+  @ResolveField(() => Service, { nullable: true })
   service(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'service',
@@ -185,7 +210,23 @@ export class NewsfeedPostsResolver {
     };
   }
 
-  // TODO: implement this
+  @ResolveField(() => Boolean)
+  async pinned(
+    @Parent() post: NewsfeedPost,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const pinned = await this.prisma.pinnedContent.findUnique({
+      where: {
+        userId_contentId: {
+          contentId: post.id,
+          userId: user.id,
+        },
+      },
+    });
+
+    return !!pinned;
+  }
+
   @ResolveField(() => Boolean)
   async isLiked(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -193,7 +234,7 @@ export class NewsfeedPostsResolver {
   ) {
     const like = await this.prisma.contentReaction.findUnique({
       where: {
-        hostId_hostType_reactedByProfileId: {
+        hostId_hostType_reactedByUserId: {
           hostId: post.id,
           hostType:
             post.type === PostType.newsfeed_post
@@ -205,7 +246,7 @@ export class NewsfeedPostsResolver {
               : post.type === PostType.affiliation_post
               ? ContentHostType.post_affiliation
               : undefined,
-          reactedByProfileId: user.id,
+          reactedByUserId: user.id,
         },
       },
     });

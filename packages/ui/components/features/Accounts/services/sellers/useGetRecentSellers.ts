@@ -52,9 +52,9 @@ export const useGetRecentSellers = (
   return useQuery(GetRecentSellersQueryKey(args), () => {
     if (isDev) {
       const res: GetRecentSellersQuery["getFilteredSellers"] = [
-        ...Array(10),
-      ].map(() => ({
-        createdAt: new Date().toString(),
+        ...Array(2),
+      ].map((_,i) => ({
+        createdAt: new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate() + i).toString(),
         id: getRandomUser().id,
       }));
 

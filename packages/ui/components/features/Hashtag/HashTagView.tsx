@@ -15,8 +15,6 @@ import {
   SimpleTabHead,
   SimpleTabItemList,
   AspectRatioImage,
-  GridListOrganiser,
-  GridOrganiserPresets,
   useGetTrendingHashtagPosts,
   Image,
   TabsViewer,
@@ -24,11 +22,9 @@ import {
   Avatar,
   Verified,
   LocationOutlineIcon,
-  AddToCartButton,
   AddToCartProductButton,
   CarOutlineIcon,
   BookServiceButton,
-  ScrollCursorPaginationWrapper,
   EyeIcon,
   SectionHeader,
   HashTagPostsListWrapper,
@@ -36,14 +32,7 @@ import {
   SocialProfileActionList,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import {
-  NumberShortner,
-  isDate,
-  mapArray,
-  randomNum,
-  useBreakpointValue,
-  useForm,
-} from "utils";
+import { NumberShortner, randomNum, useBreakpointValue, useForm } from "utils";
 import { PostType, StoreType } from "@features/API";
 import { startCase } from "lodash";
 import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";

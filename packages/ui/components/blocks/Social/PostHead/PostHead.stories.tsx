@@ -1,12 +1,10 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PostHead } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { PostCardPlaceHolder } from "../../../../placeholder";
 export default {
   title: "UI/blocks/Social/PostHead",
   component: PostHead,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof PostHead>;
 
 const Template: ComponentStory<typeof PostHead> = (args) => (

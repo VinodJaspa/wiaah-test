@@ -65,3 +65,15 @@ model Event {
   causedById String?
   causedToId String
 }
+
+model SalesStats {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  period String
+
+  sales              Int   @default(0)
+  salesAmount        Float @default(0)
+  refundeds          Int   @default(0)
+  refundedAmount     Float @default(0)
+  affiliations       Int   @default(0)
+  affiliationsAmount Int   @default(0)
+}

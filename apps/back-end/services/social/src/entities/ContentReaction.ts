@@ -23,7 +23,7 @@ export class ContentReaction {
   reactedBy?: Profile;
 
   @Field(() => ID)
-  reactedByProfileId: string;
+  reactedByUserId: string;
 
   @Field(() => Date)
   reactedAt: Date;

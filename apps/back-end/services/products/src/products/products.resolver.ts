@@ -14,6 +14,7 @@ import {
   accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
+  generateCursorPaginationResponse,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -21,6 +22,7 @@ import {
   KAFKA_MESSAGES,
   KafkaMessageHandler,
   SERVICES,
+  setPrismaCursorPaginationProps,
   UserPreferedLang,
 } from 'nest-utils';
 import { CommandBus } from '@nestjs/cqrs';
@@ -53,6 +55,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { GetTopSalesProductsByCategoryPaginationInput } from './dto/get-top-sales-products.input';
 import { lookup } from 'geoip-lite';
 import { ProductAttributeService } from 'src/product-attribute/product-attribute.service';
+import { GetSellerTopSellingProductsInput } from './dto/get-seller-top-selling-products.input';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -274,6 +277,18 @@ export class ProductsResolver {
   }
 
   @Query(() => [Product])
+  getProductsByIds(@Args('ids', { type: () => [String] }) ids: string[]) {
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        status: 'active',
+      },
+    });
+  }
+
+  @Query(() => [Product])
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   getMyProducts(@Args('filterInput') args: GetFilteredProductsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
@@ -369,6 +384,25 @@ export class ProductsResolver {
     };
   }
 
+  @Query(() => ProductsCursorPaginationResponse)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN, accountType.SELLER]))
+  async getSellerTopSellingProducts(
+    @Args('args') args: GetSellerTopSellingProductsInput,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<ProductsCursorPaginationResponse> {
+    const res = await this.prisma.product.findMany({
+      where: {
+        sellerId: args.sellerId,
+      },
+      ...setPrismaCursorPaginationProps(args.pagination),
+    });
+
+    return generateCursorPaginationResponse(
+      args.pagination,
+      res.map((prod) => this.productsService.formatProduct(prod, lang)),
+    );
+  }
+
   @Query(() => Product)
   getProduct(@Args('id', { type: () => ID }) id: string) {
     return this.productsService.getProductById(id);
@@ -421,8 +455,13 @@ export class ProductsResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }) {
-    return this.productsService.getProductById(ref.id);
+  async resolveReference(ref: { __typename: string; id: string }) {
+    try {
+      const res = await this.productsService.getProductById(ref.id);
+      return res;
+    } catch (error) {
+      return null;
+    }
   }
 
   @Mutation(() => Product)

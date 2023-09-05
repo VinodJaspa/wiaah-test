@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PostInteractions } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/PostInteractions",
   component: PostInteractions,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof PostInteractions>;
 
 const Template: ComponentStory<typeof PostInteractions> = (args) => (

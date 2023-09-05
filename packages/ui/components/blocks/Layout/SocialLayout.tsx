@@ -87,6 +87,10 @@ interface SocialAtomValue {
   marketShowServiceDetails?: string;
   marketShowMapSearch: boolean;
   showProfileFollowers?: string;
+  showSocialPostProducts?: string;
+  showMessageSettings?: true;
+  showGeneralSearch?: true;
+  showSocialContentProductsListing?: string[];
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -103,7 +107,6 @@ const socialAtom = atom<SocialAtomValue>({
     shareLink: undefined,
     reportContent: undefined,
     serviceDetailsId: undefined,
-    createAction: false,
     searchMap: false,
     showMyProfileNav: false,
     showMusicSearch: false,
@@ -262,6 +265,22 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     showNewPublish: () => setControls("newPublish", true),
     hideNewPublish: () => setControls("newPublish", undefined),
 
+    showSocialContentProducts: (id: string) =>
+      setControls("showSocialPostProducts", id),
+    hideSocialContentProducts: () =>
+      setControls("showSocialPostProducts", undefined),
+
+    showMessageSettings: () => setControls("showMessageSettings", true),
+    hideMessageSettings: () => setControls("showMessageSettings", undefined),
+
+    showGeneralSearch: () => setControls("showGeneralSearch", true),
+    hideGeneralSearch: () => setControls("showGeneralSearch", undefined),
+
+    showSocialContentProductsListing: (productIds: string[]) =>
+      setControls("showSocialContentProductsListing", productIds),
+    hideSocialContentProductsListing: () =>
+      setControls("showSocialContentProductsListing", undefined),
+
     value,
   };
 }
@@ -272,14 +291,14 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      <SocialStoryDrawer />
-      <ServiceBookingDrawer />
+      {/* <SocialStoryDrawer /> */}
+      {/* <ServiceBookingDrawer /> */}
       <SocialReportModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       {isMobile ? (
         <>
-          <NotifciationsDrawer />
+          {/* <NotifciationsDrawer />
           <ProductDetailsDrawer />
           <CreateActionDrawer />
           <EditMusicDrawer />
@@ -292,12 +311,10 @@ export const SocialLayout: React.FC = ({ children }) => {
           <CommentsDrawer />
           <RequestRefundDrawer />
           <NewsletterDrawer />
-          <MarketMapSearchDrawer />
+          <MarketMapSearchDrawer /> */}
         </>
       ) : (
-        <>
-          <MasterLocationMapModal />
-        </>
+        <>{/* <MasterLocationMapModal /> */}</>
       )}
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {

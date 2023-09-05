@@ -1,13 +1,12 @@
 import { useSocialControls } from "@blocks";
 import { ServiceFilterSelectionType, ServiceType } from "@features/API";
-import { Map, RenderMap } from "@features/GoogleMaps";
+import { RenderMap } from "@features/GoogleMaps";
 import { useGetServiceCategoryFiltersQuery } from "@features/Services";
 import {
   Accordion,
   AccordionButton,
   AccordionPanel,
   ArrowLeftIcon,
-  ArrowRightIcon,
   BeautyCenterOutlineIcon,
   Button,
   CloseIcon,
@@ -22,7 +21,6 @@ import {
   HouseIcon,
   Input,
   LocationIcon,
-  SearchIcon,
   SimpleTabHead,
   SimpleTabItemList,
   SimpleTabs,

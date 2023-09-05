@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { PrismaService } from 'prismaService';
 import { NewsfeedPost } from '@entities';
@@ -12,11 +12,12 @@ import {
   DBErrorException,
   ExtractPagination,
   GqlPaginationInput,
+  NotOwnerOfResourcePublicError,
 } from 'nest-utils';
 import { ContentManagementService } from '@content-management';
 import { EventBus } from '@nestjs/cqrs';
 import { PostCreatedEvent } from './events';
-import { PostStatus } from 'prismaClient';
+import { PostStatus, PostType } from 'prismaClient';
 
 @Injectable()
 export class NewsfeedPostsService {
@@ -81,18 +82,83 @@ export class NewsfeedPostsService {
     });
   }
 
-  async getNewsfeedPostsByUserId(
+  async getUserNewsfeedPostsListing(
     userId: string,
+    type: PostType,
     pagination: GqlPaginationInput,
+    sortPinned?: boolean,
   ) {
     const { skip, take } = ExtractPagination(pagination);
-    return this.prisma.newsfeedPost.findMany({
+
+    const followers = await this.prisma.follow.findMany({
       where: {
-        userId,
+        followerUserId: userId,
+      },
+    });
+
+    const posts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        type,
+        userId: { in: followers.map((v) => v.followingUserId) },
       },
       take,
       skip,
     });
+
+    console.log(
+      { posts, followers, userId },
+      // await this.prisma.follow.findMany(),
+      // await this.prisma.newsfeedPost.findMany(),
+    );
+
+    return posts;
+  }
+
+  async getNewsfeedPostsByUserId(
+    userId: string,
+    type: PostType,
+    pagination: GqlPaginationInput,
+    sortPinned?: boolean,
+  ) {
+    const { skip, take } = ExtractPagination(pagination);
+
+    const pinned = await this.prisma.pinnedContent.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const pinnedPosts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        id: {
+          in: pinned.map((v) => v.contentId),
+        },
+        type,
+      },
+    });
+
+    const posts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        userId,
+        type,
+        id: {
+          not: {
+            in: pinnedPosts.map((v) => v.id),
+          },
+        },
+      },
+      take,
+      skip,
+    });
+
+    const sortedPinnedPosts = pinned
+      .map((v) => pinnedPosts.find((post) => post.id === v.contentId))
+      .filter((v) => !!v);
+
+    return sortedPinnedPosts.concat(posts);
   }
 
   async getProtectedNewsfeedPostsByUserId(
@@ -114,13 +180,10 @@ export class NewsfeedPostsService {
     input: CreateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
-    const profileId = await this.profileService.getProfileIdByUserId(userId);
-
     try {
       const res = await this.prisma.newsfeedPost.create({
         data: {
           ...input,
-          authorProfileId: profileId,
           userId,
           legend: [
             input.content,
@@ -149,7 +212,7 @@ export class NewsfeedPostsService {
     const { id, ...rest } = input;
     const [isAuthor, post] = await this.isAuthorOfPost(id, userId);
     if (!isAuthor)
-      throw new UnauthorizedException(
+      throw new NotOwnerOfResourcePublicError(
         'you can only update posts you have published',
       );
     try {
@@ -199,7 +262,7 @@ export class NewsfeedPostsService {
   ): Promise<NewsfeedPost> {
     const isAuthor = await this.isAuthorOfPost(postId, userId);
     if (!isAuthor)
-      throw new UnauthorizedException(
+      throw new NotOwnerOfResourcePublicError(
         'you can only delete posts you have published',
       );
     try {
@@ -213,18 +276,18 @@ export class NewsfeedPostsService {
     }
   }
 
-  async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
-    const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
-      where: {
-        id: postId,
-      },
-      select: {
-        authorProfileId: true,
-      },
-      rejectOnNotFound() {
-        throw new PostNotFoundException();
-      },
-    });
-    return authorProfileId;
-  }
+  // async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
+  //   const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
+  //     where: {
+  //       id: postId,
+  //     },
+  //     select: {
+  //       authorProfileId: true,
+  //     },
+  //     rejectOnNotFound() {
+  //       throw new PostNotFoundException();
+  //     },
+  //   });
+  //   return authorProfileId;
+  // }
 }

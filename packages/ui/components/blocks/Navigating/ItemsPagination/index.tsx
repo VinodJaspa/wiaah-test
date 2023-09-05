@@ -17,6 +17,7 @@ export type usePaginationControls = {
   totalItems: number;
   itemsPerPage: number;
   page: number;
+  totalPages: number;
 };
 
 export const usePaginationControls = (
@@ -54,6 +55,7 @@ export const usePaginationControls = (
     page: pagination.page,
     itemsPerPage: pagination.take,
     totalItems: totalItems || 0,
+    totalPages: totalItems / itemsPerPage,
   };
 
   return {

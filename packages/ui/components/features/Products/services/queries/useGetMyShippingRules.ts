@@ -1,7 +1,7 @@
 import {
   Exact,
-  ShippingDeliveryTimeRange,
-  ShippingRule,
+  GetShippingRulesInput,
+  ShippingDestination,
   ShippingType,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
@@ -9,7 +9,7 @@ import { useQuery } from "react-query";
 import { isDev } from "utils";
 
 export type GetMyShippingSettingsQueryVariables = Exact<{
-  [key: string]: never;
+  args: GetShippingRulesInput;
 }>;
 
 export type GetMyShippingSettingsQuery = {
@@ -19,10 +19,11 @@ export type GetMyShippingSettingsQuery = {
     cost: number;
     id: string;
     name: string;
+    destination: ShippingDestination;
+    shippingCompanyName: string;
     sellerId: string;
     shippingType: ShippingType;
     listing: number;
-    countries: Array<{ __typename?: "ShippingCountry"; code: string }>;
     deliveryTimeRange: {
       __typename?: "ShippingDeliveryTimeRange";
       from: number;
@@ -31,12 +32,18 @@ export type GetMyShippingSettingsQuery = {
   }>;
 };
 
-export const useGetMyShippingRules = () => {
+export const useGetMyShippingRules = (
+  args: GetMyShippingSettingsQueryVariables["args"]
+) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-query getMyShippingSettings {
-  getMyShippingRules {
+query getMyShippingSettings(
+    $args:GetShippingRulesInput!
+) {
+  getMyShippingRules(
+      args:$args
+  ) {
     cost
     deliveryTimeRange {
       from
@@ -51,12 +58,11 @@ query getMyShippingSettings {
     listing
   }
 }
-
     `);
 
   client.setVariables({});
 
-  return useQuery(["shipping-rules"], async () => {
+  return useQuery(["shipping-rules", { args }], async () => {
     if (isDev) {
       const mockRes: GetMyShippingSettingsQuery["getMyShippingRules"] = [
         ...Array(5),
@@ -69,12 +75,16 @@ query getMyShippingSettings {
         sellerId: "test",
         shippingType: ShippingType.Paid,
         listing: 46,
+        destination: ShippingDestination.Local,
+        shippingCompanyName: "company name",
       }));
 
       return mockRes;
     }
 
-    const res = await client.send<GetMyShippingSettingsQuery>();
+    const res = await client
+      .setVariables<GetMyShippingSettingsQueryVariables>({ args })
+      .send<GetMyShippingSettingsQuery>();
 
     return res.data.getMyShippingRules;
   });

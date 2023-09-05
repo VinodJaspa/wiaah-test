@@ -15,6 +15,8 @@ import {
   PercentIcon,
   NotAllowedIcon,
   VerifiedIcon,
+  HStack,
+  StatisticsIcon,
 } from "ui";
 import { FiActivity, FiSettings } from "react-icons/fi";
 import { BiBrush, BiDish, BiDollar, BiMoney } from "react-icons/bi";

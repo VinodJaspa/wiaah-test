@@ -29,10 +29,10 @@ import {
 } from "@partials";
 import { useGeoLocation } from "@src/utils/React-utils/useGeolocation";
 import { useResponsive } from "hooks";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { mapArray } from "utils";
+import { mapArray, setTestid } from "utils";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState<string>();
@@ -396,23 +396,37 @@ const TopCategoriesHomePageSlider: React.FC<{
   onCategorySelect: (id: string) => any;
 }> = ({ onCategorySelect, selectedCategoryId }) => {
   const { t } = useTranslation();
+  const ref = useRef<HTMLDivElement>(null);
   const { data, hasNextPage } = useGetTopProductCategoriesQuery(
     { take: 10 },
     { getNextPageParam: (last) => last.nextCursor }
   );
 
+  const scroll = (scrollOffset: number) => {
+    if (ref.current) {
+      ref.current.scrollLeft += scrollOffset;
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-semibold text-3xl sm:text-xl">
+      <p className="font-semibold self-center text-3xl sm:text-xl">
         {t("Best sales by categories")}
       </p>
       <HStack>
-        <ArrowLeftIcon className="text-[2rem]" />
-        <div className="flex items-center w-full overflow-y-scroll gap-4">
+        <button onClick={() => scroll(-20)}>
+          <ArrowLeftIcon className="text-[2rem]" />
+        </button>
+        <div
+          ref={ref}
+          {...setTestid("productCategoriesContainer")}
+          className="flex items-center w-full overflow-y-scroll gap-4"
+        >
           {mapArray(data?.pages, (page, i) => (
             <React.Fragment key={i}>
               {mapArray(page.data, (category, i) => (
                 <button
+                  {...setTestid(`category-${category.id}`)}
                   key={i + category.id}
                   onClick={() => {
                     onCategorySelect(category.id);
@@ -427,7 +441,9 @@ const TopCategoriesHomePageSlider: React.FC<{
             </React.Fragment>
           ))}
         </div>
-        <ArrowRightIcon className="text-[2rem]" />
+        <button onClick={() => scroll(20)}>
+          <ArrowRightIcon className="text-[2rem]" />
+        </button>
       </HStack>
     </div>
   );

@@ -75,7 +75,6 @@ type Query {
   getFilteredAffiliationsHistory(filters: GetFilteredAffiliationHistoryInput!): [AffiliationPurchase!]!
   getUserAffiliations(args: GetUserAffiliationsInput!): [Affiliation!]!
   getFilteredAffiliations(filters: GetFilteredAffiliationsInput!): [Affiliation!]!
-  getMyAffiliations(args: GetMyAffiliationsInput!): [Affiliation!]!
 }
 
 input GetAffiliationHistoryInput {
@@ -108,7 +107,7 @@ input GetFilteredAffiliationHistoryInput {
 
 input GetUserAffiliationsInput {
   pagination: GqlPaginationInput!
-  id: ID!
+  userId: ID!
 }
 
 input GetFilteredAffiliationsInput {
@@ -118,10 +117,6 @@ input GetFilteredAffiliationsInput {
   link: String
   createdBefore: DateTime
   createdAfter: DateTime
-  pagination: GqlPaginationInput!
-}
-
-input GetMyAffiliationsInput {
   pagination: GqlPaginationInput!
 }
 

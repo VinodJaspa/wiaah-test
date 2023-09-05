@@ -227,6 +227,7 @@ export class ShopResolver implements OnModuleInit {
     ref: { __typename: string; id: string; name: string; ownerId: string },
     @GetLang() lang: UserPreferedLang,
   ) {
+    if (!ref?.id) return null;
     return this.shopService.getShopById(ref.id, lang);
   }
 

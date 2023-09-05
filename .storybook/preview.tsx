@@ -5,32 +5,32 @@ import { i18n } from "./i18next";
 import { addDecorator } from "@storybook/react";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider } from "@chakra-ui/react";
-import theme from "ui/themes/chakra_ui/theme";
-import { DataInitializationWrapper, useUserData } from "ui";
+import { DataInitializationWrapper } from "ui";
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import React from "react";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
+import * as _jest from "jest-mock";
+
+//@ts-ignore
+// window["jest"] = _jest;
 
 addDecorator((story) => {
   return (
     <QueryClientProvider client={new QueryClient()}>
-      <ChakraProvider theme={theme}>
+      <RecoilRoot>
         <CookiesProvider>
           <ReactPubsubProvider client={new ReactPubsubClient()}>
             <Suspense fallback={"Loading"}>
-              <RecoilRoot>
-                <DataInitializationWrapper accountType="seller">
-                  <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
-                    {story()}
-                  </section>
-                </DataInitializationWrapper>
-              </RecoilRoot>
+              <DataInitializationWrapper accountType="seller">
+                <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
+                  {story()}
+                </section>
+              </DataInitializationWrapper>
             </Suspense>
           </ReactPubsubProvider>
         </CookiesProvider>
-      </ChakraProvider>
+      </RecoilRoot>
     </QueryClientProvider>
   );
 });

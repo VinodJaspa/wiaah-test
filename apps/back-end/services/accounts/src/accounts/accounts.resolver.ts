@@ -153,17 +153,26 @@ export class AccountsResolver {
     return this.accountsService.findOne(id);
   }
 
-  @ResolveField(() => Shop)
+  @ResolveField(() => Shop, { nullable: true })
   shop(@Parent() acc: Account) {
+    if (!acc?.id) return null;
     return {
       __typename: 'Shop',
-      ownerId: acc.id,
+      ownerId: acc?.id,
     };
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
-    return this.accountsService.findOne(ref.id);
+  async resolveReference(ref: {
+    __typename: string;
+    id: string;
+  }): Promise<Account | null> {
+    try {
+      const res = await this.accountsService.findOne(ref.id);
+      return res;
+    } catch (error) {
+      return null;
+    }
   }
 
   async validateEditPremissions(

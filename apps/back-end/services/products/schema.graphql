@@ -18,7 +18,7 @@ type Category {
   sortOrder: Int!
   sales: Int!
   status: ProductCategoryStatus!
-  parantId: ID!
+  parantId: ID
 }
 
 enum ProductCategoryStatus {
@@ -318,7 +318,6 @@ type Product {
   negitiveFeedback: Int!
   vat: Float!
   status: ProductStatus!
-  usageStatus: ProductUsageStatus!
   createdAt: String!
   updatedAt: String!
   earnings: Float!
@@ -353,11 +352,6 @@ enum ProductStatus {
   pasued
   pending
   deleted
-}
-
-enum ProductUsageStatus {
-  used
-  new
 }
 
 enum ProductCondition {
@@ -463,8 +457,10 @@ type Query {
   getCursorFilteredShops(args: FilteredShopsCursorInput!): ShopCursorPaginationResponse!
   getProductRecommendation(pagination: GqlPaginationInput!): ProductPaginationResponse!
   getProductById(id: String!, isClick: Boolean!): Product!
+  getProductsByIds(ids: [String!]!): [Product!]!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getTopSalesProducts(args: GetTopSalesProductsByCategoryPaginationInput!): ProductSearchPaginationResponse!
+  getSellerTopSellingProducts(args: GetSellerTopSellingProductsInput!): ProductsCursorPaginationResponse!
   getProduct(id: ID!): Product!
   getSellerProducts(args: GetSellerProductsInput!): ProductsCursorPaginationResponse!
   getProductCategories: [Category!]!
@@ -483,7 +479,8 @@ type Query {
   getShippingGeoZoneRules(args: AdminGetShippingGeoZoneRulesInput!): [ShippingTypeRule!]!
   getShippingTypeRule(id: String!): ShippingTypeRule!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
-  getMyShippingRules: [ShippingRule!]!
+  getMyShippingRules(args: GetShippingRulesInput!): [ShippingRule!]!
+  getShippingRuleById(id: String!): ShippingRule!
 }
 
 input GetNearShopsInput {
@@ -533,7 +530,7 @@ input GetFilteredProductsInput {
   colors: [String!]
   size: [String!]
   inStock: Boolean
-  usageStatus: ProductUsageStatus
+  condition: ProductCondition
   type: ProductType
   pagination: GqlPaginationInput!
 }
@@ -546,6 +543,11 @@ enum ProductType {
 input GetTopSalesProductsByCategoryPaginationInput {
   pagination: GqlPaginationInput!
   categoryId: String
+}
+
+input GetSellerTopSellingProductsInput {
+  pagination: GqlPaginationInput!
+  sellerId: String!
 }
 
 input GetSellerProductsInput {
@@ -584,7 +586,7 @@ input GetFilteredProductsAdminInput {
   status: ProductStatus
   updatedAt: String
   type: ProductType
-  usageStatus: ProductUsageStatus
+  condition: ProductCondition
   pagination: GqlPaginationInput!
 }
 
@@ -597,7 +599,7 @@ input AdminGetAccountProductsInput {
   status: ProductStatus
   updatedAt: String
   type: ProductType
-  usageStatus: ProductUsageStatus
+  condition: ProductCondition
   pagination: GqlPaginationInput!
   accountId: ID!
 }
@@ -606,6 +608,11 @@ input AdminGetShippingGeoZoneRulesInput {
   name: String
   description: String
   pagination: GqlPaginationInput!
+}
+
+input GetShippingRulesInput {
+  page: Int!
+  take: Int!
 }
 
 type Mutation {
@@ -804,6 +811,9 @@ input ProductPresentationInput {
 input CreateCategoryInput {
   parantId: ID
   name: [TranslationTextInput!]!
+  metaTagTitle: [TranslationTextInput!]!
+  metaTagDescription: [TranslationTextInput!]!
+  metaTagKeywords: [TranslationTextInput!]!
   sortOrder: Int!
   status: ProductCategoryStatus!
 }
@@ -811,6 +821,9 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   parantId: ID
   name: [TranslationTextInput!]
+  metaTagTitle: [TranslationTextInput!]
+  metaTagDescription: [TranslationTextInput!]
+  metaTagKeywords: [TranslationTextInput!]
   sortOrder: Int
   status: ProductCategoryStatus
   id: ID!

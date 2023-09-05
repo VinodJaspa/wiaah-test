@@ -39,6 +39,7 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
           | "hostId"
           | "hostType"
           | "updatedAt"
+          | "hostUserId"
         > & {
             attachment: { __typename?: "Attachment" } & Pick<
               Attachment,
@@ -85,10 +86,12 @@ export const useGetContentCommentsQuery = (
             userId: "",
             createdAt: new Date().toUTCString(),
             author: {
+              id: "test",
               photo: getRandomImage(),
               username: getRandomName().firstName,
               verified: i % 2 === 0,
             },
+            hostUserId: "test",
             attachment: {
               src: "",
               type: AttachmentType.Img,
@@ -122,6 +125,7 @@ query getContentComments(
                 type
             }
             author{
+              id
                 username
                 photo
                 verified
@@ -133,6 +137,7 @@ query getContentComments(
             hostId
             hostType
             updatedAt
+            hostUserId
         }
         }
     }

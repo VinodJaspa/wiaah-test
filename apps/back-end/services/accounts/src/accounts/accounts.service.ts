@@ -48,7 +48,7 @@ export class AccountsService {
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
           username: createdUser.firstName,
-          birthDate,
+          birthDate: new Date(birthDate).toISOString(),
         }),
       );
       return createdUser;
@@ -79,8 +79,13 @@ export class AccountsService {
 
   async getByEmail(email: string) {
     try {
+      console.log('get by email');
       if (typeof email !== 'string')
         throw new BadRequestException('invalid email type');
+
+      console.log('getting all by email');
+      const res = [];
+      console.log('got all', { res });
 
       const account = await this.prisma.account.findUnique({
         where: {
@@ -88,7 +93,7 @@ export class AccountsService {
         },
         rejectOnNotFound(error) {
           throw new NotFoundException(
-            'could not find an account with this email, consider regisering a new account',
+            'could not find an account with this email, consider registering a new account',
           );
         },
       });

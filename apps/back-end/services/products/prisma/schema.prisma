@@ -20,14 +20,15 @@ model ProductCategory {
   sales              Int                   @default(0)
   metaTagTitle       TranslationText[]
   metaTagDescription TranslationText[]
+  metaTagKeywords    TranslationText[]
   parantId           String?
   attributeIds       String[]
 }
 
 model SavedProduct {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  productId String   @db.ObjectId
-  userId    String   @db.ObjectId
+  productId String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -87,11 +88,6 @@ enum ProductAttributeDisplayType {
   color
 }
 
-enum ProductUsageStatus {
-  used
-  new
-}
-
 model Product {
   id                    String                   @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId              String
@@ -104,7 +100,6 @@ model Product {
   price                 Int
   status                ProductStatus            @default(active)
   suspensionReason      String?
-  usageStatus           ProductUsageStatus       @default(new)
   vat                   Int
   categoryId            String
   attributesIds         ProductSelectAttribute[]
@@ -131,7 +126,7 @@ model Product {
   createdAt             DateTime                 @default(now())
   updatedAt             DateTime                 @updatedAt
   discount              Discount?                @relation(fields: [discountId], references: [id])
-  condition             ProductCondition
+  condition             ProductCondition         @default(new)
   sizes                 ProductSize[]
   colors                String[]
 }

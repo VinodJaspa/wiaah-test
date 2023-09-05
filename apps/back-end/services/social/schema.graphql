@@ -47,27 +47,27 @@ type NewsfeedPost {
   title: String!
   content: String!
   attachments: [String!]!
-  hashtags: [Hashtag!]!
+  hashtags: [Hashtag!]
   reactionNum: Int!
   comments: Int!
   shares: Int!
   views: Int!
-  mentions: [PostMention!]!
+  mentions: [PostMention!]
   location: PostLocation
-  tags: [PostTag!]!
+  tags: [PostTag!]
   createdAt: String!
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType!
   publisher: Profile
-  authorProfileId: ID!
-  affiliation: Affiliation!
-  product: Product!
-  service: Service!
+  affiliation: Affiliation
+  products: [Product!]
+  service: Service
+  pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
@@ -100,27 +100,27 @@ type AdminNewsfeedPost {
   title: String!
   content: String!
   attachments: [String!]!
-  hashtags: [Hashtag!]!
+  hashtags: [Hashtag!]
   reactionNum: Int!
   comments: Int!
   shares: Int!
   views: Int!
-  mentions: [PostMention!]!
+  mentions: [PostMention!]
   location: PostLocation
-  tags: [PostTag!]!
+  tags: [PostTag!]
   createdAt: String!
   updatedAt: String!
   enableComments: Boolean!
   commentsVisibility: CommentsVisibility!
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType!
   publisher: Profile
-  authorProfileId: ID!
-  affiliation: Affiliation!
-  product: Product!
-  service: Service!
+  affiliation: Affiliation
+  products: [Product!]
+  service: Service
+  pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
   isSaved: Boolean!
@@ -252,10 +252,8 @@ type ProfileMetaCursorPaginatedResponse {
 
 type Follow {
   id: ID!
-  followerProfile: Profile
-  followerProfileId: ID!
-  followingProfile: Profile
-  followingProfileId: ID!
+  followerUserId: ID!
+  followingUserId: ID!
   followedAt: DateTime!
 }
 
@@ -306,7 +304,7 @@ type ContentReaction {
   userId: ID!
   reactionType: ContentReactionType!
   reactedBy: Profile
-  reactedByProfileId: ID!
+  reactedByUserId: ID!
   reactedAt: DateTime!
 }
 
@@ -525,6 +523,14 @@ type PrivacySettings {
   hideLikesNum: Boolean!
   hideCommentsNum: Boolean!
   hideViewsNum: Boolean!
+  initialMessaging: MessagingSettings!
+  messageReadStatus: Boolean!
+}
+
+enum MessagingSettings {
+  all
+  follow
+  off
 }
 
 type HashtagProductPost {
@@ -679,6 +685,7 @@ type ProfileReachedAudience {
 type ProfileVisitDetails {
   country: String!
   visits: Int!
+  visitPercent: Float!
 }
 
 type ProfileVisitsDetails {
@@ -715,6 +722,15 @@ type CameraFiltersCursorResponse {
   total: Int!
 }
 
+type ContentView {
+  id: String!
+  viewerId: String!
+  contentOnwerId: String!
+  contentType: ContentHostType!
+  createdAt: String!
+  updatedAt: String!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   getProfileDetails(userId: String!): Profile!
@@ -730,7 +746,7 @@ type Query {
   isFollowed(profileId: String!): Boolean!
   getTrendingHashtagPosts(args: GetPostsByHashtagInput!): NewsfeedPostsPaginationResponse!
   getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
-  getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
   getSocialPostById(id: String!): NewsfeedPost!
   getTopHashtagNewsfeed(tag: String!): TopHashtagNewsfeedPosts!
@@ -791,6 +807,7 @@ type Query {
   getTopEffects(args: GetTopEffectsInput!): EffectCursorPaginationResponse!
   getCameraFilterById(id: String!): CameraFilter!
   getCameraFilters(args: GetCameraFiltersInput!): CameraFiltersCursorResponse!
+  getAudienceTrendingHour: [ContentView!]!
 }
 
 input SearchPopularProfilesInput {
@@ -823,14 +840,17 @@ input GetPostsByHashtagInput {
   take: Int!
   cursor: String
   hashtag: String!
+  postType: PostType!
 }
 
 input GetMyNewsfeedPostsInput {
   pagination: GqlPaginationInput!
+  type: PostType!
 }
 
 input GetNewsfeedPostsByUserIdInput {
   userId: ID!
+  type: PostType!
   pagination: GqlPaginationInput!
 }
 
@@ -1002,7 +1022,7 @@ input GetProfileVisitsDetailsInput {
 }
 
 input GetTopProfilePostsInput {
-  profileId: ID!
+  userId: ID!
   pagination: GqlPaginationInput!
   sinceHours: Int!
 }
@@ -1067,6 +1087,8 @@ type Mutation {
   UploadActionCover(file: Upload!): String!
   uploadActionVideo(src: Upload!): String!
   hideContent(args: HideContentInput!): Boolean!
+  pinContent(args: CreatePinnedContentInput!): Boolean!
+  unPinContent(args: CreatePinnedContentInput!): Boolean!
 }
 
 input CreateProfileInput {
@@ -1106,7 +1128,7 @@ input CreateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post
@@ -1137,7 +1159,7 @@ input UpdateNewsfeedPostInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post
@@ -1165,7 +1187,7 @@ input UpdatePostAdminInput {
   enableComments: Boolean
   commentsVisibility: CommentsVisibility
   location: PostLocationInput
-  productId: String
+  productIds: [String!]
   serviceId: String
   affiliationId: String
   type: PostType = newsfeed_post
@@ -1239,6 +1261,8 @@ input UpdateMyPrivacyInput {
   hideLikesNum: Boolean
   hideCommentsNum: Boolean
   hideViewsNum: Boolean
+  initialMessaging: MessagingSettings
+  messageReadStatus: Boolean
 }
 
 input CreateActionInput {
@@ -1264,4 +1288,9 @@ scalar Upload
 
 input HideContentInput {
   id: ID!
+}
+
+input CreatePinnedContentInput {
+  contentId: ID!
+  userId: ID!
 }

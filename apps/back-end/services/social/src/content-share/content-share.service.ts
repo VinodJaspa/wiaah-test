@@ -51,7 +51,6 @@ export class ContentShareService {
       this.eventClient.emit(
         KAFKA_EVENTS.SHARES_EVENTS.contentShared,
         new ContentSharedEvent({
-          contentAuthorProfileId: content.authorProfileId,
           contentAuthorUserId: content.userId,
           contentId,
           contentType,

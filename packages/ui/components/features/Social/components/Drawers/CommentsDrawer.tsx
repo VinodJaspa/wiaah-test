@@ -1,6 +1,6 @@
 import { NumberShortner, mapArray, useForm } from "@UI/../utils/src";
 import { useSocialControls } from "@blocks";
-import { AttachmentType, ContentHostType } from "@features/API";
+import { ContentHostType } from "@features/API";
 import {
   useCommentOnContent,
   useGetContentCommentsCountQuery,
@@ -9,7 +9,6 @@ import {
 } from "@features/Social/services";
 import {
   Avatar,
-  Divider,
   DotIcon,
   Drawer,
   DrawerContent,
@@ -96,6 +95,7 @@ export const CommentsDrawer: React.FC = () => {
                     <CommentCard
                       comment={{
                         id: c.id,
+                        hostUserId: c.hostUserId,
                         content: c.content,
                         createdAt: c.commentedAt,
                         user: {
@@ -151,6 +151,7 @@ export const CommentCard: React.FC<{
   comment: {
     id: string;
     user: {
+      id: string;
       photo: string;
       name: string;
       verified: boolean;
@@ -161,6 +162,7 @@ export const CommentCard: React.FC<{
       src: string;
     };
     createdAt: string;
+    hostUserId: string;
   };
 }> = ({ comment }) => {
   const { t } = useTranslation();
@@ -187,6 +189,9 @@ export const CommentCard: React.FC<{
                   year: "numeric",
                 })}
               </p>
+              {comment?.hostUserId === comment?.user?.id ? (
+                <p className="text-primary font-medium">{t("Creator")}</p>
+              ) : null}
             </HStack>
             <SocialContentDisplay content={comment.content} />
             {comment.attachment ? (
@@ -213,7 +218,7 @@ export const SocialCommentsRepliesToggle: React.FC<{ commentId: string }> = ({
   commentId,
 }) => {
   const [open, setOpen] = React.useState(false);
-
+  // TODO
   return (
     <HStack>
       <></>

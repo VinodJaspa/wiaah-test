@@ -67,3 +67,4 @@ export * from "./Navigating";
 export * from "./Cards";
 export * from "./ListDisplay";
 export * from "./Draggable";
+export * from "./Pagination";

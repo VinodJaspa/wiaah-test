@@ -111,7 +111,7 @@ export const MainRoutes: MainRouterInterface = {
     return this.addPath("auth").addPath("logout");
   },
   visitSignin() {
-    return this.addAffiliatorId("auth").addPath("sign-in");
+    return this.addPath("auth").addPath("login");
   },
   visitMarketSavedItems() {
     // TODO

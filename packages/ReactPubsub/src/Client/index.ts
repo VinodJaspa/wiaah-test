@@ -1,4 +1,4 @@
-import { FilterAndAddToArray } from "utils";
+import { FilterAndAddToArray } from "utils/src/helpers/FitlerAndAddToArray";
 
 interface Subscriber {
   key: string;

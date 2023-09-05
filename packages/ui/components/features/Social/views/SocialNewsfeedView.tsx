@@ -3,7 +3,6 @@ import {
   PostCardsListWrapper,
   RecentStories,
   usePaginationControls,
-  useSocialControls,
   useStoryModal,
 } from "@blocks";
 import React from "react";
@@ -11,13 +10,16 @@ import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
 import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
+import { useRouting } from "routing";
+import { PostType } from "@features/API";
 
-const SocialNewsfeedView = () => {
+const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { open } = useStoryModal();
+  const { visit } = useRouting();
 
-  const { openSocialNewPostModal } = useSocialControls();
+  // const { openpost } = useSocialControls();
 
   const { pagination: storiesPagination } = usePaginationControls();
   const { data: recentStories } = useGetRecentStories({
@@ -26,7 +28,7 @@ const SocialNewsfeedView = () => {
 
   const { pagination: postsPagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetMyNewsfeedPostsQuery>[0]>(
-    { pagination: postsPagination },
+    { pagination: postsPagination, type: PostType.NewsfeedPost },
     { pagination: postsPagination }
   );
   const { data } = useGetMyNewsfeedPostsQuery(form);
@@ -84,8 +86,12 @@ const SocialNewsfeedView = () => {
           <PostCardsListWrapper
             grid={true}
             onPostClick={(post) => {
-              openSocialNewPostModal(post.postInfo.id);
+              // TODO
+              // openSocialPostModal(post.postInfo.id);
             }}
+            onProfileClick={(username) =>
+              visit((r) => r.visitSocialProfile(username))
+            }
             cols={cols}
             posts={data}
           />

@@ -7,6 +7,7 @@ const headersTitle = "Headers /";
 const sectionsTitle = "Sections /";
 const blocksTitle = "UI / Blocks /";
 const modalsTitle = "Modals /";
+const drawersTitle = "Drawers /";
 export const storybookPartailsTitle = "UI / partials / ";
 export const storybookBlocksTitle = "UI / blocks / ";
 export const storybookSectionsTitle = "UI / sections / ";
@@ -152,3 +153,9 @@ export const storybookFeedBackModalsTitle =
 
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";
+
+// products
+export const storybookProductTitle = storybookFeaturesTitle + "product /";
+export const storybookProductModalsTitle = storybookProductTitle + modalsTitle;
+export const storybookProductDrawersTitle =
+  storybookProductTitle + drawersTitle;

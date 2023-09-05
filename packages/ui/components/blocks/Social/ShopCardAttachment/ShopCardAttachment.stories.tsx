@@ -1,12 +1,10 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ShopCardAttachment } from "@UI";
-import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { shopCardInfoPlaceholder } from "../../../../placeholder";
 export default {
   title: "UI/blocks/Social/ShopCardAttachment",
   component: ShopCardAttachment,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ShopCardAttachment>;
 
 const Template: ComponentStory<typeof ShopCardAttachment> = (args) => (
