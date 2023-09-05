@@ -25,6 +25,9 @@ import {
   ServicesIcon,
   ShoppingCartOutlineIcon,
   SearchIcon,
+  Button,
+  useGetMyAccountQuery,
+  useGetMyNotificationsQuery,
 } from "@UI";
 import { BsShop } from "react-icons/bs";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -32,7 +35,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { CgShoppingBag } from "react-icons/cg";
 import { useResponsive } from "hooks";
 import { HtmlDivProps, TranslationTextType } from "types";
-import { runIfFn } from "utils";
+import { runIfFn, setTestid } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
@@ -58,11 +61,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
 }) => {
   const { showNewPublish, openNotifications } = useSocialControls();
   const { SearchForLocations } = useMasterLocationMapModal();
-  const { user } = useUserData();
+  const { data: user } = useGetMyAccountQuery();
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
+  const { data } = useGetMyNotificationsQuery();
 
   return (
     <div
@@ -79,7 +83,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             <WavingHand className="text-[2rem]" />
             <div className="flex flex-col">
               <p>
-                {t("Hello")} {user?.name}
+                {t("Hello")} {user?.firstName || t("Guest")}
               </p>
               <p className="font-bold text-lg">{t("Welcome Back")}</p>
             </div>
@@ -130,7 +134,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           onClick={() => visit((r) => r.addPath("/chat"))}
         >
           <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
-            4
+            {/* TODO:api integration */}4
           </span>
           <MessageOutlineIcon className="text-lightBlack text-icon" />
         </div>
@@ -140,16 +144,28 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           </ShoppingCart>
         </div>
         {!isMobile && (
-          <AccountsProfileOptions>
-            <div className="flex flex-col justify-center">
-              <Avatar
-                className="text-2xl"
-                showBorder={false}
-                name="wiaah"
-                src="/wiaah_logo.png"
-              />
-            </div>
-          </AccountsProfileOptions>
+          <>
+            {user ? (
+              <AccountsProfileOptions>
+                <div className="flex flex-col justify-center">
+                  <Avatar
+                    className="text-2xl"
+                    showBorder={false}
+                    name={user.firstName}
+                    src={user.photo || ""}
+                  />
+                </div>
+              </AccountsProfileOptions>
+            ) : (
+              <Button
+                {...setTestid("sign-in-btn")}
+                className="whitespace-nowrap"
+                onClick={() => visit((r) => r.visitSignin())}
+              >
+                {t("Sign In")}
+              </Button>
+            )}
+          </>
         )}
       </div>
     </div>

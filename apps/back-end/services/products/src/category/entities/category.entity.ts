@@ -21,8 +21,8 @@ export class Category {
   @Field(() => ProductCategoryStatus)
   status: ProductCategoryStatus;
 
-  @Field(() => ID)
-  parantId: string;
+  @Field(() => ID, { nullable: true })
+  parantId?: string;
 }
 
 @ObjectType()

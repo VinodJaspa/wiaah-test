@@ -291,14 +291,14 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      <SocialStoryDrawer />
-      <ServiceBookingDrawer />
+      {/* <SocialStoryDrawer /> */}
+      {/* <ServiceBookingDrawer /> */}
       <SocialReportModal />
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       {isMobile ? (
         <>
-          <NotifciationsDrawer />
+          {/* <NotifciationsDrawer />
           <ProductDetailsDrawer />
           <CreateActionDrawer />
           <EditMusicDrawer />
@@ -311,12 +311,10 @@ export const SocialLayout: React.FC = ({ children }) => {
           <CommentsDrawer />
           <RequestRefundDrawer />
           <NewsletterDrawer />
-          <MarketMapSearchDrawer />
+          <MarketMapSearchDrawer /> */}
         </>
       ) : (
-        <>
-          <MasterLocationMapModal />
-        </>
+        <>{/* <MasterLocationMapModal /> */}</>
       )}
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {

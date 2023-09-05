@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { PrismaService } from 'prismaService';
 import { NewsfeedPost } from '@entities';
@@ -82,6 +82,38 @@ export class NewsfeedPostsService {
     });
   }
 
+  async getUserNewsfeedPostsListing(
+    userId: string,
+    type: PostType,
+    pagination: GqlPaginationInput,
+    sortPinned?: boolean,
+  ) {
+    const { skip, take } = ExtractPagination(pagination);
+
+    const followers = await this.prisma.follow.findMany({
+      where: {
+        followerUserId: userId,
+      },
+    });
+
+    const posts = await this.prisma.newsfeedPost.findMany({
+      where: {
+        type,
+        userId: { in: followers.map((v) => v.followingUserId) },
+      },
+      take,
+      skip,
+    });
+
+    console.log(
+      { posts, followers, userId },
+      // await this.prisma.follow.findMany(),
+      // await this.prisma.newsfeedPost.findMany(),
+    );
+
+    return posts;
+  }
+
   async getNewsfeedPostsByUserId(
     userId: string,
     type: PostType,
@@ -148,13 +180,10 @@ export class NewsfeedPostsService {
     input: CreateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
-    const profileId = await this.profileService.getProfileIdByUserId(userId);
-
     try {
       const res = await this.prisma.newsfeedPost.create({
         data: {
           ...input,
-          authorProfileId: profileId,
           userId,
           legend: [
             input.content,
@@ -247,18 +276,18 @@ export class NewsfeedPostsService {
     }
   }
 
-  async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
-    const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
-      where: {
-        id: postId,
-      },
-      select: {
-        authorProfileId: true,
-      },
-      rejectOnNotFound() {
-        throw new PostNotFoundException();
-      },
-    });
-    return authorProfileId;
-  }
+  // async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
+  //   const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
+  //     where: {
+  //       id: postId,
+  //     },
+  //     select: {
+  //       authorProfileId: true,
+  //     },
+  //     rejectOnNotFound() {
+  //       throw new PostNotFoundException();
+  //     },
+  //   });
+  //   return authorProfileId;
+  // }
 }

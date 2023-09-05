@@ -43,6 +43,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
     onSuccess(data) {
       setStory({ ...data, views: [], publisher: data.publisher as Profile });
     },
+    enabled: !!profileId,
   });
   useGetPrevStory(story?.id!, {
     onSuccess(data) {

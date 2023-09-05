@@ -679,6 +679,7 @@ export class ServiceResolver {
 
   @ResolveReference()
   reslove(ref: { id: string }) {
+    console.log('resolving ');
     return this.prisma.service.findUnique({
       where: {
         id: ref.id,

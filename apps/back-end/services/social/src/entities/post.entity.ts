@@ -82,7 +82,7 @@ export class SocialPost {
   @Field(() => [String])
   attachments: string[];
 
-  @Field(() => [Hashtag])
+  @Field(() => [Hashtag], { nullable: true, defaultValue: [] })
   hashtags: Hashtag[];
 
   @Field(() => Int)
@@ -97,13 +97,13 @@ export class SocialPost {
   @Field(() => Int)
   views: number;
 
-  @Field(() => [PostMention])
+  @Field(() => [PostMention], { nullable: true, defaultValue: [] })
   mentions: PostMention[];
 
   @Field(() => PostLocation, { nullable: true })
   location?: PostLocation;
 
-  @Field(() => [PostTag])
+  @Field(() => [PostTag], { nullable: true, defaultValue: [] })
   tags: PostTag[];
 
   @Field(() => String)
@@ -136,9 +136,6 @@ export class SocialPost {
 export class NewsfeedPost extends SocialPost {
   @Field(() => Profile, { nullable: true })
   publisher?: Profile;
-
-  @Field(() => ID)
-  authorProfileId: string;
 }
 
 @ObjectType()

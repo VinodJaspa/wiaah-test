@@ -1,5 +1,5 @@
 import { useRouting } from "@UI/../routing";
-import { useForm } from "@UI/../utils/src";
+import { setTestid, useForm } from "@UI/../utils/src";
 import {
   Button,
   Checkbox,
@@ -30,6 +30,7 @@ export const SellerSigninView: React.FC = () => {
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
       }),
+      addLabel: true,
     }
   );
 
@@ -43,18 +44,27 @@ export const SellerSigninView: React.FC = () => {
       <LogoColouredIcon className="text-9xl" />
       <div className="flex flex-col gap-8 w-full">
         <div className="flex flex-col gap-4 w-full">
-          <Input {...inputProps("email")} className="w-full" />
-          <Input isPassword {...inputProps("password")} className="w-full" />
+          <Input
+            {...setTestid("login-username-input")}
+            {...inputProps("email")}
+            className="w-full"
+          />
+          <Input
+            {...setTestid("login-password-input")}
+            isPassword
+            {...inputProps("password")}
+            className="w-full"
+          />
         </div>
 
         <HStack className="justify-between w-full">
           <HStack>
-            <Checkbox />
+            <Checkbox {...setTestid("login-remember-me-input")} />
             <p className="text-sm">{t("Remember me")}</p>
           </HStack>
 
           <Link href={getUrl((r) => r.visitChangePassword())}>
-            <button>
+            <button {...setTestid("login-forgot-password-btn")}>
               <p className="text-sm">{t("forgot password?")}</p>
             </button>
           </Link>
@@ -62,6 +72,7 @@ export const SellerSigninView: React.FC = () => {
       </div>
       <Recaptcha sitekey={"6Le6C70nAAAAAJTH4JRbMgmYx1LMRvbFMrxbkpxg"} />
       <Button
+        {...setTestid("login-form-submit-btn")}
         onClick={() => signin(form)}
         className="font-medium w-full"
         colorScheme="darkbrown"

@@ -21,23 +21,9 @@ export type GetSocialPostQuery = {
     userId: string;
     id: string;
     productIds?: Array<string> | null;
-    affiliation: {
-      __typename?: "Affiliation";
-      commision: number;
-      itemType: string;
-      product?: {
-        __typename?: "Product";
-        price: number;
-        thumbnail: string;
-        title: string;
-      } | null;
-      service?: {
-        __typename?: "Service";
-        thumbnail: string;
-        price: number;
-        name: string;
-      } | null;
-    };
+    isLiked: boolean;
+    isCommented: boolean;
+    isSaved: boolean;
     publisher?: {
       __typename?: "Profile";
       photo: string;
@@ -46,12 +32,6 @@ export type GetSocialPostQuery = {
       ownerId: string;
       verified: boolean;
     } | null;
-    service: {
-      __typename?: "Service";
-      thumbnail: string;
-      name: string;
-      price: number;
-    };
   };
 };
 
@@ -67,16 +47,16 @@ export const getSocialPostQueryFetcher = async (args: args) => {
       id: "342",
       comments: randomNum(150),
       createdAt: new Date().toUTCString(),
-      product: {
-        price: randomNum(13),
-        thumbnail: getRandomImage(),
-        title: "test product",
-      },
-      service: {
-        name: "service name",
-        price: randomNum(160),
-        thumbnail: getRandomImage(),
-      },
+      // product: {
+      //   price: randomNum(13),
+      //   thumbnail: getRandomImage(),
+      //   title: "test product",
+      // },
+      // service: {
+      //   name: "service name",
+      //   price: randomNum(160),
+      //   thumbnail: getRandomImage(),
+      // },
       reactionNum: randomNum(1600),
       shares: randomNum(1700),
       userId: "tesat1321",
@@ -89,15 +69,15 @@ export const getSocialPostQueryFetcher = async (args: args) => {
         username: getRandomName().firstName,
         verified: true,
       },
-      affiliation: {
-        commision: randomNum(10),
-        itemType: "product",
-        product: {
-          thumbnail: getRandomImage(),
-          price: randomNum(150),
-          title: "product title",
-        },
-      },
+      // affiliation: {
+      //   commision: randomNum(10),
+      //   itemType: "product",
+      //   product: {
+      //     thumbnail: getRandomImage(),
+      //     price: randomNum(150),
+      //     title: "product title",
+      //   },
+      // },
       isCommented: true,
       isLiked: true,
       isSaved: true,
@@ -121,20 +101,9 @@ query getSocialPost($id: String!) {
     userId
     id
     productIds
-    affiliation {
-      product {
-        price
-        thumbnail
-        title
-      }
-      commision
-      itemType
-      service {
-        thumbnail
-        price
-        name
-      }
-    }
+    isLiked
+    isCommented
+    isSaved
     publisher {
       photo
       username
@@ -142,15 +111,10 @@ query getSocialPost($id: String!) {
       ownerId
       verified
     }
-    service {
-      thumbnail
-      name
-      price
-    }
   }
 }
 
-  `
+`
     )
     .setVariables<args>(args)
     .send<GetSocialPostQuery>();

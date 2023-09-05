@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <ReactSeoProvider TagWrapper={NextHead}>
                   <RecoilRoot>
                     <DataInitializationWrapper accountType="seller">
-                      <Component {...pageProps} />
+                      <Component suppressHydrationWarning {...pageProps} />
                     </DataInitializationWrapper>
                   </RecoilRoot>
                 </ReactSeoProvider>

@@ -3,7 +3,6 @@ import {
   PostCardsListWrapper,
   RecentStories,
   usePaginationControls,
-  useSocialControls,
   useStoryModal,
 } from "@blocks";
 import React from "react";
@@ -12,6 +11,7 @@ import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
 import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 import { useRouting } from "routing";
+import { PostType } from "@features/API";
 
 const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
@@ -28,7 +28,7 @@ const SocialNewsfeedView: React.FC = () => {
 
   const { pagination: postsPagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetMyNewsfeedPostsQuery>[0]>(
-    { pagination: postsPagination },
+    { pagination: postsPagination, type: PostType.NewsfeedPost },
     { pagination: postsPagination }
   );
   const { data } = useGetMyNewsfeedPostsQuery(form);

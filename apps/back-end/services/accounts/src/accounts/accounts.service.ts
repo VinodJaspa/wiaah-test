@@ -48,7 +48,7 @@ export class AccountsService {
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
           username: createdUser.firstName,
-          birthDate,
+          birthDate: new Date(birthDate).toISOString(),
         }),
       );
       return createdUser;

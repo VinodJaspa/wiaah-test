@@ -75,7 +75,7 @@ export class NewsfeedPostsResolver {
     @Args('args') args: GetMyNewsfeedPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.newsfeedPostsService.getNewsfeedPostsByUserId(
+    return this.newsfeedPostsService.getUserNewsfeedPostsListing(
       user.id,
       args.type,
       args.pagination,
@@ -186,7 +186,7 @@ export class NewsfeedPostsResolver {
     return this.newsfeedPostsService.deleteNewsfeedPost(id, user.id);
   }
 
-  @ResolveField(() => Affiliation)
+  @ResolveField(() => Affiliation, { nullable: true })
   affiliation(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'affiliation',
@@ -194,7 +194,7 @@ export class NewsfeedPostsResolver {
     };
   }
 
-  @ResolveField(() => [Product])
+  @ResolveField(() => [Product], { nullable: true })
   products(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'product',
@@ -202,7 +202,7 @@ export class NewsfeedPostsResolver {
     };
   }
 
-  @ResolveField(() => Service)
+  @ResolveField(() => Service, { nullable: true })
   service(@Parent() post: NewsfeedPost) {
     return {
       __typename: 'service',
@@ -234,7 +234,7 @@ export class NewsfeedPostsResolver {
   ) {
     const like = await this.prisma.contentReaction.findUnique({
       where: {
-        hostId_hostType_reactedByProfileId: {
+        hostId_hostType_reactedByUserId: {
           hostId: post.id,
           hostType:
             post.type === PostType.newsfeed_post
@@ -246,7 +246,7 @@ export class NewsfeedPostsResolver {
               : post.type === PostType.affiliation_post
               ? ContentHostType.post_affiliation
               : undefined,
-          reactedByProfileId: user.id,
+          reactedByUserId: user.id,
         },
       },
     });

@@ -1,4 +1,4 @@
-import { NumberShortner, mapArray, runIfFn } from "@UI/../utils/src";
+import { NumberShortner, mapArray, runIfFn, setTestid } from "@UI/../utils/src";
 import {
   AspectRatio,
   Avatar,
@@ -8,15 +8,10 @@ import {
   HeartFillIcon,
   HeartIcon,
   Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   PaperPlaneAngleIcon,
   PaperPlaneAngleOutlineIcon,
   SaveFlagFIllIcon,
   SaveFlagOutlineIcon,
-  ShareIcon,
   Slider,
   VStack,
   VerifiedIcon,
@@ -120,7 +115,7 @@ export const SocialNewsfeedPostMobileCard: React.FC<
   const since = getSince();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div {...setTestid("social-newsfeed-post")} className="flex flex-col gap-4">
       <HStack className="justify-between">
         <HStack className="items-center">
           <Avatar src={post.userPhoto} alt={post.username} />

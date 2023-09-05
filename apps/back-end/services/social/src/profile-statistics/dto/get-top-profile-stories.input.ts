@@ -4,7 +4,7 @@ import { GqlPaginationInput } from 'nest-utils';
 @InputType()
 export class GetTopProfilePostsInput {
   @Field(() => ID)
-  profileId: string;
+  userId: string;
 
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;

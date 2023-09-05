@@ -92,9 +92,9 @@ export class ProductsAdminResolver {
       });
     }
 
-    if (args.usageStatus) {
+    if (args.condition) {
       filters.push({
-        usageStatus: args.usageStatus,
+        condition: args.condition,
       });
     }
 
@@ -228,9 +228,9 @@ export class ProductsAdminResolver {
       });
     }
 
-    if (args.usageStatus) {
+    if (args.condition) {
       filters.push({
-        usageStatus: args.usageStatus,
+        condition: args.condition,
       });
     }
 

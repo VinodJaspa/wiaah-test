@@ -1,7 +1,12 @@
-import { createGraphqlRequestClient } from "api";
+import { createGraphqlRequestClient } from "api/src/utils/GraphqlRequestClient";
 import { useMutation } from "react-query";
 
-export const useSigninMutation = () => {
+type args = {
+  email: string;
+  password: string;
+};
+
+export const SigninFetcher = (args: args) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(
@@ -21,16 +26,9 @@ export const useSigninMutation = () => {
     `
   );
 
-  return useMutation<
-    unknown,
-    unknown,
-    {
-      email: string;
-      password: string;
-    }
-  >("signin", (input) => client.setVariables(input).send(), {
-    onMutate(variables) {
-      console.log("mutate", variables);
-    },
-  });
+  return client.setVariables(args).send<{ access_token: string }>();
+};
+
+export const useSigninMutation = () => {
+  return useMutation<unknown, unknown, args>((input) => SigninFetcher(input));
 };

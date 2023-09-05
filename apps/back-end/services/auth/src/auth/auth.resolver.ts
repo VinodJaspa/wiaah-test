@@ -103,7 +103,6 @@ export class AuthResolver implements OnModuleInit {
     );
 
     if (ctx && ctx.res && ctx.res.cookie) {
-      console.log('settings jwt token', this.cookiesKey, data);
       ctx.res.cookie(this.cookiesKey, data.access_token, {
         secure: true,
         httpOnly: true,
@@ -211,6 +210,7 @@ export class AuthResolver implements OnModuleInit {
       new GetAdminAccountByEmailMesssage({ email: args.email }),
     );
 
+    console.log({ acc });
     if (!acc?.results?.data)
       throw new ResourceNotFoundPublicError('Account not found');
 

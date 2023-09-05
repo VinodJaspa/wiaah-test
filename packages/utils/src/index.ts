@@ -22,4 +22,4 @@ export * from "./getRandomNumber";
 export * from "./passPropsToFnOrElem";
 export * from "./mocks";
 
-export const isDev = true;
+export const isDev = false;

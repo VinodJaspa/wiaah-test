@@ -57,7 +57,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              followingProfileId: args.profileId,
+              followingUserId: args.userId,
             },
             {
               followedAt: {
@@ -72,7 +72,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              followingProfileId: args.profileId,
+              followingUserId: args.userId,
             },
             {
               followedAt: {
@@ -92,7 +92,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              hostProfileId: args.profileId,
+              hostUserId: args.userId,
             },
             {
               reactedAt: {
@@ -107,7 +107,7 @@ export class ProfileStatisticsResolver {
         where: {
           AND: [
             {
-              hostProfileId: args.profileId,
+              hostUserId: args.userId,
             },
             {
               reactedAt: {
@@ -420,7 +420,7 @@ export class ProfileStatisticsResolver {
     @Args('args') args: GetTopProfilePostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Story[]> {
-    await this.validateAuthorite(user, args.profileId);
+    await this.validateAuthorite(user, args.userId);
     const { take, skip } = ExtractPagination(args.pagination);
 
     const firstPeriod = SubtractFromDate(new Date(), {
@@ -431,7 +431,7 @@ export class ProfileStatisticsResolver {
       where: {
         AND: [
           {
-            profileId: args.profileId,
+            publisherId: args.userId,
           },
           {
             createdAt: {
@@ -452,7 +452,7 @@ export class ProfileStatisticsResolver {
     @Args('args') args: GetTopProfilePostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<NewsfeedPost[]> {
-    await this.validateAuthorite(user, args.profileId);
+    await this.validateAuthorite(user, args.userId);
     const { take, skip } = ExtractPagination(args.pagination);
 
     const firstPeriod = SubtractFromDate(new Date(), {
@@ -463,7 +463,7 @@ export class ProfileStatisticsResolver {
       where: {
         AND: [
           {
-            authorProfileId: args.profileId,
+            userId: args.userId,
           },
           {
             createdAt: {

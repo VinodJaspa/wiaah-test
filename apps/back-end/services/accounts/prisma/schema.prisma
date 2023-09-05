@@ -41,7 +41,7 @@ model Account {
   currency                   String                   @default("usd")
   phoneVerified              Boolean                  @default(false)
   ips                        String[]
-  birthDate                  String
+  birthDate                  DateTime
   AccountDeletionRequest     AccountDeletionRequest[]
   contacts                   UserContact?
   requiredActions            RequiredAction[]

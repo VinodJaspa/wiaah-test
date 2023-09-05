@@ -47,14 +47,14 @@ type NewsfeedPost {
   title: String!
   content: String!
   attachments: [String!]!
-  hashtags: [Hashtag!]!
+  hashtags: [Hashtag!]
   reactionNum: Int!
   comments: Int!
   shares: Int!
   views: Int!
-  mentions: [PostMention!]!
+  mentions: [PostMention!]
   location: PostLocation
-  tags: [PostTag!]!
+  tags: [PostTag!]
   createdAt: String!
   updatedAt: String!
   enableComments: Boolean!
@@ -64,10 +64,9 @@ type NewsfeedPost {
   affiliationId: String
   type: PostType!
   publisher: Profile
-  authorProfileId: ID!
-  affiliation: Affiliation!
-  products: [Product!]!
-  service: Service!
+  affiliation: Affiliation
+  products: [Product!]
+  service: Service
   pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
@@ -101,14 +100,14 @@ type AdminNewsfeedPost {
   title: String!
   content: String!
   attachments: [String!]!
-  hashtags: [Hashtag!]!
+  hashtags: [Hashtag!]
   reactionNum: Int!
   comments: Int!
   shares: Int!
   views: Int!
-  mentions: [PostMention!]!
+  mentions: [PostMention!]
   location: PostLocation
-  tags: [PostTag!]!
+  tags: [PostTag!]
   createdAt: String!
   updatedAt: String!
   enableComments: Boolean!
@@ -118,10 +117,9 @@ type AdminNewsfeedPost {
   affiliationId: String
   type: PostType!
   publisher: Profile
-  authorProfileId: ID!
-  affiliation: Affiliation!
-  products: [Product!]!
-  service: Service!
+  affiliation: Affiliation
+  products: [Product!]
+  service: Service
   pinned: Boolean!
   isLiked: Boolean!
   isCommented: Boolean!
@@ -254,10 +252,8 @@ type ProfileMetaCursorPaginatedResponse {
 
 type Follow {
   id: ID!
-  followerProfile: Profile
-  followerProfileId: ID!
-  followingProfile: Profile
-  followingProfileId: ID!
+  followerUserId: ID!
+  followingUserId: ID!
   followedAt: DateTime!
 }
 
@@ -308,7 +304,7 @@ type ContentReaction {
   userId: ID!
   reactionType: ContentReactionType!
   reactedBy: Profile
-  reactedByProfileId: ID!
+  reactedByUserId: ID!
   reactedAt: DateTime!
 }
 
@@ -1026,7 +1022,7 @@ input GetProfileVisitsDetailsInput {
 }
 
 input GetTopProfilePostsInput {
-  profileId: ID!
+  userId: ID!
   pagination: GqlPaginationInput!
   sinceHours: Int!
 }

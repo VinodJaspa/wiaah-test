@@ -67,15 +67,13 @@ model BlockedUser {
 model Follow {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  followerProfile         Profile  @relation(fields: [followerProfileId], references: [id])
-  followerUserId          String   @db.ObjectId
-  followerProfileId       String   @db.ObjectId
+  followerProfile         Profile  @relation(fields: [followerUserId], references: [ownerId])
+  followerUserId          String
   followerLastStorySeenAt DateTime @default(now())
 
   followingLastStoryPostedAt DateTime @default(now())
-  followingProfile           Profile  @relation(name: "followingProfile", fields: [followingProfileId], references: [id])
-  followingUserId            String   @db.ObjectId
-  followingProfileId         String   @db.ObjectId
+  followingProfile           Profile  @relation(name: "followingProfile", fields: [followingUserId], references: [ownerId])
+  followingUserId            String
 
   followedAt DateTime @default(now())
 
@@ -84,9 +82,8 @@ model Follow {
 
 model NewsfeedPost {
   id                 String             @id() @default(auto()) @map("_id") @db.ObjectId()
-  userId             String             @db.ObjectId
-  publisher          Profile            @relation(fields: [authorProfileId], references: [id])
-  authorProfileId    String             @db.ObjectId
+  userId             String
+  publisher          Profile            @relation(fields: [userId], references: [ownerId])
   title              String
   content            String
   attachments        String[]
@@ -278,18 +275,17 @@ enum ActionType {
 }
 
 model ContentReaction {
-  id                 String              @id() @default(auto()) @map("_id") @db.ObjectId()
-  userId             String              @db.ObjectId
-  hostUserId         String
-  hostProfileId      String
-  hostId             String              @db.ObjectId
-  hostType           ContentHostType
-  reactionType       ContentReactionType @default(like)
-  reactedBy          Profile             @relation(fields: [reactedByProfileId], references: [id])
-  reactedByProfileId String              @db.ObjectId
-  reactedAt          DateTime            @default(now())
+  id              String              @id() @default(auto()) @map("_id") @db.ObjectId()
+  userId          String              @db.ObjectId
+  hostUserId      String
+  hostId          String              @db.ObjectId
+  hostType        ContentHostType
+  reactionType    ContentReactionType @default(like)
+  reactedBy       Profile             @relation(fields: [reactedByUserId], references: [ownerId])
+  reactedByUserId String              @db.ObjectId
+  reactedAt       DateTime            @default(now())
 
-  @@unique([hostId, hostType, reactedByProfileId])
+  @@unique([hostId, hostType, reactedByUserId])
 }
 
 model ContentShare {
@@ -356,7 +352,7 @@ model Comment {
 model Story {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   publisherId  String        @db.ObjectId
-  publisher    Profile       @relation(fields: [profileId], references: [id])
+  publisher    Profile       @relation(fields: [publisherId], references: [ownerId])
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   type         StoryType     @default(base)
@@ -370,7 +366,6 @@ model Story {
   likes        StoryLike[]
   mentions     PostMention[]
   tags         PostTag[]
-  profileId    String        @db.ObjectId()
   audioId      String?
   effectId     String?
 }

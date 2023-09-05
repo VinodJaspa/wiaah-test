@@ -42,25 +42,21 @@ export class ReactionService {
 
     if (!content) throw new ContentNotFoundException();
 
-    const authorProfileId = content.authorProfileId;
-
     // validate the user have the right premission to react on this content
-    const profileId = await this.profileService.getProfileIdByUserId(userId);
     const canInteract = await this.profileService.canInteractWith(
-      authorProfileId,
-      profileId,
+      content.userId,
+      userId,
     );
     if (!canInteract) throw new UnauthorizedException();
 
     try {
       const reaction = await this.prisma.contentReaction.create({
         data: {
-          hostProfileId: content.authorProfileId,
           hostUserId: content.userId,
           hostId: contentId,
           hostType: contentType,
           reactionType: 'like',
-          reactedByProfileId: profileId,
+          reactedByUserId: userId,
           userId,
         },
       });
@@ -73,10 +69,9 @@ export class ReactionService {
       this.eventClient.emit(
         KAFKA_EVENTS.REACTION_EVENTS.contentReacted(contentType),
         new ContentReactedEvent({
-          contentAuthorProfileId: authorProfileId,
           contentAuthorUserId: content.userId,
           contentId,
-          reacterProfileId: profileId,
+
           reacterUserId: userId,
           contentType,
           contentTitle: content.content,

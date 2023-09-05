@@ -78,7 +78,7 @@ export class AffiliationResolver {
     );
   }
 
-  @ResolveField(() => Product)
+  @ResolveField(() => Product, { nullable: true })
   product(@Parent() aff: Affiliation) {
     return {
       __typename: 'Product',
@@ -86,7 +86,7 @@ export class AffiliationResolver {
     };
   }
 
-  @ResolveField(() => Service)
+  @ResolveField(() => Service, { nullable: true })
   service(@Parent() aff: Affiliation) {
     return {
       __typename: 'Service',

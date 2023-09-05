@@ -129,6 +129,7 @@ export class AccountsController implements OnModuleInit {
     @Payload() payload: KafkaPayload<GetAccountMetaDataByEmailMessage>,
   ): Promise<GetAccountMetaDataByEmailMessageReply> {
     try {
+      console.log('account by email');
       const {
         value: {
           input: { email },

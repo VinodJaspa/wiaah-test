@@ -167,11 +167,6 @@ export class StoryRepository {
       data: {
         ...input,
         publisherId: userId,
-        publisher: {
-          connect: {
-            ownerId: userId,
-          },
-        },
         type: this.getStoryTypeFromInput(input),
       },
       include: {

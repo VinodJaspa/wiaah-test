@@ -15,7 +15,7 @@ export class AccountsSeeder implements Seeder {
     await this.accountsClient.collection('Account').insertMany([
       {
         accountType: accountType.ADMIN,
-        birthDate: new Date().toString(),
+        birthDate: new Date(),
         email: 'admin@wiaah.com',
         firstName: 'admin',
         lastName: 'admin',
@@ -34,7 +34,7 @@ export class AccountsSeeder implements Seeder {
       },
       {
         accountType: accountType.SELLER,
-        birthDate: new Date().toString(),
+        birthDate: new Date(),
         email: 'seller@wiaah.com',
         firstName: 'seller',
         lastName: 'seller',
@@ -53,7 +53,7 @@ export class AccountsSeeder implements Seeder {
       },
       {
         accountType: accountType.BUYER,
-        birthDate: new Date().toString(),
+        birthDate: new Date(),
         email: 'buyer@wiaah.com',
         firstName: 'buyer',
         lastName: 'buyer',

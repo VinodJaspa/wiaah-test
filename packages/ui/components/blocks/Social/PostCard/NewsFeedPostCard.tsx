@@ -25,7 +25,7 @@ import {
   NewsfeedPost,
   Profile,
 } from "@features/API";
-import { NumberShortner } from "@UI/../utils/src";
+import { NumberShortner, setTestid } from "@UI/../utils/src";
 import { useSocialControls } from "@blocks/Layout";
 
 export interface PostCardProps {
@@ -40,11 +40,11 @@ export interface PostCardProps {
     | "userId"
     | "comments"
     | "reactionNum"
-    | "authorProfileId"
     | "content"
     | "createdAt"
     | "tags"
     | "shares"
+    | "thumbnail"
   > & { attachments: Pick<Attachment, "src" | "type">[] };
   onProfileClick?: () => any;
   onPostClick?: () => any;
@@ -83,45 +83,42 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   const date = getSince();
 
-  if (!postInfo || !profileInfo) return null;
+  // if (!postInfo || !profileInfo) return null;
 
   return (
-    <div className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full">
+    <div
+      onClick={() => visit((r) => r.visitSocialPost(postInfo.id))}
+      {...setTestid("social-newsfeed-post")}
+      className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full"
+    >
       <Image
         className="w-full h-full object-cover"
-        src={
-          postInfo?.attachments && postInfo.attachments.length > 0
-            ? postInfo.attachments[0].src
-            : ""
-        }
+        src={postInfo?.thumbnail || ""}
         alt={postInfo.content}
       />
 
-      <div
-        onClick={() => visit((r) => r.visitSocialPost(postInfo.id))}
-        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
-      >
+      <div className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
         <div className="flex flex-col w-full">
           <div className="flex gap-2 items-center">
             <div className="min-w-[2.5rem] ">
               <UserProfileDisplay
                 storyUserData={{
-                  name: profileInfo.username,
-                  userPhotoSrc: profileInfo.photo,
-                  id: profileInfo.id,
+                  name: profileInfo?.username,
+                  userPhotoSrc: profileInfo?.photo,
+                  id: profileInfo?.id,
                 }}
                 onProfileClick={() => onProfileClick && onProfileClick()}
               />
             </div>
             <div className="flex w-full justify-between">
               <div className="flex flex-col">
-                <p className="font-bold">{profileInfo.username}</p>
+                <p className="font-bold">{profileInfo?.username}</p>
                 <div
                   onClick={() => onLocationClick && onLocationClick()}
                   className="cursor-pointer flex gap-1 items-center"
                 >
                   <LocationIcon className="text-white" />
-                  <p>{profileInfo.profession}</p>
+                  <p>{profileInfo?.profession}</p>
                 </div>
               </div>
               <div className="flex items-end flex-col">

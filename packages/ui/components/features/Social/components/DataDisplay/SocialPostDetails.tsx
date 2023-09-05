@@ -24,7 +24,7 @@ import {
 } from "@partials";
 import React from "react";
 import { SocialPostOptionsDropdown } from "./DropdownOptions";
-import { NumberShortner, mapArray } from "@UI/../utils/src";
+import { NumberShortner, mapArray, setTestid } from "@UI/../utils/src";
 import { useTranslation } from "react-i18next";
 import { CommentInput, useSocialControls } from "@blocks";
 import { PostCommentsList } from "../Lists";
@@ -51,11 +51,13 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
     activeIcon: React.ReactElement;
     isActive: boolean;
     label: string;
+    testid?: string;
     onClick: () => void;
   }[] = [
     {
-      icon: <HeartOutlineIcon />,
-      activeIcon: <HeartFillIcon />,
+      icon: <HeartOutlineIcon {...setTestid("social-post-unliked-icon")} />,
+      activeIcon: <HeartFillIcon {...setTestid("social-post-liked-icon")} />,
+      testid: "social-post-like-btn",
       isActive: !!data?.isLiked,
       label: `${NumberShortner(data?.reactionNum || 0)}`,
       onClick: () =>
@@ -72,6 +74,7 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
       icon: <CommentOutlineIcon />,
       activeIcon: <CommentIcon />,
       isActive: !!data?.isCommented,
+
       label: `${NumberShortner(data?.comments || 0)}`,
       onClick: () => {},
     },
@@ -79,6 +82,7 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
       icon: <PaperPlaneAngleOutlineIcon />,
       activeIcon: <PaperPlaneAngleIcon />,
       isActive: false,
+      testid: "social-post-share-btn",
       label: `${NumberShortner(data?.shares || 0)}`,
       onClick: () => {
         shareLink(getUrl((r) => r.visitSocialPost(postId)));
@@ -95,7 +99,7 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
 
   const attachments = (
     data?.type === PostType.ShopPost
-      ? [data.product.thumbnail]
+      ? [data?.product?.thumbnail]
       : data?.type === PostType.ServicePost
       ? [data.service.thumbnail]
       : data?.type === PostType.AffiliationPost

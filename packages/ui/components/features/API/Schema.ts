@@ -355,7 +355,6 @@ export type AdminNewsfeedPost = {
   affiliation: Affiliation;
   affiliationId?: Maybe<Scalars["String"]["output"]>;
   attachments: Array<Scalars["String"]["output"]>;
-  authorProfileId: Scalars["ID"]["output"];
   comments: Scalars["Int"]["output"];
   commentsVisibility: CommentsVisibility;
   content: Scalars["String"]["output"];
@@ -985,7 +984,7 @@ export type ContentReaction = {
   id: Scalars["ID"]["output"];
   reactedAt: Scalars["DateTime"]["output"];
   reactedBy?: Maybe<Profile>;
-  reactedByProfileId: Scalars["ID"]["output"];
+  reactedByUserId: Scalars["ID"]["output"];
   reactionType: ContentReactionType;
   userId: Scalars["ID"]["output"];
 };
@@ -2202,8 +2201,8 @@ export type GetTopHashtagsInput = {
 
 export type GetTopProfilePostsInput = {
   pagination: GqlPaginationInput;
-  profileId: Scalars["ID"]["input"];
   sinceHours: Scalars["Int"]["input"];
+  userId: Scalars["ID"]["input"];
 };
 
 export type GetTopSalesProductsByCategoryPaginationInput = {
@@ -3570,7 +3569,6 @@ export type NewsfeedPost = {
   affiliation: Affiliation;
   affiliationId?: Maybe<Scalars["String"]["output"]>;
   attachments: Array<Scalars["String"]["output"]>;
-  authorProfileId: Scalars["ID"]["output"];
   comments: Scalars["Int"]["output"];
   commentsVisibility: CommentsVisibility;
   content: Scalars["String"]["output"];

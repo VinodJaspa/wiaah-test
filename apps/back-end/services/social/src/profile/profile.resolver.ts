@@ -184,8 +184,8 @@ export class ProfileResolver {
 
     const profiles = await this.prisma.profile.findMany({
       where: {
-        id: {
-          in: res.map((follow) => follow.followerProfileId),
+        ownerId: {
+          in: res.map((follow) => follow.followerUserId),
         },
       },
     });
@@ -224,8 +224,8 @@ export class ProfileResolver {
 
     const profiles = await this.prisma.profile.findMany({
       where: {
-        id: {
-          in: res.map((follow) => follow.followerProfileId),
+        ownerId: {
+          in: res.map((follow) => follow.followerUserId),
         },
       },
     });
