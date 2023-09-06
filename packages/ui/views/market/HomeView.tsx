@@ -293,9 +293,15 @@ const TopSalesCategoryProducts: React.FC<{
       <p className="font-medium text-3xl sm:text-lg">
         {isAll ? t("Products") : category} {t("for you")}
       </p>
-      <div className="grid grid-cols-4 gap-1 sm:grid-cols-2">
+      <div
+        {...setTestid("home-page-products-container")}
+        className="grid grid-cols-4 gap-1 sm:grid-cols-2"
+      >
         {mapArray(data?.data, (prod, i) => (
-          <div className="flex flex-col gap-4 sm:gap-2  p-1">
+          <div
+            {...setTestid(`home-page-product-${prod.id}`)}
+            className="flex flex-col gap-4 sm:gap-2  p-1"
+          >
             <div className="flex flex-col gap-1">
               <AspectRatioImage
                 className="rounded-xl"

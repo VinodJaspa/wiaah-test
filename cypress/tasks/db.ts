@@ -29,10 +29,12 @@ export const db = {
   products: {
     db: mongodbTestClient.db("wiaah-products"),
     get productsCollection() {
-      return this.db.collection("Product") as Collection;
+      return this.db.collection("Product") as Collection<Product>;
     },
     get productCategoryCollection() {
-      return this.db.collection("ProductCategory") as Collection;
+      return this.db.collection(
+        "ProductCategory"
+      ) as Collection<ProductsCategory>;
     },
   },
 };
@@ -42,3 +44,66 @@ export const resetDB = async () => {
 };
 
 export const seedDB = () => {};
+
+interface ProductsCategory {
+  name: {
+    langId: string;
+    value: string;
+  }[];
+  sortOrder: number;
+  status: string;
+  thumbnail: string;
+  sales: number;
+  metaTagTitle: {
+    langId: string;
+    value: string;
+  }[];
+  metaTagDescription: {
+    langId: string;
+    value: string;
+  }[];
+  attributeIds: any[];
+}
+
+interface Product {
+  sellerId: string;
+  vendor_external_link: null;
+  todayProductClickId: null;
+  type: string;
+  hashtags: string[];
+  title: { langId: string; value: string }[];
+  description: { langId: string; value: string }[];
+  price: number;
+  status: string;
+  suspensionReason: null;
+  usageStatus: string;
+  vat: number;
+  categoryId: string;
+  attributesIds: string[];
+  stock: number;
+  rate: number;
+  reviews: number;
+  rateStarCount: number;
+  brand: string;
+  discountId: null;
+  cashbackId: null;
+  shippingRulesIds: string[];
+  presentations: { type: string; src: string }[];
+  thumbnail: string;
+  visibility: string;
+  sales: number;
+  earnings: number;
+  totalOrdered: number;
+  totalDiscounted: number;
+  totalDiscountedAmount: number;
+  unitsRefunded: number;
+  positiveFeedback: number;
+  // negativeFeedback: number;
+  views: number;
+  createdAt: Date;
+  updatedAt: Date;
+  discount: null;
+  condition: string;
+  sizes: string[];
+  colors: string[];
+}

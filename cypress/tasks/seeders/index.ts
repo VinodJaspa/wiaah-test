@@ -6,6 +6,12 @@ export interface SeedDBResponse {
   accountsIds: string[];
   profilesIds: string[];
   socialPostsIds: string[];
-  productCategoriesIds: string[];
-  productsIds: string[];
+  productCategories: {
+    name: string;
+    id: string;
+  }[];
+  products: {
+    id: string;
+    name: string;
+  }[];
 }

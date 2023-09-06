@@ -32,15 +32,21 @@ export default defineConfig({
           const categories = await seedProductCategories();
           const products = await seedProducts({
             sellersIds: accIds,
-            categories: categories,
+            categories: categories.map((v) => v._id.toHexString()),
           });
 
           return {
             accountsIds: accIds,
             profilesIds: profiles.map((v) => v._id.toHexString()),
             socialPostsIds: posts.reduce((acc, curr) => [...acc, ...curr], []),
-            productCategoriesIds: categories,
-            productsIds: products,
+            productCategories: categories.map((v) => ({
+              id: v._id.toHexString(),
+              name: v.name[0].value,
+            })),
+            products: products.map((v) => ({
+              id: v._id.toHexString(),
+              name: v.title[0].value,
+            })),
           };
         },
         async seedSocialFollow(options: { from: string; to?: string }) {

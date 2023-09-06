@@ -8,8 +8,17 @@ import {
   ResolveField,
   Parent,
   Int,
+  Context,
+  GqlExecutionContext,
 } from '@nestjs/graphql';
-import { Inject, Ip, Logger, UseGuards } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Inject,
+  Ip,
+  Logger,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -84,11 +93,13 @@ export class ProductsResolver {
   async getProductRecommendation(
     @Args('pagination') pagination: GqlPaginationInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Ip() userIp: string,
+    @Context() ctx: ExecutionContext,
     @GetLang() langId: UserPreferedLang,
   ): Promise<ProductPaginationResponse> {
     const { page, skip, take, totalSearched } = ExtractPagination(pagination);
-    const userCountry = lookup(userIp).country;
+    const userIp = user.ip;
+    const userCountry = lookup(userIp);
+    console.log({ userCountry, userIp, user });
     const products = await this.prisma.product.findMany({
       where: { status: 'active' },
       select: {
@@ -149,7 +160,10 @@ export class ProductsResolver {
       }
 
       const productShop = shops.find((shop) => shop.ownerId === curr.sellerId);
-      if (productShop && productShop.location.countryCode === userCountry) {
+      if (
+        productShop &&
+        productShop.location.countryCode === userCountry.country
+      ) {
         score += this.shopCountryWeight;
       }
 

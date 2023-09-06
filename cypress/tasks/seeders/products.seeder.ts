@@ -1,7 +1,7 @@
 import { db } from "../db";
 import { faker } from "@faker-js/faker";
 
-export const seedProductCategories = async (): Promise<string[]> => {
+export const seedProductCategories = async () => {
   await db.products.productCategoryCollection.insertMany(
     [...Array(5)].map((_, i) => ({
       name: [
@@ -34,7 +34,7 @@ export const seedProductCategories = async (): Promise<string[]> => {
     .find()
     .toArray();
 
-  return categories.map((v) => v._id.toHexString());
+  return categories;
 };
 
 export const seedProducts = async (options: {
@@ -109,5 +109,5 @@ export const seedProducts = async (options: {
 
   const prods = await db.products.productsCollection.find().toArray();
 
-  return prods.map((v) => v._id.toHexString());
+  return prods;
 };
