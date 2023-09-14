@@ -69,6 +69,14 @@ export class CategoryResolver {
     return this.categoryService.getAllCategories(args, lang);
   }
 
+  @Query(() => Category, { nullable: true })
+  getProductCategoryById(
+    @Args('id') id: string,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<Category | null> {
+    return this.categoryService.getOneById(id, lang);
+  }
+
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   createProductCategory(

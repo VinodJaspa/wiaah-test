@@ -64,7 +64,6 @@ query getTopSalesProductsQuery(
             id
             vendor_external_link
             saved
-            isExternalShopping
             category {
                 name
             }
@@ -78,6 +77,7 @@ query getTopSalesProductsQuery(
     })
     .send<GetTopSalesProductsQueryQuery>();
 
+  // isExternalShopping
   return res.data.getTopSalesProducts;
 };
 

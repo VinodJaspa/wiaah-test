@@ -46,6 +46,7 @@ export default defineConfig({
             products: products.map((v) => ({
               id: v._id.toHexString(),
               name: v.title[0].value,
+              categoryId: v.categoryId,
             })),
           };
         },

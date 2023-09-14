@@ -9,6 +9,15 @@ export function getByTestid<TElement>(testId: string) {
   return cy.get<TElement>(getTestId(testId));
 }
 
+export function createTranslationValue(value: any) {
+  return [
+    {
+      langId: "en",
+      value: value,
+    },
+  ];
+}
+
 Cypress.on("uncaught:exception", (err, runnable) => {
   // returning false here prevents Cypress from
   // failing the test
@@ -29,5 +38,8 @@ export const marketplaceRoutes = {
   base: "http://localhost:3002",
   get createProduct() {
     return this.base + "/product/new";
+  },
+  visitProductPage(productId: string) {
+    return this.base + "/product/" + productId;
   },
 };

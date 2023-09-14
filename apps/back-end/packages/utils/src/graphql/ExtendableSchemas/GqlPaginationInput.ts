@@ -46,7 +46,7 @@ export const ExtractPagination = (pagination: GqlPaginationInput) => {
   const currentTake = take;
   const currentPage = page <= 0 ? 1 : page;
   const skip = (currentPage - 1) * currentTake;
-  const totalSearched = skip + currentTake;
+  const totalSearched = skip === 0 ? 0 : skip + currentTake;
 
   return {
     page: currentPage,

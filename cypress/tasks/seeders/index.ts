@@ -13,5 +13,6 @@ export interface SeedDBResponse {
   products: {
     id: string;
     name: string;
+    categoryId: string;
   }[];
 }

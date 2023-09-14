@@ -136,7 +136,7 @@ export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
           </div>
           <div className="">
             <p className="my-10 flex justify-center text-2xl font-bold uppercase">
-              {t("Related_Products", "Related Products")}
+              {t("Related Products")}
             </p>
           </div>
         </div>

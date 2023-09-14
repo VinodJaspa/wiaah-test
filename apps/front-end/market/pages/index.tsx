@@ -1,6 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
-import { ImageSlider, Container, CookiesInfoBanner, AspectRatio } from "ui";
+import { Container, CookiesInfoBanner } from "ui";
 import { HomeView } from "ui/views";
 import { MasterLayout } from "@components";
 

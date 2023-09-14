@@ -44,7 +44,7 @@ export const seedProducts = async (options: {
   await db.products.productsCollection.insertMany(
     [...Array(10)].map(() => ({
       sellerId: (options?.sellersIds || [])[
-        faker.number.int(options?.sellersIds?.length || 1)
+        faker.number.int(options?.sellersIds?.length - 1 || 1)
       ],
       vendor_external_link: null,
       todayProductClickId: null,
@@ -55,7 +55,7 @@ export const seedProducts = async (options: {
       title: [
         {
           langId: "en",
-          value: faker.lorem.paragraph(40),
+          value: faker.lorem.slug(),
         },
       ],
       description: [
@@ -70,7 +70,7 @@ export const seedProducts = async (options: {
       usageStatus: ["new", "used"][faker.number.int(1)],
       vat: faker.number.int(25),
       categoryId: options.categories.at(
-        faker.number.int(options.categories.length)
+        faker.number.int(options.categories.length - 1)
       ),
       attributesIds: [],
       stock: faker.number.int(100),

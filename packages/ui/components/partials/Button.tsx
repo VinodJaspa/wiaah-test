@@ -1,6 +1,8 @@
 import React from "react";
 import { HtmlButtonProps } from "types";
 import { CgSpinner } from "react-icons/cg";
+import { useTranslation } from "react-i18next";
+import { setTestid } from "utils";
 
 type ColorScheme =
   | "primary"
@@ -110,8 +112,13 @@ export const AddToCartProductButton: React.FC<
     productId: string;
   }
 > = ({ productId, ...props }) => {
+  const { t } = useTranslation();
   // TODO: switch if product is external
-  return <Button {...props} />;
+  return (
+    <Button {...setTestid("product-add-to-cart-btn")} {...props}>
+      {t("Add to cart")}
+    </Button>
+  );
 };
 
 export const BookServiceButton: React.FC<

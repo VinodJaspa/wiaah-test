@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import { SeedDBResponse } from "../../tasks";
 import { getByTestid, getTestId, marketplaceRoutes } from "../const";
 
@@ -7,11 +6,12 @@ const testids = {
   homepage_productCategoriesContainer: "productCategoriesContainer",
   homepage_productsContainer: "home-page-products-container",
   homepage_product: "home-page-product",
+  productSkeleton: "product-skeleton",
 };
 
 describe("homepage testing", () => {
   let productsCategories: { id: string; name: string }[];
-  let products: { id: string; name: string }[];
+  let products: { id: string; name: string; categoryId: string }[];
 
   beforeEach(() => {
     cy.task<SeedDBResponse>("seedDb").then((res) => {
@@ -43,11 +43,23 @@ describe("homepage testing", () => {
       `${testids.homepage_productsContainer}`
     );
 
-    const testingCategory =
-      productsCategories[faker.number.int(productsCategories.length)];
-
     productsContainer
       .find(getTestId(testids.homepage_product))
-      .should("have.length", 40);
+      .should("have.length", products.length > 40 ? 40 : products.length);
+
+    const testingCategory = productsCategories.at(0);
+
+    getByTestid(`${testids.category}-${testingCategory.id}`).click();
+
+    cy.get(getTestId(testids.productSkeleton)).should("have.length", 40);
+
+    const cateProducts = products.filter(
+      (v) => v.categoryId === testingCategory.id
+    );
+
+    cy.find(getTestId(testids.homepage_product), { timeout: 10000 }).should(
+      "have.length",
+      cateProducts.length > 40 ? 40 : cateProducts.length
+    );
   });
 });

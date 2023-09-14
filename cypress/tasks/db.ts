@@ -37,6 +37,12 @@ export const db = {
       ) as Collection<ProductsCategory>;
     },
   },
+  services: {
+    db: mongodbTestClient.db("wiaah-services"),
+    get servicesCollection() {
+      return this.db.collection("Service") as Collection<Service>;
+    },
+  },
 };
 
 export const resetDB = async () => {
@@ -107,3 +113,5 @@ interface Product {
   sizes: string[];
   colors: string[];
 }
+
+interface Service {}

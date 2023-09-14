@@ -1,10 +1,10 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { ProductView } from "ui/views";
 import MasterLayout from "../../components/MasterLayout";
 import { Container } from "ui";
 import { useRouter } from "next/router";
+import { ProductView } from "ui/components/features/Products/views/ProductView";
 
 const ProductDetailPage: NextPage = () => {
   const router = useRouter();

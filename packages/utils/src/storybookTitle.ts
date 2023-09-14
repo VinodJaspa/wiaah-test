@@ -39,7 +39,6 @@ export const storybookBlocksInputTitle = storybookBlocksTitle + inputsTitle;
 export const storybookFeaturesTitle = "UI / Features /";
 
 // google maps service
-
 export const storybookGoogleMapsTitle =
   storybookFeaturesTitle + "Google maps /";
 
@@ -65,9 +64,10 @@ export const storybookOtherServicesHeadersTitle =
   storybookServicesTitle + headersTitle;
 export const storybookOtherServicesSectionsTitle =
   storybookServicesTitle + sectionsTitle;
+export const storybookLoadingSkeletonTitle =
+  storybookBlocksTitle + "Loading Skeleton /";
 
 // Vehicle service
-
 export const storybookVehicleTitle = storybookFeaturesTitle + "Vehicle /";
 export const storybookVehicleInputsTitle = storybookVehicleTitle + inputsTitle;
 export const storybookVehicleCardsTitle = storybookVehicleTitle + cardsTitle;
@@ -98,7 +98,6 @@ export const storybookRestaurantInputTitle =
   storybookRestaurantTitle + inputsTitle;
 
 // beauty center service
-
 export const storybookBeautyCenterTitle =
   storybookFeaturesTitle + "Beauty Center /";
 export const storybookBeautyCenterCardsTitle =

@@ -1,12 +1,16 @@
 import {
   GridListOrganiser,
+  ProductSkeleton,
   SpinnerFallback,
   usePaginationControls,
 } from "@blocks";
 import { DesignPlacement, Product } from "@features/API";
 import { useGetDesignPlacementQuery } from "@features/Moderation";
 import { useGetNearPlacesQuery } from "@features/Places/services/useGetNearPlacesQuery";
-import { useGetTopProductCategoriesQuery } from "@features/Products";
+import {
+  useGetCategoryByIdQuery,
+  useGetTopProductCategoriesQuery,
+} from "@features/Products";
 import { useGetTopSalesProductsByCategoryIdQuery } from "@features/Products/services/queries/getTopSalesProductsByCategory";
 import { useGetRecommendedProducts } from "@features/Products/services/queries/useGetRecommendedProducts";
 import { useGetBestShopsQuery } from "@features/Shop/services/queries/useGetBestShopsQuery";
@@ -35,7 +39,7 @@ import { useRouting } from "routing";
 import { mapArray, setTestid } from "utils";
 
 export const HomeView: React.FC = () => {
-  const [category, setCategory] = useState<string>();
+  const [category, setCategory] = useState<string>("all");
   return (
     <div className="flex flex-col gap-4">
       <HomeViewDesignsDisplay />
@@ -126,6 +130,9 @@ const HomeRecommendationSection: React.FC = () => {
 const PlacesNearYouHomeSection: React.FC = () => {
   const { lat, lng } = useGeoLocation();
   const { isMobile } = useResponsive();
+  const { t } = useTranslation();
+
+  console.log({ lat, lng });
 
   const {
     data: places,
@@ -145,10 +152,18 @@ const PlacesNearYouHomeSection: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8">
+      <p>{t("Places near you")}</p>
       <SpinnerFallback error={error} isError={isError} isLoading={isLoading}>
-        <div className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div
+          {...setTestid("homepage-near-places-container")}
+          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
           {mapArray(places, (place, i) => (
-            <div key={i} className="flex flex-col p-1 gap-4">
+            <div
+              {...setTestid("service-card")}
+              key={i}
+              className="flex flex-col p-1 gap-4"
+            >
               <div className="flex flex-col gap-1">
                 <AspectRatioImage
                   src={place.thumbnail}
@@ -275,10 +290,12 @@ const TopSalesCategoryProducts: React.FC<{
   categoryId?: string;
 }> = ({ categoryId }) => {
   const { t } = useTranslation();
-  const { pagination } = usePaginationControls();
-  const { data } = useGetTopSalesProductsByCategoryIdQuery(
+  const { visit } = useRouting();
+  const { pagination } = usePaginationControls({ itemsPerPage: 40 });
+  const { data: categoryRes } = useGetCategoryByIdQuery(categoryId!);
+  const { data, isLoading } = useGetTopSalesProductsByCategoryIdQuery(
     {
-      categoryId: categoryId!,
+      categoryId: categoryId === "all" ? undefined : categoryId!,
       pagination,
     },
     { enabled: !!categoryId }
@@ -286,7 +303,7 @@ const TopSalesCategoryProducts: React.FC<{
 
   const isAll = categoryId === "all";
 
-  const category = "";
+  const category = categoryRes?.name;
 
   return (
     <div className="flex flex-col gap-4">
@@ -295,55 +312,62 @@ const TopSalesCategoryProducts: React.FC<{
       </p>
       <div
         {...setTestid("home-page-products-container")}
-        className="grid grid-cols-4 gap-1 sm:grid-cols-2"
+        className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4"
       >
-        {mapArray(data?.data, (prod, i) => (
-          <div
-            {...setTestid(`home-page-product-${prod.id}`)}
-            className="flex flex-col gap-4 sm:gap-2  p-1"
-          >
-            <div className="flex flex-col gap-1">
-              <AspectRatioImage
-                className="rounded-xl"
-                src={prod.thumbnail}
-                alt={prod.title}
-                ratio={0.85}
+        {isLoading
+          ? mapArray([...Array(40)], () => <ProductSkeleton />)
+          : mapArray(data?.data, (prod, i) => (
+              <div
+                onClick={() => visit((r) => r.visitProduct(prod.id))}
+                key={i}
+                className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
+                {...setTestid(`home-page-product`)}
+                data-itemID={prod.id}
               >
-                <button
-                  onClick={() => {
-                    // TODO: integrate
-                  }}
-                  className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
-                >
-                  {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
-                </button>
-              </AspectRatioImage>
-              <p className="font-medium">{prod.title}</p>
-            </div>
-            <Text className="text-xs text-grayText" maxLines={1}>
-              {prod.description}
-            </Text>
-            <HStack className="gap-1">
-              <StarIcon className="text-yellow-300" />
-              <p className="text-xs">
-                {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-              </p>
-            </HStack>
-            <div className="flex pt-4 sm:pt-2 justify-between w-full items-center sm:flex-col gap-8 sm:gap-4">
-              <PriceDisplay
-                price={prod.price}
-                decimel
-                className="font-semibold text-2xl sm:text-base"
-              />
-              <AddToCartProductButton
-                productId={prod.id}
-                className="sm:w-full"
-                colorScheme="darkbrown"
-                outline
-              />
-            </div>
-          </div>
-        ))}
+                <div className="flex flex-col gap-1">
+                  <AspectRatioImage
+                    className="rounded-xl"
+                    src={prod.thumbnail}
+                    alt={prod.title}
+                    ratio={0.85}
+                  >
+                    <button
+                      onClick={() => {
+                        // TODO: integrate
+                      }}
+                      className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
+                    >
+                      {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
+                    </button>
+                  </AspectRatioImage>
+                  <Text maxLines={2} className="font-medium">
+                    {prod.title}
+                  </Text>
+                </div>
+                <Text className="text-xs text-grayText" maxLines={1}>
+                  {prod.description}
+                </Text>
+                <HStack className="gap-1">
+                  <StarIcon className="text-yellow-300" />
+                  <p className="text-xs">
+                    {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+                  </p>
+                </HStack>
+                <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
+                  <PriceDisplay
+                    price={prod.price}
+                    decimel
+                    className="font-semibold text-2xl sm:text-base"
+                  />
+                  <AddToCartProductButton
+                    productId={prod.id}
+                    className="sm:w-full"
+                    colorScheme="darkbrown"
+                    outline
+                  />
+                </div>
+              </div>
+            ))}
       </div>
     </div>
   );
@@ -426,7 +450,7 @@ const TopCategoriesHomePageSlider: React.FC<{
         <div
           ref={ref}
           {...setTestid("productCategoriesContainer")}
-          className="flex items-center w-full overflow-y-scroll gap-4"
+          className="flex items-center w-full overflow-x-scroll noScroll gap-4"
         >
           {mapArray(data?.pages, (page, i) => (
             <React.Fragment key={i}>
@@ -438,7 +462,9 @@ const TopCategoriesHomePageSlider: React.FC<{
                     onCategorySelect(category.id);
                   }}
                   className={`${
-                    selectedCategoryId === category.id ? "bg-black" : "bg-white"
+                    selectedCategoryId === category.id
+                      ? "bg-black text-white"
+                      : "bg-white text-black"
                   } border border-back rounded-full py-1 px-2`}
                 >
                   {category.name}

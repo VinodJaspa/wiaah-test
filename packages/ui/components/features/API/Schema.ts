@@ -211,6 +211,7 @@ export type AdminDeleteServiceInput = {
 
 export type AdminGetAccountProductsInput = {
   accountId: Scalars["ID"]["input"];
+  condition?: InputMaybe<ProductCondition>;
   pagination: GqlPaginationInput;
   price?: InputMaybe<Scalars["Float"]["input"]>;
   productId?: InputMaybe<Scalars["ID"]["input"]>;
@@ -220,7 +221,6 @@ export type AdminGetAccountProductsInput = {
   title?: InputMaybe<Scalars["String"]["input"]>;
   type?: InputMaybe<ProductType>;
   updatedAt?: InputMaybe<Scalars["String"]["input"]>;
-  usageStatus?: InputMaybe<ProductUsageStatus>;
 };
 
 export type AdminGetBookingsInput = {
@@ -352,7 +352,7 @@ export type AdminGetUserReturnedOrdersInput = {
 
 export type AdminNewsfeedPost = {
   __typename?: "AdminNewsfeedPost";
-  affiliation: Affiliation;
+  affiliation?: Maybe<Affiliation>;
   affiliationId?: Maybe<Scalars["String"]["output"]>;
   attachments: Array<Scalars["String"]["output"]>;
   comments: Scalars["Int"]["output"];
@@ -360,22 +360,22 @@ export type AdminNewsfeedPost = {
   content: Scalars["String"]["output"];
   createdAt: Scalars["String"]["output"];
   enableComments: Scalars["Boolean"]["output"];
-  hashtags: Array<Hashtag>;
+  hashtags?: Maybe<Array<Hashtag>>;
   id: Scalars["ID"]["output"];
   isCommented: Scalars["Boolean"]["output"];
   isLiked: Scalars["Boolean"]["output"];
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
-  mentions: Array<PostMention>;
+  mentions?: Maybe<Array<PostMention>>;
   pinned: Scalars["Boolean"]["output"];
   productIds?: Maybe<Array<Scalars["String"]["output"]>>;
-  products: Array<Product>;
+  products?: Maybe<Array<Product>>;
   publisher?: Maybe<Profile>;
   reactionNum: Scalars["Int"]["output"];
-  service: Service;
+  service?: Maybe<Service>;
   serviceId?: Maybe<Scalars["String"]["output"]>;
   shares: Scalars["Int"]["output"];
-  tags: Array<PostTag>;
+  tags?: Maybe<Array<PostTag>>;
   thumbnail: Scalars["String"]["output"];
   title: Scalars["String"]["output"];
   type: PostType;
@@ -824,7 +824,7 @@ export type Category = {
   __typename?: "Category";
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
-  parantId: Scalars["ID"]["output"];
+  parantId?: Maybe<Scalars["ID"]["output"]>;
   sales: Scalars["Int"]["output"];
   sortOrder: Scalars["Int"]["output"];
   status: ProductCategoryStatus;
@@ -1632,10 +1632,8 @@ export enum FinancialAccountType {
 export type Follow = {
   __typename?: "Follow";
   followedAt: Scalars["DateTime"]["output"];
-  followerProfile?: Maybe<Profile>;
-  followerProfileId: Scalars["ID"]["output"];
-  followingProfile?: Maybe<Profile>;
-  followingProfileId: Scalars["ID"]["output"];
+  followerUserId: Scalars["ID"]["output"];
+  followingUserId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
 };
 
@@ -1882,6 +1880,7 @@ export type GetFilteredOrdersInput = {
 };
 
 export type GetFilteredProductsAdminInput = {
+  condition?: InputMaybe<ProductCondition>;
   pagination: GqlPaginationInput;
   price?: InputMaybe<Scalars["Float"]["input"]>;
   productId?: InputMaybe<Scalars["ID"]["input"]>;
@@ -1891,13 +1890,13 @@ export type GetFilteredProductsAdminInput = {
   title?: InputMaybe<Scalars["String"]["input"]>;
   type?: InputMaybe<ProductType>;
   updatedAt?: InputMaybe<Scalars["String"]["input"]>;
-  usageStatus?: InputMaybe<ProductUsageStatus>;
 };
 
 export type GetFilteredProductsInput = {
   brands?: InputMaybe<Array<Scalars["ID"]["input"]>>;
   categories?: InputMaybe<Array<Scalars["ID"]["input"]>>;
   colors?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  condition?: InputMaybe<ProductCondition>;
   inStock?: InputMaybe<Scalars["Boolean"]["input"]>;
   maxPrice?: InputMaybe<Scalars["Float"]["input"]>;
   minPrice?: InputMaybe<Scalars["Float"]["input"]>;
@@ -1905,7 +1904,6 @@ export type GetFilteredProductsInput = {
   ratings?: InputMaybe<Array<Scalars["Int"]["input"]>>;
   size?: InputMaybe<Array<Scalars["String"]["input"]>>;
   type?: InputMaybe<ProductType>;
-  usageStatus?: InputMaybe<ProductUsageStatus>;
 };
 
 export type GetFilteredRefundsInput = {
@@ -3566,7 +3564,7 @@ export type NewsfeedHashtagSearch = {
 
 export type NewsfeedPost = {
   __typename?: "NewsfeedPost";
-  affiliation: Affiliation;
+  affiliation?: Maybe<Affiliation>;
   affiliationId?: Maybe<Scalars["String"]["output"]>;
   attachments: Array<Scalars["String"]["output"]>;
   comments: Scalars["Int"]["output"];
@@ -3574,22 +3572,22 @@ export type NewsfeedPost = {
   content: Scalars["String"]["output"];
   createdAt: Scalars["String"]["output"];
   enableComments: Scalars["Boolean"]["output"];
-  hashtags: Array<Hashtag>;
+  hashtags?: Maybe<Array<Hashtag>>;
   id: Scalars["ID"]["output"];
   isCommented: Scalars["Boolean"]["output"];
   isLiked: Scalars["Boolean"]["output"];
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
-  mentions: Array<PostMention>;
+  mentions?: Maybe<Array<PostMention>>;
   pinned: Scalars["Boolean"]["output"];
   productIds?: Maybe<Array<Scalars["String"]["output"]>>;
-  products: Array<Product>;
+  products?: Maybe<Array<Product>>;
   publisher?: Maybe<Profile>;
   reactionNum: Scalars["Int"]["output"];
-  service: Service;
+  service?: Maybe<Service>;
   serviceId?: Maybe<Scalars["String"]["output"]>;
   shares: Scalars["Int"]["output"];
-  tags: Array<PostTag>;
+  tags?: Maybe<Array<PostTag>>;
   thumbnail: Scalars["String"]["output"];
   title: Scalars["String"]["output"];
   type: PostType;
@@ -3849,9 +3847,8 @@ export type Product = {
   totalOrdered: Scalars["Int"]["output"];
   unitsRefunded: Scalars["Int"]["output"];
   updatedAt: Scalars["String"]["output"];
-  usageStatus: ProductUsageStatus;
   vat: Scalars["Float"]["output"];
-  vendor_external_link: Scalars["String"]["output"];
+  vendor_external_link?: Maybe<Scalars["String"]["output"]>;
   visibility: VisibilityEnum;
 };
 
@@ -3883,6 +3880,7 @@ export type ProductAttributeValue = {
   __typename?: "ProductAttributeValue";
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
+  price?: Maybe<Scalars["Float"]["output"]>;
   value: Scalars["String"]["output"];
 };
 
@@ -4018,11 +4016,6 @@ export enum ProductStatus {
 export enum ProductType {
   Digital = "digital",
   Goods = "goods",
-}
-
-export enum ProductUsageStatus {
-  New = "new",
-  Used = "used",
 }
 
 export type ProductsCursorPaginationResponse = {
@@ -4331,6 +4324,7 @@ export type Query = {
   getProductAttributesByProductCategory: ProductAttribute;
   getProductById: Product;
   getProductCategories: Array<Category>;
+  getProductCategoryById?: Maybe<Category>;
   getProductRecommendation: ProductPaginationResponse;
   getProductsByIds: Array<Product>;
   getProductsFilters: Array<Filter>;
@@ -4925,6 +4919,10 @@ export type QueryGetProductAttributesByProductCategoryArgs = {
 export type QueryGetProductByIdArgs = {
   id: Scalars["String"]["input"];
   isClick: Scalars["Boolean"]["input"];
+};
+
+export type QueryGetProductCategoryByIdArgs = {
+  id: Scalars["String"]["input"];
 };
 
 export type QueryGetProductRecommendationArgs = {

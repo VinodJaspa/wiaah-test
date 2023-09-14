@@ -2,23 +2,16 @@ import { createGraphqlRequestClient } from "api";
 import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
 import {
-  Account,
-  AttachmentType,
   Exact,
-  Maybe,
   PresentationType,
-  Product,
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
-  ProductPresentation,
   ProductSize,
-  Profile,
-  Scalars,
 } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetProductDetailsQueryVariables = Exact<{
-  id: Scalars["ID"]["input"];
+  id: string;
 }>;
 
 export type GetProductDetailsQuery = {
@@ -26,13 +19,10 @@ export type GetProductDetailsQuery = {
   getProduct: {
     __typename?: "Product";
     id: string;
-    colors: Array<string>;
-    sizes: Array<ProductSize>;
     price: number;
     title: string;
     seller: {
       __typename?: "Account";
-      id: string;
       profile?: {
         __typename?: "Profile";
         username: string;
@@ -52,12 +42,15 @@ export type GetProductDetailsQuery = {
       selectionType: ProductAttributeSelectionType;
       values: Array<{
         __typename?: "ProductAttributeValue";
-        price: number;
+        id: string;
+        price?: number | null;
+        name: string;
         value: string;
       }>;
     }>;
   };
 };
+
 type args = GetProductDetailsQueryVariables;
 export const getProductQueryDetailsKey = (args: args) => [
   "product-details",
@@ -67,12 +60,10 @@ export const getProductQueryDetailsKey = (args: args) => [
 export const getProductqueryDetailsQueryFetcher = async (args: args) => {
   if (isDev) {
     const mockRes: GetProductDetailsQuery["getProduct"] = {
-      colors: ["red", "green", "orange", "lime", "blue", "sky"],
       id: "",
       presentations: [{ src: getRandomImage(), type: PresentationType.Image }],
       price: randomNum(150),
       seller: {
-        id: "13465",
         profile: {
           photo: getRandomImage(),
           username: getRandomName().firstName,
@@ -88,20 +79,17 @@ export const getProductqueryDetailsQueryFetcher = async (args: args) => {
             {
               price: 0,
               value: "#fff",
+              id: "",
+              name: "",
             },
             {
               price: 0,
               value: "#000",
+              id: "",
+              name: "",
             },
           ],
         },
-      ],
-      sizes: [
-        ProductSize.S,
-        ProductSize.M,
-        ProductSize.L,
-        ProductSize.Xl,
-        ProductSize.Xxl,
       ],
       title: "Midnight Elegance",
     };
@@ -113,31 +101,31 @@ export const getProductqueryDetailsQueryFetcher = async (args: args) => {
   const res = await client
     .setQuery(
       `
-query getProductDetails($id:ID!){
-  getProduct(id:$id){
+query getProductDetails($id: ID!) {
+  getProduct(id: $id) {
     id
-    seller{
-      profile{
+    seller {
+      profile {
         username
         verified
         photo
       }
     }
-    presentations{
+    presentations {
       src
       type
     }
-    attributes{
-        displayType
+    attributes {
+      displayType
+      name
+      selectionType
+      values {
+        id
+        price
         name
-        selectionType
-        values{
-            price
-            value
-        }
+        value
+      }
     }
-    colors
-    sizes
     price
     title
   }

@@ -104,7 +104,7 @@ model Service {
   presentations     ServicePresentation[]
   policies          ServiceTranslationPolicies[]
   payment_methods   ServicePaymentMethods[]
-  vat               Int
+  vat               Float
   suspensionReason  String?
   discountId        String?
   hashtags          String[]
@@ -582,8 +582,8 @@ type ServiceDayWorkingHours {
 }
 
 type PropertyMeasurements {
-  inFeet  Int
-  inMeter Int
+  inFeet  Float
+  inMeter Float
 }
 
 type ServiceDailyPrices {
