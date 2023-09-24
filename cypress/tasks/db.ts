@@ -36,6 +36,9 @@ export const db = {
         "ProductCategory"
       ) as Collection<ProductsCategory>;
     },
+    get shopProductCollection() {
+      return this.db.collection("Shop") as Collection<Shop>;
+    },
   },
   services: {
     db: mongodbTestClient.db("wiaah-services"),
@@ -115,3 +118,105 @@ interface Product {
 }
 
 interface Service {}
+
+interface Shop {
+  ownerId: string;
+  name: TranslationText[];
+  description: TranslationText[];
+  banner: string;
+  verified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  phone: string;
+  email: string;
+  thumbnail: string;
+  location: Location;
+  geoLocation: GeoLocation;
+  storeType: StoreType;
+  storeCategoryId?: string;
+  businessType: BusinessType;
+  storeFor: StoreFor[];
+  targetGenders: TargetGenders[];
+  vat?: VatSettings;
+  status: ShopStatus;
+  payment_methods: ShopPaymentMethods[];
+  type?: ServiceType;
+  videos: string[];
+  images: string[];
+  reviews: number;
+  rating: number;
+  hashtags: string[];
+  score: number;
+}
+
+interface GeoLocation {
+  type: GeoLocationType;
+  coordinates: number[];
+}
+
+type GeoLocationType = "Point";
+
+type TranslationText = {
+  langId: string;
+  value: string;
+};
+
+export enum StoreType {
+  Product = "product",
+  Service = "service",
+}
+
+export enum BusinessType {
+  Company = "company",
+  Individual = "individual",
+}
+
+export enum TargetGenders {
+  Male = "male",
+  Female = "female",
+}
+
+interface VatSettings {
+  VatID?: string;
+  location?: Location;
+}
+
+export enum ShopPaymentMethods {
+  CreditCard = "credit_card",
+  Visa = "visa",
+  Mastercard = "mastercard",
+  Check = "check",
+  Cash = "cash",
+}
+
+export enum ShopStatus {
+  InActive = "inActive",
+  Active = "active",
+  Suspended = "suspended",
+}
+
+interface Location {
+  countryCode: string;
+  country: string;
+  city: string;
+  state: string;
+  address: string;
+  address2?: string;
+  postalCode: string;
+}
+
+export enum ServiceType {
+  Hotel = "hotel",
+  HolidayRentals = "holiday_rentals",
+  Restaurant = "restaurant",
+  HealthCenter = "health_center",
+  BeautyCenter = "beauty_center",
+  Vehicle = "vehicle",
+}
+
+export enum StoreFor {
+  Men = "men",
+  Women = "women",
+  Children = "children",
+  Babies = "babies",
+}

@@ -108,6 +108,7 @@ model Service {
   suspensionReason  String?
   discountId        String?
   hashtags          String[]
+  isExternal        Boolean                      @default(false)
 
   // hotel
   includedServices  TranslationArrayText[]

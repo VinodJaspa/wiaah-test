@@ -210,8 +210,12 @@ export class CreateServiceInput {
   @Min(SERVICE_MIN_VAT_PERCENT)
   vat: number;
 
+  // uploaded image id
   @Field(() => GraphQLUpload)
   thumbnail: Upload;
+
+  @Field(() => Boolean)
+  isExternal: boolean;
 
   @Field(() => [String])
   hashtags: string[];

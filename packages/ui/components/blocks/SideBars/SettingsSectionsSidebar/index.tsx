@@ -8,7 +8,7 @@ import {
   Stack,
   TranslationText,
 } from "@partials";
-import { PassPropsToFnOrElem } from "utils";
+import { PassPropsToFnOrElem, setTestid } from "utils";
 import { useResponsive } from "@src/index";
 
 export interface SettingsSectionsSidebarProps {
@@ -143,6 +143,7 @@ export const SettingsSectionsSidebar: React.FC<
             return (
               <>
                 <div
+                  {...setTestid(`section-${panelUrl}`)}
                   key={panelUrl + i}
                   onClick={() => {
                     if (hasSub) {

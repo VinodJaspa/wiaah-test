@@ -3,7 +3,7 @@ import { HtmlDivProps, StepperStepType } from "types";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { BiCircle } from "react-icons/bi";
 import { TranslationText } from "@UI";
-import { runIfFn } from "utils";
+import { runIfFn, setTestid } from "utils";
 
 export interface CheckMarkStepperProps {
   steps: (StepperStepType | undefined)[];

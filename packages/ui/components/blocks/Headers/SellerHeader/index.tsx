@@ -1,4 +1,4 @@
-import React from "react";
+import React, { HTMLProps } from "react";
 import {
   Avatar,
   SearchInput,
@@ -44,6 +44,7 @@ export interface HeaderNavLink {
   link: {
     name: TranslationTextType;
     href: string;
+    props?: HtmlDivProps;
   };
   icon: React.ReactNode;
 }
@@ -147,7 +148,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <>
             {user ? (
               <AccountsProfileOptions>
-                <div className="flex flex-col justify-center">
+                <div
+                  {...setTestid("header_profile_icon")}
+                  className="flex flex-col justify-center"
+                >
                   <Avatar
                     className="text-2xl"
                     showBorder={false}
@@ -275,6 +279,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
           fallbackText: "Service Management",
         },
         href: getRouting((r) => r.visitServiceManagement()),
+        props: setTestid("header_settings_service"),
       },
       icon: () => <ServicesIcon />,
     },
@@ -316,10 +321,13 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
   return (
     <Menu>
       <MenuButton>{children}</MenuButton>
-      <MenuList origin="top right">
+      <MenuList {...setTestid("header_settings")} origin="top right">
         {links.length > 0
           ? links.map(({ icon, link }, i) => (
-              <MenuItem onClick={() => visit((r) => r.addPath(link.href))}>
+              <MenuItem
+                {...(link?.props || {})}
+                onClick={() => visit((r) => r.addPath(link.href))}
+              >
                 <HStack>
                   <span className="text-4xl">{runIfFn(icon, {})}</span>
                   <span className="capitalize">

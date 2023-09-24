@@ -32,6 +32,15 @@ export const sellerRoutes = {
   get login() {
     return this.base + "/auth/login";
   },
+  get serviceManagement() {
+    return this.base + "/management/service-management";
+  },
+};
+
+export const sharedAccountsAppTestIds = {
+  headerProfileIcon: "header_profile_icon",
+  headerSettings: "header_settings",
+  headerSettingsService: "header_settings_service",
 };
 
 export const marketplaceRoutes = {

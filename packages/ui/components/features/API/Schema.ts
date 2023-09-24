@@ -1325,6 +1325,7 @@ export type CreateServiceInput = {
   hashtags: Array<Scalars["String"]["input"]>;
   includedAmenities?: InputMaybe<Array<TranslationTextInput>>;
   ingredients?: InputMaybe<Array<TranslationTextArrayInput>>;
+  isExternal: Scalars["Boolean"]["input"];
   lugaggeCapacity?: InputMaybe<Scalars["Int"]["input"]>;
   maxSpeedInKm?: InputMaybe<Scalars["Int"]["input"]>;
   measurements?: InputMaybe<ServicePropertyMeasurementsInput>;
@@ -6822,6 +6823,7 @@ export type UpdateServiceInput = {
   id: Scalars["String"]["input"];
   includedAmenities?: InputMaybe<Array<TranslationTextInput>>;
   ingredients?: InputMaybe<Array<TranslationTextArrayInput>>;
+  isExternal?: InputMaybe<Scalars["Boolean"]["input"]>;
   lugaggeCapacity?: InputMaybe<Scalars["Int"]["input"]>;
   maxSpeedInKm?: InputMaybe<Scalars["Int"]["input"]>;
   measurements?: InputMaybe<ServicePropertyMeasurementsInput>;
