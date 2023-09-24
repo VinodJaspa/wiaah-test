@@ -57,8 +57,11 @@ export class PrismaGlobalModule {}
       },
       context({ req, res }) {
         const user = getUserFromRequest(req);
-        console.log({ user });
-        return { req, res, user };
+        const userIp =
+          req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+        console.log({ req, userIp });
+        return { req, res, user: { ...user, ip: userIp } };
       },
     }),
     WorkingScheduleModule,

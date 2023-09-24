@@ -48,7 +48,8 @@ import { client } from './main';
         formatError(error) {
           const exception = error?.extensions?.exception;
           const isSchemaValidationError =
-            error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED';
+            error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ||
+            error.extensions.code === 'BAD_USER_INPUT';
 
           const errorCodesValues = Object.values(PublicErrorCodes);
 

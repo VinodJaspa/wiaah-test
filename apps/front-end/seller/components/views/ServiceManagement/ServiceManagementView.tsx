@@ -69,7 +69,7 @@ const sections: SettingsSectionType[] = [
   {
     panelName: "My Service",
     panelIcon: RiServiceFill({}),
-    panelUrl: "",
+    panelUrl: "/my-services",
     panelComponent: <MyServicesSection />,
     subSections: [
       {

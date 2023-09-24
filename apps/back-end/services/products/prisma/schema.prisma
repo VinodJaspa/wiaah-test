@@ -75,6 +75,7 @@ model ProductAttribute {
 type ProductAttributeValue {
   id    String
   value String
+  price Float?
   name  TranslationText[]
 }
 

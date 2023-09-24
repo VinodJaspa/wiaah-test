@@ -25,6 +25,7 @@ import {
   TBody,
 } from "@UI";
 import { ServiceType } from "@features/API";
+import { setTestid } from "utils";
 export interface MyServicesListProps {}
 
 export const UserServicesList: React.FC<{ accountId: string }> = () => {
@@ -53,7 +54,11 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full">
-      <Button onClick={() => AddNewService()} className="self-end mr-4">
+      <Button
+        {...setTestid("add-new-service-btn")}
+        onClick={() => AddNewService()}
+        className="self-end mr-4"
+      >
         {t("Add new service")}
       </Button>
       <ScrollCursorPaginationWrapper controls={controls}>

@@ -809,6 +809,7 @@ input CreateServiceInput {
   cancelationPolicy: ServiceCancelationType
   vat: Float!
   thumbnail: Upload!
+  isExternal: Boolean!
   hashtags: [String!]!
   popularAmenities: [TranslationTextInput!]
   extras: [ServiceExtraInput!]
@@ -900,6 +901,7 @@ input UpdateServiceInput {
   cancelationPolicy: ServiceCancelationType
   vat: Float
   thumbnail: Upload
+  isExternal: Boolean
   hashtags: [String!]
   popularAmenities: [TranslationTextInput!]
   extras: [ServiceExtraInput!]

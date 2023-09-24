@@ -125,6 +125,9 @@ export class ProductAttributeValue {
   @Field(() => String)
   value: string;
 
+  @Field(() => Float, { nullable: true })
+  price?: number;
+
   @Field(() => String)
   name: string;
 }
@@ -139,8 +142,8 @@ export class Product {
   @Field(() => ID)
   sellerId: string;
 
-  @Field(() => String)
-  vendor_external_link: string;
+  @Field(() => String, { nullable: true })
+  vendor_external_link?: string;
 
   @Field(() => String, { nullable: true })
   todayProductClickId?: string;

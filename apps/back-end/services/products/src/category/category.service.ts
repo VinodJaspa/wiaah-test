@@ -40,6 +40,16 @@ export class CategoryService {
     return res.map((v) => this.formatCategory(v, langId));
   }
 
+  async getOneById(id: string, langId: string): Promise<Category | null> {
+    const cate = await this.prisma.productCategory.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return this.formatCategory(cate, langId);
+  }
+
   async createCategory(
     input: CreateCategoryInput,
     userId: string,

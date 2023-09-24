@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   StepperFormHandler,
@@ -7,7 +7,6 @@ import {
   SimpleTabs,
   SimpleTabHead,
   SimpleTabItemList,
-  FormTranslationWrapper,
   Input,
   Textarea,
   Select,
@@ -35,7 +34,13 @@ import { MyServicesCtx } from "./index";
 import { NewProductDiscountOptions } from "@sections/ShopManagement";
 import { SectionHeader } from "@sections";
 import { NewServiceSchemas } from "validation";
-import { WiaahLanguageCountries, mapArray, useForm } from "utils";
+import {
+  WiaahLangId,
+  WiaahLanguageCountries,
+  mapArray,
+  setTestid,
+  useForm,
+} from "utils";
 import { AnySchema } from "yup";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { useGetUserShopType } from "@features/Shop";
@@ -62,7 +67,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
     useContext(MyServicesCtx);
 
   const { t } = useTranslation();
-  const [lang, setLang] = React.useState<string>("en");
+  const [lang, setLang] = React.useState<WiaahLangId>(WiaahLangId.EN);
 
   const { mutate } = useCreateServiceMutation();
 
@@ -81,18 +86,19 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           <div className="flex-wrap flex gap-4 flex-col sm:flex-row justify-center sm:justify-start">
             <SimpleTabHead>
               {WiaahLanguageCountries.map(
-                ({ code, name }, i) =>
+                ({ code, name, langId }, i) =>
                   ({ selected, onClick }: any) =>
                     (
-                      <div
-                        onClick={onClick}
+                      <button
+                        {...setTestid(`lang-switch-${langId}`)}
+                        onClick={() => setLang(langId)}
                         className={`${
                           selected === i ? "border-primary" : "border-gray-300"
                         } flex cursor-pointer w-fit items-center gap-2 border-b-[1px] shadow p-2`}
                       >
                         <FlagIcon code={code} />
                         <span className="hidden sm:block">{name}</span>
-                      </div>
+                      </button>
                     )
               )}
             </SimpleTabHead>
@@ -101,15 +107,14 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
         </>
       </SimpleTabs>
       <div className=" pb-8">
-        <FormTranslationWrapper lang={lang} onLangChange={setLang}>
-          <NewServiceStepper
-            sellerId={user?.id || ""}
-            onFinish={(data) => mutate(data)}
-            isEdit={isEdit || false}
-            // TODO
-            data={{}}
-          />
-        </FormTranslationWrapper>
+        <NewServiceStepper
+          sellerId={user?.id || ""}
+          onFinish={(data) => mutate(data)}
+          isEdit={isEdit || false}
+          // TODO
+          data={{}}
+          lang={lang}
+        />
         <div className="w-full justify-between flex">
           <Button
             colorScheme="danger"
@@ -148,18 +153,19 @@ export const NewServiceStepper = React.forwardRef(
       data,
       sellerId,
       onFinish,
+      lang,
     }: {
       isEdit: boolean;
       data?: CreateServiceInput;
       onFinish?: (data: CreateServiceInput) => any;
       sellerId: string;
+      lang: WiaahLangId;
     },
     ref
   ) => {
     const { isMobile } = useResponsive();
     const { t } = useTranslation();
-
-    const [lang, setLang] = React.useState<string>("en");
+    const uploadImagesRef = useRef<HTMLInputElement>(null);
 
     const { data: shop } = useGetUserShopType({ userId: sellerId });
 
@@ -182,6 +188,7 @@ export const NewServiceStepper = React.forwardRef(
         thumbnail: "",
         vat: 0,
         hashtags: [],
+        isExternal: false,
       },
       {},
       { addLabel: true, addPlaceholder: true }
@@ -225,7 +232,10 @@ export const NewServiceStepper = React.forwardRef(
     const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
     return (
-      <div className="flex flex-col gap-4 h-full justify-between">
+      <div
+        {...setTestid("service-stepper")}
+        className="flex flex-col gap-4 h-full justify-between"
+      >
         <CheckMarkStepper
           currentStepIdx={step}
           onStepChange={(step) => goToStep(step)}
@@ -234,10 +244,19 @@ export const NewServiceStepper = React.forwardRef(
               key: "generalDetails",
               stepComponent: (
                 <div className="w-full flex flex-col gap-4">
-                  {isMobile}
                   <p className="text-lg font-semibold">{t("Upload Images")}</p>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/png, image/gif, image/jpeg"
+                    ref={uploadImagesRef}
+                    className="hidden"
+                    onChange={(event) => {}}
+                  />
                   <button
-                    onClick={() => {}}
+                    onClick={() => {
+                      uploadImagesRef.current?.click();
+                    }}
                     className="flex flex-col gap-4 items-center justify-center py-10 text-iconGray"
                   >
                     <UploadIcon className="text-5xl" />
@@ -250,6 +269,7 @@ export const NewServiceStepper = React.forwardRef(
                     {t("Name & Description")}
                   </span>
                   <Input
+                    {...setTestid("service-name-input")}
                     {...translationInputProps("name", lang)}
                     label={(() => {
                       switch (serviceType) {
@@ -277,12 +297,19 @@ export const NewServiceStepper = React.forwardRef(
                   />
                   <div>
                     <p className="font-medium">{t("Description")}</p>
-                    <Textarea {...translationInputProps("description", lang)} />
+                    <Textarea
+                      {...setTestid("service-description-input")}
+                      {...translationInputProps("description", lang)}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch {...switchInputProps("isExternal")} />
+                    <p>{t("Is external service ?")}</p>
                   </div>
                   <div>
                     <p className="font-medium">{t("Source site url")}</p>
                     <Input
-                      {...translationInputProps("description", lang)}
+                      {...translationInputProps("source", lang)}
                       placeholder={t("Source site url")}
                       label={undefined}
                     />

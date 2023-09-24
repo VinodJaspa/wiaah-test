@@ -25,6 +25,8 @@ export class AuthorizationDecodedUser {
   @IsEmail()
   email: string;
 
+  ip?: string;
+
   city: string;
   country: string;
   lat: number;

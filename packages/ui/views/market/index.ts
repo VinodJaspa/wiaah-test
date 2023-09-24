@@ -1,6 +1,6 @@
 export * from "./HomeView";
 export * from "./SearchView";
-export * from "./ProductView";
+// export * from "./ProductView";
 export * from "./Login";
 export * from "./SellerProfileStartupView";
 export * from "./BuyerProfileStartupView";

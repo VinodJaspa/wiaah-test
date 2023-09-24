@@ -8,8 +8,17 @@ import {
   ResolveField,
   Parent,
   Int,
+  Context,
+  GqlExecutionContext,
 } from '@nestjs/graphql';
-import { Inject, Ip, Logger, UseGuards } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Inject,
+  Ip,
+  Logger,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -84,11 +93,13 @@ export class ProductsResolver {
   async getProductRecommendation(
     @Args('pagination') pagination: GqlPaginationInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Ip() userIp: string,
+    @Context() ctx: ExecutionContext,
     @GetLang() langId: UserPreferedLang,
   ): Promise<ProductPaginationResponse> {
     const { page, skip, take, totalSearched } = ExtractPagination(pagination);
-    const userCountry = lookup(userIp).country;
+    const userIp = user.ip;
+    const userCountry = lookup(userIp);
+
     const products = await this.prisma.product.findMany({
       where: { status: 'active' },
       select: {
@@ -121,7 +132,7 @@ export class ProductsResolver {
     });
 
     let userCategoryStats: UserProductCategoryInteractions | undefined;
-    if (user) {
+    if (user && user.id === 'string') {
       userCategoryStats =
         await this.prisma.userProductCategoryInteractions.findUnique({
           where: {
@@ -149,7 +160,10 @@ export class ProductsResolver {
       }
 
       const productShop = shops.find((shop) => shop.ownerId === curr.sellerId);
-      if (productShop && productShop.location.countryCode === userCountry) {
+      if (
+        productShop &&
+        productShop.location.countryCode === userCountry.country
+      ) {
         score += this.shopCountryWeight;
       }
 
@@ -166,21 +180,25 @@ export class ProductsResolver {
       (first, second) => first.score - second.score,
     );
 
+    const targetIds = sortedProds
+      .slice(totalSearched, totalSearched + take)
+      .map((v) => v.productId);
     const prods = await this.prisma.product.findMany({
       where: {
         id: {
-          in: sortedProds
-            .slice(totalSearched, totalSearched + take)
-            .map((v) => v.productId),
+          in: targetIds,
         },
       },
     });
 
+    console.log({ prods, sortedProds, totalSearched, take, targetIds });
     return {
-      data: sortedProds
-        .map(({ productId }) => prods.find((prod) => prod.id === productId))
-        .filter((prod) => !!prod)
-        .map((prod) => this.productsService.formatProduct(prod, langId)),
+      data: prods.map((prod) =>
+        this.productsService.formatProduct(prod, langId),
+      ),
+      // sortedProds
+      //   .map(({ productId }) => prods.find((prod) => prod.id === productId))
+      //   .filter((prod) => !!prod)
       total: 0,
       hasMore: totalSearched < productScores.length,
     };
@@ -506,6 +524,7 @@ export class ProductsResolver {
     @Parent() prod: Product,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
+    if (!user?.id || !prod?.id) return false;
     const save = await this.prisma.savedProduct.findUnique({
       where: {
         productId_userId: {

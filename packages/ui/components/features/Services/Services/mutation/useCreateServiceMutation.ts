@@ -7,10 +7,10 @@ export type CreateServiceMutationVariables = Exact<{
   args: CreateServiceInput;
 }>;
 
-export type CreateServiceMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "createService"
->;
+export type CreateServiceMutation = {
+  __typename?: "Mutation";
+  createService: boolean;
+};
 
 export function useCreateServiceMutation<
   TVars extends { serviceType: ServicesType }

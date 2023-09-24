@@ -43,7 +43,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
-  const [opened, setOpen] = React.useState<boolean>(false);
+  const [opened, setOpen] = React.useState<boolean>(true);
   const { t } = useTranslation();
   const { visit } = useRouting();
   const flatedSections = flatenSections(sections);
