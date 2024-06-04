@@ -109,7 +109,12 @@ const AffiliationHistory: NextPage = () => {
                   <Td>
                     <Image src={product?.thumbnail || service?.thumbnail} />
                   </Td>
-                  <Td>{(product?.title || service?.title).slice(0, 15)}...</Td>
+                  {product?.title ||
+                    (service?.title && (
+                      <Td>
+                        {(product?.title || service?.title).slice(0, 15)}...
+                      </Td>
+                    ))}
                   <Td>
                     <Link
                       href={(r) =>
