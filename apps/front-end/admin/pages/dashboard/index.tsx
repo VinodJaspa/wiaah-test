@@ -102,7 +102,7 @@ const Dashboard: NextPage = () => {
             className="bg-indigo-200"
             amount={analyticsData?.generalAnalytics.totalBalance.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={analyticsData?.generalAnalytics.totalBalance.incress}
+            increase={analyticsData?.generalAnalytics.totalBalance.incress}
             percentage={
               analyticsData?.generalAnalytics.totalBalance.changePercent
             }
@@ -112,7 +112,7 @@ const Dashboard: NextPage = () => {
             className="bg-neutral-200"
             amount={analyticsData?.generalAnalytics.totalExpenses.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={analyticsData?.generalAnalytics.totalExpenses.incress}
+            increase={analyticsData?.generalAnalytics.totalExpenses.incress}
             percentage={
               analyticsData?.generalAnalytics.totalExpenses.changePercent
             }
@@ -122,7 +122,7 @@ const Dashboard: NextPage = () => {
             className="bg-orange-200"
             amount={analyticsData?.generalAnalytics.totalProfit.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={analyticsData?.generalAnalytics.totalProfit.incress}
+            increase={analyticsData?.generalAnalytics.totalProfit.incress}
             percentage={
               analyticsData?.generalAnalytics.totalProfit.changePercent
             }
