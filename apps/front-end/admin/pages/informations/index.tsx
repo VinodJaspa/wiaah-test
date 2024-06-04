@@ -24,10 +24,10 @@ export default () => {
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
 
-  const { form } = useForm<
-    Parameters<typeof useAdminGetSiteInformationsQuery>[0]
-  >({ pagination }, { pagination });
-  const { data: info } = useAdminGetSiteInformationsQuery(form);
+  const { form } = useForm<Parameters<typeof useAdminGetSiteInformationsQuery>>(
+    []
+  );
+  const { data: info } = useAdminGetSiteInformationsQuery();
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -61,32 +61,30 @@ export default () => {
             </Tr>
           </THead>
           <TBody>
-            {mapArray(info, ({ id, title, sortOrder }, i) => (
-              <Tr>
-                <Td className="w-[99%]">
-                  <div className="flex items-center gap-4 font-semibold">
-                    <Checkbox />
-                    <p>{title}</p>
-                  </div>
-                </Td>
-                <Td>{sortOrder}</Td>
-                <Td>
-                  <Button
-                    onClick={() =>
-                      visit((r) =>
-                        r
-                          .addPath(getCurrentPath({ noParams: true }))
-                          .addPath("form")
-                          .addPath(id)
-                      )
-                    }
-                    className="flex items-center justify-center  text-2xl h-12 w-12"
-                  >
-                    <EditIcon />
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
+            <Tr>
+              <Td className="w-[99%]">
+                <div className="flex items-center gap-4 font-semibold">
+                  <Checkbox />
+                  <p>{info.title}</p>
+                </div>
+              </Td>
+              <Td>{info.sortOrder}</Td>
+              <Td>
+                <Button
+                  onClick={() =>
+                    visit((r) =>
+                      r
+                        .addPath(getCurrentPath({ noParams: true }))
+                        .addPath("form")
+                        .addPath(info.id)
+                    )
+                  }
+                  className="flex items-center justify-center  text-2xl h-12 w-12"
+                >
+                  <EditIcon />
+                </Button>
+              </Td>
+            </Tr>
           </TBody>
         </Table>
         <ItemsPagination controls={controls} />
