@@ -30,28 +30,24 @@ const editBannedCountry = () => {
 
   const { mutate: ban } = useAdminBanSellersCitites();
   const { mutate: unban } = useAdminBanBuyersCitites();
-  const { data } = useAdminGetBannedCountryQuery(id, !isNew);
+  // get Banned Countries
+  const { data: bannedContry } = useAdminGetBannedCountryQuery(id, !isNew);
 
   const { form: countriesSearch } =
     useForm<Parameters<typeof useGetCountriesQuery>[0]>("");
+
   const { inputProps: cititesInputProps, form: cititesSearch } = useForm<
     Parameters<typeof useGetCountryCititesQuery>[0]
   >({ countryid: "", name: "" });
 
+  // Get Country based on name
   const { data: countries } = useGetCountriesQuery(countriesSearch);
-  const { data: citites } = useGetCountryCititesQuery(
-    cititesSearch,
-    cititesSearch.countryid && cititesSearch?.countryid?.length > 0
-  );
+  // Get all cities in a specific country based on countryid an name
+  const { data: cities } = useGetCountryCititesQuery(cititesSearch);
 
-  const { form, inputProps } = useForm<Parameters<typeof ban>[0]>(
-    {
-      citiesIds: data.cities.map((v) => v.cityId),
-    },
-    {
-      citiesIds: data.cities.map((v) => v.cityId),
-    }
-  );
+  const { form, inputProps } = useForm<Parameters<typeof ban>[0]>({
+    citiesIds: cities.map((v) => v.cityId),
+  });
 
   return (
     <section>
@@ -61,11 +57,11 @@ const editBannedCountry = () => {
         edit
         onBack={() => back()}
         onSave={() => {
-          const removed = data.cities.filter(
+          const removed = cities.filter(
             (v) => !form.citiesIds.includes(v.cityId)
           );
           const newCitites = form.citiesIds.filter(
-            (v) => !data.cities.map((v) => v.cityId).includes(v)
+            (v) => !cities.map((v) => v.cityId).includes(v)
           );
 
           if (removed && removed.length > 0) {
@@ -104,7 +100,7 @@ const editBannedCountry = () => {
             <MultiChooseInput
               placeholder={t("Select country to see its cities here")}
               {...inputProps("citiesIds")}
-              suggestions={citites.map((v) => ({
+              suggestions={cities.map((v) => ({
                 label: v.name,
                 value: v.id,
               }))}

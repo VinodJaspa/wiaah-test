@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetCountriesQueryVariables = Exact<{
-  name: Scalars["String"];
+  name: Scalars["String"]["input"];
 }>;
 
 export type GetCountriesQuery = { __typename?: "Query" } & {

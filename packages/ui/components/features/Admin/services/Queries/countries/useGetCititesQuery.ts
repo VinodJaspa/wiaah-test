@@ -8,7 +8,7 @@ export type GetCountryCititesQueryVariables = Exact<{
 
 export type GetCountryCititesQuery = { __typename?: "Query" } & {
   getCitites: Array<
-    { __typename?: "City" } & Pick<City, "code" | "id" | "name" | "countryId">
+    { __typename?: "City" } & Pick<City, "code" | "id" | "name" | "cityId">
   >;
 };
 

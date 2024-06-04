@@ -11,7 +11,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetBannedCountryQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminGetBannedCountryQuery = { __typename?: "Query" } & {
