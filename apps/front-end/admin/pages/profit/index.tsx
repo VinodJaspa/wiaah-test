@@ -26,12 +26,12 @@ const data: Profit[] = [...Array(5)].map((_, i) => ({
 
 const Profit = () => {
   const { t } = useTranslation();
-  const { pagination } = usePaginationControls();
+  const { pagination, controls } = usePaginationControls();
 
   return (
     <section>
       <AdminListTable
-        pagination={pagination}
+        pagination={controls}
         title={t("Profit")}
         headers={[
           {
