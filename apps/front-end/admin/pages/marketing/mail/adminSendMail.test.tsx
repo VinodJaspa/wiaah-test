@@ -49,7 +49,7 @@ describe("adminSendMailView tests", () => {
 
     options.forEach((e) => {
       expect(
-        Object.values(MailUserType).includes(e.prop("value") as string)
+        Object.values(MailUserType).includes(e.prop("value") as MailUserType)
       ).toBe(true);
     });
 
