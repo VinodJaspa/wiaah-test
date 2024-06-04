@@ -8,10 +8,11 @@ import {
   InputLeftElement,
   ListIcon,
   SaveIcon,
-  SearchFilterInput,
   Select,
   SelectOption,
   useMediaUploadControls,
+  SearchFilterInput,
+  useCursorScrollPagination,
 } from "ui";
 import React from "react";
 import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
@@ -25,6 +26,8 @@ const editCollab = () => {
   const id = getParam("id");
 
   const isNew = !id;
+
+  const { controls } = useCursorScrollPagination({ take: 10 });
 
   return (
     <section>
@@ -68,7 +71,11 @@ const editCollab = () => {
             </div>
           </div>
           <div className="p-4 flex flex-col gap-4 w-full">
-            <SearchFilterInput placeholder={t("Select Shop")} value="" />
+            <SearchFilterInput
+              controls={controls}
+              placeholder={t("Select Shop")}
+              value=""
+            />
             <Input flushed placeholder={"Owner name"} />
             <Input flushed placeholder={"Link"} />
             <Select className="w-full">
