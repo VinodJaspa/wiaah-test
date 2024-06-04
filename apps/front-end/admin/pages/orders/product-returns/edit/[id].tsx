@@ -167,10 +167,10 @@ const ProductReturnsEdit: NextPage = () => {
             </div>
             <div className="flex col-span-3 w-full justify-end">
               <Select value={data?.status} className="w-full">
-                <SelectOption value={RefundStatusType.Reject}>
+                <SelectOption value={RefundStatusType.Rejected}>
                   {t("Refused")}
                 </SelectOption>
-                <SelectOption value={RefundStatusType.Accept}>
+                <SelectOption value={RefundStatusType.Accepted}>
                   {t("Refunded")}
                 </SelectOption>
                 <SelectOption value={RefundStatusType.Pending}>
