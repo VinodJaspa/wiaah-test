@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type AdminCloseRefundMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type AdminCloseRefundMutation = { __typename?: "Mutation" } & Pick<

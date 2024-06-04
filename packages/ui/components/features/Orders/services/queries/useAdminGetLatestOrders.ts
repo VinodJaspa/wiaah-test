@@ -12,7 +12,7 @@ import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 
 export type GetLatestOrdersQueryVariables = Exact<{
-  take?: Maybe<Scalars["Int"]>;
+  take?: Maybe<Scalars["Int"]["input"]>;
 }>;
 
 export type GetLatestOrdersQuery = { __typename?: "Query" } & {

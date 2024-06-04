@@ -4,7 +4,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetRecentsalesQueryVariables = Exact<{
-  take?: Maybe<Scalars["Int"]>;
+  take?: Maybe<Scalars["Int"]["input"]>;
 }>;
 
 export type GetRecentsalesQuery = { __typename?: "Query" } & {

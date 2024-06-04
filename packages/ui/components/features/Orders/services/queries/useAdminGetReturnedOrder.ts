@@ -16,7 +16,7 @@ import { useQuery } from "react-query";
 import { isDev } from "utils";
 
 export type GetAdminRefundRequestQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type GetAdminRefundRequestQuery = { __typename?: "Query" } & {
@@ -123,7 +123,7 @@ query getAdminRefundRequest($id:String!){
       id: "test",
       orderItemId: "test",
       reason: "mock refund reason for product refund request",
-      status: RefundStatusType.Reject,
+      status: RefundStatusType.Rejected,
       orderItem: {
         qty: 4,
         seller: {

@@ -4,13 +4,13 @@ import {
   Maybe,
   Profile,
   Scalars,
-  ServiceDetails,
+  Service,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetSellerQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type AdminGetSellerQuery = { __typename?: "Query" } & {
@@ -24,8 +24,8 @@ export type AdminGetSellerQuery = { __typename?: "Query" } & {
     | "createdAt"
   > & {
       profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "bio">>;
-      service: { __typename?: "ServiceDetails" } & Pick<
-        ServiceDetails,
+      service: { __typename?: "Service" } & Pick<
+        Service,
         "id" | "type"
       >;
     };
