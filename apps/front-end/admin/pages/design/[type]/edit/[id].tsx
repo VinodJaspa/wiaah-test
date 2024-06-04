@@ -30,6 +30,22 @@ interface Slideshowitem {
   id: string;
 }
 
+const FAKE_SLIDES: Slideshowitem[] = [
+  {
+    title: "Slide 1",
+    link: "https://example.com/slide1.jpg",
+    sortOrder: 1,
+    id: "1",
+  },
+  {
+    title: "Slide 2",
+    link: "https://example.com/slide2.jpg",
+    sortOrder: 2,
+    id: "2",
+  },
+  // Add more slide items as needed
+];
+
 const EditSlideShowPage: NextPage = () => {
   const { t } = useTranslation();
 
@@ -128,7 +144,7 @@ const EditSlideShowPage: NextPage = () => {
                     </Tr>
                   </THead>
                   <TBody>
-                    {mapArray(Slides, ({ id, link, sortOrder, title }) => (
+                    {mapArray(FAKE_SLIDES, ({ id, link, sortOrder, title }) => (
                       <Tr>
                         <Td>
                           <Image src={link} />
