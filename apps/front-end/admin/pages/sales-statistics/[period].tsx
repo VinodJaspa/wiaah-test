@@ -64,7 +64,11 @@ const SalesStatistics: NextPage = () => {
               <div className="flex gap-1 items-center ">
                 <BiFolder />
                 <p>{t("Export to")}</p>
-                <SearchFilterInput value="" flushed />
+                <SearchFilterInput
+                  controls={{ hasMore: true, next: () => {} }}
+                  value=""
+                  flushed
+                />
               </div>
               <Button className="flex items-center gap-1">
                 <BiCloudDownload />
