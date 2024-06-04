@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { WiaahLangId, WiaahLanguageCountries, mapArray, useForm } from "utils";
 
-const form = () => {
+const ProductShopAttributeForm = () => {
   const { t } = useTranslation();
   const { back, getQuery } = useRouting();
   const { id } = getQuery();
@@ -143,60 +143,64 @@ const form = () => {
                 <Th>{t("action")}</Th>
               </Tr>
               <TBody>
-                {mapArray(form?.values, (value, i) => (
-                  <Tr>
-                    <Td>
-                      <Input />
-                    </Td>
-                    <Td>
-                      {form?.displayType ===
-                      ProductAttributeDisplayType.Color ? (
-                        <input
-                          className="w-full h-12 rounded-3xl"
-                          type="color"
-                        />
-                      ) : (
+                <div>
+                  {mapArray(updateForm?.values, (value, i) => (
+                    <Tr>
+                      <Td>
                         <Input />
-                      )}
-                    </Td>
+                      </Td>
+                      <Td>
+                        {form?.displayType ===
+                        ProductAttributeDisplayType.Color ? (
+                          <input
+                            className="w-full h-12 rounded-3xl"
+                            type="color"
+                          />
+                        ) : (
+                          <Input />
+                        )}
+                      </Td>
+                      <Td>
+                        <HStack className="justify-center">
+                          <Button
+                            colorScheme="danger"
+                            className="p-2"
+                            onClick={() =>
+                              handleChange(
+                                "values",
+                                createForm?.values?.filter(
+                                  (v) => v.id === value.id
+                                )
+                              )
+                            }
+                            center
+                          >
+                            <TrashIcon className="text-xl" />
+                          </Button>
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  ))}
+                  <Tr>
+                    <Td colSpan={2}></Td>
                     <Td>
                       <HStack className="justify-center">
                         <Button
-                          colorScheme="danger"
+                          center
                           className="p-2"
                           onClick={() =>
-                            handleChange(
-                              "values",
-                              form?.values?.filter((v) => v.id === value.id)
-                            )
+                            handleChange("values", [
+                              ...createForm?.values,
+                              { name: [], value: "", id: "" },
+                            ])
                           }
-                          center
                         >
-                          <TrashIcon className="text-xl" />
+                          <PlusIcon className="text-xl" />
                         </Button>
                       </HStack>
                     </Td>
                   </Tr>
-                ))}
-                <Tr>
-                  <Td colSpan={2}></Td>
-                  <Td>
-                    <HStack className="justify-center">
-                      <Button
-                        center
-                        className="p-2"
-                        onClick={() =>
-                          handleChange("values", [
-                            ...(form?.values || []),
-                            { name: [], value: "" },
-                          ])
-                        }
-                      >
-                        <PlusIcon className="text-xl" />
-                      </Button>
-                    </HStack>
-                  </Td>
-                </Tr>
+                </div>
               </TBody>
             </Table>
           </div>
@@ -206,4 +210,4 @@ const form = () => {
   );
 };
 
-export default form;
+export default ProductShopAttributeForm;
