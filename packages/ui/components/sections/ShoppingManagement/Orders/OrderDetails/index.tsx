@@ -42,10 +42,13 @@ import { useModalDisclouser } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
 import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
-
-export const OrderDetailsSection: React.FC<{}> = () => {
+import { OrderStatusEnum } from "@features/API";
+// orders is in any type because there is no order type yet
+export const OrderDetailsSection = ({ order }: { order: any }) => {
   const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
+
+  const OrderStatusArray: string[] = Object.values(OrderStatusEnum);
 
   return (
     <div className="flex flex-col gap-4">
@@ -77,9 +80,9 @@ export const OrderDetailsSection: React.FC<{}> = () => {
                   placeholder={t("Status")}
                   name="status"
                 >
-                  {statusOptions.map((opt, i) => (
-                    <SelectOption value={opt.value}>
-                      <TranslationText translationObject={opt.name} />
+                  {OrderStatusArray.map((opt, i) => (
+                    <SelectOption value={opt}>
+                      <TranslationText translationObject={opt} />
                     </SelectOption>
                   ))}
                 </FormikInput>
@@ -187,7 +190,8 @@ export const OrderDetailsSection: React.FC<{}> = () => {
             <Th>{shopping ? t("Cancelation") : t("Edit")}</Th>
           </Tr>
           <TBody>
-            {order.products.map((prod, i) => (
+            {/* This is any because there is not products type yet */}
+            {order.products.map((prod: any, i: number) => (
               <Tr key={i}>
                 <Td className="pl-0">
                   <img

@@ -27,6 +27,7 @@ const EditOrder = () => {
 
   return (
     <section className="flex flex-col gap-4 w-full">
+      {/* It is fake data  */}
       <OrderDetailsSection
         order={{
           customer: "customer",
@@ -39,7 +40,6 @@ const EditOrder = () => {
             amount: randomNum(5000),
             currency: "USD",
           },
-
           products,
         }}
       />
