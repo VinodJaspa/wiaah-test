@@ -8,7 +8,7 @@ import React from "react";
 export const AccountWishlist: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { data } = useAdminGetUserWishlist(accountId);
+  const { data: wishedItem } = useAdminGetUserWishlist(accountId);
   const { mutate } = useAdminDeleteUserWishlistItem();
 
   return (
@@ -17,7 +17,7 @@ export const AccountWishlist: React.FC<{
       onDelete={(id) => {
         mutate(id);
       }}
-      items={data}
+      items={wishedItem}
     />
   );
 };

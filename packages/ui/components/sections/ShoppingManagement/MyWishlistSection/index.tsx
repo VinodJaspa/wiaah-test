@@ -126,7 +126,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
         <>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <WishlistTable
-              items={data?.wishedItems || []}
+              items={data || []}
               onAdd={(id) => handleAddItemToCart(id)}
               onDelete={(id) => handleItemDelete(id)}
               DeletingId={deleteIsLoading ? variables?.itemId : undefined}
