@@ -31,7 +31,6 @@ export const AccountProductManagement: React.FC<{
     <>
       <ProductDetailsTable
         filters={(v: any) => setValue(v)}
-        onFiltersChange={() => {}}
         products={data || []}
         onDelete={(id) => deleteProd(id)}
       />
