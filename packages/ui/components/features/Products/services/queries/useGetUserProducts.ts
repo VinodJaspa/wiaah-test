@@ -25,17 +25,17 @@ export type GetUserProductsQuery = { __typename?: "Query" } & {
     ProductsCursorPaginationResponse,
     "cursor" | "hasMore" | "nextCursor"
   > & {
-      data: Array<
-        Pick<Product, "id" | "price" | "title" | "description"> & {
-          presentations: Array<
-            { __typename?: "ProductPresentation" } & Pick<
-              ProductPresentation,
-              "src" | "type"
-            >
-          >;
-        }
-      >;
-    };
+    data: Array<
+      Pick<Product, "id" | "price" | "title" | "description"> & {
+        presentations: Array<
+          { __typename?: "ProductPresentation" } & Pick<
+            ProductPresentation,
+            "src" | "type"
+          >
+        >;
+      }
+    >;
+  };
 };
 
 type args = GetUserProductsQueryVariables["args"];
@@ -113,5 +113,4 @@ export const useGetUserProducts = (
         ...args,
         idCursor: pageArgs.pageParam,
       }),
-    options
   );

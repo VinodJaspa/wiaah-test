@@ -21,7 +21,7 @@ export type AdminGetProfileQuery = { __typename?: "Query" } & {
     | "profession"
     | "coverPhoto"
   > & {
-      user?: Maybe<{ __typename?: "Account" } & Pick<Account, "type" | "id">>;
+      user?: Maybe<{ __typename?: "Account" } & Pick<Account, "accountType" | "id">>;
     };
 };
 

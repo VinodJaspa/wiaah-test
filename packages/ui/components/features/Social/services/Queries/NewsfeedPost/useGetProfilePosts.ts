@@ -10,6 +10,7 @@ import {
   PostLocation,
   PostMention,
   PostTag,
+  PostType,
   Profile,
 } from "@features/API";
 import { getRandomImage } from "@UI/placeholder";
@@ -29,6 +30,11 @@ export type GetProfilePostsQuery = { __typename?: "Query" } & {
       | "comments"
       | "title"
       | "userId"
+      | "mediaType"
+      | "thumbnail"
+      | "views"
+      |"likes"
+      | "createdAt"
     > & {
         attachments: Array<
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
@@ -95,6 +101,11 @@ export const useGetProfilePosts = (args: GetNewsfeedPostsByUserIdInput) => {
                 }
                 title
                 userId
+                mediaType 
+                thumbnail
+                views
+                likes
+                createdAt
             }
         }
     `);
@@ -113,6 +124,10 @@ export const useGetProfilePosts = (args: GetNewsfeedPostsByUserIdInput) => {
       createdAt: new Date().toString(),
       listTitle: "Most liked post",
       reactionNum: 26,
+      thumbnail:"image.jpg",
+      views:7,
+      likes:13,
+      type:PostType.NewsfeedPost,
       publisher: {
         id: "",
         ownerId: "",

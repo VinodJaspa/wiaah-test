@@ -7,6 +7,12 @@ import { GqlResponse } from "@UI/../types/src";
 import { isDev } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 
+export type GetFilteredHotelRoomsQuery = { __typename?: "Query" } & {
+  getSellerProductsDetails: { __typename?: "Products" } & Array<
+    HotelRoom
+  >;
+};
+
 export const useGetFilteredHotelRoomsQuery = (
   filters: SearchHotelRoomLocationInput
 ) => {
@@ -74,12 +80,12 @@ export const useGetFilteredHotelRoomsQuery = (
 
     `);
 
-  client.setVariables({ args: filters });
+  client.setVariables({ args: filters })
+    .send<GetFilteredHotelRoomsQuery>();
 
   return useQuery(
     ["hotel-rooms", filters],
     async () =>
-      (await client.send<GqlResponse<HotelRoom[], "searchHotelRooms">>()).data
-        .searchHotelRooms
+      (await client.send<GqlResponse<HotelRoom[], "searchHotelRooms">>()).data.data.searchHotelRooms
   );
 };
