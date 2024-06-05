@@ -1,4 +1,6 @@
 import { DateFormInput, SocialProfile, usePaginationControls } from "@blocks";
+import { PostType, StoryType } from "@features/API";
+import { StoreType } from "@features/API/gql/generated";
 import {
   Badge,
   Input,
@@ -12,7 +14,8 @@ import {
   Tr,
   TrashIcon,
 } from "@partials";
-import { useAdminGetProfileQuery } from "@UI";
+import Image from "next/image";
+import { useGetProfilePosts } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsKey } from "react-icons/bs";
@@ -23,41 +26,31 @@ export const AccountSocialInfo: React.FC<{
 }> = ({ accountId }) => {
   const { t } = useTranslation();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
-  const {} = useForm<>();
-  const {} = useAdminGetProfileQuery(accountId);
+  const { data: posts } = useGetProfilePosts({
+    userId: accountId,
+    type: PostType.NewsfeedPost,
+    pagination: { page: 1, take: 5 },
+  });
 
   return (
     <div>
       <SocialProfile
         profileInfo={{
-          accountType: "seller",
-          userId: "1325",
           id: "1230",
-          name: "Jane Daniel",
-          public: true,
-          thumbnail: "/shop-2.jpeg",
+          username: "Jane Daniel",
+          publications: 5,
+          photo: "/shop-2.jpeg",
           verified: true,
           bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend diam cras eu felis egestas aliquam. Amet ornare",
-          isFollowed: false,
-          links: ["this is a test link"],
-          location: {
-            address: "address",
-            city: "city",
-            cords: {
-              lat: 32,
-              lng: 23,
-            },
-            country: "country",
-            countryCode: "CH",
-            postalCode: 1234,
-            state: "Geneve",
-          },
-          profileCoverPhoto: "/shop-2.jpeg",
-          publications: 156,
-          subscribers: 135,
-          subscriptions: 14,
-          profession: "Agent",
+          followers: 4,
+          following: 10,
+          profession: "programmer",
+          ownerId: "jkl",
+          shopId: "jkldi",
         }}
+        isFollowed={false}
+        isPublic={true}
+        storeType={StoreType.Product}
       />
       <TableContainer>
         <Table className="w-full">
@@ -103,20 +96,24 @@ export const AccountSocialInfo: React.FC<{
             {mapArray(posts, (data, i) => (
               <Tr key={i}>
                 <Td className="w-fit">
-                  {data.type === "video" ? (
+                  {data.mediaType === "video" ? (
                     <></>
                   ) : (
-                    <Image className="w-32" src={data.thumbnail} />
+                    <Image
+                      className="w-32"
+                      src={data.thumbnail}
+                      alt="thumbnail"
+                    />
                   )}
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>
                 <Td className="w-[30%]">
                   <div className="flex flex-col gap-4">
-                    <p>{data.description.slice(0, 80)}...</p>
+                    <p>{data.content.slice(0, 80)}...</p>
                     <div className="flex flex-wrap gap-2">
-                      {data.hashtags.map((tag, i) => (
+                      {data.hashtags.map((hashtag, i) => (
                         <Badge variant="off" key={i}>
-                          #{tag}
+                          #{hashtag.tag}
                         </Badge>
                       ))}
                     </div>
