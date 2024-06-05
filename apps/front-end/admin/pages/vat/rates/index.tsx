@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 
-const taxRates: NextPage = () => {
+const TaxRates: NextPage = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
   const { controls, pagination } = usePaginationControls();
@@ -71,6 +71,7 @@ const taxRates: NextPage = () => {
               type: AdminTableCellTypeEnum.action,
               actionBtns: [
                 <Button
+                  key={v.id}
                   onClick={() =>
                     visit((r) =>
                       r.addPath(getCurrentPath()).addPath("form").addPath(v.id)
@@ -90,4 +91,4 @@ const taxRates: NextPage = () => {
   );
 };
 
-export default taxRates;
+export default TaxRates;

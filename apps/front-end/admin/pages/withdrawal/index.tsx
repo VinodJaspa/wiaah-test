@@ -17,7 +17,7 @@ import { startCase } from "lodash";
 import { ImCheckmark } from "react-icons/im";
 import { AccountType, WithdrawalStatus } from "@features/API";
 
-const withdrawal: NextPage = () => {
+const Withdrawal: NextPage = () => {
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
@@ -57,7 +57,7 @@ const withdrawal: NextPage = () => {
               },
               {
                 type: AdminTableCellTypeEnum.text,
-                value: user?.type,
+                value: user?.accountType,
               },
               {
                 type: AdminTableCellTypeEnum.text,
@@ -92,6 +92,7 @@ const withdrawal: NextPage = () => {
                   status === "pending"
                     ? [
                         <Button
+                          key={id}
                           {...setTestid("withdrawal-accept-btn")}
                           onClick={() => mutate(id)}
                           center
@@ -180,4 +181,4 @@ const withdrawal: NextPage = () => {
   );
 };
 
-export default withdrawal;
+export default Withdrawal;

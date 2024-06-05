@@ -81,6 +81,7 @@ const SubscriptionPlans: NextPage = () => {
               props: { align: "right" },
               actionBtns: [
                 <Button
+                  key={v.id}
                   onClick={() =>
                     visit((r) =>
                       r.addPath(getCurrentPath()).addPath("form").addPath(v.id)

@@ -482,9 +482,9 @@ export const AccountStatistics: React.FC<{
           <p className="font-bold text-xl">{t("Popular Stories Views")}</p>
           <HStack className="h-12">
             {weekDays.map((v, i) => (
-              <Button className="text-xs " colorScheme="white">
+              <Button key={i} className="text-xs " colorScheme="white">
                 {new Date(
-                  new Date().setDate(new Date().getDate() - v)
+                  new Date().setDate(new Date().getDate())
                 ).toLocaleDateString("en-us", {
                   weekday: "long",
                 })}
@@ -572,7 +572,7 @@ export const AccountStatistics: React.FC<{
           </div>
           <div className="col-span-2 border-r row-span-3 pt-4 flex flex-col gap-4">
             {countries.map((v, i) => (
-              <div className="flex gap-6 items-center">
+              <div key={i} className="flex gap-6 items-center">
                 <p className="font-bold">
                   {(i + 1).toLocaleString("en-us", { minimumIntegerDigits: 2 })}
                 </p>
@@ -593,7 +593,7 @@ export const AccountStatistics: React.FC<{
             <div></div>
             <div className="flex flex-col pt-4 gap-4">
               {countries.map((v, i) => (
-                <p className="font-semibold">
+                <p key={i} className="font-semibold">
                   {Intl.NumberFormat("en-us", {
                     compactDisplay: "long",
                   }).format(v.visits)}
@@ -604,7 +604,9 @@ export const AccountStatistics: React.FC<{
           <div className="col-span-7 row-span-3 border-l pt-4 grid grid-cols-6">
             <div className="col-span-2 flex flex-col items-center gap-4">
               {countriesPercentage.map((v, i) => (
-                <p className="font-semibold">{(v.visits * 100).toFixed(2)}%</p>
+                <p key={i} className="font-semibold">
+                  {(v.visits * 100).toFixed(2)}%
+                </p>
               ))}
             </div>
             <div
@@ -663,7 +665,11 @@ export const AccountStatistics: React.FC<{
             {mapArray(posts, (v, i) => (
               <Tr>
                 <Td>
-                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
+                  <Image
+                    className="w-20 h-12 object-cover"
+                    src={v.thumbnail}
+                    alt="thumbnail"
+                  />
                 </Td>
                 <Td>
                   {new Date(v.date).toLocaleDateString("en-us", {

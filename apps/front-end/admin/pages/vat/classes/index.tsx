@@ -16,7 +16,7 @@ const classes = [
   },
 ];
 
-const taxClasses: NextPage = () => {
+const TaxClasses: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
@@ -37,6 +37,7 @@ const taxClasses: NextPage = () => {
             type: AdminTableCellTypeEnum.action,
             actionBtns: [
               <Button
+                key={v.id}
                 onClick={() =>
                   visit((r) =>
                     r.addPath(getCurrentPath()).addPath("form").addPath(v.id)
@@ -71,4 +72,4 @@ const taxClasses: NextPage = () => {
   );
 };
 
-export default taxClasses;
+export default TaxClasses;
