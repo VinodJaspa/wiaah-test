@@ -17,6 +17,9 @@ import {
   ProductDetailsTable,
   HotelsSearchList,
   useAdminGetSellerAccountDetailsQuery,
+  useGetUserProducts,
+  useGetSellerProductsDetails,
+  useGetFilteredHotelRoomsQuery,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -38,13 +41,19 @@ const SellerInfo = () => {
   const id = getParam("id");
 
   const { data: seller } = useAdminGetSellerAccountDetailsQuery(id);
+  // const { data: products } = useGetUserProducts({ sellerId: id, take: 2 });
+  const { data: products } = useGetSellerProductsDetails({ sellerId: id });
 
   const isService = true;
 
   const productsTitle = isService ? "Services" : "Products";
 
   const productComp = !isService ? (
-    <ProductDetailsTable />
+    <ProductDetailsTable
+      products={products}
+      onDelete={(id: string) => {}}
+      filters={"title"}
+    />
   ) : (
     <HotelsSearchList />
   );
