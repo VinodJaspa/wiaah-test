@@ -1,9 +1,9 @@
-import { Exact, Product, Scalars, Service, WishedItem } from "@features/API";
+import { Exact, Product, Scalars, Service, WishedItem,  } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetUserWishlistQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminGetUserWishlistQuery = { __typename?: "Query" } & {
@@ -18,7 +18,7 @@ export type AdminGetUserWishlistQuery = { __typename?: "Query" } & {
         >;
         service: { __typename?: "Service" } & Pick<
           Service,
-          "id" | "thumbnail" | "title" | "price"
+          "id" | "thumbnail" | "title" | "price" | "name"
         >;
       }
   >;
@@ -34,6 +34,13 @@ export const useAdminGetUserWishlist = (args: args) =>
     id
     itemId
     userId
+    service{
+      id
+      thumbnail
+      title
+      price
+      name
+    }
     product{
       id
       thumbnail

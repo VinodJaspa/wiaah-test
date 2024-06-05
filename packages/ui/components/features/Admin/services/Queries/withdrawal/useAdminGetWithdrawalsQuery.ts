@@ -20,7 +20,7 @@ export type AdminGetWithdrawalsQuery = { __typename?: "Query" } & {
       WithdrawalRequest,
       "amount" | "id" | "processedAt" | "status" | "userId" | "requestedAt"
     > & {
-        user: { __typename?: "Account" } & Pick<Account, "email" | "type"> & {
+        user: { __typename?: "Account" } & Pick<Account, "email" | "accountType"> & {
             shop: { __typename?: "Shop" } & Pick<Shop, "name">;
             profile?: Maybe<
               { __typename?: "Profile" } & Pick<Profile, "username">

@@ -7,6 +7,7 @@ import {
   Maybe,
   Membership,
   Profile,
+  SellerSalesStat,
 } from "@features/API";
 import { Exact } from "types";
 import { useQuery } from "react-query";
@@ -42,6 +43,9 @@ export type GetFilteredSellersQuery = { __typename?: "Query" } & {
           Balance,
           "withdrawableBalance"
         >;
+      }
+      & {
+        sellerSalesStats: Maybe<{__typename:"SellerSalesStat"} & Pick<SellerSalesStat, "sales">>
       }
   >;
 };

@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type AcceptSellerRequestMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["ID"]["input"];
 }>;
 
 export type AcceptSellerRequestMutation = { __typename?: "Mutation" } & Pick<

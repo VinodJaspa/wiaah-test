@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type AdminSuspenseHashtagMutationVariables = Exact<{
-  tag: Scalars["String"];
+  tag: Scalars["String"]["input"];
 }>;
 
 export type AdminSuspenseHashtagMutation = { __typename?: "Mutation" } & {

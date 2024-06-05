@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { Exact, Mutation, Scalars } from "@features/API";
 
 export type MarkReportedContentCleanMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type MarkReportedContentCleanMutation = {
