@@ -1,3 +1,5 @@
+import { ServiceCategoryFilterInput } from "./gql/generated";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -12,12 +14,12 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 export type MakeEmpty<
   T extends { [key: string]: unknown },
   K extends keyof T
-> = { [_ in K]?: never };
+  > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
   | {
-      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
-    };
+    [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+  };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string };
@@ -890,6 +892,7 @@ export type City = {
   countryId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
+  cityId: Scalars["ID"]["input"];
 };
 
 export type Comment = {
@@ -1345,6 +1348,7 @@ export type CreateServiceInput = {
   thumbnail: Scalars["Upload"]["input"];
   treatmentCategoryId?: InputMaybe<Scalars["ID"]["input"]>;
   typeOfPlace?: InputMaybe<RentalTypeOfPlace>;
+  title: Scalars["String"]["input"];
   units?: InputMaybe<Scalars["Int"]["input"]>;
   vat: Scalars["Float"]["input"];
   vehicleCategoryId?: InputMaybe<Scalars["String"]["input"]>;
@@ -2142,7 +2146,7 @@ export type GetSalesDurningPeriodInput = {
 
 export type GetSellerProductsInput = {
   idCursor?: InputMaybe<Scalars["String"]["input"]>;
-  sellerId: Scalars["String"]["input"];
+  sellerId: Scalars["ID"]["input"];
   take: Scalars["Int"]["input"];
 };
 
@@ -2589,6 +2593,11 @@ export enum MembershipRecurring {
   Month = "month",
   Week = "week",
   Year = "year",
+}
+
+export enum MediaType {
+  Video = "video",
+  Image = "image"
 }
 
 export type MembershipSubscription = {
@@ -3145,9 +3154,6 @@ export type MutationDeleteProductCategoryArgs = {
   deleteCategoryId: Scalars["String"];
 };
 
-export type MutationDeleteServiceArgs = {
-  id: Scalars["String"]["input"];
-};
 
 export type MutationDeleteServiceArgs = {
   id: Scalars["String"]["input"];
@@ -3579,7 +3585,9 @@ export type NewsfeedPost = {
   isLiked: Scalars["Boolean"]["output"];
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
+  likes: Scalars["Int"]["input"]
   mentions?: Maybe<Array<PostMention>>;
+  mediaType?: Maybe<MediaType>;
   pinned: Scalars["Boolean"]["output"];
   productIds?: Maybe<Array<Scalars["String"]["output"]>>;
   products?: Maybe<Array<Product>>;
@@ -3733,11 +3741,18 @@ export type PaymentIntent = {
   client_secret: Scalars["String"]["output"];
 };
 
+export enum ProductUsageStatus {
+  New = 'new',
+  Used = 'used'
+}
+
+
 export type Place = {
   __typename?: "Place";
   id: Scalars["ID"]["output"];
   type: Scalars["String"]["output"];
 };
+
 
 export type PlaceSuggestions = {
   __typename?: "PlaceSuggestions";
@@ -3848,6 +3863,7 @@ export type Product = {
   totalOrdered: Scalars["Int"]["output"];
   unitsRefunded: Scalars["Int"]["output"];
   updatedAt: Scalars["String"]["output"];
+  usageStatus: Maybe<ProductUsageStatus>
   vat: Scalars["Float"]["output"];
   vendor_external_link?: Maybe<Scalars["String"]["output"]>;
   visibility: VisibilityEnum;
@@ -3888,6 +3904,7 @@ export type ProductAttributeValue = {
 export type ProductAttributeValueInput = {
   name: Array<TranslationTextInput>;
   value: Scalars["String"]["input"];
+  id: Scalars["ID"]["input"]
 };
 
 export type ProductAttributesPaginationResponse = {
@@ -4166,6 +4183,7 @@ export type ProfileVisitDetails = {
 };
 
 export type ProfileVisitsDetails = {
+
   __typename?: "ProfileVisitsDetails";
   countries: Array<ProfileVisitDetails>;
 };
@@ -5634,6 +5652,7 @@ export type Service = {
   thumbnail: Scalars["String"]["output"];
   treatmentCategory?: Maybe<Scalars["String"]["output"]>;
   treatmentCategoryId?: Maybe<Scalars["ID"]["output"]>;
+  title: Scalars["String"]["input"]
   type: ServiceType;
   typeOfPlace?: Maybe<RentalTypeOfPlace>;
   units?: Maybe<Scalars["Int"]["output"]>;
@@ -6784,7 +6803,7 @@ export type UpdateSellerAccountAdminInput = {
 
 export type UpdateServiceCategoryInput = {
   description?: InputMaybe<TranslationTextInput>;
-  filters?: InputMaybe<Array<ServiceCategoryFilterValueInput>>;
+  filters?: InputMaybe<Array<ServiceCategoryFilterInput>>;
   id: Scalars["String"]["input"];
   metaTagDescription?: InputMaybe<TranslationTextInput>;
   metaTagKeywords?: InputMaybe<TranslationTextInput>;
@@ -7050,12 +7069,54 @@ export type WithdrawalRequest = {
   user: Account;
   userId: Scalars["ID"]["output"];
 };
+export type WishedItem = {
+  __typeName?: "WishedItem";
+  id: Scalars["ID"]["input"];
+  itemId: Scalars["ID"]["input"];
+  userId: Scalars["ID"]["input"];
+
+}
 
 export enum WithdrawalStatus {
   Pending = "pending",
   Processed = "processed",
   Refused = "refused",
 }
+
+export type Wisher = {
+  __typename?: 'Wisher';
+  userId: Scalars['String']['input'];
+};
+
+export type Wisherslist = {
+  __typename?: 'Wisherslist';
+  id: Scalars['ID']["input"];
+  itemId: Scalars['ID']['input'];
+  sellerId: Scalars['ID']['input'];
+  wishers: Array<Wisher>;
+  wishersCount: Scalars['Int']['input'];
+};
+
+export type Wishlist = {
+  __typename?: 'Wishlist';
+  id: Scalars['ID']["input"];
+  ownerId: Scalars['ID']["input"];
+  wishedItems: Array<WishlistItem>;
+};
+
+export type WishlistItem = {
+  __typename?: 'WishlistItem';
+  itemId: Scalars['ID']["input"];
+  itemType: WishlistItemType;
+  product?: Maybe<Product>;
+  service?: Maybe<Service>;
+};
+
+export enum WishlistItemType {
+  Product = 'product',
+  Service = 'service'
+}
+
 
 export enum ProfessionStatus {
   Active = "active",
