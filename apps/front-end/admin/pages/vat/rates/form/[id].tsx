@@ -32,7 +32,7 @@ const EditVatRate: NextPage = () => {
 
   const isNew = id === "new";
 
-  const { data } = useAdminGetTaxRateQuery(id, !isNew);
+  const { data } = useAdminGetTaxRateQuery(id);
 
   const {
     form: updateForm,
