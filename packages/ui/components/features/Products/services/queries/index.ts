@@ -14,3 +14,4 @@ export * from "./useGetProductQuery";
 export * from "./useGetUserProducts";
 export * from "./attributes";
 export * from "./useGetShippingRuleQuery";
+export * from "./useGetSellerProductsDetails";
