@@ -60,7 +60,7 @@ export const AdminListTable: React.FC<{
     id: string;
     cols: {
       props?: ThProps;
-      value?: string;
+      value?: unknown | string;
       type?: AdminTableCellTypeEnum;
       actionBtns?: React.ReactNode[];
       custom?: React.ReactNode;
@@ -203,13 +203,13 @@ export const AdminListTable: React.FC<{
                             case AdminTableCellTypeEnum.image:
                               return (
                                 <Td {...props}>
-                                  <Image src={value} />
+                                  <Image src={value as string} />
                                 </Td>
                               );
                             case AdminTableCellTypeEnum.avatar:
                               return (
                                 <Td {...props}>
-                                  <Avatar src={value} />
+                                  <Avatar src={value as string} />
                                 </Td>
                               );
                             case AdminTableCellTypeEnum.checkbox:
@@ -227,7 +227,7 @@ export const AdminListTable: React.FC<{
                                 </Td>
                               );
                             case AdminTableCellTypeEnum.number:
-                              return <Td {...props}>{value}</Td>;
+                              return <Td {...props}>{value as string}</Td>;
 
                             case AdminTableCellTypeEnum.action:
                               return (
@@ -242,7 +242,7 @@ export const AdminListTable: React.FC<{
                             case AdminTableCellTypeEnum.custom:
                               return <Td {...props}>{runIfFn(custom)}</Td>;
                             default:
-                              return <Td {...props}>{value}</Td>;
+                              return <Td {...props}>{value as string}</Td>;
                           }
                         }
                       )}
