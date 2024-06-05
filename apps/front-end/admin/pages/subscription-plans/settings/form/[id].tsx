@@ -20,7 +20,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
-import { CommissionOn } from "@features/API";
+import { CommissionOn, MembershipRecurring } from "@features/API";
 
 const commissionTypes: {
   id: string;
@@ -58,7 +58,7 @@ const commissions: {
   },
 ];
 
-const editSubscriptionPlan = () => {
+const EditSubscriptionPlan = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
@@ -70,10 +70,9 @@ const editSubscriptionPlan = () => {
   const { form: createForm, inputProps: changeCreatePlan } = useForm<
     Parameters<typeof useAdminCreatePlanMutation>[0]
   >({
-    commissionOn: CommissionOn.Sale,
     includings: [],
     name: "",
-    recurring: 0,
+    recurring: MembershipRecurring.Week,
     sortOrder: 1,
     turnover_rules: [],
   });
@@ -306,4 +305,4 @@ const editSubscriptionPlan = () => {
   );
 };
 
-export default editSubscriptionPlan;
+export default EditSubscriptionPlan;

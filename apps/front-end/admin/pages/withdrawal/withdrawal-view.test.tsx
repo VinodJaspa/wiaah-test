@@ -1,4 +1,4 @@
-import { WithdrawalStatus } from "@features/API";
+import { AccountType, WithdrawalStatus } from "@features/API";
 import {
   useAdminAcceptWithdrawalRequestMutation,
   useAdminGetWithdrawalsQuery,
@@ -36,6 +36,7 @@ describe("admin withdrawal tests", () => {
       requestedAt: new Date().toString(),
       status: WithdrawalStatus.Pending,
       user: {
+        accountType: AccountType.Seller,
         email: "email 1",
         shop: {
           name: "shop 1",
@@ -53,6 +54,7 @@ describe("admin withdrawal tests", () => {
       requestedAt: new Date().toString(),
       status: WithdrawalStatus.Processed,
       user: {
+        accountType: AccountType.Seller,
         email: "email 2",
         shop: {
           name: "shop 2",
@@ -81,7 +83,7 @@ describe("admin withdrawal tests", () => {
 
     const table = wrapper.find(getTestId(testids.table));
 
-    const tableData = table.prop("data") as Array<any>;
+    const tableData = table.prop("data") as unknown as Array<any>;
 
     expect(tableData.length).toBe(mockData.length);
 

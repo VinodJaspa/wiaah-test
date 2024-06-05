@@ -1,4 +1,4 @@
-import { VoucherStatus } from "@features/API";
+import { VoucherStatus } from "@features/API/gql/generated";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
