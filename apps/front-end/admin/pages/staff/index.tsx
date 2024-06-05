@@ -27,6 +27,14 @@ const Staff: NextPage = () => {
   >({ pagination }, { pagination });
   const { data } = uesAdminGetStaffAccountsQuery(form);
 
+  const TimeDiff = (lastActiveAt: string) => {
+    const { timeUnit, value } = useDateDiff({
+      from: new Date(),
+      to: new Date(lastActiveAt),
+    }).getSince();
+    return `${value} ${timeUnit} `;
+  };
+
   return (
     <section>
       <div className="flex justify-end">
@@ -122,7 +130,7 @@ const Staff: NextPage = () => {
                 value: email,
               },
               {
-                value: startCase(type),
+                value: startCase(type as string),
               },
               {
                 type: AdminTableCellTypeEnum.custom,
@@ -138,12 +146,7 @@ const Staff: NextPage = () => {
               },
               {
                 value: (() => {
-                  const { timeUnit, value } = useDateDiff({
-                    from: new Date(),
-                    to: new Date(lastActiveAt),
-                  }).getSince();
-
-                  return `${value} ${timeUnit}`;
+                  TimeDiff(lastActiveAt);
                 })(),
               },
             ],
