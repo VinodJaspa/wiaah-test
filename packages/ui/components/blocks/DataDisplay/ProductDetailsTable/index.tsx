@@ -32,7 +32,9 @@ import { FormikInput } from "@blocks/DataInput";
 import { mapArray } from "@UI/../utils/src";
 
 export interface ProductDetailsTableProps {
-  products: Pick<
+  products: {
+    __typename?: "Products";
+  } & Pick<
     Product,
     | "title"
     | "thumbnail"
