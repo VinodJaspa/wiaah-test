@@ -46,6 +46,7 @@ import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { useGetUserShopType } from "@features/Shop";
 import {
   CreateServiceInput,
+  DoctorSpeakingLanguage,
   RentalPropertyType,
   RentalTypeOfPlace,
   RestaurantDishType,
@@ -112,7 +113,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           onFinish={(data) => mutate(data)}
           isEdit={isEdit || false}
           // TODO
-          data={{}}
+          data={NewServiceStepper.defaultProps?.data}
           lang={lang}
         />
         <div className="w-full justify-between flex">
@@ -179,15 +180,21 @@ export const NewServiceStepper = React.forwardRef(
       switchInputProps,
     } = useForm<CreateServiceInput>(
       {
+        title: "",
         cancelable: false,
-        policies: [],
+        policies: [
+          {
+            langId: "en-US",
+            value: [{ policyTitle: "k", terms: [" ", ""] }],
+          },
+        ],
         price: 0,
-        description: [],
-        name: [],
-        speakingLanguages: [],
+        description: [{ langId: "en-US", value: "" }],
+        name: [{ langId: "en-US", value: "" }],
+        speakingLanguages: [DoctorSpeakingLanguage.En],
         thumbnail: "",
         vat: 0,
-        hashtags: [],
+        hashtags: ["#"],
         isExternal: false,
       },
       {},
@@ -306,14 +313,15 @@ export const NewServiceStepper = React.forwardRef(
                     <Switch {...switchInputProps("isExternal")} />
                     <p>{t("Is external service ?")}</p>
                   </div>
-                  <div>
+                  {/* There is no source sit url data type */}
+                  {/* <div>
                     <p className="font-medium">{t("Source site url")}</p>
                     <Input
-                      {...translationInputProps("source", lang)}
+                      {...translationInputProps(, lang)}
                       placeholder={t("Source site url")}
                       label={undefined}
                     />
-                  </div>
+                  </div> */}
 
                   {showOn([ServiceType.Restaurant]) ? (
                     <>
