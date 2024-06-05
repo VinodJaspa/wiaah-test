@@ -10,7 +10,7 @@ const EditProduct: NextPage = () => {
 
   return (
     <section className="py-4">
-      <AddNewService isEdit serviceType="hotel" />
+      <AddNewService />
     </section>
   );
 };

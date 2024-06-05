@@ -11,11 +11,7 @@ export const AccountVerifciation: React.FC<{
 
   return (
     <div className="w-full">
-      <AccountVerifciationForm
-        onSubmit={() => {}}
-        readOnly
-        initialValue={data}
-      />
+      <AccountVerifciationForm onChange={() => {}} readOnly value={data} />
     </div>
   );
 };

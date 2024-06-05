@@ -3,6 +3,6 @@ import React from "react";
 
 export const AccountBookingsHistory: React.FC<{
   accountId: string;
-}> = () => {
-  return <BookingsHistorySection />;
+}> = ({ accountId }) => {
+  return <BookingsHistorySection accountId={accountId} />;
 };
