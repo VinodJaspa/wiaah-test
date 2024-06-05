@@ -196,7 +196,7 @@ const sellers: NextPage = () => {
               <Td>{seller.verified ? t("Verified") : t("unVerified")}</Td>
               <Td>{seller.lastName}</Td>
               {/* TODO: include seller total sales from api */}
-              <Td>{NumberShortner(seller.sales)}</Td>
+              <Td>{NumberShortner(seller.sellerSalesStats.sales)}</Td>
               <Td>{NumberShortner(seller.balance?.withdrawableBalance)}</Td>
               <Td>{seller.status}</Td>
               <Td>{new Date(seller.createdAt).toDateString()}</Td>
