@@ -203,7 +203,7 @@ export const AdminListTable: React.FC<{
                             case AdminTableCellTypeEnum.image:
                               return (
                                 <Td {...props}>
-                                  <Image src={value as string} />
+                                  <Image src={value as string} alt="" />
                                 </Td>
                               );
                             case AdminTableCellTypeEnum.avatar:

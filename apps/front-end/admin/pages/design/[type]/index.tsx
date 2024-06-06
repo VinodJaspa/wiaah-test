@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
 
-const slideshow = () => {
+const Slideshow = () => {
   const { visit, getCurrentPath, getParam, back } = useRouting();
   const type = getParam("type") as DesignType;
 
@@ -88,8 +88,8 @@ const slideshow = () => {
           {
             custom: (
               <HStack className="flex-wrap">
-                {v.placement.map((e) => (
-                  <Badge>{e}</Badge>
+                {v.placement.map((e, i) => (
+                  <Badge key={i}>{e}</Badge>
                 ))}
               </HStack>
             ),
@@ -97,6 +97,7 @@ const slideshow = () => {
           {
             actionBtns: [
               <Button
+                key={v.id}
                 onClick={() => {
                   visit((r) =>
                     r.addPath(getCurrentPath()).addPath("edit").addPath(v.id)
@@ -107,7 +108,7 @@ const slideshow = () => {
               >
                 <EditIcon />
               </Button>,
-              <Button onClick={() => {}} center className="p-2">
+              <Button key={v.id} onClick={() => {}} center className="p-2">
                 <CloseIcon />
               </Button>,
             ],
@@ -118,4 +119,4 @@ const slideshow = () => {
   );
 };
 
-export default slideshow;
+export default Slideshow;

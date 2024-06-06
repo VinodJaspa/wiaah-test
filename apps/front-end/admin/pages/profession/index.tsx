@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, randomNum, useForm } from "utils";
 
-const profession: NextPage = () => {
+const Profession: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
   const { controls, pagination } = usePaginationControls();
@@ -57,6 +57,7 @@ const profession: NextPage = () => {
               type: AdminTableCellTypeEnum.action,
               actionBtns: [
                 <Button
+                  key={id}
                   onClick={() =>
                     visit((r) => r.addPath(getCurrentPath()).addQuery({ id }))
                   }
@@ -74,4 +75,4 @@ const profession: NextPage = () => {
   );
 };
 
-export default profession;
+export default Profession;

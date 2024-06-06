@@ -31,7 +31,7 @@ interface Payback {
   thumbnail: string;
 }
 
-const payback: NextPage = () => {
+const Payback: NextPage = () => {
   const { t } = useTranslation();
 
   const paybackHistory: Payback[] = [...Array(10)].map((_, i) => ({
@@ -106,7 +106,7 @@ const payback: NextPage = () => {
               }) => (
                 <Tr>
                   <Td>
-                    <Image src={thumbnail} />
+                    <Image src={thumbnail} alt="thumbnail" />
                   </Td>
                   <Td>{id.slice(0, 10)}</Td>
                   <Td>{seller}</Td>
@@ -130,4 +130,4 @@ const payback: NextPage = () => {
   );
 };
 
-export default payback;
+export default Payback;

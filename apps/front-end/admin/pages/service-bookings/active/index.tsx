@@ -46,12 +46,9 @@ const books: Book[] = [...Array(10)].map((_, i) => ({
   type: randomNum(100) < 50 ? "Hotel" : "Restaurant",
 }));
 
-const bookings = () => {
+const Bookings = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
-
-  
-
 
   return (
     <section className="w-full flex flex-col gap-8">
@@ -161,4 +158,4 @@ const bookings = () => {
   );
 };
 
-export default bookings;
+export default Bookings;

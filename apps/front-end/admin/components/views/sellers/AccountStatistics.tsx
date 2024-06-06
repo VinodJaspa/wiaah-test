@@ -727,7 +727,11 @@ export const AccountStatistics: React.FC<{
             {mapArray(posts, (v, i) => (
               <Tr>
                 <Td>
-                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
+                  <Image
+                    className="w-20 h-12 object-cover"
+                    src={v.thumbnail}
+                    alt="thumbnail"
+                  />
                 </Td>
                 <Td>
                   {new Date(v.date).toLocaleDateString("en-us", {

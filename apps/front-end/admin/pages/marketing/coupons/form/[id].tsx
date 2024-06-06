@@ -63,7 +63,7 @@ const couponHistory: CouponHistory[] = [...Array(5)].map((_, i) => ({
   productName: "product/service name" + i,
 }));
 
-const couponform: NextPage = () => {
+const Couponform: NextPage = () => {
   const { t } = useTranslation();
   const { getParam, back } = useRouting();
   const id = getParam("id");
@@ -279,4 +279,4 @@ const couponform: NextPage = () => {
   );
 };
 
-export default couponform;
+export default Couponform;

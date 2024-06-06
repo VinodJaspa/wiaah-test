@@ -19,7 +19,7 @@ import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
-const editCollab = () => {
+const EditCollab = () => {
   const { t } = useTranslation();
   const { back, getParam } = useRouting();
 
@@ -89,4 +89,4 @@ const editCollab = () => {
   );
 };
 
-export default editCollab;
+export default EditCollab;

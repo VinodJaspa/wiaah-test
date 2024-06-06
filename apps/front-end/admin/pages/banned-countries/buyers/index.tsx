@@ -20,7 +20,7 @@ const BannedCountries: BannedCountry[] = [
   },
 ];
 
-const bannedBuyers: NextPage = () => {
+const BannedBuyers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
   const { controls } = usePaginationControls();
@@ -65,6 +65,7 @@ const bannedBuyers: NextPage = () => {
               type: AdminTableCellTypeEnum.action,
               actionBtns: [
                 <Button
+                  key={id}
                   onClick={() =>
                     visit((r) =>
                       r.addPath(getCurrentPath()).addPath("form").addPath(id)
@@ -85,4 +86,4 @@ const bannedBuyers: NextPage = () => {
   );
 };
 
-export default bannedBuyers;
+export default BannedBuyers;

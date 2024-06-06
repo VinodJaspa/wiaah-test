@@ -49,6 +49,7 @@ const View: NextPage = () => {
               <Image
                 className="w-[9rem] h-[7rem]"
                 src={request.idPhoto}
+                alt=""
               ></Image>
             </Td>
           </Tr>

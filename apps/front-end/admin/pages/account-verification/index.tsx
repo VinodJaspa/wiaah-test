@@ -142,6 +142,7 @@ const AccountVerifications: NextPage = () => {
               props: { align: "right" },
               actionBtns: [
                 <Button
+                  key={id}
                   onClick={() =>
                     visit((r) =>
                       r.addPath(getCurrentPath()).addPath("view").addPath(id)
@@ -153,10 +154,16 @@ const AccountVerifications: NextPage = () => {
                 >
                   <EyeIcon />
                 </Button>,
-                <Button colorScheme="primary" center className="w-8 h-8">
+                <Button
+                  key={id}
+                  colorScheme="primary"
+                  center
+                  className="w-8 h-8"
+                >
                   <ImCheckmark />
                 </Button>,
                 <Button
+                  key={id}
                   onClick={() => setRefuseId(id)}
                   colorScheme="danger"
                   center

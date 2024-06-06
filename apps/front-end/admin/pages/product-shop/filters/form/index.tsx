@@ -40,7 +40,7 @@ const FilterValuesValidationSchema = object({
     .required(),
 }).required();
 
-export default () => {
+const ProductShopFiltersForm = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
 
@@ -211,3 +211,5 @@ export default () => {
     </div>
   );
 };
+
+export default ProductShopFiltersForm;

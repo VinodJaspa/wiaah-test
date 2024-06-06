@@ -27,19 +27,16 @@ import {
 } from "ui";
 import { mapArray, useForm } from "utils";
 
-const services: NextPage = () => {
+const Services: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
   const { pagination } = usePaginationControls();
 
+  const filters = [{ id: "432", value: ["id"] }];
+
   const { form, inputProps } = useForm<
     Parameters<typeof useGetFilteredServicesQuery>[0]
-  >(
-    {
-      pagination,
-    },
-    { pagination }
-  );
+  >({ filters, pagination });
 
   const { data: services } = useGetFilteredServicesQuery(form);
 
@@ -156,45 +153,51 @@ const services: NextPage = () => {
             </THead>
 
             <TBody>
-              {mapArray(services, (prod, i) => (
-                <Tr key={prod.id}>
-                  <Td>
-                    <Checkbox />
-                  </Td>
-                  <Td>
-                    <Image className="w-full" src={prod.thumbnail} />
-                  </Td>
-                  <Td>{prod.title}</Td>
-                  <Td>{prod.sellerName}</Td>
-                  <Td>{prod.id.slice(0, 8)}...</Td>
-                  <Td>
-                    <PriceDisplay price={prod.price[0]} />
-                  </Td>
-                  <Td className="whitespace-nowrap">{prod.type}</Td>
-                  <Td>{prod.status}</Td>
-                  <Td>{new Date(prod.updatedAt).toDateString()}</Td>
-                  <Td>
-                    <div className="grid grid-cols-2d justify-center gap-2 fill-white text-white text-sm ">
-                      <SearchIcon className="w-8 h-8 p-2 bg-cyan-600" />
-                      <EditIcon
-                        onClick={() =>
-                          visit((r) =>
-                            r
-                              .addPath(getCurrentPath())
-                              .addPath("edit")
-                              .addPath(prod.id)
-                          )
-                        }
-                        className="w-8 h-8 p-2 bg-cyan-400"
+              <div>
+                {mapArray(services.data, (serv, i) => (
+                  <Tr key={serv.id}>
+                    <Td>
+                      <Checkbox />
+                    </Td>
+                    <Td>
+                      <Image
+                        className="w-full"
+                        src={serv.thumbnail}
+                        alt="thumbnail"
                       />
-                      <TrashIcon
-                        onClick={() => handleDeleteService(prod.id)}
-                        className="w-8 h-8 p-2 bg-red-500"
-                      />
-                    </div>
-                  </Td>
-                </Tr>
-              ))}
+                    </Td>
+                    <Td>{serv.title}</Td>
+                    <Td>{serv.shop.sellerProfile.username}</Td>
+                    <Td>{serv.id.slice(0, 8)}...</Td>
+                    <Td>
+                      <PriceDisplay price={serv.price[0]} />
+                    </Td>
+                    <Td className="whitespace-nowrap">{serv.type}</Td>
+                    <Td>{serv.shop.status}</Td>
+                    <Td>{new Date(serv.updatedAt).toDateString()}</Td>
+                    <Td>
+                      <div className="grid grid-cols-2d justify-center gap-2 fill-white text-white text-sm ">
+                        <SearchIcon className="w-8 h-8 p-2 bg-cyan-600" />
+                        <EditIcon
+                          onClick={() =>
+                            visit((r) =>
+                              r
+                                .addPath(getCurrentPath())
+                                .addPath("edit")
+                                .addPath(serv.id)
+                            )
+                          }
+                          className="w-8 h-8 p-2 bg-cyan-400"
+                        />
+                        <TrashIcon
+                          onClick={() => handleDeleteService(serv.id)}
+                          className="w-8 h-8 p-2 bg-red-500"
+                        />
+                      </div>
+                    </Td>
+                  </Tr>
+                ))}
+              </div>
             </TBody>
           </Table>
         </TableContainer>
@@ -204,4 +207,4 @@ const services: NextPage = () => {
   );
 };
 
-export default services;
+export default Services;

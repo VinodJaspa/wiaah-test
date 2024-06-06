@@ -49,7 +49,7 @@ interface Review {
   createdAt: string;
 }
 
-const reviews: NextPage = () => {
+const Reviews: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
 
@@ -169,4 +169,4 @@ const reviews: NextPage = () => {
   );
 };
 
-export default reviews;
+export default Reviews;

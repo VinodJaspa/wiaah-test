@@ -23,7 +23,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
-const canceledOrders: NextPage = () => {
+const CanceledOrders: NextPage = () => {
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
@@ -93,7 +93,10 @@ const canceledOrders: NextPage = () => {
                 {mapArray(orders, ({ amount, orderItem, reason }) => (
                   <Tr>
                     <Td>
-                      <Image src={orderItem?.product?.thumbnail} />
+                      <Image
+                        src={orderItem?.product?.thumbnail}
+                        alt="thumbnail"
+                      />
                     </Td>
                     <Td>{orderItem?.product?.title}</Td>
                     <Td>{orderItem.seller?.profile?.username}</Td>
@@ -124,4 +127,4 @@ const canceledOrders: NextPage = () => {
   );
 };
 
-export default canceledOrders;
+export default CanceledOrders;

@@ -37,7 +37,7 @@ import {
 } from "ui";
 import { mapArray, NumberShortner, useForm } from "utils";
 
-const sellers: NextPage = () => {
+const Sellers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
@@ -275,4 +275,4 @@ const sellers: NextPage = () => {
   );
 };
 
-export default sellers;
+export default Sellers;

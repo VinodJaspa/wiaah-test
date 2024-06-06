@@ -20,7 +20,7 @@ import { useRouting } from "routing";
 import { Upload } from "antd";
 import { BiCloudUpload } from "react-icons/bi";
 
-const addPartner = () => {
+const AddPartner = () => {
   const { t } = useTranslation();
   const { back } = useRouting();
   const { controls, uploadImage, uploadVideo } = useMediaUploadControls();
@@ -83,4 +83,4 @@ const addPartner = () => {
   );
 };
 
-export default addPartner;
+export default AddPartner;

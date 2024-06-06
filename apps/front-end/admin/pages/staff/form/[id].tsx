@@ -27,7 +27,7 @@ import {
   StaffAccountType,
 } from "@features/API";
 
-const manageStaff: NextPage = () => {
+const ManageStaff: NextPage = () => {
   const { t } = useTranslation();
 
   const { getParam } = useRouting();
@@ -185,4 +185,4 @@ const manageStaff: NextPage = () => {
   );
 };
 
-export default manageStaff;
+export default ManageStaff;

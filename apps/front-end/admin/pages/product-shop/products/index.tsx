@@ -108,7 +108,11 @@ const Products: NextPage = () => {
                     <Checkbox />
                   </Td>
                   <Td className="min-w-[8rem]">
-                    <Image className="w-full" src={prod.thumbnail} />
+                    <Image
+                      className="w-full"
+                      src={prod.thumbnail}
+                      alt="thumbnail"
+                    />
                   </Td>
                   <Td>{prod.title}</Td>
                   <Td>{prod?.seller?.profile?.username}</Td>

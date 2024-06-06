@@ -22,7 +22,7 @@ import {
 } from "ui";
 import { mapArray, SeperatedStringArray, useForm } from "utils";
 
-export default () => {
+const ProductShopCategory = () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps } = useForm<
@@ -153,3 +153,4 @@ export default () => {
     </div>
   );
 };
+export default ProductShopCategory;

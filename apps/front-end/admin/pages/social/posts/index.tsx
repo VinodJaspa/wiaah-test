@@ -105,7 +105,11 @@ const SocialPosts = () => {
             {mapArray(data, (data, i) => (
               <Tr key={i}>
                 <Td className="w-fit">
-                  <Image className="w-32" src={data?.attachments[0]?.src} />
+                  <Image
+                    className="w-32"
+                    src={data?.attachments[0]?.src}
+                    alt="thumbnail"
+                  />
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>
                 <Td className="text-primary">

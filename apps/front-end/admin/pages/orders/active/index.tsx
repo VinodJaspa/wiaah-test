@@ -26,7 +26,7 @@ import {
 } from "ui";
 import { AddToDate, mapArray, useForm } from "utils";
 
-const order = () => {
+const Order = () => {
   const { t } = useTranslation();
 
   const { getCurrentPath, visit } = useRouting();
@@ -148,4 +148,4 @@ const order = () => {
   );
 };
 
-export default order;
+export default Order;

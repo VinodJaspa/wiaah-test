@@ -20,7 +20,7 @@ import {
 } from "ui";
 import { mapArray } from "utils";
 
-export default () => {
+const ServiceShopCategory = () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
@@ -108,3 +108,4 @@ export default () => {
     </div>
   );
 };
+export default ServiceShopCategory;

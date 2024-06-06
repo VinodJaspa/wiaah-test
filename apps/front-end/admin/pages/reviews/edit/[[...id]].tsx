@@ -95,6 +95,7 @@ const EditReview = () => {
                 <div className="flex gap-4">
                   {[...Array(5)].map((v, i) => (
                     <Radio
+                      key={i}
                       onChange={(e) => {
                         if (e.target.checked) {
                           handleChange("rate", i + 1);

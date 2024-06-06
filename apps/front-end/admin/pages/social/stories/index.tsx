@@ -92,7 +92,11 @@ const SocialStories: NextPage = () => {
                   {data.type === "video" ? (
                     <></>
                   ) : (
-                    <Image className="w-32" src={data.thumbnail} />
+                    <Image
+                      className="w-32"
+                      src={data.thumbnail}
+                      alt="thumbnail"
+                    />
                   )}
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>

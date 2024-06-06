@@ -18,7 +18,7 @@ import { useForm, WiaahLangId, WiaahLanguageCountries } from "utils";
 import { useRouting } from "routing";
 import { ProfessionStatus } from "@features/API";
 
-const addProfession: NextPage = () => {
+const AddProfession: NextPage = () => {
   const { t } = useTranslation();
   const { back, getParam } = useRouting();
 
@@ -75,7 +75,7 @@ const addProfession: NextPage = () => {
                 className="p-[0px] w-[5rem] border-[0px]"
               >
                 {WiaahLanguageCountries.map(({ code }) => (
-                  <SelectOption value={code}>
+                  <SelectOption key={code} value={code}>
                     <FlagIcon code={code} />
                   </SelectOption>
                 ))}
@@ -106,8 +106,10 @@ const addProfession: NextPage = () => {
             placeholder={t("Sort Order")}
             className="col-span-3"
           >
-            {Object.values(ProfessionStatus).map((v) => (
-              <SelectOption value={v}>{v}</SelectOption>
+            {Object.values(ProfessionStatus).map((v, i) => (
+              <SelectOption key={i} value={v}>
+                {v}
+              </SelectOption>
             ))}
           </Select>
         </div>
@@ -116,4 +118,4 @@ const addProfession: NextPage = () => {
   );
 };
 
-export default addProfession;
+export default AddProfession;

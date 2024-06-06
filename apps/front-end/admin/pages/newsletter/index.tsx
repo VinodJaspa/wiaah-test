@@ -29,7 +29,7 @@ interface NewsletterUser {
   user_id: string;
 }
 
-const newsletter: NextPage = () => {
+const Newsletter: NextPage = () => {
   const newsletter: NewsletterUser[] = [...Array(10)].map((_, i) => ({
     email: `test${i}@gmail.com`,
     name: `name-${i}`,
@@ -113,4 +113,4 @@ const newsletter: NextPage = () => {
   );
 };
 
-export default newsletter;
+export default Newsletter;

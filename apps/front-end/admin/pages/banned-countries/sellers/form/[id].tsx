@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { countries, getCitiesOfCountry, mapArray, useForm } from "utils";
 
-const editBannedCountry = () => {
+const EditBannedCountry = () => {
   const { getParam, back } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
@@ -112,4 +112,4 @@ const editBannedCountry = () => {
   );
 };
 
-export default editBannedCountry;
+export default EditBannedCountry;

@@ -13,7 +13,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
-const hashtags: NextPage = () => {
+const Hashtags: NextPage = () => {
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
@@ -56,6 +56,7 @@ const hashtags: NextPage = () => {
             type: AdminTableCellTypeEnum.action,
             actionBtns: [
               <Button
+                key={v.id}
                 onClick={() => {
                   suspense(v.tag);
                 }}
@@ -65,7 +66,7 @@ const hashtags: NextPage = () => {
               >
                 <NotAllowedIcon />
               </Button>,
-              <Button center className="p-2">
+              <Button key={v.id} center className="p-2">
                 <TrashIcon onClick={() => {}} />
               </Button>,
             ],
@@ -76,4 +77,4 @@ const hashtags: NextPage = () => {
   );
 };
 
-export default hashtags;
+export default Hashtags;

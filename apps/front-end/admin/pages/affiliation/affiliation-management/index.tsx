@@ -91,7 +91,10 @@ const AffiliationManagement: NextPage = () => {
               }) => (
                 <Tr key={id}>
                   <Td>
-                    <Image src={product.thumbnail || service.thumbnail} />
+                    <Image
+                      src={product.thumbnail || service.thumbnail}
+                      alt="thumbnail"
+                    />
                   </Td>
                   <Td>
                     <Link

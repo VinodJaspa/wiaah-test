@@ -50,7 +50,7 @@ const orders: CanceledOrder[] = [...Array(10)].map((_, i) => ({
   paymentMethod: "paypal",
 }));
 
-const canceledOrders: NextPage = () => {
+const CanceledOrders: NextPage = () => {
   const { t } = useTranslation();
 
   return (
@@ -132,7 +132,7 @@ const canceledOrders: NextPage = () => {
                   }) => (
                     <Tr>
                       <Td>
-                        <Image src={thumbnail} />
+                        <Image src={thumbnail} alt="thumbnail" />
                       </Td>
                       <Td>{title}</Td>
                       <Td>{seller}</Td>
@@ -165,4 +165,4 @@ const canceledOrders: NextPage = () => {
   );
 };
 
-export default canceledOrders;
+export default CanceledOrders;

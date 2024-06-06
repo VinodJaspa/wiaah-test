@@ -60,6 +60,7 @@ const AttributesList: NextPage = () => {
                 type: AdminTableCellTypeEnum.action,
                 actionBtns: [
                   <Button
+                    key={id}
                     onClick={() =>
                       visit((r) =>
                         r

@@ -38,10 +38,9 @@ const FilterValuesValidationSchema = object({
     .required(),
 }).required();
 
-export default () => {
+const ServiceShopFilterForm = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
-
   const filterId = getParam("filter_id");
 
   return (
@@ -208,3 +207,5 @@ export default () => {
     </div>
   );
 };
+
+export default ServiceShopFilterForm;

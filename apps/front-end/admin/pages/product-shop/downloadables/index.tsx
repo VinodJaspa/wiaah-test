@@ -109,7 +109,7 @@ const items: DownloadedRecord[] = [
   },
 ];
 
-const downloadables: NextPage = () => {
+const Downloadables: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
   const { controls } = usePaginationControls();
@@ -222,6 +222,7 @@ const downloadables: NextPage = () => {
                 type: AdminTableCellTypeEnum.action,
                 actionBtns: [
                   <Button
+                    key={id}
                     onClick={() => {
                       visit((r) =>
                         r.addPath(getCurrentPath()).addPath("form").addPath(id)
@@ -242,4 +243,4 @@ const downloadables: NextPage = () => {
   );
 };
 
-export default downloadables;
+export default Downloadables;

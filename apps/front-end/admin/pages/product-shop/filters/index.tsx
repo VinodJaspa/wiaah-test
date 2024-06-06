@@ -21,7 +21,7 @@ import {
 } from "ui";
 import { mapArray, randomNum, useForm } from "utils";
 
-export default () => {
+const ProductShopFilters = () => {
   const [filterGroupAsc, setFilterGroupAsc] = React.useState<boolean>(false);
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
@@ -129,3 +129,4 @@ export default () => {
     </div>
   );
 };
+export default ProductShopFilters;

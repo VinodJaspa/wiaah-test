@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { cities, countries, getCitiesOfCountry } from "utils";
 
-const editBannedCountry = () => {
+const EditBannedCountry = () => {
   const { getParam, back } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
@@ -45,7 +45,7 @@ const editBannedCountry = () => {
                 className="col-span-3"
               >
                 {countries.map(({ isoCode, name }) => (
-                  <SelectOption value={isoCode}>
+                  <SelectOption key={isoCode} value={isoCode}>
                     <HStack>
                       <FlagIcon code={isoCode} />
                       <p>{name}</p>
@@ -75,4 +75,4 @@ const editBannedCountry = () => {
   );
 };
 
-export default editBannedCountry;
+export default EditBannedCountry;

@@ -23,7 +23,7 @@ const products: any[] = [...Array(15)].map((_, i) => ({
   trackingLink: "link",
 }));
 
-const downloadableForm: NextPage = () => {
+const DownloadableForm: NextPage = () => {
   const { getParam } = useRouting();
   const orderId = getParam("id");
 
@@ -49,4 +49,4 @@ const downloadableForm: NextPage = () => {
   );
 };
 
-export default downloadableForm;
+export default DownloadableForm;

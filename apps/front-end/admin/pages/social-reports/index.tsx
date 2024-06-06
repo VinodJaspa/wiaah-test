@@ -118,7 +118,11 @@ const SocialReports: NextPage = () => {
                     {post.attachments[0].type === AttachmentType.Vid ? (
                       <></>
                     ) : (
-                      <Image className="w-32" src={post.attachments[0].src} />
+                      <Image
+                        className="w-32"
+                        src={post.attachments[0].src}
+                        alt=""
+                      />
                     )}
                   </Td>
                   <Td>{id.slice(0, 4)}...</Td>

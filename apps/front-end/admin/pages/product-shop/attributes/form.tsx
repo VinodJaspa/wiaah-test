@@ -90,7 +90,7 @@ const ProductShopAttributeForm = () => {
                 className="p-[0px] w-[5rem] border-[0px]"
               >
                 {WiaahLanguageCountries.map(({ langId, code }) => (
-                  <SelectOption value={langId}>
+                  <SelectOption key={code} value={langId}>
                     <FlagIcon code={code} />
                   </SelectOption>
                 ))}

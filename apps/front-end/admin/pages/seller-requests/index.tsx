@@ -57,7 +57,7 @@ const sellers: PendingSellerAccount[] = [...Array(15)].map((_, i) => ({
   thumbnail: getRandomImage(),
 }));
 
-const pendingProducts = () => {
+const PendingProducts = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
   const [rejectId, setRejectId] = React.useState<string>();
@@ -270,4 +270,4 @@ const pendingProducts = () => {
   );
 };
 
-export default pendingProducts;
+export default PendingProducts;

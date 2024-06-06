@@ -19,7 +19,7 @@ import {
 } from "ui";
 import { mapArray, useForm } from "utils";
 
-export default () => {
+const Informations = () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
@@ -92,3 +92,4 @@ export default () => {
     </div>
   );
 };
+export default Informations;

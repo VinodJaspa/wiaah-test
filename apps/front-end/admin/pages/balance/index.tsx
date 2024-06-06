@@ -14,7 +14,7 @@ import { startCase } from "lodash";
 import { FaFileInvoice } from "react-icons/fa";
 import { TransactionStatus } from "@features/API";
 
-const balance: NextPage = () => {
+const Balance: NextPage = () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
@@ -169,4 +169,4 @@ const balance: NextPage = () => {
   );
 };
 
-export default balance;
+export default Balance;
