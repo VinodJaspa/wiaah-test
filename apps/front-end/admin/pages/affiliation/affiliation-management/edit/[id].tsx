@@ -1,15 +1,9 @@
 import { NextPage } from "next";
 import React from "react";
-import { NewAffiliationLinkSection } from "ui";
+import { AffiliationForm } from "ui";
 
 const Edit: NextPage = () => {
-  return (
-    <NewAffiliationLinkSection<{}>
-      values={{}}
-      onSubmit={() => {}}
-      onBack={() => {}}
-    />
-  );
+  return <AffiliationForm />;
 };
 
 export default Edit;
