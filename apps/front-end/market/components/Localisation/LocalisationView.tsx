@@ -1,6 +1,4 @@
 import {
-  Flex,
-  HStack,
   Button,
   Text,
   useBreakpointValue,
@@ -8,8 +6,8 @@ import {
   Center,
   Divider,
   Icon,
-  Image,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -27,9 +25,9 @@ const placesPH = costumPH.concat(
   }))
 );
 
-export interface LocalisationViewProps {}
+export interface LocalisationViewProps { }
 
-export const LocalisationView: React.FC<LocalisationViewProps> = ({}) => {
+export const LocalisationView: React.FC<LocalisationViewProps> = ({ }) => {
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
@@ -45,44 +43,41 @@ export const LocalisationView: React.FC<LocalisationViewProps> = ({}) => {
   );
 
   return (
-    <Flex direction={"column"} my="2rem">
-      <HStack justify={"space-between"} w="100%">
-        <Button visibility={"hidden"} textTransform={"capitalize"}>
-          {t("follow", "follow")}
-        </Button>
+    <div className="flex flex-col my-4">
+      <div className="flex justify-center items-center w-full relative">
+        <button className="hidden capitalize">{t("follow", "follow")}</button>
         <div className="flex flex-col gap-2">
-          <HStack>
+          <div className="flex flex-col items-between">
             <Image
-              rounded="xl"
-              h="3rem"
-              w="auto"
-              objectFit="cover"
-              src="/place-1.jpg"
+              className="rounded-full h-20 object-cover w-20 "
+              src={"/place-1.jpg"}
+              width={200}
+              height={200}
+              alt=""
             />
-            <Icon fontSize={"xx-large"} as={MdPlace} />
-            <Text fontWeight={"bold"} fontSize="x-large">
-              {tag}
-            </Text>
-          </HStack>
+            <h2 className="font-bold text-xl">{tag}</h2>
+          </div>
           <p className="font-bold text-xl">{`${randomNum(500)}M ${t(
             "Views"
           )}`}</p>
         </div>
-        <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
-      </HStack>
-      <Divider borderColor={"black"} my="1rem" />
+        <button className="capitalize absolute right-4">
+          {t("follow", "follow")}
+        </button>
+      </div>
+      <div className="border border-black my-2" />
       {isLoading ? (
         <Center>
-          <Spinner colorScheme={"primary"} />
+          <p>...Loading</p>
         </Center>
       ) : (
-        <ListWrapper cols={cols}>
+        <div>
           {places &&
             places.map((place, i) => (
               <PlaceCard fixedHeight="18rem" key={i} {...place} />
             ))}
-        </ListWrapper>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };
