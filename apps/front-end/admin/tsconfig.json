@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "baseUrl": ".",
+    "experimentalDecorators": true,
     "paths": {
       "@components": ["components"],
       "@partials": ["../../../packages/ui/components/partials"],
