@@ -1,4 +1,4 @@
-import { Exact, Location, ShippingAddress } from "@features/API";
+import { Exact, LocationInput, ShippingAddress } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -13,8 +13,8 @@ export type GetMyShippingAddressQuery = { __typename?: "Query" } & {
       "firstname" | "id" | "instractions" | "lastname" | "phone" | "zipCode"
     > & {
         location: { __typename?: "Location" } & Pick<
-          Location,
-          "address" | "city" | "country" | "lat" | "long" | "state"
+          LocationInput,
+          "address" | "city" | "country" | "lat" | "long" | "state" | "countryCode" | "postalCode"
         >;
       }
   >;
@@ -59,6 +59,9 @@ query getMyShippingAddress{
         lat: 40.73962045,
         long: -74.021118,
         state: "NY",
+        countryCode:"US",
+        postalCode:"339944"
+
       },
       instractions: "",
       phone: "646-366-9896",

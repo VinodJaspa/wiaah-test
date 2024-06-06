@@ -125,6 +125,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                           city,
                           country,
                           state: city,
+                          postalCode: zipCode.toString(),
                         },
                         phone: String(contact),
                         zipCode: String(zipCode),
@@ -172,7 +173,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
               </div>
             </BoxShadow>
             <VoucherInput onSuccess={(data) => handleVoucherValidation(data)} />
-            <PaymentGateway />
+            <PaymentGateway onSuccess={(data) => {}} />
           </div>
         </div>
         <div className="md:table-cell ">
