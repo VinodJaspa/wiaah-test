@@ -70,6 +70,14 @@ const Dashboard: NextPage = () => {
     new Date(accounts[accounts.length - 1]?.createdAt)
   );
 
+  const GetDurationFromDateDiffHook = (createdAt: string) => {
+    const { getSince } = useDateDiff({
+      from: new Date(createdAt),
+      to: new Date(),
+    });
+    return getSince();
+  };
+
   const charData = dates.reduce((acc, curr, idx, arr) => {
     const from = curr;
     const to = arr[idx + 1] || new Date();
@@ -281,12 +289,7 @@ const Dashboard: NextPage = () => {
             <p className="font-semibold">{t("See All")}</p>
           </div>
           {mapArray(recentSales, ({ buyer, createdAt, id, paid }, i) => {
-            const { getSince } = useDateDiff({
-              from: new Date(createdAt),
-              to: new Date(),
-            });
-
-            const since = getSince();
+            const since = GetDurationFromDateDiffHook(createdAt);
             return (
               <div key={i} className="flex justify-between items-center">
                 <div className="flex gap-2 items-center">
