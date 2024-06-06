@@ -1,3 +1,4 @@
+import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -71,17 +72,7 @@ const SellerInfo = () => {
       <SimpleTabs>
         <div className="flex gap-2 items-center">
           <SimpleTabHead>
-            {tabsTitles.map((v, i) => ({ onClick, selected }) => (
-              <div
-                key={i}
-                onClick={onClick}
-                className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${
-                  selected ? "border-t border-l border-r font-bold" : ""
-                }`}
-              >
-                {t(v)}
-              </div>
-            ))}
+            <TabHighlighter tabsTitles={tabsTitles} />
           </SimpleTabHead>
         </div>
         <SimpleTabItemList>

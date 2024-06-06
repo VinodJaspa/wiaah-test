@@ -1,3 +1,4 @@
+import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,7 @@ import {
   SimpleTabItemList,
   SimpleTabs,
   Switch,
+  TabList,
 } from "ui";
 
 const Maintenance: React.FC = () => {
@@ -36,16 +38,7 @@ const Maintenance: React.FC = () => {
         <SimpleTabs>
           <div className="flex flex-wrap border-b border-b-gray-300">
             <SimpleTabHead>
-              {tabs.map((v, i) => ({ onClick, selected }) => (
-                <p
-                  className={`${
-                    selected ? "border border-gray-300 border-b-0" : ""
-                  } w-fit px-4 py-2 `}
-                  onClick={onClick}
-                >
-                  {v}
-                </p>
-              ))}
+              <TabHighlighter tabsTitles={tabs} />
             </SimpleTabHead>
           </div>
           <SimpleTabItemList>
@@ -64,8 +57,9 @@ const Maintenance: React.FC = () => {
               {({ values, handleChange }) => (
                 <Form>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {socialLinks.map((link) => (
+                    {socialLinks.map((link, i) => (
                       <FormikInput
+                        key={i}
                         flushed
                         name={link.label}
                         label={link.label}

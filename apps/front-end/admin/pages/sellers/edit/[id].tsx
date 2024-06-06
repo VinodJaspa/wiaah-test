@@ -41,7 +41,9 @@ import {
   ProfileStatistics,
   useGetUserShopType,
   SalesStatistics,
+  TabTitle,
 } from "ui";
+import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 
 const Edit = () => {
   const { getParam } = useRouting();
@@ -95,17 +97,7 @@ const Edit = () => {
       <SimpleTabs>
         <div className="flex flex-wrap gap-2 ">
           <SimpleTabHead>
-            {tabsTitles.map((v, i) => ({ onClick, selected }) => (
-              <div
-                key={i}
-                onClick={onClick}
-                className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${
-                  selected ? "border-t border-l border-r font-bold" : ""
-                }`}
-              >
-                {t(v)}
-              </div>
-            ))}
+            <TabHighlighter tabsTitles={TabTitle} />
           </SimpleTabHead>
         </div>
 
