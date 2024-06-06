@@ -26,17 +26,10 @@ type Post = Pick<
   | "createdAt"
   | "views"
   | "location"
+  | "serviceId"
+  | "serviceType"
 > & {
-  service: Pick<
-    Service,
-    | "id"
-    | "thumbnail"
-    | "hashtags"
-    | "serviceType"
-    | "price"
-    | "rating"
-    | "title"
-  >;
+  service: Pick<Service, "id" | "thumbnail" | "price" | "rating" | "title">;
   profile: Pick<
     Profile,
     "id" | "username" | "verified" | "profession" | "photo" | "followers"
@@ -85,7 +78,7 @@ export const SocialServicePostMetaDataCard: React.FC<
         <div className="cursor-pointer absolute top-4 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
           {/* <p className="font-semibold  lg:text-2xl ">{name}</p> */}
           <p className="w-full text-lg font-bold text-right text-primary">
-            {">>"} {startCase(post.service.serviceType)} {"<<"}
+            {">>"} {startCase(post.serviceType)} {"<<"}
           </p>
         </div>
       </div>

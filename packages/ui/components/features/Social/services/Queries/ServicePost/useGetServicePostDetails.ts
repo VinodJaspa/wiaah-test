@@ -28,7 +28,7 @@ export type GetServicePostQuery = { __typename?: "Query" } & {
       >;
       service: { __typename?: "Service" } & Pick<
         Service,
-        "id" | "presentation" | "title" | "hashtags"
+        "id"  | "title" | "thumbnail" | "price" | "rating" 
       >;
       user: { __typename?: "Account" } & Pick<Account, "id"> & {
           profile?: Maybe<
