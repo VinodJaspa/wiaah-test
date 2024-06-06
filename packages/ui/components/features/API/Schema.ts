@@ -2520,7 +2520,7 @@ export type LocationInput = {
   address: Scalars["String"]["input"];
   city: Scalars["String"]["input"];
   country: Scalars["String"]["input"];
-  countryCode: Scalars["String"]["input"];
+  countryCode?: Scalars["String"]["input"];
   lat?: InputMaybe<Scalars["Float"]["input"]>;
   long?: InputMaybe<Scalars["Float"]["input"]>;
   postalCode: Scalars["String"]["input"];
