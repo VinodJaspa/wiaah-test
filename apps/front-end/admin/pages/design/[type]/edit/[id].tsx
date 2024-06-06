@@ -1,3 +1,4 @@
+import { LanguageSelector } from "components/views/sellers/LanguageSelector";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -99,22 +100,9 @@ const EditSlideShowPage: NextPage = () => {
           <SimpleTabs>
             <div className="flex flex-wrap">
               <SimpleTabHead>
-                {WiaahLanguageCountries.map(
-                  ({ code, name }) =>
-                    ({ selected, onClick }) =>
-                      (
-                        <div
-                          className={`p-4 w-fit flex items-center gap-1 ${
-                            selected ? "border border-b-0 border-gray-300" : ""
-                          }`}
-                        >
-                          <FlagIcon code={code} />
-                          <p onClick={onClick} className={""}>
-                            {name}
-                          </p>
-                        </div>
-                      )
-                )}
+                <LanguageSelector
+                  WiaahLanguageCountriesIsoCodes={WiaahLanguageCountries}
+                />
               </SimpleTabHead>
             </div>
             <SimpleTabItemList>
@@ -147,7 +135,7 @@ const EditSlideShowPage: NextPage = () => {
                     {mapArray(FAKE_SLIDES, ({ id, link, sortOrder, title }) => (
                       <Tr>
                         <Td>
-                          <Image src={link} />
+                          <Image src={link} alt="" />
                         </Td>
                         <Td>{title}</Td>
                         <Td>{link.slice(0, 30)}</Td>

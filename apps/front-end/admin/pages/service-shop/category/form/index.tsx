@@ -50,6 +50,7 @@ import {
 } from "utils";
 import { array, InferType, number, object, string } from "yup";
 import { useUpdateServiceCategory } from "@features/Services/Services/mutation";
+import { LanguageSelector } from "components/views/sellers/LanguageSelector";
 
 const EditCategory = () => {
   const { getParam, back } = useRouting();
@@ -282,27 +283,11 @@ const EditCategory = () => {
             <SimpleTabs>
               <div className="flex items-center gap-4">
                 <SimpleTabHead>
-                  {mapArray(
-                    WiaahLanguageCountriesIsoCodes,
-                    (v, i) =>
-                      ({ onClick, selected }) =>
-                        (
-                          <div
-                            key={i}
-                            onClick={() => {
-                              onClick();
-                              setLang(v);
-                            }}
-                            className={`${
-                              selected
-                                ? "border-2 border-gray-300 border-b-white"
-                                : ""
-                            } px-8 py-2`}
-                          >
-                            <FlagIcon code={v} />
-                          </div>
-                        )
-                  )}
+                  <LanguageSelector
+                    WiaahLanguageCountriesIsoCodes={
+                      WiaahLanguageCountriesIsoCodes
+                    }
+                  />
                 </SimpleTabHead>
               </div>
             </SimpleTabs>

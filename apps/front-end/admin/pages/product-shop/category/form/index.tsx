@@ -1,4 +1,5 @@
 import { CreateCategoryInput } from "@features/API";
+import { LanguageSelector } from "components/views/sellers/LanguageSelector";
 import { Formik } from "formik";
 import React from "react";
 import { FlagIconCode } from "react-flag-kit";
@@ -241,27 +242,11 @@ const EditCategory = () => {
           <SimpleTabs>
             <div className="flex items-center">
               <SimpleTabHead>
-                {mapArray(
-                  WiaahLanguageCountriesIsoCodes as FlagIconCode[],
-                  (v, i) =>
-                    ({ onClick, selected }) =>
-                      (
-                        <div
-                          onClick={() => {
-                            onClick && onClick();
-                            changeLang(v);
-                          }}
-                          className={`${
-                            selected
-                              ? "border-2 border-gray-300 border-b-white"
-                              : ""
-                          } px-8 py-2`}
-                          key={i}
-                        >
-                          <FlagIcon code={v} />
-                        </div>
-                      )
-                )}
+                <LanguageSelector
+                  WiaahLanguageCountriesIsoCodes={
+                    WiaahLanguageCountriesIsoCodes
+                  }
+                />
               </SimpleTabHead>
             </div>
           </SimpleTabs>
