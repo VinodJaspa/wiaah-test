@@ -9,6 +9,7 @@ import {
   Prefix,
   Spacer,
   PhoneNumberInput,
+  useCursorScrollPagination,
 } from "@UI";
 import { AddressDetails, AddressInputsFields } from "types";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
@@ -36,6 +37,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   askShippingAddress = true,
 }) => {
   const { t } = useTranslation();
+  const { controls } = useCursorScrollPagination();
   const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
   const [input, setInputs] = React.useState<AddressInputsFields>(
     initialInputs
@@ -90,6 +92,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       {t("Delivery country")}
                     </div>
                     <SearchFilterInput
+                      controls={controls}
                       id="DeliverySearchInput"
                       icon={() =>
                         currentCountryCode && (
@@ -177,6 +180,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       <>
                         <BoldText>{t("Address finder")}</BoldText>
                         <SearchFilterInput
+                          controls={controls}
                           id="AddressFinderInput"
                           icon={() => <FaSearch />}
                           onChange={(e) =>
