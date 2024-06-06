@@ -8,20 +8,20 @@ import {
   CollaboratorCard,
 } from "ui";
 import { useScreenWidth } from "hooks";
-import { Shop, ShopProfile } from "../Shop/ShopProfile";
+import { ShopProfile } from "../Shop/ShopProfile";
 import {
   CollaboratorCategory,
   CollaboratorShop,
-} from "types/market/Collaboration";
+} from "../../../../../packages/types/src/market/Collaboration";
 import { useRouter } from "next/router";
 import { shopRouting } from "uris";
 export interface CollaborationViewProps {
-  shop: Shop;
+  shopId: string;
   categories: CollaboratorCategory[];
 }
 
 export const CollaborationView: React.FC<CollaborationViewProps> = ({
-  shop,
+  shopId,
   categories,
 }) => {
   const router = useRouter();
@@ -46,7 +46,7 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
 
   return (
     <FlexStack direction="vertical" fullWidth verticalSpacingInRem={2}>
-      <ShopProfile shop={shop} />
+      <ShopProfile shopId={shopId} />
       <Container>
         <FlexStack
           direction={min ? "vertical" : "horizontal"}
