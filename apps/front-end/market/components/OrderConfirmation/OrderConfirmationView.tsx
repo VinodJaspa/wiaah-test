@@ -17,7 +17,6 @@ import {
   Text,
   TotalCost,
   useCartSummary,
-  UserInfoConfirmation,
   useScreenWidth,
 } from "ui";
 import { DividerProps } from "ui/components/partials/Divider";
@@ -43,7 +42,8 @@ const OrderConfirmationView: React.FC<OrderConfirmationViewProps> = () => {
           fullWidth
         >
           <FlexStack fullWidth direction="vertical">
-            <UserInfoConfirmation />
+            {/* TODO: UserInfoConfirmation component */}
+            {/* <UserInfoConfirmation /> */}
             <div className="flex flex-col items-end gap-4 bg-white p-4 ">
               <Spacer spaceInRem={2} />
               <OrderConfirmationProductsTable
