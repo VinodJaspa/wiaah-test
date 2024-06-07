@@ -10,7 +10,7 @@ export type GetServicePostQueryVariables = Exact<{
 }>;
 
 export type GetServicePostQuery = { __typename?: "Query" } & {
-  getServicePost: { __typename?: "ServicePost" } & Pick<
+  getServicePost: { __typename?: "ServicePost" } & Array<Pick<
     ServicePost,
     | "id"
     | "reactionNum"
@@ -34,11 +34,11 @@ export type GetServicePostQuery = { __typename?: "Query" } & {
           profile?: Maybe<
             { __typename?: "Profile" } & Pick<
               Profile,
-              "id" | "username" | "photo" | "profession" | "verified"
+              "id" | "username" | "photo" | "profession" | "verified" |"followers"
             >
           >;
         };
-    };
+    }>
 };
 
 export const useGetServicePostDetails = (id: string) => {
