@@ -39,7 +39,6 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
           | "hostId"
           | "hostType"
           | "updatedAt"
-          | "hostUserId"
         > & {
             attachment: { __typename?: "Attachment" } & Pick<
               Attachment,
@@ -155,6 +154,5 @@ query getContentComments(
 
       return res.data.getContentComments;
     },
-    options
   );
 };

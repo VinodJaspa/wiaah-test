@@ -5,10 +5,10 @@ import {
   ServiceStatus,
   ServicePaymentMethod,
   ServiceCancelationPolicy,
+  Scalars,
 } from "@features/API";
 import {
   Exact,
-  GetRestaurantInput,
   Maybe,
   Restaurant,
   RestaurantMenu,
@@ -25,7 +25,7 @@ import { isDev } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 
 export type GetRestaurantQueryVariables = Exact<{
-  args: GetRestaurantInput;
+  args: {id:Scalars["ID"]["input"]};
 }>;
 
 export type GetRestaurantQuery = { __typename?: "Query" } & {

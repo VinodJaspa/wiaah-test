@@ -3,7 +3,6 @@ import {
   Dish,
   Doctor,
   Exact,
-  GetHotelServiceArgs,
   HealthCenterSpecialty,
   Hotel,
   HotelRoom,
@@ -14,7 +13,6 @@ import {
   ServiceContact,
   ServiceDailyPrices,
   ServiceDayWorkingHours,
-  ServiceDetails,
   ServiceDiscount,
   ServiceExtra,
   ServiceLocation,
@@ -24,24 +22,25 @@ import {
   ServicePresentationType,
   ServicePropertyMeasurements,
   Treatment,
-  WorkingSchedule,
+  ServiceShopRaw,
   BeautyCenterTreatmentCategory,
   RestaurantMenu,
   Vehicle,
   VehicleProperties,
+  ServiceTypeOfSeller,
 } from "@features/API";
 import { useQuery } from "react-query";
 import { random } from "lodash";
 import { createGraphqlRequestClient } from "api";
 
 export type GetServiceDetailsQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetServiceDetailsQuery = { __typename?: "Query" } & {
   getServiceDetails?: Maybe<
     { __typename?: "ServiceDetails" } & Pick<
-      ServiceDetails,
+      ServiceShopRaw,
       | "createdAt"
       | "cuisinesTypeId"
       | "establishmentTypeId"
@@ -139,14 +138,19 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
               | "title"
               | "sellerId"
               | "reviews"
+              |"adaptedFor"
+              | "title"
+              |"pricePerNight"
+              |"thumbnail"
+              |"includedAmenities"
             > & {
-                cancelationPolicies: Array<
+                cancelationPolicies?: Array<
                   { __typename?: "ServiceCancelationPolicy" } & Pick<
                     ServiceCancelationPolicy,
                     "cost" | "duration"
                   >
                 >;
-                discount: { __typename?: "ServiceDiscount" } & Pick<
+                discount?: { __typename?: "ServiceDiscount" } & Pick<
                   ServiceDiscount,
                   "units" | "value"
                 >;
@@ -164,7 +168,7 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
                     >
                   >
                 >;
-                measurements: {
+                measurements?: {
                   __typename?: "ServicePropertyMeasurements";
                 } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
                 popularAmenities?: Maybe<
@@ -181,6 +185,7 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
                     "src" | "type"
                   >
                 >;
+
               }
           >
         >;
@@ -465,6 +470,15 @@ query GetServiceDetails($id:String!){
       createdAt: "2023-03-06T00:00:00Z",
       id: "12345",
       ownerId: "67890",
+      cuisinesTypeId:"543",
+      establishmentTypeId:"423",
+      highest_price:500,
+      lowest_price:100,
+      michelin_guide_stars:3,
+      payment_methods:[],
+      setting_and_ambianceId:"44",
+      type_of_seller:ServiceTypeOfSeller.Individual,
+
       policies: [
         {
           policyTitle: "Cancellation Policy",
@@ -560,6 +574,7 @@ query GetServiceDetails($id:String!){
           beds: 3,
           num_of_rooms: 2,
           sellerId: "",
+          thumbnail:""
         },
       ],
       serviceMetaInfo: {
@@ -578,75 +593,6 @@ query GetServiceDetails($id:String!){
         email: "email",
         phone: "123456789",
         state: "state",
-      },
-      owner: {
-        email: "email",
-        firstName: "first",
-        id: "id",
-        lastName: "last",
-        verified: true,
-        photo: "photo",
-      },
-      workingHours: {
-        id: "",
-        weekdays: {
-          fr: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          mo: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          sa: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          su: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          th: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          tu: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-          we: {
-            periods: [
-              new Date().toString(),
-              new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
-              ).toString(),
-            ],
-          },
-        },
       },
     };
 

@@ -3,6 +3,7 @@ import {
   SearchServicesInput,
   ServiceAdaptation,
   ServiceType,
+  ShopStatus,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -40,14 +41,17 @@ export type SearchServiceQuery = {
       thumbnail: string;
       rating: number;
       type: ServiceType;
+      title:string;
       speciality?: string | null;
       availableAppointments?: Array<string> | null;
       healthCenterBookedAppointments: Array<string>;
       saved: boolean;
       sellerId: string;
+      updatedAt:string;
       shop: {
         __typename?: "Shop";
         id: string;
+        status:ShopStatus
         location: {
           __typename?: "Location";
           address: string;
@@ -109,8 +113,12 @@ query SearchService($args: SearchServicesInput!) {
       availableAppointments
       healthCenterBookedAppointments
       saved
+      saved
+      sellerId
+      updatedAt
       shop {
         id
+        status
         location {
           address
           city

@@ -5,7 +5,7 @@ import { Exact, RestaurantDishType, Scalars, Service } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetShopServicesByIdsQueryVariables = Exact<{
-  sellerId: Scalars["String"];
+  sellerId: Scalars["String"]["input"];
   ids: Array<Scalars["String"]> | Scalars["String"];
 }>;
 
