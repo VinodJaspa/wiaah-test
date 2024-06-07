@@ -1,3 +1,4 @@
+import { ServiceType } from "@features/API";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,8 +17,8 @@ import { randomNum } from "utils";
 
 export const VehicleSearchResultsView: React.FC = () => {
   const { t } = useTranslation();
-  const { filters } = useSearchFilters();
-  const { isLoading, isError, data } = useGetServiceSearchFiltersQuery(filters);
+  const filter: ServiceType = ServiceType.Vehicle;
+  const { isLoading, isError, data } = useGetServiceSearchFiltersQuery(filter);
   const { getLocationFilterQuery } = useSearchFilters();
   return (
     <div className="flex gap-4 flex-col md:flex-row px-2">
