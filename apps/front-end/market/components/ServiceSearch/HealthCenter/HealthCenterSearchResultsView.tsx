@@ -21,7 +21,11 @@ import {
   usePaginationControls,
   Pagination,
   SpinnerFallback,
+  CalenderIcon,
+  ClockIcon,
+  PersonIcon,
 } from "ui";
+import { useTranslation } from "react-i18next";
 import { randomNum } from "utils";
 
 export const HealthCenterSearchResultsView: React.FC = () => {
@@ -34,6 +38,7 @@ export const HealthCenterSearchResultsView: React.FC = () => {
     isLoading: healthIsLoading,
     isError: healthIsError,
   } = useGetFilteredHealthCenters({ pagination });
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <HealthCenterSearchBox />
@@ -49,6 +54,20 @@ export const HealthCenterSearchResultsView: React.FC = () => {
                         <StepperHeader>
                           <ResturantFindTableFilterStepperHeader
                             currentStepIdx={currentStepIdx}
+                            steps={[
+                              {
+                                icon: <CalenderIcon />,
+                                name: t("Date"),
+                              },
+                              {
+                                icon: <ClockIcon />,
+                                name: t("Time"),
+                              },
+                              {
+                                icon: <PersonIcon />,
+                                name: t("Guests"),
+                              },
+                            ]}
                           />
                         </StepperHeader>
                         <StepperContent>
