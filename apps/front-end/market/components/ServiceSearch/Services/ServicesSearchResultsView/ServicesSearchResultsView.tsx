@@ -1,3 +1,4 @@
+import { ServiceType } from "@features/API";
 import { Form } from "antd";
 import { Formik } from "formik";
 import React from "react";
@@ -12,14 +13,18 @@ import {
   ServicesSearchResultsFiltersSidebar,
 } from "ui";
 
-export const ServicesSearchResultsView: React.FC = () => {
+type ServicesSearchResultsViewProps = {
+  serviceType: ServiceType;
+};
+
+export const ServicesSearchResultsView: React.FC<
+  ServicesSearchResultsViewProps
+> = ({ serviceType }) => {
   const {
     data: res,
     isLoading,
     isError,
-  } = useGetServiceSearchFiltersQuery({
-    [SERVICESTYPE_INDEXKEY]: ServicesRequestKeys.general,
-  });
+  } = useGetServiceSearchFiltersQuery(serviceType);
 
   return (
     <div className="flex flex-col md:flex-row gap-8 w-full">
