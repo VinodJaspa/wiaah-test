@@ -9,13 +9,11 @@ import {
   SocialShopPostcardProps,
   useResponsive,
 } from "@UI";
+import { ShopCardInfo } from "types";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
-  items: {
-    postInfo: SocialShopPostcardProps["postInfo"];
-    profileInfo: SocialShopPostcardProps["profileInfo"];
-  }[];
+  items: SocialShopPostcardProps[];
   cols?: number;
   wrapperProps?: ListWrapperProps;
   grid?: boolean;

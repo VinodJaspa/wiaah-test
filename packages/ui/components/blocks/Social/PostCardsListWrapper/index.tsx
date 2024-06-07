@@ -14,9 +14,7 @@ import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
-  posts: (PostCardProps["postInfo"] & {
-    publisher?: PostCardProps["profileInfo"] | null;
-  })[];
+  posts: PostCardInfo[];
   cols?: number;
   grid?: boolean;
   onPostClick?: (postId: string) => any;
@@ -38,13 +36,12 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
       <PostCard
         onProfileClick={() =>
           onProfileClick &&
-          post.publisher?.username &&
-          onProfileClick(post.publisher?.username)
+          post.profileInfo?.name &&
+          onProfileClick(post.profileInfo?.name)
         }
         // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
-        onPostClick={() => onPostClick && onPostClick(post.id)}
-        postInfo={post}
-        profileInfo={post.publisher!}
+        onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
+        post={post}
         key={idx}
       />
     ));

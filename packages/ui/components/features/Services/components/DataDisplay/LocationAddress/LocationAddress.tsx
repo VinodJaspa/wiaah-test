@@ -1,16 +1,14 @@
+import { ServiceLocation } from "@features/API";
 import React from "react";
 import { HtmlDivProps } from "types";
 
 export const LocationAddressDisplay: React.FC<{
-  address: string;
-  city: string;
-  country: string;
-  postalCode?: string;
-  state?: string;
-}> = ({ address, city, country, postalCode, ...props }) => {
+  location: ServiceLocation;
+}> = ({ location }) => {
   return (
-    <p {...props}>
-      {address} {postalCode}, {city}, {country}
+    <p>
+      {location.address} {location.postalCode}, {location.city},{" "}
+      {location.country}
     </p>
   );
 };
