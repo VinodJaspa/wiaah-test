@@ -2,13 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HStack, ServicePropertiesSwticher } from "@UI";
 
-export type amenite = {
-  name: string;
-  slug: string;
-};
-
 export interface PopularAmenitiesSectionProps {
-  amenities: amenite[];
+  amenities: string[];
   cols?: number;
 }
 
@@ -27,10 +22,8 @@ export const PopularAmenitiesSection: React.FC<
       >
         {amenities.map((amenite, i) => (
           <HStack key={i}>
-            <ServicePropertiesSwticher slug={amenite.slug} />
-            <p className="font-medium text-darkBrown text-base">
-              {t(amenite.name)}
-            </p>
+            <ServicePropertiesSwticher slug={amenite} />
+            <p className="font-medium text-darkBrown text-base">{t(amenite)}</p>
           </HStack>
         ))}
       </div>

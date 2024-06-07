@@ -16,9 +16,17 @@ import {
 } from "@UI";
 import {
   Discount,
+  HotelRoom,
+  Maybe,
   Service,
   ServiceAdaptation,
+  ServiceAmenity,
+  ServiceCancelationPolicy,
+  ServiceDailyPrices,
+  ServiceDiscount,
   ServiceExtra,
+  ServicePresentation,
+  ServicePropertyMeasurements,
 } from "@features/API";
 import { mapArray } from "utils";
 import { startCase } from "lodash";
@@ -27,24 +35,45 @@ import { ImCheckmark } from "react-icons/im";
 export interface HotelRoomDetailsCardProps {
   onBook?: (roomId: string) => any;
   room: Pick<
-    Service,
-    | "id"
-    | "name"
+    HotelRoom,
     | "bathrooms"
     | "beds"
-    | "adaptedFor"
-    | "cancelationPolicy"
-    | "cancelable"
+    | "createdAt"
     | "dailyPrice"
-    | "measurements"
-    | "price"
-    | "rating"
-    | "reviews"
+    | "description"
+    | "hotelId"
+    | "id"
     | "includedAmenities"
+    | "includedServices"
+    | "num_of_rooms"
+    | "pricePerNight"
+    | "rating"
+    | "updatedAt"
+    | "title"
+    | "sellerId"
+    | "reviews"
+    | "adaptedFor"
+    | "title"
+    | "pricePerNight"
     | "thumbnail"
   > & {
-    discount?: Pick<Discount, "amount" | "units">;
-    extras?: Pick<ServiceExtra, "cost" | "name">[];
+    cancelationPolicies?: Array<
+      Pick<ServiceCancelationPolicy, "cost" | "duration">
+    >;
+    discount?: Pick<ServiceDiscount, "units" | "value">;
+    dailyPrices?: Maybe<
+      Pick<ServiceDailyPrices, "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we">
+    >;
+    extras?: Maybe<
+      Array<
+        { __typename?: "ServiceExtra" } & Pick<ServiceExtra, "cost" | "name">
+      >
+    >;
+    measurements?: {
+      __typename?: "ServicePropertyMeasurements";
+    } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
+    popularAmenities?: Maybe<Array<Pick<ServiceAmenity, "label" | "value">>>;
+    presentations?: Array<Pick<ServicePresentation, "src" | "type">>;
   };
 }
 
@@ -67,7 +96,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
           </div>
           <div className="flex flex-col w-full gap-5">
             <div className="flex gap-4 justify-between">
-              <p className="font-bold text-base text-title">{room.name}</p>
+              <p className="font-bold text-base text-title">{room.title}</p>
               {room.measurements ? (
                 <div className="flex items-center gap-2 text-lightBlack">
                   <PropertyDimensionsIcon className="text-sm" />
@@ -163,14 +192,17 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
         <div className="flex flex-col gap-5 w-full">
           <div className="flex items-center flex-wrap gap-5">
             <div className="text-lg items-center flex gap-2 font-bold text-black">
-              <PriceDisplay price={room.price} />
+              <PriceDisplay price={room.pricePerNight} />
 
               {room.discount ? (
                 <>
                   <div className="text-sm flex gap-1 text-lightBlack items-center font-normal">
                     <UnDiscountedPriceDisplay
-                      amount={room.price + room.discount.amount * room.price}
-                      discount={room.discount.amount}
+                      amount={
+                        room.pricePerNight +
+                        room.discount.value * room.pricePerNight
+                      }
+                      discount={room.discount.value}
                     />
                     /<p className="text-black">{t("night")}</p>
                   </div>

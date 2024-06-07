@@ -14,7 +14,13 @@ import {
   LocationIcon,
 } from "@UI";
 import { startCase } from "lodash";
-import { AttachmentType, Profile, ServicePost } from "@features/API";
+import {
+  AttachmentType,
+  Profile,
+  ServicePost,
+  Account,
+  PostLocation,
+} from "@features/API";
 
 type Post = Pick<
   ServicePost,
@@ -29,11 +35,14 @@ type Post = Pick<
   | "serviceId"
   | "serviceType"
 > & {
+  location: Pick<PostLocation, "address" | "city" | "state" | "country">;
   service: Pick<Service, "id" | "thumbnail" | "price" | "rating" | "title">;
-  profile: Pick<
-    Profile,
-    "id" | "username" | "verified" | "profession" | "photo" | "followers"
-  >;
+  user: Pick<Account, "id"> & {
+    profile?: Pick<
+      Profile,
+      "id" | "username" | "verified" | "profession" | "photo" | "followers"
+    >;
+  };
 };
 
 export interface SocialServicePostMetaDataCardProps {
@@ -61,16 +70,16 @@ export const SocialServicePostMetaDataCard: React.FC<
               : null}
           </Slider>
         </AspectRatio>
-        {post.profile ? (
+        {post.user.profile ? (
           <div className="absolute bottom-0 left-0 w-full p-2 text-white bg-gradient-to-t from-black  to-transparent">
             <UserProfile
               user={{
-                username: post.profile.username,
-                followers: post.profile.followers,
-                id: post.profile.id,
-                photo: post.profile.photo,
-                profession: post.profile.profession,
-                verified: post.profile.verified,
+                username: post.user.profile.username,
+                followers: post.user.profile.followers,
+                id: post.user.profile.id,
+                photo: post.user.profile.photo,
+                profession: post.user.profile.profession,
+                verified: post.user.profile.verified,
               }}
             />
           </div>

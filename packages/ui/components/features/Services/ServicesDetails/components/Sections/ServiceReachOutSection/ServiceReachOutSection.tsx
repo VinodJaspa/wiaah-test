@@ -8,11 +8,14 @@ import {
   LocationAddressDisplay,
 } from "@UI";
 import { runIfFn } from "utils";
-import { Location } from "@features/API";
+import { Location, ServiceLocation } from "@features/API";
 
 export interface ServiceReachOutSectionProps {
   email: string;
-  location: Location;
+  location: Pick<
+    ServiceLocation,
+    "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+  >;
   telephone: string;
   showContact?: boolean;
 }
@@ -34,7 +37,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
     {
       label: t("Address"),
       icon: <LocationIcon className="fill-primary" />,
-      value: <LocationAddressDisplay {...location} />,
+      value: <LocationAddressDisplay location={location} />,
     },
     {
       label: t("Phone"),

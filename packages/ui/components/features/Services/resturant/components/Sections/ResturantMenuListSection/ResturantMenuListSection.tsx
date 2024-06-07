@@ -1,13 +1,23 @@
-import { RestaurantMenu, ServiceCancelationPolicy } from "api";
+import { ServiceCancelationPolicy } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
 import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "@UI";
 import { FilterAndAddToArray, mapArray } from "utils";
+import { RestaurantMenu, Dish } from "@features/API";
 
 export interface ResturantMenuListSectionProps {
   cancelation: ServiceCancelationPolicy[];
-  menus: RestaurantMenu[];
+  menus: Array<
+    { __typename?: "RestaurantMenu" } & Pick<RestaurantMenu, "id" | "name"> & {
+        dishs: Array<
+          { __typename?: "Dish" } & Pick<
+            Dish,
+            "id" | "ingredients" | "price" | "name" | "thumbnail"
+          >
+        >;
+      }
+  >;
 }
 
 export const ResturantMenuListSection: React.FC<
