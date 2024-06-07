@@ -1,14 +1,17 @@
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import {
+  AccountType,
   Attachment,
   AttachmentType,
   Hashtag,
   NewsfeedPost,
+  PostCardInfo,
   PostLocation,
   PostMention,
   PostTag,
   Profile,
+  StaffAccountType,
 } from "@features/API";
 import { Exact, Maybe, Scalars } from "types";
 import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
@@ -19,47 +22,8 @@ export type GetNewsfeedPostQueryVariables = Exact<{
 }>;
 
 export type GetNewsfeedPostQuery = { __typename?: "Query" } & {
-  getNewsfeedPostById: { __typename?: "NewsfeedPost" } & Pick<
-    NewsfeedPost,
-    | "id"
-    | "comments"
-    | "authorProfileId"
-    | "content"
-    | "createdAt"
-    | "reactionNum"
-    | "shares"
-    | "title"
-    | "updatedAt"
-    | "userId"
-    | "views"
-  > & {
-      attachments: Array<
-        { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
-      >;
-      hashtags: Array<{ __typename?: "Hashtag" } & Pick<Hashtag, "tag">>;
-      location?: Maybe<
-        { __typename?: "PostLocation" } & Pick<
-          PostLocation,
-          "address" | "city" | "country" | "state"
-        >
-      >;
-      mentions: Array<
-        { __typename?: "PostMention" } & Pick<PostMention, "userId">
-      >;
-      publisher?: Maybe<
-        { __typename?: "Profile" } & Pick<
-          Profile,
-          | "id"
-          | "verified"
-          | "username"
-          | "photo"
-          | "profession"
-          | "createdAt"
-          | "ownerId"
-        >
-      >;
-      tags: Array<{ __typename?: "PostTag" } & Pick<PostTag, "userId">>;
-    };
+  
+  getNewsfeedPostById:  PostCardInfo
 };
 
 export const useGetNewsfeedPostQuery = (id: string) => {
@@ -119,38 +83,52 @@ export const useGetNewsfeedPostQuery = (id: string) => {
 
   return useQuery(["get-post", { id }], async () => {
     if (isDev) {
-      const mockRes: GetNewsfeedPostQuery["getNewsfeedPostById"] = {
-        id: "",
-        attachments: [{ src: getRandomImage(), type: AttachmentType.Img }],
-        authorProfileId: "",
-        comments: 45,
-        content: "Test",
-        createdAt: new Date().toString(),
-        reactionNum: 26,
-        updatedAt: new Date().toUTCString(),
-        views: randomNum(1500),
-        publisher: {
-          id: "",
-          ownerId: "",
-          photo: getRandomImage(),
-          profession: "profe",
-          username: getRandomName().firstName,
-          createdAt: new Date().toUTCString(),
-          verified: true,
-        },
-        shares: 54,
-        tags: [],
-        title: "title",
-        userId: "",
-        hashtags: [],
-        mentions: [],
-        location: {
-          city: "",
-          country: "",
-          address: "",
-          state: "",
-        },
-      };
+      const mockRes: GetNewsfeedPostQuery["getNewsfeedPostById"] = 
+        {
+          profileInfo: {
+            id: "user123",
+            name: "John Doe",
+            thumbnail: "https://example.com/profile_pic_thumb.jpg",
+            accountType: AccountType.Seller,
+            public: true,
+            profession: "Software Engineer",
+          },
+          postInfo: {
+            createdAt: "2024-06-07T12:34:56Z",
+            id: "post456",
+            content: "This is a sample post with some content!",
+            tags: ["#fakedata", "#socialmedia"],
+            views: 100,
+            attachments: [
+              {
+                type: "image",
+                src: "https://example.com/post_image.jpg",
+              },
+            ],
+            numberOfLikes: 25,
+            numberOfComments: 3,
+            numberOfShares: 5,
+            comments: [
+              {
+                id: "comment1",
+                user: {
+                  id: "user789",
+                  name: "Jane Smith",
+                  thumbnail: "https://example.com/jane_thumb.jpg",
+                  accountType: AccountType.Buyer,
+                  public: true,
+                },
+                replies: 0,
+                likes: 2,
+                createdAt: "2024-06-07T13:00:00Z",
+                content: "Nice post!",
+              },
+              // Add more comments here as needed
+            ],
+            thumbnail: "https://example.com/post_thumb.jpg",
+          },
+        };
+
 
       return mockRes;
     }
