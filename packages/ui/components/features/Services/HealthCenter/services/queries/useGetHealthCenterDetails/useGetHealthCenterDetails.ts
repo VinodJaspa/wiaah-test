@@ -5,6 +5,7 @@ import {
   ServicePaymentMethod,
   ServiceStatus,
   HealthCenterDoctorAvailablityStatus,
+  ServiceWorkingSchedule,
 } from "@features/API";
 import { AsyncReturnType } from "@UI/../types/src";
 import {
@@ -27,7 +28,7 @@ import { createGraphqlRequestClient } from "api";
 import { random } from "lodash";
 
 export type GetHealthCenterQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetHealthCenterQuery = { __typename?: "Query" } & {
@@ -102,55 +103,103 @@ export type GetHealthCenterQuery = { __typename?: "Query" } & {
         | "metaTagKeywords"
         | "title"
       >;
-      workingHours: { __typename?: "WorkingSchedule" } & Pick<
-        WorkingSchedule,
-        "id"
-      > & {
-          weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-            fr?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            mo?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            sa?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            su?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            th?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            tu?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-            we?: Maybe<
-              { __typename?: "ServiceDayWorkingHours" } & Pick<
-                ServiceDayWorkingHours,
-                "periods"
-              >
-            >;
-          };
-        };
+      workingSchedule?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+              fr?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              mo?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              sa?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              su?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              th?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              tu?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              we?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+            };
+          }
+      >;
+      takenSchedule?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+              fr?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              mo?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              sa?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              su?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              th?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              tu?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              we?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+            };
+          }
+      >;
+
     };
 };
 
@@ -392,7 +441,69 @@ workingHours {
         verified: true,
         photo: "photo",
       },
-      workingHours: {
+
+      takenSchedule: {
+        id: "",
+        weekdays: {
+          fr: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          mo: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          sa: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          su: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          th: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          tu: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+          we: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11))
+              ).toString(),
+            ],
+          },
+        },
+      },
+      workingSchedule: {
         id: "",
         weekdays: {
           fr: {
