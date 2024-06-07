@@ -16,13 +16,14 @@ import {
   SpinnerFallback,
   Pagination,
   usePaginationControls,
+  ServiceType,
 } from "ui";
 import { randomNum } from "utils";
 
 export const BeautyCenterSearchResultsView: React.FC = () => {
-  const { filters, getLocationFilterQuery } = useSearchFilters();
+  const filter: ServiceType = ServiceType.BeautyCenter;
   const { controls, pagination } = usePaginationControls();
-  const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filters);
+  const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filter);
   const {
     data: treatments,
     isLoading: treatmentsIsLoading,
