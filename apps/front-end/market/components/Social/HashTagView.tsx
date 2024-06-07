@@ -15,6 +15,7 @@ import {
   ShoppingCartIcon,
   useGetTopHashtagPostsQuery,
   useGetTopHashtagServicePost,
+  newsFeedPostIdState,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
@@ -27,7 +28,7 @@ export interface HashTagViewProps {
 export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
-  const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery();
+  const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery(tag);
   const { data: servicePostHashtagPosts } = useGetTopHashtagServicePost({
     tag,
   });
@@ -48,10 +49,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
-          <PostCardsListWrapper
-            cols={3}
-            posts={newsfeedPosts.concat(newsfeedPosts)}
-          />
+          <PostCardsListWrapper cols={3} posts={newsfeedPosts} />
         </div>
       ),
     },
@@ -64,7 +62,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col w-full gap-16">
-          <HashTagPostsListWrapper hashtags={topPosts} />
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
           <SocialServicePostsList posts={[]} />
         </div>
@@ -79,7 +77,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={topPosts} />
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
 
           <Divider />
 
