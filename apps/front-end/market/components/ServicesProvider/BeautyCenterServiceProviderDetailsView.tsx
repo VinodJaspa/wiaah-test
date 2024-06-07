@@ -47,6 +47,17 @@ export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
         sidebar={
           <div className="w-full h-full overflow-hidden">
             <WorkingDaysCalender
+              takenDates={
+                res
+                  ? Object.values(res.takenHours.weekdays).map((value) => ({
+                      date: new Date().toString(),
+                      workingHoursRanges:
+                        typeof value === "object"
+                          ? [{ from: value.periods[0], to: value.periods[1] }]
+                          : [],
+                    }))
+                  : []
+              }
               workingDates={
                 res
                   ? Object.values(res.workingHours.weekdays).map((value) => ({

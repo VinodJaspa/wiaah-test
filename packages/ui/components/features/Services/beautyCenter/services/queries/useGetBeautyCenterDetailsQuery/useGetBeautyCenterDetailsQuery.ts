@@ -14,7 +14,7 @@ import {
   ServiceMetaInfo,
   ServicePolicy,
   ServicePresentation,
-  WorkingSchedule,
+  ServiceWorkingSchedule,
   ServicePresentationType,
   ServicePaymentMethod,
   ServiceStatus,
@@ -108,7 +108,7 @@ export type GetBeautyQuery = { __typename?: "Query" } & {
         "address" | "city" | "country" | "email" | "phone" | "state"
       >;
       workingHours?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<WorkingSchedule, "id"> & {
+        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
             weekdays: { __typename?: "WeekdaysWorkingHours" } & {
               fr?: Maybe<
                 { __typename?: "ServiceDayWorkingHours" } & Pick<
@@ -155,6 +155,55 @@ export type GetBeautyQuery = { __typename?: "Query" } & {
             };
           }
       >;
+      takenHours?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+              fr?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              mo?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              sa?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              su?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              th?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              tu?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              we?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+            };
+          }
+      >;
+
     };
 };
 
