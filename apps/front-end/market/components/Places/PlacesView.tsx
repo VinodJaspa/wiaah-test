@@ -8,7 +8,6 @@ import {
   Center,
   Divider,
   Icon,
-  Image,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -18,6 +17,7 @@ import { MdPlace } from "react-icons/md";
 import { ListWrapper, PlaceCard, PlaceCardProps, placesPlaceholder } from "ui";
 import { placeCardPlaceholder } from "placeholder";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
+import Image from "next/image";
 
 const costumPH: PlaceCardProps[] = [
   {
@@ -72,39 +72,29 @@ export const PlacesView: React.FC<PlaceViewProps> = ({}) => {
   );
 
   return (
-    <Flex direction={"column"} my="2rem">
-      <HStack justify={"space-between"} w="100%">
-        <Button visibility={"hidden"} textTransform={"capitalize"}>
-          {t("follow", "follow")}
-        </Button>
-        <HStack>
+    <div className="flex flex-col my-4">
+      <div className="flex justify-between w-full">
+        <button className="hidden capitalize">{t("follow", "follow")}</button>
+        <div>
           <Image
-            rounded="xl"
-            h="3rem"
-            w="auto"
-            objectFit="cover"
+            className="rounded-xl h-24 w-auto object-cover"
             src="/place-1.jpg"
+            alt="place"
+            width={100}
+            height={100}
           />
-          <Icon fontSize={"xx-large"} as={AiOutlineShop} />
-          <Text fontWeight={"bold"} fontSize="x-large">
-            {tag}
-          </Text>
-        </HStack>
-        <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
-      </HStack>
-      <Divider borderColor={"black"} my="1rem" />
-      {/* {isLoading ? (
-        <Center>
-          <Spinner colorScheme={"primary"} />
-        </Center>
-      ) : ( */}
-      <ListWrapper cols={cols}>
+          <AiOutlineShop className="text-2xl" />
+          <h3 className="font-bold text-xl">{tag}</h3>
+        </div>
+        <button className="capitalize">{t("follow", "follow")}</button>
+      </div>
+      <div className="border border-black my-6" />
+      <div>
         {placesPH &&
           placesPH.map((place, i) => (
             <PlaceCard fixedHeight="17rem" key={i} {...place} />
           ))}
-      </ListWrapper>
-      {/* )} */}
-    </Flex>
+      </div>
+    </div>
   );
 };
