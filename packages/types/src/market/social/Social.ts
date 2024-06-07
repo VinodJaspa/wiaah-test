@@ -8,7 +8,8 @@ export interface ProfileInfo {
   thumbnail: string;
   accountType: "seller" | "buyer";
   public: boolean;
-  profession: string;
+  profession?: string;
+  photo?:string;
 }
 
 export interface ShopSocialProfileInfo extends ProfileInfo {
@@ -66,9 +67,10 @@ export interface PostInfo {
   numberOfComments: number;
   numberOfShares: number;
   comments?: PostComment[];
+  thumbnail?: string;
 }
 
-export interface PostCardInfo {
+export type PostCardInfo =  {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
 }
@@ -111,6 +113,7 @@ export interface ShopCardInfo {
   noOfComments: number;
   comments: PostComment[];
   url: string;
+  createdAt:string
 }
 
 export interface AffiliationOfferCardInfo {
