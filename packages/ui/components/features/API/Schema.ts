@@ -558,6 +558,23 @@ export type BannedCountry = {
   isoCode: Scalars["String"]["output"];
 };
 
+
+export type BeautyCenter = {
+  _typename?:"BeatuyCenter";
+  beauty_center_typeId:Scalars["ID"]["input"];
+  id:Scalars["ID"]["output"];
+  ownerId:Scalars["ID"]["input"];
+  payment_methods: Array<ServicePaymentMethod>;
+  rating: Scalars["Float"]["input"];
+  status: ServiceStatus;
+  title:Scalars["String"]["input"];
+  totalReviews: Scalars["Int"]["input"];
+  type_of_seller: ServiceTypeOfSeller 
+  createdAt: Scalars["DateTime"]["input"];
+  updatedAt: Scalars["DateTime"]["input"];
+  vat:Scalars["Float"]["input"];
+}
+
 export type BeautyCenterTreatmentCategory = {
   __typename?: "BeautyCenterTreatmentCategory";
   createdAt: Scalars["DateTime"]["output"];
@@ -2009,7 +2026,7 @@ export type GetMyFriendSuggestionsInput = {
 
 export type GetMyNewsfeedPostsInput = {
   pagination: GqlPaginationInput;
-  type: PostType;
+  type?: PostType;
 };
 
 export type GetMyOrdersInput = {
@@ -2398,6 +2415,7 @@ export type HotelAvailablity = {
 
 export type HotelRoom = {
   __typename?: "HotelRoom";
+  adaptedFor?: Maybe<Array<ServiceAdaptation>>;
   bathrooms: Scalars["Int"]["output"];
   beds: Scalars["Int"]["output"];
   cancelationPolicies: Array<ServiceCancelationPolicy>;
@@ -2410,7 +2428,7 @@ export type HotelRoom = {
   hotel?: Maybe<Hotel>;
   hotelId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
-  includedAmenities?: Maybe<Array<Scalars["String"]["output"]>>;
+  includedAmenities?: Maybe<Array<Scalars["String"]["input"]>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
   measurements: ServicePropertyMeasurements;
   num_of_rooms: Scalars["Int"]["output"];
@@ -2422,6 +2440,7 @@ export type HotelRoom = {
   sellerId: Scalars["ID"]["output"];
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
+  thumbnail:Scalars["String"]["output"];
 };
 
 export type HotelRoomMetaInfoInput = {
@@ -3800,6 +3819,56 @@ export enum PostVisibility {
   Following = "following",
   Hidden = "hidden",
   Public = "public",
+}
+
+export type PostCardInfo =  {
+  profileInfo: ProfileInfo;
+  postInfo: PostInfo;
+}
+
+
+export type PostInfo =  {
+  createdAt: Scalars["String"]["input"];
+  id: Scalars["String"]["input"];
+  content?: Scalars["String"]["input"];
+  tags: Array<Scalars["String"]["input"]>;
+  views?: Scalars["Int"]["input"];
+  attachments?: PostAttachment[];
+  numberOfLikes: Scalars["Int"]["input"];
+  numberOfComments: Scalars["Int"]["input"];
+  numberOfShares: Scalars["Int"]["input"];
+  comments?: PostComment[];
+  thumbnail?: Scalars["String"]["input"];
+}
+
+export interface PostComment {
+  id: Scalars["String"]["input"];
+  user: ProfileInfo;
+  replies: Scalars["Int"]["input"];
+  likes: Scalars["Int"]["input"] ;
+  createdAt: Scalars["String"]["input"];
+  content: Scalars["String"]["input"];
+  attachment?: PostAttachment | null;
+  hashTags?: Array<Scalars["String"]["input"]>;
+}
+
+
+export type PostAttachment =  {
+  type: Scalars["String"]["input"];
+  src: Scalars["String"]["input"];
+  postLocation?: Scalars["String"]["input"];
+}
+
+
+export type ProfileInfo =  {
+  id: Scalars["ID"]["output"];
+  verifed?: Scalars["Boolean"]["input"];
+  name: Scalars["String"]["input"];
+  thumbnail: Scalars["String"]["input"];
+  accountType: AccountType.Buyer | AccountType.Seller
+  public: Scalars["Boolean"]["input"];
+  profession?: Scalars["String"]["input"];
+  photo?:Scalars["String"]["input"];
 }
 
 export enum PresentationType {
@@ -5464,6 +5533,20 @@ export type RequiredAction = {
   exampleField: Scalars["Int"]["output"];
 };
 
+export type Restaurant  = {
+    cuisinesTypeId:Scalars["ID"]["input"]
+    establishmentTypeId:Scalars["ID"]["input"]
+    highest_price:Scalars["Int"]["input"]
+    id:Scalars["ID"]["output"]
+    lowest_price:Scalars["Int"]["input"]
+    michelin_guide_stars:Scalars["Int"]["input"]
+    ownerId:Scalars["ID"]["input"]
+    payment_methods: Array<ServicePaymentMethod>
+    setting_and_ambianceId: Scalars["ID"]["input"]
+    status:ServiceStatus
+    vat: Scalars["Float"]["input"]
+}
+
 export enum RestaurantDishType {
   Dessert = "dessert",
   Drinks = "drinks",
@@ -5999,7 +6082,7 @@ export type ServiceSearchResponse = {
   total: Scalars["Int"]["output"];
 };
 
-export type ServiceServiceDayWorkingHours = {
+export type ServiceDayWorkingHours = {
   __typename?: "ServiceServiceDayWorkingHours";
   periods: Array<Scalars["String"]["output"]>;
 };
@@ -6066,13 +6149,13 @@ export enum ServiceTypeOfSeller {
 
 export type ServiceWeekdaysWorkingHours = {
   __typename?: "ServiceWeekdaysWorkingHours";
-  fr?: Maybe<ServiceServiceDayWorkingHours>;
-  mo?: Maybe<ServiceServiceDayWorkingHours>;
-  sa?: Maybe<ServiceServiceDayWorkingHours>;
-  su?: Maybe<ServiceServiceDayWorkingHours>;
-  th?: Maybe<ServiceServiceDayWorkingHours>;
-  tu?: Maybe<ServiceServiceDayWorkingHours>;
-  we?: Maybe<ServiceServiceDayWorkingHours>;
+  fr?: Maybe<ServiceDayWorkingHours>;
+  mo?: Maybe<ServiceDayWorkingHours>;
+  sa?: Maybe<ServiceDayWorkingHours>;
+  su?: Maybe<ServiceDayWorkingHours>;
+  th?: Maybe<ServiceDayWorkingHours>;
+  tu?: Maybe<ServiceDayWorkingHours>;
+  we?: Maybe<ServiceDayWorkingHours>;
 };
 
 export type ServiceWorkingSchedule = {
@@ -6081,6 +6164,7 @@ export type ServiceWorkingSchedule = {
   specialDays: Array<SpecialDayWorkingHours>;
   weekdays: ServiceWeekdaysWorkingHours;
 };
+
 
 export type ServicesCursorPaginationResponse = {
   __typename?: "ServicesCursorPaginationResponse";
@@ -6257,6 +6341,8 @@ export type ShopWorkingSchedule = {
   weekdays: ShopWeekdaysWorkingHours;
 };
 
+
+
 export type ShoppingCart = {
   __typename?: "ShoppingCart";
   appliedVoucherId?: Maybe<Scalars["ID"]["output"]>;
@@ -6313,7 +6399,7 @@ export type SocialTag = {
 export type SpecialDayWorkingHours = {
   __typename?: "SpecialDayWorkingHours";
   date: Scalars["String"]["output"];
-  workingHours: ServiceServiceDayWorkingHours;
+  workingHours: ServiceDayWorkingHours;
 };
 
 export type SpecialDayWorkingHoursInput = {
@@ -7022,6 +7108,17 @@ export type Vehicle = {
   title: Scalars["String"]["output"];
 };
 
+export type VehicleService = {
+    createdAt:Scalars["String"]["input"]
+    id:Scalars["ID"]["output"]
+    ownerId:Scalars["ID"]["output"]
+    payment_methods:Array<ServicePaymentMethod>
+    rating: Scalars["Float"]["input"]
+    totalReviews: Scalars["Int"]["input"]
+    updatedAt: Scalars["String"]["input"]
+    vat:Scalars["Float"]["input"]
+}
+
 export type VehicleProperties = {
   __typename?: "VehicleProperties";
   airCondition: Scalars["Boolean"]["output"];
@@ -7116,6 +7213,25 @@ export enum WishlistItemType {
   Product = 'product',
   Service = 'service'
 }
+
+export type WorkingSchedule = {
+  __typename?: 'WorkingSchedule';
+  id: Scalars['ID']["output"];
+  specialDays: Array<SpecialDayWorkingHours>;
+  weekdays: WeekdaysWorkingHours;
+};
+
+
+export type WeekdaysWorkingHours = {
+  __typename?: 'WeekdaysWorkingHours';
+  fr?: Maybe<ServiceDayWorkingHours>;
+  mo?: Maybe<ServiceDayWorkingHours>;
+  sa?: Maybe<ServiceDayWorkingHours>;
+  su?: Maybe<ServiceDayWorkingHours>;
+  th?: Maybe<ServiceDayWorkingHours>;
+  tu?: Maybe<ServiceDayWorkingHours>;
+  we?: Maybe<ServiceDayWorkingHours>;
+};
 
 
 export enum ProfessionStatus {
