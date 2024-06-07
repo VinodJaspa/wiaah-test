@@ -18,16 +18,15 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
         {mapArray(comments, (comment, i) => (
           <CommentCard
             comment={{
-              hostUserId: comment.hostUserId,
+              hostUserId: comment.hostId,
               content: comment.content,
               createdAt: comment.createdAt,
               id: comment.id,
-              attachment: comment.attachment,
               user: {
-                id: comment.author?.id,
-                name: comment.author?.username,
-                photo: comment.author?.photo,
-                verified: comment.author?.verified,
+                id: comment.author?.id || "",
+                name: comment.author?.username || "",
+                photo: comment.author?.photo || "",
+                verified: comment.author?.verified!,
               },
             }}
             key={i}
