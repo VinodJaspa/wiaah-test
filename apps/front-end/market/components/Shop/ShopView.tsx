@@ -6,6 +6,7 @@ import {
   Spacer,
   SpinnerFallback,
   useGetProductsQuery,
+  usePaginationControls,
   useScreenWidth,
   useSearchFilters,
 } from "ui";
@@ -28,11 +29,8 @@ export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
   const { min } = useScreenWidth({ minWidth: 640 });
   const { filters } = useSearchFilters();
   const { page, take } = usePagination();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetProductsQuery({ page, take }, filters);
+  const { pagination } = usePaginationControls();
+  const { data: res, isLoading, isError } = useGetProductsQuery({ pagination });
 
   return (
     <section className="flex flex-col items-center justify-center">

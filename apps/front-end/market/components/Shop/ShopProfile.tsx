@@ -17,9 +17,12 @@ export interface ShopProfileProps {
   fullWidth?: boolean;
 }
 
-export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
+export const ShopProfile: React.FC<ShopProfileProps> = ({
+  fullWidth,
+  shopId,
+}) => {
   const { filters } = useSearchFilters();
-  const { data: res, isError, isLoading } = useGetShopDetailsQuery(filters);
+  const { data: res, isError, isLoading } = useGetShopDetailsQuery(shopId);
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -42,8 +45,8 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
                 {res ? (
                   <img
                     className="h-full w-full object-cover"
-                    src={res.data.thumbnail}
-                    alt={res.data.name}
+                    src={res.thumbnail}
+                    alt={res.name}
                   />
                 ) : null}
               </SpinnerFallback>
@@ -56,10 +59,8 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
                   <>
                     <div className="flex items-center gap-2 text-lg font-bold">
                       {/* shop name */}
-                      {res.data.name}
-                      {res.data.verified && (
-                        <Verified className="text-primary" />
-                      )}
+                      {res.name}
+                      {res.verified && <Verified className="text-primary" />}
                     </div>
                     <p className="font-semibold cursor-pointer text-primary">
                       {t("Show on map")}
@@ -69,12 +70,12 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
                       <Rate
                         className="cursor-pointer"
                         allowHalf
-                        rating={res.data.rating}
+                        rating={res.rating}
                       />
                     </a>
                     <p>
                       {/* shop creation date */}
-                      {new Date(res.data.createdAt).toDateString()}
+                      {new Date(res.createdAt).toDateString()}
                     </p>
                   </>
                 ) : null}
@@ -97,9 +98,9 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
               {res ? (
                 <div className="flex w-full items-center justify-end gap-2">
                   {/* shop location */}
-                  <FlagIcon code={res.data.location.countryCode} />
+                  <FlagIcon code={res.location.countryCode} />
                   {location
-                    ? ` ${res.data.location.state}, ${res.data.location.city}, ${res.data.location.country}`
+                    ? ` ${res.location.state}, ${res.location.city}, ${res.location.country}`
                     : null}
                 </div>
               ) : null}
@@ -115,9 +116,9 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <p>{res.data.name}</p>
+                  <p>{res.name}</p>
 
-                  <QrcodeDisplay className="w-12" value={res.data.id} />
+                  <QrcodeDisplay className="w-12" value={res.id} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -125,7 +126,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
           <div className="h-full bg-white p-4">
             {/* shop Desc */}
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? res.data.description : null}
+              {res ? res.description : null}
             </SpinnerFallback>
           </div>
         </div>

@@ -24,19 +24,13 @@ import {
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
-import { PresentationType } from "@features/API";
+import { PresentationType, ServicePresentationType } from "@features/API";
 
 export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
   const { data: res, isError, isLoading } = useGetShopDetailsQuery(id);
-  const { data } = useGetShopServicesQuery({
-    ids: [],
-    sellerId: res?.ownerId || "",
-  });
+  const { data } = useGetServicesProviderQuery(res?.ownerId || "");
   const { t } = useTranslation();
-  console.log({ res });
-  const rating = res?.rating;
-
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       {res ? (
@@ -53,7 +47,7 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
           res
             ? res.images.map((v) => ({
                 src: v,
-                type: PresentationType.Image,
+                type: ServicePresentationType.Img,
               })) || []
             : []
         }
@@ -77,22 +71,18 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
             />
             <Divider />
             <Accordion>
-              <PopularAmenitiesSection
+              {/* TODO: It should go inside RoomCardDetails */}
+              {/* <PopularAmenitiesSection
                 cols={2}
-                amenities={
-                  // res?.data?.getHotelService?.rooms[0]?.popularAmenities.map(
-                  // ({ label, value }) => ({ name: label, slug: value })
-                  // ) || []
-                  []
-                }
-              />
+                amenities={data?.rooms[0].includedAmenities || []}
+              /> */}
               <Divider />
               <ServiceReachOutSection
                 email={res.email}
                 location={res.location}
                 telephone={res.phone}
               />
-              <HotelServiceRoomsSection rooms={data} />
+              <HotelServiceRoomsSection rooms={data.rooms} />
               {res.workingSchedule.weekdays ? (
                 <ServiceWorkingHoursSection
                   workingHours={res.workingSchedule}

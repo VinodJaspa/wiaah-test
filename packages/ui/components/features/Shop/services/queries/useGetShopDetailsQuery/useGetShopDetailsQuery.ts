@@ -7,7 +7,10 @@ import {
   Maybe,
   Profile,
   Scalars,
+  ServiceDayWorkingHours,
+  ServiceLocation,
   ServiceType,
+  ServiceWorkingSchedule,
   Shop,
   ShopDayWorkingHours,
   ShopSpecialDayWorkingHours,
@@ -18,7 +21,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetShopDetailsQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetShopDetailsQuery = { __typename?: "Query" } & {
@@ -46,70 +49,60 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
         Profile,
         "photo" | "username" | "ownerId" | "id"
       >;
-      location: { __typename?: "Location" } & Pick<
-        Location,
-        "address" | "city" | "country" | "lat" | "long" | "postalCode" | "state"
-      >;
-      workingSchedule: { __typename?: "ShopWorkingSchedule" } & Pick<
-        ShopWorkingSchedule,
-        "sellerId" | "id"
-      > & {
-          weekdays: { __typename?: "ShopWeekdaysWorkingHours" } & {
-            fr?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            mo?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            sa?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            su?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            th?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            tu?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-            we?: Maybe<
-              { __typename?: "ShopDayWorkingHours" } & Pick<
-                ShopDayWorkingHours,
-                "periods"
-              >
-            >;
-          };
-          specialDays: Array<
-            { __typename?: "ShopSpecialDayWorkingHours" } & Pick<
-              ShopSpecialDayWorkingHours,
-              "date"
-            > & {
-                workingHours: { __typename?: "ShopDayWorkingHours" } & Pick<
-                  ShopDayWorkingHours,
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+      > & {countryCode:string};
+      
+      workingSchedule?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+              fr?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
                   "periods"
-                >;
-              }
-          >;
-        };
+                >
+              >;
+              mo?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              sa?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              su?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              th?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              tu?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              we?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+            };
+          }
+      >;
+
     };
 };
 
@@ -143,9 +136,10 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
         city: "Dubai",
         country: "United Arab Emirates",
         lat: 45.464664,
-        long: 9.18854,
-        postalCode: "1546",
+        lon: 9.18854,
+        postalCode: 1546,
         state: "state",
+        countryCode:"AED"
       },
       name: "service name",
       phone: "1324658",
@@ -156,8 +150,6 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
       videos: [],
       workingSchedule: {
         id: "",
-        sellerId: "",
-        specialDays: [],
         weekdays: {
           mo: {
             periods: [
