@@ -2,10 +2,23 @@ import React from "react";
 import { WorkingDayColumn } from "./WorkingDayColumn";
 import { Slider, ArrowLeftIcon, ArrowRightIcon } from "@UI";
 import { isSameMinute } from "utils";
+import { ServiceDayWorkingHours } from "@features/API";
 
 export interface WorkingDaysCalenderProps {
-  workingDates: string[];
-  takenDates: string[];
+  workingDates: {
+    date: string;
+    workingHoursRanges: {
+      from: string;
+      to: string;
+    }[];
+  }[];
+  takenDates: {
+    date: string;
+    workingHoursRanges: {
+      from: string;
+      to: string;
+    }[];
+  }[];
 }
 
 interface SplitDay {
@@ -42,7 +55,7 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
   takenDates,
 }) => {
-  const dates = splitDatesByDay(workingDates.map((d) => new Date(d)));
+  const dates = splitDatesByDay(workingDates.map((d) => new Date(d.date)));
 
   return (
     <Slider
@@ -69,7 +82,7 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
               dates={date.dates.map((date) => ({
                 date,
                 available: !!takenDates.find((d) =>
-                  isSameMinute(new Date(d), date)
+                  isSameMinute(new Date(d.date), date)
                 ),
               }))}
               onClick={() => {}}
