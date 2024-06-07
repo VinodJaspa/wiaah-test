@@ -21,14 +21,16 @@ import {
   useGetServiceFiltersQuery,
 } from "ui";
 import { useResponsive } from "hooks";
+import { ServiceType } from "@features/API";
 
 export const HotelsSearchResultsView: React.FC = () => {
   const { addFilter, setFilters, filtersKeys } = useMutateSearchFilters();
   const { t } = useTranslation();
   const router = useRouter();
+  const type: ServiceType = ServiceType.HolidayRentals;
   const { isTablet } = useResponsive();
   const { data } = useGetFilteredHotelRoomsQuery({});
-  const { data: filters } = useGetServiceFiltersQuery({ type: "" });
+  const { data: filters } = useGetServiceFiltersQuery({ type });
 
   React.useEffect(() => {
     if (typeof router.query.location === "string") {
@@ -118,6 +120,7 @@ export const HotelsSearchResultsView: React.FC = () => {
                 </div>
 
                 <ServiceSearchFilter
+                  serviceType={type}
                   onChange={{
                     onOptionSelect: setFieldValue,
                     onOptionsSelect: setFieldValue,
