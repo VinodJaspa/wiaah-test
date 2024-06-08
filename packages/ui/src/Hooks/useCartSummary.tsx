@@ -31,7 +31,6 @@ export const useCartSummary = () => {
           qty: itemExists[0].item.qty,
         },
       };
-      // qty: itemExists[0].qty + 1,
 
       setCartSummaryItems([...restOfItems, UpdatedItem]);
     } else {

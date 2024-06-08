@@ -5,6 +5,7 @@ import {
   useShoppingCart,
   useSavedItems,
   getRandomImage,
+  useCartSummary,
 } from "ui";
 import { TipTextContainer } from "ui/components/blocks/TipTextContainer";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
@@ -12,22 +13,25 @@ import { ProductCard } from "ui/components/blocks/ProductCard";
 import WishlistEmpty from "./WishlistEmpty";
 import { WishlistItem } from "@features/API";
 import { useTranslation } from "react-i18next";
+import { CartSummaryItem, ShopContactDetails } from "types";
 
 export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();
   const { OpenShoppingCart } = useShoppingCart();
   const { DeleteItem, savedItems } = useSavedItems();
+  const { AddNewItem } = useCartSummary();
   const { t } = useTranslation();
-  function handleAddToCart(item: WishlistItem) {
-    const id = String(Math.random() * 100);
+  const shop: ShopContactDetails = {
+    name: "awsome shop",
+    id: "44",
+    imageUrl: "http://image",
+  };
+  function handleAddToCart(item: CartSummaryItem) {
     OpenShoppingCart();
-    // AddNewItem({
-    //   id,
-    //   name: item.name,
-    //   price: item.price,
-    //   quantity: 1,
-    //   thumbnail: item.imgUrl,
-    // });
+    AddNewItem({
+      item: item,
+      shop: shop,
+    });
     handleLoginPopup();
   }
   function handleLoginPopup() {
@@ -50,7 +54,6 @@ export const WishlistView: React.FC = () => {
               position="delete"
               forceHover={true}
               buttonText={type > 50 ? "Add to Cart" : "Book now"}
-              variant={type > 50 ? "product" : "service"}
               id=""
               cashback={15}
               discount={10}
