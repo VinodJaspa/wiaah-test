@@ -31,16 +31,14 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = await getServicePostDataFetcher({ id, author: profileName });
 
-  if (id && profileName) {
-    queryClient.prefetchQuery(
-      getServicePostDetailsQueryKey({ id, publisher: profileName }),
-      () => data
-    );
-  }
+  queryClient.prefetchQuery(
+    getServicePostDetailsQueryKey({ id, publisher: profileName }),
+    () => data
+  );
   return {
     props: {
-      dehydratedProps: dehydrate(queryClient),
-      data,
+      dehydratedState: dehydrate(queryClient),
+      data: data,
     },
   };
 };

@@ -170,7 +170,7 @@ type ServiceCancelationPolicy = {
 
 export const getVehicleServiceProviderDetailsFetcher = async (
   filters: FormatedSearchableFilter
-): Promise<VehicleService> => {
+): Promise<GqlResponse<VehicleService, "getVehicleService">> => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
@@ -252,9 +252,5 @@ export const getVehicleServiceProviderDetailsFetcher = async (
 }
 `);
 
-  const res = await client.send<
-    GqlResponse<VehicleService, "getVehicleServicebyId">
-  >();
-
-  return res.data.data.getVehicleServicebyId;
+  return client.setVariables(filters).send();
 };

@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<
 
   return {
     props: {
-      dehydratedProps: dehydrate(queryClient),
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
@@ -58,7 +58,7 @@ const ServicePostOnMapPage: NextPage = () => {
           profileName ?? ""
         }`}
       />
-      <MetaImage content={data ? data.data.at(0).thumbnail : ""} />
+      <MetaImage content={data ? data.data.at(0).attachments.at(0).src : ""} />
       <MetaDescription
         content={`serivces posts search by ${
           profileName ?? ""
@@ -67,7 +67,7 @@ const ServicePostOnMapPage: NextPage = () => {
       <RequiredSocialMediaTags />
 
       <MasterLayout social>
-        <ServicePostOnMapView />
+        <ServicePostOnMapView id={data.data.at(0).id} />
       </MasterLayout>
     </>
   );

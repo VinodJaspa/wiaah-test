@@ -69,6 +69,8 @@ export type Restaurant = {
   cuisinesTypeId: Scalars["ID"];
   michelin_guide_stars: Scalars["Int"];
   workingHours: WorkingSchedule;
+  description:Scalars["String"]
+  name:Scalars["String"]
 };
 export enum ServiceStatus {
   InActive = "inActive",
@@ -102,6 +104,8 @@ query getRestaurant($args:GetRestaurantInput!){
         establishmentTypeId
         highest_price
         id
+        description
+        name
         location{
             address
             city

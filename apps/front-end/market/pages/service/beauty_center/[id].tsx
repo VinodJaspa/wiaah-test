@@ -5,6 +5,8 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
+  FormatedSearchableFilter,
+  GetHotelServiceArgs,
   getBeautyCenterDetailsDataFetcher,
   getServiceDetailsDataSwitcher,
 } from "api";
@@ -30,10 +32,15 @@ export const getServerSideProps: GetServerSideProps<
 
   const serviceType = "beauty_center";
   const serviceId = ExtractParamFromQuery(query, "id");
+  const beautyCenterDetailsArgs: GetHotelServiceArgs &
+    FormatedSearchableFilter = {
+    id: "your_beauty_center_id",
+  };
 
-  const data = (await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  })) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    beautyCenterDetailsArgs.id
+  )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),

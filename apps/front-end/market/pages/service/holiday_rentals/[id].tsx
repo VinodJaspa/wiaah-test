@@ -4,9 +4,14 @@ import { HotelDetailsView, MasterLayout } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
-import { getServiceDetailsDataSwitcher } from "api";
+import {
+  Hotel,
+  ServicePresentationType,
+  getServiceDetailsDataSwitcher,
+} from "api";
 import {
   AsyncReturnType,
+  GqlResponse,
   ServerSideQueryClientProps,
   ServicesType,
 } from "types";
@@ -20,7 +25,7 @@ import {
 } from "react-seo";
 
 interface HotelServiceDetailsPageProps {
-  data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
+  data: GqlResponse<Hotel, "getHotelService">;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -31,9 +36,10 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType: ServicesType = "holidays_rentals";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  });
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    serviceId
+  )) as GqlResponse<Hotel, "getHotelService">;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
@@ -53,19 +59,28 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
 }) => {
   return (
     <>
-      {/* {data && data.data ? (
+      {data && data.data ? (
         <>
-          <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
-          <MetaDescription content={data.data.description} />
-          {data.data.presintations.at(0).type === "video" ? (
-            <MetaVideo content={data.data.presintations.at(0).src} />
+          <MetaTitle
+            content={`Wiaah | Service Details by ${data.data.getHotelService.owner.firstName}`}
+          />
+          <MetaDescription
+            content={data.data.getHotelService.serviceMetaInfo.description}
+          />
+          {data.data.getHotelService.presentations.at(0).type ===
+          ServicePresentationType.Vid ? (
+            <MetaVideo
+              content={data.data.getHotelService.presentations.at(0).src}
+            />
           ) : (
-            <MetaImage content={data.data.presintations.at(0).src} />
+            <MetaImage
+              content={data.data.getHotelService.presentations.at(0).src}
+            />
           )}
-          <MetaAuthor author={data.data.name} />
+          <MetaAuthor author={data.data.getHotelService.owner.firstName} />
           <RequiredSocialMediaTags />
         </>
-      ) : null} */}
+      ) : null}
       <MasterLayout>
         <Container>
           <HotelDetailsView id={""} />

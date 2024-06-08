@@ -5,11 +5,18 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
+  ServicePresentationType,
+  Vehicle,
+  VehicleService,
   getServiceDetailsDataSwitcher,
   getVehicleSearchDataFetcher,
   getVehicleServiceProviderDetailsFetcher,
 } from "api";
-import { AsyncReturnType, ServerSideQueryClientProps } from "types";
+import {
+  AsyncReturnType,
+  GqlResponse,
+  ServerSideQueryClientProps,
+} from "types";
 import {
   MetaAuthor,
   MetaDescription,
@@ -20,7 +27,7 @@ import {
 } from "react-seo";
 
 interface VehicleServiceDetailsPageProps {
-  data: AsyncReturnType<typeof getVehicleServiceProviderDetailsFetcher>;
+  data: GqlResponse<VehicleService, "getVehicleService">;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -31,12 +38,15 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "vehicle";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = {};
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    serviceId
+  )) as GqlResponse<VehicleService, "getVehicleService">;
 
-  // queryClient.prefetchQuery(
-  //   GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-  //   () => data
-  // );
+  queryClient.prefetchQuery(
+    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
+    () => data
+  );
 
   return {
     props: {
@@ -51,21 +61,28 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
 }) => {
   return (
     <>
-      {/* {data && data ? (
+      {data && data ? (
         <>
           <MetaTitle
-            content={`Wiaah | Service Details by ${data.serviceMetaInfo.title}`}
+            content={`Wiaah | Service Details by ${data.data.getVehicleService.owner.firstName}`}
           />
-          <MetaDescription content={data.serviceMetaInfo.description} />
-          {data.presentations.at(0).type === "vid" ? (
-            <MetaVideo content={data.presentations.at(0).src} />
+          <MetaDescription
+            content={data.data.getVehicleService.serviceMetaInfo.description}
+          />
+          {data.data.getVehicleService.presentations.at(0).type ===
+          ServicePresentationType.Vid ? (
+            <MetaVideo
+              content={data.data.getVehicleService.presentations.at(0).src}
+            />
           ) : (
-            <MetaImage content={data.presentations.at(0).src} />
+            <MetaImage
+              content={data.data.getVehicleService.presentations.at(0).src}
+            />
           )}
-          <MetaAuthor author={data.owner.name} />
+          <MetaAuthor author={data.data.getVehicleService.owner.firstName} />
           <RequiredSocialMediaTags />
         </>
-      ) : null} */}
+      ) : null}
       <MasterLayout>
         <Container>
           <VehicleServiceDetailsView />

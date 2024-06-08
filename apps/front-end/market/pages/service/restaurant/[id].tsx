@@ -1,11 +1,24 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { MasterLayout, RestaurantDetailsView } from "@components";
-import { Container, GetServiceDetailsQueryKey } from "ui";
+import {
+  Container,
+  GetServiceDetailsQueryKey,
+  ServicePresentationCarosuel,
+} from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
-import { getServiceDetailsDataSwitcher } from "api";
-import { AsyncReturnType, ServerSideQueryClientProps } from "types";
+import {
+  Restaurant,
+  ServicePresentationType,
+  getResturantSearchFiltersFetcher,
+  getServiceDetailsDataSwitcher,
+} from "api";
+import {
+  AsyncReturnType,
+  GqlResponse,
+  ServerSideQueryClientProps,
+} from "types";
 import {
   MetaAuthor,
   MetaDescription,
@@ -16,21 +29,22 @@ import {
 } from "react-seo";
 import { useRouting } from "routing";
 
-interface HotelServiceDetailsPageProps {
-  data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
+interface RestaurantServiceDetailsPageProps {
+  data: GqlResponse<Restaurant, "getRestaurant">;
 }
 
 export const getServerSideProps: GetServerSideProps<
-  ServerSideQueryClientProps<HotelServiceDetailsPageProps>
+  ServerSideQueryClientProps<RestaurantServiceDetailsPageProps>
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
   const serviceType = "restaurant";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  });
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    serviceId
+  )) as GqlResponse<Restaurant, "getRestaurant">;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
@@ -45,24 +59,33 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const RestaurantServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
-  data,
-}) => {
+const RestaurantServiceDetailsPage: NextPage<
+  RestaurantServiceDetailsPageProps
+> = ({ data }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   return (
     <>
       {data && data.data ? (
         <>
-          {/* <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
-          <MetaDescription content={data.data.description} />
-          {data.data.presintations.at(0).type === "video" ? (
-            <MetaVideo content={data.data.presintations.at(0).src} />
+          <MetaTitle
+            content={`Wiaah | Service Details by ${data.data.getRestaurant.name}`}
+          />
+          <MetaDescription
+            content={data.data.getRestaurant.serviceMetaInfo.description}
+          />
+          {data.data.getRestaurant.presentations.at(0).type ===
+          ServicePresentationType.Vid ? (
+            <MetaVideo
+              content={data.data.getRestaurant.presentations.at(0).src}
+            />
           ) : (
-            <MetaImage content={data.data.presintations.at(0).src} />
+            <MetaImage
+              content={data.data.getRestaurant.presentations.at(0).src}
+            />
           )}
-          <MetaAuthor author={data.data.name} />
-          <RequiredSocialMediaTags /> */}
+          <MetaAuthor author={data.data.getRestaurant.owner.firstName} />
+          <RequiredSocialMediaTags />
         </>
       ) : null}
       <MasterLayout>

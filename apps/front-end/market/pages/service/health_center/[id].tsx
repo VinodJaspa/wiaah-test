@@ -31,9 +31,10 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "health_center";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  })) as AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    serviceId
+  )) as AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),

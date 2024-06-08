@@ -5,8 +5,12 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
-import { getServiceDetailsDataSwitcher } from "api";
-import { AsyncReturnType, ServerSideQueryClientProps } from "types";
+import { Hotel, getServiceDetailsDataSwitcher } from "api";
+import {
+  AsyncReturnType,
+  GqlResponse,
+  ServerSideQueryClientProps,
+} from "types";
 import {
   MetaAuthor,
   MetaDescription,
@@ -16,9 +20,10 @@ import {
   RequiredSocialMediaTags,
 } from "react-seo";
 import { useRouting } from "routing";
+import { ServicePresentationType } from "@features/API";
 
 interface HotelServiceDetailsPageProps {
-  data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
+  data: AsyncReturnType<typeof getServiceDetailsDataSwitcher>;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -29,9 +34,10 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "hotel";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = await getServiceDetailsDataSwitcher(serviceType)({
-    id: serviceId,
-  });
+  const data = (await getServiceDetailsDataSwitcher(
+    serviceType,
+    serviceId
+  )) as GqlResponse<Hotel, "getHotelService">;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
@@ -41,13 +47,15 @@ export const getServerSideProps: GetServerSideProps<
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      data,
+      data: data as GqlResponse<Hotel, "getHotelService">,
     },
   };
 };
 
 const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
   data,
+}: {
+  data: GqlResponse<Hotel, "getHotelService">;
 }) => {
   const { getParam } = useRouting();
   const router = useRouter();
@@ -58,14 +66,23 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
     <>
       {data && data.data ? (
         <>
-          {/* <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
-          <MetaDescription content={data.data.description} />
-          {data.data.presintations.at(0).type === "video" ? (
-            <MetaVideo content={data.data.presintations.at(0).src} />
+          <MetaTitle
+            content={`Wiaah | Service Details by ${data.data.getHotelService.owner.firstName}`}
+          />
+          <MetaDescription
+            content={data.data.getHotelService.serviceMetaInfo.description}
+          />
+          {data.data.getHotelService.presentations.at(0).type ===
+          ServicePresentationType.Vid ? (
+            <MetaVideo
+              content={data.data.getHotelService.presentations.at(0).src}
+            />
           ) : (
-            <MetaImage content={data.data.presintations.at(0).src} />
+            <MetaImage
+              content={data.data.getHotelService.presentations.at(0).src}
+            />
           )}
-          <MetaAuthor author={data.data.name} /> */}
+          <MetaAuthor author={data.data.getHotelService.owner.firstName} />
           <RequiredSocialMediaTags />
         </>
       ) : null}

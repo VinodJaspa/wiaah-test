@@ -7,18 +7,18 @@ import {
   getBeautyCenterDetailsDataFetcher,
 } from "api";
 
-export const getServiceDetailsDataSwitcher = (serviceType: ServicesType) => {
+export const getServiceDetailsDataSwitcher = (serviceType: ServicesType,id:string) => {
   switch (serviceType) {
     case "hotel":
-      return getServicesProviderDataFetcher;
+      return getServicesProviderDataFetcher({id:id});
     case "restaurant":
-      return getResturantServiceDetialsData;
+      return getResturantServiceDetialsData(id);
     case "health_center":
-      return getHealthCenterDetailsFetcher;
+      return getHealthCenterDetailsFetcher({});
     case "vehicle":
-      return getVehicleServiceProviderDetailsFetcher;
+      return getVehicleServiceProviderDetailsFetcher({});
     case "beauty_center":
-      return getBeautyCenterDetailsDataFetcher;
+      return getBeautyCenterDetailsDataFetcher(id);
     default:
       return null;
   }
