@@ -2,7 +2,14 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
-import { Comment, ContentHostType } from "@features/API";
+import {
+  Attachment,
+  Comment,
+  CommentsCursorPaginationResponse,
+  ContentHostType,
+  Maybe,
+  Profile,
+} from "@features/API";
 import {
   PostAttachment,
   Verified,
@@ -25,8 +32,28 @@ export interface PostCommentCardProps {
   onReply?: (message: string) => void;
   onLike?: () => void;
   main?: boolean;
-  comment: Comment;
-} 
+  comment: { __typename?: "Comment" } & Pick<
+    Comment,
+    | "id"
+    | "content"
+    | "commentedAt"
+    | "likes"
+    | "userId"
+    | "hostId"
+    | "hostType"
+    | "updatedAt"
+    | "replies"
+  > & {
+      attachment: { __typename?: "Attachment" } & Pick<
+        Attachment,
+        "src" | "type"
+      >;
+      author?: { __typename?: "Profile" } & Pick<
+        Profile,
+        "username" | "photo" | "verified" | "id"
+      >;
+    };
+}
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   comment,
@@ -35,7 +62,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
-    from: new Date(comment.createdAt),
+    from: new Date(comment.commentedAt),
     to: new Date(Date.now()),
   });
   const since = getSince();
@@ -117,7 +144,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               <div className="flex whitespace-nowrap gap-1 h-full items-end">
                 <MdOutlineReply className="text-lg fill-primary" />
                 <p className="text-gray-500">
-                  {comment.replies} {t("Replies")}
+                  {comment} {t("Replies")}
                 </p>
               </div>
             </HStack>
@@ -138,8 +165,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           <CommentInput
             onCommentSubmit={(v) => {
               createComment({
-                authorProfileId: comment.authorProfileId,
-                authorUserId: comment.userId,
+                authorProfileId: comment.author!.id,
+                authorUserId: comment.author!.id,
                 content: v,
                 contentId: comment.id,
                 contentType: ContentHostType.Comment,

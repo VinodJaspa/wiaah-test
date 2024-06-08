@@ -64,7 +64,7 @@ const ShopSocialProfile: NextPage<SocialPageProps> = ({ profile }) => {
         <title>{profile.name}</title>
       </Head>
       <MasterLayout social>
-        <SocialView profile={profile} />
+        <SocialView profileId={profile.id} />
       </MasterLayout>
     </>
   );

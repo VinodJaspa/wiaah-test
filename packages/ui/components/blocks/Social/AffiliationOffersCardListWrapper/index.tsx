@@ -207,13 +207,8 @@ export const AffiliationOffersCardListWrapper: React.FC<
             <>
               test
               <PostAttachment
-                multiply={
-                  (post.affiliation.product?.presentations.length || 0) > 1
-                }
                 style={{ onClick: () => setCurrentPost(post.id) }}
                 blur
-                minimal
-                controls={false}
                 key={i}
                 src={
                   (post?.affiliation?.product?.presentations &&
@@ -223,16 +218,9 @@ export const AffiliationOffersCardListWrapper: React.FC<
                 type={AttachmentType.Img}
                 footer={
                   post.views ? (
-                    <Text
-                      w="100%"
-                      px="1rem"
-                      textAlign={"start"}
-                      fontSize={"lg"}
-                      fontWeight="bold"
-                      color="white"
-                    >
+                    <div className="w-full px-4 text-start text-lg font-bold text-white">
                       {NumberShortner(post.views)}
-                    </Text>
+                    </div>
                   ) : undefined
                 }
               />

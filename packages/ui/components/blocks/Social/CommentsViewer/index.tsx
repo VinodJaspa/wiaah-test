@@ -20,7 +20,7 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
             comment={{
               hostUserId: comment.hostId,
               content: comment.content,
-              createdAt: comment.createdAt,
+              createdAt: comment.commentedAt,
               id: comment.id,
               user: {
                 id: comment.author?.id || "",

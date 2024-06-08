@@ -27,25 +27,49 @@ import { useDisclouser } from "hooks";
 import { useSendFollowRequestMutation } from "@features/Social";
 
 import { useUnFollowProfileMutation } from "@features/Social";
-import { StoreType } from "@features/API";
+import {
+  Account,
+  Maybe,
+  Profile,
+  ProfileVisibility,
+  Shop,
+  StoreType,
+} from "@features/API";
 import { useRouting } from "@UI/../routing";
 
 export interface SocialProfileProps {
-  profileInfo: {
-    id: string;
-    photo: string;
-    username: string;
-    profession: string;
-    verified: boolean;
-    publications: number;
-    followers: number;
-    following: number;
-    bio: string;
-    ownerId: string;
-    shopId: string;
+  profileInfo: Pick<
+    Profile,
+    | "activeStatus"
+    | "bio"
+    | "createdAt"
+    | "followers"
+    | "following"
+    | "id"
+    | "lastActive"
+    | "ownerId"
+    | "photo"
+    | "profession"
+    | "publications"
+    | "updatedAt"
+    | "username"
+    | "visibility"
+    | "verified"
+  > & {
+    user?: Maybe<
+      { __typename?: "Account" } & Pick<
+        Account,
+        "id" | "verified" | "accountType"
+      > & {
+          shop: { __typename?: "Shop" } & Pick<
+            Shop,
+            "type" | "storeType" | "id"
+          >;
+        }
+    >;
   };
   isFollowed: boolean;
-  isPublic: boolean;
+  isPublic: ProfileVisibility;
   storeType: StoreType;
 }
 
@@ -232,7 +256,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
               <Button
                 onClick={() => {
-                  visit((r) => r.visitShop({ id: profileInfo.shopId }));
+                  visit((r) => r.visitShop({ id: profileInfo.ownerId }));
                 }}
                 disabled={isPrivateForUser}
                 colorScheme="darkbrown"
