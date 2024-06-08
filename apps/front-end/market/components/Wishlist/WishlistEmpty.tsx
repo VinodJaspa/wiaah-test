@@ -28,7 +28,7 @@ const WishlistEmpty: React.FC = () => {
         <Spacer spaceInRem={0.5} />
         <h1 className="text-2xl font-bold">Already have items saved?</h1>
         <div>
-          <Button onClick={handleLoginRedirect}>SIGN IN / REGISTER</Button>
+          <button onClick={handleLoginRedirect}>SIGN IN / REGISTER</button>
         </div>
       </FlexStack>
     </>
