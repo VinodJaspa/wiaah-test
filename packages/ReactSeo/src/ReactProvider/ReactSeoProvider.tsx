@@ -1,19 +1,21 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface ReactSeoContext {
   TagWrapper: React.FC;
 }
 
 export const ReactSeoContext = React.createContext<ReactSeoContext>({
-  TagWrapper: ({ children }) => <>{children}</>,
+  TagWrapper: () => <>{}</>,
 });
 
 interface ReactSeoProviderProps {
   TagWrapper: React.FC;
+  children: ReactNode;
 }
 
 export const ReactSeoProvider: React.FC<ReactSeoProviderProps> = ({
   TagWrapper,
+  children,
   ...props
 }) => {
   return (
@@ -22,6 +24,8 @@ export const ReactSeoProvider: React.FC<ReactSeoProviderProps> = ({
         TagWrapper,
       }}
       {...props}
-    />
+    >
+      {children}
+    </ReactSeoContext.Provider>
   );
 };

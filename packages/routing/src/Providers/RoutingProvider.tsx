@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface RoutingContextInterface {
   visit: (url: string) => any;
@@ -10,9 +10,11 @@ interface RoutingContextInterface {
   // removeParam: (param: string) => any;
   // getParams:(params:string[])=> string[]
   // getHash:()=> string
+  children: ReactNode;
 }
 
 export const routingContext = React.createContext<RoutingContextInterface>({
+  children: <div></div>,
   visit: () => {},
   getCurrentPath: () => "",
   getParam: (param) => "",
@@ -30,12 +32,21 @@ export const RoutingProvider: React.FC<RoutingContextInterface> = ({
   getQuery,
   getBaseUrl,
   back,
+  children,
   ...props
 }) => {
   return (
     <routingContext.Provider
-      value={{ visit, getCurrentPath, getParam, getQuery, getBaseUrl, back }}
+      value={{
+        visit,
+        getCurrentPath,
+        getParam,
+        getQuery,
+        getBaseUrl,
+        back,
+        children,
+      }}
       {...props}
-    />
+    ></routingContext.Provider>
   );
 };

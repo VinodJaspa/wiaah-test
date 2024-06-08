@@ -52,7 +52,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                       {coomingSoon ? (
                         <CoomingSoon />
                       ) : (
-                        //  @ts-ignore
                         <Component {...pageProps} />
                       )}
                     </RecoilRoot>

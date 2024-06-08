@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children, ReactNode } from "react";
 import { ReactPubsubClient } from "../Client";
 
 interface ReactPubsubContextType {
@@ -18,11 +18,13 @@ export const ReactPubsubContext = React.createContext<ReactPubsubContextType>({
 interface ReactPubsubProviderProps {
   client: ReactPubsubClient;
   keys: Record<string, any>;
+  children: ReactNode;
 }
 
 export const ReactPubsubProvider: React.FC<ReactPubsubProviderProps> = ({
   client,
   keys,
+  children,
   ...props
 }) => {
   return (
@@ -40,6 +42,8 @@ export const ReactPubsubProvider: React.FC<ReactPubsubProviderProps> = ({
         },
       }}
       {...props}
-    />
+    >
+      {children}
+    </ReactPubsubContext.Provider>
   );
 };
