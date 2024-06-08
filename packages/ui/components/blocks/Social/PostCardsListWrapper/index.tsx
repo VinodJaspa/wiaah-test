@@ -1,6 +1,5 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
-import { PostCardInfo } from "types";
 import { PostCard, PostCardProps } from "@UI/components/blocks/Social/PostCard";
 import { PostViewPopup } from "@UI/components/blocks/Popups";
 import { PostAttachmentsViewer } from "@UI/components/blocks/DataDisplay";
@@ -12,6 +11,7 @@ import {
 import { useResponsive } from "@UI/../hooks";
 import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
+import { PostCardInfo } from "@features/API";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];

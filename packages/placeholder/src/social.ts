@@ -11,7 +11,7 @@ import {
   ShopSocialProfileInfo,
   SubscribersUserInfo,
 } from "types";
-import { SocialShopPostcardProps } from "ui";
+import { SocialAffiliationCardProps, SocialShopPostcardProps } from "ui";
 const randomNum = (num: number) => num;
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
@@ -295,118 +295,40 @@ const comments: PostComment[] = [
     attachment: null,
   },
 ];
-export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
+export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post"][] = [
   {
-    ...socialAffiliationCardPlaceholder,
-    id: "1",
-    commission: randomNum(20),
-    price: randomNum(100),
-    attachments: [
-      // {
-      //   type: "image",
-      //   src: "/verticalImage.jpg",
-      // },
-      {
-        type: "image",
-        src: "/shop.jpeg",
+    id: "post-123",
+    userId: "user-456",
+    affiliationId: "affiliation-789",
+    views: 543,
+    reactionNum: 25,
+    shares: 12,
+    comments: 3,
+    createdAt: "2024-06-08T10:00:00Z",
+    affiliation: {
+      id: "affiliation-789",
+      commision: 10, // Percentage
+      createdAt: "2024-06-07T15:30:00Z",
+      itemId: "item-001",
+      itemType: "product", // Or "service"
+      product: { // Replace with actual product details if applicable
+        name: "Awesome Product",
+        description: "This is a great product you should check out!",
+        // ... other product properties
       },
-    ],
-    comments: [comments[randomNum(comments.length)]],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    id: "2",
-    commission: randomNum(20),
-    price: randomNum(100),
-    views: 0,
-    attachments: [
-      {
-        src: "/shop-2.jpeg",
-        type: "image",
+      service: null, // If not a product, replace with service details
+      status: "active", // Or other possible statuses
+    },
+    user: {
+      profile: {
+        id: "user-456",
+        username: "johndoe",
+        verified: true,
+        photo: "https://example.com/profile_pics/johndoe.jpg",
+        ownerId: "owner-123", // Optional owner ID
       },
-      {
-        src: "/shop-2.jpeg",
-        type: "image",
-      },
-      {
-        src: "/shop-2.jpeg",
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    id: "3",
-    commission: randomNum(20),
-    price: randomNum(100),
-    attachments: [
-      {
-        src: "/place-1.jpg",
-        type: "image",
-      },
-    ],
-    comments: comments,
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    id: "4",
-    commission: randomNum(20),
-    price: randomNum(100),
-    views: 0,
-    attachments: [
-      {
-        src: "/verticalImage.jpg",
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    id: "5",
-    commission: randomNum(20),
-    price: randomNum(100),
-    views: 0,
-    attachments: [
-      {
-        src: "/place-2.jpg",
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    id: "6",
-    commission: randomNum(20),
-    price: randomNum(100),
-    attachments: [
-      {
-        src: "/place-3.jpg",
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    commission: randomNum(20),
-    price: randomNum(100),
-    attachments: [
-      {
-        src: imgs[randomNum(imgs.length)],
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...socialAffiliationCardPlaceholder,
-    commission: randomNum(20),
-    price: randomNum(100),
-    attachments: [
-      {
-        src: imgs[randomNum(imgs.length)],
-        type: "image",
-      },
-    ],
-  },
+    },
+  }
 ];
 export const newsfeedPosts: PostCardInfo[] = [
   {
@@ -648,7 +570,40 @@ export const stringplaceholder =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
-export const ShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
+export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [{
+
+  id: "1",
+  createdAt:"",
+  title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
+  cashback: {
+    unit: "$",
+    value: 5,
+  },
+  user: { ...PostCardPlaceHolder.profileInfo },
+  likes: 5,
+  noOfComments: 2,
+  type: "service",
+  price: 800,
+  oldPrice: 1000,
+  discount: {
+    unit: "%",
+    value: 15,
+  },
+  // views: 50,
+  attachments: [
+    {
+      type: "video",
+      src: "/video.mp4",
+    },
+  ],
+  comments: PostCardPlaceHolder.postInfo.comments || [],
+  rating: 3,
+  url: `${baseUri}/social/wiaah/socialshop-post/15`,
+}
+
+]
+export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
+
   {
   profileInfo: {
     id: 12345,

@@ -16,7 +16,7 @@ import { MasterLayout } from "@components";
 import { ShopProductView } from "@components";
 
 const socialShopPost: NextPage = ({}) => {
-  const shopProductPost: ShopCardInfo = ShopCardsInfoPlaceholder[2];
+  const shopProductPost: ShopCardInfo = shopCardInfoPlaceholder;
   const otherPosts: ShopCardInfo[] = ShopCardsInfoPlaceholder;
   const setPost = useSetRecoilState(SocialShopPostState);
   const setOtherPosts = useSetRecoilState(SocialShopOtherPostsState);

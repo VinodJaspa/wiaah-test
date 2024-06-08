@@ -1,6 +1,6 @@
 import { isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { Exact, GetMyNewsfeedPostsInput } from "@features/API";
+import { AccountType, Exact, GetMyNewsfeedPostsInput, PostCardInfo } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -10,28 +10,8 @@ export type GetMyNewsfeedQueryVariables = Exact<{
 
 export type GetMyNewsfeedQuery = {
   __typename?: "Query";
-  getMyNewsfeedPosts: Array<{
-    __typename?: "NewsfeedPost";
-    id: string;
-    title: string;
-    userId: string;
-    comments: number;
-    reactionNum: number;
-    content: string;
-    createdAt: string;
-    shares: number;
-    attachments: Array<string>;
-    publisher?: {
-      __typename?: "Profile";
-      ownerId: string;
-      username: string;
-      photo: string;
-      verified: boolean;
-      profession: string;
-    } | null;
-    hashtags: Array<{ __typename?: "Hashtag"; id: string; tag: string }>;
-    tags: Array<{ __typename?: "PostTag"; userId: string }>;
-  }>;
+  getMyNewsfeedPosts: Array< PostCardInfo
+  >;
 };
 
 type args = GetMyNewsfeedQueryVariables["args"];
@@ -44,34 +24,64 @@ export const getMyNewsfeedPostsQueryKey = (args: args) => [
 export const getMyNewsfeedPostsQueryFetcher = async (args: args) => {
   if (isDev) {
     const mockRes: GetMyNewsfeedQuery["getMyNewsfeedPosts"] = [
-      ...Array(15),
-    ].map((v, i) => ({
-      id: i.toString(),
-      attachments: [
-        getRandomImage(),
-        getRandomImage(),
-        getRandomImage(),
-        getRandomImage(),
-      ],
-      comments: randomNum(15654321),
-      content:
-        "Lorem Ipsum is simply dummy text of the printing  typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-      createdAt: new Date().toString(),
-      hashtags: [],
-      reactionNum: randomNum(5646532),
-      shares: randomNum(657465),
-      tags: [],
-      title: "test",
-      userId: "",
-      publisher: {
-        id: "",
-        ownerId: "",
-        photo: getRandomImage(),
-        profession: "test",
-        username: "Nike",
-        verified: true,
-      },
-    }));
+      {
+        profileInfo: {
+          id: "user-123",
+          verifed: true,
+          name: "John Doe",
+          thumbnail: "https://example.com/profile_pics/john_doe_thumb.jpg",
+          accountType: AccountType.Seller,
+          public: true,
+          profession: "Software Engineer",
+        },
+        postInfo: {
+          createdAt: "2024-06-08T08:00:00Z",
+          id: "post-456",
+          content: "Just launched my new app! Check it out!",
+          tags: ["app", "launch", "mobile"],
+          views: 123,
+          attachments: [
+            {
+              type: "image",
+              src: "https://example.com/posts/app_screenshot.png",
+            },
+          ],
+          numberOfLikes: 10,
+          numberOfComments: 2,
+          numberOfShares: 5,
+          comments: [
+            {
+              id: "comment-789",
+              user: {
+                id: "user-987",
+                name: "Jane Smith",
+                thumbnail: "https://example.com/profile_pics/jane_smith_thumb.jpg",
+                accountType: AccountType.Buyer,
+                public:true
+              },
+              replies: 0,
+              likes: 1,
+              createdAt: "2024-06-08T08:10:00Z",
+              content: "Looks great, John! Congrats!",
+            },
+            {
+              id: "comment-012",
+              user: {
+                id: "user-345",
+                name: "Alice Johnson",
+                thumbnail: "https://example.com/profile_pics/alice_johnson_thumb.jpg",
+                accountType: AccountType.Buyer,
+                public:false
+              },
+              replies: 0,
+              likes: 0,
+              createdAt: "2024-06-08T08:15:00Z",
+              content: "Definitely checking it out!",
+            },
+          ],
+          thumbnail: "https://example.com/posts/app_icon.png",
+        },
+  }]
     return mockRes;
   }
 
@@ -114,7 +124,7 @@ query getMyNewsfeed(
   `);
 
   const res = await client
-    .setVariables<GetMyNewsfeedQueryVariables>({ args })
+    .setVariables<GetMyNewsfeedQueryVariables>( {args} )
     .send<GetMyNewsfeedQuery>();
 
   return res.data.getMyNewsfeedPosts;
