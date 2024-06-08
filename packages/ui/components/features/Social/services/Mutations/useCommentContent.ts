@@ -28,7 +28,7 @@ export type CommentOnContentMutation = { __typename?: "Mutation" } & {
         { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
       >;
       author?: Maybe<
-        { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
+        { __typename?: "Profile" } & Pick<Profile, "username" | "photo" | "id" | "verified">
       >;
     };
 };

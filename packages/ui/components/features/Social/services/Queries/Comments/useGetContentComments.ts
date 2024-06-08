@@ -22,12 +22,8 @@ export type GetContentCommentsQueryVariables = Exact<{
 }>;
 
 export type GetContentCommentsQuery = { __typename?: "Query" } & {
-  getContentComments: {
-    __typename?: "CommentsCursorPaginationResponse";
-  } & Pick<
-    CommentsCursorPaginationResponse,
-    "cursor" | "hasMore" | "nextCursor"
-  > & {
+  getContentComments: 
+   {
       data: Array<
         { __typename?: "Comment" } & Pick<
           Comment,
@@ -39,6 +35,7 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
           | "hostId"
           | "hostType"
           | "updatedAt"
+          |"replies"
         > & {
             attachment: { __typename?: "Attachment" } & Pick<
               Attachment,
@@ -47,7 +44,7 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
             author?: Maybe<
               { __typename?: "Profile" } & Pick<
                 Profile,
-                "username" | "photo" | "verified"
+                "username" | "photo" | "verified" | "id"
               >
             >;
           }
@@ -65,14 +62,11 @@ export const useGetContentCommentsQuery = (
     any
   >
 ) => {
-  return useInfiniteQuery(
+  return useQuery(
     ["get-content-comments", { args }],
     async ({ meta, queryKey, pageParam }) => {
       if (isDev) {
         const res: GetContentCommentsQuery["getContentComments"] = {
-          cursor: pageParam || args.cursor,
-          hasMore: true,
-          nextCursor: args.cursor || "",
           data: [...Array(10)].map((_, i) => ({
             id: "",
             attachments: [],

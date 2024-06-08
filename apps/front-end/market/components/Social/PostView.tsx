@@ -35,7 +35,7 @@ export const PostView: React.FC = () => {
         {post ? (
           <>
             <PostCard post={post} />
-            <CommentsViewer comments={comments || []} />
+            <CommentsViewer comments={comments.data} />
           </>
         ) : null}
       </div>
@@ -45,7 +45,7 @@ export const PostView: React.FC = () => {
           {t("other_posts", "other posts")}
         </>
       </p>
-      <SocialProfileNewsfeedPosts grid userId={post?.userId} />
+      <SocialProfileNewsfeedPosts grid userId={post.profileInfo.id} />
       <Button outline>{t("view_more", "view more")}</Button>
     </div>
   );
