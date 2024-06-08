@@ -22,13 +22,14 @@ import {
   ServicesIcon,
   ShoppingCartIcon,
   useGetSocialProfileQuery,
-  ProfileVisibility,
-  AccountType,
+  useGetMyNewsfeedPostsQuery,
+  usePaginationControls,
 } from "ui";
+import { ProfileVisibility, AccountType, StoreType } from "@features/API";
 import {
   PostCommentPlaceholder,
   postProfilesPlaceholder,
-  ShopCardsInfoPlaceholder,
+  SocialShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
 } from "placeholder";
 import { TabType } from "types";
@@ -90,6 +91,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const cols = useBreakpointValue({ base: 3 });
+  const { pagination } = usePaginationControls();
+  const { data: posts } = useGetMyNewsfeedPostsQuery({ pagination });
+
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
@@ -107,6 +111,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
       component: (
         <PostCardsListWrapper
+          posts={posts}
           cols={cols}
           // posts={[]}
         />
@@ -150,7 +155,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <ShopCardsListWrapper
             // grid={isMobile}
             cols={cols}
-            items={ShopCardsInfoPlaceholder}
+            items={SocialShopCardsInfoPlaceholder}
           />
         </div>
       ),
@@ -192,24 +197,24 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const buyerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: (
-        <PostCardsListWrapper
-          cols={cols}
-          // posts={[]}
-        />
-      ),
+      component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
   ];
 
   const tabsSet =
-    profile.user.type === AccountType.Seller ? sellerTabs : buyerTabs;
+    profile.user.accountType === AccountType.Seller ? sellerTabs : buyerTabs;
 
   return (
     <>
       <ShareWithModal />
       <SocialPostsCommentsDrawer />
       <div className="flex gap-4 flex-col">
-        <SocialProfile profileInfo={profile} />
+        <SocialProfile
+          storeType={StoreType.Product}
+          profileInfo={profile}
+          isFollowed={profile.isFollowed}
+          isPublic={profile.visibility}
+        />
         <Container className="flex-grow gap-4 flex-col">
           {profile && profile.visibility === ProfileVisibility.Public ? (
             <>
