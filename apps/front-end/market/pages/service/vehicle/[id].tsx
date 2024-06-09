@@ -70,7 +70,7 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
             content={data.data.getVehicleService.serviceMetaInfo.description}
           />
           {data.data.getVehicleService.presentations.at(0).type ===
-          ServicePresentationType.Vid ? (
+            ServicePresentationType.Vid ? (
             <MetaVideo
               content={data.data.getVehicleService.presentations.at(0).src}
             />
