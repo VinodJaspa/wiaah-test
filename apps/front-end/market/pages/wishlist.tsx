@@ -5,7 +5,7 @@ import MasterLayout from "../components/MasterLayout";
 import { Container, Divider, Spacer, Collaboration, products } from "ui";
 import { WishlistView } from "../components/Wishlist/WishlistView";
 import { useSetRecoilState } from "recoil";
-import { SavedItemsState } from "@src/state";
+import { SavedProductDetailedItemState } from "@src/state";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   // get user wishlist and return it as props
@@ -15,11 +15,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-const wishlist: NextPage = () => {
-  const setSavedItems = useSetRecoilState(SavedItemsState);
+const Wishlist: NextPage = () => {
+  const setSavedItems = useSetRecoilState(SavedProductDetailedItemState);
   useEffect(() => {
     setSavedItems(products);
-  }, []);
+  }, [setSavedItems]);
   return (
     <>
       <Head>
@@ -37,4 +37,4 @@ const wishlist: NextPage = () => {
   );
 };
 
-export default wishlist;
+export default Wishlist;
