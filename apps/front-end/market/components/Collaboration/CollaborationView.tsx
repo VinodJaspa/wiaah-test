@@ -32,7 +32,7 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
   React.useEffect(() => {
     const category = categories.find((cate) => cate.name === shopType);
     setShops((state) => (category ? category.shops : state));
-  }, [shopType]);
+  }, [shopType, categories]);
 
   React.useEffect(() => {
     const type = router.query.category;
@@ -64,8 +64,8 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
             }
           />
           <GridContainerPager componentsLimit={5}>
-            {shops.map((shop) => (
-              <Clickable onClick={() => handleNavToShop(shop.id)}>
+            {shops.map((shop, i) => (
+              <Clickable key={i} onClick={() => handleNavToShop(shop.id)}>
                 <CollaboratorCard
                   imageUrl={shop.thumbnailUrl}
                   name={shop.name}

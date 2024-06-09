@@ -36,7 +36,7 @@ export const HotelsSearchResultsView: React.FC = () => {
     if (typeof router.query.location === "string") {
       addFilter((keys) => [keys.location, router.query.location]);
     }
-  }, [router]);
+  }, [router, addFilter]);
 
   const handleFiltersUpdate = debounce(
     (filters: FormatedSearchableFilter) =>

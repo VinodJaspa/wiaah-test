@@ -12,7 +12,7 @@ interface AffiliationPostPageProps {
   otherPosts: AffiliationOfferCardInfo[];
 }
 
-const socialShopPost: NextPage<AffiliationPostPageProps> = ({}) => {
+const SocialShopPost: NextPage<AffiliationPostPageProps> = ({}) => {
   const { getParam } = useRouting();
 
   const id = getParam("postId");
@@ -30,4 +30,4 @@ const socialShopPost: NextPage<AffiliationPostPageProps> = ({}) => {
   );
 };
 
-export default socialShopPost;
+export default SocialShopPost;

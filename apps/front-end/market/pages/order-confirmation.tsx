@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const orderConfirmation: NextPage<OrderConfirmationPageProps> = ({
+const OrderConfirmation: NextPage<OrderConfirmationPageProps> = ({
   Products,
 }) => {
   const setItems = useSetRecoilState(CartSummaryItemsState);
@@ -34,7 +34,7 @@ const orderConfirmation: NextPage<OrderConfirmationPageProps> = ({
       value: 50,
       voucherName: "50OFF",
     });
-  }, []);
+  }, [setVoucher, Products, setItems]);
   return (
     <>
       <Head>
@@ -55,4 +55,4 @@ const orderConfirmation: NextPage<OrderConfirmationPageProps> = ({
   );
 };
 
-export default orderConfirmation;
+export default OrderConfirmation;

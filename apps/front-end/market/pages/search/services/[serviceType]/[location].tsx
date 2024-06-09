@@ -12,7 +12,7 @@ import {
 import { ServiceType } from "@features/API";
 import { useRouting } from "routing";
 
-const filtered: NextPage = () => {
+const Filtered: NextPage = () => {
   const { t } = useTranslation();
   const { getParam, getCurrentPath } = useRouting();
   const serviceType = getParam("serviceType");
@@ -43,4 +43,4 @@ const filtered: NextPage = () => {
   );
 };
 
-export default filtered;
+export default Filtered;

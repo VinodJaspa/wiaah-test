@@ -34,7 +34,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
   const setVoucher = useSetRecoilState(VoucherState);
   useEffect(() => {
     setVoucher(voucher);
-  }, []);
+  }, [voucher, setVoucher]);
 
   const { OpenLoginPopup } = useLoginPopup();
   function handleOpenLogin() {
@@ -52,8 +52,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
       <main className="flex w-full flex-col">
         <>{children}</>
       </main>
-      {!social && <Footer />}
-      {!social && <AuthFooter />}
+
       {!social && (
         <div className="container mx-auto block w-full space-y-6 py-6">
           <div className="flex w-full justify-center">
@@ -66,6 +65,8 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
           </div>
         </div>
       )}
+      {!social && <Footer />}
+      {!social && <AuthFooter />}
       {!social && (
         <div className="flex w-full justify-start bg-black p-6">
           <p className="text-gray-500">

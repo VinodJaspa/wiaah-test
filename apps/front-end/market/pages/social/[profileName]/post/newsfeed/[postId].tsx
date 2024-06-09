@@ -147,7 +147,7 @@ const NewsfeedPost: NextPage<SocialPageProps> = ({
         photoSrc: "/wiaah_logo.png",
       },
     ]);
-  }, []);
+  }, [setStorySeenBy]);
 
   setNewStory(true);
   // console.log("post", newsfeedPost.profileInfo);

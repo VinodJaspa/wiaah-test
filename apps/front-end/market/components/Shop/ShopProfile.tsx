@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -43,10 +44,12 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               {/* shop thumbnail */}
               <SpinnerFallback isLoading={isLoading} isError={isError}>
                 {res ? (
-                  <img
+                  <Image
                     className="h-full w-full object-cover"
                     src={res.thumbnail}
                     alt={res.name}
+                    width={200}
+                    height={200}
                   />
                 ) : null}
               </SpinnerFallback>

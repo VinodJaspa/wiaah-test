@@ -15,7 +15,7 @@ import { PostCardPlaceHolder } from "placeholder";
 import { MasterLayout } from "@components";
 import { ShopProductView } from "@components";
 
-const socialShopPost: NextPage = ({}) => {
+const SocialShopPost: NextPage = ({}) => {
   const shopProductPost: ShopCardInfo = shopCardInfoPlaceholder;
   const otherPosts: ShopCardInfo[] = ShopCardsInfoPlaceholder;
   const setPost = useSetRecoilState(SocialShopPostState);
@@ -85,7 +85,7 @@ const socialShopPost: NextPage = ({}) => {
       },
     ]);
     isNewStory();
-  }, []);
+  }, [isNewStory, setStories, setStorySeenBy]);
   setStory({
     storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
     storyType: "text",
@@ -111,4 +111,4 @@ const socialShopPost: NextPage = ({}) => {
   );
 };
 
-export default socialShopPost;
+export default SocialShopPost;

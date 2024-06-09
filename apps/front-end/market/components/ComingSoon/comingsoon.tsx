@@ -85,6 +85,7 @@ export const CoomingSoon: React.FC = () => {
       /> */}
       <div className="w-screen h-screen relative">
         <Image
+          alt="Hero"
           className="absolute w-screen h-screen object-cover object-top"
           src="./ComingSoonHero.png"
         />
@@ -92,7 +93,7 @@ export const CoomingSoon: React.FC = () => {
           <div className="w-full h-full items-end py-4 flex flex-col">
             <div className="flex gap-4">
               {socialData.map((item, i) => (
-                <Clickable>
+                <Clickable key={i}>
                   <Link href={item.link}>
                     <div
                       style={{

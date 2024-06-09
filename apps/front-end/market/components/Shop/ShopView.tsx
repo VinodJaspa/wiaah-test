@@ -61,7 +61,11 @@ export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
                 {/* shop items */}
                 {res
                   ? res.data.map((product, i) => (
-                      <SpinnerFallback isLoading={isLoading} isError={isError}>
+                      <SpinnerFallback
+                        key={i}
+                        isLoading={isLoading}
+                        isError={isError}
+                      >
                         {res ? (
                           <ProductCard
                             buttonText="Add to Cart"

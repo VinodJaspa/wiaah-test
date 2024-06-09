@@ -47,25 +47,25 @@ export const HealthCenterDetailsView: React.FC<{ id: string }> = ({ id }) => {
               takenDates={
                 res
                   ? Object.values(res.takenSchedule.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value.periods[0], to: value.periods[1] }]
-                          : [],
-                    }))
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value.periods[0], to: value.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
               workingDates={
                 res
                   ? Object.values(res.workingSchedule.weekdays).map(
-                      (value) => ({
-                        date: new Date().toString(),
-                        workingHoursRanges:
-                          typeof value === "object"
-                            ? [{ from: value.periods[0], to: value.periods[1] }]
-                            : [],
-                      })
-                    )
+                    (value) => ({
+                      date: new Date().toString(),
+                      workingHoursRanges:
+                        typeof value === "object"
+                          ? [{ from: value.periods[0], to: value.periods[1] }]
+                          : [],
+                    })
+                  )
                   : []
               }
             />

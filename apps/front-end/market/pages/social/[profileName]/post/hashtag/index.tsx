@@ -7,7 +7,7 @@ import { useRouting } from "routing";
 
 export interface HashTagPageProps {}
 
-const hashTag: NextPage<HashTagPageProps> = () => {
+const HashTag: NextPage<HashTagPageProps> = () => {
   const { getParam } = useRouting();
   const tag = getParam("tag");
   return (
@@ -24,4 +24,4 @@ const hashTag: NextPage<HashTagPageProps> = () => {
   );
 };
 
-export default hashTag;
+export default HashTag;

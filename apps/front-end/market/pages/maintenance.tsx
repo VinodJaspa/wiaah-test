@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-const maintenance: NextPage = () => {
+const Maintenance: NextPage = () => {
   const { t } = useTranslation();
   return (
     <section className=" w-screen h-screen bg-white flex justify-center items-center">
@@ -23,4 +23,4 @@ const maintenance: NextPage = () => {
   );
 };
 
-export default maintenance;
+export default Maintenance;

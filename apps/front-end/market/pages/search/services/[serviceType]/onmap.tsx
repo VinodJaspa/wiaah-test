@@ -8,7 +8,7 @@ import { Container, SERVICESTYPE_INDEXKEY, useMutateSearchFilters } from "ui";
 import { ServicesViewsList } from "@data";
 import { ExtractServiceTypeFromQuery } from "utils";
 
-const onmap: NextPage = () => {
+const Onmap: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
@@ -31,4 +31,4 @@ const onmap: NextPage = () => {
   );
 };
 
-export default onmap;
+export default Onmap;
