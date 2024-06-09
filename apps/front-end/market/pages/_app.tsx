@@ -18,12 +18,12 @@ import { ReactPubsubKeys } from "ui";
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = React.useState(new QueryClient());
+  const [queryClient] = React.useState(() => new QueryClient());
   const router = useRouter();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedProps}>
+      <Hydrate state={pageProps.dehydratedState}>
         <RoutingProvider
           back={() => router.back()}
           getBaseUrl={() => router.basePath}
@@ -48,10 +48,12 @@ function MyApp({ Component, pageProps }: AppProps) {
               <SeoWrapper>
                 <ChakraProvider>
                   <CookiesProvider>
+                    {/* @ts-ignore */}
                     <RecoilRoot>
                       {coomingSoon ? (
                         <CoomingSoon />
                       ) : (
+                        //  @ts-ignore
                         <Component {...pageProps} />
                       )}
                     </RecoilRoot>
