@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { createContext, ReactNode } from "react";
 
 interface RoutingContextInterface {
   visit: (url: string) => any;
@@ -7,46 +7,33 @@ interface RoutingContextInterface {
   getQuery: () => any;
   getBaseUrl: () => string;
   back: () => void;
-  // removeParam: (param: string) => any;
-  // getParams:(params:string[])=> string[]
-  // getHash:()=> string
+}
+
+const defaultRoutingContext: RoutingContextInterface = {
+  visit: () => { },
+  getCurrentPath: () => "",
+  getParam: () => null,
+  getQuery: () => { },
+  getBaseUrl: () => "",
+  back: () => { },
+};
+
+interface RoutingProviderProps extends RoutingContextInterface {
   children: ReactNode;
 }
 
-export const routingContext = React.createContext<RoutingContextInterface>({
-  children: <div></div>,
-  visit: () => {},
-  getCurrentPath: () => "",
-  getParam: (param) => "",
-  getQuery: () => {},
-  getBaseUrl: () => "",
-  back: () => {},
-  // removeParam: () => {},
-});
+export const routingContext = createContext<RoutingContextInterface>(
+  defaultRoutingContext
+);
 
-export const RoutingProvider: React.FC<RoutingContextInterface> = ({
-  visit,
-  getCurrentPath,
-  getParam,
-  // removeParam,
-  getQuery,
-  getBaseUrl,
-  back,
+export const RoutingProvider: React.FC<RoutingProviderProps> = ({
   children,
-  ...props
+  ...methods
 }) => {
+  // 'children' is removed from the context value
   return (
-    <routingContext.Provider
-      value={{
-        visit,
-        getCurrentPath,
-        getParam,
-        getQuery,
-        getBaseUrl,
-        back,
-        children,
-      }}
-      {...props}
-    ></routingContext.Provider>
+    <routingContext.Provider value={methods}>
+      {children}
+    </routingContext.Provider>
   );
 };

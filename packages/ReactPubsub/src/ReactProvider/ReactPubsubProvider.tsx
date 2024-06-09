@@ -1,4 +1,4 @@
-import React, { Children, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { ReactPubsubClient } from "../Client";
 
 interface ReactPubsubContextType {
@@ -9,9 +9,9 @@ interface ReactPubsubContextType {
 }
 
 export const ReactPubsubContext = React.createContext<ReactPubsubContextType>({
-  publish(key, props) {},
-  subscribe(key, cb) {},
-  unSubscribe(key) {},
+  publish: () => { },
+  subscribe: () => { },
+  unSubscribe: () => { },
   keys: {},
 });
 
@@ -25,23 +25,27 @@ export const ReactPubsubProvider: React.FC<ReactPubsubProviderProps> = ({
   client,
   keys,
   children,
-  ...props
 }) => {
+  const publish = (key: string, props: any) => {
+    client.Publish(key, props);
+  };
+
+  const subscribe = (key: string, cb: (props?: any) => any) => {
+    client.Subscribe(key, cb);
+  };
+
+  const unSubscribe = (key: string) => {
+    client.unSubscribe(key);
+  };
+
   return (
     <ReactPubsubContext.Provider
       value={{
+        publish,
+        subscribe,
+        unSubscribe,
         keys,
-        publish(key, props) {
-          client.Publish(key, props);
-        },
-        subscribe(key, cb) {
-          client.Subscribe(key, cb);
-        },
-        unSubscribe(key) {
-          client.unSubscribe(key);
-        },
       }}
-      {...props}
     >
       {children}
     </ReactPubsubContext.Provider>
