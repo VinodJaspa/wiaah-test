@@ -4,6 +4,7 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
