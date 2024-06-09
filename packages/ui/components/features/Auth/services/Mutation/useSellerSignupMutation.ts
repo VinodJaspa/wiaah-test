@@ -25,7 +25,7 @@ mutation sellerSignup(
   );
 
   return useMutation<string, unknown, SellerSignupMutationVariables["args"]>(
-    "seller-register",
+    "seller-signup",
     async (args) => {
       console.log("send mu");
       const res = await client
