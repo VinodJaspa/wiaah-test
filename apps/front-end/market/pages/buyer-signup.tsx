@@ -7,7 +7,6 @@ import { useBuyerSignupMutation } from "ui";
 
 const BuyerSignup: NextPage = () => {
   const { mutate, data } = useBuyerSignupMutation();
-  console.log({ data });
   return (
     <>
       <Head>
