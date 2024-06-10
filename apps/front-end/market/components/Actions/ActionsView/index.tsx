@@ -3,13 +3,13 @@ import { SocialActionData, SocialStoryDataWithUser } from "types";
 import { useTranslation } from "react-i18next";
 import { Slider, AspectRatio } from "ui";
 import { SocialProfileInfo } from "placeholder";
-import { ActionViewer } from "ui";
+import { ActionViewer, PostViewPopup } from "ui";
 export const ActionsView: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="bg-white w-full h-[40rem] overflow-hidden flex-col flex items-center">
       <p className="text-4xl font-bold">{t("Action")}</p>
-      {/* <PostViewPopup
+      <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;
           const action = actionsPlaceholders.find((post) => post.id === id);
@@ -20,7 +20,7 @@ export const ActionsView: React.FC = () => {
         renderChild={(props: SocialActionData) => {
           return <ActionViewer action={props} />;
         }}
-      /> */}
+      />
       {/* actions View */}
       <AspectRatio ratio={16 / 5}>
         <Slider variant="vertical">
