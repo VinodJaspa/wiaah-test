@@ -77,7 +77,7 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
             <SpinnerFallback isError={isError} isLoading={isLoading}>
               {res ? (
                 <ServiceWorkingHoursSection
-                  workingDays={res.data.workingDays}
+                  workingHours={res.data.workingDays.workingHours}
                 />
               ) : null}
             </SpinnerFallback>
