@@ -2,19 +2,20 @@ import { t } from "i18next";
 import {
   AffiliationOfferCardInfo,
   HashTagCardInfo,
-  PostCardInfo,
   PostComment,
   PostInfo,
   ProfileInfo,
   ShopCardInfo,
   ShopSocialProfileInfo,
   SubscribersUserInfo,
+  PostCardInfo,
+  AccountType,
 } from "types";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
-  accountType: "seller",
+  accountType: AccountType.Seller,
   publications: 100,
   subscribers: 40,
   subscriptions: 23,
@@ -106,7 +107,7 @@ export const PostCommentPlaceholder: PostComment = {
   },
   user: {
     id: "1",
-    accountType: "buyer",
+    accountType: AccountType.Buyer,
     name: "wiaah",
     thumbnail: "/wiaah_logo.png",
     verifed: true,
@@ -152,7 +153,6 @@ export const PostCardPlaceHolder: PostCardInfo = {
       { ...PostCommentPlaceholder },
       { ...PostCommentPlaceholder },
     ],
-    url: `/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
     profession: "Los Angeles",
@@ -160,7 +160,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
 };
@@ -168,7 +168,8 @@ export const PostCardPlaceHolder: PostCardInfo = {
 import { products } from "./products";
 import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
-import { RestaurantDishType, ServiceType } from "@features/API";
+import { CashbackType, PresentationType, RestaurantDishType, ServiceType } from "@features/API";
+import { SocialShopPostcardProps } from "..";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -249,7 +250,7 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Seller,
     verifed: true,
     public: true,
   },
@@ -257,14 +258,14 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "2",
     name: "user",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
   {
     id: "3",
     name: "seller",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     verifed: true,
     public: true,
   },
@@ -272,7 +273,7 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "4",
     name: "buyer",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
 ];
@@ -330,7 +331,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-    Math.floor(Math.random() * postProfilesPlaceholder.length)
+  Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -737,6 +738,47 @@ export const stringplaceholder =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
+
+
+export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[]= [
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: "http://example.com/photo.jpg",
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "post456",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations:[{
+          src:"http://",
+          type: PresentationType.Image
+        }],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: {amount:11,id:"432",units:4},
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  }
+]
 export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   {
     ...shopCardInfoPlaceholder,

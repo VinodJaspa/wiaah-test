@@ -33,33 +33,33 @@ export type GetProfileShopPostsQuery = { __typename?: "Query" } & {
       | "productId"
       | "views"
     > & {
-        product: { __typename?: "Product" } & Pick<
-          Product,
-          | "id"
-          | "presentations"
-          | "hashtags"
-          | "title"
-          | "cashback"
-          | "discount"
-          | "price"
-          | "thumbnail"
-        >;
-        user?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id" | "type"> & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<
-                  Profile,
-                  | "photo"
-                  | "username"
-                  | "verified"
-                  | "id"
-                  | "profession"
-                  | "visibility"
-                >
-              >;
-            }
-        >;
-      }
+      product: { __typename?: "Product" } & Pick<
+        Product,
+        | "id"
+        | "presentations"
+        | "hashtags"
+        | "title"
+        | "cashback"
+        | "discount"
+        | "price"
+        | "thumbnail"
+      >;
+      user?: Maybe<
+        { __typename?: "Account" } & Pick<Account, "id" | "type"> & {
+          profile?: Maybe<
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              | "photo"
+              | "username"
+              | "verified"
+              | "id"
+              | "profession"
+              | "visibility"
+            >
+          >;
+        }
+      >;
+    }
   >;
 };
 
