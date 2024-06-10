@@ -1,6 +1,11 @@
 import { isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
-import { AccountType, Exact, GetMyNewsfeedPostsInput, PostCardInfo } from "@features/API";
+import {
+  AccountType,
+  Exact,
+  GetMyNewsfeedPostsInput,
+  PostCardInfo,
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -10,8 +15,7 @@ export type GetMyNewsfeedQueryVariables = Exact<{
 
 export type GetMyNewsfeedQuery = {
   __typename?: "Query";
-  getMyNewsfeedPosts: Array< PostCardInfo
-  >;
+  getMyNewsfeedPosts: Array<PostCardInfo>;
 };
 
 type args = GetMyNewsfeedQueryVariables["args"];
@@ -55,9 +59,10 @@ export const getMyNewsfeedPostsQueryFetcher = async (args: args) => {
               user: {
                 id: "user-987",
                 name: "Jane Smith",
-                thumbnail: "https://example.com/profile_pics/jane_smith_thumb.jpg",
+                thumbnail:
+                  "https://example.com/profile_pics/jane_smith_thumb.jpg",
                 accountType: AccountType.Buyer,
-                public:true
+                public: true,
               },
               replies: 0,
               likes: 1,
@@ -69,9 +74,10 @@ export const getMyNewsfeedPostsQueryFetcher = async (args: args) => {
               user: {
                 id: "user-345",
                 name: "Alice Johnson",
-                thumbnail: "https://example.com/profile_pics/alice_johnson_thumb.jpg",
+                thumbnail:
+                  "https://example.com/profile_pics/alice_johnson_thumb.jpg",
                 accountType: AccountType.Buyer,
-                public:false
+                public: false,
               },
               replies: 0,
               likes: 0,
@@ -81,7 +87,8 @@ export const getMyNewsfeedPostsQueryFetcher = async (args: args) => {
           ],
           thumbnail: "https://example.com/posts/app_icon.png",
         },
-  }]
+      },
+    ];
     return mockRes;
   }
 
@@ -124,7 +131,7 @@ query getMyNewsfeed(
   `);
 
   const res = await client
-    .setVariables<GetMyNewsfeedQueryVariables>( {args} )
+    .setVariables<GetMyNewsfeedQueryVariables>({ args })
     .send<GetMyNewsfeedQuery>();
 
   return res.data.getMyNewsfeedPosts;

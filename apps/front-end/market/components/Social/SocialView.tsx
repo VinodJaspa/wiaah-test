@@ -22,6 +22,7 @@ import {
   ServicesIcon,
   ShoppingCartIcon,
   useGetSocialProfileQuery,
+  getSocialProfileFetcher,
   useGetMyNewsfeedPostsQuery,
   usePaginationControls,
 } from "ui";
@@ -44,7 +45,7 @@ import { useTypedReactPubsub } from "@libs";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-    Math.floor(Math.random() * postProfilesPlaceholder.length)
+  Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -84,22 +85,26 @@ const comments: PostComment[] = [
 ];
 
 export interface SocialViewProps {
-  profileId: string;
+  profileId?: string;
 }
 
-export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
+export const SocialView: React.FC<SocialViewProps> = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
+  const profileId = "32";
   const cols = useBreakpointValue({ base: 3 });
   const { pagination } = usePaginationControls();
   const { data: posts } = useGetMyNewsfeedPostsQuery({ pagination });
+  console.log("Posts  " + JSON.stringify(posts));
 
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
+  // this getSocialProfileFetcher is just for dev, should be changed to useGetSocialProfileFetcher in production
+  const profile = getSocialProfileFetcher(profileId);
 
-  const { data: profile } = useGetSocialProfileQuery(profileId);
+  console.log("profile  " + JSON.stringify(profile));
 
   const sellerTabs: TabType[] = [
     {
@@ -109,13 +114,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <HomeIcon />
         </HStack>
       ),
-      component: (
-        <PostCardsListWrapper
-          posts={posts}
-          cols={cols}
-          // posts={[]}
-        />
-      ),
+      component: <PostCardsListWrapper posts={posts} cols={cols} />,
     },
     {
       name: (
