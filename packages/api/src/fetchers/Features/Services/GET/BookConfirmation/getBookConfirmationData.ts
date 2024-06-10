@@ -53,7 +53,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
   {
     type: "resturant",
     data: {
-      serviceType: "resturant",
+      serviceType: "restaurant",
       bookedDates: {
         from: new Date(Date.now()).toString(),
         to: new Date(Date.now()).toString(),
@@ -140,6 +140,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
   {
     type: "beauty_center",
     data: {
+      guests: 5,
       serviceType: "beauty_center",
       bookedDates: {
         from: new Date(Date.now()).toString(),
@@ -165,6 +166,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
       price: randomNum(500),
       bookedTreatments: [
         {
+          id: "44",
           category: "Facial",
           title: "Hydro facial with chemical peel",
           durationInMinutes: [30, 60],
@@ -189,97 +191,43 @@ export const getBookedSerivceConfirmationDataFetcher = async (
           address: "Rue du marche 34",
           city: "Geneve",
           country: "switzerland",
-          cords: {
-            lat: 45.464664,
-            lng: 9.18854,
-          },
+          lat: 45.464664,
+          lon: 9.18854,
           countryCode: "USA",
           state: "state",
           postalCode: 1204,
         },
         telephone: "101227879123",
       },
-      workingDays: [
-        {
-          weekDay: "Friday",
-          from: {
-            hour: 0,
-            minutes: 0,
-          },
-          to: {
-            hour: 0,
-            minutes: 0,
-          },
-        },
-        {
-          weekDay: "Monday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
-        },
-        {
-          weekDay: "Saturday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
+      workingDays: {
+        workingHours: {
+          id: "1",
+          weekdays: {
+            mo: {
+              periods: ["2023-06-09T09:00:00.000Z", "2023-06-09T19:30:00.000Z"],
+            },
+            tu: {
+              periods: ["2023-06-10T09:00:00.000Z", "2023-06-10T19:30:00.000Z"],
+            },
+            we: {
+              periods: ["2023-06-11T09:00:00.000Z", "2023-06-11T19:30:00.000Z"],
+            },
+            th: {
+              periods: ["2023-06-12T09:00:00.000Z", "2023-06-12T19:30:00.000Z"],
+            },
+            fr: {
+              periods: ["2023-06-13T00:00:00.000Z", "2023-06-13T00:00:00.000Z"],
+            },
+            sa: {
+              periods: ["2023-06-14T09:00:00.000Z", "2023-06-14T19:30:00.000Z"],
+            },
+            su: {
+              periods: ["2023-06-15T09:00:00.000Z", "2023-06-15T19:30:00.000Z"],
+            },
           },
         },
-        {
-          weekDay: "Sunday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
-        },
-        {
-          weekDay: "Thursday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
-        },
-        {
-          weekDay: "Tuesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
-        },
-        {
-          weekDay: "Wednesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
-        },
-      ],
+      },
     },
   };
-
   return res;
 };
