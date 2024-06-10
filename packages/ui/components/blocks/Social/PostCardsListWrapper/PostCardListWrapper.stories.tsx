@@ -3,10 +3,12 @@ import { newsfeedPosts } from "@UI";
 import { storybookListWrappersTitle } from "utils";
 import { PostCardsListWrapper } from "./index";
 
-export default {
+const meta: ComponentMeta<typeof PostCardsListWrapper> = {
   title: storybookListWrappersTitle + "PostCardListWrapper",
   component: PostCardsListWrapper,
-} as ComponentMeta<typeof PostCardsListWrapper>;
+};
+
+export default meta;
 
 export const Default = () => (
   <PostCardsListWrapper
