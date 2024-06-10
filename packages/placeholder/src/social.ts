@@ -2,6 +2,7 @@ import { products } from "./index";
 import { baseUri } from "uris";
 import { t } from "i18next";
 import {
+  AccountType,
   AffiliationOfferCardInfo,
   HashTagCardInfo,
   PostCardInfo,
@@ -11,13 +12,17 @@ import {
   ShopSocialProfileInfo,
   SubscribersUserInfo,
 } from "types";
-import { SocialAffiliationCardProps, SocialShopPostcardProps } from "ui";
+import {
+  AccountSignup,
+  SocialAffiliationCardProps,
+  SocialShopPostcardProps,
+} from "ui";
 const randomNum = (num: number) => num;
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
-  accountType: "seller",
+  accountType: AccountType.Buyer,
   publications: 100,
   subscribers: 40,
   subscriptions: 23,
@@ -108,7 +113,7 @@ export const PostCommentPlaceholder: PostComment = {
   },
   user: {
     id: "1",
-    accountType: "buyer",
+    accountType: AccountType.Buyer,
     name: "wiaah",
     thumbnail: "/wiaah_logo.png",
     verifed: true,
@@ -125,7 +130,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium.",
     numberOfComments: 5,
     numberOfLikes: 7,
-    numberOfShares:3,
+    numberOfShares: 3,
     attachments: [
       {
         type: "image",
@@ -161,7 +166,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
 };
@@ -175,7 +180,7 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Buyer,
     verifed: true,
     public: true,
   },
@@ -183,14 +188,14 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "2",
     name: "user",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
   {
     id: "3",
     name: "seller",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     verifed: true,
     public: true,
   },
@@ -198,13 +203,13 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
     id: "4",
     name: "buyer",
     thumbnail: images[Math.floor(Math.random() * images.length)],
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
 ];
 export const shopCardInfoPlaceholder: ShopCardInfo = {
   id: "1",
-  createdAt:"",
+  createdAt: "",
   title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
   cashback: {
     unit: "$",
@@ -257,7 +262,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-    Math.floor(Math.random() * postProfilesPlaceholder.length)
+  Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -295,41 +300,43 @@ const comments: PostComment[] = [
     attachment: null,
   },
 ];
-export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post"][] = [
-  {
-    id: "post-123",
-    userId: "user-456",
-    affiliationId: "affiliation-789",
-    views: 543,
-    reactionNum: 25,
-    shares: 12,
-    comments: 3,
-    createdAt: "2024-06-08T10:00:00Z",
-    affiliation: {
-      id: "affiliation-789",
-      commision: 10, // Percentage
-      createdAt: "2024-06-07T15:30:00Z",
-      itemId: "item-001",
-      itemType: "product", // Or "service"
-      product: { // Replace with actual product details if applicable
-        name: "Awesome Product",
-        description: "This is a great product you should check out!",
-        // ... other product properties
+export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post"][] =
+  [
+    {
+      id: "post-123",
+      userId: "user-456",
+      affiliationId: "affiliation-789",
+      views: 543,
+      reactionNum: 25,
+      shares: 12,
+      comments: 3,
+      createdAt: "2024-06-08T10:00:00Z",
+      affiliation: {
+        id: "affiliation-789",
+        commision: 10, // Percentage
+        createdAt: "2024-06-07T15:30:00Z",
+        itemId: "item-001",
+        itemType: "product", // Or "service"
+        product: {
+          // Replace with actual product details if applicable
+          name: "Awesome Product",
+          description: "This is a great product you should check out!",
+          // ... other product properties
+        },
+        service: null, // If not a product, replace with service details
+        status: "active", // Or other possible statuses
       },
-      service: null, // If not a product, replace with service details
-      status: "active", // Or other possible statuses
-    },
-    user: {
-      profile: {
-        id: "user-456",
-        username: "johndoe",
-        verified: true,
-        photo: "https://example.com/profile_pics/johndoe.jpg",
-        ownerId: "owner-123", // Optional owner ID
+      user: {
+        profile: {
+          id: "user-456",
+          username: "johndoe",
+          verified: true,
+          photo: "https://example.com/profile_pics/johndoe.jpg",
+          ownerId: "owner-123", // Optional owner ID
+        },
       },
     },
-  }
-];
+  ];
 export const newsfeedPosts: PostCardInfo[] = [
   {
     profileInfo: PostCardPlaceHolder.profileInfo,
@@ -570,99 +577,99 @@ export const stringplaceholder =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
-export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [{
-
-  id: "1",
-  createdAt:"",
-  title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
-  cashback: {
-    unit: "$",
-    value: 5,
-  },
-  user: { ...PostCardPlaceHolder.profileInfo },
-  likes: 5,
-  noOfComments: 2,
-  type: "service",
-  price: 800,
-  oldPrice: 1000,
-  discount: {
-    unit: "%",
-    value: 15,
-  },
-  // views: 50,
-  attachments: [
-    {
-      type: "video",
-      src: "/video.mp4",
+export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
+  {
+    id: "1",
+    createdAt: "",
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
+    cashback: {
+      unit: "$",
+      value: 5,
     },
-  ],
-  comments: PostCardPlaceHolder.postInfo.comments || [],
-  rating: 3,
-  url: `${baseUri}/social/wiaah/socialshop-post/15`,
-}
-
-]
+    user: { ...PostCardPlaceHolder.profileInfo },
+    likes: 5,
+    noOfComments: 2,
+    type: "service",
+    price: 800,
+    oldPrice: 1000,
+    discount: {
+      unit: "%",
+      value: 15,
+    },
+    // views: 50,
+    attachments: [
+      {
+        type: "video",
+        src: "/video.mp4",
+      },
+    ],
+    comments: PostCardPlaceHolder.postInfo.comments || [],
+    rating: 3,
+    url: `${baseUri}/social/wiaah/socialshop-post/15`,
+  },
+];
 export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
-
   {
-  profileInfo: {
-    id: 12345,
-    verified: true,
-    photo: "https://example.com/profile_pic.jpg",
-    username: "fashion_lover",
-    profession: "Stylist",
-  },
-  postInfo: {
-    id: 54321,
-    comments: 25,
-    shares: 102,
-    reactionNum: 417,
-    userId: 12345,
-    createdAt: new Date("2024-06-06T10:00:00Z"),
-    product: {
-      id: 98765,
-      presentations: ["https://example.com/product_image.jpg"],
-      title: "Summer Breeze Dress",
-      hashtags: ["#summerdress", "#fashion", "#ootd"],
-      price: 49.99,
-      cashback: 5.00,
-      discount: 10,
+    profileInfo: {
+      id: 12345,
+      verified: true,
+      photo: "https://example.com/profile_pic.jpg",
+      username: "fashion_lover",
+      profession: "Stylist",
+    },
+    postInfo: {
+      id: 54321,
+      comments: 25,
+      shares: 102,
+      reactionNum: 417,
+      userId: 12345,
+      createdAt: new Date("2024-06-06T10:00:00Z"),
+      product: {
+        id: 98765,
+        presentations: ["https://example.com/product_image.jpg"],
+        title: "Summer Breeze Dress",
+        hashtags: ["#summerdress", "#fashion", "#ootd"],
+        price: 49.99,
+        cashback: 5.0,
+        discount: 10,
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("Interaction received:", interaction);
+      // Perform some action based on the interaction type
     },
   },
-  onInteraction: (interaction) => {
-    console.log("Interaction received:", interaction);
-    // Perform some action based on the interaction type
-  },}, 
 
   {
-  profileInfo: {
-    id: 12345,
-    verified: true,
-    photo: "https://example.com/profile_pic.jpg",
-    username: "fashion_lover",
-    profession: "Stylist",
-  },
-  postInfo: {
-    id: 54321,
-    comments: 25,
-    shares: 102,
-    reactionNum: 417,
-    userId: 12345,
-    createdAt: new Date("2024-06-06T10:00:00Z"),
-    product: {
-      id: 98765,
-      presentations: ["https://example.com/product_image.jpg"],
-      title: "Summer Breeze Dress",
-      hashtags: ["#summerdress", "#fashion", "#ootd"],
-      price: 49.99,
-      cashback: 5.00,
-      discount: 10,
+    profileInfo: {
+      id: 12345,
+      verified: true,
+      photo: "https://example.com/profile_pic.jpg",
+      username: "fashion_lover",
+      profession: "Stylist",
+    },
+    postInfo: {
+      id: 54321,
+      comments: 25,
+      shares: 102,
+      reactionNum: 417,
+      userId: 12345,
+      createdAt: new Date("2024-06-06T10:00:00Z"),
+      product: {
+        id: 98765,
+        presentations: ["https://example.com/product_image.jpg"],
+        title: "Summer Breeze Dress",
+        hashtags: ["#summerdress", "#fashion", "#ootd"],
+        price: 49.99,
+        cashback: 5.0,
+        discount: 10,
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("Interaction received:", interaction);
+      // Perform some action based on the interaction type
     },
   },
-  onInteraction: (interaction) => {
-    console.log("Interaction received:", interaction);
-    // Perform some action based on the interaction type
-  },}
 ];
 
 export const hashtagCardInfoPlaceholder: HashTagCardInfo = {

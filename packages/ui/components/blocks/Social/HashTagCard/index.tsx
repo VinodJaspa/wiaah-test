@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { PostAttachment, PostCard, PostCardProps } from "@UI";
 
 export interface HashTagCardProps {
-  post: PostCardProps["postInfo"];
-  profile: PostCardProps["profileInfo"];
+  post: PostCardProps["post"]["postInfo"];
+  profile: PostCardProps["post"]["profileInfo"];
   title: string;
   onViewPost?: () => void;
 }
@@ -26,7 +26,7 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
         {title}
       </p>
       <div className="flex justify-center items-center w-full h-96">
-        <PostCard postInfo={post} profileInfo={profile} />
+        <PostCard post={{ postInfo: post, profileInfo: profile }} />
       </div>
     </div>
   );

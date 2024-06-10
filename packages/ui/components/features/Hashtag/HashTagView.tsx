@@ -30,13 +30,19 @@ import {
   HashTagPostsListWrapper,
   SocialHashTagTopPosts,
   SocialProfileActionList,
+  PostCardsListWrapper,
+  ShopCardsListWrapper,
+  SocialShopCard,
 } from "ui";
+
+import { newsfeedPosts } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import { NumberShortner, randomNum, useBreakpointValue, useForm } from "utils";
 import { PostType, StoreType } from "@features/API";
 import { startCase } from "lodash";
 import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";
 import { useGetTopHashtagActionsQuery } from "@features/Social/services/Queries/Action/useGetTopHashtagActions";
+import { SocialShopCardsInfoPlaceholder } from "placeholder";
 
 export interface HashTagViewProps {
   tag: string;
@@ -54,8 +60,6 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
 
   const { t } = useTranslation();
 
-  function handleFollowHashtag() {}
-
   const tabs: TabType[] = [
     {
       name: (
@@ -66,12 +70,12 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col gap-16">
-          {/* <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} /> */}
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
-          {/* <PostCardsListWrapper
+          <PostCardsListWrapper
             cols={3}
             posts={newsfeedPosts.concat(newsfeedPosts)}
-          /> */}
+          />
         </div>
       ),
     },
@@ -84,9 +88,9 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col w-full gap-16">
-          {/* <HashTagPostsListWrapper hashtags={topPosts} /> */}
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
-          <SocialServicePostsList posts={[]} />
+          // <SocialServicePostsList posts={[]} />
         </div>
       ),
     },
@@ -99,11 +103,14 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       ),
       component: (
         <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={SocialHashTagTopPosts} />
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
 
           <Divider />
 
-          {/* <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} /> */}
+          <ShopCardsListWrapper
+            cols={cols}
+            items={SocialShopCardsInfoPlaceholder}
+          />
         </div>
       ),
     },

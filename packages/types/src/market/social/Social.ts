@@ -6,10 +6,10 @@ export interface ProfileInfo {
   verifed?: boolean;
   name: string;
   thumbnail: string;
-  accountType: "seller" | "buyer";
+  accountType: AccountType.Seller | AccountType.Buyer;
   public: boolean;
   profession?: string;
-  photo?:string;
+  photo?: string;
 }
 
 export interface ShopSocialProfileInfo extends ProfileInfo {
@@ -29,10 +29,9 @@ export interface SubscribersUserInfo {
   avatar: string;
   profileUrl: string;
 }
-export type PostAttachmentTypes = string;
 
 export interface PostAttachment {
-  type: PostAttachmentTypes;
+  type: string;
   src: string;
   postLocation?: string;
 }
@@ -70,10 +69,17 @@ export interface PostInfo {
   thumbnail?: string;
 }
 
-export type PostCardInfo =  {
+export enum AccountType {
+  Admin = "admin",
+  Buyer = "buyer",
+  Mod = "mod",
+  Seller = "seller",
+}
+
+export type PostCardInfo = {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
-}
+};
 
 export interface Interaction {
   type: Interactions;
@@ -113,7 +119,7 @@ export interface ShopCardInfo {
   noOfComments: number;
   comments: PostComment[];
   url: string;
-  createdAt:string
+  createdAt: string;
 }
 
 export interface AffiliationOfferCardInfo {
@@ -142,14 +148,14 @@ export interface HashTagCardInfo {
 export interface SocialStoryData {
   id: string;
   storyType:
-    | "text"
-    | "image"
-    | "video"
-    | "newsFeedPost"
-    | "shopPost"
-    | "affiliationPost"
-    | "action"
-    | "servicePost";
+  | "text"
+  | "image"
+  | "video"
+  | "newsFeedPost"
+  | "shopPost"
+  | "affiliationPost"
+  | "action"
+  | "servicePost";
   storySrc?: string;
   storyText?: string;
   storyCreationDate: string;
@@ -158,9 +164,9 @@ export interface SocialStoryData {
 
 export interface SocialStoryContentData
   extends Pick<
-    SocialStoryData,
-    "storyType" | "storySrc" | "storyText" | "id"
-  > {}
+  SocialStoryData,
+  "storyType" | "storySrc" | "storyText" | "id"
+  > { }
 
 export interface SocialStoryDataWithUser extends SocialStoryData {
   user: ProfileInfo;
