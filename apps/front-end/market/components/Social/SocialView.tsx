@@ -213,23 +213,8 @@ export const SocialView: React.FC<SocialViewProps> = () => {
           profileInfo={profile}
           isFollowed={profile.isFollowed}
           isPublic={profile.visibility}
+          tabsSet={tabsSet}
         />
-        <Container className="flex-grow gap-4 flex-col">
-          {profile && profile.visibility === ProfileVisibility.Public ? (
-            <>
-              <TabsViewer tabs={tabsSet} />
-              <Divider />
-            </>
-          ) : (
-            <>
-              <div className="flex h-full items-center justify-center flex-grow-[inherit]">
-                <p className="font-bold text-3xl">
-                  {t("this profile is private")}
-                </p>
-              </div>
-            </>
-          )}
-        </Container>
       </div>
     </>
   );

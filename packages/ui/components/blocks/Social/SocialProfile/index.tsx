@@ -21,6 +21,7 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
 } from "@UI";
+import { Container, TabsViewer } from "ui";
 import { NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useDisclouser } from "hooks";
@@ -61,16 +62,17 @@ export interface SocialProfileProps {
         Account,
         "id" | "verified" | "accountType"
       > & {
-          shop: { __typename?: "Shop" } & Pick<
-            Shop,
-            "type" | "storeType" | "id"
-          >;
-        }
+        shop: { __typename?: "Shop" } & Pick<
+          Shop,
+          "type" | "storeType" | "id"
+        >;
+      }
     >;
   };
   isFollowed: boolean;
   isPublic: ProfileVisibility;
   storeType: StoreType;
+  tabsSet?: any;
 }
 
 export const SocialProfile: React.FC<SocialProfileProps> = ({
@@ -78,6 +80,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   isFollowed,
   isPublic,
   storeType,
+  tabsSet,
 }) => {
   const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
@@ -123,7 +126,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   if (!profileInfo) return null;
 
   return (
-    <div className="flex flex-col w-full md:h-80 relative">
+    <div className="flex flex-col w-full md:h-[75vh] relative">
       <div className="flex text-white justify-between px-4 items-center absolute top-0 left-0 z-10 w-full">
         <ArrowLeftIcon className="text-xl w-10" />
         <HStack className="text-lg">
@@ -165,12 +168,10 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       />
       <div className="items-center w-full pt-16 flex-wrap md:flex-nowrap bg-white border-2 border-white bottom-0 left-0 md:h-36 px-2 md:pl-14 py-6 flex flex-col gap-4">
         <div className="relative">
-          <div className="w-[500px] -bottom-[40%] left-1/2 -translate-x-1/2 h-[500px] skew-x-[55deg] rotate-[-27deg] bg-primary absolute rounded-full"></div>
           <Avatar
             onClick={() => setStoryProfileId(profileInfo.id)}
-            className="w-[8.625rem] border-4  border-white shadow-md z-10"
+            className="w-[8.625rem] object-cover h-[8.625rem] border-4  border-white shadow-md z-10"
             src={profileInfo.photo}
-            name={profileInfo.username}
           ></Avatar>
         </div>
 
@@ -187,12 +188,11 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         <div className="flex flex-col gap-4">
           <Stack
             divider={<Divider variant="vert" className="mx-[1.25rem]" />}
-            className="w-[fit-content]"
+            className="w-[fit-content] "
           >
             <VStack
-              className={`${
-                isPrivateForUser ? "text-[#969696]" : ""
-              } cursor-pointer border-2 border-white`}
+              className={`${isPrivateForUser ? "text-[#969696]" : ""
+                } cursor-pointer border-2 border-white`}
             >
               <p className="font-medium text-sm">{t("Posts")}</p>
               <p className="font-bold text-xl">
@@ -201,9 +201,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </VStack>
 
             <VStack
-              className={`${
-                isPrivateForUser ? "text-[#969696]" : ""
-              } cursor-pointer`}
+              className={`${isPrivateForUser ? "text-[#969696]" : ""
+                } cursor-pointer`}
               onClick={() => handleOpen()}
             >
               <p className="font-medium text-sm">{t("Followers")}</p>
@@ -213,9 +212,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </VStack>
 
             <VStack
-              className={`${
-                isPrivateForUser ? "text-[#969696]" : ""
-              } cursor-pointer border-2 border-white`}
+              className={`${isPrivateForUser ? "text-[#969696]" : ""
+                } cursor-pointer border-2 border-white`}
               onClick={() => subscriptionsOnOpen()}
             >
               <p className="font-medium text-sm">{t("Following")}</p>
@@ -230,8 +228,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
               <Button colorScheme="gray">{t("Share Profile")}</Button>
             </HStack>
           ) : (
-            <>
-              <HStack className="gap-4">
+            <div className="grid grid-rows-2">
+              <HStack className="gap-4 row-span-1">
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
@@ -240,8 +238,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   {isFollowed
                     ? t("Unfollow")
                     : isProfilePublic
-                    ? t("Follow")
-                    : t("Ask To Follow")}
+                      ? t("Follow")
+                      : t("Ask To Follow")}
                 </Button>
 
                 <Button
@@ -255,6 +253,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
               </HStack>
 
               <Button
+                className="mb-6 row-span-1 w-full"
                 onClick={() => {
                   visit((r) => r.visitShop({ id: profileInfo.ownerId }));
                 }}
@@ -275,12 +274,30 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   )}
                 </HStack>
               </Button>
-            </>
+            </div>
           )}
         </div>
 
         {/* <div className="flex flex-col "> */}
         <p className="">"{profileInfo.bio}"</p>
+
+        <Container className="flex-grow gap-4 flex-col">
+          {profileInfo &&
+            profileInfo.visibility === ProfileVisibility.Public ? (
+            <>
+              <TabsViewer tabs={tabsSet} />
+              <Divider />
+            </>
+          ) : (
+            <>
+              <div className="flex h-full items-center justify-center flex-grow-[inherit]">
+                <p className="font-bold text-3xl">
+                  {t("this profile is private")}
+                </p>
+              </div>
+            </>
+          )}
+        </Container>
       </div>
     </div>
   );
