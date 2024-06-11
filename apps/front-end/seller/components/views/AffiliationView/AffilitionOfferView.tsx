@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   SocialPostHeader,
@@ -11,6 +11,7 @@ import {
   Button,
 } from "ui";
 import { useBreakpointValue } from "utils";
+import { AffiliationPostPlaceholder } from "placeholder";
 
 export interface AffilitionOfferView {
   id: string;
@@ -20,9 +21,13 @@ export const AffilitionOfferView: React.FC<AffilitionOfferView> = ({ id }) => {
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
-  const { data } = useGetAffiliationPostQuery({
-    id,
-  });
+  // use this graphql query only if the server is ready if not use placeholder data
+  // const { data } = useGetAffiliationPostQuery({
+  //   id,
+  // });
+  //
+
+  const [data] = useState(AffiliationPostPlaceholder);
 
   const { controls, pagination } = usePaginationControls();
   const { data: profilePosts } = useGetProfileAffiliationPosts(
