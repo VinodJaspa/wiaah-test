@@ -21,11 +21,14 @@ export type GetSuggestedActionsQuery = {
     tags: Array<{ __typename?: "PostTag"; userId: string }>;
     effect?: { __typename?: "Effect"; name: string } | null;
     location: {
-      __typename?: "PostLocation";
-      address?: string | null;
+      __typename?: "ServiceLocation";
+      postalCode: number;
+      address: string;
       city: string;
       country: string;
-      state?: string | null;
+      state: string;
+      lat: number;
+      lon: number;
     };
     profile: {
       __typename?: "Profile";
@@ -63,10 +66,13 @@ export const getPeronalizedActionsQueryFetcher = async () => {
         verified: true,
       },
       location: {
+        postalCode: 643253,
         city: "city",
         country: "country",
         address: "address",
         state: "state",
+        lat: 54,
+        lon: 42,
       },
     };
 

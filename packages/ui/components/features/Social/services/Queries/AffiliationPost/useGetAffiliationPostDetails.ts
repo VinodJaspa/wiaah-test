@@ -29,28 +29,28 @@ export type GetAffiliationPostDetailsQuery = { __typename?: "Query" } & {
     | "comments"
     | "createdAt"
   > & {
-      affiliation: { __typename?: "Affiliation" } & Pick<
-        Affiliation,
-        | "id"
-        | "commision"
-        | "createdAt"
-        | "itemId"
-        | "itemType"
-        | "product"
-        | "service"
-        | "status"
-      >;
-      user?: Maybe<
-        { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                "id" | "username" | "verified" | "photo" | "ownerId"
-              >
-            >;
-          }
-      >;
-    };
+    affiliation: { __typename?: "Affiliation" } & Pick<
+      Affiliation,
+      | "id"
+      | "commision"
+      | "createdAt"
+      | "itemId"
+      | "itemType"
+      | "product"
+      | "service"
+      | "status"
+    >;
+    user?: Maybe<
+      { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<
+            Profile,
+            "id" | "username" | "verified" | "photo" | "ownerId"
+          >
+        >;
+      }
+    >;
+  };
 };
 
 export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {

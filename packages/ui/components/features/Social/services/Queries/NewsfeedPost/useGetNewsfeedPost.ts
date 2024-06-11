@@ -14,16 +14,17 @@ import {
   StaffAccountType,
 } from "@features/API";
 import { Exact, Maybe, Scalars } from "types";
-import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
+import { getRandomName, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
+
+const isDev = true;
 
 export type GetNewsfeedPostQueryVariables = Exact<{
   id: Scalars["String"];
 }>;
 
 export type GetNewsfeedPostQuery = { __typename?: "Query" } & {
-  
-  getNewsfeedPostById:  PostCardInfo
+  getNewsfeedPostById: PostCardInfo;
 };
 
 export const useGetNewsfeedPostQuery = (id: string) => {
@@ -83,52 +84,50 @@ export const useGetNewsfeedPostQuery = (id: string) => {
 
   return useQuery(["get-post", { id }], async () => {
     if (isDev) {
-      const mockRes: GetNewsfeedPostQuery["getNewsfeedPostById"] = 
-        {
-          profileInfo: {
-            id: "user123",
-            name: "John Doe",
-            thumbnail: "https://example.com/profile_pic_thumb.jpg",
-            accountType: AccountType.Seller,
-            public: true,
-            profession: "Software Engineer",
-          },
-          postInfo: {
-            createdAt: "2024-06-07T12:34:56Z",
-            id: "post456",
-            content: "This is a sample post with some content!",
-            tags: ["#fakedata", "#socialmedia"],
-            views: 100,
-            attachments: [
-              {
-                type: "image",
-                src: "https://example.com/post_image.jpg",
+      const mockRes: GetNewsfeedPostQuery["getNewsfeedPostById"] = {
+        profileInfo: {
+          id: "user123",
+          name: "John Doe",
+          thumbnail: "https://example.com/profile_pic_thumb.jpg",
+          accountType: AccountType.Seller,
+          public: true,
+          profession: "Software Engineer",
+        },
+        postInfo: {
+          createdAt: "2024-06-07T12:34:56Z",
+          id: "post456",
+          content: "This is a sample post with some content!",
+          tags: ["#fakedata", "#socialmedia"],
+          views: 100,
+          attachments: [
+            {
+              type: "image",
+              src: "https://example.com/post_image.jpg",
+            },
+          ],
+          numberOfLikes: 25,
+          numberOfComments: 3,
+          numberOfShares: 5,
+          comments: [
+            {
+              id: "comment1",
+              user: {
+                id: "user789",
+                name: "Jane Smith",
+                thumbnail: "https://example.com/jane_thumb.jpg",
+                accountType: AccountType.Buyer,
+                public: true,
               },
-            ],
-            numberOfLikes: 25,
-            numberOfComments: 3,
-            numberOfShares: 5,
-            comments: [
-              {
-                id: "comment1",
-                user: {
-                  id: "user789",
-                  name: "Jane Smith",
-                  thumbnail: "https://example.com/jane_thumb.jpg",
-                  accountType: AccountType.Buyer,
-                  public: true,
-                },
-                replies: 0,
-                likes: 2,
-                createdAt: "2024-06-07T13:00:00Z",
-                content: "Nice post!",
-              },
-              // Add more comments here as needed
-            ],
-            thumbnail: "https://example.com/post_thumb.jpg",
-          },
-        };
-
+              replies: 0,
+              likes: 2,
+              createdAt: "2024-06-07T13:00:00Z",
+              content: "Nice post!",
+            },
+            // Add more comments here as needed
+          ],
+          thumbnail: "https://example.com/post_thumb.jpg",
+        },
+      };
 
       return mockRes;
     }

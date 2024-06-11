@@ -16,7 +16,7 @@ export type GetAffiliationPostSuggestionsQueryVariables = Exact<{
 
 export type GetAffiliationPostSuggestionsQuery = { __typename?: "Query" } & {
   getRecommendedAffiliationPosts: Array<
-    { __typename?: "AffiliationPost" } & Pick<
+    Pick<
       AffiliationPost,
       | "id"
       | "userId"
@@ -27,40 +27,24 @@ export type GetAffiliationPostSuggestionsQuery = { __typename?: "Query" } & {
       | "comments"
       | "createdAt"
     > & {
-        location?: Maybe<
-          { __typename?: "PostLocation" } & Pick<
-            PostLocation,
-            "address" | "city" | "country" | "state"
-          >
+      affiliation: Pick<
+        Affiliation,
+        | "id"
+        | "commision"
+        | "createdAt"
+        | "itemId"
+        | "itemType"
+        | "product"
+        | "service"
+        | "status"
+      >;
+      user: {
+        profile: Pick<
+          Profile,
+          "id" | "username" | "verified" | "photo" | "ownerId"
         >;
-        affiliation: { __typename?: "Affiliation" } & Pick<
-          Affiliation,
-          | "id"
-          | "commision"
-          | "createdAt"
-          | "itemId"
-          | "itemType"
-          | "product"
-          | "service"
-          | "status"
-        >;
-        user?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id"> & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<
-                  Profile,
-                  | "id"
-                  | "username"
-                  | "followers"
-                  | "verified"
-                  | "photo"
-                  | "ownerId"
-                  | "profession"
-                >
-              >;
-            }
-        >;
-      }
+      };
+    }
   >;
 };
 

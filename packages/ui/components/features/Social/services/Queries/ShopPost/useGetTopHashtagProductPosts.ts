@@ -43,6 +43,7 @@ export type GetTopHashtagProductPostsQuery = {
 };
 
 type args = GetTopHashtagProductPostsQueryVariables;
+
 export const getTopHashtagProductPostsQueryKey = (args: args) => [
   "get-top-hashtag-product-posts",
   { args },
@@ -111,5 +112,4 @@ export const useGetTopHashtagProductPosts = (
   useInfiniteQuery(
     getTopHashtagProductPostsQueryKey(args),
     () => getTopHashtagProductPostsQueryFetcher(args),
-    options
   );
