@@ -13,7 +13,7 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useBreakpointValue } from "utils";
-import { PostCommentPlaceholder } from "placeholder";
+import { PostCommentPlaceholder, PostCardPlaceHolder } from "placeholder";
 
 export const PostView: React.FC = () => {
   const { data: post } = useGetNewsfeedPostQuery("");
@@ -45,7 +45,10 @@ export const PostView: React.FC = () => {
           {t("other_posts", "other posts")}
         </>
       </p>
-      <SocialProfileNewsfeedPosts grid userId={post.profileInfo.id} />
+      <SocialProfileNewsfeedPosts
+        grid
+        userId={PostCardPlaceHolder.profileInfo.id}
+      />
       <Button outline>{t("view_more", "view more")}</Button>
     </div>
   );
