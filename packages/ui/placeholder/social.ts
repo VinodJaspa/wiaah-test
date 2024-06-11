@@ -168,8 +168,13 @@ export const PostCardPlaceHolder: PostCardInfo = {
 import { products } from "./products";
 import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
-import { CashbackType, PresentationType, RestaurantDishType, ServiceType } from "@features/API";
-import { SocialShopPostcardProps } from "..";
+import {
+  CashbackType,
+  PresentationType,
+  RestaurantDishType,
+  ServiceType,
+} from "@features/API";
+import { ServicePostData, SocialShopPostcardProps } from "..";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -280,6 +285,7 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
 export const shopCardInfoPlaceholder: ShopCardInfo = {
   id: "1",
   title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
+  createdAt: "2023-05-05",
   cashback: {
     unit: "$",
     value: 5,
@@ -739,8 +745,7 @@ export const stringplaceholder =
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
 
-
-export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[]= [
+export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
   {
     profileInfo: {
       id: "user123",
@@ -758,10 +763,12 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[]= [
       createdAt: "2023-04-04",
       product: {
         id: "product789",
-        presentations:[{
-          src:"http://",
-          type: PresentationType.Image
-        }],
+        presentations: [
+          {
+            src: "http://",
+            type: PresentationType.Image,
+          },
+        ],
         title: "Awesome Product",
         hashtags: ["#awesome", "#product"],
         price: 99.99,
@@ -771,14 +778,14 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[]= [
           type: CashbackType.Cash,
           units: 5,
         },
-        discount: {amount:11,id:"432",units:4},
+        discount: { amount: 11, id: "432", units: 4 },
       },
     },
     onInteraction: (interaction) => {
       console.log("User interaction:", interaction);
     },
-  }
-]
+  },
+];
 export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   {
     ...shopCardInfoPlaceholder,
@@ -864,6 +871,83 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     views: randomNum(50),
     type: getRandomType(),
     comments: [],
+  },
+];
+
+export const ServicePostData: ServicePostData[] = [
+  {
+    profileInfo: {
+      id: "user123",
+      username: "john_doe",
+      photo: "https://example.com/photo.jpg",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 15,
+      views: 500,
+      comments: 10,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Web Development Services",
+        hashtags: ["#webdev", "#coding", "#programming"],
+      },
+    },
+    discount: 20,
+    price: 100,
+    cashback: 10,
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      username: "john_doe",
+      photo: "https://example.com/photo.jpg",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 15,
+      views: 500,
+      comments: 10,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Web Development Services",
+        hashtags: ["#webdev", "#coding", "#programming"],
+      },
+    },
+    discount: 20,
+    price: 100,
+    cashback: 10,
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      username: "john_doe",
+      photo: "https://example.com/photo.jpg",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 15,
+      views: 500,
+      comments: 10,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Web Development Services",
+        hashtags: ["#webdev", "#coding", "#programming"],
+      },
+    },
+    discount: 20,
+    price: 100,
+    cashback: 10,
   },
 ];
 
