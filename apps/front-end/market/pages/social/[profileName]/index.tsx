@@ -5,6 +5,7 @@ import { SocialProfileInfo, postProfilesPlaceholder } from "placeholder";
 import { MasterLayout, SocialView } from "@components";
 import { products } from "placeholder";
 import { SocialProfileData } from "api";
+import { AccountType } from "types";
 
 interface SocialPageProps {
   profile: SocialProfileData;
@@ -13,19 +14,16 @@ interface SocialPageProps {
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 const getRandomUser = () =>
   postProfilesPlaceholder[
-    Math.floor(Math.random() * postProfilesPlaceholder.length)
+  Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
-export const getServerSideProps: GetServerSideProps<
-  SocialPageProps
-> = async () => {
+export const getServerSideProps: GetServerSideProps<any> = () => {
   // get user/shop profle info
-
   return {
     props: {
       profile: {
         id: "1",
         name: "Wiaah",
-        accountType: "seller",
+        accountType: AccountType.Seller,
         publications: 100,
         subscribers: 40,
         subscriptions: 23,
@@ -35,10 +33,8 @@ export const getServerSideProps: GetServerSideProps<
         location: {
           address: "test add",
           city: "city",
-          cords: {
-            lat: 45,
-            lng: 56,
-          },
+          lat: 45,
+          lon: 56,
           country: "country",
           countryCode: "CHF",
           postalCode: 1234,
