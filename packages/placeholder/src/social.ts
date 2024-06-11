@@ -14,9 +14,12 @@ import {
 } from "types";
 import {
   AccountSignup,
+  GetProfileAffiliationPostsQuery,
+  GetSuggestedActionsQuery,
   SocialAffiliationCardProps,
   SocialShopPostcardProps,
 } from "ui";
+import { getRandomName } from "utils";
 const randomNum = (num: number) => num;
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
@@ -734,3 +737,259 @@ export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
     title: t("most_liked_video", "most liked video"),
   },
 ];
+
+export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
+  id: "post1",
+  userId: "user1",
+  affiliationId: "aff1",
+  views: 1000,
+  reactionNum: 150,
+  shares: 20,
+  comments: 30,
+  createdAt: new Date().toISOString(),
+  affiliation: {
+    id: "aff1",
+    commision: 10,
+    createdAt: new Date().toISOString(),
+    itemId: "item1",
+    itemType: "product",
+    product: "Product 1",
+    service: "Service 1",
+    status: "active",
+  },
+  user: {
+    profile: {
+      id: "user1",
+      username: "john_doe",
+      verified: true,
+      photo: "https://example.com/photo1.jpg",
+      ownerId: "owner1",
+    },
+  },
+};
+
+export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffiliationPosts"][] =
+  [
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        __typename: "Affiliation",
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        product: "Product 1",
+        service: "Service 1",
+        status: "active",
+      },
+      user: {
+        id: "acc1",
+        profile: {
+          __typename: "Profile",
+          id: "user1",
+          username: "john_doe",
+          followers: 500,
+          verified: true,
+          photo: "https://example.com/photo1.jpg",
+          ownerId: "owner1",
+          profession: "Software Developer",
+        },
+      },
+    },
+    {
+      id: "post2",
+      userId: "user2",
+      affiliationId: "aff2",
+      views: 2000,
+      reactionNum: 250,
+      shares: 30,
+      comments: 40,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff2",
+        commision: 15,
+        createdAt: new Date().toISOString(),
+        itemId: "item2",
+        itemType: "service",
+        product: "Product 2",
+        service: "Service 2",
+        status: "inactive",
+      },
+      user: {
+        id: "acc2",
+        profile: {
+          id: "user2",
+          username: "jane_smith",
+          followers: 1000,
+          verified: false,
+          photo: "https://example.com/photo2.jpg",
+          ownerId: "owner2",
+          profession: "Graphic Designer",
+        },
+      },
+    },
+    {
+      id: "post3",
+      userId: "user3",
+      affiliationId: "aff3",
+      views: 3000,
+      reactionNum: 350,
+      shares: 40,
+      comments: 50,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        __typename: "Affiliation",
+        id: "aff3",
+        commision: 20,
+        createdAt: new Date().toISOString(),
+        itemId: "item3",
+        itemType: "product",
+        product: "Product 3",
+        service: "Service 3",
+        status: "active",
+      },
+      user: {
+        __typename: "Account",
+        id: "acc3",
+        profile: {
+          __typename: "Profile",
+          id: "user3",
+          username: "sam_wilson",
+          followers: 1500,
+          verified: true,
+          photo: "https://example.com/photo3.jpg",
+          ownerId: "owner3",
+          profession: "Digital Marketer",
+        },
+      },
+    },
+  ];
+
+export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["post"][] =
+  [
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        product: "Product 1",
+        service: "Service 1",
+        status: "active",
+      },
+      user: {
+        profile: {
+          id: "user1",
+          username: "john_doe",
+          verified: true,
+          photo: "https://example.com/photo1.jpg",
+          ownerId: "owner1",
+        },
+      },
+    },
+    {
+      id: "post2",
+      userId: "user2",
+      affiliationId: "aff2",
+      views: 2000,
+      reactionNum: 250,
+      shares: 30,
+      comments: 40,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff2",
+        commision: 15,
+        createdAt: new Date().toISOString(),
+        itemId: "item2",
+        itemType: "service",
+        product: "Product 2",
+        service: "Service 2",
+        status: "inactive",
+      },
+      user: {
+        profile: {
+          id: "user2",
+          username: "jane_smith",
+          verified: false,
+          photo: "https://example.com/photo2.jpg",
+          ownerId: "owner2",
+        },
+      },
+    },
+    {
+      id: "post3",
+      userId: "user3",
+      affiliationId: "aff3",
+      views: 3000,
+      reactionNum: 350,
+      shares: 40,
+      comments: 50,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff3",
+        commision: 20,
+        createdAt: new Date().toISOString(),
+        itemId: "item3",
+        itemType: "product",
+        product: "Product 3",
+        service: "Service 3",
+        status: "active",
+      },
+      user: {
+        profile: {
+          id: "user3",
+          username: "sam_wilson",
+          verified: true,
+          photo: "https://example.com/photo3.jpg",
+          ownerId: "owner3",
+        },
+      },
+    },
+  ];
+
+export const PersonalizeAction: GetSuggestedActionsQuery["getMyRecommendedAction"] =
+{
+  comments: randomNum(123456),
+  reactionNum: randomNum(123456),
+  shares: randomNum(123456),
+  src: "/action.mp4",
+  id: "Teasdasd",
+  musicId: "Kafir - Nile",
+  tags: [{ userId: "" }, { userId: "" }, { userId: "" }],
+  effect: {
+    name: "Clarendon",
+  },
+  profile: {
+    id: "",
+    ownerId: "",
+    photo: getRandomImage(),
+    username: getRandomName().firstName,
+    verified: true,
+  },
+  location: {
+    postalCode: 643253,
+    city: "city",
+    country: "country",
+    address: "address",
+    state: "state",
+    lat: 54,
+    lon: 42,
+  },
+};
