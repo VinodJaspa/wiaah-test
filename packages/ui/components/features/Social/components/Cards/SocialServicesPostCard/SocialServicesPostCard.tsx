@@ -17,12 +17,10 @@ import {
   PriceDisplay,
   UnDiscountedPriceDisplay,
   CashbackBadge,
-  Profile,
-  ServicePost,
   Service,
   useLikeContent,
-  ContentHostType,
 } from "@UI";
+import { Profile, ServicePost, ContentHostType } from "@features/API";
 import { useTypedReactPubsub } from "@libs";
 
 export interface SocialServicesPostCardProps {
@@ -138,7 +136,6 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
                 onClick={() => {
                   like({
                     args: {
-                      authorProfileId: profileInfo.id,
                       contentId: postInfo.id,
                       contentType: ContentHostType.PostService,
                     },

@@ -33,16 +33,27 @@ import {
   PostCardsListWrapper,
   ShopCardsListWrapper,
   SocialShopCard,
+  GridOrganiserPresets,
 } from "ui";
 
-import { newsfeedPosts } from "ui/placeholder";
+import {
+  getRandomImage,
+  newsfeedPosts,
+  SocialShopsPostCardPlaceholder,
+} from "ui/placeholder";
 import { useTranslation } from "react-i18next";
-import { NumberShortner, randomNum, useBreakpointValue, useForm } from "utils";
+import {
+  mapArray,
+  NumberShortner,
+  randomNum,
+  useBreakpointValue,
+  useForm,
+} from "utils";
 import { PostType, StoreType } from "@features/API";
 import { startCase } from "lodash";
 import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";
 import { useGetTopHashtagActionsQuery } from "@features/Social/services/Queries/Action/useGetTopHashtagActions";
-import { SocialShopCardsInfoPlaceholder } from "placeholder";
+import { ScrollCursorPaginationWrapper, GridListOrganiser } from "ui";
 
 export interface HashTagViewProps {
   tag: string;
@@ -57,6 +68,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   const { data: servicePostHashtagPosts } = useGetTopHashtagServicePost({
     tag,
   });
+  function handleFollowHashtag() { }
 
   const { t } = useTranslation();
 
@@ -73,7 +85,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
           <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
           <PostCardsListWrapper
-            cols={3}
+            cols={2}
             posts={newsfeedPosts.concat(newsfeedPosts)}
           />
         </div>
@@ -90,7 +102,6 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
         <div className="flex flex-col w-full gap-16">
           <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
-          // <SocialServicePostsList posts={[]} />
         </div>
       ),
     },
@@ -104,12 +115,11 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       component: (
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
-
           <Divider />
 
           <ShopCardsListWrapper
             cols={cols}
-            items={SocialShopCardsInfoPlaceholder}
+            items={SocialShopsPostCardPlaceholder}
           />
         </div>
       ),
@@ -123,9 +133,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
       component: (
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={[]} />
-
           <Divider />
-
           <SocialProfileActionList userId="" />
         </div>
       ),
@@ -146,9 +154,8 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
               (v, i) => (
                 <button onClick={() => setIdx(i)} key={v + i}>
                   <p
-                    className={`${
-                      idx === i ? "border-b-primary" : "border-b-transparent"
-                    } border-b pb-2 font-medium`}
+                    className={`${idx === i ? "border-b-primary" : "border-b-transparent"
+                      } border-b pb-2 font-medium`}
                   >
                     {v}
                   </p>
@@ -197,6 +204,7 @@ export const HashtagPostsView: React.FC<{
   const { form } = useForm<Parameters<typeof useGetTrendingHashtagPosts>[0]>({
     hashtag: tag,
     take: 10,
+    postType: PostType.NewsfeedPost,
   });
   const {
     data: trendingPosts,
@@ -211,56 +219,56 @@ export const HashtagPostsView: React.FC<{
   const { data: topServices } = useGetTopHashtagServicePost({ tag });
   const { data: topActions } = useGetTopHashtagActionsQuery({ tag });
 
-  const TopPosts =
+  const TopPosts: Object =
     postType === PostType.NewsfeedPost
       ? topNewsfeed
       : postType === PostType.ShopPost
-      ? topProducts
-      : postType === PostType.ServicePost
-      ? topServices
-      : topActions;
+        ? topProducts
+        : postType === PostType.ServicePost
+          ? topServices
+          : topActions;
 
   return isMobile ? (
     <div className="flex flex-col ">
       <div className="flex gap-2 ">
         {TopPosts
           ? Object.entries(TopPosts).map(([key, value]) => {
-              const thumbnail =
-                postType === PostType.NewsfeedPost
-                  ? value.thumbnail
-                  : postType === PostType.ShopPost
+            const thumbnail =
+              postType === PostType.NewsfeedPost
+                ? value.thumbnail
+                : postType === PostType.ShopPost
                   ? value.product.thumbnail
                   : postType === PostType.ServicePost
-                  ? value.service.thumbnail
-                  : value.cover;
+                    ? value.service.thumbnail
+                    : value.cover;
 
-              const views = value.views;
-              return typeof value !== "string" ? (
-                <div className="flex gap-2 flex-col">
-                  <AspectRatioImage
-                    src={thumbnail}
-                    alt={""}
-                    className="w-40 rounded-xl overflow-hidden"
-                    ratio={1}
-                  >
-                    <HStack className="text-white px-2 py-1 rounded absolute bottom-2 left-2 bg-black/25 text-sm">
-                      <EyeIcon />
-                      <p>{NumberShortner(views)}</p>
-                    </HStack>
-                  </AspectRatioImage>
-                  <p className="text-center font-semibold p-2">
-                    {t("Top")} {t(startCase(key))} {t(`${startCase(postType)}`)}
-                  </p>
-                </div>
-              ) : null;
-            })
+            const views = value.views;
+            return typeof value !== "string" ? (
+              <div className="flex gap-2 flex-col">
+                <AspectRatioImage
+                  src={thumbnail}
+                  alt={""}
+                  className="w-40 rounded-xl overflow-hidden"
+                  ratio={1}
+                >
+                  <HStack className="text-white px-2 py-1 rounded absolute bottom-2 left-2 bg-black/25 text-sm">
+                    <EyeIcon />
+                    <p>{NumberShortner(views)}</p>
+                  </HStack>
+                </AspectRatioImage>
+                <p className="text-center font-semibold p-2">
+                  {t("Top")} {t(startCase(key))} {t(`${startCase(postType)}`)}
+                </p>
+              </div>
+            ) : null;
+          })
           : null}
       </div>
 
       <p className="font-medium text-lg">{t("All Posts")}</p>
       {/* TODO: */}
       <SocialProfileActionList userId="" />
-      {/* <ScrollCursorPaginationWrapper
+      <ScrollCursorPaginationWrapper
         controls={{ hasMore: hasNextPage || false, next: fetchNextPage }}
       >
         <GridListOrganiser presets={GridOrganiserPresets.socialPostsGrid}>
@@ -280,7 +288,7 @@ export const HashtagPostsView: React.FC<{
             </React.Fragment>
           ))}
         </GridListOrganiser>
-      </ScrollCursorPaginationWrapper> */}
+      </ScrollCursorPaginationWrapper>
     </div>
   ) : null;
 };
@@ -306,54 +314,54 @@ export const HashtagSearchProdcutCard: React.FC<{
   location,
   storeType,
 }) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
-  return (
-    <div className="flex flex-col gap-2 w-full">
-      <AspectRatio ratio={1.2}>
-        <Image src={thumbnail} className="w-full h-full object-cover" />
-        <div className="absolute text-xs top-1 left-1 bg-black/30 text-white">
-          {categoryLabel}
+    return (
+      <div className="flex flex-col gap-2 w-full">
+        <AspectRatio ratio={1.2}>
+          <Image src={thumbnail} className="w-full h-full object-cover" />
+          <div className="absolute text-xs top-1 left-1 bg-black/30 text-white">
+            {categoryLabel}
+          </div>
+        </AspectRatio>
+
+        <div className="flex gap-2">
+          <Avatar
+            className="max-w-[1.5rem] max-h-[1.5rem]"
+            src={sellerThumbnail}
+          />
+          <p>{title}</p>
+
+          {verified ? <Verified className="text-secondaryBlue" /> : null}
         </div>
-      </AspectRatio>
 
-      <div className="flex gap-2">
-        <Avatar
-          className="max-w-[1.5rem] max-h-[1.5rem]"
-          src={sellerThumbnail}
-        />
-        <p>{title}</p>
+        <HStack className="text-xs">
+          <LocationOutlineIcon />
+          <p>{location}</p>
+        </HStack>
 
-        {verified ? <Verified className="text-secondaryBlue" /> : null}
+        {storeType === StoreType.Product ? (
+          <AddToCartProductButton
+            productId={id}
+            className="w-full"
+            colorScheme="darkbrown"
+          >
+            <HStack>
+              <CarOutlineIcon />
+              <p>{t("Add to cart")}</p>
+            </HStack>
+          </AddToCartProductButton>
+        ) : (
+          <BookServiceButton
+            className="w-full"
+            colorScheme="darkbrown"
+            serviceId={id}
+          >
+            <HStack>
+              <p>{t("Book now")}</p>
+            </HStack>
+          </BookServiceButton>
+        )}
       </div>
-
-      <HStack className="text-xs">
-        <LocationOutlineIcon />
-        <p>{location}</p>
-      </HStack>
-
-      {storeType === StoreType.Product ? (
-        <AddToCartProductButton
-          productId={id}
-          className="w-full"
-          colorScheme="darkbrown"
-        >
-          <HStack>
-            <CarOutlineIcon />
-            <p>{t("Add to cart")}</p>
-          </HStack>
-        </AddToCartProductButton>
-      ) : (
-        <BookServiceButton
-          className="w-full"
-          colorScheme="darkbrown"
-          serviceId={id}
-        >
-          <HStack>
-            <p>{t("Book now")}</p>
-          </HStack>
-        </BookServiceButton>
-      )}
-    </div>
-  );
-};
+    );
+  };

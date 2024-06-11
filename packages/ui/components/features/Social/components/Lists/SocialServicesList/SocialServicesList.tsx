@@ -8,6 +8,9 @@ import {
   useResponsive,
 } from "@UI";
 import { mapArray } from "@UI/../utils/src";
+import { Service } from "@UI";
+import { PostCardProps } from "@blocks";
+import { PostCardInfo, Profile, ServicePost } from "@features/API";
 
 const servicesData = [
   {
@@ -36,10 +39,17 @@ const servicesData = [
   },
 ];
 
-type ServicePostData = {
-  thumbnail: string;
-  id: string;
-};
+export interface ServicePostData {
+  profileInfo: Pick<Profile, "id" | "username" | "photo" | "profession">;
+  postInfo: Pick<
+    ServicePost,
+    "createdAt" | "id" | "reactionNum" | "shares" | "views" | "comments"
+  > & { service: Pick<Service, "thumbnail" | "title" | "hashtags"> };
+  discount?: number;
+  price?: number;
+  cashback?: number;
+  onInteraction?: () => any;
+}
 
 export interface SocialServicesPostsListProps {
   posts: ServicePostData[];
@@ -59,7 +69,7 @@ export const SocialServicePostsList: React.FC<SocialServicesPostsListProps> = ({
             {mapArray(posts, (v, i) => (
               <AspectRatio ratio={1}>
                 <Image
-                  src={v.thumbnail}
+                  src={v.profileInfo.photo}
                   className="w-full h-full object-cover rounded-lg"
                 />
               </AspectRatio>
