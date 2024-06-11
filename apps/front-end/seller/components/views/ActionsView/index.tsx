@@ -1,5 +1,5 @@
 import { ContentHostType } from "@features/API";
-import React from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
@@ -28,6 +28,7 @@ import {
   useLikeContent,
   useSocialControls,
 } from "ui";
+import { PersonalizeAction } from "placeholder";
 import { NumberShortner, mapArray } from "utils";
 
 export const ActionsView: React.FC = () => {
@@ -35,26 +36,38 @@ export const ActionsView: React.FC = () => {
   const { shareLink, showContentComments } = useSocialControls();
   const { mutate } = useLikeContent();
   const { getUrl } = useRouting();
-
-  const { data } = useGetPeronalizedActionsQuery();
+  // use this only if the database is ready if not use placeholder data
+  // const { data } = useGetPeronalizedActionsQuery();
   const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
     useSocialControls();
 
-  const actions = data ? [data] : [];
+  const memoizedCreateRemixAction = useCallback(createRemixAction, [,]); // If createRemixAction is expensive
+
+  const memoizedShowContentTaggedProfiles = useCallback(
+    showContentTaggedProfiles,
+    []
+  ); // If showContentTaggedProfiles is expensive
+  const memoizedOpenMusicDetails = useCallback(openMusicDetails, []); // If openMusicDetails is expensive
+
+  const [data] = useState(PersonalizeAction);
+  const actions = [data];
 
   const hasProduct = true;
-  const product = hasProduct
-    ? {
+  const product = useMemo(() => {
+    if (hasProduct) {
+      return {
         shopName: "Nike",
         verified: true,
         prodTitle:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the",
         photo: "/wiaah_logo.png",
-      }
-    : null;
+      };
+    }
+    return null;
+  }, [hasProduct]);
 
   return (
-    <div className="h-screen w-fit ">
+    <div suppressHydrationWarning={true} className="h-screen w-fit ">
       {/* actions View */}
       <Slider variant="vertical">
         {mapArray(actions, (v, i) => (
@@ -69,7 +82,7 @@ export const ActionsView: React.FC = () => {
                   <DigitalCamera />
                   <div
                     onClick={() => {
-                      openMusicDetails(v.musicId);
+                      memoizedOpenMusicDetails(v.musicId);
                     }}
                     className="cursor-pointer px-2 py-1 bg-black bg-opacity-40 flex items-center gap-2"
                   >
@@ -105,7 +118,7 @@ export const ActionsView: React.FC = () => {
                           },
                         },
                         {
-                          onSuccess(data, variables, context) {},
+                          onSuccess(data, variables, context) { },
                         }
                       )
                     }
@@ -152,15 +165,16 @@ export const ActionsView: React.FC = () => {
                         icon: <LoopIcon />,
                         label: t("Remix"),
                         onClick: () => {
-                          createRemixAction(v.id);
+                          memoizedCreateRemixAction(v.id);
                         },
                       },
                       {
                         icon: <StarsIcon />,
                         label: v.effect.name,
                       },
-                    ].map((v) => (
+                    ].map((v, i) => (
                       <HStack
+                        key={i}
                         onClick={v.onClick}
                         className="rounded-full cursor-pointer bg-black bg-opacity-40 py-1 px-2"
                       >
@@ -183,15 +197,11 @@ export const ActionsView: React.FC = () => {
                       <HStack>
                         <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
                           <LocationOutlineIcon />
-                          <LocationAddressDisplay
-                            address={v.location.address}
-                            city={v.location.city}
-                            country={v.location.country}
-                          />
+                          <LocationAddressDisplay location={v.location} />
                         </HStack>
                         <HStack
                           onClick={() =>
-                            showContentTaggedProfiles(
+                            memoizedShowContentTaggedProfiles(
                               v.id,
                               ContentHostType.Action
                             )
