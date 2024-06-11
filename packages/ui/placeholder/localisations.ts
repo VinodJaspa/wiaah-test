@@ -1,4 +1,4 @@
-import { PostCardInfo } from "types";
+import { AccountType, PostCardInfo } from "types";
 import { PlaceCardProps } from "../components";
 const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
@@ -33,7 +33,7 @@ const PostCardPlaceHolder: PostCardInfo = {
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Seller,
     public: true,
   },
 };
