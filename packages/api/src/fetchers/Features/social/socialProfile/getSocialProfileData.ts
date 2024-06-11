@@ -37,10 +37,8 @@ export const getSocialProfileData = async (
       location: {
         address: "address",
         city: "city",
-        cords: {
-          lat: 32,
-          lng: 23,
-        },
+        lat: 32,
+        lon: 23,
         country: "country",
         countryCode: "CH",
         postalCode: 1234,

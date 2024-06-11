@@ -6,8 +6,9 @@ import { socialAffiliationCardPlaceholder } from "ui/placeholder";
 import { AffiliationOfferCardInfo } from "types";
 import { SellerLayout } from "ui";
 import { AffilitionOfferView } from "../../../components/views";
+import { useRouter } from "next/router";
 
-export interface affiliationOfferPageProps {}
+export interface affiliationOfferPageProps { }
 
 async function getAffiliationOffer({
   queryKey,
@@ -17,25 +18,28 @@ async function getAffiliationOffer({
   return socialAffiliationCardPlaceholder;
 }
 
-export const getServerSideProps: GetServerSideProps<affiliationOfferPageProps> =
-  async ({ query }) => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  affiliationOfferPageProps
+> = async ({ query }) => {
+  const queryClient = new QueryClient();
 
-    const offerId = query.offerId;
+  const offerId = query.offerId;
 
-    queryClient.prefetchQuery(
-      ["affiliationOffer", { offerId }],
-      getAffiliationOffer
-    );
+  queryClient.prefetchQuery(
+    ["affiliationOffer", { offerId }],
+    getAffiliationOffer
+  );
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
-const affiliationOffer: NextPage<affiliationOfferPageProps> = () => {
+const AffiliationOffer: NextPage<affiliationOfferPageProps> = () => {
+  const router = useRouter();
+  const id = router.query.offerId as string;
   return (
     <>
       <Head>
@@ -43,11 +47,11 @@ const affiliationOffer: NextPage<affiliationOfferPageProps> = () => {
       </Head>
       <>
         <SellerLayout>
-          <AffilitionOfferView />
+          <AffilitionOfferView id={id} />
         </SellerLayout>
       </>
     </>
   );
 };
 
-export default affiliationOffer;
+export default AffiliationOffer;
