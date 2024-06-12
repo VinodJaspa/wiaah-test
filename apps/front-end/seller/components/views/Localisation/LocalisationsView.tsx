@@ -17,13 +17,16 @@ import { useTranslation } from "react-i18next";
 import { MdPlace } from "react-icons/md";
 import { useQuery } from "react-query";
 import { placesPH } from "ui/placeholder";
-import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
-export interface LocailisationsViewProps {}
+import { PlaceCardProps, ListWrapper, PlaceCard, GridWrapper } from "ui";
+import { useResponsive } from "hooks";
+export interface LocailisationsViewProps { }
 
-export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
+export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
   const { t } = useTranslation();
-  const isMobile = useBreakpointValue({ base: true, sm: false });
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  // const isMobile = useBreakpointValue({ base: true, sm: false });
+  const cols = useBreakpointValue({ base: 3, md: 2, lg: 1 });
+  const { isMobile, isTablet } = useResponsive();
+  console.log("Screens   " + isMobile, isTablet);
 
   const router = useRouter();
   const { tag } = router.query;
@@ -36,8 +39,15 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
   );
 
   return (
-    <Flex direction={"column"} my="2rem">
-      <HStack px="" justify={"space-between"} w="100%">
+    <Flex
+      direction={"column"}
+      my="2rem"
+      align={"center"}
+      alignItems={"center"}
+      justify={"center"}
+      className="flex flex-col justify-center items-center"
+    >
+      <HStack px="" justify={"space-between"} align={"center"} w="100%">
         {isMobile ? (
           <Button visibility={"hidden"} textTransform={"capitalize"}>
             {t("follow", "follow")}
@@ -45,6 +55,7 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
         ) : null}
         <HStack w="100%">
           <Image
+            alt="place"
             rounded="xl"
             h="3rem"
             w="auto"
@@ -77,7 +88,7 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
           <Spinner colorScheme={"primary"} />
         </Center>
       ) : (
-        <ListWrapper cols={cols}>
+        <ListWrapper cols={isMobile ? 1 : 3}>
           {places &&
             places.map(({ openDays, openFrom, openTo, ...rest }, i) => (
               <PlaceCard fixedHeight="18rem" key={i} {...rest} />
