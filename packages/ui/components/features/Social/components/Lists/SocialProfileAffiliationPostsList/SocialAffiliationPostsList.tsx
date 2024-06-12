@@ -7,6 +7,7 @@ import { AspectRatio, Image, ScrollPaginationWrapper } from "@partials";
 import { useResponsive } from "hooks";
 import { mapArray, useBreakpointValue } from "utils";
 import React from "react";
+import { AffiliationPostPlaceholder } from "placeholder";
 
 export const SocialProfileAffiliationPostsList: React.FC<{
   userId: string;
@@ -36,7 +37,7 @@ export const SocialProfileAffiliationPostsList: React.FC<{
         <AffiliationOffersCardListWrapper
           grid={isMobile}
           cols={cols}
-          items={data || []}
+          items={[AffiliationPostPlaceholder]}
         />
       )}
     </ScrollPaginationWrapper>

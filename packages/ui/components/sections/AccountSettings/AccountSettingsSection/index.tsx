@@ -48,6 +48,7 @@ import {
 } from "@UI";
 import { accountTypes } from "@UI";
 import { StoreFor } from "@features/API";
+import { GetProfileQueryPlaceholder as data } from "placeholder";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";
@@ -59,16 +60,17 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   accountId,
 }) => {
   const { isMobile } = useResponsive();
-  const { data } = useGetAccountSettingsQuery({ userId: accountId });
+  // const { data } = useGetAccountSettingsQuery({ userId: accountId });
+
   const { form: AccForm } = useForm<
     Parameters<typeof mutate>[0]["accountArgs"]
-  >({ id: accountId, ...data?.account });
+  >({ ...data?.getUserAccount });
   const { form: ProfileForm } = useForm<
     Parameters<typeof mutate>[0]["profileArgs"]
-  >({ userId: accountId, ...data?.profile });
+  >({ userId: accountId, ...data?.getProfileDetails });
   const { form: shopForm } = useForm<Parameters<typeof mutate>[0]["shopArgs"]>({
     userId: accountId,
-    ...data?.shop,
+    ...data?.getUserRawShop,
   });
 
   const isBuyer = variant === "buyer";
@@ -104,9 +106,9 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
         <p className="text-xs font-medium">{t("Profile Image")}</p>
         <div className="flex justify-center">
           <div className="w-32 h-32 flex items-center justify-center rounded-full relative">
-            {data?.profile.photo ? (
+            {data?.getProfileDetails.photo ? (
               <Image
-                src={data.profile.photo}
+                src={data.getProfileDetails.photo}
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -205,29 +207,26 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
         </span>
       </div>
       <Formik<UpdateAccouuntSettingsDto>
-        initialValues={
-          data || {
-            address: "",
-            address2: "",
-            bio: "",
-            brandDescription: "",
-            city: "",
-            clientType: "individual",
-            country: "",
-            countryCode: "",
-            email: "",
-            firstName: "",
-            language: "",
-            lastName: "",
-            phoneNumber: "",
-            photoSrc: "",
-            storeFor: [],
-            username: "",
-            profilePhoto: "",
-            shopType: "",
-          }
-        }
-        onSubmit={(data) => {}}
+        initialValues={{
+          address: "",
+          address2: "",
+          bio: "",
+          brandDescription: "",
+          city: "",
+          clientType: "individual",
+          country: "",
+          countryCode: "",
+          email: "",
+          firstName: "",
+          language: "",
+          lastName: "",
+          phoneNumber: "",
+          photoSrc: "",
+          storeFor: [],
+          username: "",
+          shopType: "",
+        }}
+        onSubmit={(data) => { }}
       >
         {({ handleChange, values, setFieldValue }) => (
           <Form>
@@ -561,8 +560,8 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                           onChange={(e) =>
                             e.target.checked
                               ? setFieldValue("storeFor", [
-                                  ...storeForOptions.map((opt) => opt.value),
-                                ])
+                                ...storeForOptions.map((opt) => opt.value),
+                              ])
                               : setFieldValue("storeFor", [])
                           }
                         />
@@ -692,11 +691,11 @@ const shopTypeOptions: {
   value: string;
   name: TranslationTextType;
 }[] = [
-  {
-    value: "clothes",
-    name: {
-      fallbackText: "Clothes",
-      translationKey: "clothes",
+    {
+      value: "clothes",
+      name: {
+        fallbackText: "Clothes",
+        translationKey: "clothes",
+      },
     },
-  },
-];
+  ];
