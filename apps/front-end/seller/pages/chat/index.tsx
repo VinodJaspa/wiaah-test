@@ -6,7 +6,7 @@ import { ServerSideQueryClientProps } from "types";
 import { SellerLayout, useResponsive } from "ui";
 import { ChatView } from "../../components";
 
-interface MessagesPageProps {}
+interface MessagesPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const messages: React.FC<MessagesPageProps> = () => {
+const Messages: React.FC<MessagesPageProps> = () => {
   const { isMobile } = useResponsive();
   return (
     <>
@@ -37,4 +37,4 @@ const messages: React.FC<MessagesPageProps> = () => {
   );
 };
 
-export default messages;
+export default Messages;

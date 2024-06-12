@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetDiscoverPosts,
   useGetDiscoverUsers,
@@ -41,7 +41,7 @@ const discoverHashtagsPlaceholder: {
   posts: randomNum(1000000),
 }));
 
-const placeTypes = Object.values(ServiceType).concat(["store"]);
+const placeTypes = Object.values(ServiceType).concat([ServiceType.Hotel]);
 
 const discoverPlacesPlaceHolder: {
   name: string;
@@ -83,7 +83,7 @@ const discoverStoriesPlaceholder: {
   },
 }));
 
-export const DiscoverView: React.FC = ({}) => {
+export const DiscoverView: React.FC = ({ }) => {
   const { t } = useTranslation();
   const [state, setState] = React.useState<number>(0);
   const { form, handleChange, inputProps } = useForm<{ q: string }>({ q: "" });
@@ -225,11 +225,10 @@ export const DiscoverView: React.FC = ({}) => {
             {["discover", "stories", "users", "places", "hashtags"].map(
               (v, i) => (
                 <p
-                  className={`${
-                    state === i
+                  className={`${state === i
                       ? "border-b-black font-bold text-black"
                       : "border-b-white text-[#707070]"
-                  } border-black pb-1 border-b-2 font-semibold`}
+                    } border-black pb-1 border-b-2 font-semibold`}
                   key={i}
                 >
                   {startCase(v)}
@@ -266,8 +265,10 @@ export const DiscoverView: React.FC = ({}) => {
                 },
               ]}
             >
-              {[...Array(30)].map(() => (
+              {[...Array(30)].map((v, i) => (
                 <Image
+                  key={i}
+                  alt="randumImage"
                   className="w-full h-full object-cover"
                   src={getRandomImage()}
                 />
@@ -280,6 +281,7 @@ export const DiscoverView: React.FC = ({}) => {
               {mapArray(discoverStoriesPlaceholder, (v, i) => (
                 <AspectRatio ratio={1.45} className="rounded-xl">
                   <Image
+                    alt="thumbnail"
                     src={v.thumbnail}
                     className="w-full h-full object-cover rounded-xl"
                   />
@@ -307,6 +309,7 @@ export const DiscoverView: React.FC = ({}) => {
               {mapArray(discoverUsers?.accounts, (v, i) => (
                 <AspectRatio ratio={1.6} className="rounded-lg">
                   <Image
+                    alt="avatar"
                     src={v?.profile?.photo}
                     className="w-full h-full object-cover rounded-lg"
                   />

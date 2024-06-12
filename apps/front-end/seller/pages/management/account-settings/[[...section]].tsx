@@ -6,7 +6,7 @@ import { dehydrate, QueryClient } from "react-query";
 import { SellerLayout } from "ui";
 import { AccountSettingsView } from "@components";
 
-interface AccountSettingsPageProps {}
+interface AccountSettingsPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   AccountSettingsPageProps
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
+const AccountSettings: NextPage<AccountSettingsPageProps> = ({ }) => {
   const { t } = useTranslation();
 
   return (
@@ -37,4 +37,4 @@ const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
   );
 };
 
-export default accountSettings;
+export default AccountSettings;

@@ -10,7 +10,7 @@ const getLoclisations = async () => {
   return placesPH;
 };
 
-interface LocalisationPageProps {}
+interface LocalisationPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   LocalisationPageProps
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const localisation: NextPage = () => {
+const Localisation: NextPage = () => {
   const { isMobile } = useResponsive();
   return (
     <>
@@ -40,4 +40,4 @@ const localisation: NextPage = () => {
   );
 };
 
-export default localisation;
+export default Localisation;

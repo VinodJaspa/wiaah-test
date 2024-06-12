@@ -5,7 +5,7 @@ import { SellerLayout } from "ui";
 import { ServiceManagementView } from "@components";
 import { useTranslation } from "react-i18next";
 
-const serviceManagement: NextPage = () => {
+const ServiceManagement: NextPage = () => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
   return (
@@ -18,4 +18,4 @@ const serviceManagement: NextPage = () => {
   );
 };
 
-export default serviceManagement;
+export default ServiceManagement;
