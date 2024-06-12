@@ -16,9 +16,14 @@ import {
   useResponsive,
   RoundedPlusIcon,
 } from "@UI";
+import { FinancialAccountPlaceholder as FinData } from "placeholder";
 import { mapArray, randomNum } from "utils";
 export const PaymentMethodsSection: React.FC = () => {
-  const { data } = useGetMyAccountQuery();
+  // Warning: grphql query endpoint is not ready yet so I replace it with placeholder once it's ready replace it back
+  // const { data } = useGetMyAccountQuery();
+
+  const data = { id: "33" };
+
   return data ? (
     <AccountPaymentMethodsSection
       accountId={data.id}
@@ -33,14 +38,15 @@ export const AccountPaymentMethodsSection: React.FC<{ accountId: string }> = ({
   const [addNew, setAddNew] = React.useState<boolean>(true);
   const { isMobile } = useResponsive();
 
-  const { data } = useGetMyFinancialAccountsQuery();
+  // Warning: grphql query endpoint is not ready yet so I replace it with placeholder once it's ready replace it back
+  // const { data } = useGetMyFinancialAccountsQuery();
 
   return isMobile ? (
     <div className="flex flex-col p-9 gap-4">
       <SectionHeader sectionTitle={t("Payment methods")} />
 
       <div className="flex flex-col w-full h-full overflow-y-scroll noScroll gap-4">
-        {mapArray(data, (item) => (
+        {mapArray(FinData, (item) => (
           <ColouredPaymentCard
             last4={parseInt(item.cardLast4!)}
             expiryMonth={parseInt(item.card_exp_month!)}
@@ -133,28 +139,26 @@ interface PaymentCardProps {
 const PaymentCard: React.FC<PaymentCardProps> = ({ cardInfo, onEdit }) => {
   const { t } = useTranslation();
 
-  const paymentMethods: {
-    icon: ReactElement;
-  }[] = [
-      {
-        icon: <VisaIcon />,
-      },
-      {
-        icon: <MasterCardIcon />,
-      },
-      {
-        icon: <DiscoverCreditCardIcon />,
-      },
-      {
-        icon: <AmericanExpressCreditCardIcon />,
-      },
-    ];
+  const paymentMethods: { icon: ReactElement }[] = [
+    {
+      icon: <VisaIcon />,
+    },
+    {
+      icon: <MasterCardIcon />,
+    },
+    {
+      icon: <DiscoverCreditCardIcon />,
+    },
+    {
+      icon: <AmericanExpressCreditCardIcon />,
+    },
+  ];
 
   return (
     <div className="gap-2 p-1 text-xl rounded flex flex-col w-[min(100%,30rem)] bg-gray-200">
       <div className="text-lg px-2 flex gap-4">
         {mapArray(paymentMethods, (v, i) => (
-          <React.Fragment key={i}>{v}</React.Fragment>
+          <React.Fragment key={i}>{v.icon}</React.Fragment>
         ))}
       </div>
       <div className="p-2 bg-white rounded">
