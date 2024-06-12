@@ -29,7 +29,7 @@ import {
 import { useBreakpointValue } from "utils";
 import { MyProfile } from "./MyProfile";
 
-export interface MyProfileView {}
+export interface MyProfileView { }
 
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
@@ -48,8 +48,9 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
       cancelUpload();
     },
   });
-
-  const { data: profile, isLoading, isError } = useGetMyProfileQuery();
+  // WARNING: This grphql query has been replaced with placeholder because it's not ready yet
+  // const { data: profile, isLoading, isError } = useGetMyProfileQuery();
+  const profile = { ownerId: "33" };
 
   const sellerTabs: TabType[] = [
     {
@@ -97,11 +98,10 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     <div className="flex flex-col w-full gap-4">
       <MyProfile shopInfo={profile} />
       <div
-        className={`absolute md:relative w-full h-[${
-          dims ? dims.height : "unset"
-        }]`}
+        className={`absolute md:relative w-full h-[${dims ? dims.height : "unset"
+          }]`}
       >
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
+        <SpinnerFallback>
           {profile && (
             <>
               <MediaUploadModal
