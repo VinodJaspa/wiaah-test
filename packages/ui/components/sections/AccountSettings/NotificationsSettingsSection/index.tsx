@@ -15,6 +15,7 @@ import {
   useUpdateUserNotificationSettingsMutation,
 } from "@UI";
 import { mapArray, useForm } from "@UI/../utils/src";
+import { UserNotificationSettingsPlaceholder } from "placeholder";
 
 export interface NotificationsSettingsSectionProps {
   accountId: string;
@@ -25,14 +26,17 @@ export const NotificationsSettingsSection: React.FC<
 > = ({ accountId }) => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const { data: notificationSettings } = useGetUserNotificationsSettingsQuery(
-    { userId: accountId },
-    { enabled: !!accountId }
-  );
+
+  // use this graphql endpoint if the server is ready if not use Placeholder data
+  // const { data: notificationSettings } = useGetUserNotificationsSettingsQuery(
+  //   { userId: accountId },
+  //   { enabled: !!accountId }
+  // );
   const { mutate } = useUpdateUserNotificationSettingsMutation();
   const { radioInputProps } = useForm<Parameters<typeof mutate>[0]>({
-    ...(notificationSettings || {}),
+    ...(UserNotificationSettingsPlaceholder || {}),
   });
+  console.log("RadioInputProps" + radioInputProps);
 
   return isMobile ? (
     <div className="flex flex-col gap-4 p-2">
@@ -52,9 +56,11 @@ export const NotificationsSettingsSection: React.FC<
                     translationObject={option.name}
                   />
                   <Radio
-                    {...radioInputProps(opt.name as any)}
+                    {...radioInputProps}
                     name={opt.name}
                     value={option.value}
+                    id="33"
+                    colorScheme="primary"
                   />
                 </HStack>
               ))}

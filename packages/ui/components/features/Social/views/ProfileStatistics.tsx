@@ -200,7 +200,7 @@ export const ProfileStatistics: React.FC<{
     Parameters<typeof useGetProfileTopStoriesQuery>[0]
   >({
     pagination: storiesPagination,
-    profileId: profile?.id || "",
+    userId: profile?.id || "",
     sinceHours: form.topStories,
   });
   const { data: topStories } = useGetProfileTopStoriesQuery(storiesForm);
@@ -265,42 +265,42 @@ export const ProfileStatistics: React.FC<{
     color: string;
     visits: number;
   }[] = [
-    {
-      name: "France",
-      color: "#87B2D2",
-      visits: randomNum(500000),
-    },
-    {
-      name: "United States",
-      color: "#70AB51",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Saudi Arabia",
-      color: "#DB5E31",
-      visits: randomNum(500000),
-    },
-    {
-      name: "New Zeeland",
-      color: "#6BC5E1",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Belgium",
-      color: "#82E37B",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Italy",
-      color: "#E89D64",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Germeny",
-      color: "#F8F679",
-      visits: randomNum(500000),
-    },
-  ];
+      {
+        name: "France",
+        color: "#87B2D2",
+        visits: randomNum(500000),
+      },
+      {
+        name: "United States",
+        color: "#70AB51",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Saudi Arabia",
+        color: "#DB5E31",
+        visits: randomNum(500000),
+      },
+      {
+        name: "New Zeeland",
+        color: "#6BC5E1",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Belgium",
+        color: "#82E37B",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Italy",
+        color: "#E89D64",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Germeny",
+        color: "#F8F679",
+        visits: randomNum(500000),
+      },
+    ];
 
   const totalVisits = countries.reduce((acc, curr) => acc + curr.visits, 0);
 
@@ -680,7 +680,7 @@ export const ProfileStatistics: React.FC<{
             </Tr>
           </THead>
           <TBody>
-            {mapArray(actions, (v, i) => (
+            {mapArray(posts, (v, i) => (
               <Tr>
                 <Td>
                   <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
@@ -747,9 +747,8 @@ export const StatisticsCard: React.FC<{
         </div>
       </div>
       <div
-        className={`${
-          positive ? "text-primary" : "text-secondaryRed"
-        } self-start text-[0.5rem] flex items-center px-1 rounded`}
+        className={`${positive ? "text-primary" : "text-secondaryRed"
+          } self-start text-[0.5rem] flex items-center px-1 rounded`}
       >
         {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
         {Math.floor(change || 0)}%
@@ -780,7 +779,8 @@ export const BarChartLegend: React.FC<{
 };
 
 export const MyProfileStatistics = () => {
-  const { user } = useUserData();
+  // const { user } = useUserData();
+  const user = { id: "33" };
 
   return user ? (
     <ProfileStatistics accountId={user?.id}></ProfileStatistics>
