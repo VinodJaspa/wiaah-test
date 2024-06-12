@@ -71,32 +71,47 @@ export const AccountSettingsView: React.FC = () => {
   );
 };
 
-export const NotFoundSection = () => {
-  return <div>not found</div>;
-};
+// export const NotFoundSection = () => {
+//   return <div>not found</div>;
+// };
 
 export const MyAccountNotificationSettings = () => {
-  const { data } = useGetMyProfileQuery();
+  // const { data } = useGetMyProfileQuery();
+  const data = {
+    ownerId: "33",
+  };
 
-  return data ? (
-    <NotificationsSettingsSection accountId={data.ownerId} />
-  ) : null;
+  return data ? <NotificationsSettingsSection accountId={"33"} /> : null;
 };
 
 export const MyAccountSettingsSection = () => {
-  const { data } = useGetMyProfileQuery();
+  // this graphql query endpoint is not ready yet so use placeholders instead till the server get ready
+  // const { data } = useGetMyProfileQuery();
+  const data = {
+    ownerId: "33",
+  };
 
   return data ? <AccountSettingsSection accountId={data.ownerId} /> : null;
 };
 
 export const MyVatSection = () => {
-  const { data } = useGetMyProfileQuery();
+  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
+  // const { data } = useGetMyProfileQuery();
+  const data = {
+    ownerId: "33",
+  };
 
   return data ? <VatSection accountId={data.ownerId} /> : null;
 };
 
 export const MyNewsletterSettingsSection = () => {
-  const { data } = useGetMyProfileQuery();
+  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
+  // const { data } = useGetMyProfileQuery();
+
+  const data = {
+    ownerId: "33",
+  };
+
   return data ? (
     <AccountNewsLetterSettingsSection userId={data.ownerId} />
   ) : null;
@@ -155,7 +170,7 @@ const sections: SettingsSectionType[] = [
     panelName: "Invite Friends",
     panelIcon: HiUserGroup,
     panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep onSuccess={() => {}} />,
+    panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
   },
   {
     panelName: "Your Membership",
