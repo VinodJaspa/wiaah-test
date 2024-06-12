@@ -46,21 +46,14 @@ export const AffilitionOfferView: React.FC<AffilitionOfferView> = ({ id }) => {
           thumbnail={data.user.profile.photo}
         />
         {data ? (
-          <SocialAffiliationCard
-            showPostInteraction
-            showComments
-            post={{ ...data, profile: data.user.profile }}
-          />
+          <SocialAffiliationCard showPostInteraction showComments post={data} />
         ) : null}
       </div>
       <p className="text-2xl font-bold w-full text-center">
         {t("view")} {data.user?.profile.username} {t("other posts")}
       </p>
       <ScrollPaginationWrapper controls={controls}>
-        <AffiliationOffersCardListWrapper
-          cols={cols}
-          items={profilePosts.map((v) => ({ ...v, profile: v.user.profile }))}
-        />
+        <AffiliationOffersCardListWrapper cols={cols} items={[data]} />
       </ScrollPaginationWrapper>
       <Button>{t("view more")}</Button>
     </div>
