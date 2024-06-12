@@ -6,22 +6,23 @@ import { QueryClient, dehydrate } from "react-query";
 import { SellerLayout } from "ui";
 import { MyProfileView } from "../../components/views/MyProfile/MyProfileView";
 
-interface MyProfilePageProps {}
+interface MyProfilePageProps { }
 
-export const getServerSideProps: GetServerSideProps<MyProfilePageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  MyProfilePageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("myProfileData", getMyProfileData);
+  queryClient.prefetchQuery("myProfileData", getMyProfileData);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
-const myProfile: NextPage = () => {
+const MyProfile: NextPage = () => {
   return (
     <>
       <Head>
@@ -34,4 +35,4 @@ const myProfile: NextPage = () => {
   );
 };
 
-export default myProfile;
+export default MyProfile;
