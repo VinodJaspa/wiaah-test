@@ -12,7 +12,7 @@ import {
 import { useQuery } from "react-query";
 
 export type GetAccountSettingsQueryQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetAccountSettingsQueryQuery = { __typename?: "Query" } & {
@@ -24,23 +24,23 @@ export type GetAccountSettingsQueryQuery = { __typename?: "Query" } & {
     RawShop,
     "id" | "storeType" | "type" | "businessType" | "storeFor" | "phone"
   > & {
-      description: Array<
-        { __typename?: "TranslationText" } & Pick<
-          TranslationText,
-          "langId" | "value"
-        >
-      >;
-      name: Array<
-        { __typename?: "TranslationText" } & Pick<
-          TranslationText,
-          "langId" | "value"
-        >
-      >;
-      location: { __typename?: "Location" } & Pick<
-        Location,
-        "city" | "country" | "address" | "state" | "postalCode"
-      >;
-    };
+    description: Array<
+      { __typename?: "TranslationText" } & Pick<
+        TranslationText,
+        "langId" | "value"
+      >
+    >;
+    name: Array<
+      { __typename?: "TranslationText" } & Pick<
+        TranslationText,
+        "langId" | "value"
+      >
+    >;
+    location: { __typename?: "Location" } & Pick<
+      Location,
+      "city" | "country" | "address" | "state" | "postalCode"
+    >;
+  };
   getUserAccount: { __typename?: "Account" } & Pick<
     Account,
     "id" | "firstName" | "lastName" | "companyRegisterationNumber" | "phone"

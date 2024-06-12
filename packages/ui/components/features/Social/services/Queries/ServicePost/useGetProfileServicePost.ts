@@ -13,11 +13,11 @@ export type GetProfileServicePostsQueryVariables = Exact<{
 export type GetProfileServicePostsQuery = { __typename?: "Query" } & {
   getUserServicePosts: Array<
     { __typename?: "ServicePost" } & Pick<ServicePost, "id" | "userId"> & {
-        service: { __typename?: "Service" } & Pick<
-          Service,
-          "id" | "thumbnail" | "name"
-        >;
-      }
+      service: { __typename?: "Service" } & Pick<
+        Service,
+        "id" | "thumbnail" | "name"
+      >;
+    }
   >;
 };
 

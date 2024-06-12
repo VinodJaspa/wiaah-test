@@ -60,7 +60,7 @@ export const useGetMyProfileQuery = () => {
   return useQuery(["my-profile"], async () => {
     if (isDev) {
       return {
-        id: "",
+        id: "33",
         activeStatus: ActiveStatus.Active,
         bio: "My Social Profile Bio",
         createdAt: new Date(2023, 1, 1, 1).toString(),

@@ -3,7 +3,7 @@ import { Exact, Scalars, UserNotificationSettings } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetMyNotificationSettingsQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetMyNotificationSettingsQuery = { __typename?: "Query" } & {
