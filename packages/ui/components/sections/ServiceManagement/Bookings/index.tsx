@@ -10,16 +10,17 @@ export const bookingsHistoryCtx = React.createContext<{
 }>({
   shopping: false,
   appointmentId: null,
-  viewAppointment: () => {},
-  removeAppointment: () => {},
+  viewAppointment: () => { },
+  removeAppointment: () => { },
 });
 
 export const BookingsHistory: React.FC<{
   shopping?: boolean;
 }> = ({ shopping }) => {
   const [appointmentId, setAppointmentId] = React.useState<string | null>(null);
-
-  const { data } = useGetMyProfileQuery();
+  // WARNING the graphql endpoint is important but it's not ready yet so I replace it with placeholder data but once it's ready replace it back
+  // const { data } = useGetMyProfileQuery();
+  const data = { ownerId: "33" };
 
   function viewAppointment(id: string) {
     setAppointmentId(id);

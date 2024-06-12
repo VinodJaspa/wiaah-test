@@ -78,7 +78,7 @@ export const AccountPaymentMethodsSection: React.FC<{ accountId: string }> = ({
           <Button onClick={() => setAddNew(true)}>{t("Add New")}</Button>
         </div>
       )}
-      {addNew && <PaymentMethodForm onSuccess={() => {}}></PaymentMethodForm>}
+      {addNew && <PaymentMethodForm onSuccess={() => { }}></PaymentMethodForm>}
     </div>
   );
 };
@@ -136,19 +136,19 @@ const PaymentCard: React.FC<PaymentCardProps> = ({ cardInfo, onEdit }) => {
   const paymentMethods: {
     icon: ReactElement;
   }[] = [
-    {
-      icon: <VisaIcon />,
-    },
-    {
-      icon: <MasterCardIcon />,
-    },
-    {
-      icon: <DiscoverCreditCardIcon />,
-    },
-    {
-      icon: <AmericanExpressCreditCardIcon />,
-    },
-  ];
+      {
+        icon: <VisaIcon />,
+      },
+      {
+        icon: <MasterCardIcon />,
+      },
+      {
+        icon: <DiscoverCreditCardIcon />,
+      },
+      {
+        icon: <AmericanExpressCreditCardIcon />,
+      },
+    ];
 
   return (
     <div className="gap-2 p-1 text-xl rounded flex flex-col w-[min(100%,30rem)] bg-gray-200">
@@ -192,25 +192,25 @@ export const PaymentMethodForm = React.forwardRef(
     const { t } = useTranslation();
 
     React.useImperativeHandle(ref, () => ({
-      submit: () => {},
+      submit: () => { },
     }));
 
     const paymentMethods: {
       icon: ReactElement;
     }[] = [
-      {
-        icon: <VisaIcon />,
-      },
-      {
-        icon: <MasterCardIcon />,
-      },
-      {
-        icon: <DiscoverCreditCardIcon />,
-      },
-      {
-        icon: <AmericanExpressCreditCardIcon />,
-      },
-    ];
+        {
+          icon: <VisaIcon />,
+        },
+        {
+          icon: <MasterCardIcon />,
+        },
+        {
+          icon: <DiscoverCreditCardIcon />,
+        },
+        {
+          icon: <AmericanExpressCreditCardIcon />,
+        },
+      ];
 
     return (
       <div className="rounded-md flex flex-col gap-3 py-6">
