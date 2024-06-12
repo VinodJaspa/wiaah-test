@@ -1,3 +1,4 @@
+import { UserNotificationEnum, UserNotificationSettings } from "@features/API";
 import { NotificationData } from "types";
 
 export const NotificationsPH: NotificationData[] = [
@@ -71,4 +72,29 @@ export const NotificationsPH: NotificationData[] = [
     },
     creationDate: new Date(Date.UTC(2022, 4, 1)).toISOString(),
   },
+];
+
+
+export const UserNotificationSettingsPlaceholder: UserNotificationSettings[] = [
+  {
+    id: "user1",
+    commentLike: UserNotificationEnum.on,
+    mentions: UserNotificationEnum.iFollow,
+    postComment: UserNotificationEnum.off,
+    postReaction: UserNotificationEnum.on
+  },
+  {
+    id: "user2",
+    commentLike: UserNotificationEnum.off,
+    mentions: UserNotificationEnum.on,
+    postComment: UserNotificationEnum.iFollow,
+    postReaction: UserNotificationEnum.off
+  },
+  {
+    id: "user3",
+    commentLike: UserNotificationEnum.iFollow,
+    mentions: UserNotificationEnum.off,
+    postComment: UserNotificationEnum.on,
+    postReaction: UserNotificationEnum.iFollow
+  }
 ];

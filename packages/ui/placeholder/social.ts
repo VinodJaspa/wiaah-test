@@ -169,12 +169,21 @@ import { products } from "./products";
 import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
 import {
+  AffiliationStatus,
+  BusinessType,
   CashbackType,
   PresentationType,
   RestaurantDishType,
   ServiceType,
+  StoreFor,
 } from "@features/API";
-import { ServicePostData, SocialShopPostcardProps } from "..";
+import {
+  GetAccountSettingsQueryQuery,
+  ServicePostData,
+  SocialAffiliationCardProps,
+  SocialShopPostcardProps,
+} from "..";
+import { StoreType } from "@features/API/gql/generated";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -488,6 +497,34 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     ],
   },
 ];
+
+export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
+  id: "post1",
+  userId: "user1",
+  affiliationId: "aff1",
+  views: 1000,
+  reactionNum: 150,
+  shares: 20,
+  comments: 30,
+  createdAt: new Date().toISOString(),
+  affiliation: {
+    id: "aff1",
+    commision: 10,
+    createdAt: new Date().toISOString(),
+    itemId: "item1",
+    itemType: "product",
+    status: AffiliationStatus.Active,
+  },
+  user: {
+    profile: {
+      id: "user1",
+      username: "john_doe",
+      verified: true,
+      photo: getRandomImage(),
+      ownerId: "owner1",
+    },
+  },
+};
 export const newsfeedPosts: PostCardInfo[] = [
   {
     profileInfo: PostCardPlaceHolder.profileInfo,
@@ -989,3 +1026,58 @@ export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
     title: t("most_liked_video", "most liked video"),
   },
 ];
+const placeholderProfileDetails = {
+  id: "profile1",
+  username: "johndoe",
+  photo: getRandomImage(),
+  bio: "This is a bio.",
+};
+
+const placeholderUserRawShop = {
+  id: "shop1",
+  storeType: StoreType.Service,
+  type: ServiceType.Hotel,
+  businessType: BusinessType.Company,
+  storeFor: [StoreFor.Men],
+  phone: "123-456-7890",
+  description: [
+    {
+      langId: "en",
+      value: "An electronic shop",
+    },
+    {
+      langId: "es",
+      value: "Una tienda de electrónicos",
+    },
+  ],
+  name: [
+    {
+      langId: "en",
+      value: "ElectroShop",
+    },
+    {
+      langId: "es",
+      value: "TiendaElectro",
+    },
+  ],
+  location: {
+    city: "New York",
+    country: "USA",
+    address: "123 Main St",
+    state: "NY",
+    postalCode: "10001",
+  },
+};
+const placeholderUserAccount = {
+  id: "account1",
+  firstName: "John",
+  lastName: "Doe",
+  companyRegisterationNumber: "123456789",
+  phone: "123-456-7890",
+};
+
+export const GetProfileQueryPlaceholder: GetAccountSettingsQueryQuery = {
+  getProfileDetails: placeholderProfileDetails,
+  getUserRawShop: placeholderUserRawShop,
+  getUserAccount: placeholderUserAccount,
+};
