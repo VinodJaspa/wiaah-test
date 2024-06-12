@@ -560,19 +560,19 @@ export type BannedCountry = {
 
 
 export type BeautyCenter = {
-  _typename?:"BeatuyCenter";
-  beauty_center_typeId:Scalars["ID"]["input"];
-  id:Scalars["ID"]["output"];
-  ownerId:Scalars["ID"]["input"];
+  _typename?: "BeatuyCenter";
+  beauty_center_typeId: Scalars["ID"]["input"];
+  id: Scalars["ID"]["output"];
+  ownerId: Scalars["ID"]["input"];
   payment_methods: Array<ServicePaymentMethod>;
   rating: Scalars["Float"]["input"];
   status: ServiceStatus;
-  title:Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
   totalReviews: Scalars["Int"]["input"];
-  type_of_seller: ServiceTypeOfSeller 
+  type_of_seller: ServiceTypeOfSeller
   createdAt: Scalars["DateTime"]["input"];
   updatedAt: Scalars["DateTime"]["input"];
-  vat:Scalars["Float"]["input"];
+  vat: Scalars["Float"]["input"];
 }
 
 export type BeautyCenterTreatmentCategory = {
@@ -2440,7 +2440,7 @@ export type HotelRoom = {
   sellerId: Scalars["ID"]["output"];
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
-  thumbnail:Scalars["String"]["output"];
+  thumbnail: Scalars["String"]["output"];
 };
 
 export type HotelRoomMetaInfoInput = {
@@ -3821,13 +3821,13 @@ export enum PostVisibility {
   Public = "public",
 }
 
-export type PostCardInfo =  {
+export type PostCardInfo = {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
 }
 
 
-export type PostInfo =  {
+export type PostInfo = {
   createdAt: Scalars["String"]["input"];
   id: Scalars["String"]["input"];
   content?: Scalars["String"]["input"];
@@ -3845,7 +3845,7 @@ export interface PostComment {
   id: Scalars["String"]["input"];
   user: ProfileInfo;
   replies: Scalars["Int"]["input"];
-  likes: Scalars["Int"]["input"] ;
+  likes: Scalars["Int"]["input"];
   createdAt: Scalars["String"]["input"];
   content: Scalars["String"]["input"];
   attachment?: PostAttachment | null;
@@ -3853,14 +3853,14 @@ export interface PostComment {
 }
 
 
-export type PostAttachment =  {
+export type PostAttachment = {
   type: Scalars["String"]["input"];
   src: Scalars["String"]["input"];
   postLocation?: Scalars["String"]["input"];
 }
 
 
-export type ProfileInfo =  {
+export type ProfileInfo = {
   id: Scalars["ID"]["output"];
   verifed?: Scalars["Boolean"]["input"];
   name: Scalars["String"]["input"];
@@ -3868,7 +3868,7 @@ export type ProfileInfo =  {
   accountType: AccountType.Buyer | AccountType.Seller
   public: Scalars["Boolean"]["input"];
   profession?: Scalars["String"]["input"];
-  photo?:Scalars["String"]["input"];
+  photo?: Scalars["String"]["input"];
 }
 
 export enum PresentationType {
@@ -5533,18 +5533,18 @@ export type RequiredAction = {
   exampleField: Scalars["Int"]["output"];
 };
 
-export type Restaurant  = {
-    cuisinesTypeId:Scalars["ID"]["input"]
-    establishmentTypeId:Scalars["ID"]["input"]
-    highest_price:Scalars["Int"]["input"]
-    id:Scalars["ID"]["output"]
-    lowest_price:Scalars["Int"]["input"]
-    michelin_guide_stars:Scalars["Int"]["input"]
-    ownerId:Scalars["ID"]["input"]
-    payment_methods: Array<ServicePaymentMethod>
-    setting_and_ambianceId: Scalars["ID"]["input"]
-    status:ServiceStatus
-    vat: Scalars["Float"]["input"]
+export type Restaurant = {
+  cuisinesTypeId: Scalars["ID"]["input"]
+  establishmentTypeId: Scalars["ID"]["input"]
+  highest_price: Scalars["Int"]["input"]
+  id: Scalars["ID"]["output"]
+  lowest_price: Scalars["Int"]["input"]
+  michelin_guide_stars: Scalars["Int"]["input"]
+  ownerId: Scalars["ID"]["input"]
+  payment_methods: Array<ServicePaymentMethod>
+  setting_and_ambianceId: Scalars["ID"]["input"]
+  status: ServiceStatus
+  vat: Scalars["Float"]["input"]
 }
 
 export enum RestaurantDishType {
@@ -7109,14 +7109,14 @@ export type Vehicle = {
 };
 
 export type VehicleService = {
-    createdAt:Scalars["String"]["input"]
-    id:Scalars["ID"]["output"]
-    ownerId:Scalars["ID"]["output"]
-    payment_methods:Array<ServicePaymentMethod>
-    rating: Scalars["Float"]["input"]
-    totalReviews: Scalars["Int"]["input"]
-    updatedAt: Scalars["String"]["input"]
-    vat:Scalars["Float"]["input"]
+  createdAt: Scalars["String"]["input"]
+  id: Scalars["ID"]["output"]
+  ownerId: Scalars["ID"]["output"]
+  payment_methods: Array<ServicePaymentMethod>
+  rating: Scalars["Float"]["input"]
+  totalReviews: Scalars["Int"]["input"]
+  updatedAt: Scalars["String"]["input"]
+  vat: Scalars["Float"]["input"]
 }
 
 export type VehicleProperties = {
@@ -7237,6 +7237,21 @@ export type WeekdaysWorkingHours = {
 export enum ProfessionStatus {
   Active = "active",
   InActive = "inActive",
+}
+
+export enum UserNotificationEnum {
+  on = "on",
+  off = "off",
+  iFollow = "iFollow"
+}
+
+export type UserNotificationSettings = {
+  id: Scalars["String"]["input"];
+  commentLike: UserNotificationEnum;
+  mentions: UserNotificationEnum;
+  postComment: UserNotificationEnum;
+  postReaction: UserNotificationEnum;
+
 }
 
 export type UpdateBeautyCenterAdminInput = {
