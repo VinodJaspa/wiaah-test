@@ -762,13 +762,13 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
       id: "user1",
       username: "john_doe",
       verified: true,
-      photo: "https://example.com/photo1.jpg",
+      photo: getRandomImage(),
       ownerId: "owner1",
     },
   },
 };
 
-export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffiliationPosts"][] =
+export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffiliationPosts"] =
   [
     {
       id: "post1",
@@ -798,7 +798,7 @@ export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffil
           username: "john_doe",
           followers: 500,
           verified: true,
-          photo: "https://example.com/photo1.jpg",
+          photo: getRandomImage(),
           ownerId: "owner1",
           profession: "Software Developer",
         },
@@ -865,7 +865,7 @@ export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffil
           username: "sam_wilson",
           followers: 1500,
           verified: true,
-          photo: "https://example.com/photo3.jpg",
+          photo: getRandomImage(),
           ownerId: "owner3",
           profession: "Digital Marketer",
         },
