@@ -12,9 +12,13 @@ import {
   PostCardsListWrapper,
 } from "ui";
 
-export interface NewsFeedPostViewProps {}
+export interface NewsFeedPostViewProps {
+  postId: string;
+}
 
-export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
+export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
+  postId,
+}) => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { t } = useTranslation();
   const router = useRouter();
@@ -47,16 +51,12 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
         mb="6rem"
         align={"start"}
       >
-        <SocialStoryModal />
+        <SocialStoryModal profileId={postId} />
         <SocialPostHeader
           name={post.profileInfo.name}
           thumbnail={post.profileInfo.thumbnail}
         />
-        <PostCard
-          showComments
-          postInfo={post.postInfo}
-          profileInfo={post.profileInfo}
-        />
+        <PostCard post={post} />
       </Flex>
       <Text
         fontSize={"xx-large"}

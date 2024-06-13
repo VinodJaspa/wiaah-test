@@ -15,8 +15,9 @@ export const SocialProfileNewsfeedPosts: React.FC<
   }
 > = ({ userId, ...props }) => {
   const { pagination, controls } = usePaginationControls();
-  // use this graphql query only if the server is ready if not use placehoder data
-  const { data: posts } = useGetProfilePosts({
+  use this graphql query only if the server is ready if not use placehoder data
+  //Warning: this graphql query is not supported yet
+  const { data: _posts } = useGetProfilePosts({
     userId,
     pagination,
     type: PostType.NewsfeedPost,

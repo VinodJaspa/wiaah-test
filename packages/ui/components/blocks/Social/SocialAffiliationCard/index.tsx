@@ -21,6 +21,8 @@ import {
   Profile,
   ServicePresentationType,
 } from "@features/API";
+import { getRandomImage } from "placeholder";
+import { AttachmentType } from "@features/API/gql/generated";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -91,23 +93,23 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   } =
     post?.affiliation?.itemType === "service"
       ? {
-          name: post.affiliation.service?.name || "",
-          price: post.affiliation.service?.price || 0,
-          presentations:
-            [
-              {
-                src: post.affiliation.service?.thumbnail || "",
-                type: ServicePresentationType.Img,
-              },
-            ] || ([] as ServicePresentation[]),
-        }
+        name: post.affiliation.service?.name || "",
+        price: post.affiliation.service?.price || 0,
+        presentations:
+          [
+            {
+              src: post.affiliation.product?.thumbnail || "",
+              type: ServicePresentationType.Img,
+            },
+          ] || ([] as ServicePresentation[]),
+      }
       : {
-          name: post?.affiliation?.product?.title || "",
-          price: post?.affiliation?.product?.price || 0,
-          presentations:
-            post?.affiliation?.product?.presentations ||
-            ([] as ProductPresentation[]),
-        };
+        name: post?.affiliation?.product?.title || "",
+        price: post?.affiliation?.product?.price || 0,
+        presentations:
+          post?.affiliation?.product?.presentations ||
+          ([] as ProductPresentation[]),
+      };
 
   return (
     <div
@@ -152,7 +154,11 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
           >
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
-              attachments={prod.presentations}
+              attachments={
+                post.affiliation.product?.presentations || [
+                  { src: getRandomImage(), type: AttachmentType.Img },
+                ]
+              }
             />
             <div className="flex justify-center items-center absolute bottom-0 right-0 px-4 py-2 bg-black bg-opacity-60 text-white">
               <PriceDisplay price={prod.price} />
@@ -168,7 +174,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 <HiOutlineLink onClick={handleCopyLink} />
               </div>
 
-              <Input value={affiliationLink} onChange={() => {}} />
+              <Input value={affiliationLink} onChange={() => { }} />
             </div>
 
             {showPostInteraction && (
