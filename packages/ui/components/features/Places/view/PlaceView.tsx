@@ -13,6 +13,31 @@ import { SectionHeader } from "@sections/ShoppingManagement";
 import { useResponsive } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { getRandomImage } from "placeholder";
+
+const FAKEDATA = [
+  {
+    sellerThumbnail: getRandomImage(),
+    name: "fake name",
+    ownerId: "33",
+    thumbnail: getRandomImage(),
+    title: "Sample Product Title",
+    verified: true,
+    openFromDate: new Date("2023-06-01"),
+    openToDate: new Date("2023-12-31"),
+    isOpen: true,
+    id: "product1",
+    sellerId: "seller1",
+    categoryLabel: "Electronics",
+    storeType: StoreType.Product,
+    storeCategory: "cat",
+    location: {
+      country: "fake country",
+      city: "fake city",
+      address: "fake address",
+    },
+  },
+];
 
 export const PlaceView: React.FC<{
   slug: string;
@@ -48,7 +73,7 @@ export const PlaceView: React.FC<{
             <p>{`(${NumberShortner(locationQueryViews)} ${t("Views")})`}</p>
           </div>
         </div>
-        <Button colorScheme="darkbrown" onClick={() => {}}>
+        <Button colorScheme="darkbrown" onClick={() => { }}>
           {t("Follow")}
         </Button>
       </HStack>
@@ -56,30 +81,29 @@ export const PlaceView: React.FC<{
         controls={{ hasMore, next: () => fetchNextPage() }}
       >
         <div className="grid grid-col-2 md:grid-col-3 xl:grid-cols-4">
-          {mapArray(data?.pages, (page) => (
-            <>
-              {mapArray(page.data, (shop) => (
-                <LocalizationShopCard
-                  storeType={shop.storeType}
-                  categoryLabel={`${
-                    shop.storeType === StoreType.Product
-                      ? `${shop.storeCategory} ${t("Store")}`
-                      : `${shop.type} ${t("Service")}`
+          {/*{mapArray(data?.pages, (page) => (*/}
+          <>
+            {mapArray(FAKEDATA, (shop) => (
+              <LocalizationShopCard
+                storeType={shop.storeType}
+                categoryLabel={`${shop.storeType === StoreType.Product
+                    ? `${shop.storeCategory} ${t("Store")}`
+                    : `${shop.type} ${t("Service")}`
                   }`}
-                  id={shop.id}
-                  sellerId={shop.ownerId}
-                  sellerThumbnail={shop?.sellerProfile?.photo}
-                  thumbnail={shop.thumbnail}
-                  location={`${shop.location?.address}, ${shop.location?.city}, ${shop.location?.country}`}
-                  title={shop.name}
-                  verified={shop.verified}
-                  isOpen={shop?.workingSchedule?.isOpen}
-                  openFromDate={new Date(shop?.workingSchedule?.openFrom)}
-                  openToDate={new Date(shop?.workingSchedule?.openTo)}
-                />
-              ))}
-            </>
-          ))}
+                id={shop.id}
+                sellerId={shop.ownerId}
+                sellerThumbnail={shop?.sellerThumbnail}
+                thumbnail={shop.thumbnail}
+                location={`${shop.location?.address}, ${shop.location?.city}, ${shop.location?.country}`}
+                title={shop.name}
+                verified={shop.verified}
+                isOpen={shop?.workingSchedule?.isOpen}
+                openFromDate={new Date(shop?.workingSchedule?.openFrom)}
+                openToDate={new Date(shop?.workingSchedule?.openTo)}
+              />
+            ))}
+          </>
+          ))
         </div>
       </ScrollCursorPaginationWrapper>
     </div>

@@ -12,6 +12,17 @@ import {
   AccountType,
 } from "types";
 
+import {
+  Profile,
+  ProfileVisibility,
+  ProductCondition,
+  ProductSize,
+  ProductStatus,
+  ProductUsageStatus,
+  VisibilityEnum,
+  Discount,
+} from "@features/API";
+
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
@@ -94,81 +105,11 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   },
 ];
 
-export const PostCommentPlaceholder: PostComment = {
-  id: "1",
-  content:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has",
-  createdAt: new Date(Date.UTC(2022, 3, 1)).toJSON(),
-  likes: 5,
-  replies: 2,
-  attachment: {
-    type: "image",
-    src: "/shop.jpeg",
-  },
-  user: {
-    id: "1",
-    accountType: AccountType.Buyer,
-    name: "wiaah",
-    thumbnail: "/wiaah_logo.png",
-    verifed: true,
-    public: true,
-  },
-  hashTags: ["gaming", "fashion", "motivation"],
-};
-export const PostCardPlaceHolder: PostCardInfo = {
-  postInfo: {
-    views: 56300,
-    numberOfShares: 13,
-    id: "1",
-    tags: ["mood", "new"],
-    content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium.",
-    numberOfComments: 5,
-    numberOfLikes: 7,
-    attachments: [
-      {
-        type: "image",
-        src: "/place-2.jpg",
-      },
-      {
-        src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        type: "video",
-      },
-      {
-        src: "/shop.jpeg",
-        type: "image",
-      },
-      {
-        src: "/verticalVideo.jpeg",
-        type: "video",
-      },
-    ],
-    createdAt: new Date(Date.UTC(2022, 3, 5)).toJSON(),
-    comments: [
-      { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder, attachment: null },
-      { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder },
-    ],
-  },
-  profileInfo: {
-    profession: "Los Angeles",
-    verifed: true,
-    id: "1",
-    name: "Wiaah",
-    thumbnail: "/wiaah_logo.png",
-    accountType: AccountType.Seller,
-    public: true,
-  },
-};
-
 import { products } from "./products";
 import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
 import {
+  ActiveStatus,
   AffiliationStatus,
   BusinessType,
   CashbackType,
@@ -184,6 +125,7 @@ import {
   SocialShopPostcardProps,
 } from "..";
 import { StoreType } from "@features/API/gql/generated";
+import { DiscountUnits } from "@UI/../validation";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -259,6 +201,77 @@ export const getRandomServiceImage = (
 export const getRandomImage = (): string =>
   images[Math.floor(Math.random() * images.length)];
 
+export const PostCommentPlaceholder: PostComment = {
+  id: "1",
+  content:
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has",
+  createdAt: new Date(Date.UTC(2022, 3, 1)).toJSON(),
+  likes: 5,
+  replies: 2,
+  attachment: {
+    type: "image",
+    src: "/shop.jpeg",
+  },
+  user: {
+    id: "1",
+    accountType: AccountType.Buyer,
+    name: "wiaah",
+    thumbnail: "/wiaah_logo.png",
+    verifed: true,
+    public: true,
+  },
+  hashTags: ["gaming", "fashion", "motivation"],
+};
+export const PostCardPlaceHolder: PostCardInfo = {
+  postInfo: {
+    views: 56300,
+    numberOfShares: 13,
+    id: "1",
+    tags: ["mood", "new"],
+    thumbnail: getRandomImage(),
+    content:
+      "Lorem ipsum dolor sectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium.",
+    numberOfComments: 5,
+    numberOfLikes: 7,
+    attachments: [
+      {
+        type: "image",
+        src: getRandomImage(),
+      },
+      {
+        src: getRandomImage(),
+        type: "video",
+      },
+      {
+        src: getRandomImage(),
+        type: "image",
+      },
+      {
+        src: getRandomImage(),
+        type: "video",
+      },
+    ],
+    createdAt: new Date(Date.UTC(2022, 3, 5)).toJSON(),
+    comments: [
+      { ...PostCommentPlaceholder },
+      { ...PostCommentPlaceholder, attachment: null },
+      { ...PostCommentPlaceholder },
+      { ...PostCommentPlaceholder },
+      { ...PostCommentPlaceholder },
+      { ...PostCommentPlaceholder },
+      { ...PostCommentPlaceholder },
+    ],
+  },
+  profileInfo: {
+    profession: "Los Angeles",
+    verifed: true,
+    id: "1",
+    name: "Wiaah",
+    thumbnail: getRandomImage(),
+    accountType: AccountType.Seller,
+    public: true,
+  },
+};
 export const postProfilesPlaceholder: ProfileInfo[] = [
   {
     id: "1",
@@ -498,6 +511,288 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   },
 ];
 
+export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][] =
+  [
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        status: AffiliationStatus.Active,
+        //@ts-ignore
+        product: {
+          brand: "ExampleBrand",
+          cashbackId: "cashback1",
+          categoryId: "category1",
+          colors: ["Red", "Blue", "Green"],
+          condition: ProductCondition.New,
+          createdAt: new Date().toISOString(),
+          description: "This is a placeholder description for the product.",
+          discount: {
+            amount: 33,
+            id: "44",
+            units: 3,
+          },
+          id: "product1",
+          isExternalProduct: false,
+          isExternalShopping: false,
+          negitiveFeedback: 2,
+          positiveFeedback: 98,
+          presentations: [
+            { src: getRandomImage(), type: PresentationType.Image },
+          ],
+          price: 299.99,
+          rate: 5,
+          reviews: 120,
+          sales: 50,
+          saved: true,
+          sellerId: "seller1",
+          shippingRulesIds: ["rule1", "rule2"],
+          stock: 100,
+          thumbnail: getRandomImage(),
+          title: "Placeholder Product Title",
+          todayProductClickId: "click1",
+          totalDiscounted: 10,
+          totalDiscountedAmount: 2999,
+          totalOrdered: 50,
+          unitsRefunded: 1,
+          updatedAt: new Date().toISOString(),
+          vat: 20.0,
+          vendor_external_link: "https://example.com/vendor-link",
+          visibility: VisibilityEnum.Hidden,
+        },
+      },
+      user: {
+        profile: {
+          id: "user1",
+          username: "john_doe",
+          verified: true,
+          photo: getRandomImage(),
+          ownerId: "owner1",
+        },
+      },
+    },
+
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        status: AffiliationStatus.Active,
+        //@ts-ignore
+        product: {
+          brand: "ExampleBrand",
+          cashbackId: "cashback1",
+          categoryId: "category1",
+          colors: ["Red", "Blue", "Green"],
+          condition: ProductCondition.New,
+          createdAt: new Date().toISOString(),
+          description: "This is a placeholder description for the product.",
+          discount: {
+            amount: 33,
+            id: "44",
+            units: 3,
+          },
+          id: "product1",
+          isExternalProduct: false,
+          isExternalShopping: false,
+          negitiveFeedback: 2,
+          positiveFeedback: 98,
+          presentations: [
+            { src: getRandomImage(), type: PresentationType.Image },
+          ],
+          price: 299.99,
+          rate: 5,
+          reviews: 120,
+          sales: 50,
+          saved: true,
+          sellerId: "seller1",
+          shippingRulesIds: ["rule1", "rule2"],
+          stock: 100,
+          thumbnail: getRandomImage(),
+          title: "Placeholder Product Title",
+          todayProductClickId: "click1",
+          totalDiscounted: 10,
+          totalDiscountedAmount: 2999,
+          totalOrdered: 50,
+          unitsRefunded: 1,
+          updatedAt: new Date().toISOString(),
+          vat: 20.0,
+          vendor_external_link: "https://example.com/vendor-link",
+          visibility: VisibilityEnum.Hidden,
+        },
+      },
+      user: {
+        profile: {
+          id: "user1",
+          username: "john_doe",
+          verified: true,
+          photo: getRandomImage(),
+          ownerId: "owner1",
+        },
+      },
+    },
+
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        status: AffiliationStatus.Active,
+        //@ts-ignore
+        product: {
+          brand: "ExampleBrand",
+          cashbackId: "cashback1",
+          categoryId: "category1",
+          colors: ["Red", "Blue", "Green"],
+          condition: ProductCondition.New,
+          createdAt: new Date().toISOString(),
+          description: "This is a placeholder description for the product.",
+          discount: {
+            amount: 33,
+            id: "44",
+            units: 3,
+          },
+          id: "product1",
+          isExternalProduct: false,
+          isExternalShopping: false,
+          negitiveFeedback: 2,
+          positiveFeedback: 98,
+          presentations: [
+            { src: getRandomImage(), type: PresentationType.Image },
+          ],
+          price: 299.99,
+          rate: 5,
+          reviews: 120,
+          sales: 50,
+          saved: true,
+          sellerId: "seller1",
+          shippingRulesIds: ["rule1", "rule2"],
+          stock: 100,
+          thumbnail: getRandomImage(),
+          title: "Placeholder Product Title",
+          todayProductClickId: "click1",
+          totalDiscounted: 10,
+          totalDiscountedAmount: 2999,
+          totalOrdered: 50,
+          unitsRefunded: 1,
+          updatedAt: new Date().toISOString(),
+          vat: 20.0,
+          vendor_external_link: "https://example.com/vendor-link",
+          visibility: VisibilityEnum.Hidden,
+        },
+      },
+      user: {
+        profile: {
+          id: "user1",
+          username: "john_doe",
+          verified: true,
+          photo: getRandomImage(),
+          ownerId: "owner1",
+        },
+      },
+    },
+    {
+      id: "post1",
+      userId: "user1",
+      affiliationId: "aff1",
+      views: 1000,
+      reactionNum: 150,
+      shares: 20,
+      comments: 30,
+      createdAt: new Date().toISOString(),
+      affiliation: {
+        id: "aff1",
+        commision: 10,
+        createdAt: new Date().toISOString(),
+        itemId: "item1",
+        itemType: "product",
+        status: AffiliationStatus.Active,
+        //@ts-ignore
+        product: {
+          brand: "ExampleBrand",
+          cashbackId: "cashback1",
+          categoryId: "category1",
+          colors: ["Red", "Blue", "Green"],
+          condition: ProductCondition.New,
+          createdAt: new Date().toISOString(),
+          description: "This is a placeholder description for the product.",
+          discount: {
+            amount: 33,
+            id: "44",
+            units: 3,
+          },
+          id: "product1",
+          isExternalProduct: false,
+          isExternalShopping: false,
+          negitiveFeedback: 2,
+          positiveFeedback: 98,
+          presentations: [
+            { src: getRandomImage(), type: PresentationType.Image },
+          ],
+          price: 299.99,
+          rate: 5,
+          reviews: 120,
+          sales: 50,
+          saved: true,
+          sellerId: "seller1",
+          shippingRulesIds: ["rule1", "rule2"],
+          stock: 100,
+          thumbnail: getRandomImage(),
+          title: "Placeholder Product Title",
+          todayProductClickId: "click1",
+          totalDiscounted: 10,
+          totalDiscountedAmount: 2999,
+          totalOrdered: 50,
+          unitsRefunded: 1,
+          updatedAt: new Date().toISOString(),
+          vat: 20.0,
+          vendor_external_link: "https://example.com/vendor-link",
+          visibility: VisibilityEnum.Hidden,
+        },
+      },
+      user: {
+        profile: {
+          id: "user1",
+          username: "john_doe",
+          verified: true,
+          photo: getRandomImage(),
+          ownerId: "owner1",
+        },
+      },
+    },
+  ];
+
 export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
   id: "post1",
   userId: "user1",
@@ -514,6 +809,46 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
     itemId: "item1",
     itemType: "product",
     status: AffiliationStatus.Active,
+    //@ts-ignore
+    product: {
+      brand: "ExampleBrand",
+      cashbackId: "cashback1",
+      categoryId: "category1",
+      colors: ["Red", "Blue", "Green"],
+      condition: ProductCondition.New,
+      createdAt: new Date().toISOString(),
+      description: "This is a placeholder description for the product.",
+      presentations: [{ src: getRandomImage(), type: PresentationType.Image }],
+      discount: {
+        amount: 33,
+        id: "44",
+        units: 3,
+      },
+      id: "product1",
+      isExternalProduct: false,
+      isExternalShopping: false,
+      negitiveFeedback: 2,
+      positiveFeedback: 98,
+      price: 299.99,
+      rate: 5,
+      reviews: 120,
+      sales: 50,
+      saved: true,
+      sellerId: "seller1",
+      shippingRulesIds: ["rule1", "rule2"],
+      stock: 100,
+      thumbnail: getRandomImage(),
+      title: "Placeholder Product Title",
+      todayProductClickId: "click1",
+      totalDiscounted: 10,
+      totalDiscountedAmount: 2999,
+      totalOrdered: 50,
+      unitsRefunded: 1,
+      updatedAt: new Date().toISOString(),
+      vat: 20.0,
+      vendor_external_link: "https://example.com/vendor-link",
+      visibility: VisibilityEnum.Hidden,
+    },
   },
   user: {
     profile: {
@@ -525,32 +860,26 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
     },
   },
 };
+
 export const newsfeedPosts: PostCardInfo[] = [
   {
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       id: "1",
+      thumbnail: getRandomImage(),
       attachments: [
         {
           type: "image",
-          src: "/post (1).jfif",
+          src: getRandomImage(),
           postLocation: "New York",
         },
-        // {
-        //   src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        //   type: "video",
-        // },
-        // {
-        //   type: "video",
-        //   src: "/video.mp4",
-        // },
         {
-          src: "/shop.jpeg",
+          src: getRandomImage(),
           type: "image",
         },
         {
-          src: "/verticalVideo.mp4",
+          src: getRandomImage(),
           type: "image",
         },
       ],
@@ -565,7 +894,7 @@ export const newsfeedPosts: PostCardInfo[] = [
           user: getRandomUser(),
           content: "nice video",
           attachment: {
-            src: "/shop.jpeg",
+            src: getRandomImage(),
             type: "image",
           },
         },
@@ -602,27 +931,20 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       id: "2",
+      thumbnail: getRandomImage(),
       attachments: [
         {
-          src: "/post (2).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
         {
           type: "image",
-          src: "/verticalImage.jpg",
+          src: getRandomImage(),
           postLocation: "New York",
         },
-        // {
-        //   src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        //   type: "video",
-        // },
         {
-          type: "video",
-          src: "/video.mp4",
-        },
-        {
-          src: "/shop.jpeg",
+          src: getRandomImage(),
           type: "image",
         },
       ],
@@ -633,10 +955,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "4",
       attachments: [
         {
-          src: "/post (3).jfif",
+          src: "getRandomImage()",
           type: "image",
           postLocation: "New York",
         },
@@ -649,10 +972,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "5",
       attachments: [
         {
-          src: "/post (4).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
@@ -665,10 +989,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "3",
       attachments: [
         {
-          src: "/post (5).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
@@ -680,7 +1005,7 @@ export const newsfeedPosts: PostCardInfo[] = [
           user: getRandomUser(),
           content: "nice video",
           attachment: {
-            src: "/shop.jpeg",
+            src: getRandomImage(),
             type: "image",
           },
         },
@@ -717,10 +1042,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "6",
       attachments: [
         {
-          src: "/post (6).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
@@ -733,9 +1059,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
+      id: "9",
       attachments: [
         {
-          src: "/post (7).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
@@ -748,10 +1076,11 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "7",
       attachments: [
         {
-          src: "/post (8).jfif",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
@@ -764,6 +1093,7 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
       id: "8",
       attachments: [
         {
@@ -777,6 +1107,55 @@ export const newsfeedPosts: PostCardInfo[] = [
     },
   },
 ];
+export const ProfilePlaceholder: Profile = {
+  __typename: "Profile",
+  activeStatus: ActiveStatus.Active,
+  bio: "This is a placeholder bio for the user.",
+  coverPhoto: "https://example.com/cover-photo.jpg",
+  createdAt: new Date().toISOString(),
+  followers: 100,
+  followersData: [
+    {
+      followedAt: new Date().toISOString(),
+      followerUserId: "user3",
+      followingUserId: "user4",
+      id: "follow2",
+    },
+    {
+      followedAt: new Date().toISOString(),
+      followerUserId: "user1",
+      followingUserId: "user2",
+      id: "follow1",
+    },
+  ],
+  following: 50,
+  followingData: [
+    {
+      followedAt: new Date().toISOString(),
+      followerUserId: "user1",
+      followingUserId: "user2",
+      id: "follow1",
+    },
+    {
+      followedAt: new Date().toISOString(),
+      followerUserId: "user1",
+      followingUserId: "user2",
+      id: "follow1",
+    },
+  ],
+  id: "profile1",
+  lastActive: new Date().toISOString(),
+  newStory: true,
+  ownerId: "owner1",
+  photo: getRandomImage(),
+  profession: "Software Developer",
+  publications: 5,
+  updatedAt: new Date().toISOString(),
+  username: "John Doe",
+  verified: true,
+  visibility: ProfileVisibility.Public,
+  visits: 1000,
+};
 export const stringplaceholder =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
 const getRandomType = (): "service" | "product" =>
