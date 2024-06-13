@@ -12,7 +12,9 @@ import {
   HStack,
   Button,
   EditIcon,
-  Profile,
+  SocialProfileInfo,
+  Account,
+  getRandomImage,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";
 import { useReactPubsub } from "react-pubsub";
@@ -22,6 +24,7 @@ import { mapArray } from "utils";
 import { SocialStoryState } from "state";
 import { SocialShopProfileData } from "api";
 import { useRouting } from "routing";
+import { Profile } from "@features/API";
 
 export interface MyProfileProps {
   shopInfo: Profile;
@@ -54,7 +57,9 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
           <p>{t("Show on map")}</p>
         </div>
       </div>
+      {/*
       {shopInfo && <SocialStoryModal profileId={shopInfo.id} />}
+      */}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
@@ -75,22 +80,22 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
           <div className="flex gap-4">
             <div className="absolute left-14 top-0 -translate-y-1/2">
               <Avatar
-                className="w-[6.75rem]"
-                src={shopInfo?.photo}
+                className="w-[6.75rem] h-[6.75rem]"
+                src={shopInfo?.photo || getRandomImage()}
                 name={shopInfo?.username}
               />
             </div>
             <div className="w-24 h-full"></div>
 
-            <HStack>
-              <p className="text-xl whitespace-nowrap font-bold">
+            <HStack className="gap-3">
+              <p className="ml-2 text-xl whitespace-nowrap font-bold">
                 {shopInfo?.username}
               </p>
-              <p className="text-sm font-light text-grayText">
+              <p className="text-sm font-light whitespace-nowrap w-fit text-grayText">
                 {shopInfo?.profession}
               </p>
               {shopInfo.verified ? (
-                <VerifiedIcon className="text-lg text-primary" />
+                <VerifiedIcon className="text-xl text-primary" />
               ) : null}
             </HStack>
           </div>
