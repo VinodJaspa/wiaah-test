@@ -34,17 +34,16 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
   const { ToggleComments } = useActionComments();
   const { t } = useTranslation();
   return (
-    <div className="relative  h-full w-[min(35rem,100%)]">
+    <div className="relative h-full w-[min(35rem,100%)] mx-auto">
       {action && (
         <>
           <div
-            className={`${dark ? "text-white bg-black bg-opacity-30" : " "} ${
-              interactionPos === "in"
+            className={`${dark ? "text-white bg-black bg-opacity-30" : " "} ${interactionPos === "in"
                 ? "right-0 text-white"
                 : "left-full text-black"
-            } z-10 bottom-0 absolute flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
+              } z-10 bottom-0 absolute flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
           >
-            <div className="flex flex-col justify-center">
+            <div className="flex flex-col ml-1 justify-center">
               <HiHeart />
               <span className="text-xl">1.5k</span>
             </div>
@@ -73,20 +72,17 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
           />
           {muteIcon ? (
             <BiVolumeFull
-              className={`${
-                muteIcon ? "hidden" : ""
-              } absolute z-10 top-4 right-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
+              className={`${muteIcon ? "hidden" : ""
+                } absolute z-10 top-4 right-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
             />
           ) : null}
           <BsPlayFill
-            className={`${
-              playIcon ? "hidden" : ""
-            } absolute z-10 top-4 left-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
+            className={`${playIcon ? "hidden" : ""
+              } absolute z-10 top-4 left-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
           />
           <CgPlayButtonR
-            className={`absolute ${
-              muteIcon ? "top-14" : "top-4"
-            } right-4 z-10 text-5xl text-white`}
+            className={`absolute ${muteIcon ? "top-14" : "top-4"
+              } right-4 z-10 text-5xl text-white`}
           />
 
           <div
