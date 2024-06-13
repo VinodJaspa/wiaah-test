@@ -26,7 +26,10 @@ import {
   SocialProfileServicePosts,
   SocialProfileShopPostsList,
 } from "ui";
+import { ProfilePlaceholder as profile } from "ui/placeholder";
 import { useBreakpointValue } from "utils";
+import { ActionsView } from "../ActionsView";
+import { SocialActionsView } from "../SocialActionsView";
 import { MyProfile } from "./MyProfile";
 
 export interface MyProfileView { }
@@ -50,7 +53,6 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   });
   // WARNING: This grphql query has been replaced with placeholder because it's not ready yet
   // const { data: profile, isLoading, isError } = useGetMyProfileQuery();
-  const profile = { ownerId: "33" };
 
   const sellerTabs: TabType[] = [
     {
@@ -78,13 +80,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     },
     {
       name: t("actions", "Actions"),
-      component: (
-        <div></div>
-        // <ActionsListWrapper
-        //   cols={ActionsCols}
-        //   actions={profileActionsPlaceholder}
-        // />
-      ),
+      component: <SocialActionsView />,
     },
   ];
   const buyerTabs: TabType[] = [
