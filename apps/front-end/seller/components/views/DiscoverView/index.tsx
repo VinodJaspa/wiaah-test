@@ -63,7 +63,7 @@ const discoverPlacesPlaceHolder: {
   type: placeTypes[randomNum(placeTypes.length)],
 }));
 
-const discoverStoriesPlaceholder: {
+export const discoverStoriesPlaceholder: {
   thumbnail: string;
   id: string;
   user: {
