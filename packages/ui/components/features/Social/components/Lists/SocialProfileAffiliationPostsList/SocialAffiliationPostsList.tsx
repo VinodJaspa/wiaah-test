@@ -19,9 +19,9 @@ export const SocialProfileAffiliationPostsList: React.FC<{
   const { pagination, controls } = usePaginationControls();
 
   // WARNING: This grqphql is not working so I replaced it with placeholder once it's ready replace it back
-  const { data: _affiliationPosts } = useGetProfileAffiliationPosts({
-  userId, pagination;
-  });
+  // const { data: _affiliationPosts } = useGetProfileAffiliationPosts({
+  // userId, pagination;
+  // });
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
