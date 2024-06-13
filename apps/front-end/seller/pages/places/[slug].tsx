@@ -7,7 +7,7 @@ import { useResponsive, PlaceView } from "ui";
 import { placesPH } from "ui/placeholder";
 import { useRouting } from "routing";
 
-interface PlacesPageProps {}
+interface PlacesPageProps { }
 
 async function getPlaces() {
   return placesPH;
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const places: NextPage = () => {
+const Places: NextPage = () => {
   const { isMobile } = useResponsive();
   const { getParam } = useRouting();
 
@@ -45,4 +45,4 @@ const places: NextPage = () => {
   );
 };
 
-export default places;
+export default Places;
