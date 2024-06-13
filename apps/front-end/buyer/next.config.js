@@ -10,25 +10,20 @@ const nextConfig = {
   },
 };
 
-const withTM = require("next-transpile-modules")(
-  [
-    "ui",
-    "api",
-    "uris",
-    "validation",
-    "hooks",
-    "utils",
-    "state",
-    "placeholder",
-    "types",
-    "routing",
-    "react-pubsub",
-    "lib",
-  ],
-  {
-    debug: true,
-  }
-);
+const withTM = require("next-transpile-modules")([
+  "ui",
+  "api",
+  "uris",
+  "validation",
+  "hooks",
+  "utils",
+  "state",
+  "placeholder",
+  "types",
+  "routing",
+  "react-pubsub",
+  "lib",
+]);
 const withPWA = require("next-pwa");
 
 module.exports = withTM(
