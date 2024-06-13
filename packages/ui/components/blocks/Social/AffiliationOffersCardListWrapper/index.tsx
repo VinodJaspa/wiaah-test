@@ -13,6 +13,7 @@ import {
 } from "@UI";
 import { Text } from "@chakra-ui/react";
 import { AttachmentType } from "@features/API";
+import { getRandomImage } from "placeholder";
 
 export interface AffiliationOffersCardListWrapperProps {
   items: SocialAffiliationCardProps["post"][];
@@ -35,172 +36,172 @@ export const AffiliationOffersCardListWrapper: React.FC<
           presets={
             isMobile
               ? [
-                  {
-                    cols: 3,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                  {
-                    cols: 3,
-                    points: [
-                      { c: 2, r: 2 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
-                  },
+                {
+                  cols: 3,
+                  points: [
+                    {
+                      c: 2,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 2,
+                      r: 2,
+                    },
+                    {
+                      c: 2,
+                      r: 1,
+                    },
+                  ],
+                },
+                {
+                  cols: 3,
+                  points: [
+                    { c: 2, r: 2 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 2, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 2, r: 1 },
+                    { c: 1, r: 1 },
+                  ],
+                },
 
-                  {
-                    cols: 2,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                ]
+                {
+                  cols: 2,
+                  points: [
+                    {
+                      c: 2,
+                      r: 1,
+                    },
+                    {
+                      c: 2,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 2,
+                      r: 1,
+                    },
+                  ],
+                },
+              ]
               : [
-                  {
-                    cols: 5,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                    ],
-                  },
-                  {
-                    cols: 5,
-                    points: [
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 2 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
-                  },
+                {
+                  cols: 5,
+                  points: [
+                    {
+                      c: 2,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                  ],
+                },
+                {
+                  cols: 5,
+                  points: [
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 2 },
+                    { c: 2, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                  ],
+                },
 
-                  {
-                    cols: 4,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                ]
+                {
+                  cols: 4,
+                  points: [
+                    {
+                      c: 2,
+                      r: 1,
+                    },
+                    {
+                      c: 2,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 2,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 1,
+                      r: 1,
+                    },
+                    {
+                      c: 2,
+                      r: 1,
+                    },
+                  ],
+                },
+              ]
           }
         >
           {items.map((post, i) => (
@@ -210,11 +211,7 @@ export const AffiliationOffersCardListWrapper: React.FC<
                 style={{ onClick: () => setCurrentPost(post.id) }}
                 blur
                 key={i}
-                src={
-                  (post?.affiliation?.product?.presentations &&
-                    post.affiliation.product.presentations[0].src) ||
-                  ""
-                }
+                src={getRandomImage()}
                 type={AttachmentType.Img}
                 footer={
                   post.views ? (

@@ -104,7 +104,7 @@ export function PostViewPopup<TData extends {}>({
   }
   return (
     <>
-      <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
+      <Modal onOpen={() => { }} onClose={handlePostViewClose} isOpen={isOpen}>
         {/* <ModalOverlay className="bg-opacity-[100%]" /> */}
         <ModalContent className="h-screen px-[2.5rem] bg-black flex w-screen">
           <div className="flex flex-col gap-2 w-full">

@@ -77,7 +77,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     >
       <Image
         className="w-full h-full object-cover"
-        src={post.postInfo?.thumbnail || ""}
+        src={post.postInfo?.thumbnail}
         alt={post.postInfo.content}
       />
 
@@ -150,8 +150,8 @@ export const PostCard: React.FC<PostCardProps> = ({
               <p className="font-bold text-base">
                 {NumberShortner(
                   post.postInfo.numberOfComments +
-                    post.postInfo.numberOfLikes +
-                    post.postInfo.numberOfShares
+                  post.postInfo.numberOfLikes +
+                  post.postInfo.numberOfShares
                 )}
               </p>
             </div>

@@ -9,6 +9,7 @@ import {
   ArrowRightIcon,
 } from "@UI";
 import { AttachmentType } from "@features/API";
+import { getRandomImage } from "placeholder";
 export interface PostAttachmentsViewerProps {
   attachments: PostAttachmentType[];
   profileInfo?: ProfileInfo;
@@ -41,7 +42,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
             <PostAttachment
               key={attachment.src + i}
               type={AttachmentType.Img}
-              src={attachment.src}
+              src={getRandomImage()}
               alt={attachment.postLocation}
               footer={
                 showFooter ? (
@@ -67,33 +68,30 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
           ))}
         </Slider>
       ) : (
-        attachments &&
-        attachments.length > 0 && (
-          <PostAttachment
-            {...attachments[0]}
-            alt={profileInfo && profileInfo.name}
-            footer={
-              <div className="flex items center gap-2 p-2 text-white font-4xl">
-                {attachments[0].postLocation && (
-                  <div className="flex items-center gap-2">
-                    <HiLocationMarker />
-                    <span className="text-lg">
-                      {attachments[0].postLocation}
-                    </span>
-                  </div>
-                )}
-                {profileInfo && profileInfo.name && (
-                  <div className="flex items-center gap-2">
-                    <HiUser />
-                    <span className="text-lg">
-                      {profileInfo && profileInfo.name}
-                    </span>
-                  </div>
-                )}
-              </div>
-            }
-          />
-        )
+        <PostAttachment
+          {...attachments[0]}
+          alt={"thumbnail"}
+          src={getRandomImage()}
+          type={AttachmentType.Img}
+          footer={
+            <div className="flex items center gap-2 p-2 text-white font-4xl">
+              {attachments[0].postLocation && (
+                <div className="flex items-center gap-2">
+                  <HiLocationMarker />
+                  <span className="text-lg">{attachments[0].postLocation}</span>
+                </div>
+              )}
+              {profileInfo && profileInfo.name && (
+                <div className="flex items-center gap-2">
+                  <HiUser />
+                  <span className="text-lg">
+                    {profileInfo && profileInfo.name}
+                  </span>
+                </div>
+              )}
+            </div>
+          }
+        />
       )}
     </div>
   );
