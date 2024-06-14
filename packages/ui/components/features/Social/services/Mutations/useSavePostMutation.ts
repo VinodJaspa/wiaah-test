@@ -3,7 +3,7 @@ import { Exact, Mutation, Scalars } from "@features/API";
 import { useMutation } from "react-query";
 
 export type SavePostMutationVariables = Exact<{
-  postId: Scalars["String"];
+  postId: Scalars["String"]["input"];
 }>;
 
 export type SavePostMutation = { __typename?: "Mutation" } & Pick<
