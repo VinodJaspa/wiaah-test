@@ -32,6 +32,8 @@ import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { ActionType } from "@features/API";
+import { getRandomImage } from "placeholder";
 
 const MAX_UPLOAD_LIMIT = 5;
 
@@ -47,8 +49,10 @@ export const NewPostView: React.FC = () => {
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof mutate>[0]
   >({
-    src: "",
-    cover: "",
+    srcUploadId: "55",
+    allowedActions: [ActionType.Duet],
+    thumbnailUploadId: getRandomImage(),
+    coverUploadId: "",
   });
 
   const { mutate } = useCreateActionMutation();
@@ -77,7 +81,7 @@ export const NewPostView: React.FC = () => {
     }
   }, [isOpen]);
 
-  function cleanUpStates() {}
+  function cleanUpStates() { }
 
   const vidTypes = ["mp4", "mov"];
   const imgTypes = ["jpeg", "jpg", "png"];
@@ -148,6 +152,8 @@ export const NewPostView: React.FC = () => {
               <div className="flex flex-col gap-1">
                 <p>{t("Link")}</p>
                 <ProductMultiSelect
+                  onChange={() => { }}
+                  value={["fake value"]}
                   placeholder={t("You can add a wiaah product link only")}
                 />
               </div>
@@ -169,38 +175,38 @@ export const NewPostView: React.FC = () => {
                     >
                       {media
                         ? Array.from(media!).map((v) => (
-                            <div className="relative w-full h-full">
-                              <Image
-                                className="w-full h-full object-cover"
-                                src={URL.createObjectURL(v)}
-                              />
-                              <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
-                                <HStack>
-                                  <Button
-                                    colorScheme="danger"
-                                    center
-                                    className="p-2"
-                                  >
-                                    <TrashIcon />
-                                  </Button>
-                                </HStack>
-                              </div>
+                          <div className="relative w-full h-full">
+                            <Image
+                              className="w-full h-full object-cover"
+                              src={URL.createObjectURL(v)}
+                            />
+                            <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
+                              <HStack>
+                                <Button
+                                  colorScheme="danger"
+                                  center
+                                  className="p-2"
+                                >
+                                  <TrashIcon />
+                                </Button>
+                              </HStack>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : null}
                     </Slider>
                   </AspectRatio>
                   <div className="flex gap-4 justify-center w-full">
                     {media
                       ? mapArray(Array.from(media!), (v, i) => (
-                          <Radio
-                            className="cursor-pointer scale-125"
-                            checked={imageIdx === i}
-                            onChange={(v) =>
-                              v.target.checked ? setImageIdx(i) : null
-                            }
-                          />
-                        ))
+                        <Radio
+                          className="cursor-pointer scale-125"
+                          checked={imageIdx === i}
+                          onChange={(v) =>
+                            v.target.checked ? setImageIdx(i) : null
+                          }
+                        />
+                      ))
                       : null}
                   </div>
                 </div>
@@ -227,7 +233,10 @@ export const NewPostView: React.FC = () => {
                             onFinish={(data) => {
                               if (data.size > MAX_ACTION_SIZE) return;
                               setActionVidBlob(data);
-                              handleChange("video", URL.createObjectURL(data));
+                              handleChange(
+                                "srcUploadId",
+                                URL.createObjectURL(data)
+                              );
                               setStep(1);
                             }}
                           />
@@ -286,7 +295,8 @@ export const NewPostView: React.FC = () => {
                             <div className="flex flex-col gap-1">
                               <p>{t("Cover")}</p>
 
-                              {form.video && form.video.length > 0 ? (
+                              {form.srcUploadId &&
+                                form.srcUploadId.length > 0 ? (
                                 <VideoFlattenFrames
                                   videoEverySec={1}
                                   onFrameSelected={(v, idx) => {
@@ -328,7 +338,7 @@ export const NewPostView: React.FC = () => {
                                       />
                                     </div>
                                   )}
-                                  videoSrc={form.video}
+                                  videoSrc={form.srcUploadId}
                                 />
                               ) : null}
                             </div>
@@ -452,12 +462,33 @@ export const ProductMultiSelect: React.FC<{
         onKeyDown={(e) => {
           e.code === "Enter" ? addProduct(searchValue) : "";
         }}
-        components={mapArray(prods || [], ({ tag }, i) => ({
-          name: `#${tag}`,
-          comp: <p>#{tag}</p>,
-          value: tag,
-        }))}
+        components={ComponentsPlaceHolder}
       />
     </div>
   );
 };
+
+const ComponentsPlaceHolder: {
+  name: string;
+  value?: string;
+  comp: React.ReactElement;
+}[] = [
+    {
+      name: "ButtonComponent",
+      value: "ClickMe",
+      comp: <button>Click Me</button>,
+    },
+    {
+      name: "InputComponent",
+      comp: <input placeholder="Enter text" />,
+    },
+    {
+      name: "ParagraphComponent",
+      value: "Lorem ipsum",
+      comp: <p>Lorem ipsum dolor sit amet.</p>,
+    },
+    {
+      name: "HeaderComponent",
+      comp: <h1>Header</h1>,
+    },
+  ];
