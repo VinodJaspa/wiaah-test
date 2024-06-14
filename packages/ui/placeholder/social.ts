@@ -21,6 +21,8 @@ import {
   ProductUsageStatus,
   VisibilityEnum,
   Discount,
+  StoryType,
+  ProfileReachedGender,
 } from "@features/API";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
@@ -120,11 +122,12 @@ import {
 } from "@features/API";
 import {
   GetAccountSettingsQueryQuery,
+  GetProfileStoryQuery,
   ServicePostData,
   SocialAffiliationCardProps,
   SocialShopPostcardProps,
 } from "..";
-import { StoreType } from "@features/API/gql/generated";
+import { StoreType, Story } from "@features/API/";
 import { DiscountUnits } from "@UI/../validation";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
@@ -1290,7 +1293,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
 ];
 
-export const ServicePostData: ServicePostData[] = [
+export const ServicePostDataPlaceholder: ServicePostData[] = [
   {
     profileInfo: {
       id: "user123",
@@ -1459,4 +1462,31 @@ export const GetProfileQueryPlaceholder: GetAccountSettingsQueryQuery = {
   getProfileDetails: placeholderProfileDetails,
   getUserRawShop: placeholderUserRawShop,
   getUserAccount: placeholderUserAccount,
+};
+
+export const GetUserSocialStoryPlaceHolder: Story = {
+  id: "1",
+  content: "This is a sample story content.",
+  createdAt: "2024-06-01T12:00:00Z",
+  publisherId: "123",
+  reactionsNum: 10,
+  type: StoryType.Base,
+  updatedAt: "2024-06-10T12:00:00Z",
+  viewsCount: 150,
+  views: [
+    {
+      createdAt: "2024-06-02T12:00:00Z",
+      gender: ProfileReachedGender.Male,
+      id: "1",
+      storyId: "1",
+      viewerId: "viewer1",
+    },
+    {
+      createdAt: "2024-06-03T14:00:00Z",
+      gender: ProfileReachedGender.Female,
+      id: "2",
+      storyId: "1",
+      viewerId: "viewer2",
+    },
+  ],
 };

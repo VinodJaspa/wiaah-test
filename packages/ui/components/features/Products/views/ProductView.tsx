@@ -3,6 +3,7 @@ import { useGetProductDetailsQuery } from "../services";
 import { useMutateShoppingCart, useResponsive } from "@src/index";
 import { SectionHeader } from "@sections/ShoppingManagement";
 import { useTranslation } from "react-i18next";
+import { PorductDetailsPlaceHolder } from "placeholder";
 import {
   AspectRatioImage,
   HStack,
@@ -22,6 +23,7 @@ import {
   ProductViewRight,
   SellerCard,
 } from "@blocks";
+import { ProductGalleryItem } from "@UI/../types/src";
 
 const breadcrumb = [
   {
@@ -101,9 +103,10 @@ const productComments = [
 ];
 
 export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
-  const { data } = useGetProductDetailsQuery({ id: productId });
+  //WARNING: This graphql is not working right now
+  const { data: _data } = useGetProductDetailsQuery({ id: productId });
   const [productImgIdx, setProductIdx] = useState<number>(0);
-
+  const data = React.useMemo(() => PorductDetailsPlaceHolder, []);
   const { addShoppingCartItem } = useMutateShoppingCart();
   const { handleChange, form } = useForm<
     Parameters<typeof addShoppingCartItem>[0]
