@@ -1,5 +1,6 @@
 import { useDateDiff } from "@UI/../hooks";
 import {
+  GetSocialPostQuery,
   useGetMyProfileQuery,
   useGetSocialPostQuery,
   useLikeContent,
@@ -32,8 +33,18 @@ import { ContentHostType, PostType } from "@features/API";
 import { getRandomImage } from "@UI/placeholder";
 import { useRouting } from "routing";
 
-export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
-  const { data } = useGetSocialPostQuery({ id: postId });
+export const SocialPostDetails: React.FC<{
+  postId: string;
+  data: GetSocialPostQuery["getSocialPostById"];
+}> = ({ postId, data }) => {
+  //Warning: this graphql enpoint query is not ready yet,
+  //Warning: This graphql is not the sutable endpoint query for this compoennt
+  const { data: _data } = useGetSocialPostQuery({ id: postId });
+  // Added product to placeholder to be able to creat an attachment
+  const dataWithProduct = data && {
+    ...data,
+    product: { thumbnail: getRandomImage() },
+  };
   const { shareLink } = useSocialControls();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
@@ -54,65 +65,71 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
     testid?: string;
     onClick: () => void;
   }[] = [
-    {
-      icon: <HeartOutlineIcon {...setTestid("social-post-unliked-icon")} />,
-      activeIcon: <HeartFillIcon {...setTestid("social-post-liked-icon")} />,
-      testid: "social-post-like-btn",
-      isActive: !!data?.isLiked,
-      label: `${NumberShortner(data?.reactionNum || 0)}`,
-      onClick: () =>
-        myProfile?.id
-          ? mutate({
+      {
+        icon: <HeartOutlineIcon {...setTestid("social-post-unliked-icon")} />,
+        activeIcon: <HeartFillIcon {...setTestid("social-post-liked-icon")} />,
+        testid: "social-post-like-btn",
+        isActive: !!data?.isLiked,
+        label: `${NumberShortner(data?.reactionNum || 0)}`,
+        onClick: () =>
+          myProfile?.id
+            ? mutate({
               args: {
                 contentId: postId,
                 contentType: ContentHostType.PostNewsfeed,
               },
             })
-          : null,
-    },
-    {
-      icon: <CommentOutlineIcon />,
-      activeIcon: <CommentIcon />,
-      isActive: !!data?.isCommented,
-
-      label: `${NumberShortner(data?.comments || 0)}`,
-      onClick: () => {},
-    },
-    {
-      icon: <PaperPlaneAngleOutlineIcon />,
-      activeIcon: <PaperPlaneAngleIcon />,
-      isActive: false,
-      testid: "social-post-share-btn",
-      label: `${NumberShortner(data?.shares || 0)}`,
-      onClick: () => {
-        shareLink(getUrl((r) => r.visitSocialPost(postId)));
+            : null,
       },
-    },
-    {
-      icon: <SaveFlagOutlineIcon />,
-      activeIcon: <SaveFlagFIllIcon />,
-      isActive: !!data?.isSaved,
-      label: `${t("Save")}`,
-      onClick: () => savePost({ postId }),
-    },
-  ];
+      {
+        icon: <CommentOutlineIcon />,
+        activeIcon: <CommentIcon />,
+        isActive: !!data?.isCommented,
 
-  const attachments = (
-    data?.type === PostType.ShopPost
-      ? [data?.product?.thumbnail]
-      : data?.type === PostType.ServicePost
-      ? [data.service.thumbnail]
-      : data?.type === PostType.AffiliationPost
-      ? data.affiliation.itemType === "product"
-        ? [data.affiliation.product?.thumbnail]
-        : [data.affiliation.service?.thumbnail]
-      : data?.type === PostType.NewsfeedPost
-      ? [getRandomImage(), getRandomImage(), getRandomImage()]
-      : []
-  ) as string[];
+        label: `${NumberShortner(data?.comments || 0)}`,
+        onClick: () => { },
+      },
+      {
+        icon: <PaperPlaneAngleOutlineIcon />,
+        activeIcon: <PaperPlaneAngleIcon />,
+        isActive: false,
+        testid: "social-post-share-btn",
+        label: `${NumberShortner(data?.shares || 0)}`,
+        onClick: () => {
+          shareLink(getUrl((r) => r.visitSocialPost(postId)));
+        },
+      },
+      {
+        icon: <SaveFlagOutlineIcon />,
+        activeIcon: <SaveFlagFIllIcon />,
+        isActive: !!data?.isSaved,
+        label: `${t("Save")}`,
+        onClick: () => savePost({ postId }),
+      },
+    ];
+
+  // WARNING this is commented becuase we use placholders untill the server is ready
+  // const attachments = (
+  //   dataWithProduct?.type === PostType.ShopPost
+  //     ? [dataWithProduct?.product?.thumbnail]
+  //     : data?.type === PostType.ServicePost
+  //       ? [data. service.thumbnail]
+  //       : data?.type === PostType.AffiliationPost
+  //         ? data.affiliation.itemType === "product"
+  //           ? [data.affiliation.product?.thumbnail]
+  //           : [data.affiliation.service?.thumbnail]
+  //         : data?.type === PostType.NewsfeedPost
+  //           ? [getRandomImage(), getRandomImage(), getRandomImage()]
+  //           : []
+  // ) as string[];
+
+  const attachments = React.useMemo(
+    () => [getRandomImage(), getRandomImage()],
+    []
+  );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 md:w-3/4 w-full mx-auto">
       <div className="flex justify-between">
         <HStack>
           <Avatar
@@ -138,7 +155,7 @@ export const SocialPostDetails: React.FC<{ postId: string }> = ({ postId }) => {
           <HorizontalDotsIcon />
         </SocialPostOptionsDropdown>
       </div>
-
+      {/* WARNING: This getRandomIMage function is just a placeholder once the server is ready replace it*/}
       <SocialPostDetailsAttachmentsDisplay attachments={attachments} />
 
       <HStack className="justify-around py-2">
@@ -166,7 +183,7 @@ const SocialPostDetailsAttachmentsDisplay: React.FC<{
         <Slider gap={4} onSliderChange={(i) => setIdx(i)} currentItemIdx={idx}>
           {mapArray(attachments, (src, i) => (
             <div key={i} className="w-full">
-              <AspectRatio ratio={1.016304347826087}>
+              <AspectRatio ratio={1 / 2}>
                 <Image src={src} className="w-full h-full object-cover" />
               </AspectRatio>
             </div>
@@ -176,9 +193,8 @@ const SocialPostDetailsAttachmentsDisplay: React.FC<{
       <div className="flex gap-2 justify-center">
         {[...Array(attachments.length)].map((_, i) => (
           <div
-            className={`${
-              i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
-            } h-2 rounded-full`}
+            className={`${i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
+              } h-2 rounded-full`}
           />
         ))}
       </div>
