@@ -42,7 +42,7 @@ const NewsFeedPost: NextPage<NewsFeedPost> = () => {
   return (
     <>
       <Head>
-        <title>Seller | NewsFeed Post</title>
+        <title>Buyer | NewsFeed Post</title>
       </Head>
       <SellerLayout>
         <NewsFeedPostView postId={postId} />
