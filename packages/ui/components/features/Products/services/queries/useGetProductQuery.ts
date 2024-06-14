@@ -37,6 +37,7 @@ export type GetProductDetailsQuery = {
     }>;
     attributes: Array<{
       __typename?: "ProductAttribute";
+      id: string;
       displayType: ProductAttributeDisplayType;
       name: string;
       selectionType: ProductAttributeSelectionType;
@@ -72,6 +73,7 @@ export const getProductqueryDetailsQueryFetcher = async (args: args) => {
       },
       attributes: [
         {
+          id: "44",
           name: "Color",
           displayType: ProductAttributeDisplayType.Color,
           selectionType: ProductAttributeSelectionType.Single,
