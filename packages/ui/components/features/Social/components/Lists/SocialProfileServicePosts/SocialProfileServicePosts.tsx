@@ -3,7 +3,7 @@ import { useGetProfileServicePostQuery } from "@features/Social/services";
 import { ScrollPaginationWrapper } from "@partials";
 import React from "react";
 import { SocialServicePostsList } from "@features/Social";
-import { ServicePostData } from "ui/placeholder";
+import { ServicePostDataPlaceholder } from "ui/placeholder";
 
 export const SocialProfileServicePosts: React.FC<{
   userId: string;
@@ -14,7 +14,7 @@ export const SocialProfileServicePosts: React.FC<{
 
   return (
     <ScrollPaginationWrapper controls={controls}>
-      <SocialServicePostsList posts={ServicePostData} />
+      <SocialServicePostsList posts={ServicePostDataPlaceholder} />
     </ScrollPaginationWrapper>
   );
 };
