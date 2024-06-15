@@ -47,170 +47,172 @@ type ServiceInputData = {
 
 type CalenderFilterInputData = {
   placeholder: string;
-  component: (validate: (data: Record<string, any>) => any) => React.ReactNode;
+  component: React.ReactNode;
 };
 
 export const ServicesSearchView: React.FC = () => {
   const { t } = useTranslation();
 
-  const getCalenderFilter: (
-    service: ServicesType
-  ) => CalenderFilterInputData = (service) => {
+  const stepsPlaceholder = [
+    {
+      icon: <CalenderIcon />,
+      name: "Step 1: Completed",
+    },
+    {
+      icon: <CalenderIcon />,
+      name: "Step 2: Not Completed",
+    },
+    {
+      icon: <CalenderIcon />,
+      name: "Step 3: In Progress",
+    },
+    // Add more steps as needed
+  ];
+
+  const getCalenderFilter = (service) => {
     switch (service) {
       case "hotel":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return (
-              <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
-                <FormikInput<SearchInputProps>
-                  as={SearchInput}
-                  innerProps={{ className: "bg-white text-black h-12" }}
-                  label={t("Destination") + "/" + t("property name") + ":"}
-                  name="search_query"
-                />
-                <FormikInput<DateFormInputProps>
-                  as={DateFormInput}
-                  className={"bg-white h-12"}
-                  menuProps={{
-                    menuListProps: {
-                      className: "translate-x-full origin-top-left",
-                    },
-                  }}
-                  placeholder={t("Check-in") + " " + t("date")}
-                  label={t("Check-in") + " " + t("date") + ":"}
-                  name="check-in_date"
-                />
-                <FormikInput<DateFormInputProps>
-                  as={DateFormInput}
-                  menuProps={{
-                    menuListProps: {
-                      className: "translate-x-full origin-top-left",
-                    },
-                  }}
-                  placeholder={t("Check-out") + " " + t("date")}
-                  className={"bg-white h-12 "}
-                  label={t("Check-out") + " " + t("date") + ":"}
-                  name="check-out_date"
-                />
-              </div>
-            );
-          },
+          component: (
+            <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
+              <FormikInput<SearchInputProps>
+                as={SearchInput}
+                innerProps={{ className: "bg-white text-black h-12" }}
+                label={t("Destination") + "/" + t("property name") + ":"}
+                name="search_query"
+              />
+              <FormikInput<DateFormInputProps>
+                as={DateFormInput}
+                className={"bg-white h-12"}
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-in") + " " + t("date")}
+                label={t("Check-in") + " " + t("date") + ":"}
+                name="check-in_date"
+              />
+              <FormikInput<DateFormInputProps>
+                as={DateFormInput}
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-out") + " " + t("date")}
+                className={"bg-white h-12 "}
+                label={t("Check-out") + " " + t("date") + ":"}
+                name="check-out_date"
+              />
+            </div>
+          ),
         };
       case "holidays_rentals":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return (
-              <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
-                <FormikInput<SearchInputProps>
-                  as={SearchInput}
-                  innerProps={{ className: "bg-white text-black h-12" }}
-                  label={t("Destination") + "/" + t("property name") + ":"}
-                  name="search_query"
-                />
-                <FormikInput<DateFormInputProps>
-                  as={DateFormInput}
-                  className={"bg-white h-12"}
-                  menuProps={{
-                    menuListProps: {
-                      className: "translate-x-full origin-top-left",
-                    },
-                  }}
-                  placeholder={t("Check-in") + " " + t("date")}
-                  label={t("Check-in") + " " + t("date") + ":"}
-                  name="check-in_date"
-                />
-                <FormikInput<DateFormInputProps>
-                  as={DateFormInput}
-                  menuProps={{
-                    menuListProps: {
-                      className: "translate-x-full origin-top-left",
-                    },
-                  }}
-                  placeholder={t("Check-out") + " " + t("date")}
-                  className={"bg-white h-12 "}
-                  label={t("Check-out") + " " + t("date") + ":"}
-                  name="check-out_date"
-                />
-              </div>
-            );
-          },
+          component: (
+            <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
+              <FormikInput<SearchInputProps>
+                as={SearchInput}
+                innerProps={{ className: "bg-white text-black h-12" }}
+                label={t("Destination") + "/" + t("property name") + ":"}
+                name="search_query"
+              />
+              <FormikInput<DateFormInputProps>
+                as={DateFormInput}
+                className={"bg-white h-12"}
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-in") + " " + t("date")}
+                label={t("Check-in") + " " + t("date") + ":"}
+                name="check-in_date"
+              />
+              <FormikInput<DateFormInputProps>
+                as={DateFormInput}
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-out") + " " + t("date")}
+                className={"bg-white h-12 "}
+                label={t("Check-out") + " " + t("date") + ":"}
+                name="check-out_date"
+              />
+            </div>
+          ),
         };
       case "health_center":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return (
-              <Stepper>
-                {({ currentStepIdx, nextStep }) => (
-                  <>
-                    <StepperHeader>
-                      <ResturantFindTableFilterStepperHeader
-                        currentStepIdx={currentStepIdx}
-                        stepsLen={2}
-                      />
-                    </StepperHeader>
-                    <StepperContent>
-                      <DateInput
-                        className="w-[100%]"
-                        dayComponent={ResturantFindTableFilterDateDayComponent}
-                        onDaySelect={() => {
-                          nextStep();
-                        }}
-                      />
-                      <TimeInput
-                        timeRange={{
-                          from: { hour: 0, minutes: 0 },
-                          to: { hour: 24, minutes: 0 },
-                        }}
-                        timeComponent={ResturantReplacableTimeComponent}
-                      />
-                    </StepperContent>
-                  </>
-                )}
-              </Stepper>
-            );
-          },
+          component: (
+            <Stepper>
+              {({ currentStepIdx, nextStep }) => (
+                <>
+                  <StepperHeader>
+                    <ResturantFindTableFilterStepperHeader
+                      currentStepIdx={currentStepIdx}
+                      steps={stepsPlaceholder}
+                    />
+                  </StepperHeader>
+                  <StepperContent>
+                    <DateInput
+                      className="w-[100%]"
+                      dayComponent={ResturantFindTableFilterDateDayComponent}
+                      onDaySelect={() => {
+                        nextStep();
+                      }}
+                    />
+                    <TimeInput
+                      timeRange={{
+                        from: { hour: 0, minutes: 0 },
+                        to: { hour: 24, minutes: 0 },
+                      }}
+                      timeComponent={ResturantReplacableTimeComponent}
+                    />
+                  </StepperContent>
+                </>
+              )}
+            </Stepper>
+          ),
         };
       case "restaurant":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return <ResturantFindTableFilterStepper />;
-          },
+          component: <ResturantFindTableFilterStepper />,
         };
       case "vehicle":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return (
-              <div className="flex flex-col gap-2">
-                <DateAndTimeInput
-                  onDateChange={() => {}}
-                  dateLabel={t("Pick-up Date")}
-                />
-                <DateAndTimeInput
-                  onDateChange={() => {}}
-                  dateLabel={t("Return Date")}
-                />
-              </div>
-            );
-          },
+          component: (
+            <div className="flex flex-col gap-2">
+              <DateAndTimeInput
+                onDateChange={() => { }}
+                dateLabel={t("Pick-up Date")}
+              />
+              <DateAndTimeInput
+                onDateChange={() => { }}
+                dateLabel={t("Return Date")}
+              />
+            </div>
+          ),
         };
       case "beauty_center":
         return {
           placeholder: t("Select Booking Date"),
-          component(validate) {
-            return (
-              <ServiceBookingStepper
-                steps={[
-                  { name: "Date", icon: CalenderIcon, component: DateInput },
-                  { name: "time", icon: ClockIcon, component: TimeInput },
-                ]}
-              />
-            );
-          },
+          component: (
+            <ServiceBookingStepper
+              steps={[
+                { name: "Date", icon: CalenderIcon, component: DateInput },
+                { name: "time", icon: ClockIcon, component: TimeInput },
+              ]}
+            />
+          ),
         };
       default:
         break;
@@ -524,7 +526,7 @@ export const ServicesSearchView: React.FC = () => {
     <div className="flex flex-col gap-10 w-full">
       <Formik
         initialValues={{ serviceType: "hotel" } as any}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           const filters = getFilters(values["serviceType"]);
@@ -609,9 +611,7 @@ export const ServicesSearchView: React.FC = () => {
                     </InputGroup>
                   </MenuButton>
                   <MenuList origin="top left" className="p-4 left-0 ">
-                    {getCalenderFilter(values["serviceType"])?.component(
-                      console.log
-                    )}
+                    {getCalenderFilter("restaurant").component}
                   </MenuList>
                 </Menu>
                 {mapArray(filters, (filter, i) => {
