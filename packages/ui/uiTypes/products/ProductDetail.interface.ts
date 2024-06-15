@@ -1,4 +1,4 @@
-import { ProductTypes } from "types/market/Product";
+import { ProductType } from "@features/API";
 
 export interface ProductDetails {
   id: string;
@@ -7,7 +7,7 @@ export interface ProductDetails {
   oldPrice?: number;
   imgUrl: string;
   rating?: number;
-  type: ProductTypes;
+  type: string;
   off?: number;
   category?: string;
   saved?: boolean;
