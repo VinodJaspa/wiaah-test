@@ -3,7 +3,7 @@ import { Exact, NewsfeedPost, SavesCollection, Scalars } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetUserSavesCollectionsQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetUserSavesCollectionsQuery = { __typename?: "Query" } & {
@@ -12,15 +12,15 @@ export type GetUserSavesCollectionsQuery = { __typename?: "Query" } & {
       SavesCollection,
       "id" | "name"
     > & {
-        recentSaves: Array<
-          { __typename?: "UserSavedPost" } & {
-            post: { __typename?: "NewsfeedPost" } & Pick<
-              NewsfeedPost,
-              "thumbnail"
-            >;
-          }
-        >;
-      }
+      recentSaves: Array<
+        { __typename?: "UserSavedPost" } & {
+          post: { __typename?: "NewsfeedPost" } & Pick<
+            NewsfeedPost,
+            "thumbnail"
+          >;
+        }
+      >;
+    }
   >;
 };
 
