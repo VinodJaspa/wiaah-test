@@ -84,17 +84,15 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               </AccordionButton>
               <HStack className="gap-4">
                 <button
-                  className={`${
-                    isGrid ? "text-black" : "bg-primary text-white"
-                  } h-6 w-6 flex justify-center items-center`}
+                  className={`${isGrid ? "text-black" : "bg-primary text-white"
+                    } h-6 w-6 flex justify-center items-center`}
                   onClick={() => setIsGrid(false)}
                 >
                   <BoxIcon />
                 </button>
                 <button
-                  className={`${
-                    isGrid ? "bg-primary text-white" : "text-black"
-                  } h-6 w-6 flex justify-center items-center`}
+                  className={`${isGrid ? "bg-primary text-white" : "text-black"
+                    } h-6 w-6 flex justify-center items-center`}
                   onClick={() => setIsGrid(true)}
                 >
                   <FourBoxesIcon />
@@ -131,7 +129,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
                     symbolProps={{ className: "text-primary" }}
                   />
 
-                  <Button colorScheme="darkbrown" onClick={() => {}}>
+                  <Button colorScheme="darkbrown" onClick={() => { }}>
                     <ShoppingCartIcon className="text-white text-xl" />
                   </Button>
                 </HStack>
@@ -150,7 +148,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
     </div>
   ) : (
     <div className="flex flex-col gap-14 w-full">
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik initialValues={{}} onSubmit={() => { }}>
         {() => (
           <Form className="flex flex-col gap-7">
             <div className="flex gap-8">
@@ -176,7 +174,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
             <div className="grid grid-cols-6 gap-5">
               <FormikInput<StatusSelectInputProps>
                 name="status"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Status")}
                 options={[t("Available")]}
@@ -184,7 +182,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               />
               <FormikInput<BrandSelectInputProps>
                 name="brand"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Brand")}
                 options={[t("Nike")]}
@@ -192,7 +190,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               />
               <FormikInput<FilterSelectInputProps>
                 name="shipping"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Shipping")}
                 options={[t("Click & Collect")]}
@@ -200,7 +198,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               />
               <FormikInput<FilterSelectInputProps>
                 name="size"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Size")}
                 options={[t("Extra Large")]}
@@ -208,7 +206,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               />
               <FormikInput<FilterSelectInputProps>
                 name="rating"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Rating")}
                 options={[...Array(5)].map(
@@ -218,18 +216,18 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
               />
               <FormikInput
                 name="price"
-                onChange={() => {}}
+                onChange={() => { }}
                 value={""}
                 label={t("Price")}
                 as={() => (
                   <div className="flex gap-1">
                     <NumberInput
-                      onChange={() => {}}
+                      onChange={() => { }}
                       value={0}
                       placeholder="Min"
                     />
                     <NumberInput
-                      onChange={() => {}}
+                      onChange={() => { }}
                       value={0}
                       placeholder="Max"
                     />
