@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { dehydrate, QueryClient } from "react-query";
+import { dehydrate, DehydratedState, QueryClient } from "react-query";
 import { getSocialProfileData } from "api";
 import { SellerLayout, useGetSocialProfile } from "ui";
 import { SocialProfileView } from "ui";
@@ -28,6 +28,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
     return {
       props: {
         profileId: profileData.data.id,
+        username,
       },
       redirect: {
         destination: getRouting((r) => r.visitMyProfile()),
@@ -40,21 +41,21 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
+      dehydratedState: dehydrate(queryClient) as DehydratedState,
       username,
     },
   };
 };
 
 const profile: NextPage<ProfilePageProps> = ({ username }) => {
-  const { data } = useGetSocialProfile(username);
+  // const { data } = useGetSocialProfile(username);
   return (
     <>
       <Head>
-        <title>{data ? data.data.name : "Seller | profile"}</title>
+        <title>{"Seller | profile"}</title>
       </Head>
       <SellerLayout>
-        <SocialProfileView username={username} />
+        <SocialProfileView username={username || "name"} />
       </SellerLayout>
     </>
   );
