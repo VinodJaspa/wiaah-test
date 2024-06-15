@@ -131,7 +131,17 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
         <div className="flex gap-1 items-center justify-between">
           <div className="flex gap-1 text-xs text-iconGray">
             <LocationIcon className="text-primary text-base w-6" />
-            <LocationAddressDisplay {...location} />
+            <LocationAddressDisplay
+              location={{
+                city: location.city,
+                lat: location.lat,
+                lon: location.lon,
+                address: location.address,
+                state: location.state || "",
+                country: location.country,
+                postalCode: location.postalCode,
+              }}
+            />
           </div>
           <p className="underline whitespace-nowrap text-primary">
             {t("Show on map")}
