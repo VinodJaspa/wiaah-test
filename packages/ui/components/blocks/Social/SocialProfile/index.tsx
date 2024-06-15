@@ -37,6 +37,7 @@ import {
   StoreType,
 } from "@features/API";
 import { useRouting } from "@UI/../routing";
+import { TabsTabType, TabType } from "@UI/../types/src";
 
 export interface SocialProfileProps {
   profileInfo: Pick<
@@ -72,7 +73,7 @@ export interface SocialProfileProps {
   isFollowed: boolean;
   isPublic: ProfileVisibility;
   storeType: StoreType;
-  tabsSet?: any;
+  tabsSet?: TabType[];
 }
 
 export const SocialProfile: React.FC<SocialProfileProps> = ({
