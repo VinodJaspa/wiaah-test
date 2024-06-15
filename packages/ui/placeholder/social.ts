@@ -23,7 +23,33 @@ import {
   Discount,
   StoryType,
   ProfileReachedGender,
+  ProductAttributeDisplayType,
+  ProductAttributeSelectionType,
 } from "@features/API";
+
+import { products } from "./products";
+import { baseUri } from "uris";
+import { randomNum } from "../components/helpers/randomNumber";
+import {
+  ActiveStatus,
+  AffiliationStatus,
+  BusinessType,
+  CashbackType,
+  PresentationType,
+  RestaurantDishType,
+  ServiceType,
+  StoreFor,
+} from "@features/API";
+import {
+  GetAccountSettingsQueryQuery,
+  GetProductDetailsQuery,
+  GetProfileByIdQuery,
+  GetUserSavesCollectionsQuery,
+  GetProfileStoryQuery,
+  ServicePostData,
+  SocialAffiliationCardProps,
+  SocialShopPostcardProps,
+} from "..";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
@@ -107,26 +133,6 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   },
 ];
 
-import { products } from "./products";
-import { baseUri } from "uris";
-import { randomNum } from "../components/helpers/randomNumber";
-import {
-  ActiveStatus,
-  AffiliationStatus,
-  BusinessType,
-  CashbackType,
-  PresentationType,
-  RestaurantDishType,
-  ServiceType,
-  StoreFor,
-} from "@features/API";
-import {
-  GetAccountSettingsQueryQuery,
-  GetProfileStoryQuery,
-  ServicePostData,
-  SocialAffiliationCardProps,
-  SocialShopPostcardProps,
-} from "..";
 import { StoreType, Story } from "@features/API/";
 import { DiscountUnits } from "@UI/../validation";
 const images: string[] = [
@@ -1490,3 +1496,164 @@ export const GetUserSocialStoryPlaceHolder: Story = {
     },
   ],
 };
+
+export const PorductDetailsPlaceHolder: GetProductDetailsQuery["getProduct"] = {
+  id: "prod_123456",
+  price: 49.99,
+  title: "Sample Product",
+  seller: {
+    __typename: "Account",
+    profile: {
+      __typename: "Profile",
+      username: "seller123",
+      verified: true,
+      photo: getRandomImage(),
+    },
+  },
+  presentations: [
+    {
+      src: getRandomImage(),
+      type: PresentationType.Image,
+    },
+    {
+      src: getRandomImage(),
+
+      type: PresentationType.Image,
+    },
+    {
+      src: getRandomImage(),
+
+      type: PresentationType.Image,
+    },
+  ],
+  attributes: [
+    {
+      __typename: "ProductAttribute",
+      id: "2",
+      displayType: ProductAttributeDisplayType.Text,
+      name: "Color",
+      selectionType: ProductAttributeSelectionType.Single,
+      values: [
+        {
+          __typename: "ProductAttributeValue",
+          id: "attr_val_1",
+          price: 0,
+          name: "Red",
+          value: "red",
+        },
+        {
+          __typename: "ProductAttributeValue",
+          id: "attr_val_2",
+          price: 0,
+          name: "Blue",
+          value: "blue",
+        },
+      ],
+    },
+    {
+      __typename: "ProductAttribute",
+      id: "34",
+      displayType: ProductAttributeDisplayType.Text,
+      name: "Size",
+      selectionType: ProductAttributeSelectionType.Single,
+      values: [
+        {
+          __typename: "ProductAttributeValue",
+          id: "attr_val_3",
+          price: 5,
+          name: "Small",
+          value: "S",
+        },
+        {
+          __typename: "ProductAttributeValue",
+          id: "attr_val_4",
+          price: 5,
+          name: "Medium",
+          value: "M",
+        },
+        {
+          __typename: "ProductAttributeValue",
+          id: "attr_val_5",
+          price: 5,
+          name: "Large",
+          value: "L",
+        },
+      ],
+    },
+  ],
+};
+
+export const GetProfileByIdPlaceholder: GetProfileByIdQuery["getProfile"] = {
+  activeStatus: ActiveStatus.Active,
+  bio: "This is a sample bio",
+  createdAt: "2023-01-01T00:00:00Z",
+  followers: 123,
+  following: 456,
+  id: "profile-1",
+  lastActive: "2024-06-15T00:00:00Z",
+  ownerId: "owner-1",
+  photo: "http://example.com/photo.jpg",
+  profession: "Software Developer",
+  publications: 10,
+  updatedAt: "2024-06-15T00:00:00Z",
+  username: "sampleUser",
+  visibility: ProfileVisibility.Public,
+  verified: true,
+  user: {
+    id: "account-1",
+    verified: true,
+    accountType: AccountType.Mod,
+    shop: {
+      type: ServiceType.Hotel,
+      storeType: StoreType.Service,
+      id: "shop-1",
+    },
+  },
+  isFollowed: true,
+};
+
+export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
+  [
+    {
+      __typename: "SavesCollection",
+      id: "collection-1",
+      name: "Collection 1",
+      recentSaves: [
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: "http://example.com/thumbnail1.jpg",
+          },
+        },
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: "http://example.com/thumbnail2.jpg",
+          },
+        },
+      ],
+    },
+    {
+      __typename: "SavesCollection",
+      id: "collection-2",
+      name: "Collection 2",
+      recentSaves: [
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: "http://example.com/thumbnail3.jpg",
+          },
+        },
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: "http://example.com/thumbnail4.jpg",
+          },
+        },
+      ],
+    },
+  ];

@@ -28,23 +28,62 @@ import {
   useUserData,
   SocialProfileActionList,
   LockOutlineCircleIcon,
+  GetProfileByIdQuery,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { runIfFn } from "utils";
-import { AccountType, ProfileVisibility, StoreType } from "@features/API";
+import {
+  AccountType,
+  ActiveStatus,
+  ProfileVisibility,
+  ServiceType,
+  StoreType,
+} from "@features/API";
 import { useRouting } from "@UI/../routing";
 
 export interface SocialViewProps {
   username: string;
 }
 
+export const GetProfileByIdPlaceholder: GetProfileByIdQuery["getProfile"] = {
+  activeStatus: ActiveStatus.Idle,
+  bio: "This is a sample bio",
+  createdAt: "2023-01-01T00:00:00Z",
+  followers: 123,
+  following: 456,
+  id: "profile-1",
+  lastActive: "2024-06-15T00:00:00Z",
+  ownerId: "owner-1",
+  photo: "http://example.com/photo.jpg",
+  profession: "Software Developer",
+  publications: 10,
+  updatedAt: "2024-06-15T00:00:00Z",
+  username: "sampleUser",
+  visibility: ProfileVisibility.Public,
+  verified: true,
+  user: {
+    id: "account-1",
+    verified: true,
+    accountType: AccountType.Mod,
+    shop: {
+      type: ServiceType.Hotel,
+      storeType: StoreType.Service,
+      id: "shop-1",
+    },
+  },
+  isFollowed: true,
+};
+
 export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
   const { t } = useTranslation();
+  //WARNING: graphql query is not ready yet
   const {
-    data: profileInfo,
+    data: _profileInfo,
     isLoading,
     isError,
   } = useGetSocialProfileQuery(username);
+
+  const profileInfo = GetProfileByIdPlaceholder;
 
   const { getParam, visit } = useRouting();
   const idx = getParam("tab");
@@ -66,37 +105,37 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
 
   const productsShop = profileInfo?.user?.shop?.storeType === StoreType.Product;
 
-  const tabs: { solid: React.ReactNode; outline: React.ReactNode }[] = [
-    { solid: NewsFeedIcon, outline: NewsFeedOutlineIcon },
+  const tabs: { name: React.ReactNode; component: React.ReactNode }[] = [
+    { name: NewsFeedIcon, component: NewsFeedOutlineIcon },
   ]
     .concat(
       showOn([AccountType.Seller])
         ? [
-            productsShop
-              ? {
-                  solid: ShoppingBagIcon,
-                  outline: ShoppingBagOutlineIcon,
-                }
-              : {
-                  solid: ServicesIcon,
-                  outline: ServicesOutlineIcon,
-                },
-            {
-              solid: AffiliationIcon,
-              outline: AffiliationIconOutline,
+          productsShop
+            ? {
+              name: ShoppingBagIcon,
+              component: ShoppingBagOutlineIcon,
+            }
+            : {
+              name: ServicesIcon,
+              component: ServicesOutlineIcon,
             },
-          ]
+          {
+            name: AffiliationIcon,
+            component: AffiliationIconOutline,
+          },
+        ]
         : []
     )
     .concat([
       {
-        solid: VideosPlayIcon,
-        outline: VideosOutlinePlayIcon,
+        name: VideosPlayIcon,
+        component: VideosOutlinePlayIcon,
       },
     ])
     .filter((v) => !!v);
 
-  const isPublic = profileInfo.visibility === ProfileVisibility.Public;
+  const isPublic = profileInfo.visibility && ProfileVisibility.Public;
 
   return (
     <div className="flex flex-col h-full">
@@ -104,9 +143,9 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
         <Container className="flex-grow flex-col flex gap-2">
           {profileInfo ? (
             <SocialProfile
+              tabsSet={tabs}
               profileInfo={{
                 ...profileInfo,
-                shopId: profileInfo.user?.shop?.id || "",
               }}
               storeType={
                 profileInfo?.user?.shop?.storeType || StoreType.Product
@@ -127,13 +166,12 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
                     <SimpleTabHead>
                       {tabs.map((v, i) => (
                         <div
-                          className={`${
-                            tabValue === i
+                          className={`${tabValue === i
                               ? "border-black"
                               : "border-transparent"
-                          } border-b-2 pb-2 px-4`}
+                            } border-b-2 pb-2 px-4`}
                         >
-                          {runIfFn(tabValue === i ? v.solid : v.outline)}
+                          {runIfFn(tabValue === i ? v.name : v.component)}
                         </div>
                       ))}
                     </SimpleTabHead>

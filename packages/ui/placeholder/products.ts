@@ -4,7 +4,7 @@ import {
   ProductAttributeSelectionType,
 } from "@features/API";
 import { CartSummaryItemData } from "types";
-import { GetProductDetailsQuery } from "..";
+
 import { ProductDetails } from "../uiTypes/products/ProductDetail.interface";
 import { getRandomImage } from "placeholder";
 
@@ -597,93 +597,3 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
 ];
-
-export const PorductDetailsPlaceHolder: GetProductDetailsQuery["getProduct"] = {
-  __typename: "Product",
-  id: "prod_123456",
-  price: 49.99,
-  title: "Sample Product",
-  seller: {
-    __typename: "Account",
-    profile: {
-      __typename: "Profile",
-      username: "seller123",
-      verified: true,
-      photo: getRandomImage(),
-    },
-  },
-  presentations: [
-    {
-      __typename: "ProductPresentation",
-      src: getRandomImage(),
-      type: PresentationType.Image,
-    },
-    {
-      __typename: "ProductPresentation",
-      src: getRandomImage(),
-
-      type: PresentationType.Image,
-    },
-    {
-      __typename: "ProductPresentation",
-      src: getRandomImage(),
-
-      type: PresentationType.Image,
-    },
-  ],
-  attributes: [
-    {
-      __typename: "ProductAttribute",
-      id: "2",
-      displayType: ProductAttributeDisplayType.Text,
-      name: "Color",
-      selectionType: ProductAttributeSelectionType.Single,
-      values: [
-        {
-          __typename: "ProductAttributeValue",
-          id: "attr_val_1",
-          price: 0,
-          name: "Red",
-          value: "red",
-        },
-        {
-          __typename: "ProductAttributeValue",
-          id: "attr_val_2",
-          price: 0,
-          name: "Blue",
-          value: "blue",
-        },
-      ],
-    },
-    {
-      __typename: "ProductAttribute",
-      id: "34",
-      displayType: ProductAttributeDisplayType.Text,
-      name: "Size",
-      selectionType: ProductAttributeSelectionType.Single,
-      values: [
-        {
-          __typename: "ProductAttributeValue",
-          id: "attr_val_3",
-          price: 5,
-          name: "Small",
-          value: "S",
-        },
-        {
-          __typename: "ProductAttributeValue",
-          id: "attr_val_4",
-          price: 5,
-          name: "Medium",
-          value: "M",
-        },
-        {
-          __typename: "ProductAttributeValue",
-          id: "attr_val_5",
-          price: 5,
-          name: "Large",
-          value: "L",
-        },
-      ],
-    },
-  ],
-};

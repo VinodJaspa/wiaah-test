@@ -5,26 +5,79 @@ import {
   SectionHeader,
   useGetUserSavedCollections,
   useGetMyAccountQuery,
+  GetUserSavesCollectionsQuery,
   AspectRatio,
   Image,
 } from "@UI";
 import { mapArray } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
+
+//Placeholder
+export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
+  [
+    {
+      __typename: "SavesCollection",
+      id: "collection-1",
+      name: "Collection 1",
+      recentSaves: [
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: getRandomImage(),
+          },
+        },
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: getRandomImage(),
+          },
+        },
+      ],
+    },
+    {
+      __typename: "SavesCollection",
+      id: "collection-2",
+      name: "Collection 2",
+      recentSaves: [
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: getRandomImage(),
+          },
+        },
+        {
+          __typename: "UserSavedPost",
+          post: {
+            __typename: "NewsfeedPost",
+            thumbnail: getRandomImage(),
+          },
+        },
+      ],
+    },
+  ];
 
 export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();
 
-  const { data: account } = useGetMyAccountQuery();
-  const { data } = useGetUserSavedCollections(
-    { userId: account?.id! },
-    { enabled: !!account?.id }
+  // WARNING: this graqphql query is not working right now so it has been replaced with placeholder once the graphql is ready replace it back
+  const { data: _account } = useGetMyAccountQuery();
+  const { data: _data } = useGetUserSavedCollections(
+    { userId: _account?.id! },
+    { enabled: !!_account?.id }
   );
-
+  const data = GetUserSavedCollectionPlaceholder;
   return (
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
-      <div className="grid grid-cols-2 md:grid-cols-3">
+      <div className="flex gap-8 justify-center">
         {mapArray(data, (collection, i) => (
-          <div key={collection.id + i} className="flex fle-col gap-2">
+          <div
+            key={collection.id + i}
+            className="flex flex-col gap-2 items-center w-1/3"
+          >
             <AspectRatio ratio={1}>
               {collection.recentSaves.length === 4 ? (
                 <div className="grid grid-col-2">
@@ -43,7 +96,7 @@ export const SavedPostsSection: React.FC = () => {
                 />
               )}
             </AspectRatio>
-            <p>{collection.name}</p>
+            <p className="font-medium ">{collection.name}</p>
           </div>
         ))}
       </div>
