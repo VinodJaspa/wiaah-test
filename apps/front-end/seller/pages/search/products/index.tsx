@@ -8,7 +8,7 @@ const ProductSearchPage: NextPage = () => {
     <>
       <MetaTitle content={`Product search`} />
       <SellerLayout>
-        <ProductSearchView />
+        <ProductSearchView searchSlug="" />
       </SellerLayout>
     </>
   );
