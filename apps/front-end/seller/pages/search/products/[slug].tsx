@@ -3,7 +3,7 @@ import { SellerLayout } from "@blocks";
 import React from "react";
 import { useRouting } from "routing";
 
-const productSearch = () => {
+const ProductSearch = () => {
   const { getParam } = useRouting();
 
   const slug = getParam("slug");
@@ -17,4 +17,4 @@ const productSearch = () => {
   );
 };
 
-export default productSearch;
+export default ProductSearch;
