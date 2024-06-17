@@ -21,17 +21,23 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { VehicleMyServiceDataType } from "api";
+type VehicleServiceDetailsViewProps = {
+  vehicleData: any;
+};
 
-export const VehicleServiceDetailsView: React.FC = () => {
+export const VehicleServiceDetailsView: React.FC<
+  VehicleServiceDetailsViewProps
+> = ({ vehicleData }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
-
-  const {
-    data: res,
-    isError,
-    isLoading,
-  } = useGetVehicleProviderDetailsQuery({ id });
-
+  //WARNING: grqphql endpoint query is not
+  // const {
+  //   data: _res,
+  //   isError,
+  //   isLoading,
+  // } = useGetVehicleProviderDetailsQuery({ id });
+  const res = vehicleData;
   const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
@@ -40,7 +46,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Description",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <div className="flex flex-col gap-8">
                   <VehicleServiceDescriptionSection
@@ -58,7 +64,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Contact",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceReachOutSection
@@ -74,7 +80,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Policies",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServicePoliciesSection
@@ -90,7 +96,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Working hours",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
@@ -104,7 +110,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Vehicles",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? <VehiclesSelectableList vehicles={res.vehicles} /> : null}
             </SpinnerFallback>
           ),
@@ -112,7 +118,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Localization",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceOnMapLocalizationSection location={res.location} />
@@ -124,7 +130,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {
           name: "Customer reviews",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceDetailsReviewsSection
@@ -171,24 +177,19 @@ export const VehicleServiceDetailsView: React.FC = () => {
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
             reviewsCount={res.totalReviews}
             serviceTitle={res.serviceMetaInfo.title}
-            travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={() => {
           return (
-            <ServiceReservastionForm
-              sellerId={""}
-              selectedServicesIds={[]}
-              serviceId={""}
-            />
+            <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
           );
         }}
       >
@@ -203,9 +204,8 @@ export const VehicleServiceDetailsView: React.FC = () => {
                     <TabTitle TabKey={i}>
                       {({ currentActive }) => (
                         <p
-                          className={`${
-                            currentActive ? "text-primary" : "text-lightBlack"
-                          } font-bold text-sm`}
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
                         >
                           {t(tab.name)}
                         </p>
