@@ -9,9 +9,9 @@ import {
   EllipsisText,
   SocialServicePostAttachment,
   Slider,
-  ServicePost,
   Service,
 } from "@UI";
+import { ServicePost } from "@features/API";
 
 type Post = Pick<ServicePost, "id" | "comments" | "reactionNum"> & {
   service: Pick<Service, "presentation" | "title" | "hashtags">;
@@ -40,12 +40,12 @@ export const SocialServicePostDetailsCard: React.FC<
         <Slider>
           {Array.isArray(post.service.presentation)
             ? post.service.presentation.map((att) => (
-                <SocialServicePostAttachment
-                  id={post.id}
-                  alt={post.service.title}
-                  attachments={att}
-                />
-              ))
+              <SocialServicePostAttachment
+                id={post.id}
+                alt={post.service.title}
+                attachments={att}
+              />
+            ))
             : null}
         </Slider>
       </AspectRatio>
