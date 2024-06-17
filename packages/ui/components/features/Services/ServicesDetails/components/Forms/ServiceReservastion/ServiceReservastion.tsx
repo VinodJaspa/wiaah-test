@@ -22,9 +22,66 @@ import {
   Image,
   WorkingDaysCalender,
   useGetBookingCostQuery,
+  GetBookingCostQuery,
 } from "@UI";
-import { isDate, useForm } from "utils";
-import { Service, ServiceType } from "@features/API";
+import { isDate, randomNum, useForm } from "utils";
+import { RestaurantDishType, Service, ServiceType } from "@features/API";
+
+const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
+  total: 500.0,
+  subTotal: 450.0,
+  vatAmount: 50.0,
+  vatPercent: 0.1,
+  services: [
+    {
+      qty: 2,
+      service: {
+        id: "service123",
+        thumbnail: "https://example.com/thumbnails/service.jpg",
+        type: ServiceType.Restaurant,
+        name: "Deluxe Room",
+        num_of_rooms: 1,
+        beds: 2,
+        bathrooms: 1,
+        menuType: RestaurantDishType.Main,
+        price: 200.0,
+        extras: [
+          {
+            cost: 50.0,
+            name: "Extra Bed",
+            id: "extra1",
+          },
+          {
+            cost: 20.0,
+            name: "Late Checkout",
+            id: "extra2",
+          },
+        ],
+      },
+    },
+    {
+      qty: 1,
+      service: {
+        id: "service124",
+        thumbnail: "https://example.com/thumbnails/service2.jpg",
+        type: ServiceType.Hotel,
+        name: "Suite",
+        num_of_rooms: 1,
+        beds: 1,
+        bathrooms: 1,
+        menuType: RestaurantDishType.Main,
+        price: 300.0,
+        extras: [
+          {
+            cost: 30.0,
+            name: "Airport Pickup",
+            id: "extra3",
+          },
+        ],
+      },
+    },
+  ],
+};
 
 export const ServiceReservastionForm: React.FC<{
   sellerId: string;
@@ -32,7 +89,15 @@ export const ServiceReservastionForm: React.FC<{
 }> = ({ selectedServicesIds, sellerId }) => {
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof mutate>[0]
-  >({});
+  >({
+    checkin: "2024-07-01T15:00:00Z",
+    checkout: "2024-07-05T11:00:00Z",
+    dishsIds: "dish1",
+    extrasIds: "extra1",
+    guests: 2,
+    serviceId: "service123",
+    treatmentsIds: "treatment1",
+  });
 
   const { mutate } = useBookServiceMutation();
 
@@ -52,14 +117,17 @@ export const ServiceReservastionForm: React.FC<{
     checkoutDate: "",
     extrasIds: [],
   });
-  const { data: costData } = useGetBookingCostQuery(bookingForm, {
+
+  const { data: _costData } = useGetBookingCostQuery(bookingForm, {
     enabled:
       selectedServicesIds &&
       selectedServicesIds.length > 0 &&
       isDate(bookingForm.checkinDate),
   });
 
-  const services = costData?.services.map((v) => v.service) || [];
+  const costData = FAKE_BOOKING_COST_DATA;
+
+  const services = costData?.services.map((v) => v.service);
 
   const service = Array.isArray(services) ? services[0] : ({} as Service);
 
@@ -78,28 +146,21 @@ export const ServiceReservastionForm: React.FC<{
     const menu = acc.find((v) => v.menuName === curr.menuType);
 
     if (menu) {
-      return acc
-        .filter((v) => v.menuName !== curr.menuType)
-        .concat([
-          {
-            menuName: curr.menuType || "",
-            dishs: [...(menu?.dishs || []), menu],
-          },
-        ]);
+      menu.dishs.push(curr);
     } else {
-      return acc.concat([
-        {
-          menuName: curr.menuType || "",
-          dishs: [...(menu?.dishs || []), curr],
-        },
-      ]);
+      acc.push({
+        menuName: curr.menuType || "",
+        dishs: [curr],
+      });
     }
+
+    return acc;
   }, [] as { menuName: string; dishs: typeof services }[]);
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
   return (
-    <div className="pl-4 flex flex-col max-h-screen overflow-y-scroll thinScroll gap-[1.875rem]">
+    <div className="pl-4 flex flex-col max-h-screen overflow-y-scroll thinScroll gap-[1.875rem] h-fit">
       <div
         style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.2)" }}
         className="pt-5 pb-10 flex flex-col gap-4 p-4 rounded-[1.25rem]"
@@ -160,9 +221,9 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Vehicle,
                       ])
                         ? {
-                            icon: <CalenderIcon />,
-                            name: t("Date"),
-                          }
+                          icon: <CalenderIcon />,
+                          name: t("Date"),
+                        }
                         : undefined,
                       showOn([
                         ServiceType.Restaurant,
@@ -177,9 +238,9 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Restaurant,
                       ])
                         ? {
-                            icon: <PersonIcon />,
-                            name: t("Guests"),
-                          }
+                          icon: <PersonIcon />,
+                          name: t("Guests"),
+                        }
                         : undefined,
                     ].filter((v) => !!v) as any
                   }
@@ -188,6 +249,113 @@ export const ServiceReservastionForm: React.FC<{
                   {showOn([ServiceType.HealthCenter]) ? (
                     <div className="mx-4">
                       <WorkingDaysCalender
+                        takenDates={[
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                        ]}
                         workingDates={[
                           {
                             date: new Date().toString(),
@@ -379,7 +547,7 @@ export const ServiceReservastionForm: React.FC<{
                         name: e.name,
                         thumbnail: e.thumbnail,
                         price: e.price,
-                        ingredints: e.ingredients,
+                        ingredints: ["ingredints"],
                         qty: v.dishs.filter((d) => d.id === e.id).length,
                       })),
                     })) || []
