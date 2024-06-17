@@ -58,6 +58,9 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import {
+  HealthCenterDoctorAvailablityStatus,
+  RentalPropertyType,
+  RentalTypeOfPlace,
   RestaurantDishType,
   Service,
   ServiceAdaptation,
@@ -69,16 +72,231 @@ import {
 import { mapArray, runIfFn } from "@UI/../utils/src";
 import { ImCheckmark } from "react-icons/im";
 import { startCase } from "lodash";
+import { getRandomImage } from "placeholder";
+
+const FAEK_SERVICE_DATA = {
+  cursor: "placeholderCursor",
+  hasMore: true,
+  data: [
+    {
+      id: "service1",
+      name: "Placeholder Service 1",
+      reviews: 10,
+      rating: 4.5,
+      thumbnail: getRandomImage(),
+      price: 100,
+      beds: 2,
+      bathrooms: 1,
+      brand: "Placeholder Brand",
+      model: "Model XYZ",
+      speciality: "Placeholder Speciality",
+      createdAt: "2023-01-01T00:00:00Z",
+      num_of_rooms: 3,
+      type: ServiceType.Hotel,
+      menuType: RestaurantDishType.Main,
+      treatmentCategory: "Category A",
+      ingredients: ["Placeholder", "ingredients"],
+      description: "Placeholder description",
+      seats: 4,
+      windows: 2,
+      gpsAvailable: true,
+      airCondition: true,
+      lugaggeCapacity: 2,
+      maxSpeedInKm: 180,
+      includedAmenities: ["WiFi", "TV", "Kitchen"],
+      adaptedFor: [ServiceAdaptation.Children],
+      treatmentCategoryId: "category1",
+      sellerId: "seller1",
+      duration: 2,
+      cleaningFee: 20,
+      cancelable: true,
+      cancelationPolicy: ServiceCancelationType.Simple,
+      restriction: [ServiceRestriction.Pets],
+      propertyType: RentalPropertyType.Flat,
+      typeOfPlace: RentalTypeOfPlace.Entire,
+      doctor: {
+        availablityStatus: HealthCenterDoctorAvailablityStatus.Available,
+        description: "Experienced cardiologist with over 10 years of practice.",
+        healthCenterId: "healthCenter123",
+        id: "doctor1",
+        name: "Dr. John Doe",
+        price: 150,
+        rating: 4.8,
+        specialityId: "speciality123",
+        thumbnail: getRandomImage(),
+        speciality: {
+          id: "3",
+          description:
+            "Cardiology is a branch of medicine that deals with disorders of the heart.",
+          name: "Cardiology",
+        },
+      },
+      extras: [
+        { id: "3", cost: 10, name: "Extra Service 1" },
+        { id: "4", cost: 15, name: "Extra Service 2" },
+      ],
+      measurements: {
+        inFeet: 1000,
+        inMeter: 300,
+      },
+      discount: { units: 10, value: 5 },
+    },
+    {
+      id: "service2",
+      name: "Placeholder Service 2",
+      reviews: 5,
+      rating: 4.0,
+      thumbnail: getRandomImage(),
+      price: 80,
+      beds: 1,
+      bathrooms: 1,
+      brand: "Another Brand",
+      model: "Model ABC",
+      speciality: "Another Speciality",
+      createdAt: "2023-02-01T00:00:00Z",
+      num_of_rooms: 1,
+      type: ServiceType.Restaurant,
+      menuType: RestaurantDishType.Main,
+      treatmentCategory: "Category B",
+      ingredients: ["Another", "set of ingredients"],
+      description: "Another description",
+      seats: 2,
+      windows: 1,
+      gpsAvailable: false,
+      airCondition: false,
+      lugaggeCapacity: 1,
+      maxSpeedInKm: 150,
+      includedAmenities: ["WiFI", "Parking"],
+      adaptedFor: [ServiceAdaptation.Children],
+      treatmentCategoryId: "category2",
+      sellerId: "seller2",
+      duration: 1.5,
+      cleaningFee: 15,
+      cancelable: true,
+      cancelationPolicy: ServiceCancelationType.Simple,
+      restriction: [ServiceRestriction.Smoking],
+      propertyType: RentalPropertyType.House,
+      typeOfPlace: RentalTypeOfPlace.Entire,
+
+      doctor: {
+        availablityStatus: HealthCenterDoctorAvailablityStatus.Available,
+        description: "Experienced cardiologist with over 10 years of practice.",
+        healthCenterId: "healthCenter123",
+        id: "doctor1",
+        name: "Dr. John Doe",
+        price: 150,
+        rating: 4.8,
+        specialityId: "speciality123",
+        thumbnail: getRandomImage(),
+        speciality: {
+          description:
+            "Cardiology is a branch of medicine that deals with disorders of the heart.",
+          id: "speciality123",
+          name: "Cardiology",
+        },
+      },
+      extras: [
+        {
+          id: "1",
+          cost: 8,
+          name: "Additional Service A",
+        },
+        {
+          id: "2",
+          cost: 12,
+          name: "Additional Service B",
+        },
+      ],
+      measurements: {
+        inFeet: 800,
+        inMeter: 250,
+      },
+      discount: { units: 5, value: 3 },
+    },
+  ],
+};
+const FAKE_USER_SHOP_DATA = {
+  banner: getRandomImage(),
+  businessType: "Retail",
+  images: [getRandomImage(), getRandomImage(), getRandomImage()],
+  videos: ["https://example.com/video1.mp4", "https://example.com/video2.mp4"],
+  createdAt: "2023-01-01T00:00:00Z",
+  description: "This is a placeholder shop description.",
+  email: "shop@example.com",
+  id: "shop1",
+  ownerId: "owner1",
+  name: "Placeholder Shop",
+  phone: "+123456789",
+  rating: 4.7,
+  reviews: 100,
+  thumbnail: getRandomImage(),
+  type: ServiceType.Hotel,
+  storeType: "Fashion",
+  verified: true,
+  sellerProfile: {
+    photo: getRandomImage(),
+    username: "shopowner123",
+    ownerId: "owner1",
+    id: "profile1",
+  },
+  location: {
+    address: "123 Placeholder St",
+    city: "Placeholder City",
+    country: "Placeholder Country",
+    lat: 12.345678,
+    lon: 98.765432,
+    postalCode: 12345,
+    state: "Placeholder State",
+    countryCode: "PL",
+  },
+  workingSchedule: {
+    __typename: "WorkingSchedule",
+    id: "schedule1",
+    weekdays: {
+      fr: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      mo: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      sa: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      su: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      th: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      tu: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+      we: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00", "18:00"],
+      },
+    },
+  },
+};
 
 export const ServiceDetailsView: React.FC<{
   id: string;
 }> = ({ id: userId }) => {
   const { isMobile } = useResponsive();
   const { bookServices } = useSocialControls();
-  const { data: shop } = useGetShopDetailsQuery(userId);
+
+  // WARNING: graphql is not working right yet
+  const { data: _shop } = useGetShopDetailsQuery(userId);
 
   const { changeTotalItems, controls, pagination } = usePaginationControls();
-  const { data: services, isLoading: sericesIsLoading } =
+  // WARNING: graphql is not working right yet
+  const { data: _services, isLoading: _sericesIsLoading } =
     useGetUserServicesQuery(userId, pagination);
 
   const [serviceId, setServiceId] = React.useState<string>("test");
@@ -90,32 +308,27 @@ export const ServiceDetailsView: React.FC<{
   const isLoading = false;
 
   const { t } = useTranslation();
+  const shop = FAKE_USER_SHOP_DATA;
 
   const serviceType = shop?.type || ServiceType.Hotel;
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
+  const services = FAEK_SERVICE_DATA;
 
-  const formatedDishs = services?.data?.reduce((acc, curr) => {
+  const formatedDishs = FAEK_SERVICE_DATA.data.reduce((acc, curr) => {
     const menu = acc.find((v) => v.menuName === curr.menuType);
 
     if (menu) {
-      return acc
-        .filter((v) => v.menuName !== curr.menuType)
-        .concat([
-          {
-            menuName: curr.menuType || "",
-            dishs: [...(menu?.dishs || []), menu],
-          },
-        ]) as unknown as any;
+      menu.dishs.push(curr);
     } else {
-      return acc.concat([
-        {
-          menuName: curr.menuType || "",
-          dishs: [curr],
-        },
-      ]);
+      acc.push({
+        menuName: curr.menuType || "",
+        dishs: [curr],
+      });
     }
-  }, [] as { menuName: string; dishs: (typeof services)["data"] }[]);
+
+    return acc;
+  }, [] as { menuName: string; dishs: typeof services.data }[]);
 
   return isMobile ? (
     <div className="flex flex-col overflow-x-hidden gap-6 pb-12 p-4 w-full font-sf">
@@ -197,7 +410,7 @@ export const ServiceDetailsView: React.FC<{
             <div className="pt-4">
               <ServiceReachOutSection
                 email={shop?.email!}
-                location={shop?.location!}
+                location={shop.location}
                 telephone={shop?.phone!}
               />
             </div>
@@ -743,9 +956,9 @@ export const ServiceDetailsView: React.FC<{
         data={
           shop
             ? shop.images.map((v) => ({
-                src: v,
-                type: ServicePresentationType.Img,
-              })) || []
+              src: v,
+              type: ServicePresentationType.Img,
+            })) || []
             : []
         }
       />
@@ -755,7 +968,7 @@ export const ServiceDetailsView: React.FC<{
             rating={shop.rating}
             reviewsCount={shop.reviews}
             serviceTitle={shop.name}
-            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -812,11 +1025,11 @@ export const ServiceDetailsView: React.FC<{
                 <div className="flex flex-col gap-8">
                   <ServicesProviderDescriptionSection
                     description={shop.description}
-                    // bathrooms={2}
-                    // bedrooms={3}
-                    // bikes={3}
-                    // cars={2}
-                    // pets={1}
+                  // bathrooms={2}
+                  // bedrooms={3}
+                  // bikes={3}
+                  // cars={2}
+                  // pets={1}
                   />
                 </div>
               ) : null}
@@ -869,7 +1082,7 @@ export const ServiceDetailsView: React.FC<{
                 />
               ) : null}
             </SpinnerFallback>
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               <>
                 {showOn([ServiceType.Hotel]) ? (
                   <HotelServiceRoomsSection
@@ -1088,11 +1301,11 @@ export const ServiceDetailsView: React.FC<{
                                             ServiceType.HealthCenter,
                                           ].includes(room.type)
                                             ? t(
-                                                "if you cancel within 5 hours of the schduled date, 50% of the reservation price will taken"
-                                              )
+                                              "if you cancel within 5 hours of the schduled date, 50% of the reservation price will taken"
+                                            )
                                             : t(
-                                                "if you cancel within 30 days of the schduled date, 50% of the reservation price will taken"
-                                              );
+                                              "if you cancel within 30 days of the schduled date, 50% of the reservation price will taken"
+                                            );
                                       }
                                     })()}
                                   </>
@@ -1193,7 +1406,7 @@ export const ServiceDetailsView: React.FC<{
                 ) : null}
                 {showOn([ServiceType.Restaurant]) ? (
                   <ResturantMenuList
-                    onMenuListChange={() => {}}
+                    onMenuListChange={() => { }}
                     menu={
                       (formatedDishs?.map((v) => ({
                         name: v.menuName,
@@ -1209,15 +1422,7 @@ export const ServiceDetailsView: React.FC<{
                 ) : null}
                 {showOn([ServiceType.HealthCenter]) ? (
                   <HealthCenterDoctorsList
-                    doctors={mapArray(services?.data || [], (v) => ({
-                      description: v.description,
-                      name: v.name,
-                      price: v.price,
-                      rating: v.rating,
-                      id: v.id,
-                      thumbnail: v.thumbnail,
-                      speciality: v.speciality || "",
-                    }))}
+                    doctors={mapArray(services.data, (v) => v.doctor)}
                     cancelation={[]}
                   />
                 ) : null}
@@ -1293,6 +1498,41 @@ export const ServiceDetailsView: React.FC<{
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {shop ? <>{/* TODO: BIND SERVICE RATING */}</> : null}
             </SpinnerFallback>
+
+            <SpinnerFallback isLoading={false}>
+              <ServiceDetailsReviewsSection
+                overAllRating={5}
+                ratingLevels={[
+                  {
+                    rate: 4.9,
+                    name: "Amenities",
+                  },
+                  {
+                    name: "Communication",
+                    rate: 5,
+                  },
+                  {
+                    name: "Value for Money",
+                    rate: 5,
+                  },
+                  {
+                    name: "Hygiene",
+                    rate: 5,
+                  },
+                  {
+                    name: "Location of Property",
+                    rate: 5,
+                  },
+                ]}
+                reviews={[...Array(6)].map((_, i) => ({
+                  name: "John Doberman",
+                  content:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  thumbnail: `/profile (${i + 1}).jfif`,
+                  date: new Date().toString(),
+                }))}
+              />
+            </SpinnerFallback>
           </SimpleTabItemList>
         </SimpleTabs>
       </StaticSideBarWrapper>
@@ -1306,9 +1546,8 @@ const ServiceDetailsTabHead: React.FC<{
 }> = ({ title, selected, ...rest }) => (
   <p
     {...rest}
-    className={`${
-      selected ? "text-primary border-b" : ""
-    } font-semibold px-4 py-1 cursor-pointer hover:border-b border-primary`}
+    className={`${selected ? "text-primary border-b" : ""
+      } font-semibold px-4 py-1 cursor-pointer hover:border-b border-primary`}
   >
     {title}
   </p>
@@ -1330,23 +1569,23 @@ export const ServiceDetailsFacilities: React.FC<{
     ServiceType.HolidayRentals,
   ])
     ? [
-        {
-          icon: BedOutlineIcon,
-          label: `${v.beds || 0} ${t("Bedrooms")}`,
-        },
-        {
-          icon: BathtubOutlineIcon,
-          label: `${v.bathrooms || 0} ${t("Bathrooms")}`,
-        },
-        {
-          icon: WifiOutlineIcon,
-          label: `${t("24h WIFI")}`,
-        },
-        {
-          icon: CarOutlineIcon,
-          label: `${t("3 Cars 24h")}`,
-        },
-      ]
+      {
+        icon: BedOutlineIcon,
+        label: `${v.beds || 0} ${t("Bedrooms")}`,
+      },
+      {
+        icon: BathtubOutlineIcon,
+        label: `${v.bathrooms || 0} ${t("Bathrooms")}`,
+      },
+      {
+        icon: WifiOutlineIcon,
+        label: `${t("24h WIFI")}`,
+      },
+      {
+        icon: CarOutlineIcon,
+        label: `${t("3 Cars 24h")}`,
+      },
+    ]
     : [];
 
   return (
@@ -1397,11 +1636,11 @@ export const ServiceDetailsCancelationSwitcher: React.FC<{
               ServiceType.HealthCenter,
             ].includes(serviceType)
               ? t(
-                  "if you cancel within 5 hours of the schduled date, 50% of the reservation price will taken"
-                )
+                "if you cancel within 5 hours of the schduled date, 50% of the reservation price will taken"
+              )
               : t(
-                  "if you cancel within 30 days of the schduled date, 50% of the reservation price will taken"
-                );
+                "if you cancel within 30 days of the schduled date, 50% of the reservation price will taken"
+              );
         }
       })()}
     </>
