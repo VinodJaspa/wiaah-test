@@ -25,16 +25,164 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { getRandomImage } from "placeholder";
+import { ServicePresentationType } from "@features/API";
+
+const FAKE_RESTAURANT_DETAILS_DATA = {
+  cuisinesTypeId: 1,
+  establishmentTypeId: 2,
+  highest_price: 100.0,
+  id: "rest123",
+  lowest_price: 20.0,
+  michelin_guide_stars: 2,
+  ownerId: "owner456",
+  payment_methods: ["credit_card", "cash", "mobile_payment"],
+  setting_and_ambianceId: 3,
+  status: "open",
+  vat: 0.08,
+  location: {
+    address: "123 Food Street",
+    city: "Gourmet City",
+    country: "Foodland",
+    lat: 40.7128,
+    lon: -74.006,
+    postalCode: 12345,
+    state: "Delicious",
+  },
+  menus: [
+    {
+      id: "menu1",
+      name: "Lunch Menu",
+      dishs: [
+        {
+          id: "dish1",
+          ingredients: ["chicken", "rice", "spices"],
+          price: 25.0,
+          name: "Chicken Rice",
+          thumbnail: getRandomImage(),
+        },
+        {
+          id: "dish2",
+          ingredients: ["beef", "noodles", "vegetables"],
+          price: 30.0,
+          name: "Beef Noodles",
+          thumbnail: getRandomImage(),
+        },
+      ],
+    },
+    {
+      id: "menu2",
+      name: "Dinner Menu",
+      dishs: [
+        {
+          id: "dish3",
+          ingredients: ["fish", "potatoes", "herbs"],
+          price: 35.0,
+          name: "Herb Fish",
+          thumbnail: getRandomImage(),
+        },
+        {
+          id: "dish4",
+          ingredients: ["pasta", "tomato", "cheese"],
+          price: 28.0,
+          name: "Tomato Pasta",
+          thumbnail: getRandomImage(),
+        },
+      ],
+    },
+  ],
+  policies: [
+    {
+      policyTitle: "No Smoking",
+      terms: ["Smoking is not allowed inside the restaurant."],
+    },
+    {
+      policyTitle: "Pet Friendly",
+      terms: ["Pets are allowed in the outdoor seating area."],
+    },
+  ],
+  presentations: [
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+  ],
+  serviceMetaInfo: {
+    description:
+      "A fine dining restaurant offering a variety of gourmet dishes.",
+    hashtags: ["#gourmet", "#finedining", "#restaurant"],
+    metaTagDescription: "Enjoy gourmet dishes at our fine dining restaurant.",
+    title: "Gourmet Restaurant",
+    metaTagKeywords: ["gourmet", "fine dining", "restaurant"],
+  },
+  contact: {
+    address: "123 Food Street",
+    city: "Gourmet City",
+    country: "Foodland",
+    email: "contact@gourmetrestaurant.com",
+    phone: "+1234567890",
+    state: "Delicious",
+  },
+  cancelationPolicies: [
+    {
+      cost: 10.0,
+      duration: 24,
+    },
+    {
+      cost: 20.0,
+      duration: 24,
+    },
+  ],
+  owner: {
+    firstName: "John",
+    lastName: "Doe",
+    id: "owner456",
+    photo: getRandomImage(),
+    verified: true,
+  },
+  workingHours: {
+    id: "workingHours123",
+    weekdays: {
+      fr: {
+        periods: ["18:00", "22:00"],
+      },
+      mo: {
+        periods: ["18:00", "22:00"],
+      },
+      sa: {
+        periods: ["18:00", "23:00"],
+      },
+      su: {
+        periods: ["12:00", "15:00"],
+      },
+      th: {
+        periods: ["18:00", "22:00"],
+      },
+      tu: {
+        periods: ["18:00", "22:00"],
+      },
+      we: {
+        periods: ["18:00", "22:00"],
+      },
+    },
+  },
+};
 
 export const RestaurantDetailsView: React.FC = () => {
   const { getParam } = useRouting();
   const id = getParam("id");
   const {
-    data: res,
-    isError,
-    isLoading,
+    data: _res,
+    isError: _isError,
+    isLoading: _isLoading,
   } = useGetRestaurantServiceDetailsDataQuery(id);
   const { t } = useTranslation();
+
+  const res = FAKE_RESTAURANT_DETAILS_DATA;
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
@@ -42,7 +190,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Description",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <div className="flex flex-col gap-8">
                   <RestaurantDetailsDescriptionSection
@@ -56,7 +204,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Contact",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceReachOutSection
@@ -72,7 +220,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Policies",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServicePoliciesSection
@@ -87,11 +235,11 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Working hours",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={Object.values(res?.workingHours || {}) || []}
+                    workingDays={Object.values(res?.workingHours.weekdays)}
                   />
                 </>
               ) : null}
@@ -101,7 +249,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Menus",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <ResturantMenuListSection
                   cancelation={res?.cancelationPolicies || []}
@@ -114,7 +262,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Localization",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceOnMapLocalizationSection location={res?.location} />
@@ -126,7 +274,7 @@ export const RestaurantDetailsView: React.FC = () => {
         {
           name: "Customer reviews",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceDetailsReviewsSection
@@ -175,6 +323,7 @@ export const RestaurantDetailsView: React.FC = () => {
       <div className="flex w-full items-center justify-between shadow p-4">
         <div className="flex gap-4">
           <Image
+            alt="avetar"
             className="w-28 h-20 rounded-xl object-cover"
             src={
               res
@@ -203,13 +352,13 @@ export const RestaurantDetailsView: React.FC = () => {
       </div>
       <Divider />
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={4.5}
             reviewsCount={15}
             serviceTitle={res.serviceMetaInfo.title}
-            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -219,7 +368,7 @@ export const RestaurantDetailsView: React.FC = () => {
             <ServiceReservastionForm
               sellerId={""}
               selectedServicesIds={[]}
-              serviceId={""}
+            // serviceId={""}
             />
           );
         }}
@@ -235,9 +384,8 @@ export const RestaurantDetailsView: React.FC = () => {
                     <TabTitle TabKey={i}>
                       {({ currentActive }) => (
                         <p
-                          className={`${
-                            currentActive ? "text-primary" : "text-lightBlack"
-                          } font-bold text-sm`}
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
                         >
                           {t(tab.name)}
                         </p>
