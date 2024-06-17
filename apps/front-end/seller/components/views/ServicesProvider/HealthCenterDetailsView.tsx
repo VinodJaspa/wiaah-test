@@ -21,14 +21,184 @@ import {
   LocationOnPointFillIcon,
   Button,
   Divider,
+  ServiceReservastionForm,
 } from "ui";
+import { getRandomImage } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { HealthCenterDoctorAvailablityStatus } from "api";
+import { ServicePresentationType } from "@features/API";
+
+const FAKE_HEALTH_CENTER_DATA = {
+  id: "hc123",
+  ownerId: "owner789",
+  payment_methods: ["credit_card", "cash", "insurance"],
+  rating: 4.5,
+  status: "open",
+  totalReviews: 120,
+  vat: 0.08,
+  cancelationPolicies: [
+    {
+      cost: 50.0,
+      duration: 24,
+    },
+    {
+      cost: 100.0,
+      duration: 12,
+    },
+  ],
+  contact: {
+    address: "456 Health Ave",
+    city: "MediCity",
+    country: "Healthland",
+    email: "contact@healthcenter.com",
+    phone: "+9876543210",
+    state: "Healthy",
+  },
+  doctors: [
+    {
+      availablityStatus: HealthCenterDoctorAvailablityStatus.Available,
+      description: "Expert in cardiology with 20 years of experience.",
+      healthCenterId: "hc123",
+      id: "doc1",
+      name: "Dr. Heart",
+      price: 200.0,
+      rating: 4.8,
+      specialityId: "spec1",
+      thumbnail: "https://example.com/thumbnails/doctor1.jpg",
+      speciality: {
+        description: "Cardiology specialty",
+        id: "spec1",
+        name: "Cardiology",
+      },
+    },
+    {
+      availablityStatus: HealthCenterDoctorAvailablityStatus.Unavailable,
+      description: "Renowned neurologist with a focus on brain health.",
+      healthCenterId: "hc123",
+      id: "doc2",
+      name: "Dr. Brain",
+      price: 250.0,
+      rating: 4.7,
+      specialityId: "spec2",
+      thumbnail: "https://example.com/thumbnails/doctor2.jpg",
+      speciality: {
+        description: "Neurology specialty",
+        id: "spec2",
+        name: "Neurology",
+      },
+    },
+  ],
+  location: {
+    address: "456 Health Ave",
+    city: "MediCity",
+    country: "Healthland",
+    lat: 34.0522,
+    lon: -118.2437,
+    postalCode: 67890,
+    state: "Healthy",
+  },
+  owner: {
+    id: "owner789",
+    firstName: "Alice",
+    lastName: "Smith",
+    email: "alice@healthcenter.com",
+    photo: "https://example.com/photos/alice.jpg",
+    verified: true,
+  },
+  policies: [
+    {
+      policyTitle: "No Smoking",
+      terms: ["Smoking is prohibited in all areas of the health center."],
+    },
+    {
+      policyTitle: "Masks Required",
+      terms: ["All visitors must wear masks inside the health center."],
+    },
+  ],
+  presentations: [
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+  ],
+  serviceMetaInfo: {
+    description:
+      "A state-of-the-art health center offering a wide range of medical services.",
+    hashtags: ["#healthcenter", "#medical", "#wellness"],
+    metaTagDescription:
+      "Discover top-notch healthcare at our state-of-the-art health center.",
+    metaTagKeywords: ["health center", "medical services", "wellness"],
+    title: "State-of-the-Art Health Center",
+  },
+  workingSchedule: {
+    id: "schedule1",
+    weekdays: {
+      fr: {
+        periods: ["09:00", "17:00"],
+      },
+      mo: {
+        periods: ["09:00", "17:00"],
+      },
+      sa: {
+        periods: ["10:00", "14:00"],
+      },
+      su: {
+        periods: ["10:00", "14:00"],
+      },
+      th: {
+        periods: ["09:00", "17:00"],
+      },
+      tu: {
+        periods: ["09:00", "17:00"],
+      },
+      we: {
+        periods: ["09:00", "17:00"],
+      },
+    },
+  },
+  takenSchedule: {
+    id: "schedule2",
+    weekdays: {
+      fr: {
+        periods: ["13:00", "17:00"],
+      },
+      mo: {
+        periods: ["13:00", "17:00"],
+      },
+      sa: {
+        periods: ["10:00", "12:00"],
+      },
+      su: {
+        periods: [],
+      },
+      th: {
+        periods: ["13:00", "17:00"],
+      },
+      tu: {
+        periods: ["13:00", "17:00"],
+      },
+      we: {
+        periods: ["13:00", "17:00"],
+      },
+    },
+  },
+};
 
 export const HealthCenterDetailsView: React.FC = () => {
   const { getParam } = useRouting();
   const id = getParam("id");
-  const { data: res, isError, isLoading } = useGetHealthCenterDetailsQuery(id);
+  // WARNING: grqphql is not ready yet once it's ready remove the placeholder
+  const {
+    data: _res,
+    isError: _isError,
+    isLoading: _isLoading,
+  } = useGetHealthCenterDetailsQuery(id);
+  const res = FAKE_HEALTH_CENTER_DATA;
 
   const { t } = useTranslation();
 
@@ -38,7 +208,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Description",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <div className="flex flex-col gap-8">
                   <RestaurantDetailsDescriptionSection
@@ -52,7 +222,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Contact",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceReachOutSection
@@ -68,7 +238,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Policies",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServicePoliciesSection
@@ -83,11 +253,13 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Working hours",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={Object.values(res.workingHours) || []}
+                    workingDays={
+                      Object.values(res.workingSchedule.weekdays) || []
+                    }
                   />
                 </>
               ) : null}
@@ -97,7 +269,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Doctors",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <HealthCenterDoctorsList
                   cancelation={res.cancelationPolicies || []}
@@ -110,7 +282,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Localization",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceOnMapLocalizationSection location={res.location} />
@@ -122,7 +294,7 @@ export const HealthCenterDetailsView: React.FC = () => {
         {
           name: "Customer reviews",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceDetailsReviewsSection
@@ -171,6 +343,7 @@ export const HealthCenterDetailsView: React.FC = () => {
       <div className="flex w-full items-center justify-between shadow p-4">
         <div className="flex gap-4">
           <Image
+            alt="avetar"
             className="w-28 h-20 rounded-xl object-cover"
             src={
               res
@@ -199,68 +372,26 @@ export const HealthCenterDetailsView: React.FC = () => {
       </div>
       <Divider />
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
             reviewsCount={156}
             serviceTitle={res.serviceMetaInfo.title}
-            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={
-          <WorkingDaysCalender
-            workingDates={[
-              {
-                date: new Date().toString(),
-                workingHoursRanges: [
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                ],
-              },
-              {
-                date: new Date().toString(),
-                workingHoursRanges: [
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                ],
-              },
-              {
-                date: new Date().toString(),
-                workingHoursRanges: [
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                ],
-              },
-              {
-                date: new Date().toString(),
-                workingHoursRanges: [
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                ],
-              },
-              {
-                date: new Date().toString(),
-                workingHoursRanges: [
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                  { from: new Date().toString(), to: new Date().toString() },
-                ],
-              },
-            ]}
-          />
-        }
+        sidebar={() => {
+          return (
+            <ServiceReservastionForm
+              sellerId={""}
+              selectedServicesIds={[]}
+            // serviceId={""}
+            />
+          );
+        }}
       >
         <Tabs>
           {({ currentTabIdx }) => {
@@ -273,9 +404,8 @@ export const HealthCenterDetailsView: React.FC = () => {
                     <TabTitle TabKey={i}>
                       {({ currentActive }) => (
                         <p
-                          className={`${
-                            currentActive ? "text-primary" : "text-lightBlack"
-                          } font-bold text-sm`}
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
                         >
                           {t(tab.name)}
                         </p>
