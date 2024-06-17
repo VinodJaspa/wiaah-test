@@ -1,4 +1,5 @@
 import { Form, Formik } from "formik";
+import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
@@ -69,7 +70,15 @@ export const ServicesSearchView: React.FC = () => {
     // Add more steps as needed
   ];
 
-  const getCalenderFilter = (service) => {
+  type Services =
+    | "hotel"
+    | "holidays_rentals"
+    | "restaurant"
+    | "health_center"
+    | "vehicle"
+    | "beauty_center";
+
+  const getCalenderFilter = (service: Services) => {
     switch (service) {
       case "hotel":
         return {
@@ -735,7 +744,7 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
           price: 350,
           rating: 4.8,
           thumbnail:
-            "https://www.costablancadreams.eu/wp-content/uploads/2019/10/MONT09-450x300.jpg",
+            "https://www.europahotelbelfast.com/wp-content/uploads/2021/12/Shannon-Suite-5.jpg",
           title: "Well Furnished Apartment",
         },
         serviceType: "holidays_rentals",
@@ -831,7 +840,7 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
           price: [50, 500],
           rating: 4.8,
           thumbnail:
-            "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/Tacha+Beauty+Center-desktop.jpg",
+            "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
           title: "Beauty Haven",
         },
         serviceType: "beauty_center",
