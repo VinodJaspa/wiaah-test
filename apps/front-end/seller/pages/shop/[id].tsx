@@ -40,7 +40,10 @@ const ShopView: React.FC = () => {
 
   const id = getParam("id");
 
-  const { data: shop } = useGetShopDetailsQuery(id, { enabled: !!id });
+  const { data: _shop } = useGetShopDetailsQuery(id, { enabled: !!id });
+  const shop = {
+    storeType: StoreType.Service,
+  };
 
   return (
     <SellerLayout>
