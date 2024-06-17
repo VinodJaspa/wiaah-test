@@ -31,34 +31,28 @@ export type GetServicePostSuggestionsQuery = { __typename?: "Query" } & {
       | "views"
       | "serviceType"
     > & {
-        service: { __typename?: "Service" } & Pick<
-          Service,
-          | "id"
-          | "thumbnail"
-          | "hashtags"
-          | "serviceType"
-          | "price"
-          | "rating"
-          | "title"
+      service: { __typename?: "Service" } & Pick<
+        Service,
+        "id" | "thumbnail" | "type" | "price" | "title"
+      >;
+      location: { __typename?: "PostLocation" } & Pick<
+        PostLocation,
+        "address" | "city" | "country" | "state"
+      >;
+      user: { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<
+            Profile,
+            | "id"
+            | "username"
+            | "verified"
+            | "profession"
+            | "photo"
+            | "followers"
+          >
         >;
-        location: { __typename?: "PostLocation" } & Pick<
-          PostLocation,
-          "address" | "city" | "country" | "state"
-        >;
-        user: { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                | "id"
-                | "username"
-                | "verified"
-                | "profession"
-                | "photo"
-                | "followers"
-              >
-            >;
-          };
-      }
+      };
+    }
   >;
 };
 
