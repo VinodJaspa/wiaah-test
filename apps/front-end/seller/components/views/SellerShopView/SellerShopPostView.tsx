@@ -6,6 +6,7 @@ import {
 } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
+import { getRandomImage } from "placeholder";
 import {
   SocialStoryModal,
   SocialPostHeader,
@@ -13,6 +14,52 @@ import {
   ShopCardsListWrapper,
 } from "ui";
 import { useRouter } from "next/router";
+import { CashbackType, PresentationType } from "@features/API";
+import { Cashback } from "validation";
+const FAKE_SHOP_POST = {
+  postInfo: {
+    id: "post1",
+    comments: 25,
+    shares: 10,
+    reactionNum: 50,
+    userId: "user123",
+    createdAt: "2023-06-01T00:00:00Z",
+    product: {
+      id: "product1",
+      presentations: [
+        {
+          type: PresentationType.Image,
+          src: getRandomImage(),
+        },
+        {
+          type: PresentationType.Image,
+          src: getRandomImage(),
+        },
+      ],
+      title: "Placeholder Product",
+      hashtags: ["#placeholder", "#product"],
+      price: 29.99,
+      cashback: {
+        amount: 20,
+        id: "cashback1",
+        type: CashbackType.Cash,
+        units: 100,
+      },
+      discount: {
+        amount: 10,
+        id: "discount1",
+        units: 5,
+      },
+    },
+  },
+  profileInfo: {
+    id: "profile1",
+    verified: true,
+    photo: getRandomImage(),
+    username: "user123",
+    profession: "Software Developer",
+  },
+};
 
 export const SellerShopPostView: React.FC = () => {
   const { t } = useTranslation();
@@ -27,6 +74,7 @@ export const SellerShopPostView: React.FC = () => {
     }
   );
   const ShopPosts = ShopCardsInfoPlaceholder;
+  // WARNING: graphql is not ready yet
   const { data: _ShopPosts } = useQuery("shopPosts", () => {
     return ShopCardsInfoPlaceholder;
   });
@@ -39,7 +87,9 @@ export const SellerShopPostView: React.FC = () => {
         mb="6rem"
         align={"start"}
       >
-        <SocialStoryModal />
+        {/*
+        <SocialStoryModal profileId="4" />
+        */}
         <SocialPostHeader
           name={ShopPost.user.name}
           thumbnail={ShopPost.user.thumbnail}
@@ -56,7 +106,7 @@ export const SellerShopPostView: React.FC = () => {
         {t("view", "view")} {ShopPost.user.name}{" "}
         {t("other_posts", "other posts")}
       </Text>
-      <ShopCardsListWrapper cols={cols} items={ShopPosts} />
+      <ShopCardsListWrapper cols={cols} items={[FAKE_SHOP_POST]} />
       <Button
         _focus={{ ringColor: "primary.main" }}
         bgColor="white"
