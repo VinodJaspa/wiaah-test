@@ -24,27 +24,266 @@ import {
   ServiceRangeBookingCalander,
 } from "ui";
 import { useTranslation } from "react-i18next";
+import { getRandomImage } from "placeholder";
+import { ServiceAdaptation } from "@features/API";
+import { ServicePresentationType } from "api";
+
+const FAKE_HOTEL_DATA = {
+  __typename: "ServiceDetails",
+  createdAt: "2023-01-01T00:00:00Z",
+  cuisinesTypeId: "cuisine123",
+  establishmentTypeId: "establishment123",
+  highest_price: 100,
+  id: "service123",
+  lowest_price: 10,
+  michelin_guide_stars: 3,
+  ownerId: "owner123",
+  payment_methods: ["Credit Card", "Paypal"],
+  setting_and_ambianceId: "ambiance123",
+  type_of_seller: "individual",
+  updatedAt: "2023-06-01T00:00:00Z",
+  contact: {
+    __typename: "ServiceContact",
+    address: "123 Main St",
+    city: "Anytown",
+    country: "USA",
+    email: "contact@example.com",
+    phone: "+1234567890",
+    state: "NY",
+  },
+  workingHours: {
+    id: "schedule123",
+    weekdays: {
+      fr: {
+        periods: ["09:00", "17:00"],
+      },
+      mo: {
+        periods: ["09:00", "17:00"],
+      },
+      sa: {
+        periods: ["10:00", "14:00"],
+      },
+      su: {
+        periods: ["10:00", "14:00"],
+      },
+      th: {
+        periods: ["09:00", "17:00"],
+      },
+      tu: {
+        periods: ["09:00", "17:00"],
+      },
+      we: {
+        periods: ["09:00", "17:00"],
+      },
+    },
+  },
+  doctors: [
+    {
+      __typename: "Doctor",
+      availablityStatus: "Available",
+      description: "Experienced general physician.",
+      healthCenterId: "healthCenter123",
+      id: "doctor123",
+      name: "Dr. John Doe",
+      price: 100,
+      rating: 4.8,
+      thumbnail: getRandomImage(),
+      specialityId: "speciality123",
+      speciality: {
+        __typename: "HealthCenterSpecialty",
+        description: "General Medicine",
+        id: "speciality123",
+        name: "General Medicine",
+      },
+    },
+  ],
+  location: {
+    address: "123 Main St",
+    city: "Anytown",
+    country: "USA",
+    lat: 40.7128,
+    lon: -74.006,
+    postalCode: 12345,
+    state: "NY",
+  },
+  menus: [
+    {
+      __typename: "RestaurantMenu",
+      id: "menu123",
+      name: "Main Menu",
+      dishs: [
+        {
+          __typename: "Dish",
+          id: "dish123",
+          ingredients: ["ingredient1", "ingredient2"],
+          name: "Dish Name",
+          price: 15,
+          thumbnail: getRandomImage(),
+        },
+      ],
+    },
+  ],
+  policies: [
+    {
+      __typename: "ServicePolicy",
+      policyTitle: "No Smoking",
+      terms: "Smoking is prohibited inside the premises.",
+    },
+  ],
+  presentations: [
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+  ],
+  rooms: {
+    bathrooms: 1,
+    beds: 2,
+    createdAt: "2023-01-01T00:00:00Z",
+    dailyPrice: true,
+    description: "Spacious room with a beautiful view.",
+    hotelId: "hotel123",
+    id: "room123",
+    includedAmenities: ["WiFi", "Air Conditioning"],
+    includedServices: ["Room Service", "Daily Housekeeping"],
+    num_of_rooms: 1,
+    pricePerNight: 150,
+    rating: 4.7,
+    updatedAt: "2023-06-01T00:00:00Z",
+    title: "Deluxe Room",
+    sellerId: "seller123",
+    reviews: 5,
+    adaptedFor: [ServiceAdaptation.Wheelchair],
+    thumbnail: getRandomImage(),
+    cancelationPolicies: [
+      {
+        cost: 20,
+        duration: 1,
+      },
+    ],
+    discount: {
+      units: 1,
+      value: 10,
+    },
+    dailyPrices: {
+      fr: 150,
+      mo: 130,
+      sa: 160,
+      su: 140,
+      th: 135,
+      tu: 130,
+      we: 130,
+    },
+    extras: [
+      {
+        cost: 20,
+        name: "Extra Bed",
+      },
+    ],
+    measurements: {
+      inFeet: 300,
+      inMeter: 27.87,
+    },
+    popularAmenities: [
+      {
+        label: "Free WiFi",
+        value: "",
+      },
+    ],
+    presentations: [
+      {
+        src: getRandomImage(),
+        type: ServicePresentationType.Img,
+      },
+    ],
+  },
+  serviceMetaInfo: {
+    __typename: "ServiceMetaInfo",
+    description: "Luxury hotel offering the best services.",
+    hashtags: ["#luxury", "#hotel"],
+    metaTagDescription: "Luxury hotel in the heart of the city.",
+    metaTagKeywords: ["hotel", "luxury", "service"],
+    title: "Luxury Hotel",
+  },
+  treatments: [
+    {
+      __typename: "Treatment",
+      beautyCenterServiceId: "beautyCenter123",
+      duration: "60 mins",
+      id: "treatment123",
+      price: 100,
+      thumbnail: getRandomImage(),
+      title: "Full Body Massage",
+      treatmentCategoryId: "category123",
+      category: {
+        __typename: "BeautyCenterTreatmentCategory",
+        createdAt: "2022-01-01T00:00:00Z",
+        createdById: "creator123",
+        id: "category123",
+        title: "Massage Therapy",
+      },
+      discount: {
+        __typename: "ServiceDiscount",
+        units: "percent",
+        value: 15,
+      },
+    },
+  ],
+  vehicles: [
+    {
+      __typename: "Vehicle",
+      brand: "Toyota",
+      id: "vehicle123",
+      model: "Camry",
+      price: 100,
+      title: "Toyota Camry",
+      cancelationPolicies: [
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 30,
+          duration: "12 hours",
+        },
+      ],
+      presentations: [
+        {
+          __typename: "ServicePresentation",
+          src: getRandomImage(),
+          type: "image",
+        },
+      ],
+      properties: {
+        __typename: "VehicleProperties",
+        airCondition: true,
+        gpsAvailable: true,
+        lugaggeCapacity: 3,
+        maxSpeedInKm: 200,
+        seats: 5,
+        windows: 4,
+      },
+    },
+  ],
+};
 
 export const HotelDetailsView: React.FC = () => {
-  const { data: res, isError, isLoading } = useGetServicesProviderQuery("");
+  //WARNING: grphql query endpoint is not ready yet
+  const {
+    data: _res,
+    isError: _isError,
+    isLoading: _isLoading,
+  } = useGetServicesProviderQuery("");
   const { t } = useTranslation();
-
+  const res = FAKE_HOTEL_DATA;
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
       () => [
         {
           name: "Description",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <div className="flex flex-col gap-8">
                   <ServicesProviderDescriptionSection
                     description={res.serviceMetaInfo.description}
-                    bathrooms={2}
-                    bedrooms={3}
-                    bikes={3}
-                    cars={2}
-                    pets={1}
                   />
                 </div>
               ) : null}
@@ -54,7 +293,7 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Contact",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceReachOutSection
@@ -70,7 +309,7 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Policies",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServicePoliciesSection
@@ -107,7 +346,7 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Working hours",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res && res.workingHours ? (
                 <>
                   <SellerServiceWorkingHoursSection
@@ -121,10 +360,10 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Rooms",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
-                  <HotelServiceRoomsSection rooms={res.rooms} />
+                  <HotelServiceRoomsSection rooms={[res.rooms]} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -133,7 +372,7 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Localization",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceOnMapLocalizationSection location={res.location} />
@@ -145,7 +384,7 @@ export const HotelDetailsView: React.FC = () => {
         {
           name: "Customer reviews",
           component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
                   <ServiceDetailsReviewsSection
@@ -194,6 +433,7 @@ export const HotelDetailsView: React.FC = () => {
       <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-between shadow p-4">
         <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
           <Image
+            alt="cover"
             className="w-40 h-28 sm:h-20 sm:w-28 rounded-xl object-cover"
             src={
               res
@@ -221,14 +461,14 @@ export const HotelDetailsView: React.FC = () => {
         </div>
       </div>
       <Divider />
-      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+      <ServicePresentationCarosuel data={res.presentations} />
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={15}
             reviewsCount={150}
             serviceTitle={"service title"}
-            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -238,7 +478,7 @@ export const HotelDetailsView: React.FC = () => {
             <ServiceRangeBookingCalander
               bookedDates={[]}
               date={new Date()}
-              onChange={() => {}}
+              onChange={() => { }}
               value={[]}
             />
           ) : null
@@ -254,9 +494,8 @@ export const HotelDetailsView: React.FC = () => {
                       <TabTitle TabKey={i}>
                         {({ currentActive }) => (
                           <p
-                            className={`${
-                              currentActive ? "text-primary" : "text-lightBlack"
-                            } font-bold text-sm`}
+                            className={`${currentActive ? "text-primary" : "text-lightBlack"
+                              } font-bold text-sm`}
                           >
                             {t(tab.name)}
                           </p>
