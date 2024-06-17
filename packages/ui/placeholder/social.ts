@@ -334,8 +334,8 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
   // views: 50,
   attachments: [
     {
-      type: "video",
-      src: "/video.mp4",
+      type: "image",
+      src: getRandomImage(),
     },
   ],
   comments: PostCardPlaceHolder.postInfo.comments || [],
@@ -1217,7 +1217,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     id: "2",
     attachments: [
       {
-        src: "/shop-2.jpeg",
+        src: getRandomImage(),
         type: "image",
       },
     ],
@@ -1234,7 +1234,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     id: "5",
     attachments: [
       {
-        src: "/shop.jpeg",
+        src: getRandomImage(),
         type: "image",
       },
     ],
@@ -1251,7 +1251,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     id: "3",
     attachments: [
       {
-        src: "/place-2.jpg",
+        src: getRandomImage(),
         type: "image",
       },
     ],
@@ -1285,7 +1285,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     id: "5",
     attachments: [
       {
-        src: "/place-3.jpg",
+        src: getRandomImage(),
         type: "image",
       },
     ],
