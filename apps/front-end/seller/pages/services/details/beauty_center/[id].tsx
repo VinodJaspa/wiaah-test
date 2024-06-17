@@ -18,12 +18,12 @@ import { ExtractParamFromQuery } from "utils";
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
 > = async ({ query }) => {
-  const id = ExtractParamFromQuery(query, "id");
+  const id = ExtractParamFromQuery(query, "id") as string;
   const client = new QueryClient();
 
   if (id) {
     client.prefetchQuery(getBeautyCenterDetailsDataQueryKey({ id }), () =>
-      getBeautyCenterDetailsDataFetcher({ id })
+      getBeautyCenterDetailsDataFetcher(id)
     );
   }
 
@@ -42,9 +42,8 @@ const RestaurantServiceDetailsPage: NextPage = () => {
   return (
     <>
       <MetaTitle
-        content={`${t("Beauty Center Details")} | ${
-          res ? res?.serviceMetaInfo?.title || "" : ""
-        }`}
+        content={`${t("Beauty Center Details")} | ${res ? res?.serviceMetaInfo?.title || "" : ""
+          }`}
       />
 
       <SellerLayout>

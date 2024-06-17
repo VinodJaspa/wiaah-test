@@ -16,13 +16,13 @@ import { RestaurantDetailsView } from "@components";
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
 > = async ({ query }) => {
-  const id = query["id"];
+  const id = query["id"] as string;
   const client = new QueryClient();
 
   if (id) {
     client.prefetchQuery(
-      getRestaurantServiceProviderDetailsDataQuerykey({ id }),
-      () => getResturantServiceDetialsData({ id })
+      getRestaurantServiceProviderDetailsDataQuerykey(id),
+      () => getResturantServiceDetialsData(id)
     );
   }
 
@@ -45,9 +45,8 @@ const RestaurantServiceDetailsPage: NextPage = () => {
   return (
     <>
       <MetaTitle
-        content={`${t("Restaurant Details")} | ${
-          res ? res?.owner?.firstName || "" : ""
-        }`}
+        content={`${t("Restaurant Details")} | ${res ? res?.owner?.firstName || "" : ""
+          }`}
       />
 
       <SellerLayout>
