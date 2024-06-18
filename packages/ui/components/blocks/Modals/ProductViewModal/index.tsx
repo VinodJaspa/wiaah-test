@@ -1,6 +1,5 @@
 import {
   useProductViewModal,
-  ProductView,
   ServiceView,
   Modal,
   ModalCloseButton,
@@ -8,15 +7,16 @@ import {
   ModalOverlay,
   ModalHeader,
 } from "@UI";
+import { ProductView } from "@UI/views/market/ProductView";
 import React from "react";
 
-export interface ProductViewModalProps {}
+export interface ProductViewModalProps { }
 
 export const ProductViewModal: React.FC<ProductViewModalProps> = () => {
   const { product, closeProduct } = useProductViewModal();
 
   return (
-    <Modal onOpen={() => {}} isOpen={!!product} onClose={closeProduct}>
+    <Modal onOpen={() => { }} isOpen={!!product} onClose={closeProduct}>
       <ModalOverlay />
       <ModalContent className="max-h-full max-w-[80%]">
         <ModalHeader title="">
