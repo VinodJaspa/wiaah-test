@@ -14,6 +14,7 @@ import { RoutingProvider } from "routing";
 import { NextRouter, useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
 import { useGraphqlRequestErrorCode } from "api";
+import { AccountType } from "types";
 
 const handleAutoRedirect = (route: string, router: NextRouter) => {
   const currRoute = router.route;
@@ -60,8 +61,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 client={new ReactPubsubClient()}
               >
                 <ReactSeoProvider TagWrapper={NextHead}>
+                  {/*@ts-ignore*/}
                   <RecoilRoot>
-                    <DataInitializationWrapper accountType="seller">
+                    <DataInitializationWrapper accountType={AccountType.Seller}>
                       <Component suppressHydrationWarning {...pageProps} />
                     </DataInitializationWrapper>
                   </RecoilRoot>
