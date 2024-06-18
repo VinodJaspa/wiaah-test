@@ -5,13 +5,13 @@ import {
   useTimer,
   CurrentStoryProgressState,
   PostAttachment,
-  StoryType,
   ActionPostStory,
   AffiliationPostStory,
   NewsFeedPostStory,
   ShopPostStory,
   ServicePostStory,
 } from "@UI";
+import { StoryType, AttachmentType } from "@features/API";
 
 export interface SocialStoryContentViewerProps {
   type: StoryType;
@@ -74,13 +74,12 @@ export const SocialStoryContentViewer: React.FC<
   return (
     <div
       className="flex flex-col items-center h-full w-full justify-center"
-      // maxW="container.md"
+    // maxW="container.md"
     >
       {text && (
         <p
-          className={`w-full text-center font-bold py-4 ${
-            type === "text" ? "text-3xl" : "text-lg"
-          }`}
+          className={`w-full text-center font-bold py-4 ${type === "text" ? "text-3xl" : "text-lg"
+            }`}
         >
           {text}
         </p>
