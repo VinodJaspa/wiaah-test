@@ -5,6 +5,7 @@ import {
   usePaginationControls,
   useStoryModal,
 } from "@blocks";
+import { useSocialControls } from "ui";
 import React from "react";
 import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
@@ -12,6 +13,50 @@ import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 import { useRouting } from "routing";
 import { PostType } from "@features/API";
+import { getRandomImage } from "placeholder";
+import { newsfeedPosts } from "@UI/placeholder";
+
+const FAKE_RECENT_STORIES_DATA = [
+  {
+    newStory: "Just finished reading an amazing book!",
+    userId: "user123",
+    user: {
+      id: "user123",
+      profile: {
+        id: "profile123",
+        photo: getRandomImage(),
+        profession: "Software Engineer",
+        username: "tech_guru",
+      },
+    },
+  },
+  {
+    newStory: "Exploring the beautiful landscapes of New Zealand.",
+    userId: "user456",
+    user: {
+      id: "user456",
+      profile: {
+        id: "profile456",
+        photo: getRandomImage(),
+        profession: "Travel Blogger",
+        username: "wanderlust_jane",
+      },
+    },
+  },
+  {
+    newStory: "Cooked a delicious homemade lasagna today.",
+    userId: "user789",
+    user: {
+      id: "user789",
+      profile: {
+        id: "profile789",
+        photo: getRandomImage(),
+        profession: "Chef",
+        username: "foodie_chef",
+      },
+    },
+  },
+];
 
 const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
@@ -19,19 +64,21 @@ const SocialNewsfeedView: React.FC = () => {
   const { open } = useStoryModal();
   const { visit } = useRouting();
 
-  // const { openpost } = useSocialControls();
+  const { openSocialNewPostModal } = useSocialControls();
 
   const { pagination: storiesPagination } = usePaginationControls();
-  const { data: recentStories } = useGetRecentStories({
+  const { data: _recentStories } = useGetRecentStories({
     pagination: storiesPagination,
   });
+  const recentStories = FAKE_RECENT_STORIES_DATA;
 
   const { pagination: postsPagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetMyNewsfeedPostsQuery>[0]>(
     { pagination: postsPagination, type: PostType.NewsfeedPost },
     { pagination: postsPagination }
   );
-  const { data } = useGetMyNewsfeedPostsQuery(form);
+  const { data: _data } = useGetMyNewsfeedPostsQuery(form);
+  const data = newsfeedPosts;
 
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
@@ -48,9 +95,9 @@ const SocialNewsfeedView: React.FC = () => {
           stories={
             recentStories?.map((v) => ({
               storyUserData: {
-                id: v.user?.id,
-                name: v.user?.profile?.id,
-                userPhotoSrc: v.user?.profile?.photo,
+                id: v.user?.id || "3",
+                name: v.user?.profile?.username || "name",
+                userPhotoSrc: v.user?.profile?.photo || getRandomImage(),
               },
             })) || []
           }
@@ -62,22 +109,22 @@ const SocialNewsfeedView: React.FC = () => {
             {mapArray(data, (v, i) => (
               <SocialNewsfeedPostMobileCard
                 post={{
-                  id: v.id,
-                  comments: v.comments,
-                  content: v.content,
-                  createdAt: v.createdAt,
-                  images: v.attachments.map((v) => v.src),
+                  id: v.postInfo.id,
+                  comments: v.postInfo.numberOfComments,
+                  content: v.postInfo.content!,
+                  createdAt: v.postInfo.createdAt,
+                  images: v.postInfo?.attachments?.map((v) => v.src) || [""],
                   liked: true,
-                  likes: v.reactionNum,
+                  likes: v.postInfo.numberOfLikes,
                   location: {
                     city: "geneve",
                     country: "switzerland",
                   },
                   saved: true,
-                  shares: v.shares,
-                  username: v.publisher?.username || "",
-                  userPhoto: v.publisher?.photo || "",
-                  verified: v.publisher?.verified || false,
+                  shares: v.postInfo.numberOfShares,
+                  username: v.profileInfo?.name || "",
+                  userPhoto: v.profileInfo?.photo || "",
+                  verified: false,
                 }}
               />
             ))}
