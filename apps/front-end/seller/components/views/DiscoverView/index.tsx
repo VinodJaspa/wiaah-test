@@ -33,6 +33,56 @@ import { mapArray, randomNum, useForm } from "utils";
 import { ServiceType } from "@features/API";
 import { startCase } from "lodash";
 
+const FAKE_DISCOVER_USERS_DATA = {
+  accounts: [
+    {
+      id: "account1",
+      profile: {
+        id: "profile1",
+        username: "user1",
+        photo: getRandomImage(),
+        profession: "Software Engineer",
+        followers: 500,
+        verified: true,
+        location: {
+          city: "San Francisco",
+          country: "USA",
+        },
+      },
+    },
+    {
+      id: "account2",
+      profile: {
+        id: "profile2",
+        username: "user2",
+        photo: getRandomImage(),
+        profession: "Graphic Designer",
+        followers: 750,
+        verified: false,
+        location: {
+          city: "Berlin",
+          country: "Germany",
+        },
+      },
+    },
+    {
+      id: "account3",
+      profile: {
+        id: "profile3",
+        username: "user3",
+        photo: getRandomImage(),
+        profession: "Data Scientist",
+        followers: 1200,
+        verified: true,
+        location: {
+          city: "Tokyo",
+          country: "Japan",
+        },
+      },
+    },
+  ],
+};
+
 const discoverHashtagsPlaceholder: {
   tag: string;
   posts: number;
@@ -97,12 +147,15 @@ export const DiscoverView: React.FC = ({ }) => {
   const { pagination: hashtagPagination, controls: hashtagControls } =
     usePaginationControls();
 
-  const { data: discoverUsers } = useGetDiscoverUsers({
+  // WARNING: use this graphql query instead of the placeholder once it's ready
+  const { data: _discoverUsers } = useGetDiscoverUsers({
     q: form.q,
     pagination: usersPagination,
   });
 
-  const { data: discoverPosts } = useGetDiscoverPosts({
+  const discoverUsers = FAKE_DISCOVER_USERS_DATA;
+
+  const { data: _discoverPosts } = useGetDiscoverPosts({
     q: form.q,
   });
 
