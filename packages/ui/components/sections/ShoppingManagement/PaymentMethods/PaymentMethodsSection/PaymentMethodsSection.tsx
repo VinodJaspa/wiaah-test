@@ -16,7 +16,7 @@ import {
   useResponsive,
   RoundedPlusIcon,
 } from "@UI";
-import { FinancialAccountPlaceholder as FinData } from "placeholder";
+import { FinancialAccountPlaceholder as FinData } from "@UI/placeholder";
 import { mapArray, randomNum } from "utils";
 export const PaymentMethodsSection: React.FC = () => {
   // Warning: grphql query endpoint is not ready yet so I replace it with placeholder once it's ready replace it back
@@ -84,7 +84,7 @@ export const AccountPaymentMethodsSection: React.FC<{ accountId: string }> = ({
           <Button onClick={() => setAddNew(true)}>{t("Add New")}</Button>
         </div>
       )}
-      {addNew && <PaymentMethodForm onSuccess={() => { }}></PaymentMethodForm>}
+      {addNew && <PaymentMethodForm onSuccess={() => {}}></PaymentMethodForm>}
     </div>
   );
 };
@@ -196,25 +196,25 @@ export const PaymentMethodForm = React.forwardRef(
     const { t } = useTranslation();
 
     React.useImperativeHandle(ref, () => ({
-      submit: () => { },
+      submit: () => {},
     }));
 
     const paymentMethods: {
       icon: ReactElement;
     }[] = [
-        {
-          icon: <VisaIcon />,
-        },
-        {
-          icon: <MasterCardIcon />,
-        },
-        {
-          icon: <DiscoverCreditCardIcon />,
-        },
-        {
-          icon: <AmericanExpressCreditCardIcon />,
-        },
-      ];
+      {
+        icon: <VisaIcon />,
+      },
+      {
+        icon: <MasterCardIcon />,
+      },
+      {
+        icon: <DiscoverCreditCardIcon />,
+      },
+      {
+        icon: <AmericanExpressCreditCardIcon />,
+      },
+    ];
 
     return (
       <div className="rounded-md flex flex-col gap-3 py-6">
