@@ -4,14 +4,12 @@ import {
   Account,
   Exact,
   Maybe,
-  Notification,
-  NotificationPaginationResponse,
   NotificationType,
   Profile,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-
+import { NotificationPaginationResponse, Notification } from "@entities";
 export type GetMyNotificationsQueryQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -21,30 +19,30 @@ export type GetMyNotificationsQueryQuery = { __typename?: "Query" } & {
     NotificationPaginationResponse,
     "total"
   > & {
-      data: Array<
-        { __typename?: "Notification" } & Pick<
-          Notification,
-          | "id"
-          | "userId"
-          | "authorId"
-          | "createdAt"
-          | "type"
-          | "content"
-          | "thumbnail"
-        > & {
-            author?: Maybe<
-              { __typename?: "Account" } & Pick<Account, "id"> & {
-                  profile?: Maybe<
-                    { __typename?: "Profile" } & Pick<
-                      Profile,
-                      "username" | "photo"
-                    >
-                  >;
-                }
+    data: Array<
+      { __typename?: "Notification" } & Pick<
+        Notification,
+        | "id"
+        | "userId"
+        | "authorId"
+        | "createdAt"
+        | "type"
+        | "content"
+        | "thumbnail"
+      > & {
+        author?: Maybe<
+          { __typename?: "Account" } & Pick<Account, "id"> & {
+            profile?: Maybe<
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                "username" | "photo"
+              >
             >;
           }
-      >;
-    };
+        >;
+      }
+    >;
+  };
 };
 
 export const useGetMyNotificationsQuery = () =>
@@ -65,9 +63,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -82,9 +79,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -99,9 +95,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -116,9 +111,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -133,9 +127,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -150,9 +143,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -167,9 +159,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
@@ -184,9 +175,8 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${
-                    getRandomName().lastName
-                  }`,
+                  username: `${getRandomName().firstName} ${getRandomName().lastName
+                    }`,
                 },
               },
             },
