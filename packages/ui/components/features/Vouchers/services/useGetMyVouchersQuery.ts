@@ -1,10 +1,7 @@
-import {
-  Exact,
-  GetVouchersInput,
-  Maybe,
-  Voucher,
-  VoucherStatus,
-} from "@features/API";
+import { Exact, Maybe } from "@features/API";
+import { GetVouchersInput } from "@features/API/gql/generated";
+
+import { VoucherStatus, Voucher } from "@features/API/gql/generated";
 import { randomNum } from "@UI/../utils/src";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
