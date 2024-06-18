@@ -11,7 +11,7 @@ import {
   CartSummaryView,
 } from "ui";
 
-interface CartSummaryPageProps {}
+interface CartSummaryPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   CartSummaryPageProps
@@ -27,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const cartSummary: NextPage<CartSummaryPageProps> = () => {
+const CartSummary: NextPage<CartSummaryPageProps> = () => {
   const { data, isLoading, isError } = useQuery(
     "CartSummaryData",
     getCartSummaryData
@@ -52,4 +52,4 @@ const cartSummary: NextPage<CartSummaryPageProps> = () => {
   );
 };
 
-export default cartSummary;
+export default CartSummary;
