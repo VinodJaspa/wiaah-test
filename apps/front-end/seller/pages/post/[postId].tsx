@@ -2,17 +2,14 @@ import { SocialPostView } from "@UI";
 import { SellerLayout } from "@blocks";
 import { NextPage } from "next";
 import React from "react";
-import { useRouting } from "routing";
+import { useRouter } from "next/router";
 
-const PostDetailsView: NextPage = () => {
-  const { getParam } = useRouting();
-
-  const postId = getParam("postId");
+export default function PostDetailsView() {
+  const router = useRouter();
+  const { postId } = router.query;
   return (
     <SellerLayout>
-      <SocialPostView postId={postId} />
+      <SocialPostView postId="44" />
     </SellerLayout>
   );
-};
-
-export default PostDetailsView;
+}
