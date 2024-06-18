@@ -25,6 +25,7 @@ import {
   ProfileReachedGender,
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
+  AttachmentType,
 } from "@features/API";
 
 import { products } from "./products";
@@ -1388,7 +1389,7 @@ export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
   {
     attachment: {
       src: "/verticalImage.jpg",
-      type: "image",
+      type: AttachmentType.Img,
     },
     title: t("most_liked_post", "most liked post"),
   },
@@ -1583,77 +1584,77 @@ export const PorductDetailsPlaceHolder: GetProductDetailsQuery["getProduct"] = {
   ],
 };
 
-export const GetProfileByIdPlaceholder: GetProfileByIdQuery["getProfile"] = {
-  activeStatus: ActiveStatus.Active,
-  bio: "This is a sample bio",
-  createdAt: "2023-01-01T00:00:00Z",
-  followers: 123,
-  following: 456,
-  id: "profile-1",
-  lastActive: "2024-06-15T00:00:00Z",
-  ownerId: "owner-1",
-  photo: "http://example.com/photo.jpg",
-  profession: "Software Developer",
-  publications: 10,
-  updatedAt: "2024-06-15T00:00:00Z",
-  username: "sampleUser",
-  visibility: ProfileVisibility.Public,
-  verified: true,
-  user: {
-    id: "account-1",
-    verified: true,
-    accountType: AccountType.Mod,
-    shop: {
-      type: ServiceType.Hotel,
-      storeType: StoreType.Service,
-      id: "shop-1",
-    },
-  },
-  isFollowed: true,
-};
-
-export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
-  [
-    {
-      __typename: "SavesCollection",
-      id: "collection-1",
-      name: "Collection 1",
-      recentSaves: [
-        {
-          __typename: "UserSavedPost",
-          post: {
-            __typename: "NewsfeedPost",
-            thumbnail: "http://example.com/thumbnail1.jpg",
-          },
-        },
-        {
-          __typename: "UserSavedPost",
-          post: {
-            __typename: "NewsfeedPost",
-            thumbnail: "http://example.com/thumbnail2.jpg",
-          },
-        },
-      ],
-    },
-    {
-      __typename: "SavesCollection",
-      id: "collection-2",
-      name: "Collection 2",
-      recentSaves: [
-        {
-          __typename: "UserSavedPost",
-          post: {
-            __typename: "NewsfeedPost",
-            thumbnail: "http://example.com/thumbnail3.jpg",
-          },
-        },
-        {
-          __typename: "UserSavedPost",
-          post: {
-            __typename: "NewsfeedPost",
-            thumbnail: "http://example.com/thumbnail4.jpg",
-          },
-        },
-      ],
-    },
-  ];
+// export const GetProfileByIdPlaceholder: GetProfileByIdQuery["getProfile"] = {
+//   activeStatus: ActiveStatus.Active,
+//   bio: "This is a sample bio",
+//   createdAt: "2023-01-01T00:00:00Z",
+//   followers: 123,
+//   following: 456,
+//   id: "profile-1",
+//   lastActive: "2024-06-15T00:00:00Z",
+//   ownerId: "owner-1",
+//   photo: "http://example.com/photo.jpg",
+//   profession: "Software Developer",
+//   publications: 10,
+//   updatedAt: "2024-06-15T00:00:00Z",
+//   username: "sampleUser",
+//   visibility: ProfileVisibility.Public,
+//   verified: true,
+//   user: {
+//     id: "account-1",
+//     verified: true,
+//     accountType: AccountType.Mod,
+//     shop: {
+//       type: ServiceType.Hotel,
+//       storeType: StoreType.Service,
+//       id: "shop-1",
+//     },
+//   },
+//   isFollowed: true,
+// };
+//
+// export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
+//   [
+//     {
+//       __typename: "SavesCollection",
+//       id: "collection-1",
+//       name: "Collection 1",
+//       recentSaves: [
+//         {
+//           __typename: "UserSavedPost",
+//           post: {
+//             __typename: "NewsfeedPost",
+//             thumbnail: "http://example.com/thumbnail1.jpg",
+//           },
+//         },
+//         {
+//           __typename: "UserSavedPost",
+//           post: {
+//             __typename: "NewsfeedPost",
+//             thumbnail: "http://example.com/thumbnail2.jpg",
+//           },
+//         },
+//       ],
+//     },
+//     {
+//       __typename: "SavesCollection",
+//       id: "collection-2",
+//       name: "Collection 2",
+//       recentSaves: [
+//         {
+//           __typename: "UserSavedPost",
+//           post: {
+//             __typename: "NewsfeedPost",
+//             thumbnail: "http://example.com/thumbnail3.jpg",
+//           },
+//         },
+//         {
+//           __typename: "UserSavedPost",
+//           post: {
+//             __typename: "NewsfeedPost",
+//             thumbnail: "http://example.com/thumbnail4.jpg",
+//           },
+//         },
+//       ],
+//     },
+//   ];
