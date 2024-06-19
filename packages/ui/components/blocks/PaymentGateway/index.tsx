@@ -102,10 +102,14 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                 {t("Payment")}
               </span>
               <div className="flex h-12 items-center gap-2">
-                <Image src="/visa.png" />
-                <Image src="/mastercard.png" />
-                <Image src="/discover.png" />
-                <Image src="/american_express.png" />
+                <Image src="/visa-logo.png" className="w-6" alt="visa" />
+                <Image src="/mastercard.svg" className="w-6" alt="mastercard" />
+                <Image src="/discover.png" className="w-6" alt="discover" />
+                <Image
+                  src="/american_express.png"
+                  className="w-6"
+                  alt="american_express"
+                />
               </div>
             </div>
             <div className="w-full items-end gap-6 flex flex-col">
