@@ -30,12 +30,13 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
   };
 };
 
-const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
-  const { data } = useGetSocialProfile(profileId);
+const Profile: NextPage<ProfilePageProps> = ({ profileId }) => {
+  //WARNING: graphql query is not ready yet
+  const { data: _data } = useGetSocialProfile(profileId);
   return (
     <>
       <Head>
-        <title>{data ? data.name : "Seller | profile"}</title>
+        <title>{"Buyer | profile"}</title>
       </Head>
       <SellerLayout>
         <SocialView profileId={profileId} />
@@ -44,4 +45,4 @@ const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
   );
 };
 
-export default profile;
+export default Profile;
