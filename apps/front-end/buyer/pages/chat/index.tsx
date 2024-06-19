@@ -5,7 +5,7 @@ import { dehydrate, QueryClient } from "react-query";
 import { SellerLayout, useResponsive } from "ui";
 import { ChatView } from "../../components";
 
-interface MessagesPageProps {}
+interface MessagesPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   MessagesPageProps
@@ -29,7 +29,7 @@ const Messages: React.FC<MessagesPageProps> = () => {
       <Head>
         <title>Wiaah | Messages</title>
       </Head>
-      <SellerLayout header={isMobile ? null : "main"} sideBar={false}>
+      <SellerLayout header={isMobile ? null : "main"} sideBar={true}>
         <ChatView />
       </SellerLayout>
     </>
