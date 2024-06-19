@@ -11,10 +11,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
 import {
-  ActionsListWrapper,
   HashTagPostsListWrapper,
+  newsFeedPostIdState,
   PostCardsListWrapper,
   ShopCardsListWrapper,
+  SocialProfileActionList,
   TabsViewer,
 } from "ui";
 import {
@@ -23,8 +24,14 @@ import {
   hashTagCardsInfoPlaceholder,
   actionsPlaceholders,
 } from "ui/placeholder";
+import { SocialShopCardsInfoPlaceholder } from "placeholder";
 
 export const HashtagsView: React.FC = () => {
+  const HashtagsDataPlaceholder = newsfeedPosts.map((post, i) => ({
+    ...post.postInfo,
+    profile: post.profileInfo,
+    listTitle: "",
+  }));
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { t } = useTranslation();
   const router = useRouter();
@@ -35,7 +42,7 @@ export const HashtagsView: React.FC = () => {
       name: t("news_feed", "news feed"),
       component: (
         <Flex direction={"column"} gap="4rem">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
+          <HashTagPostsListWrapper hashtags={HashtagsDataPlaceholder} />
           <Divider />
           <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />
         </Flex>
@@ -45,9 +52,10 @@ export const HashtagsView: React.FC = () => {
       name: t("shop", "shop"),
       component: (
         <Flex direction={"column"} gap="4rem">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
-          <Divider />
-          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+          <ShopCardsListWrapper
+            cols={cols}
+            items={SocialShopCardsInfoPlaceholder}
+          />
         </Flex>
       ),
     },
@@ -55,9 +63,7 @@ export const HashtagsView: React.FC = () => {
       name: t("action", "Action"),
       component: (
         <Flex direction={"column"} gap="4rem">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
-          <Divider />
-          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
+          <SocialProfileActionList userId="" />
         </Flex>
       ),
     },
