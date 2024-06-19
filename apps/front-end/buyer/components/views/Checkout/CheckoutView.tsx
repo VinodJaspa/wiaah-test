@@ -19,7 +19,7 @@ import {
   PaymentGateway,
   TotalCost,
 } from "ui";
-import { AddressCardDetails, AddressDetails } from "types";
+import { AddressCardDetails, AddressDetails, CartSummaryItem } from "types";
 import { CheckoutProductsState, VoucherState } from "@src/state";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -27,8 +27,8 @@ import { shippingMotheds } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { randomNum } from "utils";
-
-export interface CheckoutViewProps {}
+import { getRandomImage } from "placeholder";
+export interface CheckoutViewProps { }
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
@@ -39,7 +39,9 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-  const products = useRecoilValue(CheckoutProductsState);
+
+  const _products = useRecoilValue(CheckoutProductsState);
+  const products = FAKE_PRODUCTS;
   const setVoucher = useSetRecoilState(VoucherState);
 
   const [activeAddress, setActiveAddress] = React.useState<number>();
@@ -152,7 +154,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
           </BoxShadow>
           <VoucherInput onSuccess={handleVoucherValidation} />
           <ShippingMotheds motheds={shippingMotheds} />
-          <PaymentGateway />
+          <PaymentGateway onSuccess={() => { }} />
         </FlexStack>
         <BoxShadow fitHeight fitWidth>
           <div className="bg-white">
@@ -201,3 +203,38 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
     </Padding>
   );
 };
+
+const FAKE_PRODUCTS: CartSummaryItem[] = [
+  {
+    id: "1",
+    name: "Sample Product 1",
+    imageUrl: getRandomImage(),
+    qty: 1,
+    price: 100,
+    type: "product",
+  },
+  {
+    id: "2",
+    name: "Sample Service 1",
+    imageUrl: getRandomImage(),
+    qty: 2,
+    price: 200,
+    type: "service",
+  },
+  {
+    id: "3",
+    name: "Sample Product 2",
+    imageUrl: getRandomImage(),
+    qty: 1,
+    price: 150,
+    type: "product",
+  },
+  {
+    id: "4",
+    name: "Sample Service 2",
+    imageUrl: getRandomImage(),
+    qty: 1,
+    price: 250,
+    type: "service",
+  },
+];
