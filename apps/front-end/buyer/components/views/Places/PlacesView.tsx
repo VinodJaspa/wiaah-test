@@ -44,6 +44,7 @@ export const PlacesView: React.FC = () => {
         )}
         <HStack>
           <Image
+            alt="thumbnail"
             rounded="xl"
             h="3rem"
             w="auto"
@@ -68,7 +69,10 @@ export const PlacesView: React.FC = () => {
           <Spinner colorScheme={"primary"} />
         </Center>
       ) : (
-        <ListWrapper cols={cols}>
+        <ListWrapper
+          cols={cols}
+          itemProps={{ className: "flex flex-col items-center" }}
+        >
           {placesPH &&
             placesPH.map((place, i) => (
               <PlaceCard fixedHeight="17rem" key={i} {...place} />

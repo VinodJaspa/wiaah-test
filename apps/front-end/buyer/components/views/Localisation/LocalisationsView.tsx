@@ -18,9 +18,10 @@ import { MdPlace } from "react-icons/md";
 import { useQuery } from "react-query";
 import { placesPH } from "ui/placeholder";
 import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
-export interface LocailisationsViewProps {}
+import { getRandomImage } from "placeholder";
+export interface LocailisationsViewProps { }
 
-export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
+export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
   const { t } = useTranslation();
   const isMobile = useBreakpointValue({ base: true, sm: false });
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
@@ -45,11 +46,12 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
         )}
         <HStack w="100%">
           <Image
+            alt="thumbnail"
             rounded="xl"
             h="3rem"
             w="auto"
             objectFit="cover"
-            src="/place-1.jpg"
+            src={getRandomImage()}
           />
           <Flex
             justify={"center"}
@@ -77,7 +79,10 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
           <Spinner colorScheme={"primary"} />
         </Center>
       ) : (
-        <ListWrapper cols={cols}>
+        <ListWrapper
+          itemProps={{ className: "flex flex-col items-center" }}
+          cols={cols}
+        >
           {places &&
             places.map(({ openDays, openFrom, openTo, ...rest }, i) => (
               <PlaceCard fixedHeight="18rem" key={i} {...rest} />
