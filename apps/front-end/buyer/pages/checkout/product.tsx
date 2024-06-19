@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const checkout: NextPage<CheckoutPageProps> = ({ userAddresses, cart }) => {
+const Checkout: NextPage<CheckoutPageProps> = ({ userAddresses, cart }) => {
   const setCheckoutAddress = useSetRecoilState(UserAddressesState);
   const setVoucher = useSetRecoilState(VoucherState);
   const setProducts = useSetRecoilState(CheckoutProductsState);
@@ -88,4 +88,4 @@ const checkout: NextPage<CheckoutPageProps> = ({ userAddresses, cart }) => {
   );
 };
 
-export default checkout;
+export default Checkout;
