@@ -2,14 +2,31 @@ import { Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AffiliationOfferCardInfo } from "types";
+import { AccountType, AffiliationOfferCardInfo } from "types";
 import {
   AffiliationOffersCardListWrapper,
   PostAttachmentsViewer,
   PostViewPopup,
   SocialAffiliationCard,
 } from "ui";
-import { socialAffiliationCardPlaceholders } from "ui/placeholder/social";
+import {
+  socialAffiliationCardPlaceholders,
+  AffiliationPostListPlaceholder,
+} from "ui/placeholder/social";
+import { SocialAffiliationCardProps } from "ui";
+import {
+  AffiliationStatus,
+  CashbackType,
+  PresentationType,
+  ProductAttributeDisplayType,
+  ProductAttributeSelectionType,
+  ProductCategoryStatus,
+  ProductCondition,
+  AccountStatus,
+} from "@features/API";
+import { getRandomImage } from "placeholder";
+import { getRandomName } from "utils";
+import { FaKey } from "react-icons/fa";
 
 export const AffiliationView: React.FC = () => {
   const { t } = useTranslation();
@@ -40,23 +57,27 @@ export const AffiliationView: React.FC = () => {
         idParam="affiliationPostId"
         renderChild={(props: AffiliationOfferCardInfo) => {
           return (
-            <SocialAffiliationCard showPostInteraction={true} {...props} />
+            <SocialAffiliationCard
+              showPostInteraction={true}
+              post={AffiliationPostListPlaceholder[0]}
+              {...props}
+            />
           );
         }}
       />
       <AffiliationOffersCardListWrapper
-        onCardClick={(id) => {
-          console.log(id);
-          router.push(
-            router.pathname,
-            { query: { affiliationPostId: id } },
-            {
-              shallow: true,
-            }
-          );
-        }}
+        // onCardClick={(id: any) => {
+        //   console.log(id);
+        //   router.push(
+        //     router.pathname,
+        //     { query: { affiliationPostId: id } },
+        //     {
+        //       shallow: true,
+        //     }
+        //   );
+        // }}
         cols={cols}
-        items={socialAffiliationCardPlaceholders}
+        items={AffiliationPostListPlaceholder}
       />
     </>
   );
