@@ -6,7 +6,6 @@ import {
   TabsViewer,
   useDiscoverTabs,
   UserProfile,
-  usersProfilesPlaceHolder,
   placesPlaceholder,
   LocationButton,
   HashTagSearchItem,
@@ -15,6 +14,8 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { randomNum } from "ui/components/helpers";
+import { getRandomImage } from "placeholder";
+import { classNames } from "react-select/src/utils";
 
 const discoverItemsPlaceholder = products.map((prod, i) => ({
   image: prod.imgUrl,
@@ -28,7 +29,9 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
   return [...acc, ...hashTagsPlaceholder];
 }, []);
 
-export const DiscoverView: React.FC = ({}) => {
+export const DiscoverView: React.FC = ({ }) => {
+  const usersProfilesPlaceHolder = FAKE_USERS;
+
   const { t } = useTranslation();
   const { discoverTabs, changeDiscoverTab, currentTab, setTabsData } =
     useDiscoverTabs();
@@ -70,7 +73,6 @@ export const DiscoverView: React.FC = ({}) => {
                 key={i}
                 iconProps={{ className: "text-primary" }}
                 name={place}
-                key={i}
               />
             ))}
           </ListWrapper>
@@ -80,9 +82,10 @@ export const DiscoverView: React.FC = ({}) => {
       {
         name: t("hashtags", "hashtags"),
         component: (
-          <ListWrapper style={{ w: "100%" }}>
+          <ListWrapper>
             {discoverHashtagsPlaceholder.map((tag, i) => (
               <HashTagSearchItem
+                key={i}
                 hashtagName={tag}
                 hashtagViews={randomNum(50000000)}
               />
@@ -103,3 +106,41 @@ export const DiscoverView: React.FC = ({}) => {
     </VStack>
   );
 };
+
+const FAKE_USERS = [
+  {
+    id: "1",
+    photo: getRandomImage(),
+    username: "user1",
+    followers: 100,
+    verified: true,
+    profession: "Engineer",
+  },
+
+  {
+    id: "2",
+    photo: getRandomImage(),
+    username: "user2",
+    followers: 200,
+    verified: false,
+    profession: "Designer",
+  },
+
+  {
+    id: "3",
+    photo: getRandomImage(),
+    username: "user3",
+    followers: 150,
+    verified: true,
+    profession: "Artist",
+  },
+
+  {
+    id: "4",
+    photo: getRandomImage(),
+    username: "user4",
+    followers: 250,
+    verified: false,
+    profession: "Photographer",
+  },
+];
