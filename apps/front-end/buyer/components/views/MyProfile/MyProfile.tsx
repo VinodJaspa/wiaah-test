@@ -14,7 +14,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
-import { FlagIcon } from "react-flag-kit";
+import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { BiCamera, BiLink } from "react-icons/bi";
 import { MdClose, MdVerified } from "react-icons/md";
@@ -30,15 +30,34 @@ import {
 import { NumberShortner } from "ui/components/helpers";
 import { useRouter } from "next/router";
 import { AccountSettingsRoute } from "uris";
+import { getRandomImage } from "placeholder";
+import { getRandomName } from "utils";
 
-export interface MyProfileProps {}
+const FAKE_USER_DATA = {
+  name: "John Doe",
+  thumbnail: getRandomImage(),
+  verifed: true,
+  publications: 33,
+  subscriptions: 5,
+  subscribers: 55,
+  bio: "This is a fake bio",
+  links: ["link", "link", "link"],
+  countryCode: "MT" as FlagIconCode,
+  location: "fake location",
+};
+
+export interface MyProfileProps { }
 
 export const MyProfile: React.FC<MyProfileProps> = () => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { data: shopInfo, isLoading, isError } = useGetMyProfileData();
+  const {
+    data: _profileData,
+    isLoading: _isLoadign,
+    isError,
+  } = useGetMyProfileData();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const profileData = FAKE_USER_DATA;
   const {
     isOpen: subscriptionsIsOpen,
     onOpen: subscriptionsOnOpen,
@@ -60,169 +79,159 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
       justify={"space-between"}
       direction={"column"}
     >
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {shopInfo && (
-          <>
-            <SubscribersPopup
-              title={t("subscribers", "subscribers")}
-              isOpen={isOpen}
-              onClose={onClose}
-            />
-            <SubscribersPopup
-              title={t("subscriptions", "subscriptions")}
-              isOpen={subscriptionsIsOpen}
-              onClose={subscriptionsOnClose}
-            />
-            <Flex w="100%" justify={"space-between"}>
-              <div />
-              <CustomAvatar
-                bgColor={"black"}
-                name={shopInfo.name}
-                photoSrc={shopInfo.thumbnail}
-                size={"xl"}
-              />
-              <div />
-            </Flex>
-            <Flex
-              bgColor={{ base: "primary.main", md: "transparent" }}
-              align={"center"}
-              mb="0.5rem"
-              px="0.25rem"
-              rounded={"lg"}
-              gap="0.5rem"
-            >
-              <Text>{shopInfo.name}</Text>
-              {shopInfo.verifed && (
-                <Icon fontSize={"x-large"} as={MdVerified} />
-              )}
-            </Flex>
-            <Flex lineHeight={"1.8rem"} gap="1rem">
-              <Flex
-                direction={"row"}
-                align={"center"}
-                cursor={"pointer"}
-                gap="0.5em"
-              >
-                <Text fontWeight={"bold"}>
-                  {NumberShortner(shopInfo.publications)}
-                </Text>
-                <Text fontSize={"md"} textTransform={"capitalize"}>
-                  {t("publications", "publications")}
-                </Text>
-              </Flex>
-              <Flex
-                align="center"
-                onClick={subscriptionsOnOpen}
-                cursor={"pointer"}
-              >
-                <HStack mx="0.5rem">
-                  <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
-                    {[...Array(3)].map((_, i) => (
-                      <Avatar
-                        borderWidth={"1px"}
-                        borderColor="white"
-                        rounded={"lg"}
-                        size={"xs"}
-                        h="2em"
-                        w="2em"
-                        key={i}
-                        bgColor={"black"}
-                        src="/shop.jpeg"
-                        name="test"
-                      />
-                    ))}
-                  </AvatarGroup>
-                  <Text fontWeight={"bold"}>
-                    {NumberShortner(shopInfo.subscriptions)}
-                  </Text>
-                </HStack>
-                <Text fontSize={"md"} textTransform={"capitalize"}>
-                  {t("subscriptions", "subscriptions")}
-                </Text>
-              </Flex>
-              <Flex align="center" onClick={onOpen} cursor={"pointer"}>
-                <HStack mx="0.5rem">
-                  <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
-                    {[...Array(3)].map((_, i) => (
-                      <Avatar
-                        borderWidth={"1px"}
-                        borderColor="white"
-                        rounded={"md"}
-                        size={"xs"}
-                        h="2em"
-                        w="2em"
-                        key={i}
-                        bgColor={"black"}
-                        src="/shop-2.jpeg"
-                        name="test"
-                      />
-                    ))}
-                  </AvatarGroup>
-                  <Text fontWeight={"bold"}>
-                    {NumberShortner(shopInfo.subscribers)}
-                  </Text>
-                </HStack>
-
-                <Text fontSize={"md"} textTransform={"capitalize"}>
-                  {t("subscribers", "Subscribers")}
-                </Text>
-              </Flex>
-            </Flex>
-            <Flex
-              gap="0.5rem"
-              direction={"column"}
-              py="1rem"
-              fontSize={"md"}
-              w="100%"
-            >
-              {shopInfo.bio && (
-                <EllipsisText
-                  showMoreColor="primary.main"
-                  maxLines={4}
-                  content={shopInfo.bio}
-                />
-              )}
-              {shopInfo.links && (
-                <Flex direction={"column"}>
-                  {shopInfo.links.map((link, i) => (
-                    <HStack key={i}>
-                      <Icon color={"white"} fontSize="xl" as={BiLink} />
-                      <Link color="blue" href={link}>
-                        {link}
-                      </Link>
-                    </HStack>
-                  ))}
-                </Flex>
-              )}
-            </Flex>
-
-            <HStack w="100%" spacing={"1rem"}>
-              <Button
-                onClick={handleRouteToModifyProfile}
-                borderWidth={"2px"}
-                w="100%"
-                borderColor="white"
-              >
-                {t("modify_profile", "Modify profile")}
-              </Button>
+      <SpinnerFallback isLoading={false} isError={isError}>
+        <SubscribersPopup
+          title={t("subscribers", "subscribers")}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+        <SubscribersPopup
+          title={t("subscriptions", "subscriptions")}
+          isOpen={subscriptionsIsOpen}
+          onClose={subscriptionsOnClose}
+        />
+        <Flex w="100%" justify={"space-between"}>
+          <div />
+          <CustomAvatar
+            className="bg-black w-8 h-8 "
+            name={profileData.name}
+            photoSrc={profileData.thumbnail}
+          />
+          <div />
+        </Flex>
+        <Flex
+          className="flex flex-col"
+          bgColor={{ base: "primary.main", md: "transparent" }}
+          align={"center"}
+          mb="0.5rem"
+          px="0.25rem"
+          rounded={"lg"}
+          gap="0.5rem"
+        >
+          <h4>{profileData.name}</h4>
+          {profileData.verifed && <Icon fontSize={"x-large"} as={MdVerified} />}
+        </Flex>
+        <Flex lineHeight={"1.8rem"} gap="1rem">
+          <Flex
+            direction={"row"}
+            align={"center"}
+            cursor={"pointer"}
+            gap="0.5em"
+          >
+            <Text fontWeight={"bold"}>
+              {NumberShortner(profileData.publications)}
+            </Text>
+            <Text fontSize={"md"} textTransform={"capitalize"}>
+              {t("publications", "publications")}
+            </Text>
+          </Flex>
+          <Flex align="center" onClick={subscriptionsOnOpen} cursor={"pointer"}>
+            <HStack mx="0.5rem">
+              <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
+                {[...Array(3)].map((_, i) => (
+                  <Avatar
+                    borderWidth={"1px"}
+                    borderColor="white"
+                    rounded={"lg"}
+                    size={"xs"}
+                    h="2em"
+                    w="2em"
+                    key={i}
+                    bgColor={"black"}
+                    src={getRandomImage()}
+                    name="test"
+                  />
+                ))}
+              </AvatarGroup>
+              <Text fontWeight={"bold"}>
+                {NumberShortner(profileData.subscriptions)}
+              </Text>
             </HStack>
-            <Flex
-              bg={{ base: "whiteAlpha.200", md: "transparent" }}
-              gap="0.5rem"
-              w="100%"
-              align={"center"}
-              justify={"end"}
-              pt="0.75rem"
-            >
-              <Text fontSize={"lg"}>
-                <FlagIcon code={shopInfo.countryCode} />
+            <Text fontSize={"md"} textTransform={"capitalize"}>
+              {t("subscriptions", "subscriptions")}
+            </Text>
+          </Flex>
+          <Flex align="center" onClick={onOpen} cursor={"pointer"}>
+            <HStack mx="0.5rem">
+              <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
+                {[...Array(3)].map((_, i) => (
+                  <Avatar
+                    borderWidth={"1px"}
+                    borderColor="white"
+                    rounded={"md"}
+                    size={"xs"}
+                    h="2em"
+                    w="2em"
+                    key={i}
+                    bgColor={"black"}
+                    src="/shop-2.jpeg"
+                    name="test"
+                  />
+                ))}
+              </AvatarGroup>
+              <Text fontWeight={"bold"}>
+                {NumberShortner(profileData.subscribers)}
               </Text>
-              <Text color={"white"} fontSize={"md"}>
-                {shopInfo.location}
-              </Text>
+            </HStack>
+
+            <Text fontSize={"md"} textTransform={"capitalize"}>
+              {t("subscribers", "Subscribers")}
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex
+          gap="0.5rem"
+          direction={"column"}
+          py="1rem"
+          fontSize={"md"}
+          w="100%"
+        >
+          {profileData.bio && (
+            <EllipsisText
+              showMoreColor="primary.main"
+              maxLines={4}
+              content={profileData.bio}
+            />
+          )}
+          {profileData.links && (
+            <Flex direction={"column"}>
+              {profileData.links.map((link, i) => (
+                <HStack key={i}>
+                  <Icon color={"white"} fontSize="xl" as={BiLink} />
+                  <Link color="blue" href={link}>
+                    {link}
+                  </Link>
+                </HStack>
+              ))}
             </Flex>
-          </>
-        )}
+          )}
+        </Flex>
+
+        <HStack w="100%" spacing={"1rem"}>
+          <Button
+            onClick={handleRouteToModifyProfile}
+            borderWidth={"2px"}
+            w="100%"
+            borderColor="white"
+          >
+            {t("modify_profile", "Modify profile")}
+          </Button>
+        </HStack>
+        <Flex
+          bg={{ base: "whiteAlpha.200", md: "transparent" }}
+          gap="0.5rem"
+          w="100%"
+          align={"center"}
+          justify={"end"}
+          pt="0.75rem"
+        >
+          <Text fontSize={"lg"}>
+            <FlagIcon code={profileData.countryCode} />
+          </Text>
+          <Text color={"white"} fontSize={"md"}>
+            {profileData.location}
+          </Text>
+        </Flex>
       </SpinnerFallback>
     </Flex>
   );
@@ -250,10 +259,9 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
       {...props}
     >
       <CustomAvatar
-        size={"2xl"}
+        className="bg-black w-8 h=8"
         photoSrc={photoSrc}
         name={name}
-        bgColor={"black"}
       />
       {editable && (
         <Center
@@ -278,19 +286,19 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
 };
 {
   /* <Flex>
-      {shopInfo && (
+      {profileData && (
         <Formik<UpdateProfileDto>
           initialValues={{
-            profileName: shopInfo.name,
-            bio: shopInfo.bio,
-            location: shopInfo.location,
-            countryCode: shopInfo.countryCode,
-            links: shopInfo.links,
-            profileImageSrc: shopInfo.thumbnail,
+            profileName: profileData.name,
+            bio: profileData.bio,
+            location: profileData.location,
+            countryCode: profileData.countryCode,
+            links: profileData.links,
+            profileImageSrc: profileData.thumbnail,
             newProfileImage: null,
           }}
           onSubmit={(res, { resetForm, submitForm }) => {
-            console.log(shopInfo);
+            console.log(profileData);
             SubmitChanges(res);
             setTimeout(() => {
               if (!test) {
@@ -376,9 +384,9 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                       <ErrorMessage name="profileName" component="div" />
                     </>
                   ) : (
-                    <Text>{shopInfo.name}</Text>
+                    <Text>{profileData.name}</Text>
                   )}
-                  {shopInfo.verifed && (
+                  {profileData.verifed && (
                     <Icon fontSize={"x-large"} as={MdVerified} />
                   )}
                 </Flex>
@@ -390,7 +398,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                     gap="0.5em"
                   >
                     <Text fontWeight={"bold"}>
-                      {NumberShortner(shopInfo.publications)}
+                      {NumberShortner(profileData.publications)}
                     </Text>
                     <Text fontSize={"md"} textTransform={"capitalize"}>
                       {t("publications", "publications")}
@@ -419,7 +427,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                         ))}
                       </AvatarGroup>
                       <Text fontWeight={"bold"}>
-                        {NumberShortner(shopInfo.subscriptions)}
+                        {NumberShortner(profileData.subscriptions)}
                       </Text>
                     </HStack>
                     <Text fontSize={"md"} textTransform={"capitalize"}>
@@ -445,7 +453,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                         ))}
                       </AvatarGroup>
                       <Text fontWeight={"bold"}>
-                        {NumberShortner(shopInfo.subscribers)}
+                        {NumberShortner(profileData.subscribers)}
                       </Text>
                     </HStack>
 
@@ -479,7 +487,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                     <EllipsisText
                       showMoreColor="primary.main"
                       maxLines={4}
-                      content={shopInfo.bio}
+                      content={profileData.bio}
                     />
                   )}
 
@@ -523,9 +531,9 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                       </HStack>
                     </Flex>
                   ) : (
-                    shopInfo.links && (
+                    profileData.links && (
                       <Flex direction={"column"}>
-                        {shopInfo.links.map((link, i) => (
+                        {profileData.links.map((link, i) => (
                           <HStack key={i}>
                             <Icon color={"white"} fontSize="xl" as={BiLink} />
                             <Link color="blue" href={link}>
@@ -547,7 +555,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                   pt="0.75rem"
                 >
                   <Text fontSize={"lg"}>
-                    <FlagIcon code={shopInfo.countryCode} />
+                    <FlagIcon code={profileData.countryCode} />
                   </Text>
                   {editing ? (
                     <>
@@ -557,7 +565,7 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
                     </>
                   ) : (
                     <Text color={"white"} fontSize={"md"}>
-                      {shopInfo.location}
+                      {profileData.location}
                     </Text>
                   )}
                 </Flex>

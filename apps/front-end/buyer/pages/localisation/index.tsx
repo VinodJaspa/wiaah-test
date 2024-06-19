@@ -10,27 +10,28 @@ const getLoclisations = async () => {
   return placesPH;
 };
 
-interface LocalisationPageProps {}
+interface LocalisationPageProps { }
 
-export const getServerSideProps: GetServerSideProps<LocalisationPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  LocalisationPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("localisations", getLoclisations);
+  queryClient.prefetchQuery("localisations", getLoclisations);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
-const localisation: NextPage = () => {
+const Localisation: NextPage = () => {
   const { isMobile } = useResponsive();
   return (
     <>
       <Head>
-        <title>Seller | Localisation</title>
+        <title>Buyer | Localisation</title>
       </Head>
       <SellerLayout header={isMobile ? "minimal" : "main"}>
         <LocalisationsView />
@@ -39,4 +40,4 @@ const localisation: NextPage = () => {
   );
 };
 
-export default localisation;
+export default Localisation;

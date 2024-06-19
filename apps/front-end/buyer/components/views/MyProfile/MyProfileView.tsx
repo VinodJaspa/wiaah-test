@@ -16,7 +16,6 @@ import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { TabType } from "types";
 import {
-  ActionsListWrapper,
   AffiliationOffersCardListWrapper,
   Container,
   FilterModal,
@@ -25,7 +24,6 @@ import {
   profileActionsPlaceholder,
   ShopCardsInfoPlaceholder,
   ShopCardsListWrapper,
-  socialAffiliationCardPlaceholders,
   SocialNewsfeedPostsState,
   SocialProfileInfo,
   SocialProfileInfoState,
@@ -36,10 +34,14 @@ import {
   useResponsive,
   useUpdateMyProfile,
   newsfeedPosts,
+  SocialShopsPostCardPlaceholder,
+  SocialProfileActionList,
 } from "ui";
-import { MyProfile } from "./MyProfile";
+import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
+import { MyProfileCustomed } from "./MyProfileCustomed";
+import { ProfilePlaceholder as profile } from "ui/placeholder";
 
-export interface MyProfileView {}
+export interface MyProfileView { }
 
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
@@ -47,7 +49,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   const { t } = useTranslation();
   const client = useQueryClient();
   const { uploadImage, cancelUpload } = useFileUploadModal();
-  const { data, isLoading, isError } = useGetMyProfileData();
+  const { data: _data, isLoading, isError } = useGetMyProfileData();
   const { mutate } = useUpdateMyProfile({
     onSuccess: (data) => {
       client.setQueryData("MyProfileData", data);
@@ -60,6 +62,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  const image = React.useMemo(() => getRandomImage(), []);
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
@@ -88,14 +91,11 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
             grid={isMobile}
             cols={cols}
-            items={ShopCardsInfoPlaceholder}
+            items={SocialShopsPostCardPlaceholder}
           />
         </Flex>
       ),
@@ -112,12 +112,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     },
     {
       name: t("actions", "Actions"),
-      component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
-      ),
+      component: <SocialProfileActionList userId="" />,
     },
   ];
   const buyerTabs: TabType[] = [
@@ -131,7 +126,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     <Flex direction={"column"}>
       <Flex position={{ base: "relative", md: "initial" }}>
         <Box h={"fit-content"} ref={boxRef}>
-          <MyProfile />
+          <MyProfileCustomed shopInfo={profile} />
         </Box>
         <Box
           position={{ base: "absolute", md: "relative" }}
@@ -139,41 +134,40 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
           h={{ base: dims ? dims.borderBox.height : "unset" }}
         >
           <SpinnerFallback isLoading={isLoading} isError={isError}>
-            {data && (
-              <>
-                <MediaUploadModal
-                  onImgUpload={(src) => {
-                    console.log("upload");
-                    mutate({
-                      profileCoverPhoto: src.toString(),
-                    });
-                  }}
-                />
-                <Image
-                  position={{ base: "absolute", md: "unset" }}
-                  top="0px"
-                  left="0px"
-                  w="100%"
-                  h="100%"
-                  overflow={"hidden"}
-                  bgColor={"blackAlpha.200"}
-                  zIndex={-1}
-                  src={data.profileCoverPhoto}
-                  objectFit={"cover"}
-                />
-                <IconButton
-                  variant={"icon"}
-                  fontSize="xx-large"
-                  position={"absolute"}
-                  bgColor="whiteAlpha.800"
-                  top="1rem"
-                  right="1rem"
-                  aria-label={t("change_cover_photo", "Change Cover Photo")}
-                  as={BiCamera}
-                  onClick={uploadImage}
-                />
-              </>
-            )}
+            <>
+              <MediaUploadModal
+                onImgUpload={(src) => {
+                  console.log("upload");
+                  mutate({
+                    profileCoverPhoto: src.toString(),
+                  });
+                }}
+              />
+              <Image
+                alt="thumbnail"
+                position={{ base: "absolute", md: "unset" }}
+                top="0px"
+                left="0px"
+                w="100%"
+                h="100%"
+                overflow={"hidden"}
+                bgColor={"blackAlpha.200"}
+                zIndex={-1}
+                src={image}
+                objectFit={"cover"}
+              />
+              <IconButton
+                variant={"icon"}
+                fontSize="xx-large"
+                position={"absolute"}
+                bgColor="whiteAlpha.800"
+                top="1rem"
+                right="1rem"
+                aria-label={t("change_cover_photo", "Change Cover Photo")}
+                as={BiCamera}
+                onClick={uploadImage}
+              />
+            </>
           </SpinnerFallback>
         </Box>
       </Flex>
