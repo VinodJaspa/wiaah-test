@@ -7,31 +7,32 @@ import { dehydrate, QueryClient } from "react-query";
 import { useResponsive } from "ui";
 import { placesPH } from "ui/placeholder";
 
-interface PlacesPageProps {}
+interface PlacesPageProps { }
 
 async function getPlaces() {
   return placesPH;
 }
 
-export const getServerSideProps: GetServerSideProps<PlacesPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  PlacesPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("places", getPlaces);
+  queryClient.prefetchQuery("places", getPlaces);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
-const places: NextPage = () => {
+const Places: NextPage = () => {
   const { isMobile } = useResponsive();
   return (
     <>
       <Head>
-        <title>Seller | places</title>
+        <title>Buyer | places</title>
       </Head>
       <SellerLayout header={isMobile ? "minimal" : "main"}>
         <PlacesView />
@@ -40,4 +41,4 @@ const places: NextPage = () => {
   );
 };
 
-export default places;
+export default Places;
