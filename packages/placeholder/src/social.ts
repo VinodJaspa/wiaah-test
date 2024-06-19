@@ -616,7 +616,7 @@ export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
     profileInfo: {
       id: 12345,
       verified: true,
-      photo: "https://example.com/profile_pic.jpg",
+      photo: getRandomImage(),
       username: "fashion_lover",
       profession: "Stylist",
     },
@@ -629,7 +629,7 @@ export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
       createdAt: new Date("2024-06-06T10:00:00Z"),
       product: {
         id: 98765,
-        presentations: ["https://example.com/product_image.jpg"],
+        presentations: [{ src: getRandomImage() }],
         title: "Summer Breeze Dress",
         hashtags: ["#summerdress", "#fashion", "#ootd"],
         price: 49.99,
@@ -647,7 +647,7 @@ export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
     profileInfo: {
       id: 12345,
       verified: true,
-      photo: "https://example.com/profile_pic.jpg",
+      photo: getRandomImage(),
       username: "fashion_lover",
       profession: "Stylist",
     },
@@ -660,7 +660,7 @@ export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
       createdAt: new Date("2024-06-06T10:00:00Z"),
       product: {
         id: 98765,
-        presentations: ["https://example.com/product_image.jpg"],
+        presentations: [{ src: getRandomImage() }],
         title: "Summer Breeze Dress",
         hashtags: ["#summerdress", "#fashion", "#ootd"],
         price: 49.99,
