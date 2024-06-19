@@ -9,24 +9,37 @@ import {
   AffiliationOffersCardListWrapper,
   FilterModal,
   useResponsive,
-  ActionsListWrapper,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SpinnerFallback,
   newsfeedPosts,
   Divider,
+  SocialProfileProps,
 } from "ui";
+import Image from "next/image";
 import {
   useGetSocialProfile,
   ShopCardsInfoPlaceholder,
-  socialAffiliationCardPlaceholders,
   profileActionsPlaceholder,
 } from "ui";
+import { SocialShopsPostCardPlaceholder } from "ui/placeholder";
+import {
+  PostCardPlaceHolder,
+  socialAffiliationCardPlaceholders,
+} from "placeholder";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
 import { SocialNewsfeedPostsState } from "state";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import {
+  AccountType,
+  ActiveStatus,
+  ProfileVisibility,
+  ServiceType,
+  StoreType,
+} from "@features/API";
+import { SocialActionsView } from "../SocialActionsView";
 
 export interface SocialViewProps {
   profileId: string;
@@ -34,7 +47,7 @@ export interface SocialViewProps {
 
 export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const { t } = useTranslation();
-  const { data: res, isLoading, isError } = useGetSocialProfile(profileId);
+  const { data: _res, isLoading, isError } = useGetSocialProfile(profileId);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
@@ -42,7 +55,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
 
-  const { data: profileInfo } = res;
+  const profileInfo = FAKE_DATA.data;
 
   const sellerTabs: TabType[] = [
     {
@@ -74,7 +87,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <ShopCardsListWrapper
             grid={isMobile}
             cols={cols}
-            items={ShopCardsInfoPlaceholder}
+            items={SocialShopsPostCardPlaceholder}
           />
         </div>
       ),
@@ -91,12 +104,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     },
     {
       name: t("actions", "Actions"),
-      component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
-      ),
+      component: <SocialActionsView />,
     },
   ];
   const buyerTabs: TabType[] = [
@@ -106,12 +114,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     },
     {
       name: t("actions", "Actions"),
-      component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
-      ),
+      component: <SocialActionsView />,
     },
   ];
   return (
@@ -119,10 +122,16 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col">
           <div className="w-full flex overflow-hidden relative max-h-[26rem]">
-            <SocialProfile profileInfo={profileInfo} />
+            <SocialProfile
+              storeType={FAKE_PROFILE_INFO.user.shop.storeType}
+              isFollowed={true}
+              isPublic={FAKE_PROFILE_INFO.visibility}
+              profileInfo={FAKE_PROFILE_INFO}
+            />
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
-            <img
+            <Image
+              alt="thumbnail"
               src="/shop.jpeg"
               className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
             />
@@ -131,13 +140,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             <>
               {profileInfo.public ? (
                 <>
-                  <TabsViewer
-                    tabs={
-                      profileInfo.accountType === "seller"
-                        ? sellerTabs
-                        : buyerTabs
-                    }
-                  />
+                  <TabsViewer tabs={sellerTabs} showTabs />
                   <Divider className="my-4" />
                 </>
               ) : (
@@ -155,4 +158,64 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       </SpinnerFallback>
     </div>
   );
+};
+
+const FAKE_PROFILE_INFO: SocialProfileProps["profileInfo"] = {
+  activeStatus: ActiveStatus.Active,
+  bio: "This is a sample bio.",
+  createdAt: new Date().toISOString(),
+  followers: 100,
+  following: 50,
+  id: "profile-123",
+  lastActive: new Date().toISOString(),
+  ownerId: "owner-456",
+  photo: "https://example.com/photo.jpg",
+  profession: "Software Developer",
+  publications: 2,
+  updatedAt: new Date().toISOString(),
+  username: "sampleuser",
+  visibility: ProfileVisibility.Public,
+  verified: true,
+  user: {
+    __typename: "Account",
+    id: "account-789",
+    verified: true,
+    accountType: AccountType.Buyer,
+    shop: {
+      __typename: "Shop",
+      type: ServiceType.Hotel,
+      storeType: StoreType.Product,
+      id: "shop-101",
+    },
+  },
+};
+
+const FAKE_DATA = {
+  data: {
+    accountType: "seller",
+    userId: "1325",
+    id: "1230",
+    name: "Jane Daniel",
+    public: true,
+    thumbnail: "/shop-2.jpeg",
+    verified: true,
+    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend diam cras eu felis egestas aliquam. Amet ornare",
+    isFollowed: false,
+    links: ["this is a test link"],
+    location: {
+      address: "address",
+      city: "city",
+      lat: 32,
+      lon: 23,
+      country: "country",
+      countryCode: "CH",
+      postalCode: 1234,
+      state: "Geneve",
+    },
+    profileCoverPhoto: "/shop-2.jpeg",
+    publications: 156,
+    subscribers: 135,
+    subscriptions: 14,
+    profession: "Agent",
+  },
 };
