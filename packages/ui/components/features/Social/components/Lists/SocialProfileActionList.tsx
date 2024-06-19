@@ -12,6 +12,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ArrElement } from "types";
 import { IoPlayOutline } from "react-icons/io5";
+import { getRandomImage } from "placeholder";
 
 export const SocialProfileActionList: React.FC<{
   userId: string;
@@ -27,11 +28,16 @@ export const SocialProfileActionList: React.FC<{
     },
     { cursor: props.cursor, take: props.take, userId }
   );
-  const { data, isLoading, fetchNextPage } = useGetProfileActionsQuery(form, {
+  const {
+    data: _data,
+    isLoading,
+    fetchNextPage,
+  } = useGetProfileActionsQuery(form, {
     getNextPageParam: (page) => {
       return page.data.at(page.data.length - 1);
     },
   });
+  const data = FAKE_ACTIONS;
 
   React.useEffect(() => {
     getHasMore(data?.pages.at(data.pages.length - 1)?.hasMore || false);
@@ -60,4 +66,52 @@ export const SocialProfileActionList: React.FC<{
       </div>
     </ScrollCursorPaginationWrapper>
   );
+};
+const FAKE_ACTIONS = {
+  pages: [
+    {
+      cursor: "cursor_placeholder",
+      hasMore: true,
+      __typename: "GetActionsCursorResponse",
+      data: [
+        {
+          id: "1",
+          cover: getRandomImage(),
+          views: 100,
+          __typename: "Action",
+        },
+        {
+          id: "2",
+          cover: getRandomImage(),
+          views: 200,
+          __typename: "Action",
+        },
+        {
+          id: "3",
+          cover: getRandomImage(),
+          views: 300,
+          __typename: "Action",
+        },
+
+        {
+          id: "4",
+          cover: getRandomImage(),
+          views: 100,
+          __typename: "Action",
+        },
+        {
+          id: "5",
+          cover: getRandomImage(),
+          views: 200,
+          __typename: "Action",
+        },
+        {
+          id: "6",
+          cover: getRandomImage(),
+          views: 300,
+          __typename: "Action",
+        },
+      ],
+    },
+  ],
 };
