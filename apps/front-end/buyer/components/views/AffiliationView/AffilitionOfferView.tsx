@@ -11,11 +11,12 @@ import {
 import {
   socialAffiliationCardPlaceholder,
   socialAffiliationCardPlaceholders,
+  AffiliationPostListPlaceholder,
 } from "ui/placeholder";
 import { useQuery } from "react-query";
 import { useRouter } from "next/router";
 
-export interface AffilitionOfferView {}
+export interface AffilitionOfferView { }
 
 export const AffilitionOfferView: React.FC<AffilitionOfferView> = () => {
   const { t } = useTranslation();
@@ -46,12 +47,19 @@ export const AffilitionOfferView: React.FC<AffilitionOfferView> = () => {
         mb="6rem"
         align={"start"}
       >
+        {/*
         <SocialStoryModal />
+        */}
         <SocialPostHeader
           name={offer.user.name}
           thumbnail={offer.user.thumbnail}
         />
-        <SocialAffiliationCard showPostInteraction showComments {...offer} />
+        <SocialAffiliationCard
+          post={AffiliationPostListPlaceholder[0]}
+          showPostInteraction
+          showComments
+          {...offer}
+        />
       </Flex>
       <Text
         fontSize={"xx-large"}
@@ -62,7 +70,10 @@ export const AffilitionOfferView: React.FC<AffilitionOfferView> = () => {
       >
         {t("view", "view")} {offer.user.name} {t("other_posts", "other posts")}
       </Text>
-      <AffiliationOffersCardListWrapper cols={cols} items={otherOffers} />
+      <AffiliationOffersCardListWrapper
+        cols={cols}
+        items={AffiliationPostListPlaceholder}
+      />
       <Button
         _focus={{ ringColor: "primary.main" }}
         bgColor="white"
