@@ -51,7 +51,9 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
         mb="6rem"
         align={"start"}
       >
+        {/*
         <SocialStoryModal profileId={postId} />
+        */}
         <SocialPostHeader
           name={post.profileInfo.name}
           thumbnail={post.profileInfo.thumbnail}
