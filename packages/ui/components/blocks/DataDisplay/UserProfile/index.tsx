@@ -1,5 +1,6 @@
 import React from "react";
-import { Verified, Avatar, Profile } from "@UI";
+import { Verified, Avatar } from "@UI";
+import { Profile } from "@features/API";
 import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
 
 export interface UserProfileProps extends HtmlDivProps {
