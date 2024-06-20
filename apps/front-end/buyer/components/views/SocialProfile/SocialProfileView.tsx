@@ -15,8 +15,8 @@ import {
   newsfeedPosts,
   Divider,
   SocialProfileProps,
+  Image,
 } from "ui";
-import Image from "next/image";
 import {
   useGetSocialProfile,
   ShopCardsInfoPlaceholder,
@@ -24,8 +24,10 @@ import {
 } from "ui";
 import { SocialShopsPostCardPlaceholder } from "ui/placeholder";
 import {
+  getRandomImage,
   PostCardPlaceHolder,
   socialAffiliationCardPlaceholders,
+  SocialProfileInfo,
 } from "placeholder";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
@@ -52,6 +54,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  const image = React.useMemo(() => getRandomImage(), []);
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
 
@@ -110,7 +113,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const buyerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: <PostCardsListWrapper cols={cols} posts={posts} />,
+      component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
     },
     {
       name: t("actions", "Actions"),
@@ -132,7 +135,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             <ShareWithModal />
             <Image
               alt="thumbnail"
-              src="/shop.jpeg"
+              src={image}
               className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
             />
           </div>
@@ -140,7 +143,14 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             <>
               {profileInfo.public ? (
                 <>
-                  <TabsViewer tabs={sellerTabs} showTabs />
+                  <TabsViewer
+                    tabs={
+                      profileInfo.accountType === "seller"
+                        ? sellerTabs
+                        : buyerTabs
+                    }
+                  ></TabsViewer>
+
                   <Divider className="my-4" />
                 </>
               ) : (
@@ -169,7 +179,7 @@ const FAKE_PROFILE_INFO: SocialProfileProps["profileInfo"] = {
   id: "profile-123",
   lastActive: new Date().toISOString(),
   ownerId: "owner-456",
-  photo: "https://example.com/photo.jpg",
+  photo: getRandomImage(),
   profession: "Software Developer",
   publications: 2,
   updatedAt: new Date().toISOString(),
@@ -192,12 +202,12 @@ const FAKE_PROFILE_INFO: SocialProfileProps["profileInfo"] = {
 
 const FAKE_DATA = {
   data: {
-    accountType: "seller",
+    accountType: "buyer",
     userId: "1325",
     id: "1230",
     name: "Jane Daniel",
     public: true,
-    thumbnail: "/shop-2.jpeg",
+    thumbnail: getRandomImage(),
     verified: true,
     bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend diam cras eu felis egestas aliquam. Amet ornare",
     isFollowed: false,
@@ -212,7 +222,7 @@ const FAKE_DATA = {
       postalCode: 1234,
       state: "Geneve",
     },
-    profileCoverPhoto: "/shop-2.jpeg",
+    profileCoverPhoto: getRandomImage(),
     publications: 156,
     subscribers: 135,
     subscriptions: 14,
