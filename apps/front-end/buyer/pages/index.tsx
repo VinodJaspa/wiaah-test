@@ -26,6 +26,7 @@ import { PostCardInfo } from "types";
 const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   {
     storyUserData: {
+      id: "1",
       name: "Wiaah",
       userPhotoSrc: "/shop-3.jpeg",
     },
@@ -33,6 +34,7 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
   {
     storyUserData: {
+      id: "2",
       name: "Jack",
       userPhotoSrc: "/shop.jpeg",
     },
@@ -40,6 +42,7 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
   {
     storyUserData: {
+      id: "3",
       name: "sam",
       userPhotoSrc: "/shop-2.jpeg",
     },
@@ -47,6 +50,7 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
   {
     storyUserData: {
+      id: "4",
       name: "Wiaah",
       userPhotoSrc: "/shop-3.jpeg",
     },
@@ -54,6 +58,7 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
   {
     storyUserData: {
+      id: "5",
       name: "Jack",
       userPhotoSrc: "/shop.jpeg",
     },
@@ -61,7 +66,7 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
 ];
 
-const seller: NextPage = () => {
+const Buyer: NextPage = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
@@ -103,25 +108,25 @@ const seller: NextPage = () => {
               isMobile
                 ? []
                 : [
-                    {
-                      label: (
-                        <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
-                          <ChevronRightIcon boxSize={9} />
-                        </Button>
-                      ),
-                      right: "1rem",
-                      top: "center",
-                    },
-                    {
-                      label: (
-                        <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
-                          <ChevronLeftIcon boxSize={9} />
-                        </Button>
-                      ),
-                      left: "1rem",
-                      top: "center",
-                    },
-                  ]
+                  {
+                    label: (
+                      <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
+                        <ChevronRightIcon boxSize={9} />
+                      </Button>
+                    ),
+                    right: "1rem",
+                    top: "center",
+                  },
+                  {
+                    label: (
+                      <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
+                        <ChevronLeftIcon boxSize={9} />
+                      </Button>
+                    ),
+                    left: "1rem",
+                    top: "center",
+                  },
+                ]
             }
           >
             <RecentStories
@@ -135,7 +140,7 @@ const seller: NextPage = () => {
           <div className="w-full">
             <PostCardsListWrapper
               onPostClick={
-                (post) => {}
+                (post) => { }
                 // router.push(
                 //   "/",
                 //   { query: { newsfeedpostid: post.postInfo.id } },
@@ -152,4 +157,4 @@ const seller: NextPage = () => {
   );
 };
 
-export default seller;
+export default Buyer;
