@@ -16,7 +16,12 @@ import { useForm } from "@UI/../utils/src";
 import { useRouting } from "@UI/../routing";
 import * as yup from "yup";
 
-export interface PasswordSectionProps {}
+export interface PasswordSectionProps { }
+export interface PasswordSectionDTO {
+  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+}
 
 export const PasswordSection: React.FC<PasswordSectionProps> = () => {
   const { t } = useTranslation();
@@ -64,7 +69,7 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
         isPassword
       ></Input>
       <HStack className="justify-end">
-        <button onClick={() => {}}>
+        <button onClick={() => { }}>
           <p className="text-sm text-primary">{t("Forgot Password?")}</p>
         </button>
       </HStack>
@@ -90,28 +95,41 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
       </Button>
     </div>
   ) : (
-    <>
+    <React.Fragment>
       <div className="flex flex-col gap-4">
         <SectionHeader sectionTitle={t("password", "Password")} />
-        <FormikInput
-          label={{
-            translationKey: "current_password",
-            fallbackText: "Current Password",
+        <Formik<PasswordSectionDTO>
+          initialValues={{
+            confirmPassword: "",
+            newPassword: "",
+            currentPassword: "",
           }}
-          {...inputProps("currentPassword")}
-          {...setTestid("current_password")}
-          name="currentPassword"
-        />
-        <Input
-          label={t("New Password")}
-          {...inputProps("newPassword")}
-          {...setTestid("new_password")}
-        />
-        <Input
-          label={t("Confirm Password")}
-          {...inputProps("confirmNewPassword")}
-          {...setTestid("confirm_password")}
-        />
+          onSubmit={(data) => { }}
+        >
+          <React.Fragment>
+            <FormikInput
+              label={{
+                translationKey: "current_password",
+                fallbackText: "Current Password",
+              }}
+              {...inputProps("currentPassword")}
+              {...setTestid("current_password")}
+              name="currentPassword"
+            />
+            <FormikInput
+              label={t("New Password")}
+              {...inputProps("newPassword")}
+              {...setTestid("new_password")}
+              name="newPassword"
+            />
+            <FormikInput
+              label={t("Confirm Password")}
+              {...inputProps("confirmNewPassword")}
+              {...setTestid("confirm_password")}
+              name="confirmPassword"
+            />
+          </React.Fragment>
+        </Formik>
       </div>
       <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
         <span
@@ -130,6 +148,6 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
           {t("Change Password")}
         </Button>
       </div>
-    </>
+    </React.Fragment>
   );
 };
