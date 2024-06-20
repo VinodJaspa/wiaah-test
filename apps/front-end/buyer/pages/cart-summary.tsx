@@ -37,10 +37,10 @@ const CartSummary: NextPage<CartSummaryPageProps> = () => {
   return (
     <>
       <Head>
-        <title>Seller | Cart Summary</title>
+        <title>Buyer | Cart Summary</title>
       </Head>
       <SellerLayout sideBar={false}>
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
+        <SpinnerFallback isLoading={false}>
           <CartSummaryView />
         </SpinnerFallback>
       </SellerLayout>
