@@ -77,6 +77,6 @@ const sections: SettingsSectionType[] = [
     panelName: "Address Book",
     panelIcon: GiPostStamp,
     panelUrl: "/address-book",
-    panelComponent: <AddressBookSection />,
+    panelComponent: <AddressBookSection accountId="2" />,
   },
 ];
