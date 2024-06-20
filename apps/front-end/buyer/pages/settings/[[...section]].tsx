@@ -8,7 +8,7 @@ import { SellerLayout } from "ui";
 import { getRouteAfter } from "ui/components/helpers";
 import { AccountSettingsView } from "../../components/views/AccountSettings/AccountSettingsView";
 
-interface AccountSettingsPageProps {}
+interface AccountSettingsPageProps { }
 
 export const getServerSideProps: GetServerSideProps<
   AccountSettingsPageProps
@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
+const AccountSettings: NextPage<AccountSettingsPageProps> = ({ }) => {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -40,4 +40,4 @@ const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
   );
 };
 
-export default accountSettings;
+export default AccountSettings;
