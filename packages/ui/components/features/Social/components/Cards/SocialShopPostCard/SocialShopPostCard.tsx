@@ -68,7 +68,7 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
         className="w-full h-full object-cover"
         src={
           postInfo?.product.presentations &&
-          postInfo.product.presentations.length > 0
+            postInfo.product.presentations.length > 0
             ? postInfo.product.presentations[0].src
             : ""
         }
@@ -150,7 +150,7 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
                 onClick={() =>
                   like({
                     args: {
-                      authorProfileId: profileInfo.id,
+                      // authorProfileId: profileInfo.id,
                       contentId: postInfo.id,
                       contentType: ContentHostType.PostShop,
                     },
