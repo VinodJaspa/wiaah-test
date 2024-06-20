@@ -7,6 +7,7 @@ import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import { DataInitializationWrapper } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
+import { AccountType } from "types";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(
@@ -25,8 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Hydrate state={pageProps.dehydratedState}>
         {/* <ChakraProvider theme={{}}> */}
         <CookiesProvider>
+          {/* @ts-ignore */}
           <RecoilRoot>
-            <DataInitializationWrapper accountType="buyer">
+            <DataInitializationWrapper accountType={AccountType.Buyer}>
               <Component {...pageProps} />
             </DataInitializationWrapper>
           </RecoilRoot>
