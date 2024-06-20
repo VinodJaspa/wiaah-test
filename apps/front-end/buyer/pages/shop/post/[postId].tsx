@@ -10,7 +10,7 @@ import Head from "next/head";
 import { SellerLayout } from "ui";
 import { SellerShopPostView } from "../../../components";
 
-interface ShopPostProps {}
+interface ShopPostProps { }
 
 async function getShopPosts(): Promise<ShopCardInfo[]> {
   return ShopCardsInfoPlaceholder;
@@ -40,7 +40,7 @@ const ShopPost: NextPage<ShopPostProps> = () => {
   return (
     <>
       <Head>
-        <title>Seller | shop post</title>
+        <title>Buyer | shop post</title>
       </Head>
       <SellerLayout>
         <SellerShopPostView />

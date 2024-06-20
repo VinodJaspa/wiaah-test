@@ -6,24 +6,25 @@ import { QueryClient } from "react-query";
 import { SellerLayout } from "ui";
 import { WishlistView } from "../../components/index";
 
-export interface WishListPageProps {}
+export interface WishListPageProps { }
 
-export const getServerSideProps: GetServerSideProps<WishListPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  WishListPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("getWishlistItemsData", getWishlistItemsData);
+  queryClient.prefetchQuery("getWishlistItemsData", getWishlistItemsData);
 
-    return {
-      props: {},
-    };
+  return {
+    props: {},
   };
+};
 
 const wishlist: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Seller || wishlist</title>
+        <title>Buyer | wishlist</title>
       </Head>
       <SellerLayout>
         <WishlistView />
