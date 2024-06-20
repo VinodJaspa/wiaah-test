@@ -63,11 +63,11 @@ export interface SocialProfileProps {
         Account,
         "id" | "verified" | "accountType"
       > & {
-        shop: { __typename?: "Shop" } & Pick<
-          Shop,
-          "type" | "storeType" | "id"
-        >;
-      }
+          shop: { __typename?: "Shop" } & Pick<
+            Shop,
+            "type" | "storeType" | "id"
+          >;
+        }
     >;
   };
   isFollowed: boolean;
@@ -167,7 +167,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         isOpen={subscriptionsIsOpen}
         onClose={subscriptionsOnClose}
       />
-      <div className="items-center w-full pt-16 flex-wrap md:flex-nowrap bg-white border-2 border-white bottom-0 left-0 md:h-36 px-2 md:pl-14 py-6 flex flex-col gap-4">
+      <div className="items-center w-full flex-wrap md:flex-nowrap bg-white border-2 border-white bottom-0 left-0 md:h-36 px-2 md:pl-14 py-6 flex flex-col gap-4">
         <div className="relative">
           <Avatar
             onClick={() => setStoryProfileId(profileInfo.id)}
@@ -192,8 +192,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             className="w-[fit-content] "
           >
             <VStack
-              className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer border-2 border-white`}
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
             >
               <p className="font-medium text-sm">{t("Posts")}</p>
               <p className="font-bold text-xl">
@@ -202,8 +203,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </VStack>
 
             <VStack
-              className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer`}
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer`}
               onClick={() => handleOpen()}
             >
               <p className="font-medium text-sm">{t("Followers")}</p>
@@ -213,8 +215,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </VStack>
 
             <VStack
-              className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer border-2 border-white`}
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
               onClick={() => subscriptionsOnOpen()}
             >
               <p className="font-medium text-sm">{t("Following")}</p>
@@ -239,8 +242,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   {isFollowed
                     ? t("Unfollow")
                     : isProfilePublic
-                      ? t("Follow")
-                      : t("Ask To Follow")}
+                    ? t("Follow")
+                    : t("Ask To Follow")}
                 </Button>
 
                 <Button
@@ -284,9 +287,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
         <Container className="flex-grow gap-4 flex-col">
           {profileInfo &&
-            profileInfo.visibility === ProfileVisibility.Public ? (
+          profileInfo.visibility === ProfileVisibility.Public ? (
             <>
-              <TabsViewer tabs={tabsSet} />
+              <TabsViewer tabs={tabsSet!} />
               <Divider />
             </>
           ) : (
