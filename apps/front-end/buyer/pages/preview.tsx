@@ -2,10 +2,10 @@ import { NextPage } from "next";
 import React from "react";
 import { Formik, Form } from "formik";
 import {
+  StepperFormController,
   CheckMarkStepper,
   FormikInput,
   Button,
-  StepperFormContainer,
   StepperFormHandler,
 } from "ui";
 import * as yup from "yup";
@@ -22,8 +22,8 @@ const test3Schema = yup.object().shape({
 
 const preview: NextPage = () => {
   return (
-    <div className="w-1/2 mx-auto">
-      <StepperFormContainer
+    <div className="w-1/2 mx-auto mt-8">
+      <StepperFormController
         stepsNum={3}
         onFormComplete={(data) => {
           console.log("complete", data);
@@ -90,7 +90,7 @@ const preview: NextPage = () => {
             </div>
           );
         }}
-      </StepperFormContainer>
+      </StepperFormController>
     </div>
   );
 };
@@ -102,7 +102,7 @@ const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test1Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
@@ -122,7 +122,7 @@ const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test2Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
@@ -142,7 +142,7 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test3Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
