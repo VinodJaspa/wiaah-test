@@ -26,6 +26,9 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   children,
   ...props
 }) => {
+  if (!tabs || tabs.length === 0) {
+    return <div>Loading...</div>; // Display loading state or message
+  }
   return tabs.length > 0 ? (
     <Tabs {...props}>
       {showTabs && (
