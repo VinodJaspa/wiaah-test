@@ -4,6 +4,7 @@ import {
   shopCardInfoPlaceholder,
   ShopCardsInfoPlaceholder,
 } from "ui/placeholder";
+import { SocialShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import {
@@ -39,7 +40,9 @@ export const SellerShopPostView: React.FC = () => {
         mb="6rem"
         align={"start"}
       >
+        {/*
         <SocialStoryModal />
+        */}
         <SocialPostHeader
           name={ShopPost.user.name}
           thumbnail={ShopPost.user.thumbnail}
@@ -56,7 +59,10 @@ export const SellerShopPostView: React.FC = () => {
         {t("view", "view")} {ShopPost.user.name}{" "}
         {t("other_posts", "other posts")}
       </Text>
-      <ShopCardsListWrapper cols={cols} items={ShopPosts} />
+      <ShopCardsListWrapper
+        cols={cols}
+        items={SocialShopCardsInfoPlaceholder}
+      />
       <Button
         _focus={{ ringColor: "primary.main" }}
         bgColor="white"
