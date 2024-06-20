@@ -15,7 +15,7 @@ import {
   AccountSettingsSection,
   BlocklistSection,
   FindYourFriendsStep,
-  NewsLetterSection,
+  AccountNewsLetterSettingsSection,
   NotificationsSettingsSection,
   PasswordSection,
   PrivacySection,
@@ -66,7 +66,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: FiSettings,
     panelUrl: "/account",
 
-    panelComponent: <AccountSettingsSection />,
+    panelComponent: <AccountSettingsSection accountId="2" />,
   },
   {
     panelName: "Password",
@@ -80,20 +80,20 @@ const sections: SettingsSectionType[] = [
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
-    panelComponent: <NotificationsSettingsSection />,
+    panelComponent: <NotificationsSettingsSection accountId="2" />,
   },
   {
     panelName: "Newsletter",
     panelIcon: IoNewspaperOutline,
     panelUrl: "/newsletter",
 
-    panelComponent: <NewsLetterSection />,
+    panelComponent: <AccountNewsLetterSettingsSection userId="2" />,
   },
   {
     panelName: "Invite Friends",
     panelIcon: HiUserGroup,
     panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep />,
+    panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
   },
   {
     panelName: "Blocklist",
