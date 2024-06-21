@@ -1,4 +1,4 @@
-import { QueryPaginationInputs } from "src/types";
+import { QueryPaginationInputs } from "../../../../../types/index";
 import { AsyncReturnType } from "types";
 import {
   InferType,
@@ -54,10 +54,8 @@ export const getMyServicesFetcher = async (
       location: {
         address: "address",
         city: "city",
-        cords: {
-          lat: 456,
-          lng: 45,
-        },
+        lat: 456,
+        lon: 45,
         country: "country",
         countryCode: "US",
         postalCode: 12345,

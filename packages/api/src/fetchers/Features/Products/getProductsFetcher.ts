@@ -1,5 +1,8 @@
 import { getRandomImage } from "placeholder";
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
+import {
+  FormatedSearchableFilter,
+  QueryPaginationInputs,
+} from "../../../types/index";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {

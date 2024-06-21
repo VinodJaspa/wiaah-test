@@ -1,4 +1,7 @@
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
+import {
+  FormatedSearchableFilter,
+  QueryPaginationInputs,
+} from "../../../../../types/index";
 import {
   CheckValidation,
   generalServicesApiValidationSchema,
@@ -27,10 +30,8 @@ export const getGeneralServicesData = async (
       location: {
         address: "Rue du Cendrier 14",
         city: "Geneve",
-        cords: {
-          lat: 50,
-          lng: 30,
-        },
+        lat: 50,
+        lon: 30,
         country: "switzerland",
         postalCode: 1201,
         countryCode: "CH",

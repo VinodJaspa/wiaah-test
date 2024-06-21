@@ -1,4 +1,4 @@
-import { QueryPaginationInputs } from "../../../../../../";
+import { QueryPaginationInputs } from "../../../../../../types/index";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {

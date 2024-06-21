@@ -1,4 +1,4 @@
-import { QueryPaginationInputs } from "../../../../";
+import { QueryPaginationInputs } from "../../../../types/index";
 import { ServicesType } from "types";
 
 export type ServiceCategoryType = { name: string; slug: ServicesType };

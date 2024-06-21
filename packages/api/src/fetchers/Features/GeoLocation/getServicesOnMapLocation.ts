@@ -1,4 +1,4 @@
-import { FormatedSearchableFilter } from "src/types";
+import { FormatedSearchableFilter } from "../../../types/SearchableData";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {

@@ -1,4 +1,4 @@
-import { PaginationFetchedData } from "@types";
+import { PaginationFetchedData } from "../../../../types/pagination";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 

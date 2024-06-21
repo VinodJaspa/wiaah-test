@@ -2,7 +2,7 @@ import {
   FormatedSearchableFilter,
   PaginationFetchedData,
   QueryPaginationInputs,
-} from "src";
+} from "../../../../../types/index";
 import { randomNum } from "utils";
 import { HealthCenterPractitioner } from "./getHealthCenterSearchData";
 
@@ -28,10 +28,8 @@ const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
     location: {
       address: "address",
       city: "city",
-      cords: {
-        lat: 15,
-        lng: 15,
-      },
+      lat: 15,
+      lon: 15,
       country: "country",
       postalCode: 1234,
       countryCode: "CH",

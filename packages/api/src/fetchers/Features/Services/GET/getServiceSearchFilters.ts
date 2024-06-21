@@ -1,4 +1,4 @@
-import { FormatedSearchableFilter } from "../../../../";
+import { FormatedSearchableFilter } from "../../../../types/index";
 import { SERVICESTYPE_INDEXKEY, ServiceType } from "ui";
 import { ServicesType } from "types";
 export type FilterType = "select" | "radio" | "check";
@@ -6,22 +6,22 @@ export type FilterDisplayType = "text" | "rate";
 
 export type SearchFilterType =
   | {
-      filterTitle: string;
-      filterSlug: string;
-      filterType: FilterType;
-      filterDisplay: FilterDisplayType;
-      filterOptions: {
-        optName: string;
-        optSlug: string;
-      }[];
-    }
+    filterTitle: string;
+    filterSlug: string;
+    filterType: FilterType;
+    filterDisplay: FilterDisplayType;
+    filterOptions: {
+      optName: string;
+      optSlug: string;
+    }[];
+  }
   | {
-      filterTitle: string;
-      filterSlug: string;
-      filterType: "range";
-      minRange: number;
-      maxRange: number;
-    };
+    filterTitle: string;
+    filterSlug: string;
+    filterType: "range";
+    minRange: number;
+    maxRange: number;
+  };
 
 const filters: SearchFilterType[] = [
   {
