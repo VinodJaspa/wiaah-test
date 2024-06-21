@@ -3,12 +3,19 @@ import { ClassType } from "../../";
 
 type IsStringTranslation<T> = T extends String ? string : T;
 
+interface TranslationInputFields<T> {
+  langId: string;
+  value: IsStringTranslation<T>[];
+}
+
 export function CreateGqlInputTranslationInputFields<TData>(
   TItemClass: ClassType<TData>
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @InputType({ isAbstract: true })
-  abstract class TranslationInputFields {
+  abstract class TranslationInputFieldsClass
+    implements TranslationInputFields<TData>
+  {
     @Field(() => String)
     langId: string;
 
@@ -17,7 +24,14 @@ export function CreateGqlInputTranslationInputFields<TData>(
     // and here the generic type
     value: IsStringTranslation<TData>[];
   }
-  return TranslationInputFields;
+  return TranslationInputFieldsClass as ClassType<
+    TranslationInputFields<TData>
+  >;
+}
+
+interface TranslationInputField<T> {
+  langId: string;
+  value: IsStringTranslation<T>;
 }
 
 export function CreateInputGqlTranslationInputField<TData>(
@@ -25,7 +39,9 @@ export function CreateInputGqlTranslationInputField<TData>(
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @InputType({ isAbstract: true })
-  abstract class TranslationInputField {
+  abstract class TranslationInputFieldClass
+    implements TranslationInputField<TData>
+  {
     @Field(() => String)
     langId: string;
 
@@ -34,7 +50,12 @@ export function CreateInputGqlTranslationInputField<TData>(
     // and here the generic type
     value: IsStringTranslation<TData>;
   }
-  return TranslationInputField;
+  return TranslationInputFieldClass as ClassType<TranslationInputField<TData>>;
+}
+
+interface ObjectTranslationInputFields<T> {
+  langId: string;
+  value: IsStringTranslation<T>[];
 }
 
 export function CreateGqlObjectTranslationInputFields<TData>(
@@ -42,7 +63,9 @@ export function CreateGqlObjectTranslationInputFields<TData>(
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
-  abstract class TranslationInputFields {
+  abstract class TranslationInputFieldsClass
+    implements ObjectTranslationInputFields<TData>
+  {
     @Field(() => String)
     langId: string;
 
@@ -51,7 +74,14 @@ export function CreateGqlObjectTranslationInputFields<TData>(
     // and here the generic type
     value: IsStringTranslation<TData>[];
   }
-  return TranslationInputFields;
+  return TranslationInputFieldsClass as ClassType<
+    ObjectTranslationInputFields<TData>
+  >;
+}
+
+interface ObjectTranslationInputField<T> {
+  langId: string;
+  value: IsStringTranslation<T>;
 }
 
 export function CreateObjectGqlTranslationInputField<TData>(
@@ -59,7 +89,9 @@ export function CreateObjectGqlTranslationInputField<TData>(
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
-  abstract class TranslationInputField {
+  abstract class TranslationInputFieldClass
+    implements ObjectTranslationInputField<TData>
+  {
     @Field(() => String)
     langId: string;
 
@@ -68,5 +100,7 @@ export function CreateObjectGqlTranslationInputField<TData>(
     // and here the generic type
     value: IsStringTranslation<TData>;
   }
-  return TranslationInputField;
+  return TranslationInputFieldClass as ClassType<
+    ObjectTranslationInputField<TData>
+  >;
 }
