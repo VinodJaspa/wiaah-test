@@ -1,12 +1,18 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { ClassType } from "../../types";
 
+interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  hasMore: boolean;
+}
+
 export function CreateGqlPaginatedResponse<TData>(
   TItemClass: ClassType<TData>
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
-  abstract class PaginatedResponseClass {
+  abstract class PaginatedResponseClass implements PaginatedResponse<TData> {
     // here we use the runtime argument
     @Field(() => [TItemClass])
     // and here the generic type
@@ -18,7 +24,14 @@ export function CreateGqlPaginatedResponse<TData>(
     @Field()
     hasMore: boolean;
   }
-  return PaginatedResponseClass;
+  return PaginatedResponseClass as ClassType<PaginatedResponse<TData>>;
+}
+interface CursorPaginatedResponse<T> {
+  data: T[];
+  cursor?: string;
+  nextCursor?: string;
+  hasMore: boolean;
+  total?: number;
 }
 
 export function CreateGqlCursorPaginatedResponse<TData>(
@@ -26,7 +39,9 @@ export function CreateGqlCursorPaginatedResponse<TData>(
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
-  abstract class PaginatedResponseClass {
+  abstract class PaginatedResponseClass
+    implements CursorPaginatedResponse<TData>
+  {
     // here we use the runtime argument
     @Field(() => [TItemClass])
     // and here the generic type
@@ -44,5 +59,5 @@ export function CreateGqlCursorPaginatedResponse<TData>(
     @Field(() => Int, { defaultValue: 0 })
     total?: number;
   }
-  return PaginatedResponseClass;
+  return PaginatedResponseClass as ClassType<CursorPaginatedResponse<TData>>;
 }
