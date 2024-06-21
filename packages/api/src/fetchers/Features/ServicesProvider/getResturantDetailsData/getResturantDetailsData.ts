@@ -88,7 +88,7 @@ export enum ServicePaymentMethods {
 }
 
 export type GetRestaurantInput = {
-  id: Scalars["ID"]["input"];
+  id: Scalars["ID"];
 };
 
 export type GetResturantServiceDetialsQuery = {
@@ -348,6 +348,9 @@ query getRestaurant($args:GetRestaurantInput!){
   };
 
   const res = await client.send<GetResturantServiceDetialsQuery>();
+  if (!res.data) {
+    throw new Error("Restaurant not found");
+  }
 
   return res.data;
 };
