@@ -3,6 +3,9 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "jsx": "preserve",
     "baseUrl": ".",
