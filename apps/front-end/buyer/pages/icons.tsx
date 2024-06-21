@@ -1,8 +1,8 @@
 import React from "react";
-import { AllIconsPreviewer } from "@UI";
+// import { AllIconsPreviewer } from "@UI";
 import { NextPage } from "next";
 const Icons: NextPage = () => {
-  return <AllIconsPreviewer />;
+  return <div>Icons Page</div>;
 };
 
 export default Icons;
