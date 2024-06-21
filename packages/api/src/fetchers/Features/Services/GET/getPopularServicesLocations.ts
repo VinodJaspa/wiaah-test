@@ -10,10 +10,8 @@ export const getPopularServiceLocations = async (
     {
       address: "address 1",
       city: "Paris",
-      cords: {
-        lat: 15,
-        lng: 54,
-      },
+      lat: 15,
+      lon: 54,
       country: "france",
       countryCode: "FC",
       postalCode: 1354,
@@ -22,10 +20,8 @@ export const getPopularServiceLocations = async (
     {
       address: "address 1",
       city: "Paris",
-      cords: {
-        lat: 15,
-        lng: 54,
-      },
+      lat: 15,
+      lon: 54,
       country: "france",
       countryCode: "FC",
       postalCode: 1354,
@@ -34,10 +30,8 @@ export const getPopularServiceLocations = async (
     {
       address: "address 1",
       city: "Paris",
-      cords: {
-        lat: 15,
-        lng: 54,
-      },
+      lat: 15,
+      lon: 54,
       country: "france",
       countryCode: "FC",
       postalCode: 1354,

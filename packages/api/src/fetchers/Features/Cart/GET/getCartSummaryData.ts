@@ -226,10 +226,8 @@ export const getMyCartSummaryDataFetcher = (): Promise<
             location: {
               address: "address",
               city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
+              lat: 15,
+              lon: 16,
               country: "country",
               countryCode: "CH",
               postalCode: 13254,

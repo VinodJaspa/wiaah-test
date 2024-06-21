@@ -28,10 +28,8 @@ export const getHotelsMetaDataFetcher = async (
       location: {
         address: "test address",
         city: "paris",
-        cords: {
-          lat: 40,
-          lng: 45,
-        },
+        lat: 40,
+        lon: 45,
         postalCode: 13532,
         country: "france",
         countryCode: "USA",

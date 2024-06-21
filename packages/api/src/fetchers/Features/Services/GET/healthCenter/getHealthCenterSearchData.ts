@@ -48,10 +48,8 @@ export const getHealthCenterSearchData = async (
       location: {
         address: "address",
         city: "city",
-        cords: {
-          lat: 15,
-          lng: 15,
-        },
+        lat: 15,
+        lon: 15,
         country: "france",
         countryCode: "FR",
         postalCode: 1322,

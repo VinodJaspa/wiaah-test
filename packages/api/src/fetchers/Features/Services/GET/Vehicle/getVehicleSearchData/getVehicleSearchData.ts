@@ -32,7 +32,10 @@ export const getVehicleSearchDataFetcher = async (
       id: `${i}`,
       title: "Lucky Dip Car",
       price: 111,
-      cancelationPolicies: [],
+      cancelationPolicies: [
+        { duration: 24, cost: 50, id: "policy1" },
+        { duration: 48, cost: 25, id: "policy2" },
+      ],
       thumbnail:
         "https://hips.hearstapps.com/hmg-prod/images/2023-mclaren-artura-101-1655218102.jpg?crop=1.00xw:0.847xh;0,0.153xh&resize=1200:*",
 
@@ -44,6 +47,15 @@ export const getVehicleSearchDataFetcher = async (
         airCondition: true,
         gpsAvailable: true,
       },
+      pricePerDay: 100,
+      name: "Car Model A",
+      vehicleProps: [
+        { type: "passengers", value: 4 },
+        { type: "windows", value: 4 },
+        { type: "bags", value: 2 },
+        { type: "a/c", value: true },
+        { type: "gps", value: true },
+      ],
     })),
     total: randomNum(500),
   };

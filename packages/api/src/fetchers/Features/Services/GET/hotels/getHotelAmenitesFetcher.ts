@@ -13,7 +13,13 @@ export type HotelAmenitesApiResponse = InferType<
 export const getHotelAmenitesFetcher =
   async (): Promise<HotelAmenitesApiResponse> => {
     const res: AsyncReturnType<typeof getHotelAmenitesFetcher> = {
-      data: { amenites: ["Pool", "Park", "Free-Wifi"] },
+      data: {
+        amenites: [
+          { name: "Pool", slug: "pool" },
+          { name: "Park", slug: "park" },
+          { name: "Free-Wifi", slug: "free-wifi" },
+        ],
+      },
     };
 
     return CheckValidation(HotelAmenitesApiResponseValidationSchema, res);

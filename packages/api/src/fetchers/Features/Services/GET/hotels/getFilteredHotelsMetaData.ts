@@ -69,10 +69,8 @@ export const getFilteredHotelsMetaData = async (
         countryCode: "CHF",
         state: "Geneve",
         postalCode: 1234,
-        cords: {
-          lng: lngs[randomNum(lngs.length)],
-          lat: lats[randomNum(lats.length)],
-        },
+        lon: lngs[randomNum(lngs.length)],
+        lat: lats[randomNum(lats.length)],
       },
     })),
   };

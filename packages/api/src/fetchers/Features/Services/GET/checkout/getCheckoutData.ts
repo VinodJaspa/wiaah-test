@@ -95,7 +95,7 @@ export const getCheckoutDataFetcher = async (
           },
         },
         {
-          type: ServiceType.Vehicle,
+          type: ServiceType.Hotel,
           data: {
             serviceType: "hotel",
             bookedDates: {
@@ -130,7 +130,7 @@ export const getCheckoutDataFetcher = async (
           },
         },
         {
-          type: ServiceType.Restaurant,
+          type: "resturant",
           data: {
             serviceType: "restaurant",
             bookedDates: {
@@ -261,10 +261,8 @@ export const getCheckoutDataFetcher = async (
             location: {
               address: "address",
               city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
+              lat: 15,
+              lon: 16,
               country: "country",
               countryCode: "CH",
               postalCode: 13254,
@@ -294,10 +292,8 @@ export const getCheckoutDataFetcher = async (
             location: {
               address: "address",
               city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
+              lat: 15,
+              lon: 16,
               country: "country",
               countryCode: "CH",
               postalCode: 13254,

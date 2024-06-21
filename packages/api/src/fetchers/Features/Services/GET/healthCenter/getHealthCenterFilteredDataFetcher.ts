@@ -22,15 +22,14 @@ export const getHealthCentersFilteredDataFetcher = async (
         location: {
           address: "Boulvard James-Fazy 4",
           city: "Geneve",
-          cords: {
-            lat: randomNum(100),
-            lng: randomNum(100),
-          },
+          lat: randomNum(100),
+          lon: randomNum(100),
           country: "france",
           countryCode: "CHF",
           state: "Geneve",
           postalCode: 1201,
         },
+        reviews: 3,
         id: `${i}`,
         rate: randomNum(15),
         name: "Dr Charlene Kasaven",

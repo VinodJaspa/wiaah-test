@@ -53,10 +53,8 @@ export const getRecommendedResturantsFetcher = async (
         city: "paris",
         country: "France",
         state: "geneve",
-        cords: {
-          lat: lats[randomNum(lats.length)],
-          lng: lngs[randomNum(lngs.length)],
-        },
+        lat: lats[randomNum(lats.length)],
+        lon: lngs[randomNum(lngs.length)],
         countryCode: "CHF",
       },
       discount: {
