@@ -1,8 +1,9 @@
 import React from "react";
-import { ReactPubSubEventKeys, useReactPubsub } from "./useReactPubsub";
+import { useReactPubsub } from "./useReactPubsub";
+import { ReactPubsubKeys } from "ui";
 
 export function useReactPubsubModal<TValue extends object>(
-  fn: (keys: typeof ReactPubSubEventKeys) => keyof typeof ReactPubSubEventKeys,
+  fn: (keys: typeof ReactPubsubKeys) => keyof typeof ReactPubsubKeys,
   subscribe: boolean = false
 ) {
   const [value, setValue] = React.useState<TValue>();
