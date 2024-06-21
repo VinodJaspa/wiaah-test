@@ -1,5 +1,5 @@
 import React from "react";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItem } from "types";
 import { BoxShadow, CartSummaryProductCard, Divider, FlexStack } from "ui";
 
 export interface CartSummaryFilledProps {
@@ -16,15 +16,15 @@ export interface CartSummaryFilledProps {
 export const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({
   items,
 }) => {
-  function handleContactClick(shopId: string) {}
+  function handleContactClick(shopId: string) { }
 
-  function handleMoveToWishlist(productId: string) {}
+  function handleMoveToWishlist(productId: string) { }
 
-  function handleProfileClick(shopId: string) {}
+  function handleProfileClick(shopId: string) { }
 
-  function handleQtyChange(productId: string) {}
+  function handleQtyChange(productId: string) { }
 
-  function handleRemove(productId: string) {}
+  function handleRemove(productId: string) { }
 
   return (
     <BoxShadow>
@@ -45,7 +45,7 @@ export const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({
               onRemove={handleRemove}
               product={item}
             />
-            {i + 1 < items.length && <Divider marginY={{ value: 0.25 }} />}
+            {i + 1 < items.length && <Divider />}
           </>
         ))}
       </FlexStack>
