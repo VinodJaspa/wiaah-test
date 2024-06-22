@@ -1,4 +1,5 @@
 import { AsyncReturnType } from "types";
+import { ServiceType } from "ui";
 import { randomNum } from "utils";
 import {
   InferType,
@@ -57,7 +58,7 @@ export const getPendingAppointmentsFetcher =
         {
           type: "resturant",
           data: {
-            serviceType: "resturant",
+            serviceType: ServiceType.Restaurant,
             bookedDates: {
               from: new Date(Date.now()).toString(),
               to: null,
