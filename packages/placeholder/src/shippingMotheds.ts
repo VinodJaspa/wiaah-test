@@ -2,11 +2,14 @@ import { ShippingMothed } from "types";
 
 export const shippingMotheds: ShippingMothed[] = [
   {
-    name: "Click & Collect",
-    value: "click_and_collect",
+    name: "International",
+    value: "international",
     deliveryTime: {
-      from: 4,
-      to: 6,
+      from: 7,
+      to: 14,
     },
+    id: "method3",
+    cost: 20,
+    description: "Shipping to international destinations outside EU.",
   },
 ];

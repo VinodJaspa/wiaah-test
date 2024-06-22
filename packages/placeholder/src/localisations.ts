@@ -1,8 +1,7 @@
-import { PostCardInfo } from "types";
+import { AccountType, PostCardInfo } from "types";
 import { PlaceCardProps } from "ui";
 const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
-    url: "",
     id: "1",
     tags: ["mood", "new"],
     content:
@@ -29,12 +28,14 @@ const PostCardPlaceHolder: PostCardInfo = {
     ],
     createdAt: new Date(Date.UTC(2022, 3, 5)).toJSON(),
     comments: [],
+    numberOfShares: 4,
   },
   profileInfo: {
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
-    accountType: "seller",
+    accountType: AccountType.Seller,
+
     public: true,
   },
 };

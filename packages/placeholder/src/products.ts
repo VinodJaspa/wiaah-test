@@ -17,28 +17,37 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
       qty: 3,
       shippingMotheds: [
         {
-          deliveryTime: {
-            from: 5,
-            to: 7,
-          },
-          name: "European union",
-          value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
           name: "Click & Collect",
           value: "click_and_collect",
+          deliveryTime: {
+            from: 2,
+            to: 5,
+          },
+          id: "method1",
+          cost: 0,
+          description: "Pick up your order from our store.",
         },
         {
+          name: "European union",
+          value: "european_union",
           deliveryTime: {
-            from: 6,
-            to: 8,
+            from: 5,
+            to: 10,
           },
+          id: "method2",
+          cost: 10,
+          description: "Shipping within European Union countries.",
+        },
+        {
           name: "International",
           value: "international",
+          deliveryTime: {
+            from: 7,
+            to: 14,
+          },
+          id: "method3",
+          cost: 20,
+          description: "Shipping to international destinations outside EU.",
         },
       ],
 
@@ -72,28 +81,37 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
       qty: 3,
       shippingMotheds: [
         {
-          deliveryTime: {
-            from: 5,
-            to: 7,
-          },
-          name: "European union",
-          value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
           name: "Click & Collect",
           value: "click_and_collect",
+          deliveryTime: {
+            from: 2,
+            to: 5,
+          },
+          id: "method1",
+          cost: 0,
+          description: "Pick up your order from our store.",
         },
         {
+          name: "European union",
+          value: "european_union",
           deliveryTime: {
-            from: 6,
-            to: 8,
+            from: 5,
+            to: 10,
           },
+          id: "method2",
+          cost: 10,
+          description: "Shipping within European Union countries.",
+        },
+        {
           name: "International",
           value: "international",
+          deliveryTime: {
+            from: 7,
+            to: 14,
+          },
+          id: "method3",
+          cost: 20,
+          description: "Shipping to international destinations outside EU.",
         },
       ],
 
@@ -127,28 +145,37 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
       qty: 3,
       shippingMotheds: [
         {
-          deliveryTime: {
-            from: 5,
-            to: 7,
-          },
-          name: "European union",
-          value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
           name: "Click & Collect",
           value: "click_and_collect",
+          deliveryTime: {
+            from: 2,
+            to: 5,
+          },
+          id: "method1",
+          cost: 0,
+          description: "Pick up your order from our store.",
         },
         {
+          name: "European union",
+          value: "european_union",
           deliveryTime: {
-            from: 6,
-            to: 8,
+            from: 5,
+            to: 10,
           },
+          id: "method2",
+          cost: 10,
+          description: "Shipping within European Union countries.",
+        },
+        {
           name: "International",
           value: "international",
+          deliveryTime: {
+            from: 7,
+            to: 14,
+          },
+          id: "method3",
+          cost: 20,
+          description: "Shipping to international destinations outside EU.",
         },
       ],
       type: "service",
