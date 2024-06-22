@@ -1,4 +1,7 @@
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src/types";
+import {
+  FormatedSearchableFilter,
+  QueryPaginationInputs,
+} from "../../../../../types/index";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {
@@ -6,6 +9,7 @@ import {
   PostCommentsApiResponseValidationSchema,
   InferType,
   CheckValidation,
+  PostAttachmentType,
 } from "validation";
 
 export type PostCommentType = InferType<typeof PostCommentValidationSchema>;
@@ -22,20 +26,42 @@ export const getPostCommentsFetcher = async (
     total: randomNum(15),
     data: [...Array(5)].map((_, i) => ({
       id: `${i}`,
-      attachment:
-        randomNum(10) > 7 ? { src: "/shop-3.jpeg", type: "image" } : undefined,
-      content: "nice post " + i,
-      createdAt: new Date().toString(),
-      hashTags: ["fashion", "shopping"],
-      likes: randomNum(35),
-      replies: randomNum(135),
+      content: "This is a placeholder post content.",
+      createdAt: new Date().toISOString(),
+      hashTags: ["#placeholder", "#example"],
+      attachment: {
+        src: "https://example.com/placeholder.jpg",
+        type: "image" as PostAttachmentType,
+      },
+
+      likes: 0,
+      replies: 0,
       user: {
-        id: "" + i,
-        accountType: "seller",
-        name: "seller name",
-        public: true,
+        id: "user1",
+        userId: "user1",
         verified: true,
-        thumbnail: "/shop-2.jpeg",
+        name: "Placeholder Name",
+        thumbnail: "https://example.com/thumbnail.jpg",
+        accountType: "seller",
+        public: true,
+        profession: "Placeholder Profession",
+        publications: 0,
+        subscriptions: 0,
+        subscribers: 0,
+        location: {
+          address: "123 Placeholder St",
+          city: "Placeholder City",
+          state: "Placeholder State",
+          country: "Placeholder Country",
+          lat: 0.0,
+          lon: 0.0,
+          postalCode: 443243,
+          countryCode: "US",
+        },
+        bio: "This is a placeholder bio.",
+        links: ["https://example.com"],
+        isFollowed: false,
+        profileCoverPhoto: "https://example.com/profile-cover-photo.jpg",
       },
     })),
   };

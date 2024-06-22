@@ -1,4 +1,7 @@
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
+import {
+  FormatedSearchableFilter,
+  QueryPaginationInputs,
+} from "../../../types/index";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {
@@ -30,10 +33,8 @@ export const getShopsMapSearchDataFetcher = async (
       location: {
         address: "address",
         city: "paris",
-        cords: {
-          lat: 15,
-          lng: 21,
-        },
+        lat: 15,
+        lon: 21,
         country: "France",
         countryCode: "CHF",
         postalCode: 135465,

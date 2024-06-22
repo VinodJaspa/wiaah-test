@@ -1,4 +1,4 @@
-import { PostCardInfo, SocialStoryDataWithUser } from "types";
+import { AccountType, PostCardInfo, SocialStoryDataWithUser } from "types";
 import { newsfeedPosts } from "ui";
 
 export const getUserStoryFetcher = async (
@@ -11,7 +11,7 @@ export const getUserStoryFetcher = async (
     storyType: "image",
     storyViews: 156,
     user: {
-      accountType: "buyer",
+      accountType: AccountType.Buyer,
       id: "123",
       name: "test",
       profession: "test",

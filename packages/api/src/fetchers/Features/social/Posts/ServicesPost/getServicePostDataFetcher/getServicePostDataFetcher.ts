@@ -1,4 +1,4 @@
-import { FormatedSearchableFilter } from "src/types";
+import { FormatedSearchableFilter } from "../../../../../../types/index";
 import { AsyncReturnType } from "types";
 import { getRandomName, randomNum } from "utils";
 import {
@@ -32,13 +32,13 @@ export const getServicePostDataFetcher = async (
       label: "label",
       name: "service post",
       createdAt: new Date().toString(),
-      hashtags:["hash"],
-      discount:50,
-      price:55,
-      views:4,
-      cashback:{amount:3,type: "cash"},
-      rate:4.5,
-      postInteraction:{likes:4,comments:1},
+      hashtags: ["hash"],
+      discount: 50,
+      price: 55,
+      views: 4,
+      cashback: { amount: 3, type: "cash" },
+      rate: 4.5,
+      postInteraction: { likes: 4, comments: 1 },
       attachements: [
         {
           src: "https://images.unsplash.com/photo-1625602812206-5ec545ca1231?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YW1lcmljYW4lMjBob3VzZXN8ZW58MHx8MHx8&w=1000&q=80",
@@ -48,9 +48,7 @@ export const getServicePostDataFetcher = async (
       ],
       type: "hotel",
       content: sentence.substring(0, randomNum(sentence.length)),
-      profileInfo:
-      
-      {
+      profileInfo: {
         id: "user_123456", // Predefined ID
         userId: "user_john_doe", // Predefined user ID
         verified: true, // Set verification to true
@@ -58,13 +56,11 @@ export const getServicePostDataFetcher = async (
         thumbnail: "https://example.com/avatar.jpg", // Predefined thumbnail URL
         accountType: "seller", // Predefined social account type (assuming SocialAccountTypeEnum is defined)
         public: true, // Set profile to public
-        location:{
+        location: {
           address: "1600 Pennsylvania Ave NW", // Required string
           city: "Washington", // Required string
-          cords: {
-            lat: 38.8977, // Required number (latitude)
-            lng: -77.0369, // Required number (longitude)
-          },
+          lat: 38.8977, // Required number (latitude)
+          lon: -77.0369, // Required number (longitude)
           state: "DC", // Optional string (state)
           country: "USA", // Required string (country)
           postalCode: 20500, // Required string (postal code) - can be adjusted for different formats
@@ -78,8 +74,7 @@ export const getServicePostDataFetcher = async (
         links: ["https://www.example.com", "https://anotherwebsite.com"], // Predefined links
         isFollowed: false, // Set follower status to false
         profileCoverPhoto: "https://example.com/cover_photo.jpg", // Predefined cover photo URL
-      }
-      
+      },
     },
   };
 

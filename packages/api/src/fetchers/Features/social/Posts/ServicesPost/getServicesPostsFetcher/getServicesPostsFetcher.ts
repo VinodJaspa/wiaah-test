@@ -1,4 +1,4 @@
-import { QueryPaginationInputs } from "src/types";
+import { QueryPaginationInputs } from "../../../../../../types/index";
 import { AsyncReturnType, ServicesType } from "types";
 import { randomNum } from "utils";
 import {
@@ -76,10 +76,8 @@ export const getServicesPostsFetcher = async (
         location: {
           address: "test",
           city: "test",
-          cords: {
-            lat: 54,
-            lng: 132,
-          },
+          lat: 54,
+          lon: 132,
           country: "test",
           countryCode: "chf",
           postalCode: 456,

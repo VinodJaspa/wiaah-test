@@ -1,4 +1,7 @@
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src/types";
+import {
+  FormatedSearchableFilter,
+  QueryPaginationInputs,
+} from "../../../../../../types/index";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
 import {
@@ -46,23 +49,40 @@ export const getServicePostsOnMapDataFetcher = async (
       location: {
         address: "address",
         city: "city",
-        cords: {
-          lat: 45,
-          lng: 32,
-        },
+        lat: 45,
+        lon: 32,
         country: "country",
         countryCode: "CH",
         postalCode: 12345,
         state: "State",
       },
+
       user: {
-        accountType: "seller",
-        id: "132",
-        name: "seller name",
-        profession: "profession",
-        public: true,
-        thumbnail: "/shop-2.jpeg",
+        id: "user1",
+        userId: "user1",
         verified: true,
+        name: "Placeholder Name",
+        thumbnail: "https://example.com/thumbnail.jpg",
+        accountType: "seller",
+        public: true,
+        profession: "Placeholder Profession",
+        publications: 0,
+        subscriptions: 0,
+        subscribers: 0,
+        location: {
+          address: "123 Placeholder St",
+          city: "Placeholder City",
+          state: "Placeholder State",
+          country: "Placeholder Country",
+          lat: 0.0,
+          lon: 0.0,
+          postalCode: 443243,
+          countryCode: "US",
+        },
+        bio: "This is a placeholder bio.",
+        links: ["https://example.com"],
+        isFollowed: false,
+        profileCoverPhoto: "https://example.com/profile-cover-photo.jpg",
       },
     })),
   };
