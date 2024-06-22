@@ -176,3 +176,115 @@ export interface StorySeenByUserInfo {
   photoSrc: string;
   name: string;
 }
+export type ProductAttribute = {
+  __typename?: "ProductAttribute";
+  displayType: ProductAttributeDisplayType;
+  id: string;
+  name: string;
+  selectionType: ProductAttributeSelectionType;
+  values: Array<ProductAttributeValue>;
+};
+
+export type ProductAttributeValue = {
+  __typename?: "ProductAttributeValue";
+  id: string;
+  name: string;
+  price?: number;
+  value: string;
+};
+
+export enum ProductAttributeDisplayType {
+  Color = "color",
+  Text = "text",
+}
+
+export enum ProductAttributeSelectionType {
+  Multiple = "multiple",
+  Single = "single",
+}
+export enum ProductCondition {
+  New = "new",
+  Recondition = "recondition",
+  Used = "used",
+}
+export type Discount = {
+  __typename?: "Discount";
+  amount: string;
+  id: string;
+  units: number;
+};
+export type ProductPresentation = {
+  __typename?: "ProductPresentation";
+  src: string;
+  type: PresentationType;
+};
+
+export enum PresentationType {
+  Image = "image",
+  Video = "video",
+}
+export type ProductSelectAttribute = {
+  __typename?: "ProductSelectAttribute";
+  id: string;
+  values: string[];
+};
+export enum ShippingType {
+  ClickAndCollect = "click_and_collect",
+  Free = "free",
+  Paid = "paid",
+}
+export type ShippingDeliveryTimeRange = {
+  from: number;
+  to: number;
+};
+export type ShippingDetails = {
+  __typename?: "ShippingDetails";
+  available: boolean;
+  cost?: number;
+  country: string;
+  deliveryTimeRange?: ShippingDeliveryTimeRange;
+  shippingRulesIds: string[];
+  shippingTypes?: ShippingType[];
+};
+export enum ProductSize {
+  L = "l",
+  M = "m",
+  S = "s",
+  Xl = "xl",
+  Xxl = "xxl",
+  Xxxl = "xxxl",
+  Xxxxl = "xxxxl",
+}
+export enum ProductStatus {
+  Active = "active",
+  Deleted = "deleted",
+  Pasued = "pasued",
+  Pending = "pending",
+  Suspended = "suspended",
+}
+export enum ProductUsageStatus {
+  New = "new",
+  Used = "used",
+}
+export enum VisibilityEnum {
+  Hidden = "hidden",
+  Public = "public",
+}
+
+export enum CashbackType {
+  Cash = "cash",
+  Percent = "percent",
+}
+
+export enum AccountStatus {
+  Active = "active",
+  InActive = "inActive",
+  Pending = "pending",
+  Refused = "refused",
+  Suspended = "suspended",
+}
+
+export enum AffiliationStatus {
+  Active = "active",
+  InActive = "inActive",
+}
