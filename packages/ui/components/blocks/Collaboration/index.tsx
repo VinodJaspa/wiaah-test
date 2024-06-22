@@ -7,7 +7,7 @@ export const Collaboration: FC = () => {
     <div className="">
       <div className="flex w-full justify-center">
         <p className="text-2xl font-bold uppercase">
-          {t("Collaboration", "Collaboration")}
+          {t("Collaboration", "Collaboration").toString()}
         </p>
       </div>
       <Spacer />
