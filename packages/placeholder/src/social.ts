@@ -3,14 +3,26 @@ import { baseUri } from "uris";
 import { t } from "i18next";
 import {
   AccountType,
+  AccountStatus,
+  AffiliationStatus,
   AffiliationOfferCardInfo,
+  CashbackType,
   HashTagCardInfo,
   PostCardInfo,
   PostComment,
+  PresentationType,
+  ProductAttributeDisplayType,
+  ProductAttributeSelectionType,
+  ProductCondition,
+  ProductSize,
+  ProductStatus,
+  ProductUsageStatus,
   ProfileInfo,
+  ShippingType,
   ShopCardInfo,
   ShopSocialProfileInfo,
   SubscribersUserInfo,
+  VisibilityEnum,
 } from "types";
 import {
   AccountSignup,
@@ -321,13 +333,166 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
         itemId: "item-001",
         itemType: "product", // Or "service"
         product: {
-          // Replace with actual product details if applicable
-          name: "Awesome Product",
-          description: "This is a great product you should check out!",
-          // ... other product properties
+          __typename: "Product",
+          id: "product1",
+          attributes: [
+            {
+              __typename: "ProductAttribute",
+              id: "attr1",
+              name: "Size",
+              displayType: ProductAttributeDisplayType.Text,
+              selectionType: ProductAttributeSelectionType.Single,
+              values: [
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue1",
+                  name: "Red",
+                  price: 10.99,
+                  value: "#FF0000",
+                },
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue2",
+                  name: "Blue",
+                  price: 12.99,
+                  value: "#0000FF",
+                },
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue3",
+                  name: "Green",
+                  value: "#00FF00",
+                },
+              ],
+            },
+            {
+              __typename: "ProductAttribute",
+              id: "attr2",
+              name: "Color",
+              displayType: ProductAttributeDisplayType.Color,
+              selectionType: ProductAttributeSelectionType.Multiple,
+              values: [
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue1",
+                  name: "Red",
+                  price: 10.99,
+                  value: "#FF0000",
+                },
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue2",
+                  name: "Blue",
+                  price: 12.99,
+                  value: "#0000FF",
+                },
+                {
+                  __typename: "ProductAttributeValue",
+                  id: "attrValue3",
+                  name: "Green",
+                  value: "#00FF00",
+                },
+              ],
+            },
+          ],
+          brand: "Sample Brand",
+          cashback: {
+            __typename: "Cashback",
+            amount: 10,
+            id: "cashback1",
+            type: CashbackType.Cash,
+            units: 1,
+          },
+
+          categoryId: "category1",
+          condition: ProductCondition.New,
+          createdAt: "2024-06-22T12:00:00Z",
+          description: "This is a sample product description.",
+          discount: { amount: 10, id: "discount1", units: 1 },
+          earnings: 15.5,
+          external_clicks: 100,
+          hashtags: ["#fashion", "#clothing"],
+          colors: ["Red", "Blue", "Green"],
+          isExternalProduct: false,
+          isExternalShopping: false,
+          negitiveFeedback: 2,
+          positiveFeedback: 15,
+          presentations: [
+            {
+              __typename: "ProductPresentation",
+              src: "https://example.com/image1.jpg",
+              type: PresentationType.Image,
+            },
+            {
+              __typename: "ProductPresentation",
+              src: "https://example.com/image2.jpg",
+              type: PresentationType.Image,
+            },
+          ],
+          price: 49.99,
+          rate: 4,
+          reviews: 20,
+          sales: 50,
+          saved: true,
+          selectableAttributes: [
+            {
+              __typename: "ProductSelectAttribute",
+              id: "attr1",
+              values: ["size1"],
+            },
+            {
+              __typename: "ProductSelectAttribute",
+              id: "attr2",
+              values: ["color1", "color2"],
+            },
+          ],
+          seller: {
+            __typename: "Account",
+            accountType: AccountType.Seller,
+            createdAt: "2024-06-22T12:00:00Z",
+            currency: "USD",
+            email: "example@email.com",
+            firstName: "John",
+            id: "account1",
+            ips: ["192.168.1.1"],
+            lang: "en",
+            lastActiveAt: "2024-06-22T12:00:00Z",
+            //@ts-ignore
+            service: {},
+            lastName: "Doe",
+            status: AccountStatus.Active,
+            updatedAt: "2024-06-22T12:00:00Z",
+            verified: true,
+          },
+          sellerId: "seller1",
+          shippingDetails: {
+            available: true,
+            cost: 5.99,
+            country: "Sample Country",
+            deliveryTimeRange: { from: 2, to: 5 },
+            shippingRulesIds: ["rule1", "rule2"],
+            shippingTypes: [ShippingType.Paid, ShippingType.ClickAndCollect],
+          },
+          shippingRulesIds: ["rule1", "rule2"],
+          sizes: [ProductSize.S, ProductSize.M, ProductSize.L],
+          status: ProductStatus.Active,
+          stock: 100,
+          thumbnail: "https://example.com/product.jpg",
+          title: "Sample Product",
+          todayProductClickId: "click1",
+          totalDiscounted: 30,
+          totalDiscountedAmount: 100,
+          totalOrdered: 200,
+          unitsRefunded: 5,
+          updatedAt: "2024-06-22T12:00:00Z",
+          usageStatus: ProductUsageStatus.New,
+          vat: 5.5,
+          vendor_external_link: "https://example.com/vendor",
+          visibility: VisibilityEnum.Public,
         },
+        //@ts-ignore
         service: null, // If not a product, replace with service details
-        status: "active", // Or other possible statuses
+        status: AffiliationStatus.InActive, // Or other possible statuses
       },
       user: {
         profile: {
@@ -614,27 +779,39 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
 export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
   {
     profileInfo: {
-      id: 12345,
+      id: "443",
       verified: true,
       photo: getRandomImage(),
       username: "fashion_lover",
       profession: "Stylist",
     },
     postInfo: {
-      id: 54321,
+      id: "543",
       comments: 25,
       shares: 102,
       reactionNum: 417,
-      userId: 12345,
-      createdAt: new Date("2024-06-06T10:00:00Z"),
+      userId: "345",
+      createdAt: new Date("2024-06-06T10:00:00Z").toString(),
       product: {
-        id: 98765,
-        presentations: [{ src: getRandomImage() }],
+        id: "987",
+        presentations: [
+          { src: getRandomImage(), type: PresentationType.Image },
+        ],
         title: "Summer Breeze Dress",
         hashtags: ["#summerdress", "#fashion", "#ootd"],
         price: 49.99,
-        cashback: 5.0,
-        discount: 10,
+        cashback: {
+          amount: 100,
+          id: "cashback1",
+          type: CashbackType.Cash,
+          units: 1,
+        },
+        discount: {
+          __typename: "Discount",
+          amount: 10,
+          id: "discount1",
+          units: 1,
+        },
       },
     },
     onInteraction: (interaction) => {
@@ -645,27 +822,39 @@ export const SocialShopCardsInfoPlaceholder: SocialShopPostcardProps[] = [
 
   {
     profileInfo: {
-      id: 12345,
+      id: "2345",
       verified: true,
       photo: getRandomImage(),
       username: "fashion_lover",
       profession: "Stylist",
     },
     postInfo: {
-      id: 54321,
+      id: "5421",
       comments: 25,
       shares: 102,
       reactionNum: 417,
-      userId: 12345,
-      createdAt: new Date("2024-06-06T10:00:00Z"),
+      userId: "12345",
+      createdAt: new Date("2024-06-06T10:00:00Z").toString(),
       product: {
-        id: 98765,
-        presentations: [{ src: getRandomImage() }],
+        id: "985",
+        presentations: [
+          { src: getRandomImage(), type: PresentationType.Image },
+        ],
         title: "Summer Breeze Dress",
         hashtags: ["#summerdress", "#fashion", "#ootd"],
         price: 49.99,
-        cashback: 5.0,
-        discount: 10,
+        cashback: {
+          amount: 100,
+          id: "cashback1",
+          type: CashbackType.Cash,
+          units: 1,
+        },
+        discount: {
+          __typename: "Discount",
+          amount: 10,
+          id: "discount1",
+          units: 1,
+        },
       },
     },
     onInteraction: (interaction) => {
@@ -753,9 +942,11 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
     createdAt: new Date().toISOString(),
     itemId: "item1",
     itemType: "product",
+    //@ts-ignore
     product: "Product 1",
+    //@ts-ignore
     service: "Service 1",
-    status: "active",
+    status: AffiliationStatus.Active,
   },
   user: {
     profile: {
@@ -786,9 +977,11 @@ export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffil
         createdAt: new Date().toISOString(),
         itemId: "item1",
         itemType: "product",
+        //@ts-ignore
         product: "Product 1",
+        //@ts-ignore
         service: "Service 1",
-        status: "active",
+        status: AffiliationStatus.Active,
       },
       user: {
         id: "acc1",
@@ -819,9 +1012,11 @@ export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffil
         createdAt: new Date().toISOString(),
         itemId: "item2",
         itemType: "service",
+        //@ts-ignore
         product: "Product 2",
+        //@ts-ignore
         service: "Service 2",
-        status: "inactive",
+        status: AffiliationStatus.InActive,
       },
       user: {
         id: "acc2",
@@ -852,9 +1047,11 @@ export const ProfileAffiliation: GetProfileAffiliationPostsQuery["getAuthorAffil
         createdAt: new Date().toISOString(),
         itemId: "item3",
         itemType: "product",
+        //@ts-ignore
         product: "Product 3",
+        //@ts-ignore
         service: "Service 3",
-        status: "active",
+        status: AffiliationStatus.Active,
       },
       user: {
         __typename: "Account",
@@ -890,9 +1087,11 @@ export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["
         createdAt: new Date().toISOString(),
         itemId: "item1",
         itemType: "product",
+        //@ts-ignore
         product: "Product 1",
+        //@ts-ignore
         service: "Service 1",
-        status: "active",
+        status: AffiliationStatus.Active,
       },
       user: {
         profile: {
@@ -919,9 +1118,11 @@ export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["
         createdAt: new Date().toISOString(),
         itemId: "item2",
         itemType: "service",
+        //@ts-ignore
         product: "Product 2",
+        //@ts-ignore
         service: "Service 2",
-        status: "inactive",
+        status: AffiliationStatus.InActive,
       },
       user: {
         profile: {
@@ -948,9 +1149,11 @@ export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["
         createdAt: new Date().toISOString(),
         itemId: "item3",
         itemType: "product",
+        //@ts-ignore
         product: "Product 3",
+        //@ts-ignore
         service: "Service 3",
-        status: "active",
+        status: AffiliationStatus.Active,
       },
       user: {
         profile: {
