@@ -45,7 +45,7 @@ export const CalanderPage: React.FC<CalanderPageProps> = ({
       </div>
       <span className={`text-2xl p-2 font-bold text-[${textColor}]`}>
         <div className="flex flex-col items-center gap-2 py-2">
-          <span>{numericDay}</span>
+          <span>{numericDay?.toString() || ""}</span>
           <span>{month}</span>
         </div>
       </span>
