@@ -1,3 +1,5 @@
+import { jest } from "@jest/globals";
+
 export class NestKafkaClientMock {
   emit: jest.Mock = jest.fn();
   send: jest.Mock = jest.fn();

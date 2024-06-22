@@ -1,4 +1,5 @@
 import { ClassType } from "../../";
+import { jest, expect } from "@jest/globals";
 
 type TranslationResource = { langId: string; value: any };
 
