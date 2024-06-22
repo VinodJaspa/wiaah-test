@@ -66,7 +66,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
       onContactClick(profile.id);
     }
   }
-  function handleLocationClick() {}
+  function handleLocationClick() { }
   return (
     <FlexStack fullWidth>
       <FlexStack fullWidth direction="vertical">
@@ -82,8 +82,8 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                         <BoxShadow>
                           <Image
                             id="ProductImage"
-                            height={{ value: 2 }}
-                            width={{ value: 2 }}
+                            height={2}
+                            width={2}
                             src={profile.imageUrl}
                           />
                         </BoxShadow>
@@ -116,11 +116,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
             <FlexStack fullWidth={min} justify="center">
               <Releative fullWidth>
                 <Image
-                  width={min ? { value: 100, unit: "%" } : undefined}
-                  height={min ? { value: 16 } : undefined}
-                  rotation={min ? "landscape" : "portrait"}
-                  fit={"cover"}
-                  size={minimal ? "lg" : "xl"}
+                  width={min ? 100 : undefined}
+                  height={min ? 16 : undefined}
+                  style={{
+                    objectFit: "cover",
+                    transform: min ? "rotate(0deg)" : "rotate(90deg)",
+                  }}
                   src={product.imageUrl}
                 />
                 {product.cashback && !minimal && (
