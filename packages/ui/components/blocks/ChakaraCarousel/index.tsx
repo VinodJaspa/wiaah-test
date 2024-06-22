@@ -33,11 +33,12 @@ const transitionProps = {
   mass: 3,
 };
 
-export interface ChakaraCarouselProps extends FlexProps {
+export interface ChakaraCarouselProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactElement[];
   gap?: number;
   activeItem?: number;
-  setActiveItem?: (item: number) => any;
+  setActiveItem: (item: number) => any;
   onCurrentActiveChange?: (
     currentActive: number,
     currentActiveData?: any
@@ -173,7 +174,16 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   };
 
   return (
-    <Slider {...props} {...sliderProps}>
+    <Slider
+      constraint={constraint}
+      itemWidth={itemWidth}
+      setTrackIsActive={setTrackIsActive}
+      initSliderWidth={initSliderWidth}
+      setActiveItem={setActiveItem}
+      activeItem={activeItem}
+      positions={positions}
+      gap={gap}
+    >
       <Track {...trackProps}>
         {children &&
           children.map((child, index) => (
@@ -186,7 +196,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   );
 };
 
-interface SliderProps extends FlexProps {
+interface SliderProps {
   setTrackIsActive: Dispatch<SetStateAction<boolean>>;
   initSliderWidth: (width: number) => any;
   setActiveItem: (item: number) => any;
@@ -194,7 +204,7 @@ interface SliderProps extends FlexProps {
   constraint: number;
   itemWidth: number;
   positions: number[];
-  children: ReactElement;
+  children: React.ReactNode;
   arrows?: boolean;
   gap: number;
   navigateOnClick?: boolean;
@@ -278,7 +288,7 @@ const Slider: React.FC<SliderProps> = ({
   return (
     <Flex
       position={"relative"}
-      {...props}
+      // {...props}
       align={"center"}
       direction={"row"}
       ref={sliderRef}
@@ -312,6 +322,7 @@ const Slider: React.FC<SliderProps> = ({
           top: 0,
         }}
       >
+        {/*@ts-ignore*/}
         {children}
       </Box>
       {arrows && (
@@ -330,7 +341,7 @@ const Slider: React.FC<SliderProps> = ({
             variant="link"
             minW={0}
           >
-            <DoubleChevronLeftIcon boxSize={9} />
+            <DoubleChevronLeftIcon className="w-[9px] h-[9px]" />
           </Button>
           <Button
             onClick={handleIncrementClick}
@@ -347,7 +358,7 @@ const Slider: React.FC<SliderProps> = ({
             bgColor="whiteAlpha.600"
             minW={0}
           >
-            <DoubleChevronRightIcon boxSize={9} />
+            <DoubleChevronRightIcon className="w-[9px] h-[9px]" />
           </Button>
         </>
       )}
@@ -512,7 +523,7 @@ const Track: React.FC<TrackProps> = ({
     <>
       {/* {itemWidth && ( */}
       <VStack
-        {...style}
+        // {...style}
         bg={trackBgColor}
         ref={node}
         spacing={5}
@@ -534,6 +545,7 @@ const Track: React.FC<TrackProps> = ({
           flexWrap="nowrap"
           cursor={swipe ? "grab" : "auto"}
         >
+          {/*@ts-ignore*/}
           {children}
         </MotionFlex>
       </VStack>
@@ -593,6 +605,7 @@ const Item: React.FC<ItemProps> = ({
       }}
       py="4px"
     >
+      {/*@ts-ignore*/}
       {children}
     </Flex>
   );
