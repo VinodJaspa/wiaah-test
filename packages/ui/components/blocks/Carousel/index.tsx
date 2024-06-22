@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useCallback } from "react";
+import React, { CSSProperties, FC, useCallback, ReactNode } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export interface CarouselProps {
@@ -115,15 +115,17 @@ export const Carousel: FC<CarouselProps> = ({
             }}
             className={`h-full transition-all duration-500`}
           >
-            {children.map((Component, i) => (
-              <div
-                key={i}
-                style={{ left: `${100 * i}%` }}
-                className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center px-2`}
-              >
-                {Component}
-              </div>
-            ))}
+            {children &&
+              children.map((Component, i) => (
+                <div
+                  key={i}
+                  style={{ left: `${100 * i}%` }}
+                  className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center px-2`}
+                >
+                  {/*@ts-ignore*/}
+                  {Component}
+                </div>
+              ))}
           </div>
         </div>
       </div>

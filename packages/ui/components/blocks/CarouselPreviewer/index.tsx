@@ -8,7 +8,7 @@ export interface CarouselPreviewerProps {
   borderColor?: string;
 }
 export interface ComponentDetails {
-  Component: ReactElement;
+  Component: React.ReactNode;
 }
 
 export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
@@ -59,10 +59,10 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
                 onClick={() => handleItemClick(i)}
                 style={itemStyles}
                 key={i}
-                className={`h-16 w-28  overflow-clip ${
-                  currentComponent === i ? `border-4` : ""
-                } rounded`}
+                className={`h-16 w-28  overflow-clip ${currentComponent === i ? `border-4` : ""
+                  } rounded`}
               >
+                {/*@ts-ignore*/}
                 {Component}
               </div>
             ))}
@@ -84,10 +84,10 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
                 onClick={() => handleItemClick(i)}
                 style={itemStyles}
                 key={i}
-                className={`h-fit w-full overflow-clip ${
-                  currentComponent === i ? `border-4` : ""
-                } rounded`}
+                className={`h-fit w-full overflow-clip ${currentComponent === i ? `border-4` : ""
+                  } rounded`}
               >
+                {/*@ts-ignore*/}
                 {Component}
               </div>
             ))}
