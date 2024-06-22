@@ -13,7 +13,7 @@ import {
 } from "validation";
 import { randomNum } from "utils";
 
-export interface HealthCenterSpecialty {
+export interface HealthCenterSpecialtyTitle {
   title: string;
 }
 
@@ -22,7 +22,7 @@ export type HealthCenterPractitioner = InferType<
 >;
 
 export interface HealthCenterSearchSuggistionsData {
-  specialties: HealthCenterSpecialty[];
+  specialties: HealthCenterSpecialtyTitle[];
   practitioners: HealthCenterPractitioner[];
 }
 
@@ -38,7 +38,7 @@ export const getHealthCenterSearchData = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
 ): Promise<PaginationFetchedData<HealthCenterSearchSuggistionsData>> => {
-  const specialties: HealthCenterSpecialty[] = [...Array(50)].map(() => ({
+  const specialties: HealthCenterSpecialtyTitle[] = [...Array(50)].map(() => ({
     title: specialtiesPh[randomNum(specialtiesPh.length)],
     photo: undefined,
   }));
