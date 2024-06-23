@@ -85,6 +85,7 @@ export const Draggable: React.FC<DraggableComponentProps> = ({
       onMouseDown={handleDragStart}
       onTouchStart={handleDragStart}
     >
+      {/*@ts-ignore*/}
       {children}
     </div>
   );
