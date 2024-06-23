@@ -12,8 +12,9 @@ import {
 import { ChatMessageAttachment } from "@UI";
 import { AttachmentType, MessageAttachmentType } from "@features/API";
 import { mapArray } from "@UI/../utils/src";
+import { ChatMessageAttachmentType } from "../ChatRoomContent";
 
-export interface ChatMessageType {
+interface ChatMessageType {
   id: string;
   userId: string;
   username: string;
@@ -23,11 +24,6 @@ export interface ChatMessageType {
   messageAttachments?: ChatMessageAttachmentType[];
   seen: boolean;
   showUser: boolean;
-}
-
-export interface ChatMessageAttachmentType {
-  type: MessageAttachmentType;
-  src: string;
 }
 
 export interface ChatMessageProps {
@@ -82,11 +78,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
 
           {mapArray(messageAttachments, (attachment, i) => (
             <div
-              className={` ${
-                attachment.type === MessageAttachmentType.VoiceMessage
+              className={` ${attachment.type === MessageAttachmentType.VoiceMessage
                   ? ""
                   : "max-w-[min(100%,10rem)]"
-              } `}
+                } `}
               key={i}
             >
               <ChatMessageAttachment attachment={attachment} />
@@ -137,11 +132,10 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
           {Array.isArray(messageAttachments) &&
             messageAttachments.map((attachment, i) => (
               <div
-                className={`py-1 px-2 ${
-                  attachment.type === MessageAttachmentType.VoiceMessage
+                className={`py-1 px-2 ${attachment.type === MessageAttachmentType.VoiceMessage
                     ? ""
                     : "max-w-[min(100%,20rem)]"
-                }  ${msgBgColor} ${msgRadius}`}
+                  }  ${msgBgColor} ${msgRadius}`}
                 key={i}
               >
                 <ChatMessageAttachment attachment={attachment} />
