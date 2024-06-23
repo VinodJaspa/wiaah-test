@@ -1,8 +1,10 @@
 export interface UserProfileData {
+  id: string;
   name: string;
-  userPhotoSrc: string;
+  photo: string;
   activityType: string;
   verified?: boolean;
+  profession: string;
 }
 
 export type UsersProfilesVariant = "narrow" | "long";
