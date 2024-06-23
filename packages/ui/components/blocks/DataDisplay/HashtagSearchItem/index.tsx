@@ -21,7 +21,7 @@ export const HashTagSearchItem: React.FC<HashTagSearchProps> = ({
       </div>
       <div className="flex items-center gap-2">
         <span>{NumberShortner(hashtagViews)}</span>
-        <span>{t("views", "views")}</span>
+        <span>{t("views", "views").toString()}</span>
       </div>
     </div>
   );
