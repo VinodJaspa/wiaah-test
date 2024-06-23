@@ -36,64 +36,84 @@ import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover
 
 export const usersProfilesPlaceHolder = [
   {
+    id: "1",
     name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
+    photo: "/shop-3.jpeg",
     activityType: "Hotel",
     verified: true,
+    profession: "Hotel Manager",
   },
   {
+    id: "2",
     name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
+    photo: "/shop.jpeg",
     activityType: "Bar",
     verified: false,
+    profession: "Bartender",
   },
   {
+    id: "3",
     name: "sam",
-    userPhotoSrc: "/shop-2.jpeg",
+    photo: "/shop-2.jpeg",
     activityType: "Singer",
     verified: true,
+    profession: "Musician",
   },
   {
+    id: "4",
     name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
+    photo: "/shop-3.jpeg",
     activityType: "MarketPlace",
     verified: true,
+    profession: "Market Vendor",
   },
   {
+    id: "5",
     name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
+    photo: "/shop.jpeg",
     activityType: "Artist",
     verified: false,
+    profession: "Painter",
   },
   {
+    id: "6",
     name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
+    photo: "/shop-3.jpeg",
     activityType: "Hotel",
     verified: true,
+    profession: "Hotel Manager",
   },
   {
+    id: "7",
     name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
+    photo: "/shop.jpeg",
     activityType: "Bar",
     verified: false,
+    profession: "Bartender",
   },
   {
+    id: "8",
     name: "sam",
-    userPhotoSrc: "/shop-2.jpeg",
+    photo: "/shop-2.jpeg",
     activityType: "Singer",
     verified: true,
+    profession: "Musician",
   },
   {
+    id: "9",
     name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
+    photo: "/shop-3.jpeg",
     activityType: "MarketPlace",
     verified: true,
+    profession: "Market Vendor",
   },
   {
+    id: "10",
     name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
+    photo: "/shop.jpeg",
     activityType: "Artist",
     verified: false,
+    profession: "Painter",
   },
 ];
 export const placesPlaceholder: string[] = [
@@ -225,15 +245,13 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         )}
         <Container
           noContainer={true}
-          className={`${
-            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
-          } h-full`}
+          className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
+            } h-full`}
         >
           {header && header !== null && showHeader ? (
             <div
-              className={`bg-white fixed z-[35] w-full top-0 left-0 ${
-                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-              }`}
+              className={`bg-white fixed z-[35] w-full top-0 left-0 ${isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+                }`}
               ref={headerRef}
             >
               <HeaderSwitcher
@@ -249,9 +267,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                   ? `calc(${headerHeight || 0}px + 2rem)`
                   : undefined,
               }}
-              className={`${
-                containerProps?.className || ""
-              } overflow-hidden h-[max(fit,100%)]`}
+              className={`${containerProps?.className || ""
+                } overflow-hidden h-[max(fit,100%)]`}
               {...containerProps}
             >
               {children}
