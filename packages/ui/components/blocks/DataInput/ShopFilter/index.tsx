@@ -18,17 +18,13 @@ export const ShopFilter: React.FC<ShopFilterProps> = ({
 
   return (
     <div className="flex justify-end">
-      <FilterModal
-        isOpen={filterVisibleOnMobile}
-        onClose={() => setFilterVisibleOnMobile(false)}
-      />
+      <FilterModal />
       <div
         onClick={() => {
           setFilterVisibleOnMobile(true);
         }}
-        className={`filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs ${
-          onlyMobile && "md:hidden"
-        }`}
+        className={`filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs ${onlyMobile && "md:hidden"
+          }`}
       >
         <samp>{t("Filter", "Filter")}</samp>
         <FaChevronDown className="ml-2" />
@@ -37,17 +33,15 @@ export const ShopFilter: React.FC<ShopFilterProps> = ({
         onClick={() => {
           setGrid(false);
         }}
-        className={`${
-          isGrid ? "" : "bg-gray-200"
-        } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+        className={`${isGrid ? "" : "bg-gray-200"
+          } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
       />
       <HiOutlineViewGrid
         onClick={() => {
           setGrid(true);
         }}
-        className={`${
-          isGrid ? "bg-gray-200" : ""
-        } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+        className={`${isGrid ? "bg-gray-200" : ""
+          } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
       />
     </div>
   );
