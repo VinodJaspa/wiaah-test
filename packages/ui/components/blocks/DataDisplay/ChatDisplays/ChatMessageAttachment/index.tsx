@@ -5,11 +5,7 @@ import {
   useGetStoryQuery,
 } from "@UI";
 import { MessageAttachmentType, StoryType } from "@features/API";
-
-export interface ChatMessageAttachmentType {
-  type: MessageAttachmentType;
-  src: string;
-}
+import { ChatMessageAttachmentType } from "../ChatRoomContent";
 
 export interface ChatMessageAttachmentProps {
   attachment: ChatMessageAttachmentType;
