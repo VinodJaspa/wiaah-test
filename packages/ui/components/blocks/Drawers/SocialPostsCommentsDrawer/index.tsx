@@ -17,6 +17,7 @@ import React from "react";
 import { useUserData, useGetPostCommentsQuery, SpinnerFallback } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "hooks";
+import { FormatedSearchableFilter } from "@UI/../api";
 
 export interface SocialPostsCommentsDrawerProps {}
 
@@ -28,7 +29,11 @@ export const SocialPostsCommentsDrawer: React.FC<
   const { user } = useUserData();
   const { postId, removePostComments } = usePostsCommentsDrawer();
   const { isMobile } = useResponsive();
-  const { data, isLoading, isError } = useGetPostCommentsQuery(postId || null);
+  const filters: FormatedSearchableFilter = { id: postId! };
+  const { data, isLoading, isError } = useGetPostCommentsQuery(filters, {
+    take: 2,
+    page: 2,
+  });
 
   React.useEffect(() => {
     setTimeout(() => {
