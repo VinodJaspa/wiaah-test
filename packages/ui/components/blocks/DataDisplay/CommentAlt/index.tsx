@@ -40,7 +40,7 @@ export const CommentAlt: React.FC<CommentAltProps> = ({
   });
   const since = getSince();
 
-  function handleMoreCommentOptions() {}
+  function handleMoreCommentOptions() { }
 
   return (
     <Flex w="100%" gap={"1rem"}>
@@ -80,8 +80,7 @@ export const CommentAlt: React.FC<CommentAltProps> = ({
 
           {hashTags && (
             <HashTags
-              style={{ mb: "0.5rem" }}
-              color="primary.main"
+              props={{ className: "mb-2 text-[primary.main] " }}
               tags={hashTags}
             />
           )}
