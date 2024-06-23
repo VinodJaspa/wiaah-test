@@ -30,8 +30,6 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
 }, []);
 
 export const DiscoverView: React.FC = ({ }) => {
-  const usersProfilesPlaceHolder = FAKE_USERS;
-
   const { t } = useTranslation();
   const { discoverTabs, changeDiscoverTab, currentTab, setTabsData } =
     useDiscoverTabs();
@@ -40,6 +38,7 @@ export const DiscoverView: React.FC = ({ }) => {
     () => discoverItemsPlaceholder
   );
 
+  const usersProfilesPlaceHolder = FAKE_USERS;
   React.useEffect(() => {
     setTabsData([
       {
@@ -110,37 +109,82 @@ export const DiscoverView: React.FC = ({ }) => {
 const FAKE_USERS = [
   {
     id: "1",
-    photo: getRandomImage(),
-    username: "user1",
-    followers: 100,
+    name: "Wiaah",
+    photo: "/shop-3.jpeg",
+    activityType: "Hotel",
     verified: true,
-    profession: "Engineer",
+    profession: "Hotel Manager",
   },
-
   {
     id: "2",
-    photo: getRandomImage(),
-    username: "user2",
-    followers: 200,
+    name: "Jack",
+    photo: "/shop.jpeg",
+    activityType: "Bar",
     verified: false,
-    profession: "Designer",
+    profession: "Bartender",
   },
-
   {
     id: "3",
-    photo: getRandomImage(),
-    username: "user3",
-    followers: 150,
+    name: "sam",
+    photo: "/shop-2.jpeg",
+    activityType: "Singer",
     verified: true,
-    profession: "Artist",
+    profession: "Musician",
   },
-
   {
     id: "4",
-    photo: getRandomImage(),
-    username: "user4",
-    followers: 250,
+    name: "Wiaah",
+    photo: "/shop-3.jpeg",
+    activityType: "MarketPlace",
+    verified: true,
+    profession: "Market Vendor",
+  },
+  {
+    id: "5",
+    name: "Jack",
+    photo: "/shop.jpeg",
+    activityType: "Artist",
     verified: false,
-    profession: "Photographer",
+    profession: "Painter",
+  },
+  {
+    id: "6",
+    name: "Wiaah",
+    photo: "/shop-3.jpeg",
+    activityType: "Hotel",
+    verified: true,
+    profession: "Hotel Manager",
+  },
+  {
+    id: "7",
+    name: "Jack",
+    photo: "/shop.jpeg",
+    activityType: "Bar",
+    verified: false,
+    profession: "Bartender",
+  },
+  {
+    id: "8",
+    name: "sam",
+    photo: "/shop-2.jpeg",
+    activityType: "Singer",
+    verified: true,
+    profession: "Musician",
+  },
+  {
+    id: "9",
+    name: "Wiaah",
+    photo: "/shop-3.jpeg",
+    activityType: "MarketPlace",
+    verified: true,
+    profession: "Market Vendor",
+  },
+  {
+    id: "10",
+    name: "Jack",
+    photo: "/shop.jpeg",
+    activityType: "Artist",
+    verified: false,
+    profession: "Painter",
   },
 ];
