@@ -62,6 +62,7 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                     }, [])
                     .map((v) => ({
                       id: v.id,
+                      userId: v.user.id,
                       sendDate: v.createdAt,
                       username: v.user.profile?.username || "",
                       userPhoto: v.user.profile?.photo || "",
