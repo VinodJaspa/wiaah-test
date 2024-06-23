@@ -46,27 +46,29 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
           <img className="w-full h-full object-contain" src="/wiaah_logo.png" />
         </DrawerHeader>
         <div className="flex gap-4 overflow-y-scroll h-full flex-col">
-          {links.map((link, i) => (
-            <Button
-              key={i}
-              className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300"
-            >
-              <div
-                className="px-8 flex gap-8 items-center py-2 w-full"
+          <>
+            {links.map((link, i) => (
+              <Button
                 key={i}
-                onClick={() => onLinkClick && onLinkClick(link)}
+                className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300"
               >
-                <span className="w-8 h-8 text-4xl">
-                  {activeLink === link.url ? link.activeIcon : link.icon}
-                </span>
+                <div
+                  className="px-8 flex gap-8 items-center py-2 w-full"
+                  key={i}
+                  onClick={() => onLinkClick && onLinkClick(link)}
+                >
+                  <span className="w-8 h-8 text-4xl">
+                    {activeLink === link.url ? link.activeIcon : link.icon}
+                  </span>
 
-                <span className="capitalize font-semibold text-xl">
-                  {link.name}
-                </span>
-              </div>
-            </Button>
-          ))}
-          {children}
+                  <span className="capitalize font-semibold text-xl">
+                    {link.name}
+                  </span>
+                </div>
+              </Button>
+            ))}
+            {children}
+          </>
         </div>
       </DrawerContent>
     </Drawer>

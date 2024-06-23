@@ -23,23 +23,25 @@ export const FileInput: React.FC<FileInputProps> = ({
   }
   return (
     <label htmlFor={id}>
-      {children}
-      <Input
-        id={id}
-        type="file"
-        className="hidden"
-        multiple={multiple}
-        accept={
-          accept === "both"
-            ? "image/* , video/*"
-            : accept === "picture"
-            ? "image/*"
-            : accept === "video"
-            ? "video/*"
-            : undefined
-        }
-        {...props}
-      />
+      <>
+        {children}
+        <Input
+          id={id}
+          type="file"
+          className="hidden"
+          multiple={multiple}
+          accept={
+            accept === "both"
+              ? "image/* , video/*"
+              : accept === "picture"
+                ? "image/*"
+                : accept === "video"
+                  ? "video/*"
+                  : undefined
+          }
+          {...props}
+        />
+      </>
     </label>
   );
 };
