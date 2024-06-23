@@ -8,7 +8,6 @@ const transitionProps = {
   mass: 3,
 };
 export interface VerticalCarouselProps extends FlexProps {
-  children: React.ReactNode;
   gap?: number;
   explicitActiveItem?: number;
   onCurrentActiveChange?: (index: number) => any;
@@ -123,7 +122,6 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   return (
     <Flex
       data-testid="CarouselSlider"
-      {...props}
       ref={containerRef}
       w="100%"
       position={"relative"}
@@ -156,9 +154,9 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
               w={"auto"}
               h={`calc((100% / ${positions.length}) + ${gap}px )`}
               overflow="hidden"
-              {...itemProps}
             >
-              {child}
+              {/*@ts-ignore*/}
+              {child as unknown as React.ReactNode}
             </Flex>
           ))}
         </MotionFlex>
