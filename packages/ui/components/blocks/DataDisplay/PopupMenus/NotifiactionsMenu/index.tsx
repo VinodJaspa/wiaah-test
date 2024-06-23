@@ -8,9 +8,10 @@ import {
   MenuButton,
   useGetMyNotificationsQuery,
 } from "@UI";
+import { isToday } from "@UI/../utils/src";
 import React from "react";
 import { useTranslation } from "react-i18next";
-export interface NotifiactionsMenuProps {}
+export interface NotifiactionsMenuProps { }
 
 export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   children,
@@ -31,18 +32,14 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
               data.data.map((noti, i) => (
                 <MenuItem key={noti.id + i}>
                   <NotifiactionCard
-                    notificationDetails={{
-                      by: {
-                        id: noti.author?.id!,
-                        name: noti.author?.profile?.username!,
-                        thumbnail: noti.author?.profile?.photo!,
-                      },
-                      creationDate: noti.createdAt,
-                      id: noti.id,
-                      message: noti.content,
-                      type: noti.type,
-                      attachment: noti.thumbnail || undefined,
-                    }}
+                    username={noti.author?.profile?.username}
+                    createdAt={noti.createdAt}
+                    // TODO: bind order id from notification
+                    orderId={"132456"}
+                    type={noti.type}
+                    count={1}
+                    thumbnail={noti.author?.profile?.photo}
+                    seen={!isToday(new Date(noti.createdAt))}
                   />
                 </MenuItem>
               ))}
