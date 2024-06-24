@@ -609,6 +609,12 @@ export type BillingAccountAddressInput = {
   state: Scalars["String"]["input"];
 };
 
+export type BillingAccountBusinessProfileInput = {
+  mcc: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  url: Scalars["String"]["input"];
+}
+
 export enum BillingAccountBusinessType {
   Company = "company",
   Individual = "individual",
