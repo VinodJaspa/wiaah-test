@@ -43,8 +43,7 @@ export const AccountSignup = forwardRef(
         password: "",
         gender: AccountGenderEnum.Male,
       },
-      // TODO: remove username when added to the api
-      { accountType: RegisterAccountType.Seller, username: undefined },
+      { accountType: RegisterAccountType.Seller },
       {
         addLabel: true,
         addPlaceholder: true,
@@ -126,7 +125,6 @@ export const AccountSignup = forwardRef(
           <Input {...inputProps("firstName")} />
           <Input {...inputProps("lastName")} />
         </HStack>
-        <Input {...inputProps("username")} />
         <DateFormInput {...dateInputProps("birthDate")} />
         <div>
           <p className="font-semibold text-lg">{t("Gender")}</p>
@@ -174,7 +172,7 @@ export const AccountSignup = forwardRef(
               <Input
                 type="file"
                 hidden
-                onChange={(e: any) => {}}
+                onChange={(e: any) => { }}
                 name="photo"
                 accept="image/png, image/jpeg"
               />
@@ -182,7 +180,7 @@ export const AccountSignup = forwardRef(
                 <div className="flex flex-col items-center cursor-pointer justify-center">
                   <Button
                     className={`w-[min(100%,15rem)] rounded-full`}
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     {t("Upload_a_photo", "Upload a photo")}
                   </Button>
@@ -194,7 +192,7 @@ export const AccountSignup = forwardRef(
                 <div className="w-full flex flex-col items-center cursor-pointer justify-center">
                   <Button
                     className={`w-[min(100%,15rem)] rounded-full`}
-                    onClick={() => {}}
+                    onClick={() => { }}
                   >
                     {t("Take_a_Photo", "Take a Photo")}
                   </Button>
