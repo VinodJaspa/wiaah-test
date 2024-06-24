@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetAccountVerificationRequestQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminGetAccountVerificationRequestQuery = {

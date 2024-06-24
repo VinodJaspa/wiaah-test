@@ -19,22 +19,22 @@ export type AdminGetMembershipSubscribersQuery = { __typename?: "Query" } & {
       MembershipSubscription,
       "endAt" | "membershipId" | "startAt" | "userId" | "usage" | "status"
     > & {
-        membership: { __typename?: "Membership" } & Pick<
-          Membership,
-          "commissionOn" | "name" | "recurring" | "sortOrder" | "id"
-        > & {
-            turnover_rules: Array<
-              { __typename?: "MembershipTurnoverRule" } & Pick<
-                MembershipTurnoverRule,
-                "commission" | "commissionType" | "id" | "priceId" | "usage"
-              >
-            >;
-          };
-        subscriber: { __typename?: "Account" } & Pick<
-          Account,
-          "firstName" | "lastName"
+      membership: { __typename?: "Membership" } & Pick<
+        Membership,
+        "name" | "recurring" | "sortOrder" | "id"
+      > & {
+        turnover_rules: Array<
+          { __typename?: "MembershipTurnoverRule" } & Pick<
+            MembershipTurnoverRule,
+            "commission" | "commissionType" | "id" | "usage"
+          >
         >;
-      }
+      };
+      subscriber: { __typename?: "Account" } & Pick<
+        Account,
+        "firstName" | "lastName"
+      >;
+    }
   >;
 };
 

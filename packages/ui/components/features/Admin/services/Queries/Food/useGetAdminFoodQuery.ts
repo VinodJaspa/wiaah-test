@@ -5,12 +5,19 @@ import {
   Maybe,
   Profile,
   RestaurantDishType,
-  RestaurantEstablishmentType,
   ServiceLocation,
 } from "@features/API";
 import { randomNum } from "@UI/../utils/src";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
+
+type RestaurantEstablishmentType = {
+  id: string;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+  createdById: string;
+};
 
 export type GetAdminDishsQueryVariables = Exact<{
   args: AdminGetDishsInput;
@@ -22,23 +29,23 @@ export type GetAdminDishsQuery = { __typename?: "Query" } & {
       Dish,
       "id" | "name" | "thumbnail" | "type" | "sales"
     > & {
-        menu: { __typename?: "RestaurantMenu" } & {
-          restaurant: { __typename?: "ServiceDetails" } & {
-            location: { __typename?: "ServiceLocation" } & Pick<
-              ServiceLocation,
-              "country" | "city"
+      menu: { __typename?: "RestaurantMenu" } & {
+        restaurant: { __typename?: "ServiceDetails" } & {
+          location: { __typename?: "ServiceLocation" } & Pick<
+            ServiceLocation,
+            "country" | "city"
+          >;
+          establishmentType: {
+            __typename?: "RestaurantEstablishmentType";
+          } & Pick<RestaurantEstablishmentType, "name">;
+          owner: { __typename?: "Account" } & {
+            profile?: Maybe<
+              { __typename?: "Profile" } & Pick<Profile, "username">
             >;
-            establishmentType: {
-              __typename?: "RestaurantEstablishmentType";
-            } & Pick<RestaurantEstablishmentType, "name">;
-            owner: { __typename?: "Account" } & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<Profile, "username">
-              >;
-            };
           };
         };
-      }
+      };
+    }
   >;
 };
 

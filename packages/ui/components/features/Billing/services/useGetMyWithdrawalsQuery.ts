@@ -20,11 +20,11 @@ export type GetMyWithdrawalsQuery = { __typename?: "Query" } & {
       WithdrawalRequest,
       "id" | "amount" | "processedAt" | "requestedAt" | "status" | "userId"
     > & {
-        financialAccount: { __typename?: "FinancialAccount" } & Pick<
-          FinancialAccount,
-          "type" | "label" | "id"
-        >;
-      }
+      financialAccount: { __typename?: "FinancialAccount" } & Pick<
+        FinancialAccount,
+        "type" | "label" | "id"
+      >;
+    }
   >;
 };
 
@@ -63,7 +63,7 @@ query getMyWithdrawals($args:GetMyWithdrawalRequestsInput!){
     financialAccount: {
       id: "test",
       label: "Stripe",
-      type: FinancialAccountType.Stripe,
+      type: FinancialAccountType.Bank,
     },
     id: "test",
     processedAt: new Date().toDateString(),

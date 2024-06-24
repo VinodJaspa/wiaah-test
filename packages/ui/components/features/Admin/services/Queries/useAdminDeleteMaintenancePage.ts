@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type DeleteMaintenancePageMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type DeleteMaintenancePageMutation = { __typename?: "Mutation" } & Pick<

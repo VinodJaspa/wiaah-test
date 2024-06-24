@@ -1,7 +1,5 @@
 import {
   BillingAccount,
-  PartialBillingAccountBusinessProfile,
-  PartialBillingAccountCompany,
   PartialBillingAccountAddress,
   BillingAccountIndividual,
   BillingAccountAddress,
@@ -18,74 +16,86 @@ import { useQuery } from "react-query";
 
 export type GetMyPayoutAccountQueryVariables = Exact<{ [key: string]: never }>;
 
+type PartialBillingAccountCompany = {
+  name: string;
+  phone: string;
+  tax_id: string;
+};
+
+type PartialBillingAccountBusinessProfile = {
+  name: string;
+  mcc: string;
+  url: string;
+};
+
 export type GetMyPayoutAccountQuery = { __typename?: "Query" } & {
   getMyBillingAccount: { __typename?: "BillingAccount" } & Pick<
     BillingAccount,
     "businessType"
   > & {
-      business_profile?: Maybe<
-        { __typename?: "PartialBillingAccountBusinessProfile" } & Pick<
-          PartialBillingAccountBusinessProfile,
-          "mcc" | "name" | "url"
-        >
-      >;
-      company?: Maybe<
-        { __typename?: "PartialBillingAccountCompany" } & Pick<
-          PartialBillingAccountCompany,
-          "name" | "phone" | "tax_id"
+    business_profile?: Maybe<
+      { __typename?: "PartialBillingAccountBusinessProfile" } & Pick<
+        PartialBillingAccountBusinessProfile,
+        "mcc" | "name" | "url"
+      >
+    >;
+    company?: Maybe<
+      { __typename?: "PartialBillingAccountCompany" } & Pick<
+        PartialBillingAccountCompany,
+        "name" | "phone" | "tax_id"
+      > & {
+        address?: Maybe<
+          { __typename?: "PartialBillingAccountAddress" } & Pick<
+            PartialBillingAccountAddress,
+            "city" | "country" | "line1" | "postal_code"
+          >
+        >;
+      }
+    >;
+    individual?: Maybe<
+      { __typename?: "BillingAccountIndividual" } & Pick<
+        BillingAccountIndividual,
+        | "email"
+        | "phone"
+        | "first_name"
+        | "last_name"
+        | "id_number"
+        | "ssn_last_4"
+      > & {
+        address: { __typename?: "BillingAccountAddress" } & Pick<
+          BillingAccountAddress,
+          "city" | "country" | "line1" | "postal_code" | "state"
+        >;
+        dob: { __typename?: "BillingAccountDateOfBirth" } & Pick<
+          BillingAccountDateOfBirth,
+          "day" | "month" | "year"
+        >;
+      }
+    >;
+    companyMembers?: Maybe<
+      Array<
+        { __typename?: "CompanyPerson" } & Pick<
+          CompanyPerson,
+          "email" | "first_name" | "id" | "id_number" | "last_name" | "phone"
         > & {
-            address?: Maybe<
-              { __typename?: "PartialBillingAccountAddress" } & Pick<
-                PartialBillingAccountAddress,
-                "city" | "country" | "line1" | "postal_code"
-              >
-            >;
-          }
-      >;
-      individual?: Maybe<
-        { __typename?: "BillingAccountIndividual" } & Pick<
-          BillingAccountIndividual,
-          | "email"
-          | "phone"
-          | "first_name"
-          | "last_name"
-          | "id_number"
-          | "ssn_last_4"
-        > & {
-            address: { __typename?: "BillingAccountAddress" } & Pick<
-              BillingAccountAddress,
-              "city" | "country" | "line1" | "postal_code" | "state"
-            >;
-            dob: { __typename?: "BillingAccountDateOfBirth" } & Pick<
-              BillingAccountDateOfBirth,
-              "day" | "month" | "year"
-            >;
-          }
-      >;
-      companyMembers?: Maybe<
-        Array<
-          { __typename?: "CompanyPerson" } & Pick<
-            CompanyPerson,
-            "email" | "first_name" | "id" | "id_number" | "last_name" | "phone"
-          > & {
-              address: { __typename?: "PartialBillingAccountAddress" } & Pick<
-                PartialBillingAccountAddress,
-                "city" | "country" | "line1" | "postal_code" | "state"
-              >;
-              dob: { __typename?: "PartialBillingAccountDateOfBirth" } & Pick<
-                PartialBillingAccountDateOfBirth,
-                "day" | "month" | "year"
-              >;
-              relationship: {
-                __typename?: "PartialCompanyPersonRelationship";
-              } & Pick<
-                PartialCompanyPersonRelationship,
-                "director" | "executive" | "owner" | "representative" | "title"
-              >;
-            }
-        >
-      >;
-    };
+          address: { __typename?: "PartialBillingAccountAddress" } & Pick<
+            PartialBillingAccountAddress,
+            "city" | "country" | "line1" | "postal_code" | "state"
+          >;
+          dob: { __typename?: "PartialBillingAccountDateOfBirth" } & Pick<
+            PartialBillingAccountDateOfBirth,
+            "day" | "month" | "year"
+          >;
+          relationship: {
+            __typename?: "PartialCompanyPersonRelationship";
+          } & Pick<
+            PartialCompanyPersonRelationship,
+            "director" | "executive" | "owner" | "representative" | "title"
+          >;
+        }
+      >
+    >;
+  };
 };
 
 export const useGetMyPayoutAccountQuery = () =>

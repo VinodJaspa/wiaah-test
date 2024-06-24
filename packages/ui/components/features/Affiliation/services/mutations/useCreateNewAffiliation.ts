@@ -25,7 +25,7 @@ export const useCreateNewAffiliationMutation = () => {
         .setVariables(vars)
         .send<GqlResponse<Affiliation, "createNewAffiliationProduct">>();
 
-      return res.data.createNewAffiliationProduct;
+      return res.data.data.createNewAffiliationProduct;
     }
   );
 };

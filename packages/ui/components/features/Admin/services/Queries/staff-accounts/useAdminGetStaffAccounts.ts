@@ -17,7 +17,7 @@ export type GetStaffAccontsQuery = { __typename?: "Query" } & {
       | "photo"
       | "status"
       | "lastActiveAt"
-      | "type"
+      | "accountType"
     >
   >;
 };

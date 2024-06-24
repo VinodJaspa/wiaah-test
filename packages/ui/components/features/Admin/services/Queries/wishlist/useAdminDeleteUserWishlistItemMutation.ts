@@ -1,30 +1,40 @@
-import { Exact, Mutation, Product, Scalars, WishedItem } from "@features/API";
+import { Exact, Mutation, Scalars } from "@features/API"; // Adjust based on your actual import structure
 import { createGraphqlRequestClient } from "api";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 
+// Define the mutation variables and response types
 export type AdminDeleteUserWishlistItemMutationVariables = Exact<{
-  id: Scalars["String"];
+  accountId: Scalars["String"]["input"];
 }>;
 
 export type AdminDeleteUserWishlistItemMutation = {
   __typename?: "Mutation";
-} & Pick<Mutation, "adminDeleteUserWishlistItem">;
+} & {
+  adminDeleteUserWishlistItem: boolean; // Adjust return type based on actual response type
+};
 
+// Define the custom hook for the mutation
 export const useAdminDeleteUserWishlistItem = () =>
-  useMutation<boolean, unknown, string>(
-    ["admin-get-user-wishlist"],
-    async (id) => {
+  useMutation<boolean, unknown, AdminDeleteUserWishlistItemMutationVariables>(
+    // React Query key for caching and refetching purposes
+    ["admin-delete-user-wishlist-item"], // Adjust key based on your naming convention
+    async ({ accountId }) => {
       const client = createGraphqlRequestClient();
 
-      client.setQuery(`
-mutation adminDeleteUserWishlistItem($id:String!){
-  adminDeleteUserWishlistItem(accountId:$id)
-}`);
+      // Construct GraphQL mutation query with variables
+      const query = `
+        mutation AdminDeleteUserWishlistItem($accountId: String!) {
+          adminDeleteUserWishlistItem(accountId: $accountId)
+        }
+      `;
 
-      const res = await client
-        .setVariables<AdminDeleteUserWishlistItemMutationVariables>({ id: id })
+      // Send the GraphQL mutation request using the GraphQL client
+      const response = await client
+        .setQuery(query)
+        .setVariables({ accountId })
         .send<AdminDeleteUserWishlistItemMutation>();
 
-      return res.data.adminDeleteUserWishlistItem;
+      // Return the result of the mutation
+      return response.data.adminDeleteUserWishlistItem;
     }
   );

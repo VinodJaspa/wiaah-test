@@ -4,11 +4,11 @@ import { useQuery } from "react-query";
 import {
   Affiliation,
   AffiliationStatus,
-  GetMyAffiliationsInput,
   Product,
   Service,
   ServiceType,
 } from "@features/API";
+import { GetMyAffiliationsInput } from "@features/API/gql/generated";
 import { random } from "lodash";
 import { getRandomImage } from "@UI/placeholder";
 import { isDev } from "@UI/../utils/src";
@@ -31,19 +31,19 @@ export type GetAffiliationsQuery = { __typename?: "Query" } & {
       | "updatedAt"
       | "status"
     > & {
-        product?: Maybe<
-          { __typename?: "Product" } & Pick<
-            Product,
-            "id" | "thumbnail" | "title"
-          >
-        >;
-        service?: Maybe<
-          { __typename?: "Service" } & Pick<
-            Service,
-            "id" | "type" | "thumbnail" | "name"
-          >
-        >;
-      }
+      product?: Maybe<
+        { __typename?: "Product" } & Pick<
+          Product,
+          "id" | "thumbnail" | "title"
+        >
+      >;
+      service?: Maybe<
+        { __typename?: "Service" } & Pick<
+          Service,
+          "id" | "type" | "thumbnail" | "name"
+        >
+      >;
+    }
   >;
 };
 

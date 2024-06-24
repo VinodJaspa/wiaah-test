@@ -14,7 +14,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetNewsfeedPostQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminGetNewsfeedPostQuery = { __typename?: "Query" } & {
@@ -25,7 +25,6 @@ export type AdminGetNewsfeedPostQuery = { __typename?: "Query" } & {
     | "content"
     | "comments"
     | "attachments"
-    | "authorProfileId"
     | "commentsVisibility"
     | "createdAt"
     | "enableComments"
@@ -36,29 +35,29 @@ export type AdminGetNewsfeedPostQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "visibility"
   > & {
-      hashtags: Array<
-        { __typename?: "Hashtag" } & Pick<
-          Hashtag,
-          "createdAt" | "createdById" | "id" | "tag" | "usage" | "updatedAt"
-        >
-      >;
-      location?: Maybe<
-        { __typename?: "PostLocation" } & Pick<
-          PostLocation,
-          "address" | "city" | "country" | "state"
-        >
-      >;
-      mentions: Array<
-        { __typename?: "PostMention" } & Pick<PostMention, "userId">
-      >;
-      publisher?: Maybe<
-        { __typename?: "Profile" } & Pick<
-          Profile,
-          "photo" | "id" | "username" | "verified"
-        >
-      >;
-      tags: Array<{ __typename?: "PostTag" } & Pick<PostTag, "userId">>;
-    };
+    hashtags: Array<
+      { __typename?: "Hashtag" } & Pick<
+        Hashtag,
+        "createdAt" | "createdById" | "id" | "tag" | "usage" | "updatedAt"
+      >
+    >;
+    location?: Maybe<
+      { __typename?: "PostLocation" } & Pick<
+        PostLocation,
+        "address" | "city" | "country" | "state"
+      >
+    >;
+    mentions: Array<
+      { __typename?: "PostMention" } & Pick<PostMention, "userId">
+    >;
+    publisher?: Maybe<
+      { __typename?: "Profile" } & Pick<
+        Profile,
+        "photo" | "id" | "username" | "verified"
+      >
+    >;
+    tags: Array<{ __typename?: "PostTag" } & Pick<PostTag, "userId">>;
+  };
 };
 
 type args = AdminGetNewsfeedPostQueryVariables["id"];

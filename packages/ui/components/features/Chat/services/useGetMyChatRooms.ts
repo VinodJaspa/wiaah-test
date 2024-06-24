@@ -22,30 +22,30 @@ export type GetMyChatRoomsQuery = { __typename?: "Query" } & {
       ChatRoom,
       "createdAt" | "id" | "roomType" | "unSeenMessages" | "membersUserIds"
     > & {
-        members: Array<
-          { __typename?: "Account" } & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                "ownerId" | "activeStatus" | "username" | "photo"
-              >
-            >;
-          }
-        >;
-        messages: Array<
-          { __typename?: "ChatMessage" } & Pick<
-            ChatMessage,
-            "content" | "createdAt" | "userId"
-          > & {
-              seenBy: Array<
-                { __typename?: "ChatMessageSeenBy" } & Pick<
-                  ChatMessageSeenBy,
-                  "seenAt" | "userId"
-                >
-              >;
-            }
-        >;
-      }
+      members: Array<
+        { __typename?: "Account" } & {
+          profile?: Maybe<
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              "ownerId" | "activeStatus" | "username" | "photo"
+            >
+          >;
+        }
+      >;
+      messages: Array<
+        { __typename?: "ChatMessage" } & Pick<
+          ChatMessage,
+          "content" | "createdAt" | "userId"
+        > & {
+          seenBy: Array<
+            { __typename?: "ChatMessageSeenBy" } & Pick<
+              ChatMessageSeenBy,
+              "seenAt" | "userId"
+            >
+          >;
+        }
+      >;
+    }
   >;
 };
 
@@ -99,9 +99,8 @@ query getMyChatRooms {
             {
               profile: {
                 ownerId: "",
-                username: `${getRandomName().firstName} ${
-                  getRandomName().lastName
-                }`,
+                username: `${getRandomName().firstName} ${getRandomName().lastName
+                  }`,
                 activeStatus: ActiveStatus.Active,
                 photo: getRandomImage(),
               },

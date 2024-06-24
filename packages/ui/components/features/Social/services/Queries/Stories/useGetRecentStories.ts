@@ -16,16 +16,12 @@ export type GetRecentStoriesQuery = { __typename?: "Query" } & {
       RecentStory,
       "newStory" | "userId"
     > & {
-        user?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id"> & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<
-                  Profile,
-                  "id" | "photo" | "profession" | "username"
-                >
-              >;
-            }
-        >;
+        user: { __typename?: "Account" } & Pick<Account, "id"> & {
+            profile: { __typename?: "Profile" } & Pick<
+              Profile,
+              "id" | "photo" | "profession" | "username"
+            >;
+          };
       }
   >;
 };

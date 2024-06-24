@@ -1,5 +1,4 @@
-import { Category } from "@features/Products";
-import { UpdateCategoryInput } from "@features/Products/types";
+import { Category, UpdateCategoryInput } from "@features/API";
 import { GqlResponse } from "@UI/../types/src";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
@@ -29,7 +28,7 @@ export const useUpdateProductCategory = () => {
       const res = await client
         .setVariables({ args })
         .send<GqlResponse<Category, "updateProductCategory">>();
-      return res.data.updateProductCategory;
+      return res.data.data.updateProductCategory;
     }
   );
 };

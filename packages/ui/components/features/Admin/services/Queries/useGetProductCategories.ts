@@ -22,7 +22,7 @@ export const useGetProductCategories = () => {
     const res = await client.send<
       GqlResponse<Category[], "getProductCategories">
     >();
-    return res.data.getProductCategories;
+    return res.data.data.getProductCategories;
   });
 };
 

@@ -29,28 +29,28 @@ export type GetMyAffiliatiomHistoryQuery = { __typename?: "Query" } & {
       | "paidCommissionPercent"
       | "itemType"
     > & {
-        product?: Maybe<
-          { __typename?: "Product" } & Pick<
-            Product,
-            "id" | "thumbnail" | "title" | "price"
-          >
-        >;
-        service?: Maybe<
-          { __typename?: "Service" } & Pick<
-            Service,
-            "id" | "type" | "thumbnail" | "name" | "price"
-          >
-        >;
-        affiliator: { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile: Maybe<Pick<Profile, "username">>;
-          };
-        seller: { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile: Maybe<Pick<Profile, "username">>;
-          };
-        purchaser: { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile: Maybe<Pick<Profile, "username">>;
-          };
-      }
+      product?: Maybe<
+        { __typename?: "Product" } & Pick<
+          Product,
+          "id" | "thumbnail" | "title" | "price"
+        >
+      >;
+      service?: Maybe<
+        { __typename?: "Service" } & Pick<
+          Service,
+          "id" | "type" | "thumbnail" | "name" | "price"
+        >
+      >;
+      affiliator: { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile: Maybe<Pick<Profile, "username">>;
+      };
+      seller: { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile: Maybe<Pick<Profile, "username">>;
+      };
+      purchaser: { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile: Maybe<Pick<Profile, "username">>;
+      };
+    }
   >;
 };
 
@@ -114,35 +114,41 @@ export const useGetMyAffiliationHistoryQuery = (
   return useQuery(["get-my-affiliation-history"], async () => {
     const mockRes: GetMyAffiliatiomHistoryQuery["getMyProductsAffiliationHistory"] =
       [...Array(5)].map((v, i) => ({
-        id: "test",
-        itemId: "test",
-        sellerId: "test",
-        seller: {
-          id: "test",
-          profile: {
-            username: "test seller name",
-          },
+        _typename: "AffiliationPurchase",
+        id: "1",
+        itemId: "101",
+        purchaserId: "user123",
+        sellerId: "seller456",
+        paidCommissionAmount: 10.5,
+        paidCommissionPercent: 5,
+        itemType: "Product",
+        product: {
+          __typename: "Product",
+          id: "101",
+          thumbnail: "url/to/thumbnail.jpg",
+          title: "Sample Product",
+          price: 99.99,
         },
         affiliator: {
-          id: "test",
+          __typename: "Account",
+          id: "affiliate789",
           profile: {
-            username: "test affiliator name",
+            username: "affiliate_user",
           },
         },
-        paidCommissionAmount: 15,
-        paidCommissionPercent: 15,
+        seller: {
+          __typename: "Account",
+          id: "seller456",
+          profile: {
+            username: "seller_user",
+          },
+        },
         purchaser: {
-          id: "test",
+          __typename: "Account",
+          id: "user123",
           profile: {
-            username: "test purchaser name",
+            username: "purchaser_user",
           },
-        },
-        purchaserId: "test",
-        product: {
-          id: "test",
-          price: 54,
-          thumbnail: getRandomImage(),
-          title: "product titme",
         },
       }));
 

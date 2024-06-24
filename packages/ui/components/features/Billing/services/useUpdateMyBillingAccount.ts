@@ -6,10 +6,10 @@ export type UpdateBillingAccountMutationVariables = Exact<{
   args: CreateBillingAccountInput;
 }>;
 
-export type UpdateBillingAccountMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "updateMyBillingAccount"
->;
+export type UpdateBillingAccountMutation = {
+  __typename?: "Mutation";
+  updateMyBillingAccount: any; // Adjust return type based on actual response type
+};
 
 export const useUpdateMyBillingAccountMutation = () =>
   useMutation<boolean, unknown, UpdateBillingAccountMutationVariables["args"]>(

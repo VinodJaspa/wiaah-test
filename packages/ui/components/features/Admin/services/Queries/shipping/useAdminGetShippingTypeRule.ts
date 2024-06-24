@@ -8,7 +8,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetShippingTypeRuleQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetShippingTypeRuleQuery = { __typename?: "Query" } & {
@@ -16,13 +16,13 @@ export type GetShippingTypeRuleQuery = { __typename?: "Query" } & {
     ShippingTypeRule,
     "description" | "id" | "name" | "type"
   > & {
-      zones: Array<
-        { __typename?: "ShippingRuleGeoZone" } & Pick<
-          ShippingRuleGeoZone,
-          "country" | "id" | "shippingTypeRuleId" | "zone"
-        >
-      >;
-    };
+    zones: Array<
+      { __typename?: "ShippingRuleGeoZone" } & Pick<
+        ShippingRuleGeoZone,
+        "country" | "id" | "shippingTypeRuleId" | "zone"
+      >
+    >;
+  };
 };
 
 export const useAdminGetShippingTypeRule = (id: string) => {

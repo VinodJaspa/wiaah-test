@@ -1,8 +1,4 @@
-import { Category } from "@features/Products";
-import {
-  CreateCategoryInput,
-  MutationDeleteProductCategoryArgs,
-} from "@features/Products/types";
+import { Category } from "@features/API";
 import { GqlResponse } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
@@ -32,7 +28,7 @@ export const useDeleteProductCategory = () => {
       const res = await client
         .setVariables({ id })
         .send<GqlResponse<Category, "deleteProductCategory">>();
-      return res.data.deleteProductCategory;
+      return res.data.data.deleteProductCategory;
     }
   );
 };

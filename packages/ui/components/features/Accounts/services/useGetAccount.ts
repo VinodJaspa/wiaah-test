@@ -11,7 +11,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export type AdminGetAccountQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminGetAccountQuery = { __typename?: "Query" } & {
@@ -19,8 +19,8 @@ export type AdminGetAccountQuery = { __typename?: "Query" } & {
     Account,
     "firstName" | "email" | "lastName" | "accountType" | "photo"
   > & {
-      profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "username">>;
-    };
+    profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "username">>;
+  };
 };
 
 export const useAdminGetAccount = (
