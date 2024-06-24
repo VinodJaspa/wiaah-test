@@ -7,7 +7,9 @@ import { useShoppingCart, useGetMyShoppingCartQuery, PriceDisplay } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
-export interface ShoppingCartProps {}
+export interface ShoppingCartProps {
+  children: React.ReactNode;
+}
 
 export const ShoppingCart: React.FC<ShoppingCartProps> = ({ children }) => {
   const cartRef = React.useRef<HTMLDivElement>(null);
@@ -69,10 +71,12 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ children }) => {
         onClick={() => handleToggleOpen()}
         className="relative cursor-pointer select-none"
       >
-        {children}
-        <div className="w-4 h-4 absolute bottom-0 right-0 border-2 border-white translate-x-1/3 translate-y-1/3 flex items-center justify-center rounded-full bg-red-500 text-[0.5rem] text-white">
-          {items.length}
-        </div>
+        <>
+          {children}
+          <div className="w-4 h-4 absolute bottom-0 right-0 border-2 border-white translate-x-1/3 translate-y-1/3 flex items-center justify-center rounded-full bg-red-500 text-[0.5rem] text-white">
+            {items.length}
+          </div>
+        </>
       </div>
       {/* cart dropdown */}
       <div

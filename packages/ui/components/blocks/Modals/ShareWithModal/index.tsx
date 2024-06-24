@@ -20,10 +20,14 @@ import {
   Button,
 } from "@UI";
 
-export interface ShareWithModalProps {}
+export interface ShareWithModalProps { }
 
-export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
-  const { Listen } = useReactPubsub((keys) => keys.sharePostWithModal);
+interface Events {
+  sharePostWithModal: () => void;
+}
+
+export const ShareWithModal: React.FC<ShareWithModalProps> = ({ }) => {
+  const { Listen } = useReactPubsub<Events>((keys) => "sharePostWithModal");
   const [postId, setPostId] = React.useState<string>();
   const { t } = useTranslation();
 
@@ -58,7 +62,7 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
     <Modal
       isOpen={!!postId}
       onClose={() => setPostId(undefined)}
-      onOpen={() => {}}
+      onOpen={() => { }}
     >
       <ModalOverlay />
       <ModalContent>
