@@ -52,6 +52,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
                   data-testid="ListWrapperItem"
                   key={i}
                 >
+                  {/*@ts-ignore*/}
                   {item}
                 </div>
               )

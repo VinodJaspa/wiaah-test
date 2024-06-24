@@ -15,7 +15,7 @@ import {
 } from "@UI";
 import { Interaction } from "types";
 
-export interface ShopPostViewModalProps {}
+export interface ShopPostViewModalProps { }
 
 export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
   const { postId, removeCurrentPost } = useShopPostPopup();
@@ -61,7 +61,7 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
   }
 
   return (
-    <Modal onOpen={() => {}} isOpen={!!postId} onClose={removeCurrentPost}>
+    <Modal onOpen={() => { }} isOpen={!!postId} onClose={removeCurrentPost}>
       <ModalOverlay />
 
       <ModalContent className="max-w-[min(100%,35rem)] h-full sm:h-[90%]">
@@ -69,6 +69,7 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
           <PostsViewModalsHeader onBackClick={removeCurrentPost} />
         </ModalHeader>
         <div className="px-1 overflow-scroll h-full">
+          {/*@ts-ignore*/}
           {isError && <p>something went wrong :{error}</p>}
           {postDetails && (
             <SocialShopCard

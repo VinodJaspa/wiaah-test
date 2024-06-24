@@ -56,6 +56,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           />
           {footer && (
             <div className="bg-gradient-to-t from-black to-transparent w-full bottom-0 left-0 absolute z-[5]">
+              {/*@ts-ignore*/}
               {footer}
             </div>
           )}

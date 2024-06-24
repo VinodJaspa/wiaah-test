@@ -118,7 +118,7 @@ export const ActionsViewModal: React.FC<ActionsViewPopupProps> = ({
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={true}
-        // css={{ "&& .chakra-modal__content-container": { overflow: "hidden" } }}
+      // css={{ "&& .chakra-modal__content-container": { overflow: "hidden" } }}
       >
         <ModalOverlay bg="black" />
         <ModalContent
@@ -183,6 +183,7 @@ export const ActionsViewModal: React.FC<ActionsViewPopupProps> = ({
                     },
                   ]}
                 >
+                  {/*@ts-ignore*/}
                   {renderChild && post && renderChild(post)}
                   {/* <PostAttachmentsViewer
                     attachments={post?.postInfo.attachments || []}

@@ -13,6 +13,7 @@ export const PaginationWrapper: React.FC<HtmlDivProps> = ({
       {...props}
       className={`${props.className} self flex w-full flex-col gap-4 items-center`}
     >
+      {/*@ts-ignore*/}
       {children}
       <Pagination onPageChange={goToPage} />
     </div>

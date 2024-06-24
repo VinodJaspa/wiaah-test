@@ -34,7 +34,7 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
   return [...acc, ...hashTagsPlaceholder];
 }, []);
 
-export interface GeneralSearchModalProps {}
+export interface GeneralSearchModalProps { }
 
 export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   children,
@@ -105,6 +105,7 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   return (
     <Menu isLazy>
       <MenuButton>
+        {/*@ts-ignore*/}
         <div className="w-full">{children}</div>
       </MenuButton>
       <MenuList origin="top" className="-right-1/2 p-2">
