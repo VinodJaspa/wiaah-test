@@ -44,15 +44,15 @@ export interface PostCommentCardProps {
     | "updatedAt"
     | "replies"
   > & {
-      attachment: { __typename?: "Attachment" } & Pick<
-        Attachment,
-        "src" | "type"
-      >;
-      author?: { __typename?: "Profile" } & Pick<
-        Profile,
-        "username" | "photo" | "verified" | "id"
-      >;
-    };
+    attachment: { __typename?: "Attachment" } & Pick<
+      Attachment,
+      "src" | "type"
+    >;
+    author?: { __typename?: "Profile" } & Pick<
+      Profile,
+      "username" | "photo" | "verified" | "id"
+    >;
+  };
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -93,9 +93,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
       <Avatar src={profile?.photo} name={profile?.username} />
       <div className="w-full flex flex-col">
         <div
-          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${
-            main ? "bg-white" : "bg-primary-light"
-          }`}
+          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${main ? "bg-white" : "bg-primary-light"
+            }`}
         >
           <div className="flex items-center gap-2 justify-between">
             <HStack>
@@ -144,7 +143,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               <div className="flex whitespace-nowrap gap-1 h-full items-end">
                 <MdOutlineReply className="text-lg fill-primary" />
                 <p className="text-gray-500">
-                  {comment} {t("Replies")}
+                  {comment.content} {t("Replies")}
                 </p>
               </div>
             </HStack>

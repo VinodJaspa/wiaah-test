@@ -39,13 +39,13 @@ export const GridListOrganiser: React.FC<GridListOrganiser> = ({
     <div className={`flex flex-col w-full gap-[${gap}rem]`}>
       {Array.isArray(presetDisplayers)
         ? presetDisplayers.map(({ preset, childsPos: [from, to] }, idx) => (
-            <React.Fragment key={idx}>
-              <GridPresetOrganiser gap={gap} rowSize={rowSize} preset={preset}>
-                {React.Children.toArray(children).slice(from, to)}
-              </GridPresetOrganiser>
-              {/* <Divider /> */}
-            </React.Fragment>
-          ))
+          <React.Fragment key={idx}>
+            <GridPresetOrganiser gap={gap} rowSize={rowSize} preset={preset}>
+              {React.Children.toArray(children).slice(from, to)}
+            </GridPresetOrganiser>
+            {/* <Divider /> */}
+          </React.Fragment>
+        ))
         : null}
     </div>
   );
@@ -89,20 +89,19 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
           {preset
             ? Array.isArray(preset.points)
               ? preset.points.map((point, i) => (
-                  <div
-                    style={{
-                      gridRow: `span ${
-                        typeof point.r === "number" ? point.r : 1
+                <div
+                  style={{
+                    gridRow: `span ${typeof point.r === "number" ? point.r : 1
                       }`,
-                      gridColumn: `span ${
-                        typeof point.c === "number" ? point.c : 1
+                    gridColumn: `span ${typeof point.c === "number" ? point.c : 1
                       }`,
-                    }}
-                    key={i}
-                  >
-                    {React.Children.toArray(children).at(i)}
-                  </div>
-                ))
+                  }}
+                  key={i}
+                >
+                  {/*@ts-ignore*/}
+                  {React.Children.toArray(children).at(i)}
+                </div>
+              ))
               : null
             : null}
         </div>
