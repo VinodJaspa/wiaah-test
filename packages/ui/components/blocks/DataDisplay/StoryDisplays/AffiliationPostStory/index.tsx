@@ -2,6 +2,7 @@ import React from "react";
 import { SocialAffiliationCard, socialAffiliationCardPlaceholder } from "@UI";
 import { useRouter } from "next/router";
 import { useStory } from "@UI";
+import { AffiliationPostListPlaceholder } from "@UI/placeholder";
 export interface AffiliationPostStoryProps {
   postId: string;
 }
@@ -21,7 +22,7 @@ export const AffiliationPostStory: React.FC<AffiliationPostStoryProps> = ({
   return (
     <div className="cursor-pointer" onClick={handleRoute}>
       <div className="pointer-events-none">
-        <SocialAffiliationCard {...socialAffiliationCardPlaceholder} />;
+        <SocialAffiliationCard post={AffiliationPostListPlaceholder[0]} />;
       </div>
     </div>
   );
