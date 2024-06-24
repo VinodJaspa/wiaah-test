@@ -12,7 +12,7 @@ export const HorizontalCollaboration: React.FC = () => {
         </p>
       </div>
       <Spacer />
-      <ChakraCarousel swipe>
+      <ChakraCarousel setActiveItem={() => { }} swipe>
         {[...Array(4)].map((_, i: number) => (
           <div className="pointer-events-none" key={i}>
             <ImageCard key={i} name="Item Name" imgUrl="/shop-2.jpeg" />

@@ -19,6 +19,7 @@ export interface ProductCardProps {
   cashback: number;
   discount: number;
   rate: number;
+  name?: string;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -36,6 +37,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onDelete,
   onLike,
   full,
+  name,
 }) => {
   const { preferedCurrency } = usePreferedCurrency();
   const [selectedColor, setSelectedColor] = React.useState<number>(0);
@@ -122,11 +124,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </span>
         </div>
         <div
-          className={`${
-            hovered
+          className={`${hovered
               ? "pointer-events-auto opacity-100 "
               : "pointer-events-none opacity-0"
-          } absolute h-full w-full transition-all duration-300`}
+            } absolute h-full w-full transition-all duration-300`}
         >
           <div className={`h-full w-full bg-black bg-opacity-20`}></div>
           <span

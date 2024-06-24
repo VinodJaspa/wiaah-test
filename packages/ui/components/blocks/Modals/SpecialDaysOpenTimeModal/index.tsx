@@ -28,7 +28,7 @@ export const SpecialDaysOpenTimeModal: React.FC<
   const { t } = useTranslation();
 
   return (
-    <Modal isOpen={isOpen} onOpen={() => {}} onClose={clear}>
+    <Modal isOpen={isOpen} onOpen={() => { }} onClose={clear}>
       <ModalOverlay />
       <ModalContent className="flex  justify-center flex-col gap-4">
         <div className="flex flex-wrap justify-center text-xl">
@@ -57,15 +57,23 @@ export const SpecialDaysOpenTimeModal: React.FC<
         </div>
         {isWorkingDay && (
           <TimeSliderController
+            value={[new Date()]}
             openRanges={[
               {
-                from: hoursAday[9],
-                to: hoursAday[18],
+                from: hoursAday[9].toString(),
+                to: hoursAday[18].toString(),
               },
             ]}
             timeRange={hoursAday}
-            onTimeChange={(time) => {
-              setWorkingRange(time.map((t) => ({ from: t[0], to: t[1] })));
+            onChange={(time: Date[]) => {
+              setWorkingRange(
+                time.map((t) => ({
+                  from: new Date(t.setHours(t.getHours(), 0, 0, 0)).toString(),
+                  to: new Date(
+                    t.setHours(t.getHours() + 1, 0, 0, 0)
+                  ).toString(),
+                }))
+              );
             }}
           />
         )}

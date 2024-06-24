@@ -29,8 +29,9 @@ import { useUserData } from "hooks";
 import { mapArray, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
+import { ActionType, CommentsVisibility } from "@features/API";
 
-export interface AddNewPostModalProps {}
+export interface AddNewPostModalProps { }
 
 const MAX_UPLOAD_LIMIT = 5;
 
@@ -53,8 +54,20 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const CloseModal = hideNewPublish;
 
   const { form, handleChange } = useForm<Parameters<typeof mutate>[0]>({
-    src: "",
-    cover: "",
+    allowedActions: [ActionType.Comment, ActionType.Duet, ActionType.Stitch],
+    commentsVisibility: CommentsVisibility.Public,
+    coverUploadId: "",
+    link: "",
+    location: {
+      address: "",
+      city: "",
+      country: "",
+      state: "",
+    },
+    mentions: [],
+    srcUploadId: "",
+    tags: [],
+    thumbnailUploadId: "",
   });
 
   const { mutate } = useCreateActionMutation();
@@ -85,7 +98,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     }
   }, [isOpen]);
 
-  function cleanUpStates() {}
+  function cleanUpStates() { }
 
   const vidTypes = ["mp4", "mov"];
   const imgTypes = ["jpeg", "jpg", "png"];
@@ -130,38 +143,38 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                     >
                       {media
                         ? Array.from(media!).map((v) => (
-                            <div className="relative w-full h-full">
-                              <Image
-                                className="w-full h-full object-cover"
-                                src={URL.createObjectURL(v)}
-                              ></Image>
-                              <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
-                                <HStack>
-                                  <Button
-                                    colorScheme="danger"
-                                    center
-                                    className="p-2"
-                                  >
-                                    <TrashIcon />
-                                  </Button>
-                                </HStack>
-                              </div>
+                          <div className="relative w-full h-full">
+                            <Image
+                              className="w-full h-full object-cover"
+                              src={URL.createObjectURL(v)}
+                            ></Image>
+                            <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
+                              <HStack>
+                                <Button
+                                  colorScheme="danger"
+                                  center
+                                  className="p-2"
+                                >
+                                  <TrashIcon />
+                                </Button>
+                              </HStack>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : null}
                     </Slider>
                   </AspectRatio>
                   <div className="flex gap-4 justify-center w-full">
                     {media
                       ? mapArray(Array.from(media!), (v, i) => (
-                          <Radio
-                            className="cursor-pointer scale-125"
-                            checked={imageIdx === i}
-                            onChange={(v) =>
-                              v.target.checked ? setImageIdx(i) : null
-                            }
-                          />
-                        ))
+                        <Radio
+                          className="cursor-pointer scale-125"
+                          checked={imageIdx === i}
+                          onChange={(v) =>
+                            v.target.checked ? setImageIdx(i) : null
+                          }
+                        />
+                      ))
                       : null}
                   </div>
                 </div>
@@ -222,6 +235,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                   steps={[
                     {
                       key: "editor",
+                      //@ts-ignore
                       stepComponent: () => (
                         <div className="mx-auto w-[20.5rem]">
                           <VideoEditor
@@ -230,7 +244,10 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                             onFinish={(data) => {
                               if (data.size > MAX_ACTION_SIZE) return;
                               setActionVidBlob(data);
-                              handleChange("video", URL.createObjectURL(data));
+                              handleChange(
+                                "srcUploadId",
+                                URL.createObjectURL(data)
+                              );
                               setStep(1);
                             }}
                           />
@@ -240,6 +257,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                     },
                     {
                       key: "details",
+                      //@ts-ignore
                       stepComponent: () => (
                         <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
                           <div className="w-96 mx-auto">
@@ -289,7 +307,8 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                             <div className="flex flex-col gap-1">
                               <p>{t("Cover")}</p>
 
-                              {form.video && form.video.length > 0 ? (
+                              {form.srcUploadId &&
+                                form.srcUploadId.length > 0 ? (
                                 <VideoFlattenFrames
                                   videoEverySec={1}
                                   onFrameSelected={(v, idx) => {
@@ -331,7 +350,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                                       />
                                     </div>
                                   )}
-                                  videoSrc={form.video}
+                                  videoSrc={form.srcUploadId}
                                 />
                               ) : null}
                             </div>
@@ -373,7 +392,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                       className="hidden"
                     />
                     <span
-                      onClick={() => {}}
+                      onClick={() => { }}
                       className="cursor-pointer text-primary-500"
                     >
                       {t("browse")}

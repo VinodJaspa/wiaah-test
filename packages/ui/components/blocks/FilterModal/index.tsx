@@ -13,15 +13,20 @@ import {
 import { categories } from "placeholder";
 import { useModalDisclouser } from "hooks";
 import { useReactPubsub } from "react-pubsub";
+import { ProductCategoryStatus } from "@features/API";
 
-export interface FilterModalProps {}
+export interface FilterModalProps { }
+
+interface Events {
+  openSocialShopPostsFilterDrawer: () => void;
+}
 
 export const FilterModal: React.FC<FilterModalProps> = () => {
   const { t } = useTranslation();
   const { handleClose, handleOpen, isOpen } = useModalDisclouser();
 
-  const { Listen } = useReactPubsub(
-    (events) => events.openSocialShopPostsFilterDrawer
+  const { Listen } = useReactPubsub<Events>(
+    (keys) => "openSocialShopPostsFilterDrawer"
   );
 
   Listen(() => handleOpen());
@@ -52,7 +57,7 @@ export const FilterModal: React.FC<FilterModalProps> = () => {
               rating
               countryFilter
               cityFilter
-              categories={categories}
+              categories={FAKE_CATEGOREIS}
               priceRange={{ max: 1000, min: 10 }}
             />
           </div>
@@ -65,3 +70,30 @@ export const FilterModal: React.FC<FilterModalProps> = () => {
     </Drawer>
   );
 };
+
+const FAKE_CATEGOREIS = [
+  {
+    id: "1",
+    name: "Electronics",
+    parentId: null,
+    sales: 150,
+    sortOrder: 1,
+    status: ProductCategoryStatus.Active,
+  },
+  {
+    id: "2",
+    name: "Books",
+    parentId: null,
+    sales: 120,
+    sortOrder: 2,
+    status: ProductCategoryStatus.Active,
+  },
+  {
+    id: "3",
+    name: "Smartphones",
+    parentId: "1",
+    sales: 80,
+    sortOrder: 3,
+    status: ProductCategoryStatus.InActive,
+  },
+];

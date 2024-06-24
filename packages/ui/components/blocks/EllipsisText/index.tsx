@@ -87,8 +87,10 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         overflow="clip"
         textOverflow="clip"
       >
-        {children}
-        {content}
+        <>
+          {children}
+          {content}
+        </>
       </Text>
       {textEllipsising && !displayShowMore ? null : showMore === true ? (
         <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">

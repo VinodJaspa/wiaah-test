@@ -15,8 +15,9 @@ import {
   useGetAffiliationPost,
   usePostsCommentsDrawer,
 } from "@UI";
+import { AffiliationPostListPlaceholder } from "@UI/placeholder";
 
-export interface AffiliationPostViewModalProps {}
+export interface AffiliationPostViewModalProps { }
 
 export const AffiliationPostViewModal: React.FC<
   AffiliationPostViewModalProps
@@ -52,7 +53,7 @@ export const AffiliationPostViewModal: React.FC<
   }
 
   return (
-    <Modal isOpen={!!postId} onClose={removeCurrentPost} onOpen={() => {}}>
+    <Modal isOpen={!!postId} onClose={removeCurrentPost} onOpen={() => { }}>
       <ModalOverlay />
 
       <ModalContent className="h-full sm:h-[90%] max-w-[min(100%,35rem)]">
@@ -60,17 +61,21 @@ export const AffiliationPostViewModal: React.FC<
           <PostsViewModalsHeader onBackClick={removeCurrentPost} />
         </ModalHeader>
         <div className="px-1 overflow-scroll h-full">
-          {isError && <p>something went wrong :{error}</p>}
-          {postDetails && (
-            <SocialAffiliationCard
-              innerProps={{ className: "h-full justify-between" }}
-              interactionsProps={{
-                onInteraction: handleInteraction,
-              }}
-              showPostInteraction
-              {...postDetails}
-            />
-          )}
+          <>
+            {/*@ts-ignore*/}
+            {isError && <p>something went wrong :{error}</p>}
+            {postDetails && (
+              <SocialAffiliationCard
+                post={AffiliationPostListPlaceholder[0]}
+                innerProps={{ className: "h-full justify-between" }}
+                interactionsProps={{
+                  onInteraction: handleInteraction,
+                }}
+                showPostInteraction
+                {...postDetails}
+              />
+            )}
+          </>
         </div>
       </ModalContent>
     </Modal>

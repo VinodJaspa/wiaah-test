@@ -28,9 +28,9 @@ import { FormOptionType } from "types";
 import { AskForReturnValidationSchema } from "validation";
 import { RefundType } from "@features/API";
 
-export interface AskForReturnModalProps {}
+export interface AskForReturnModalProps { }
 
-export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
+export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({ }) => {
   const { isOpen, handleClose, handleOpen } = useModalDisclouser();
   const { t } = useTranslation();
 
@@ -51,11 +51,13 @@ export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
           onSubmit={(data, { resetForm }) => {
             mutate(
               {
-                id: data.productId,
-                qty: 1,
-                type: RefundType.Money,
+                amount: 50.0,
                 fullAmount: true,
-                reason: data.reason,
+                opened: true,
+                orderItemId: "abc123",
+                qty: 1,
+                reason: "Product not as described",
+                type: RefundType.Money,
               },
               {
                 onSuccess: () => {

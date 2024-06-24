@@ -236,7 +236,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 {hashtags?.map((tag, i) => (
                   <HStack className="text-white gap-[1rem]" key={i}>
                     <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
-                    <p>{tag}</p>
+                    <p>{tag.tag}</p>
                   </HStack>
                 )) || []}
               </ScrollableContainer>
@@ -271,6 +271,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 } overflow-hidden h-[max(fit,100%)]`}
               {...containerProps}
             >
+              {/*@ts-ignore*/}
               {children}
             </main>
           </div>
