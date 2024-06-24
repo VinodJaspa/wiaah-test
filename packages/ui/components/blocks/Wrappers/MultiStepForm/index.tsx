@@ -100,7 +100,7 @@ const Formcomponent: React.ForwardRefRenderFunction<
             />
             <div className="flex flex-col items-end">
               <div className="mb-2 text-lg font-bold">
-                {steps[formStep].stepName}
+                {steps[formStep].stepName.toString()}
               </div>
               <div className="text-xs text-gray-400">
                 {steps[formStep + 1]
@@ -114,14 +114,13 @@ const Formcomponent: React.ForwardRefRenderFunction<
               return (
                 <div
                   key={key}
-                  className={`${
-                    formStep == key ? "bg-primary text-white" : ""
-                  } flex w-4/12 flex-col justify-center px-6 py-4`}
+                  className={`${formStep == key ? "bg-primary text-white" : ""
+                    } flex w-4/12 flex-col justify-center px-6 py-4`}
                 >
                   <div className="text-lg font-bold">
                     {t("Step", "Step")} {key + 1}
                   </div>
-                  <div>{item.stepName}</div>
+                  <div>{item.stepName.toString()}</div>
                 </div>
               );
             })}

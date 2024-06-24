@@ -91,14 +91,14 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
         <ScrollPaginationWrapper axis="x" controls={controls}>
           <div className="flex items-start gap-2 w-full overflow-x-scroll noScroll">
             <ChatStory
-              onClick={() => createAction()}
+              onClick={() => createAction({})}
               userId={profile?.ownerId || ""}
               name={profile?.username || t("Me")}
               newStory={true}
               photo={profile?.photo || ""}
               isLive={false}
             />
-            {mapArray(stories || [], (v, i) => (
+            {mapArray(stories, (v, i) => (
               <ChatStory
                 onClick={() => viewUserStory(v.userId)}
                 userId={v.userId}
@@ -130,8 +130,8 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                 v.unSeenMessages > 0
                   ? lastMsg?.createdAt
                   : !!memberSeen
-                  ? memberSeen.seenAt
-                  : lastMsg?.createdAt || "";
+                    ? memberSeen.seenAt
+                    : lastMsg?.createdAt || "";
 
               const displayDate: boolean = isDate(date);
 
@@ -160,18 +160,17 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                         {member?.profile?.username}
                       </p>
                       <HStack
-                        className={`text-[0.813rem] ${
-                          v.unSeenMessages > 0 ? "font-bold" : ""
-                        }`}
+                        className={`text-[0.813rem] ${v.unSeenMessages > 0 ? "font-bold" : ""
+                          }`}
                       >
                         <p>
                           {v.unSeenMessages > 0
                             ? `${v.unSeenMessages} ${t("Unread messages")}`
                             : !!memberSeen
-                            ? `${t("Message seen")}`
-                            : lastMsg?.userId === profile?.ownerId
-                            ? t("Message sent")
-                            : null}
+                              ? `${t("Message seen")}`
+                              : lastMsg?.userId === profile?.ownerId
+                                ? t("Message sent")
+                                : null}
                         </p>
                         {displayDate ? (
                           <HStack className="gap-1">
@@ -234,8 +233,8 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                   member?.profile?.activeStatus === ActiveStatus.Active
                     ? "online"
                     : member?.profile?.activeStatus === ActiveStatus.Idle
-                    ? "idle"
-                    : "offline"
+                      ? "idle"
+                      : "offline"
                 }
                 unSeenMsgs={v.unSeenMessages}
                 lastMsg={v.messages.at(0)?.content}
@@ -266,9 +265,8 @@ export const ChatStory: React.FC<{
       className="flex flex-col cursor-pointer w-[3.875rem] justify-center items-center gap-1"
     >
       <div
-        className={`relative w-[3.375rem] h-[3.5rem] rounded-[1.375rem] ${
-          newStory ? "bg-primary" : "bg-[#E7E7E7]"
-        }`}
+        className={`relative w-[3.375rem] h-[3.5rem] rounded-[1.375rem] ${newStory ? "bg-primary" : "bg-[#E7E7E7]"
+          }`}
       >
         <div className="h-[3.25rem] w-[3.175rem] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem]" />
         <Image

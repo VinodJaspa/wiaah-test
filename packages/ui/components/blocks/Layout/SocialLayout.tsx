@@ -123,12 +123,12 @@ const socialLayoutSelector = selectorFamily({
   key: "socialLayoutSelector",
   get:
     (key: keyof SocialAtomValue | undefined = "unknown") =>
-    ({ get }) => {
-      const state = get(socialAtom);
+      ({ get }) => {
+        const state = get(socialAtom);
 
-      const value = state[key];
-      return value;
-    },
+        const value = state[key];
+        return value;
+      },
 });
 
 export function useSocialControls<TKey extends keyof SocialAtomValue>(
@@ -336,7 +336,7 @@ export const SocialLayout: React.FC = ({ children }) => {
           );
         }}
       /> */}
-      <SocialStoryModal />
+      <SocialStoryModal profileId="" />
       <AddNewPostModal />
       <AddNewStoryModal />
       <CommentReportModal />

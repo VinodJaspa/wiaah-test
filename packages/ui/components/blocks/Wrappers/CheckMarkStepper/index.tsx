@@ -34,9 +34,8 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
   return (
     <div className={`${className || ""} w-full flex flex-col gap-8`}>
       <div
-        className={`${
-          stepHeaderClassName || ""
-        } w-full relative flex justify-between`}
+        className={`${stepHeaderClassName || ""
+          } w-full relative flex justify-between`}
       >
         <span
           className={`w-full border-b-gray-300 absolute top-1/2 left-0 transition-all -translate-y-1/2 border-b-4`}
@@ -49,7 +48,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
         />
         {steps.map((step, i) => (
           <div
-            key={(step?.key || "") + i}
+            key={i}
             onClick={() => handleGoToStep(i)}
             className="cursor-pointer text-xl relative flex flex-col"
           >
@@ -57,21 +56,18 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
               <IoCheckmarkCircle className="bg-white text-primary" />
             ) : (
               <BiCircle
-                className={`bg-white ${
-                  currentStepIdx === i ? "text-primary" : "text-gray-300"
-                } `}
+                className={`bg-white ${currentStepIdx === i ? "text-primary" : "text-gray-300"
+                  } `}
               />
             )}
             <TranslationText
-              className={`${
-                currentStepIdx === i ? "" : "hidden sm:block"
-              } absolute text-xs sm:text-sm  top-full whitespace-nowrap ${
-                steps.length === i + 1
+              className={`${currentStepIdx === i ? "" : "hidden sm:block"
+                } absolute text-xs sm:text-sm  top-full whitespace-nowrap ${steps.length === i + 1
                   ? "right-0"
                   : i === 0
-                  ? "left-0"
-                  : "-translate-x-1/2 left-1/2"
-              }`}
+                    ? "left-0"
+                    : "-translate-x-1/2 left-1/2"
+                }`}
               translationObject={step?.stepName || ""}
             />
           </div>

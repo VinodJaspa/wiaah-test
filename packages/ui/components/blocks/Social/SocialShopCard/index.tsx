@@ -12,6 +12,7 @@ import { ShopCardInfo } from "types";
 import { useLoginPopup } from "@UI";
 import { ControlledCarousel } from "@UI";
 import { PostInteractionsProps } from "../PostInteractions";
+import { AttachmentType, ContentHostType } from "@features/API";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
@@ -72,7 +73,6 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
                 // ["data-testid"]: "test attachment",
                 ref: attachmentRef,
               }}
-              {...attachment}
             />
           ))}
         </ControlledCarousel>
@@ -85,7 +85,6 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
             productType={shopCardInfo.type}
             cashback={shopCardInfo.cashback}
             discount={shopCardInfo.discount}
-            {...shopCardInfo.attachments[0]}
           />
         )
       )}
@@ -113,7 +112,29 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
       {showComments && (
         <div className="py-2">
           <CommentsViewer
-            comments={shopCardInfo.comments}
+            comments={[
+              {
+                id: "placeholder-id",
+                content: "This is a placeholder comment.",
+                commentedAt: new Date().toISOString(),
+                likes: 0,
+                userId: "placeholder-user-id",
+                hostId: "placeholder-host-id",
+                hostType: ContentHostType.Comment,
+                updatedAt: new Date().toISOString(),
+                replies: 0,
+                attachment: {
+                  src: "placeholder-src",
+                  type: AttachmentType.Img, // or "video", "audio", etc.
+                },
+                author: {
+                  username: "placeholder-username",
+                  photo: "placeholder-photo-url",
+                  verified: false,
+                  id: "placeholder-author-id",
+                },
+              },
+            ]}
             maxInitailComments={4}
           />
         </div>

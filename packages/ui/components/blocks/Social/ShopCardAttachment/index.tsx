@@ -5,7 +5,7 @@ import {
   HiOutlineHeart,
   HiOutlineShoppingCart,
 } from "react-icons/hi";
-import { CashBack, HtmlDivProps, PostAttachmentTypes } from "types";
+import { CashBack, HtmlDivProps } from "types";
 import { Interactions } from "types";
 import { PostAttachment, CashbackBadge } from "@UI";
 import { PostAttachmentProps } from "../PostAttachment";
@@ -14,10 +14,10 @@ import { AttachmentType } from "@features/API";
 export interface ShopCardAttachmentProps {
   cashback?: CashBack;
   src?: string;
-  type?: PostAttachmentTypes;
+  type?: AttachmentType;
   alt?: string;
   discount?: CashBack;
-  productType: "product" | "service";
+  productType?: "product" | "service";
   onInteraction?: (interaction: Interactions) => any;
   showbook?: boolean;
   attachmentProps?: PostAttachmentProps;

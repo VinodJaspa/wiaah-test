@@ -13,7 +13,7 @@ import {
   ModalHeader,
 } from "@UI";
 
-export interface NewsfeedPostDetailsPopupProps {}
+export interface NewsfeedPostDetailsPopupProps { }
 
 export const NewsfeedPostDetailsPopup: React.FC<
   NewsfeedPostDetailsPopupProps
@@ -48,7 +48,7 @@ export const NewsfeedPostDetailsPopup: React.FC<
   }
 
   return (
-    <Modal onOpen={() => {}} isOpen={!!postId} onClose={removeCurrentPost}>
+    <Modal onOpen={() => { }} isOpen={!!postId} onClose={removeCurrentPost}>
       <ModalOverlay />
 
       <ModalContent className="w-[min(100%,35rem)] h-full sm:h-[90%]">
@@ -57,17 +57,7 @@ export const NewsfeedPostDetailsPopup: React.FC<
         </ModalHeader>
         <div className="px-1 h-full overflow-scroll noScroll">
           {/* <SocialPostsCommentsDrawer /> */}
-          {postDetails && (
-            <PostCard
-              onInteraction={handleInteraction}
-              innerProps={{
-                h: "100%",
-                overflowY: "scroll",
-                className: "thinScroll px-1",
-              }}
-              {...postDetails}
-            />
-          )}
+          {postDetails && <PostCard post={postDetails} />}
         </div>
       </ModalContent>
     </Modal>

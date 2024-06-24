@@ -34,9 +34,8 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
   return (
     <Grid
       pr="1rem"
-      gridAutoRows={`${
-        (gridItemDim?.borderBox.width || 128) * (portrait ? 2 : 1)
-      }px`}
+      gridAutoRows={`${(gridItemDim?.borderBox.width || 128) * (portrait ? 2 : 1)
+        }px`}
       templateColumns={`repeat(${cols}, calc(100% / ${cols}))`}
       gap={"0.5rem"}
       position={"relative"}
@@ -64,6 +63,7 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                 : undefined
             }
           >
+            {/*@ts-ignore*/}
             {component}
           </GridItem>
         ))}
