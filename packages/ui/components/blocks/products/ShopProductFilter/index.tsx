@@ -10,7 +10,7 @@ import {
   ProductNestedCategory,
   FormatCategoryFilters,
 } from "@UI";
-import { Category as ProductCategory } from "@features/Products/types";
+import { Category as ProductCategory } from "@features/API";
 import { Country, City } from "country-state-city";
 import { useTranslation } from "react-i18next";
 

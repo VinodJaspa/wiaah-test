@@ -1,5 +1,5 @@
 import React from "react";
-import { SubscribersUserInfo } from "types/market/Social";
+import { SubscribersUserInfo } from "@UI/../types/src";
 import { SubscriberCard, Input, Divider } from "@UI";
 import { useTranslation } from "react-i18next";
 
