@@ -28,7 +28,6 @@ import {
 } from "@UI";
 import { mapArray, setTestid } from "utils";
 import {
-  CartProduct,
   OrderItem,
   Product,
   ProductAttribute,
