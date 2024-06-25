@@ -7,7 +7,6 @@ import {
   BillingAccountAddressInput,
   BillingAccountDateOfBirthInput,
   BillingAccountBusinessType,
-  BillingAccountExternalAccountInput,
   BillingAccountCompanyInput,
   BillingAccountIndividualInput,
   CreateCompanyPersonInput,
@@ -37,6 +36,14 @@ import { DateFormInput } from "@blocks";
 import { useGetMyPayoutAccountQuery } from "../services/useGetMyPayoutAccount";
 import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "@features/Stripe/stripeClient";
+
+type BillingAccountExternalAccountInput = {
+  account_number: string;
+  country: string;
+  currency: string;
+  object: string;
+  routing_number: string;
+};
 
 export const BillingAccount = React.forwardRef(
   (
@@ -139,30 +146,39 @@ export const BillingAccount = React.forwardRef(
         { addLabel: true }
       );
 
-    const [members, setMembers] = React.useState<CreateCompanyPersonInput[]>(
-      account?.companyMembers || []
-    );
+    const [members, setMembers] = React.useState<CreateCompanyPersonInput[]>([
+      {
+        address: account?.individual?.address!,
+        dob: account?.individual?.dob!,
+        email: account?.individual?.email!,
+        first_name: account?.individual?.first_name!,
+        last_name: account?.individual?.last_name!,
+        id: account?.individual?.id_number!,
+        id_number: account?.individual?.id_number!,
+        phone: account?.individual?.phone!,
+        relationship: account?.companyMembers
+          ? account?.companyMembers[0]?.relationship
+          : {
+            director: false,
+          },
+      },
+    ]);
 
     const { form, inputProps, selectProps, dateInputProps } = useForm<
       Parameters<typeof mutate>[0]
     >(
       {
-        business_profile: bizProfile,
-        business_type: BillingAccountBusinessType.Individual,
-        external_account: externalAccount,
+        businessType: account?.businessType!,
+        company: account?.company!,
+        companyMembers: account?.companyMembers!,
+        individual: account?.individual,
       },
-      {
-        external_account: externalAccount,
-        business_profile: bizProfile,
-        company,
-        individual,
-        companyMembers: members,
-      },
+      {},
       { addLabel: true }
     );
 
     const isIndividual =
-      form.business_type === BillingAccountBusinessType.Individual;
+      form.businessType === BillingAccountBusinessType.Individual;
 
     const { mutate } = useUpdateMyBillingAccountMutation();
 
@@ -198,7 +214,7 @@ export const BillingAccount = React.forwardRef(
 
     return (
       <div className="flex flex-col gap-4">
-        <Select {...selectProps("business_type")} label={t("Business Type")}>
+        <Select {...selectProps("businessType")} label={t("Business Type")}>
           {Object.values(BillingAccountBusinessType).map((v) => (
             <SelectOption value={v}>{t(startCase(v))}</SelectOption>
           ))}
@@ -232,7 +248,7 @@ export const BillingAccount = React.forwardRef(
           <CardElement onChange={(v) => console.log({ v })} />
         </Elements>
 
-        {form.business_type === BillingAccountBusinessType.Individual ? (
+        {form.businessType === BillingAccountBusinessType.Individual ? (
           <div className="flex flex-col gap-2 w-fulll">
             <p>{t("Personal Infomrations")}</p>
             <HStack>
@@ -262,7 +278,7 @@ export const BillingAccount = React.forwardRef(
           </div>
         ) : null}
 
-        {form.business_type === BillingAccountBusinessType.Company ? (
+        {form.businessType === BillingAccountBusinessType.Company ? (
           <div className="flex flex-col gap-2 w-full">
             <p className="font-bold">{t("Company Details")}</p>
             <Input {...companyInput("name")} label={t("Company name")} />
@@ -290,14 +306,14 @@ export const BillingAccount = React.forwardRef(
               </div>
 
               <HStack>
-                <Input {...inputProps("firstName")} />
-                <Input {...inputProps("lastName")} />
+                <Input {...individualInput("first_name")} />
+                <Input {...individualInput("last_name")} />
               </HStack>
-              <Input {...inputProps("email")} />
-              <Input {...inputProps("phone")} />
+              <Input {...individualInput("email")} />
+              <Input {...individualInput("phone")} />
               <HStack>
-                <DateFormInput {...dateInputProps("dob")} />
-                <Input type="number" {...dateInputProps("id_number")} />
+                <DateFormInput {...individualInput("dob")} />
+                <Input type="number" {...individualInput("id_number")} />
               </HStack>
               <Select {...addressSelect("country")}>
                 {mapArray(countries, (v) => (
