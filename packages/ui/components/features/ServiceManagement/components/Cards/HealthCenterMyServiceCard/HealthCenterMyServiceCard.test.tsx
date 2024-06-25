@@ -25,10 +25,8 @@ describe("HealthCenterMyServiceCard", () => {
     location: {
       address: "address",
       city: "city",
-      cords: {
-        lat: 16,
-        lng: 32,
-      },
+      lat: 16,
+      lon: 32,
       country: "country",
       countryCode: "CH",
       postalCode: 1345123,

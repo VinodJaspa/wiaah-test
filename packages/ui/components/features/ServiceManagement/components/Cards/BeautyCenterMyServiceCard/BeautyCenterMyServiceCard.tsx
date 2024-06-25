@@ -26,10 +26,8 @@ export const BeautyCenterMyServiceCard: React.FC<
   const location = {
     address: "street name",
     city: "Geneve",
-    cords: {
-      lat: 15,
-      lng: 16,
-    },
+    lat: 15,
+    lon: 16,
     country: "switzerland",
     countryCode: "CHF",
     postalCode: 1565,
@@ -58,7 +56,7 @@ export const BeautyCenterMyServiceCard: React.FC<
           <div className="flex gap-4">
             <p>{SeperatedStringArray(owners, ", ")}</p>
           </div>
-          <LocationAddressDisplay {...location} />
+          <LocationAddressDisplay location={location} />
         </div>
       </div>
 
