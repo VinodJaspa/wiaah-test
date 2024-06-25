@@ -14,7 +14,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetChatRoomQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetChatRoomQuery = { __typename?: "Query" } & {
@@ -22,22 +22,22 @@ export type GetChatRoomQuery = { __typename?: "Query" } & {
     ChatRoom,
     "createdAt" | "id" | "roomType" | "unSeenMessages" | "updatedAt"
   > & {
-      members: Array<
-        { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                | "id"
-                | "username"
-                | "photo"
-                | "activeStatus"
-                | "lastActive"
-                | "verified"
-              >
-            >;
-          }
-      >;
-    };
+    members: Array<
+      { __typename?: "Account" } & Pick<Account, "id"> & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<
+            Profile,
+            | "id"
+            | "username"
+            | "photo"
+            | "activeStatus"
+            | "lastActive"
+            | "verified"
+          >
+        >;
+      }
+    >;
+  };
 };
 
 export const useGetChatRoomQuery = (id: string) => {
