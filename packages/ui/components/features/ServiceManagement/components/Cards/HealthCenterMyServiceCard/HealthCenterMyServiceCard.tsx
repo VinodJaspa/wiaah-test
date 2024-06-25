@@ -57,7 +57,30 @@ export const HealthCenterMyServiceCard: React.FC<
           </div>
         </div>
         <div className="flex max-w-md flex-col w-full gap-2 thinScroll py-4">
-          <WorkingDaysCalender hoursLimit={1} workingDates={workingDates} />
+          <WorkingDaysCalender
+            workingDates={[
+              {
+                date: workingDates[0].date.toString(),
+                workingHoursRanges: [
+                  {
+                    from: workingDates[0].workingHoursRanges[0].from.toString(),
+                    to: workingDates[0].workingHoursRanges[0].to.toString(),
+                  },
+                ],
+              },
+            ]}
+            takenDates={[
+              {
+                date: workingDates[0].date.toString(),
+                workingHoursRanges: [
+                  {
+                    from: workingDates[0].workingHoursRanges[0].from.toString(),
+                    to: workingDates[0].workingHoursRanges[0].to.toString(),
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
 

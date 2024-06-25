@@ -76,7 +76,7 @@ export const NotificationsSettingsSection: React.FC<
         initialValues={{
           likes: "iFollow",
         }}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           return (
@@ -307,116 +307,116 @@ const notificationsOptions: {
   opts: FormOptionType[];
   name: string;
 }[] = [
-  {
-    name: "likesNotifications",
-    label: {
-      translationKey: "likes",
-      fallbackText: "Likes",
+    {
+      name: "likesNotifications",
+      label: {
+        translationKey: "likes",
+        fallbackText: "Likes",
+      },
+      opts: LikesNotificationsOpts,
     },
-    opts: LikesNotificationsOpts,
-  },
-  {
-    name: "comments",
-    label: {
-      translationKey: "comments",
-      fallbackText: "Comments",
+    {
+      name: "comments",
+      label: {
+        translationKey: "comments",
+        fallbackText: "Comments",
+      },
+      opts: CommentsNotificationsOpts,
     },
-    opts: CommentsNotificationsOpts,
-  },
-  {
-    name: "commentsLikesNotifiactions",
-    label: {
-      translationKey: "comment_likes",
-      fallbackText: "Comment Likes",
+    {
+      name: "commentsLikesNotifiactions",
+      label: {
+        translationKey: "comment_likes",
+        fallbackText: "Comment Likes",
+      },
+      opts: CommentLikesNotificationOpts,
     },
-    opts: CommentLikesNotificationOpts,
-  },
-  {
-    name: "LikesAndCommentsOnPhotosOfYou",
-    label: {
-      translationKey: "likes_and_comments_on_photos_of_you",
-      fallbackText: "Likes and Comments on Photos of You",
+    {
+      name: "LikesAndCommentsOnPhotosOfYou",
+      label: {
+        translationKey: "likes_and_comments_on_photos_of_you",
+        fallbackText: "Likes and Comments on Photos of You",
+      },
+      opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
     },
-    opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
-  },
-  {
-    name: "allowMentionsFrom",
-    label: {
-      translationKey: "allow_@mentions_from",
-      fallbackText: "Allow @Mentions From",
+    {
+      name: "allowMentionsFrom",
+      label: {
+        translationKey: "allow_@mentions_from",
+        fallbackText: "Allow @Mentions From",
+      },
+      opts: allowMentionsFromOpts,
     },
-    opts: allowMentionsFromOpts,
-  },
-  {
-    name: "allowTagsFrom",
-    label: {
-      translationKey: "allow_tags_from",
-      fallbackText: "Allow Tags From",
+    {
+      name: "allowTagsFrom",
+      label: {
+        translationKey: "allow_tags_from",
+        fallbackText: "Allow Tags From",
+      },
+      opts: allowTagsFrom,
     },
-    opts: allowTagsFrom,
-  },
-  {
-    name: "firstPostsAndStories",
-    label: {
-      translationKey: "first_posts_and_stories",
-      fallbackText: "First Posts and Stories",
+    {
+      name: "firstPostsAndStories",
+      label: {
+        translationKey: "first_posts_and_stories",
+        fallbackText: "First Posts and Stories",
+      },
+      opts: firstPostsAndStoriesOpts,
     },
-    opts: firstPostsAndStoriesOpts,
-  },
-  {
-    name: "videoViewCounts",
-    label: {
-      translationKey: "video_view_counts",
-      fallbackText: "Video View Counts",
+    {
+      name: "videoViewCounts",
+      label: {
+        translationKey: "video_view_counts",
+        fallbackText: "Video View Counts",
+      },
+      opts: videoViewCountsOpts,
     },
-    opts: videoViewCountsOpts,
-  },
-  {
-    name: "supportRequests",
-    label: {
-      translationKey: "support_requests",
-      fallbackText: "Support Requests",
+    {
+      name: "supportRequests",
+      label: {
+        translationKey: "support_requests",
+        fallbackText: "Support Requests",
+      },
+      opts: supportRequestsOpts,
     },
-    opts: supportRequestsOpts,
-  },
-  {
-    name: "acceptedFollowRequests",
-    label: {
-      translationKey: "accepted_follow_requests",
-      fallbackText: "Accepted Follow Requests",
+    {
+      name: "acceptedFollowRequests",
+      label: {
+        translationKey: "accepted_follow_requests",
+        fallbackText: "Accepted Follow Requests",
+      },
+      opts: acceptedFollowRequests,
     },
-    opts: acceptedFollowRequests,
-  },
-  {
-    name: "wiaahDirectRequests",
-    label: {
-      translationKey: "wiaah_direct_requests",
-      fallbackText: "Wiaah Direct Requests",
+    {
+      name: "wiaahDirectRequests",
+      label: {
+        translationKey: "wiaah_direct_requests",
+        fallbackText: "Wiaah Direct Requests",
+      },
+      opts: instagramDirectRequests,
     },
-    opts: instagramDirectRequests,
-  },
-  {
-    name: "wiaahDirect",
-    label: {
-      translationKey: "wiaah_direct",
-      fallbackText: "Wiaah Direct",
+    {
+      name: "wiaahDirect",
+      label: {
+        translationKey: "wiaah_direct",
+        fallbackText: "Wiaah Direct",
+      },
+      opts: instagramDirect,
     },
-    opts: instagramDirect,
-  },
-  {
-    name: "reminders",
-    label: {
-      translationKey: "reminders",
-      fallbackText: "Reminders",
+    {
+      name: "reminders",
+      label: {
+        translationKey: "reminders",
+        fallbackText: "Reminders",
+      },
+      opts: RemindersOpts,
     },
-    opts: RemindersOpts,
-  },
-  {
-    name: "liveVideos",
-    label: {
-      translationKey: "live_videos",
-      fallbackText: "Live Videos",
+    {
+      name: "liveVideos",
+      label: {
+        translationKey: "live_videos",
+        fallbackText: "Live Videos",
+      },
+      opts: liveVideosOpts,
     },
-    opts: liveVideosOpts,
-  },
-];
+  ];
