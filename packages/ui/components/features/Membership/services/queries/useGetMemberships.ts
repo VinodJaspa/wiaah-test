@@ -16,26 +16,21 @@ export type GetMembershipsQuery = { __typename?: "Query" } & {
   getSubscriableMemberships: Array<
     { __typename?: "Membership" } & Pick<
       Membership,
-      "id" | "commissionOn" | "name" | "priceId" | "recurring"
+      "id" | "name" | "priceIds" | "recurring"
     > & {
-        includings: Array<
-          { __typename?: "MembershipIncludedItem" } & Pick<
-            MembershipIncludedItem,
-            "title"
-          >
-        >;
-        turnover_rules: Array<
-          { __typename?: "MembershipTurnoverRule" } & Pick<
-            MembershipTurnoverRule,
-            | "commission"
-            | "commissionType"
-            | "id"
-            | "membershipId"
-            | "priceId"
-            | "usage"
-          >
-        >;
-      }
+      includings: Array<
+        { __typename?: "MembershipIncludedItem" } & Pick<
+          MembershipIncludedItem,
+          "title"
+        >
+      >;
+      turnover_rules: Array<
+        { __typename?: "MembershipTurnoverRule" } & Pick<
+          MembershipTurnoverRule,
+          "commission" | "commissionType" | "id" | "membershipId" | "usage"
+        >
+      >;
+    }
   >;
 };
 
@@ -69,14 +64,13 @@ export const useGetMembershipsQuery = () => {
     const mockRes: GetMembershipsQuery["getSubscriableMemberships"] = [
       {
         id: "test",
-        commissionOn: CommissionOn.Revenue,
         includings: [
           {
             title: "20% commission on sales",
           },
         ],
         name: "Free",
-        priceId: "test",
+        priceIds: ["test"],
         recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
@@ -84,7 +78,6 @@ export const useGetMembershipsQuery = () => {
             commissionType: CommissionType.Percentage,
             id: "test",
             membershipId: "test",
-            priceId: "test",
             usage: 10000,
           },
           {
@@ -92,14 +85,12 @@ export const useGetMembershipsQuery = () => {
             commissionType: CommissionType.Fixed,
             id: "test",
             membershipId: "test",
-            priceId: "test",
             usage: 10000,
           },
         ],
       },
       {
         id: "Pay",
-        commissionOn: CommissionOn.ExternalClick,
         includings: [
           {
             title: "5% commission on sales",
@@ -109,7 +100,7 @@ export const useGetMembershipsQuery = () => {
           },
         ],
         name: "Pay",
-        priceId: "test",
+        priceIds: ["test"],
         recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
@@ -117,7 +108,6 @@ export const useGetMembershipsQuery = () => {
             commissionType: CommissionType.Percentage,
             id: "test",
             membershipId: "test",
-            priceId: "test",
             usage: 10000,
           },
           {
@@ -125,14 +115,12 @@ export const useGetMembershipsQuery = () => {
             commissionType: CommissionType.Fixed,
             id: "test",
             membershipId: "test",
-            priceId: "test",
             usage: 50,
           },
         ],
       },
       {
         id: "Pay Per Click",
-        commissionOn: CommissionOn.ExternalClick,
         includings: [
           {
             title: "let users shop through your own website",
@@ -142,7 +130,7 @@ export const useGetMembershipsQuery = () => {
           },
         ],
         name: "Pay Per Click",
-        priceId: "test",
+        priceIds: ["test"],
         recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
@@ -150,7 +138,6 @@ export const useGetMembershipsQuery = () => {
             commissionType: CommissionType.Fixed,
             id: "test",
             membershipId: "test",
-            priceId: "test",
             usage: 50,
           },
         ],

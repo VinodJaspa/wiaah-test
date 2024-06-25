@@ -28,9 +28,9 @@ mutation adminUpdateReview(
     boolean,
     unknown,
     AdminUpdateReviewMutationVariables["args"]
-  >(async (id) => {
+  >(async (args) => {
     const res = await client
-      .setVariables<AdminUpdateReviewMutationVariables>({ id })
+      .setVariables<AdminUpdateReviewMutationVariables>({ args })
       .send<AdminUpdateReviewMutation>();
 
     return res.data.adminUpdateProductReview;

@@ -1,7 +1,6 @@
 import {
   CreateShippingRuleInput,
   Exact,
-  ShippingCountry,
   ShippingDeliveryTimeRange,
   ShippingRule,
   ShippingType,

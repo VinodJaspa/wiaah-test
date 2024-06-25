@@ -6,6 +6,11 @@ import {
 } from "@features/API";
 import { useMutation } from "react-query";
 
+type UpdateNotificationSettingInput = Pick<
+  UserNotificationSettings,
+  "mentions" | "commentLike" | "postComment" | "postReaction"
+>;
+
 export type UpdateMyNotificationSettingsMutationVariables = Exact<{
   args: UpdateNotificationSettingInput;
 }>;

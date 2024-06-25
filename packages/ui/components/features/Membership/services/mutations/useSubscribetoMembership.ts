@@ -3,7 +3,7 @@ import { Exact, Mutation, Scalars } from "@features/API";
 import { useMutation } from "react-query";
 
 export type SubscribeMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type SubscribeMutation = { __typename?: "Mutation" } & Pick<

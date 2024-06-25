@@ -1,4 +1,4 @@
-import { ArrElement } from "@UI/../types/src";
+import { ArrElement, ProductSize } from "@UI/../types/src";
 import { mapArray } from "@UI/../utils/src";
 import { SpinnerFallback, useSocialControls } from "@blocks";
 import { PresentationType } from "@features/API";
@@ -45,9 +45,9 @@ export const ProductDetailsDrawer = () => {
   );
 
   const { fetchNextPage, data, hasNextPage, error } = useGetUserProducts(
-    { sellerId: product?.seller.id!, take: 5 },
+    { sellerId: product?.seller.profile?.id || "", take: 5 },
     {
-      enabled: !!product?.seller.id,
+      enabled: !!product?.seller.profile?.id!,
       getNextPageParam: (last) => last.nextCursor,
       getPreviousPageParam: (last) => last.cursor,
     }
@@ -94,9 +94,8 @@ export const ProductDetailsDrawer = () => {
                       <div className="absolute  flex gap-2 top-2 left-1/2 -translate-x-1/2">
                         {[...Array(product.presentations)].map((_, i) => (
                           <div
-                            className={`${
-                              i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
-                            } h-2 rounded-full`}
+                            className={`${i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
+                              } h-2 rounded-full`}
                           />
                         ))}
                       </div>
@@ -119,7 +118,7 @@ export const ProductDetailsDrawer = () => {
               <div className="flex flex-col gap-4">
                 <p className="text-lg font-semibold">{t("Select size")}</p>
                 <HStack>
-                  {mapArray(product.sizes, (v, i) => (
+                  {mapArray(product.sizes, (v: ProductSize, i) => (
                     <div
                       key={i}
                       className="w-[2.375rem] h-[2.375rem] flex justify-center items-center border-2 border-primary rounded-[0.625rem] uppercase"
@@ -136,19 +135,17 @@ export const ProductDetailsDrawer = () => {
                   {mapArray(product.colors, (v, i) => (
                     <div
                       key={i}
-                      className={`${
-                        false ? "border-primary" : "border-white"
-                      } border-[3px] rounded-md`}
+                      className={`${false ? "border-primary" : "border-white"
+                        } border-[3px] rounded-md`}
                     >
                       <div
                         style={{
                           backgroundColor: v,
                         }}
-                        className={`w-[1.875rem] h-[1.875rem] text-xs text-white uppercase rounded-md ${
-                          false
+                        className={`w-[1.875rem] h-[1.875rem] text-xs text-white uppercase rounded-md ${false
                             ? "border-white border-2"
                             : "border border-primary"
-                        }`}
+                          }`}
                       ></div>
                     </div>
                   ))}

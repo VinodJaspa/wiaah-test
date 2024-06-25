@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
-import { Exact } from "types";
+import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import { Product, RefundType } from "@features/API";
+import { Product, RefundType, OrderItem } from "@features/API";
 import {
   GetMyReturnedOrdersInput,
   Refund,
@@ -30,14 +30,14 @@ export type GetReturnedOrdersQuery = { __typename?: "Query" } & {
       | "type"
       | "status"
     > & {
-        product: { __typename?: "Product" } & Pick<
-          Product,
-          "id" | "title" | "thumbnail"
-        >;
-        orderItem?: Maybe<
-          { __typename?: "OrderItem" } & Pick<OrderItem, "paid">
-        >;
-      }
+      product: { __typename?: "Product" } & Pick<
+        Product,
+        "id" | "title" | "thumbnail"
+      >;
+      orderItem?: Maybe<
+        { __typename?: "OrderItem" } & Pick<OrderItem, "paid">
+      >;
+    }
   >;
 };
 
@@ -85,29 +85,7 @@ export const useGetMyReturnedProductsQuery = (
   });
 
   return useQuery(["my-returned-orders", { input }], async () => {
-    const mockRes: GetReturnedOrdersQuery["getMyReturnedOrders"] = [
-      ...Array(5),
-    ].map((v, i) => ({
-      id: "test",
-      amount: random(150, 500),
-      fullAmount: false,
-      orderItemId: "test",
-      product: {
-        id: "test",
-        thumbnail: getRandomImage(),
-        title: "test prod",
-      },
-      qty: 5,
-      reason: "return  reason",
-      requestedById: "test",
-      sellerId: "test",
-      status: RefundStatusType.Accept,
-      type: RefundType.Credit,
-      rejectReason: "reject reason",
-    }));
-
-    return mockRes;
-
+    // Deleted mockRes because graphql query will never invoke it
     const res = await client.send<GetReturnedOrdersQuery>();
     return res.data.getMyReturnedOrders;
   });

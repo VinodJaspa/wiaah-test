@@ -10,13 +10,13 @@ export const getRefundRequestQueryKey = (args: args) => [
 export const getRefundRequestQueryFetcher = async () => {
   const client = createGraphqlRequestClient();
 
-  const res = await client.setQuery(``).setVariables().send();
+  const res = await client.setQuery(``).setVariables({}).send();
 
   return res;
 };
 
 export const useGetRefundRequestQuery = (args: args) => {
   return useQuery(getRefundRequestQueryKey(args), () =>
-    getRefundRequestQueryFetcher(args)
+    getRefundRequestQueryFetcher()
   );
 };

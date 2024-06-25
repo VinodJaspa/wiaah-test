@@ -1,4 +1,4 @@
-import { Order } from "@features/Orders/schema";
+import { Order } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact, Scalars } from "types";
 

@@ -19,12 +19,15 @@ export type GetProductDetailsQuery = {
   getProduct: {
     __typename?: "Product";
     id: string;
+    sizes: ProductSize[];
+    colors: string[];
     price: number;
     title: string;
     seller: {
       __typename?: "Account";
       profile?: {
         __typename?: "Profile";
+        id: string;
         username: string;
         verified: boolean;
         photo: string;
@@ -62,10 +65,13 @@ export const getProductqueryDetailsQueryFetcher = async (args: args) => {
   if (isDev) {
     const mockRes: GetProductDetailsQuery["getProduct"] = {
       id: "",
+      sizes: [ProductSize.L],
+      colors: ["green"],
       presentations: [{ src: getRandomImage(), type: PresentationType.Image }],
       price: randomNum(150),
       seller: {
         profile: {
+          id: "2",
           photo: getRandomImage(),
           username: getRandomName().firstName,
           verified: true,
