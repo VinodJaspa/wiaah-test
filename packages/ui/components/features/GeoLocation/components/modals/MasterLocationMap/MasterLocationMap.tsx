@@ -75,12 +75,12 @@ export const MasterLocationMapModal: React.FC = () => {
   setLocations(
     res
       ? res.data.map((ser) => ({
-          id: ser.serviceData.id,
-          price: ser.serviceData.price,
-          title: ser.serviceData.title,
-          lat: ser.serviceData.location.cords.lat,
-          lng: ser.serviceData.location.cords.lng,
-        }))
+        id: ser.serviceData.id,
+        price: ser.serviceData.price,
+        title: ser.serviceData.title,
+        lat: ser.serviceData.location.lat,
+        lng: ser.serviceData.location.lon,
+      }))
       : []
   );
 
@@ -92,7 +92,7 @@ export const MasterLocationMapModal: React.FC = () => {
           <RenderMap />
           <Formik
             initialValues={{ serviceType: "hotel", location: "" }}
-            onSubmit={() => {}}
+            onSubmit={() => { }}
           >
             {({ values, setFieldValue }) => {
               setFilters(values);
@@ -103,8 +103,8 @@ export const MasterLocationMapModal: React.FC = () => {
                       <div className="grid grid-cols-2 gap-4 px-2 h-full overflow-y-scroll thinScroll">
                         {res
                           ? mapArray(res.data, (data, i) => (
-                              <SearchServiceCard key={i} {...data} />
-                            ))
+                            <SearchServiceCard key={i} {...data} />
+                          ))
                           : null}
                       </div>
                     </div>
@@ -121,7 +121,7 @@ export const MasterLocationMapModal: React.FC = () => {
                         />
                       </div>
                       <div className="absolute pointer-events-auto bg-white w-[min(70rem,95%)] top-4 left-1/2 -translate-x-1/2">
-                        <LocationSearchInput onLocationSelect={() => {}} />
+                        <LocationSearchInput onLocationSelect={() => { }} />
                       </div>
                     </div>
                   </div>
