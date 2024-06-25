@@ -237,7 +237,7 @@ export const VideoEditorControls: React.FC<{
                   >
                     {playing ? <BiPause /> : <BiPlay />}
                   </div>
-                  <BiSkipNext onClick={() => {}} className="text-gray-400" />
+                  <BiSkipNext onClick={() => { }} className="text-gray-400" />
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <div
@@ -516,73 +516,73 @@ const VideoDraggableHandler: React.FC<{
   children,
   className,
 }) => {
-  const [dragging, setDragging] = React.useState(false);
-  const currPosition = (position / maxPosition) * 100;
-  const currPositionPercent =
-    currPosition > 100 ? 100 : currPosition < 0 ? 0 : currPosition;
+    const [dragging, setDragging] = React.useState(false);
+    const currPosition = (position / maxPosition) * 100;
+    const currPositionPercent =
+      currPosition > 100 ? 100 : currPosition < 0 ? 0 : currPosition;
 
-  React.useEffect(() => {
-    function handleMove(e: React.MouseEvent) {
-      if (dragging && parentRef && parentRef.current) {
-        const rect = parentRef.current.getBoundingClientRect();
+    React.useEffect(() => {
+      function handleMove(e: React.MouseEvent) {
+        if (dragging && parentRef && parentRef.current) {
+          const rect = parentRef.current.getBoundingClientRect();
 
-        // console.log({ maxPosition });
-        const parentX = rect.x;
-        const currX = e.clientX;
+          // console.log({ maxPosition });
+          const parentX = rect.x;
+          const currX = e.clientX;
 
-        const gap = rect.width / maxPosition;
+          const gap = rect.width / maxPosition;
 
-        const positions = [
-          ...Array(
-            typeof maxPosition === "number" && maxPosition >= 0
-              ? Math.floor(maxPosition)
-              : 0
-          ),
-        ].map((_, i) => {
-          const distance = i * gap;
-          return parentX + distance;
-        });
+          const positions = [
+            ...Array(
+              typeof maxPosition === "number" && maxPosition >= 0
+                ? Math.floor(maxPosition)
+                : 0
+            ),
+          ].map((_, i) => {
+            const distance = i * gap;
+            return parentX + distance;
+          });
 
-        const newX = findClosestNumber(positions, currX);
+          const newX = findClosestNumber(positions, currX);
 
-        const idx = positions.findIndex((e) => e === newX);
-        if (idx !== position) {
-          setPosition(idx);
+          const idx = positions.findIndex((e) => e === newX);
+          if (idx !== position) {
+            setPosition(idx);
+          }
         }
       }
-    }
-    function handleUp() {
-      setDragging(false);
-    }
-
-    //@ts-ignore
-    document?.addEventListener("mousemove", handleMove);
-    document?.addEventListener("mouseup", handleUp);
-
-    return () => {
-      //@ts-ignore
-      document?.removeEventListener("mousemove", handleMove);
-      document?.removeEventListener("mouseup", handleUp);
-    };
-  }, [parentRef, dragging]);
-
-  return (
-    <div
-      onMouseMove={(e) => {}}
-      onMouseDown={() => {
-        setDragging(true);
-      }}
-      onMouseUp={() => {
+      function handleUp() {
         setDragging(false);
-      }}
-      style={{
-        left: `${currPositionPercent}%`,
-      }}
-      className={`${
-        className || ""
-      } h-full items-center absolute flex flex-col gap-1 top-0`}
-    >
-      {children}
-    </div>
-  );
-};
+      }
+
+      //@ts-ignore
+      document?.addEventListener("mousemove", handleMove);
+      document?.addEventListener("mouseup", handleUp);
+
+      return () => {
+        //@ts-ignore
+        document?.removeEventListener("mousemove", handleMove);
+        document?.removeEventListener("mouseup", handleUp);
+      };
+    }, [parentRef, dragging]);
+
+    return (
+      <div
+        onMouseMove={(e) => { }}
+        onMouseDown={() => {
+          setDragging(true);
+        }}
+        onMouseUp={() => {
+          setDragging(false);
+        }}
+        style={{
+          left: `${currPositionPercent}%`,
+        }}
+        className={`${className || ""
+          } h-full items-center absolute flex flex-col gap-1 top-0`}
+      >
+        {/*@ts-ignore*/}
+        {children}
+      </div>
+    );
+  };
