@@ -9,6 +9,7 @@ import {
   PartialCompanyPersonRelationship,
   Maybe,
   Exact,
+  CreateCompanyPersonRelationshipInput,
 } from "@features/API";
 import { isDev } from "@UI/../utils/src";
 import { createGraphqlRequestClient } from "api";
@@ -44,11 +45,9 @@ export type GetMyPayoutAccountQuery = { __typename?: "Query" } & {
         PartialBillingAccountCompany,
         "name" | "phone" | "tax_id"
       > & {
-        address?: Maybe<
-          { __typename?: "PartialBillingAccountAddress" } & Pick<
-            PartialBillingAccountAddress,
-            "city" | "country" | "line1" | "postal_code"
-          >
+        address: { __typename?: "PartialBillingAccountAddress" } & Pick<
+          PartialBillingAccountAddress,
+          "city" | "country" | "line1" | "postal_code" | "state"
         >;
       }
     >;
@@ -89,7 +88,7 @@ export type GetMyPayoutAccountQuery = { __typename?: "Query" } & {
           relationship: {
             __typename?: "PartialCompanyPersonRelationship";
           } & Pick<
-            PartialCompanyPersonRelationship,
+            CreateCompanyPersonRelationshipInput,
             "director" | "executive" | "owner" | "representative" | "title"
           >;
         }
