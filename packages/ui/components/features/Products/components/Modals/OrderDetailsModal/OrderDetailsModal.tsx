@@ -36,7 +36,7 @@ import {
 import { setTestid } from "utils";
 import { useTypedReactPubsub } from "@libs";
 
-export interface OrderDetailsModalProps {}
+export interface OrderDetailsModalProps { }
 
 export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
   const [id, setId] = React.useState<string>();
@@ -53,26 +53,33 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
       setId(undefined);
     }
   });
-  const orderDate = DateDetails(res ? res.data.orderedDate : "");
-  const deliveryDate = DateDetails(res ? res.data.deliveryDate : "");
+  const orderDate = DateDetails(res ? res.order.createdAt : "");
+  const deliveryDate = DateDetails(
+    res
+      ? res.order.shipping.deliveryTimeRange.from -
+      res.order.shipping.deliveryTimeRange.to
+      : ""
+  );
   const subtotal = res
-    ? res.data.products.reduce((acc, curr) => {
-        return acc + curr.price * curr.qty;
-      }, 0)
+    ? res.order.orderItem.products.reduce((acc, curr) => {
+      return acc + curr.price * curr.qty;
+    }, 0)
     : 0;
-  const discountCost = res ? subtotal * (res.data.discount / 100) : 0;
-  const deliveryCost = res ? res.data.deliveryCost : 0;
-  const tax = res ? res.data.tax : 0;
+  const discountCost = res
+    ? subtotal * (res.order.orderItem.discount! / 100)
+    : 0;
+  const deliveryCost = res ? res.order.shipping.cost : 0;
+  const tax = res ? res.order.orderItem.products[0].vat : 0;
   const total = subtotal - discountCost + deliveryCost + tax;
   const { t } = useTranslation();
 
   const { min } = useScreenWidth({ minWidth: 900 });
 
-  function handleMoveToWishList() {}
-  function handleItemDeletion() {}
+  function handleMoveToWishList() { }
+  function handleItemDeletion() { }
 
   return (
-    <Modal isOpen={!!id} onClose={() => setId(undefined)} onOpen={() => {}}>
+    <Modal isOpen={!!id} onClose={() => setId(undefined)} onOpen={() => { }}>
       <ModalOverlay />
       <ModalContent className="w-[min(100%,50rem)]">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
@@ -81,7 +88,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
               <div className="flex flex-col w-full gap-2">
                 <div className="flex justify-between items-center">
                   <p className="text-2xl font-bold">
-                    {t("Order ID")}: {res.data.orderId}
+                    {t("Order ID")}: {res.order.id}
                   </p>
                   <div className="flex items-center gap-2">
                     <Button
@@ -115,19 +122,19 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                {res?.data?.products.map(
+                {res?.order?.orderItem.products.map(
                   (
                     {
                       cashback,
-                      color,
+                      colors,
                       description,
                       discount,
                       id,
-                      name,
+                      title,
                       price,
+                      shippingDetails,
+                      sizes,
                       qty,
-                      shippingMethods,
-                      size,
                       thumbnail,
                     },
                     i
@@ -135,24 +142,21 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                     <div key={i} className="flex w-full">
                       <div className="flex flex-col w-full">
                         <div
-                          className={`${
-                            min ? "flex-col" : "flex-row"
-                          } flex w-full gap-4 justify-between`}
+                          className={`${min ? "flex-col" : "flex-row"
+                            } flex w-full gap-4 justify-between`}
                         >
                           <div
-                            className={`${
-                              min ? "flex-col" : "flex-row"
-                            } flex w-full gap-4`}
+                            className={`${min ? "flex-col" : "flex-row"
+                              } flex w-full gap-4`}
                           >
                             <div
-                              className={`${
-                                min ? "w-full" : ""
-                              } flex justify-center`}
+                              className={`${min ? "w-full" : ""
+                                } flex justify-center`}
                             >
                               <div className="relative w-40">
                                 <AspectRatioImage
                                   src={thumbnail}
-                                  alt={name}
+                                  alt={title}
                                   ratio={6 / 4}
                                 />
                               </div>
@@ -161,35 +165,34 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                               <div className="flex  justify-between">
                                 <div className="flex flex-col">
                                   <span id="ProductName" className="font-bold">
-                                    {name}
+                                    {title}
                                   </span>
                                   <EllipsisText maxLines={1}>
                                     {description}
                                   </EllipsisText>
                                   <div>
-                                    {color && (
+                                    {colors[0] && (
                                       <p id="ProductColor">
-                                        {t("Color")}: {color}
+                                        {t("Color")}: {colors[0]}
                                       </p>
                                     )}
-                                    {size && (
+                                    {sizes[0] && (
                                       <p id="ProductSize">
-                                        {t("Size")}: {size}
+                                        {t("Size")}: {sizes[0]}
                                       </p>
                                     )}
                                   </div>
                                 </div>
                                 <div
-                                  className={`${
-                                    min ? "items-start" : "items-end"
-                                  } flex flex-col`}
+                                  className={`${min ? "items-start" : "items-end"
+                                    } flex flex-col`}
                                 >
                                   <div className="flex gap-2">
                                     <BoldText>
                                       <UnDiscountedPriceDisplay
                                         id="ProductOldPrice"
                                         amount={price}
-                                        discount={discount}
+                                        discount={discount.amount}
                                       />
                                     </BoldText>
                                     <BoldText>
@@ -201,7 +204,9 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                                       className="text-[#ff0000] whitespace-nowrap"
                                       id="ProductDiscount"
                                     >
-                                      {t("You Save")} %{discount}
+                                      <span>
+                                        {t("You Save")} %{discount.amount}
+                                      </span>
                                     </p>
                                   )}
                                 </div>
@@ -212,30 +217,41 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                                 className="text-xs"
                               >
                                 <TBody>
-                                  {Array.isArray(shippingMethods)
-                                    ? shippingMethods.map((method) => (
+                                  {Array.isArray(shippingDetails?.shippingTypes)
+                                    ? shippingDetails?.shippingTypes.map(
+                                      (method) => (
                                         <Tr>
                                           <Td>
                                             <Radio
                                               name={`shippingMethod-${id}`}
-                                              value={method.value}
+                                              value={method.toString()}
                                             >
-                                              {method.name}
+                                              {method.toString()}
                                             </Radio>
                                           </Td>
                                           <Td>
-                                            <PriceDisplay price={method.cost} />
+                                            <PriceDisplay
+                                              price={res.order.shipping.cost}
+                                            />
                                           </Td>
                                           <Td>
                                             <p>
                                               {t("Available in")}{" "}
-                                              {method.deliveryTime.from} -{" "}
-                                              {method.deliveryTime.to}{" "}
+                                              {
+                                                res.order.shipping
+                                                  .deliveryTimeRange.from
+                                              }{" "}
+                                              -{" "}
+                                              {
+                                                res.order.shipping
+                                                  .deliveryTimeRange.to
+                                              }{" "}
                                               {t("Days")}
                                             </p>
                                           </Td>
                                         </Tr>
-                                      ))
+                                      )
+                                    )
                                     : null}
                                 </TBody>
                               </Table>
@@ -285,8 +301,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                 <div className="flex flex-col w-full gap-2">
                   <p className="text-xl font-bold">{t("Payment")}</p>
                   <div className="flex gap-2 items-center text-lg">
-                    {res ? res.data.payment.method || "" : ""}{" "}
-                    {res ? res.data.payment.value || "" : ""} <CreditCardIcon />
+                    {res ? res.payment.method || "" : ""}{" "}
+                    {res ? res.payment.value || "" : ""} <CreditCardIcon />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 w-full">
@@ -298,7 +314,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                   <div className="flex justify-between gap-2">
                     <p>{t("Discount")}</p>
                     <div className="flex gap-2">
-                      <p>{`(${res.data.discount}%)`}</p>
+                      <p>{`(${res.order.orderItem.products[0].discount}%)`}</p>
                       -
                       <PriceDisplay price={subtotal} />
                     </div>
@@ -323,12 +339,12 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                   <div className="flex flex-col gap-1">
                     <p className="text-gray-400">{t("Address")}</p>
                     <div className="flex flex-col">
-                      <p>{res.data.deliveryAddress.address}</p>
+                      <p>{res.order.shipping.location.address}</p>
                       <p>
-                        {res.data.deliveryAddress.city}{" "}
-                        {res.data.deliveryAddress.country}
+                        {res.order.shipping.location.city}{" "}
+                        {res.order.shipping.location.country}
                       </p>
-                      <p>{res.data.phoneNumber}</p>
+                      <p>{res.order.shipping.location.postalCode}</p>
                     </div>
                   </div>
                 </div>
