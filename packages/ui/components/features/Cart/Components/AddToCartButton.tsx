@@ -19,7 +19,14 @@ export const AddToCartButton: React.FC<
   return (
     <Button
       onClick={() => {
-        !!data?.id ? addShoppingCartItem({ itemId, itemType, qty: 1 }) : null;
+        !!data?.id
+          ? addShoppingCartItem({
+            itemId,
+            type: itemType,
+            quantity: 1,
+            shippingRuleId: "1",
+          })
+          : null;
       }}
       className={className}
       colorScheme="darkbrown"
