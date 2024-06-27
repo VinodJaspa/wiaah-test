@@ -13,6 +13,8 @@ import {
   LocationAddressDisplay,
 } from "@UI";
 import { setTestid } from "utils";
+import { VehicleProperties } from "@features/API/gql/generated";
+import { CreateVehiclePropertiesInput } from "@features/API";
 
 export interface VehicleMyServiceCardProps extends VehicleMyServiceDataType {
   onEdit: (id: string) => any;
@@ -36,6 +38,45 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
     title,
   } = props;
 
+  const convertToVehicleProperties = (
+    props: { type?: string; value?: boolean | number }[],
+  ): VehicleProperties => {
+    const vehicleProperties: Partial<VehicleProperties> = {
+      __typename: "VehicleProperties",
+      seats: 0,
+      windows: 0,
+      maxSpeedInKm: 0,
+      lugaggeCapacity: 0,
+      gpsAvailable: false,
+      airCondition: false,
+    };
+
+    props.forEach((prop) => {
+      switch (prop.type) {
+        case "passengers":
+          vehicleProperties.seats = prop.value as number;
+          break;
+        case "windows":
+          vehicleProperties.windows = prop.value as number;
+          break;
+        case "bags":
+          vehicleProperties.lugaggeCapacity = prop.value as number;
+          break;
+        case "a/c":
+          vehicleProperties.airCondition = prop.value as boolean;
+          break;
+        case "gps":
+          vehicleProperties.gpsAvailable = prop.value as boolean;
+          break;
+        // Add more cases if there are additional properties
+      }
+    });
+
+    return vehicleProperties as VehicleProperties;
+  };
+
+  const adjustedvehicleProps = convertToVehicleProperties(vehicleProps);
+
   return (
     <div className="border flex-col sm:flex-row border-gray-400 rounded p-2 flex justify-between gap-4">
       <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -44,14 +85,24 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          <p className="font-semibold text-lg">{name}</p>
+          <p className="font-semibold text-lg">{title}</p>
           {pricePerDay ? (
             <div className="flex flex-col font-bold gap-2"></div>
           ) : null}
           <span className="text-lg">
-            <VehicleProprtiesList VehicleProps={vehicleProps} />
+            <VehicleProprtiesList VehicleProps={adjustedvehicleProps} />
           </span>
-          <LocationAddressDisplay {...location} />
+          <LocationAddressDisplay
+            location={{
+              city: location.city,
+              country: location.country!,
+              state: location.state!,
+              address: location.address!,
+              postalCode: location.postalCode!,
+              lat: location.lat!,
+              lon: location.lon!,
+            }}
+          />
         </div>
         <div className="flex flex-col gap-2">
           {cancelationPolicies.map((policy, i) => (
