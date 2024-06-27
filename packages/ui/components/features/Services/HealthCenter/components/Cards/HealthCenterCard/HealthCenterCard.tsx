@@ -19,6 +19,13 @@ export interface HealthCenterCardProps {
   vertical?: boolean;
 }
 
+interface ConvertedWorkingDate {
+  date: string;
+  workingHoursRanges: {
+    from: string;
+    to: string;
+  }[];
+}
 export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   centerData,
   workingDates,
@@ -27,6 +34,19 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   const { visit } = useRouting();
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
   const { t } = useTranslation();
+  // this function converts the WrokingDate type to get passed to WorkingDaysCalender
+  const convertWorkingDates = (
+    workingDates: WorkingDate[],
+  ): ConvertedWorkingDate[] => {
+    return workingDates.map(({ date, workingHoursRanges }) => ({
+      date: String(date),
+      workingHoursRanges: workingHoursRanges.map(({ from, to }) => ({
+        from: String(from),
+        to: String(to),
+      })),
+    }));
+  };
+  const convertedWrokingDates = convertWorkingDates(workingDates);
   return (
     <div
       className={`${
@@ -62,7 +82,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
         <Button
           onClick={() =>
             visit((routes) =>
-              routes.visitService(centerData, ServicesRequestKeys.healthCenter)
+              routes.visitService(centerData, ServicesRequestKeys.healthCenter),
             )
           }
           className="w-1/2"
@@ -72,8 +92,8 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
       </div>
       <div className="flex w-1/2 h-full overflow-hidden flex-col gap-2 thinScroll py-4">
         <WorkingDaysCalender
-          hoursLimit={hoursLimit}
-          workingDates={workingDates}
+          workingDates={convertedWrokingDates}
+          takenDates={convertedWrokingDates}
         />
       </div>
     </div>
