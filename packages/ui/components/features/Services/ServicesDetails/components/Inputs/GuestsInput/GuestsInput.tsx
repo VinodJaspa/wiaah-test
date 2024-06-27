@@ -32,6 +32,7 @@ export const GuestsInput: React.FC<GuestsInputProps> = ({
       <MenuButton>
         <div className="flex items-center justify-between gap-2 border-b border-gray-200">
           <p className="cursor-pointer w-full font-semibold text-lg">
+            {/*@ts-ignore*/}
             {children}
           </p>
           <ArrowDownIcon className="text-lg" />
