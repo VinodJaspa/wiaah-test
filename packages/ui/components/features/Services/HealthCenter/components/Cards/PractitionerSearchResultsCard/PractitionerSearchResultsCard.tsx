@@ -17,6 +17,7 @@ export const PractitionerSearchResultsCard: React.FC<
   PractitionerSearchResultsCardProps
 > = ({ practitioner }) => {
   const { t } = useTranslation();
+
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">
       <ServiceCardPresentation
@@ -31,7 +32,17 @@ export const PractitionerSearchResultsCard: React.FC<
           <span>{practitioner.specialty}</span>
         </div>
         <div className="flex font-semibold flex-col gap-1">
-          <LocationAddressDisplay {...practitioner.location} />
+          <LocationAddressDisplay
+            location={{
+              state: practitioner.location.state!,
+              country: practitioner.location.country,
+              address: practitioner.location.address,
+              city: practitioner.location.city,
+              postalCode: practitioner.location.postalCode,
+              lat: practitioner.location.lat,
+              lon: practitioner.location.lon,
+            }}
+          />
         </div>
         <p className="font-bold">
           {t("Reviews")}: {practitioner.reviews}
