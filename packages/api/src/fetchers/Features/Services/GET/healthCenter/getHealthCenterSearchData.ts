@@ -1,5 +1,6 @@
 import {
   FormatedSearchableFilter,
+  HealthCenterSpecialty,
   InValidDataSchemaError,
   PaginationFetchedData,
   QueryPaginationInputs,
@@ -22,7 +23,7 @@ export type HealthCenterPractitioner = InferType<
 >;
 
 export interface HealthCenterSearchSuggistionsData {
-  specialties: HealthCenterSpecialtyTitle[];
+  specialties: HealthCenterSpecialty[];
   practitioners: HealthCenterPractitioner[];
 }
 
@@ -36,12 +37,16 @@ export const specialtiesPh: string[] = [
 
 export const getHealthCenterSearchData = async (
   pagination: QueryPaginationInputs,
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<PaginationFetchedData<HealthCenterSearchSuggistionsData>> => {
-  const specialties: HealthCenterSpecialtyTitle[] = [...Array(50)].map(() => ({
-    title: specialtiesPh[randomNum(specialtiesPh.length)],
-    photo: undefined,
-  }));
+  const specialties: HealthCenterSpecialty[] = [...Array(50)].map(
+    (spec, i) => ({
+      title: specialtiesPh[randomNum(specialtiesPh.length)],
+      id: i.toString(),
+      name: "speciality",
+      description: "speciality description",
+    }),
+  );
   const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
     (_, i) => ({
       reviews: 150,
@@ -61,28 +66,24 @@ export const getHealthCenterSearchData = async (
       photo:
         "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
       specialty: "Dentist",
-    })
+    }),
   );
   const searchQuery = filters["search_query"] || "";
   const data: AsyncReturnType<typeof getHealthCenterSearchData> = {
     hasMore: true,
     total: randomNum(5000),
     data: {
-      specialties: specialties
-        .filter((s) =>
-          s.title.includes(typeof searchQuery === "string" ? searchQuery : "")
-        )
-        .slice(
-          pagination.page * pagination.take,
-          (pagination.page + 1) * pagination.take
-        ),
+      specialties: specialties.slice(
+        pagination.page * pagination.take,
+        (pagination.page + 1) * pagination.take,
+      ),
       practitioners: practitioners
         .filter((p) =>
-          p.name.includes(typeof searchQuery === "string" ? searchQuery : "")
+          p.name.includes(typeof searchQuery === "string" ? searchQuery : ""),
         )
         .slice(
           pagination.page * pagination.take,
-          (pagination.page + 1) * pagination.take
+          (pagination.page + 1) * pagination.take,
         ),
     },
   };
@@ -90,7 +91,7 @@ export const getHealthCenterSearchData = async (
   CheckValidation(
     HealthCenterSuggestionsApiDataValidationSchema,
     data,
-    InValidDataSchemaError
+    InValidDataSchemaError,
   );
 
   return data;
