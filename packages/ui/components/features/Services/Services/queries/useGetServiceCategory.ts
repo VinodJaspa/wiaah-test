@@ -38,8 +38,8 @@ export const useGetServiceCategory = (id: string) => {
         .setVariables({ id })
         .send<GqlResponse<Category, "getServiceCategoryById">>();
 
-      return res.data.getServiceCategoryById;
+      return res.data.data.getServiceCategoryById;
     },
-    { enabled: !!id }
+    { enabled: !!id },
   );
 };

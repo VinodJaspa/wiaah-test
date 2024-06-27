@@ -61,7 +61,7 @@ export const useGetResturantsQuery = (args: SearchFilteredRestaurantInput) => {
         vat
 
     }
-}    
+}
   `);
 
   client.setVariables({
@@ -71,6 +71,6 @@ export const useGetResturantsQuery = (args: SearchFilteredRestaurantInput) => {
   return useQuery(["search-filtered-resturants", args], async () => {
     return (
       await client.send<GqlResponse<Restaurant[], "searchFilteredRestaurant">>()
-    ).data.searchFilteredRestaurant;
+    ).data.data.searchFilteredRestaurant;
   });
 };

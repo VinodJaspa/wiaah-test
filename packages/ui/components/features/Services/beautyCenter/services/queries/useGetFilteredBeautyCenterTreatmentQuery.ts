@@ -8,7 +8,7 @@ import { GqlResponse } from "@UI/../types/src";
 import { useQuery } from "react-query";
 
 export const useGetFilteredBeautyCenterTreatmentsQuery = (
-  input: SearchFilteredBeautyCenterInput
+  input: SearchFilteredBeautyCenterInput,
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -44,12 +44,13 @@ export const useGetFilteredBeautyCenterTreatmentsQuery = (
   });
 
   return useQuery(["search-filtered-beauty-center", input], async () => {
-    const res = await client.send<
-      GqlResponse<
-        (BeautyCenterTreatment & { center: BeautyCenter })[],
-        "getFilteredBeuatyCenterTreatments"
-      >
-    >();
-    return res.data.getFilteredBeuatyCenterTreatments;
+    const res =
+      await client.send<
+        GqlResponse<
+          (BeautyCenterTreatment & { center: BeautyCenter })[],
+          "getFilteredBeuatyCenterTreatments"
+        >
+      >();
+    return res.data.data.getFilteredBeuatyCenterTreatments;
   });
 };

@@ -17,7 +17,12 @@ import {
   ServiceType,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
-import { UseInfiniteQueryOptions, useInfiniteQuery } from "react-query";
+import {
+  QueryFunction,
+  QueryFunctionContext,
+  UseInfiniteQueryOptions,
+  useInfiniteQuery,
+} from "react-query";
 
 export type GetMyAppointmentsQueryVariables = Exact<{
   args: GetMyBookingsInput;
@@ -88,18 +93,18 @@ export const useGetMyAppointmentsQuery = (
   options?: UseInfiniteQueryOptions<
     GetMyBookingsInput,
     any,
-    GetMyAppointmentsQuery["getMyBookings"],
+    GetMyAppointmentsQuery["getMyBookings"], // TQueryData
     any
-  >
+  >,
 ) => {
   return useInfiniteQuery(
     ["get-my-bookings", { input }],
     async ({ pageParam }) => {
       if (isDev) {
         const mockRes: GetMyAppointmentsQuery["getMyBookings"] = {
-          take: (pageParam || input).days,
-          cursor: (pageParam || input).date,
-          data: [...Array((pageParam || input).days * 30)].map((_, i) => ({
+          take: input.days!,
+          cursor: input.date!,
+          data: [...Array(input.days * 30)].map((_, i) => ({
             room: {
               title: `Preumim Plus Room`,
             },
@@ -124,7 +129,7 @@ export const useGetMyAppointmentsQuery = (
             id: "test",
             ownerId: "test",
             providerId: "test",
-            serviceId: "test",
+            serviceId: ["test"],
             status: BookedServiceStatus.Pending,
             type: ServiceType.Hotel,
             duration: 4,
@@ -174,6 +179,5 @@ query getMyAppointments(
 
       return res.data.getMyBookings;
     },
-    options
   );
 };
