@@ -99,8 +99,8 @@ export const ServiceTripDateInput: React.FC<ServiceTripDateInputProps> = () => {
                                 active
                                   ? "text-white bg-primary"
                                   : currentMonth
-                                  ? "text-black bg-white"
-                                  : "text-gray-500"
+                                    ? "text-black bg-white"
+                                    : "text-gray-500"
                               } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                             >
                               {dayNum}
@@ -126,8 +126,8 @@ export const ServiceTripDateInput: React.FC<ServiceTripDateInputProps> = () => {
                                 active
                                   ? "text-white bg-primary"
                                   : currentMonth
-                                  ? "text-black bg-white"
-                                  : "text-gray-500"
+                                    ? "text-black bg-white"
+                                    : "text-gray-500"
                               } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                             >
                               {dayNum}
@@ -180,7 +180,10 @@ export const ServiceTripDateInput: React.FC<ServiceTripDateInputProps> = () => {
               >
                 <ModalOverlay />
                 <ModalContent>
-                  <GuestsInput />
+                  <GuestsInput
+                    onChange={() => {}}
+                    value={{ adults: 0, childrens: 0, infants: 0 }}
+                  />
                 </ModalContent>
               </Modal>
 
