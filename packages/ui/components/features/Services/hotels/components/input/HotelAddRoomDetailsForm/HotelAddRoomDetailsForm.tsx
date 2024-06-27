@@ -21,6 +21,7 @@ import {
   DailyPriceInput,
 } from "@UI";
 import { FileRes } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 const MAX_PRODUCTS_IMAGE = 4;
 
@@ -31,7 +32,8 @@ export const HotelAddRoomDetailsForm: React.FC<
 > = () => {
   const { data: res } = useGetHotelAmenitesQuery();
   const { t } = useTranslation();
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
+
+  const { emit } = useTypedReactPubsub((events) => events.openFileUploadModal);
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
 
@@ -118,7 +120,7 @@ export const HotelAddRoomDetailsForm: React.FC<
                 onChange={(amis) => setFieldValue("common_amenites", amis)}
                 value={values["common_amenites"]}
                 name="common_amenites"
-                suggestions={res?.data.amenites}
+                suggestions={res?.data.amenites.map((amenity) => amenity.name)}
                 label={t("Room common amenites")}
               />
 
