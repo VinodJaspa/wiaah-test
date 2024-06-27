@@ -72,7 +72,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
             </p>{" "}
           </span>
           <p>{`${t("Guests rated this property")} ${rate}/${5} ${t(
-            "for"
+            "for",
           )} ${rateReason}`}</p>
         </div>
         <span className={`text-red-500 font-semibold flex gap-2 items-center`}>
@@ -88,8 +88,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
             <p>{guests}</p>
           </div>
         ) : null}
-        {children}
-
+        <>{children}</>
         {fromDate && !toDate ? (
           <div className="flex flex-col gap-1">
             <span className="flex gap-2">

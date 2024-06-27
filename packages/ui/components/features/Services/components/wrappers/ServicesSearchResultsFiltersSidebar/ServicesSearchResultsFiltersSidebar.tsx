@@ -86,8 +86,7 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
                 />
               </InputGroup>
             </div>
-
-            {children}
+            <>{children}</>
           </div>
         </DrawerContent>
       </Drawer>
