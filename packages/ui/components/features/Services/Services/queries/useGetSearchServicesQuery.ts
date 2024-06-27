@@ -39,7 +39,7 @@ export type SearchServiceQuery = { __typename?: "Query" } & {
         shop: { __typename?: "Shop" } & Pick<Shop, "id"> & {
             location: { __typename?: "Location" } & Pick<
               Location,
-              "address" | "city" | "country" | "lat" | "long" | "state"
+              "address" | "city" | "country" | "state"
             >;
             sellerProfile: { __typename?: "Profile" } & Pick<
               Profile,
@@ -86,7 +86,7 @@ export const getSearchServicesQueryFetcher = async (args: args) => {
             state: "state",
           },
         },
-      })
+      }),
     );
 
     return mockRes;
@@ -131,7 +131,7 @@ query SearchService($args:SearchServicesInput!){
     sellerId
   }
 }
-`
+`,
     )
     .setVariables<SearchServiceQueryVariables>({
       args,
@@ -143,6 +143,6 @@ query SearchService($args:SearchServicesInput!){
 
 export const useGetSearchServicesQuery = (args: args) => {
   return useQuery(getSearchServicesQueryKey(args), () =>
-    getSearchServicesQueryFetcher(args)
+    getSearchServicesQueryFetcher(args),
   );
 };

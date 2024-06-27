@@ -1,23 +1,19 @@
-import {
-  getServiceSearchFiltersFetcher,
-  SearchFilterType,
-} from "api";
+import { getServiceSearchFiltersFetcher, SearchFilterType } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 import {
   ServicesRequestKeys,
   SERVICESTYPE_INDEXKEY,
 } from "../../../../constants/ServicesRequestKeys";
+import { ServiceType } from "@features/API";
 
 export const useGetHealthCenterFiltersQuery = (
-  options?: UseQueryOptions<unknown, unknown, SearchFilterType, any>
+  options?: UseQueryOptions<unknown, unknown, SearchFilterType, any>,
 ) => {
   return useQuery(
     ["getHealthCenterFilters"],
     () => {
-      return getServiceSearchFiltersFetcher({
-        [SERVICESTYPE_INDEXKEY]: ServicesRequestKeys.healthCenter,
-      });
+      return getServiceSearchFiltersFetcher(ServiceType.HealthCenter);
     },
-    options
+    options,
   );
 };

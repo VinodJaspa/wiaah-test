@@ -3,7 +3,7 @@ import { Exact, RawShop, Scalars, TranslationText } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetRawShopQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetRawShopQuery = { __typename?: "Query" } & {
@@ -65,7 +65,7 @@ query getRawShop($id:String!){
     videos
   }
 }
-    `
+    `,
     )
     .setVariables<GetRawShopQueryVariables>(args)
     .send<GetRawShopQuery>();
@@ -75,10 +75,10 @@ query getRawShop($id:String!){
 
 export const useGetShopRawData = (
   args: args,
-  options?: UseQueryOptions<any, unknown, any, any>
+  options?: UseQueryOptions<any, unknown, any, any>,
 ) =>
   useQuery(
     getShopRawDataQueryKey(args),
     () => getShopRawDataQueryFetcher(args),
-    options
+    options,
   );

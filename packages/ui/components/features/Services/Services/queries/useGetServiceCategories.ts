@@ -3,11 +3,11 @@ import { useQuery } from "react-query";
 import {
   Exact,
   ServiceCategory,
-  ServiceCategoryFilter,
   ServiceCategoryFilterValue,
   ServiceCategoryStatus,
   TranslationText,
 } from "@features/API";
+import { ServiceCategoryFilter } from "@features/API/gql/generated";
 import { isDev } from "@UI/../utils/src";
 
 export type GetServiceCategoriesQueryVariables = Exact<{
@@ -18,7 +18,7 @@ export type GetServiceCategoriesQuery = { __typename?: "Query" } & {
   getServiceCategories: Array<
     { __typename?: "ServiceCategory" } & Pick<
       ServiceCategory,
-      "id" | "sortOrder" | "status" | "slug" | "thumbnail"
+      "id" | "sortOrder" | "status" | "thumbnail"
     > & {
         name: Array<
           { __typename?: "TranslationText" } & Pick<
@@ -137,7 +137,7 @@ query getServiceCategories{
         langId
         value
       }
-      
+
     }
 }
     `);

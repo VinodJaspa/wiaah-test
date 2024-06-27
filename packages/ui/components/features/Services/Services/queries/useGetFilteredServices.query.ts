@@ -8,11 +8,11 @@ import {
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
-export type SearchServiceQueryVariables = Exact<{
+type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
 }>;
 
-export type SearchServiceQuery = {
+type SearchServiceQuery = {
   __typename?: "Query";
   searchServices: {
     __typename?: "ServiceSearchResponse";
@@ -41,17 +41,17 @@ export type SearchServiceQuery = {
       thumbnail: string;
       rating: number;
       type: ServiceType;
-      title:string;
+      title: string;
       speciality?: string | null;
       availableAppointments?: Array<string> | null;
       healthCenterBookedAppointments: Array<string>;
       saved: boolean;
       sellerId: string;
-      updatedAt:string;
+      updatedAt: string;
       shop: {
         __typename?: "Shop";
         id: string;
-        status:ShopStatus
+        status: ShopStatus;
         location: {
           __typename?: "Location";
           address: string;
@@ -140,7 +140,7 @@ query SearchService($args: SearchServicesInput!) {
   }
 }
 
-    `
+    `,
       )
       .setVariables<SearchServiceQueryVariables>({
         args,
