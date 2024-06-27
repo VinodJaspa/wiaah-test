@@ -60,7 +60,7 @@ export const HealthCenterAddDoctorForm: React.FC<
               value={values.name}
               name="name"
               placeholder={t("name") + "..."}
-              label={t("Doctor name")}
+              label={t("Doctor name") + ""}
               {...setTestid("DoctorNameInput")}
             />
             <div className="w-full">

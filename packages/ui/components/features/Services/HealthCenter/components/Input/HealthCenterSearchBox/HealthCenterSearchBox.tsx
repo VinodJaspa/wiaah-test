@@ -35,7 +35,7 @@ export const HealthCenterSearchBox: React.FC<
     q: "",
   });
   const [specialites, setSepcialties] = React.useState<HealthCenterSpecialty[]>(
-    []
+    [],
   );
   const [practitioners, setPractitioners] = React.useState<
     HealthCenterPractitioner[]
@@ -88,9 +88,9 @@ export const HealthCenterSearchBox: React.FC<
                   routes
                     .visitServiceLocationSearchResults(
                       ServicesRequestKeys.healthCenter,
-                      "milano"
+                      "milano",
                     )
-                    .addQuery(search)
+                    .addQuery(search),
                 )
               }
               className="uppercase rounded-none px-12"

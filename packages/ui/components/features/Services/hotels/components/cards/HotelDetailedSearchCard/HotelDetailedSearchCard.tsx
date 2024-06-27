@@ -36,7 +36,7 @@ export interface HotelDetailedSearchCardProps {
 }
 
 export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
-  props
+  props,
 ) => {
   const {
     description,
@@ -109,7 +109,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
               {rate}
             </span>
           </div>
-          {children}
+          <>{children}</>
           <div
             className={`${
               vertical ? "items-start" : "items-end"

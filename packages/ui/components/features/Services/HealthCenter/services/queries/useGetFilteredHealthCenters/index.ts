@@ -104,7 +104,7 @@ export const useGetFilteredHealthCenters = (args: SearchHealthCenterInput) => {
             }
         }
     }
-} 
+}
     `);
 
   client.setVariables({
@@ -119,6 +119,6 @@ export const useGetFilteredHealthCenters = (args: SearchHealthCenterInput) => {
           "searchHealthCenterDoctors"
         >
       >()
-    ).data.searchHealthCenterDoctors;
+    ).data.data;
   });
 };

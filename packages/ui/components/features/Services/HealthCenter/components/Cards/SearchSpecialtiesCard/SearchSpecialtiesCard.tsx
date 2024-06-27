@@ -12,7 +12,7 @@ export const SearchHealthSpecialtyCard: React.FC<
 > = ({ searchQuery, specialty }) => {
   return (
     <div className="p-2 font-bold cursor-pointer hover:bg-primary-50 items-center flex gap-2">
-      <HighlightText text={specialty.title} toHighlight={searchQuery} />
+      <HighlightText text={specialty.name} toHighlight={searchQuery} />
     </div>
   );
 };
