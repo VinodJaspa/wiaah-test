@@ -24,7 +24,7 @@ export type VehicleSearchDataApiResponse = InferType<
 
 export const getVehicleSearchDataFetcher = async (
   pagination: QueryPaginationInputs,
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<VehicleSearchDataApiResponse> => {
   const data: AsyncReturnType<typeof getVehicleSearchDataFetcher> = {
     hasMore: false,

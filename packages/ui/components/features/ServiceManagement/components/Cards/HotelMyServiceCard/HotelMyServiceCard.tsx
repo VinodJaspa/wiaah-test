@@ -22,7 +22,7 @@ export interface HotelMyServiceCardProps extends HotelMyServiceDataType {
 }
 
 export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
-  props
+  props,
 ) => {
   const {
     description,
@@ -39,6 +39,8 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
   } = props;
   const { t } = useTranslation();
 
+  const amenitiesNames = amenites.map((amenity) => amenity.name);
+
   return (
     <div
       className={`flex flex-col lg:flex-row gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
@@ -52,7 +54,17 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
           <EllipsisText maxLines={2}>{title}</EllipsisText>
         </span>
         <EllipsisText maxLines={3}>{description}</EllipsisText>
-        <LocationAddressDisplay {...location} />
+        <LocationAddressDisplay
+          location={{
+            city: location.city,
+            country: location.country!,
+            state: location.state!,
+            address: location.address!,
+            postalCode: location.postalCode!,
+            lat: location.lat!,
+            lon: location.lon!,
+          }}
+        />
         <div className="flex flex-col gap-2">
           <p className="font-bold">{t("Extras")}</p>
           {extras.map((extra, i) => (
@@ -88,7 +100,7 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
         ))}
       </div>
       <div className="h-64 w-full overflow-y-scroll noScroll">
-        <PopularAmenitiesSection amenities={amenites} />
+        <PopularAmenitiesSection amenities={amenitiesNames} />
       </div>
 
       <div className={`flex-col items-end flex justify-between h-auto gap-2`}>

@@ -60,7 +60,17 @@ export const RestaurantMyServiceCard: React.FC<
                 <p className="text-xl font-bold">{name}</p>
                 <p className="text-3xl font-bold">{rate}</p>
               </div>
-              <LocationAddressDisplay {...location} />
+              <LocationAddressDisplay
+                location={{
+                  city: location.city,
+                  country: location.country!,
+                  state: location.state!,
+                  address: location.address!,
+                  postalCode: location.postalCode!,
+                  lat: location.lat!,
+                  lon: location.lon!,
+                }}
+              />
 
               <InfoText variant="fail">
                 {discount.amount}% {discount.rule}

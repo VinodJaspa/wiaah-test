@@ -40,6 +40,8 @@ export const HolidayRentalsMyServiceCard: React.FC<
   } = props;
   const { t } = useTranslation();
 
+  const amanitiesNames = amenites.map((amenity) => amenity.name);
+
   return (
     <div
       className={`flex flex-col lg:flex-row gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
@@ -54,7 +56,17 @@ export const HolidayRentalsMyServiceCard: React.FC<
         </span>
         <EllipsisText maxLines={3}>{description}</EllipsisText>
 
-        <LocationAddressDisplay {...location} />
+        <LocationAddressDisplay
+          location={{
+            city: location.city,
+            country: location.country!,
+            state: location.state!,
+            address: location.address!,
+            postalCode: location.postalCode!,
+            lat: location.lat!,
+            lon: location.lon!,
+          }}
+        />
 
         {extras.map((extra, i) => (
           <div key={i} className="flex items-center gap-2">
@@ -89,7 +101,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
         ))}
       </div>
       <div className="h-64 w-full overflow-y-scroll noScroll">
-        <PopularAmenitiesSection amenities={amenites} />
+        <PopularAmenitiesSection amenities={amanitiesNames} />
       </div>
 
       <div className={`flex-col items-end flex justify-between h-auto gap-2`}>
