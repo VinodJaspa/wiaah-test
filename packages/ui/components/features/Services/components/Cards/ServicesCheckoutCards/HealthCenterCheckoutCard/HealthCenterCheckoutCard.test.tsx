@@ -5,6 +5,7 @@ import {
   HealthCenterCheckoutCardProps,
 } from "./HealthCenterCheckoutCard";
 import { randomNum } from "utils";
+import { HealthCenterDoctorAvailablityStatus } from "@features/API/gql/generated";
 
 describe("HealthCenterCheckoutCard tests", () => {
   let wrapper: ShallowWrapper;
@@ -39,9 +40,13 @@ describe("HealthCenterCheckoutCard tests", () => {
       price: randomNum(500),
       doctor: {
         id: "123",
+        rating: 3,
         name: "Doctor 1",
         specialty: "spine",
+        description: "doctor description",
+        healthCenterId: "3",
         price: randomNum(50),
+        availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
         photo:
           "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
       },
@@ -59,7 +64,7 @@ describe("HealthCenterCheckoutCard tests", () => {
   it("should display the number of guests", () => {
     expect(
       wrapper.findWhere((node) => node.text() === `Guests:${props.guests}`)
-        .length
+        .length,
     ).toBe(1);
   });
 });

@@ -120,9 +120,7 @@ export const WeekdaysOpenTimeInput: React.FC<WeekdaysOpenTimeInputProps> = ({
                         },
                       ]}
                       timeRange={hoursAday}
-                      onChange={(data) => {
-                        onChange && onChange(data);
-                      }}
+                      onChange={(data) => {}}
                       value={[]}
                     />
                   )}

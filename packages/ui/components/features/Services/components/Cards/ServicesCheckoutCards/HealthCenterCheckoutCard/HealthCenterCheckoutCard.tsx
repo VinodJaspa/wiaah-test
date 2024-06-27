@@ -13,10 +13,20 @@ export const HealthCenterCheckoutCard: React.FC<
     <ServiceCheckoutCommonCardWrapper {...props}>
       <HealthCenterDoctorCard
         doctor={{
-          speciality: { name: doctor.specialty },
+          speciality: {
+            name: doctor.specialty,
+            description: "",
+            id: doctor.id,
+          },
+          id: doctor.id,
           name: doctor.name,
           price: doctor.price,
           thumbnail: doctor.photo,
+          specialityId: doctor.id,
+          rating: doctor.rating!,
+          healthCenterId: doctor.healthCenterId!,
+          description: doctor.description!,
+          availablityStatus: doctor.availabilityStatus!,
         }}
       />
     </ServiceCheckoutCommonCardWrapper>
