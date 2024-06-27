@@ -5,6 +5,7 @@ import {
   InferType,
   CheckoutDataValidationTester,
   CreatePaginationApiResponseValidationSchemaOf,
+  HealthCenterDoctorAvailablityStatus,
 } from "validation";
 
 const appointment = CheckoutDataValidationTester.required();
@@ -132,11 +133,16 @@ export const getPendingAppointmentsFetcher =
               type: "percent",
             },
             price: randomNum(500),
+
             doctor: {
               id: "123",
+              rating: 3,
               name: "Doctor 1",
               specialty: "spine",
+              description: "doctor description",
+              healthCenterId: "3",
               price: randomNum(50),
+              availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
               photo:
                 "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
             },

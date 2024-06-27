@@ -6,6 +6,7 @@ import {
   InferType,
   MyCartSummaryApiResponseValidationSchema,
 } from "validation";
+import { HealthCenterDoctorAvailablityStatus } from "../../ServicesProvider";
 
 export type CartSummaryItemData = InferType<
   typeof CartSummaryItemDataValidationSchema
@@ -157,9 +158,13 @@ export const getMyCartSummaryDataFetcher = (): Promise<
             price: randomNum(500),
             doctor: {
               id: "123",
+              rating: 3,
               name: "Doctor 1",
               specialty: "spine",
+              description: "doctor description",
+              healthCenterId: "3",
               price: randomNum(50),
+              availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
               photo:
                 "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
             },

@@ -1,17 +1,27 @@
 import { createApiResponseValidationSchema } from "../../SharedSchema";
-import { array, number, object, string } from "yup";
+import { array, number, object, string, mixed } from "yup";
 import {
   CommonServiceDataSchema,
   ServiceCancelationPolicies,
 } from "../Services/common";
 import { WorkingDateValidationSchema } from "../Services/HealthCenter";
 
+export enum HealthCenterDoctorAvailablityStatus {
+  Available = "available",
+  Unavailable = "unavailable",
+}
 export const HealthCenterDoctorMetaDataValidationSchema = object({
   id: string().required(),
   name: string().required(),
   specialty: string().required(),
   photo: string().required(),
   price: number().required(),
+  rating: number(),
+  description: string(),
+  healthCenterId: string(),
+  availabilityStatus: mixed<HealthCenterDoctorAvailablityStatus>().oneOf(
+    Object.values(HealthCenterDoctorAvailablityStatus),
+  ),
 });
 
 export const HealthCenterDetailsValidationSchema =
@@ -22,7 +32,7 @@ export const HealthCenterDetailsValidationSchema =
         .min(0)
         .required(),
       workingDates: array().of(WorkingDateValidationSchema).min(0).required(),
-    }).required()
+    }).required(),
   );
 
 export const HealthCenterDetailtsApiResponseValidationSchema =

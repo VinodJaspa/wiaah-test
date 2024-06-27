@@ -6,6 +6,7 @@ import {
   InferType,
 } from "validation";
 import { ServiceCheckoutDataType } from "../checkout";
+import { HealthCenterDoctorAvailablityStatus } from "ui";
 
 export type BookedServiceConfirmationApiResponse = InferType<
   typeof BookConfirmationApiResponseValidationSchema
@@ -129,9 +130,13 @@ const bookedServices: ServiceCheckoutDataType[] = [
       price: randomNum(500),
       doctor: {
         id: "123",
+        rating: 3,
         name: "Doctor 1",
         specialty: "spine",
+        description: "doctor description",
+        healthCenterId: "3",
         price: randomNum(50),
+        availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
         photo:
           "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
       },
@@ -179,7 +184,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
 ];
 
 export const getBookedSerivceConfirmationDataFetcher = async (
-  id: string
+  id: string,
 ): Promise<BookedServiceConfirmationApiResponse> => {
   const res: AsyncReturnType<typeof getBookedSerivceConfirmationDataFetcher> = {
     data: {

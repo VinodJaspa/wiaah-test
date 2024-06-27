@@ -1,6 +1,6 @@
 import { FormatedSearchableFilter } from "api";
 import { AsyncReturnType } from "types";
-import { ServiceType } from "ui";
+import { HealthCenterDoctorAvailablityStatus, ServiceType } from "ui";
 
 import { randomNum } from "utils";
 import {
@@ -54,7 +54,7 @@ export type ProductCheckoutData = InferType<
 >;
 
 export const getCheckoutDataFetcher = async (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<ServiceCheckoutApiResponse> => {
   const res: AsyncReturnType<typeof getCheckoutDataFetcher> = {
     data: {
@@ -206,11 +206,16 @@ export const getCheckoutDataFetcher = async (
               type: "percent",
             },
             price: randomNum(500),
+
             doctor: {
               id: "123",
+              rating: 3,
               name: "Doctor 1",
               specialty: "spine",
+              description: "doctor description",
+              healthCenterId: "3",
               price: randomNum(50),
+              availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
               photo:
                 "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
             },
