@@ -61,13 +61,13 @@ export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
               value={values.ingredients}
               onChange={(data) => setFieldValue("ingredients", data)}
               suggestions={[
-                t("fish"),
-                t("tomato"),
-                t("sauce"),
-                t("cucamber"),
-                t("onion"),
-                t("rice"),
-                t("meat"),
+                { label: t("fish"), value: "fish" },
+                { label: t("tomato"), value: "tomato" },
+                { label: t("sauce"), value: "sauce" },
+                { label: t("cucumber"), value: "cucumber" },
+                { label: t("onion"), value: "onion" },
+                { label: t("rice"), value: "rice" },
+                { label: t("meat"), value: "meat" },
               ]}
             />
             <div className="flex flex-col gap-2 cursor-pointer justify-center items-center w-32 h-24 border-primary border-2 rounded-2xl">

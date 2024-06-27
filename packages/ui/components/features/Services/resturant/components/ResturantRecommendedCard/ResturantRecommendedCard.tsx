@@ -51,7 +51,7 @@ export const ResturantRecommendedCard: React.FC<
           className="absolute opacity-0 group-hover:opacity-100 transition-all top-1/2 left-1/2 -translate-x-1/2"
           onClick={() =>
             visit((routes) =>
-              routes.visitService(props, ServicesRequestKeys.resturants)
+              routes.visitService(props, ServicesRequestKeys.restaurant),
             )
           }
         >

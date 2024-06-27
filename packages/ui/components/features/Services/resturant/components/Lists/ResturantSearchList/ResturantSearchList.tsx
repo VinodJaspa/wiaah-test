@@ -43,16 +43,28 @@ export const ResturantHorizontalList: React.FC = () => {
     data: res,
     isLoading,
     isError,
-  } = useGetResturantsQuery({ page, take }, filters, {
-    onSuccess: (res) => setResturants(res.data),
-  });
+  } = useGetResturantsQuery({ pagination: { page: 2, take: 2 } });
 
   return (
     <div className="flex gap-4 w-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res
-          ? res.data.map((restaurant, i) => (
-              <ResturantRecommendedCard minimal {...restaurant} key={i} />
+          ? res.map((restaurant, i) => (
+              <ResturantRecommendedCard
+                price={restaurant.lowest_price}
+                thumbnail={restaurant.presentations[0].src}
+                title={restaurant.serviceMetaInfo.title}
+                rating={restaurant.rating}
+                location={{
+                  country: restaurant.location.country,
+                  city: restaurant.location.city,
+                  address: restaurant.location.address,
+                }}
+                reviews={restaurant.reviews}
+                hashtags={restaurant.serviceMetaInfo.hashtags}
+                minimal
+                key={i}
+              />
             ))
           : null}
       </SpinnerFallback>
