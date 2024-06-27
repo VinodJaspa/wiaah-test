@@ -23,7 +23,7 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetUserServicesQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
   pagination: GqlCursorPaginationInput;
 }>;
 
@@ -98,7 +98,7 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
 };
 
 export const getUserServicesQueryKey = (
-  args: GetUserServicesQueryVariables
+  args: GetUserServicesQueryVariables,
 ) => ["myServices", { args }];
 export const useGetUserServicesQuery = (
   userId: string,
@@ -108,7 +108,7 @@ export const useGetUserServicesQuery = (
     unknown,
     GetUserServicesQuery["getUserServices"],
     any
-  >
+  >,
 ) => {
   return useQuery(
     getUserServicesQueryKey({ pagination, userId }),
@@ -131,7 +131,7 @@ export const useGetUserServicesQuery = (
               reviews: 162,
               thumbnail: getRandomServiceImage(
                 ServiceType.BeautyCenter,
-                menuType
+                menuType,
               ),
               type: ServiceType.BeautyCenter,
               bathrooms: 3,
@@ -243,7 +243,7 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
     }
   }
 }
-      `
+      `,
         )
         .setVariables<GetUserServicesQueryVariables>({
           pagination,
@@ -253,13 +253,13 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
 
       return res.data.getUserServices;
     },
-    options
+    options,
   );
 };
 
 export const useGetMyServicesQuery = (
   pagination: GetUserServicesQueryVariables["pagination"],
-  options: Parameters<typeof useGetUserServicesQuery>[2]
+  options: Parameters<typeof useGetUserServicesQuery>[2],
 ) => {
   const { user } = useUserData();
 

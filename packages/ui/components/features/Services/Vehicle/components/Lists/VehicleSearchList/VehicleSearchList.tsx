@@ -10,7 +10,7 @@ import {
   VehicleSearchCard,
   VehicleSearchCardProps,
 } from "@UI";
-import { PresentationType } from "@features/API";
+import { PresentationType, ServicePresentationType } from "@features/API";
 
 export const VehicleSearchList: React.FC = () => {
   const { take, page } = usePagination(12);
@@ -27,11 +27,22 @@ export const VehicleSearchList: React.FC = () => {
           data={res?.data || []}
           component={VehicleSearchCard}
           handlePassData={(props) => ({
-            ...props,
             showTotal: false,
-            presentations: [
-              { src: props.thumbnail, type: PresentationType.Image },
-            ],
+            presentations: [{ src: " ", type: ServicePresentationType.Img }],
+            cancelationPolicies: props.cancelationPolicies,
+            title: "",
+            brand: "",
+            price: 4,
+            id: "2",
+            model: "",
+            properties: {
+              seats: 5,
+              windows: 4,
+              maxSpeedInKm: 120,
+              lugaggeCapacity: 4,
+              gpsAvailable: true,
+              airCondition: true,
+            },
           })}
         />
       </SpinnerFallback>

@@ -155,7 +155,7 @@ export const MarketServiceDetailsDrawer: React.FC = () => {
                 onClick={() =>
                   data?.sellerProfile?.id
                     ? visit((r) =>
-                        r.visitChatRoomByProfileId(data?.sellerProfile?.id)
+                        r.visitChatRoomByProfileId(data?.sellerProfile?.id),
                       )
                     : null
                 }
@@ -193,6 +193,7 @@ export const MarketServiceDetailsDrawer: React.FC = () => {
                       <p className="text-xs text-grayText">{item.label}</p>
                       <p className="text-sm font-medium">{item.value}</p>
                     </div>
+                    {/* @ts-ignore */}
                     <div className="text-2xl">{item.icon}</div>
                   </HStack>
                 ))}
@@ -211,7 +212,7 @@ export const MarketServiceDetailsDrawer: React.FC = () => {
             <p className="text-lg font-semibold">{t("Working Hours")}</p>
 
             <div className="grid grid-col-2 gap-2">
-              {(data?.workingSchedule.weekdays
+              {(data?.workingSchedule?.weekdays
                 ? Object.entries(data.workingSchedule.weekdays)
                 : []
               )

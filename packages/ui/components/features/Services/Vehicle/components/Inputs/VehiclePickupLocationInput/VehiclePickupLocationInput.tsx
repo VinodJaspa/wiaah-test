@@ -1,4 +1,3 @@
-// import { VehiclePickupLocation } from "api";
 import { VehiclePickupLocation } from "api";
 import { usePagination } from "hooks";
 import React from "react";
@@ -21,7 +20,7 @@ export const VehiclePickupLocationInput: React.FC<
   VehiclePickupLocationInputProps
 > = ({}) => {
   const { t } = useTranslation();
-  const { addFilter, filters } = useSearchFilters();
+  const { filters } = useSearchFilters();
   const { take, page } = usePagination();
   const [locationSuggsions, setLocationSuggistions] = React.useState<
     VehiclePickupLocation[]
@@ -38,7 +37,7 @@ export const VehiclePickupLocationInput: React.FC<
           }
         } catch {}
       },
-    }
+    },
   );
   return (
     <InputGroup className="text-black h-12 w-full rounded bg-white">
@@ -50,7 +49,9 @@ export const VehiclePickupLocationInput: React.FC<
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {Array.isArray(locationSuggsions)
             ? locationSuggsions.map((location) =>
-                location ? <PickupLocationSuggistionCard {...location} /> : null
+                location ? (
+                  <PickupLocationSuggistionCard {...location} />
+                ) : null,
               )
             : null}
         </SpinnerFallback>

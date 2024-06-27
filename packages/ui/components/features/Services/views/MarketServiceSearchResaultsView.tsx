@@ -1,7 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@UI/../hooks";
-import { useGetFilteredServicesQuery } from "../Services";
+import {
+  ServicePaymentMethods,
+  useGetFilteredServicesQuery,
+} from "../Services";
 import {
   DisplayFoundServices,
   ServicesSearchGrid,
@@ -52,6 +55,10 @@ import {
   MarketVehicleServiceSearchCardAlt,
 } from "./MarketServiceSearchView";
 import { useGetServiceCategoryFiltersQuery } from "../Services/queries/getServiceCategoryFilters.fetcher";
+import {
+  ServicePaymentMethod,
+  ServiceStatus,
+} from "@features/API/gql/generated";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
@@ -189,7 +196,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
                 default:
                   break;
               }
-            }
+            },
           )}
         </div>
       </SpinnerFallback>
@@ -320,47 +327,117 @@ export const MarketServiceSearchResaultsView: React.FC<{
             />
             <HealthCenterServiceSearchResultsList
               doctors={[...Array(15)].map(() => ({
-                availablityStatus:
-                  HealthCenterDoctorAvailablityStatus.Available,
-                description: "",
+                id: "doctor123",
+                rating: 3,
+                healthCenterId: "33",
                 healthCenter: {
-                  location: {
-                    address: "address",
-                    city: "city",
-                    country: "country",
-                    lat: 0,
-                    lon: 0,
-                    postalCode: "1324",
-                    state: "state",
+                  __typename: "HealthCenter",
+                  owner: null,
+                  contact: {
+                    __typename: "ServiceContact",
+                    address: "123 Main St",
+                    country: "Country",
+                    state: "State",
+                    city: "City",
+                    email: "contact@example.com",
+                    phone: "+1234567890",
                   },
+                  id: "healthcenter123",
+                  ownerId: "owner456",
+                  vat: 10.0,
+                  rating: 4.5,
+                  totalReviews: 100,
+                  location: {
+                    __typename: "ServiceLocation",
+                    address: "456 Elm St",
+                    country: "Country",
+                    state: "State",
+                    city: "City",
+                    lat: 40.7128,
+                    lon: -74.006,
+                    postalCode: 10001,
+                  },
+                  status: ServiceStatus.Active,
+                  presentations: [
+                    {
+                      __typename: "ServicePresentation",
+                      type: ServicePresentationType.Img,
+                      src: "https://example.com/presentation.jpg",
+                    },
+                  ],
+                  policies: [
+                    {
+                      __typename: "ServicePolicy",
+                      policyTitle: "Cancellation Policy",
+                      terms: ["Term 1", "Term 2"],
+                    },
+                  ],
+                  serviceMetaInfo: {
+                    __typename: "ServiceMetaInfo",
+                    title: "Health Center Title",
+                    description: "Description of the health center",
+                    metaTagDescription: "Meta description",
+                    metaTagKeywords: ["keyword1", "keyword2"],
+                    hashtags: ["health", "center", "medical"],
+                  },
+                  payment_methods: [
+                    ServicePaymentMethods.Cash,
+                    ServicePaymentMethods.CreditCard,
+                  ],
+                  cancelationPolicies: [
+                    {
+                      __typename: "ServiceCancelationPolicy",
+                      duration: 24,
+                      cost: 10,
+                    },
+                  ],
+                  doctors: [], // Placeholder array, add mock doctors as needed
                   workingHours: {
-                    id: "",
+                    __typename: "WorkingSchedule",
+                    id: "schedule789",
                     weekdays: {
-                      fr: { periods: [new Date(), new Date()] },
-                      mo: { periods: [new Date(), new Date()] },
-                      sa: { periods: [new Date(), new Date()] },
-                      su: { periods: [new Date(), new Date()] },
-                      th: { periods: [new Date(), new Date()] },
-                      tu: { periods: [new Date(), new Date()] },
-                      we: { periods: [new Date(), new Date()] },
+                      __typename: "WeekdaysWorkingHours",
+                      mo: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+                      tu: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+                      we: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+                      th: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+                      fr: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+
+                      sa: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
+
+                      su: {
+                        __typename: "ServiceDayWorkingHours",
+                        periods: ["09:00 AM - 05:00 PM"],
+                      },
                     },
                   },
                 },
-                healthCenterId: "",
-                id: "",
-                name: `Dr.${getRandomName().firstName} ${
-                  getRandomName().lastName
-                }`,
-                price: randomNum(150),
-                rating: 4,
-                specialityId: "",
-                thumbnail:
-                  "https://img.freepik.com/premium-photo/covid-19-coronavirus-outbreak-healthcare-workers-pandemic-concept_1258-19738.jpg?w=2000",
-                speciality: {
-                  description: "",
-                  id: "",
-                  name: "Dentist",
-                },
+                specialityId: "speciality123",
+                name: "Dr. John Doe",
+                thumbnail: "https://example.com/thumbnail.jpg",
+                price: 100,
+                description:
+                  "Experienced doctor specializing in internal medicine.",
+                availablityStatus:
+                  HealthCenterDoctorAvailablityStatus.Available,
               }))}
             />
           </div>
@@ -429,19 +506,19 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
     filters: {
       id: string;
       value: string[];
-    }[]
+    }[],
   ) => void;
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
   const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
-    serviceType as ServiceType
+    serviceType as ServiceType,
   );
 
   const { data: filters } = useGetServiceCategoryFiltersQuery(
     { serviceType: serviceType! },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const [selectedValues, setSelectedValues] = React.useState<
