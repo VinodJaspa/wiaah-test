@@ -41,12 +41,12 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
     },
     {
       label: t("Phone"),
-      icon: TelephoneFillIcon,
+      icon: <TelephoneFillIcon className="fill-primary" />,
       value: `+${telephone}`,
     },
     {
       label: t("E-mail"),
-      icon: EmailIcon,
+      icon: <EmailIcon className="fill-primary" />,
       value: email,
     },
   ];

@@ -29,19 +29,19 @@ export const VehicleServiceDescriptionSection: React.FC<
   }[] = [
     {
       text: `${maxSpeed}Km/s ${t("Max Speed")}`,
-      icon: CarWheelIcon,
+      icon: <CarWheelIcon />,
     },
     {
       text: `${GPS ? t("GPS Availiable") : ""}`,
-      icon: GPSIcon,
+      icon: <GPSIcon />,
     },
     {
       text: `${seats} ${t("Seats")}`,
-      icon: TransportSeatIcon,
+      icon: <TransportSeatIcon />,
     },
     {
       text: `${airCondition ? t("Air Condition") : ""}`,
-      icon: AirConditionIcon,
+      icon: <AirConditionIcon />,
     },
   ];
 
@@ -60,7 +60,7 @@ export const VehicleServiceDescriptionSection: React.FC<
             className="flex rounded-lg bg-[#EFF0F2] text-darkBrown  flex-col gap-4 justify-center items-center h-[9.375rem] w-full"
             key={i}
           >
-            {runIfFn<HtmlSvgProps>(icon, { className: "text-[2.125rem]" })}
+            <>{runIfFn<HtmlSvgProps>(icon, { className: "text-[2.125rem]" })}</>
             <p className="font-semibold">{text}</p>
           </div>
         ))}
