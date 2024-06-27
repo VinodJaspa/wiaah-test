@@ -1,13 +1,14 @@
-import { ServiceCancelationPolicyType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Radio, PriceDisplay, ServiceRefundableTypeDescription } from "@UI";
 import { setTestid } from "utils";
 
-export interface ServiceCancelationPolicyInputProps
-  extends ServiceCancelationPolicyType {
+export interface ServiceCancelationPolicyInputProps {
+  id: string;
   name: string;
   onSelected: (id: string) => any;
+  cost: number;
+  duration: number;
 }
 
 export const ServiceCancelationPolicyInput: React.FC<
