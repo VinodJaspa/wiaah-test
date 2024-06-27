@@ -1006,7 +1006,7 @@ export type ServiceAmenitiesLabelTranslationInput = {
   value: Scalars["String"];
 };
 
-export type ServiceCancelationPolicyInput = {
+type ServiceCancelationPolicyInput = {
   duration: Scalars["Int"];
   cost: Scalars["Int"];
 };
