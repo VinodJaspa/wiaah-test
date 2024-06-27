@@ -3,7 +3,7 @@ import {
   Location,
 } from "../../../SharedSchema";
 import { Cashback, CashbackValidationSchema } from "../../Products";
-import { array, InferType, mixed, number, object, string } from "yup";
+import { array, InferType, mixed, number, object, string, boolean } from "yup";
 import { ServiceCancelationPolicy } from "../common";
 import { ServicesType } from "types";
 import { HealthCenterDoctorMetaDataValidationSchema } from "../../ServicesProvider/HealthCenterDetailsData.schema";
@@ -20,6 +20,10 @@ const services: ServicesType[] = [
 ];
 
 type ServicesCheckoutData =
+  | {
+      type: "holiday_rentals";
+      data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
+    }
   | {
       type: "hotel";
       data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
@@ -39,7 +43,43 @@ type ServicesCheckoutData =
   | {
       type: "product";
       data: InferType<typeof ProductCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "vehicle";
+      data: InferType<typeof VehiclCheckoutDataValidationSchema>;
     };
+
+const ServiceCancelationPolicySchema = object().shape({
+  cost: number().required(),
+  duration: number().required(),
+});
+
+// Define the ServicePresentation schema
+const ServicePresentationSchema = object().shape({
+  src: string().required(),
+  type: mixed().oneOf(["img", "vid"]).required(),
+});
+const VehiclePropertiesSchema = object().shape({
+  airCondition: boolean().required(),
+  gpsAvailable: boolean().required(),
+  lugaggeCapacity: number().required(),
+  maxSpeedInKm: number().required(),
+  seats: number().required(),
+  windows: number().required(),
+});
+
+const VehiclCheckoutDataValidationSchema = object().shape({
+  brand: string().required(),
+  cancelationPolicies: array()
+    .of(ServiceCancelationPolicySchema.required())
+    .required(),
+  id: string().required(),
+  model: string().required(),
+  presentations: array().of(ServicePresentationSchema.required()).required(),
+  price: number().required(),
+  properties: VehiclePropertiesSchema.required(),
+  title: string().required(),
+});
 
 export const ShippingMothedValidationSchema = object({
   name: string().required(),
@@ -98,12 +138,12 @@ export const HotelCheckoutServiceDataValidationSchema =
           object({
             name: string().required(),
             price: number().required(),
-          })
+          }),
         )
         .min(0)
         .required(),
       guests: number().required(),
-    })
+    }),
   );
 
 export const RestaurantServiceCheckoutDataValidationSchema =
@@ -115,12 +155,12 @@ export const RestaurantServiceCheckoutDataValidationSchema =
             title: string().required(),
             qty: number().required(),
             price: number().required(),
-          }).required()
+          }).required(),
         )
         .min(0)
         .required(),
       guests: number().required(),
-    })
+    }),
   );
 
 export const HealthCenterServiceCheckoutDataValidationSchema =
@@ -128,7 +168,7 @@ export const HealthCenterServiceCheckoutDataValidationSchema =
     object({
       doctor: HealthCenterDoctorMetaDataValidationSchema.required(),
       guests: number().required(),
-    })
+    }),
   );
 
 export const BeautyCenterServiceCheckoutDataValidationSchema =
@@ -138,7 +178,7 @@ export const BeautyCenterServiceCheckoutDataValidationSchema =
         .of(beautyCenterTreatmentValidationSchema)
         .min(0)
         .required(),
-    })
+    }),
   );
 
 export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
@@ -153,17 +193,17 @@ export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
           break;
         case "resturant":
           RestaurantServiceCheckoutDataValidationSchema.validateSync(
-            value.data
+            value.data,
           );
           break;
         case "health_center":
           HealthCenterServiceCheckoutDataValidationSchema.validateSync(
-            value.data
+            value.data,
           );
           break;
         case "beauty_center":
           BeautyCenterServiceCheckoutDataValidationSchema.validateSync(
-            value.data
+            value.data,
           );
           break;
         case "product":
@@ -177,7 +217,7 @@ export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
       console.error(err);
       return false;
     }
-  }
+  },
 );
 
 export const ServiceCheckoutDataApiResponseValidationSchema =
@@ -189,5 +229,5 @@ export const ServiceCheckoutDataApiResponseValidationSchema =
         .required(),
       vat: number().required(),
       saved: number().required(),
-    })
+    }),
   );

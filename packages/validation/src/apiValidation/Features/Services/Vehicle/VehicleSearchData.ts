@@ -40,5 +40,5 @@ export const VehicleSearchDataValidationSchema =
 
 export const VehicleSearchApiResponseValidationSchema =
   CreatePaginationValidationSchemaOf(
-    array().of(VehicleSearchDataValidationSchema).min(0).required()
+    array().of(VehicleSearchDataValidationSchema).min(0).required(),
   );

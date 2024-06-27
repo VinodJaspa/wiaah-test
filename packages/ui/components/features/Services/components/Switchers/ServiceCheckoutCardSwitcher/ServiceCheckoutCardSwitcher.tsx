@@ -39,7 +39,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           serviceType={ServiceType.Hotel}
         />
       );
-    case ServiceType.Restaurant:
+    case ServiceType.HolidayRentals:
       return (
         <ServiceCheckoutCard
           shopName="Padma Resort Legian"
@@ -210,16 +210,19 @@ export const ServiceCheckoutCardSwitcher: React.FC<
               name: "Body treatment - back pain treatment",
               price: 100,
               thumbnail: "/treatment-back.png",
+              qty: 2,
             },
             {
               name: "Microdermabrasion - dead skin cells treatment",
               price: 1000,
               thumbnail: "/treatment-skincare.png",
+              qty: 2,
             },
             {
               name: "treatmentChemical peel - remove the top layer of dead skin cells",
               price: 400,
               thumbnail: "/treatment-peel.png",
+              qty: 2,
             },
           ]}
         />
@@ -294,6 +297,6 @@ export const ServiceCheckoutCardSwitcher: React.FC<
         />
       );
     default:
-      return "";
+      return null;
   }
 };
