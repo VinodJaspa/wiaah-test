@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useMutation } from "react-query";
-import { CreateBlockInput, Mutation } from "@features/Social/services/types";
+import { CreateBlockInput, Mutation } from "@features/API/gql/generated";
 
 export type UnBlockUserMutationVariables = Exact<{
   args: CreateBlockInput;
@@ -35,6 +35,6 @@ export const useUnBlockUserMutation = () => {
         .send<UnBlockUserMutation>();
 
       return res.data.unblockUser;
-    }
+    },
   );
 };

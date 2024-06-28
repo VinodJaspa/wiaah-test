@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import { Mutation, UnFollowProfileInput } from "@features/Social";
+import { UnFollowProfileInput, Mutation } from "@features/API/gql/generated";
 import { useMutation } from "react-query";
 
 export type UnFollowProfileMutationVariables = Exact<{
@@ -35,6 +35,6 @@ export const useUnFollowProfileMutation = () => {
         .send<UnFollowProfileMutation>();
 
       return res.data.unFollow;
-    }
+    },
   );
 };

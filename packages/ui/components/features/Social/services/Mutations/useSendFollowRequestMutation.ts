@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Scalars } from "types";
-import { Mutation, UnFollowProfileInput } from "@features/Social";
+import { UnFollowProfileInput, Mutation } from "@features/API/gql/generated";
 import { useMutation } from "react-query";
 
 export type SendFollowReqMutationVariables = Exact<{
@@ -35,6 +35,6 @@ export const useSendFollowRequestMutation = () => {
         .send<SendFollowReqMutation>();
 
       return res.data.sendFollowRequest;
-    }
+    },
   );
 };
