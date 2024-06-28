@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
 import { CallbackAfter, MapChildren, MaybeFn, runIfFn } from "utils";
 import { EyeIcon, EyeIconSlash } from "../icons";
-import { useOutsideClick } from "hooks";
+import { useOutsideClick } from "@src/Hooks";
 
 interface InputContextValue {
   isInputGroup: boolean;
@@ -67,8 +67,8 @@ export const Input: React.FC<InputProps> = ({
             isInputGroup
               ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
               : flushed
-              ? "border-b-2 border-t-0 border-l-0 border-r-0"
-              : "border-2"
+                ? "border-b-2 border-t-0 border-l-0 border-r-0"
+                : "border-2"
           }
         focus:border-primary-200 border-[#EDEDED] rounded-lg px-3 w-full h-10`}
         />
@@ -142,17 +142,19 @@ export const InputGroup: React.FC<InputGroupProps> = ({
           focused ? "border-primary-200" : "border-[#EDEDED]"
         } flex gap-1 bg-white items-center rounded-md relative`}
       >
-        {leftElement && <>{runIfFn(leftElement, {})}</>}
-        {MapChildren<InputContextValue>(children, {
-          isFocused: focused,
-          isInputGroup: isGroup,
-          inputLeftElement: leftElement,
-          inputRightElement: rightElement,
-          setFocused: (focused) => setFocused(focused),
-          setInputLeftElement: (element) => setLeftElement(element),
-          setInputRightElement: (element) => setRightElement(element),
-        })}
-        {rightElement && <>{runIfFn(rightElement, {})}</>}
+        <>{leftElement && <>{runIfFn(leftElement, {})}</>}</>
+        <>
+          {MapChildren<InputContextValue>(children, {
+            isFocused: focused,
+            isInputGroup: isGroup,
+            inputLeftElement: leftElement,
+            inputRightElement: rightElement,
+            setFocused: (focused) => setFocused(focused),
+            setInputLeftElement: (element) => setLeftElement(element),
+            setInputRightElement: (element) => setRightElement(element),
+          })}
+        </>
+        <> {rightElement && <>{runIfFn(rightElement, {})}</>} </>
       </div>
     </InputContext.Provider>
   );
@@ -171,9 +173,9 @@ export const InputLeftElement: React.FC<InputLeftElementProps> = ({
       setInputLeftElement(
         <div {...props} className={`${className || ""} px-2`}>
           {children}
-        </div>
+        </div>,
       ),
-    [children]
+    [children],
   );
   return null;
 };
@@ -190,7 +192,7 @@ export const InputRightElement: React.FC<InputRightElementProps> = ({
     setInputRightElement(
       <div {...props} className={`${className || ""}`}>
         {children}
-      </div>
+      </div>,
     );
   }, [children]);
   return null;
