@@ -13,13 +13,13 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T
-  > = { [_ in K]?: never };
+  K extends keyof T,
+> = { [_ in K]?: never };
 export type Incremental<T> =
   | T
   | {
-    [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
-  };
+      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string };
@@ -558,7 +558,6 @@ export type BannedCountry = {
   isoCode: Scalars["String"]["output"];
 };
 
-
 export type BeautyCenter = {
   _typename?: "BeatuyCenter";
   beauty_center_typeId: Scalars["ID"]["input"];
@@ -569,11 +568,11 @@ export type BeautyCenter = {
   status: ServiceStatus;
   title: Scalars["String"]["input"];
   totalReviews: Scalars["Int"]["input"];
-  type_of_seller: ServiceTypeOfSeller
+  type_of_seller: ServiceTypeOfSeller;
   createdAt: Scalars["DateTime"]["input"];
   updatedAt: Scalars["DateTime"]["input"];
   vat: Scalars["Float"]["input"];
-}
+};
 
 export type BeautyCenterTreatmentCategory = {
   __typename?: "BeautyCenterTreatmentCategory";
@@ -613,7 +612,7 @@ export type BillingAccountBusinessProfileInput = {
   mcc: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
   url: Scalars["String"]["input"];
-}
+};
 
 export enum BillingAccountBusinessType {
   Company = "company",
@@ -2622,7 +2621,7 @@ export enum MembershipRecurring {
 
 export enum MediaType {
   Video = "video",
-  Image = "image"
+  Image = "image",
 }
 
 export type MembershipSubscription = {
@@ -2703,6 +2702,7 @@ export type Mutation = {
   acceptSellerAccount: Scalars["Boolean"]["output"];
   addNewBillingAddress: Scalars["Boolean"]["output"];
   addProductToCart: CartItem;
+  addWishListItem: Scalars["Boolean"]["output"];
   adminCancelOrder: Scalars["Boolean"]["output"];
   adminCloseRefund: Scalars["Boolean"]["output"];
   adminConfirmRefund: Scalars["Boolean"]["output"];
@@ -2809,6 +2809,7 @@ export type Mutation = {
   removeRequiredAction: RequiredAction;
   removeReview: ProductReview;
   removeServiceCategory: ServiceCategory;
+  removeWishlistItem: Scalars["Boolean"]["output"];
   reportContent: Scalars["Boolean"]["output"];
   requestAccountDeletion: Scalars["Boolean"]["output"];
   requestAccountVerification: Scalars["Boolean"]["output"];
@@ -3178,7 +3179,6 @@ export type MutationDeleteProductArgs = {
 export type MutationDeleteProductCategoryArgs = {
   deleteCategoryId: Scalars["String"];
 };
-
 
 export type MutationDeleteServiceArgs = {
   id: Scalars["String"]["input"];
@@ -3610,7 +3610,7 @@ export type NewsfeedPost = {
   isLiked: Scalars["Boolean"]["output"];
   isSaved: Scalars["Boolean"]["output"];
   location?: Maybe<PostLocation>;
-  likes: Scalars["Int"]["input"]
+  likes: Scalars["Int"]["input"];
   mentions?: Maybe<Array<PostMention>>;
   mediaType?: Maybe<MediaType>;
   pinned: Scalars["Boolean"]["output"];
@@ -3656,6 +3656,27 @@ export type NewsletterSubscriber = {
   updatedAt: Scalars["String"]["output"];
   user: Account;
 };
+
+export type Notification = {
+  __typename?: "Notification";
+  id: Scalars["String"]["output"];
+  userId: Scalars["String"]["output"];
+  authorId: Scalars["String"]["output"];
+  author: Account;
+  authorProfileId: Scalars["String"]["output"];
+  createdAt: Scalars["String"]["output"];
+  updatedAt: Scalars["String"]["output"];
+  type: NotificationType;
+  content: Scalars["String"]["output"];
+  thumbnail: Scalars["String"]["output"];
+};
+export type NotificationPaginationResponse = {
+  total: Scalars["Int"]["input"];
+};
+export enum NotificationType {
+  FollowRequest = "follow_request",
+  Follow = "follow",
+}
 
 export type OpenTime = {
   __typename?: "OpenTime";
@@ -3767,17 +3788,15 @@ export type PaymentIntent = {
 };
 
 export enum ProductUsageStatus {
-  New = 'new',
-  Used = 'used'
+  New = "new",
+  Used = "used",
 }
-
 
 export type Place = {
   __typename?: "Place";
   id: Scalars["ID"]["output"];
   type: Scalars["String"]["output"];
 };
-
 
 export type PlaceSuggestions = {
   __typename?: "PlaceSuggestions";
@@ -3830,8 +3849,7 @@ export enum PostVisibility {
 export type PostCardInfo = {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
-}
-
+};
 
 export type PostInfo = {
   createdAt: Scalars["String"]["input"];
@@ -3845,7 +3863,7 @@ export type PostInfo = {
   numberOfShares: Scalars["Int"]["input"];
   comments?: PostComment[];
   thumbnail?: Scalars["String"]["input"];
-}
+};
 
 export interface PostComment {
   id: Scalars["String"]["input"];
@@ -3858,24 +3876,22 @@ export interface PostComment {
   hashTags?: Array<Scalars["String"]["input"]>;
 }
 
-
 export type PostAttachment = {
   type: Scalars["String"]["input"];
   src: Scalars["String"]["input"];
   postLocation?: Scalars["String"]["input"];
-}
-
+};
 
 export type ProfileInfo = {
   id: Scalars["ID"]["output"];
   verifed?: Scalars["Boolean"]["input"];
   name: Scalars["String"]["input"];
   thumbnail: Scalars["String"]["input"];
-  accountType: AccountType.Buyer | AccountType.Seller
+  accountType: AccountType.Buyer | AccountType.Seller;
   public: Scalars["Boolean"]["input"];
   profession?: Scalars["String"]["input"];
   photo?: Scalars["String"]["input"];
-}
+};
 
 export enum PresentationType {
   Image = "image",
@@ -3938,7 +3954,7 @@ export type Product = {
   totalOrdered: Scalars["Int"]["output"];
   unitsRefunded: Scalars["Int"]["output"];
   updatedAt: Scalars["String"]["output"];
-  usageStatus: Maybe<ProductUsageStatus>
+  usageStatus: Maybe<ProductUsageStatus>;
   vat: Scalars["Float"]["output"];
   vendor_external_link?: Maybe<Scalars["String"]["output"]>;
   visibility: VisibilityEnum;
@@ -3979,7 +3995,7 @@ export type ProductAttributeValue = {
 export type ProductAttributeValueInput = {
   name: Array<TranslationTextInput>;
   value: Scalars["String"]["input"];
-  id: Scalars["ID"]["input"]
+  id: Scalars["ID"]["input"];
 };
 
 export type ProductAttributesPaginationResponse = {
@@ -4258,7 +4274,6 @@ export type ProfileVisitDetails = {
 };
 
 export type ProfileVisitsDetails = {
-
   __typename?: "ProfileVisitsDetails";
   countries: Array<ProfileVisitDetails>;
 };
@@ -5540,18 +5555,18 @@ export type RequiredAction = {
 };
 
 export type Restaurant = {
-  cuisinesTypeId: Scalars["ID"]["input"]
-  establishmentTypeId: Scalars["ID"]["input"]
-  highest_price: Scalars["Int"]["input"]
-  id: Scalars["ID"]["output"]
-  lowest_price: Scalars["Int"]["input"]
-  michelin_guide_stars: Scalars["Int"]["input"]
-  ownerId: Scalars["ID"]["input"]
-  payment_methods: Array<ServicePaymentMethod>
-  setting_and_ambianceId: Scalars["ID"]["input"]
-  status: ServiceStatus
-  vat: Scalars["Float"]["input"]
-}
+  cuisinesTypeId: Scalars["ID"]["input"];
+  establishmentTypeId: Scalars["ID"]["input"];
+  highest_price: Scalars["Int"]["input"];
+  id: Scalars["ID"]["output"];
+  lowest_price: Scalars["Int"]["input"];
+  michelin_guide_stars: Scalars["Int"]["input"];
+  ownerId: Scalars["ID"]["input"];
+  payment_methods: Array<ServicePaymentMethod>;
+  setting_and_ambianceId: Scalars["ID"]["input"];
+  status: ServiceStatus;
+  vat: Scalars["Float"]["input"];
+};
 
 export enum RestaurantDishType {
   Dessert = "dessert",
@@ -5741,7 +5756,7 @@ export type Service = {
   thumbnail: Scalars["String"]["output"];
   treatmentCategory?: Maybe<Scalars["String"]["output"]>;
   treatmentCategoryId?: Maybe<Scalars["ID"]["output"]>;
-  title: Scalars["String"]["input"]
+  title: Scalars["String"]["input"];
   type: ServiceType;
   typeOfPlace?: Maybe<RentalTypeOfPlace>;
   units?: Maybe<Scalars["Int"]["output"]>;
@@ -6171,7 +6186,6 @@ export type ServiceWorkingSchedule = {
   weekdays: ServiceWeekdaysWorkingHours;
 };
 
-
 export type ServicesCursorPaginationResponse = {
   __typename?: "ServicesCursorPaginationResponse";
   cursor?: Maybe<Scalars["String"]["output"]>;
@@ -6346,8 +6360,6 @@ export type ShopWorkingSchedule = {
   specialDays: Array<ShopSpecialDayWorkingHours>;
   weekdays: ShopWeekdaysWorkingHours;
 };
-
-
 
 export type ShoppingCart = {
   __typename?: "ShoppingCart";
@@ -7115,15 +7127,15 @@ export type Vehicle = {
 };
 
 export type VehicleService = {
-  createdAt: Scalars["String"]["input"]
-  id: Scalars["ID"]["output"]
-  ownerId: Scalars["ID"]["output"]
-  payment_methods: Array<ServicePaymentMethod>
-  rating: Scalars["Float"]["input"]
-  totalReviews: Scalars["Int"]["input"]
-  updatedAt: Scalars["String"]["input"]
-  vat: Scalars["Float"]["input"]
-}
+  createdAt: Scalars["String"]["input"];
+  id: Scalars["ID"]["output"];
+  ownerId: Scalars["ID"]["output"];
+  payment_methods: Array<ServicePaymentMethod>;
+  rating: Scalars["Float"]["input"];
+  totalReviews: Scalars["Int"]["input"];
+  updatedAt: Scalars["String"]["input"];
+  vat: Scalars["Float"]["input"];
+};
 
 export type VehicleProperties = {
   __typename?: "VehicleProperties";
@@ -7177,8 +7189,7 @@ export type WishedItem = {
   id: Scalars["ID"]["input"];
   itemId: Scalars["ID"]["input"];
   userId: Scalars["ID"]["input"];
-
-}
+};
 
 export enum WithdrawalStatus {
   Pending = "pending",
@@ -7187,49 +7198,48 @@ export enum WithdrawalStatus {
 }
 
 export type Wisher = {
-  __typename?: 'Wisher';
-  userId: Scalars['String']['input'];
+  __typename?: "Wisher";
+  userId: Scalars["String"]["input"];
 };
 
 export type Wisherslist = {
-  __typename?: 'Wisherslist';
-  id: Scalars['ID']["input"];
-  itemId: Scalars['ID']['input'];
-  sellerId: Scalars['ID']['input'];
+  __typename?: "Wisherslist";
+  id: Scalars["ID"]["input"];
+  itemId: Scalars["ID"]["input"];
+  sellerId: Scalars["ID"]["input"];
   wishers: Array<Wisher>;
-  wishersCount: Scalars['Int']['input'];
+  wishersCount: Scalars["Int"]["input"];
 };
 
 export type Wishlist = {
-  __typename?: 'Wishlist';
-  id: Scalars['ID']["input"];
-  ownerId: Scalars['ID']["input"];
+  __typename?: "Wishlist";
+  id: Scalars["ID"]["input"];
+  ownerId: Scalars["ID"]["input"];
   wishedItems: Array<WishlistItem>;
 };
 
 export type WishlistItem = {
-  __typename?: 'WishlistItem';
-  itemId: Scalars['ID']["input"];
+  __typename?: "WishlistItem";
+  itemId: Scalars["ID"]["input"];
   itemType: WishlistItemType;
   product?: Maybe<Product>;
   service?: Maybe<Service>;
 };
 
 export enum WishlistItemType {
-  Product = 'product',
-  Service = 'service'
+  Product = "product",
+  Service = "service",
 }
 
 export type WorkingSchedule = {
-  __typename?: 'WorkingSchedule';
-  id: Scalars['ID']["output"];
+  __typename?: "WorkingSchedule";
+  id: Scalars["ID"]["output"];
   specialDays: Array<SpecialDayWorkingHours>;
   weekdays: WeekdaysWorkingHours;
 };
 
-
 export type WeekdaysWorkingHours = {
-  __typename?: 'WeekdaysWorkingHours';
+  __typename?: "WeekdaysWorkingHours";
   fr?: Maybe<ServiceDayWorkingHours>;
   mo?: Maybe<ServiceDayWorkingHours>;
   sa?: Maybe<ServiceDayWorkingHours>;
@@ -7239,7 +7249,6 @@ export type WeekdaysWorkingHours = {
   we?: Maybe<ServiceDayWorkingHours>;
 };
 
-
 export enum ProfessionStatus {
   Active = "active",
   InActive = "inActive",
@@ -7248,7 +7257,7 @@ export enum ProfessionStatus {
 export enum UserNotificationEnum {
   on = "on",
   off = "off",
-  iFollow = "iFollow"
+  iFollow = "iFollow",
 }
 
 export type UserNotificationSettings = {
@@ -7257,8 +7266,7 @@ export type UserNotificationSettings = {
   mentions: UserNotificationEnum;
   postComment: UserNotificationEnum;
   postReaction: UserNotificationEnum;
-
-}
+};
 
 export type UpdateBeautyCenterAdminInput = {
   beauty_center_typeId?: InputMaybe<Scalars["ID"]["input"]>;
