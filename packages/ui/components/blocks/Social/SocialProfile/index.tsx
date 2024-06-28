@@ -242,8 +242,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   {isFollowed
                     ? t("Unfollow")
                     : isProfilePublic
-                    ? t("Follow")
-                    : t("Ask To Follow")}
+                      ? t("Follow")
+                      : t("Ask To Follow")}
                 </Button>
 
                 <Button

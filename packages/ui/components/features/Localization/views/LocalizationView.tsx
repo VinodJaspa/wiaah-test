@@ -56,9 +56,9 @@ export const LocalizationView: React.FC<{ locationSlug: string }> = ({
     },
     {
       getNextPageParam: (last, all) => {
-        return last.nextCursor;
+        return last.cursor;
       },
-    }
+    },
   );
 
   const hasMore = !!data?.pages.at(-1);
@@ -77,7 +77,7 @@ export const LocalizationView: React.FC<{ locationSlug: string }> = ({
             <p>{`(${NumberShortner(locationQueryViews)} ${t("Views")})`}</p>
           </div>
         </div>
-        <Button colorScheme="darkbrown" onClick={() => { }}>
+        <Button colorScheme="darkbrown" onClick={() => {}}>
           {t("Follow")}
         </Button>
       </HStack>
@@ -90,10 +90,11 @@ export const LocalizationView: React.FC<{ locationSlug: string }> = ({
             {mapArray(FAKEDATA, (shop) => (
               <LocalizationShopCard
                 storeType={shop.storeType}
-                categoryLabel={`${shop.storeType === StoreType.Product
+                categoryLabel={`${
+                  shop.storeType === StoreType.Product
                     ? `${shop.storeCategory} ${t("Store")}`
                     : `${shop.storeType} ${t("Service")}`
-                  }`}
+                }`}
                 id={shop.id}
                 sellerId={shop.ownerId}
                 sellerThumbnail={shop.sellerThumbnail}
@@ -138,44 +139,44 @@ export const LocalizationShopCard: React.FC<{
   location,
   storeType,
 }) => {
-    const { t } = useTranslation();
-    const validOpenTime = isDate(openFromDate) && isDate(openToDate);
-    return (
-      <div className="flex flex-col gap-2 w-full">
-        <AspectRatio ratio={1.2}>
-          <Image src={thumbnail} className="w-full h-full object-cover" />
-          <div className="absolute text-xs top-1 left-1 bg-black/30 text-white">
-            {categoryLabel}
-          </div>
-        </AspectRatio>
-
-        <div className="flex gap-2">
-          <Avatar
-            className="max-w-[1.5rem] max-h-[1.5rem]"
-            src={sellerThumbnail}
-          />
-          <p>{title}</p>
-
-          {verified ? <Verified className="text-secondaryBlue" /> : null}
+  const { t } = useTranslation();
+  const validOpenTime = isDate(openFromDate) && isDate(openToDate);
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <AspectRatio ratio={1.2}>
+        <Image src={thumbnail} className="w-full h-full object-cover" />
+        <div className="absolute text-xs top-1 left-1 bg-black/30 text-white">
+          {categoryLabel}
         </div>
+      </AspectRatio>
 
-        <HStack className="text-xs">
-          <LocationOutlineIcon />
-          <p>{location}</p>
-        </HStack>
+      <div className="flex gap-2">
+        <Avatar
+          className="max-w-[1.5rem] max-h-[1.5rem]"
+          src={sellerThumbnail}
+        />
+        <p>{title}</p>
 
-        {validOpenTime ? (
-          <HStack className="text-xs">
-            <p>{isOpen ? t("Open") : t("Closed")}</p>
-            <p>{`(${new Date(openFromDate as Date).toTimeString()} - ${new Date(
-              openToDate as Date
-            ).toTimeString()})`}</p>
-          </HStack>
-        ) : null}
-
-        <Button onClick={() => { }} className="w-full" colorScheme="darkbrown">
-          {t("Follow")}
-        </Button>
+        {verified ? <Verified className="text-secondaryBlue" /> : null}
       </div>
-    );
-  };
+
+      <HStack className="text-xs">
+        <LocationOutlineIcon />
+        <p>{location}</p>
+      </HStack>
+
+      {validOpenTime ? (
+        <HStack className="text-xs">
+          <p>{isOpen ? t("Open") : t("Closed")}</p>
+          <p>{`(${new Date(openFromDate as Date).toTimeString()} - ${new Date(
+            openToDate as Date,
+          ).toTimeString()})`}</p>
+        </HStack>
+      ) : null}
+
+      <Button onClick={() => {}} className="w-full" colorScheme="darkbrown">
+        {t("Follow")}
+      </Button>
+    </div>
+  );
+};

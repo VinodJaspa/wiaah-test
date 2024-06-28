@@ -2,6 +2,7 @@ import {
   LocationSearchInput,
   ResturantSearchInput,
   WorkingDaysCalender,
+  WorkingDaysCalenderProps,
   usePaginationControls,
 } from "@blocks";
 import { ServiceType } from "@features/API";
@@ -87,8 +88,8 @@ export const MarketServiceSearchView: React.FC<{
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
                     serviceType,
-                    location
-                  )
+                    location,
+                  ),
                 );
               }}
             />
@@ -99,9 +100,9 @@ export const MarketServiceSearchView: React.FC<{
               onSubmit={() =>
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
-                    ServicesRequestKeys.resturants,
-                    "location"
-                  )
+                    ServicesRequestKeys.restaurant,
+                    "location",
+                  ),
                 )
               }
             />
@@ -212,7 +213,7 @@ export const MarketServiceSearchView: React.FC<{
                     />
                   ) : null}
                 </>
-              )
+              ),
             )}
           </div>
         </>
@@ -311,8 +312,8 @@ export const MarketHealthCenterServiceCardAlt: React.FC<{
   location: string;
   speciality: string;
   thumbnail: string;
-  appointments: string[];
-  bookedAppointments: string[];
+  appointments: WorkingDaysCalenderProps["workingDates"];
+  bookedAppointments: WorkingDaysCalenderProps["workingDates"];
 }> = ({
   location,
   speciality,

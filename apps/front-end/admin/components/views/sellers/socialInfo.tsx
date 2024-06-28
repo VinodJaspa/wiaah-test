@@ -1,6 +1,15 @@
 import { DateFormInput, SocialProfile, usePaginationControls } from "@blocks";
-import { PostType, StoryType } from "@features/API";
-import { StoreType } from "@features/API/gql/generated";
+import {
+  PostType,
+  ProfileVisibility,
+  ServiceType,
+  StoryType,
+} from "@features/API";
+import {
+  AccountType,
+  ActiveStatus,
+  StoreType,
+} from "@features/API/gql/generated";
 import {
   Badge,
   Input,
@@ -46,10 +55,24 @@ export const AccountSocialInfo: React.FC<{
           following: 10,
           profession: "programmer",
           ownerId: "jkl",
-          shopId: "jkldi",
+          activeStatus: ActiveStatus.Active,
+          visibility: ProfileVisibility.Public,
+          createdAt: "2024-1-1",
+          lastActive: "2024-12-12",
+          updatedAt: "2024-2-2",
+          user: {
+            id: "33",
+            verified: true,
+            accountType: AccountType.Seller,
+            shop: {
+              id: "22",
+              type: ServiceType.BeautyCenter,
+              storeType: StoreType.Service,
+            },
+          },
         }}
         isFollowed={false}
-        isPublic={true}
+        isPublic={ProfileVisibility.Public}
         storeType={StoreType.Product}
       />
       <TableContainer>

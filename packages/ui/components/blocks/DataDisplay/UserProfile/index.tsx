@@ -8,7 +8,7 @@ export interface UserProfileProps extends HtmlDivProps {
     id: string;
     name: string;
     photo: string;
-    activityType: string;
+    activityType?: string;
     verified?: boolean;
     profession: string;
   };
