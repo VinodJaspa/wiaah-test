@@ -16,10 +16,11 @@ import {
 } from "@UI/components/partials";
 import { FormikInput } from "@UI/components/blocks";
 import { mapArray } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export const useSocialReportModal = () => {
-  const { Listen, emit, removeListner } = useReactPubsub(
-    (events) => events.openSocialReportModal
+  const { Listen, emit, removeListner } = useTypedReactPubsub(
+    (events) => events.openSocialReportModal,
   );
 
   function OpenModal(id: string) {
