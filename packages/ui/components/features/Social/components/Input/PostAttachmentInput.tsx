@@ -123,11 +123,14 @@ const PostAttachmentDraggable: React.FC<DraggableProps> = ({
         setPos({
           x: Math.max(
             0,
-            Math.min(left, parent.offsetWidth - wrapperRef.current.offsetWidth)
+            Math.min(left, parent.offsetWidth - wrapperRef.current.offsetWidth),
           ),
           y: Math.max(
             0,
-            Math.min(top, parent.offsetHeight - wrapperRef.current.offsetHeight)
+            Math.min(
+              top,
+              parent.offsetHeight - wrapperRef.current.offsetHeight,
+            ),
           ),
           parentH: parent.offsetHeight,
           parentW: parent.offsetWidth,
@@ -184,6 +187,7 @@ const PostAttachmentDraggable: React.FC<DraggableProps> = ({
         top: `${pos.y}px`,
       }}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );

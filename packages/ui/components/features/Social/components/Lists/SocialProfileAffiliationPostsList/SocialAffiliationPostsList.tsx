@@ -11,7 +11,7 @@ import {
   AffiliationPostPlaceholder,
   AffiliationPostListPlaceholder,
   getRandomImage,
-} from "placeholder";
+} from "ui/placeholder";
 
 export const SocialProfileAffiliationPostsList: React.FC<{
   userId: string;

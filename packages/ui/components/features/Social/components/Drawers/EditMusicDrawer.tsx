@@ -56,7 +56,9 @@ export const EditMusicDrawer = () => {
                 <CloseIcon className="text-3xl"></CloseIcon>
                 <p className="text-lg font-medium">{currentStepIdx}/2</p>
 
-                <p className="font-medium text-[1.063rem]">{t("Next")}</p>
+                <p className="font-medium text-[1.063rem]">
+                  {t("Next").toString()}
+                </p>
               </HStack>
               <StepperContent>
                 <AudioEditor />
@@ -107,7 +109,9 @@ const ActionVideoEditor: React.FC<{
       </div>
 
       <div className="w-full  text-white flex justify-center gap-2 text-sm font-medium">
-        <p>{t("Min")} 00:03</p> / <p>03:00 {t("Max")}</p>
+        <p>
+          {t("Min").toString()} 00:03 / 03:00 {t("Max").toString()}
+        </p>
       </div>
     </div>
   );
@@ -188,11 +192,11 @@ const AudioEditor = () => {
         />
         <p className="text-sm font-medium">
           {Intl.NumberFormat("en-us", { minimumIntegerDigits: 2 }).format(
-            Math.floor(duration / 60)
+            Math.floor(duration / 60),
           )}
           :
           {Intl.NumberFormat("en-us", { minimumIntegerDigits: 2 }).format(
-            duration % 60
+            duration % 60,
           )}
         </p>
       </HStack>
