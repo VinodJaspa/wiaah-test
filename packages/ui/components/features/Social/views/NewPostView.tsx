@@ -81,7 +81,7 @@ export const NewPostView: React.FC = () => {
     }
   }, [isOpen]);
 
-  function cleanUpStates() { }
+  function cleanUpStates() {}
 
   const vidTypes = ["mp4", "mov"];
   const imgTypes = ["jpeg", "jpg", "png"];
@@ -152,7 +152,7 @@ export const NewPostView: React.FC = () => {
               <div className="flex flex-col gap-1">
                 <p>{t("Link")}</p>
                 <ProductMultiSelect
-                  onChange={() => { }}
+                  onChange={() => {}}
                   value={["fake value"]}
                   placeholder={t("You can add a wiaah product link only")}
                 />
@@ -175,38 +175,38 @@ export const NewPostView: React.FC = () => {
                     >
                       {media
                         ? Array.from(media!).map((v) => (
-                          <div className="relative w-full h-full">
-                            <Image
-                              className="w-full h-full object-cover"
-                              src={URL.createObjectURL(v)}
-                            />
-                            <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
-                              <HStack>
-                                <Button
-                                  colorScheme="danger"
-                                  center
-                                  className="p-2"
-                                >
-                                  <TrashIcon />
-                                </Button>
-                              </HStack>
+                            <div className="relative w-full h-full">
+                              <Image
+                                className="w-full h-full object-cover"
+                                src={URL.createObjectURL(v)}
+                              />
+                              <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
+                                <HStack>
+                                  <Button
+                                    colorScheme="danger"
+                                    center
+                                    className="p-2"
+                                  >
+                                    <TrashIcon />
+                                  </Button>
+                                </HStack>
+                              </div>
                             </div>
-                          </div>
-                        ))
+                          ))
                         : null}
                     </Slider>
                   </AspectRatio>
                   <div className="flex gap-4 justify-center w-full">
                     {media
                       ? mapArray(Array.from(media!), (v, i) => (
-                        <Radio
-                          className="cursor-pointer scale-125"
-                          checked={imageIdx === i}
-                          onChange={(v) =>
-                            v.target.checked ? setImageIdx(i) : null
-                          }
-                        />
-                      ))
+                          <Radio
+                            className="cursor-pointer scale-125"
+                            checked={imageIdx === i}
+                            onChange={(v) =>
+                              v.target.checked ? setImageIdx(i) : null
+                            }
+                          />
+                        ))
                       : null}
                   </div>
                 </div>
@@ -225,7 +225,7 @@ export const NewPostView: React.FC = () => {
                   steps={[
                     {
                       key: "editor",
-                      stepComponent: () => (
+                      stepComponent: (
                         <div className="mx-auto w-[20.5rem]">
                           <VideoEditor
                             video={media.item(0)!}
@@ -235,7 +235,7 @@ export const NewPostView: React.FC = () => {
                               setActionVidBlob(data);
                               handleChange(
                                 "srcUploadId",
-                                URL.createObjectURL(data)
+                                URL.createObjectURL(data),
                               );
                               setStep(1);
                             }}
@@ -246,7 +246,7 @@ export const NewPostView: React.FC = () => {
                     },
                     {
                       key: "details",
-                      stepComponent: () => (
+                      stepComponent: (
                         <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
                           <div className="w-96 mx-auto">
                             <div className="flex flex-col gap-1">
@@ -284,7 +284,7 @@ export const NewPostView: React.FC = () => {
                               <p>{t("Link")}</p>
                               <Input
                                 placeholder={t(
-                                  "You can add a wiaah product link only"
+                                  "You can add a wiaah product link only",
                                 )}
                               />
                             </div>
@@ -296,7 +296,7 @@ export const NewPostView: React.FC = () => {
                               <p>{t("Cover")}</p>
 
                               {form.srcUploadId &&
-                                form.srcUploadId.length > 0 ? (
+                              form.srcUploadId.length > 0 ? (
                                 <VideoFlattenFrames
                                   videoEverySec={1}
                                   onFrameSelected={(v, idx) => {
@@ -367,7 +367,7 @@ export const NewPostView: React.FC = () => {
               <p className="font-medium">{t("Or drag and drop a file")}</p>
               <p className="font-medium">
                 {t(
-                  "Long videos can be split into multiple parts to get more exposure"
+                  "Long videos can be split into multiple parts to get more exposure",
                 )}
               </p>
 
@@ -473,22 +473,22 @@ const ComponentsPlaceHolder: {
   value?: string;
   comp: React.ReactElement;
 }[] = [
-    {
-      name: "ButtonComponent",
-      value: "ClickMe",
-      comp: <button>Click Me</button>,
-    },
-    {
-      name: "InputComponent",
-      comp: <input placeholder="Enter text" />,
-    },
-    {
-      name: "ParagraphComponent",
-      value: "Lorem ipsum",
-      comp: <p>Lorem ipsum dolor sit amet.</p>,
-    },
-    {
-      name: "HeaderComponent",
-      comp: <h1>Header</h1>,
-    },
-  ];
+  {
+    name: "ButtonComponent",
+    value: "ClickMe",
+    comp: <button>Click Me</button>,
+  },
+  {
+    name: "InputComponent",
+    comp: <input placeholder="Enter text" />,
+  },
+  {
+    name: "ParagraphComponent",
+    value: "Lorem ipsum",
+    comp: <p>Lorem ipsum dolor sit amet.</p>,
+  },
+  {
+    name: "HeaderComponent",
+    comp: <h1>Header</h1>,
+  },
+];
