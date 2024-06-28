@@ -6,7 +6,7 @@ export type GetOrderDetailsQueryVariables = Exact<{
   id: Scalars["String"];
 }>;
 
-export type GetOrderDetailsQuery = { __typename?: "Query" } & {
+type GetOrderDetailsQuery = { __typename?: "Query" } & {
   getOrder: { __typename?: "Order" } & Pick<Order, "id">;
 };
 

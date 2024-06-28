@@ -4,115 +4,138 @@ import { getRandomImage } from "@UI/placeholder";
 import {
   Exact,
   FilteredShopsCursorInput,
-  FilteredShopsInput,
   ServiceType,
   StoreType,
 } from "@features/API";
 import {
   UseInfiniteQueryOptions,
   useInfiniteQuery,
-  useQuery,
+  InfiniteData,
+  QueryFunction,
+  QueryKey,
 } from "react-query";
 import { getRandomHotelRoomName } from "@features/Statistics";
 
-export type GetShopsQueryVariables = Exact<{
-  input: FilteredShopsInput;
+// Types for GetFilteredShopsCursorQuery
+export type GetFilteredShopsCursorQueryVariables = Exact<{
+  args: FilteredShopsCursorInput;
 }>;
 
-export type GetShopsQuery = {
+export type GetFilteredShopsCursorQuery = {
   __typename?: "Query";
-  getFilteredShops: Array<{
-    __typename?: "Shop";
-    id: string;
-    banner: string;
-    name: string;
-    ownerId: string;
-    verified: boolean;
-    storeType: StoreType;
-    type?: ServiceType | null;
-    thumbnail: string;
-    storeCategory: string;
-    workingSchedule: {
-      __typename?: "ShopWorkingSchedule";
-      isOpen: boolean;
-      openFrom: string;
-      openTo: string;
-    };
-  }>;
+  getCursorFilteredShops: {
+    __typename?: "FilteredShopsCursorResult";
+    cursor: string | null;
+    shops: Array<{
+      __typename?: "Shop";
+      id: string;
+      banner: string;
+      name: string;
+      ownerId: string;
+      verified: boolean;
+      storeType: StoreType;
+      type?: ServiceType | null;
+      thumbnail: string;
+      storeCategory: string;
+      workingSchedule: {
+        __typename?: "ShopWorkingSchedule";
+        isOpen: boolean;
+        openFrom: string;
+        openTo: string;
+      };
+    }>;
+  };
 };
 
-type args = GetShopsQueryVariables["input"];
+// Query key for cursor-based fetching
+export const getFilteredCursorShopsQueryKey = (
+  args: FilteredShopsCursorInput,
+): QueryKey => ["get-filtered-cursor-shops", { args }];
 
-export const getFilteredShopsQueryKey = (args: args) => [
-  "get-filtered-shops",
-  { args },
-];
-
-export const getFilteredShopsQueryFetcher = async (args: args) => {
+// Fetcher function for cursor-based fetching
+export const getFilteredCursorShopsQueryFetcher: QueryFunction<
+  GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+  QueryKey
+> = async ({ queryKey }) => {
+  const [{ args }] = queryKey as [{ args: FilteredShopsCursorInput }];
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-query getShops(
-    $input:FilteredShopsInput!
-){
-    getFilteredShops(
-        filteredShopsArgs:$input
-    ){
-        id
-        banner
-        name
-        ownerId
-        verified
-        storeType
-        type
-        thumbnail
-        storeCategory
-        workingSchedule {
+    query getCursorFilteredShops($args: FilteredShopsCursorInput!) {
+      getCursorFilteredShops(filteredShopsCursorArgs: $args) {
+        cursor
+        shops {
+          id
+          banner
+          name
+          ownerId
+          verified
+          storeType
+          type
+          thumbnail
+          storeCategory
+          workingSchedule {
             isOpen
             openFrom
             openTo
+          }
         }
+      }
     }
-}
-`);
+  `);
 
-  client.setVariables<GetShopsQueryVariables>({ input: args });
+  client.setVariables<GetFilteredShopsCursorQueryVariables>({ args });
 
   if (isDev) {
-    const mockres: GetShopsQuery["getFilteredShops"] = [...Array(15)].map(
-      () => ({
+    const mockres: GetFilteredShopsCursorQuery["getCursorFilteredShops"] = {
+      cursor: null,
+      shops: [...Array(15)].map(() => ({
+        __typename: "Shop",
+        id: Math.random().toString(36).substr(2, 9),
         banner: getRandomImage(),
-        id: "",
         name: getRandomHotelRoomName(),
-        ownerId: "",
+        ownerId: Math.random().toString(36).substr(2, 9),
+        verified: true,
         storeType: StoreType.Product,
         type: ServiceType.Hotel,
-        verified: true,
-      })
-    );
+        thumbnail: getRandomImage(),
+        storeCategory: "Mock Category",
+        workingSchedule: {
+          __typename: "ShopWorkingSchedule",
+          isOpen: true,
+          openFrom: "08:00",
+          openTo: "22:00",
+        },
+      })),
+    };
     return mockres;
   }
 
-  const res = await client.send<GetShopsQuery>();
-
-  return useQuery<any, unknown, { data: Shop[] }>("filtered-products", () =>
-    client.send()
-  );
+  const res = await client.send<GetFilteredShopsCursorQuery>();
+  return res.data.getCursorFilteredShops;
 };
 
+// Hook for cursor-based fetching
 export const useGetFilteredShopsInfiniteQuery = (
-  args: args1,
-  options?: UseInfiniteQueryOptions<
+  args: FilteredShopsCursorInput,
+  options?: Omit<
+    UseInfiniteQueryOptions<
+      GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+      unknown,
+      GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+      GetFilteredShopsCursorQuery["getCursorFilteredShops"],
+      QueryKey
+    >,
+    "queryKey" | "queryFn"
+  >,
+) =>
+  useInfiniteQuery<
     GetFilteredShopsCursorQuery["getCursorFilteredShops"],
     unknown,
     GetFilteredShopsCursorQuery["getCursorFilteredShops"],
-    GetFilteredShopsCursorQueryVariables["args"],
-    any
-  >
-) =>
-  useInfiniteQuery(
-    getFilteredCursorShopsQuery(args),
-    ({ pageParam }) =>
-      getFilteredCursorShopsQueryFetcher({ ...args, cursor: pageParam }),
-    options
+    QueryKey
+  >(
+    getFilteredCursorShopsQueryKey(args),
+    getFilteredCursorShopsQueryFetcher,
+    options,
   );

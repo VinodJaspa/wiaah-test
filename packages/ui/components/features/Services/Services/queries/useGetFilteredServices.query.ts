@@ -1,3 +1,4 @@
+import { WorkingDaysCalenderProps } from "@blocks";
 import {
   Exact,
   SearchServicesInput,
@@ -7,6 +8,7 @@ import {
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
+import { WorkingDate } from "types";
 
 type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
@@ -43,8 +45,8 @@ type SearchServiceQuery = {
       type: ServiceType;
       title: string;
       speciality?: string | null;
-      availableAppointments?: Array<string> | null;
-      healthCenterBookedAppointments: Array<string>;
+      availableAppointments?: WorkingDaysCalenderProps["workingDates"];
+      healthCenterBookedAppointments: WorkingDaysCalenderProps["workingDates"];
       saved: boolean;
       sellerId: string;
       updatedAt: string;

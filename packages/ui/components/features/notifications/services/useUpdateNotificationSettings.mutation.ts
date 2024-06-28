@@ -1,9 +1,5 @@
 import { createGraphqlRequestClient } from "api";
-import {
-  Exact,
-  UpdateNotificationSettingInput,
-  UserNotificationSettings,
-} from "@features/API";
+import { Exact, UserNotificationSettings } from "@features/API";
 import { useMutation } from "react-query";
 
 type UpdateNotificationSettingInput = Pick<
@@ -40,7 +36,7 @@ export const useUpdateUserNotificationSettingsMutation = () =>
   updateMyNotification(updateNotificationsArgs:$args){
     id
   }
-}`
+}`,
       )
       .setVariables<UpdateMyNotificationSettingsMutationVariables>({ args })
       .send<UpdateMyNotificationSettingsMutation>();

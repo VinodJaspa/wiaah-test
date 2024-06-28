@@ -6,10 +6,11 @@ import {
   Maybe,
   NotificationType,
   Profile,
+  Notification,
+  NotificationPaginationResponse,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-import { NotificationPaginationResponse, Notification } from "@entities";
 export type GetMyNotificationsQueryQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -19,30 +20,30 @@ export type GetMyNotificationsQueryQuery = { __typename?: "Query" } & {
     NotificationPaginationResponse,
     "total"
   > & {
-    data: Array<
-      { __typename?: "Notification" } & Pick<
-        Notification,
-        | "id"
-        | "userId"
-        | "authorId"
-        | "createdAt"
-        | "type"
-        | "content"
-        | "thumbnail"
-      > & {
-        author?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id"> & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                "username" | "photo"
-              >
+      data: Array<
+        { __typename?: "Notification" } & Pick<
+          Notification,
+          | "id"
+          | "userId"
+          | "authorId"
+          | "createdAt"
+          | "type"
+          | "content"
+          | "thumbnail"
+        > & {
+            author?: Maybe<
+              { __typename?: "Account" } & Pick<Account, "id"> & {
+                  profile?: Maybe<
+                    { __typename?: "Profile" } & Pick<
+                      Profile,
+                      "username" | "photo"
+                    >
+                  >;
+                }
             >;
           }
-        >;
-      }
-    >;
-  };
+      >;
+    };
 };
 
 export const useGetMyNotificationsQuery = () =>
@@ -54,6 +55,7 @@ export const useGetMyNotificationsQuery = () =>
           data: [
             {
               authorId: "",
+              thumbnail: "",
               content: "",
               createdAt: new Date().toUTCString(),
               id: "",
@@ -62,48 +64,18 @@ export const useGetMyNotificationsQuery = () =>
               author: {
                 id: "",
                 profile: {
-                  photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  photo: `${getRandomImage()}`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
             {
               authorId: "",
+              thumbnail: "",
               content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 1 }),
-              id: "",
-              type: NotificationType.OrderCanceled,
-              userId: "",
-              author: {
-                id: "",
-                profile: {
-                  photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
-                },
-              },
-            },
-            {
-              authorId: "",
-              content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 1 }),
-              id: "",
-              type: NotificationType.OrderDelivered,
-              userId: "",
-              author: {
-                id: "",
-                profile: {
-                  photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
-                },
-              },
-            },
-            {
-              authorId: "",
-              content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 1 }),
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
               id: "",
               type: NotificationType.Follow,
               userId: "",
@@ -111,72 +83,117 @@ export const useGetMyNotificationsQuery = () =>
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
             {
               authorId: "",
+              thumbnail: "",
               content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
               id: "",
-              type: NotificationType.PostReacted,
+              type: NotificationType.Follow,
               userId: "",
               author: {
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
             {
               authorId: "",
+              thumbnail: "",
               content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
               id: "",
-              type: NotificationType.PostCommented,
+              type: NotificationType.Follow,
               userId: "",
               author: {
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
             {
               authorId: "",
+              thumbnail: "",
               content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 2 }),
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
               id: "",
-              type: NotificationType.PostMention,
+              type: NotificationType.Follow,
               userId: "",
               author: {
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
             {
               authorId: "",
+              thumbnail: "",
               content: "",
-              createdAt: SubtractFromDate(new Date(), { days: 8 }),
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
               id: "",
-              type: NotificationType.StoryReacted,
+              type: NotificationType.Follow,
               userId: "",
               author: {
                 id: "",
                 profile: {
                   photo: getRandomImage(),
-                  username: `${getRandomName().firstName} ${getRandomName().lastName
-                    }`,
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              thumbnail: "",
+              content: "",
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
+              id: "",
+              type: NotificationType.Follow,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
+                },
+              },
+            },
+            {
+              authorId: "",
+              thumbnail: "",
+              content: "",
+              createdAt: `${SubtractFromDate(new Date(), { days: 1 })}`,
+              id: "",
+              type: NotificationType.Follow,
+              userId: "",
+              author: {
+                id: "",
+                profile: {
+                  photo: getRandomImage(),
+                  username: `${getRandomName().firstName} ${
+                    getRandomName().lastName
+                  }`,
                 },
               },
             },
@@ -191,9 +208,10 @@ export const useGetMyNotificationsQuery = () =>
 
       client.setQuery(`
     query getMyNotificationsQuery{
-	getMyNotifications{total
+              getMyNotifications{
+              total
     data{
-      id
+              id
       userId
       authorId
       createdAt
@@ -201,21 +219,21 @@ export const useGetMyNotificationsQuery = () =>
       content
       thumbnail
       author {
-        id
+              id
         profile {
-          username
+              username
           photo
-          
-        }
+
+            }
       }
+      }
+
     }
-    
-  }
 }
-    `);
+`);
       const res = await client.send<GetMyNotificationsQueryQuery>();
 
       return res?.data?.getMyNotifications;
     },
-    { cacheTime: 0 }
+    { cacheTime: 0 },
   );

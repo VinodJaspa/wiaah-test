@@ -6,7 +6,7 @@ export type SellerSignupMutationVariables = Exact<{
   args: CreateAccountInput;
 }>;
 
-export type SellerSignupMutation = { __typename?: "Mutation" } & Pick<
+type SellerSignupMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "register"
 >;
@@ -21,7 +21,7 @@ mutation sellerSignup(
 ){
   register(RegisterInput:$args)
 }
-    `
+    `,
   );
 
   return useMutation<string, unknown, SellerSignupMutationVariables["args"]>(
@@ -37,6 +37,6 @@ mutation sellerSignup(
         .send<SellerSignupMutation>();
 
       return res.data.register;
-    }
+    },
   );
 };
