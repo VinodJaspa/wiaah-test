@@ -1,4 +1,5 @@
-import { Account, Exact, GetFilteredVouchers, Voucher } from "@features/API";
+import { Account, Exact } from "@features/API";
+import { GetFilteredVouchers, Voucher } from "@features/API/gql/generated";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -10,7 +11,7 @@ export type AdminGetVouchersQuery = { __typename?: "Query" } & {
   getFilteredVouchers: Array<
     { __typename?: "Voucher" } & Pick<
       Voucher,
-      "amount" | "code" | "createdAt" | "currency" | "status" | "id"
+      "amount" | "code" | "createdAt" | "currency" | "status"
     > & { user: { __typename?: "Account" } & Pick<Account, "id" | "firstName"> }
   >;
 };
@@ -54,5 +55,5 @@ query adminGetVouchers(
 
 export const useAdminGetVouchersQuery = (args: args) =>
   useQuery(adminGetVouchersQueryKey(args), () =>
-    adminGetVouchersQueryFetcher(args)
+    adminGetVouchersQueryFetcher(args),
   );

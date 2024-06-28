@@ -1,4 +1,5 @@
-import { CreateVoucherInput, Exact, Voucher } from "@features/API";
+import { Exact } from "@features/API";
+import { CreateVoucherInput, Voucher } from "@features/API/gql/generated";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 

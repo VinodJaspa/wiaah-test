@@ -31,13 +31,13 @@ export const Absolute: React.FC<AbsoluteProps> = ({
     width: fullWidth
       ? "100%"
       : width
-      ? CSSValueUnitToString(width)
-      : "fit-content",
+        ? CSSValueUnitToString(width)
+        : "fit-content",
     height: fullHeight
       ? "100%"
       : height
-      ? CSSValueUnitToString(height)
-      : "fit-content",
+        ? CSSValueUnitToString(height)
+        : "fit-content",
   };
 
   if (position) {
@@ -59,6 +59,7 @@ export const Absolute: React.FC<AbsoluteProps> = ({
         horizontalCenter ? "left-1/2 translate-x-1/2" : ""
       }`}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );

@@ -1,4 +1,5 @@
-import { AddWishlistItemInput, Exact, Mutation } from "@features/API";
+import { Exact, Mutation } from "@features/API";
+import { AddWishlistItemInput } from "@features/API/gql/generated";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
@@ -8,7 +9,7 @@ export type AddItemToWishlistMutationVariables = Exact<{
 
 export type AddItemToWishlistMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
-  "AddWishlistItem"
+  "addWishListItem"
 >;
 
 export const useAddItemToWishlistMutation = () => {
@@ -33,6 +34,6 @@ export const useAddItemToWishlistMutation = () => {
       })
       .send<AddItemToWishlistMutation>();
 
-    return res.data.AddWishlistItem;
+    return res.data.addWishListItem;
   });
 };

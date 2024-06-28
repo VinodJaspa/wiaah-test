@@ -4,7 +4,7 @@ import { HtmlSvgProps } from "types";
 export interface ShoppingBagOutlineIconProps extends HtmlSvgProps {}
 
 export const ShoppingBagIcon: React.FC<ShoppingBagOutlineIconProps> = (
-  props
+  props,
 ) => {
   return (
     <svg
@@ -29,7 +29,7 @@ export const ShoppingBagIcon: React.FC<ShoppingBagOutlineIconProps> = (
 export interface ShoppingBagOutlineIconProps extends HtmlSvgProps {}
 
 export const ShoppingBagOutlineIcon: React.FC<ShoppingBagOutlineIconProps> = (
-  props
+  props,
 ) => {
   return (
     <svg
