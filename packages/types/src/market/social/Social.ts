@@ -6,7 +6,7 @@ export interface ProfileInfo {
   verifed?: boolean;
   name: string;
   thumbnail: string;
-  accountType: AccountType.Seller | AccountType.Buyer;
+  accountType: "seller" | "buyer";
   public: boolean;
   profession?: string;
   photo?: string;
@@ -148,14 +148,14 @@ export interface HashTagCardInfo {
 export interface SocialStoryData {
   id: string;
   storyType:
-  | "text"
-  | "image"
-  | "video"
-  | "newsFeedPost"
-  | "shopPost"
-  | "affiliationPost"
-  | "action"
-  | "servicePost";
+    | "text"
+    | "image"
+    | "video"
+    | "newsFeedPost"
+    | "shopPost"
+    | "affiliationPost"
+    | "action"
+    | "servicePost";
   storySrc?: string;
   storyText?: string;
   storyCreationDate: string;
@@ -164,9 +164,9 @@ export interface SocialStoryData {
 
 export interface SocialStoryContentData
   extends Pick<
-  SocialStoryData,
-  "storyType" | "storySrc" | "storyText" | "id"
-  > { }
+    SocialStoryData,
+    "storyType" | "storySrc" | "storyText" | "id"
+  > {}
 
 export interface SocialStoryDataWithUser extends SocialStoryData {
   user: ProfileInfo;
