@@ -11,7 +11,7 @@ import {
 import { useResponsive } from "@UI/../hooks";
 import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
-import { PostCardInfo } from "@features/API";
+import { PostCardInfo } from "types";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
