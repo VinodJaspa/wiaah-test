@@ -28,7 +28,6 @@ export type GetMySavedPostsQuery = { __typename?: "Query" } & {
           | "comments"
           | "reactionNum"
           | "userId"
-          | "authorProfileId"
           | "hashtags"
           | "createdAt"
           | "tags"
@@ -93,15 +92,10 @@ export const useGetMySavedPostsQuery = (input: GetMySavedPostsInput) => {
         {
           id: "test",
           comments: randomNum(5),
-          authorProfileId: "test",
           hashtags: [],
           createdAt: new Date().toString(),
           attachments: [
-            {
-              marketingTags: [],
-              src: "https://images.pexels.com/photos/15193687/pexels-photo-15193687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-              type: AttachmentType.Img,
-            },
+            "https://images.pexels.com/photos/15193687/pexels-photo-15193687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           ],
           content: "test post",
           reactionNum: randomNum(300),

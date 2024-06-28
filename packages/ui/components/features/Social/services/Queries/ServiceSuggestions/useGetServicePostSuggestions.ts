@@ -13,6 +13,7 @@ import {
 import { Account, Service } from "@features/API";
 import { randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
+import { TypeOfService } from "@features/API/gql/generated";
 
 export type GetServicePostSuggestionsQueryVariables = Exact<{
   args: GetRecommendedServicePostsInput;
@@ -31,33 +32,33 @@ export type GetServicePostSuggestionsQuery = { __typename?: "Query" } & {
       | "views"
       | "serviceType"
     > & {
-      service: { __typename?: "Service" } & Pick<
-        Service,
-        "id" | "thumbnail" | "type" | "price" | "title"
-      >;
-      location: { __typename?: "PostLocation" } & Pick<
-        PostLocation,
-        "address" | "city" | "country" | "state"
-      >;
-      user: { __typename?: "Account" } & Pick<Account, "id"> & {
-        profile?: Maybe<
-          { __typename?: "Profile" } & Pick<
-            Profile,
-            | "id"
-            | "username"
-            | "verified"
-            | "profession"
-            | "photo"
-            | "followers"
-          >
+        service: { __typename?: "Service" } & Pick<
+          Service,
+          "id" | "thumbnail" | "type" | "price" | "title"
         >;
-      };
-    }
+        location: { __typename?: "PostLocation" } & Pick<
+          PostLocation,
+          "address" | "city" | "country" | "state"
+        >;
+        user: { __typename?: "Account" } & Pick<Account, "id"> & {
+            profile?: Maybe<
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                | "id"
+                | "username"
+                | "verified"
+                | "profession"
+                | "photo"
+                | "followers"
+              >
+            >;
+          };
+      }
   >;
 };
 
 export const useGetServicePostSuggestionQuery = (
-  input: GetRecommendedServicePostsInput
+  input: GetRecommendedServicePostsInput,
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -112,54 +113,40 @@ export const useGetServicePostSuggestionQuery = (
 
   return useQuery(["get-service-post-suggestions"], async () => {
     return [...Array(15)].map((_, i) => ({
-      id: i.toString(),
-      comments: randomNum(150),
-      createdAt: new Date().toString(),
+      id: "1",
+      userId: "user123",
+      comments: 10,
+      reactionNum: 20,
+      shares: 5,
+      createdAt: "2024-06-28T12:00:00Z",
+      views: 100,
+      serviceType: TypeOfService.HotelRoom,
       service: {
-        hashtags: [],
-        id: i.toString(),
-        presentations: [
-          { src: getRandomImage(), type: PresentationType.Image },
-        ],
-        price: randomNum(15),
-        title: "title",
-        cashback: {
-          amount: randomNum(5),
-          id: i.toString(),
-          units: 5,
-          type: CashbackType.Cash,
-        },
-        discount: {
-          amount: randomNum(54),
-          id: i.toString(),
-          units: randomNum(56),
-        },
-        thumbnail:
-          "https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg",
-        rating: 5,
-        serviceType: input.serviceType,
-      },
-      serviceType: input.serviceType,
-      reactionNum: randomNum(56),
-      shares: randomNum(5),
-      userId: i.toString(),
-      views: randomNum(546),
-      user: {
-        id: i.toString(),
-        profile: {
-          id: i.toString(),
-          photo: getRandomImage(),
-          profession: "profession",
-          username: "name",
-          verified: true,
-          followers: randomNum(150),
-        },
+        id: "service123",
+        thumbnail: "https://example.com/thumbnail.jpg",
+        type: ServiceType.Hotel,
+        price: 100,
+        title: "Luxury Hotel Stay",
       },
       location: {
-        city: "city",
-        country: "country",
-        address: "address",
-        state: "state",
+        __typename: "PostLocation",
+        address: "123 Main St",
+        city: "New York",
+        country: "USA",
+        state: "NY",
+      },
+      user: {
+        __typename: "Account",
+        id: "user123",
+        profile: {
+          __typename: "Profile",
+          id: "profile123",
+          username: "example_user",
+          verified: true,
+          profession: "Travel Blogger",
+          photo: "https://example.com/profile.jpg",
+          followers: 50000,
+        },
       },
     })) as GetServicePostSuggestionsQuery["getRecommendedServicePosts"];
 

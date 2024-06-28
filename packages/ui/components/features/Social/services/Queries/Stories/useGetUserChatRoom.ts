@@ -3,7 +3,7 @@ import { ChatRoom, Exact, Scalars } from "@features/API";
 import { UseQueryOptions, useMutation, useQuery } from "react-query";
 
 export type GetRoomWithUserQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetRoomWithUserQuery = { __typename?: "Query" } & {
@@ -27,7 +27,7 @@ export const getUserChatRoomQueryFetcher = async (args: args) => {
   getRoomWithUser(userId:$userId) {
     id
   }
-}`
+}`,
     )
     .setVariables<GetRoomWithUserQueryVariables>(args)
     .send<GetRoomWithUserQuery>();
@@ -38,5 +38,5 @@ export const getUserChatRoomQueryFetcher = async (args: args) => {
 export const useGetUserChatRoomQuery = () =>
   useMutation<GetRoomWithUserQuery["getRoomWithUser"], any, args>(
     ["user-chat-room-mutation"],
-    (args) => getUserChatRoomQueryFetcher(args)
+    (args) => getUserChatRoomQueryFetcher(args),
   );

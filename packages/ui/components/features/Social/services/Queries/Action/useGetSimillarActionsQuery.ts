@@ -25,11 +25,11 @@ export const getSimillarActionsQueryFetcher = async (args: args) => {
 
   const client = createGraphqlRequestClient();
 
-  const res = await client.setQuery(``).setVariables().send();
+  const res = await client.setQuery(``).setVariables(args).send();
   return res.data;
 };
 
 export const useGetSimillarActionsQuery = (args: args) =>
   useInfiniteQuery(getSimillarActionsQueryKey(args), () =>
-    getSimillarActionsQueryFetcher(args)
+    getSimillarActionsQueryFetcher(args),
   );

@@ -27,7 +27,6 @@ export type GetAdminFilteredPostsQuery = { __typename?: "Query" } & {
       | "views"
       | "userId"
       | "title"
-      | "authorProfileId"
       | "id"
       | "createdAt"
     > & {
@@ -101,7 +100,7 @@ query getAdminFilteredPosts($args:GetAdminFilteredNewsfeedPostsInput!) {
     publisher {
       photo
       username
-      
+
     }
   }
 }
@@ -116,6 +115,6 @@ query getAdminFilteredPosts($args:GetAdminFilteredNewsfeedPostsInput!) {
 
 export const useGetAdminFilteredNewsfeedPosts = (args: args) => {
   return useQuery(getAdminFilteredNewsfeedPostsQueryKey(args), () =>
-    getAdminFilteredNewsfeedPostsFetcher(args)
+    getAdminFilteredNewsfeedPostsFetcher(args),
   );
 };

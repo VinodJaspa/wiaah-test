@@ -4,7 +4,7 @@ import { ContentHostType, Exact, Query, Scalars } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetContentCommentsCountQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
   type: ContentHostType;
 }>;
 
@@ -34,7 +34,7 @@ export const getContentCommentsQueryFetcher = async (args: args) => {
   query getContentCommentsCount($id:String!, $type:ContentHostType!){
   getContentCommentsCount(id:$id,type:$type)
 }
-  `
+  `,
     )
     .setVariables<GetContentCommentsCountQueryVariables>(args)
     .send<GetContentCommentsCountQuery>();
@@ -49,10 +49,10 @@ export const useGetContentCommentsCountQuery = (
     unknown,
     GetContentCommentsCountQuery["getContentCommentsCount"],
     any
-  >
+  >,
 ) =>
   useQuery(
     getContentCommentsQueryKey(args),
     () => getContentCommentsQueryFetcher(args),
-    options
+    options,
   );

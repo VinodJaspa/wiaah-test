@@ -3,7 +3,7 @@ import { Exact, Mutation, Scalars } from "@features/API";
 import { useMutation } from "react-query";
 
 export type AdminDeleteCommentMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type AdminDeleteCommentMutation = { __typename?: "Mutation" } & Pick<
@@ -21,7 +21,7 @@ export const useAdminDeleteCommentMutation = () =>
 mutation adminDeleteComment($id:String!){
   adminDeleteComment(commentId:$id)
 }
-    `
+    `,
       )
       .setVariables<AdminDeleteCommentMutationVariables>({ id })
       .send<AdminDeleteCommentMutation>();

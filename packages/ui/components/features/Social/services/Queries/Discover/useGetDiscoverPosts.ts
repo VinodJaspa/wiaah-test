@@ -25,7 +25,6 @@ export type GetDiscoverPostsQuery = { __typename?: "Query" } & {
           { __typename?: "NewsfeedPost" } & Pick<
             NewsfeedPost,
             | "id"
-            | "authorProfileId"
             | "content"
             | "createdAt"
             | "comments"

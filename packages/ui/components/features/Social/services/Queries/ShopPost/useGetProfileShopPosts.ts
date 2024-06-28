@@ -33,33 +33,33 @@ export type GetProfileShopPostsQuery = { __typename?: "Query" } & {
       | "productId"
       | "views"
     > & {
-      product: { __typename?: "Product" } & Pick<
-        Product,
-        | "id"
-        | "presentations"
-        | "hashtags"
-        | "title"
-        | "cashback"
-        | "discount"
-        | "price"
-        | "thumbnail"
-      >;
-      user?: Maybe<
-        { __typename?: "Account" } & Pick<Account, "id" | "type"> & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<
-              Profile,
-              | "photo"
-              | "username"
-              | "verified"
-              | "id"
-              | "profession"
-              | "visibility"
-            >
-          >;
-        }
-      >;
-    }
+        product: { __typename?: "Product" } & Pick<
+          Product,
+          | "id"
+          | "presentations"
+          | "hashtags"
+          | "title"
+          | "cashback"
+          | "discount"
+          | "price"
+          | "thumbnail"
+        >;
+        user?: Maybe<
+          { __typename?: "Account" } & Pick<Account, "id" | "accountType"> & {
+              profile?: Maybe<
+                { __typename?: "Profile" } & Pick<
+                  Profile,
+                  | "photo"
+                  | "username"
+                  | "verified"
+                  | "id"
+                  | "profession"
+                  | "visibility"
+                >
+              >;
+            }
+        >;
+      }
   >;
 };
 
@@ -80,7 +80,7 @@ export const useGetProfileShopPosts = (args: GetUserProductPostsInput) => {
             views
             reactionNum
             productId
-            
+
             product {
             thumbnail
               id
@@ -154,7 +154,7 @@ export const useGetProfileShopPosts = (args: GetUserProductPostsInput) => {
       visibility: PostVisibility.Public,
       user: {
         id: i.toString(),
-        type: AccountType.Seller,
+        accountType: AccountType.Seller,
         profile: {
           id: i.toString(),
           photo: "/profile (3).jfif",

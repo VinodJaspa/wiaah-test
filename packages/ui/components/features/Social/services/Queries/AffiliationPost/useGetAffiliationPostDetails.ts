@@ -29,28 +29,28 @@ export type GetAffiliationPostDetailsQuery = { __typename?: "Query" } & {
     | "comments"
     | "createdAt"
   > & {
-    affiliation: { __typename?: "Affiliation" } & Pick<
-      Affiliation,
-      | "id"
-      | "commision"
-      | "createdAt"
-      | "itemId"
-      | "itemType"
-      | "product"
-      | "service"
-      | "status"
-    >;
-    user?: Maybe<
-      { __typename?: "Account" } & Pick<Account, "id"> & {
-        profile?: Maybe<
-          { __typename?: "Profile" } & Pick<
-            Profile,
-            "id" | "username" | "verified" | "photo" | "ownerId"
-          >
-        >;
-      }
-    >;
-  };
+      affiliation: { __typename?: "Affiliation" } & Pick<
+        Affiliation,
+        | "id"
+        | "commision"
+        | "createdAt"
+        | "itemId"
+        | "itemType"
+        | "product"
+        | "service"
+        | "status"
+      >;
+      user?: Maybe<
+        { __typename?: "Account" } & Pick<Account, "id"> & {
+            profile?: Maybe<
+              { __typename?: "Profile" } & Pick<
+                Profile,
+                "id" | "username" | "verified" | "photo" | "ownerId"
+              >
+            >;
+          }
+      >;
+    };
 };
 
 export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {
@@ -110,6 +110,8 @@ export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {
           id: "",
           itemId: "",
           status: AffiliationStatus.Active,
+          // ts-ignore used here to prevent creating a full product placeholder we do not need full product in this example
+          // @ts-ignore
           product: {
             thumbnail: getRandomImage(),
             presentations: [
@@ -125,6 +127,9 @@ export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {
             title: "product title",
             price: randomNum(51),
           },
+
+          // ts-ignore used here to prevent creating a full service placeholder we do not need full service in this example
+          //@ts-ignore
           service: {
             name: "product title",
             thumbnail: getRandomImage(),

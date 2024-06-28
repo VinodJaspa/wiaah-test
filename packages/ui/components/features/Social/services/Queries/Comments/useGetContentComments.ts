@@ -22,34 +22,33 @@ export type GetContentCommentsQueryVariables = Exact<{
 }>;
 
 export type GetContentCommentsQuery = { __typename?: "Query" } & {
-  getContentComments: 
-   {
-      data: Array<
-        { __typename?: "Comment" } & Pick<
-          Comment,
-          | "id"
-          | "content"
-          | "commentedAt"
-          | "likes"
-          | "userId"
-          | "hostId"
-          | "hostType"
-          | "updatedAt"
-          |"replies"
-        > & {
-            attachment: { __typename?: "Attachment" } & Pick<
-              Attachment,
-              "src" | "type"
-            >;
-            author?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                "username" | "photo" | "verified" | "id"
-              >
-            >;
-          }
-      >;
-    };
+  getContentComments: {
+    data: Array<
+      { __typename?: "Comment" } & Pick<
+        Comment,
+        | "id"
+        | "content"
+        | "commentedAt"
+        | "likes"
+        | "userId"
+        | "hostId"
+        | "hostType"
+        | "updatedAt"
+        | "replies"
+      > & {
+          attachment: { __typename?: "Attachment" } & Pick<
+            Attachment,
+            "src" | "type"
+          >;
+          author?: Maybe<
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              "username" | "photo" | "verified" | "id"
+            >
+          >;
+        }
+    >;
+  };
 };
 
 export const useGetContentCommentsQuery = (
@@ -60,7 +59,7 @@ export const useGetContentCommentsQuery = (
     GetContentCommentsQuery["getContentComments"],
     unknown,
     any
-  >
+  >,
 ) => {
   return useQuery(
     ["get-content-comments", { args }],
