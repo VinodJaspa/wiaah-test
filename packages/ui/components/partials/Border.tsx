@@ -19,6 +19,6 @@ export const Border: React.FC<BorderProps> = ({
     borderColor: color?.inHex,
     borderRadius: `${rounded?.value}${rounded?.unit || "px"}`,
   };
-
+  //@ts-ignore
   return <div style={styles}>{children}</div>;
 };

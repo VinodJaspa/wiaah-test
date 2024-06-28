@@ -27,6 +27,7 @@ export const BoxShadow: React.FC<BoxShadowProps> = ({
       }}
       {...props}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );

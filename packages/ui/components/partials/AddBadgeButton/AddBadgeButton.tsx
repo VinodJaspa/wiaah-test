@@ -18,6 +18,7 @@ export const AddBadgeButton: React.FC<AddBadgeButtonProps> = ({
       className="flex gap-2 items-center text-primary cursor-pointer"
     >
       <RoundedPlusIcon className="border-primary" />
+      {/* @ts-ignore */}
       <div>{children}</div>
     </Badge>
   );
