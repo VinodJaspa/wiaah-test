@@ -1,14 +1,14 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { ClassType } from "../../types";
 
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
   data: T[];
   total: number;
   hasMore: boolean;
 }
 
 export function CreateGqlPaginatedResponse<TData>(
-  TItemClass: ClassType<TData>
+  TItemClass: ClassType<TData>,
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
@@ -26,7 +26,7 @@ export function CreateGqlPaginatedResponse<TData>(
   }
   return PaginatedResponseClass as ClassType<PaginatedResponse<TData>>;
 }
-interface CursorPaginatedResponse<T> {
+export interface CursorPaginatedResponse<T> {
   data: T[];
   cursor?: string;
   nextCursor?: string;
@@ -35,7 +35,7 @@ interface CursorPaginatedResponse<T> {
 }
 
 export function CreateGqlCursorPaginatedResponse<TData>(
-  TItemClass: ClassType<TData>
+  TItemClass: ClassType<TData>,
 ) {
   // `isAbstract` decorator option is mandatory to prevent registering in schema
   @ObjectType({ isAbstract: true })
