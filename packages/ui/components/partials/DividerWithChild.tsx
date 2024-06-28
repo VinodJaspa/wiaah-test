@@ -11,7 +11,7 @@ export const DividerWidthChild: FC<DividerWithChildProps> = ({
   children,
 }) => {
   const [DividerStyles, setDividerStyles] = React.useState<React.CSSProperties>(
-    {}
+    {},
   );
   React.useEffect(() => {
     // set Divder Line stlyes
@@ -31,7 +31,9 @@ export const DividerWidthChild: FC<DividerWithChildProps> = ({
   return (
     <div className="flex items-center">
       <div style={DividerStyles} className={` my-4 flex h-0.5 w-full `}></div>
-      {children ? children : null}
+
+      {/* @ts-ignore */}
+      <>{children ? children : null}</>
       <div style={DividerStyles} className={` my-4 flex h-0.5 w-full `}></div>
     </div>
   );

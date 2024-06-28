@@ -10,7 +10,7 @@ export const MathPowerDisplay: React.FC<MathPowerDisplayProps> = ({
 }) => {
   return (
     <div className="relative">
-      {children}
+      <>{children}</>
       <span className="text-[0.5em] absolute top-0 right-0 transform translate-x-full ">
         {power}
       </span>

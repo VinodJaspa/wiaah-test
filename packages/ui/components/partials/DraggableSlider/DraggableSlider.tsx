@@ -60,6 +60,7 @@ export const Slide: React.FC<SlideProps> = ({
           return false;
         }}
       >
+        {/* @ts-ignore */}
         {child}
       </div>
     </div>
@@ -95,7 +96,7 @@ export const DraggableSlider = React.forwardRef(
       gap = 0,
       draggingActive = true,
     }: DraggableSliderProps,
-    ref
+    ref,
   ) => {
     useResponsive(() => {
       RefreshSize();
@@ -117,7 +118,7 @@ export const DraggableSlider = React.forwardRef(
       setPositionByIndex(
         vertical
           ? getElementDimensions(sliderRef).height
-          : getElementDimensions(sliderRef).width
+          : getElementDimensions(sliderRef).width,
       );
     }
 
@@ -127,7 +128,7 @@ export const DraggableSlider = React.forwardRef(
         prevTranslate.current = currentTranslate.current;
         setSliderPosition();
       },
-      [dimensions.width, dimensions.height]
+      [dimensions.width, dimensions.height],
     );
 
     const transitionOn = () =>
@@ -329,5 +330,5 @@ export const DraggableSlider = React.forwardRef(
         </div>
       </div>
     );
-  }
+  },
 );

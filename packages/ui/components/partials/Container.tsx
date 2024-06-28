@@ -17,6 +17,7 @@ export const Container: FC<ContainerProps> = ({
         noContainer ? "" : "container mx-auto h-full"
       }`}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );

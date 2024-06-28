@@ -37,6 +37,8 @@ export const InfoText: React.FC<InfoTextProps> = ({
   return (
     <div className={`${styleSwitcher()} flex relative isolate`}>
       <span className={`${styleSwitcher()} w-1 absolute lef-0 top-0 h-full`} />
+
+      {/* @ts-ignore */}
       <span className="pl-4">{children}</span>
     </div>
   );

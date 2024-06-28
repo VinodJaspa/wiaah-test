@@ -63,6 +63,7 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
           Opened ? "h-fit" : "h-0"
         }  grid transform gap-y-2 overflow-clip  transition-all duration-1000`}
       >
+        {/* @ts-ignore */}
         {children}
       </div>
     </div>

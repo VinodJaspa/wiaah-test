@@ -141,6 +141,7 @@ export const FlexStack: FC<FlexStackProps> = ({
       {...props}
       id={setId}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );

@@ -15,7 +15,7 @@ export const DividerWidthText: FC<DivderWithTextProps> = ({
   children,
 }) => {
   const [DividerStyles, setDividerStyles] = React.useState<React.CSSProperties>(
-    {}
+    {},
   );
   const [TextStyles, setTextStyles] = React.useState<React.CSSProperties>();
   React.useEffect(() => {
@@ -43,6 +43,7 @@ export const DividerWidthText: FC<DivderWithTextProps> = ({
         style={DividerStyles}
         className={` my-4 flex h-0.5 w-full bg-gray-100 `}
       ></div>
+
       {children ? (
         <>{children}</>
       ) : text ? (

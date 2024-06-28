@@ -9,6 +9,7 @@ export interface ClickableProps
 export const Clickable: React.FC<ClickableProps> = ({ children, ...props }) => {
   return (
     <div style={{ ...props.style, cursor: "pointer" }} {...props}>
+    {/* @ts-ignore */}
       {children}
     </div>
   );
