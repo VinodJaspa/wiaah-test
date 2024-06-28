@@ -65,50 +65,50 @@ export const SocialPostDetails: React.FC<{
     testid?: string;
     onClick: () => void;
   }[] = [
-      {
-        icon: <HeartOutlineIcon {...setTestid("social-post-unliked-icon")} />,
-        activeIcon: <HeartFillIcon {...setTestid("social-post-liked-icon")} />,
-        testid: "social-post-like-btn",
-        isActive: !!data?.isLiked,
-        label: `${NumberShortner(data?.reactionNum || 0)}`,
-        onClick: () =>
-          myProfile?.id
-            ? mutate({
+    {
+      icon: <HeartOutlineIcon {...setTestid("social-post-unliked-icon")} />,
+      activeIcon: <HeartFillIcon {...setTestid("social-post-liked-icon")} />,
+      testid: "social-post-like-btn",
+      isActive: !!data?.isLiked,
+      label: `${NumberShortner(data?.reactionNum || 0)}`,
+      onClick: () =>
+        myProfile?.id
+          ? mutate({
               args: {
                 contentId: postId,
                 contentType: ContentHostType.PostNewsfeed,
               },
             })
-            : null,
-      },
-      {
-        icon: <CommentOutlineIcon />,
-        activeIcon: <CommentIcon />,
-        isActive: !!data?.isCommented,
+          : null,
+    },
+    {
+      icon: <CommentOutlineIcon />,
+      activeIcon: <CommentIcon />,
+      isActive: !!data?.isCommented,
 
-        label: `${NumberShortner(data?.comments || 0)}`,
-        onClick: () => { },
+      label: `${NumberShortner(data?.comments || 0)}`,
+      onClick: () => {},
+    },
+    {
+      icon: <PaperPlaneAngleOutlineIcon />,
+      activeIcon: <PaperPlaneAngleIcon />,
+      isActive: false,
+      testid: "social-post-share-btn",
+      label: `${NumberShortner(data?.shares || 0)}`,
+      onClick: () => {
+        shareLink(getUrl((r) => r.visitSocialPost(postId)));
       },
-      {
-        icon: <PaperPlaneAngleOutlineIcon />,
-        activeIcon: <PaperPlaneAngleIcon />,
-        isActive: false,
-        testid: "social-post-share-btn",
-        label: `${NumberShortner(data?.shares || 0)}`,
-        onClick: () => {
-          shareLink(getUrl((r) => r.visitSocialPost(postId)));
-        },
-      },
-      {
-        icon: <SaveFlagOutlineIcon />,
-        activeIcon: <SaveFlagFIllIcon />,
-        isActive: !!data?.isSaved,
-        label: `${t("Save")}`,
-        onClick: () => savePost({ postId }),
-      },
-    ];
+    },
+    {
+      icon: <SaveFlagOutlineIcon />,
+      activeIcon: <SaveFlagFIllIcon />,
+      isActive: !!data?.isSaved,
+      label: `${t("Save")}`,
+      onClick: () => savePost({ postId }),
+    },
+  ];
 
-  // WARNING this is commented becuase we use placholders untill the server is ready
+  // WARNING this is commented because we use diffferent placeholder
   // const attachments = (
   //   dataWithProduct?.type === PostType.ShopPost
   //     ? [dataWithProduct?.product?.thumbnail]
@@ -125,7 +125,7 @@ export const SocialPostDetails: React.FC<{
 
   const attachments = React.useMemo(
     () => [getRandomImage(), getRandomImage()],
-    []
+    [],
   );
 
   return (
@@ -161,12 +161,11 @@ export const SocialPostDetails: React.FC<{
       <HStack className="justify-around py-2">
         {mapArray(interactions, (v, i) => (
           <div key={i} className="flex flex-col gap-1 text-lg items-center">
-            {v.isActive ? v.activeIcon : v.icon}
+            <>{v.isActive ? v.activeIcon : v.icon}</>
             <p className="text-xs font-medium">{v.label}</p>
           </div>
         ))}
       </HStack>
-
       <CommentInput />
       <PostCommentsList postId={postId} />
     </div>
@@ -193,8 +192,9 @@ const SocialPostDetailsAttachmentsDisplay: React.FC<{
       <div className="flex gap-2 justify-center">
         {[...Array(attachments.length)].map((_, i) => (
           <div
-            className={`${i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
-              } h-2 rounded-full`}
+            className={`${
+              i === idx ? "bg-primary w-4" : "bg-gray-400 w-2"
+            } h-2 rounded-full`}
           />
         ))}
       </div>

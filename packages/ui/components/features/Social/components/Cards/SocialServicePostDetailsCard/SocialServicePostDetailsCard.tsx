@@ -40,12 +40,12 @@ export const SocialServicePostDetailsCard: React.FC<
         <Slider>
           {Array.isArray(post.service.presentation)
             ? post.service.presentation.map((att) => (
-              <SocialServicePostAttachment
-                id={post.id}
-                alt={post.service.title}
-                attachments={att}
-              />
-            ))
+                <SocialServicePostAttachment
+                  id={post.id}
+                  alt={post.service.title}
+                  attachment={att}
+                />
+              ))
             : null}
         </Slider>
       </AspectRatio>

@@ -10,6 +10,8 @@ import {
   Slider,
   AspectRatio,
 } from "@UI";
+import { useTypedReactPubsub } from "../../../../../../libs/TypedReactPubsub";
+import { ServicePresentation } from "@features/API";
 
 export interface SocialServiceDetailsCardProps extends ServicePostDetails {
   showComments?: boolean;
@@ -17,6 +19,7 @@ export interface SocialServiceDetailsCardProps extends ServicePostDetails {
   showCommentInput?: boolean;
   onCardClick?: (id: string) => any;
   interactionsProps?: Partial<PostInteractionsProps>;
+  attachments: ServicePresentation[];
 }
 
 export const SocialServiceDetailsCard: React.FC<
@@ -27,7 +30,7 @@ export const SocialServiceDetailsCard: React.FC<
     onCardClick,
     showCommentInput,
     showInteraction,
-    attachements,
+    attachments,
     id,
     name,
     postInteraction,
@@ -40,11 +43,11 @@ export const SocialServiceDetailsCard: React.FC<
   } = props;
   const productDetailsRef = React.useRef(null);
 
-  const { emit: handleShare } = useReactPubsub(
-    (keys) => keys.sharePostWithModal
+  const { emit: handleShare } = useTypedReactPubsub(
+    (keys) => keys.sharePostWithModal,
   );
-  const { emit: OpenLoginPopup } = useReactPubsub(
-    (keys) => keys.openLoginPopup
+  const { emit: OpenLoginPopup } = useTypedReactPubsub(
+    (keys) => keys.openLoginPopup,
   );
 
   return (
@@ -53,9 +56,9 @@ export const SocialServiceDetailsCard: React.FC<
       data-testid="ShopCardContainer"
     >
       <AspectRatio onClick={() => onCardClick && onCardClick(id)} ratio={4 / 3}>
-        {attachements && attachements.length > 1 ? (
+        {attachments && attachments.length > 1 ? (
           <Slider>
-            {attachements.map((attachement, i) => (
+            {attachments.map((attachment, i) => (
               <SocialServicePostAttachment
                 id={id}
                 alt={name}
@@ -63,20 +66,20 @@ export const SocialServiceDetailsCard: React.FC<
                 onInteraction={(interaction) => OpenLoginPopup}
                 cashback={cashback}
                 discount={discount}
-                attachment={attachement}
+                attachment={attachment}
               />
             ))}
           </Slider>
         ) : (
-          attachements &&
-          attachements.length === 1 && (
+          attachments &&
+          attachments.length === 1 && (
             <SocialServicePostAttachment
               id={id}
               alt={name}
               onInteraction={(interaction) => OpenLoginPopup()}
               cashback={cashback}
               discount={discount}
-              attachment={attachements[0]}
+              attachment={attachments[0]}
             />
           )
         )}

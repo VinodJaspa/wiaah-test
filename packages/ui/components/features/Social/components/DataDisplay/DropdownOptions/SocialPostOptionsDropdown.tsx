@@ -19,7 +19,7 @@ export const SocialPostOptionsDropdown: React.FC<{
       <MenuButton>{children}</MenuButton>
       <MenuList className="text-black ">
         <MenuItem
-          onClick={() => reportContent(postId, ContentHostType.SocialPost)}
+          onClick={() => reportContent(postId, ContentHostType.PostNewsfeed)}
         >
           {t("Report")}
         </MenuItem>

@@ -22,7 +22,7 @@ import {
   PostLocation,
 } from "@features/API";
 
-type Post = Pick<
+export type Post = Pick<
   ServicePost,
   | "id"
   | "userId"
@@ -74,8 +74,7 @@ export const SocialServicePostMetaDataCard: React.FC<
           <div className="absolute bottom-0 left-0 w-full p-2 text-white bg-gradient-to-t from-black  to-transparent">
             <UserProfile
               user={{
-                username: post.user.profile.username,
-                followers: post.user.profile.followers,
+                name: post.user.profile.username,
                 id: post.user.profile.id,
                 photo: post.user.profile.photo,
                 profession: post.user.profile.profession,

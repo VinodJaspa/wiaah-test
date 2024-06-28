@@ -32,6 +32,7 @@ import { ChooseActionRemix, ChooseRemixPlacement } from "./CreateActionRemix";
 import { useCreateActionMutation } from "@features/Social/services";
 import { useGetCameraFiltersQuery } from "@features/Social/services/Queries/CameraFilters";
 import { useGetCameraFilterByIdQuery } from "@features/Social/services/Queries/CameraFilters/getCameraFilter";
+import { ActionType } from "@features/API";
 
 const gradients: { from: string; to: string }[] = [
   {
@@ -136,9 +137,10 @@ export const CreateActionDrawer: React.FC = () => {
   }>(null);
 
   const {} = useForm<Parameters<typeof mutate>[0]>({
-    allowedActions: [],
-    coverUploadId: "",
-    srcUploadId: "",
+    allowedActions: [ActionType.Comment],
+    coverUploadId: "cover123",
+    srcUploadId: "src456",
+    thumbnailUploadId: "thumb789",
   });
 
   const { mutate } = useCreateActionMutation();
@@ -183,7 +185,7 @@ export const SelectVideoFilters: React.FC = () => {
     {
       enabled: typeof categoryId === "string",
       getNextPageParam: (last) => last.nextCursor,
-    }
+    },
   );
 
   return (
@@ -422,7 +424,7 @@ const CameraActionSettings: React.FC<{}> = () => {
                       <p className="font-semibold text-[0.65rem]">
                         {
                           Durations.find(
-                            (v) => v.duration === settings.duration
+                            (v) => v.duration === settings.duration,
                           )?.label
                         }
                       </p>
@@ -638,6 +640,7 @@ const CameraActionListMenu: React.FC<{
           open ? "right-[110%]" : "right-1/2 opacity-0"
         } transition-all origin-right absolute top-1/2 -translate-y-1/2`}
       >
+        {/* @ts-ignore */}
         {children}
       </div>
     </div>
@@ -680,7 +683,7 @@ const CameraCountDown = React.forwardRef(
         </div>
       </div>
     ) : null;
-  }
+  },
 );
 
 // const VideoEffectList: React.FC = () => {

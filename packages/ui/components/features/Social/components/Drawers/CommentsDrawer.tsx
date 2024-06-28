@@ -1,6 +1,6 @@
 import { NumberShortner, mapArray, useForm } from "@UI/../utils/src";
 import { useSocialControls } from "@blocks";
-import { ContentHostType } from "@features/API";
+import { AttachmentType, ContentHostType } from "@features/API";
 import {
   useCommentOnContent,
   useGetContentCommentsCountQuery,
@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 export const CommentsDrawer: React.FC = () => {
   const { t } = useTranslation();
   const { value, hideContentComments } = useSocialControls(
-    "showSocialContentComments"
+    "showSocialContentComments",
   );
   const isOpen =
     typeof value?.id === "string" &&
@@ -43,14 +43,14 @@ export const CommentsDrawer: React.FC = () => {
         prevPage;
       },
       enabled: isOpen,
-    }
+    },
   );
 
   const { data: profile } = useGetMyProfileQuery();
 
   const { data: commentsCount } = useGetContentCommentsCountQuery(
     { id: value?.id!, type: value?.type! },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const { inputProps, form } = useForm<Parameters<typeof mutate>[0]>(
@@ -67,7 +67,7 @@ export const CommentsDrawer: React.FC = () => {
       authorUserId: profile?.ownerId || "",
       contentId: value?.id || "",
       contentType: value?.type || ContentHostType.PostNewsfeed,
-    }
+    },
   );
   const { mutate } = useCommentOnContent();
 
@@ -89,34 +89,36 @@ export const CommentsDrawer: React.FC = () => {
 
           <div className="h-full flex flex-col gap-2">
             <div className="h-full flex flex-col gap-4 px-4 overflow-y-scroll">
-              {mapArray(comments?.pages || [], (v, i) => (
-                <React.Fragment key={i}>
-                  {mapArray(v.data || [], (c, i) => (
-                    <CommentCard
-                      comment={{
-                        id: c.id,
-                        hostUserId: c.hostUserId,
-                        content: c.content,
-                        createdAt: c.commentedAt,
-                        user: {
-                          name: c.author?.username || "",
-                          photo: c.author?.photo || "",
-                          verified: c.author?.verified || false,
-                        },
-                        attachment: c.attachment
-                          ? {
-                              src: c.attachment.src,
-                              type:
-                                c.attachment.type === AttachmentType.Img
-                                  ? "img"
-                                  : "vid",
-                            }
-                          : undefined,
-                      }}
-                    />
-                  ))}
-                </React.Fragment>
-              ))}
+              {/* This line is commented because comments has no pages it's not an infinite query */}
+              {/* {mapArray(comments?.pages || [], (v, i) => ( */}
+              <React.Fragment>
+                {mapArray(comments?.data || [], (c, i) => (
+                  <CommentCard
+                    comment={{
+                      id: c.id,
+                      hostUserId: c.hostId,
+                      content: c.content,
+                      createdAt: c.commentedAt,
+                      user: {
+                        id: c.author?.id || "",
+                        name: c.author?.username || "",
+                        photo: c.author?.photo || "",
+                        verified: c.author?.verified || false,
+                      },
+                      attachment: c.attachment
+                        ? {
+                            src: c.attachment.src,
+                            type:
+                              c.attachment.type === AttachmentType.Img
+                                ? "img"
+                                : "vid",
+                          }
+                        : undefined,
+                    }}
+                  />
+                ))}
+              </React.Fragment>
+              ){/* )} */}
             </div>
             {/* <Divider /> */}
             <HStack className="items-start px-4 mb-12">

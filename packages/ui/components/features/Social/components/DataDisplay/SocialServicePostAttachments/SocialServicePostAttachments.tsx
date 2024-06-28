@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal, HiOutlineHeart } from "react-icons/hi";
-import { HtmlDivProps, PostAttachmentTypes } from "types";
+import { HtmlDivProps } from "types";
 import { useReactPubsub } from "react-pubsub";
 import { Interactions } from "types";
 import {
@@ -25,7 +25,7 @@ import { AttachmentType } from "@features/API";
 export interface SocialServicePostAttachmentsProps {
   id: string;
   cashback?: CashbackData;
-  attachments: ServicePresentation;
+  attachment: ServicePresentation;
   alt: string;
   discount?: number;
   onInteraction?: (interaction: Interactions) => any;
@@ -41,7 +41,7 @@ export const SocialServicePostAttachment: React.FC<
   discount,
   innerProps,
   onInteraction,
-  attachments,
+  attachment,
   id,
 }) => {
   const { emit } = useTypedReactPubsub((keys) => keys.serviceModal);
@@ -50,7 +50,7 @@ export const SocialServicePostAttachment: React.FC<
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
       <Image
         className="w-full h-full object-cover"
-        src={attachments.src}
+        src={attachment.src}
       ></Image>
 
       <div className="w-full h-full absolute top-0 left-0 p-1 flex justify-between pointer-events-none z-10">
