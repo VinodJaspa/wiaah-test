@@ -102,7 +102,7 @@ export const NewProductInputsSection: React.FC<{
                   values["product_type"] === "downloadable"
                     ? {
                         key: "files",
-                        stepComponent: () => (
+                        stepComponent: (
                           <StepperFormHandler handlerKey="files">
                             {({ validate }) => (
                               <AddNewDigitalProductSection
@@ -116,7 +116,7 @@ export const NewProductInputsSection: React.FC<{
                     : {
                         key,
                         stepName,
-                        stepComponent: () => (
+                        stepComponent: (
                           <StepperFormHandler handlerKey={String(key)}>
                             {({ validate }) => (
                               <>
@@ -127,7 +127,7 @@ export const NewProductInputsSection: React.FC<{
                             )}
                           </StepperFormHandler>
                         ),
-                      }
+                      },
                 )}
               />
               <div className="w-full flex justify-end gap-4">
@@ -156,7 +156,7 @@ const steps: StepperStepType[] = [
       translationKey: "general",
       fallbackText: "General",
     },
-    stepComponent: (props: any) => <ProductGeneralDetails {...props} />,
+    stepComponent: <ProductGeneralDetails values={{}} />,
     key: "general",
   },
   {
@@ -164,7 +164,7 @@ const steps: StepperStepType[] = [
       translationKey: "shipping",
       fallbackText: "Shipping",
     },
-    stepComponent: (props: any) => <NewProductShippingOptions {...props} />,
+    stepComponent: <NewProductShippingOptions />,
     key: "shipping",
   },
   {
@@ -172,7 +172,7 @@ const steps: StepperStepType[] = [
       translationKey: "options",
       fallbackText: "Options",
     },
-    stepComponent: (props: any) => <ProductOptions {...props} />,
+    stepComponent: <ProductOptions />,
     key: "options",
   },
   {
@@ -180,7 +180,7 @@ const steps: StepperStepType[] = [
       translationKey: "special_discount",
       fallbackText: "Special Discount",
     },
-    stepComponent: (props: any) => <NewProductDiscountOptions {...props} />,
+    stepComponent: <NewProductDiscountOptions onChange={() => {}} />,
     key: "special discount",
   },
 ];
