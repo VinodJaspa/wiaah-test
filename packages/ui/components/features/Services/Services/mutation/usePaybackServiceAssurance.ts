@@ -3,7 +3,7 @@ import { Exact, Mutation, Scalars } from "@features/API";
 import { useMutation } from "react-query";
 
 export type PaybackInsuranceMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
 }>;
 
 export type PaybackInsuranceMutation = { __typename?: "Mutation" } & Pick<
@@ -23,11 +23,11 @@ export const usePaybackServiceInsuranceMutation = () =>
 mutation paybackInsurance($id:ID!){
   refundInsurance(id:$id)
 }
-    `
+    `,
         )
         .setVariables<PaybackInsuranceMutationVariables>(args)
         .send<PaybackInsuranceMutation>();
 
       return res.data.refundInsurance;
-    }
+    },
   );

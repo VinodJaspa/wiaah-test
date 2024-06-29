@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation, useQuery } from "react-query";
 
 export type AcceptPendingAppointmentMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
 }>;
 
 export type AcceptPendingAppointmentMutation = {

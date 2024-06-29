@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type AccpetRefundRequestMutationVariables = Exact<{
-  id: Scalars["ID"];
+  id: Scalars["ID"]["output"];
 }>;
 
 export type AccpetRefundRequestMutation = { __typename?: "Mutation" } & Pick<

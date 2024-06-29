@@ -3,7 +3,7 @@ import { Exact, NewsletterSettings, Scalars } from "@features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetUserNewsletterSettingsQueryVariables = Exact<{
-  userId: Scalars["String"];
+  userId: Scalars["String"]["input"];
 }>;
 
 export type GetUserNewsletterSettingsQuery = { __typename?: "Query" } & {
@@ -32,7 +32,7 @@ export const getUserNewsletterSettingsQueryFetcher = async (args: args) => {
     reminder
   }
 }
-  `
+  `,
     )
     .setVariables<GetUserNewsletterSettingsQueryVariables>(args)
     .send<GetUserNewsletterSettingsQuery>();
@@ -47,10 +47,10 @@ export const useGetUserNewsletterSettingsQuery = (
     any,
     GetUserNewsletterSettingsQuery["getUserNewsletterSettings"],
     any
-  >
+  >,
 ) =>
   useQuery(
     getUserNewsletterSettingsQueryKey(args),
     () => getUserNewsletterSettingsQueryFetcher(args),
-    options
+    options,
   );

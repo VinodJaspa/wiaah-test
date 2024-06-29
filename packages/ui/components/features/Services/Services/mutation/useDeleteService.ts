@@ -3,7 +3,7 @@ import { createGraphqlRequestClient } from "api";
 import { UseQueryOptions, useMutation } from "react-query";
 
 export type DeleteServiceMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type DeleteServiceMutation = { __typename?: "Mutation" } & Pick<
@@ -23,12 +23,12 @@ export const useDeleteServiceMutation = () => {
 mutation deleteService($id:String!){
   deleteService(id:$id)
 }
-        `
+        `,
         )
         .setVariables<DeleteServiceMutationVariables>(args)
         .send<DeleteServiceMutation>();
 
       return res.data.deleteService;
-    }
+    },
   );
 };

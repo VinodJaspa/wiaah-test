@@ -3,7 +3,7 @@ import { Exact, Mutation, Scalars, UpdateNewsletterInput } from "@features/API";
 import { useMutation } from "react-query";
 
 export type UpdateUserNewsletterSettingsMutationVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
   args: UpdateNewsletterInput;
 }>;
 
@@ -25,7 +25,7 @@ export const useUpdateUserNewsletterSettingsMutation = () =>
 mutation updateUserNewsletterSettings($id:String!,$args:UpdateNewsletterInput!){
   changeUserNewsletterSettings(accountId:$id,args:$args)
 }
-    `
+    `,
       )
       .setVariables<UpdateUserNewsletterSettingsMutationVariables>(args)
       .send<UpdateUserNewsletterSettingsMutation>();
