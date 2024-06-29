@@ -35,7 +35,7 @@ export const OrdersSection: React.FC<{ shopping: boolean }> = ({
         shopping,
       }}
     >
-      {orderId ? <OrderDetailsSection /> : <OrdersList />}
+      {orderId ? <OrderDetailsSection order={{}} /> : <OrdersList />}
     </OrderContext.Provider>
   );
 };

@@ -25,7 +25,7 @@ export const ProductManagementSection: React.FC<
     {
       pagination,
     },
-    { pagination }
+    { pagination },
   );
   const { data } = useGetMyProducts(form);
 
@@ -33,7 +33,6 @@ export const ProductManagementSection: React.FC<
     <>
       <ProductDetailsTable
         filters={(v: any) => setValue(v)}
-        onFiltersChange={() => {}}
         products={data || []}
         onDelete={(id) => deleteProd(id)}
       />

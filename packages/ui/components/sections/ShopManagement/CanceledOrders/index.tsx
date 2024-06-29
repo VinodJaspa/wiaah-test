@@ -114,9 +114,9 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
                         colorScheme={
                           card.status === RefundStatusType.Pending
                             ? "info"
-                            : card.status === RefundStatusType.Reject
-                            ? "danger"
-                            : "primary"
+                            : card.status === RefundStatusType.Rejected
+                              ? "danger"
+                              : "primary"
                         }
                         className="w-full"
                       >
