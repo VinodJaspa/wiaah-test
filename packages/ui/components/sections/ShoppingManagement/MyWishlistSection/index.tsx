@@ -21,6 +21,7 @@ import {
   AspectRatioImage,
   HStack,
   AddToCartButton,
+  GetMyWishListQuery,
 } from "@UI";
 import { HiShoppingCart } from "react-icons/hi";
 import { IoTrash } from "react-icons/io5";
@@ -34,6 +35,31 @@ import {
 } from "@features/API";
 
 export interface MyWishListSectionProps {}
+
+interface WishlistTableProps {
+  items: {
+    itemId: string;
+    itemType: WishlistItemType;
+    product?: {
+      id: string;
+      title: string;
+      price: number;
+      stock: number;
+      thumbnail: string;
+      isExternalShopping: boolean;
+      vendor_external_link?: string;
+    };
+    service?: {
+      id: string;
+      name: string;
+      thumbnail: string;
+      price: number;
+    };
+  }[];
+  onDelete: (id: string) => void;
+  onAdd: (id: string) => void;
+  DeletingId?: string;
+}
 
 export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   const { t } = useTranslation();
@@ -53,6 +79,8 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   }
 
   function handleAddItemToCart(itemId: string) {}
+
+  const DeletingId = deleteIsLoading ? variables?.itemId : undefined;
 
   return (
     <div className="flex flex-col">
@@ -125,12 +153,78 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
       ) : (
         <>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
-            <WishlistTable
-              items={data || []}
-              onAdd={(id) => handleAddItemToCart(id)}
-              onDelete={(id) => handleItemDelete(id)}
-              DeletingId={deleteIsLoading ? variables?.itemId : undefined}
-            ></WishlistTable>
+            <TableContainer>
+              <Table className="w-full">
+                <Tr>
+                  <Th className="pl-0 text-left">{t("Image")}</Th>
+                  <Th>{t("Product Name")}</Th>
+                  <Th>{t("Stock")}</Th>
+                  <Th>{t("Unit Price")}</Th>
+                  <Th className="pr-0 text-right">{t("Action")}</Th>
+                </Tr>
+                <TBody>
+                  {mapArray(data?.wishedItems, (item, i) => (
+                    <Tr {...setTestid("item")}>
+                      <Td className="pl-0">
+                        <Image
+                          {...setTestid("item-thumbnail")}
+                          className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
+                          src={
+                            item.itemType === WishlistItemType.Product
+                              ? item.product?.thumbnail
+                              : item.service?.thumbnail
+                          }
+                          alt={
+                            item.itemType === WishlistItemType.Product
+                              ? item.product?.title
+                              : item.service?.name
+                          }
+                        />
+                      </Td>
+                      <Td {...setTestid("item-title")}>
+                        {item.itemType === WishlistItemType.Product
+                          ? item.product?.title
+                          : item.service?.name}
+                      </Td>
+                      <Td {...setTestid("item-stock")}>
+                        {(item.itemType === WishlistItemType.Product &&
+                          item.product?.stock) ||
+                          t("Avaiable")}
+                      </Td>
+                      <Td>
+                        <PriceDisplay
+                          {...setTestid("item-price")}
+                          price={
+                            item.itemType === WishlistItemType.Product
+                              ? item.product?.price
+                              : item.service?.price
+                          }
+                        />
+                      </Td>
+                      <Td className="pr-0">
+                        <div className="w-full text-4xl gap-2  items-center flex justify-end">
+                          <HiShoppingCart
+                            {...setTestid("item-add-to-cart-btn")}
+                            onClick={() => () =>
+                              handleAddItemToCart(item.itemId)
+                            }
+                            className="text-white p-2 rounded cursor-pointer bg-primary"
+                          />
+                          <Button
+                            {...setTestid("item-delete-btn")}
+                            onClick={() => () => handleItemDelete(item.itemId)}
+                            center
+                            loading={!!DeletingId && DeletingId === item.itemId}
+                          >
+                            <IoTrash className="text-white bg-red-600 rounded cursor-pointer p-2" />
+                          </Button>
+                        </div>
+                      </Td>
+                    </Tr>
+                  ))}
+                </TBody>
+              </Table>
+            </TableContainer>
           </SpinnerFallback>
           <Pagination controls={controls} />
         </>
@@ -139,15 +233,12 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   );
 };
 
-export const WishlistTable: React.FC<{
-  items: (Pick<WishedItem, "id" | "itemId"> & {
-    product: Pick<Product, "id" | "thumbnail" | "title" | "stock" | "price">;
-    service: Pick<Service, "thumbnail" | "name" | "id" | "price">;
-  })[];
-  onDelete: (id: string) => any;
-  onAdd: (id: string) => any;
-  DeletingId?: string;
-}> = ({ items, onDelete, onAdd, DeletingId }) => {
+export const WishlistTable: React.FC<WishlistTableProps> = ({
+  items,
+  onDelete,
+  onAdd,
+  DeletingId,
+}) => {
   const { t } = useTranslation();
   return (
     <>
@@ -167,20 +258,36 @@ export const WishlistTable: React.FC<{
                   <Image
                     {...setTestid("item-thumbnail")}
                     className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
-                    src={item.product?.thumbnail || item.service?.thumbnail}
-                    alt={item.product?.title || item.service?.name}
+                    src={
+                      item.itemType === WishlistItemType.Product
+                        ? item.product?.thumbnail
+                        : item.service?.thumbnail
+                    }
+                    alt={
+                      item.itemType === WishlistItemType.Product
+                        ? item.product?.title
+                        : item.service?.name
+                    }
                   />
                 </Td>
                 <Td {...setTestid("item-title")}>
-                  {item.product?.title || item.service?.name}
+                  {item.itemType === WishlistItemType.Product
+                    ? item.product?.title
+                    : item.service?.name}
                 </Td>
                 <Td {...setTestid("item-stock")}>
-                  {item.product?.stock || t("Avaiable")}
+                  {item.itemType === WishlistItemType.Product
+                    ? item.product?.stock
+                    : t("Avaiable")}
                 </Td>
                 <Td>
                   <PriceDisplay
                     {...setTestid("item-price")}
-                    price={item.product?.price || item.service?.price || 0}
+                    price={
+                      item.itemType === WishlistItemType.Product
+                        ? item.product?.price
+                        : item.service?.price
+                    }
                   />
                 </Td>
                 <Td className="pr-0">
@@ -192,9 +299,9 @@ export const WishlistTable: React.FC<{
                     />
                     <Button
                       {...setTestid("item-delete-btn")}
-                      onClick={() => onDelete(item.id)}
+                      onClick={() => onDelete(item.itemId)}
                       center
-                      loading={!!DeletingId && DeletingId === item.id}
+                      loading={!!DeletingId && DeletingId === item.itemId}
                     >
                       <IoTrash className="text-white bg-red-600 rounded cursor-pointer p-2" />
                     </Button>
