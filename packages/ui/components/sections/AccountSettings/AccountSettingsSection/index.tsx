@@ -48,7 +48,7 @@ import {
 } from "@UI";
 import { accountTypes } from "@UI";
 import { StoreFor } from "@features/API";
-import { GetProfileQueryPlaceholder as data } from "placeholder";
+import { GetProfileQueryPlaceholder as data } from "ui/placeholder";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";
@@ -78,7 +78,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
 
   const { form: updateForm } = useForm<Parameters<typeof mutate>[0]>(
     { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm },
-    { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm }
+    { accountArgs: AccForm, profileArgs: ProfileForm, shopArgs: shopForm },
   );
   const { mutate } = useUpdateAccountSettingsMutation();
 
@@ -202,7 +202,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
         <span className="text-slate-500">
           {t(
             "info_public_warn",
-            "This inforomation will be displayed publicly so be careful what you share."
+            "This inforomation will be displayed publicly so be careful what you share.",
           )}
         </span>
       </div>
@@ -226,7 +226,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
           username: "",
           shopType: "",
         }}
-        onSubmit={(data) => { }}
+        onSubmit={(data) => {}}
       >
         {({ handleChange, values, setFieldValue }) => (
           <Form>
@@ -335,7 +335,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                   <span className="text-slate-500" color={"slategray"}>
                     {t(
                       "brief_descrption",
-                      "Brief Description for your profile, URLs are hyperlinked"
+                      "Brief Description for your profile, URLs are hyperlinked",
                     )}
                   </span>
                 </div>
@@ -349,7 +349,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                 <span className="text-slate-500" color="slategray">
                   {t(
                     "info_public_warn",
-                    "This inforomation will be displayed publicly so be careful what you share."
+                    "This inforomation will be displayed publicly so be careful what you share.",
                   )}
                 </span>
               </div>
@@ -375,7 +375,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                       const county = values.country;
                       if (county) {
                         const country = countries.find(
-                          (ctry) => ctry.name === county
+                          (ctry) => ctry.name === county,
                         );
                         if (country) {
                           //@ts-ignore
@@ -423,7 +423,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                     placeHolder={t("select_city", "Select City")}
                     rightElement={<HiChevronDown />}
                     components={getCitiesOfCountry(
-                      values.countryCode || ""
+                      values.countryCode || "",
                     )?.map((city, i) => ({
                       name: city.name,
                       value: city.name,
@@ -549,7 +549,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                               return storeForOptions.every((opt) => {
                                 if (!values.storeFor) return false;
                                 const idx = values.storeFor.findIndex(
-                                  (value) => value === opt.value
+                                  (value) => value === opt.value,
                                 );
                                 return idx > -1;
                               });
@@ -560,8 +560,8 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                           onChange={(e) =>
                             e.target.checked
                               ? setFieldValue("storeFor", [
-                                ...storeForOptions.map((opt) => opt.value),
-                              ])
+                                  ...storeForOptions.map((opt) => opt.value),
+                                ])
                               : setFieldValue("storeFor", [])
                           }
                         />
@@ -573,7 +573,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                             checked={(() => {
                               if (values.storeFor) {
                                 const idx = values.storeFor.findIndex(
-                                  (v) => v === opt.value
+                                  (v) => v === opt.value,
                                 );
                                 if (idx > -1) {
                                   return true;
@@ -595,8 +595,8 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                                   setFieldValue(
                                     "storeFor",
                                     values.storeFor.filter(
-                                      (v) => v !== opt.value
-                                    )
+                                      (v) => v !== opt.value,
+                                    ),
                                   );
                                 }
                               }
@@ -618,7 +618,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                     <span className="text-slate-500" color={"slategray"}>
                       {t(
                         "brief_brand_descrption",
-                        "Brief Description for your brand, URLs are hyperlinked"
+                        "Brief Description for your brand, URLs are hyperlinked",
                       )}
                     </span>
                   </div>
@@ -627,7 +627,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
               <span className="text-slate-500" color="slategray">
                 {t(
                   "this_account_was_created_on",
-                  "This account was created on"
+                  "This account was created on",
                 )}{" "}
                 {new Date(Date.now()).toLocaleString("en", {
                   month: "long",
@@ -691,11 +691,11 @@ const shopTypeOptions: {
   value: string;
   name: TranslationTextType;
 }[] = [
-    {
-      value: "clothes",
-      name: {
-        fallbackText: "Clothes",
-        translationKey: "clothes",
-      },
+  {
+    value: "clothes",
+    name: {
+      fallbackText: "Clothes",
+      translationKey: "clothes",
     },
-  ];
+  },
+];

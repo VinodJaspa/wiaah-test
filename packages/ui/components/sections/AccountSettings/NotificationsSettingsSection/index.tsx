@@ -15,7 +15,7 @@ import {
   useUpdateUserNotificationSettingsMutation,
 } from "@UI";
 import { mapArray, useForm } from "@UI/../utils/src";
-import { UserNotificationSettingsPlaceholder } from "placeholder";
+import { UserNotificationSettingsPlaceholder } from "ui/placeholder";
 
 export interface NotificationsSettingsSectionProps {
   accountId: string;
@@ -34,7 +34,10 @@ export const NotificationsSettingsSection: React.FC<
   // );
   const { mutate } = useUpdateUserNotificationSettingsMutation();
   const { radioInputProps } = useForm<Parameters<typeof mutate>[0]>({
-    ...(UserNotificationSettingsPlaceholder || {}),
+    mentions: UserNotificationSettingsPlaceholder[0].mentions,
+    commentLike: UserNotificationSettingsPlaceholder[0].commentLike,
+    postComment: UserNotificationSettingsPlaceholder[0].postComment,
+    postReaction: UserNotificationSettingsPlaceholder[0].postReaction,
   });
   console.log("RadioInputProps" + radioInputProps);
 
@@ -76,7 +79,7 @@ export const NotificationsSettingsSection: React.FC<
         initialValues={{
           likes: "iFollow",
         }}
-        onSubmit={() => { }}
+        onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
           return (
@@ -307,116 +310,116 @@ const notificationsOptions: {
   opts: FormOptionType[];
   name: string;
 }[] = [
-    {
-      name: "likesNotifications",
-      label: {
-        translationKey: "likes",
-        fallbackText: "Likes",
-      },
-      opts: LikesNotificationsOpts,
+  {
+    name: "likesNotifications",
+    label: {
+      translationKey: "likes",
+      fallbackText: "Likes",
     },
-    {
-      name: "comments",
-      label: {
-        translationKey: "comments",
-        fallbackText: "Comments",
-      },
-      opts: CommentsNotificationsOpts,
+    opts: LikesNotificationsOpts,
+  },
+  {
+    name: "comments",
+    label: {
+      translationKey: "comments",
+      fallbackText: "Comments",
     },
-    {
-      name: "commentsLikesNotifiactions",
-      label: {
-        translationKey: "comment_likes",
-        fallbackText: "Comment Likes",
-      },
-      opts: CommentLikesNotificationOpts,
+    opts: CommentsNotificationsOpts,
+  },
+  {
+    name: "commentsLikesNotifiactions",
+    label: {
+      translationKey: "comment_likes",
+      fallbackText: "Comment Likes",
     },
-    {
-      name: "LikesAndCommentsOnPhotosOfYou",
-      label: {
-        translationKey: "likes_and_comments_on_photos_of_you",
-        fallbackText: "Likes and Comments on Photos of You",
-      },
-      opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
+    opts: CommentLikesNotificationOpts,
+  },
+  {
+    name: "LikesAndCommentsOnPhotosOfYou",
+    label: {
+      translationKey: "likes_and_comments_on_photos_of_you",
+      fallbackText: "Likes and Comments on Photos of You",
     },
-    {
-      name: "allowMentionsFrom",
-      label: {
-        translationKey: "allow_@mentions_from",
-        fallbackText: "Allow @Mentions From",
-      },
-      opts: allowMentionsFromOpts,
+    opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
+  },
+  {
+    name: "allowMentionsFrom",
+    label: {
+      translationKey: "allow_@mentions_from",
+      fallbackText: "Allow @Mentions From",
     },
-    {
-      name: "allowTagsFrom",
-      label: {
-        translationKey: "allow_tags_from",
-        fallbackText: "Allow Tags From",
-      },
-      opts: allowTagsFrom,
+    opts: allowMentionsFromOpts,
+  },
+  {
+    name: "allowTagsFrom",
+    label: {
+      translationKey: "allow_tags_from",
+      fallbackText: "Allow Tags From",
     },
-    {
-      name: "firstPostsAndStories",
-      label: {
-        translationKey: "first_posts_and_stories",
-        fallbackText: "First Posts and Stories",
-      },
-      opts: firstPostsAndStoriesOpts,
+    opts: allowTagsFrom,
+  },
+  {
+    name: "firstPostsAndStories",
+    label: {
+      translationKey: "first_posts_and_stories",
+      fallbackText: "First Posts and Stories",
     },
-    {
-      name: "videoViewCounts",
-      label: {
-        translationKey: "video_view_counts",
-        fallbackText: "Video View Counts",
-      },
-      opts: videoViewCountsOpts,
+    opts: firstPostsAndStoriesOpts,
+  },
+  {
+    name: "videoViewCounts",
+    label: {
+      translationKey: "video_view_counts",
+      fallbackText: "Video View Counts",
     },
-    {
-      name: "supportRequests",
-      label: {
-        translationKey: "support_requests",
-        fallbackText: "Support Requests",
-      },
-      opts: supportRequestsOpts,
+    opts: videoViewCountsOpts,
+  },
+  {
+    name: "supportRequests",
+    label: {
+      translationKey: "support_requests",
+      fallbackText: "Support Requests",
     },
-    {
-      name: "acceptedFollowRequests",
-      label: {
-        translationKey: "accepted_follow_requests",
-        fallbackText: "Accepted Follow Requests",
-      },
-      opts: acceptedFollowRequests,
+    opts: supportRequestsOpts,
+  },
+  {
+    name: "acceptedFollowRequests",
+    label: {
+      translationKey: "accepted_follow_requests",
+      fallbackText: "Accepted Follow Requests",
     },
-    {
-      name: "wiaahDirectRequests",
-      label: {
-        translationKey: "wiaah_direct_requests",
-        fallbackText: "Wiaah Direct Requests",
-      },
-      opts: instagramDirectRequests,
+    opts: acceptedFollowRequests,
+  },
+  {
+    name: "wiaahDirectRequests",
+    label: {
+      translationKey: "wiaah_direct_requests",
+      fallbackText: "Wiaah Direct Requests",
     },
-    {
-      name: "wiaahDirect",
-      label: {
-        translationKey: "wiaah_direct",
-        fallbackText: "Wiaah Direct",
-      },
-      opts: instagramDirect,
+    opts: instagramDirectRequests,
+  },
+  {
+    name: "wiaahDirect",
+    label: {
+      translationKey: "wiaah_direct",
+      fallbackText: "Wiaah Direct",
     },
-    {
-      name: "reminders",
-      label: {
-        translationKey: "reminders",
-        fallbackText: "Reminders",
-      },
-      opts: RemindersOpts,
+    opts: instagramDirect,
+  },
+  {
+    name: "reminders",
+    label: {
+      translationKey: "reminders",
+      fallbackText: "Reminders",
     },
-    {
-      name: "liveVideos",
-      label: {
-        translationKey: "live_videos",
-        fallbackText: "Live Videos",
-      },
-      opts: liveVideosOpts,
+    opts: RemindersOpts,
+  },
+  {
+    name: "liveVideos",
+    label: {
+      translationKey: "live_videos",
+      fallbackText: "Live Videos",
     },
-  ];
+    opts: liveVideosOpts,
+  },
+];
