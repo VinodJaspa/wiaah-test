@@ -32,6 +32,7 @@ export const Radio: React.FC<RadioProps> = ({
         type={"radio"}
         {...props}
       />
+      {/* @ts-ignore */}
       {children}
     </label>
   );

@@ -96,6 +96,7 @@ export const SimpleTabHeadButton: React.FC<{
           : "text-gray border border-white"
       } px-4 py-2`}
     >
+      {/* @ts-ignore */}
       {children}
     </div>
   );
