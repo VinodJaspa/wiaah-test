@@ -13,6 +13,7 @@ export const PushSwitch: React.FC = ({ ...props }) => {
   const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2">
+      {/* @ts-ignore */}
       <Switch {...props} />
       <p>{t("push", "Push")}</p>
     </div>

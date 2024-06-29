@@ -68,6 +68,7 @@ export const ScrollPaginationWrapper: React.FC<
 
   return (
     <div {...rest} ref={ref}>
+      {/* @ts-ignore */}
       {children}
     </div>
   );

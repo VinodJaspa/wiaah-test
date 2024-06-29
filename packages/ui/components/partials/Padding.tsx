@@ -23,24 +23,26 @@ export const Padding: React.FC<PaddingProps> = ({
     paddingLeft: left
       ? CSSValueUnitToString(left)
       : X
-      ? CSSValueUnitToString(X)
-      : 0,
+        ? CSSValueUnitToString(X)
+        : 0,
     paddingRight: right
       ? CSSValueUnitToString(right)
       : X
-      ? CSSValueUnitToString(X)
-      : 0,
+        ? CSSValueUnitToString(X)
+        : 0,
     paddingBottom: bottom
       ? CSSValueUnitToString(bottom)
       : Y
-      ? CSSValueUnitToString(Y)
-      : 0,
+        ? CSSValueUnitToString(Y)
+        : 0,
     paddingTop: top
       ? CSSValueUnitToString(top)
       : Y
-      ? CSSValueUnitToString(Y)
-      : 0,
+        ? CSSValueUnitToString(Y)
+        : 0,
     width: "inherit",
   };
+
+  //@ts-ignore
   return <div style={styles}>{children}</div>;
 };

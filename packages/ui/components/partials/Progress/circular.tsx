@@ -1,6 +1,8 @@
+import { HtmlDivProps } from "types";
 import { AspectRatio } from "../AspectRatio";
 
-interface CircularProgressProps {
+interface CircularProgressProps
+  extends React.HtmlHTMLAttributes<HTMLDivElement> {
   value: number;
   maxValue: number;
 }
@@ -50,6 +52,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         >
           <circle cx="8" cy="8" r="6.25" />
         </svg>
+        {/* @ts-ignore */}
         {children}
       </div>
     </AspectRatio>

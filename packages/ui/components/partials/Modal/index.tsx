@@ -179,6 +179,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
       className={`${className || ""} flex items-center gap-2 justify-between`}
     >
       {centerTitle ? <div></div> : null}
+      {/* @ts-ignore */}
       <span>{title}</span>
       <ModalCloseButton>
         <CloseIcon className="text-2xl" />

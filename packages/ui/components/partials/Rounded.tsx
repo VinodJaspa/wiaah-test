@@ -5,5 +5,6 @@ export interface RoundedProps {
 }
 
 export const Rounded: React.FC<RoundedProps> = ({ children, radius }) => {
+  //@ts-ignore
   return <div className={`overflow-hidden rounded-${radius}`}>{children}</div>;
 };

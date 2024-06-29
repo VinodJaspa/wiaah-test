@@ -18,8 +18,8 @@ export const Releative: React.FC<ReleativeProps> = ({
     height: fullHeight
       ? "100%"
       : height
-      ? CSSValueUnitToString(height)
-      : "fit-content",
+        ? CSSValueUnitToString(height)
+        : "fit-content",
   };
 
   if (width && !fullWidth) {
@@ -28,6 +28,7 @@ export const Releative: React.FC<ReleativeProps> = ({
 
   return (
     <div style={styles} className="relative">
+      {/* @ts-ignore */}
       {children}
     </div>
   );

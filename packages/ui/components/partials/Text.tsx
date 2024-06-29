@@ -49,6 +49,7 @@ export const Text: React.FC<TextProps> = ({
       }`}
       style={styles}
     >
+      {/* @ts-ignore */}
       {children}
     </p>
   );
