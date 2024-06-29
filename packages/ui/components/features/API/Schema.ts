@@ -736,7 +736,7 @@ export type BookedService = {
   serviceId: Array<Scalars["ID"]["output"]>;
   status: BookedServiceStatus;
   total?: Maybe<Scalars["Int"]["output"]>;
-  type: Scalars["String"]["output"];
+  type: ServiceType;
 };
 
 export enum BookedServiceStatus {
@@ -7220,7 +7220,7 @@ export type Wishlist = {
 
 export type WishlistItem = {
   __typename?: "WishlistItem";
-  itemId: Scalars["ID"]["input"];
+  itemId: Scalars["ID"]["output"];
   itemType: WishlistItemType;
   product?: Maybe<Product>;
   service?: Maybe<Service>;

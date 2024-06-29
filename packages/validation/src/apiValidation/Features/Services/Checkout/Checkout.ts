@@ -54,6 +54,28 @@ const ServiceCancelationPolicySchema = object().shape({
   duration: number().required(),
 });
 
+type ServicesCheckoutDataWithouProduct =
+  | {
+      type: "holiday_rentals";
+      data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
+    }
+  | {
+      type: "hotel";
+      data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
+    }
+  | {
+      type: "resturant";
+      data: InferType<typeof RestaurantServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "health_center";
+      data: InferType<typeof HealthCenterServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "beauty_center";
+      data: InferType<typeof BeautyCenterServiceCheckoutDataValidationSchema>;
+    };
+
 // Define the ServicePresentation schema
 const ServicePresentationSchema = object().shape({
   src: string().required(),
@@ -219,6 +241,43 @@ export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
     }
   },
 );
+
+export const ServicesCheckoutDataValidationTester =
+  mixed<ServicesCheckoutDataWithouProduct>().test(
+    "ServiceCheckoutData",
+    "service type and data doesnt match",
+    (value) => {
+      if (!value) return false;
+      try {
+        switch (value.type) {
+          case "hotel":
+            HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
+            break;
+          case "resturant":
+            RestaurantServiceCheckoutDataValidationSchema.validateSync(
+              value.data,
+            );
+            break;
+          case "health_center":
+            HealthCenterServiceCheckoutDataValidationSchema.validateSync(
+              value.data,
+            );
+            break;
+          case "beauty_center":
+            BeautyCenterServiceCheckoutDataValidationSchema.validateSync(
+              value.data,
+            );
+            break;
+          default:
+            return false;
+        }
+        return true;
+      } catch (err) {
+        console.error(err);
+        return false;
+      }
+    },
+  );
 
 export const ServiceCheckoutDataApiResponseValidationSchema =
   createApiResponseValidationSchema(

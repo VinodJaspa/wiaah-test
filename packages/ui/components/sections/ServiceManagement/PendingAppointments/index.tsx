@@ -47,6 +47,24 @@ export const PendingAppointmentsSection: React.FC<
     pagination,
     q: "",
   });
+  const placeholderTreatments = [
+    {
+      category: "Massage",
+      duration: 60,
+      id: "treatment1",
+      price: 100,
+      title: "Relaxing Full Body Massage",
+      discount: 10,
+    },
+    {
+      category: "Facial",
+      duration: 45,
+      id: "treatment2",
+      price: 80,
+      title: "Rejuvenating Facial",
+      discount: 5,
+    },
+  ];
 
   return isMobile ? (
     <div className="flex flex-col gap-4 p-4">
@@ -64,7 +82,7 @@ export const PendingAppointmentsSection: React.FC<
       <div className="flex flex-col gap-6 w-full p-2">
         {mapArray(data, (v, i) => (
           <ServicePendingAppointmentCard
-            variant={ServiceBookingCardVariant.sellerd}
+            variant={ServiceBookingCardVariant.seller}
             shopName="Padma Resort Legian"
             amenities={[
               { slug: "wifi", label: "Free WIFI" },
@@ -102,9 +120,10 @@ export const PendingAppointmentsSection: React.FC<
                 <PendingAppointmentCard
                   key={i}
                   appointmentRequestData={{
-                    type: v.type,
+                    type: "hotel",
+                    //@ts-ignore
                     data: {
-                      type: v.type,
+                      title: "title",
                       thumbnail:
                         "https://cf.bstatic.com/xdata/images/hotel/max1024x768/184305239.jpg?k=2d22fe63ae1f8960e057238c98fb436f7bd9f65854e3a5e918607c5cfa1d0a52&o=&hp=1",
                       rate: 4,
@@ -119,25 +138,21 @@ export const PendingAppointmentsSection: React.FC<
                         from: v.checkin,
                         to: v.checkout,
                       },
-                      bookedMenus: v.dishs?.map((d) => ({
-                        price: d.price,
-                        qty: 1,
-                        title: d.name,
-                      })),
-                      bookedTreatments: v.treatments?.map((t) => ({
-                        category: t.category?.title || "",
-                        durationInMinutes: t.duration,
-                        id: t.id,
-                        price: t.price,
-                        title: t.title,
-                        discount: v.discount.amount,
-                      })),
+                      ...(v.type === "beauty_center" && {
+                        bookedTreatments: placeholderTreatments.map((t) => ({
+                          category: t.category || "",
+                          durationInMinutes: t.duration,
+                          id: t.id,
+                          price: t.price,
+                          title: t.title,
+                          discount: v.discount.amount,
+                        })),
+                      }),
                       cashback: {
                         amount: v.cashback.amount,
                         type: "cash",
                       },
                       guests: v.guests,
-                      discount: v.discount.amount,
                       serviceType: v.type as any,
                       // title: v.service.title,
                       // doctor: {
@@ -147,11 +162,10 @@ export const PendingAppointmentsSection: React.FC<
                       //   price: v.doctor.price,
                       //   specialty: v.doctor.speciality?.name,
                       // },
-                      description: "",
                       duration: "",
-                      extras: [],
                       // location: v.service.location,
                       id: v.id,
+                      price: 44,
                       // name: v.service.title,
                       // price: v.service.price,
                     },

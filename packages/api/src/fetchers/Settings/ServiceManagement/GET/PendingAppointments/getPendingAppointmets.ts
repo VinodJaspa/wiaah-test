@@ -6,9 +6,10 @@ import {
   CheckoutDataValidationTester,
   CreatePaginationApiResponseValidationSchemaOf,
   HealthCenterDoctorAvailablityStatus,
+  ServicesCheckoutDataValidationTester,
 } from "validation";
 
-const appointment = CheckoutDataValidationTester.required();
+const appointment = ServicesCheckoutDataValidationTester.required();
 
 export type PendingAppointmentData = InferType<typeof appointment>;
 const apiRes = CreatePaginationApiResponseValidationSchemaOf(appointment);
