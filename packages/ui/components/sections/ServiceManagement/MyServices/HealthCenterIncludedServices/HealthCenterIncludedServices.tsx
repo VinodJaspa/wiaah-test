@@ -3,7 +3,7 @@ import React from "react";
 import { InferType, NewServiceSchemas } from "validation";
 import { Avatar, HealthCenterAddDoctorForm, CloseIcon } from "@UI";
 
-const schema = NewServiceSchemas.healthCenterIncludedServicesSchema;
+const schema = NewServiceSchemas.HealthcenterIncludedServicesSchema;
 
 type DataType = InferType<typeof schema>;
 
@@ -34,7 +34,7 @@ export const HealthCenterIncludedServices: React.FC<
                       onClick={() =>
                         setFieldValue(
                           "doctors",
-                          values.doctors?.filter((_, idx) => idx !== i)
+                          values.doctors?.filter((_, idx) => idx !== i),
                         )
                       }
                     />
