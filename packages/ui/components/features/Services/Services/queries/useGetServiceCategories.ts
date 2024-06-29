@@ -16,10 +16,10 @@ export type GetServiceCategoriesQueryVariables = Exact<{
 
 export type GetServiceCategoriesQuery = { __typename?: "Query" } & {
   getServiceCategories: Array<
-    { __typename?: "ServiceCategory" } & Pick<
-      ServiceCategory,
-      "id" | "sortOrder" | "status" | "thumbnail"
-    > & {
+    { __typename?: "ServiceCategory" } & { slug: string } & Pick<
+        ServiceCategory,
+        "id" | "sortOrder" | "status" | "thumbnail"
+      > & {
         name: Array<
           { __typename?: "TranslationText" } & Pick<
             TranslationText,

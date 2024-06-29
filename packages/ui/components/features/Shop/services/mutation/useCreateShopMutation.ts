@@ -3,7 +3,7 @@ import { CreateShopInput, Exact, Shop } from "@features/API";
 import { useMutation } from "react-query";
 
 export type CreateShopMutationVariables = Exact<{
-  args: CreateShopInput;
+  args: CreateShopInput & { crn: number; language: string; currency: string };
 }>;
 
 export type CreateShopMutation = { __typename?: "Mutation" } & {
@@ -21,7 +21,7 @@ mutation createShop($args:CreateShopInput!){
   createShop(createShopInput:$args){
     id
   }
-}        
+}
     `);
 
       const res = await client
@@ -29,6 +29,6 @@ mutation createShop($args:CreateShopInput!){
         .send<CreateShopMutation>();
 
       return !!res.data.createShop;
-    }
+    },
   );
 };

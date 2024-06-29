@@ -81,13 +81,13 @@ query getMyWishList {
         itemId: i.toString(),
         itemType: WishlistItemType.Product,
         product: {
-          id:"1",
+          id: "1",
           price: 45,
           stock: 0,
           thumbnail: getRandomImage(),
           title: "product title",
-          isExternalShopping:false,
-          vendor_external_link:"http://"
+          isExternalShopping: false,
+          vendor_external_link: "http://",
         },
       })),
     };
