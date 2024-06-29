@@ -29,7 +29,7 @@ import { useRouting } from "@UI/../routing";
 
 function getObjectByAmount<
   TObj extends Record<string, any>,
-  Tkey extends keyof TObj
+  Tkey extends keyof TObj,
 >(arr: TObj[], currentAmount: number, key: Tkey) {
   for (let i = 0; i < arr.length - 1; i++) {
     if (currentAmount >= arr[i][key] && currentAmount < arr[i + 1][key]) {
@@ -61,10 +61,10 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
   const formatedExpenses = myMembership?.membership.turnover_rules.reduce(
     (acc, curr, i) => {
       const filtered = acc.filter(
-        (v) => v.key !== curr.key
+        (v) => v.key !== curr.key,
       ) as FormatedMembershipExpense[];
       const target = acc.find(
-        (v) => v.key === curr.key
+        (v) => v.key === curr.key,
       ) as FormatedMembershipExpense;
 
       const currentTier = getObjectByAmount(
@@ -72,7 +72,7 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
           .filter((v) => v.key === curr.key)
           .sort((a, b) => a.usage! - b.usage!),
         myMembership.usage,
-        "usage"
+        "usage",
       );
 
       return filtered.concat(
@@ -92,12 +92,12 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
                   curr.type === MembershipTurnoverRuleType.Flat
                     ? 1
                     : myMembership.usage,
-                usageType: startCase(curr.commission),
+                usageType: startCase(curr.commission.toString()),
               },
-            ]
+            ],
       );
     },
-    [] as FormatedMembershipExpense[]
+    [] as FormatedMembershipExpense[],
   );
 
   return isMobile ? (
@@ -132,7 +132,7 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
 
       <div className="flex flex-col gap-4">
         <p className="text-lg font-medium">{t("Select a plan")}</p>
-        <SelectPackageStep shopType={""} />
+        <SelectPackageStep shopType={""} onChange={() => {}} value="" />
       </div>
     </div>
   ) : (
@@ -169,7 +169,7 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
       </div>
       <Divider className="my-2" />
 
-      <SelectPackageStep shopType={""} />
+      <SelectPackageStep shopType={""} onChange={() => {}} value="" />
     </div>
   );
 };

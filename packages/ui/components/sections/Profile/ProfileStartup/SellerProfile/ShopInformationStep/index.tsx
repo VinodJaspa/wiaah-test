@@ -44,7 +44,7 @@ export const ShopInformationStep = React.forwardRef(
   ({ onSuccess }: ShopInformationStepProps, ref) => {
     const { t } = useTranslation();
     const { emit } = useTypedReactPubsub(
-      (events) => events.openFileUploadModal
+      (events) => events.openFileUploadModal,
     );
     const [lang, setLang] = React.useState("en");
 
@@ -81,8 +81,11 @@ export const ShopInformationStep = React.forwardRef(
         vidoes: [],
         storeFor: [],
         type: ServiceType.Hotel,
+        crn: 544325,
+        language: "English",
+        currency: "USD",
       },
-      { location }
+      { location },
     );
     const { isMobile } = useResponsive();
     const { mutate, isLoading } = useCreateShopMutation();
@@ -258,7 +261,7 @@ export const ShopInformationStep = React.forwardRef(
                       checked={isAllAvailableInArray(
                         storeForOptions.map((opt) => opt.value),
                         // form.storefor
-                        []
+                        [],
                       )}
                       readOnly
                     >
@@ -291,5 +294,5 @@ export const ShopInformationStep = React.forwardRef(
         </div>
       </div>
     );
-  }
+  },
 );

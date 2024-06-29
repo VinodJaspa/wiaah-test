@@ -34,13 +34,13 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
       <p>
         {t(
           "wiaah_verification_explaintion",
-          "A verified badge is a check that appears next to an Wiaah account's name to indicate that the account is the authentic presence of a notable public figure, celebrity, global brand or entity it represents"
+          "A verified badge is a check that appears next to an Wiaah account's name to indicate that the account is the authentic presence of a notable public figure, celebrity, global brand or entity it represents",
         )}
       </p>
       <p>
         {t(
           "verification_not_guarantee",
-          "Submittung a request for verification does not guarantee that your account will be verified."
+          "Submittung a request for verification does not guarantee that your account will be verified.",
         )}
       </p>
       <Formik
@@ -82,16 +82,13 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
                 flushed
               />
               <FormikInput<SelectProps>
-                label={{
-                  translationKey: "category",
-                  fallbackText: "Category",
-                }}
+                label={"Category"}
                 flushed
                 onOptionSelect={(v) => setFieldValue("category", v)}
                 name="category"
                 placeholder={t(
                   "select_a_category_for_your_account",
-                  "Select a category for your account"
+                  "Select a category for your account",
                 )}
                 as={Select}
               >
@@ -105,7 +102,7 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
                 <span className="text-black font-bold">
                   {t(
                     "please_attach_a_photo_of_your_id",
-                    "Please attach a photo of your ID"
+                    "Please attach a photo of your ID",
                   )}
                 </span>
                 <div className="flex flex-col gap-2">
@@ -126,7 +123,7 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
               <p>
                 {t(
                   "government_issued_photo_id_require",
-                  "We require a government-issued photo ID that shows your name and date of birth (e.g. driver's license, passport or national identification card) or official business documents (tax filing, recent utility bill, article of incorporation) in order to review your request"
+                  "We require a government-issued photo ID that shows your name and date of birth (e.g. driver's license, passport or national identification card) or official business documents (tax filing, recent utility bill, article of incorporation) in order to review your request",
                 )}
               </p>
               <Button type="submit" className="sm:w-fit self-end">
