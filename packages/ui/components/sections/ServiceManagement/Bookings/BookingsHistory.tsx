@@ -59,12 +59,14 @@ import {
   getAllMonthsOfYear,
   isDate,
   mapArray,
+  randomNum,
   useForm,
 } from "@UI/../utils/src";
 import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
 import { startCase } from "lodash";
 import { useRouting } from "@UI/../routing";
 import { useDateManipulation } from "@UI/../hooks";
+import { getRandomImage } from "placeholder";
 
 const BookingHistoryAtom = atom<{
   paybackId?: {
@@ -104,7 +106,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
     {
       status: Filter,
       pagination,
-    }
+    },
   );
 
   const { refetch } = useGetMyBookingsHistoryQuery(form);
@@ -122,7 +124,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
 
   const data: GetMyBookingsQuery["getBookingHistory"] = [...Array(5)].map(
     (v, i) => ({
-      id: "test",
+      id: `${i}`,
       cashback: {
         amount: 5,
         id: "test",
@@ -132,36 +134,39 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
         profile: {
           photo: "/profile (2).jfif",
           username: "buyer name",
+          verified: true,
         },
       },
       checkin: new Date().toString(),
-      checkout: new Date().toString(),
-      payment: "Visa",
       discount: {
         amount: 15,
         id: "test",
         units: 5,
         type: CashbackType.Cash,
       },
-      dishs: [],
       guests: 1,
       seller: {
         profile: {
-          photo: "/profile (3).jfif",
+          photo: "profile (3).jfif",
           username: "seller name",
+          verified: true,
         },
       },
       service: {
         price: 48,
-        title: "test service name",
+        name: "test service name",
+        id: "",
+        thumbnail: getRandomImage(),
       },
       status: BookedServiceStatus.Completed,
       treatments: [],
       type: ServiceType.Hotel,
+      checkout: new Date(),
       insurance: {
-        amount: 250,
+        id: "",
+        amount: randomNum(50),
       },
-    })
+    }),
   );
 
   const startSearchYear = new Date().getFullYear() - yearsDiff;
@@ -188,13 +193,13 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
             <Select>
               {mapArray(
                 [...Array(yearsToAdd)].map(
-                  (_, i) => new Date(startSearchYear + i)
+                  (_, i) => new Date(startSearchYear + i),
                 ),
                 (date, i) => (
                   <SelectOption key={i} value={date}>
                     {new Date(date).getFullYear()}
                   </SelectOption>
-                )
+                ),
               )}
             </Select>
           </HStack>
@@ -416,7 +421,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
         </InputLeftElement>
         <Input
           placeholder={`${t("Search for order ID")}, ${t("customer")}, ${t(
-            "Order Status"
+            "Order Status",
           )}, ${t("Or")} ${t("something")}`}
         />
       </InputGroup>
@@ -481,7 +486,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                     payment,
                     ...rest
                   },
-                  i
+                  i,
                 ) => (
                   <Tr className="cursor-pointer" key={i}>
                     <Td>
@@ -586,7 +591,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                       </Td>
                     )}
                   </Tr>
-                )
+                ),
               )
             ) : (
               <Tr>
@@ -618,7 +623,7 @@ const BookingViewModal: React.FC = () => {
 
         return state.viewId;
       },
-    })
+    }),
   );
 
   const setId = useSetRecoilState(BookingHistoryAtom);
@@ -718,7 +723,7 @@ const BookingPayBackModal: React.FC = () => {
 
         return state.paybackId;
       },
-    })
+    }),
   );
   const { mutate, isLoading } = usePaybackServiceInsuranceMutation();
 
@@ -766,7 +771,7 @@ const BookingCancelationModal: React.FC = () => {
 
         return state.cancelId;
       },
-    })
+    }),
   );
 
   const setId = useSetRecoilState(BookingHistoryAtom);
@@ -777,7 +782,7 @@ const BookingCancelationModal: React.FC = () => {
       appointmentId: id || "",
       cancelationReason: "",
     },
-    { appointmentId: id || "" }
+    { appointmentId: id || "" },
   );
 
   return (

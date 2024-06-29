@@ -41,7 +41,7 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
   const { data: res } = useGetMyServicesQuery(props, {
     onSuccess(data) {
       getHasMore(data?.hasMore || false);
-      getNextCursor(data?.cursor);
+      getNextCursor(data?.cursor!);
     },
   });
 
