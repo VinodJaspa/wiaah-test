@@ -14,8 +14,10 @@ export const Prefix: React.FC<PrefixProps> = ({
 }) => {
   return (
     <div {...props} className={`${className || ""} flex items-center gap-2`}>
-      {runIfFn<HtmlDivProps>(Prefix, { className: PrefixClassName })}
-      {children}
+      <>
+        {runIfFn<HtmlDivProps>(Prefix, { className: PrefixClassName })}
+        <>{children}</>
+      </>
     </div>
   );
 };
