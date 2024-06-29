@@ -73,5 +73,13 @@ export const NewServiceSchemas = {
   beautyCenterDetailsSchema: yup.object({}),
   hotelIncludedServicesSchema: yup.object({}),
   RestaurantIncludedServicesSchema: yup.object({}),
-  HealthcenterIncludedServicesSchema: yup.object({}),
+  HealthcenterIncludedServicesSchema: yup.object({
+    doctors: yup.array().of(
+      yup.object().shape({
+        picture: yup.string().required("Picture is required"),
+        name: yup.string().required("Name is required"),
+        specialist: yup.string().required("Specialist is required"),
+      })
+    ),
+  }),
 };
