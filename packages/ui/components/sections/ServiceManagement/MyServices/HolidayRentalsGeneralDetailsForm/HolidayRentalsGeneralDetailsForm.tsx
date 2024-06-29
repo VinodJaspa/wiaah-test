@@ -49,6 +49,11 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
   const { t } = useTranslation();
   const { data: res } = useGetHotelAmenitesQuery();
 
+  const amenitiesNames = React.useMemo(
+    () => res?.data.amenites.map((amenity) => amenity.name) || [],
+    [res],
+  );
+
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik
@@ -253,7 +258,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                   onChange={(amis) => setFieldValue("common_amenites", amis)}
                   value={values["common_amenites"]}
                   name="common_amenites"
-                  suggestions={res?.data.amenites || []}
+                  suggestions={amenitiesNames}
                   label={t("Room common amenites")}
                 />
 
