@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlSvgProps } from "types";
-export const Verified: React.FC<HtmlDivProps> = ({ ...props }) => {
+export const Verified: React.FC<HtmlSvgProps> = ({ ...props }) => {
   return (
     <svg
       {...props}
