@@ -10,6 +10,7 @@ import {
   AspectRatio,
 } from "@UI";
 import { useTranslation } from "react-i18next";
+import { useTypedReactPubsub } from "@libs";
 
 export interface DiscoverOurServiceFormProps {
   serviceLabel: string;
@@ -25,7 +26,7 @@ export const DiscoverOurServiceForm: React.FC<DiscoverOurServiceFormProps> = ({
   const { t } = useTranslation();
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
-  const { emit } = useReactPubsub((keys) => keys.openLoginPopup);
+  const { emit } = useTypedReactPubsub((keys) => keys.openLoginPopup);
   return (
     <div className="flex flex-col gap-4">
       <p className="text-2xl font-semibold">
