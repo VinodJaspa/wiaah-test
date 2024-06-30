@@ -184,7 +184,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
 ];
 
 export const getBookedSerivceConfirmationDataFetcher = async (
-  id: string,
+  id: string
 ): Promise<BookedServiceConfirmationApiResponse> => {
   const res: AsyncReturnType<typeof getBookedSerivceConfirmationDataFetcher> = {
     data: {

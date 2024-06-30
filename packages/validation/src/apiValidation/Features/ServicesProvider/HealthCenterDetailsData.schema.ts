@@ -6,10 +6,7 @@ import {
 } from "../Services/common";
 import { WorkingDateValidationSchema } from "../Services/HealthCenter";
 
-export enum HealthCenterDoctorAvailablityStatus {
-  Available = "available",
-  Unavailable = "unavailable",
-}
+export type HealthCenterDoctorAvailablityStatus = "available" | "unavailable";
 export const HealthCenterDoctorMetaDataValidationSchema = object({
   id: string().required(),
   name: string().required(),
@@ -19,9 +16,10 @@ export const HealthCenterDoctorMetaDataValidationSchema = object({
   rating: number(),
   description: string(),
   healthCenterId: string(),
-  availabilityStatus: mixed<HealthCenterDoctorAvailablityStatus>().oneOf(
-    Object.values(HealthCenterDoctorAvailablityStatus),
-  ),
+  availabilityStatus: mixed<HealthCenterDoctorAvailablityStatus>().oneOf([
+    "available",
+    "unavailable",
+  ]),
 });
 
 export const HealthCenterDetailsValidationSchema =
@@ -32,7 +30,7 @@ export const HealthCenterDetailsValidationSchema =
         .min(0)
         .required(),
       workingDates: array().of(WorkingDateValidationSchema).min(0).required(),
-    }).required(),
+    }).required()
   );
 
 export const HealthCenterDetailtsApiResponseValidationSchema =
