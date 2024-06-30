@@ -1,10 +1,19 @@
 import { isDev } from "@UI/../utils/src";
-import { Exact, Maybe, Scalars, Service, ServiceType } from "@features/API";
+import {
+  Exact,
+  Maybe,
+  Scalars,
+  Service,
+  ServiceType,
+  ServiceShopRaw,
+  ServiceAdaptation,
+  ServicePaymentMethod,
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type GetServiceMetaDataQueryVariables = Exact<{
-  id: Scalars["String"];
+  id: Scalars["String"]["input"];
 }>;
 
 export type GetServiceMetaDataQuery = { __typename?: "Query" } & {
@@ -20,7 +29,23 @@ export type GetServiceMetaDataQuery = { __typename?: "Query" } & {
       | "bathrooms"
       | "beds"
       | "num_of_rooms"
-    >
+      | "rating"
+      | "reviews"
+      | "price"
+      | "discount"
+      | "availableAppointments"
+      | "cancelable"
+      | "includedServices"
+      | "measurements"
+      | "adaptedFor"
+      | "airCondition"
+      | "lugaggeCapacity"
+      | "seats"
+      | "model"
+    > & { __typename?: "ServiceShopRaw" } & Pick<
+        ServiceShopRaw,
+        "payment_methods"
+      >
   >;
 };
 
@@ -39,6 +64,20 @@ export const getServiceMetadataQueryFetcher = async (args: args) => {
       num_of_rooms: 4,
       bathrooms: 3,
       beds: 4,
+      rating: 3,
+      reviews: 2,
+      price: 22,
+      discount: { units: 22, value: 33 },
+      availableAppointments: ["2024-1-1"],
+      cancelable: true,
+      includedServices: ["service"],
+      measurements: { inFeet: 100, inMeter: 33 },
+      adaptedFor: [ServiceAdaptation.Children],
+      airCondition: true,
+      lugaggeCapacity: 2,
+      seats: 2,
+      model: "KIA",
+      payment_methods: [ServicePaymentMethod.Cash],
     };
     return mockRes;
   }
@@ -60,7 +99,7 @@ query getServiceMetaData($id:String!){
     bathrooms
   }
 }
-  `
+  `,
     )
     .setVariables<GetServiceMetaDataQueryVariables>(args)
     .send<GetServiceMetaDataQuery>();
@@ -71,6 +110,6 @@ query getServiceMetaData($id:String!){
 export const useGetServiceMetadataQuery = (args: args) => {
   console.log({ args });
   return useQuery(["service-metadata", args], () =>
-    getServiceMetadataQueryFetcher(args)
+    getServiceMetadataQueryFetcher(args),
   );
 };
