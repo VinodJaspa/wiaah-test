@@ -29,7 +29,7 @@ export function getRoleId(id: string): string {
 
 export const waitFor = (
   callback: () => any,
-  { interval = 50, timeout = 1000 } = {}
+  { interval = 50, timeout = 1000 } = {},
 ) =>
   act(
     () =>
@@ -52,11 +52,16 @@ export const waitFor = (
         };
 
         nextInterval();
-      })
+      }),
   );
 
-export const QueryClientWrapper: React.FC = ({ children }) => (
+export const QueryClientWrapper = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
   <QueryClientProvider client={new QueryClient()}>
+    {/* @ts-ignore */}
     {children}
   </QueryClientProvider>
 );

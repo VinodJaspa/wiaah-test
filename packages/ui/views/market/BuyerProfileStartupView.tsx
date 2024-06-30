@@ -113,7 +113,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
         key: "2",
       },
     ],
-    []
+    [],
   );
 
   const currentStepComp = steps.at(currentStep) || null;
@@ -163,15 +163,18 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
           </div>
         </div>
         <div className="flex flex-col">
-          <p className="text-lg font-semibold">{currentStepComp?.stepName}</p>
+          <p className="text-lg font-semibold">
+            {currentStepComp?.stepName.toString()}
+          </p>
           <p className="text-xs text-primary">
-            {t("Next")} : {nextStep?.stepName}
+            {t("Next").toString()} : {nextStep?.stepName.toString()}
           </p>
         </div>
       </HStack>
 
       <div className="h-full px-4 overflow-y-scroll">
-        {currentStepComp?.stepComponent}
+        {/* @ts-ignore */}
+        {currentStepComp?.stepComponent as unknown as React.ReactNode}
       </div>
 
       <HStack className="px-4 justify-between">
@@ -210,7 +213,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
               />
               <div className="flex flex-col items-end">
                 <div className="mb-2 text-lg font-bold">
-                  {steps[currentStep].stepName}
+                  {steps[currentStep].stepName.toString()}
                 </div>
                 <div className="text-xs text-gray-400">
                   {steps[currentStep + 1]
@@ -231,7 +234,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
                     <div className="text-lg font-bold">
                       {t("Step")} {key + 1}
                     </div>
-                    <div>{item.stepName}</div>
+                    <div>{item.stepName.toString()}</div>
                   </div>
                 );
               })}
