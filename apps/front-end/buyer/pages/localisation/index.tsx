@@ -12,17 +12,9 @@ const getLoclisations = async () => {
 
 interface LocalisationPageProps { }
 
-export const getServerSideProps: GetServerSideProps<
-  LocalisationPageProps
-> = async () => {
-  const queryClient = new QueryClient();
-
-  queryClient.prefetchQuery("localisations", getLoclisations);
-
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {}, // You can add your props here
   };
 };
 

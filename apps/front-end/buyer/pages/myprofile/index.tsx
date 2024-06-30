@@ -9,20 +9,11 @@ import { MyProfileView } from "../../components/views/MyProfile/MyProfileView";
 
 interface MyProfilePageProps { }
 
-export const getServerSideProps: GetServerSideProps<
-  MyProfilePageProps
-> = async () => {
-  const queryClient = new QueryClient();
-
-  queryClient.prefetchQuery("myProfileData", getMyProfileData);
-
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {}, // You can add your props here
   };
 };
-
 const myProfile: NextPage = () => {
   return (
     <>

@@ -7,33 +7,15 @@ import { useSetRecoilState } from "recoil";
 import { SellerLayout, SpinnerFallback, CartSummaryItemsState } from "ui";
 import { CartSummaryView } from "../components";
 
-interface CartSummaryPageProps {}
+interface CartSummaryPageProps { }
 
-export const getServerSideProps: GetServerSideProps<
-  CartSummaryPageProps
-> = async () => {
-  const queryClient = new QueryClient();
-
-  queryClient.prefetchQuery("CartSummaryData", getCartSummaryData);
-
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {}, // You can add your props here
   };
 };
 
 const CartSummary: NextPage<CartSummaryPageProps> = () => {
-  const { data, isLoading, isError } = useQuery(
-    "CartSummaryData",
-    getCartSummaryData
-  );
-  const setItems = useSetRecoilState(CartSummaryItemsState);
-  React.useEffect(() => {
-    if (data) {
-      setItems(data);
-    }
-  }, [data]);
   return (
     <>
       <Head>

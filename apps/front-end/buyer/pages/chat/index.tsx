@@ -7,21 +7,6 @@ import { ChatView } from "../../components";
 
 interface MessagesPageProps { }
 
-export const getServerSideProps: GetServerSideProps<
-  MessagesPageProps
-> = async () => {
-  const queryClient = new QueryClient();
-
-  // get messages page data with
-  // queryClient.prefetchQuery
-
-  return {
-    props: {
-      dehydratedProps: dehydrate(queryClient),
-    },
-  };
-};
-
 const Messages: React.FC<MessagesPageProps> = () => {
   const { isMobile } = useResponsive();
   return (
@@ -34,6 +19,12 @@ const Messages: React.FC<MessagesPageProps> = () => {
       </SellerLayout>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {}, // You can add your props here
+  };
 };
 
 export default Messages;
