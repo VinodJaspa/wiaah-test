@@ -57,9 +57,17 @@ export type ServiceTransport = {
 
 export type ServicePayment = "online" | "cash";
 
+export enum ServicePaymentMethod {
+  Cash = "cash",
+  Check = "check",
+  CreditCard = "credit_card",
+  Mastercard = "mastercard",
+  Visa = "visa",
+}
+
 export type ServiceRules = {
   refundable: boolean;
-  payment: ServicePayment;
+  payment: ServicePaymentMethod;
 };
 
 export type ServiceDiscount = {
