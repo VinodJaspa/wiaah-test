@@ -58,7 +58,7 @@ export const SocialStoryContentViewer: React.FC<
           </div>
         );
       case StoryType.Post:
-        return <NewsFeedPostStory postId={id} />;
+        return <NewsFeedPostStory postId={id} storyId="33" />;
       case StoryType.Product:
         return <ShopPostStory postId={id} />;
       case StoryType.Affiliation:
@@ -74,12 +74,13 @@ export const SocialStoryContentViewer: React.FC<
   return (
     <div
       className="flex flex-col items-center h-full w-full justify-center"
-    // maxW="container.md"
+      // maxW="container.md"
     >
       {text && (
         <p
-          className={`w-full text-center font-bold py-4 ${type === "text" ? "text-3xl" : "text-lg"
-            }`}
+          className={`w-full text-center font-bold py-4 ${
+            type === "text" ? "text-3xl" : "text-lg"
+          }`}
         >
           {text}
         </p>

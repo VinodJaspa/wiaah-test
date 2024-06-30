@@ -6,13 +6,19 @@ import { AccountType } from "@features/API";
 import { PostCardPlaceHolder } from "placeholder";
 export interface NewsFeedPostStoryProps {
   postId: string;
+  storyId: string;
 }
 
 export const NewsFeedPostStory: React.FC<NewsFeedPostStoryProps> = ({
   postId,
+  storyId,
 }) => {
   const router = useRouter();
-  const { data: _data, isLoading, isError } = useGetNewsfeedPostStory(postId);
+  const {
+    data: _data,
+    isLoading,
+    isError,
+  } = useGetNewsfeedPostStory(postId, storyId);
   const data = PostCardPlaceHolder;
   const { CloseStories } = useStory();
   function handleRoute() {
