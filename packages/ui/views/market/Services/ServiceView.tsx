@@ -92,15 +92,22 @@ export interface ServiceViewProps {
 }
 
 export const ServiceView: React.FC<ServiceViewProps> = ({ serviceId }) => {
-  const { data, isLoading, isError } = useGetServiceMetadataQuery(serviceId);
+  const { data, isLoading, isError } = useGetServiceMetadataQuery({
+    id: serviceId,
+  });
 
   const { t } = useTranslation();
   const router = useRouter();
+
+  const categories = router.query.categories;
+  const categoriesArray = Array.isArray(categories)
+    ? categories
+    : [categories].filter(Boolean);
   const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
-    [...(router.query.categories || [])].map((cate, i) => ({
-      text: cate,
-      url: `/${cate}`,
-    }))
+    categoriesArray.map((cate, i) => ({
+      text: cate || "",
+      url: `/${categoriesArray.slice(0, i + 1).join("/")}`,
+    })),
   );
   return (
     <>
@@ -113,7 +120,16 @@ export const ServiceView: React.FC<ServiceViewProps> = ({ serviceId }) => {
             <div className="h-full w-full lg:w-8/12">
               <SpinnerFallback isLoading={isLoading} isError={isError}>
                 {data ? (
-                  <ProductImageGallery images={data.servicePresentation} />
+                  <ProductImageGallery
+                    images={[
+                      {
+                        original: data?.thumbnail,
+                        thumbnail: data?.thumbnail,
+                        type: "image",
+                        alt: data?.name,
+                      },
+                    ]}
+                  />
                 ) : null}
               </SpinnerFallback>
             </div>
