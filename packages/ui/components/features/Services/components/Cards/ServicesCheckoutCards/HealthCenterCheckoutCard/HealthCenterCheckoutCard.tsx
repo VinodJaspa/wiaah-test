@@ -1,9 +1,10 @@
 import { HealthCenterCheckoutBookedPropertyData } from "api";
 import React from "react";
 import { ServiceCheckoutCommonCardWrapper, HealthCenterDoctorCard } from "@UI";
+import { HealthCenterDoctorAvailablityStatus } from "@features/API";
 
 export interface HealthCenterCheckoutCardProps
-  extends HealthCenterCheckoutBookedPropertyData {}
+  extends HealthCenterCheckoutBookedPropertyData { }
 
 export const HealthCenterCheckoutCard: React.FC<
   HealthCenterCheckoutCardProps
@@ -26,7 +27,10 @@ export const HealthCenterCheckoutCard: React.FC<
           rating: doctor.rating!,
           healthCenterId: doctor.healthCenterId!,
           description: doctor.description!,
-          availablityStatus: doctor.availabilityStatus!,
+          availablityStatus:
+            doctor.availabilityStatus === "available"
+              ? HealthCenterDoctorAvailablityStatus.Available
+              : HealthCenterDoctorAvailablityStatus.Unavailable,
         }}
       />
     </ServiceCheckoutCommonCardWrapper>
