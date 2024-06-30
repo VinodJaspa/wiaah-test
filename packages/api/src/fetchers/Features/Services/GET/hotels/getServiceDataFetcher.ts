@@ -1,8 +1,8 @@
-import { ServiceData } from "types";
+import { ServiceData, ServicePaymentMethod } from "types";
 import { FetchingMock } from "utils";
 
 export const getServiceDataFetcher = async (
-  id: string
+  id: string,
 ): Promise<ServiceData> => {
   if (!id) throw new Error("invalid service id provided");
   await FetchingMock;
@@ -62,7 +62,7 @@ export const getServiceDataFetcher = async (
     },
     serviceRules: {
       refundable: false,
-      payment: "online",
+      payment: ServicePaymentMethod.Cash,
     },
     serviceTransport: {
       airCondition: true,
