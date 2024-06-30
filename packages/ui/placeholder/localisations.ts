@@ -8,6 +8,7 @@ const PostCardPlaceHolder: PostCardInfo = {
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium.",
     numberOfComments: 5,
     numberOfLikes: 7,
+    numberOfShares: 3,
     attachments: [
       {
         type: "image",
@@ -85,7 +86,7 @@ export const costumPH: PlaceCardProps[] = [
 export const placesWithCostum = costumPH.concat(
   [...Array(9)].map(() => ({
     ...placeCardPlaceholder,
-  }))
+  })),
 );
 
 export const placesPH = [...Array(20)].map(() => ({

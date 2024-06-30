@@ -5,10 +5,12 @@ export const RecentSearchItemsPH: RecentSearchItem[] = [
   {
     itemType: "user",
     data: {
+      id: "2",
       name: "wiaah",
       activityType: "artist",
-      userPhotoSrc: "/wiaah_logo.png",
+      photo: "/wiaah_logo.png",
       verified: true,
+      profession: "programmer",
     },
   },
   {

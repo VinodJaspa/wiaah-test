@@ -135,7 +135,6 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
 ];
 
 import { StoreType, Story } from "@features/API/";
-import { DiscountUnits } from "@UI/../validation";
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -185,7 +184,7 @@ export const rentalsPh = [
 
 export const getRandomServiceImage = (
   type: ServiceType,
-  menuType?: RestaurantDishType
+  menuType?: RestaurantDishType,
 ) => {
   const getRandom = (imgs: string[]) => imgs[randomNum(imgs.length)];
   switch (type) {
@@ -369,7 +368,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-  Math.floor(Math.random() * postProfilesPlaceholder.length)
+    Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -1378,41 +1377,158 @@ export const ServicePostDataPlaceholder: ServicePostData[] = [
 ];
 
 export const hashtagCardInfoPlaceholder: HashTagCardInfo = {
-  attachment: {
-    src: "/video.mp4",
-    type: "video",
+  title: "Exploring the Outdoors",
+  postInfo: {
+    createdAt: "2024-01-01T12:00:00Z",
+    id: "post1",
+    content: "Had an amazing hike today!",
+    tags: ["hiking", "nature", "adventure"],
+    views: 150,
+    attachments: [
+      {
+        type: "image",
+        src: "https://example.com/image1.jpg",
+        postLocation: "Mountain Trail",
+      },
+    ],
+    numberOfLikes: 20,
+    numberOfComments: 5,
+    numberOfShares: 2,
+    comments: [
+      {
+        id: "comment1",
+        user: {
+          id: "user1",
+          verifed: true,
+          name: "Jane Doe",
+          thumbnail: "https://example.com/user1.jpg",
+          accountType: "buyer",
+          public: true,
+          profession: "Photographer",
+        },
+        replies: 0,
+        likes: 3,
+        createdAt: "2024-01-01T12:30:00Z",
+        content: "Looks beautiful!",
+        attachment: null,
+        hashTags: ["nature", "hiking"],
+      },
+    ],
+    thumbnail: "https://example.com/thumbnail1.jpg",
   },
-  title: t("most_liked_post", "most liked post"),
+  profileInfo: {
+    id: "profile1",
+    verifed: true,
+    name: "John Smith",
+    thumbnail: "https://example.com/profile1.jpg",
+    accountType: "seller",
+    public: true,
+    profession: "Travel Blogger",
+    photo: "https://example.com/photo1.jpg",
+  },
 };
 
 export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
   {
-    attachment: {
-      src: "/verticalImage.jpg",
-      type: AttachmentType.Img,
+    title: "Exploring the Outdoors",
+    postInfo: {
+      createdAt: "2024-01-01T12:00:00Z",
+      id: "post1",
+      content: "Had an amazing hike today!",
+      tags: ["hiking", "nature", "adventure"],
+      views: 150,
+      attachments: [
+        {
+          type: "image",
+          src: "https://example.com/image1.jpg",
+          postLocation: "Mountain Trail",
+        },
+      ],
+      numberOfLikes: 20,
+      numberOfComments: 5,
+      numberOfShares: 2,
+      comments: [
+        {
+          id: "comment1",
+          user: {
+            id: "user1",
+            verifed: true,
+            name: "Jane Doe",
+            thumbnail: "https://example.com/user1.jpg",
+            accountType: "buyer",
+            public: true,
+            profession: "Photographer",
+          },
+          replies: 0,
+          likes: 3,
+          createdAt: "2024-01-01T12:30:00Z",
+          content: "Looks beautiful!",
+          attachment: null,
+          hashTags: ["nature", "hiking"],
+        },
+      ],
+      thumbnail: "https://example.com/thumbnail1.jpg",
     },
-    title: t("most_liked_post", "most liked post"),
+    profileInfo: {
+      id: "profile1",
+      verifed: true,
+      name: "John Smith",
+      thumbnail: "https://example.com/profile1.jpg",
+      accountType: "seller",
+      public: true,
+      profession: "Travel Blogger",
+      photo: "https://example.com/photo1.jpg",
+    },
   },
   {
-    attachment: {
-      src: images[randomNum(images.length)],
-      type: "image",
+    title: "Delicious Recipes",
+    postInfo: {
+      createdAt: "2024-02-14T08:00:00Z",
+      id: "post2",
+      content: "Sharing my favorite dessert recipe!",
+      tags: ["cooking", "dessert", "recipe"],
+      views: 300,
+      attachments: [
+        {
+          type: "video",
+          src: "https://example.com/video1.mp4",
+        },
+      ],
+      numberOfLikes: 50,
+      numberOfComments: 10,
+      numberOfShares: 5,
+      comments: [
+        {
+          id: "comment2",
+          user: {
+            id: "user2",
+            verifed: false,
+            name: "Alice Johnson",
+            thumbnail: "https://example.com/user2.jpg",
+            accountType: "buyer",
+            public: true,
+            profession: "Chef",
+          },
+          replies: 1,
+          likes: 10,
+          createdAt: "2024-02-14T09:00:00Z",
+          content: "Can't wait to try this!",
+          attachment: null,
+          hashTags: ["cooking", "dessert"],
+        },
+      ],
+      thumbnail: "https://example.com/thumbnail2.jpg",
     },
-    title: t("most_commented_post", "most commented post"),
-  },
-  {
-    attachment: {
-      src: "/verticalVideo.mp4",
-      type: "video",
+    profileInfo: {
+      id: "profile2",
+      verifed: false,
+      name: "Emily Davis",
+      thumbnail: "https://example.com/profile2.jpg",
+      accountType: "buyer",
+      public: true,
+      profession: "Food Blogger",
+      photo: "https://example.com/photo2.jpg",
     },
-    title: t("most_viewed_video", "most viewed video"),
-  },
-  {
-    attachment: {
-      src: "/video.mp4",
-      type: "video",
-    },
-    title: t("most_liked_video", "most liked video"),
   },
 ];
 const placeholderProfileDetails = {
@@ -1502,10 +1618,13 @@ export const PorductDetailsPlaceHolder: GetProductDetailsQuery["getProduct"] = {
   id: "prod_123456",
   price: 49.99,
   title: "Sample Product",
+  sizes: [ProductSize.Xl],
+  colors: ["green"],
   seller: {
     __typename: "Account",
     profile: {
       __typename: "Profile",
+      id: "2",
       username: "seller123",
       verified: true,
       photo: getRandomImage(),
