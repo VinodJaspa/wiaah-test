@@ -28,11 +28,11 @@ import {
 
 import { StepperStepType } from "types";
 import { Button } from "@UI";
-import { runIfFn, useForm } from "utils";
+import { runIfFn, useForm, WiaahLangId } from "utils";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
-import { StoreType } from "@features/API";
+import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
@@ -203,7 +203,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         key: 9,
       },
     ],
-    []
+    [],
   );
 
   const currentStepComp = steps.at(currentStep) || null;
@@ -253,15 +253,18 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           </div>
         </div>
         <div className="flex flex-col">
-          <p className="text-lg font-semibold">{currentStepComp?.stepName}</p>
+          <p className="text-lg font-semibold">
+            {currentStepComp?.stepName.toString()}
+          </p>
           <p className="text-xs text-primary">
-            {t("Next")} : {nextStep?.stepName}
+            {t("Next")} : {nextStep?.stepName.toString()}
           </p>
         </div>
       </HStack>
 
       <div className="h-full px-4 overflow-y-scroll">
-        {currentStepComp?.stepComponent}
+        {/* @ts-ignore */}
+        {currentStepComp?.stepComponent as unknown as React.ReactNode}
       </div>
 
       <HStack className="px-4 justify-between">
@@ -300,7 +303,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               />
               <div className="flex flex-col items-end">
                 <div className="mb-2 text-lg font-bold">
-                  {steps[currentStep].stepName}
+                  {steps[currentStep].stepName.toString()}
                 </div>
                 <div className="text-xs text-gray-400">
                   {steps[currentStep + 1]
@@ -321,7 +324,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                     <div className="text-lg font-bold">
                       {t("Step")} {key + 1}
                     </div>
-                    <div>{item.stepName}</div>
+                    <div>{item.stepName.toString()}</div>
                   </div>
                 );
               })}
@@ -374,7 +377,7 @@ const SellerListingForm = React.forwardRef(
     }: {
       onSuccess: () => any;
     },
-    ref
+    ref,
   ) => {
     const stepperRef = React.useRef<{
       next: () => any;
@@ -386,7 +389,38 @@ const SellerListingForm = React.forwardRef(
     React.useImperativeHandle(ref, () => {
       return {
         submit: () => {
-          mutate({}, { onSuccess });
+          mutate(
+            {
+              cancelable: true,
+              description: [
+                { langId: "en", value: "English" },
+                { langId: "es", value: "Epanish" },
+              ],
+              hashtags: ["#service", "#awesome"],
+              isExternal: false,
+              name: [
+                { langId: "en", value: "English" },
+                { langId: "es", value: "Epanish" },
+              ],
+              policies: [
+                {
+                  langId: "en",
+                  value: [
+                    {
+                      policyTitle: "Example Policy",
+                      terms: ["Term 1", "Term 2", "Term 3"],
+                    },
+                  ],
+                },
+              ],
+              price: 99.99,
+              speakingLanguages: [DoctorSpeakingLanguage.En],
+              thumbnail: {}, // Assuming the input type for Upload
+              title: "Amazing Service",
+              vat: 10.5,
+            },
+            { onSuccess },
+          );
         },
       };
     });
@@ -398,11 +432,12 @@ const SellerListingForm = React.forwardRef(
           ref={stepperRef}
           isEdit={false}
           sellerId={shop?.ownerId || ""}
+          lang={WiaahLangId.EN}
         />
         {/* ) : null} */}
       </div>
     );
-  }
+  },
 );
 
 export const AccountSignEmailVerificationStep = React.forwardRef(
@@ -412,7 +447,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     }: {
       onSuccess: () => any;
     },
-    ref
+    ref,
   ) => {
     const { t } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
@@ -485,7 +520,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
         />
       </div>
     );
-  }
+  },
 );
 
 export const SignupAccountVerificationStep = React.forwardRef(
@@ -507,7 +542,7 @@ export const SignupAccountVerificationStep = React.forwardRef(
         value={data}
       />
     );
-  }
+  },
 );
 
 export const SellerSignupPlansStep = React.forwardRef(
@@ -523,7 +558,7 @@ export const SellerSignupPlansStep = React.forwardRef(
           { id: packageId },
           {
             onSuccess,
-          }
+          },
         );
       },
     }));
@@ -535,5 +570,5 @@ export const SellerSignupPlansStep = React.forwardRef(
         onChange={(id) => setPackageId(id)}
       ></SelectPackageStep>
     );
-  }
+  },
 );
