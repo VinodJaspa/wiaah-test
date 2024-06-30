@@ -12,12 +12,14 @@ import {
   ServicePropertyDetailsDisplay,
   VideoCameraIcon,
   HStack,
+  useGetServiceCategory,
 } from "@UI";
 import { Event } from "@UI";
 import { useGetServiceMetadataQuery } from "@UI";
 import { getTimeInAmPm } from "utils";
 import { useTranslation } from "react-i18next";
 import { useServiceBookedRange, useServiceBookingModal } from "state";
+import { ServiceAdaptation, ServiceType } from "@features/API";
 
 export interface ServiceRightViewProps {
   serviceId: string;
@@ -28,7 +30,10 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
 }) => {
   const { range } = useServiceBookedRange();
   const { openBookEvent, openBookRange } = useServiceBookingModal();
-  const { data, isLoading, isError } = useGetServiceMetadataQuery(serviceId);
+  const { data, isLoading, isError } = useGetServiceMetadataQuery({
+    id: serviceId,
+  });
+  const { data: category } = useGetServiceCategory(data?.id || "");
 
   const { t } = useTranslation();
   const { AddNewItem } = useCartSummary();
@@ -51,7 +56,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
         <div className="flex w-full h-full flex-col justify-between gap-2">
           <div className="flex h-full flex-col gap-2 items-start">
             <div>
-              <samp className="green-text">{data.category}</samp>
+              <samp className="green-text">{category?.name}</samp>
               <h1 className="m-0 text-2xl font-bold text-gray-800 ">
                 {data.name}
               </h1>
@@ -67,62 +72,83 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
             </div>
             <div className="flex gap-4 items-center font-bold">
               <span className="product-price text-3xl">
-                ${data.price.amount}
+                ${data.price}
                 100
               </span>
               {/* {!data?.price?.value ? (
                 ""
               ) : ( */}
               <span className="text-2xl text-slate-400 line-through">
-                ${data?.price.amount}
+                ${data?.price}
                 110
               </span>
               {/* )} */}
               <p className="inline text-xl">/{t("night")}</p>
             </div>
             <div className="inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
-              <span>{data?.discount?.discount?.value}% </span>
+              <span>{data?.discount?.value}% </span>
               <span>{t("OFF", "OFF")}</span>
             </div>
             <div>
-              {data?.discount?.discountedUnits && (
+              {data?.discount?.units && (
                 <p className="text-lg font-bold text-red-500">
-                  {t("Only", "Only")} {data.discount.discountedUnits}{" "}
+                  {t("Only", "Only")} {data.discount.units}{" "}
                   {t("Tickets left at this price on our site")}
                 </p>
               )}
             </div>
             <div>
               <span className="font-bold">
-                {data?.available
-                  ? t("Service Available") + ":" + data.available
+                {data?.availableAppointments
+                  ? t("Service Available") + ":" + data.availableAppointments
                   : t("Service Not Available")}{" "}
               </span>
             </div>
             <div className="text-lg">
-              {data?.videoConsulition ? (
+              {/* There is no videoConsulation field in the hole Schema file I commented it for a while */}
+              {/* {data?.videoConsulition ? (
                 <HStack>
                   <VideoCameraIcon />
                   {t("Video consultations available")}
                 </HStack>
-              ) : null}
+              ) : null} */}
             </div>
             <div className="text-lg flex flex-col gap-2">
-              {data?.serviceRules ? (
-                <ServiceRulesDisplay {...data.serviceRules} />
+              {data?.cancelable ? (
+                <ServiceRulesDisplay
+                  payment={data?.payment_methods[0]}
+                  refundable={data?.cancelable}
+                />
               ) : null}
-              {data?.serviceTransport ? (
-                <ServiceTransportDisplay {...data.serviceTransport} />
+              {data?.type === ServiceType.Vehicle ? (
+                <ServiceTransportDisplay
+                  airCondition={data?.airCondition!}
+                  luggageCapacity={data?.lugaggeCapacity!}
+                  seats={data?.seats!}
+                  guests={data?.seats!}
+                  passengers={data?.seats!}
+                  typeOfDevice={"Mobile"}
+                  type="manual"
+                />
               ) : null}
-              {data?.propertyDetails ? (
-                <ServicePropertyDetailsDisplay {...data.propertyDetails} />
+              {data?.measurements ? (
+                <ServicePropertyDetailsDisplay
+                  size={data?.measurements}
+                  residentsCapacity={{
+                    max: data?.beds! + 1,
+                    residentType:
+                      data?.adaptedFor?.[0] === ServiceAdaptation.Children
+                        ? "children"
+                        : "adults",
+                  }}
+                />
               ) : null}
             </div>
             <div>
-              {data?.included && (
+              {data?.includedServices && (
                 <div className="flex flex-wrap gap-2">
-                  {Array.isArray(data.included)
-                    ? data.included.map((service, i) => (
+                  {Array.isArray(data.includedServices)
+                    ? data.includedServices.map((service, i) => (
                         <span className="rounded-lg border-2 border-green-500 px-2 py-1 text-green-500 ">
                           {service} included
                         </span>
@@ -172,11 +198,14 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
               />
               <Button
                 onClick={() =>
-                  data.type === "event"
+                  data.type === ServiceType.HolidayRentals ||
+                  ServiceType.BeautyCenter ||
+                  ServiceType.HealthCenter ||
+                  ServiceType.Restaurant
                     ? openBookEvent()
-                    : data.type === "rent"
-                    ? openBookRange()
-                    : undefined
+                    : data.type === ServiceType.Hotel || ServiceType.Vehicle
+                      ? openBookRange()
+                      : undefined
                 }
                 className="w-full"
               >
