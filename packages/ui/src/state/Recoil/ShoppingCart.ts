@@ -1,5 +1,5 @@
+import { ShoppingCartItem } from "@UI/uiTypes/shoppingCart/shoppingCartItem.interface";
 import { atom, selector } from "recoil";
-import { ShoppingCartItem } from "../../uiTypes/shoppingCart/shoppingCartItem.interface";
 
 export const ShoppingCartItemsState = atom<ShoppingCartItem[]>({
   key: "ShoppingCartItemsState",

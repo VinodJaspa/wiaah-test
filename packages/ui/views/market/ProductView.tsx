@@ -7,7 +7,6 @@ import {
   SellerCard,
   Spacer,
 } from "@UI";
-import { Product } from "@UI";
 import { useTranslation } from "react-i18next";
 import { ProductGalleryItem } from "types";
 

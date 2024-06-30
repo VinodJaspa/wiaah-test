@@ -32,7 +32,7 @@ import {
   useCreateVoucherMutation,
   useGetMyVouchersQuery,
 } from "@features/Vouchers";
-import { VoucherStatus } from "@features/API";
+import { VoucherStatus } from "@features/API/gql/generated";
 
 export const VouchersSection: React.FC = () => {
   const { t } = useTranslation();
