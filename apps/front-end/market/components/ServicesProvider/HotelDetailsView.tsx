@@ -26,6 +26,37 @@ import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 import { PresentationType, ServicePresentationType } from "@features/API";
 
+const ServicesProviderTabs: SectionTabType[] = [
+  {
+    slug: "description",
+    name: "Description",
+  },
+  {
+    name: "Contact",
+    slug: "contact",
+  },
+  {
+    slug: "policies",
+    name: "Policies",
+  },
+  {
+    name: "Working hours",
+    slug: "workingHours",
+  },
+  {
+    slug: "rooms",
+    name: "Rooms",
+  },
+  {
+    slug: "localization",
+    name: "Localization",
+  },
+  {
+    slug: "reviews",
+    name: "Customer reviews",
+  },
+];
+
 export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
   const { data: res, isError, isLoading } = useGetShopDetailsQuery(id);
@@ -46,9 +77,9 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
         data={
           res
             ? res.images.map((v) => ({
-                src: v,
-                type: ServicePresentationType.Img,
-              })) || []
+              src: v,
+              type: ServicePresentationType.Img,
+            })) || []
             : []
         }
       />
@@ -101,34 +132,3 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
     </div>
   );
 };
-
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
-  },
-  {
-    name: "Contact",
-    slug: "contact",
-  },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    slug: "rooms",
-    name: "Rooms",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];
