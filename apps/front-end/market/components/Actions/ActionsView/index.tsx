@@ -35,17 +35,18 @@ export const ActionsView: React.FC = () => {
 
 const actionsPlaceholders: SocialActionData[] = [
   {
-    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    id: "1",
+    likes: 100,
+    dislikes: 20,
+    comments: 50,
+    shares: 30,
+    title: "Sample Story Title",
     storyType: "video",
-    storyViews: 1300000,
-    storySrc: "/verticalVideo.mp4",
-    id: "5",
+    url: "https://example.com/video",
+    storyCreationDate: "2024-07-02",
+    storyViews: 500,
+    storySrc: "https://example.com/video.mp4",
     user: SocialProfileInfo,
-    comments: 45,
-    dislikes: 45,
-    likes: 232,
-    shares: 15,
-    title: "Lorem ipsum dolor",
   },
   {
     storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
@@ -58,8 +59,8 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     id: "3",
-
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    url: "https://example.com/video",
   },
   {
     storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
@@ -73,7 +74,7 @@ const actionsPlaceholders: SocialActionData[] = [
     dislikes: 45,
     likes: 232,
     shares: 15,
-
+    url: "https://example.com/video",
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
@@ -87,7 +88,7 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     id: "3",
-
+    url: "https://example.com/video",
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
@@ -101,8 +102,8 @@ const actionsPlaceholders: SocialActionData[] = [
     dislikes: 45,
     likes: 232,
     shares: 15,
+    url: "https://example.com/video",
     id: "4",
-
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
 ];
