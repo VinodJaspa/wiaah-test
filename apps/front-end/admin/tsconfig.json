@@ -7,6 +7,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "paths": {
       "@components": ["components"],
       "@partials": ["../../../packages/ui/components/partials"],
