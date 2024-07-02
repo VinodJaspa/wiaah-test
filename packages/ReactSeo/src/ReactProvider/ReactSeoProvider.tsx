@@ -2,12 +2,12 @@ import React, { ReactNode } from "react";
 
 // Define the interface for the SEO context
 interface ReactSeoContext {
-  TagWrapper: React.FC;
+  TagWrapper: React.FC<React.PropsWithChildren<{}>>;
 }
 
 // Create the SEO context
 export const ReactSeoContext = React.createContext<ReactSeoContext>({
-  TagWrapper: () => null, // Default TagWrapper component
+  TagWrapper: ({ children }) => <>{children}</>, // Default TagWrapper component
 });
 
 // Define the props interface for the SEO provider

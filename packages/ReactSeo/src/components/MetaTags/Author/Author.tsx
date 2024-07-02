@@ -1,6 +1,8 @@
 import React from "react";
-import { HtmlMetaProps } from "types";
 import { useSeoCtx } from "react-seo";
+
+export interface HtmlMetaProps extends React.HTMLProps<HTMLMetaElement> { }
+
 export interface MetaAuthorProps extends HtmlMetaProps {
   author: string;
 }
