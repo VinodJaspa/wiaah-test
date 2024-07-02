@@ -16,7 +16,7 @@ const getRandomUser = () =>
   postProfilesPlaceholder[
   Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
-export const getServerSideProps: GetServerSideProps<any> = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // get user/shop profle info
   return {
     props: {
