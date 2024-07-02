@@ -62,7 +62,7 @@ const EditCategory = () => {
 
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof mutate>[0]
-  >(data, { id: CategoryId });
+  >({ id: CategoryId });
 
   function handleSave() {
     mutate(form);
@@ -296,9 +296,8 @@ const EditCategory = () => {
                 <SimpleTabHead>
                   {mapArray(tabs, ({ name }, i) => (
                     <div
-                      className={`${
-                        i === 3 ? "border-b-white" : ""
-                      } border px-8 py-2`}
+                      className={`${i === 3 ? "border-b-white" : ""
+                        } border px-8 py-2`}
                     >
                       {name}
                     </div>
@@ -345,7 +344,7 @@ const ServiceCategoryFilterView: React.FC<{
   const filter = value.find((v) => (v.filteringKey = filterId));
   const edit = typeof EditId === "string";
 
-  function handleChange() {}
+  function handleChange() { }
 
   function handleEdit(id: string) {
     setEditId(id);
@@ -441,7 +440,7 @@ const ServiceCategoryFilterView: React.FC<{
                 initialValues={{
                   filterValues: [],
                 }}
-                onSubmit={() => {}}
+                onSubmit={() => { }}
               >
                 {({ values, setFieldValue, handleChange }) => {
                   return (
