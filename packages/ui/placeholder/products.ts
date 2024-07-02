@@ -3,9 +3,8 @@ import {
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
 } from "@features/API";
-import { CartSummaryItemData } from "types";
+import { CartSummaryItemData, ProductDetails } from "types";
 
-import { ProductDetails } from "../uiTypes/products/ProductDetail.interface";
 import { getRandomImage } from "placeholder";
 
 export const ProductsWithProfile: CartSummaryItemData[] = [

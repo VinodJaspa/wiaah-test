@@ -88,8 +88,8 @@ export const MarketServiceSearchView: React.FC<{
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
                     serviceType,
-                    location,
-                  ),
+                    location
+                  )
                 );
               }}
             />
@@ -101,8 +101,8 @@ export const MarketServiceSearchView: React.FC<{
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
                     ServicesRequestKeys.restaurant,
-                    "location",
-                  ),
+                    "location"
+                  )
                 )
               }
             />
@@ -213,7 +213,7 @@ export const MarketServiceSearchView: React.FC<{
                     />
                   ) : null}
                 </>
-              ),
+              )
             )}
           </div>
         </>
@@ -322,38 +322,38 @@ export const MarketHealthCenterServiceCardAlt: React.FC<{
   appointments,
   bookedAppointments,
 }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="flex flex-col gap-2 p-1">
-      <AspectRatioImage alt={title} ratio={1.7} src={thumbnail} />
+    const { t } = useTranslation();
+    return (
+      <div className="flex flex-col gap-2 p-1">
+        <AspectRatioImage alt={title} ratio={1.7} src={thumbnail} />
 
-      <div className="p-1 flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <p className="text-lg font-medium">{title}</p>
-          <p className="text-sm text-grayText">{speciality}</p>
-          <HStack>
-            <LocationIcon className="text-primary" />
-            <p className="text-sm">{location}</p>
-          </HStack>
+        <div className="p-1 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <p className="text-lg font-medium">{title}</p>
+            <p className="text-sm text-grayText">{speciality}</p>
+            <HStack>
+              <LocationIcon className="text-primary" />
+              <p className="text-sm">{location}</p>
+            </HStack>
+          </div>
+
+          <div className="max-h-40 overflow-y-scroll">
+            <WorkingDaysCalender
+              takenDates={bookedAppointments}
+              workingDates={appointments}
+            />
+          </div>
+
+          <Button className="w-full" colorScheme="darkbrown">
+            <HStack className="text-white">
+              <p className="text-sm font-semibold">{t("Book now")}</p>
+              <ArrowRightIcon />
+            </HStack>
+          </Button>
         </div>
-
-        <div className="max-h-40 overflow-y-scroll">
-          <WorkingDaysCalender
-            takenDates={bookedAppointments}
-            workingDates={appointments}
-          />
-        </div>
-
-        <Button className="w-full" colorScheme="darkbrown">
-          <HStack className="text-white">
-            <p className="text-sm font-semibold">{t("Book now")}</p>
-            <ArrowRightIcon />
-          </HStack>
-        </Button>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export const MarketVehicleServiceSearchCardAlt: React.FC<{
   pricePerDay: number;
@@ -374,61 +374,61 @@ export const MarketVehicleServiceSearchCardAlt: React.FC<{
   passengers = 0,
   windows = 0,
 }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="flex flex-col gap-2 p-1">
-      <AspectRatioImage src={thumbnail} alt={title} ratio={1.2} />
-      <div className="flex flex-col gap-2">
-        <p>{title}</p>
+    const { t } = useTranslation();
+    return (
+      <div className="flex flex-col gap-2 p-1">
+        <AspectRatioImage src={thumbnail} alt={title} ratio={1.2} />
+        <div className="flex flex-col gap-2">
+          <p>{title}</p>
 
-        <HStack className="flex-wrap">
-          {airCondition ? (
-            <HStack>
-              <AirConditionIcon className="text-sm" />
-              <p className="text-xs">{t("A/C")}</p>
-            </HStack>
-          ) : null}
+          <HStack className="flex-wrap">
+            {airCondition ? (
+              <HStack>
+                <AirConditionIcon className="text-sm" />
+                <p className="text-xs">{t("A/C")}</p>
+              </HStack>
+            ) : null}
 
-          {gps ? (
-            <HStack>
-              <GPSIcon className="text-sm" />
-              <p className="text-xs">{t("GPS")}</p>
-            </HStack>
-          ) : null}
+            {gps ? (
+              <HStack>
+                <GPSIcon className="text-sm" />
+                <p className="text-xs">{t("GPS")}</p>
+              </HStack>
+            ) : null}
 
-          {passengers ? (
-            <HStack>
-              <PersonGroupIcon className="text-sm" />
-              <p className="text-xs">{passengers}</p>
-            </HStack>
-          ) : null}
+            {passengers ? (
+              <HStack>
+                <PersonGroupIcon className="text-sm" />
+                <p className="text-xs">{passengers}</p>
+              </HStack>
+            ) : null}
 
-          {luggage ? (
-            <HStack>
-              <TransportLuggageIcon className="text-sm" />
-              <p className="text-xs">{luggage}</p>
-            </HStack>
-          ) : null}
+            {luggage ? (
+              <HStack>
+                <TransportLuggageIcon className="text-sm" />
+                <p className="text-xs">{luggage}</p>
+              </HStack>
+            ) : null}
 
-          {windows ? (
-            <HStack>
-              <CarWindowIcon className="text-sm" />
-              <p className="text-xs">{windows}</p>
-            </HStack>
-          ) : null}
-        </HStack>
+            {windows ? (
+              <HStack>
+                <CarWindowIcon className="text-sm" />
+                <p className="text-xs">{windows}</p>
+              </HStack>
+            ) : null}
+          </HStack>
 
-        <div className="flex items-end">
-          <PriceDisplay
-            price={pricePerDay}
-            symbolProps={{ className: "text-primary" }}
-          />
-          /{t("day")}
+          <div className="flex items-end">
+            <PriceDisplay
+              price={pricePerDay}
+              symbolProps={{ className: "text-primary" }}
+            />
+            /{t("day")}
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export const MarketBeautyCenterSearchCardAlt: React.FC<{
   title: string;
@@ -497,54 +497,54 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<{
   sellerVerified,
   location,
 }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="flex flex-col gap-1 p-1">
-      <AspectRatioImage ratio={1.7} src={thumbnail} alt={title}>
-        <div className="top-2 right-2 flex justify-center items-center bg-black/30 rounded-full h-24 w-24">
-          {saved ? <HeartFillIcon /> : <HeartOutlineAltIcon />}
-        </div>
-      </AspectRatioImage>
-      <div className="flex flex-col gap-2">
-        <div className="flex justify-between">
-          <HStack>
-            <Avatar src={sellerThumbnail} />
-            <p className="font-medium">{sellerName}</p>
-            {sellerVerified ? <Verified /> : null}
-          </HStack>
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex gap-1 items-center">
-              <StarIcon className="text-yellow-300" />
+    const { t } = useTranslation();
+    return (
+      <div className="flex flex-col gap-1 p-1">
+        <AspectRatioImage ratio={1.7} src={thumbnail} alt={title}>
+          <div className="top-2 right-2 flex justify-center items-center bg-black/30 rounded-full h-24 w-24">
+            {saved ? <HeartFillIcon /> : <HeartOutlineAltIcon />}
+          </div>
+        </AspectRatioImage>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between">
+            <HStack>
+              <Avatar src={sellerThumbnail} />
+              <p className="font-medium">{sellerName}</p>
+              {sellerVerified ? <Verified /> : null}
+            </HStack>
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex gap-1 items-center">
+                <StarIcon className="text-yellow-300" />
 
-              <p className="text-xs">{rating}/5</p>
+                <p className="text-xs">{rating}/5</p>
+              </div>
+              <p className="text-xs">{`(${reviews}) ${t("Reviews")}`}</p>
             </div>
-            <p className="text-xs">{`(${reviews}) ${t("Reviews")}`}</p>
-          </div>
-        </div>
-
-        <p className="text-lg font-medium">{title}</p>
-        <p className="text-sm">{description}</p>
-
-        <div className="flex justify-between gap-4">
-          <div className="flex gap-1">
-            <LocationOutlineIcon className="text-primary" />
-            <p className="text-xs text-grayText">{location}</p>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <p className="flex items-end">
-              <span>
-                <PriceDisplay
-                  price={monthlyPrice}
-                  className="text-lg font-semibold"
-                />
-              </span>
-              /<span>{t("Month")}</span>
-            </p>
-            <p className="text-xs">{t("Includes tax & fees") + "*"}</p>
+          <p className="text-lg font-medium">{title}</p>
+          <p className="text-sm">{description}</p>
+
+          <div className="flex justify-between gap-4">
+            <div className="flex gap-1">
+              <LocationOutlineIcon className="text-primary" />
+              <p className="text-xs text-grayText">{location}</p>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <p className="flex items-end">
+                <span>
+                  <PriceDisplay
+                    price={monthlyPrice}
+                    className="text-lg font-semibold"
+                  />
+                </span>
+                /<span>{t("Month")}</span>
+              </p>
+              <p className="text-xs">{t("Includes tax & fees") + "*"}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };

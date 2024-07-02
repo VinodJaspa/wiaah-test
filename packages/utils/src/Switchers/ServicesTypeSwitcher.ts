@@ -15,20 +15,20 @@ type GetServiceViewKeyType =
   | "DETAILS"
   | "HORIZONTAL_LIST";
 export const getServiceView: Record<GetServiceViewKeyType, getServiceViewType> =
-  {
-    SEARCH: "search",
-    RESAULTS: "resaults",
-    LIST: "list",
-    DETAILS: "details",
-    HORIZONTAL_LIST: "horizontalList",
-  };
+{
+  SEARCH: "search",
+  RESAULTS: "resaults",
+  LIST: "list",
+  DETAILS: "details",
+  HORIZONTAL_LIST: "horizontalList",
+};
 
 export const ServicesTypeSwitcher: React.FC<{
   serviceType: ServicesType;
   servicesList: ServiceViewListItem[];
   get:
-    | getServiceViewType
-    | ((keys: typeof getServiceView) => keyof typeof getServiceView);
+  | getServiceViewType
+  | ((keys: typeof getServiceView) => keyof typeof getServiceView);
   fallbackComponent?: React.ReactNode;
   props?: object;
 }> = ({
@@ -38,29 +38,29 @@ export const ServicesTypeSwitcher: React.FC<{
   fallbackComponent = null,
   props = {},
 }) => {
-  const get = typeof Get === "function" ? Get(getServiceView) : Get;
-  const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
-  const serviceFound = serviceIdx > -1;
+    const get = typeof Get === "function" ? Get(getServiceView) : Get;
+    const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
+    const serviceFound = serviceIdx > -1;
 
-  if (!serviceFound) return runIfFn(fallbackComponent, {});
+    if (!serviceFound) return runIfFn(fallbackComponent, {});
 
-  // console.log({ serviceIdx, serviceFound });
+    // console.log({ serviceIdx, serviceFound });
 
-  const comp = serviceFound
-    ? get === "search"
-      ? servicesList[serviceIdx].search
-      : get === "resaults"
-      ? servicesList[serviceIdx].searchResaults
-      : get === "list"
-      ? servicesList[serviceIdx].searchList
-      : get === "details"
-      ? servicesList[serviceIdx].details
-      : get === "horizontalList"
-      ? servicesList[serviceIdx].searchHorizontalList
-      : null
-    : null;
+    const comp = serviceFound
+      ? get === "search"
+        ? servicesList[serviceIdx].search
+        : get === "resaults"
+          ? servicesList[serviceIdx].searchResaults
+          : get === "list"
+            ? servicesList[serviceIdx].searchList
+            : get === "details"
+              ? servicesList[serviceIdx].details
+              : get === "horizontalList"
+                ? servicesList[serviceIdx].searchHorizontalList
+                : null
+      : null;
 
-  return serviceFound
-    ? runIfFn(comp ? comp : fallbackComponent, props)
-    : runIfFn(fallbackComponent, {});
-};
+    return serviceFound
+      ? runIfFn(comp ? comp : fallbackComponent, props)
+      : runIfFn(fallbackComponent, {});
+  };
