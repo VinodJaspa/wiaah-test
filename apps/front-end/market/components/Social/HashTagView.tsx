@@ -17,7 +17,11 @@ import {
   useGetTopHashtagServicePost,
   newsFeedPostIdState,
 } from "ui";
-import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
+import {
+  newsfeedPosts,
+  ShopCardsInfoPlaceholder,
+  SocialShopCardsInfoPlaceholder,
+} from "placeholder";
 import { useTranslation } from "react-i18next";
 import { randomNum, useBreakpointValue } from "utils";
 
@@ -35,7 +39,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
 
   const { t } = useTranslation();
 
-  function handleFollowHashtag() {}
+  function handleFollowHashtag() { }
 
   const tabs: TabType[] = [
     {
@@ -81,7 +85,10 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
 
           <Divider />
 
-          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+          <ShopCardsListWrapper
+            cols={cols}
+            items={SocialShopCardsInfoPlaceholder}
+          />
         </div>
       ),
     },
