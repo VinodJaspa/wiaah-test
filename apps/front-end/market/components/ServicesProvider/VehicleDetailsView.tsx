@@ -52,11 +52,11 @@ export const VehicleServiceDetailsView: React.FC = () => {
         sidebar={
           <div className="flex flex-col gap-2 text-xl">
             <DateAndTimeInput
-              onDateChange={() => {}}
+              onDateChange={() => { }}
               dateLabel={t("Pick-up Date")}
             />
             <DateAndTimeInput
-              onDateChange={() => {}}
+              onDateChange={() => { }}
               dateLabel={t("Return Date")}
             />
           </div>
