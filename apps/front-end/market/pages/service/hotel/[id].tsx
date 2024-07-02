@@ -73,7 +73,7 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
             content={data.data.getHotelService.serviceMetaInfo.description}
           />
           {data.data.getHotelService.presentations.at(0).type ===
-          ServicePresentationType.Vid ? (
+            ServicePresentationType.Vid ? (
             <MetaVideo
               content={data.data.getHotelService.presentations.at(0).src}
             />
@@ -88,7 +88,7 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
       ) : null}
       <MasterLayout>
         <Container>
-          <HotelDetailsView id={id} />
+          <HotelDetailsView id={id || ""} />
         </Container>
       </MasterLayout>
     </>
