@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { StepperStepType } from "types";
 import {
   CheckMarkStepper,
-  ProductGeneralDetails,
   Button,
   ProductOptions,
   NewProductShippingOptions,
@@ -20,9 +19,42 @@ import {
   useEditProductData,
   FlagIcon,
 } from "@UI";
+import { ProductGeneralDetails } from "@blocks";
 import { mapArray, PassPropsToFnOrElem } from "utils";
 
-export interface AddNewProductSectionProps {}
+export interface AddNewProductSectionProps { }
+
+const addProductLanguagesSection: {
+  language: {
+    name: string;
+    countryCode: string;
+  };
+}[] = [
+    {
+      language: {
+        name: "English",
+        countryCode: "GB",
+      },
+    },
+    {
+      language: {
+        name: "French",
+        countryCode: "FR",
+      },
+    },
+    {
+      language: {
+        name: "German",
+        countryCode: "DE",
+      },
+    },
+    {
+      language: {
+        name: "Spanish",
+        countryCode: "ES",
+      },
+    },
+  ];
 
 export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
   const { t } = useTranslation();
@@ -48,11 +80,10 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
                   }
                   return (
                     <div
-                      className={`${
-                        currentTabIdx === i
+                      className={`${currentTabIdx === i
                           ? "border-primary"
                           : "border-gray-300"
-                      } flex items-center gap-2 border-b-[1px] shadow p-2`}
+                        } flex items-center gap-2 border-b-[1px] shadow p-2`}
                     >
                       <FlagIcon code={section.language.countryCode} />
                       <span className="hidden sm:block">
@@ -81,6 +112,40 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
 export const NewProductInputsSection: React.FC<{
   onSubmit: (data: any) => any;
 }> = ({ onSubmit }) => {
+  const steps: StepperStepType[] = [
+    {
+      stepName: {
+        translationKey: "general",
+        fallbackText: "General",
+      },
+      stepComponent: <ProductGeneralDetails values={{}} />,
+      key: "general",
+    },
+    {
+      stepName: {
+        translationKey: "shipping",
+        fallbackText: "Shipping",
+      },
+      stepComponent: <NewProductShippingOptions />,
+      key: "shipping",
+    },
+    {
+      stepName: {
+        translationKey: "options",
+        fallbackText: "Options",
+      },
+      stepComponent: <ProductOptions />,
+      key: "options",
+    },
+    {
+      stepName: {
+        translationKey: "special_discount",
+        fallbackText: "Special Discount",
+      },
+      stepComponent: <NewProductDiscountOptions onChange={() => { }} />,
+      key: "special discount",
+    },
+  ];
   const { t } = useTranslation();
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
@@ -99,35 +164,35 @@ export const NewProductInputsSection: React.FC<{
                 onStepChange={(step) => goToStep(step)}
                 steps={mapArray(steps, ({ key, stepComponent, stepName }) =>
                   key === "shipping" &&
-                  values["product_type"] === "downloadable"
+                    values["product_type"] === "downloadable"
                     ? {
-                        key: "files",
-                        stepComponent: (
-                          <StepperFormHandler handlerKey="files">
-                            {({ validate }) => (
-                              <AddNewDigitalProductSection
-                                onChange={validate}
-                              />
-                            )}
-                          </StepperFormHandler>
-                        ),
-                        stepName: "Files",
-                      }
+                      key: "files",
+                      stepComponent: (
+                        <StepperFormHandler handlerKey="files">
+                          {({ validate }) => (
+                            <AddNewDigitalProductSection
+                              onChange={validate}
+                            />
+                          )}
+                        </StepperFormHandler>
+                      ),
+                      stepName: "Files",
+                    }
                     : {
-                        key,
-                        stepName,
-                        stepComponent: (
-                          <StepperFormHandler handlerKey={String(key)}>
-                            {({ validate }) => (
-                              <>
-                                {PassPropsToFnOrElem(stepComponent, {
-                                  onChange: validate,
-                                })}
-                              </>
-                            )}
-                          </StepperFormHandler>
-                        ),
-                      },
+                      key,
+                      stepName,
+                      stepComponent: (
+                        <StepperFormHandler handlerKey={String(key)}>
+                          {({ validate }) => (
+                            <>
+                              {PassPropsToFnOrElem(stepComponent, {
+                                onChange: validate,
+                              })}
+                            </>
+                          )}
+                        </StepperFormHandler>
+                      ),
+                    }
                 )}
               />
               <div className="w-full flex justify-end gap-4">
@@ -150,69 +215,3 @@ export const NewProductInputsSection: React.FC<{
     </div>
   );
 };
-const steps: StepperStepType[] = [
-  {
-    stepName: {
-      translationKey: "general",
-      fallbackText: "General",
-    },
-    stepComponent: <ProductGeneralDetails values={{}} />,
-    key: "general",
-  },
-  {
-    stepName: {
-      translationKey: "shipping",
-      fallbackText: "Shipping",
-    },
-    stepComponent: <NewProductShippingOptions />,
-    key: "shipping",
-  },
-  {
-    stepName: {
-      translationKey: "options",
-      fallbackText: "Options",
-    },
-    stepComponent: <ProductOptions />,
-    key: "options",
-  },
-  {
-    stepName: {
-      translationKey: "special_discount",
-      fallbackText: "Special Discount",
-    },
-    stepComponent: <NewProductDiscountOptions onChange={() => {}} />,
-    key: "special discount",
-  },
-];
-
-const addProductLanguagesSection: {
-  language: {
-    name: string;
-    countryCode: string;
-  };
-}[] = [
-  {
-    language: {
-      name: "English",
-      countryCode: "GB",
-    },
-  },
-  {
-    language: {
-      name: "French",
-      countryCode: "FR",
-    },
-  },
-  {
-    language: {
-      name: "German",
-      countryCode: "DE",
-    },
-  },
-  {
-    language: {
-      name: "Spanish",
-      countryCode: "ES",
-    },
-  },
-];
