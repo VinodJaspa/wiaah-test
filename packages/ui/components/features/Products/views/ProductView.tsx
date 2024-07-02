@@ -3,7 +3,7 @@ import { useGetProductDetailsQuery } from "../services";
 import { useMutateShoppingCart, useResponsive } from "@src/index";
 import { SectionHeader } from "@sections/ShoppingManagement";
 import { useTranslation } from "react-i18next";
-import { PorductDetailsPlaceHolder } from "placeholder";
+import { PorductDetailsPlaceHolder } from "ui/placeholder";
 import {
   AspectRatioImage,
   HStack,
