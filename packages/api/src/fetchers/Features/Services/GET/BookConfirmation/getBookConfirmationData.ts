@@ -136,7 +136,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
         description: "doctor description",
         healthCenterId: "3",
         price: randomNum(50),
-        availabilityStatus: HealthCenterDoctorAvailablityStatus.Available,
+        availabilityStatus: "available",
         photo:
           "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
       },

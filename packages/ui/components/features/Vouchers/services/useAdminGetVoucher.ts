@@ -55,5 +55,5 @@ query adminGetVouchers(
 
 export const useAdminGetVouchersQuery = (args: args) =>
   useQuery(adminGetVouchersQueryKey(args), () =>
-    adminGetVouchersQueryFetcher(args),
+    adminGetVouchersQueryFetcher(args)
   );
