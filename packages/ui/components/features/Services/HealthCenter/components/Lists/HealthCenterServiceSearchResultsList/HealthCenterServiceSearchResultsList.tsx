@@ -17,14 +17,14 @@ export const HealthCenterServiceSearchResultsList: React.FC<{
       <div className="flex flex-col gap-4">
         {Array.isArray(doctors)
           ? doctors.map((s) => (
-              <HealthCenterCard
-                vertical={isTablet}
-                centerData={s}
-                workingDates={convertWorkingScheduleToWorkingHours(
-                  s.healthCenter.workingHours
-                )}
-              />
-            ))
+            <HealthCenterCard
+              vertical={isTablet}
+              centerData={s}
+              workingDates={convertWorkingScheduleToWorkingHours(
+                s.healthCenter.workingHours
+              )}
+            />
+          ))
           : null}
       </div>
     </div>

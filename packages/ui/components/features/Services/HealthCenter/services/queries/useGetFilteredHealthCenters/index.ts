@@ -119,6 +119,6 @@ export const useGetFilteredHealthCenters = (args: SearchHealthCenterInput) => {
           "searchHealthCenterDoctors"
         >
       >()
-    ).data.data;
+    ).data.data.searchHealthCenterDoctors;
   });
 };
