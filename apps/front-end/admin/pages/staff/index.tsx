@@ -111,7 +111,7 @@ const Staff: NextPage = () => {
             firstName,
             lastActiveAt,
             lastName,
-            type,
+            accountType,
             photo,
           }) => ({
             id,
@@ -130,7 +130,7 @@ const Staff: NextPage = () => {
                 value: email,
               },
               {
-                value: startCase(type as string),
+                value: startCase(accountType as string),
               },
               {
                 type: AdminTableCellTypeEnum.custom,
