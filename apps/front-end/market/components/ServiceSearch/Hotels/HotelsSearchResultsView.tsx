@@ -46,19 +46,19 @@ export const HotelsSearchResultsView: React.FC = () => {
 
   return (
     <div
-      className={`${
-        isTablet ? "flex-col gap-4" : "flex-row gap-12"
-      } relative flex  py-4`}
+      className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
+        } relative flex  py-4`}
     >
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
         <Formik<FormatedSearchableFilter>
           validateOnBlur={false}
           initialValues={{}}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           {({ setFieldValue, values }) => {
             handleFiltersUpdate(values);
-            const searchQueryKey = filtersKeys.searchQuery;
+            const searchQueryKey = filtersKeys.searchQuery as string;
+
             return (
               <Form>
                 <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
@@ -67,9 +67,7 @@ export const HotelsSearchResultsView: React.FC = () => {
                     onValueChange={(v) => setFieldValue("search_query", v)}
                     value={
                       typeof values[searchQueryKey] === "string"
-                        ? values[searchQueryKey].length > 0
-                          ? values[searchQueryKey]
-                          : typeof router.query.location === "string"
+                        ? typeof router.query.location === "string"
                           ? router.query.location
                           : ""
                         : ""

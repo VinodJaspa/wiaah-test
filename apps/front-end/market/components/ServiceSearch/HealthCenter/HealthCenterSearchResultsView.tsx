@@ -43,8 +43,8 @@ export const HealthCenterSearchResultsView: React.FC = () => {
     <div className="flex flex-col gap-4">
       <HealthCenterSearchBox />
       <div className={`${isTablet ? "flex-col" : "flex-row"} flex gap-4`}>
-        <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
-          <Formik initialValues={{}} onSubmit={() => {}}>
+        <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+          <Formik initialValues={{}} onSubmit={() => { }}>
             {({ setFieldValue, values }) => {
               return (
                 <Form className="flex flex-col ">
