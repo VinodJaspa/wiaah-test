@@ -15,6 +15,7 @@ import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
 import { AdminLayout } from "@components";
+import { AccountType } from "types";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -51,8 +52,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 client={new ReactPubsubClient()}
               >
                 <ReactSeoProvider TagWrapper={NextHead}>
+                  {/*@ts-ignore*/}
                   <RecoilRoot>
-                    <DataInitializationWrapper>
+                    <DataInitializationWrapper accountType={AccountType.Admin}>
                       {showlayout ? (
                         <AdminLayout>
                           <Component {...pageProps} />
