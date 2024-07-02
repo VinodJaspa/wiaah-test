@@ -17,7 +17,7 @@ export const ResturantSearchView: React.FC = () => {
           onSubmit={() =>
             visit((routes) =>
               routes.visitServiceLocationSearchResults(
-                ServicesRequestKeys.resturants,
+                ServicesRequestKeys.restaurant,
                 "location"
               )
             )
