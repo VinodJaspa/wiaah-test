@@ -20,20 +20,44 @@ import {
 } from "ui";
 import { randomNum } from "utils";
 
+const FAKE_TREATMENTS = [
+  {
+    title: "Deep Tissue Massage",
+    price: 80.0,
+    duration: 60,
+    id: "treatment1",
+    category: "Massage",
+    thumbnail: "https://example.com/deep-tissue-massage.jpg",
+    rate: 4.5,
+    reviews: 120,
+  },
+  {
+    title: "Facial Treatment",
+    price: 100.0,
+    duration: 45,
+    id: "treatment2",
+    category: "Facial",
+    thumbnail: "https://example.com/facial-treatment.jpg",
+    rate: 4.0,
+    reviews: 90,
+  },
+];
+
 export const BeautyCenterSearchResultsView: React.FC = () => {
   const filter: ServiceType = ServiceType.BeautyCenter;
   const { controls, pagination } = usePaginationControls();
+  //WARNING Graphql is no ready yet
   const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filter);
   const {
-    data: treatments,
+    data: _treatments,
     isLoading: treatmentsIsLoading,
     isError: treatmentsIsError,
   } = useGetFilteredBeautyCenterTreatmentsQuery({ pagination });
 
   return (
     <div className="flex flex-col  md:flex-row gap-4 p-4">
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
-        <Formik initialValues={{}} onSubmit={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+        <Formik initialValues={{}} onSubmit={() => { }}>
           {({ setFieldValue, values }) => {
             return (
               <Form className="flex flex-col">
@@ -64,7 +88,7 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
           isLoading={treatmentsIsLoading}
           isError={treatmentsIsError}
         >
-          <RecommendedBeautyCenterSearchList treatments={treatments} />
+          <RecommendedBeautyCenterSearchList treatments={FAKE_TREATMENTS} />
           <Pagination controls={controls} />
         </SpinnerFallback>
       </div>
