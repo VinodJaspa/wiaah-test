@@ -26,7 +26,14 @@ const Voucher = () => {
 
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetVouchersQuery>[0]
-  >({ pagination });
+  >({
+    currency: "USD",
+    date: "2024-07-02",
+    name: "Sample Voucher",
+    price: 50.0,
+    status: VoucherStatus.Active,
+    voucherNumber: 123456,
+  });
 
   const { data: vouchers } = useAdminGetVouchersQuery(form);
 
@@ -79,8 +86,8 @@ const Voucher = () => {
           <TBody>
             {mapArray(
               vouchers,
-              ({ createdAt, currency, amount, code, status, user, id }, i) => (
-                <Tr {...setTestid("voucher-record")} key={id}>
+              ({ createdAt, currency, amount, code, status, user }, i) => (
+                <Tr {...setTestid("voucher-record")} key={i}>
                   <Td {...setTestid("voucher-code")}>{code}</Td>
                   <Td {...setTestid("voucher-name")}>{user?.firstName}</Td>
                   <Td {...setTestid("voucher-currency")}>{currency}</Td>
