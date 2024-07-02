@@ -116,7 +116,7 @@ const SocialPosts = () => {
                   <Link
                     href={(r) =>
                       r.visitSocialPostAuthorProfile({
-                        id: data?.authorProfileId,
+                        id: data?.userId,
                       }).route
                     }
                   >
