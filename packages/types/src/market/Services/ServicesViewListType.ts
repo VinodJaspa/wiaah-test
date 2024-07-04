@@ -1,10 +1,16 @@
 import { ServicesType } from "./ServicesTypes";
 
-export interface ServiceViewListItem {
-  search: React.FC;
-  details: React.FC;
-  searchResaults: React.FC;
-  searchList: React.FC;
-  searchHorizontalList:React.FC;
+export interface ServiceViewListItem<
+  TSearchProps = {},
+  TDetailsProps = {},
+  TSearchResultsProps = {},
+  TSearchListProps = {},
+  TSearchHorizontalListProps = {}
+  > {
+  search: React.FC<Partial<TSearchProps>>;
+  details: React.FC<Partial<TDetailsProps>> | null;
+  searchResults: React.FC;
+  searchList: React.FC<Partial<TSearchListProps>>;
+  searchHorizontalList: React.FC<Partial<TSearchHorizontalListProps>> | null;
   slug: ServicesType;
 }
