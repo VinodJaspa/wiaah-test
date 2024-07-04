@@ -21,9 +21,10 @@ import {
 } from "ui";
 import { DividerProps } from "ui/components/partials/Divider";
 import { CartSummaryItemsState, CheckoutProductsState } from "@src/state";
-import { randomNum } from "utils";
 
-export interface OrderConfirmationViewProps {}
+export interface OrderConfirmationViewProps { }
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 const OrderConfirmationView: React.FC<OrderConfirmationViewProps> = () => {
   const router = useRouter();

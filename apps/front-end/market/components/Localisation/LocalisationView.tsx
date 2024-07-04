@@ -15,7 +15,8 @@ import { useQuery } from "react-query";
 import { MdPlace } from "react-icons/md";
 import { ListWrapper, PlaceCard, PlaceCardProps, placesPlaceholder } from "ui";
 import { placeCardPlaceholder } from "placeholder";
-import { randomNum } from "utils";
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 const costumPH: PlaceCardProps[] = [];
 
