@@ -1,4 +1,3 @@
-import { ServicesViewsList } from "@data";
 import { useResponsive } from "hooks";
 import { useRouter } from "next/router";
 import React from "react";
@@ -22,7 +21,6 @@ export const OnMapView: React.FC = () => {
         <div className="w-full absolute bottom-0 left-0 z-50 md:static md:w-full md:h-full">
           <ScrollingWrapper horizonatal={isTablet}>
             <ServicesTypeSwitcher
-              servicesList={ServicesViewsList}
               get={
                 isTablet ? getServiceView.HORIZONTAL_LIST : getServiceView.LIST
               }
