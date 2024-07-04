@@ -13,7 +13,7 @@ import {
   ServicesSearchResultsFiltersSidebar,
 } from "ui";
 
-type ServicesSearchResultsViewProps = {
+export type ServicesSearchResultsViewProps = {
   serviceType: ServiceType;
 };
 
@@ -28,8 +28,8 @@ export const ServicesSearchResultsView: React.FC<
 
   return (
     <div className="flex flex-col md:flex-row gap-8 w-full">
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
-        <Formik initialValues={{}} onSubmit={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+        <Formik initialValues={{}} onSubmit={() => { }}>
           {({ setFieldValue, values }) => {
             return (
               <Form className="flex flex-col w-full">

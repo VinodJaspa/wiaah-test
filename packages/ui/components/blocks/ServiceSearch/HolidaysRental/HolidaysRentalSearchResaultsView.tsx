@@ -1,5 +1,5 @@
 import React from "react";
-import { HotelsSearchResultsView } from "@components";
+import { HotelsSearchResultsView } from "../Hotels";
 
 export const HolidaysRentalSearchResultsView: React.FC = () => {
   return <HotelsSearchResultsView />;

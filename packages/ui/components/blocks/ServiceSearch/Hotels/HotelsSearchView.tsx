@@ -12,7 +12,7 @@ import {
   ServicesSearchGrid,
   HotelSearchCardProps,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 
 export const HotelsSearchView: React.FC = () => {
   const [location, setLocation] = React.useState<string>("Paris, France");
@@ -44,7 +44,7 @@ export const HotelsSearchView: React.FC = () => {
           <ServicesSearchGrid<ArrElement<typeof services>, HotelSearchCardProps>
             component={HotelSearchCard}
             data={services}
-            handlePassData={(data) => ({ ...data, onLiked: () => {} })}
+            handlePassData={(data) => ({ ...data, onLiked: () => { } })}
           />
         </SpinnerFallback>
       </PaginationWrapper>

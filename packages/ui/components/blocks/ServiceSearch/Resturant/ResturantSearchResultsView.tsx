@@ -21,8 +21,8 @@ export const ResturantSearchResultsView: React.FC = () => {
   const { data: restaurants } = useGetResturantsQuery({ pagination });
   return (
     <div className="flex flex-col md:flex-row gap-4 py-4">
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
-        <Formik initialValues={{}} onSubmit={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+        <Formik initialValues={{}} onSubmit={() => { }}>
           {({ setFieldValue, values }) => {
             return (
               <Form className="flex flex-col">

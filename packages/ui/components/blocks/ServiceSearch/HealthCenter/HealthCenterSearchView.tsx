@@ -1,5 +1,5 @@
 import React from "react";
-import { HealthCenterSearchBox, PractitionersSearchResultsList } from "ui";
+import { HealthCenterSearchBox, PractitionersSearchResultsList } from "@UI";
 
 export const HealthCenterSearchView: React.FC = () => {
   return (

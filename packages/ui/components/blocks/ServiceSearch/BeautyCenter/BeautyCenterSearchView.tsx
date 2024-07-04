@@ -5,10 +5,8 @@ import {
   LocationSearchInput,
   ServicesRequestKeys,
   useGetRecommendedBeautyCentersQuery,
-  getRandomImage,
   Pagination,
-} from "ui";
-import { randomNum } from "utils";
+} from "@UI";
 
 export const BeautyCenterSearchView: React.FC = () => {
   const { visit } = useRouting();
@@ -32,7 +30,7 @@ export const BeautyCenterSearchView: React.FC = () => {
           category: "Facial",
           duration: 45,
           id: "",
-          price: randomNum(40),
+          price: 40,
           rate: 4,
           reviews: 150,
           thumbnail:

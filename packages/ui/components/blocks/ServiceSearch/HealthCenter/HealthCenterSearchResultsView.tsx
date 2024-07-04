@@ -24,9 +24,8 @@ import {
   CalenderIcon,
   ClockIcon,
   PersonIcon,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
 
 export const HealthCenterSearchResultsView: React.FC = () => {
   const { data: res, isLoading, isError } = useGetHealthCenterFiltersQuery();
@@ -105,7 +104,7 @@ export const HealthCenterSearchResultsView: React.FC = () => {
         <div className="flex flex-col">
           <DisplayFoundServices
             location={getLocationFilterQuery || ""}
-            servicesNum={randomNum(500)}
+            servicesNum={100}
           />
           <SpinnerFallback isLoading={healthIsLoading} isError={healthIsError}>
             <HealthCenterServiceSearchResultsList doctors={data} />

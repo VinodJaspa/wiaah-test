@@ -19,7 +19,7 @@ import {
   useMutateSearchFilters,
   useGetFilteredHotelRoomsQuery,
   useGetServiceFiltersQuery,
-} from "ui";
+} from "@UI";
 import { useResponsive } from "hooks";
 import { ServiceType } from "@features/API";
 

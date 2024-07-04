@@ -17,8 +17,7 @@ import {
   Pagination,
   usePaginationControls,
   ServiceType,
-} from "ui";
-import { randomNum } from "utils";
+} from "@UI";
 
 const FAKE_TREATMENTS = [
   {
@@ -80,10 +79,7 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
       <div className="flex flex-col w-full gap-2">
-        <DisplayFoundServices
-          location={"milano"}
-          servicesNum={randomNum(500)}
-        />
+        <DisplayFoundServices location={"milano"} servicesNum={100} />
         <SpinnerFallback
           isLoading={treatmentsIsLoading}
           isError={treatmentsIsError}
