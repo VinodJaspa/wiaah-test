@@ -21,7 +21,7 @@ import {
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 
-export const RestaurantDetailsView: React.FC<{ id: string }> = ({ id }) => {
+export const RestaurantDetailsView: React.FC<{ id?: string }> = ({ id }) => {
   const {
     data: res,
     isError,
