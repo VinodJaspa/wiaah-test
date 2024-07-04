@@ -1169,9 +1169,9 @@ export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["
 
 export const PersonalizeAction: GetSuggestedActionsQuery["getMyRecommendedAction"] =
 {
-  comments: randomNum(123456),
-  reactionNum: randomNum(123456),
-  shares: randomNum(123456),
+  comments: 12,
+  reactionNum: 144,
+  shares: 43,
   src: "/action.mp4",
   id: "Teasdasd",
   musicId: "Kafir - Nile",

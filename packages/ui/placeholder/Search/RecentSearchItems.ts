@@ -1,5 +1,4 @@
 import { RecentSearchItem } from "types";
-import { randomNum } from "../../components/helpers";
 
 export const RecentSearchItemsPH: RecentSearchItem[] = [
   {
@@ -17,7 +16,7 @@ export const RecentSearchItemsPH: RecentSearchItem[] = [
     itemType: "Hashtag",
     data: {
       hashtagName: "gaming",
-      hashtagViews: randomNum(50000),
+      hashtagViews: 44,
     },
   },
   {
@@ -31,7 +30,7 @@ export const RecentSearchItemsPH: RecentSearchItem[] = [
     data: {
       name: "new york",
       image: "/place-1.jpg",
-      views: randomNum(50000),
+      views: 100,
     },
   },
 ];

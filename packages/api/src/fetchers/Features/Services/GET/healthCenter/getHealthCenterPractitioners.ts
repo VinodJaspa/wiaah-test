@@ -3,7 +3,6 @@ import {
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "../../../../../types/index";
-import { randomNum } from "utils";
 import { HealthCenterPractitioner } from "./getHealthCenterSearchData";
 
 // export interface HealthCenterFilteredData {
@@ -24,7 +23,7 @@ const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
   (_, i) => ({
     reviews: 150,
     id: `${i}`,
-    rate: randomNum(5),
+    rate: 4,
     location: {
       address: "address",
       city: "city",
@@ -49,6 +48,6 @@ export const getHealthCenterPractitionersFilteredDataFetcher = async (
   return {
     data: practitioners.slice(0, pagination.take),
     hasMore: false,
-    total: randomNum(5000),
+    total: 300,
   };
 };

@@ -1,5 +1,5 @@
 import { useUserData } from "@UI/../hooks";
-import { getRandomName, mapArray, randomNum } from "utils";
+import { getRandomName, mapArray } from "utils";
 import {
   SalesStatisticsCard,
   CustomTooltip,
@@ -29,6 +29,7 @@ import { useResponsive } from "@src/index";
 
 import { useRouting } from "@UI/../routing";
 import { getRandomImage } from "placeholder";
+import { randomNum } from "@UI/components/helpers";
 
 const services: {
   name: string;

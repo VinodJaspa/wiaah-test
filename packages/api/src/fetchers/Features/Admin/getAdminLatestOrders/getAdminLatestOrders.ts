@@ -1,6 +1,5 @@
 import { PaginationFetchedData } from "../../../../types/pagination";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
 
 type LatestOrderStatus = "refund" | "charge_black" | "paid";
 
@@ -19,10 +18,10 @@ const recentOrders: {
   amount: number;
   status: LatestOrderStatus;
 }[] = [...Array(10)].map((_, i) => ({
-  amount: randomNum(50000),
+  amount: 50,
   billingName: "user name",
   date: new Date(),
-  status: status[randomNum(status.length)],
+  status: status[status.length],
 }));
 
 export const getAdminLatestOrdersFetcher = async (): Promise<

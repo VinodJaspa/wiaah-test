@@ -37,7 +37,7 @@ import {
   StepperHeader,
   TimeInput,
 } from "ui";
-import { mapArray, randomNum } from "utils";
+import { mapArray } from "utils";
 
 type ServiceInputData = {
   label: string;
@@ -693,8 +693,8 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
       ...acc,
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Hotel",
           location: {
@@ -725,8 +725,8 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Holiday Rentals",
           location: {
@@ -757,8 +757,8 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Restaurant",
           location: {
@@ -789,8 +789,8 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Health Center",
           location: {

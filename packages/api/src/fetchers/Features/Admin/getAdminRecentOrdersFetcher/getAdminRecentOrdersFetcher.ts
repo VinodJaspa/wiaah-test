@@ -1,6 +1,5 @@
 import { PaginationFetchedData } from "../../../../types/pagination";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
 
 export type AdminRecentOrderType = {
   buyer: {
@@ -20,7 +19,7 @@ const recentSales: AdminRecentOrderType[] = [...Array(9)].map((_, i) => ({
     photo: `/profile (${i + 1}).jfif`,
   },
   date: new Date(),
-  price: randomNum(400),
+  price: 400,
 }));
 
 export const getAdminRecentSalesFetcher = async (): Promise<

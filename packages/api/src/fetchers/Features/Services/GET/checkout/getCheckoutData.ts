@@ -2,7 +2,6 @@ import { FormatedSearchableFilter } from "api";
 import { AsyncReturnType } from "types";
 import { HealthCenterDoctorAvailablityStatus, ServiceType } from "ui";
 
-import { randomNum } from "utils";
 import {
   CheckValidation,
   InferType,
@@ -67,14 +66,14 @@ export const getCheckoutDataFetcher = async (
               from: new Date(Date.now()).toString(),
               to: new Date(Date.now()).toString(),
             },
-            rate: randomNum(5),
+            rate: 5,
             refundingRule: {
               cost: 12,
               duration: 3,
               id: "12",
             },
 
-            reviews: randomNum(153),
+            reviews: 153,
             thumbnail: "/place-1.jpg",
             id: "123",
             rateReason: "cleanliness",
@@ -83,15 +82,15 @@ export const getCheckoutDataFetcher = async (
             extras: [
               {
                 name: "Breakfast + book now, pay later",
-                price: randomNum(100),
+                price: 100,
               },
             ],
-            guests: randomNum(5),
+            guests: 5,
             cashback: {
-              amount: randomNum(20),
+              amount: 20,
               type: "percent",
             },
-            price: randomNum(500),
+            price: 500,
           },
         },
         {
@@ -102,14 +101,14 @@ export const getCheckoutDataFetcher = async (
               from: new Date(Date.now()).toString(),
               to: new Date(Date.now()).toString(),
             },
-            rate: randomNum(5),
+            rate: 5,
             refundingRule: {
               cost: 12,
               duration: 3,
               id: "12",
             },
 
-            reviews: randomNum(153),
+            reviews: 153,
             thumbnail: "/place-1.jpg",
             id: "123",
             rateReason: "cleanliness",
@@ -118,15 +117,15 @@ export const getCheckoutDataFetcher = async (
             extras: [
               {
                 name: "Breakfast + book now, pay later",
-                price: randomNum(100),
+                price: 100,
               },
             ],
-            guests: randomNum(5),
+            guests: 5,
             cashback: {
-              amount: randomNum(20),
+              amount: 20,
               type: "percent",
             },
-            price: randomNum(500),
+            price: 500,
           },
         },
         {
@@ -138,13 +137,13 @@ export const getCheckoutDataFetcher = async (
               to: null,
             },
 
-            rate: randomNum(5),
+            rate: 5,
             refundingRule: {
               cost: 0,
               duration: 0,
               id: "12",
             },
-            reviews: randomNum(153),
+            reviews: 15,
             thumbnail:
               "https://digital.ihg.com/is/image/ihg/crowne-plaza-jeddah-5499645385-2x1",
             id: "123",
@@ -153,28 +152,28 @@ export const getCheckoutDataFetcher = async (
             duration: [30, 60],
             bookedMenus: [
               {
-                price: randomNum(100),
-                qty: randomNum(10),
-                title: senctence.slice(0, randomNum(senctence.length)),
+                price: 100,
+                qty: 10,
+                title: senctence.slice(0, senctence.length),
               },
               {
-                price: randomNum(100),
-                qty: randomNum(10),
-                title: senctence.slice(0, randomNum(senctence.length)),
+                price: 100,
+                qty: 10,
+                title: senctence.slice(0, senctence.length),
               },
               {
-                price: randomNum(100),
-                qty: randomNum(10),
-                title: senctence.slice(0, randomNum(senctence.length)),
+                price: 100,
+                qty: 10,
+                title: senctence.slice(0, senctence.length),
               },
             ],
-            guests: randomNum(5),
+            guests: 5,
             cashback: {
-              amount: randomNum(20),
+              amount: 20,
               type: "percent",
             },
 
-            price: randomNum(500),
+            price: 500,
           },
         },
         {
@@ -185,14 +184,14 @@ export const getCheckoutDataFetcher = async (
               from: new Date(Date.now()).toString(),
               to: new Date(Date.now()).toString(),
             },
-            rate: randomNum(5),
+            rate: 5,
             refundingRule: {
               cost: 60,
               duration: 0,
               id: "12",
             },
 
-            reviews: randomNum(153),
+            reviews: 153,
             thumbnail:
               "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
             id: "123",
@@ -200,12 +199,12 @@ export const getCheckoutDataFetcher = async (
             title: "Citadines Montmartre Paris",
 
             duration: [30, 60],
-            guests: randomNum(5),
+            guests: 5,
             cashback: {
-              amount: randomNum(20),
+              amount: 20,
               type: "percent",
             },
-            price: randomNum(500),
+            price: 500,
 
             doctor: {
               id: "123",
@@ -214,7 +213,7 @@ export const getCheckoutDataFetcher = async (
               specialty: "spine",
               description: "doctor description",
               healthCenterId: "3",
-              price: randomNum(50),
+              price: 50,
               availabilityStatus: "available",
               photo:
                 "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
@@ -229,33 +228,33 @@ export const getCheckoutDataFetcher = async (
               from: new Date(Date.now()).toString(),
               to: new Date(Date.now()).toString(),
             },
-            rate: randomNum(5),
+            rate: 5,
             refundingRule: {
               cost: 0,
               duration: 4,
               id: "12",
             },
             duration: [30, 60],
-            reviews: randomNum(153),
+            reviews: 153,
             thumbnail:
               "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/big/Tacha+Beauty+Center-01.jpg",
             id: "123",
             rateReason: "cleanliness",
             title: "Citadines Montmartre Paris",
             cashback: {
-              amount: randomNum(20),
+              amount: 20,
               type: "percent",
             },
             guests: null,
-            price: randomNum(500),
+            price: 500,
             bookedTreatments: [
               {
                 id: "123",
                 category: "Facial",
                 title: "Hydro facial with chemical peel",
                 durationInMinutes: [30, 60],
-                price: randomNum(50),
-                discount: randomNum(60),
+                price: 50,
+                discount: 60,
               },
             ],
           },
@@ -357,7 +356,7 @@ export const getCheckoutDataFetcher = async (
           },
         },
       ],
-      saved: randomNum(150),
+      saved: 150,
       vat: 7,
     },
   };

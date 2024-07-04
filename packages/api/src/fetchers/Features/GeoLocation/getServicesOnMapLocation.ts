@@ -1,6 +1,5 @@
 import { FormatedSearchableFilter } from "../../../types/SearchableData";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
 import {
   CheckValidation,
   InferType,
@@ -15,8 +14,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
       ...acc,
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Hotel",
           location: {
@@ -26,8 +25,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
@@ -47,8 +46,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Holiday Rentals",
           location: {
@@ -58,8 +57,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
@@ -79,8 +78,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Restaurant",
           location: {
@@ -90,8 +89,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
@@ -111,8 +110,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
       },
       {
         serviceData: {
-          reviews: randomNum(500),
-          discount: randomNum(30),
+          reviews: 500,
+          discount: 30,
           id: "123",
           label: "Health Center",
           location: {
@@ -122,8 +121,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
@@ -154,8 +153,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
@@ -186,8 +185,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             address: "Smart Street",
             postalCode: 8,
             cords: {
-              lat: lats[randomNum(lats.length)],
-              lng: lngs[randomNum(lngs.length)],
+              lat: lats[lats.length],
+              lng: lngs[lngs.length],
             },
             city: "LA",
           },
