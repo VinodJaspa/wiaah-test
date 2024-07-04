@@ -23,7 +23,9 @@ import {
   SocialShopCardsInfoPlaceholder,
 } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { randomNum, useBreakpointValue } from "utils";
+import { useBreakpointValue } from "utils";
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export interface HashTagViewProps {
   tag: string;

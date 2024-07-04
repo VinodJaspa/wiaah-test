@@ -37,13 +37,13 @@ import {
   Pagination,
 } from "@UI";
 import { getRandomImage } from "placeholder";
-import { randomNum } from "utils";
 import { useModalDisclouser } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
 import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
 import { OrderStatusEnum } from "@features/API";
 // orders is in any type because there is no order type yet
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 export const OrderDetailsSection = ({ order }: { order: any }) => {
   const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
@@ -63,8 +63,8 @@ export const OrderDetailsSection = ({ order }: { order: any }) => {
         <Divider className="border-primary" />
       </div>
       <div>
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          {({}) => {
+        <Formik initialValues={{}} onSubmit={() => { }}>
+          {({ }) => {
             return (
               <Form className="grid grid-cols-3 gap-4">
                 <FormikInput

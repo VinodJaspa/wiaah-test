@@ -1,6 +1,5 @@
 import { AsyncReturnType } from "types";
 import { ServiceType } from "ui";
-import { randomNum } from "utils";
 import {
   InferType,
   CheckoutDataValidationTester,
@@ -10,6 +9,8 @@ import {
 } from "validation";
 
 const appointment = ServicesCheckoutDataValidationTester.required();
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export type PendingAppointmentData = InferType<typeof appointment>;
 const apiRes = CreatePaginationApiResponseValidationSchemaOf(appointment);

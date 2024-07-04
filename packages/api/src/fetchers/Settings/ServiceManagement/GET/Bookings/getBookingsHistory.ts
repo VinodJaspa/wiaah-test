@@ -5,8 +5,9 @@ import {
   payments,
 } from "placeholder";
 import { OrdersFilter, OrdersStatus, PriceType } from "types";
-import { randomNum } from "utils";
 import { FetchDataArrayResults } from "api";
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export interface BookingHistoryAppointmentType {
   appointmentId: string;

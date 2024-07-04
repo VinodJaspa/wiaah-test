@@ -13,7 +13,8 @@ import {
   getRandomImage,
   Divider,
 } from "ui";
-import { randomNum } from "utils";
+
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export const ServicePostView: React.FC = () => {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export const ServicePostView: React.FC = () => {
               />
             ) : null}
           </SpinnerFallback>
-          <ShowMapButton onClick={() => {}} />
+          <ShowMapButton onClick={() => { }} />
         </div>
         <Divider></Divider>
         <SpinnerFallback isError={isError} isLoading={isLoading}>

@@ -26,9 +26,10 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { shippingMotheds } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { randomNum } from "utils";
 
-export interface CheckoutViewProps {}
+const randomNum = (max: number) => Math.floor(Math.random() * max);
+
+export interface CheckoutViewProps { }
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();

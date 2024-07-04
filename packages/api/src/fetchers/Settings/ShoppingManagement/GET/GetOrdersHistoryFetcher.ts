@@ -1,7 +1,6 @@
 import { currencices, orderStatus, payments, products } from "placeholder";
 import { FormOptionType, OrdersFilter, OrdersStatus, PriceType } from "types";
-import { randomNum } from "utils";
-
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 type OrderInfoData = {
   orderId: string;
   orderDeliveryStatus: OrdersStatus;

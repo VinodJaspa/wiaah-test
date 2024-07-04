@@ -1,11 +1,11 @@
 import { PaginationData } from "nest-utils";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
 import {
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "../../../../types";
 
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 export type GetPostMentionsFetcherResponse = PaginationFetchedData<
   {
     thumbnail: string;
