@@ -36,12 +36,14 @@ import { CheckoutProductsState, VoucherState } from "@src/state";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { DateDetails, randomNum, runIfFn } from "utils";
+import { DateDetails, runIfFn } from "utils";
+
 import { useDateDiff } from "hooks";
 import { ServiceCheckoutDataType } from "api";
 import { ServiceType } from "@features/API";
 import { getRandomImage } from "placeholder";
 
+const randomNum = (max: number) => Math.floor(Math.random() * max);
 export interface ServiceCheckoutViewProps { }
 
 export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
