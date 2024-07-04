@@ -1,6 +1,8 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout, RestaurantDetailsView } from "@components";
+import { MasterLayout } from "@components";
+
+import { RestaurantDetailsView } from "ui";
 import {
   Container,
   GetServiceDetailsQueryKey,
@@ -75,7 +77,7 @@ const RestaurantServiceDetailsPage: NextPage<
             content={data.data.getRestaurant.serviceMetaInfo.description}
           />
           {data.data.getRestaurant.presentations.at(0).type ===
-          ServicePresentationType.Vid ? (
+            ServicePresentationType.Vid ? (
             <MetaVideo
               content={data.data.getRestaurant.presentations.at(0).src}
             />

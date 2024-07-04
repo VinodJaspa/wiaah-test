@@ -1,6 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout, VehicleServiceDetailsView } from "@components";
+import { MasterLayout } from "@components";
+import { VehicleServiceDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";

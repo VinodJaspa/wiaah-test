@@ -1,6 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { HotelDetailsView, MasterLayout } from "@components";
+import { MasterLayout } from "@components";
+import { HotelDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
 import { useRouter } from "next/router";

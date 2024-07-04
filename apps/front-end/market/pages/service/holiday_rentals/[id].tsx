@@ -1,6 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { HotelDetailsView, MasterLayout } from "@components";
+import { MasterLayout } from "@components";
+import { HotelDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
@@ -68,7 +69,7 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
             content={data.data.getHotelService.serviceMetaInfo.description}
           />
           {data.data.getHotelService.presentations.at(0).type ===
-          ServicePresentationType.Vid ? (
+            ServicePresentationType.Vid ? (
             <MetaVideo
               content={data.data.getHotelService.presentations.at(0).src}
             />
