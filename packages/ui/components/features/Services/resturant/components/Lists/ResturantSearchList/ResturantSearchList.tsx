@@ -14,9 +14,13 @@ import {
   ResturantRecommendedCardProps,
 } from "@UI";
 
-export const ResturantSearchList: React.FC<{
+export interface ResturantSearchListProps {
   restaurants: ResturantRecommendedCardProps[];
-}> = ({ restaurants }) => {
+}
+
+export const ResturantSearchList: React.FC<ResturantSearchListProps> = ({
+  restaurants,
+}) => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
   const { controls, pagination } = usePaginationControls();
 
@@ -50,22 +54,22 @@ export const ResturantHorizontalList: React.FC = () => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res
           ? res.map((restaurant, i) => (
-              <ResturantRecommendedCard
-                price={restaurant.lowest_price}
-                thumbnail={restaurant.presentations[0].src}
-                title={restaurant.serviceMetaInfo.title}
-                rating={restaurant.rating}
-                location={{
-                  country: restaurant.location.country,
-                  city: restaurant.location.city,
-                  address: restaurant.location.address,
-                }}
-                reviews={restaurant.reviews}
-                hashtags={restaurant.serviceMetaInfo.hashtags}
-                minimal
-                key={i}
-              />
-            ))
+            <ResturantRecommendedCard
+              price={restaurant.lowest_price}
+              thumbnail={restaurant.presentations[0].src}
+              title={restaurant.serviceMetaInfo.title}
+              rating={restaurant.rating}
+              location={{
+                country: restaurant.location.country,
+                city: restaurant.location.city,
+                address: restaurant.location.address,
+              }}
+              reviews={restaurant.reviews}
+              hashtags={restaurant.serviceMetaInfo.hashtags}
+              minimal
+              key={i}
+            />
+          ))
           : null}
       </SpinnerFallback>
       <Pagination maxPages={3} />

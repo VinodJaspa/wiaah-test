@@ -7,9 +7,13 @@ import {
   convertWorkingScheduleToWorkingHours,
 } from "@UI";
 
-export const HealthCenterServiceSearchResultsList: React.FC<{
+export interface HealthCenterServiceSearchResultsListProps {
   doctors: (HealthCenterDoctor & { healthCenter: HealthCenter })[];
-}> = ({ doctors }) => {
+}
+
+export const HealthCenterServiceSearchResultsList: React.FC<
+  HealthCenterServiceSearchResultsListProps
+> = ({ doctors }) => {
   const { isTablet } = useResponsive();
 
   return (

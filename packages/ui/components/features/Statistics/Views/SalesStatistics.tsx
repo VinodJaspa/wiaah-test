@@ -2,7 +2,6 @@ import {
   NumberShortner,
   calculateAmountPercentChange,
   mapArray,
-  randomNum,
   runIfFn,
 } from "utils";
 import {
@@ -37,6 +36,7 @@ import { ServiceType } from "@features/API";
 import { PieChart } from "recharts";
 import { startCase } from "lodash";
 import { useResponsive } from "@UI/../hooks";
+import { randomNum } from "@UI/components/helpers";
 
 export function getRandomHotelRoomName(): string {
   const adjectives = ["Luxurious", "Spacious", "Cozy", "Elegant", "Charming"];
@@ -88,25 +88,25 @@ const customerStats: {
   color: string;
   total: number;
 }[] = [
-  {
-    name: "New Customer",
-    color: "#118AB2",
-    value: 200,
-    total: 1000,
-  },
-  {
-    name: "Current Customer",
-    color: "#FFD166",
-    value: 400,
-    total: 1000,
-  },
-  {
-    name: "Retargeted Cystiner (Coming soon)",
-    color: "#00E1E1",
-    value: 400,
-    total: 1000,
-  },
-];
+    {
+      name: "New Customer",
+      color: "#118AB2",
+      value: 200,
+      total: 1000,
+    },
+    {
+      name: "Current Customer",
+      color: "#FFD166",
+      value: 400,
+      total: 1000,
+    },
+    {
+      name: "Retargeted Cystiner (Coming soon)",
+      color: "#00E1E1",
+      value: 400,
+      total: 1000,
+    },
+  ];
 
 export const SalesStatistics: React.FC<{
   accountId: string;
@@ -186,9 +186,8 @@ export const SalesStatistics: React.FC<{
           textAnchor={"middle"}
           dominantBaseline="central"
           fontWeight={"700"}
-          fontSize={`${
-            space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
-          }rem`}
+          fontSize={`${space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
+            }rem`}
         >
           {`${(percent * 100).toFixed(0)}%`}
         </text>
@@ -198,9 +197,8 @@ export const SalesStatistics: React.FC<{
           fill="white"
           textAnchor={space < 0.9 ? "middle" : "end"}
           // fontWeight={""}
-          fontSize={`${
-            space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
-          }rem`}
+          fontSize={`${space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
+            }rem`}
           dominantBaseline="central"
         >
           {name}
@@ -362,59 +360,59 @@ export const SalesStatistics: React.FC<{
           <div className="px-4 w-full gap-4 font-medium grid grid-cols-8 h-full overflow-y-scroll pr-2 thinScroll">
             {!isPayPerClick
               ? mapArray(services, (v, i) => (
-                  <React.Fragment key={i}>
-                    <p className="text-xl col-span-2 font-semibold">{v.name}</p>
-                    <p className="items-center flex justify-center">
-                      {startCase(v.type)}
-                    </p>
-                    <div className="flex flex-col items-center justify-center">
-                      <HStack className="gap-0">
-                        <PriceDisplay
-                          className="flex items-center justify-center"
-                          price={v.price}
-                          compact
-                          decimel
-                        />
-                        /
-                      </HStack>
-                      <p className="text-[#8A8A8A] text-xs">{t("Night")}</p>
-                    </div>
-                    <PriceDisplay
-                      className="flex items-center justify-center"
-                      price={v.discount}
-                      compact
-                      decimel
-                    />
-                    <PriceDisplay
-                      className="flex items-center justify-center"
-                      price={v.earning}
-                      compact
-                      decimel
-                    />
-                    <HStack className="text-center">
-                      <EyeIcon />
-                      <p>{NumberShortner(v.views)}</p>
+                <React.Fragment key={i}>
+                  <p className="text-xl col-span-2 font-semibold">{v.name}</p>
+                  <p className="items-center flex justify-center">
+                    {startCase(v.type)}
+                  </p>
+                  <div className="flex flex-col items-center justify-center">
+                    <HStack className="gap-0">
+                      <PriceDisplay
+                        className="flex items-center justify-center"
+                        price={v.price}
+                        compact
+                        decimel
+                      />
+                      /
                     </HStack>
-                    <p
-                      style={{
-                        color: v.status === "compeleted" ? "red" : "green",
-                      }}
-                      className="flex text-xs items-center justify-center"
-                    >
-                      {startCase(v.status)}
-                    </p>
-                  </React.Fragment>
-                ))
+                    <p className="text-[#8A8A8A] text-xs">{t("Night")}</p>
+                  </div>
+                  <PriceDisplay
+                    className="flex items-center justify-center"
+                    price={v.discount}
+                    compact
+                    decimel
+                  />
+                  <PriceDisplay
+                    className="flex items-center justify-center"
+                    price={v.earning}
+                    compact
+                    decimel
+                  />
+                  <HStack className="text-center">
+                    <EyeIcon />
+                    <p>{NumberShortner(v.views)}</p>
+                  </HStack>
+                  <p
+                    style={{
+                      color: v.status === "compeleted" ? "red" : "green",
+                    }}
+                    className="flex text-xs items-center justify-center"
+                  >
+                    {startCase(v.status)}
+                  </p>
+                </React.Fragment>
+              ))
               : mapArray([], () => (
-                  <React.Fragment>
-                    <Image />
-                    <p>0</p>
-                    <p>product name</p>
-                    <PriceDisplay price={0} />
-                    <p>link</p>
-                    <PriceDisplay price={0} />
-                  </React.Fragment>
-                ))}
+                <React.Fragment>
+                  <Image />
+                  <p>0</p>
+                  <p>product name</p>
+                  <PriceDisplay price={0} />
+                  <p>link</p>
+                  <PriceDisplay price={0} />
+                </React.Fragment>
+              ))}
           </div>
         </div>
       </div>
@@ -616,50 +614,49 @@ export const SalesStatisticsCard: React.FC<{
   lastCycleLabel,
   reverse = false,
 }) => {
-  const { t } = useTranslation();
-  const [percent, isPositive] = calculateAmountPercentChange(
-    amount,
-    lastCycleAmount
-  );
+    const { t } = useTranslation();
+    const [percent, isPositive] = calculateAmountPercentChange(
+      amount,
+      lastCycleAmount
+    );
 
-  return (
-    <div className="flex flex-col gap-3 px-3 py-[0.625rem] rounded-lg bg-white overflow-hidden shadow">
-      <HStack>
-        {runIfFn(Icon)}
-        <p className="font-medium">{label}</p>
-      </HStack>
+    return (
+      <div className="flex flex-col gap-3 px-3 py-[0.625rem] rounded-lg bg-white overflow-hidden shadow">
+        <HStack>
+          {runIfFn(Icon)}
+          <p className="font-medium">{label}</p>
+        </HStack>
 
-      <HStack className="justify-between">
-        <span className="font-medium">
-          <PriceDisplay price={amount} decimel />
-        </span>
+        <HStack className="justify-between">
+          <span className="font-medium">
+            <PriceDisplay price={amount} decimel />
+          </span>
 
-        <span
-          className={`text-xs font-medium ${
-            isPositive
-              ? reverse
-                ? "text-[#FF0000]"
-                : "text-primary"
-              : reverse
-              ? "text-primary"
-              : "text-[#FF0000]"
-          }`}
-        >
-          {isPositive ? "+" : "-"}
-          {percent.toFixed(2)}%
-        </span>
-      </HStack>
+          <span
+            className={`text-xs font-medium ${isPositive
+                ? reverse
+                  ? "text-[#FF0000]"
+                  : "text-primary"
+                : reverse
+                  ? "text-primary"
+                  : "text-[#FF0000]"
+              }`}
+          >
+            {isPositive ? "+" : "-"}
+            {percent.toFixed(2)}%
+          </span>
+        </HStack>
 
-      <p className="text-[0.688rem] flex-wrap leading-3 flex gap-1 text-[#87888C]">
-        <p>{t("Compared to")}</p>
-        <span className="inline">
-          <PriceDisplay price={lastCycleAmount} />
-        </span>
-        <p className="inline">{`(${lastCycleLabel})`}</p>
-      </p>
-    </div>
-  );
-};
+        <p className="text-[0.688rem] flex-wrap leading-3 flex gap-1 text-[#87888C]">
+          <p>{t("Compared to")}</p>
+          <span className="inline">
+            <PriceDisplay price={lastCycleAmount} />
+          </span>
+          <p className="inline">{`(${lastCycleLabel})`}</p>
+        </p>
+      </div>
+    );
+  };
 
 export const MySalesStatistics: React.FC = () => {
   const { user } = useUserData();

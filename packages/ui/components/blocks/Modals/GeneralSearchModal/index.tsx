@@ -11,12 +11,12 @@ import {
   HashTagSearchItem,
   LocalizationsPH,
   LocalizationSearchItem,
-  RecentSearchItemsPH,
   RecentSearchItemSwticher,
   Menu,
   MenuList,
   MenuButton,
 } from "@UI";
+import { RecentSearchItemsPH } from "placeholder";
 import { randomNum } from "utils";
 
 const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {
