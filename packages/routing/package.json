@@ -7,12 +7,18 @@
   "devDependencies": {
     "config": "*",
     "tsconfig": "*",
-    "types": "*",
-    "typescript": "^4.5.3"
+    "types": "*"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "utils": "*"
+  },
+  "shadow": {
+    "dependencies": [
+      "react",
+      "react-dom"
+    ],
+    "devDependencies": [
+      "typescript"
+    ]
   }
 }

@@ -7,44 +7,50 @@
   "scripts": {
     "test": "jest"
   },
-  "devDependencies": {
-    "@testing-library/react-hooks": "^8.0.1",
-    "@types/google.maps": "^3.49.2",
-    "@types/react": "^17.0.37",
-    "@types/react-dom": "^17.0.11",
-    "@types/react-google-recaptcha": "^2.1.5",
-    "config": "*",
-    "nock": "^13.3.0",
-    "react-test-renderer": "^18.2.0",
-    "tsconfig": "*",
-    "typescript": "^4.5.3"
-  },
   "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.9.3",
-    "@googlemaps/react-wrapper": "1.1.35",
-    "@stripe/react-stripe-js": "^1.16.4",
-    "@stripe/stripe-js": "^1.46.0",
     "api": "*",
-    "classnames": "^2.3.1",
-    "country-flag-icons": "^1.5.7",
     "dto": "*",
     "hooks": "*",
     "lib": "*",
-    "placeholder": "*",
-    "qrcode.react": "^3.0.2",
-    "react-google-recaptcha": "^3.1.0",
-    "react-icons": "^4.3.1",
-    "react-pubsub": "*",
-    "react-responsive": "^9.0.0-beta.6",
-    "react-simple-image-slider": "^2.3.0",
-    "recharts": "2.1.12",
-    "recoil": "^0.6.1",
-    "routing": "*",
-    "state": "*",
-    "swiper": "8.0.5",
-    "tailwind-merge": "^1.13.1",
     "types": "*",
     "utils": "*",
-    "validation": "*"
+    "validation": "*",
+    "react-pubsub": "*",
+    "routing": "*",
+    "state": "*",
+    "placeholder": "*"
+  },
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*"
+  },
+  "shadow": {
+    "devDependencies": [
+      "@testing-library/react-hooks",
+      "@types/google.maps",
+      "@types/react",
+      "@types/react-dom",
+      "@types/react-google-recaptcha",
+      "nock",
+      "react-test-renderer",
+      "typescript"
+    ],
+    "dependencies": [
+      "@ffmpeg/ffmpeg",
+      "@googlemaps/react-wrapper",
+      "@stripe/react-stripe-js",
+      "@stripe/stripe-js",
+      "classnames",
+      "country-flag-icons",
+      "qrcode.react",
+      "react-google-recaptcha",
+      "react-icons",
+      "react-responsive",
+      "react-simple-image-slider",
+      "recharts",
+      "recoil",
+      "swiper",
+      "tailwind-merge"
+    ]
   }
 }

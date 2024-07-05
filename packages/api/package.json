@@ -5,21 +5,27 @@
   "types": "./index.ts",
   "license": "MIT",
   "devDependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
     "config": "*",
     "dto": "*",
     "placeholder": "*",
-    "tsconfig": "*",
-    "typescript": "^4.5.3"
+    "tsconfig": "*"
   },
   "dependencies": {
-    "axios": "^0.27.2",
-    "graphql-request": "^5.1.0",
-    "graphql-ws": "^5.11.3",
-    "react-query": "^3.38.1",
     "utils": "*",
-    "validation": "*",
-    "ws": "^8.12.0"
+    "validation": "*"
+  },
+  "shadow": {
+    "dependencies": [
+      "axios",
+      "graphql-request",
+      "graphql-ws",
+      "react-query",
+      "ws"
+    ],
+    "devDependencies": [
+      "babel-preset-env",
+      "babel-preset-es2015",
+      "typescript"
+    ]
   }
 }

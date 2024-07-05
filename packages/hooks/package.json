@@ -7,12 +7,18 @@
   "devDependencies": {
     "config": "*",
     "tsconfig": "*",
-    "types": "*",
-    "typescript": "^4.5.3"
+    "types": "*"
   },
   "dependencies": {
-    "recoil": "^0.6.1",
     "utils": "*",
     "state": "*"
+  },
+  "shadow": {
+    "dependencies": [
+      "recoil"
+    ],
+    "devDependencies": [
+      "typescript"
+    ]
   }
 }

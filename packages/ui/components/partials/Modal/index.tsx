@@ -19,16 +19,16 @@ interface ModalExtendedContextValues {
 }
 
 const ModalExtendedContext = React.createContext<ModalExtendedContextValues>({
-  isOpen: () => {},
-  onOpen: () => {},
-  onClose: () => {},
-  closeAll: () => {},
+  isOpen: () => { },
+  onOpen: () => { },
+  onClose: () => { },
+  closeAll: () => { },
 });
 
 const ModalContext = React.createContext<ModalContextValues>({
   isOpen: false,
-  onClose: () => {},
-  onOpen: () => {},
+  onClose: () => { },
+  onOpen: () => { },
   isLazy: false,
 });
 
@@ -37,14 +37,16 @@ export interface ModalProps
   isLazy?: boolean;
   onOpen?: (key?: string) => any;
   z?: number;
+  children: React.ReactNode;
 }
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  onOpen = () => {},
+  onOpen = () => { },
   isLazy,
   z,
+  children,
   ...props
 }) => {
   const { isOpen: ExtendedIsOpen, onClose: ExtendedOnClose } =
@@ -66,11 +68,14 @@ export const Modal: React.FC<ModalProps> = ({
       {/* <div className={`fixed w-full h-full pointer-events-none`}>
         <div {...props} className={`relative w-full h-full isolate`} />
       </div> */}
+      {children}
     </ModalContext.Provider>
   );
 };
 
-export interface ModalCloseButtonProps {}
+export interface ModalCloseButtonProps {
+  children: React.ReactNode;
+}
 
 export const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
   children,
@@ -79,7 +84,7 @@ export const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
   return <>{PassPropsToChild(children, { onClick: onClose })}</>;
 };
 
-export interface ModalContentProps extends Omit<HtmlDivProps, "children"> {}
+export interface ModalContentProps extends HtmlDivProps { }
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   className,
@@ -94,7 +99,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     if (isOpen) {
       setShow(true);
       // empty callback to clear timeout function from the previous close
-      CallbackAfter(0, () => {});
+      CallbackAfter(0, () => { });
     } else {
       if (!isLazy) return;
       CallbackAfter(5000, () => {
@@ -110,11 +115,10 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       style={{
         zIndex: z,
       }}
-      className={`${className || ""} ${
-        isOpen
+      className={`${className || ""} ${isOpen
           ? "-translate-y-1/2 p-4 bg-white"
           : "-translate-y-[calc(50% - 5rem)] hidden bg-transparent opacity-0 pointer-events-none"
-      } fixed top-1/2 w-[min(100%,40rem)] max-h-[90%] opacity-100 left-1/2  z-[60] transition-all rounded-xl -translate-x-1/2`}
+        } fixed top-1/2 w-[min(100%,40rem)] max-h-[90%] opacity-100 left-1/2  z-[60] transition-all rounded-xl -translate-x-1/2`}
     >
       {/* @ts-ignore */}
       {show ? children : null}
@@ -122,7 +126,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   );
 };
 
-export interface ModalOverlayProps extends HtmlDivProps {}
+export interface ModalOverlayProps extends HtmlDivProps { }
 
 export const ModalOverlay: React.FC<ModalOverlayProps> = ({
   className,
@@ -136,9 +140,8 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
       style={{
         zIndex: z,
       }}
-      className={`${className || ""} ${
-        isOpen ? "bg-opacity-30" : "bg-opacity-0 pointer-events-none"
-      } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black`}
+      className={`${className || ""} ${isOpen ? "bg-opacity-30" : "bg-opacity-0 pointer-events-none"
+        } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black`}
     />
   );
 };
@@ -155,9 +158,8 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
   return (
     <div
       {...props}
-      className={`${className || ""} ${
-        left ? "justify-start" : "justify-end"
-      } flex gap-2`}
+      className={`${className || ""} ${left ? "justify-start" : "justify-end"
+        } flex gap-2`}
     />
   );
 };
@@ -191,6 +193,7 @@ export interface ModalButtonProps extends Partial<ExtendedModalPassedProps> {
   close?: boolean;
   closeAll?: boolean;
   key?: string;
+  children: React.ReactNode;
 }
 
 export const ModalButton: React.FC<ModalButtonProps> = ({
@@ -224,6 +227,7 @@ export const ModalButton: React.FC<ModalButtonProps> = ({
 
 export interface ModalExtendedWrapperProps {
   modalKey?: string;
+  children: React.ReactNode;
 }
 
 type ExtendedModalPassedProps = {

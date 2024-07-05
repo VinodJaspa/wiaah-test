@@ -7,8 +7,13 @@
   "devDependencies": {
     "config": "*",
     "tsconfig": "*",
-    "types": "*",
-    "typescript": "^4.5.3"
+    "types": "*"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "shadow": {
+    "devDependencies": [
+      "typescript"
+    ],
+    "dependencies": []
+  }
 }

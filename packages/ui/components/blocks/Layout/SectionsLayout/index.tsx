@@ -36,13 +36,13 @@ function flatenSections(
   return flatedSections;
 }
 
-export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
+export const SectionsLayout = ({
   currentSectionName: section,
-  name,
+  SettingsLayoutPropsname,
   sections,
   handleSectionChange,
   handleRetrun,
-}) => {
+}:) => {
   const [opened, setOpen] = React.useState<boolean>(true);
   const { t } = useTranslation();
   const { visit } = useRouting();
@@ -66,7 +66,9 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         return (
           <div className="flex flex-col p-2 gap-4">
             <HStack className="justify-center relative">
-              <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
+              <>
+                <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
+              </>
               <TranslationText
                 className="text-lg font-semibold"
                 translationObject={name}
@@ -98,9 +100,8 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         <div className="fixed h-full left-[13rem]">
           {!isMobile && (
             <div
-              className={`${
-                opened ? "md:w-[15rem] xl:w-[20rem] sm:w-40" : ""
-              } gap-4 w-full h-full flex flex-col px-2`}
+              className={`${opened ? "md:w-[15rem] xl:w-[20rem] sm:w-40" : ""
+                } gap-4 w-full h-full flex flex-col px-2`}
             >
               <div
                 onClick={() => visit((r) => r.management())}

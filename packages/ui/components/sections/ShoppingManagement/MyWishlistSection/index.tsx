@@ -34,7 +34,7 @@ import {
   WishlistItemType,
 } from "@features/API";
 
-export interface MyWishListSectionProps {}
+export interface MyWishListSectionProps { }
 
 interface WishlistTableProps {
   items: {
@@ -61,7 +61,7 @@ interface WishlistTableProps {
   DeletingId?: string;
 }
 
-export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
+export const MyWishListSection: React.FC<MyWishListSectionProps> = ({ }) => {
   const { t } = useTranslation();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { isMobile } = useResponsive();
@@ -78,7 +78,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
     mutate({ itemId });
   }
 
-  function handleAddItemToCart(itemId: string) {}
+  function handleAddItemToCart(itemId: string) { }
 
   const DeletingId = deleteIsLoading ? variables?.itemId : undefined;
 
@@ -122,9 +122,8 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
                       <HStack>
                         <p className="text-sm">{t("Stock")}:</p>
                         <div
-                          className={`${
-                            available ? "border-primary" : "border-secondaryRed"
-                          } border px-2 py-1`}
+                          className={`${available ? "border-primary" : "border-secondaryRed"
+                            } border px-2 py-1`}
                         >
                           {available ? t("Available") : t("Unavailable")}
                         </div>
@@ -206,8 +205,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
                           <HiShoppingCart
                             {...setTestid("item-add-to-cart-btn")}
                             onClick={() => () =>
-                              handleAddItemToCart(item.itemId)
-                            }
+                              handleAddItemToCart(item.itemId)}
                             className="text-white p-2 rounded cursor-pointer bg-primary"
                           />
                           <Button
