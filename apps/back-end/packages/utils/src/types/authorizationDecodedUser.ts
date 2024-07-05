@@ -1,4 +1,4 @@
-import { AccountType } from "./accountTypes";
+import type { AccountType } from "./accountTypes";
 import { IsString, IsMongoId, IsEmail } from "class-validator";
 export class AuthorizationDecodedUser {
   @IsMongoId()

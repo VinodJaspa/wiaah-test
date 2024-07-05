@@ -1,28 +1,29 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
 import { ArrayElement } from "@nestjs/graphql";
-import { GraphQLResolveInfo, FieldNode, SelectionNode } from "graphql";
+import { FieldNode, SelectionNode } from "graphql/language/ast";
+import { GraphQLResolveInfo } from "graphql/type/definition";
 
 export type GqlSelectedFields<
   T extends Record<string, any> = any,
   SelectField extends boolean = true
-> = {
-  [key in keyof T]: T[key] extends object
+  > = {
+    [key in keyof T]: T[key] extends object
     ? T[key] extends Array<string | number | boolean>
-      ? true
-      : T[key] extends Date
-      ? true
-      : SelectField extends true
-      ? { select: GqlSelectedFields<ArrayElement<T[key]>> }
-      : GqlSelectedFields<ArrayElement<T[key]>, false>
+    ? true
+    : T[key] extends Date
+    ? true
+    : SelectField extends true
+    ? { select: GqlSelectedFields<ArrayElement<T[key]>> }
+    : GqlSelectedFields<ArrayElement<T[key]>, false>
     : true;
-};
+  };
 
 @Injectable()
 export class GqlSelectedQueryPipe implements PipeTransform {
   constructor(
     private readonly rootMethodName?: string,
     private selectField: boolean = true
-  ) {}
+  ) { }
   transform(
     value: GraphQLResolveInfo,
     metadata: ArgumentMetadata

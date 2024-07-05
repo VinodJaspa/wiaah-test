@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   OnModuleInit,
 } from "@nestjs/common";
-import { StripeForRootOptions } from "./types";
+import type { StripeForRootOptions } from "./types";
 import { Stripe } from "stripe";
 import { ConfigService } from "@nestjs/config";
 import { STRIPE_INJECT_TOKEN } from "./constent";
@@ -325,7 +325,7 @@ export class StripeService implements OnModuleInit {
     const clientSecret =
       //@ts-ignore
       subscription.latest_invoice?.["payment_intent"]?.[
-        "client_secret"
+      "client_secret"
       ] as string;
 
     return { clientSecret, subscriptionObj: subscription };
@@ -393,5 +393,5 @@ export class StripeService implements OnModuleInit {
     );
   }
 
-  onModuleInit() {}
+  onModuleInit() { }
 }

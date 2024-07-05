@@ -4,8 +4,8 @@ import { KafkaMessage } from "kafkajs";
 import {
   kafkaPubsubInjectToken,
   kafkaPubsubKafkaInjectToken,
-  KafkaPubsubOpts,
 } from "./kafkaPubsub.module";
+import type { KafkaPubsubOpts } from "./kafkaPubsub.module";
 
 interface KafkaPubsubImpl {
   publish(event: string, data: any): void;
@@ -19,7 +19,7 @@ export class KafkaPubsubService implements KafkaPubsubImpl {
     private readonly options: KafkaPubsubOpts,
     @Inject("KAFKA_PUBSUB")
     private readonly pubsub: KafkaPubSub
-  ) {}
+  ) { }
 
   publish<TData>(event: string, data: TData): void {
     this.pubsub.publish(event, JSON.stringify(data));
