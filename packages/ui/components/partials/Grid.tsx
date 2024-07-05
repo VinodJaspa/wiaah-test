@@ -15,6 +15,7 @@ export interface GridProps {
   fitHeight?: boolean;
   width?: CSSValueUnit;
   height?: CSSValueUnit;
+  children: React.ReactNode;
 }
 
 export const Grid: React.FC<GridProps> = ({
@@ -33,9 +34,8 @@ export const Grid: React.FC<GridProps> = ({
   height,
 }) => {
   const styles: React.CSSProperties = {
-    gridTemplateColumns: `repeat(${cols},${
-      colWidth ? CSSValueUnitToString(colWidth) : "1fr"
-    })`,
+    gridTemplateColumns: `repeat(${cols},${colWidth ? CSSValueUnitToString(colWidth) : "1fr"
+      })`,
   };
   if (width && !fullWidth) {
     styles.width = CSSValueUnitToString(width);
@@ -62,9 +62,8 @@ export const Grid: React.FC<GridProps> = ({
     styles.rowGap = CSSValueUnitToString(rowsGap);
   }
   if (rows) {
-    styles.gridTemplateRows = `repeat(${rows},${
-      rowHeight ? CSSValueUnitToString(rowHeight) : "1fr"
-    })`;
+    styles.gridTemplateRows = `repeat(${rows},${rowHeight ? CSSValueUnitToString(rowHeight) : "1fr"
+      })`;
   }
   return (
     <div style={styles} className="grid">

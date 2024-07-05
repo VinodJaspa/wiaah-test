@@ -22,6 +22,7 @@ export interface SliderProps {
   draggingActive?: boolean;
   keepLast?: boolean;
   onSliderChange?: (currentIdx: number, visibleItemsIdx: number[]) => any;
+  children: React.ReactNode;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -108,9 +109,8 @@ export const Slider: React.FC<SliderProps> = ({
         onClick={() => handlePrev()}
         {...setTestid("SliderPreviousItemBtn")}
         {...arrowLeftProps}
-        className={`${
-          arrowLeftProps?.className || ""
-        } absolute left-0 top-1/2 -translate-y-1/2`}
+        className={`${arrowLeftProps?.className || ""
+          } absolute left-0 top-1/2 -translate-y-1/2`}
       >
         {runIfFn(leftArrowComponent)}
       </div>
@@ -118,9 +118,8 @@ export const Slider: React.FC<SliderProps> = ({
         onClick={() => handleNext()}
         {...setTestid("SliderNextItemBtn")}
         {...arrowRightProps}
-        className={`${
-          arrowRightProps?.className || ""
-        } absolute right-0 top-1/2 -translate-y-1/2`}
+        className={`${arrowRightProps?.className || ""
+          } absolute right-0 top-1/2 -translate-y-1/2`}
       >
         {runIfFn(rightArrowComponent)}
       </div>

@@ -148,6 +148,7 @@ export interface SellerLayoutProps {
   sideBar?: boolean;
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
+  children: React.ReactNode;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({

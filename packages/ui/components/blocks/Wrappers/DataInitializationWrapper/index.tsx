@@ -3,6 +3,7 @@ import { useUserData } from "hooks";
 import { AccountType } from "types";
 export interface DataInitializationWrapper {
   accountType: AccountType;
+  children: React.ReactNode;
 }
 
 export const DataInitializationWrapper: React.FC<DataInitializationWrapper> = ({
