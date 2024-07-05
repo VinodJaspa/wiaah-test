@@ -43,6 +43,7 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     title: "Lorem ipsum dolor",
+    url: "https:/fakeurl",
   },
   {
     storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
@@ -55,8 +56,8 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     id: "3",
-
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    url: "https:/fakeurl",
   },
   {
     storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
@@ -70,7 +71,7 @@ const actionsPlaceholders: SocialActionData[] = [
     dislikes: 45,
     likes: 232,
     shares: 15,
-
+    url: "https:/fakeurl",
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
@@ -84,7 +85,7 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     id: "3",
-
+    url: "https:/fakeurl",
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
@@ -99,7 +100,7 @@ const actionsPlaceholders: SocialActionData[] = [
     likes: 232,
     shares: 15,
     id: "4",
-
+    url: "https:/fakeurl",
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
 ];
