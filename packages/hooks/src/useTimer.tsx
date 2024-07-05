@@ -1,6 +1,6 @@
 import React from "react";
 
-let interval: NodeJS.Timer;
+let interval: NodeJS.Timeout;
 export const useTimer = (
   time: number,
   onTimeProgression: (progress: number) => any,
@@ -9,6 +9,7 @@ export const useTimer = (
 ) => {
   const timeInMs = time * 1000;
   const targetTime = Date.now() + timeInMs;
+
   if (!interval) {
     interval = setInterval(() => {
       const now = Date.now();

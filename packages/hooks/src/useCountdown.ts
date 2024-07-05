@@ -5,7 +5,7 @@ export const useSecondsCountdown = (
   check: (count: number) => boolean
 ) => {
   const countDownDate = new Date(targetDate).getTime();
-  const intervalRef = useRef<NodeJS.Timer>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const [countDown, setCountDown] = useState(
     countDownDate - new Date().getTime()
   );
