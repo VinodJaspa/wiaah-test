@@ -3,7 +3,7 @@ import { ClassType } from "../../";
 
 type IsStringTranslation<T> = T extends String ? string : T;
 
-interface TranslationInputFields<T> {
+export interface TranslationInputFields<T> {
   langId: string;
   value: IsStringTranslation<T>[];
 }
@@ -29,7 +29,7 @@ export function CreateGqlInputTranslationInputFields<TData>(
   >;
 }
 
-interface TranslationInputField<T> {
+export interface TranslationInputField<T> {
   langId: string;
   value: IsStringTranslation<T>;
 }
@@ -79,7 +79,7 @@ export function CreateGqlObjectTranslationInputFields<TData>(
   >;
 }
 
-interface ObjectTranslationInputField<T> {
+export interface ObjectTranslationInputField<T> {
   langId: string;
   value: IsStringTranslation<T>;
 }

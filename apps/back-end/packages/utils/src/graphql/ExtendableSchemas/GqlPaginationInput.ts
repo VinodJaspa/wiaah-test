@@ -59,7 +59,7 @@ export const ExtractPagination = (pagination: GqlPaginationInput) => {
 export function setPrismaCursorPaginationProps<
   TModel extends { id: string },
   Tkey extends keyof TModel
-  // @ts-ignore
+// @ts-ignore
 >(pagination: GqlCursorPaginationInput, cursorKey?: Tkey = "id") {
   return {
     take: pagination.take + 1,
