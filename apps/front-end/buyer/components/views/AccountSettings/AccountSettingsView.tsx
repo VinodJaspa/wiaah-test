@@ -41,18 +41,20 @@ export const AccountSettingsView: React.FC = () => {
     router.replace(`/${baseRoute}/${url}`);
   }
   return (
-    <SectionsLayout
-      name={{
-        translationKey: "account_settings",
-        fallbackText: "Account Settings",
-      }}
-      handleRetrun={() => {
-        router.push(`/${baseRoute}`, null, { shallow: true });
-      }}
-      currentSectionName={route}
-      sections={sections}
-      handleSectionChange={handleSectionChange}
-    />
+    <>
+      <SectionsLayout
+        name={{
+          translationKey: "account_settings",
+          fallbackText: "Account Settings",
+        }}
+        handleRetrun={() => {
+          router.push(`/${baseRoute}`, null, { shallow: true });
+        }}
+        currentSectionName={route}
+        sections={sections}
+        handleSectionChange={handleSectionChange}
+      ></SectionsLayout>
+    </>
   );
 };
 
