@@ -1,4 +1,4 @@
-import { DeepPartial } from "src/types";
+import { DeepPartial } from "types";
 import { mergeObjectArray } from "./mergeObjectArray";
 
 type TestData = {
