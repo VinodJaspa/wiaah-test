@@ -26,7 +26,7 @@ export const RestaurantDetailsView: React.FC<{ id?: string }> = ({ id }) => {
     data: res,
     isError,
     isLoading,
-  } = useGetRestaurantServiceDetailsDataQuery(id);
+  } = useGetRestaurantServiceDetailsDataQuery(id!);
   const { isMobile } = useResponsive();
 
   return (
@@ -43,7 +43,7 @@ export const RestaurantDetailsView: React.FC<{ id?: string }> = ({ id }) => {
       <Divider />
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
+      <StaticSideBarWrapper sidebar={<ResturantFindTableFilterStepper />}>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
             <ServicesProviderDescriptionSection
