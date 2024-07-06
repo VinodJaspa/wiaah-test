@@ -74,13 +74,12 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
               style={{
                 height: h,
               }}
-              className={`${
-                i < currentAudioTick ? "bg-primary" : "bg-gray-400"
-              } w-[0.2em]`}
+              className={`${i < currentAudioTick ? "bg-primary" : "bg-gray-400"
+                } w-[0.2em]`}
             />
           ))}
         </div>
-        {audioRef.current && audioRef.current.duration !== NaN && (
+        {audioRef.current && !Number.isNaN(audioRef.current.duration) && (
           <p className="text-black">
             <DurationDisplay duration={audioRef.current.duration} />
           </p>
