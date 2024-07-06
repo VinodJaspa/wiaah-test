@@ -973,22 +973,18 @@ export const ServiceDetailsView: React.FC<{
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={() => {
-          if (serviceId) {
-            return (
-              <ServiceReservastionForm
-                sellerId={shop?.ownerId!}
-                selectedServicesIds={selectedServicesids}
-              />
-            );
-          } else {
-            return (
-              <div className="w-full flex justify-center items-center p-8">
-                {t("Please select a service to book")}
-              </div>
-            );
-          }
-        }}
+        sidebar={
+          serviceId ? (
+            <ServiceReservastionForm
+              sellerId={shop?.ownerId!}
+              selectedServicesIds={selectedServicesids}
+            />
+          ) : (
+            <div className="w-full flex justify-center items-center p-8">
+              {t("Please select a service to book")}
+            </div>
+          )
+        }
       >
         <SimpleTabs>
           <HStack>
@@ -1570,19 +1566,19 @@ export const ServiceDetailsFacilities: React.FC<{
   ])
     ? [
       {
-        icon: BedOutlineIcon,
+        icon: <BedOutlineIcon />,
         label: `${v.beds || 0} ${t("Bedrooms")}`,
       },
       {
-        icon: BathtubOutlineIcon,
+        icon: <BathtubOutlineIcon />,
         label: `${v.bathrooms || 0} ${t("Bathrooms")}`,
       },
       {
-        icon: WifiOutlineIcon,
+        icon: <WifiOutlineIcon />,
         label: `${t("24h WIFI")}`,
       },
       {
-        icon: CarOutlineIcon,
+        icon: <CarOutlineIcon />,
         label: `${t("3 Cars 24h")}`,
       },
     ]

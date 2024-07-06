@@ -51,7 +51,7 @@ export function Select<ValueType = string>({
   const ref = React.useRef<HTMLDivElement>(null);
 
   useOutsideClick(ref, handleClose);
-  let timeout: NodeJS.Timer;
+  let timeout: NodeJS.Timeout;
 
   React.useEffect(() => {
     if (open) {
@@ -90,9 +90,8 @@ export function Select<ValueType = string>({
       <div
         {...props}
         ref={ref}
-        className={`${className || ""} ${
-          flushed ? "border-b-2" : "border-2"
-        } bg-white border-[#EDEDED] items-center flex rounded-xl relative`}
+        className={`${className || ""} ${flushed ? "border-b-2" : "border-2"
+          } bg-white border-[#EDEDED] items-center flex rounded-xl relative`}
       >
         <div
           onClick={handleToggle}
@@ -118,25 +117,24 @@ export function Select<ValueType = string>({
         </div>
         <div
           data-testid="SelectOptionsContainer"
-          className={`${
-            open ? "scale-y-100" : "scale-y-0"
-          } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll thinScroll transform absolute left-0 flex flex-col top-full w-full`}
+          className={`${open ? "scale-y-100" : "scale-y-0"
+            } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll thinScroll transform absolute left-0 flex flex-col top-full w-full`}
         >
           {children && showChild ? (
             <>
               {Array.isArray(children)
                 ? children.map((child, i) => (
-                    <React.Fragment key={i}>
-                      {React.cloneElement<SelectChildProps<ValueType>>(child, {
-                        onOptionSelect: (value) =>
-                          handleSelect(value, children[i]),
-                        key: i,
-                      })}
-                    </React.Fragment>
-                  ))
+                  <React.Fragment key={i}>
+                    {React.cloneElement<SelectChildProps<ValueType>>(child, {
+                      onOptionSelect: (value) =>
+                        handleSelect(value, children[i]),
+                      key: i,
+                    })}
+                  </React.Fragment>
+                ))
                 : React.cloneElement<SelectChildProps<ValueType>>(children, {
-                    onOptionSelect: (value) => handleSelect(value, children),
-                  })}
+                  onOptionSelect: (value) => handleSelect(value, children),
+                })}
             </>
           ) : null}
         </div>
@@ -162,11 +160,10 @@ export const SelectOption: React.FC<SelectListProps> = ({
     <div
       {...props}
       onClick={() => onOptionSelect && onOptionSelect(value)}
-      className={`${className || ""} ${
-        selectable
+      className={`${className || ""} ${selectable
           ? "px-4 py-[0.375rem] cursor-pointer hover:bg-gray-200 active:bg-gray-300 w-full"
           : "px-2"
-      }
+        }
        select-none `}
     />
   );

@@ -8,7 +8,9 @@ import {
 import { setTestid } from "utils";
 
 export interface BeautyCenterCheckoutCardProps
-  extends BeautyCenterCheckoutBookedPropertyData {}
+  extends BeautyCenterCheckoutBookedPropertyData {
+  children: React.ReactNode;
+}
 
 export const BeautyCenterCheckoutCard: React.FC<
   BeautyCenterCheckoutCardProps
@@ -19,19 +21,19 @@ export const BeautyCenterCheckoutCard: React.FC<
       <ul className="list-disc list-inside">
         {Array.isArray(bookedTreatments)
           ? bookedTreatments.map((treatment, i) => (
-              <li
-                {...setTestid("BookedTreatmentItem")}
-                className="flex justify-between w-full"
-              >
-                <div>
-                  <p className="list-item">{treatment.title}</p>
-                  <TimeRangeDisplay
-                    rangeInMinutes={treatment.durationInMinutes}
-                  />
-                </div>
-                <PriceDisplay className="font-bold" price={treatment.price} />
-              </li>
-            ))
+            <li
+              {...setTestid("BookedTreatmentItem")}
+              className="flex justify-between w-full"
+            >
+              <div>
+                <p className="list-item">{treatment.title}</p>
+                <TimeRangeDisplay
+                  rangeInMinutes={treatment.durationInMinutes}
+                />
+              </div>
+              <PriceDisplay className="font-bold" price={treatment.price} />
+            </li>
+          ))
           : null}
       </ul>
     </ServiceCheckoutCommonCardWrapper>

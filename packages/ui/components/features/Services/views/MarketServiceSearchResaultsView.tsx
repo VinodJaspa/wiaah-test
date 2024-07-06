@@ -196,7 +196,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
                 default:
                   break;
               }
-            },
+            }
           )}
         </div>
       </SpinnerFallback>
@@ -209,11 +209,10 @@ export const MarketServiceSearchResaultsView: React.FC<{
     </div>
   ) : (
     <div
-      className={`${
-        isTablet ? "flex-col gap-4" : "flex-row gap-12"
-      } relative flex  py-4`}
+      className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
+        } relative flex  py-4`}
     >
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
         {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
           <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
             <Input
@@ -489,7 +488,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
               ...props,
               showTotal: false,
               presentations: [
-                { src: props.thumbnail, type: PresentationType.Image },
+                { src: props.thumbnail, type: ServicePresentationType.Img },
               ],
             })}
           />
@@ -506,19 +505,19 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
     filters: {
       id: string;
       value: string[];
-    }[],
+    }[]
   ) => void;
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
   const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
-    serviceType as ServiceType,
+    serviceType as ServiceType
   );
 
   const { data: filters } = useGetServiceCategoryFiltersQuery(
     { serviceType: serviceType! },
-    { enabled: isOpen },
+    { enabled: isOpen }
   );
 
   const [selectedValues, setSelectedValues] = React.useState<
@@ -579,7 +578,7 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
             <div className="flex flex-col gap-4">
               <p>{filter.filterGroupName}</p>
               {filter.selectionType ===
-              ServiceFilterSelectionType.MultiSelect ? (
+                ServiceFilterSelectionType.MultiSelect ? (
                 <HStack className="w-full overflow-x-scroll">
                   {mapArray(filter.filterValues, (value, i) => (
                     <Button

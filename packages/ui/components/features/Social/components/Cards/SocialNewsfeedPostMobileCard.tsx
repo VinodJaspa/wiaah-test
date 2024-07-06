@@ -64,48 +64,48 @@ export const SocialNewsfeedPostMobileCard: React.FC<
     active: boolean;
     onClick?: () => void;
   }[] = [
-    {
-      value: NumberShortner(post.likes),
-      active: post?.liked,
-      icon: HeartIcon,
-      activeIcon: HeartFillIcon,
-      onClick: () => {
-        like({
-          args: {
-            contentId: post.id,
-            contentType: ContentHostType.PostNewsfeed,
-          },
-        });
+      {
+        value: NumberShortner(post.likes),
+        active: post?.liked,
+        icon: <HeartIcon />,
+        activeIcon: <HeartFillIcon />,
+        onClick: () => {
+          like({
+            args: {
+              contentId: post.id,
+              contentType: ContentHostType.PostNewsfeed,
+            },
+          });
+        },
       },
-    },
-    {
-      value: NumberShortner(post.comments),
-      active: false,
-      icon: CommentOutlineIcon,
-      activeIcon: CommentIcon,
-      onClick: () => {
-        visit((r) => r.visitSocialPost(post.id));
+      {
+        value: NumberShortner(post.comments),
+        active: false,
+        icon: <CommentOutlineIcon />,
+        activeIcon: <CommentIcon />,
+        onClick: () => {
+          visit((r) => r.visitSocialPost(post.id));
+        },
       },
-    },
-    {
-      value: NumberShortner(post.shares),
-      active: false,
-      icon: PaperPlaneAngleOutlineIcon,
-      activeIcon: PaperPlaneAngleIcon,
-      onClick: () => {
-        shareLink(getUrl((r) => r.visitSocialPost(post.id)));
+      {
+        value: NumberShortner(post.shares),
+        active: false,
+        icon: <PaperPlaneAngleOutlineIcon />,
+        activeIcon: <PaperPlaneAngleIcon />,
+        onClick: () => {
+          shareLink(getUrl((r) => r.visitSocialPost(post.id)));
+        },
       },
-    },
-    {
-      value: post.saved ? t("Saved") : t("Save"),
-      active: post?.saved,
-      icon: SaveFlagOutlineIcon,
-      activeIcon: SaveFlagFIllIcon,
-      onClick: () => {
-        savePost({ postId: post.id });
+      {
+        value: post.saved ? t("Saved") : t("Save"),
+        active: post?.saved,
+        icon: <SaveFlagOutlineIcon />,
+        activeIcon: <SaveFlagFIllIcon />,
+        onClick: () => {
+          savePost({ postId: post.id });
+        },
       },
-    },
-  ];
+    ];
 
   const { getSince } = useDateDiff({
     from: new Date(post.createdAt),
@@ -152,9 +152,8 @@ export const SocialNewsfeedPostMobileCard: React.FC<
               <div className="absolute flex gap-2 top-2 left-1/2 -translate-x-1/2">
                 {[...Array(post.images.length)].map((_, i) => (
                   <div
-                    className={`${
-                      i === activeImage ? "bg-primary w-4" : "bg-gray-400 w-2"
-                    } h-2 rounded-full`}
+                    className={`${i === activeImage ? "bg-primary w-4" : "bg-gray-400 w-2"
+                      } h-2 rounded-full`}
                   />
                 ))}
               </div>

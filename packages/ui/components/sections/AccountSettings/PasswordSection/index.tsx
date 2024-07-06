@@ -108,10 +108,7 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
         >
           <React.Fragment>
             <FormikInput
-              label={{
-                translationKey: "current_password",
-                fallbackText: "Current Password",
-              }}
+              label={t("Current Password")}
               {...inputProps("currentPassword")}
               {...setTestid("current_password")}
               name="currentPassword"

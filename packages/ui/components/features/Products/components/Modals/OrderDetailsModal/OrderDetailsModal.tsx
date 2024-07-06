@@ -84,7 +84,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
       <ModalContent className="w-[min(100%,50rem)]">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {res ? (
-            <Stack col divider={Divider}>
+            <Stack col divider={<Divider />}>
               <div className="flex flex-col w-full gap-2">
                 <div className="flex justify-between items-center">
                   <p className="text-2xl font-bold">

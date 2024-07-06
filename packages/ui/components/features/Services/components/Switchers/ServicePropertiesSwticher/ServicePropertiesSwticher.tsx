@@ -21,8 +21,12 @@ import {
   TelevisionIcon,
   SnowFlakeIcon,
   BalconyIcon,
+  TransportGuestsIconProps,
 } from "@UI";
 import { runIfFn } from "utils";
+import { IconBaseProps } from "react-icons";
+import { HtmlSvgProps } from "types";
+type IconProps = HtmlSvgProps | IconBaseProps | TransportGuestsIconProps;
 
 export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
   slug,
@@ -55,10 +59,10 @@ export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
   return (
     <>
       {icon
-        ? runIfFn(icon)
+        ? runIfFn(icon as React.FC<IconProps>)
         : runIfFn(SuccessIcon, {
-            style: { color: "white", fill: "black", backgroundColor: "black" },
-          })}
+          style: { color: "white", fill: "black", backgroundColor: "black" },
+        })}
     </>
   );
 };

@@ -25,7 +25,7 @@ import { useTypedReactPubsub } from "@libs";
 
 const MAX_PRODUCTS_IMAGE = 4;
 
-export interface HotelAddRoomDetailsFormProps {}
+export interface HotelAddRoomDetailsFormProps { }
 
 export const HotelAddRoomDetailsForm: React.FC<
   HotelAddRoomDetailsFormProps
@@ -65,12 +65,12 @@ export const HotelAddRoomDetailsForm: React.FC<
           ],
         } as Record<string, any>
       }
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ setFieldValue, values }) => {
         return (
           <Form className="w-full flex flex-col">
-            <Stack col divider={Divider}>
+            <Stack col divider={<Divider />}>
               <FormikInput
                 name="roomTitle"
                 placeholder={t("Enter a room title")}

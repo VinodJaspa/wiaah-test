@@ -3,7 +3,7 @@ import { PassPropsToChild, randomNum, PassPropsToFnOrElem } from "utils";
 
 export interface ServicesSearchGridProps<TData, TProps> {
   data: TData[];
-  component: React.ReactNode;
+  component: React.FC<TProps>;
   gridRule?: string;
   handlePassData: (data: TData, index?: number) => TProps;
   cols?: number;
@@ -27,13 +27,13 @@ export function ServicesSearchGrid<TData, TProps>({
     >
       {Array.isArray(data)
         ? data.map((d, i) => (
-            <>
-              {PassPropsToFnOrElem(component, {
-                ...handlePassData(d, i),
-                key: `${randomNum(5000)}-${i}`,
-              })}
-            </>
-          ))
+          <>
+            {PassPropsToFnOrElem(component, {
+              ...handlePassData(d, i),
+              key: `${randomNum(5000)}-${i}`,
+            })}
+          </>
+        ))
         : null}
     </div>
   );

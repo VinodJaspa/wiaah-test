@@ -4,15 +4,15 @@ import { MenuContext } from "../Menu";
 
 export interface MenuListProps extends HtmlDivProps {
   origin?:
-    | "top left"
-    | "top"
-    | "top right"
-    | "center left"
-    | "center"
-    | "center right"
-    | "bottom left"
-    | "bottom"
-    | "bottom right";
+  | "top left"
+  | "top"
+  | "top right"
+  | "center left"
+  | "center"
+  | "center right"
+  | "bottom left"
+  | "bottom"
+  | "bottom right";
 }
 
 export const MenuList: React.FC<MenuListProps> = ({
@@ -23,7 +23,7 @@ export const MenuList: React.FC<MenuListProps> = ({
 }) => {
   const { isOpen, isLazy } = React.useContext(MenuContext);
   const [showChild, setShowChild] = React.useState<boolean>(false);
-  let timeout: NodeJS.Timer;
+  let timeout: NodeJS.Timeout;
 
   React.useEffect(() => {
     if (isOpen) {
@@ -43,9 +43,8 @@ export const MenuList: React.FC<MenuListProps> = ({
       style={{
         transformOrigin: origin,
       }}
-      className={`${className || ""} ${
-        isOpen ? "scale-100" : "scale-0"
-      } z-50 transition-all duration-200 absolute bg-white border-gray-200 border-[1px] rounded-xl m-2 py-2 shadow-lg flex flex-col gap-2 top-full right-0`}
+      className={`${className || ""} ${isOpen ? "scale-100" : "scale-0"
+        } z-50 transition-all duration-200 absolute bg-white border-gray-200 border-[1px] rounded-xl m-2 py-2 shadow-lg flex flex-col gap-2 top-full right-0`}
     >
       {showChild && <>{children}</>}
     </div>

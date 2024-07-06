@@ -1,5 +1,8 @@
 import React, { CSSProperties } from "react";
 
+interface MapChildProps {
+  map?: google.maps.Map;
+}
 export interface MapProps extends google.maps.MapOptions {
   style?: CSSProperties;
   className?: string;
@@ -37,7 +40,7 @@ export const Map: React.FC<MapProps> = ({
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           // set the map prop on the child component
-          return React.cloneElement(child, { map });
+          return React.cloneElement(child, { map } as MapChildProps);
         }
       })}
     </>

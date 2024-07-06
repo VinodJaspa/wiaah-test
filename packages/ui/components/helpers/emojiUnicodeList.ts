@@ -1,9 +1,22 @@
-export function convertEmojiToHtml(text: string) {
-  return text.replace(/[\u{1F000}-\u{1FFFF}]/gu, function (match) {
-    return "&#x" + match.codePointAt(0).toString(16) + ";";
-  });
+export function convertEmojiToHtml(text: string): string {
+  return text.replace(
+    /[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27FF]/g,
+    function(match) {
+      if (match.length === 1) {
+        return match; // For non-surrogate pairs like basic emoji
+      } else {
+        // For surrogate pairs
+        let codePoint = match.codePointAt(0)!;
+        let nextCodeUnit = match.codePointAt(1)!;
+        return `&#x${(
+          (codePoint - 0xd800) * 0x400 +
+          (nextCodeUnit - 0xdc00) +
+          0x10000
+        ).toString(16)};`;
+      }
+    }
+  );
 }
-
 export const emojiUnicodeList = {
   "Smileys & People": [
     {

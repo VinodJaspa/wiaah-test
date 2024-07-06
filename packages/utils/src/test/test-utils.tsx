@@ -16,10 +16,10 @@ export function getShallowInputFormField(node: ShallowWrapper): ShallowWrapper {
   return node.dive().find("Field");
 }
 import React from "react";
-import { runIfFn } from "../runIfFun";
+import { MaybeFn, runIfFn } from "../runIfFun";
 
 export function MapChildren<TProps>(
-  children: React.ReactNode,
+  children: MaybeFn<TProps>,
   props: TProps
 ): React.ReactNode {
   return Array.isArray(children)
@@ -54,7 +54,7 @@ export const waitFor = (
 ) =>
   act(
     () =>
-      new Promise((resolve, reject) => {
+      new Promise<void>((resolve, reject) => {
         const startTime = Date.now();
 
         const nextInterval = () => {

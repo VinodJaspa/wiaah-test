@@ -20,9 +20,9 @@ const InputContext = React.createContext<InputContextValue>({
   inputLeftElement: null,
   inputRightElement: null,
   isFocused: false,
-  setFocused: () => {},
-  setInputLeftElement: () => {},
-  setInputRightElement: () => {},
+  setFocused: () => { },
+  setInputLeftElement: () => { },
+  setInputRightElement: () => { },
 });
 
 export interface InputProps extends HtmlInputProps {
@@ -63,13 +63,12 @@ export const Input: React.FC<InputProps> = ({
             setFocused && setFocused(true);
           }}
           {...props}
-          className={`${className || ""} ${
-            isInputGroup
+          className={`${className || ""} ${isInputGroup
               ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
               : flushed
                 ? "border-b-2 border-t-0 border-l-0 border-r-0"
                 : "border-2"
-          }
+            }
         focus:border-primary-200 border-[#EDEDED] rounded-lg px-3 w-full h-10`}
         />
         {isPassword ? (
@@ -136,11 +135,9 @@ export const InputGroup: React.FC<InputGroupProps> = ({
         {...props}
         onFocus={() => setFocused(true)}
         ref={groupRef}
-        className={`${className ?? ""} ${
-          isGroup ? (flushed ? "border-b-2" : "border-2") : ""
-        } ${
-          focused ? "border-primary-200" : "border-[#EDEDED]"
-        } flex gap-1 bg-white items-center rounded-md relative`}
+        className={`${className ?? ""} ${isGroup ? (flushed ? "border-b-2" : "border-2") : ""
+          } ${focused ? "border-primary-200" : "border-[#EDEDED]"
+          } flex gap-1 bg-white items-center rounded-md relative`}
       >
         <>{leftElement && <>{runIfFn(leftElement, {})}</>}</>
         <>
@@ -160,7 +157,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   );
 };
 
-export interface InputLeftElementProps extends HtmlDivProps {}
+export interface InputLeftElementProps extends HtmlDivProps { }
 
 export const InputLeftElement: React.FC<InputLeftElementProps> = ({
   children,
@@ -173,14 +170,14 @@ export const InputLeftElement: React.FC<InputLeftElementProps> = ({
       setInputLeftElement(
         <div {...props} className={`${className || ""} px-2`}>
           {children}
-        </div>,
+        </div>
       ),
-    [children],
+    [children]
   );
   return null;
 };
 
-export interface InputRightElementProps extends HtmlDivProps {}
+export interface InputRightElementProps extends HtmlDivProps { }
 
 export const InputRightElement: React.FC<InputRightElementProps> = ({
   children,
@@ -192,13 +189,13 @@ export const InputRightElement: React.FC<InputRightElementProps> = ({
     setInputRightElement(
       <div {...props} className={`${className || ""}`}>
         {children}
-      </div>,
+      </div>
     );
   }, [children]);
   return null;
 };
 
-export interface InputSuggestionsProps extends HtmlDivProps {}
+export interface InputSuggestionsProps extends HtmlDivProps { }
 export const InputSuggestions: React.FC<InputSuggestionsProps> = ({
   children,
   className,
@@ -220,9 +217,8 @@ export const InputSuggestions: React.FC<InputSuggestionsProps> = ({
   return (
     <div
       {...props}
-      className={`${className || ""} ${
-        isFocused ? "" : "scale-y-0"
-      } origin-top transition-transform max-h-96 overflow-scroll thinScroll absolute z-10 top-full left-0 w-full`}
+      className={`${className || ""} ${isFocused ? "" : "scale-y-0"
+        } origin-top transition-transform max-h-96 overflow-scroll thinScroll absolute z-10 top-full left-0 w-full`}
     >
       {display ? children : null}
     </div>

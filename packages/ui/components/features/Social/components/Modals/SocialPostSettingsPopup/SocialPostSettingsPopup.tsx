@@ -65,50 +65,54 @@ export const SocialPostSettingsPopup: React.FC = () => {
     className?: string;
     onClick: (props: any) => any;
   }[] = [
-    {
-      label: t("Delete"),
-      onClick: () => {},
-      className: "text-red-500",
-    },
-    {
-      label: t("Edit"),
-      onClick: () => {},
-    },
-    {
-      label: t("Hide"),
-      onClick: handleHide,
-    },
-    {
-      label: t("Turn off commenting"),
-      onClick: () => {},
-    },
-    {
-      label: t("Go to post"),
-      onClick: () => {},
-    },
-    {
-      label: t("Report"),
-      onClick: () => {},
-    },
-    {
-      label: t("Copy link"),
-      onClick: () => {},
-    },
-    {
-      label: t("Disable notification"),
-      onClick: () => {},
-    },
-    {
-      label: t("Cancel"),
-      onClick: handleClose,
-    },
-  ];
+      {
+        label: t("Delete"),
+        onClick: () => { },
+        className: "text-red-500",
+      },
+      {
+        label: t("Edit"),
+        onClick: () => { },
+      },
+      {
+        label: t("Hide"),
+        onClick: handleHide,
+      },
+      {
+        label: t("Turn off commenting"),
+        onClick: () => { },
+      },
+      {
+        label: t("Go to post"),
+        onClick: () => { },
+      },
+      {
+        label: t("Report"),
+        onClick: () => { },
+      },
+      {
+        label: t("Copy link"),
+        onClick: () => { },
+      },
+      {
+        label: t("Disable notification"),
+        onClick: () => { },
+      },
+      {
+        label: t("Cancel"),
+        onClick: handleClose,
+      },
+    ];
 
   return (
     <Modal isOpen={!!id} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent className="rounded-[2rem] noScroll">
-        <Stack className="items-center text-xl font-bold" col divider={Divider}>
+        <Stack
+          className="items-center text-xl font-bold"
+          col
+          divider={<Divider />}
+        >
           {options.map(({ label, onClick, className }, i) => (
             <MenuItem
               className={`${className || ""} py-[0.5rem] w-full text-center`}
