@@ -34,7 +34,9 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
   return [...acc, ...hashTagsPlaceholder];
 }, []);
 
-export interface GeneralSearchModalProps { }
+export interface GeneralSearchModalProps {
+  children: React.ReactNode;
+}
 
 export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   children,

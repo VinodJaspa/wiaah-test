@@ -49,24 +49,24 @@ export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
             <WorkingDaysCalender
               takenDates={
                 res
-                  ? Object.values(res.takenHours.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value.periods[0], to: value.periods[1] }]
-                          : [],
-                    }))
+                  ? Object.values(res.takenHours!.weekdays).map((value) => ({
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
               workingDates={
                 res
-                  ? Object.values(res.workingHours.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value.periods[0], to: value.periods[1] }]
-                          : [],
-                    }))
+                  ? Object.values(res.workingHours!.weekdays).map((value) => ({
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
             />
@@ -89,7 +89,7 @@ export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
               telephone={res.contact.phone}
             />
 
-            <ServiceWorkingHoursSection workingHours={res.workingHours} />
+            <ServiceWorkingHoursSection workingHours={res.workingHours!} />
             <ServicePoliciesSection policies={res.policies} title="" />
             <ServiceOnMapLocalizationSection location={res.location} />
           </>

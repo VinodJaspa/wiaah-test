@@ -8,6 +8,7 @@ import {
   ArrowRightIcon,
   Button,
   HStack,
+  SectionsScrollTabListProps,
   SettingsSectionsSidebar,
   TranslationText,
 } from "@UI";
@@ -36,13 +37,13 @@ function flatenSections(
   return flatedSections;
 }
 
-export const SectionsLayout = ({
+export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   currentSectionName: section,
-  SettingsLayoutPropsname,
   sections,
   handleSectionChange,
   handleRetrun,
-}:) => {
+  name,
+}) => {
   const [opened, setOpen] = React.useState<boolean>(true);
   const { t } = useTranslation();
   const { visit } = useRouting();

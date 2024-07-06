@@ -61,7 +61,7 @@ export const AccountDeletionModal: React.FC<{
                       reason: yup.string().required(),
                     })}
                   >
-                    {({ validate }) => {
+                    {({ validate }) => (
                       <div className="flex flex-col gap-4">
                         {[
                           "Something was broken",
@@ -84,8 +84,8 @@ export const AccountDeletionModal: React.FC<{
                         <StepperNextButton>
                           <Button>{t("Next")}</Button>
                         </StepperNextButton>
-                      </div>;
-                    }}
+                      </div>
+                    )}
                   </StepperFormHandler>
                   <StepperFormHandler
                     validationSchema={yup.object({
