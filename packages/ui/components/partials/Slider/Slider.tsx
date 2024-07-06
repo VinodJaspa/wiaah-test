@@ -9,8 +9,8 @@ export interface SliderProps {
   itemsCount?: number;
   className?: string;
   childsWrapperProps?: HtmlDivProps;
-  leftArrowComponent?: React.ReactNode;
-  rightArrowComponent?: React.ReactNode;
+  leftArrowComponent?: React.ReactNode | React.FC;
+  rightArrowComponent?: React.ReactNode | React.FC;
   downArrowComponent?: React.ReactNode;
   upArrowComponent?: React.ReactNode;
   variant?: SliderVariants;
