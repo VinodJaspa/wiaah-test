@@ -345,7 +345,7 @@ export const ProfileStatistics: React.FC<{
           <StatisticsCard
             icon={{
               color: "#01D022",
-              node: LocationOnPointIcon,
+              node: <LocationOnPointIcon />,
             }}
             amount={stats?.total_visits || 0}
             prevAmount={stats?.prev_total_visits || 0}
@@ -354,7 +354,7 @@ export const ProfileStatistics: React.FC<{
           <StatisticsCard
             icon={{
               color: "#FFD66B",
-              node: PersonPlusIcon,
+              node: <PersonPlusIcon />,
             }}
             amount={stats?.total_followers || 0}
             prevAmount={stats?.prev_total_followers || 0}
@@ -363,7 +363,7 @@ export const ProfileStatistics: React.FC<{
           <StatisticsCard
             icon={{
               color: "#E91010",
-              node: HeartFillIcon,
+              node: <HeartFillIcon />,
             }}
             prevAmount={stats?.total_likes || 0}
             amount={stats?.prev_total_likes || 0}
@@ -372,7 +372,7 @@ export const ProfileStatistics: React.FC<{
           <StatisticsCard
             icon={{
               color: "#1227E2",
-              node: CommentIcon,
+              node: <CommentIcon />,
             }}
             amount={stats?.total_comments || 0}
             prevAmount={stats?.prev_total_comments || 0}
@@ -381,7 +381,7 @@ export const ProfileStatistics: React.FC<{
           <StatisticsCard
             icon={{
               color: "#ACC418",
-              node: SaveFlagFIllIcon,
+              node: <SaveFlagFIllIcon />,
             }}
             amount={stats?.total_saves || 0}
             prevAmount={stats?.prev_total_saves || 0}
@@ -761,6 +761,7 @@ export const BarChartLegend: React.FC<{
   name: string;
   amount?: number;
   color: string;
+  children?: React.ReactNode;
 }> = ({ amount, name, children, color }) => {
   return (
     <div className="flex flex-col gap-2">

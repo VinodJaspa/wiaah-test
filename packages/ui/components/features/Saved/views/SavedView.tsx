@@ -23,7 +23,7 @@ export const SavedView: React.FC = () => {
   const SavedSections: SettingsSectionType[] = [
     {
       panelName: "Posts",
-      panelIcon: ImageIcon,
+      panelIcon: <ImageIcon />,
       panelUrl: "/posts",
       panelComponent: <SavedPostsSection />,
     },

@@ -51,31 +51,31 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
     icon: ReactNode;
     slug: ServiceType;
   }[] = [
-    {
-      icon: <HotelOutlineIcon />,
-      slug: ServiceType.Hotel,
-    },
-    {
-      icon: <HouseIcon />,
-      slug: ServiceType.HolidayRentals,
-    },
-    {
-      icon: <ForkAndKnifeIcon />,
-      slug: ServiceType.Restaurant,
-    },
-    {
-      icon: <HealthCenterOutlineIcon />,
-      slug: ServiceType.HealthCenter,
-    },
-    {
-      icon: <VehicleOutlineIcon />,
-      slug: ServiceType.Vehicle,
-    },
-    {
-      icon: <BeautyCenterOutlineIcon />,
-      slug: ServiceType.BeautyCenter,
-    },
-  ];
+      {
+        icon: <HotelOutlineIcon />,
+        slug: ServiceType.Hotel,
+      },
+      {
+        icon: <HouseIcon />,
+        slug: ServiceType.HolidayRentals,
+      },
+      {
+        icon: <ForkAndKnifeIcon />,
+        slug: ServiceType.Restaurant,
+      },
+      {
+        icon: <HealthCenterOutlineIcon />,
+        slug: ServiceType.HealthCenter,
+      },
+      {
+        icon: <VehicleOutlineIcon />,
+        slug: ServiceType.Vehicle,
+      },
+      {
+        icon: <BeautyCenterOutlineIcon />,
+        slug: ServiceType.BeautyCenter,
+      },
+    ];
   const { data: filters } = useGetServiceCategoryFiltersQuery(
     { serviceType: form.type! },
     { enabled: Object.values(ServiceType).includes(form.type) }
@@ -170,26 +170,16 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
 
           <SimpleTabs>
             <SimpleTabHead>
-              {[t("Services"), t("Shops")].map(
-                (label, i) =>
-                  ({
-                    selected,
-                    onClick,
-                  }: {
-                    selected: boolean;
-                    onClick: () => any;
-                  }) =>
-                    (
-                      <Button
-                        onClick={onClick}
-                        className="w-full rounded-full"
-                        colorScheme={selected ? "darkbrown" : "white"}
-                        key={i}
-                      >
-                        {label}
-                      </Button>
-                    )
-              )}
+              {[t("Services"), t("Shops")].map((label, i) => (
+                <Button
+                  onClick={() => console.log(`Tab ${i} clicked`)}
+                  className="w-full rounded-full"
+                  colorScheme={i === 0 ? "darkbrown" : "white"}
+                  key={i}
+                >
+                  {label}
+                </Button>
+              ))}
             </SimpleTabHead>
             <SimpleTabItemList>
               {/* services filters */}
@@ -247,7 +237,7 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
                   <div className="flex flex-col gap-4">
                     <p>{filter.filterGroupName}</p>
                     {filter.selectionType ===
-                    ServiceFilterSelectionType.MultiSelect ? (
+                      ServiceFilterSelectionType.MultiSelect ? (
                       <HStack className="w-full overflow-x-scroll">
                         {mapArray(filter.filterValues, (value, i) => (
                           <Button

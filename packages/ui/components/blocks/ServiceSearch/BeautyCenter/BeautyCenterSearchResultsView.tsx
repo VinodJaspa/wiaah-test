@@ -62,8 +62,16 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
               <Form className="flex flex-col">
                 <ServiceBookingStepper
                   steps={[
-                    { name: "Date", icon: CalenderIcon, component: DateInput },
-                    { name: "time", icon: ClockIcon, component: TimeInput },
+                    {
+                      name: "Date",
+                      icon: <CalenderIcon />,
+                      component: <DateInput />,
+                    },
+                    {
+                      name: "time",
+                      icon: <ClockIcon />,
+                      component: <TimeInput />,
+                    },
                   ]}
                 />
 

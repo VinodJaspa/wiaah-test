@@ -31,15 +31,15 @@ export interface ChatRoomHeaderProps {
 const rightIcons: { icon: React.ReactNode; label: string }[] = [
   {
     label: "start a video call",
-    icon: BiVideo,
+    icon: <BiVideo />,
   },
   {
     label: "start a voice call",
-    icon: BiPhone,
+    icon: <BiPhone />,
   },
   {
     label: "more options",
-    icon: HiDotsHorizontal,
+    icon: <HiDotsHorizontal />,
   },
 ];
 
@@ -109,27 +109,27 @@ export const ChatUserActiveStatusIndicator: React.FC<{
     label: string;
     key: ActiveStatus;
   }[] = [
-    {
-      className: "bg-primary",
-      key: ActiveStatus.Active,
-      label: t("Active"),
-    },
-    {
-      className: "bg-yellow-600",
-      key: ActiveStatus.Idle,
-      label: t("Idle"),
-    },
-    {
-      className: "bg-gray-600",
-      key: ActiveStatus.InActive,
-      label: t("Offline"),
-    },
-    {
-      className: "bg-red-600",
-      key: ActiveStatus.DoNotDisturb,
-      label: t("Do not disturb"),
-    },
-  ];
+      {
+        className: "bg-primary",
+        key: ActiveStatus.Active,
+        label: t("Active"),
+      },
+      {
+        className: "bg-yellow-600",
+        key: ActiveStatus.Idle,
+        label: t("Idle"),
+      },
+      {
+        className: "bg-gray-600",
+        key: ActiveStatus.InActive,
+        label: t("Offline"),
+      },
+      {
+        className: "bg-red-600",
+        key: ActiveStatus.DoNotDisturb,
+        label: t("Do not disturb"),
+      },
+    ];
 
   const currentStats =
     _status.find((v) => v.key === status) ||

@@ -31,32 +31,32 @@ export const ServicesSearchBadgeList: React.FC<
   const services: ServiceBadgeData[] = additionalLinks.concat([
     {
       name: "Hotels",
-      icon: HotelIcon,
+      icon: <HotelIcon />,
       key: "hotel",
     },
     {
       name: "Holiday Rentals",
-      icon: HouseIcon,
+      icon: <HouseIcon />,
       key: "holidays_rentals",
     },
     {
       name: "Restaurants",
-      icon: ForkAndSpoonIcon,
+      icon: <ForkAndSpoonIcon />,
       key: "restaurant",
     },
     {
       name: "Health Centers",
-      icon: HealthIcon,
+      icon: <HealthIcon />,
       key: "health_center",
     },
     {
       name: "Beauty Centers",
-      icon: BeautyCenterIcon,
+      icon: <BeautyCenterIcon />,
       key: "beauty_center",
     },
     {
       name: "Vehicle",
-      icon: CarWheelIcon,
+      icon: <CarWheelIcon />,
       key: "vehicle",
     },
   ]);
@@ -71,9 +71,8 @@ export const ServicesSearchBadgeList: React.FC<
         >
           <p className="whitespace-nowrap">{t(name)}</p>
           <span
-            className={`${
-              activeKey === key ? "text-primary" : "text-lightBlack"
-            } text-lg`}
+            className={`${activeKey === key ? "text-primary" : "text-lightBlack"
+              } text-lg`}
           >
             {runIfFn(icon)}
           </span>

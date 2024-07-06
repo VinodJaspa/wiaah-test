@@ -310,7 +310,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
       },
       href: "/myprofile",
     },
-    icon: HiOutlineUserCircle,
+    icon: <HiOutlineUserCircle />,
   },
   {
     link: {
@@ -320,7 +320,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
       },
       href: "/settings",
     },
-    icon: IoSettingsOutline,
+    icon: <IoSettingsOutline />,
   },
   {
     link: {
@@ -330,7 +330,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
       },
       href: "/shopping-management",
     },
-    icon: CgShoppingBag,
+    icon: <CgShoppingBag />,
   },
   {
     link: {
@@ -340,7 +340,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
       },
       href: "/wallet",
     },
-    icon: BiWallet,
+    icon: <BiWallet />,
   },
   {
     link: {
@@ -363,7 +363,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: "/myprofile",
     },
-    icon: HiOutlineUserCircle,
+    icon: <HiOutlineUserCircle />,
   },
   {
     link: {
@@ -373,10 +373,10 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitAccountSettings()),
     },
-    icon: IoSettingsOutline,
+    icon: <IoSettingsOutline />,
   },
   {
-    icon: () => <StarOutlineIcon />,
+    icon: <StarOutlineIcon />,
     link: {
       href: "/saved",
       name: {
@@ -393,7 +393,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitShopManagement()),
     },
-    icon: BsShop,
+    icon: <BsShop />,
   },
   {
     link: {
@@ -403,7 +403,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitServiceManagement()),
     },
-    icon: () => <ServicesIcon />,
+    icon: <ServicesIcon />,
   },
   {
     link: {
@@ -413,7 +413,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitShoppingManagement()),
     },
-    icon: CgShoppingBag,
+    icon: <CgShoppingBag />,
   },
   {
     link: {
@@ -423,7 +423,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: "/wallet",
     },
-    icon: BiWallet,
+    icon: <BiWallet />,
   },
   {
     link: {

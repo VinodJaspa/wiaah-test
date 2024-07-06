@@ -32,7 +32,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/myprofile",
       },
-      icon: HiOutlineUserCircle,
+      icon: <HiOutlineUserCircle />,
     },
     {
       link: {
@@ -42,7 +42,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/settings",
       },
-      icon: IoSettingsOutline,
+      icon: <IoSettingsOutline />,
     },
     {
       link: {
@@ -52,7 +52,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/shopping-management",
       },
-      icon: CgShoppingBag,
+      icon: <CgShoppingBag />,
     },
     {
       link: {
@@ -62,7 +62,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/wallet",
       },
-      icon: BiWallet,
+      icon: <BiWallet />,
     },
     {
       link: {
@@ -85,7 +85,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/myprofile",
       },
-      icon: HiOutlineUserCircle,
+      icon: <HiOutlineUserCircle />,
     },
     {
       link: {
@@ -95,10 +95,10 @@ export const ProfileOptionsDrawer = () => {
         },
         href: getRouting((r) => r.visitAccountSettings()),
       },
-      icon: IoSettingsOutline,
+      icon: <IoSettingsOutline />,
     },
     {
-      icon: () => <StarOutlineIcon />,
+      icon: <StarOutlineIcon />,
       link: {
         href: "/saved",
         name: {
@@ -115,7 +115,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: getRouting((r) => r.visitShopManagement()),
       },
-      icon: BsShop,
+      icon: <BsShop />,
     },
     {
       link: {
@@ -125,7 +125,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: getRouting((r) => r.visitServiceManagement()),
       },
-      icon: () => <ServicesIcon />,
+      icon: <ServicesIcon />,
     },
     {
       link: {
@@ -135,7 +135,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: getRouting((r) => r.visitShoppingManagement()),
       },
-      icon: CgShoppingBag,
+      icon: <CgShoppingBag />,
     },
     {
       link: {
@@ -145,7 +145,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: "/wallet",
       },
-      icon: BiWallet,
+      icon: <BiWallet />,
     },
     {
       link: {
