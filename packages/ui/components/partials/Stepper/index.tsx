@@ -12,9 +12,9 @@ export interface StepperContextValues {
 export const StepperContext = React.createContext<StepperContextValues>({
   currentStepIdx: 0,
   stepsLength: 0,
-  nextStep: () => {},
-  previousStep: () => {},
-  setStepsLength: () => {},
+  nextStep: () => { },
+  previousStep: () => { },
+  setStepsLength: () => { },
 });
 
 type StepperPassedProps = StepperContextValues & {
@@ -68,7 +68,7 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
         stepsLength,
       }}
     >
-      {runIfFn<StepperPassedProps, React.ReactNode>(children, {
+      {runIfFn<StepperPassedProps>(children, {
         nextStep: handleNextStep,
         previousStep: handlePreviousStep,
         currentStepIdx,
@@ -80,7 +80,9 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
   );
 };
 
-export interface StepperContentProps {}
+export interface StepperContentProps {
+  children: React.ReactNode;
+}
 
 export const StepperContent: React.FC<StepperContentProps> = ({
   children: _children,
@@ -98,18 +100,22 @@ export const StepperContent: React.FC<StepperContentProps> = ({
   return <>{Comp ? runIfFn(Comp, {}) : Comp}</>;
 };
 
-export interface StepperHeaderProps {}
+export interface StepperHeaderProps { }
 
 export const StepperHeader: React.FC<StepperContentProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-export const StepperNextButton: React.FC = ({ children }) => {
+export const StepperNextButton: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { nextStep } = React.useContext(StepperContext);
   return <>{PassPropsToChild(children, { onClick: nextStep })}</>;
 };
 
-export const StepperPreviousButton: React.FC = ({ children }) => {
+export const StepperPreviousButton: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { previousStep } = React.useContext(StepperContext);
   return <>{PassPropsToChild(children, { onClick: previousStep })}</>;
 };
