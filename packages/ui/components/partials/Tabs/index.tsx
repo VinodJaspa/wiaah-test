@@ -23,11 +23,11 @@ const TabsContext = React.createContext<TabsContextValue>({
   currentTabIdx: 0,
   tabsComponents: [],
   tabsTitles: [],
-  setCurrentTabIdx: () => {},
-  setTabsComponents: () => {},
-  setTabsTitlesComponents: () => {},
-  addTab: () => {},
-  addTitle: () => {},
+  setCurrentTabIdx: () => { },
+  setTabsComponents: () => { },
+  setTabsTitlesComponents: () => { },
+  addTab: () => { },
+  addTitle: () => { },
 });
 
 export interface TabsProps {
@@ -105,7 +105,7 @@ export const Tabs: React.FC<TabsProps> = ({
   );
 };
 
-export interface TabsHeaderProps extends HtmlDivProps {}
+export interface TabsHeaderProps extends HtmlDivProps { }
 
 export const TabsHeader: React.FC<TabsHeaderProps> = ({
   className,
@@ -142,7 +142,10 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
 
 type TabTitleChildrenPropsType = TabsContextValue & { currentActive?: boolean };
 
-type TabTitleChildrenType = MaybeFn<TabTitleChildrenPropsType>;
+type TabTitleChildrenType = MaybeFn<{
+  currentTabIdx: number;
+  currentActive?: boolean;
+}>;
 
 export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
   TabKey?: string | number;
@@ -154,14 +157,19 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
   React.useEffect(() => {
     addTitle({
       id: `${TabKey}`,
-      component: typeof children === "function" ? children : <>{children}</>,
+      component:
+        typeof children === "function" ? (
+          children({ currentTabIdx: TabKey! as number })
+        ) : (
+          <>{children}</>
+        ),
     });
   }, []);
 
   return null;
 };
 
-export interface TabListProps extends HtmlDivProps {}
+export interface TabListProps extends HtmlDivProps { }
 
 export const TabList: React.FC<TabListProps> = ({
   children,
@@ -174,13 +182,13 @@ export const TabList: React.FC<TabListProps> = ({
     <div {...props} className={`${className || ""} w-full`}>
       {tabsComponents[currentTabIdx]
         ? PassPropsToFnOrElem<TabsContextValue>(
-            tabsComponents[currentTabIdx].component,
-            {
-              currentTabIdx,
-              tabsComponents,
-              ...rest,
-            }
-          )
+          tabsComponents[currentTabIdx].component,
+          {
+            currentTabIdx,
+            tabsComponents,
+            ...rest,
+          }
+        )
         : null}
       {children}
     </div>
@@ -189,7 +197,10 @@ export const TabList: React.FC<TabListProps> = ({
 
 export interface TabItemProps {
   key?: string | number;
-  children: MaybeFn<TabsContextValue>;
+  children: MaybeFn<{
+    currentTabIdx: number;
+    currentActive?: boolean;
+  }>;
 }
 export const TabItem: React.FC<TabItemProps> = ({
   children,
@@ -199,8 +210,13 @@ export const TabItem: React.FC<TabItemProps> = ({
   React.useEffect(() => {
     addTab({
       id: `${key}`,
+
       component:
-        typeof children === "function" ? children : () => <>{children}</>,
+        typeof children === "function" ? (
+          children({ currentTabIdx: key! as number })
+        ) : (
+          <>{children}</>
+        ),
     });
   }, []);
   return null;
