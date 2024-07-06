@@ -13,26 +13,8 @@ import {
 import { useRouting } from "routing";
 import { ExclimationOutlineCircleMark } from "@UI/components/partials/icons/ExclimationMark";
 import { isToday, isYesterday } from "@UI/../utils/src";
-export enum NotificationType {
-  FollowRequest = "followRequest",
-  Follow = "follow",
-  StoryReacted = "storyReacted",
-  DmMessage = "DmMessage",
-  ShopPromotion = "ShopPromotion",
-  PostReacted = "postReacted",
-  PostCommented = "postCommented",
-  CommentReacted = "commentReacted",
-  CommentCommented = "commentCommented",
-  PostMention = "postMention",
-  CommentMention = "commentMention",
-  Info = "info",
-  Warning = "warning",
-  OrderCanceled = "orderCanceled",
-  OrderDelivered = "orderDelivered",
-  ActionPosted = "actionPosted",
-  LocalizationService = "localizationService",
-  LocalizationShop = "localizationShop",
-}
+import { NotificationType } from "@features/API";
+
 export interface NotifiactionCardProps {
   type: NotificationType;
   username?: string;
@@ -41,6 +23,7 @@ export interface NotifiactionCardProps {
   thumbnail?: string;
   createdAt: string;
   seen?: boolean;
+  children?: React.ReactNode;
 }
 
 export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
