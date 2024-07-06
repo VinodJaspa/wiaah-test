@@ -3,6 +3,7 @@ import React, { FC } from "react";
 export interface DividerWithChildProps {
   hexDividerColor?: string;
   dividerHeightInRem?: 0.5 | 1 | 2 | number;
+  children?: React.ReactNode;
 }
 
 export const DividerWidthChild: FC<DividerWithChildProps> = ({
@@ -11,7 +12,7 @@ export const DividerWidthChild: FC<DividerWithChildProps> = ({
   children,
 }) => {
   const [DividerStyles, setDividerStyles] = React.useState<React.CSSProperties>(
-    {},
+    {}
   );
   React.useEffect(() => {
     // set Divder Line stlyes

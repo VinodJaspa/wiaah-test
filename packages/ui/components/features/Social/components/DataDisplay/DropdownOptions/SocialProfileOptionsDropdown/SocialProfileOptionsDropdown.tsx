@@ -10,6 +10,7 @@ import {
 
 export interface SocialProfileOptionsDropdownProps {
   profileId: string;
+  children?: React.ReactNode;
 }
 
 export const SocialProfileOptionsDropdown: React.FC<

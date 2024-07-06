@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export const SocialPostOptionsDropdown: React.FC<{
   postId: string;
+  children?: React.ReactNode;
 }> = ({ postId, children }) => {
   const { copy } = useClipboard();
   const { getUrl } = useRouting();

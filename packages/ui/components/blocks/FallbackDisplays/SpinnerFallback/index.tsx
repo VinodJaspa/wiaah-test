@@ -7,7 +7,7 @@ export interface SpinnerFallbackProps {
   isLoading?: boolean;
   isError?: boolean;
   error?: any;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const SpinnerFallback: React.FC<SpinnerFallbackProps> = ({

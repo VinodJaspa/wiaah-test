@@ -9,6 +9,7 @@ import { runIfFn } from "utils";
 
 export interface RootProps {
   scrollable?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {

@@ -15,6 +15,7 @@ export interface AbsoluteProps {
   };
   verticalCenter?: boolean;
   horizontalCenter?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Absolute: React.FC<AbsoluteProps> = ({
@@ -55,9 +56,8 @@ export const Absolute: React.FC<AbsoluteProps> = ({
   return (
     <div
       style={styles}
-      className={`absolute ${verticalCenter ? "top-1/2 translate-y-1/2" : ""} ${
-        horizontalCenter ? "left-1/2 translate-x-1/2" : ""
-      }`}
+      className={`absolute ${verticalCenter ? "top-1/2 translate-y-1/2" : ""} ${horizontalCenter ? "left-1/2 translate-x-1/2" : ""
+        }`}
     >
       {/* @ts-ignore */}
       {children}

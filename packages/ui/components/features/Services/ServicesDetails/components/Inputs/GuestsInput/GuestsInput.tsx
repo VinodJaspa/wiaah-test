@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ArrowDownIcon,
@@ -8,6 +8,7 @@ import {
   HotelGuestsInput,
 } from "@UI";
 export interface GuestsInputProps {
+  children?: ReactNode;
   onChange: (guests: {
     adults: number;
     childrens: number;

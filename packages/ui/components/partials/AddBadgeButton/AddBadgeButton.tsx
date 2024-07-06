@@ -4,6 +4,7 @@ import { Badge, RoundedPlusIcon } from "@UI";
 
 export interface AddBadgeButtonProps {
   onClick: () => any;
+  children?: React.ReactNode;
 }
 
 export const AddBadgeButton: React.FC<AddBadgeButtonProps> = ({

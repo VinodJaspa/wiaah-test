@@ -15,6 +15,7 @@ export interface ResturantSearchInputProps {
   whatInputProps?: HtmlInputProps;
   whereInputProps?: HtmlInputProps;
   onSubmit: () => any;
+  children?: React.ReactNode;
 }
 
 export const ResturantSearchInput: React.FC<ResturantSearchInputProps> = ({

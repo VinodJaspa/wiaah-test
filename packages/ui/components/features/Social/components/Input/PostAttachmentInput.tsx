@@ -48,7 +48,7 @@ export const PostAttachmentInput: React.FC<{
               <PostAttachmentTag
                 label={data.title}
                 value={data.value}
-                onClick={() => {}}
+                onClick={() => { }}
               ></PostAttachmentTag>
             </PostAttachmentDraggable>
           ))}
@@ -93,6 +93,7 @@ interface DraggableProps {
     parentX: number;
     parentY: number;
   }) => any;
+  children?: React.ReactNode;
 }
 
 const PostAttachmentDraggable: React.FC<DraggableProps> = ({
@@ -123,14 +124,11 @@ const PostAttachmentDraggable: React.FC<DraggableProps> = ({
         setPos({
           x: Math.max(
             0,
-            Math.min(left, parent.offsetWidth - wrapperRef.current.offsetWidth),
+            Math.min(left, parent.offsetWidth - wrapperRef.current.offsetWidth)
           ),
           y: Math.max(
             0,
-            Math.min(
-              top,
-              parent.offsetHeight - wrapperRef.current.offsetHeight,
-            ),
+            Math.min(top, parent.offsetHeight - wrapperRef.current.offsetHeight)
           ),
           parentH: parent.offsetHeight,
           parentW: parent.offsetWidth,
@@ -175,7 +173,7 @@ const PostAttachmentDraggable: React.FC<DraggableProps> = ({
     parentY:
       wrapperRef.current?.parentElement?.getBoundingClientRect().top || 0,
   });
-  React.useEffect(() => {}, [wrapperRef.current]);
+  React.useEffect(() => { }, [wrapperRef.current]);
 
   return (
     <div

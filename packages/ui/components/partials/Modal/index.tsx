@@ -74,7 +74,7 @@ export const Modal: React.FC<ModalProps> = ({
 };
 
 export interface ModalCloseButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
@@ -280,6 +280,7 @@ export const ModalExtendedWrapper: React.FC<ModalExtendedWrapperProps> = ({
 interface ControlledModalProps {
   overlay?: boolean;
   contentProps?: ModalContentProps;
+  children?: React.ReactNode;
 }
 
 export const ControlledModal: React.FC<ControlledModalProps> = ({

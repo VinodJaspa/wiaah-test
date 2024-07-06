@@ -106,11 +106,9 @@ const DefaultDaycomponent: React.FC<DateDayComponentProps> = ({
 }) => {
   return (
     <span
-      className={`${
-        currentMonth ? "cursor-pointer" : "cursor-not-allowed text-gray-400"
-      } ${
-        active ? "bg-primary text-white" : ""
-      } h-8 w-8 flex items-center justify-center`}
+      className={`${currentMonth ? "cursor-pointer" : "cursor-not-allowed text-gray-400"
+        } ${active ? "bg-primary text-white" : ""
+        } h-8 w-8 flex items-center justify-center`}
     >
       {dayNum}
     </span>

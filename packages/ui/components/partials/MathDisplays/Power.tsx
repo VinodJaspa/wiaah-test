@@ -2,6 +2,7 @@ import React from "react";
 
 export interface MathPowerDisplayProps {
   power: number;
+  children?: React.ReactNode;
 }
 
 export const MathPowerDisplay: React.FC<MathPowerDisplayProps> = ({

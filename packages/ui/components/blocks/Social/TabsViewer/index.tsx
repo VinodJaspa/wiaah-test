@@ -16,6 +16,7 @@ export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   reverseOrder?: boolean;
   showPanels?: boolean;
   showTabs?: boolean;
+  children?: React.ReactNode;
 }
 
 export const TabsViewer: React.FC<TabsViewerProps> = ({
@@ -38,11 +39,10 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
               {({ currentTabIdx }) => {
                 return (
                   <div
-                    className={`${
-                      currentTabIdx === i
+                    className={`${currentTabIdx === i
                         ? "border-primary text-primary fill-primary font-bold"
                         : "font-semibold text-lightBlack border-transparent"
-                    } border-b-2 pb-2 leading-6 text-sm`}
+                      } border-b-2 pb-2 leading-6 text-sm`}
                   >
                     {runIfFn(name, { active: currentTabIdx === i })}
                   </div>

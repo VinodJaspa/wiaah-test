@@ -11,6 +11,7 @@ export interface EllipsisTextProps {
   showMoreColor?: string;
   showMoreTextColor?: string;
   displayShowMore?: boolean;
+  children?: React.ReactNode;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({

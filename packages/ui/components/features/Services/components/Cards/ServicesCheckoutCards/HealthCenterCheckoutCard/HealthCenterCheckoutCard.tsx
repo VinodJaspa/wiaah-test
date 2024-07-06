@@ -4,7 +4,9 @@ import { ServiceCheckoutCommonCardWrapper, HealthCenterDoctorCard } from "@UI";
 import { HealthCenterDoctorAvailablityStatus } from "@features/API";
 
 export interface HealthCenterCheckoutCardProps
-  extends HealthCenterCheckoutBookedPropertyData { }
+  extends HealthCenterCheckoutBookedPropertyData {
+  children: React.ReactNode;
+}
 
 export const HealthCenterCheckoutCard: React.FC<
   HealthCenterCheckoutCardProps

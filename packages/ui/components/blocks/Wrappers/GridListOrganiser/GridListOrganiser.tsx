@@ -5,6 +5,7 @@ export interface GridListOrganiser {
   presets: GridPreset[];
   rowSize?: string;
   gap?: number;
+  children?: React.ReactNode;
 }
 
 export const GridListOrganiser: React.FC<GridListOrganiser> = ({
@@ -63,6 +64,7 @@ export interface GridPresetOrganiserProps {
   preset: GridPreset;
   rowSize?: string;
   gap?: number;
+  children?: React.ReactNode;
 }
 export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
   children,

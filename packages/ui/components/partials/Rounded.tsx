@@ -2,9 +2,9 @@ import React from "react";
 
 export interface RoundedProps {
   radius: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
+  children: React.ReactNode;
 }
 
 export const Rounded: React.FC<RoundedProps> = ({ children, radius }) => {
-  //@ts-ignore
   return <div className={`overflow-hidden rounded-${radius}`}>{children}</div>;
 };

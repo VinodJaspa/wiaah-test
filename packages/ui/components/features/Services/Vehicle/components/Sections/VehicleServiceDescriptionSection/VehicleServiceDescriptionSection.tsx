@@ -27,23 +27,23 @@ export const VehicleServiceDescriptionSection: React.FC<
     text: string;
     icon: React.ReactNode;
   }[] = [
-    {
-      text: `${maxSpeed}Km/s ${t("Max Speed")}`,
-      icon: <CarWheelIcon />,
-    },
-    {
-      text: `${GPS ? t("GPS Availiable") : ""}`,
-      icon: <GPSIcon />,
-    },
-    {
-      text: `${seats} ${t("Seats")}`,
-      icon: <TransportSeatIcon />,
-    },
-    {
-      text: `${airCondition ? t("Air Condition") : ""}`,
-      icon: <AirConditionIcon />,
-    },
-  ];
+      {
+        text: `${maxSpeed}Km/s ${t("Max Speed")}`,
+        icon: <CarWheelIcon />,
+      },
+      {
+        text: `${GPS ? t("GPS Availiable") : ""}`,
+        icon: <GPSIcon />,
+      },
+      {
+        text: `${seats} ${t("Seats")}`,
+        icon: <TransportSeatIcon />,
+      },
+      {
+        text: `${airCondition ? t("Air Condition") : ""}`,
+        icon: <AirConditionIcon />,
+      },
+    ];
 
   return (
     <div ref={descriptionRef} className="flex flex-col gap-[1.875rem]">

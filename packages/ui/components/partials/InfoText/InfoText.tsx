@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 export type InfoTextCases = {
   success?: string;
@@ -10,6 +10,7 @@ export interface InfoTextProps {
   value?: string | number | boolean;
   cases?: InfoTextCases;
   variant?: keyof InfoTextCases;
+  children?: ReactNode;
 }
 
 export const InfoText: React.FC<InfoTextProps> = ({

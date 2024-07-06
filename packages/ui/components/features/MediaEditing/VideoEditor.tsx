@@ -508,6 +508,7 @@ const VideoDraggableHandler: React.FC<{
   maxPosition: number;
   parentRef: React.RefObject<HTMLElement>;
   className?: string;
+  children?: React.ReactNode;
 }> = ({
   position,
   setPosition,

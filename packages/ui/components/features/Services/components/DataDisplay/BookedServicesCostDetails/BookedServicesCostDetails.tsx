@@ -12,6 +12,7 @@ export interface BookedServicesCostDetailsProps {
   subTotal: number;
   total: number;
   vatAmount: number;
+  children?: React.ReactNode;
 }
 
 export const BookedServicesCostDetails: React.FC<

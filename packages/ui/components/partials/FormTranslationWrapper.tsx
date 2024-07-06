@@ -5,13 +5,13 @@ const FormTranslationContext = React.createContext<{
   setLang: (lang: string) => any;
 }>({
   lang: "en",
-  setLang() {},
+  setLang() { },
 });
 
 export function getTranslationStateValue<TValue extends Record<string, any>>(
   values: TValue,
   key: keyof TValue,
-  lang: string,
+  lang: string
 ) {
   return values?.[key]?.[lang] || "";
 }
@@ -20,7 +20,7 @@ export function setTranslationStateValue<TValue, TKey extends keyof TValue>(
   values: TValue,
   key: TKey,
   value: any,
-  lang: string,
+  lang: string
 ): TValue[TKey] {
   return {
     ...(values?.[key] || ({} as TValue[TKey])),
@@ -38,12 +38,12 @@ export const useFormTranslationWrapper = () => {
 };
 
 export const FormTranslationWrapper: React.FC<{
+  children: React.ReactNode;
   lang: string;
   onLangChange: (lang: string) => any;
 }> = ({ lang, onLangChange, children }) => {
   return (
     <FormTranslationContext.Provider value={{ lang, setLang: onLangChange }}>
-      {/* @ts-ignore */}
       {children}
     </FormTranslationContext.Provider>
   );

@@ -3,7 +3,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { AspectRatioImage, Rate } from "@UI";
 
-export interface ShopMapSearchCardProps extends ShopMapSearchDataType {}
+export interface ShopMapSearchCardProps extends ShopMapSearchDataType {
+  children?: React.ReactNode;
+}
 
 export const ShopMapSearchCard: React.FC<ShopMapSearchCardProps> = ({
   categories,

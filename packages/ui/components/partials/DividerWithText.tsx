@@ -1,10 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 
 export interface DivderWithTextProps {
   text?: string;
   hexDividerColor?: string;
   hexTextColor?: string;
   dividerHeightInRem?: 0.5 | 1 | 2 | number;
+  children?: ReactNode;
 }
 
 export const DividerWidthText: FC<DivderWithTextProps> = ({
@@ -15,7 +16,7 @@ export const DividerWidthText: FC<DivderWithTextProps> = ({
   children,
 }) => {
   const [DividerStyles, setDividerStyles] = React.useState<React.CSSProperties>(
-    {},
+    {}
   );
   const [TextStyles, setTextStyles] = React.useState<React.CSSProperties>();
   React.useEffect(() => {

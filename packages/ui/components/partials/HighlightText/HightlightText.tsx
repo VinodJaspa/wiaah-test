@@ -4,6 +4,7 @@ import { setTestid } from "utils";
 export interface HighlightTextProps {
   text?: string;
   toHighlight: string;
+  children?: React.ReactNode;
 }
 
 export const HighlightText: React.FC<HighlightTextProps> = ({

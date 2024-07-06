@@ -6,6 +6,7 @@ export interface ReleativeProps {
   height?: CSSValueUnit;
   fullWidth?: boolean;
   fullHeight?: boolean;
+  children?: React.ReactNode;
 }
 export const Releative: React.FC<ReleativeProps> = ({
   children,

@@ -7,6 +7,7 @@ import { SubscribersUserInfo } from "@UI/../types/src";
 export interface SubscriberCardProps extends SubscribersUserInfo {
   onFollow?: () => any;
   onProfileClick?: (profileUrl: string) => any;
+  children?: React.ReactNode;
 }
 
 export const SubscriberCard: React.FC<SubscriberCardProps> = ({

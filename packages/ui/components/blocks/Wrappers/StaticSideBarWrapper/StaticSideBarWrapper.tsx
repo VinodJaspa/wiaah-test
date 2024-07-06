@@ -5,6 +5,7 @@ import { useElementScrolling } from "utils";
 
 export interface StaticSideBarWrapperProps {
   sidebar: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
@@ -30,7 +31,9 @@ export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
   );
 };
 
-export const FixedScrollingWrapper: React.FC = ({ children }) => {
+export const FixedScrollingWrapper: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const WrapperRef = React.useRef<HTMLDivElement>(null);
   const { passed, y } = useElementScrolling(WrapperRef);
 

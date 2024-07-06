@@ -24,8 +24,8 @@ const DrawerCtx = React.createContext<DrawerCtxValues>({
   spaceBottom: "0px",
   active: true,
   full: false,
-  onClose: () => {},
-  onOpen: () => {},
+  onClose: () => { },
+  onOpen: () => { },
   draggable: false,
 });
 
@@ -35,12 +35,14 @@ export interface DrawerProps
   active?: boolean;
   onOpen?: () => any;
   isLazy?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
+  children,
   isOpen,
   onClose,
-  onOpen = () => {},
+  onOpen = () => { },
   position = "left",
   active = true,
   full,
@@ -64,11 +66,13 @@ export const Drawer: React.FC<DrawerProps> = ({
         overlap,
         draggable,
       }}
-    />
+    >
+      {children}
+    </DrawerCtx.Provider>
   );
 };
 
-export interface DrawerContentProps extends HtmlDivProps {}
+export interface DrawerContentProps extends HtmlDivProps { }
 
 export const DrawerContent: React.FC<DrawerContentProps> = ({
   children,
@@ -85,9 +89,8 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
     switch (position) {
       case "bottom":
         return {
-          className: `${
-            isOpen ? "" : `translate-y-[calc(105%)]`
-          } w-full left-0`,
+          className: `${isOpen ? "" : `translate-y-[calc(105%)]`
+            } w-full left-0`,
           styles: {
             transform: isOpen
               ? undefined
@@ -100,23 +103,20 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         };
       case "top":
         return {
-          className: `${isOpen ? "" : "-translate-y-full"} top-0 ${
-            full ? "h-full" : "h-[min(100%,20rem)]"
-          } w-full left-0`,
+          className: `${isOpen ? "" : "-translate-y-full"} top-0 ${full ? "h-full" : "h-[min(100%,20rem)]"
+            } w-full left-0`,
           styles: {},
         };
       case "right":
         return {
-          className: `${isOpen ? "" : "translate-x-full"} right-0 ${
-            full ? "w-full" : "w-[min(100%,20rem)]"
-          } h-full top-0`,
+          className: `${isOpen ? "" : "translate-x-full"} right-0 ${full ? "w-full" : "w-[min(100%,20rem)]"
+            } h-full top-0`,
           styles: {},
         };
       default:
         return {
-          className: `${isOpen ? "" : "-translate-x-full"} left-0 ${
-            full ? "w-full" : "w-[min(100%,20rem)]"
-          } h-full top-0`,
+          className: `${isOpen ? "" : "-translate-x-full"} left-0 ${full ? "w-full" : "w-[min(100%,20rem)]"
+            } h-full top-0`,
           styles: {},
         };
     }
@@ -131,9 +131,8 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         zIndex: overlap ? 100 : undefined,
         overflowY: draggable ? "visible" : "hidden",
       }}
-      className={`${className || ""} ${
-        setPositionClasses().className
-      } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
+      className={`${className || ""} ${setPositionClasses().className
+        } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
     >
       {draggable && isOpen ? (
         <>
@@ -184,7 +183,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   );
 };
 
-export interface DrawerOverlayProps extends HtmlDivProps {}
+export interface DrawerOverlayProps extends HtmlDivProps { }
 
 export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
   className,
@@ -198,16 +197,17 @@ export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
       style={{
         bottom: spaceBottom ? spaceBottom : "0px",
       }}
-      className={`${
-        isOpen
+      className={`${isOpen
           ? "bg-opacity-30 pointer-events-auto"
           : "bg-opacity-0 pointer-events-none"
-      } z-50 bg-black fixed transition-all left-0 w-full h-full`}
+        } z-50 bg-black fixed transition-all left-0 w-full h-full`}
     />
   ) : null;
 };
 
-export interface DrawerCloseButton {}
+export interface DrawerCloseButton {
+  children?: React.ReactNode;
+}
 export const DrawerCloseButton: React.FC<DrawerCloseButton> = ({
   children,
 }) => {
@@ -231,9 +231,8 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   const { active } = React.useContext(DrawerCtx);
   return active ? (
     <div
-      className={`${
-        className || ""
-      } flex justify-between items-center relative`}
+      className={`${className || ""
+        } flex justify-between items-center relative`}
       {...props}
     >
       {typeof onBack === "function" ? (

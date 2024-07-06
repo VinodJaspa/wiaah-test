@@ -8,9 +8,11 @@ export interface AccordionProps {
   defaultOpenItems?: AccordionKeyType[];
   onChange?: (v: AccordionKeyType[]) => any;
   value?: AccordionKeyType[];
+  children?: React.ReactNode;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
+  children,
   controled,
   isLazy,
   defaultOpenItems,
@@ -64,6 +66,8 @@ export const Accordion: React.FC<AccordionProps> = ({
         defaultOpen,
       }}
       {...props}
-    />
+    >
+      {children}
+    </AccordionContext.Provider>
   );
 };

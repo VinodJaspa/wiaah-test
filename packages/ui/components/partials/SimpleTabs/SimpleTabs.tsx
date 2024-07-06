@@ -15,12 +15,13 @@ interface SimpleTabsCtxType {
 
 const SimpleTabsContext = React.createContext<SimpleTabsCtxType>({
   currIdx: 0,
-  setCurrIdx(idx) {},
+  setCurrIdx(idx) { },
 });
 
 interface SimpleTabsProps {
   onChange?: (idx: number) => any;
   value?: number;
+  children?: React.ReactNode;
 }
 
 export const SimpleTabs: React.FC<SimpleTabsProps> = ({
@@ -75,7 +76,9 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
   );
 };
 
-export const SimpleTabItemList: React.FC = ({ children: _children }) => {
+export const SimpleTabItemList: React.FC<{ children: React.ReactNode }> = ({
+  children: _children,
+}) => {
   const children = _children
     ? React.Children.toArray(_children).filter((v) => !!v)
     : [];
@@ -86,15 +89,15 @@ export const SimpleTabItemList: React.FC = ({ children: _children }) => {
 export const SimpleTabHeadButton: React.FC<{
   selected?: boolean;
   onClick?: () => any;
+  children?: React.ReactNode;
 }> = ({ onClick, selected, children }) => {
   return (
     <div
       onClick={onClick}
-      className={`${
-        selected
+      className={`${selected
           ? "border border-b-0 border-b-gray-300 text-black"
           : "text-gray border border-white"
-      } px-4 py-2`}
+        } px-4 py-2`}
     >
       {/* @ts-ignore */}
       {children}

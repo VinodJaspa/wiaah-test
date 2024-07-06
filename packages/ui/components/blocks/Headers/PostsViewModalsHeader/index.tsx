@@ -3,6 +3,7 @@ import { FloatingContainer, ArrowLeftIcon } from "@UI";
 
 export interface PostsViewModalsHeaderProps {
   onBackClick?: () => any;
+  children?: React.ReactNode;
 }
 
 export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({

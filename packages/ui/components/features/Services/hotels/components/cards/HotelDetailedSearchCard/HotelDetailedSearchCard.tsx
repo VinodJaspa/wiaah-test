@@ -33,10 +33,11 @@ export interface HotelDetailedSearchCardProps {
   };
   id: string;
   taxesAndFeesIncluded: boolean;
+  children?: React.ReactNode;
 }
 
 export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
-  props,
+  props
 ) => {
   const {
     description,
@@ -58,9 +59,8 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
 
   return (
     <div
-      className={`${
-        vertical ? "flex-col" : "flex-row"
-      } flex gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
+      className={`${vertical ? "flex-col" : "flex-row"
+        } flex gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
       <div className="relative w-[min(100%,30rem)]">
         <AspectRatioImage src={thumbnail} alt={name} ratio={1} />
@@ -94,9 +94,8 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
         </div>
       ) : (
         <div
-          className={`${
-            vertical ? "flex-row-reverse" : "flex-col items-end"
-          } flex justify-between h-auto gap-2`}
+          className={`${vertical ? "flex-row-reverse" : "flex-col items-end"
+            } flex justify-between h-auto gap-2`}
         >
           <div className={`${vertical ? "" : "items-end"} flex gap-2`}>
             <div className="flex flex-col">
@@ -111,9 +110,8 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
           </div>
           <>{children}</>
           <div
-            className={`${
-              vertical ? "items-start" : "items-end"
-            } flex gap-1 flex-col`}
+            className={`${vertical ? "items-start" : "items-end"
+              } flex gap-1 flex-col`}
           >
             <span
               onClick={() => onShowOnMap && onShowOnMap(id, location.cords)}

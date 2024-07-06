@@ -11,7 +11,9 @@ import {
 import { isToday } from "@UI/../utils/src";
 import React from "react";
 import { useTranslation } from "react-i18next";
-export interface NotifiactionsMenuProps { }
+export interface NotifiactionsMenuProps {
+  children?: React.ReactNode;
+}
 
 export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   children,

@@ -7,6 +7,7 @@ export interface FileInputProps {
   accept?: "video" | "picture" | "both" | "all";
   innerProps?: HtmlInputProps;
   multiple?: boolean;
+  children?: React.ReactNode;
 }
 
 export const FileInput: React.FC<FileInputProps> = ({

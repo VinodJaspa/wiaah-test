@@ -1,6 +1,7 @@
 import React from "react";
 import { CSSValueUnit } from "types";
 export interface BorderProps {
+  children?: React.ReactNode;
   thinkness?: CSSValueUnit;
   color?: {
     inHex: string;
@@ -19,6 +20,5 @@ export const Border: React.FC<BorderProps> = ({
     borderColor: color?.inHex,
     borderRadius: `${rounded?.value}${rounded?.unit || "px"}`,
   };
-  //@ts-ignore
   return <div style={styles}>{children}</div>;
 };

@@ -15,7 +15,7 @@ type TimeRange = {
 
 export interface TimeInputProps {
   timeRange?: TimeRange;
-  timeComponent?: React.ReactNode;
+  timeComponent?: React.ReactNode | React.FC;
   onTimeSelect?: (time: TimeType) => any;
 }
 
@@ -33,14 +33,12 @@ const DefaultTimeComponent: React.FC<TimeCustomComponentProps> = ({
   return (
     <AspectRatio onClick={() => onClick(time.id || "")} ratio={3 / 4}>
       <div
-        className={`${
-          selected ? "text-white bg-primary" : ""
-        } w-full min-w-[2rem] flex justify-center items-center h-full`}
+        className={`${selected ? "text-white bg-primary" : ""
+          } w-full min-w-[2rem] flex justify-center items-center h-full`}
       >
         <p>
-          {`${time.hour}:${
-            time.minutes < 10 ? `0${time.minutes}` : time.minutes
-          }`}
+          {`${time.hour}:${time.minutes < 10 ? `0${time.minutes}` : time.minutes
+            }`}
         </p>
       </div>
     </AspectRatio>
@@ -85,15 +83,15 @@ export const TimeInput: React.FC<TimeInputProps> = ({
     <div className="grid grid-cols-5 min-w-[20rem]  gap-2 h-fit w-full">
       {Array.isArray(times)
         ? times.map((time, i) => {
-            return PassPropsToFnOrElem<TimeCustomComponentProps>(
-              timeComponent,
-              {
-                onClick: (id) => setSelectedTime((state) => [time]),
-                selected: selectedTime.findIndex((t) => t.id === time.id) > -1,
-                time,
-              }
-            );
-          })
+          return PassPropsToFnOrElem<TimeCustomComponentProps>(
+            timeComponent,
+            {
+              onClick: (id) => setSelectedTime((state) => [time]),
+              selected: selectedTime.findIndex((t) => t.id === time.id) > -1,
+              time,
+            }
+          );
+        })
         : null}
     </div>
   );

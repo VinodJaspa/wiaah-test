@@ -8,7 +8,7 @@ export interface PaddingProps {
   bottom?: CSSValueUnit;
   left?: CSSValueUnit;
   right?: CSSValueUnit;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const Padding: React.FC<PaddingProps> = ({

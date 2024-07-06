@@ -1,6 +1,8 @@
 import React from "react";
 import { Divider, DividerWidthChild } from "@UI";
-export interface TipTextContainerProps { }
+export interface TipTextContainerProps {
+  children?: React.ReactNode;
+}
 
 export const TipTextContainer: React.FC<TipTextContainerProps> = ({
   children,
@@ -10,7 +12,6 @@ export const TipTextContainer: React.FC<TipTextContainerProps> = ({
       <DividerWidthChild>
         <span className="w-[40rem] bg-black bg-opacity-70 py-[1px]"></span>
       </DividerWidthChild>
-      {/*@ts-ignore*/}
       <div className="flex w-full items-center justify-center">{children}</div>
       <Divider />
     </div>

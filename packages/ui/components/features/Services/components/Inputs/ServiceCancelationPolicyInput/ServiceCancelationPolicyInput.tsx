@@ -9,6 +9,7 @@ export interface ServiceCancelationPolicyInputProps {
   onSelected: (id: string) => any;
   cost: number;
   duration: number;
+  children?: React.ReactNode;
 }
 
 export const ServiceCancelationPolicyInput: React.FC<

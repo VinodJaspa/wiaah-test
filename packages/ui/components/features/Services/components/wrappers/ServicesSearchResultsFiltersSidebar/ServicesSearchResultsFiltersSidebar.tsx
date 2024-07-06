@@ -21,6 +21,7 @@ import {
 
 export interface ServicesSearchResultsFiltersSidebarProps {
   onShowOnMap: () => any;
+  children?: React.ReactNode;
 }
 
 export const ServicesSearchResultsFiltersSidebar: React.FC<

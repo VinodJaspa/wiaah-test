@@ -17,6 +17,7 @@ export interface SellerNavigationDrawerProps
   links: NavigationLinkType[];
   activeLink?: string;
   onLinkClick?: (link: NavigationLinkType) => any;
+  children?: React.ReactNode;
 }
 
 export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({

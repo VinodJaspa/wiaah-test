@@ -176,7 +176,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   );
 };
 
-export const AccountsProfileOptions: React.FC = ({ children }) => {
+interface AccountsProfileOptionsProps {
+  children?: React.ReactNode;
+}
+export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
+  children,
+}) => {
   const { visit } = useRouting();
   const BuyerNavLinks: HeaderNavLink[] = [
     {
@@ -187,7 +192,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/myprofile",
       },
-      icon: HiOutlineUserCircle,
+      icon: <HiOutlineUserCircle />,
     },
     {
       link: {
@@ -197,7 +202,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/settings",
       },
-      icon: IoSettingsOutline,
+      icon: <IoSettingsOutline />,
     },
     {
       link: {
@@ -207,7 +212,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/shopping-management",
       },
-      icon: CgShoppingBag,
+      icon: <CgShoppingBag />,
     },
     {
       link: {
@@ -217,7 +222,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/wallet",
       },
-      icon: BiWallet,
+      icon: <BiWallet />,
     },
     {
       link: {
@@ -240,7 +245,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/myprofile",
       },
-      icon: HiOutlineUserCircle,
+      icon: <HiOutlineUserCircle />,
     },
     {
       link: {
@@ -250,10 +255,10 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: getRouting((r) => r.visitAccountSettings()),
       },
-      icon: IoSettingsOutline,
+      icon: <IoSettingsOutline />,
     },
     {
-      icon: () => <StarOutlineIcon />,
+      icon: <StarOutlineIcon />,
       link: {
         href: "/saved",
         name: {
@@ -270,7 +275,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: getRouting((r) => r.visitShopManagement()),
       },
-      icon: BsShop,
+      icon: <BsShop />,
     },
     {
       link: {
@@ -281,7 +286,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         href: getRouting((r) => r.visitServiceManagement()),
         props: setTestid("header_settings_service"),
       },
-      icon: () => <ServicesIcon />,
+      icon: <ServicesIcon />,
     },
     {
       link: {
@@ -291,7 +296,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: getRouting((r) => r.visitShoppingManagement()),
       },
-      icon: CgShoppingBag,
+      icon: <CgShoppingBag />,
     },
     {
       link: {
@@ -301,7 +306,7 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
         },
         href: "/wallet",
       },
-      icon: BiWallet,
+      icon: <BiWallet />,
     },
     {
       link: {
@@ -324,18 +329,18 @@ export const AccountsProfileOptions: React.FC = ({ children }) => {
       <MenuList {...setTestid("header_settings")} origin="top right">
         {links.length > 0
           ? links.map(({ icon, link }, i) => (
-              <MenuItem
-                {...(link?.props || {})}
-                onClick={() => visit((r) => r.addPath(link.href))}
-              >
-                <HStack>
-                  <span className="text-4xl">{runIfFn(icon, {})}</span>
-                  <span className="capitalize">
-                    <TranslationText translationObject={link.name} />
-                  </span>
-                </HStack>
-              </MenuItem>
-            ))
+            <MenuItem
+              {...(link?.props || {})}
+              onClick={() => visit((r) => r.addPath(link.href))}
+            >
+              <HStack>
+                <span className="text-4xl">{runIfFn(icon, {})}</span>
+                <span className="capitalize">
+                  <TranslationText translationObject={link.name} />
+                </span>
+              </HStack>
+            </MenuItem>
+          ))
           : null}
       </MenuList>
     </Menu>

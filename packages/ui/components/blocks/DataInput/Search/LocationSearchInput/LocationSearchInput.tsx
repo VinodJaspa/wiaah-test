@@ -47,9 +47,8 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
   return (
     <div
       ref={ref}
-      className={`${
-        className || ""
-      } rounded-lg relative z-10 isolate w-full border-[1px] border-gray-200 border-b-0 p-2`}
+      className={`${className || ""
+        } rounded-lg relative z-10 isolate w-full border-[1px] border-gray-200 border-b-0 p-2`}
     >
       <InputGroup flushed className="border-b-black ">
         <InputLeftElement className="flex px-2 justify-center items-center">
@@ -65,18 +64,17 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
         />
       </InputGroup>
       <div
-        className={`${
-          focused ? "" : " scale-y-0 opacity-0 pointer-events-none"
-        } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-20`}
+        className={`${focused ? "" : " scale-y-0 opacity-0 pointer-events-none"
+          } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-20`}
       >
         <Prefix
           PrefixClassName="text-2xl"
           className="items-center"
-          Prefix={() => (
+          Prefix={
             <span className="border-2 border-gray-200 p-2 rounded-full">
               <BiSend className="text-xl" />
             </span>
-          )}
+          }
         >
           <span className="font-bold text-sm">{t("Nearby")}</span>
         </Prefix>
@@ -86,25 +84,25 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {Array.isArray(locations)
             ? locations.map((location, i) => (
-                <Prefix
-                  key={i}
-                  onClick={() => {
-                    onLocationSelect(location.address);
-                    setFocused(false);
-                  }}
-                  className="hover:bg-gray-100 active:bg-gray-200 border-b-2 border-gray-200 py-2 cursor-pointer"
-                  Prefix={() => (
-                    <span className="border-2 border-gray-200 p-2 rounded-full">
-                      <HiOutlineLocationMarker className="text-xl" />
-                    </span>
-                  )}
-                >
-                  <div className="flex flex-col text-black">
-                    <span className="font-bold">{location.address}</span>
-                    <span>{location.city}</span>
-                  </div>
-                </Prefix>
-              ))
+              <Prefix
+                key={i}
+                onClick={() => {
+                  onLocationSelect(location.address);
+                  setFocused(false);
+                }}
+                className="hover:bg-gray-100 active:bg-gray-200 border-b-2 border-gray-200 py-2 cursor-pointer"
+                Prefix={
+                  <span className="border-2 border-gray-200 p-2 rounded-full">
+                    <HiOutlineLocationMarker className="text-xl" />
+                  </span>
+                }
+              >
+                <div className="flex flex-col text-black">
+                  <span className="font-bold">{location.address}</span>
+                  <span>{location.city}</span>
+                </div>
+              </Prefix>
+            ))
             : null}
         </SpinnerFallback>
       </div>

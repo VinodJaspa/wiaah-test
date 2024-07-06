@@ -3,6 +3,7 @@ import React, { useState, useRef, MouseEvent, TouchEvent } from "react";
 interface DraggableComponentProps {
   onChange?: (position: { x: number; y: number }) => void;
   direction?: "horizontal" | "vertical" | "both";
+  children?: React.ReactNode;
 }
 
 export const Draggable: React.FC<DraggableComponentProps> = ({

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { MaybeFn, runIfFn } from "utils";
 
 interface ToggleVisableCtxValues {
@@ -7,7 +7,7 @@ interface ToggleVisableCtxValues {
 }
 
 const ToggleVisableCtx = React.createContext<ToggleVisableCtxValues>({
-  changeState: () => {},
+  changeState: () => { },
   state: "",
 });
 export interface ToggleVisiableProps {
@@ -33,6 +33,7 @@ export const ToggleVisable: React.FC<ToggleVisiableProps> = ({ children }) => {
 
 interface ToggleVisableItemProps {
   visableOnState: string | string[];
+  children?: ReactNode;
 }
 
 export const ToggleVisableItem: React.FC<ToggleVisableItemProps> = ({
@@ -48,8 +49,8 @@ export const ToggleVisableItem: React.FC<ToggleVisableItemProps> = ({
           ? children
           : null
         : visableOnState === state
-        ? children
-        : null}
+          ? children
+          : null}
     </>
   );
 };
