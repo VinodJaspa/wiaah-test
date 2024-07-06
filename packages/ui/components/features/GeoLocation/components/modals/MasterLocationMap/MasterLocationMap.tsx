@@ -113,7 +113,11 @@ export const MasterLocationMapModal: React.FC = () => {
                         <ServicesSearchBadgeList
                           activeKey={values["serviceType"] as ServicesType}
                           additionalLinks={[
-                            { key: "shop", name: t("Shop"), icon: StoreIcon },
+                            {
+                              key: "shop",
+                              name: t("Shop"),
+                              icon: <StoreIcon />,
+                            },
                           ]}
                           onClick={(v) => {
                             setFieldValue("serviceType", v);

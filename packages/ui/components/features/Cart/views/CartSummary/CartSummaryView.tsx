@@ -27,7 +27,7 @@ import { EmptyCartSummary } from "./EmptyCartSummary";
 import { mapArray } from "@UI/../utils/src";
 import { CartItem, ServiceType, ShoppingCartItemType } from "@features/API";
 
-export interface CartSummaryViewProps {}
+export interface CartSummaryViewProps { }
 
 export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
   const { t } = useTranslation();
@@ -141,6 +141,7 @@ const ShoppingCartMobileItem: React.FC<{
   guests?: number;
   type: ShoppingCartItemType;
   serviceType?: ServiceType;
+  children?: React.ReactNode;
 }> = ({
   checkin,
   thumbnail,
@@ -151,20 +152,20 @@ const ShoppingCartMobileItem: React.FC<{
   guests,
   type,
 }) => {
-  const [] = React.useState<boolean>();
-  return (
-    <Draggable onChange={({ x, y }) => {}} direction="horizontal">
-      <HStack>
-        <Checkbox />
-        <div className="flex gap-1">
-          <Image src={thumbnail} className="h-full object-cover w-24"></Image>
-          <div className="flex flex-col gap-2">
-            <p className="text-lg font-medium">{title}</p>
+    const [] = React.useState<boolean>();
+    return (
+      <Draggable onChange={({ x, y }) => { }} direction="horizontal">
+        <HStack>
+          <Checkbox />
+          <div className="flex gap-1">
+            <Image src={thumbnail} className="h-full object-cover w-24"></Image>
+            <div className="flex flex-col gap-2">
+              <p className="text-lg font-medium">{title}</p>
+            </div>
           </div>
-        </div>
-      </HStack>
-    </Draggable>
-  );
-};
+        </HStack>
+      </Draggable>
+    );
+  };
 
 export default CartSummaryView;

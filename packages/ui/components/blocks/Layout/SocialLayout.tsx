@@ -285,7 +285,10 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
   };
 }
 
-export const SocialLayout: React.FC = ({ children }) => {
+interface SocialLayoutProps {
+  children?: React.ReactNode;
+}
+export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
   const { isMobile } = useResponsive();
   return (
     <>

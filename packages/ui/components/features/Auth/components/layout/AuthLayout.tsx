@@ -4,7 +4,9 @@ import React from "react";
 
 const loginPath = "/auth/login";
 
-export const AuthLayout: React.FC = ({ children }) => {
+export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { push, getCurrentPath, getQuery, getParam } = useRouting();
   const path = getCurrentPath();
   const { data, isLoading, isError } = useGetMyAccountQuery();
