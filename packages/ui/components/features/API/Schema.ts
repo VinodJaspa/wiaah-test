@@ -13,13 +13,13 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T,
+  K extends keyof T
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
   | {
-      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
-    };
+    [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+  };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string };
@@ -3674,8 +3674,24 @@ export type NotificationPaginationResponse = {
   total: Scalars["Int"]["input"];
 };
 export enum NotificationType {
-  FollowRequest = "follow_request",
+  FollowRequest = "followRequest",
   Follow = "follow",
+  StoryReacted = "storyReacted",
+  DmMessage = "DmMessage",
+  ShopPromotion = "ShopPromotion",
+  PostReacted = "postReacted",
+  PostCommented = "postCommented",
+  CommentReacted = "commentReacted",
+  CommentCommented = "commentCommented",
+  PostMention = "postMention",
+  CommentMention = "commentMention",
+  Info = "info",
+  Warning = "warning",
+  OrderCanceled = "orderCanceled",
+  OrderDelivered = "orderDelivered",
+  ActionPosted = "actionPosted",
+  LocalizationService = "localizationService",
+  LocalizationShop = "localizationShop",
 }
 
 export type OpenTime = {
