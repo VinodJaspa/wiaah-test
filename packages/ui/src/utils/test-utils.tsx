@@ -29,11 +29,11 @@ export function getRoleId(id: string): string {
 
 export const waitFor = (
   callback: () => any,
-  { interval = 50, timeout = 1000 } = {},
+  { interval = 50, timeout = 1000 } = {}
 ) =>
   act(
     () =>
-      new Promise((resolve, reject) => {
+      new Promise<void>((resolve, reject) => {
         const startTime = Date.now();
 
         const nextInterval = () => {
@@ -52,7 +52,7 @@ export const waitFor = (
         };
 
         nextInterval();
-      }),
+      })
   );
 
 export const QueryClientWrapper = ({
