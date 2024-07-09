@@ -1,4 +1,4 @@
-let callbackTimeout: NodeJS.Timer;
+let callbackTimeout: NodeJS.Timeout;
 
 export const useCallbackAfter = (
   timeInMs: number = 1000,

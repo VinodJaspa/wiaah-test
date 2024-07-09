@@ -1,40 +1,28 @@
-import React from "react";
+import { useEffect } from "react";
 
-let interval: NodeJS.Timer;
 export const useTimer = (
   time: number,
-  onTimeProgression: (progress: number) => any,
+  onTimeProgression: (progress: number) => void,
   speed: number = 200,
-  cbOnFinish?: () => any
+  cbOnFinish?: () => void
 ) => {
-  const timeInMs = time * 1000;
-  const targetTime = Date.now() + timeInMs;
-  if (!interval) {
-    interval = setInterval(() => {
+  useEffect(() => {
+    const timeInMs = time * 1000;
+    const targetTime = Date.now() + timeInMs;
+
+    const interval = setInterval(() => {
       const now = Date.now();
       const diff = targetTime - now;
       const progression = (timeInMs - diff) / timeInMs;
       const progress = Math.round(progression * 100);
-      // console.log("timer", progression);
       onTimeProgression(progress);
+
       if (progression >= 1) {
         clearInterval(interval);
         cbOnFinish && cbOnFinish();
       }
     }, speed);
-  } else {
-    clearInterval(interval);
-    interval = setInterval(() => {
-      const now = Date.now();
-      const diff = targetTime - now;
-      const progression = (timeInMs - diff) / timeInMs;
-      const progress = Math.round(progression * 100);
-      // console.log("timer", progression);
-      onTimeProgression(progress);
-      if (progression >= 1) {
-        clearInterval(interval);
-        cbOnFinish && cbOnFinish();
-      }
-    }, speed);
-  }
+
+    return () => clearInterval(interval);
+  }, [time, onTimeProgression, speed, cbOnFinish]);
 };
