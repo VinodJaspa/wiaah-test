@@ -391,15 +391,13 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={() => {
-          return (
-            <ServiceReservastionForm
-              sellerId={"test"}
-              selectedServicesIds={[]}
-            // serviceId={""}
-            />
-          );
-        }}
+        sidebar={
+          <ServiceReservastionForm
+            sellerId={"test"}
+            selectedServicesIds={[]}
+          // serviceId={""}
+          />
+        }
       >
         <Tabs>
           {({ currentTabIdx }) => {

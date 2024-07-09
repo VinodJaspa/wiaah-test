@@ -363,15 +363,13 @@ export const RestaurantDetailsView: React.FC = () => {
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={() => {
-          return (
-            <ServiceReservastionForm
-              sellerId={""}
-              selectedServicesIds={[]}
-            // serviceId={""}
-            />
-          );
-        }}
+        sidebar={
+          <ServiceReservastionForm
+            sellerId={""}
+            selectedServicesIds={[]}
+          // serviceId={""}
+          />
+        }
       >
         <Tabs>
           {({ currentTabIdx }) => {

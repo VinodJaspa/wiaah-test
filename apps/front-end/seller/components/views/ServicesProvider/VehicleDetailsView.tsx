@@ -187,11 +187,9 @@ export const VehicleServiceDetailsView: React.FC<
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={() => {
-          return (
-            <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
-          );
-        }}
+        sidebar={
+          <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
+        }
       >
         <Tabs>
           {({ currentTabIdx }) => {

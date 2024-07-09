@@ -473,7 +473,7 @@ export const HotelDetailsView: React.FC = () => {
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={() =>
+        sidebar={
           res ? (
             <ServiceRangeBookingCalander
               bookedDates={[]}
