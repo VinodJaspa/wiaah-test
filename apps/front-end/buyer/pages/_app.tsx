@@ -24,16 +24,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        {/* <ChakraProvider theme={{}}> */}
-        <CookiesProvider>
-          {/* @ts-ignore */}
-          <RecoilRoot>
-            <DataInitializationWrapper accountType={AccountType.Buyer}>
-              <Component {...pageProps} />
-            </DataInitializationWrapper>
-          </RecoilRoot>
-        </CookiesProvider>
-        {/* </ChakraProvider> */}
+        <ChakraProvider>
+          <CookiesProvider>
+            <RecoilRoot>
+              <DataInitializationWrapper accountType={AccountType.Buyer}>
+                <Component {...pageProps} />
+              </DataInitializationWrapper>
+            </RecoilRoot>
+          </CookiesProvider>
+        </ChakraProvider>
       </Hydrate>
     </QueryClientProvider>
   );
