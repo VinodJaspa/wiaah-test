@@ -12,27 +12,27 @@ const links: {
   title: string;
   url: string;
 }[] = [
-  {
-    title: "Account Settings",
-    icon: IoSettingsOutline,
-    url: getRouting((r) => r.visitAccountSettings()),
-  },
-  {
-    title: "Shop Management",
-    icon: BsShop,
-    url: getRouting((r) => r.visitShopManagement()),
-  },
-  {
-    title: "Shopping Management",
-    icon: CgShoppingBag,
-    url: getRouting((r) => r.visitShoppingManagement()),
-  },
-  {
-    title: "Service Management",
-    icon: ServicesIcon,
-    url: getRouting((r) => r.visitServiceManagement()),
-  },
-];
+    {
+      title: "Account Settings",
+      icon: <IoSettingsOutline />,
+      url: getRouting((r) => r.visitAccountSettings()),
+    },
+    {
+      title: "Shop Management",
+      icon: <BsShop />,
+      url: getRouting((r) => r.visitShopManagement()),
+    },
+    {
+      title: "Shopping Management",
+      icon: <CgShoppingBag />,
+      url: getRouting((r) => r.visitShoppingManagement()),
+    },
+    {
+      title: "Service Management",
+      icon: <ServicesIcon />,
+      url: getRouting((r) => r.visitServiceManagement()),
+    },
+  ];
 
 export const ManagementView: React.FC = () => {
   const { visit } = useRouting();

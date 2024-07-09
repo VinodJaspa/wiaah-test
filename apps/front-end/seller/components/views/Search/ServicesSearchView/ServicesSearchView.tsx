@@ -217,8 +217,12 @@ export const ServicesSearchView: React.FC = () => {
           component: (
             <ServiceBookingStepper
               steps={[
-                { name: "Date", icon: CalenderIcon, component: DateInput },
-                { name: "time", icon: ClockIcon, component: TimeInput },
+                {
+                  name: "Date",
+                  icon: <CalenderIcon />,
+                  component: <DateInput />,
+                },
+                { name: "time", icon: <ClockIcon />, component: <TimeInput /> },
               ]}
             />
           ),
