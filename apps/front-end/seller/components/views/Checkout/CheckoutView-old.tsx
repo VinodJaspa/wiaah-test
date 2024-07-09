@@ -153,7 +153,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
           </BoxShadow>
           <VoucherInput onSuccess={handleVoucherValidation} />
           <ShippingMotheds motheds={shippingMotheds} />
-          <PaymentGateway />
+          <PaymentGateway onSuccess={() => { }} />
         </FlexStack>
         <BoxShadow fitHeight fitWidth>
           <div className="bg-white">
