@@ -8,6 +8,10 @@
   ],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "jsx": "preserve",
     "baseUrl": ".",
