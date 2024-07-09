@@ -17,7 +17,7 @@ import {
   BeautyCenterSearchView,
   BeautyCenterSearchResultsView,
   ServicesSearchResultsViewProps,
-} from "../../../ui/components/blocks";
+} from "../../../ui/components/blocks/ServiceSearch";
 import { HotelsSearchList } from "ui/components/features/Services/hotels/components/lists";
 import {
   HotelDetailsView,
@@ -25,7 +25,7 @@ import {
   HealthCenterDetailsView,
   VehicleServiceDetailsView,
   BeautyCenterServiceDetailsView,
-} from "../../../ui/components/blocks";
+} from "../../../ui/components/blocks//";
 import {
   HealthCenterHorizontalCardsList,
   HealthCenterServiceSearchResultsList,
@@ -143,30 +143,55 @@ export const ServicesTypeSwitcher: React.FC<{
       searchHorizontalList: null,
     },
   ];
-  const servicesList = ServicesViewsList;
-  const get = typeof Get === "function" ? Get(getServiceView) : Get;
-  const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
+
+  const getServiceComponent = (
+    serviceIdx: number,
+    get: getServiceViewType
+  ): React.ReactElement<any, any> | null => {
+    const service = ServicesViewsList[serviceIdx];
+    switch (get) {
+      case "search":
+        return service.search
+          ? React.createElement(service.search, props)
+          : null;
+      case "resaults":
+        return service.searchResults
+          ? React.createElement(service.searchResults, props)
+          : null;
+      case "list":
+        return service.searchList
+          ? React.createElement(service.searchList, props)
+          : null;
+      case "details":
+        return service.details
+          ? React.createElement(service.details, props)
+          : null;
+      case "horizontalList":
+        return service.searchHorizontalList
+          ? React.createElement(service.searchHorizontalList, props)
+          : null;
+      default:
+        return null;
+    }
+  };
+
+  const serviceIdx = ServicesViewsList.findIndex((s) => s.slug === serviceType);
   const serviceFound = serviceIdx > -1;
 
-  if (!serviceFound) return runIfFn(fallbackComponent, {});
+  if (!serviceFound)
+    return runIfFn(fallbackComponent, {}) as React.ReactElement<
+      any,
+      any
+    > | null;
 
-  // console.log({ serviceIdx, serviceFound });
-
-  const comp = serviceFound
-    ? get === "search"
-      ? servicesList[serviceIdx].search
-      : get === "resaults"
-        ? servicesList[serviceIdx].searchResults
-        : get === "list"
-          ? servicesList[serviceIdx].searchList
-          : get === "details"
-            ? servicesList[serviceIdx].details
-            : get === "horizontalList"
-              ? servicesList[serviceIdx].searchHorizontalList
-              : null
+  const selectedComponent =
+    typeof Get === "function" ? Get(getServiceView) : Get;
+  const componentToRender = serviceFound
+    ? getServiceComponent(serviceIdx, selectedComponent as getServiceViewType)
     : null;
 
-  return serviceFound
-    ? runIfFn(comp ? comp : fallbackComponent, props)
-    : runIfFn(fallbackComponent, {});
+  return (
+    componentToRender ||
+    (runIfFn(fallbackComponent, {}) as React.ReactElement<any, any> | null)
+  );
 };
