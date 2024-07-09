@@ -41,7 +41,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
 
   const amenitiesNames = React.useMemo(
     () => res?.data.amenites.map((amenity) => amenity.name),
-    [res],
+    [res]
   );
 
   return (
@@ -67,7 +67,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
             roomTitle: "Ritzs room",
           } as Record<string, any>
         }
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -189,7 +189,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 ]}
               />
 
-              <Stack col divider={Divider}>
+              <Stack col divider={<Divider />}>
                 <FormikInput
                   name="roomTitle"
                   placeholder={t("Enter a room title")}

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 import {
   SectionHeader,
@@ -36,7 +36,7 @@ import { BiCalendar } from "react-icons/bi";
 import { FaClock } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 
-export interface BookingCalenderSectionProps {}
+export interface BookingCalenderSectionProps { }
 
 const contrastColors = ["#00BCD4"];
 
@@ -112,7 +112,7 @@ export const BookingsCalenderSection: React.FC<
 
   function bookings(
     page: ArrElement<typeof pages>
-  ): [string, typeof page["data"]][] {
+  ): [string, (typeof page)["data"]][] {
     return Object.entries(
       [...Array(7)].reduce((acc, _, i) => {
         const bookings = page?.data?.filter((v) => {
@@ -128,7 +128,7 @@ export const BookingsCalenderSection: React.FC<
           new Date(page?.cursor || get1stWeekDate(new Date())).getDate() + i;
 
         return { ...acc, [day]: bookings };
-      }, {} as Record<number, typeof page["data"]>)
+      }, {} as Record<number, (typeof page)["data"]>)
     );
   }
 
@@ -204,13 +204,12 @@ export const BookingsCalenderSection: React.FC<
                               <p className={istoday ? "text-primary" : ""}>
                                 {istoday
                                   ? t("Today")
-                                  : `${day}/${
-                                      new Date(
-                                        page?.cursor || new Date()
-                                      ).getMonth() + 1
-                                    }/${new Date(
-                                      page?.cursor || new Date()
-                                    ).getFullYear()}`}
+                                  : `${day}/${new Date(
+                                    page?.cursor || new Date()
+                                  ).getMonth() + 1
+                                  }/${new Date(
+                                    page?.cursor || new Date()
+                                  ).getFullYear()}`}
                               </p>
                             </HStack>
                           </Th>
@@ -245,11 +244,11 @@ export const BookingsCalenderSection: React.FC<
                             )
                               ? null
                               : new Date(
-                                  cursorDate.getFullYear(),
-                                  cursorDate.getMonth(),
-                                  cursorDate.getDate() + bi,
-                                  i
-                                );
+                                cursorDate.getFullYear(),
+                                cursorDate.getMonth(),
+                                cursorDate.getDate() + bi,
+                                i
+                              );
 
                             const end = new Date(
                               new Date(targetDate!).setHours(
@@ -258,9 +257,9 @@ export const BookingsCalenderSection: React.FC<
                             );
                             const bookings = targetDate
                               ? page.data?.filter((v) => {
-                                  const start = new Date(v.checkin);
-                                  return start >= targetDate && start <= end;
-                                })
+                                const start = new Date(v.checkin);
+                                return start >= targetDate && start <= end;
+                              })
                               : null;
                             return (
                               <Td>
@@ -271,7 +270,7 @@ export const BookingsCalenderSection: React.FC<
                                     {mapArray(bookings || [], (v, i) => {
                                       const color =
                                         contrastColors[
-                                          randomNum(contrastColors.length)
+                                        randomNum(contrastColors.length)
                                         ];
 
                                       const buyerName = `${v.buyer.firstName} ${v.buyer.lastName}`;
@@ -293,16 +292,15 @@ export const BookingsCalenderSection: React.FC<
                                               .join(", ")}` +
                                               (dishsLeft > 0)
                                               ? `, ${t("and")} ${dishsLeft} ${t(
-                                                  "more dishs"
-                                                )}`
+                                                "more dishs"
+                                              )}`
                                               : "";
 
                                           case ServiceType.HealthCenter:
-                                            return `${
-                                              v.doctor.speciality?.name
+                                            return `${v.doctor.speciality?.name
                                                 ? `${v.doctor.speciality.name}: `
                                                 : ""
-                                            }${v.doctor.name}`;
+                                              }${v.doctor.name}`;
 
                                           case ServiceType.BeautyCenter:
                                             const shownTreats =
@@ -315,10 +313,10 @@ export const BookingsCalenderSection: React.FC<
                                               .join(", ")}` +
                                               (treatsLeft > 0)
                                               ? `, ${t(
-                                                  "and"
-                                                )} ${treatsLeft} ${t(
-                                                  "more dishs"
-                                                )}`
+                                                "and"
+                                              )} ${treatsLeft} ${t(
+                                                "more dishs"
+                                              )}`
                                               : "";
                                           case ServiceType.Vehicle:
                                             return `${v.vehicle?.title || ""}`;
@@ -336,7 +334,7 @@ export const BookingsCalenderSection: React.FC<
                                             backgroundColor: color,
                                           }}
                                           className={`text-white p-2 border-white border rounded`}
-                                          //  first:static absolute top-0 left-0 group-hover:first:translate-x-0 group-hover:translate-x-[110%] first:translate-x-0 translate-x-4 duration-300 transform transition-all w-[95%] h-full -z-10 group-hover:z-10 `}
+                                        //  first:static absolute top-0 left-0 group-hover:first:translate-x-0 group-hover:translate-x-[110%] first:translate-x-0 translate-x-4 duration-300 transform transition-all w-[95%] h-full -z-10 group-hover:z-10 `}
                                         >
                                           <HStack className="">
                                             <FaClock />
@@ -385,6 +383,7 @@ export const BookingsCalenderSection: React.FC<
 };
 
 export const CalenderBookingsList: React.FC<{
+  children: React.ReactNode;
   length: number;
 }> = ({ children, length }) => {
   const { t } = useTranslation();
@@ -453,19 +452,17 @@ export const NotificationCalender: React.FC<{
               );
               return (
                 <Td
-                  className={`${
-                    isSelected ? "border-black border" : ""
-                  } rounded-full p-1`}
+                  className={`${isSelected ? "border-black border" : ""
+                    } rounded-full p-1`}
                   key={i}
                 >
                   <AspectRatio
-                    className={`${
-                      isSelected
+                    className={`${isSelected
                         ? "bg-black text-white"
                         : notification
-                        ? "bg-[#CCCCCC] text-white"
-                        : "text-black"
-                    } rounded-full w-7 h-7`}
+                          ? "bg-[#CCCCCC] text-white"
+                          : "text-black"
+                      } rounded-full w-7 h-7`}
                     ratio={1}
                   >
                     {new Date(v.date).getDate()}

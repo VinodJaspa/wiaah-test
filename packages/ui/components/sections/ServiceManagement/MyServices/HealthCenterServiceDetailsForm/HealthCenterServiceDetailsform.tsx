@@ -42,7 +42,7 @@ export const HealthCenterServiceDetailsForm: React.FC<
             },
           } as Record<string, any>
         }
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -73,7 +73,7 @@ export const HealthCenterServiceDetailsForm: React.FC<
                 name="vat"
                 placeholder={t("VAT %")}
               />
-              <Stack col divider={Divider}>
+              <Stack col divider={<Divider />}>
                 <FormikInput<MultiChooseInputProps>
                   placeholder={t("Choose Speciality types")}
                   as={MultiChooseInput}

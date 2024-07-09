@@ -27,7 +27,7 @@ export const RestaurantIncludedServicesSection: React.FC<{
       drinks: Menu;
       additionalMenus: Menu[];
     }>
-      onSubmit={() => {}}
+      onSubmit={() => { }}
       initialValues={{
         deseert: {
           dishs: [],
@@ -98,41 +98,41 @@ export const RestaurantIncludedServicesSection: React.FC<{
                 }}
               />
             </div>
-            <Stack col divider={Divider}>
+            <Stack col divider={<Divider />}>
               {Array.isArray(values.additionalMenus)
                 ? values.additionalMenus.map((menu, idx) => (
-                    <div key={idx} className="flex flex-col gap-2">
-                      <div className="flex items-center gap-2">
-                        <CloseIcon
-                          className="cursor-pointer"
-                          onClick={() =>
-                            setFieldValue(
-                              "additionalMenus",
-                              values.additionalMenus.filter((_, i) => i !== idx)
-                            )
-                          }
-                        />
-                        <p className="font-bold text-xl">{menu.title}</p>
-                      </div>
-                      <RestaurantMenuDishsList
-                        value={menu.dishs}
-                        onChange={(dishs) => {
-                          console.log({ dishs });
-                          const targetMenuIdx =
-                            values.additionalMenus.findIndex(
-                              (m) => m.title === menu.title
-                            );
-                          const menus = values.additionalMenus;
-                          menus.splice(targetMenuIdx, 1, {
-                            title: menu.title,
-                            dishs,
-                          });
-
-                          setFieldValue("additionalMenus", menus);
-                        }}
+                  <div key={idx} className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <CloseIcon
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setFieldValue(
+                            "additionalMenus",
+                            values.additionalMenus.filter((_, i) => i !== idx)
+                          )
+                        }
                       />
+                      <p className="font-bold text-xl">{menu.title}</p>
                     </div>
-                  ))
+                    <RestaurantMenuDishsList
+                      value={menu.dishs}
+                      onChange={(dishs) => {
+                        console.log({ dishs });
+                        const targetMenuIdx =
+                          values.additionalMenus.findIndex(
+                            (m) => m.title === menu.title
+                          );
+                        const menus = values.additionalMenus;
+                        menus.splice(targetMenuIdx, 1, {
+                          title: menu.title,
+                          dishs,
+                        });
+
+                        setFieldValue("additionalMenus", menus);
+                      }}
+                    />
+                  </div>
+                ))
                 : null}
             </Stack>
             <Divider />

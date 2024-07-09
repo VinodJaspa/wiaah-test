@@ -33,7 +33,7 @@ export const BeautyCenterServiceDetailsForm: React.FC<
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
         initialValues={{} as Record<string, any>}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -75,7 +75,7 @@ export const BeautyCenterServiceDetailsForm: React.FC<
                 name="duration"
               ></FormikInput>
 
-              <Stack col divider={Divider}>
+              <Stack col divider={<Divider />}>
                 <FormikInput<MultiChooseInputProps>
                   placeholder={t("Choose beauty center type")}
                   as={MultiChooseInput}

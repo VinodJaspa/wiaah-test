@@ -37,7 +37,7 @@ export const VehicleServiceDetailsForm: React.FC<
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
         initialValues={{} as Record<string, any>}
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -70,7 +70,7 @@ export const VehicleServiceDetailsForm: React.FC<
                 placeholder={t("VAT %")}
               />
 
-              <Stack col divider={Divider}>
+              <Stack col divider={<Divider />}>
                 <FormikInput<MultiChooseInputProps>
                   placeholder={t("Choose vehicle type")}
                   as={Select}

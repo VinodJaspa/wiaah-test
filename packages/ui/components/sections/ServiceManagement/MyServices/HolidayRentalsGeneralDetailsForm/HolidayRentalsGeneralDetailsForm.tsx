@@ -51,7 +51,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
 
   const amenitiesNames = React.useMemo(
     () => res?.data.amenites.map((amenity) => amenity.name) || [],
-    [res],
+    [res]
   );
 
   return (
@@ -84,7 +84,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
             ],
           } as Record<string, any>
         }
-        onSubmit={() => {}}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -206,7 +206,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                 ]}
               />
 
-              <Stack col divider={Divider}>
+              <Stack col divider={<Divider />}>
                 <FormikInput
                   name="roomTitle"
                   placeholder={t("Enter a room title")}
@@ -268,6 +268,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                   value={values["cancelation_policies"]}
                   label={t("Cancelation Policies")}
                   name="cancelation_policies"
+                  placeholder="cancelation policies"
                 />
 
                 <FormikInput<ServiceExtrasInputListProps>
@@ -304,7 +305,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                     multi
                     value={[new Date().toString()]}
                     onMultiChange={
-                      (dates) => {}
+                      (dates) => { }
                       // setFieldValue("rentalAvailability", dates)
                     }
                     dayComponent={({
@@ -314,11 +315,10 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                     }: DateDayComponentProps) => (
                       <AspectRatio ratio={3 / 4}>
                         <div
-                          className={`${currentMonth ? "" : "text-gray-400"} ${
-                            active
+                          className={`${currentMonth ? "" : "text-gray-400"} ${active
                               ? "bg-primary text-white"
                               : "bg-white text-black"
-                          } w-full h-full cursor-pointer flex justify-center items-center rounded text-xl`}
+                            } w-full h-full cursor-pointer flex justify-center items-center rounded text-xl`}
                         >
                           {dayNum}
                         </div>

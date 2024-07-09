@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React from "react";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 import {
   FormikInput,
@@ -112,18 +112,21 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
               {...inputProps("currentPassword")}
               {...setTestid("current_password")}
               name="currentPassword"
+              placeholder="current password"
             />
             <FormikInput
               label={t("New Password")}
               {...inputProps("newPassword")}
               {...setTestid("new_password")}
               name="newPassword"
+              placeholder="new password"
             />
             <FormikInput
               label={t("Confirm Password")}
               {...inputProps("confirmNewPassword")}
               {...setTestid("confirm_password")}
               name="confirmPassword"
+              placeholder="confirm password"
             />
           </React.Fragment>
         </Formik>

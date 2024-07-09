@@ -76,7 +76,7 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
   );
 };
 
-export const SimpleTabItemList: React.FC<{ children: React.ReactNode }> = ({
+export const SimpleTabItemList: React.FC<{ children?: React.ReactNode }> = ({
   children: _children,
 }) => {
   const children = _children
@@ -99,7 +99,6 @@ export const SimpleTabHeadButton: React.FC<{
           : "text-gray border border-white"
         } px-4 py-2`}
     >
-      {/* @ts-ignore */}
       {children}
     </div>
   );

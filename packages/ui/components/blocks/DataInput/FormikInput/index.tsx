@@ -10,10 +10,10 @@ import {
 import { startCase } from "lodash";
 
 export interface FormikInputProps extends HtmlInputProps {
-  label?: TranslationTextType | string;
+  label?: TranslationTextType;
   labelProps?: HtmlDivProps;
   name: string;
-  as?: React.FC;
+  as?: React.FC<any>;
   containerProps?: HtmlDivProps;
   formikSetField?: (key: string, value: any) => any;
   formikValues?: any;

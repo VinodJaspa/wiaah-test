@@ -21,6 +21,7 @@ import {
   InputLeftElement,
   DollarIcon,
   PercentIcon,
+  SimpleTabHeadButton,
 } from "@partials";
 import {
   CheckMarkStepper,
@@ -62,8 +63,8 @@ import {
 } from "@features/Services";
 import { useResponsive, useUserData } from "@src/index";
 
-export interface AddNewServiceProps {}
-export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
+export interface AddNewServiceProps { }
+export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { CancelAddingNewService, ServiceIdFormState } =
     useContext(MyServicesCtx);
 
@@ -75,6 +76,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
   const isEdit = typeof ServiceIdFormState === "string";
 
   const { user } = useUserData();
+  const [selected, setSelected] = React.useState<number>(0);
 
   return (
     <div className="flex gap-4 flex-col">
@@ -86,22 +88,16 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
         <>
           <div className="flex-wrap flex gap-4 flex-col sm:flex-row justify-center sm:justify-start">
             <SimpleTabHead>
-              {WiaahLanguageCountries.map(
-                ({ code, name, langId }, i) =>
-                  ({ selected, onClick }: any) =>
-                    (
-                      <button
-                        {...setTestid(`lang-switch-${langId}`)}
-                        onClick={() => setLang(langId)}
-                        className={`${
-                          selected === i ? "border-primary" : "border-gray-300"
-                        } flex cursor-pointer w-fit items-center gap-2 border-b-[1px] shadow p-2`}
-                      >
-                        <FlagIcon code={code} />
-                        <span className="hidden sm:block">{name}</span>
-                      </button>
-                    )
-              )}
+              {WiaahLanguageCountries.map(({ code, name, langId }, i) => (
+                <SimpleTabHeadButton
+                  key={langId}
+                  onClick={() => setSelected(i)}
+                  selected={selected === i}
+                >
+                  <FlagIcon code={code} />
+                  <span className="hidden sm:block">{name}</span>
+                </SimpleTabHeadButton>
+              ))}
             </SimpleTabHead>
           </div>
           <SimpleTabItemList />
@@ -127,11 +123,11 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
 
           <HStack className="justify-end">
             {/* TODO */}
-            <Button onClick={() => {}} outline colorScheme="gray">
+            <Button onClick={() => { }} outline colorScheme="gray">
               {t("Back")}
             </Button>
             {/* TODO */}
-            <Button className="w-fit self-end" onClick={() => {}}>
+            <Button className="w-fit self-end" onClick={() => { }}>
               {t("Next")}
             </Button>
           </HStack>
@@ -258,7 +254,7 @@ export const NewServiceStepper = React.forwardRef(
                     accept="image/png, image/gif, image/jpeg"
                     ref={uploadImagesRef}
                     className="hidden"
-                    onChange={(event) => {}}
+                    onChange={(event) => { }}
                   />
                   <button
                     onClick={() => {
@@ -685,45 +681,45 @@ export const NewServiceStepper = React.forwardRef(
 
             showOn([ServiceType.HealthCenter])
               ? {
-                  key: "time_settings",
-                  stepComponent: (
-                    <div className="flex flex-col gap-4 w-full">
-                      <ServiceAppontmentDurationTimeTableInput
-                        input
-                        selectionContainerProps={{ className: "h-[29vh]" }}
-                        onWeekChange={(v) => {
-                          setWeek(v);
-                        }}
-                        week={week}
-                        workingDates={[...Array(25)].map((_, i) => [
-                          new Date(new Date().setHours(3)),
-                          new Date(new Date().setHours(16)),
-                        ])}
-                        onChange={(v) => {
-                          setValue(v);
-                        }}
-                        value={value}
-                      />
-                      <div className="grid grid-cols-8 gap-y-2">
-                        <p className="font-semibold col-span-1">
-                          {t("Repeat")}
-                        </p>
-                        <p className="font-semibold col-span-7">{t("Every")}</p>
-                        <div className="h-full items-center flex">
-                          <Switch className="col-span-1" />
-                        </div>
-                        <div className="col-span-7">
-                          <Select>
-                            <SelectOption value={"week"}>
-                              {t("Week")}
-                            </SelectOption>
-                          </Select>
-                        </div>
+                key: "time_settings",
+                stepComponent: (
+                  <div className="flex flex-col gap-4 w-full">
+                    <ServiceAppontmentDurationTimeTableInput
+                      input
+                      selectionContainerProps={{ className: "h-[29vh]" }}
+                      onWeekChange={(v) => {
+                        setWeek(v);
+                      }}
+                      week={week}
+                      workingDates={[...Array(25)].map((_, i) => [
+                        new Date(new Date().setHours(3)),
+                        new Date(new Date().setHours(16)),
+                      ])}
+                      onChange={(v) => {
+                        setValue(v);
+                      }}
+                      value={value}
+                    />
+                    <div className="grid grid-cols-8 gap-y-2">
+                      <p className="font-semibold col-span-1">
+                        {t("Repeat")}
+                      </p>
+                      <p className="font-semibold col-span-7">{t("Every")}</p>
+                      <div className="h-full items-center flex">
+                        <Switch className="col-span-1" />
+                      </div>
+                      <div className="col-span-7">
+                        <Select>
+                          <SelectOption value={"week"}>
+                            {t("Week")}
+                          </SelectOption>
+                        </Select>
                       </div>
                     </div>
-                  ),
-                  stepName: "Time settings",
-                }
+                  </div>
+                ),
+                stepName: "Time settings",
+              }
               : undefined,
 
             {
@@ -753,13 +749,13 @@ export const NewServiceStepper = React.forwardRef(
                               "adaptedFor",
                               v === true
                                 ? (
-                                    form.adaptedFor?.filter(
-                                      (e) => e !== ServiceAdaptation.NewBorn
-                                    ) || []
-                                  )?.concat([ServiceAdaptation.NewBorn])
-                                : form.adaptedFor?.filter(
+                                  form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.NewBorn
-                                  )
+                                  ) || []
+                                )?.concat([ServiceAdaptation.NewBorn])
+                                : form.adaptedFor?.filter(
+                                  (e) => e !== ServiceAdaptation.NewBorn
+                                )
                             );
                           }}
                         />
@@ -779,13 +775,13 @@ export const NewServiceStepper = React.forwardRef(
                               "adaptedFor",
                               v === true
                                 ? (
-                                    form.adaptedFor?.filter(
-                                      (e) => e !== ServiceAdaptation.Children
-                                    ) || []
-                                  )?.concat([ServiceAdaptation.Children])
-                                : form.adaptedFor?.filter(
+                                  form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.Children
-                                  )
+                                  ) || []
+                                )?.concat([ServiceAdaptation.Children])
+                                : form.adaptedFor?.filter(
+                                  (e) => e !== ServiceAdaptation.Children
+                                )
                             );
                           }}
                         />
@@ -805,13 +801,13 @@ export const NewServiceStepper = React.forwardRef(
                               "adaptedFor",
                               v === true
                                 ? (
-                                    form.adaptedFor?.filter(
-                                      (e) => e !== ServiceAdaptation.Wheelchair
-                                    ) || []
-                                  )?.concat([ServiceAdaptation.Wheelchair])
-                                : form.adaptedFor?.filter(
+                                  form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.Wheelchair
-                                  )
+                                  ) || []
+                                )?.concat([ServiceAdaptation.Wheelchair])
+                                : form.adaptedFor?.filter(
+                                  (e) => e !== ServiceAdaptation.Wheelchair
+                                )
                             );
                           }}
                         />
@@ -835,13 +831,13 @@ export const NewServiceStepper = React.forwardRef(
                               "restriction",
                               v === true
                                 ? (
-                                    form.restriction?.filter(
-                                      (e) => e !== ServiceRestriction.Event
-                                    ) || []
-                                  )?.concat([ServiceRestriction.Event])
-                                : form.restriction?.filter(
+                                  form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Event
-                                  )
+                                  ) || []
+                                )?.concat([ServiceRestriction.Event])
+                                : form.restriction?.filter(
+                                  (e) => e !== ServiceRestriction.Event
+                                )
                             );
                           }}
                         />
@@ -861,13 +857,13 @@ export const NewServiceStepper = React.forwardRef(
                               "restriction",
                               v === true
                                 ? (
-                                    form.restriction?.filter(
-                                      (e) => e !== ServiceRestriction.Smoking
-                                    ) || []
-                                  )?.concat([ServiceRestriction.Smoking])
-                                : form.restriction?.filter(
+                                  form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Smoking
-                                  )
+                                  ) || []
+                                )?.concat([ServiceRestriction.Smoking])
+                                : form.restriction?.filter(
+                                  (e) => e !== ServiceRestriction.Smoking
+                                )
                             );
                           }}
                         />
@@ -887,13 +883,13 @@ export const NewServiceStepper = React.forwardRef(
                               "restriction",
                               v === true
                                 ? (
-                                    form.restriction?.filter(
-                                      (e) => e !== ServiceRestriction.Pets
-                                    ) || []
-                                  )?.concat([ServiceRestriction.Pets])
-                                : form.restriction?.filter(
+                                  form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Pets
-                                  )
+                                  ) || []
+                                )?.concat([ServiceRestriction.Pets])
+                                : form.restriction?.filter(
+                                  (e) => e !== ServiceRestriction.Pets
+                                )
                             );
                           }}
                         />

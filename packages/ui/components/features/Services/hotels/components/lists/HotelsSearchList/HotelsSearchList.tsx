@@ -8,9 +8,9 @@ import {
   useMutateFocusedMapItemId,
 } from "@UI";
 
-export interface HotelsSearchListProps {}
+export interface HotelsSearchListProps { }
 
-export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({}) => {
+export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({ }) => {
   const { data: filteredRooms } = useGetFilteredHotelRoomsQuery({
     maxPrice: 400,
     minPrice: 400,
@@ -22,7 +22,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({}) => {
 
   let filters = {};
   let getLocationFilterQuery = "";
-  const condition = (room: HotelRoom) => {};
+  const condition = (room: HotelRoom) => { };
   const { isTablet } = useResponsive();
   // TODO: create hotels table
 
