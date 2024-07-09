@@ -3,6 +3,7 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
+    "esModuleInterop": true,
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES5",
