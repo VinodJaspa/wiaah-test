@@ -51,7 +51,7 @@ export async function installShadowPackage(cfg: ShadowDepInstallConfig) {
     );
 
   const pjsonPath = join(cfg.shadowRoot, "package.json");
-  const lockFilePath = join(cfg.shadowRoot, "yarn-lock");
+  const lockFilePath = join(cfg.shadowRoot, "yarn.lock");
   await ensureDir(cfg.shadowRoot);
 
   let pjson = await genConcretePackage(cfg.ws, cfg.includeWorkspaceDeps);
