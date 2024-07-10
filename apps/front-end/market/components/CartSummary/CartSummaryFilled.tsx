@@ -10,25 +10,25 @@ import {
   Button,
 } from "ui";
 
-export interface CartSummaryFilledProps {}
+export interface CartSummaryFilledProps { }
 
 const CartSummaryFilled: React.FC<CartSummaryFilledProps> = () => {
   const { data: res, isLoading, isError } = useGetMyCartSummaryDataQuery();
   const items = res ? res.data : [];
   const { t } = useTranslation();
-  function handleContactClick(shopId: string) {}
+  function handleContactClick(shopId: string) { }
 
-  function handleMoveToWishlist(productId: string) {}
+  function handleMoveToWishlist(productId: string) { }
 
-  function handleProfileClick(shopId: string) {}
+  function handleProfileClick(shopId: string) { }
 
-  function handleQtyChange(productId: string) {}
+  function handleQtyChange(productId: string) { }
 
-  function handleRemove(productId: string) {}
+  function handleRemove(productId: string) { }
 
   return (
     <BoxShadow>
-      <Stack divider={Divider} col>
+      <Stack divider={<Divider />} col>
         {items.map(({ itemData, providerData }, i) => (
           <div key={providerData.id + i} className="flex flex-col gap-1">
             <div className="flex w-full justify-between">
