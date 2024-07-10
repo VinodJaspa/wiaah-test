@@ -1,25 +1,28 @@
 {
-  "compilerOptions": {
+  "compileroptions": {
+    "esmoduleinterop": true,
     "module": "commonjs",
     "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "removecomments": true,
+    "emitdecoratormetadata": true,
+    "experimentaldecorators": true,
+    "allowsyntheticdefaultimports": true,
     "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
+    "sourcemap": true,
+    "outdir": "./dist",
+    "baseurl": "./",
     "strict": true,
     "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": true,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
+    "skiplibcheck": true,
+    "strictnullchecks": false,
+    "noimplicitany": true,
+    "strictbindcallapply": false,
+    "forceconsistentcasinginfilenames": false,
+    "nofallthroughcasesinswitch": false,
     "paths": {
       "@generators": ["src/generators"]
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
