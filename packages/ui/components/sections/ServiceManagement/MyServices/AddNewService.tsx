@@ -748,11 +748,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "adaptedFor",
                               v === true
-                                ? (
-                                  form.adaptedFor?.filter(
+                                ? [
+                                  ...(form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.NewBorn
-                                  ) || []
-                                )?.concat([ServiceAdaptation.NewBorn])
+                                  ) || []),
+                                  ServiceAdaptation.NewBorn,
+                                ]
                                 : form.adaptedFor?.filter(
                                   (e) => e !== ServiceAdaptation.NewBorn
                                 )
@@ -774,11 +775,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "adaptedFor",
                               v === true
-                                ? (
-                                  form.adaptedFor?.filter(
+                                ? [
+                                  ...(form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.Children
-                                  ) || []
-                                )?.concat([ServiceAdaptation.Children])
+                                  ) || []),
+                                  ServiceAdaptation.Children,
+                                ]
                                 : form.adaptedFor?.filter(
                                   (e) => e !== ServiceAdaptation.Children
                                 )
@@ -800,11 +802,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "adaptedFor",
                               v === true
-                                ? (
-                                  form.adaptedFor?.filter(
+                                ? [
+                                  ...(form.adaptedFor?.filter(
                                     (e) => e !== ServiceAdaptation.Wheelchair
-                                  ) || []
-                                )?.concat([ServiceAdaptation.Wheelchair])
+                                  ) || []),
+                                  ServiceAdaptation.Wheelchair,
+                                ]
                                 : form.adaptedFor?.filter(
                                   (e) => e !== ServiceAdaptation.Wheelchair
                                 )
@@ -830,11 +833,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "restriction",
                               v === true
-                                ? (
-                                  form.restriction?.filter(
+                                ? [
+                                  ...(form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Event
-                                  ) || []
-                                )?.concat([ServiceRestriction.Event])
+                                  ) || []),
+                                  ServiceRestriction.Event,
+                                ]
                                 : form.restriction?.filter(
                                   (e) => e !== ServiceRestriction.Event
                                 )
@@ -856,11 +860,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "restriction",
                               v === true
-                                ? (
-                                  form.restriction?.filter(
+                                ? [
+                                  ...(form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Smoking
-                                  ) || []
-                                )?.concat([ServiceRestriction.Smoking])
+                                  ) || []),
+                                  ServiceRestriction.Smoking,
+                                ]
                                 : form.restriction?.filter(
                                   (e) => e !== ServiceRestriction.Smoking
                                 )
@@ -882,11 +887,12 @@ export const NewServiceStepper = React.forwardRef(
                             handleChange(
                               "restriction",
                               v === true
-                                ? (
-                                  form.restriction?.filter(
+                                ? [
+                                  ...(form.restriction?.filter(
                                     (e) => e !== ServiceRestriction.Pets
-                                  ) || []
-                                )?.concat([ServiceRestriction.Pets])
+                                  ) || []),
+                                  ServiceRestriction.Pets,
+                                ]
                                 : form.restriction?.filter(
                                   (e) => e !== ServiceRestriction.Pets
                                 )
