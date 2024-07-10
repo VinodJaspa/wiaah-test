@@ -162,7 +162,7 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: "Share Your Wiaah Qr",
-    panelIcon: ShareIcon,
+    panelIcon: <ShareIcon />,
     panelUrl: "/shareyourqr",
     panelComponent: <ShareYourWiaahQr />,
   },
