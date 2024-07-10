@@ -22,6 +22,7 @@ import { useLoginPopup } from "ui";
 export interface MasterLayoutProps {
   social?: boolean;
   rootProps?: RootProps;
+  children: React.ReactNode;
 }
 
 const MasterLayout: React.FC<MasterLayoutProps> = ({
