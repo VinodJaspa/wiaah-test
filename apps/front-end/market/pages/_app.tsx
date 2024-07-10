@@ -1,24 +1,25 @@
 import type { AppProps } from "next/app";
+import React from "react";
 import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
-import { CoomingSoon, SeoWrapper } from "@components";
+import { ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
-import { RoutingProvider } from "routing";
-import { useRouter } from "next/router";
-import React from "react";
-import NextHead from "next/head";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
+import NextHead from "next/head";
+import { RoutingProvider } from "routing";
+import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
-import { ReactPubsubKeys } from "ui";
+import { CoomingSoon, SeoWrapper } from "@components";
 
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
+
   const router = useRouter();
 
   return (
@@ -48,12 +49,10 @@ function MyApp({ Component, pageProps }: AppProps) {
               <SeoWrapper>
                 <ChakraProvider>
                   <CookiesProvider>
-                    {/* @ts-ignore */}
                     <RecoilRoot>
                       {coomingSoon ? (
                         <CoomingSoon />
                       ) : (
-                        //  @ts-ignore
                         <Component {...pageProps} />
                       )}
                     </RecoilRoot>
