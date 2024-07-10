@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import {
   MetaCopyright,
@@ -11,7 +11,9 @@ import {
   RequiredSocialMediaTags,
 } from "react-seo";
 
-export const SeoWrapper: React.FC = ({ children }) => {
+export const SeoWrapper: React.FC<{ children?: ReactNode }> = ({
+  children,
+}) => {
   const { t } = useTranslation();
   return (
     <>
