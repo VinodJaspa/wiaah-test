@@ -1,7 +1,7 @@
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export interface WishListIcon
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> { }
 
 export const WishListIcon: React.FC<WishListIcon> = () => {
   return (

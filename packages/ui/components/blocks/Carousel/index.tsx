@@ -109,9 +109,8 @@ export const Carousel: FC<CarouselProps> = ({
             onMouseUp={() => setDragging(false)}
             style={{
               ...styles,
-              width: `${
-                componentsPerView ? `${100 / componentsPerView}%` : "100%"
-              }`,
+              width: `${componentsPerView ? `${100 / componentsPerView}%` : "100%"
+                }`,
             }}
             className={`h-full transition-all duration-500`}
           >
@@ -122,7 +121,6 @@ export const Carousel: FC<CarouselProps> = ({
                   style={{ left: `${100 * i}%` }}
                   className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center px-2`}
                 >
-                  {/*@ts-ignore*/}
                   {Component}
                 </div>
               ))}
