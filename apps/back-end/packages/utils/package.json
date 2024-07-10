@@ -7,28 +7,37 @@
   "scripts": {
     "test": "jest"
   },
+  "dependencies": {},
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.3",
-    "@types/jest": "^29.2.0",
-    "config": "*",
-    "jest": "^29.2.1",
-    "ts-jest": "^29.0.3",
-    "ts-loader": "^9.4.1",
-    "ts-node": "^10.9.1",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^4.3.5"
+    "config": "*"
   },
-  "dependencies": {
-    "@nestjs/common": "^8.4.7",
-    "@nestjs/graphql": "10.0.0",
-    "@nestjs/microservices": "8.4.7",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
-    "cookie": "^0.5.0",
-    "cookie-parser": "^1.4.6",
-    "graphql": "15.8.0",
-    "graphql-kafkajs-subscriptions": "^3.0.0",
-    "kafkajs": "2.2.0"
+  "shadow": {
+    "devDependencies": [
+      "@types/cookie-parser",
+      "@types/jest",
+      "jest",
+      "ts-jest",
+      "ts-loader",
+      "ts-node",
+      "typescript"
+    ],
+    "dependencies": [
+      "@nestjs/core",
+      "@nestjs/common",
+      "@nestjs/graphql",
+      "@nestjs/microservices",
+      "@nestjs/cache-manager",
+      "fs",
+      "cache-manager",
+      "class-transformer",
+      "class-validator",
+      "cookie",
+      "cookie-parser",
+      "graphql",
+      "graphql-kafkajs-subscriptions",
+      "kafkajs"
+    ]
   }
 }
