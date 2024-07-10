@@ -1,8 +1,9 @@
 {
   "extends": "tsconfig/nextjs.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["../../../node_modules"],
   "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
     "downlevelIteration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
