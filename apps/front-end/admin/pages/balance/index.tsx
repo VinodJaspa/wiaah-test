@@ -132,12 +132,12 @@ const Balance: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Transaction ID"),
-            props: inputProps("id"),
+            props: <>{inputProps("id")}</>,
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Seller"),
-            props: inputProps("seller"),
+            props: <>{inputProps("seller")}</>,
           },
           {
             type: AdminTableCellTypeEnum.text,
@@ -150,17 +150,17 @@ const Balance: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Description"),
-            props: inputProps("description"),
+            props: <>{inputProps("description")}</>,
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Status"),
-            props: inputProps("status"),
+            props: <>{inputProps("status")}</>,
           },
           {
             type: AdminTableCellTypeEnum.number,
             value: t("Amount"),
-            props: inputProps("amount"),
+            props: <>{inputProps("amount")}</>,
           },
         ]}
         title={t("Transations")}

@@ -4,7 +4,9 @@ import { AdminCommentsModal } from "ui";
 import { AdminHeader } from "./AdminHeader";
 import { AdminNavigationSidebar } from "./AdminNavigationSidebar";
 
-export const AdminLayout: React.FC = ({ children }) => {
+export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { getCurrentPath } = useRouting();
   return (
     <>
@@ -12,7 +14,7 @@ export const AdminLayout: React.FC = ({ children }) => {
       <div className="w-full overflow-x-hidden min-h-[100vh] grid grid-cols-6">
         <AdminNavigationSidebar
           currentUrl={getCurrentPath()}
-          onRoute={() => {}}
+          onRoute={() => { }}
         />
         <div className="flex pb-8 thinScroll flex-col h-screen overflow-y-scroll px-12 w-full gap-4 col-span-5">
           <>

@@ -62,12 +62,12 @@ const History: React.FC = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Status"),
-            props: inputProps("status"),
+            props: <>{inputProps("status")}</>,
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Plan Name"),
-            props: inputProps("name"),
+            props: <>{inputProps("name")}</>,
           },
           {
             type: AdminTableCellTypeEnum.text,
@@ -76,7 +76,7 @@ const History: React.FC = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("User Name"),
-            props: inputProps("username"),
+            props: <>{inputProps("username")}</>,
           },
           {
             value: t("Next Payment Date"),
@@ -85,7 +85,7 @@ const History: React.FC = () => {
           {
             value: t("Subscription Expiry Date"),
             type: AdminTableCellTypeEnum.text,
-            props: inputProps("expiryDate"),
+            props: <>{inputProps("expiryDate")}</>,
           },
         ]}
         data={mapArray(

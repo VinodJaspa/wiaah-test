@@ -190,42 +190,42 @@ export const AccountStatistics: React.FC<{
     color: string;
     visits: number;
   }[] = [
-    {
-      name: "France",
-      color: "#87B2D2",
-      visits: randomNum(500000),
-    },
-    {
-      name: "United States",
-      color: "#70AB51",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Saudi Arabia",
-      color: "#DB5E31",
-      visits: randomNum(500000),
-    },
-    {
-      name: "New Zeeland",
-      color: "#6BC5E1",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Belgium",
-      color: "#82E37B",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Italy",
-      color: "#E89D64",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Germeny",
-      color: "#F8F679",
-      visits: randomNum(500000),
-    },
-  ];
+      {
+        name: "France",
+        color: "#87B2D2",
+        visits: randomNum(500000),
+      },
+      {
+        name: "United States",
+        color: "#70AB51",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Saudi Arabia",
+        color: "#DB5E31",
+        visits: randomNum(500000),
+      },
+      {
+        name: "New Zeeland",
+        color: "#6BC5E1",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Belgium",
+        color: "#82E37B",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Italy",
+        color: "#E89D64",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Germeny",
+        color: "#F8F679",
+        visits: randomNum(500000),
+      },
+    ];
 
   const totalVisits = countries.reduce((acc, curr) => acc + curr.visits, 0);
 
@@ -773,11 +773,10 @@ export const StatisticsCard: React.FC<{
         <p className="font-bold text-sm">{title}</p>
         <div className="w-full items-center flex justify-between">
           <div
-            className={`${
-              positive
+            className={`${positive
                 ? "text-primary bg-primary-100"
                 : "text-secondaryRed bg-red-100"
-            } flex items-center px-1 rounded`}
+              } flex items-center px-1 rounded`}
           >
             {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
             {Math.floor(change)}%
@@ -793,6 +792,7 @@ export const BarChartLegend: React.FC<{
   name: string;
   amount?: number;
   color: string;
+  children?: React.ReactNode;
 }> = ({ amount, name, children, color }) => {
   return (
     <div className="flex flex-col gap-2">
