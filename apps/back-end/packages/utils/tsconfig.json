@@ -1,5 +1,6 @@
 {
   "compileroptions": {
+    "types": ["jest", "node"],
     "downlevelIteration": true,
     "esmoduleinterop": true,
     "module": "commonjs",
