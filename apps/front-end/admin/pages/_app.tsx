@@ -52,7 +52,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 client={new ReactPubsubClient()}
               >
                 <ReactSeoProvider TagWrapper={NextHead}>
-                  {/*@ts-ignore*/}
                   <RecoilRoot>
                     <DataInitializationWrapper accountType={AccountType.Admin}>
                       {showlayout ? (
