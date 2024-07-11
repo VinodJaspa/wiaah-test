@@ -14,13 +14,13 @@ const nextConfig = {
     defaultLocale: "en",
   },
   webpack: (config, { isServer }) => {
-    config.resolve.fallback = { fs: false };
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      "class-transformer": path.resolve(
-        __dirname,
-        "../../../node_modules/class-transformer"
-      ),
+    config.resolve.fallback = {
+      fs: false,
+      tls: false,
+      net: false,
+      http2: false,
+      dns: false,
+      "stream/web": false,
     };
     config.module.rules.push({
       test: /\.ts(x?)$/,
