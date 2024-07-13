@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { HiTruck } from "react-icons/hi";
 import { useRouting } from "routing";
 import {
+  AdminGetOrdersQuery,
   Checkbox,
   DateFormInput,
   Input,
@@ -37,7 +38,9 @@ const Order = () => {
     Parameters<typeof useAdminGetOrdersQuery>[0]
   >({ pagination }, { pagination, status: OrderStatusEnum.Pending });
 
-  const { data: orders } = useAdminGetOrdersQuery(form);
+  //NOTE: graphql is not ready
+  const { data: _orders } = useAdminGetOrdersQuery(form);
+  const orders = FAKE_ORDERS;
 
   return (
     <section className="w-full flex flex-col gap-8">
@@ -149,3 +152,84 @@ const Order = () => {
 };
 
 export default Order;
+
+const FAKE_ORDERS: AdminGetOrdersQuery["getFilteredOrders"] = [
+  {
+    __typename: "Order",
+    id: "order1",
+    sellerId: "seller1",
+    buyerId: "buyer1",
+    paid: 44,
+    createdAt: new Date().toISOString(),
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.Compeleted,
+    },
+    buyer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "buyer_user1",
+      },
+    },
+    seller: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "seller_user1",
+      },
+    },
+  },
+  {
+    __typename: "Order",
+    id: "order2",
+    sellerId: "seller2",
+    buyerId: "buyer2",
+    paid: 55,
+    createdAt: new Date().toISOString(),
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.Pending,
+    },
+    buyer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "buyer_user2",
+      },
+    },
+    seller: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "seller_user2",
+      },
+    },
+  },
+  {
+    __typename: "Order",
+    id: "order3",
+    sellerId: "seller3",
+    buyerId: "buyer3",
+    paid: 33,
+    createdAt: new Date().toISOString(),
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.RejectedBySeller,
+    },
+    buyer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "buyer_user3",
+      },
+    },
+    seller: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "seller_user3",
+      },
+    },
+  },
+];

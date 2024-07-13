@@ -1,10 +1,12 @@
 import React from "react";
 import { NextPage } from "next";
 import {
+  AdminGetTaxRateQuery,
   ArrowRoundBack,
   Button,
   Checkbox,
   EditIcon,
+  GetCountriesQuery,
   Input,
   InputRequiredStar,
   SaveIcon,
@@ -28,11 +30,13 @@ const EditVatRate: NextPage = () => {
   const { back, getParam } = useRouting();
 
   const id = getParam("id");
-  const { data: countries } = useGetCountriesQuery("");
+  const { data: _countries } = useGetCountriesQuery("");
+  const countries = FAKE_COUNTRIES;
 
   const isNew = id === "new";
 
-  const { data } = useAdminGetTaxRateQuery(id);
+  const { data: _data } = useAdminGetTaxRateQuery(id);
+  const data = FAKE_TAXES;
 
   const {
     form: updateForm,
@@ -155,3 +159,52 @@ const EditVatRate: NextPage = () => {
 };
 
 export default EditVatRate;
+
+const FAKE_TAXES: AdminGetTaxRateQuery["adminGetTaxRate"] = {
+  __typename: "TaxRate",
+  id: "1",
+  percent: 20,
+  title: "Standard VAT",
+  appliedOnCountryIds: ["1", "2"],
+  appliedOnCountries: [
+    {
+      __typename: "Country",
+      code: "US",
+      id: "1",
+      name: "United States",
+    },
+    {
+      __typename: "Country",
+      code: "CA",
+      id: "2",
+      name: "Canada",
+    },
+  ],
+};
+
+const FAKE_COUNTRIES: GetCountriesQuery["getCountries"] = [
+  {
+    __typename: "Country",
+    code: "US",
+    name: "United States",
+    id: "1",
+  },
+  {
+    __typename: "Country",
+    code: "CA",
+    name: "Canada",
+    id: "2",
+  },
+  {
+    __typename: "Country",
+    code: "GB",
+    name: "United Kingdom",
+    id: "3",
+  },
+  {
+    __typename: "Country",
+    code: "AU",
+    name: "Australia",
+    id: "4",
+  },
+];

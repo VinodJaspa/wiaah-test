@@ -44,7 +44,7 @@ const SubscriptionPlans: NextPage = () => {
     Parameters<typeof useAdminGetPlansQuery>[0]
   >({ pagination }, { pagination });
 
-  const { data: plans } = useAdminGetPlansQuery(form);
+  const { data } = useAdminGetPlansQuery(form);
   return (
     <section>
       <AdminListTable

@@ -7,6 +7,7 @@ import {
   TrashIcon,
   NotAllowedIcon,
   useAdminSuspenseHashtag,
+  AdminGetHashtagsQuery,
 } from "@UI";
 import { NextPage } from "next";
 import React from "react";
@@ -22,7 +23,8 @@ const Hashtags: NextPage = () => {
   >({
     pagination,
   });
-  const { data } = useAdminGetHashtagsQuery(form);
+  const { data: _data } = useAdminGetHashtagsQuery(form);
+  const data = FAKE_HASHTAGS;
 
   const { mutate: suspense, isLoading } = useAdminSuspenseHashtag();
 
@@ -67,7 +69,7 @@ const Hashtags: NextPage = () => {
                 <NotAllowedIcon />
               </Button>,
               <Button key={v.id} center className="p-2">
-                <TrashIcon onClick={() => {}} />
+                <TrashIcon onClick={() => { }} />
               </Button>,
             ],
           },
@@ -78,3 +80,30 @@ const Hashtags: NextPage = () => {
 };
 
 export default Hashtags;
+
+const FAKE_HASHTAGS: AdminGetHashtagsQuery["adminGetHashtag"] = [
+  {
+    __typename: "Hashtag",
+    id: "1",
+    tag: "travel",
+    createdAt: "2024-07-13T12:00:00Z",
+    updatedAt: "2024-07-13T12:00:00Z",
+    usage: 1000,
+  },
+  {
+    __typename: "Hashtag",
+    id: "2",
+    tag: "food",
+    createdAt: "2024-07-12T15:30:00Z",
+    updatedAt: "2024-07-12T15:30:00Z",
+    usage: 850,
+  },
+  {
+    __typename: "Hashtag",
+    id: "3",
+    tag: "fashion",
+    createdAt: "2024-07-10T09:45:00Z",
+    updatedAt: "2024-07-11T14:20:00Z",
+    usage: 720,
+  },
+];

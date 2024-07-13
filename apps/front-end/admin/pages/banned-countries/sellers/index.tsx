@@ -9,6 +9,58 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
 
+const FAKE_COUNTRIES = [
+  {
+    __typename: "BannedCountry",
+    id: "bannedCountry1",
+    isoCode: "IR",
+    cities: [
+      {
+        __typename: "BannedCity",
+        id: "bannedCity1",
+        city: {
+          __typename: "City",
+          id: "city1",
+          name: "Tehran",
+        },
+      },
+      {
+        __typename: "BannedCity",
+        id: "bannedCity2",
+        city: {
+          __typename: "City",
+          id: "city2",
+          name: "Mashhad",
+        },
+      },
+    ],
+    country: {
+      __typename: "Country",
+      name: "Iran",
+    },
+  },
+  {
+    __typename: "BannedCountry",
+    id: "bannedCountry2",
+    isoCode: "KP",
+    cities: [
+      {
+        __typename: "BannedCity",
+        id: "bannedCity3",
+        city: {
+          __typename: "City",
+          id: "city3",
+          name: "Pyongyang",
+        },
+      },
+    ],
+    country: {
+      __typename: "Country",
+      name: "North Korea",
+    },
+  },
+];
+
 interface BannedCountry {
   id: string;
   country: string;
@@ -28,13 +80,16 @@ const BannedBuyers: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
-  const { form, inputProps } = useForm<
-    Parameters<typeof useAdminGetBannedCountriesQuery>[0]
-  >(
-    { pagination, type: accountType.SELLER },
-    { pagination, type: accountType.SELLER }
-  );
-  const { data } = useAdminGetBannedCountriesQuery(form);
+  // NOTE: The graphql is not ready yet and its error affect the built of admin app
+
+  // const { form, inputProps } = useForm<
+  //   Parameters<typeof useAdminGetBannedCountriesQuery>[0]
+  // >(
+  //   { pagination, type: accountType.SELLER },
+  //   { pagination, type: accountType.SELLER }
+  // );
+  // const { data: _data } = useAdminGetBannedCountriesQuery(form);
+  const data = FAKE_COUNTRIES;
 
   return (
     <section>
@@ -47,12 +102,10 @@ const BannedBuyers: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Country Name"),
-            inputProps: inputProps("country"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("City Name"),
-            inputProps: inputProps("city"),
           },
           {
             props: { align: "right" },

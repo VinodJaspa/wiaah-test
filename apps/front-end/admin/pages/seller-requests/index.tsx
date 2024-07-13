@@ -32,6 +32,7 @@ import {
   usePaginationControls,
   useAdminAcceptSellerRequestMutation,
   useAdminRejectSellerRequestMutation,
+  AdminGetSellerRequestsQuery,
 } from "ui";
 import { mapArray, useForm } from "utils";
 
@@ -68,7 +69,8 @@ const PendingProducts = () => {
     Parameters<typeof useAdminGetSellerRequestsQuery>[0]
   >({ pagination }, { pagination });
 
-  const { data: requests } = useAdminGetSellerRequestsQuery(form);
+  const { data: _requests } = useAdminGetSellerRequestsQuery(form);
+  const requests = FAKE_PENDING_PRODS;
   const { mutate: acceptRequest } = useAdminAcceptSellerRequestMutation();
   const { mutate: rejectRequest } = useAdminRejectSellerRequestMutation();
 
@@ -271,3 +273,30 @@ const PendingProducts = () => {
 };
 
 export default PendingProducts;
+
+const FAKE_PENDING_PRODS: AdminGetSellerRequestsQuery["getPendingSellers"] = [
+  {
+    companyRegisterationNumber: "ABC123456789",
+    firstName: "John",
+    lastName: "Doe",
+    email: "johndoe@example.com",
+    createdAt: "2024-07-13T12:00:00Z",
+    photo: "https://example.com/profile_photo.jpg",
+    id: "seller1",
+    shop: {
+      id: "shop1",
+    },
+  },
+  {
+    companyRegisterationNumber: "XYZ987654321",
+    firstName: "Jane",
+    lastName: "Smith",
+    email: "janesmith@example.com",
+    createdAt: "2024-07-12T15:30:00Z",
+    photo: "https://example.com/profile_photo.jpg",
+    id: "seller2",
+    shop: {
+      id: "shop2",
+    },
+  },
+];

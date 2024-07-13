@@ -12,6 +12,7 @@ import {
   Input,
   ListIcon,
   Pagination,
+  randomNum,
   SearchIcon,
   Select,
   SelectOption,
@@ -39,7 +40,8 @@ const ProductReturns = () => {
   >({
     pagination,
   });
-  const { data } = useGetAdminFilteredRefundRequests(form);
+  const { data: _data } = useGetAdminFilteredRefundRequests(form);
+  const data = FAKE_REQUEST;
 
   const { mutate: confirmRefund } = useAdminConfirmRefundRequestMutation();
   const { mutate: closeRefund } = useAdminCloseRefundRequestMutation();
@@ -187,3 +189,28 @@ const ProductReturns = () => {
 };
 
 export default ProductReturns;
+
+const FAKE_REQUEST = [...Array(10)].map((_, i) => ({
+  amount: randomNum(2000),
+  createdAt: new Date().toString(),
+  id: "id" + i,
+  product: {
+    title: "prod" + i,
+  },
+  reason:
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took",
+  status:
+    Object.values(RefundStatusType)[i % Object.values(RefundStatusType).length],
+  updatedAt: new Date().toString(),
+  orderItem: {
+    buyer: {
+      firstName: "first",
+      lastName: "last",
+    },
+    id: "orderid-" + i,
+    seller: {
+      firstName: "first",
+      lastName: "last",
+    },
+  },
+}));

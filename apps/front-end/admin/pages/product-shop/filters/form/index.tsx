@@ -7,6 +7,7 @@ import {
   Button,
   EditIcon,
   FlagIcon,
+  GetProductFitlerQuery,
   Input,
   InputGroup,
   InputLeftElement,
@@ -46,7 +47,8 @@ const ProductShopFiltersForm = () => {
 
   const filterId = getParam("filter_id");
 
-  const { data } = useGetAdminProductFitlerQuery(filterId);
+  const { data: _data } = useGetAdminProductFitlerQuery(filterId);
+  const data = FAKE_FILTERED_PROD;
   const { mutate } = useupdateProductFilter();
 
   return (
@@ -121,7 +123,7 @@ const ProductShopFiltersForm = () => {
                   name: [],
                   lang: "en",
                 }}
-                onSubmit={() => {}}
+                onSubmit={() => { }}
               >
                 {({ values, setFieldValue, handleChange }) => {
                   return (
@@ -191,7 +193,7 @@ const ProductShopFiltersForm = () => {
                                 {
                                   name: {},
                                   sortOrder: 1,
-                                } as typeof data.values[0],
+                                } as (typeof data.values)[0],
                               ])
                             }
                             className="text-white flex justify-center items-center text-2xl h-12 w-12"
@@ -213,3 +215,27 @@ const ProductShopFiltersForm = () => {
 };
 
 export default ProductShopFiltersForm;
+
+const FAKE_FILTERED_PROD: GetProductFitlerQuery["getAdminProductsFilter"] = {
+  __typename: "Filter",
+  id: "filter1",
+  name: "Color",
+  sortOrder: 1,
+  values: [
+    {
+      __typename: "ProductFilterGroupValue",
+      name: "Red",
+      sortOrder: 1,
+    },
+    {
+      __typename: "ProductFilterGroupValue",
+      name: "Blue",
+      sortOrder: 2,
+    },
+    {
+      __typename: "ProductFilterGroupValue",
+      name: "Green",
+      sortOrder: 3,
+    },
+  ],
+};

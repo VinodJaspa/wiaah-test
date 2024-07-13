@@ -1,4 +1,5 @@
 import {
+  AdminGetFilteredReturnOrdersQuery,
   Button,
   Image,
   Input,
@@ -30,7 +31,8 @@ const CanceledOrders: NextPage = () => {
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof useAdminGetReturnedProductsQuery>[0]
   >({ pagination }, { pagination });
-  const { data: orders } = useAdminGetReturnedProductsQuery(form);
+  const { data: _orders } = useAdminGetReturnedProductsQuery(form);
+  const orders = FAKE_ORDERS;
 
   return (
     <section>
@@ -112,7 +114,7 @@ const CanceledOrders: NextPage = () => {
                     <Td>{"visa"}</Td>
                     <Td>
                       <Button colorScheme="danger">
-                        <TrashIcon onClick={() => {}} />
+                        <TrashIcon onClick={() => { }} />
                       </Button>
                     </Td>
                   </Tr>
@@ -128,3 +130,63 @@ const CanceledOrders: NextPage = () => {
 };
 
 export default CanceledOrders;
+
+const FAKE_ORDERS: AdminGetFilteredReturnOrdersQuery["adminGetReturnedOrders"] =
+  [
+    {
+      __typename: "ReturnedOrder",
+      amount: 100,
+      reason: "Defective product",
+      orderItem: {
+        __typename: "OrderItem",
+        paid: 44,
+        product: {
+          __typename: "Product",
+          title: "Sample Product 1",
+          thumbnail: "https://example.com/product1.jpg",
+        },
+        seller: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "seller_user1",
+          },
+        },
+        buyer: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "buyer_user1",
+          },
+        },
+      },
+    },
+    {
+      __typename: "ReturnedOrder",
+      amount: 150,
+      reason: "Not as described",
+      orderItem: {
+        __typename: "OrderItem",
+        paid: 33,
+        product: {
+          __typename: "Product",
+          title: "Sample Product 2",
+          thumbnail: "https://example.com/product2.jpg",
+        },
+        seller: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "seller_user2",
+          },
+        },
+        buyer: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "buyer_user2",
+          },
+        },
+      },
+    },
+  ];

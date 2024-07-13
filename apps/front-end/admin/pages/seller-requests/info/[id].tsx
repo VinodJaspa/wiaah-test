@@ -1,3 +1,4 @@
+import { ProductStatus, ServiceType } from "@features/API";
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -21,6 +22,8 @@ import {
   useGetUserProducts,
   useGetSellerProductsDetails,
   useGetFilteredHotelRoomsQuery,
+  AdminGetSellerQuery,
+  GetSellerProductsDetailsQuery,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -41,9 +44,11 @@ const SellerInfo = () => {
   const { getParam, back } = useRouting();
   const id = getParam("id");
 
-  const { data: seller } = useAdminGetSellerAccountDetailsQuery(id);
+  const { data: _seller } = useAdminGetSellerAccountDetailsQuery(id);
+  const seller = FAKE_SELLER;
   // const { data: products } = useGetUserProducts({ sellerId: id, take: 2 });
-  const { data: products } = useGetSellerProductsDetails({ sellerId: id });
+  const { data: _products } = useGetSellerProductsDetails({ sellerId: id });
+  const products = FAKE_PROD;
 
   const isService = true;
 
@@ -52,7 +57,7 @@ const SellerInfo = () => {
   const productComp = !isService ? (
     <ProductDetailsTable
       products={products}
-      onDelete={(id: string) => {}}
+      onDelete={(id: string) => { }}
       filters={"title"}
     />
   ) : (
@@ -158,3 +163,61 @@ const SellerInfo = () => {
 };
 
 export default SellerInfo;
+
+const FAKE_SELLER: AdminGetSellerQuery["adminGetAccount"] = {
+  __typename: "Account",
+  photo: "https://example.com/seller_photo.jpg",
+  firstName: "John",
+  lastName: "Doe",
+  email: "johndoe@example.com",
+  companyRegisterationNumber: "ABC123456789",
+  createdAt: "2024-07-13T12:00:00Z",
+  profile: {
+    __typename: "Profile",
+    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  },
+  service: {
+    __typename: "Service",
+    id: "service1",
+    type: ServiceType.Hotel,
+  },
+};
+
+const FAKE_PROD: GetSellerProductsDetailsQuery["getSellerProductsDetails"] = [
+  {
+    title: "Product A",
+    thumbnail: "https://example.com/productA.jpg",
+    price: 49.99,
+    stock: 100,
+    earnings: 1499.7,
+    sales: 30,
+    totalOrdered: 35,
+    totalDiscounted: 5,
+    totalDiscountedAmount: 20,
+    unitsRefunded: 2,
+    id: "productA123",
+    positiveFeedback: 85,
+    reviews: 20,
+    negitiveFeedback: 5,
+    status: ProductStatus.Active,
+    external_clicks: 150,
+  },
+  {
+    title: "Product B",
+    thumbnail: "https://example.com/productB.jpg",
+    price: 29.99,
+    stock: 50,
+    earnings: 899.7,
+    sales: 25,
+    totalOrdered: 30,
+    totalDiscounted: 2,
+    totalDiscountedAmount: 10,
+    unitsRefunded: 1,
+    id: "productB456",
+    positiveFeedback: 70,
+    reviews: 15,
+    negitiveFeedback: 3,
+    status: ProductStatus.Active,
+    external_clicks: 100,
+  },
+];

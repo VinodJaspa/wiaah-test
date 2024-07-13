@@ -1,10 +1,11 @@
-import { OrderSearchPeriod } from "@features/API";
+import { OrderSearchPeriod, OrderStatusEnum } from "@features/API";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCloudDownload, BiFolder } from "react-icons/bi";
 import { useRouting } from "routing";
 import {
+  AdminGetSalesDurningPeriodQuery,
   Button,
   DateFormInput,
   Image,
@@ -40,12 +41,13 @@ const SalesStatistics: NextPage = () => {
       period === "day"
         ? OrderSearchPeriod.Day
         : period === "week"
-        ? OrderSearchPeriod.Week
-        : period === "month"
-        ? OrderSearchPeriod.Month
-        : undefined,
+          ? OrderSearchPeriod.Week
+          : period === "month"
+            ? OrderSearchPeriod.Month
+            : undefined,
   });
-  const { data: sales } = useAdminGetSalesByPeriod(form);
+  const { data: _sales } = useAdminGetSalesByPeriod(form);
+  const sales = FAKE_SALES;
 
   return (
     <section className="flex flex-col gap-8 w-full">
@@ -65,7 +67,7 @@ const SalesStatistics: NextPage = () => {
                 <BiFolder />
                 <p>{t("Export to")}</p>
                 <SearchFilterInput
-                  controls={{ hasMore: true, next: () => {} }}
+                  controls={{ hasMore: true, next: () => { } }}
                   value=""
                   flushed
                 />
@@ -169,3 +171,93 @@ const SalesStatistics: NextPage = () => {
 };
 
 export default SalesStatistics;
+
+const FAKE_SALES: AdminGetSalesDurningPeriodQuery["getSalesDurningPeriod"] = [
+  {
+    __typename: "OrderItem",
+    qty: 2,
+    discount: 10,
+    discountAmount: 5,
+    cashback: 2,
+    status: OrderStatusEnum.Paid,
+    paid: 44,
+    id: "orderItem1",
+    createdAt: "2024-07-13T09:00:00Z",
+    product: {
+      __typename: "Product",
+      title: "Product A",
+      thumbnail: "https://example.com/productA.jpg",
+    },
+    buyer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "buyer1username",
+      },
+    },
+    order: {
+      __typename: "Order",
+      shippingAddress: {
+        __typename: "ShippingAddress",
+        location: {
+          __typename: "Location",
+          address: "123 Example St",
+          city: "Exampleville",
+          country: "Exampleland",
+          state: "Exampleria",
+        },
+      },
+    },
+    affiliator: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "affiliator1username",
+      },
+    },
+  },
+  {
+    __typename: "OrderItem",
+    qty: 1,
+    discount: 5,
+    discountAmount: 2,
+    cashback: 1,
+    status: OrderStatusEnum.Canceled,
+    paid: 0,
+    id: "orderItem2",
+    createdAt: "2024-07-12T15:30:00Z",
+    product: {
+      __typename: "Product",
+      title: "Product B",
+      thumbnail: "https://example.com/productB.jpg",
+    },
+    buyer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "buyer2username",
+      },
+    },
+    order: {
+      __typename: "Order",
+      shippingAddress: {
+        __typename: "ShippingAddress",
+        location: {
+          __typename: "Location",
+          address: "456 Sample Rd",
+          city: "Sampletown",
+          country: "Sampleland",
+          state: "Sampleria",
+        },
+      },
+    },
+    affiliator: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "affiliator2username",
+      },
+    },
+  },
+  // Add more order items as needed
+];

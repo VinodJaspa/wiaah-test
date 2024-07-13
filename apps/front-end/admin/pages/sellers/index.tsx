@@ -1,4 +1,4 @@
-import { AccountStatus } from "@features/API";
+import { AccountStatus, AccountType } from "@features/API";
 import { useGetMembershipsQuery } from "@features/Membership";
 import { NextPage } from "next";
 import React from "react";
@@ -34,6 +34,7 @@ import {
   CloseIcon,
   ModalCloseButton,
   useGetFilteredSellers,
+  GetFilteredSellersQuery,
 } from "ui";
 import { mapArray, NumberShortner, useForm } from "utils";
 
@@ -48,7 +49,8 @@ const Sellers: NextPage = () => {
     Parameters<typeof useGetFilteredSellers>[0]
   >({ pagination }, { pagination });
 
-  const { data: sellers } = useGetFilteredSellers(form);
+  const { data: _sellers } = useGetFilteredSellers(form);
+  const sellers = FAKE_SELLERS;
   return (
     <TableContainer>
       <Table
@@ -86,7 +88,7 @@ const Sellers: NextPage = () => {
               <Input onChange={(v) => handleChange("email", v.target.value)} />
             </Td>
             <Td>
-              <Select value={form.status} onOptionSelect={(v) => {}}>
+              <Select value={form.status} onOptionSelect={(v) => { }}>
                 <SelectOption value={true}>{t("Verified")}</SelectOption>
                 <SelectOption value={false}>{t("unVerified")}</SelectOption>
               </Select>
@@ -276,3 +278,70 @@ const Sellers: NextPage = () => {
 };
 
 export default Sellers;
+
+const FAKE_SELLERS: GetFilteredSellersQuery["getFilteredSellers"] = [
+  {
+    createdAt: "2023-01-01T00:00:00Z",
+    email: "seller1@example.com",
+    firstName: "John",
+    id: "seller1",
+    lastName: "Doe",
+    photo: "https://example.com/seller1.jpg",
+    verified: true,
+    accountType: AccountType.Admin,
+    status: AccountStatus.Active,
+    ips: ["192.168.1.1", "10.0.0.1"],
+    membershipId: "member1",
+    profile: {
+      visits: 1000,
+    },
+    shop: {
+      location: {
+        address: "123 Main St",
+        city: "New York",
+        country: "USA",
+      },
+    },
+    Membership: {
+      name: "Premium",
+    },
+    balance: {
+      withdrawableBalance: 5000,
+    },
+    sellerSalesStats: {
+      sales: 100,
+    },
+  },
+  {
+    createdAt: "2023-02-01T00:00:00Z",
+    email: "seller2@example.com",
+    firstName: "Jane",
+    id: "seller2",
+    lastName: "Smith",
+    photo: "https://example.com/seller2.jpg",
+    verified: false,
+    accountType: AccountType.Admin,
+    status: AccountStatus.Active,
+    ips: ["192.168.1.2", "10.0.0.2"],
+    membershipId: "member2",
+    profile: {
+      visits: 500,
+    },
+    shop: {
+      location: {
+        address: "456 Oak Ave",
+        city: "Los Angeles",
+        country: "USA",
+      },
+    },
+    Membership: {
+      name: "Standard",
+    },
+    balance: {
+      withdrawableBalance: 2500,
+    },
+    sellerSalesStats: {
+      sales: 100,
+    },
+  },
+];

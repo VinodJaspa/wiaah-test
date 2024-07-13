@@ -1,4 +1,4 @@
-import { ProductUsageStatus } from "@features/API";
+import { ProductStatus, ProductUsageStatus } from "@features/API";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import {
   Checkbox,
   DateFormInput,
   EditIcon,
+  GetAdminProductsQuery,
   Image,
   Input,
   Pagination,
@@ -37,7 +38,8 @@ const Products: NextPage = () => {
   >({
     pagination,
   });
-  const { data: products } = useGetAdminProductsQuery(form);
+  const { data: _products } = useGetAdminProductsQuery(form);
+  const products = FAKE_PROD;
 
   return (
     <>
@@ -163,3 +165,64 @@ const Products: NextPage = () => {
 };
 
 export default Products;
+
+const FAKE_PROD: GetAdminProductsQuery["getAdminFilteredProducts"] = [
+  {
+    __typename: "Product",
+    title: "Product A",
+    sellerId: "seller1",
+    id: "product1",
+    price: 50,
+    stock: 100,
+    usageStatus: ProductUsageStatus.New,
+    thumbnail: "https://example.com/product1.jpg",
+    status: ProductStatus.Active,
+    totalOrdered: 500,
+    totalDiscountedAmount: 100,
+    totalDiscounted: 50,
+    unitsRefunded: 10,
+    positiveFeedback: 80,
+    negitiveFeedback: 5,
+    sales: 400,
+    reviews: 50,
+    earnings: 2000,
+    updatedAt: "2024-07-13T12:00:00Z",
+    external_clicks: 200,
+    seller: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "seller1username",
+      },
+    },
+  },
+  {
+    __typename: "Product",
+    title: "Product B",
+    sellerId: "seller2",
+    id: "product2",
+    price: 70,
+    stock: 50,
+    usageStatus: ProductUsageStatus.New,
+    thumbnail: "https://example.com/product2.jpg",
+    status: ProductStatus.Active,
+    totalOrdered: 200,
+    totalDiscountedAmount: 50,
+    totalDiscounted: 20,
+    unitsRefunded: 5,
+    positiveFeedback: 40,
+    negitiveFeedback: 2,
+    sales: 150,
+    reviews: 25,
+    earnings: 1000,
+    updatedAt: "2024-07-12T15:30:00Z",
+    external_clicks: 100,
+    seller: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "seller2username",
+      },
+    },
+  },
+];

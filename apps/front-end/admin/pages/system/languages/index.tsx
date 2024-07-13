@@ -1,4 +1,5 @@
 import {
+  AdminGetLanguagesQuery,
   Button,
   Checkbox,
   EditIcon,
@@ -29,7 +30,8 @@ const LanguagesList: NextPage = () => {
   const { form, inputProps, handleChange } = useForm<
     Parameters<typeof useAdminGetLanguagesQuery>[0]
   >({ pagination });
-  const { data: languages } = useAdminGetLanguagesQuery(form);
+  const { data: _languages } = useAdminGetLanguagesQuery(form);
+  const languages = FAKE_LANGUAGES;
 
   return (
     <section>
@@ -113,3 +115,24 @@ const LanguagesList: NextPage = () => {
 };
 
 export default LanguagesList;
+
+const FAKE_LANGUAGES: AdminGetLanguagesQuery["adminGetLanguages"] = [
+  {
+    __typename: "Language",
+    name: "English",
+    id: "1",
+    code: "en",
+    enabled: true,
+    locale: "en_US",
+    sortOrder: 1,
+  },
+  {
+    __typename: "Language",
+    name: "Spanish",
+    id: "2",
+    code: "es",
+    enabled: true,
+    locale: "es_ES",
+    sortOrder: 2,
+  },
+];

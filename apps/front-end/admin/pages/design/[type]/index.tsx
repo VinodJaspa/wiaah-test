@@ -1,5 +1,6 @@
 import { DesignPlacement, DesignType } from "@features/API";
 import {
+  AdminGetDesignQuery,
   AdminListTable,
   AdminTableCellTypeEnum,
   Badge,
@@ -12,10 +13,34 @@ import {
   useAdminGetDesignsQuery,
   usePaginationControls,
 } from "@UI";
+import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
+
+const FAKE_SLIDE_SHOWS: AdminGetDesignQuery["adminGetDesigns"] = [
+  {
+    __typename: "Design",
+    createdAt: new Date().toISOString(),
+    id: "design1",
+    name: "Design One",
+    placement: ["top-left", "mobile-header"],
+    src: getRandomImage(),
+    type: DesignType.Slideshow,
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    __typename: "Design",
+    createdAt: new Date().toISOString(),
+    id: "design2",
+    name: "Design Two",
+    placement: ["bottom-right", "desktop-footer"],
+    src: getRandomImage(),
+    type: DesignType.Slideshow,
+    updatedAt: new Date().toISOString(),
+  },
+];
 
 const Slideshow = () => {
   const { visit, getCurrentPath, getParam, back } = useRouting();
@@ -31,7 +56,8 @@ const Slideshow = () => {
     { pagination },
     { pagination, type: validType ? type : DesignType.Slideshow }
   );
-  const { data: slideShows } = useAdminGetDesignsQuery(form);
+  const { data: _slideShows } = useAdminGetDesignsQuery(form);
+  const slideShows = FAKE_SLIDE_SHOWS;
   React.useEffect(() => {
     if (!validType) {
       back();
@@ -108,7 +134,7 @@ const Slideshow = () => {
               >
                 <EditIcon />
               </Button>,
-              <Button key={v.id} onClick={() => {}} center className="p-2">
+              <Button key={v.id} onClick={() => { }} center className="p-2">
                 <CloseIcon />
               </Button>,
             ],

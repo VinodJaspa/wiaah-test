@@ -16,6 +16,7 @@ import {
   Tr,
   usePaginationControls,
   useAdminGetVouchersQuery,
+  AdminGetVouchersQuery,
 } from "ui";
 import { mapArray, setTestid, useForm } from "utils";
 
@@ -35,7 +36,8 @@ const Voucher = () => {
     voucherNumber: 123456,
   });
 
-  const { data: vouchers } = useAdminGetVouchersQuery(form);
+  const { data: _vouchers } = useAdminGetVouchersQuery(form);
+  const vouchers = FAKE_VOUCHERS;
 
   return (
     <section>
@@ -108,3 +110,45 @@ const Voucher = () => {
 };
 
 export default Voucher;
+
+const FAKE_VOUCHERS: AdminGetVouchersQuery["getFilteredVouchers"] = [
+  {
+    __typename: "Voucher",
+    amount: 100,
+    code: "ABC123",
+    createdAt: "2023-01-01T00:00:00Z",
+    currency: "USD",
+    status: VoucherStatus.Active,
+    user: {
+      __typename: "Account",
+      id: "1",
+      firstName: "John",
+    },
+  },
+  {
+    __typename: "Voucher",
+    amount: 200,
+    code: "XYZ789",
+    createdAt: "2023-02-01T00:00:00Z",
+    currency: "EUR",
+    status: VoucherStatus.Active,
+    user: {
+      __typename: "Account",
+      id: "2",
+      firstName: "Jane",
+    },
+  },
+  {
+    __typename: "Voucher",
+    amount: 150,
+    code: "LMN456",
+    createdAt: "2023-03-01T00:00:00Z",
+    currency: "GBP",
+    status: VoucherStatus.InActive,
+    user: {
+      __typename: "Account",
+      id: "3",
+      firstName: "Alice",
+    },
+  },
+];

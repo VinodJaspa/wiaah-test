@@ -15,6 +15,7 @@ import {
   useAdminCreateStaffAccountMutation,
   useAdminUpdateStaffAccountMutation,
   useAdminGetAccount,
+  AdminGetAccountQuery,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
@@ -36,7 +37,8 @@ const ManageStaff: NextPage = () => {
 
   const isNew = id === "new";
 
-  const { data } = useAdminGetAccount(id);
+  const { data: _data } = useAdminGetAccount(id);
+  const data = FAKE_ACCOUNT;
   const {
     form: updateForm,
     inputProps: updateInputProps,
@@ -186,3 +188,16 @@ const ManageStaff: NextPage = () => {
 };
 
 export default ManageStaff;
+
+const FAKE_ACCOUNT: AdminGetAccountQuery["adminGetAccount"] = {
+  __typename: "Account",
+  firstName: "John",
+  lastName: "Doe",
+  email: "johndoe@example.com",
+  accountType: AccountType.Admin,
+  photo: getRandomImage(),
+  profile: {
+    __typename: "Profile",
+    username: "johndoe123",
+  },
+};

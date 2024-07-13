@@ -1,5 +1,6 @@
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 import {
+  AdminGetProfessionsQuery,
   Button,
   EditIcon,
   useAdminGetProfessionQuery,
@@ -10,6 +11,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, randomNum, useForm } from "utils";
+import { ProductUsageStatus } from "types";
 
 const Profession: NextPage = () => {
   const { t } = useTranslation();
@@ -19,7 +21,8 @@ const Profession: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetProfessionQuery>[0]
   >({ pagination }, { pagination });
-  const { data } = useAdminGetProfessionQuery(form);
+  const { data: _data } = useAdminGetProfessionQuery(form);
+  const data = FAKE_PROFESSION;
 
   return (
     <section>
@@ -76,3 +79,27 @@ const Profession: NextPage = () => {
 };
 
 export default Profession;
+
+const FAKE_PROFESSION: AdminGetProfessionsQuery["adminGetProfessions"] = [
+  {
+    __typename: "Profession",
+    id: "prof1",
+    sortOrder: 1,
+    title: "Software Engineer",
+    usage: 2,
+  },
+  {
+    __typename: "Profession",
+    id: "prof2",
+    sortOrder: 2,
+    title: "Data Scientist",
+    usage: 3,
+  },
+  {
+    __typename: "Profession",
+    id: "prof3",
+    sortOrder: 3,
+    title: "Product Manager",
+    usage: 3,
+  },
+];

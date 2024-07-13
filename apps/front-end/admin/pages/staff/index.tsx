@@ -2,6 +2,7 @@ import { AdminListTable, AdminTableCellTypeEnum } from "../../components";
 import {
   Badge,
   Button,
+  GetStaffAccontsQuery,
   PlusIcon,
   Select,
   SelectOption,
@@ -15,7 +16,7 @@ import { mapArray, randomNum, useForm } from "utils";
 import { startCase } from "lodash";
 import { useDateDiff } from "hooks";
 import { useRouting } from "routing";
-import { AccountStatus, StaffAccountType } from "@features/API";
+import { AccountStatus, AccountType, StaffAccountType } from "@features/API";
 
 const Staff: NextPage = () => {
   const { t } = useTranslation();
@@ -25,7 +26,8 @@ const Staff: NextPage = () => {
   const { form, inputProps, selectProps, dateInputProps } = useForm<
     Parameters<typeof uesAdminGetStaffAccountsQuery>[0]
   >({ pagination }, { pagination });
-  const { data } = uesAdminGetStaffAccountsQuery(form);
+  const { data: _data } = uesAdminGetStaffAccountsQuery(form);
+  const data = FAKE_STUFF_ACCOUNTS;
 
   const TimeDiff = (lastActiveAt: string) => {
     const { timeUnit, value } = useDateDiff({
@@ -159,3 +161,28 @@ const Staff: NextPage = () => {
 };
 
 export default Staff;
+
+const FAKE_STUFF_ACCOUNTS: GetStaffAccontsQuery["adminGetStaffAccounts"] = [
+  {
+    __typename: "Account",
+    id: "1",
+    firstName: "Jane",
+    lastName: "Doe",
+    email: "janedoe@example.com",
+    photo: "https://example.com/avatar.jpg",
+    status: AccountStatus.Active,
+    lastActiveAt: "2024-07-13T10:00:00Z",
+    accountType: AccountType.Admin,
+  },
+  {
+    __typename: "Account",
+    id: "2",
+    firstName: "John",
+    lastName: "Smith",
+    email: "johnsmith@example.com",
+    photo: "https://example.com/avatar2.jpg",
+    status: AccountStatus.Active,
+    lastActiveAt: "2024-07-13T09:30:00Z",
+    accountType: AccountType.Admin,
+  },
+];

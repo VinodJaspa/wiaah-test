@@ -4,6 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
+  AdminGetReviewsQuery,
   Checkbox,
   DateFormInput,
   Divider,
@@ -57,7 +58,8 @@ const Reviews: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetProductReviews>[0]
   >({ pagination }, { pagination });
-  const { data: reviews } = useAdminGetProductReviews(form);
+  const { data: _reviews } = useAdminGetProductReviews(form);
+  const reviews = FAKE_REIVEWS;
   const { mutate: deleteReview } = useAdminDeleteProductReviewMutation();
 
   return (
@@ -170,3 +172,68 @@ const Reviews: NextPage = () => {
 };
 
 export default Reviews;
+
+const FAKE_REIVEWS: AdminGetReviewsQuery["adminGetFilteredProductReviews"] = [
+  {
+    __typename: "ProductReview",
+    message: "Great product, highly recommend!",
+    rate: 4.5,
+    createdAt: "2024-07-13T10:00:00Z",
+    id: "review1",
+    product: {
+      __typename: "Product",
+      title: "Product A",
+      thumbnail: "https://example.com/productA.jpg",
+      id: "product1",
+      seller: {
+        __typename: "Account",
+        id: "seller1",
+        profile: {
+          __typename: "Profile",
+          photo: "https://example.com/seller1.jpg",
+          username: "seller1username",
+        },
+      },
+    },
+    reviewer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "reviewer1username",
+        photo: "https://example.com/reviewer1.jpg",
+        id: "reviewer1",
+      },
+    },
+  },
+  {
+    __typename: "ProductReview",
+    message: "Could be better, had some issues.",
+    rate: 3.2,
+    createdAt: "2024-07-12T15:30:00Z",
+    id: "review2",
+    product: {
+      __typename: "Product",
+      title: "Product B",
+      thumbnail: "https://example.com/productB.jpg",
+      id: "product2",
+      seller: {
+        __typename: "Account",
+        id: "seller2",
+        profile: {
+          __typename: "Profile",
+          photo: "https://example.com/seller2.jpg",
+          username: "seller2username",
+        },
+      },
+    },
+    reviewer: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "reviewer2username",
+        photo: "https://example.com/reviewer2.jpg",
+        id: "reviewer2",
+      },
+    },
+  },
+];

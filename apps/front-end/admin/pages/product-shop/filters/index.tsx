@@ -7,6 +7,7 @@ import {
   Button,
   Checkbox,
   EditIcon,
+  GetProductFitlersQuery,
   Input,
   ListIcon,
   PlusIcon,
@@ -30,7 +31,8 @@ const ProductShopFilters = () => {
     Parameters<typeof useGetAdminProductsFitlersQuery>[0]
   >({});
 
-  const { data: filterGroups } = useGetAdminProductsFitlersQuery(form);
+  const { data: _filterGroups } = useGetAdminProductsFitlersQuery(form);
+  const filterGroups = FAKE_FILTERED_PROD_SHOPS;
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -130,3 +132,56 @@ const ProductShopFilters = () => {
   );
 };
 export default ProductShopFilters;
+
+const FAKE_FILTERED_PROD_SHOPS: GetProductFitlersQuery["getAdminProductsFilters"] =
+  [
+    {
+      __typename: "Filter",
+      id: "filter1",
+      name: "Color",
+      sortOrder: 1,
+      values: [
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Red",
+          sortOrder: 1,
+        },
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Blue",
+          sortOrder: 2,
+        },
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Green",
+          sortOrder: 3,
+        },
+        // Add more filter values as needed
+      ],
+    },
+    {
+      __typename: "Filter",
+      id: "filter2",
+      name: "Size",
+      sortOrder: 2,
+      values: [
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Small",
+          sortOrder: 1,
+        },
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Medium",
+          sortOrder: 2,
+        },
+        {
+          __typename: "ProductFilterGroupValue",
+          name: "Large",
+          sortOrder: 3,
+        },
+        // Add more filter values as needed
+      ],
+    },
+    // Add more filters as needed
+  ];

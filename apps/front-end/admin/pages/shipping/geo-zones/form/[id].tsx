@@ -5,6 +5,7 @@ import {
   Button,
   Divider,
   EditIcon,
+  GetShippingTypeRuleQuery,
   Input,
   InputRequiredStar,
   MinusIcon,
@@ -24,6 +25,7 @@ import {
 import { useRouting } from "routing";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
+import { ShippingType } from "@features/API";
 
 const GeoZoneForm: NextPage = () => {
   const { t } = useTranslation();
@@ -33,7 +35,9 @@ const GeoZoneForm: NextPage = () => {
   const isNew = id === "new";
   const isEdit = !isNew;
 
-  const { data } = useAdminGetShippingTypeRule(id);
+  // NOTE: graphql is not ready
+  const { data: _data } = useAdminGetShippingTypeRule(id);
+  const data = FAKE_SHIPPING_TYPE;
 
   const { form, inputProps } = useForm<Parameters<typeof update>[0]>(
     {
@@ -142,3 +146,34 @@ const GeoZoneForm: NextPage = () => {
 };
 
 export default GeoZoneForm;
+
+const FAKE_SHIPPING_TYPE: GetShippingTypeRuleQuery["getShippingTypeRule"] = {
+  __typename: "ShippingTypeRule",
+  id: "1",
+  name: "Standard Shipping",
+  type: ShippingType.Free,
+  description: "Standard shipping rules for international orders.",
+  zones: [
+    {
+      __typename: "ShippingRuleGeoZone",
+      id: "zone1",
+      shippingTypeRuleId: "1",
+      country: "US",
+      zone: "North America",
+    },
+    {
+      __typename: "ShippingRuleGeoZone",
+      id: "zone2",
+      shippingTypeRuleId: "1",
+      country: "CA",
+      zone: "North America",
+    },
+    {
+      __typename: "ShippingRuleGeoZone",
+      id: "zone3",
+      shippingTypeRuleId: "1",
+      country: "GB",
+      zone: "Europe",
+    },
+  ],
+};

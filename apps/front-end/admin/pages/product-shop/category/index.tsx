@@ -1,3 +1,4 @@
+import { ProductCategoryStatus } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -19,6 +20,7 @@ import {
   Button,
   Input,
   useGetAdminProductCategoriesQuery,
+  GetProductCategoriesQuery,
 } from "ui";
 import { mapArray, SeperatedStringArray, useForm } from "utils";
 
@@ -28,20 +30,21 @@ const ProductShopCategory = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useGetAdminProductCategoriesQuery>[0]
   >({ pagination });
-  const { data, refetch } = useGetAdminProductCategoriesQuery(form);
+  const { data: _data, refetch } = useGetAdminProductCategoriesQuery(form);
+  const data = FAKE_PROD_CATE;
   const { visit, getCurrentPath } = useRouting();
 
   const categories =
     data?.reduce(
       (acc, { id, name, parantId, sortOrder }, i, og) => {
         const names = [name];
+        let parent = parantId;
 
-        let done = false;
-        let parant = parantId;
-        while (!done) {
-          const _parant = og.find((v) => v.id === parant);
-          if (!parant) done = true;
-          names.push(_parant.name);
+        while (parent) {
+          const parentCategory = og.find((v) => v.id === parent);
+          if (!parentCategory) break;
+          names.unshift(parentCategory.name); // Add parent category name at the beginning
+          parent = parentCategory.parantId; // Move to the next parent
         }
 
         return [
@@ -154,3 +157,31 @@ const ProductShopCategory = () => {
   );
 };
 export default ProductShopCategory;
+
+const FAKE_PROD_CATE: GetProductCategoriesQuery["getFilteredProductCategories"] =
+  [
+    {
+      __typename: "Category",
+      id: "category1",
+      name: "Electronics",
+      parantId: "parent1",
+      sortOrder: 1,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      __typename: "Category",
+      id: "category2",
+      name: "Clothing",
+      parantId: "parent1",
+      sortOrder: 2,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      __typename: "Category",
+      id: "category3",
+      name: "Books",
+      parantId: "parent2",
+      sortOrder: 3,
+      status: ProductCategoryStatus.InActive,
+    },
+  ];

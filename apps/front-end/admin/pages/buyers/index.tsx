@@ -35,6 +35,79 @@ import {
 } from "ui";
 import { mapArray, NumberShortner, useForm } from "utils";
 
+const FAKE_BUYERS = [
+  {
+    __typename: "Account",
+    createdAt: "2024-07-12T00:00:00Z",
+    email: "john.doe@example.com",
+    firstName: "John",
+    id: "account1",
+    lastName: "Doe",
+    photo: "https://example.com/photos/john.jpg",
+    verified: true,
+    accountType: "buyer",
+    status: "active",
+    ips: ["192.168.1.1"],
+    membershipId: "membership1",
+    profile: {
+      __typename: "Profile",
+      visits: 10,
+    },
+    shop: {
+      __typename: "Shop",
+      location: {
+        __typename: "Location",
+        address: "123 Main St",
+        city: "Springfield",
+        country: "USA",
+      },
+    },
+    Membership: {
+      __typename: "Membership",
+      name: "Premium",
+    },
+    balance: {
+      __typename: "Balance",
+      withdrawableBalance: 100.0,
+    },
+  },
+  {
+    __typename: "Account",
+    createdAt: "2024-07-11T00:00:00Z",
+    email: "jane.smith@example.com",
+    firstName: "Jane",
+    id: "account2",
+    lastName: "Smith",
+    photo: "https://example.com/photos/jane.jpg",
+    verified: false,
+    accountType: "buyer",
+    status: "inactive",
+    ips: ["192.168.1.2"],
+    membershipId: "membership2",
+    profile: {
+      __typename: "Profile",
+      visits: 5,
+    },
+    shop: {
+      __typename: "Shop",
+      location: {
+        __typename: "Location",
+        address: "456 Elm St",
+        city: "Shelbyville",
+        country: "USA",
+      },
+    },
+    Membership: {
+      __typename: "Membership",
+      name: "Basic",
+    },
+    balance: {
+      __typename: "Balance",
+      withdrawableBalance: 50.0,
+    },
+  },
+];
+
 const Buyers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
@@ -45,7 +118,8 @@ const Buyers: NextPage = () => {
     Parameters<typeof useGetFilteredBuyers>[0]
   >({ pagination }, { pagination });
 
-  const { data: buyers, refetch } = useGetFilteredBuyers(form);
+  const { data: _buyers, refetch } = useGetFilteredBuyers(form);
+  const buyers = FAKE_BUYERS;
 
   React.useEffect(() => {
     refetch({});

@@ -3,12 +3,13 @@ import {
   AdminTableCellTypeEnum,
   usePaginationControls,
 } from "@blocks";
+import { RestaurantDishType } from "@features/API";
 import { Select, SelectOption } from "@partials";
-import { useGetAdminFoodQuery } from "@UI";
+import { GetAdminDishsQuery, useGetAdminFoodQuery } from "@UI";
+import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "utils";
-
 const FoodAdminMenu = () => {
   const { t } = useTranslation();
   const { pagination, controls } = usePaginationControls();
@@ -17,7 +18,9 @@ const FoodAdminMenu = () => {
   >({
     pagination,
   });
-  const { data } = useGetAdminFoodQuery(form);
+  // NOTE: graphql is not ready so I replaced i with placeholder
+  const { data: _data } = useGetAdminFoodQuery(form);
+  const data = FAKE_FOOD;
 
   return (
     <AdminListTable
@@ -117,3 +120,66 @@ const FoodAdminMenu = () => {
 };
 
 export default FoodAdminMenu;
+
+const FAKE_FOOD: GetAdminDishsQuery["adminGetDishs"] = [
+  {
+    __typename: "Dish",
+    id: "dish1",
+    name: "Spaghetti Carbonara",
+    thumbnail: getRandomImage(),
+    type: RestaurantDishType.Main,
+    sales: 150,
+    menu: {
+      __typename: "RestaurantMenu",
+      restaurant: {
+        __typename: "ServiceDetails",
+        location: {
+          __typename: "ServiceLocation",
+          country: "Italy",
+          city: "Rome",
+        },
+        establishmentType: {
+          __typename: "RestaurantEstablishmentType",
+          name: "Fine Dining",
+        },
+        owner: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "chef_roma",
+          },
+        },
+      },
+    },
+  },
+  {
+    __typename: "Dish",
+    id: "dish2",
+    name: "Sushi Platter",
+    thumbnail: getRandomImage(),
+    type: RestaurantDishType.Main,
+    sales: 200,
+    menu: {
+      __typename: "RestaurantMenu",
+      restaurant: {
+        __typename: "ServiceDetails",
+        location: {
+          __typename: "ServiceLocation",
+          country: "Japan",
+          city: "Tokyo",
+        },
+        establishmentType: {
+          __typename: "RestaurantEstablishmentType",
+          name: "Casual Dining",
+        },
+        owner: {
+          __typename: "Account",
+          profile: {
+            __typename: "Profile",
+            username: "sushi_master",
+          },
+        },
+      },
+    },
+  },
+];

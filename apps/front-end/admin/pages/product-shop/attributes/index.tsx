@@ -2,6 +2,7 @@ import {
   AdminTableCellTypeEnum,
   Button,
   EditIcon,
+  GetAdminProductAttributesQuery,
   SpinnerFallback,
   useAdminGetAttributesQuery,
   usePaginationControls,
@@ -26,13 +27,20 @@ const AttributesList: NextPage = () => {
     },
     { pagination }
   );
-  const { data, isLoading, isError, error } = useAdminGetAttributesQuery(form);
+  const {
+    data: _data,
+    isLoading,
+    isError,
+    error,
+  } = useAdminGetAttributesQuery(form);
+  const data = FAKE_PRODUCTS_ATTR;
 
   console.log({ error });
 
   return (
     <section>
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+      {/* ADD isLoading and isError when graphql is ready*/}
+      <SpinnerFallback isLoading={false}>
         <AdminListTable
           pagination={controls}
           onAdd={() => {
@@ -85,3 +93,22 @@ const AttributesList: NextPage = () => {
 };
 
 export default AttributesList;
+
+const FAKE_PRODUCTS_ATTR: GetAdminProductAttributesQuery["adminGetAttributes"] =
+{
+  __typename: "ProductAttributesPaginationResponse",
+  hasMore: true,
+  total: 2,
+  data: [
+    {
+      __typename: "ProductAttribute",
+      id: "attribute1",
+      name: "Size",
+    },
+    {
+      __typename: "ProductAttribute",
+      id: "attribute2",
+      name: "Color",
+    },
+  ],
+};

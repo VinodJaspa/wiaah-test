@@ -1,3 +1,4 @@
+import { ServiceAdaptation, ShopStatus } from "@features/API";
 import { useAdminDeleteServiceMutation } from "@features/Services/Services/mutation";
 import { NextPage } from "next";
 import React from "react";
@@ -24,6 +25,7 @@ import {
   useGetFilteredServicesQuery,
   usePaginationControls,
   ServiceType,
+  SearchServiceQuery,
 } from "ui";
 import { mapArray, useForm } from "utils";
 
@@ -38,7 +40,8 @@ const Services: NextPage = () => {
     Parameters<typeof useGetFilteredServicesQuery>[0]
   >({ filters, pagination });
 
-  const { data: services } = useGetFilteredServicesQuery(form);
+  const { data: _services } = useGetFilteredServicesQuery(form);
+  const services = FAKE_SERVICES;
 
   const { mutate } = useAdminDeleteServiceMutation();
 
@@ -208,3 +211,173 @@ const Services: NextPage = () => {
 };
 
 export default Services;
+
+const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
+  __typename: "ServiceSearchResponse",
+  hasMore: true,
+  total: 2,
+  data: [
+    {
+      __typename: "Service",
+      id: "1",
+      name: "Sample Service 1",
+      price: 100,
+      beds: 2,
+      bathrooms: 1,
+      adaptedFor: [ServiceAdaptation.NewBorn],
+      airCondition: true,
+      gpsAvailable: true,
+      seats: 5,
+      windows: 4,
+      lugaggeCapacity: 3,
+      treatmentCategory: "Category A",
+      maxSpeedInKm: 200,
+      brand: "Brand X",
+      description: "Description of Sample Service 1",
+      ingredients: ["Ingredient A", "Ingredient B"],
+      cleaningFee: 10,
+      reviews: 4,
+      thumbnail: "https://example.com/thumbnail1.jpg",
+      rating: 4.5,
+      type: ServiceType.Hotel,
+      title: "Sample Service Title 1",
+      speciality: "Specialty A",
+      availableAppointments: [
+        {
+          date: "2024-07-15",
+          workingHoursRanges: [
+            { from: "09:00", to: "17:00" },
+            { from: "18:00", to: "22:00" },
+          ],
+        },
+        {
+          date: "2024-07-16",
+          workingHoursRanges: [
+            { from: "10:00", to: "18:00" },
+            { from: "19:00", to: "23:00" },
+          ],
+        },
+      ],
+      healthCenterBookedAppointments: [
+        {
+          date: "2024-07-15",
+          workingHoursRanges: [
+            { from: "09:00", to: "17:00" },
+            { from: "18:00", to: "22:00" },
+          ],
+        },
+        {
+          date: "2024-07-16",
+          workingHoursRanges: [
+            { from: "10:00", to: "18:00" },
+            { from: "19:00", to: "23:00" },
+          ],
+        },
+      ],
+      saved: true,
+      sellerId: "seller1",
+      updatedAt: "2024-07-13",
+      shop: {
+        __typename: "Shop",
+        id: "shop1",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "123 Sample St",
+          city: "Sample City",
+          country: "Sample Country",
+          lat: 0,
+          long: 0,
+          state: "Sample State",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "seller1username",
+          verified: true,
+          photo: "https://example.com/seller1.jpg",
+        },
+      },
+    },
+    {
+      __typename: "Service",
+      id: "1",
+      name: "Sample Service 1",
+      price: 100,
+      beds: 2,
+      bathrooms: 1,
+      adaptedFor: [ServiceAdaptation.NewBorn],
+      airCondition: true,
+      gpsAvailable: true,
+      seats: 5,
+      windows: 4,
+      lugaggeCapacity: 3,
+      treatmentCategory: "Category A",
+      maxSpeedInKm: 200,
+      brand: "Brand X",
+      description: "Description of Sample Service 1",
+      ingredients: ["Ingredient A", "Ingredient B"],
+      cleaningFee: 10,
+      reviews: 4,
+      thumbnail: "https://example.com/thumbnail1.jpg",
+      rating: 4.5,
+      type: ServiceType.Hotel,
+      title: "Sample Service Title 1",
+      speciality: "Specialty A",
+      availableAppointments: [
+        {
+          date: "2024-07-15",
+          workingHoursRanges: [
+            { from: "09:00", to: "17:00" },
+            { from: "18:00", to: "22:00" },
+          ],
+        },
+        {
+          date: "2024-07-16",
+          workingHoursRanges: [
+            { from: "10:00", to: "18:00" },
+            { from: "19:00", to: "23:00" },
+          ],
+        },
+      ],
+      healthCenterBookedAppointments: [
+        {
+          date: "2024-07-15",
+          workingHoursRanges: [
+            { from: "09:00", to: "17:00" },
+            { from: "18:00", to: "22:00" },
+          ],
+        },
+        {
+          date: "2024-07-16",
+          workingHoursRanges: [
+            { from: "10:00", to: "18:00" },
+            { from: "19:00", to: "23:00" },
+          ],
+        },
+      ],
+      saved: true,
+      sellerId: "seller1",
+      updatedAt: "2024-07-13",
+      shop: {
+        __typename: "Shop",
+        id: "shop1",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "123 Sample St",
+          city: "Sample City",
+          country: "Sample Country",
+          lat: 0,
+          long: 0,
+          state: "Sample State",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "seller1username",
+          verified: true,
+          photo: "https://example.com/seller1.jpg",
+        },
+      },
+    },
+  ],
+};

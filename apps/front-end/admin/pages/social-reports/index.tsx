@@ -1,4 +1,5 @@
 import {
+  AdminGetPostReportsQuery,
   Badge,
   Button,
   DateFormInput,
@@ -26,7 +27,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 import { ImCheckmark } from "react-icons/im";
-import { AttachmentType, ReportType } from "@features/API";
+import { AttachmentType, ReportStatus, ReportType } from "@features/API";
 
 const SocialReports: NextPage = () => {
   const { t } = useTranslation();
@@ -35,7 +36,8 @@ const SocialReports: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetSocialReports>[0]
   >({ pagination }, { pagination, type: ReportType.Post });
-  const { data: reports } = useAdminGetSocialReports(form);
+  const { data: _reports } = useAdminGetSocialReports(form);
+  const reports = FAKE_REPORTS;
   const { mutate: clean } = useAdminMarkReportedContentCleanMutation();
   const { mutate: suspense } = useAdminSuspenseReportedContentMutation();
 
@@ -173,3 +175,78 @@ const SocialReports: NextPage = () => {
 };
 
 export default SocialReports;
+
+const FAKE_REPORTS: AdminGetPostReportsQuery["getReports"] = [
+  {
+    __typename: "Report",
+    id: "1",
+    type: ReportType.Post,
+    createdAt: "2024-07-13T09:00:00Z",
+    status: ReportStatus.Clean,
+    message: "This post contains spammy content.",
+    reportedBy: {
+      __typename: "Profile",
+      id: "user123",
+      username: "reporter1",
+    },
+    post: {
+      __typename: "NewsfeedPost",
+      title: "Exciting News Update!",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      reactionNum: 50,
+      shares: 20,
+      comments: 30,
+      views: 100,
+      hashtags: [
+        { __typename: "Hashtag", tag: "news" },
+        { __typename: "Hashtag", tag: "update" },
+      ],
+      attachments: [
+        {
+          __typename: "Attachment",
+          src: getRandomImage(),
+          type: AttachmentType.Img,
+        },
+        {
+          __typename: "Attachment",
+          src: getRandomImage(),
+          type: AttachmentType.Img,
+        },
+      ],
+    },
+  },
+  {
+    __typename: "Report",
+    id: "2",
+    type: ReportType.Post,
+    createdAt: "2024-07-12T14:30:00Z",
+    status: ReportStatus.Clean,
+    message: "This post is inappropriate for the platform.",
+    reportedBy: {
+      __typename: "Profile",
+      id: "user456",
+      username: "reporter2",
+    },
+    post: {
+      __typename: "NewsfeedPost",
+      title: "Important Announcement",
+      content:
+        "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+      reactionNum: 40,
+      shares: 10,
+      comments: 25,
+      views: 80,
+      hashtags: [
+        { __typename: "Hashtag", tag: "announcement" },
+        { __typename: "Hashtag", tag: "important" },
+      ],
+      attachments: [
+        {
+          __typename: "Attachment",
+          src: getRandomImage(),
+          type: AttachmentType.Img,
+        },
+      ],
+    },
+  },
+];

@@ -1,5 +1,5 @@
 import { Link } from "@components";
-import { ContentHostType } from "@features/API";
+import { AttachmentType, ContentHostType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiChat } from "react-icons/bi";
@@ -30,6 +30,9 @@ import {
   AdminGetPostCommentsModal,
   EmailIcon,
   MessageOutlineIcon,
+  getAdminFilteredNewsfeedPostsQueryKey,
+  GetAdminFilteredPostsQuery,
+  randomNum,
 } from "ui";
 import { mapArray, NumberShortner, useForm } from "utils";
 
@@ -46,7 +49,8 @@ const SocialPosts = () => {
     Parameters<typeof useGetAdminFilteredNewsfeedPosts>[0]
   >({ pagination });
 
-  const { data } = useGetAdminFilteredNewsfeedPosts(form);
+  const { data: _data } = useGetAdminFilteredNewsfeedPosts(form);
+  const data = FAKE_POSTS;
 
   const [editId, setEditId] = React.useState<string>();
   const [showComments, setShowComments] =
@@ -198,3 +202,25 @@ const SocialPosts = () => {
 };
 
 export default SocialPosts;
+
+const FAKE_POSTS: GetAdminFilteredPostsQuery["getFilteredNewsfeedPosts"] = [
+  ...Array(5),
+].map((_, i) => ({
+  id: i.toString(),
+  authorProfileId: i.toString(),
+  comments: randomNum(500),
+  content: `post number ${i}`,
+  createdAt: new Date().toString(),
+  hashtags: [],
+  attachments: [
+    {
+      src: "/profile (6).jfif",
+      type: AttachmentType.Img,
+    },
+  ],
+  reactionNum: randomNum(1000),
+  shares: randomNum(150),
+  title: `post title ${i}`,
+  userId: i.toString(),
+  views: randomNum(10000),
+}));

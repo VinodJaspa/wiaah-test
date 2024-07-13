@@ -22,7 +22,8 @@ const ProductReturnsEdit: NextPage = () => {
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const { data } = useGetAdminReturnedOrder(id);
+  const { data: _data } = useGetAdminReturnedOrder(id);
+  const data = FAKE_ORDERS;
 
   return (
     <section>
@@ -186,3 +187,41 @@ const ProductReturnsEdit: NextPage = () => {
 };
 
 export default ProductReturnsEdit;
+
+const FAKE_ORDERS = {
+  amount: 65,
+  createdAt: new Date().toString(),
+  fullAmount: true,
+  opened: true,
+  id: "test",
+  orderItemId: "test",
+  reason: "mock refund reason for product refund request",
+  status: RefundStatusType.Rejected,
+  orderItem: {
+    qty: 4,
+    seller: {
+      profile: {
+        username: "seller name",
+      },
+    },
+    buyer: {
+      email: "buyer@email.com",
+      profile: {
+        username: "buyer name",
+      },
+    },
+    order: {
+      createdAt: new Date().toString(),
+      id: "test",
+      shippingAddress: {
+        firstname: "first name",
+        lastname: "last name",
+        phone: "132-456-798",
+      },
+    },
+    product: {
+      brand: "Product Model",
+      title: "mock product title",
+    },
+  },
+};

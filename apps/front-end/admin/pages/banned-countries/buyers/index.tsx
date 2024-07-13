@@ -46,8 +46,8 @@ const BannedBuyers: NextPage = () => {
             value: t("Action"),
           },
         ]}
-        onAdd={() => {}}
-        onDelete={() => {}}
+        onAdd={() => { }}
+        onDelete={() => { }}
         data={BannedCountries.map(({ city, country, id }) => ({
           id,
           cols: [

@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCloudDownload, BiFolder } from "react-icons/bi";
 import {
+  AdminGetNewsletterSubscribersQuery,
   Button,
   Input,
   InputGroup,
@@ -42,7 +43,8 @@ const Newsletter: NextPage = () => {
     Parameters<typeof useAdminGetNewsletterSubscribersQuery>[0]
   >({ pagination }, { pagination });
 
-  const { data: subs } = useAdminGetNewsletterSubscribersQuery(form);
+  const { data: _subs } = useAdminGetNewsletterSubscribersQuery(form);
+  const subs = FAKE_SUBS;
   const { mutate } = useAdminRemoveNewsletterSubscriber();
 
   const { t } = useTranslation();
@@ -114,3 +116,28 @@ const Newsletter: NextPage = () => {
 };
 
 export default Newsletter;
+
+const FAKE_SUBS: AdminGetNewsletterSubscribersQuery["getNewletterSubscribers"] =
+  [
+    {
+      __typename: "NewsletterSubscriber",
+      ownerId: "owner1",
+      user: {
+        __typename: "Account",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+      },
+    },
+    {
+      __typename: "NewsletterSubscriber",
+      ownerId: "owner2",
+      user: {
+        __typename: "Account",
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+      },
+    },
+    // Add more placeholder objects as needed
+  ];

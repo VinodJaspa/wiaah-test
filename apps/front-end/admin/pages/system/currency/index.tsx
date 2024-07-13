@@ -1,4 +1,5 @@
 import {
+  AdminGetCurrenciesQuery,
   Button,
   Checkbox,
   EditIcon,
@@ -60,7 +61,8 @@ const Currency: NextPage = () => {
     { pagination },
     { pagination }
   );
-  const { data: currencies } = useAdminGetCurrenciesQuery(form);
+  const { data: _currencies } = useAdminGetCurrenciesQuery(form);
+  const currencies = FAKE_CURRENCIES;
 
   return (
     <section>
@@ -150,3 +152,26 @@ const Currency: NextPage = () => {
 };
 
 export default Currency;
+
+const FAKE_CURRENCIES: AdminGetCurrenciesQuery["adminGetCurrencies"] = [
+  {
+    __typename: "Currency",
+    code: "USD",
+    exchangeRate: 1.0,
+    id: "1",
+    name: "US Dollar",
+    symbol: "$",
+    updatedAt: "2024-07-13T00:00:00Z",
+    enabled: true,
+  },
+  {
+    __typename: "Currency",
+    code: "EUR",
+    exchangeRate: 0.9,
+    id: "2",
+    name: "Euro",
+    symbol: "€",
+    updatedAt: "2024-07-13T00:00:00Z",
+    enabled: true,
+  },
+];

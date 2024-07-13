@@ -21,6 +21,74 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { countries, getCitiesOfCountry, mapArray, useForm } from "utils";
 
+const FAKE_COUNTIRES = [
+  {
+    __typename: "Country",
+    code: "US",
+    id: "country1",
+    name: "United States",
+  },
+  {
+    __typename: "Country",
+    code: "CA",
+    id: "country2",
+    name: "Canada",
+  },
+  {
+    __typename: "Country",
+    code: "GB",
+    id: "country3",
+    name: "United Kingdom",
+  },
+];
+[
+  {
+    __typename: "City",
+    code: "NY",
+    id: "city1",
+    name: "New York",
+    cityId: "1001",
+  },
+  {
+    __typename: "City",
+    code: "LA",
+    id: "city2",
+    name: "Los Angeles",
+    cityId: "1002",
+  },
+  {
+    __typename: "City",
+    code: "CHI",
+    id: "city3",
+    name: "Chicago",
+    cityId: "1003",
+  },
+];
+
+const FAKE_CITEIES = [
+  {
+    __typename: "City",
+    code: "NY",
+    id: "city1",
+    name: "New York",
+    cityId: "1001",
+  },
+  {
+    __typename: "City",
+    code: "LA",
+    id: "city2",
+    name: "Los Angeles",
+    cityId: "1002",
+  },
+  {
+    __typename: "City",
+    code: "CHI",
+    id: "city3",
+    name: "Chicago",
+    cityId: "1003",
+  },
+];
+
 const EditBannedCountry = () => {
   const { getParam, back } = useRouting();
   const { t } = useTranslation();
@@ -31,7 +99,7 @@ const EditBannedCountry = () => {
   const { mutate: ban } = useAdminBanSellersCitites();
   const { mutate: unban } = useAdminBanBuyersCitites();
   // get Banned Countries
-  const { data: bannedContry } = useAdminGetBannedCountryQuery(id, !isNew);
+  const { data: _bannedContry } = useAdminGetBannedCountryQuery(id, !isNew);
 
   const { form: countriesSearch } =
     useForm<Parameters<typeof useGetCountriesQuery>[0]>("");
@@ -41,9 +109,11 @@ const EditBannedCountry = () => {
   >({ countryid: "", name: "" });
 
   // Get Country based on name
-  const { data: countries } = useGetCountriesQuery(countriesSearch);
+  const { data: _countries } = useGetCountriesQuery(countriesSearch);
+  const countries = FAKE_COUNTIRES;
   // Get all cities in a specific country based on countryid an name
-  const { data: cities } = useGetCountryCititesQuery(cititesSearch);
+  const { data: _cities } = useGetCountryCititesQuery(cititesSearch);
+  const cities = FAKE_CITEIES;
 
   const { form, inputProps } = useForm<Parameters<typeof ban>[0]>({
     citiesIds: cities.map((v) => v.cityId),
@@ -61,7 +131,7 @@ const EditBannedCountry = () => {
             (v) => !form.citiesIds.includes(v.cityId)
           );
           const newCitites = form.citiesIds.filter(
-            (v) => !cities.map((v) => v.cityId).includes(v)
+            (v) => !cities.map((v) => v.cityId).includes(v as string)
           );
 
           if (removed && removed.length > 0) {

@@ -1,4 +1,6 @@
 import {
+  AdminGetTaxRateQuery,
+  AdminGetTaxRatesQuery,
   Button,
   EditIcon,
   useAdminGetTaxRatesQuery,
@@ -19,7 +21,8 @@ const TaxRates: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetTaxRatesQuery>[0]
   >({ pagination });
-  const { data } = useAdminGetTaxRatesQuery(form);
+  const { data: _data } = useAdminGetTaxRatesQuery(form);
+  const data = FAKE_TAXES;
 
   return (
     <section>
@@ -92,3 +95,48 @@ const TaxRates: NextPage = () => {
 };
 
 export default TaxRates;
+
+const FAKE_TAXES: AdminGetTaxRatesQuery["adminGetTaxRates"] = [
+  {
+    __typename: "TaxRate",
+    id: "1",
+    percent: 20,
+    title: "Standard VAT",
+    appliedOnCountryIds: ["1", "2"],
+    appliedOnCountries: [
+      {
+        __typename: "Country",
+        code: "US",
+        id: "1",
+        name: "United States",
+      },
+      {
+        __typename: "Country",
+        code: "CA",
+        id: "2",
+        name: "Canada",
+      },
+    ],
+  },
+  {
+    __typename: "TaxRate",
+    id: "2",
+    percent: 20,
+    title: "Standard VAT",
+    appliedOnCountryIds: ["1", "2"],
+    appliedOnCountries: [
+      {
+        __typename: "Country",
+        code: "US",
+        id: "1",
+        name: "United States",
+      },
+      {
+        __typename: "Country",
+        code: "CA",
+        id: "2",
+        name: "Canada",
+      },
+    ],
+  },
+];

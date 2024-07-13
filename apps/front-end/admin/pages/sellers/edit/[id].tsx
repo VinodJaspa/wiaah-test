@@ -1,4 +1,4 @@
-import { StoreType } from "@features/API";
+import { BusinessType, ServiceType, StoreType } from "@features/API";
 import { AccountAddressBook } from "components/views/sellers/AccountAddressBook";
 import { AccountBlockList } from "components/views/sellers/AccountBlockList";
 import { AccountNewsletterSettings } from "components/views/sellers/AccountNewsletterSettings";
@@ -42,6 +42,7 @@ import {
   useGetUserShopType,
   SalesStatistics,
   TabTitle,
+  GetUserShopTypeQuery,
 } from "ui";
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 
@@ -50,7 +51,9 @@ const Edit = () => {
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const { data: shop } = useGetUserShopType({ userId: id });
+  // NOTE: graphql is not ready yet
+  const { data: _shop } = useGetUserShopType({ userId: id });
+  const shop = FAKE_SHOP;
 
   const isProducts =
     (shop?.storeType || StoreType.Product) === StoreType.Product;
@@ -97,7 +100,7 @@ const Edit = () => {
       <SimpleTabs>
         <div className="flex flex-wrap gap-2 ">
           <SimpleTabHead>
-            <TabHighlighter tabsTitles={TabTitle} />
+            <TabHighlighter tabsTitles={tabsTitles} />
           </SimpleTabHead>
         </div>
 
@@ -145,3 +148,13 @@ const Edit = () => {
 };
 
 export default Edit;
+
+const FAKE_SHOP: GetUserShopTypeQuery["getUserShop"] = {
+  __typename: "Shop",
+  type: ServiceType.Hotel,
+  businessType: BusinessType.Company,
+  createdAt: "2024-07-13T10:00:00Z",
+  id: "shop123",
+  storeType: StoreType.Product,
+  ownerId: "user123",
+};

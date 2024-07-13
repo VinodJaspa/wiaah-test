@@ -46,9 +46,11 @@ const Dashboard: NextPage = () => {
   const radialChartRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
-  const { data: analyticsData } = useGetAdminDashboardData();
+  const { data: _analyticsData } = useGetAdminDashboardData();
+  const analyticsData = FAKE_ANALYTICS;
 
-  const { data: recentSales } = useGetAdminRecentSalesQuery(10);
+  const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
+  const recentSales = FAKE_RECENT_SALES;
   const { data: latestOrders } = useAdminGetLatestOrdersQuery(10);
   const { data: recentSellers } = useGetRecentSellers(
     { page: 1, take: 100000 },
@@ -315,3 +317,72 @@ const Dashboard: NextPage = () => {
 };
 
 export default Dashboard;
+
+const FAKE_ANALYTICS = {
+  generalAnalytics: {
+    totalBalance: {
+      amount: randomNum(50000),
+      changePercent: randomNum(50),
+      incress: randomNum(10) > 7,
+    },
+    totalExpenses: {
+      amount: randomNum(50000),
+      changePercent: randomNum(50),
+      incress: randomNum(10) > 7,
+    },
+    totalProfit: {
+      amount: randomNum(50000),
+      changePercent: randomNum(50),
+      incress: randomNum(10) > 7,
+    },
+  },
+  monthlyProfit: {
+    profitAnalytics: [
+      {
+        title: "Maintenace",
+        percent: 50,
+      },
+      {
+        title: "Giveaway",
+        percent: 60,
+      },
+      {
+        title: "Affiliate",
+        percent: 70,
+      },
+      {
+        title: "Ofline Sales",
+        percent: 80,
+      },
+    ],
+    total: 154,
+    totalGrowth: 25,
+  },
+};
+
+const FAKE_RECENT_SALES = [
+  {
+    __typename: "OrderItem",
+    id: "orderItem1",
+    paid: 44,
+    createdAt: "2024-07-12T10:00:00Z",
+    buyer: {
+      __typename: "Account",
+      firstName: "John",
+      lastName: "Doe",
+      photo: "https://example.com/photos/john.jpg",
+    },
+  },
+  {
+    __typename: "OrderItem",
+    id: "orderItem2",
+    paid: 432,
+    createdAt: "2024-07-11T15:30:00Z",
+    buyer: {
+      __typename: "Account",
+      firstName: "Jane",
+      lastName: "Smith",
+      photo: "https://example.com/photos/jane.jpg",
+    },
+  },
+];

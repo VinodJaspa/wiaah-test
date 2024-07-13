@@ -26,37 +26,37 @@ const commissionTypes: {
   id: string;
   name: string;
 }[] = [
-  {
-    id: "1",
-    name: "Sale",
-  },
-  {
-    id: "3",
-    name: "revenue",
-  },
-  {
-    id: "2",
-    name: "External Click",
-  },
-];
+    {
+      id: "1",
+      name: "Sale",
+    },
+    {
+      id: "3",
+      name: "revenue",
+    },
+    {
+      id: "2",
+      name: "External Click",
+    },
+  ];
 
 const commissions: {
   usage: number;
   value: number;
 }[] = [
-  {
-    usage: 50000,
-    value: 15,
-  },
-  {
-    usage: 100000,
-    value: 10,
-  },
-  {
-    usage: 150000,
-    value: 5,
-  },
-];
+    {
+      usage: 50000,
+      value: 15,
+    },
+    {
+      usage: 100000,
+      value: 10,
+    },
+    {
+      usage: 150000,
+      value: 5,
+    },
+  ];
 
 const EditSubscriptionPlan = () => {
   const { t } = useTranslation();
@@ -271,7 +271,7 @@ const EditSubscriptionPlan = () => {
                       </React.Fragment>
                     ))}
                     <div className="col-span-2">
-                      <AddBadgeButton onClick={() => {}}>
+                      <AddBadgeButton onClick={() => { }}>
                         {t("Add")}
                       </AddBadgeButton>
                     </div>

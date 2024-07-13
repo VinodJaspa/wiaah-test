@@ -22,7 +22,11 @@ import {
   THead,
   Tr,
 } from "ui";
-import { mapArray, WiaahLanguageCountries } from "utils";
+import {
+  mapArray,
+  WiaahLanguageCountries,
+  WiaahLanguageCountriesIsoCodes,
+} from "utils";
 
 interface Slideshowitem {
   title: string;
@@ -44,7 +48,6 @@ const FAKE_SLIDES: Slideshowitem[] = [
     sortOrder: 2,
     id: "2",
   },
-  // Add more slide items as needed
 ];
 
 const EditSlideShowPage: NextPage = () => {
@@ -101,7 +104,9 @@ const EditSlideShowPage: NextPage = () => {
             <div className="flex flex-wrap">
               <SimpleTabHead>
                 <LanguageSelector
-                  WiaahLanguageCountriesIsoCodes={WiaahLanguageCountries}
+                  WiaahLanguageCountriesIsoCodes={
+                    WiaahLanguageCountriesIsoCodes
+                  }
                 />
               </SimpleTabHead>
             </div>
@@ -138,8 +143,8 @@ const EditSlideShowPage: NextPage = () => {
                           <Image src={link} alt="" />
                         </Td>
                         <Td>{title}</Td>
-                        <Td>{link.slice(0, 30)}</Td>
-                        <Td>{sortOrder}</Td>
+                        <Td>{link}</Td>
+                        <Td>{`${sortOrder}`}</Td>
                         <Td>
                           <Button
                             colorScheme="danger"

@@ -1,4 +1,5 @@
 import {
+  AdminGetShippingSettingsQuery,
   Button,
   Checkbox,
   EditIcon,
@@ -22,6 +23,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
+import { ShippingType } from "@features/API";
 
 const GeoZones: NextPage = () => {
   const { t } = useTranslation();
@@ -31,7 +33,8 @@ const GeoZones: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetShippingSettings>[0]
   >({ pagination }, { pagination });
-  const { data: zones } = useAdminGetShippingSettings(form);
+  const { data: _zones } = useAdminGetShippingSettings(form);
+  const zones = FAKE_GEO_ZONES;
 
   return (
     <section>
@@ -110,3 +113,21 @@ const GeoZones: NextPage = () => {
 };
 
 export default GeoZones;
+
+const FAKE_GEO_ZONES: AdminGetShippingSettingsQuery["getShippingGeoZoneRules"] =
+  [
+    {
+      __typename: "ShippingTypeRule",
+      id: "1",
+      type: ShippingType.Free,
+      name: "Standard Shipping",
+      description: "Standard shipping rules and zones",
+    },
+    {
+      __typename: "ShippingTypeRule",
+      id: "2",
+      type: ShippingType.Paid,
+      name: "Express Shipping",
+      description: "Express shipping rules and zones",
+    },
+  ];

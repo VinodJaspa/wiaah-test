@@ -111,7 +111,7 @@ const ServiceShopFilterForm = () => {
                 initialValues={{
                   filterValues: [],
                 }}
-                onSubmit={() => {}}
+                onSubmit={() => { }}
               >
                 {({ values, setFieldValue, handleChange }) => {
                   return (

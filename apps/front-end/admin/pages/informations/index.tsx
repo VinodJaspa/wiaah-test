@@ -16,6 +16,7 @@ import {
   Button,
   Input,
   useAdminGetSiteInformationsQuery,
+  AdminGetSiteSettingsQuery,
 } from "ui";
 import { mapArray, useForm } from "utils";
 
@@ -27,7 +28,9 @@ const Informations = () => {
   const { form } = useForm<Parameters<typeof useAdminGetSiteInformationsQuery>>(
     []
   );
-  const { data: info } = useAdminGetSiteInformationsQuery();
+  // NOTE: graphql is not ready so I replaced it with placehlder
+  const { data: _info } = useAdminGetSiteInformationsQuery();
+  const info = FAKE_INFO;
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -93,3 +96,14 @@ const Informations = () => {
   );
 };
 export default Informations;
+
+const FAKE_INFO: AdminGetSiteSettingsQuery["adminGetSiteInformations"] = {
+  __typename: "SiteInformation",
+  id: "site-info-1",
+  descirption: "This is a sample site description.",
+  placements: ["header", "footer", "sidebar"],
+  route: "/sample-route",
+  slug: "sample-slug",
+  sortOrder: 1,
+  title: "Sample Site Title",
+};

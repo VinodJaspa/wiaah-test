@@ -1,4 +1,4 @@
-import { CreateCategoryInput } from "@features/API";
+import { CreateCategoryInput, ProductCategoryStatus } from "@features/API";
 import { LanguageSelector } from "components/views/sellers/LanguageSelector";
 import { Formik } from "formik";
 import React from "react";
@@ -29,8 +29,10 @@ import {
   useGetAdminProductCategoriesQuery,
   useUpdateProductCategoryMutation,
   useCreateProductCategory,
+  GetProductCategoriesQuery,
 } from "ui";
 import {
+  WiaahLanguageCountries,
   WiaahLanguageCountriesIsoCodes,
   mapArray,
   runIfFn,
@@ -50,12 +52,13 @@ const EditCategory = () => {
     WiaahLanguageCountriesIsoCodes.at(0)
   );
 
-  const { data: cates } = useGetAdminProductCategoriesQuery({
+  const { data: _cates } = useGetAdminProductCategoriesQuery({
     pagination: {
       page: 1,
       take: 1000,
     },
   });
+  const cates = FAKE_CATES;
 
   const { mutate: updateCate } = useUpdateProductCategoryMutation();
   const { mutate: createCate } = useCreateProductCategory();
@@ -118,7 +121,7 @@ const EditCategory = () => {
       comp: (
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-8 gap-16">
-            <Formik initialValues={{}} onSubmit={() => {}}>
+            <Formik initialValues={{}} onSubmit={() => { }}>
               {({ values, setFieldValue }) => (
                 <>
                   <p className="font-bold">{t("Parant")}</p>
@@ -256,9 +259,8 @@ const EditCategory = () => {
                 <SimpleTabHead>
                   {mapArray(tabs, ({ name }, i) => (
                     <div
-                      className={`${
-                        i === 3 ? "border-b-white" : ""
-                      } border px-8 py-2`}
+                      className={`${i === 3 ? "border-b-white" : ""
+                        } border px-8 py-2`}
                     >
                       {name}
                     </div>
@@ -277,3 +279,29 @@ const EditCategory = () => {
 };
 
 export default EditCategory;
+const FAKE_CATES: GetProductCategoriesQuery["getFilteredProductCategories"] = [
+  {
+    __typename: "Category",
+    id: "category1",
+    name: "Electronics",
+    parantId: "parent1",
+    sortOrder: 1,
+    status: ProductCategoryStatus.Active,
+  },
+  {
+    __typename: "Category",
+    id: "category2",
+    name: "Clothing",
+    parantId: "parent1",
+    sortOrder: 2,
+    status: ProductCategoryStatus.Active,
+  },
+  {
+    __typename: "Category",
+    id: "category3",
+    name: "Books",
+    parantId: "parent2",
+    sortOrder: 3,
+    status: ProductCategoryStatus.InActive,
+  },
+];

@@ -1,3 +1,4 @@
+import { ServiceCategoryStatus } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -17,6 +18,7 @@ import {
   usePaginationControls,
   useGetServiceCategoriesQuery,
   getTranslationStateValue,
+  GetServiceCategoriesQuery,
 } from "ui";
 import { mapArray } from "utils";
 
@@ -25,7 +27,8 @@ const ServiceShopCategory = () => {
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
   const [lang, setLang] = React.useState("en");
-  const { data: categories, refetch } = useGetServiceCategoriesQuery();
+  const { data: _categories, refetch } = useGetServiceCategoriesQuery();
+  const categories = FAKE_CATEGORIES;
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -109,3 +112,72 @@ const ServiceShopCategory = () => {
   );
 };
 export default ServiceShopCategory;
+
+const FAKE_CATEGORIES: GetServiceCategoriesQuery["getServiceCategories"] = [
+  {
+    __typename: "ServiceCategory",
+    id: "1",
+    slug: "sample-category",
+    sortOrder: 1,
+    status: ServiceCategoryStatus.Active,
+    thumbnail: "https://example.com/thumbnail.jpg",
+    name: [
+      { __typename: "TranslationText", langId: "en", value: "Sample Category" },
+    ],
+    description: [
+      {
+        __typename: "TranslationText",
+        langId: "en",
+        value: "Description of Sample Category",
+      },
+    ],
+    seo: [
+      { __typename: "TranslationText", langId: "en", value: "SEO Description" },
+    ],
+    filters: [
+      {
+        __typename: "ServiceCategoryFilter",
+        filteringKey: "color",
+        sortOrder: 1,
+        filterGroupName: [
+          { __typename: "TranslationText", langId: "en", value: "Color" },
+        ],
+        filterValues: [
+          {
+            __typename: "ServiceCategoryFilterValue",
+            filteringValue: "red",
+            sortOrder: 1,
+            name: [
+              { __typename: "TranslationText", langId: "en", value: "Red" },
+            ],
+          },
+          {
+            __typename: "ServiceCategoryFilterValue",
+            filteringValue: "blue",
+            sortOrder: 2,
+            name: [
+              { __typename: "TranslationText", langId: "en", value: "Blue" },
+            ],
+          },
+        ],
+      },
+    ],
+    metaTagDescription: [
+      {
+        __typename: "TranslationText",
+        langId: "en",
+        value: "Meta Tag Description",
+      },
+    ],
+    metaTagKeywords: [
+      {
+        __typename: "TranslationText",
+        langId: "en",
+        value: "Meta Tag Keywords",
+      },
+    ],
+    metaTagTitle: [
+      { __typename: "TranslationText", langId: "en", value: "Meta Tag Title" },
+    ],
+  },
+];

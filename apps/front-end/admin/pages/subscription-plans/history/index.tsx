@@ -9,13 +9,18 @@ import {
   ItemsPagination,
   Input,
   useAdminGetMembershipSubscriptionQuery,
+  AdminGetMembershipSubscribersQuery,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 import { startCase } from "lodash";
 import { usePaginationControls } from "@blocks";
-import { MembershipSubscriptionStatus } from "@features/API";
+import {
+  CommissionType,
+  MembershipRecurring,
+  MembershipSubscriptionStatus,
+} from "@features/API";
 
 const History: React.FC = () => {
   const { t } = useTranslation();
@@ -24,7 +29,8 @@ const History: React.FC = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetMembershipSubscriptionQuery>[0]
   >({ pagination }, { pagination });
-  const { data: subs } = useAdminGetMembershipSubscriptionQuery(form);
+  const { data: _subs } = useAdminGetMembershipSubscriptionQuery(form);
+  const subs = FAKE_SUBS;
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -124,11 +130,11 @@ const History: React.FC = () => {
                 custom: (
                   <HStack>
                     <PriceDisplay
-                      price={
-                        membership.turnover_rules
-                          .sort((a, b) => a.usage - b.usage)
-                          .find((v) => v.usage > usage).commission
-                      }
+                      price={membership.turnover_rules
+                        .filter((rule) => rule.usage > usage)
+                        .sort((a, b) => a.usage - b.usage)
+                        .map((rule) => rule.commission)
+                        .find((commission) => commission !== undefined)}
                     />
                     /
                     <p>
@@ -159,3 +165,74 @@ const History: React.FC = () => {
 };
 
 export default History;
+
+const FAKE_SUBS: AdminGetMembershipSubscribersQuery["adminGetMembershipSubscriptions"] =
+  [
+    {
+      __typename: "MembershipSubscription",
+      endAt: "2024-12-31T23:59:59Z",
+      membershipId: "1",
+      startAt: "2024-01-01T00:00:00Z",
+      userId: "123",
+      usage: 2,
+      status: MembershipSubscriptionStatus.Active,
+      membership: {
+        __typename: "Membership",
+        name: "Gold Membership",
+        recurring: MembershipRecurring.Day,
+        sortOrder: 1,
+        id: "1",
+        turnover_rules: [
+          {
+            __typename: "MembershipTurnoverRule",
+            commission: 10,
+            commissionType: CommissionType.Fixed,
+            id: "1",
+            usage: 3,
+          },
+          {
+            __typename: "MembershipTurnoverRule",
+            commission: 20,
+            commissionType: CommissionType.Fixed,
+            id: "2",
+            usage: 2,
+          },
+        ],
+      },
+      subscriber: {
+        __typename: "Account",
+        firstName: "John",
+        lastName: "Doe",
+      },
+    },
+    {
+      __typename: "MembershipSubscription",
+      endAt: "2025-12-31T23:59:59Z",
+      membershipId: "2",
+      startAt: "2025-01-01T00:00:00Z",
+      userId: "456",
+      usage: 2,
+      status: MembershipSubscriptionStatus.Active,
+      membership: {
+        __typename: "Membership",
+        name: "Silver Membership",
+        recurring: MembershipRecurring.Day,
+        sortOrder: 2,
+        id: "2",
+        turnover_rules: [
+          {
+            __typename: "MembershipTurnoverRule",
+            commission: 15,
+            commissionType: CommissionType.Fixed,
+            id: "3",
+            usage: 2,
+          },
+        ],
+      },
+      subscriber: {
+        __typename: "Account",
+        firstName: "Jane",
+        lastName: "Smith",
+      },
+    },
+  ];
