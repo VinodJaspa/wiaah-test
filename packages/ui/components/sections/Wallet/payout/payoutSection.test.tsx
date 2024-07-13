@@ -21,7 +21,7 @@ describe("payout section tests", () => {
       financialAccount: {
         id: "1",
         label: "paypal",
-        type: FinancialAccountType.Stripe,
+        type: FinancialAccountType.Bank,
       },
       processedAt: new Date().toString(),
       requestedAt: new Date().toString(),
