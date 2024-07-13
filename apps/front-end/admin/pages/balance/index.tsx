@@ -14,19 +14,65 @@ import { startCase } from "lodash";
 import { FaFileInvoice } from "react-icons/fa";
 import { TransactionStatus } from "@features/API";
 
+const FAKE_TRANSACTIONS = [
+  {
+    __typename: "Transaction",
+    id: "txn1",
+    createdAt: "2023-07-12T00:00:00.000Z",
+    description: "Transaction 1",
+    status: "completed",
+    amount: 100,
+    toUser: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "user1",
+      },
+      subscribedPlan: {
+        __typename: "MembershipSubscription",
+        membership: {
+          __typename: "Membership",
+          name: "Premium",
+        },
+      },
+    },
+  },
+  {
+    __typename: "Transaction",
+    id: "txn2",
+    createdAt: "2023-07-13T00:00:00.000Z",
+    description: "Transaction 2",
+    status: "pending",
+    amount: 200,
+    toUser: {
+      __typename: "Account",
+      profile: {
+        __typename: "Profile",
+        username: "user2",
+      },
+      subscribedPlan: {
+        __typename: "MembershipSubscription",
+        membership: {
+          __typename: "Membership",
+          name: "Standard",
+        },
+      },
+    },
+  },
+];
+
 const Balance: NextPage = () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof useAdminGetFilteredTransactionsQuery>[0]
   >({});
-  const { data } = useAdminGetFilteredTransactionsQuery(form);
+  const { data: _data } = useAdminGetFilteredTransactionsQuery(form);
 
   return (
     <section>
       <div className="flex w-full items-center justify-between">
         <div className="flex w-40 flex-col text-primary items-center gap-2">
-          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={100}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -38,7 +84,6 @@ const Balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-secondaryRed items-center gap-2">
-          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -50,7 +95,6 @@ const Balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-yellow-400 items-center gap-2">
-          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -62,7 +106,6 @@ const Balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-blue-500 items-center gap-2">
-          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -80,7 +123,7 @@ const Balance: NextPage = () => {
         // onDelete={() => {}}
         pagination={controls}
         data={mapArray(
-          data,
+          FAKE_TRANSACTIONS,
           ({ createdAt, description, id, status, amount, toUser }) => ({
             id,
             cols: [
