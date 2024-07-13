@@ -18,12 +18,12 @@ export type GetLatestOrdersQueryVariables = Exact<{
 export type GetLatestOrdersQuery = { __typename?: "Query" } & {
   getLatestOrders: Array<
     { __typename?: "Order" } & Pick<Order, "createdAt" | "paid"> & {
-        billing: { __typename?: "BillingAddress" } & Pick<
-          BillingAddress,
-          "firstName"
-        >;
-        status: { __typename?: "OrderStatus" } & Pick<OrderStatus, "of">;
-      }
+      billing: { __typename?: "BillingAddress" } & Pick<
+        BillingAddress,
+        "firstName"
+      >;
+      status: { __typename?: "OrderStatus" } & Pick<OrderStatus, "of">;
+    }
   >;
 };
 

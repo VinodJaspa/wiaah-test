@@ -1,3 +1,4 @@
+import React from "react";
 import { HeaderNavLink, useSocialControls } from "@blocks";
 import {
   Divider,
@@ -16,8 +17,6 @@ import { CgShoppingBag } from "react-icons/cg";
 import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
 import { mapArray, runIfFn } from "@UI/../utils/src";
-
-import React from "react";
 
 export const ProfileOptionsDrawer = () => {
   const { visit } = useRouting();

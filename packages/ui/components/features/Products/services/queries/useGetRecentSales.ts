@@ -13,11 +13,11 @@ export type GetRecentsalesQuery = { __typename?: "Query" } & {
       OrderItem,
       "id" | "paid" | "createdAt"
     > & {
-        buyer: { __typename?: "Account" } & Pick<
-          Account,
-          "firstName" | "photo" | "lastName"
-        >;
-      }
+      buyer: { __typename?: "Account" } & Pick<
+        Account,
+        "firstName" | "photo" | "lastName"
+      >;
+    }
   >;
 };
 
@@ -75,3 +75,30 @@ export const useGetAdminRecentSalesQuery = (
     return AdminGetRecentSalesQueryFetcher(args);
   });
 };
+
+const FAKE_RECENT_SALES = [
+  {
+    __typename: "OrderItem",
+    id: "orderItem1",
+    paid: true,
+    createdAt: "2024-07-12T10:00:00Z",
+    buyer: {
+      __typename: "Account",
+      firstName: "John",
+      lastName: "Doe",
+      photo: "https://example.com/photos/john.jpg",
+    },
+  },
+  {
+    __typename: "OrderItem",
+    id: "orderItem2",
+    paid: false,
+    createdAt: "2024-07-11T15:30:00Z",
+    buyer: {
+      __typename: "Account",
+      firstName: "Jane",
+      lastName: "Smith",
+      photo: "https://example.com/photos/jane.jpg",
+    },
+  },
+];

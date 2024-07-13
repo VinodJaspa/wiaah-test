@@ -16,7 +16,7 @@ export type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
 }>;
 
-export type SearchServiceQuery = { __typename?: "Query" } & {
+export type SearchServiceDetailsQuery = { __typename?: "Query" } & {
   searchServices: Array<
     { __typename?: "Service" } & Pick<
       Service,
@@ -36,17 +36,17 @@ export type SearchServiceQuery = { __typename?: "Query" } & {
       | "thumbnail"
       | "sellerId"
     > & {
-        shop: { __typename?: "Shop" } & Pick<Shop, "id"> & {
-            location: { __typename?: "Location" } & Pick<
-              Location,
-              "address" | "city" | "country" | "state"
-            >;
-            sellerProfile: { __typename?: "Profile" } & Pick<
-              Profile,
-              "username" | "photo"
-            >;
-          };
-      }
+      shop: { __typename?: "Shop" } & Pick<Shop, "id"> & {
+        location: { __typename?: "Location" } & Pick<
+          Location,
+          "address" | "city" | "country" | "state"
+        >;
+        sellerProfile: { __typename?: "Profile" } & Pick<
+          Profile,
+          "username" | "photo"
+        >;
+      };
+    }
   >;
 };
 
@@ -59,35 +59,35 @@ export const getSearchServicesQueryKey = (args: args) => [
 
 export const getSearchServicesQueryFetcher = async (args: args) => {
   if (isDev) {
-    const mockRes: SearchServiceQuery["searchServices"] = [...Array(10)].map(
-      () => ({
-        id: "",
-        description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in",
-        name: getRandomHotelRoomName(),
-        price: randomNum(100),
-        rating: 4,
-        reviews: randomNum(150),
-        sellerId: "",
-        thumbnail: getRandomImage(),
+    const mockRes: SearchServiceDetailsQuery["searchServices"] = [
+      ...Array(10),
+    ].map(() => ({
+      id: "",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in",
+      name: getRandomHotelRoomName(),
+      price: randomNum(100),
+      rating: 4,
+      reviews: randomNum(150),
+      sellerId: "",
+      thumbnail: getRandomImage(),
 
-        shop: {
-          id: "",
-          sellerProfile: {
-            photo: getRandomImage(),
-            username: "seller name",
-          },
-          location: {
-            address: "address",
-            city: "city",
-            country: "country",
-            lat: 15,
-            long: 34,
-            state: "state",
-          },
+      shop: {
+        id: "",
+        sellerProfile: {
+          photo: getRandomImage(),
+          username: "seller name",
         },
-      }),
-    );
+        location: {
+          address: "address",
+          city: "city",
+          country: "country",
+          lat: 15,
+          long: 34,
+          state: "state",
+        },
+      },
+    }));
 
     return mockRes;
   }
@@ -131,18 +131,18 @@ query SearchService($args:SearchServicesInput!){
     sellerId
   }
 }
-`,
+`
     )
     .setVariables<SearchServiceQueryVariables>({
       args,
     })
-    .send<SearchServiceQuery>();
+    .send<SearchServiceDetailsQuery>();
 
   return res.data.searchServices;
 };
 
 export const useGetSearchServicesQuery = (args: args) => {
   return useQuery(getSearchServicesQueryKey(args), () =>
-    getSearchServicesQueryFetcher(args),
+    getSearchServicesQueryFetcher(args)
   );
 };

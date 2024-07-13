@@ -14,7 +14,7 @@ type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
 }>;
 
-type SearchServiceQuery = {
+export type SearchServiceQuery = {
   __typename?: "Query";
   searchServices: {
     __typename?: "ServiceSearchResponse";
@@ -142,7 +142,7 @@ query SearchService($args: SearchServicesInput!) {
   }
 }
 
-    `,
+    `
       )
       .setVariables<SearchServiceQueryVariables>({
         args,

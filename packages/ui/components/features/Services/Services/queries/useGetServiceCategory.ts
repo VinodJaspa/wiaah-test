@@ -40,6 +40,6 @@ export const useGetServiceCategory = (id: string) => {
 
       return res.data.data.getServiceCategoryById;
     },
-    { enabled: !!id },
+    { enabled: !!id }
   );
 };

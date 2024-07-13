@@ -31,22 +31,23 @@ export type GetFilteredSellersQuery = { __typename?: "Query" } & {
       | "ips"
       | "membershipId"
     > & {
-        profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "visits">>;
-        shop: { __typename?: "Shop" } & {
-          location: { __typename?: "Location" } & Pick<
-            Location,
-            "address" | "city" | "country"
-          >;
-        };
-        Membership: { __typename?: "Membership" } & Pick<Membership, "name">;
-        balance: { __typename?: "Balance" } & Pick<
-          Balance,
-          "withdrawableBalance"
+      profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "visits">>;
+      shop: { __typename?: "Shop" } & {
+        location: { __typename?: "Location" } & Pick<
+          Location,
+          "address" | "city" | "country"
         >;
-      }
-      & {
-        sellerSalesStats: Maybe<{__typename:"SellerSalesStat"} & Pick<SellerSalesStat, "sales">>
-      }
+      };
+      Membership: { __typename?: "Membership" } & Pick<Membership, "name">;
+      balance: { __typename?: "Balance" } & Pick<
+        Balance,
+        "withdrawableBalance"
+      >;
+    } & {
+      sellerSalesStats: Maybe<
+        { __typename?: "SellerSalesStat" } & Pick<SellerSalesStat, "sales">
+      >;
+    }
   >;
 };
 
