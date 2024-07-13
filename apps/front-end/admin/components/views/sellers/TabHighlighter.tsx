@@ -1,23 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
-export const TabHighlighter = ({ tabsTitles }) => {
-  const [selectedTab, setSelectedTab] = React.useState<string | null>(null);
+type TabHighlighterProps = {
+  tabsTitles: string[];
+};
 
-  const handleClick = (index: string) => {
-    setSelectedTab(index);
+export const TabHighlighter: React.FC<TabHighlighterProps> = ({
+  tabsTitles,
+}) => {
+  const [selectedTab, setSelectedTab] = useState<string | null>(null);
+
+  const handleClick = (tab: string) => {
+    setSelectedTab(tab);
   };
 
   return (
     <div className="tabs">
-      {tabsTitles.map((v: string, i: number) => (
+      {tabsTitles.map((tab, index) => (
         <div
-          key={i}
-          onClick={() => handleClick(v)}
-          className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${
-            selectedTab === v ? "border-t border-l border-r font-bold" : ""
-          }`}
+          key={index}
+          onClick={() => handleClick(tab)}
+          className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${selectedTab === tab ? "border-t border-l border-r font-bold" : ""
+            }`}
         >
-          {v}
+          {tab}
         </div>
       ))}
     </div>

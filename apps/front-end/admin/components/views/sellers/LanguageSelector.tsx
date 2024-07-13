@@ -1,7 +1,11 @@
 import { FlagIcon } from "ui";
 import React from "react";
 
-export const LanguageSelector = ({ WiaahLanguageCountriesIsoCodes }) => {
+export const LanguageSelector = ({
+  WiaahLanguageCountriesIsoCodes,
+}: {
+  WiaahLanguageCountriesIsoCodes: string[];
+}) => {
   const [selectedLang, setSelectedLang] = React.useState<string | null>(null);
 
   const handleClick = (v: string) => {
@@ -14,9 +18,8 @@ export const LanguageSelector = ({ WiaahLanguageCountriesIsoCodes }) => {
         <div
           key={i}
           onClick={() => handleClick(v)}
-          className={`px-8 py-2 ${
-            selectedLang === v ? "border-2 border-gray-300 border-b-white" : ""
-          }`}
+          className={`px-8 py-2 ${selectedLang === v ? "border-2 border-gray-300 border-b-white" : ""
+            }`}
         >
           <FlagIcon code={v} />
         </div>
