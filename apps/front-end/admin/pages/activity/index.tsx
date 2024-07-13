@@ -123,7 +123,7 @@ const Activity: NextPage = () => {
                 type: AdminTableCellTypeEnum.custom,
                 custom: (
                   <GetActivityMessage
-                    event={event as typeof _events[number]}
+                    event={event as (typeof _events)[number]}
                     from={
                       <span className="px-2 text-primary">{causedBy.name}</span>
                     }
@@ -147,7 +147,7 @@ const Activity: NextPage = () => {
 export default Activity;
 
 const GetActivityMessage: React.FC<{
-  event: typeof _events[number];
+  event: (typeof _events)[number];
   from: React.ReactNode;
   to?: React.ReactNode;
 }> = ({ event, from, to }) => {
