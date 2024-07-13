@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ImCheckmark } from "react-icons/im";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import {
+  AdminGetAccountDeletionRequestsQuery,
   Avatar,
   Badge,
   Button,
@@ -39,7 +40,8 @@ const AccountDeletion: React.FC = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetAccountDeletionRequests>[0]
   >({ pagination }, { pagination });
-  const { data: requests } = useAdminGetAccountDeletionRequests(form);
+  const { data: _requests } = useAdminGetAccountDeletionRequests(form);
+  const requests = FAKE_REQUESTS;
 
   const { mutate: acceptAccount } = useAdminAcceptAccountDeletionRequest();
   const { mutate: rejectAccount } = useAdminRejectAccountDeletionRequest();
@@ -164,3 +166,47 @@ const AccountDeletion: React.FC = () => {
 };
 
 export default AccountDeletion;
+
+const FAKE_REQUESTS: AdminGetAccountDeletionRequestsQuery["getAccountDeletionRequests"] =
+  [
+    {
+      __typename: "AccountDeletionRequest",
+      id: "req1",
+      status: AccountDeletionRequestStatus.Pending,
+      createdAt: "2023-07-01T00:00:00Z",
+      account: {
+        __typename: "Account",
+        photo: "https://example.com/photo1.jpg",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+      },
+    },
+    {
+      __typename: "AccountDeletionRequest",
+      id: "req2",
+
+      status: AccountDeletionRequestStatus.Approved,
+      createdAt: "2023-06-15T00:00:00Z",
+      account: {
+        __typename: "Account",
+        photo: "https://example.com/photo2.jpg",
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+      },
+    },
+    {
+      __typename: "AccountDeletionRequest",
+      id: "req3",
+      status: AccountDeletionRequestStatus.Rejected,
+      createdAt: "2023-05-20T00:00:00Z",
+      account: {
+        __typename: "Account",
+        photo: "https://example.com/photo3.jpg",
+        firstName: "Alice",
+        lastName: "Johnson",
+        email: "alice.johnson@example.com",
+      },
+    },
+  ];

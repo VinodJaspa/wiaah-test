@@ -18,6 +18,7 @@ import {
   Radio,
 } from "@partials";
 import {
+  AdminGetAccountVerificationRequestsQuery,
   ChooseWithInput,
   useAdminGetAccountIdentityRequestsQuery,
   useAdminGetAccountVerifciationRequestsQuery,
@@ -59,7 +60,10 @@ const AccountVerifications: NextPage = () => {
   const { t } = useTranslation();
   const [refuseId, setRefuseId] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();
-  const { data } = useAdminGetAccountVerifciationRequestsQuery({ pagination });
+  const { data: _data } = useAdminGetAccountVerifciationRequestsQuery({
+    pagination,
+  });
+  const data = FAKE_REQUESTS;
   const { visit, getCurrentPath } = useRouting();
 
   return (
@@ -106,7 +110,7 @@ const AccountVerifications: NextPage = () => {
             value: t("Action"),
           },
         ]}
-        data={data.map(({ id, createdAt, fullName, idPhoto, status }) => ({
+        data={data?.map(({ id, createdAt, fullName, idPhoto, status }) => ({
           id,
           cols: [
             {
@@ -189,7 +193,7 @@ const AccountVerifications: NextPage = () => {
               reason: "",
               otherReason: "",
             }}
-            onSubmit={() => {}}
+            onSubmit={() => { }}
           >
             {({ setFieldValue, values }) => (
               <Form>
@@ -270,3 +274,23 @@ const AccountVerifications: NextPage = () => {
 };
 
 export default AccountVerifications;
+
+const FAKE_REQUESTS: AdminGetAccountVerificationRequestsQuery["getAccountVerificationRequests"] =
+  [
+    {
+      __typename: "AccountVerification",
+      id: "verif1",
+      fullName: "John Doe",
+      idPhoto: "https://example.com/idPhoto.jpg",
+      status: AccountVerificationStatus.Pending,
+      createdAt: "2024-07-13T12:00:00Z",
+    },
+    {
+      __typename: "AccountVerification",
+      id: "verif2",
+      fullName: "Jane Smith",
+      idPhoto: "https://example.com/idPhoto2.jpg",
+      status: AccountVerificationStatus.Accepted,
+      createdAt: "2024-07-10T09:30:00Z",
+    },
+  ];
