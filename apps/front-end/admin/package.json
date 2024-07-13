@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "set NODE_OPTIONS=--max_old_space_size=6096 && next dev --port 2999",
-    "build": "NODE_OPTIONS='--max_old_space_size=8192' next build",
+    "build": "next build --debug",
     "start": "next start",
     "lint": "next lint"
+  },
+  "browser": {
+    "http2": false,
+    "tls": false,
+    "net": false,
+    "dns": false,
+    "fs": false,
+    "nats": false
   },
   "dependencies": {
     "api": "*",
@@ -36,6 +44,7 @@
       "draft-js",
       "eslint-config-next",
       "jwt-decode",
+      "jest",
       "next",
       "postcss",
       "qrcode.react",
