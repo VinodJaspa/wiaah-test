@@ -21,6 +21,43 @@ import {
   usePaginationControls,
 } from "ui";
 import { useForm } from "utils";
+const FAKE_HISTORY_DATA = [
+  {
+    id: "1",
+    itemId: "item-1",
+    itemType: "product",
+    paidCommissionAmount: 50,
+    paidCommissionPercent: 10,
+    affiliatorId: "affiliator-1",
+    purchaserId: "purchaser-1",
+    sellerId: "seller-1",
+    product: {
+      title: "Sample Product",
+      thumbnail: "path/to/thumbnail.jpg",
+      price: 100,
+    },
+    service: null,
+    seller: {
+      profile: {
+        username: "seller_username",
+      },
+    },
+    purchaser: {
+      profile: {
+        username: "purchaser_username",
+      },
+    },
+    affiliation: {
+      id: "affiliation-1",
+    },
+    affiliator: {
+      profile: {
+        username: "affiliator_username",
+        photo: "path/to/photo.jpg",
+      },
+    },
+  },
+];
 
 const AffiliationHistory: NextPage = () => {
   const { t } = useTranslation();
@@ -29,7 +66,8 @@ const AffiliationHistory: NextPage = () => {
   const { form, inputProps, handleChange } = useForm<
     Parameters<typeof useGetAdminAffiliationsHistoryQuery>[0]
   >({ pagination }, { pagination });
-  const { data: history } = useGetAdminAffiliationsHistoryQuery(form);
+  //Warning this graphql query is not ready yet
+  const { data: _history } = useGetAdminAffiliationsHistoryQuery(form);
 
   return (
     <section>
@@ -88,7 +126,7 @@ const AffiliationHistory: NextPage = () => {
             </Tr>
           </THead>
           <TBody>
-            {history.map(
+            {FAKE_HISTORY_DATA.map(
               ({
                 affiliator,
                 paidCommissionAmount,

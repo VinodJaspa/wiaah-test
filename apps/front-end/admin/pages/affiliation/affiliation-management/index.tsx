@@ -8,6 +8,7 @@ import {
   DateFormInput,
   EditIcon,
   getAdminAffiliationsFetcher,
+  GetAdminFilteredAffiliationsQuery,
   Image,
   Input,
   Pagination,
@@ -33,7 +34,8 @@ const AffiliationManagement: NextPage = () => {
   const { form, inputProps } = useForm<
     Parameters<typeof getAdminAffiliationsFetcher>[0]
   >({ pagination }, { pagination });
-  const { data } = useGetAdminAffiliationsQuery(form);
+  const { data: _data } = useGetAdminAffiliationsQuery(form);
+  const data = FAKE_AFFILIATION;
 
   return (
     <section>
@@ -92,7 +94,7 @@ const AffiliationManagement: NextPage = () => {
                 <Tr key={id}>
                   <Td>
                     <Image
-                      src={product.thumbnail || service.thumbnail}
+                      src={product?.thumbnail || service?.thumbnail}
                       alt="thumbnail"
                     />
                   </Td>
@@ -110,7 +112,7 @@ const AffiliationManagement: NextPage = () => {
                   </Td>
                   <Td>{commision}%</Td>
                   <Td>
-                    <PriceDisplay price={product.price || service.price} />
+                    <PriceDisplay price={product?.price || service?.price} />
                   </Td>
                   <Td>
                     {itemType === "product"
@@ -146,3 +148,49 @@ const AffiliationManagement: NextPage = () => {
 };
 
 export default AffiliationManagement;
+
+const FAKE_AFFILIATION: GetAdminFilteredAffiliationsQuery["getFilteredAffiliations"] =
+  [
+    {
+      __typename: "Affiliation",
+      id: "affil1",
+      sellerId: "seller1",
+      commision: 10.5,
+      createdAt: "2024-07-13T12:00:00Z",
+      itemId: "item1",
+      itemType: "product", // Or "service" as appropriate
+      product: {
+        __typename: "Product",
+        price: 100.0,
+        thumbnail: getRandomImage(),
+      },
+      seller: {
+        __typename: "Account",
+        profile: {
+          __typename: "Profile",
+          username: "sellerUsername1",
+        },
+      },
+    },
+    {
+      __typename: "Affiliation",
+      id: "affil2",
+      sellerId: "seller2",
+      commision: 15.0,
+      createdAt: "2024-07-10T09:30:00Z",
+      itemId: "item2",
+      itemType: "service", // Or "product" as appropriate
+      service: {
+        __typename: "Service",
+        price: 150.0,
+        thumbnail: getRandomImage(),
+      },
+      seller: {
+        __typename: "Account",
+        profile: {
+          __typename: "Profile",
+          username: "sellerUsername2",
+        },
+      },
+    },
+  ];
