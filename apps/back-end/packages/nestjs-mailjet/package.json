@@ -9,10 +9,12 @@
   },
   "author": "wiaah",
   "license": "ISC",
-  "devDependencies": {
-    "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "node-mailjet": "4.0.1"
+  "shadow": {
+    "devDependencies": [
+      "typescript"
+    ],
+    "dependencies": [
+      "node-mailjet"
+    ]
   }
 }
