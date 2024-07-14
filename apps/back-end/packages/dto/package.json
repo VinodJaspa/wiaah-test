@@ -4,15 +4,20 @@
   "main": "./dist/index.js",
   "types": "./index.ts",
   "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "config": "*",
     "tsconfig": "*",
-    "types": "*",
-    "typescript": "^4.3.5"
+    "types": "*"
   },
-  "dependencies": {
-    "@nestjs/common": "^8.4.7",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2"
+  "shadow": {
+    "devDependencies": [
+      "typescript"
+    ],
+    "dependencies": [
+      "@nestjs/common",
+      "class-transformer",
+      "class-validator"
+    ]
   }
 }
