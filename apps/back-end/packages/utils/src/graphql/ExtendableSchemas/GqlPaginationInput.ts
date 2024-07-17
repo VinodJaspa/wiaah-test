@@ -80,11 +80,20 @@ export function generateCursorPaginationResponse<TModel extends { id: string }>(
   total?: number;
 } {
   const hasMore = data.length > pagination.take;
+  let nextCursor: string | undefined;
+
+  if (hasMore) {
+    if (data.length >= pagination.take) {
+      nextCursor = data[pagination.take - 1].id;
+    } else {
+      nextCursor = undefined; // Handle case where `data` length is less than `pagination.take`
+    }
+  }
 
   return {
     cursor: pagination?.cursor,
     data: data.slice(0, pagination.take),
     hasMore,
-    nextCursor: hasMore ? data.at(pagination.take).id : undefined,
+    nextCursor,
   };
 }
