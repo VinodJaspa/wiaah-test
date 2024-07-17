@@ -8,7 +8,9 @@ type UpdateTranslationResourceOptions<T> = {
   updateOnly?: boolean;
 };
 
-export function updateTranslationResource<TResource>({
+export function updateTranslationResource<
+  TResource extends { [x: string]: any }
+>({
   originalObj,
   update,
 }: UpdateTranslationResourceOptions<TResource>):
@@ -28,14 +30,15 @@ export function updateTranslationResource<TResource>({
   );
 
   updates.forEach((v) => {
+    const inputObj =
+      originalObj.find((iV) => iV.langId === v.langId)?.value ??
+      ({} as TResource);
     updatedTranslations.push({
       langId: v.langId,
-      //@ts-ignore
       value: updateDeepObject({
-        //@ts-ignore
-        inputObj: originalObj.find((iV) => iV.langId === v.langId)?.value,
+        inputObj,
         updateObj: v.value,
-      }),
+      }) as TResource,
     });
   });
 
