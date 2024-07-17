@@ -53,7 +53,7 @@ export function CreateInputGqlTranslationInputField<TData>(
   return TranslationInputFieldClass as ClassType<TranslationInputField<TData>>;
 }
 
-interface ObjectTranslationInputFields<T> {
+export interface ObjectTranslationInputFields<T> {
   langId: string;
   value: IsStringTranslation<T>[];
 }
