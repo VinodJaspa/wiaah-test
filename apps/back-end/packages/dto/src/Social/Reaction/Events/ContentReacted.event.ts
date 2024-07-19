@@ -7,4 +7,5 @@ export class ContentReactedEvent extends KafkaMessage<{
   reacterUserId: string;
   contentTitle: string;
   keywords?: string[];
-}> {}
+  reacterProfileId?: string;
+}> { }
