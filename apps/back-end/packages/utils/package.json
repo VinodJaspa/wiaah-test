@@ -15,6 +15,7 @@
   },
   "shadow": {
     "devDependencies": [
+      "@nestjs/testing",
       "@types/cookie-parser",
       "@types/jest",
       "jest",
