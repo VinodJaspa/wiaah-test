@@ -17,23 +17,14 @@ import { client } from './main';
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       server: {
-        cors: {
-          origin: [
-            'http://localhost:3000',
-            'http://localhost:3002',
-            'http://localhost:2999',
-          ],
-          credentials: true,
-        },
         context: async (ctx) => {
           const _user = VerifyAndGetUserFromContext(ctx);
-
           const userId = _user?.id;
           const user = userId
             ? await client
-                .db()
-                .collection('Account')
-                .findOne({ _id: new ObjectId(userId) })
+              .db()
+              .collection('Account')
+              .findOne({ _id: new ObjectId(userId) })
             : {};
 
           console.log('context', { user, userId });
@@ -45,39 +36,12 @@ import { client } from './main';
             },
           };
         },
-        formatError(error) {
-          const exception = error?.extensions?.exception;
-          const isSchemaValidationError =
-            error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ||
-            error.extensions.code === 'BAD_USER_INPUT';
-
-          const errorCodesValues = Object.values(PublicErrorCodes);
-
-          const values = errorCodesValues.slice(
-            errorCodesValues.length / 2,
-            errorCodesValues.length,
-          );
-
-          const isKnownError = values.includes(exception.code);
-
-          console.log(
-            { isSchemaValidationError, isKnownError },
-            error,
-            exception,
-          );
-
-          if (isKnownError || isSchemaValidationError) {
-            return error;
-          } else {
-            return new UnknownError();
-          }
-        },
       },
       gateway: {
         buildService({ url }) {
           return new RemoteGraphQLDataSource({
             url,
-            willSendRequest({ context, request, kind }) {
+            willSendRequest({ context, request }) {
               try {
                 const contentType = (context as any)?.req?.headers[
                   'content-type'
@@ -100,7 +64,6 @@ import { client } from './main';
                   : null,
               );
             },
-
             didReceiveResponse({ context, response }) {
               if (response.http.headers.get('set-cookie')) {
                 const rawCookies = response.http.headers.get('set-cookie');
@@ -115,7 +78,6 @@ import { client } from './main';
                   });
                 }
               }
-
               return response;
             },
           });
@@ -129,4 +91,4 @@ import { client } from './main';
     }),
   ],
 })
-export class AppModule {}
+export class AppModule { }
