@@ -1,121 +1,8 @@
-interface ServiceInfo {
-  token: string;
-  groupId: string;
-  clientId: string;
-  pubsubTopic?: string;
-}
-
 export const SERVICES = {
   ACCOUNTS_SERVICE: {
-    token: "ACCOUNTS_SERVICE",
     clientId: "Accounts",
     groupId: "Accounts-consumer",
-  },
-  AUTH_SERVICE: {
-    token: "AUTH_SERVICE",
-    clientId: "Auth",
-    groupId: "Auth-consumer",
-  },
-  MAILING_SERVICE: {
-    token: "MAILING_SERVICE",
-    clientId: "mailing",
-    groupId: "mailing-consumer",
-  },
-  SHOP_SERVICE: {
-    token: "SHOP_SERVICE",
-    clientId: "shop",
-    groupId: "shop-consumer",
-  },
-  WISHLIST_SERVICE: {
-    token: "WISHLIST_SERVICE",
-    clientId: "wishlist",
-    groupId: "wishlist-consumer",
-  },
-  PRODUCTS_SERVICE: {
-    token: "PRODUCTS_SERVICE",
-    clientId: "products",
-    groupId: "products-consumer",
-  },
-  SHOPPING_CART_SERVICE: {
-    token: "SHOPPING-CART_SERVICE",
-    groupId: "shopping-cart-consumer",
-    clientId: "shopping-cart",
-  },
-  SERVICES_SERIVCE: {
-    token: "SERVICES_SERVICE",
-    clientId: "services",
-    groupId: "services-consumer",
-  },
-  CURRENCY_SERVICE: {
-    token: "CURRENCY_SERVICE",
-    clientId: "currency",
-    groupId: "currency-consumer",
-  },
-  SHIPPING_SERVICE: {
-    token: "SHIPPING_SERVICE",
-    clientId: "shipping",
-    groupId: "shipping-consumer",
-  },
-  ORDERS_SERVICE: {
-    token: "ORDERS_SERVICE",
-    clientId: "orders",
-    groupId: "orders",
-  },
-  VOUCHERS_SERVICE: {
-    clientId: "vouchers",
-    token: "VOUCHERS_SERVICE",
-    groupId: "vouchers",
-  },
-  BILLING_SERVICE: {
-    clientId: "billing",
-    token: "BILLING_SERVICE",
-    groupId: "billing",
-  },
-  PARTNERS_SERVICE: {
-    clientId: "partners",
-    groupId: "partners",
-    token: "PARTNERS_SERVICE",
-  },
-  REVIEWS_SERVICE: {
-    token: "REVIEWS_SERVICE",
-    clientId: "reviews",
-    groupId: "reviews",
-  },
-  SOCIAL_SERVICE: {
-    token: "SOCIAL_SERVICE",
-    clientId: "social",
-    groupId: "social",
-  },
-  SEARCH_SERVICE: {
-    clientId: "search",
-    groupId: "search",
-    token: "SEARCH_SERVICE",
-  },
-  CHAT: {
-    clientId: "chat-client",
-    groupId: "chat-consumer",
-    token: "CHAT_SERVICE",
-    pubsubTopic: "CHAT_SUBSCRIPTIONS_TOPIC",
-  },
-  SUBSCRIPTIONS: {
-    clientId: "subscriptions-client",
-    groupId: "consumer-group",
-    token: "SUBSCRIPTIONS_SERVICE",
-  },
-  NOTIFICATIONS: {
-    clientId: "notofications-client",
-    groupId: "notifications-group",
-    token: "notifications-service",
-  },
-  MEMBERSHIP: {
-    clientId: "memebership-client",
-    groupId: "membership-group",
-    token: "membership-service",
-  },
-  EVENT_SCHEDULING: {
-    token: "event-scheduling",
-    clientId: "event-scheduling-client",
-    groupId: "event-scheduling-group",
+    token: "ACCOUNTS_SERVICE",
   },
   AFFILIATION_SERVICE: {
     clientId: "affiliation-client",
@@ -123,23 +10,129 @@ export const SERVICES = {
     token: "affiliation-service",
   },
   ANALYTICS_SERVICE: {
-    clientId: "analytics-client",
-    groupId: "analytics-group",
-    token: "analytics-service",
+    clientId: "analytics",
+    groupId: "analytics",
+    token: "analytics",
   },
-  MODERATION: {
-    clientId: "moderation-client",
-    groupId: "moderation-consumer",
-    token: "moderation-service",
+  AUTH_SERVICE: {
+    clientId: "Auth",
+    groupId: "Auth-consumer",
+    token: "AUTH_SERVICE",
+  },
+  BILLING_SERVICE: {
+    clientId: "billing",
+    groupId: "billing",
+    token: "BILLING_SERVICE",
+  },
+  CHAT: {
+    clientId: "chat-client",
+    groupId: "chat-consumer",
+    pubsubTopic: "CHAT_SUBSCRIPTIONS_TOPIC",
+    token: "CHAT_SERVICE",
+  },
+  CURRENCY_SERVICE: {
+    clientId: "currency",
+    groupId: "currency-consumer",
+    token: "CURRENCY_SERVICE",
   },
   DISCOVER: {
     clientId: "discover-client",
     groupId: "discover-consumer",
     token: "discover-service",
   },
+  EVENT_SCHEDULING: {
+    clientId: "event-scheduling-client",
+    groupId: "event-scheduling-group",
+    token: "EVENT_SCHEDULING_SERVICE",
+  },
   HASHTAG: {
     clientId: "hashtag-client",
     groupId: "hashtag-consumer",
     token: "hashtag-service",
+  },
+  MAILING_SERVICE: {
+    clientId: "mailing",
+    groupId: "mailing-consumer",
+    token: "MAILING_SERVICE",
+  },
+  MEMBERSHIP: {
+    clientId: "memebership-client",
+    groupId: "membership-group",
+    token: "membership-service",
+  },
+  MODERATION: {
+    clientId: "moderation-client",
+    groupId: "moderation-consumer",
+    token: "moderation-service",
+  },
+  NOTIFICATIONS: {
+    clientId: "notofications-client",
+    groupId: "notifications-group",
+    token: "notifications-service",
+  },
+  ORDERS_SERVICE: {
+    clientId: "orders",
+    groupId: "orders",
+    token: "ORDERS_SERVICE",
+  },
+  PARTNERS_SERVICE: {
+    clientId: "partners",
+    groupId: "partners",
+    token: "PARTNERS_SERVICE",
+  },
+  PRODUCTS_SERVICE: {
+    clientId: "products",
+    groupId: "products-consumer",
+    token: "PRODUCTS_SERVICE",
+  },
+  REVIEWS_SERVICE: {
+    clientId: "reviews",
+    groupId: "reviews",
+    token: "REVIEWS_SERVICE",
+  },
+  SEARCH_SERVICE: {
+    clientId: "search",
+    groupId: "search",
+    token: "SEARCH_SERVICE",
+  },
+  SERVICES_SERIVCE: {
+    clientId: "services",
+    groupId: "services-consumer",
+    token: "SERVICES_SERVICE",
+  },
+  SHIPPING_SERVICE: {
+    clientId: "shipping",
+    groupId: "shipping-consumer",
+    token: "SHIPPING_SERVICE",
+  },
+  SHOP_SERVICE: {
+    clientId: "shop",
+    groupId: "shop-consumer",
+    token: "SHOP_SERVICE",
+  },
+  SHOPPING_CART_SERVICE: {
+    clientId: "shopping-cart",
+    groupId: "shopping-cart-consumer",
+    token: "SHOPPING-CART_SERVICE",
+  },
+  SOCIAL_SERVICE: {
+    clientId: "social",
+    groupId: "social",
+    token: "SOCIAL_SERVICE",
+  },
+  SUBSCRIPTIONS: {
+    clientId: "subscriptions-client",
+    groupId: "consumer-group",
+    token: "SUBSCRIPTIONS_SERVICE",
+  },
+  VOUCHERS_SERVICE: {
+    clientId: "vouchers",
+    groupId: "vouchers",
+    token: "VOUCHERS_SERVICE",
+  },
+  WISHLIST_SERVICE: {
+    clientId: "wishlist",
+    groupId: "wishlist-consumer",
+    token: "WISHLIST_SERVICE",
   },
 };
