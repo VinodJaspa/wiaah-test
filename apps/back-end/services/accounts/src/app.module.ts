@@ -14,6 +14,11 @@ import { UserLocationModule } from './user-location/user-location.module';
 import { RequiredActionsModule } from './required-actions/required-actions.module';
 import { UserContactsModule } from './user-contacts/user-contacts.module';
 
+import * as path from 'path';
+
+// Assuming 'src' is the root directory of your application
+const absoluteSchemaPath = path.join(__dirname, '..', 'src', 'schema.graphql');
+
 @Global()
 @Module({
   providers: [PrismaService],
@@ -30,7 +35,7 @@ export class PrismaModule {}
     UserLocationModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: 'schema.graphql',
+      autoSchemaFile: absoluteSchemaPath, // Specify absolute path here
       context({ req, res }) {
         const user = getUserFromRequest(req);
         console.log({ user });
