@@ -44,7 +44,7 @@ export class AccountsResolver {
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
     private readonly stripe: StripeService,
-  ) {}
+  ) { }
 
   @Mutation(() => String)
   async register(
@@ -88,7 +88,7 @@ export class AccountsResolver {
         lastName,
         password: hashedPassword,
         accountType: accountType,
-        birthDate,
+        birthDate: new Date(birthDate),
         gender,
         phone,
       },
