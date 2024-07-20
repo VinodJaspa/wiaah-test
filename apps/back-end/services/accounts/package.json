@@ -26,7 +26,6 @@
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@nestjs/apollo",
       "@nestjs/common",
@@ -54,6 +53,7 @@
       "@types/supertest",
       "@typescript-eslint/eslint-plugin",
       "@typescript-eslint/parser",
+      "mongodb-memory-server",
       "eslint",
       "eslint-config-prettier",
       "eslint-plugin-prettier",
