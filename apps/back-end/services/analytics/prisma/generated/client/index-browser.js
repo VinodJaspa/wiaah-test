@@ -120,9 +120,11 @@ exports.Prisma.EventScalarFieldEnum = makeEnum({
   causedToId: 'causedToId'
 });
 
-exports.Prisma.SalesStatsScalarFieldEnum = makeEnum({
+exports.Prisma.UserSalesStatsScalarFieldEnum = makeEnum({
   id: 'id',
-  period: 'period',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   sales: 'sales',
   salesAmount: 'salesAmount',
   refundeds: 'refundeds',
@@ -148,7 +150,7 @@ exports.Prisma.ModelName = makeEnum({
   UsersInteractions: 'UsersInteractions',
   UserInterest: 'UserInterest',
   Event: 'Event',
-  SalesStats: 'SalesStats'
+  UserSalesStats: 'UserSalesStats'
 });
 
 /**

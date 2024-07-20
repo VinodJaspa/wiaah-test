@@ -87,12 +87,14 @@ export type Event = {
 }
 
 /**
- * Model SalesStats
+ * Model UserSalesStats
  * 
  */
-export type SalesStats = {
+export type UserSalesStats = {
   id: string
-  period: string
+  userId: string
+  createdAt: Date
+  updatedAt: Date
   sales: number
   salesAmount: number
   refundeds: number
@@ -263,14 +265,14 @@ export class PrismaClient<
   get event(): Prisma.EventDelegate<GlobalReject>;
 
   /**
-   * `prisma.salesStats`: Exposes CRUD operations for the **SalesStats** model.
+   * `prisma.userSalesStats`: Exposes CRUD operations for the **UserSalesStats** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more SalesStats
-    * const salesStats = await prisma.salesStats.findMany()
+    * // Fetch zero or more UserSalesStats
+    * const userSalesStats = await prisma.userSalesStats.findMany()
     * ```
     */
-  get salesStats(): Prisma.SalesStatsDelegate<GlobalReject>;
+  get userSalesStats(): Prisma.UserSalesStatsDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -692,7 +694,7 @@ export namespace Prisma {
     UsersInteractions: 'UsersInteractions',
     UserInterest: 'UserInterest',
     Event: 'Event',
-    SalesStats: 'SalesStats'
+    UserSalesStats: 'UserSalesStats'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -5557,19 +5559,19 @@ export namespace Prisma {
 
 
   /**
-   * Model SalesStats
+   * Model UserSalesStats
    */
 
 
-  export type AggregateSalesStats = {
-    _count: SalesStatsCountAggregateOutputType | null
-    _avg: SalesStatsAvgAggregateOutputType | null
-    _sum: SalesStatsSumAggregateOutputType | null
-    _min: SalesStatsMinAggregateOutputType | null
-    _max: SalesStatsMaxAggregateOutputType | null
+  export type AggregateUserSalesStats = {
+    _count: UserSalesStatsCountAggregateOutputType | null
+    _avg: UserSalesStatsAvgAggregateOutputType | null
+    _sum: UserSalesStatsSumAggregateOutputType | null
+    _min: UserSalesStatsMinAggregateOutputType | null
+    _max: UserSalesStatsMaxAggregateOutputType | null
   }
 
-  export type SalesStatsAvgAggregateOutputType = {
+  export type UserSalesStatsAvgAggregateOutputType = {
     sales: number | null
     salesAmount: number | null
     refundeds: number | null
@@ -5578,7 +5580,7 @@ export namespace Prisma {
     affiliationsAmount: number | null
   }
 
-  export type SalesStatsSumAggregateOutputType = {
+  export type UserSalesStatsSumAggregateOutputType = {
     sales: number | null
     salesAmount: number | null
     refundeds: number | null
@@ -5587,9 +5589,11 @@ export namespace Prisma {
     affiliationsAmount: number | null
   }
 
-  export type SalesStatsMinAggregateOutputType = {
+  export type UserSalesStatsMinAggregateOutputType = {
     id: string | null
-    period: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
     sales: number | null
     salesAmount: number | null
     refundeds: number | null
@@ -5598,9 +5602,11 @@ export namespace Prisma {
     affiliationsAmount: number | null
   }
 
-  export type SalesStatsMaxAggregateOutputType = {
+  export type UserSalesStatsMaxAggregateOutputType = {
     id: string | null
-    period: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
     sales: number | null
     salesAmount: number | null
     refundeds: number | null
@@ -5609,9 +5615,11 @@ export namespace Prisma {
     affiliationsAmount: number | null
   }
 
-  export type SalesStatsCountAggregateOutputType = {
+  export type UserSalesStatsCountAggregateOutputType = {
     id: number
-    period: number
+    userId: number
+    createdAt: number
+    updatedAt: number
     sales: number
     salesAmount: number
     refundeds: number
@@ -5622,7 +5630,7 @@ export namespace Prisma {
   }
 
 
-  export type SalesStatsAvgAggregateInputType = {
+  export type UserSalesStatsAvgAggregateInputType = {
     sales?: true
     salesAmount?: true
     refundeds?: true
@@ -5631,7 +5639,7 @@ export namespace Prisma {
     affiliationsAmount?: true
   }
 
-  export type SalesStatsSumAggregateInputType = {
+  export type UserSalesStatsSumAggregateInputType = {
     sales?: true
     salesAmount?: true
     refundeds?: true
@@ -5640,9 +5648,11 @@ export namespace Prisma {
     affiliationsAmount?: true
   }
 
-  export type SalesStatsMinAggregateInputType = {
+  export type UserSalesStatsMinAggregateInputType = {
     id?: true
-    period?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
     sales?: true
     salesAmount?: true
     refundeds?: true
@@ -5651,9 +5661,11 @@ export namespace Prisma {
     affiliationsAmount?: true
   }
 
-  export type SalesStatsMaxAggregateInputType = {
+  export type UserSalesStatsMaxAggregateInputType = {
     id?: true
-    period?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
     sales?: true
     salesAmount?: true
     refundeds?: true
@@ -5662,9 +5674,11 @@ export namespace Prisma {
     affiliationsAmount?: true
   }
 
-  export type SalesStatsCountAggregateInputType = {
+  export type UserSalesStatsCountAggregateInputType = {
     id?: true
-    period?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
     sales?: true
     salesAmount?: true
     refundeds?: true
@@ -5674,131 +5688,135 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type SalesStatsAggregateArgs = {
+  export type UserSalesStatsAggregateArgs = {
     /**
-     * Filter which SalesStats to aggregate.
+     * Filter which UserSalesStats to aggregate.
      * 
     **/
-    where?: SalesStatsWhereInput
+    where?: UserSalesStatsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SalesStats to fetch.
+     * Determine the order of UserSalesStats to fetch.
      * 
     **/
-    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    orderBy?: Enumerable<UserSalesStatsOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: SalesStatsWhereUniqueInput
+    cursor?: UserSalesStatsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SalesStats from the position of the cursor.
+     * Take `±n` UserSalesStats from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SalesStats.
+     * Skip the first `n` UserSalesStats.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned SalesStats
+     * Count returned UserSalesStats
     **/
-    _count?: true | SalesStatsCountAggregateInputType
+    _count?: true | UserSalesStatsCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: SalesStatsAvgAggregateInputType
+    _avg?: UserSalesStatsAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: SalesStatsSumAggregateInputType
+    _sum?: UserSalesStatsSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: SalesStatsMinAggregateInputType
+    _min?: UserSalesStatsMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: SalesStatsMaxAggregateInputType
+    _max?: UserSalesStatsMaxAggregateInputType
   }
 
-  export type GetSalesStatsAggregateType<T extends SalesStatsAggregateArgs> = {
-        [P in keyof T & keyof AggregateSalesStats]: P extends '_count' | 'count'
+  export type GetUserSalesStatsAggregateType<T extends UserSalesStatsAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserSalesStats]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateSalesStats[P]>
-      : GetScalarType<T[P], AggregateSalesStats[P]>
+        : GetScalarType<T[P], AggregateUserSalesStats[P]>
+      : GetScalarType<T[P], AggregateUserSalesStats[P]>
   }
 
 
 
 
-  export type SalesStatsGroupByArgs = {
-    where?: SalesStatsWhereInput
-    orderBy?: Enumerable<SalesStatsOrderByWithAggregationInput>
-    by: Array<SalesStatsScalarFieldEnum>
-    having?: SalesStatsScalarWhereWithAggregatesInput
+  export type UserSalesStatsGroupByArgs = {
+    where?: UserSalesStatsWhereInput
+    orderBy?: Enumerable<UserSalesStatsOrderByWithAggregationInput>
+    by: Array<UserSalesStatsScalarFieldEnum>
+    having?: UserSalesStatsScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: SalesStatsCountAggregateInputType | true
-    _avg?: SalesStatsAvgAggregateInputType
-    _sum?: SalesStatsSumAggregateInputType
-    _min?: SalesStatsMinAggregateInputType
-    _max?: SalesStatsMaxAggregateInputType
+    _count?: UserSalesStatsCountAggregateInputType | true
+    _avg?: UserSalesStatsAvgAggregateInputType
+    _sum?: UserSalesStatsSumAggregateInputType
+    _min?: UserSalesStatsMinAggregateInputType
+    _max?: UserSalesStatsMaxAggregateInputType
   }
 
 
-  export type SalesStatsGroupByOutputType = {
+  export type UserSalesStatsGroupByOutputType = {
     id: string
-    period: string
+    userId: string
+    createdAt: Date
+    updatedAt: Date
     sales: number
     salesAmount: number
     refundeds: number
     refundedAmount: number
     affiliations: number
     affiliationsAmount: number
-    _count: SalesStatsCountAggregateOutputType | null
-    _avg: SalesStatsAvgAggregateOutputType | null
-    _sum: SalesStatsSumAggregateOutputType | null
-    _min: SalesStatsMinAggregateOutputType | null
-    _max: SalesStatsMaxAggregateOutputType | null
+    _count: UserSalesStatsCountAggregateOutputType | null
+    _avg: UserSalesStatsAvgAggregateOutputType | null
+    _sum: UserSalesStatsSumAggregateOutputType | null
+    _min: UserSalesStatsMinAggregateOutputType | null
+    _max: UserSalesStatsMaxAggregateOutputType | null
   }
 
-  type GetSalesStatsGroupByPayload<T extends SalesStatsGroupByArgs> = PrismaPromise<
+  type GetUserSalesStatsGroupByPayload<T extends UserSalesStatsGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<SalesStatsGroupByOutputType, T['by']> &
+      PickArray<UserSalesStatsGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof SalesStatsGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof UserSalesStatsGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], SalesStatsGroupByOutputType[P]>
-            : GetScalarType<T[P], SalesStatsGroupByOutputType[P]>
+              : GetScalarType<T[P], UserSalesStatsGroupByOutputType[P]>
+            : GetScalarType<T[P], UserSalesStatsGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type SalesStatsSelect = {
+  export type UserSalesStatsSelect = {
     id?: boolean
-    period?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     sales?: boolean
     salesAmount?: boolean
     refundeds?: boolean
@@ -5807,138 +5825,138 @@ export namespace Prisma {
     affiliationsAmount?: boolean
   }
 
-  export type SalesStatsGetPayload<
-    S extends boolean | null | undefined | SalesStatsArgs,
+  export type UserSalesStatsGetPayload<
+    S extends boolean | null | undefined | UserSalesStatsArgs,
     U = keyof S
       > = S extends true
-        ? SalesStats
+        ? UserSalesStats
     : S extends undefined
     ? never
-    : S extends SalesStatsArgs | SalesStatsFindManyArgs
+    : S extends UserSalesStatsArgs | UserSalesStatsFindManyArgs
     ?'include' extends U
-    ? SalesStats 
+    ? UserSalesStats 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-    P extends keyof SalesStats ? SalesStats[P] : never
+    P extends keyof UserSalesStats ? UserSalesStats[P] : never
   } 
-    : SalesStats
-  : SalesStats
+    : UserSalesStats
+  : UserSalesStats
 
 
-  type SalesStatsCountArgs = Merge<
-    Omit<SalesStatsFindManyArgs, 'select' | 'include'> & {
-      select?: SalesStatsCountAggregateInputType | true
+  type UserSalesStatsCountArgs = Merge<
+    Omit<UserSalesStatsFindManyArgs, 'select' | 'include'> & {
+      select?: UserSalesStatsCountAggregateInputType | true
     }
   >
 
-  export interface SalesStatsDelegate<GlobalRejectSettings> {
+  export interface UserSalesStatsDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one SalesStats that matches the filter.
-     * @param {SalesStatsFindUniqueArgs} args - Arguments to find a SalesStats
+     * Find zero or one UserSalesStats that matches the filter.
+     * @param {UserSalesStatsFindUniqueArgs} args - Arguments to find a UserSalesStats
      * @example
-     * // Get one SalesStats
-     * const salesStats = await prisma.salesStats.findUnique({
+     * // Get one UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends SalesStatsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, SalesStatsFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'SalesStats'> extends True ? CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__SalesStatsClient<SalesStats | null >, Prisma__SalesStatsClient<SalesStatsGetPayload<T> | null >>
+    findUnique<T extends UserSalesStatsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserSalesStatsFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'UserSalesStats'> extends True ? CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats | null >, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T> | null >>
 
     /**
-     * Find the first SalesStats that matches the filter.
+     * Find the first UserSalesStats that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsFindFirstArgs} args - Arguments to find a SalesStats
+     * @param {UserSalesStatsFindFirstArgs} args - Arguments to find a UserSalesStats
      * @example
-     * // Get one SalesStats
-     * const salesStats = await prisma.salesStats.findFirst({
+     * // Get one UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends SalesStatsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, SalesStatsFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'SalesStats'> extends True ? CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__SalesStatsClient<SalesStats | null >, Prisma__SalesStatsClient<SalesStatsGetPayload<T> | null >>
+    findFirst<T extends UserSalesStatsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserSalesStatsFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'UserSalesStats'> extends True ? CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>> : CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats | null >, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T> | null >>
 
     /**
-     * Find zero or more SalesStats that matches the filter.
+     * Find zero or more UserSalesStats that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {UserSalesStatsFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all SalesStats
-     * const salesStats = await prisma.salesStats.findMany()
+     * // Get all UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.findMany()
      * 
-     * // Get first 10 SalesStats
-     * const salesStats = await prisma.salesStats.findMany({ take: 10 })
+     * // Get first 10 UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const salesStatsWithIdOnly = await prisma.salesStats.findMany({ select: { id: true } })
+     * const userSalesStatsWithIdOnly = await prisma.userSalesStats.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends SalesStatsFindManyArgs>(
-      args?: SelectSubset<T, SalesStatsFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<SalesStats>>, PrismaPromise<Array<SalesStatsGetPayload<T>>>>
+    findMany<T extends UserSalesStatsFindManyArgs>(
+      args?: SelectSubset<T, UserSalesStatsFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<UserSalesStats>>, PrismaPromise<Array<UserSalesStatsGetPayload<T>>>>
 
     /**
-     * Create a SalesStats.
-     * @param {SalesStatsCreateArgs} args - Arguments to create a SalesStats.
+     * Create a UserSalesStats.
+     * @param {UserSalesStatsCreateArgs} args - Arguments to create a UserSalesStats.
      * @example
-     * // Create one SalesStats
-     * const SalesStats = await prisma.salesStats.create({
+     * // Create one UserSalesStats
+     * const UserSalesStats = await prisma.userSalesStats.create({
      *   data: {
-     *     // ... data to create a SalesStats
+     *     // ... data to create a UserSalesStats
      *   }
      * })
      * 
     **/
-    create<T extends SalesStatsCreateArgs>(
-      args: SelectSubset<T, SalesStatsCreateArgs>
-    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+    create<T extends UserSalesStatsCreateArgs>(
+      args: SelectSubset<T, UserSalesStatsCreateArgs>
+    ): CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>>
 
     /**
-     * Create many SalesStats.
-     *     @param {SalesStatsCreateManyArgs} args - Arguments to create many SalesStats.
+     * Create many UserSalesStats.
+     *     @param {UserSalesStatsCreateManyArgs} args - Arguments to create many UserSalesStats.
      *     @example
-     *     // Create many SalesStats
-     *     const salesStats = await prisma.salesStats.createMany({
+     *     // Create many UserSalesStats
+     *     const userSalesStats = await prisma.userSalesStats.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends SalesStatsCreateManyArgs>(
-      args?: SelectSubset<T, SalesStatsCreateManyArgs>
+    createMany<T extends UserSalesStatsCreateManyArgs>(
+      args?: SelectSubset<T, UserSalesStatsCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a SalesStats.
-     * @param {SalesStatsDeleteArgs} args - Arguments to delete one SalesStats.
+     * Delete a UserSalesStats.
+     * @param {UserSalesStatsDeleteArgs} args - Arguments to delete one UserSalesStats.
      * @example
-     * // Delete one SalesStats
-     * const SalesStats = await prisma.salesStats.delete({
+     * // Delete one UserSalesStats
+     * const UserSalesStats = await prisma.userSalesStats.delete({
      *   where: {
-     *     // ... filter to delete one SalesStats
+     *     // ... filter to delete one UserSalesStats
      *   }
      * })
      * 
     **/
-    delete<T extends SalesStatsDeleteArgs>(
-      args: SelectSubset<T, SalesStatsDeleteArgs>
-    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+    delete<T extends UserSalesStatsDeleteArgs>(
+      args: SelectSubset<T, UserSalesStatsDeleteArgs>
+    ): CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>>
 
     /**
-     * Update one SalesStats.
-     * @param {SalesStatsUpdateArgs} args - Arguments to update one SalesStats.
+     * Update one UserSalesStats.
+     * @param {UserSalesStatsUpdateArgs} args - Arguments to update one UserSalesStats.
      * @example
-     * // Update one SalesStats
-     * const salesStats = await prisma.salesStats.update({
+     * // Update one UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5948,34 +5966,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends SalesStatsUpdateArgs>(
-      args: SelectSubset<T, SalesStatsUpdateArgs>
-    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+    update<T extends UserSalesStatsUpdateArgs>(
+      args: SelectSubset<T, UserSalesStatsUpdateArgs>
+    ): CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>>
 
     /**
-     * Delete zero or more SalesStats.
-     * @param {SalesStatsDeleteManyArgs} args - Arguments to filter SalesStats to delete.
+     * Delete zero or more UserSalesStats.
+     * @param {UserSalesStatsDeleteManyArgs} args - Arguments to filter UserSalesStats to delete.
      * @example
-     * // Delete a few SalesStats
-     * const { count } = await prisma.salesStats.deleteMany({
+     * // Delete a few UserSalesStats
+     * const { count } = await prisma.userSalesStats.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends SalesStatsDeleteManyArgs>(
-      args?: SelectSubset<T, SalesStatsDeleteManyArgs>
+    deleteMany<T extends UserSalesStatsDeleteManyArgs>(
+      args?: SelectSubset<T, UserSalesStatsDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SalesStats.
+     * Update zero or more UserSalesStats.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {UserSalesStatsUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many SalesStats
-     * const salesStats = await prisma.salesStats.updateMany({
+     * // Update many UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5985,48 +6003,48 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends SalesStatsUpdateManyArgs>(
-      args: SelectSubset<T, SalesStatsUpdateManyArgs>
+    updateMany<T extends UserSalesStatsUpdateManyArgs>(
+      args: SelectSubset<T, UserSalesStatsUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one SalesStats.
-     * @param {SalesStatsUpsertArgs} args - Arguments to update or create a SalesStats.
+     * Create or update one UserSalesStats.
+     * @param {UserSalesStatsUpsertArgs} args - Arguments to update or create a UserSalesStats.
      * @example
-     * // Update or create a SalesStats
-     * const salesStats = await prisma.salesStats.upsert({
+     * // Update or create a UserSalesStats
+     * const userSalesStats = await prisma.userSalesStats.upsert({
      *   create: {
-     *     // ... data to create a SalesStats
+     *     // ... data to create a UserSalesStats
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the SalesStats we want to update
+     *     // ... the filter for the UserSalesStats we want to update
      *   }
      * })
     **/
-    upsert<T extends SalesStatsUpsertArgs>(
-      args: SelectSubset<T, SalesStatsUpsertArgs>
-    ): CheckSelect<T, Prisma__SalesStatsClient<SalesStats>, Prisma__SalesStatsClient<SalesStatsGetPayload<T>>>
+    upsert<T extends UserSalesStatsUpsertArgs>(
+      args: SelectSubset<T, UserSalesStatsUpsertArgs>
+    ): CheckSelect<T, Prisma__UserSalesStatsClient<UserSalesStats>, Prisma__UserSalesStatsClient<UserSalesStatsGetPayload<T>>>
 
     /**
-     * Find zero or more SalesStats that matches the filter.
-     * @param {SalesStatsFindRawArgs} args - Select which filters you would like to apply.
+     * Find zero or more UserSalesStats that matches the filter.
+     * @param {UserSalesStatsFindRawArgs} args - Select which filters you would like to apply.
      * @example
-     * const salesStats = await prisma.salesStats.findRaw({
+     * const userSalesStats = await prisma.userSalesStats.findRaw({
      *   filter: { age: { $gt: 25 } } 
      * })
     **/
     findRaw(
-      args?: SalesStatsFindRawArgs
+      args?: UserSalesStatsFindRawArgs
     ): PrismaPromise<JsonObject>
 
     /**
-     * Perform aggregation operations on a SalesStats.
-     * @param {SalesStatsAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * Perform aggregation operations on a UserSalesStats.
+     * @param {UserSalesStatsAggregateRawArgs} args - Select which aggregations you would like to apply.
      * @example
-     * const salesStats = await prisma.salesStats.aggregateRaw({
+     * const userSalesStats = await prisma.userSalesStats.aggregateRaw({
      *   pipeline: [
      *     { $match: { status: "registered" } },
      *     { $group: { _id: "$country", total: { $sum: 1 } } }
@@ -6034,37 +6052,37 @@ export namespace Prisma {
      * })
     **/
     aggregateRaw(
-      args?: SalesStatsAggregateRawArgs
+      args?: UserSalesStatsAggregateRawArgs
     ): PrismaPromise<JsonObject>
 
     /**
-     * Count the number of SalesStats.
+     * Count the number of UserSalesStats.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsCountArgs} args - Arguments to filter SalesStats to count.
+     * @param {UserSalesStatsCountArgs} args - Arguments to filter UserSalesStats to count.
      * @example
-     * // Count the number of SalesStats
-     * const count = await prisma.salesStats.count({
+     * // Count the number of UserSalesStats
+     * const count = await prisma.userSalesStats.count({
      *   where: {
-     *     // ... the filter for the SalesStats we want to count
+     *     // ... the filter for the UserSalesStats we want to count
      *   }
      * })
     **/
-    count<T extends SalesStatsCountArgs>(
-      args?: Subset<T, SalesStatsCountArgs>,
+    count<T extends UserSalesStatsCountArgs>(
+      args?: Subset<T, UserSalesStatsCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], SalesStatsCountAggregateOutputType>
+          : GetScalarType<T['select'], UserSalesStatsCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a SalesStats.
+     * Allows you to perform aggregations operations on a UserSalesStats.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {UserSalesStatsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -6084,13 +6102,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends SalesStatsAggregateArgs>(args: Subset<T, SalesStatsAggregateArgs>): PrismaPromise<GetSalesStatsAggregateType<T>>
+    aggregate<T extends UserSalesStatsAggregateArgs>(args: Subset<T, UserSalesStatsAggregateArgs>): PrismaPromise<GetUserSalesStatsAggregateType<T>>
 
     /**
-     * Group by SalesStats.
+     * Group by UserSalesStats.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {SalesStatsGroupByArgs} args - Group by arguments.
+     * @param {UserSalesStatsGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -6105,14 +6123,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends SalesStatsGroupByArgs,
+      T extends UserSalesStatsGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SalesStatsGroupByArgs['orderBy'] }
-        : { orderBy?: SalesStatsGroupByArgs['orderBy'] },
+        ? { orderBy: UserSalesStatsGroupByArgs['orderBy'] }
+        : { orderBy?: UserSalesStatsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6161,16 +6179,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, SalesStatsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalesStatsGroupByPayload<T> : PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, UserSalesStatsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserSalesStatsGroupByPayload<T> : PrismaPromise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for SalesStats.
+   * The delegate class that acts as a "Promise-like" for UserSalesStats.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__SalesStatsClient<T> implements PrismaPromise<T> {
+  export class Prisma__UserSalesStatsClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -6214,258 +6232,258 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * SalesStats findUnique
+   * UserSalesStats findUnique
    */
-  export type SalesStatsFindUniqueArgs = {
+  export type UserSalesStatsFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * Throw an Error if a SalesStats can't be found
+     * Throw an Error if a UserSalesStats can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which SalesStats to fetch.
+     * Filter, which UserSalesStats to fetch.
      * 
     **/
-    where: SalesStatsWhereUniqueInput
+    where: UserSalesStatsWhereUniqueInput
   }
 
 
   /**
-   * SalesStats findFirst
+   * UserSalesStats findFirst
    */
-  export type SalesStatsFindFirstArgs = {
+  export type UserSalesStatsFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * Throw an Error if a SalesStats can't be found
+     * Throw an Error if a UserSalesStats can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which SalesStats to fetch.
+     * Filter, which UserSalesStats to fetch.
      * 
     **/
-    where?: SalesStatsWhereInput
+    where?: UserSalesStatsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SalesStats to fetch.
+     * Determine the order of UserSalesStats to fetch.
      * 
     **/
-    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    orderBy?: Enumerable<UserSalesStatsOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for SalesStats.
+     * Sets the position for searching for UserSalesStats.
      * 
     **/
-    cursor?: SalesStatsWhereUniqueInput
+    cursor?: UserSalesStatsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SalesStats from the position of the cursor.
+     * Take `±n` UserSalesStats from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SalesStats.
+     * Skip the first `n` UserSalesStats.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of SalesStats.
+     * Filter by unique combinations of UserSalesStats.
      * 
     **/
-    distinct?: Enumerable<SalesStatsScalarFieldEnum>
+    distinct?: Enumerable<UserSalesStatsScalarFieldEnum>
   }
 
 
   /**
-   * SalesStats findMany
+   * UserSalesStats findMany
    */
-  export type SalesStatsFindManyArgs = {
+  export type UserSalesStatsFindManyArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * Filter, which SalesStats to fetch.
+     * Filter, which UserSalesStats to fetch.
      * 
     **/
-    where?: SalesStatsWhereInput
+    where?: UserSalesStatsWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of SalesStats to fetch.
+     * Determine the order of UserSalesStats to fetch.
      * 
     **/
-    orderBy?: Enumerable<SalesStatsOrderByWithRelationInput>
+    orderBy?: Enumerable<UserSalesStatsOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing SalesStats.
+     * Sets the position for listing UserSalesStats.
      * 
     **/
-    cursor?: SalesStatsWhereUniqueInput
+    cursor?: UserSalesStatsWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` SalesStats from the position of the cursor.
+     * Take `±n` UserSalesStats from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` SalesStats.
+     * Skip the first `n` UserSalesStats.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<SalesStatsScalarFieldEnum>
+    distinct?: Enumerable<UserSalesStatsScalarFieldEnum>
   }
 
 
   /**
-   * SalesStats create
+   * UserSalesStats create
    */
-  export type SalesStatsCreateArgs = {
+  export type UserSalesStatsCreateArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * The data needed to create a SalesStats.
+     * The data needed to create a UserSalesStats.
      * 
     **/
-    data: XOR<SalesStatsCreateInput, SalesStatsUncheckedCreateInput>
+    data: XOR<UserSalesStatsCreateInput, UserSalesStatsUncheckedCreateInput>
   }
 
 
   /**
-   * SalesStats createMany
+   * UserSalesStats createMany
    */
-  export type SalesStatsCreateManyArgs = {
+  export type UserSalesStatsCreateManyArgs = {
     /**
-     * The data used to create many SalesStats.
+     * The data used to create many UserSalesStats.
      * 
     **/
-    data: Enumerable<SalesStatsCreateManyInput>
+    data: Enumerable<UserSalesStatsCreateManyInput>
   }
 
 
   /**
-   * SalesStats update
+   * UserSalesStats update
    */
-  export type SalesStatsUpdateArgs = {
+  export type UserSalesStatsUpdateArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * The data needed to update a SalesStats.
+     * The data needed to update a UserSalesStats.
      * 
     **/
-    data: XOR<SalesStatsUpdateInput, SalesStatsUncheckedUpdateInput>
+    data: XOR<UserSalesStatsUpdateInput, UserSalesStatsUncheckedUpdateInput>
     /**
-     * Choose, which SalesStats to update.
+     * Choose, which UserSalesStats to update.
      * 
     **/
-    where: SalesStatsWhereUniqueInput
+    where: UserSalesStatsWhereUniqueInput
   }
 
 
   /**
-   * SalesStats updateMany
+   * UserSalesStats updateMany
    */
-  export type SalesStatsUpdateManyArgs = {
+  export type UserSalesStatsUpdateManyArgs = {
     /**
-     * The data used to update SalesStats.
+     * The data used to update UserSalesStats.
      * 
     **/
-    data: XOR<SalesStatsUpdateManyMutationInput, SalesStatsUncheckedUpdateManyInput>
+    data: XOR<UserSalesStatsUpdateManyMutationInput, UserSalesStatsUncheckedUpdateManyInput>
     /**
-     * Filter which SalesStats to update
+     * Filter which UserSalesStats to update
      * 
     **/
-    where?: SalesStatsWhereInput
+    where?: UserSalesStatsWhereInput
   }
 
 
   /**
-   * SalesStats upsert
+   * UserSalesStats upsert
    */
-  export type SalesStatsUpsertArgs = {
+  export type UserSalesStatsUpsertArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * The filter to search for the SalesStats to update in case it exists.
+     * The filter to search for the UserSalesStats to update in case it exists.
      * 
     **/
-    where: SalesStatsWhereUniqueInput
+    where: UserSalesStatsWhereUniqueInput
     /**
-     * In case the SalesStats found by the `where` argument doesn't exist, create a new SalesStats with this data.
+     * In case the UserSalesStats found by the `where` argument doesn't exist, create a new UserSalesStats with this data.
      * 
     **/
-    create: XOR<SalesStatsCreateInput, SalesStatsUncheckedCreateInput>
+    create: XOR<UserSalesStatsCreateInput, UserSalesStatsUncheckedCreateInput>
     /**
-     * In case the SalesStats was found with the provided `where` argument, update it with this data.
+     * In case the UserSalesStats was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<SalesStatsUpdateInput, SalesStatsUncheckedUpdateInput>
+    update: XOR<UserSalesStatsUpdateInput, UserSalesStatsUncheckedUpdateInput>
   }
 
 
   /**
-   * SalesStats delete
+   * UserSalesStats delete
    */
-  export type SalesStatsDeleteArgs = {
+  export type UserSalesStatsDeleteArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
     /**
-     * Filter which SalesStats to delete.
+     * Filter which UserSalesStats to delete.
      * 
     **/
-    where: SalesStatsWhereUniqueInput
+    where: UserSalesStatsWhereUniqueInput
   }
 
 
   /**
-   * SalesStats deleteMany
+   * UserSalesStats deleteMany
    */
-  export type SalesStatsDeleteManyArgs = {
+  export type UserSalesStatsDeleteManyArgs = {
     /**
-     * Filter which SalesStats to delete
+     * Filter which UserSalesStats to delete
      * 
     **/
-    where?: SalesStatsWhereInput
+    where?: UserSalesStatsWhereInput
   }
 
 
   /**
-   * SalesStats findRaw
+   * UserSalesStats findRaw
    */
-  export type SalesStatsFindRawArgs = {
+  export type UserSalesStatsFindRawArgs = {
     /**
      * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
      * 
@@ -6480,9 +6498,9 @@ export namespace Prisma {
 
 
   /**
-   * SalesStats aggregateRaw
+   * UserSalesStats aggregateRaw
    */
-  export type SalesStatsAggregateRawArgs = {
+  export type UserSalesStatsAggregateRawArgs = {
     /**
      * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
      * 
@@ -6497,14 +6515,14 @@ export namespace Prisma {
 
 
   /**
-   * SalesStats without action
+   * UserSalesStats without action
    */
-  export type SalesStatsArgs = {
+  export type UserSalesStatsArgs = {
     /**
-     * Select specific fields to fetch from the SalesStats
+     * Select specific fields to fetch from the UserSalesStats
      * 
     **/
-    select?: SalesStatsSelect | null
+    select?: UserSalesStatsSelect | null
   }
 
 
@@ -6575,9 +6593,11 @@ export namespace Prisma {
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
-  export const SalesStatsScalarFieldEnum: {
+  export const UserSalesStatsScalarFieldEnum: {
     id: 'id',
-    period: 'period',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     sales: 'sales',
     salesAmount: 'salesAmount',
     refundeds: 'refundeds',
@@ -6586,7 +6606,7 @@ export namespace Prisma {
     affiliationsAmount: 'affiliationsAmount'
   };
 
-  export type SalesStatsScalarFieldEnum = (typeof SalesStatsScalarFieldEnum)[keyof typeof SalesStatsScalarFieldEnum]
+  export type UserSalesStatsScalarFieldEnum = (typeof UserSalesStatsScalarFieldEnum)[keyof typeof UserSalesStatsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6861,12 +6881,14 @@ export namespace Prisma {
     causedToId?: StringWithAggregatesFilter | string
   }
 
-  export type SalesStatsWhereInput = {
-    AND?: Enumerable<SalesStatsWhereInput>
-    OR?: Enumerable<SalesStatsWhereInput>
-    NOT?: Enumerable<SalesStatsWhereInput>
+  export type UserSalesStatsWhereInput = {
+    AND?: Enumerable<UserSalesStatsWhereInput>
+    OR?: Enumerable<UserSalesStatsWhereInput>
+    NOT?: Enumerable<UserSalesStatsWhereInput>
     id?: StringFilter | string
-    period?: StringFilter | string
+    userId?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
     sales?: IntFilter | number
     salesAmount?: FloatFilter | number
     refundeds?: IntFilter | number
@@ -6875,9 +6897,11 @@ export namespace Prisma {
     affiliationsAmount?: IntFilter | number
   }
 
-  export type SalesStatsOrderByWithRelationInput = {
+  export type UserSalesStatsOrderByWithRelationInput = {
     id?: SortOrder
-    period?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
@@ -6886,32 +6910,36 @@ export namespace Prisma {
     affiliationsAmount?: SortOrder
   }
 
-  export type SalesStatsWhereUniqueInput = {
+  export type UserSalesStatsWhereUniqueInput = {
     id?: string
   }
 
-  export type SalesStatsOrderByWithAggregationInput = {
+  export type UserSalesStatsOrderByWithAggregationInput = {
     id?: SortOrder
-    period?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
     refundedAmount?: SortOrder
     affiliations?: SortOrder
     affiliationsAmount?: SortOrder
-    _count?: SalesStatsCountOrderByAggregateInput
-    _avg?: SalesStatsAvgOrderByAggregateInput
-    _max?: SalesStatsMaxOrderByAggregateInput
-    _min?: SalesStatsMinOrderByAggregateInput
-    _sum?: SalesStatsSumOrderByAggregateInput
+    _count?: UserSalesStatsCountOrderByAggregateInput
+    _avg?: UserSalesStatsAvgOrderByAggregateInput
+    _max?: UserSalesStatsMaxOrderByAggregateInput
+    _min?: UserSalesStatsMinOrderByAggregateInput
+    _sum?: UserSalesStatsSumOrderByAggregateInput
   }
 
-  export type SalesStatsScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
-    OR?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<SalesStatsScalarWhereWithAggregatesInput>
+  export type UserSalesStatsScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserSalesStatsScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserSalesStatsScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserSalesStatsScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    period?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
     sales?: IntWithAggregatesFilter | number
     salesAmount?: FloatWithAggregatesFilter | number
     refundeds?: IntWithAggregatesFilter | number
@@ -7215,9 +7243,11 @@ export namespace Prisma {
     causedToId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type SalesStatsCreateInput = {
+  export type UserSalesStatsCreateInput = {
     id?: string
-    period: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sales?: number
     salesAmount?: number
     refundeds?: number
@@ -7226,9 +7256,11 @@ export namespace Prisma {
     affiliationsAmount?: number
   }
 
-  export type SalesStatsUncheckedCreateInput = {
+  export type UserSalesStatsUncheckedCreateInput = {
     id?: string
-    period: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sales?: number
     salesAmount?: number
     refundeds?: number
@@ -7237,8 +7269,10 @@ export namespace Prisma {
     affiliationsAmount?: number
   }
 
-  export type SalesStatsUpdateInput = {
-    period?: StringFieldUpdateOperationsInput | string
+  export type UserSalesStatsUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: IntFieldUpdateOperationsInput | number
     salesAmount?: FloatFieldUpdateOperationsInput | number
     refundeds?: IntFieldUpdateOperationsInput | number
@@ -7247,8 +7281,10 @@ export namespace Prisma {
     affiliationsAmount?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SalesStatsUncheckedUpdateInput = {
-    period?: StringFieldUpdateOperationsInput | string
+  export type UserSalesStatsUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: IntFieldUpdateOperationsInput | number
     salesAmount?: FloatFieldUpdateOperationsInput | number
     refundeds?: IntFieldUpdateOperationsInput | number
@@ -7257,9 +7293,11 @@ export namespace Prisma {
     affiliationsAmount?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SalesStatsCreateManyInput = {
+  export type UserSalesStatsCreateManyInput = {
     id?: string
-    period: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     sales?: number
     salesAmount?: number
     refundeds?: number
@@ -7268,8 +7306,10 @@ export namespace Prisma {
     affiliationsAmount?: number
   }
 
-  export type SalesStatsUpdateManyMutationInput = {
-    period?: StringFieldUpdateOperationsInput | string
+  export type UserSalesStatsUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: IntFieldUpdateOperationsInput | number
     salesAmount?: FloatFieldUpdateOperationsInput | number
     refundeds?: IntFieldUpdateOperationsInput | number
@@ -7278,8 +7318,10 @@ export namespace Prisma {
     affiliationsAmount?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SalesStatsUncheckedUpdateManyInput = {
-    period?: StringFieldUpdateOperationsInput | string
+  export type UserSalesStatsUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sales?: IntFieldUpdateOperationsInput | number
     salesAmount?: FloatFieldUpdateOperationsInput | number
     refundeds?: IntFieldUpdateOperationsInput | number
@@ -7661,9 +7703,11 @@ export namespace Prisma {
     isSet?: boolean
   }
 
-  export type SalesStatsCountOrderByAggregateInput = {
+  export type UserSalesStatsCountOrderByAggregateInput = {
     id?: SortOrder
-    period?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
@@ -7672,7 +7716,7 @@ export namespace Prisma {
     affiliationsAmount?: SortOrder
   }
 
-  export type SalesStatsAvgOrderByAggregateInput = {
+  export type UserSalesStatsAvgOrderByAggregateInput = {
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
@@ -7681,9 +7725,11 @@ export namespace Prisma {
     affiliationsAmount?: SortOrder
   }
 
-  export type SalesStatsMaxOrderByAggregateInput = {
+  export type UserSalesStatsMaxOrderByAggregateInput = {
     id?: SortOrder
-    period?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
@@ -7692,9 +7738,11 @@ export namespace Prisma {
     affiliationsAmount?: SortOrder
   }
 
-  export type SalesStatsMinOrderByAggregateInput = {
+  export type UserSalesStatsMinOrderByAggregateInput = {
     id?: SortOrder
-    period?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder
@@ -7703,7 +7751,7 @@ export namespace Prisma {
     affiliationsAmount?: SortOrder
   }
 
-  export type SalesStatsSumOrderByAggregateInput = {
+  export type UserSalesStatsSumOrderByAggregateInput = {
     sales?: SortOrder
     salesAmount?: SortOrder
     refundeds?: SortOrder

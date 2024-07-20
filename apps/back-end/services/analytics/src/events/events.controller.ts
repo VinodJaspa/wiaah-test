@@ -15,8 +15,8 @@ export class EventsController {
   ) {
     const res = await this.prisma.event.create({
       data: {
-        causedById: value.input.id,
         key: AnalyticsEvents.sellerCreated,
+        causedToId: value.input.id,
       },
     });
   }
@@ -27,8 +27,8 @@ export class EventsController {
   ) {
     const res = await this.prisma.event.create({
       data: {
-        causedById: value.input.id,
         key: AnalyticsEvents.buyerCreated,
+        causedToId: value.input.id,
       },
     });
   }
