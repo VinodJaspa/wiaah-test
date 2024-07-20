@@ -16,7 +16,7 @@ export const SERVICES = {
   },
   AUTH_SERVICE: {
     clientId: "Auth",
-    groupId: "Auth-consumer",
+    groupId: "auth-consumer",
     token: "AUTH_SERVICE",
   },
   BILLING_SERVICE: {
