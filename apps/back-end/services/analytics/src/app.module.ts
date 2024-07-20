@@ -3,12 +3,31 @@ import { UserActivityStatsModule } from '@user-activity-stats/user-activity-stat
 import { PrismaModule } from './prisma.module';
 import { UsersInteractionsModule } from './users-interactions/users-interactions.module';
 import { EventsModule } from './events/events.module';
-import { UserPlaceInteractionsModule } from './user-place-interactions/user-place-interactions.module';
 import { UserInterestModule } from './user-interest/user-interest.module';
-import { UserInterestsController } from './user-interests/user-interests.controller';
+import { UserInterestsController } from './user-interest/user-interests.controller';
+import { CqrsModule } from '@nestjs/cqrs';
+import { KafkaModule } from './kafka.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import {
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
+import { getUserFromRequest } from 'nest-utils';
 
 @Module({
-  imports: [UsersInteractionsModule, UserActivityStatsModule, PrismaModule, EventsModule, UserPlaceInteractionsModule, UserInterestModule],
+  imports: [
+    CqrsModule,
+    KafkaModule,
+    UsersInteractionsModule,
+    UserActivityStatsModule,
+    PrismaModule,
+    EventsModule,
+    UserInterestModule,
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      autoSchemaFile: './schema.graphql',
+    }),
+  ],
   controllers: [UserInterestsController],
 })
-export class AppModule {}
+export class AppModule { }
