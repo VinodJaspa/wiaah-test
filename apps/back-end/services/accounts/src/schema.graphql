@@ -1,0 +1,406 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+directive @shareable on FIELD_DEFINITION | OBJECT
+
+directive @link(url: String!, import: [link__Import]) on SCHEMA
+
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @override(from: String!) on FIELD_DEFINITION
+
+type Account {
+  id: ID!
+  stripeId: String
+  membershipId: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  accountType: AccountType!
+  verified: Boolean!
+  status: AccountStatus!
+  companyRegisterationNumber: String
+  photo: String
+  phone: String
+  ips: [String!]!
+  lastActiveAt: String!
+  lang: String!
+  currency: String!
+  shop: Shop
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum AccountType {
+  admin
+  mod
+  seller
+  buyer
+}
+
+enum AccountStatus {
+  active
+  pending
+  inActive
+  suspended
+  refused
+}
+
+type AccountDeletionRequest {
+  id: ID!
+  account: Account!
+  accountId: ID!
+  createdAt: String!
+  updatedAt: String!
+  status: AccountDeletionRequestStatus!
+}
+
+enum AccountDeletionRequestStatus {
+  approved
+  pending
+  rejected
+}
+
+type Shop {
+  ownerId: String!
+}
+
+type IdentityVerification {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+  acceptedById: ID!
+  firstName: String!
+  lastName: String!
+  fullAddress: String!
+  dateOfBirth: DateTime!
+  addressProofBill: String!
+  id_front: String!
+  id_back: String!
+  VVCPicture: String!
+  VVC: String!
+}
+
+type AccountVerification {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+  status: AccountVerificationStatus!
+  acceptedById: ID
+  username: String!
+  fullName: String!
+  knownAs: String!
+  categoryId: ID!
+  idPhoto: String!
+}
+
+enum AccountVerificationStatus {
+  pending
+  rejected
+  accepted
+}
+
+type CookiesSetting {
+  id: ID!
+  title: String!
+  description: String!
+  required: Boolean!
+  benefits: [String!]!
+  cons: [String!]!
+}
+
+type UserCookiesSettings {
+  id: ID!
+  userId: ID!
+  acceptedCookiesIds: [String!]!
+  acceptedRequired: Boolean!
+}
+
+type RequiredAction {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type UserContact {
+  gmail: String
+  yahoo: String
+  whatsapp: String
+  outlook: String
+}
+
+type Query {
+  requiredActions: [RequiredAction!]!
+  requiredAction(id: Int!): RequiredAction!
+  getMyContacts: UserContact!
+  getAccountVerificationRequests(args: GetAccountVerificationRequestsInput!): [AccountVerification!]!
+  adminGetProfileVerificationRequest(id: String!): AccountVerification!
+  acceptAccountVerification(id: String!): Boolean!
+  getCookiesSettings: [CookiesSetting!]!
+  getMyCookiesSettings: UserCookiesSettings!
+  getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
+  getFilteredBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
+  adminGetAccount(id: String!): Account!
+  getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
+  getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
+  adminGetStaffAccounts(args: AdminGetStaffAccountsInput!): [Account!]!
+  getMyAccount: Account!
+  getUserAccount(userId: String!): Account!
+  adminGetAccountVerification(accountId: String!): IdentityVerification!
+  adminGetAccountIdentityVerificationRequests(args: AdminGetIdentitiyVerificationRequestsInput!): [IdentityVerification!]!
+  getMyVerificationRequest: IdentityVerification!
+}
+
+input GetAccountVerificationRequestsInput {
+  pagination: GqlPaginationInput!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input GetFilteredSellersAccountsInput {
+  pagination: GqlPaginationInput!
+  name: String
+  id: String
+  products: Int
+  sales: Int
+  email: String
+  status: AccountStatus
+  date: String
+  balance: Float
+  plan: String
+  visits: Int
+  city: String
+  country: String
+  ip: String
+}
+
+input GetBuyersAccountsInput {
+  pagination: GqlPaginationInput!
+  name: String
+  id: String
+  email: String
+  status: AccountStatus
+  date: String
+  balance: Float
+  visits: Int
+  ip: String
+}
+
+input GetAdminPendingSellersInput {
+  email: String
+  name: String
+  CRN: String
+  dateCreated: String
+  pagination: GqlPaginationInput!
+}
+
+input GetAccountDeletionRequestsInput {
+  username: String
+  email: String
+  status: AccountDeletionRequestStatus
+  dateAdded: String
+  pagination: GqlPaginationInput!
+}
+
+input AdminGetStaffAccountsInput {
+  name: String
+  email: String
+  role: StaffAccountType
+  status: AccountStatus
+  lastActivity: String
+  pagination: GqlPaginationInput!
+}
+
+enum StaffAccountType {
+  admin
+  moderator
+}
+
+input AdminGetIdentitiyVerificationRequestsInput {
+  pagination: GqlPaginationInput!
+}
+
+type Mutation {
+  createRequiredAction(createRequiredActionInput: CreateRequiredActionInput!): RequiredAction!
+  updateRequiredAction(updateRequiredActionInput: UpdateRequiredActionInput!): RequiredAction!
+  removeRequiredAction(id: Int!): RequiredAction!
+  updateMyContact(args: AddContactInput!): Boolean!
+  requestAccountVerification(args: CreateAccountVerificationInput!): Boolean!
+  refuseAccountVerification(args: RefuseAccountVerificationRequest!): Boolean!
+  updateMyCookiesSettings(args: UpdateUserCookiesSettingsInput!): Boolean!
+  updateUserLocation(updateLocation: UpdateUserLocationInput!): Boolean!
+  adminEditAccount(editAccountInput: UpdateSellerAccountAdminInput!): Account!
+  acceptSellerAccount(id: String!): Boolean!
+  declineSellerAccount(args: DeclineSellerAccountRequest!): Boolean!
+  suspenseAccount(args: SuspenseAccountAdminInput!): Boolean!
+  acceptAccountDeletionRequest(id: String!): Boolean!
+  rejectAccountDeletionRequest(id: String!): Boolean!
+  adminCreateStaffAccount(args: AdminCreateAdminAccountInput!): Boolean!
+  adminUpdateStaffAccount(args: AdminUpdateAdminAccountInput!): Boolean!
+  register(RegisterInput: CreateAccountInput!): String!
+  requestAccountDeletion(args: DeleteAccountRequestInput!): Boolean!
+  editAccount(editAccountInput: UpdateAccountInput!): Account!
+  requestIdVerification(requestInput: CreateIdentityVerificationInput!): String!
+  provideVVCPicture(pic: String!): Boolean!
+}
+
+input CreateRequiredActionInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateRequiredActionInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input AddContactInput {
+  gmail: String
+  yahoo: String
+  whatsapp: String
+  outlook: String
+}
+
+input CreateAccountVerificationInput {
+  username: String!
+  fullName: String!
+  knownAs: String!
+  categoryId: ID!
+  idPhoto: String!
+}
+
+input RefuseAccountVerificationRequest {
+  id: ID!
+  reason: String!
+}
+
+input UpdateUserCookiesSettingsInput {
+  ids: [ID!]!
+}
+
+input UpdateUserLocationInput {
+  lat: Float!
+  lon: Float!
+}
+
+input UpdateSellerAccountAdminInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  accountType: RegisterAccountType
+  birthDate: String
+  gender: AccountGenderEnum
+  phone: String
+  id: ID!
+}
+
+enum RegisterAccountType {
+  seller
+  buyer
+}
+
+enum AccountGenderEnum {
+  male
+  female
+}
+
+input DeclineSellerAccountRequest {
+  id: ID!
+  reason: String!
+}
+
+input SuspenseAccountAdminInput {
+  userId: ID!
+  rejectReason: String
+}
+
+input AdminCreateAdminAccountInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  confirmPassword: String!
+  photo: String!
+  type: StaffAccountType!
+  birthDate: String!
+  gender: AccountGenderEnum!
+}
+
+input AdminUpdateAdminAccountInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  confirmPassword: String
+  photo: String
+  type: StaffAccountType
+  birthDate: String
+  gender: AccountGenderEnum
+  id: ID!
+}
+
+input CreateAccountInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  confirmPassword: String!
+  accountType: RegisterAccountType!
+  birthDate: String!
+  gender: AccountGenderEnum!
+  phone: String
+}
+
+input DeleteAccountRequestInput {
+  reason: String!
+  password: String!
+  sendData: Boolean
+}
+
+input UpdateAccountInput {
+  firstName: String
+  lastName: String
+  birthDate: String
+  gender: AccountGenderEnum
+  phone: String
+  id: ID!
+  lang: String
+  currency: String
+  country: String
+}
+
+input CreateIdentityVerificationInput {
+  firstName: String!
+  lastName: String!
+  fullAddress: String!
+  addressProofBill: String!
+  dateOfBirth: String!
+  id_front: String!
+  id_back: String!
+}
+
+scalar link__Import
