@@ -85,9 +85,9 @@ describe('users interactions e2e tests', () => {
               contentType: type,
               reacterUserId: userId,
               contentAuthorUserId: contentAuthorId,
-              contentAuthorProfileId: new ObjectId().toHexString(),
+              // contentAuthorProfileId: new ObjectId().toHexString(),
               contentId: new ObjectId().toHexString(),
-              reacterProfileId: new ObjectId().toHexString(),
+              // reacterProfileId: new ObjectId().toHexString(),
               contentTitle: 'test title',
             }).toString(),
           },
@@ -168,7 +168,6 @@ describe('users interactions e2e tests', () => {
       messages: [
         {
           value: new ContentSharedEvent({
-            contentAuthorProfileId: new ObjectId().toHexString(),
             contentAuthorUserId: contentAuthorId,
             contentId: new ObjectId().toHexString(),
             contentType: 'post',
