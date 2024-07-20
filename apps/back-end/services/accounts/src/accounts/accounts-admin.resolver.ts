@@ -39,7 +39,7 @@ export class AccountsAdminResolver {
     private prisma: PrismaService,
     private eventBus: EventBus,
     private readonly accountsService: AccountsService,
-  ) {}
+  ) { }
   @Query(() => [Account])
   getFilteredSellers(
     @Args('getSellersInput') args: GetFilteredSellersAccountsInput,

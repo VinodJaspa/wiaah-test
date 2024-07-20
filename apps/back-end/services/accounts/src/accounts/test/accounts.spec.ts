@@ -3,13 +3,14 @@ import { Test } from '@nestjs/testing';
 import { AccountsModule } from '../accounts.module';
 import * as request from 'supertest';
 import { PrismaService } from 'prismaService';
-import { Account } from '@prisma-client';
+import { AccountType } from '@prisma-client';
 import { mockedUser as _mockedUser } from 'nest-utils';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+import { Account } from 'dist/accounts/entities';
 
 describe('accounts tests', () => {
   let app: INestApplication;
@@ -42,7 +43,8 @@ describe('accounts tests', () => {
         firstName: 'first',
         lastName: 'last',
         password: 'pass123',
-        type: 'seller',
+        accountType: AccountType.seller,
+        birthDate: '1999-03-03',
         companyRegisterationNumber: '1324',
         verified: true,
       },

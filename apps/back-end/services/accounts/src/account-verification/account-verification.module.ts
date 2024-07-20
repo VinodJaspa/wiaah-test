@@ -35,4 +35,4 @@ import { AccountVerificationRepository } from './repository';
     ...accVerificationQueryHandlers,
   ],
 })
-export class AccountVerificationModule {}
+export class AccountVerificationModule { }
