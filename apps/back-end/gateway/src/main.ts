@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { graphqlUploadExpress } from 'graphql-upload';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 require('dotenv').config();
 
 const uri = process.env.ACCOUNTS_DB_URI || '';
