@@ -1,20 +1,20 @@
 import { ClientKafka } from "@nestjs/microservices";
+import { firstValueFrom, timeout as rxjsTimeout, catchError } from "rxjs";
+import { throwError } from "rxjs";
 
 export function KafkaMessageHandler<TPattern, TInput, TData>(
   client: ClientKafka,
   messagePattern: TPattern,
   input: TInput,
-  timeoutErrMessage?: string,
+  timeoutErrMessage = `service timed out: ${messagePattern}`,
   timeout = 5000
 ): Promise<TData> {
-  return new Promise<TData>((res, rej) => {
-    const timer = setTimeout(() => {
-      rej(timeoutErrMessage || `service timed out: ${messagePattern}`);
-    }, timeout);
-    client.send(messagePattern, input).subscribe((data: TData) => {
-      console.log("msg", data);
-      res(data);
-      clearTimeout(timer);
-    });
-  });
+  return firstValueFrom(
+    client.send<TData>(messagePattern, input).pipe(
+      rxjsTimeout(timeout),
+      catchError((err) => {
+        return throwError(() => new Error(timeoutErrMessage));
+      })
+    )
+  );
 }
