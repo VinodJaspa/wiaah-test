@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-directive @key(fields: String!) on OBJECT | INTERFACE
+directive @key(fields: String!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
 
 directive @extends on OBJECT | INTERFACE
 
@@ -11,6 +11,16 @@ directive @external on OBJECT | FIELD_DEFINITION
 directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
+
+directive @shareable on FIELD_DEFINITION | OBJECT
+
+directive @link(url: String!, import: [link__Import]) on SCHEMA
+
+directive @tag(name: String!) repeatable on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
+
+directive @override(from: String!) on FIELD_DEFINITION
 
 type PostTag {
   userId: ID!
@@ -813,7 +823,7 @@ type Query {
 input SearchPopularProfilesInput {
   q: String!
   cursor: String
-  take: Int = 15
+  take: Int! = 15
 }
 
 input GetProfileFollowersMetaInput {
@@ -1065,12 +1075,12 @@ type Mutation {
   updateProfile(updateProfileInput: UpdateProfileAdminInput!): Profile!
   editNewsfeedPostAdmin(args: UpdatePostAdminInput!): Boolean!
   adminDeleteNewsfeedPost(id: String!): Boolean!
-  createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
-  removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: Int!): Comment!
   adminDeleteComment(commentId: String!): Boolean!
+  createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
+  removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
   createSavesCollection(name: String!): Boolean!
   deleteSavesCollection(id: String!): Boolean!
@@ -1131,7 +1141,7 @@ input CreateNewsfeedPostInput {
   productIds: [String!]
   serviceId: String
   affiliationId: String
-  type: PostType = newsfeed_post
+  type: PostType! = newsfeed_post
 }
 
 input HashtagInput {
@@ -1195,16 +1205,6 @@ input UpdatePostAdminInput {
   userId: ID!
 }
 
-input CreateReactionInput {
-  contentId: ID!
-  contentType: ContentHostType!
-}
-
-input RemoveReactionInput {
-  contentId: ID!
-  contentType: ContentHostType!
-}
-
 input CreateCommentInput {
   contentType: ContentHostType!
   contentId: ID!
@@ -1228,6 +1228,16 @@ input AttachmentMarketingTagInput {
   y: Float!
 }
 
+input CreateReactionInput {
+  contentId: ID!
+  contentType: ContentHostType!
+}
+
+input RemoveReactionInput {
+  contentId: ID!
+  contentType: ContentHostType!
+}
+
 input CreateContentShareInput {
   contentId: ID!
   contentType: ContentHostType!
@@ -1245,7 +1255,7 @@ input CreateStoryInput {
   servicePostId: ID
   content: String
   attachment: AttachmentInput
-  tags: [PostTagInput!] = []
+  tags: [PostTagInput!]! = []
 }
 
 input LikeStoryInput {
@@ -1294,3 +1304,5 @@ input CreatePinnedContentInput {
   contentId: ID!
   userId: ID!
 }
+
+scalar link__Import
