@@ -326,7 +326,7 @@ describe('BeautyCenterResolver', () => {
   it('should delete beauty center only by its owner', async () => {
     jest
       .spyOn(service as any, 'validateCreateInput')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
     const center = await createBeautyCenter();
     expect(
       await prisma.beautyCenterService.findUnique({
