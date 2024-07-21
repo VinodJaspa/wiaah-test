@@ -11,7 +11,7 @@ import {
 
 @ObjectType()
 @Directive('@extends')
-@Directive('@keys(fields:"sellerId")')
+@Directive('@key(fields:"sellerId")')
 export class Product {
   @Field(() => ID)
   @Directive('@external')
@@ -20,7 +20,7 @@ export class Product {
 
 @Resolver(() => Product)
 export class ProductExtendedResolver {
-  constructor(private readonly service: MembershipService) {}
+  constructor(private readonly service: MembershipService) { }
 
   @ResolveField(() => Boolean)
   isExternalShopping(@Parent() prod: Product) {
