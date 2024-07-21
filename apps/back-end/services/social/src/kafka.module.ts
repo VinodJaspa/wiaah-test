@@ -1,4 +1,5 @@
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Partitioners } from 'kafkajs';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 export const kafkaModule = ClientsModule.register([
@@ -12,6 +13,9 @@ export const kafkaModule = ClientsModule.register([
       },
       consumer: {
         groupId: SERVICES.SOCIAL_SERVICE.groupId,
+      },
+      producer: {
+        createPartitioner: Partitioners.LegacyPartitioner, // Add this line to use the legacy partitioner
       },
     },
   },

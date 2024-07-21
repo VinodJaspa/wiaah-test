@@ -20,22 +20,32 @@ export class HashtagSearch {
   tag: string;
 }
 
-function createHashtagPostsSearch<T>(Class: ClassType<T>) {
+export interface HashtagPostsSearchFields<T> {
+  mostLikedPost: T;
+  mostCommentedPost: T;
+  mostLikedVideo: T;
+  mostViewedVideo: T;
+}
+// Create a function to generate a GraphQL input type
+export function createHashtagPostsSearch<T>(ItemClass: ClassType<T>) {
+  // Define an abstract class to prevent it from being registered in the schema
   @ObjectType({ isAbstract: true })
-  abstract class HashtagPostsSearch {
-    @Field(() => Class)
+  abstract class HashtagPostsSearchClass
+    implements HashtagPostsSearchFields<T>
+  {
+    @Field(() => ItemClass)
     mostLikedPost: T;
 
-    @Field(() => Class)
+    @Field(() => ItemClass)
     mostCommentedPost: T;
 
-    @Field(() => Class)
+    @Field(() => ItemClass)
     mostLikedVideo: T;
 
-    @Field(() => Class)
+    @Field(() => ItemClass)
     mostViewedVideo: T;
   }
-  return HashtagPostsSearch;
+  return HashtagPostsSearchClass as ClassType<HashtagPostsSearchFields<T>>;
 }
 
 @ObjectType()

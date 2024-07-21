@@ -24,7 +24,7 @@ export class ReactionService {
     private readonly contentManagementService: ContentManagementService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
-  ) {}
+  ) { }
 
   logger = new Logger('ReactionService');
 
@@ -71,7 +71,6 @@ export class ReactionService {
         new ContentReactedEvent({
           contentAuthorUserId: content.userId,
           contentId,
-
           reacterUserId: userId,
           contentType,
           contentTitle: content.content,

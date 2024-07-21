@@ -6,6 +6,8 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 
+// Importing Modules
+import { PrismaModule } from './prisma.module';
 import { ProfileModule } from './profile/profile.module';
 import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
 import { CommentsModule } from './comments/comments.module';
@@ -21,44 +23,50 @@ import { PrivacyModule } from './privacy/privacy.module';
 import { ProductPostModule } from './product-post/product-post.module';
 import { AffiliationPostModule } from './affiliation-post/affiliation-post.module';
 import { ActionModule } from './action/action.module';
-import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
-import { ProfileAdminModule } from '@profile/profile-admin.module';
-import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
 import { ServicePostModule } from './service-post/service-post.module';
 import { CommunityModule } from '@community/community.module';
 import { FriendsModule } from '@friends/friends.module';
 import { PlacesModule } from '@places/places.module';
 import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
 import { ProfileStatisticsModule } from './profile-statistics/profile-statistics.module';
-import { Shop } from '@profile/resolvers/profile.shop.resolver';
-import { Account } from './entities/extends';
 import { SocialTagModule } from './social-tag/social-tag.module';
 import { AudioModule } from './audio/audio.module';
 import { EffectModule } from './effect/effect.module';
 import { CameraFilterModule } from './camera-filter/camera-filter.module';
 import { ContentViewModule } from './content-view/content-view.module';
 import { PinnedContentModule } from './pinned-content/pinned-content.module';
+import { ProfileAdminModule } from '@profile/profile-admin.module';
+import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
+
+// Importing Entities
+import { Shop } from '@profile/resolvers/profile.shop.resolver';
+import { Account } from './entities/extends';
+
+interface GraphQLContext {
+  req: Request;
+  res: Response;
+}
 
 @Module({
   imports: [
     PrismaModule,
-    ProfileModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       buildSchemaOptions: {
         orphanedTypes: [Shop, Account],
       },
       autoSchemaFile: 'schema.graphql',
-      context({ req, res }) {
+      context: ({ req, res }: GraphQLContext) => {
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
     }),
+    ProfileModule,
     NewsfeedPostsModule,
     ProfileAdminModule,
     NewsfeedPostsAdminModule,
-    // CommentsModule,
+    CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,
     ContentShareModule,
@@ -86,4 +94,4 @@ import { PinnedContentModule } from './pinned-content/pinned-content.module';
     PinnedContentModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
