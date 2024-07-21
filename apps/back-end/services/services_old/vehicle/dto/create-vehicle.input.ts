@@ -1,11 +1,11 @@
-import { ServicePresentationsLength, TranslationsInput } from '@decorators';
+import { ServicePresentationsLength, TranslationsInput } from "@decorators";
 import {
   ServiceCancelationPolicyInput,
   ServicePresentationInput,
   TranslationTextInput,
-} from '@dto';
-import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+} from "@dto";
+import { Field, Float, ID, InputType, Int } from "@nestjs/graphql";
+import { GraphQLUpload, Upload } from "graphql-upload-ts";
 
 @InputType()
 export class CreateVehiclePropertiesInput {

@@ -1,4 +1,4 @@
-import { TranslationsInput } from '@decorators';
+import { TranslationsInput } from "@decorators";
 import {
   ServiceAmenitiesInput,
   ServiceCancelationPolicyInput,
@@ -9,10 +9,10 @@ import {
   ServiceIncludedServicesInput,
   ServicePresentationInput,
   ServicePropertyMeasurementsInput,
-} from '@dto';
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
-import { CreateInputGqlTranslationInputField } from 'nest-utils';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+} from "@dto";
+import { Field, Float, InputType, Int } from "@nestjs/graphql";
+import { CreateInputGqlTranslationInputField } from "nest-utils";
+import { GraphQLUpload, Upload } from "graphql-upload-ts";
 
 @InputType()
 class HotelRoomMetaInfoInput {
@@ -25,7 +25,7 @@ class HotelRoomMetaInfoInput {
 
 @InputType()
 class HotelRoomTranslationMetaInfoInput extends CreateInputGqlTranslationInputField<HotelRoomMetaInfoInput>(
-  HotelRoomMetaInfoInput,
+  HotelRoomMetaInfoInput
 ) {}
 
 @InputType()
