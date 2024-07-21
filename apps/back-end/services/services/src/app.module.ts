@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CategoryModule } from './category/category.module';
 import {
@@ -53,8 +53,7 @@ export class GlobalPrismaService {}
       autoSchemaFile: './schema.graphql',
       context: (ctx) => {
         const user = getUserFromRequest(ctx.req);
-
-        return { ...ctx, user };
+        return { ...ctx, user, req: ctx.req };
       },
     }),
     GlobalElasticsearchModule,
@@ -67,7 +66,6 @@ export class GlobalPrismaService {}
     InsuranceModule,
     ServiceDiscoveryModule,
     GlobalPrismaService,
-    TranslationModule,
     CategoryModule,
     BookServiceModule,
   ],
