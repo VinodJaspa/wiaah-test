@@ -68,8 +68,8 @@ const regularDirname = hasDirname && fs.existsSync(path.join(__dirname, 'schema.
 
 // if the client has been bundled, we need to look for the folders
 const foundDirname = !regularDirname && findSync(process.cwd(), [
-    "prisma\\generated\\client",
-    "generated\\client",
+    "prisma/generated/client",
+    "generated/client",
 ], ['d'], ['d'], 1)[0]
 
 const dirname = regularDirname || foundDirname || __dirname
@@ -119,7 +119,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\kerlos\\Desktop\\upwork\\wiaah\\apps\\back-end\\services\\event-scheduling\\prisma\\generated\\client",
+      "value": "/home/saifalqady/Documents/WIAAHOFFICIAL/apps/back-end/services/event-scheduling/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -130,10 +130,10 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "..\\..\\..\\.env",
-    "schemaEnvPath": "..\\..\\..\\.env"
+    "rootEnvPath": "../../../.env",
+    "schemaEnvPath": "../../../.env"
   },
-  "relativePath": "..\\..",
+  "relativePath": "../..",
   "clientVersion": "3.15.2",
   "engineVersion": "461d6a05159055555eb7dfb337c9fb271cbd4d7e",
   "datasourceNames": [
@@ -158,7 +158,7 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma\\generated\\client\\query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-rhel-openssl-3.0.x.so.node");
+path.join(process.cwd(), "prisma/generated/client/libquery_engine-rhel-openssl-3.0.x.so.node")
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "prisma\\generated\\client\\schema.prisma")
+path.join(process.cwd(), "prisma/generated/client/schema.prisma")
