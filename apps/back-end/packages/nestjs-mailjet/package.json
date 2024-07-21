@@ -1,5 +1,5 @@
 {
-  "name": "@nestjs/mailing",
+  "name": "nestjs-mailing",
   "version": "1.0.0",
   "description": "mailjet module for nestjs integration",
   "main": "./dist/index.js",
