@@ -5,7 +5,7 @@ import {
   TranslationTextInput,
 } from '@dto';
 import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 
 @InputType()
 export class CreateVehiclePropertiesInput {

@@ -53,7 +53,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { HotelAvailablity } from './entities/service-availablity.entity';
 import { Service as ServicePrisma } from 'prismaClient';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 import { BookingCost } from './entities/booking-cost.entity';
 import { GetBookingCostInput } from './dto/get-booking-cost.input';
 import { Weekdays } from './utils';

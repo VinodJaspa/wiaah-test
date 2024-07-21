@@ -12,7 +12,7 @@ import {
 } from '@dto';
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 
 @InputType()
 class HotelRoomMetaInfoInput {

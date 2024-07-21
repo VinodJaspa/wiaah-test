@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
-import { graphqlUploadExpress } from 'graphql-upload';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 import { mw } from 'request-ip';
 
 async function bootstrap() {

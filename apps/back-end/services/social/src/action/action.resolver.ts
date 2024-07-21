@@ -25,7 +25,7 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { CreateActionCommand } from '@action/commands';
 import { GetActionByIdQuery, GetUserActionsQuery } from '@action/queries';
 import { UploadService } from '@wiaah/upload';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 import { PrismaService } from 'prismaService';
 import { Profile } from '@entities';
 import { ActionTopHashtagResponse } from './entities/action-hashtag';
@@ -56,7 +56,7 @@ export class ActionResolver {
     private readonly effectService: EffectService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
-  ) {}
+  ) { }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -360,8 +360,8 @@ export class ActionResolver {
         },
         cursor: args.cursor
           ? {
-              id: args.cursor,
-            }
+            id: args.cursor,
+          }
           : undefined,
         take: args.take + 1,
         orderBy: {
@@ -396,8 +396,8 @@ export class ActionResolver {
         },
         cursor: args.cursor
           ? {
-              id: args.cursor,
-            }
+            id: args.cursor,
+          }
           : undefined,
         take: args.take + 1,
         orderBy: {

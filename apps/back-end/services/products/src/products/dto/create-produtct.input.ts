@@ -18,7 +18,7 @@ import {
   VisibilityEnum,
 } from '@prisma-client';
 import { TranslationTextInput } from '@shop';
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
@@ -78,7 +78,7 @@ export class ProductAttributeValueInput {
 @InputType()
 export class StringTranslationField extends CreateInputGqlTranslationInputField(
   String,
-) {}
+) { }
 
 @InputType()
 export class CreateProductInput {

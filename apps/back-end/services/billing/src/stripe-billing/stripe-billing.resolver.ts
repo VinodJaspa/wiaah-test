@@ -25,7 +25,7 @@ import { StripeBillingService } from './stripe-billing.service';
 import { GetUserBalanceMessage, GetUserBalanceMessageReply } from 'nest-dto';
 import { PrismaService } from 'prismaService';
 import { CreateBillingAccountInput } from './dto/update-billing-account.input';
-import { Upload, GraphQLUpload } from 'graphql-upload';
+import { Upload, GraphQLUpload } from 'graphql-upload-ts';
 import {
   BillingAccount,
   BillingAccountBusinessType,
@@ -40,7 +40,7 @@ export class StripeBillingResolver implements OnModuleInit {
     private readonly commandBus: CommandBus,
     private readonly stripeService: StripeService,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
 
   @Query(() => BillingAccount)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -89,11 +89,11 @@ export class StripeBillingResolver implements OnModuleInit {
           company:
             args.business_type === BillingAccountBusinessType.company
               ? {
-                  ...args.company,
-                  owners_provided: members.data
-                    .map((v) => v?.relationship?.owner)
-                    .some((v) => !!v),
-                }
+                ...args.company,
+                owners_provided: members.data
+                  .map((v) => v?.relationship?.owner)
+                  .some((v) => !!v),
+              }
               : undefined,
           individual:
             args.business_type === BillingAccountBusinessType.individual
@@ -119,11 +119,11 @@ export class StripeBillingResolver implements OnModuleInit {
           company:
             args.business_type === BillingAccountBusinessType.company
               ? {
-                  ...args.company,
-                  owners_provided: companyMembers.some(
-                    (v) => !!v?.relationship?.owner,
-                  ),
-                }
+                ...args.company,
+                owners_provided: companyMembers.some(
+                  (v) => !!v?.relationship?.owner,
+                ),
+              }
               : undefined,
           individual:
             args.business_type === BillingAccountBusinessType.individual

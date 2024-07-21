@@ -28,7 +28,7 @@ import {
   ServiceType,
 } from 'prismaClient';
 
-import { GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 import {
   CreateInputGqlTranslationInputField,
   FieldRequired,
