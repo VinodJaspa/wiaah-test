@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { INJECT_TOKENS } from 'src/INJECT_TOKENS';
+import { INJECT_TOKENS } from 'src/inject_tokens';
 import { FormatedCurrencyName } from './types/formatedCurrencyName';
 import { FormatedRate } from './types/formatedRate';
 import { FixerServiceOptions } from './types/forRootOptions';

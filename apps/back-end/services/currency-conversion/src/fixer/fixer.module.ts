@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { DynamicModule, Module } from '@nestjs/common';
-import { INJECT_TOKENS } from 'src/INJECT_TOKENS';
+import { INJECT_TOKENS } from 'src/inject_tokens';
 import { FixerService } from './fixer.service';
 import { FixerServiceOptions } from './types/forRootOptions';
 
