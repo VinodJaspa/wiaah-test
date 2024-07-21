@@ -7,7 +7,7 @@ import {
 import {
   MailingModule as NestMailingModule,
   MailingProviders,
-} from '@nestjs/mailing';
+} from 'nestjs-mailing';
 
 import { MailingModule } from './mailing/mailing.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
@@ -20,7 +20,7 @@ import { PrismaService } from 'prismService';
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class PrismaModule {}
+export class PrismaModule { }
 
 @Module({
   imports: [
@@ -40,4 +40,4 @@ export class PrismaModule {}
     NewsletterModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
