@@ -19,6 +19,8 @@ async function bootstrap() {
   });
   await app.startAllMicroservices();
 
-  await app.listen(process.env.PORT || 3028);
+  await app.listen(process.env.PORT || 3028, () =>
+    console.log(`🚀 mailing is ready at localhost:${3028}${''}`),
+  );
 }
 bootstrap();

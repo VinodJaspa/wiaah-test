@@ -18,8 +18,10 @@ async function bootstrap() {
       },
     }),
   });
-  console.log('====> Listening to localhost:3032');
   await app.startAllMicroservices();
-  await app.listen(3032);
+
+  await app.listen(process.env.PORT || 3032, () =>
+    console.log(`🚀 analytics is ready at localhost:${3032}${''}`),
+  );
 }
 bootstrap();

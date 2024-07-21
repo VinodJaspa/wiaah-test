@@ -21,6 +21,9 @@ async function bootstrap() {
   app.use(mw());
   app.use(graphqlUploadExpress());
   await app.startAllMicroservices();
-  await app.listen(process.env.PORT || 3006);
+
+  await app.listen(process.env.PORT || 3006, () =>
+    console.log(`🚀 reviews is ready at localhost:${3006}${''}`),
+  );
 }
 bootstrap();

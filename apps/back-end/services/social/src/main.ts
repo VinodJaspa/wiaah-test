@@ -19,6 +19,9 @@ async function bootstrap() {
     }),
   });
   await app.startAllMicroservices();
-  await app.listen(3017);
+
+  await app.listen(process.env.PORT || 3017, () =>
+    console.log(`🚀 social ready at localhost:${3017}${''}`),
+  );
 }
 bootstrap();

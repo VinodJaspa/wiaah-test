@@ -18,6 +18,9 @@ async function bootstrap() {
     },
   });
   app.startAllMicroservices();
-  await app.listen(3012);
+
+  await app.listen(process.env.PORT || 3012, () =>
+    console.log(`🚀 currency-conversion is ready at localhost:${3012}${''}`),
+  );
 }
 bootstrap();

@@ -14,8 +14,10 @@ async function bootstrap() {
       consumer: { groupId: SERVICES.SHOPPING_CART_SERVICE.groupId },
     }),
   });
-  console.log('======> Listening to localhost:3011');
   await app.startAllMicroservices();
-  await app.listen(3011);
+
+  await app.listen(process.env.PORT || 3011, () =>
+    console.log(`🚀 shopping-cart ready at localhost:${3011}${''}`),
+  );
 }
 bootstrap();

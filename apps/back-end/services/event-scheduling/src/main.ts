@@ -22,8 +22,10 @@ async function bootstrap() {
       },
     },
   });
-
   await app.startAllMicroservices();
-  await app.listen(process.env.PORT || 3028);
+
+  await app.listen(process.env.PORT || 3031, () =>
+    console.log(`🚀 event-scheduling is ready at localhost:${3031}${''}`),
+  );
 }
 bootstrap();

@@ -17,9 +17,11 @@ async function bootstrap() {
       },
     },
   });
-  console.log('====> Listening to localhost:3016');
 
   await app.startAllMicroservices();
-  await app.listen(3016);
+
+  await app.listen(process.env.PORT || 3016, () =>
+    console.log(`🚀 vouchers ready at localhost:${3016}${''}`),
+  );
 }
 bootstrap();

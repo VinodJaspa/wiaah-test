@@ -16,8 +16,10 @@ async function bootstrap() {
       },
     }),
   });
-  console.log('====> Listening to localhost:3004');
   await app.startAllMicroservices();
-  await app.listen(3004);
+
+  await app.listen(process.env.PORT || 3004, () =>
+    console.log(`🚀 auth is ready at localhost:${3004}${''}`),
+  );
 }
 bootstrap();

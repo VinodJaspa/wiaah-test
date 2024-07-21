@@ -17,6 +17,9 @@ async function bootstrap() {
     }),
   });
   await app.startAllMicroservices();
-  await app.listen(3014);
+
+  await app.listen(process.env.PORT || 3014, () =>
+    console.log(`🚀 orders is ready at localhost:${3014}${''}`),
+  );
 }
 bootstrap();

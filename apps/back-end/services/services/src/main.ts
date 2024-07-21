@@ -20,11 +20,13 @@ async function bootstrap() {
       },
     }),
   });
-  console.log('=====> Listening to localhost:3020 ');
   app.useGlobalPipes(new ValidationPipe());
 
   await app.startAllMicroservices();
   await app.init();
-  await app.listen(process.env.PORT || 3020);
+
+  await app.listen(process.env.PORT || 3020, () =>
+    console.log(`🚀 services is ready at localhost:${3020}${''}`),
+  );
 }
 bootstrap();

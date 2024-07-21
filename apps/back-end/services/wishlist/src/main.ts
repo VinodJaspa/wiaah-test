@@ -17,6 +17,9 @@ async function bootstrap() {
     }),
   });
   await app.startAllMicroservices();
-  await app.listen(3009);
+
+  await app.listen(process.env.PORT || 3009, () =>
+    console.log(`🚀 wishlist ready at localhost:${3009}${''}`),
+  );
 }
 bootstrap();

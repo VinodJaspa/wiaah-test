@@ -21,8 +21,10 @@ async function bootstrap() {
     }),
   });
 
-  console.log('===> Listening to localhost:3015');
   await app.startAllMicroservices();
-  await app.listen(process.env.PORT || 3015);
+
+  await app.listen(process.env.PORT || 3015, () =>
+    console.log(`🚀 billing is ready at localhost:${3015}${''}`),
+  );
 }
 bootstrap();

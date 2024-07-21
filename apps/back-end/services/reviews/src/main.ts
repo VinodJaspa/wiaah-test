@@ -22,6 +22,9 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   await app.startAllMicroservices();
-  await app.listen(3010);
+
+  await app.listen(process.env.PORT || 3010, () =>
+    console.log(`🚀 reviews is ready at localhost:${3010}${''}`),
+  );
 }
 bootstrap();

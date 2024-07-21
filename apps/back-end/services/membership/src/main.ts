@@ -17,6 +17,9 @@ async function bootstrap() {
     }),
   });
   await app.startAllMicroservices();
-  await app.listen(3026);
+
+  await app.listen(process.env.PORT || 3026, () =>
+    console.log(`🚀 membership is ready at localhost:${3026}${''}`),
+  );
 }
 bootstrap();
