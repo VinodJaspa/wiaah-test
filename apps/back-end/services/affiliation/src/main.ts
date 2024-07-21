@@ -17,7 +17,7 @@ async function bootstrap() {
       },
     },
   });
-
+  console.log('=====> Listening to localhost:3029');
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3029);
 }

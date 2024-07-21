@@ -18,6 +18,7 @@ async function bootstrap() {
       },
     }),
   });
+  console.log('====> Listening to localhost:3032');
   await app.startAllMicroservices();
   await app.listen(3032);
 }
