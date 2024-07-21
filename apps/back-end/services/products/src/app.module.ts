@@ -37,14 +37,14 @@ import { ProductAttributeModule } from './product-attribute/product-attribute.mo
   ],
   exports: [ElasticsearchModule],
 })
-export class ElasticGlobalModule {}
+export class ElasticGlobalModule { }
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class PrismaGlobalModule {}
+export class PrismaGlobalModule { }
 
 @Module({
   imports: [
@@ -60,7 +60,7 @@ export class PrismaGlobalModule {}
         const userIp =
           req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        console.log({ req, userIp });
+        // console.log({ req, userIp });
         return { req, res, user: { ...user, ip: userIp } };
       },
     }),
@@ -81,4 +81,4 @@ export class PrismaGlobalModule {}
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule { }

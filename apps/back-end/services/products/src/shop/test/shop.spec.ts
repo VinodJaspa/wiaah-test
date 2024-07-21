@@ -143,7 +143,7 @@ describe('shop e2e tests', () => {
       location_lat: input.location.lat,
       location_lon: input.location.long,
     });
-    console.log(JSON.stringify({ res: res.body }, null, 2));
+    // console.log(JSON.stringify({ res: res.body }, null, 2));
 
     expect(await prisma.shop.findFirst()).toMatchObject(input);
   });
