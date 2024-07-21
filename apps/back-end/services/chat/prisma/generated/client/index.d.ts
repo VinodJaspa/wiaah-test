@@ -3593,7 +3593,7 @@ export namespace Prisma {
   export type RoomMemberCreateInput = {
     userId: string
     unSeenNum: number
-    online?: boolean
+    online: boolean
   }
 
   export type MessageCreateNestedManyWithoutRoomInput = {

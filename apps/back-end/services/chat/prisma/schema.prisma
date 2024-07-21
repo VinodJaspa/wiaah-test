@@ -42,6 +42,7 @@ type ChatMessageSeenBy {
 type RoomMember {
   userId    String
   unSeenNum Int
+  online    Boolean
 }
 
 type MessageAttachment {
