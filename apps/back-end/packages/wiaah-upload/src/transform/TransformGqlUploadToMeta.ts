@@ -1,5 +1,5 @@
 import { FileUploadMeta } from "../index";
-import type { Upload } from "graphql-upload";
+import type { Upload } from "graphql-upload-ts";
 
 export function TransformGqlUploadToMeta(gqlUpload: Upload): FileUploadMeta {
   const {
