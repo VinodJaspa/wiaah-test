@@ -23,7 +23,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   await app.listen(process.env.PORT || 3006, () =>
-    console.log(`🚀 reviews is ready at localhost:${3006}${''}`),
+    console.log(`🚀 products is ready at localhost:${3006}${''}`),
   );
 }
 bootstrap();
