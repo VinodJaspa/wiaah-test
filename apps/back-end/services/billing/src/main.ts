@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
-import { graphqlUploadExpress } from 'graphql-upload';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -20,6 +20,7 @@ async function bootstrap() {
       },
     }),
   });
+
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3015);
 }
