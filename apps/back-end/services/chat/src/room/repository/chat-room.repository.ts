@@ -6,7 +6,7 @@ import { ChatRoom } from '../entities';
 
 @Injectable()
 export class ChatRoomRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async CreatePrivateChatRoom(membersIds: string[]): Promise<ChatRoom> {
     const res = await this.prisma.room.create({
@@ -35,6 +35,7 @@ export class ChatRoomRepository {
           userId: v,
           lastSeenDate: new Date(),
           unSeenNum: 0,
+          online: false,
         })),
       },
       include: {
