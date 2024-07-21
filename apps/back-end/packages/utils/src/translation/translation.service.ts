@@ -5,7 +5,7 @@ import { UserPreferedLang } from "../";
 
 @Injectable()
 export class TranslationService {
-  constructor(@Inject(REQUEST) private readonly request: Request) {}
+  constructor(@Inject(REQUEST) private readonly request: any) {}
 
   getLangIdFromLangHeader(): UserPreferedLang {
     // Use the `get` method to access headers
