@@ -26,7 +26,6 @@
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@ffmpeg/ffmpeg",
       "@nestjs/apollo",
@@ -43,6 +42,7 @@
       "class-transformer",
       "class-validator",
       "graphql",
+      "grpahql-upload-ts",
       "kafkajs",
       "reflect-metadata",
       "rimraf",

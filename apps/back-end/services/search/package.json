@@ -26,7 +26,6 @@
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@elastic/elasticsearch",
       "@nestjs/apollo",
@@ -40,7 +39,7 @@
       "@nestjs/platform-express",
       "graphql",
       "joi",
-      "joi-extract-type" ,
+      "joi-extract-type",
       "reflect-metadata",
       "rimraf",
       "rxjs",

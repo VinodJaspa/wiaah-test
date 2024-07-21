@@ -26,7 +26,6 @@
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@nestjs/apollo",
       "@nestjs/common",
@@ -43,7 +42,8 @@
       "kafkajs",
       "reflect-metadata",
       "rimraf",
-      "rxjs"
+      "rxjs",
+      "dotenv"
     ],
     "devDependencies": [
       "@nestjs/cli",
@@ -58,7 +58,7 @@
       "eslint",
       "eslint-config-prettier",
       "eslint-plugin-prettier",
-      "jest" ,
+      "jest",
       "mongodb-memory-server",
       "prettier",
       "prisma",

@@ -26,7 +26,6 @@
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@nestjs/apollo",
       "@nestjs/axios",

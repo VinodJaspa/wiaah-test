@@ -21,14 +21,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/mailing": "*",
+    "nestjs-mailing": "*",
     "@nestjs/mapped-types": "*",
     "nest-dto": "*",
     "nest-utils": "*"
   },
   "shadow": {
     "dependencies": [
-      "@apollo/federation",
       "@apollo/subgraph",
       "@nestjs/apollo",
       "@nestjs/common",
