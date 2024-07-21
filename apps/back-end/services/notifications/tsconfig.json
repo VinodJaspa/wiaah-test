@@ -1,5 +1,7 @@
 {
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
+    "types": ["jest"],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
