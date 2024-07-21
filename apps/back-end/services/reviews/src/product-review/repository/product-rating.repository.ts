@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma-client';
-import { PrismaService } from 'prismaService';
+import { PrismaService } from 'src/Prisma.service';
 
 @Injectable()
 export class ProductRatingRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(productId: string) {
     return this.prisma.productRating.create({

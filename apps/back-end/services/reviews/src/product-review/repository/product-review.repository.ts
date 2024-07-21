@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductReviewInput } from '@product-review/dto';
 import { ExtractPagination, GqlPaginationInput } from 'nest-utils';
-import { PrismaService } from 'prismaService';
+import { PrismaService } from 'src/Prisma.service';
 
 @Injectable()
 export class ProductReviewRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(
     input: CreateProductReviewInput & { sellerId: string },

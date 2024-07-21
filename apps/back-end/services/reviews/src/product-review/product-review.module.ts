@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
-import { PrismaService } from 'prismaService';
 import { ProductReviewCommandHanders } from './commands';
 import { ProductReviewEventHandlers } from './events';
 import { ProductRatingResolver } from './product-rating.resolver';
@@ -11,6 +10,7 @@ import { ProductReviewsQueryHandlers } from './queries';
 import { ProductRatingRepository, ProductReviewRepository } from './repository';
 import { ProductReviewController } from './product-review.controller';
 import { SellerProductsRatingResolver } from './seller-product-rating.resolver';
+import { PrismaService } from 'src/Prisma.service';
 
 @Module({
   imports: [
@@ -44,4 +44,4 @@ import { SellerProductsRatingResolver } from './seller-product-rating.resolver';
   ],
   controllers: [ProductReviewController],
 })
-export class ProductReviewModule {}
+export class ProductReviewModule { }
