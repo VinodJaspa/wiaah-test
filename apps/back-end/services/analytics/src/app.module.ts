@@ -7,13 +7,6 @@ import { UserInterestModule } from './user-interest/user-interest.module';
 import { UserInterestsController } from './user-interest/user-interests.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { KafkaModule } from './kafka.module';
-import { GraphQLModule } from '@nestjs/graphql';
-import {
-  ApolloFederationDriver,
-  ApolloFederationDriverConfig,
-} from '@nestjs/apollo';
-import { getUserFromRequest } from 'nest-utils';
-
 @Module({
   imports: [
     CqrsModule,
@@ -23,10 +16,6 @@ import { getUserFromRequest } from 'nest-utils';
     PrismaModule,
     EventsModule,
     UserInterestModule,
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: './schema.graphql',
-    }),
   ],
   controllers: [UserInterestsController],
 })
