@@ -120,7 +120,7 @@ describe('users interactions e2e tests', () => {
     let contentAuthorId = secendMockedUser.id;
 
     await producer.send({
-      topic: KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('', false),
+      topic: KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('comment'),
       messages: [
         {
           value: new CommentCreatedEvent({
@@ -164,7 +164,7 @@ describe('users interactions e2e tests', () => {
     let contentAuthorId = secendMockedUser.id;
 
     await producer.send({
-      topic: KAFKA_EVENTS.SHARES_EVENTS.contentShared('', false),
+      topic: KAFKA_EVENTS.SHARES_EVENTS.contentShared('post', false),
       messages: [
         {
           value: new ContentSharedEvent({
