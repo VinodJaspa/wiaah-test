@@ -9,10 +9,10 @@ import { Order } from './entities/order.entity.extends';
 
 @Resolver(() => Event)
 export class EventsResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
-  @Query(() => Event)
-  adminGetEvents(@Args('args') args: AdminGetEventsInput) {
+  @Query(() => [Event])
+  async adminGetEvents(@Args('args') args: AdminGetEventsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
     return this.prisma.event.findMany({
       where: {
@@ -25,38 +25,49 @@ export class EventsResolver {
 
   @ResolveField(() => Account, { nullable: true })
   causedBy(@Parent() parent: Event) {
-    if (parent.causedToId) {
-      return {
+    return parent.causedById
+      ? {
         __typename: 'Account',
         id: parent.causedById,
-      };
-    } else return null;
+      }
+      : null;
   }
+
   @ResolveField(() => Account, { nullable: true })
   causedTo(@Parent() parent: Event) {
-    if (
-      parent.key === AnalyticsEvents.buyerCreated ||
-      parent.key === AnalyticsEvents.buyerDeleted ||
-      parent.key === AnalyticsEvents.sellerCreated ||
-      parent.key === AnalyticsEvents.sellerDeleted
-    ) {
+    if (this.isAccountEvent(parent.key as AnalyticsEvents)) {
       return {
         __typename: 'Account',
         id: parent.causedToId,
       };
-    } else return null;
+    }
+    return null;
   }
 
   @ResolveField(() => Order, { nullable: true })
   order(@Parent() parent: Event) {
-    if (
-      parent.key === AnalyticsEvents.orderCreated ||
-      parent.key === AnalyticsEvents.orderDeleted
-    ) {
+    if (this.isOrderEvent(parent.key as AnalyticsEvents)) {
       return {
         __typename: 'Order',
         id: parent.causedToId,
       };
-    } else return null;
+    }
+    return null;
+  }
+
+  private isAccountEvent(key: AnalyticsEvents): boolean {
+    return [
+      AnalyticsEvents.buyerCreated,
+      AnalyticsEvents.buyerDeleted,
+      AnalyticsEvents.sellerCreated,
+      AnalyticsEvents.sellerDeleted,
+    ].includes(key);
+  }
+
+  private isOrderEvent(key: AnalyticsEvents): boolean {
+    return [
+      AnalyticsEvents.orderCreated,
+      AnalyticsEvents.orderDeleted,
+    ].includes(key);
   }
 }
