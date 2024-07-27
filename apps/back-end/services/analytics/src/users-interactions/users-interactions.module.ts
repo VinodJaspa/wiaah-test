@@ -14,4 +14,4 @@ import { UsersInteractionsRepository } from './repository';
   ],
   controllers: [UsersInteractionsController],
 })
-export class UsersInteractionsModule {}
+export class UsersInteractionsModule { }

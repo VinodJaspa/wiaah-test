@@ -10,11 +10,9 @@ async function bootstrap() {
     strategy: new KafkaCustomTransport({
       client: {
         brokers: KAFKA_BROKERS,
-        clientId: SERVICES.ANALYTICS_SERVICE.clientId,
       },
       consumer: {
         groupId: SERVICES.ANALYTICS_SERVICE.groupId,
-        allowAutoTopicCreation: true,
       },
     }),
   });

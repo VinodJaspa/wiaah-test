@@ -4,5 +4,5 @@ import { PrismaService } from 'prismaService';
 
 @Resolver(() => UserInterest)
 export class UserInterestResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 }
