@@ -11,11 +11,11 @@ export const SERVICES = {
   },
   ANALYTICS_SERVICE: {
     clientId: "analytics",
-    groupId: "analytics",
+    groupId: "analytics-consumer",
     token: "analytics",
   },
   AUTH_SERVICE: {
-    clientId: "Auth",
+    clientId: "auth",
     groupId: "auth-consumer",
     token: "AUTH_SERVICE",
   },
