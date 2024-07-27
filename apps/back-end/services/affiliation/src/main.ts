@@ -10,7 +10,6 @@ async function bootstrap() {
     options: {
       client: {
         brokers: KAFKA_BROKERS,
-        clientId: SERVICES.AFFILIATION_SERVICE.clientId,
       },
       consumer: {
         groupId: SERVICES.AFFILIATION_SERVICE.groupId,
