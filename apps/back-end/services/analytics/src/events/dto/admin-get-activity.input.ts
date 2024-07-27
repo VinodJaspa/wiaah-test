@@ -3,7 +3,7 @@ import { GqlPaginationInput } from 'nest-utils';
 import { AnalyticsEvents } from '../const';
 
 @InputType()
-class input {
+class Input {
   @Field(() => AnalyticsEvents)
   event: AnalyticsEvents;
 
@@ -12,7 +12,7 @@ class input {
 }
 
 @InputType()
-export class AdminGetEventsInput extends PartialType(input) {
-  @Field(() => GqlPaginationInput)
-  pagination: GqlPaginationInput;
+export class AdminGetEventsInput extends PartialType(Input) {
+  @Field(() => GqlPaginationInput, { nullable: true })
+  pagination?: GqlPaginationInput;
 }
