@@ -35,7 +35,7 @@ export class UsersInteractionsController {
   constructor(
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecrementUsersInteractionScore() {
@@ -112,7 +112,7 @@ export class UsersInteractionsController {
     });
   }
 
-  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
+  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('story'))
   handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
     const reactedById = value.input.reacterUserId;
     const reactedToId = value.input.contentAuthorUserId;
@@ -143,7 +143,7 @@ export class UsersInteractionsController {
     }
   }
 
-  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
+  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('story'))
   handleContentCommented(@Payload() { value }: { value: CommentCreatedEvent }) {
     const commentedById = value.input.commentedByUserId;
     const commentedToId = value.input.hostAuthorId;
@@ -156,7 +156,7 @@ export class UsersInteractionsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.SHARES_EVENTS.contentShared('*'))
+  @EventPattern(KAFKA_EVENTS.SHARES_EVENTS.contentShared('story'))
   handleContentShared(@Payload() { value }: { value: ContentSharedEvent }) {
     const sharedById = value.input.sharedByUserId;
     const sharedContentAuthorId = value.input.contentAuthorUserId;
@@ -181,7 +181,7 @@ export class UsersInteractionsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention('*'))
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention('story'))
   handleUserMentions(@Payload() { value }: { value: UserMentionEvent }) {
     const mentionById = value.input.userId;
     const mentionToId = value.input.mentionedId;
@@ -192,7 +192,7 @@ export class UsersInteractionsController {
     }
   }
 
-  @EventPattern(KAFKA_EVENTS.PROFILE_EVENTS.profileVisited('*'))
+  @EventPattern(KAFKA_EVENTS.PROFILE_EVENTS.profileVisited('buyer'))
   handleProfileVisit(@Payload() { value }: { value: ProfileVisitedEvent }) {
     const userId = value.input.visitorId;
     const profileAuthorId = value.input.profileAuthorId;
@@ -207,7 +207,7 @@ export class UsersInteractionsController {
     }
   }
 
-  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.postSaved('*'))
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.postSaved('story'))
   handlePostSaved(@Payload() { value }: { value: PostSavedEvent }) {
     const userId = value.input.saverId;
     const authorId = value.input.postAuthorId;

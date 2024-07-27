@@ -32,7 +32,7 @@ export class UserActivityStatsController {
     private readonly prisma: PrismaService,
     private readonly commandbus: CommandBus,
     private readonly querybus: QueryBus,
-  ) {}
+  ) { }
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecreaseActivity() {
@@ -83,7 +83,7 @@ export class UserActivityStatsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
+  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('post'))
   handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
     const userId = value.input.reacterUserId;
     this.commandbus.execute(
@@ -94,7 +94,7 @@ export class UserActivityStatsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
+  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('post'))
   handleCommentCreated(@Payload() { value }: { value: CommentCreatedEvent }) {
     const userId = value.input.commentedByUserId;
     this.commandbus.execute(
@@ -105,7 +105,7 @@ export class UserActivityStatsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased(`*`))
+  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased(`hotel`))
   handleServiceBooked(@Payload() { value }: { value: ServicePurchasedEvent }) {
     const userId = value.input.purchaserId;
     this.commandbus.execute(

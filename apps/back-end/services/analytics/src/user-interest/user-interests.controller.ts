@@ -23,9 +23,9 @@ export class UserInterestsController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly querybus: QueryBus,
-  ) {}
+  ) { }
 
-  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
+  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('post'))
   async handleSocialContentReaction(
     @Payload() { value }: { value: ContentReactedEvent },
   ) {
@@ -53,7 +53,7 @@ export class UserInterestsController {
     this.updateUserKeywords(keywords, value.input.purchaserId);
   }
 
-  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased('*', true))
+  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased('hotel', true))
   async handleServicePurchased(
     @Payload() { value }: { value: ServicePurchasedEvent },
   ) {
