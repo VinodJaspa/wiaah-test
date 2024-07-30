@@ -1,5 +1,5 @@
 import { useUserData } from "@UI/../hooks";
-import { getRandomName, mapArray } from "utils";
+import { mapArray } from "utils";
 import {
   SalesStatisticsCard,
   CustomTooltip,
@@ -30,6 +30,72 @@ import { useResponsive } from "@src/index";
 import { useRouting } from "@UI/../routing";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "@UI/components/helpers";
+
+export const getRandomName = () => {
+  const firstNames = [
+    "Alice",
+    "Bob",
+    "Charlie",
+    "David",
+    "Eva",
+    "Frank",
+    "Grace",
+    "Henry",
+    "Isabel",
+    "Jack",
+    "Kate",
+    "Liam",
+    "Mia",
+    "Noah",
+    "Olivia",
+    "Parker",
+    "Quinn",
+    "Ryan",
+    "Sofia",
+    "Tyler",
+    "Uma",
+    "Violet",
+    "William",
+    "Xavier",
+    "Yara",
+    "Zoe",
+  ];
+  const lastNames = [
+    "Adams",
+    "Brown",
+    "Carter",
+    "Davis",
+    "Evans",
+    "Fisher",
+    "Garcia",
+    "Harrison",
+    "Irwin",
+    "Jackson",
+    "Kane",
+    "Lee",
+    "Miller",
+    "Nelson",
+    "O'Connor",
+    "Patel",
+    "Quinn",
+    "Ramirez",
+    "Singh",
+    "Taylor",
+    "Upton",
+    "Vargas",
+    "Williams",
+    "Xiong",
+    "Yamamoto",
+    "Zhang",
+  ];
+
+  const randomFirstName =
+    firstNames[Math.floor(Math.random() * firstNames.length)];
+  const randomLastName =
+    lastNames[Math.floor(Math.random() * lastNames.length)];
+
+  return { firstName: randomFirstName, lastName: randomLastName };
+};
 
 const services: {
   name: string;
