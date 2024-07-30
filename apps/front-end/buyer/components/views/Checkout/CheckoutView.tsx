@@ -30,7 +30,7 @@ import { randomNum } from "utils";
 import { getRandomImage } from "placeholder";
 export interface CheckoutViewProps { }
 
-export const CheckoutView: React.FC<CheckoutViewProps> = () => {
+export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
