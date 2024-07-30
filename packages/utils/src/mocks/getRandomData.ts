@@ -1,4 +1,4 @@
-export function getRandomName() {
+export const getRandomName = (): { firstName: string; lastName: string } => {
   const firstNames = [
     "Alice",
     "Bob",
@@ -62,4 +62,4 @@ export function getRandomName() {
     lastNames[Math.floor(Math.random() * lastNames.length)];
 
   return { firstName: randomFirstName, lastName: randomLastName };
-}
+};
