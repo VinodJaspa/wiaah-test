@@ -44,9 +44,9 @@ import { ServiceType } from "@features/API";
 import { getRandomImage } from "placeholder";
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
-export interface ServiceCheckoutViewProps { }
+export interface CheckoutViewProps { }
 
-export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
+export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
@@ -199,7 +199,7 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
               {res ? (
                 <TotalCost
                   subTotal={res.data.bookedServices.reduce((acc, curr) => {
-                    return acc + curr.data.price;
+                    return acc + (curr?.data?.price || 0);
                   }, 0)}
                   vat={res.data.vat}
                   saved={res.data.saved}
@@ -213,32 +213,38 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
     </div>
   );
 };
-const DatePicker = () => {
+
+interface DateRange {
+  from: Date;
+  to: Date;
+}
+
+const DatePicker: React.FC = () => {
   const [edit, setEdit] = React.useState<boolean>(false);
-  const [dates, setDates] = React.useState<{ from: Date; to: Date }>({
+  const [dates, setDates] = React.useState<DateRange>({
     from: new Date(),
     to: new Date(),
   });
-  const days = useDateDiff({ from: dates.from, to: dates.to }).days;
+  const { days } = useDateDiff({ from: dates.from, to: dates.to });
   const { t } = useTranslation();
 
-  const datesDisplay = dates
-    ? () => {
-      const checkin = DateDetails(dates.from);
-      const checkout = DateDetails(dates.to);
-      const sameMonth = checkin.month_short === checkout.month_short;
+  const datesDisplay = () => {
+    if (!dates) return null;
 
-      return (
-        <p>
-          {checkin.day} {sameMonth ? null : `${checkin.month_short} `}-
-          {checkout.day} {checkout.month_short}
-        </p>
-      );
-    }
-    : null;
+    const checkin = DateDetails(dates.from);
+    const checkout = DateDetails(dates.to);
+    const sameMonth = checkin?.month_short === checkout?.month_short;
+
+    return (
+      <p>
+        {checkin?.day} {sameMonth ? null : `${checkin?.month_short} `}-
+        {checkout?.day} {checkout?.month_short}
+      </p>
+    );
+  };
 
   const handleClearDates = () => {
-    setDates(undefined);
+    setDates({ from: new Date(), to: new Date() });
   };
 
   return (

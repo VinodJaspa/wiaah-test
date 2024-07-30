@@ -71,3 +71,4 @@ export * from "./Pagination";
 export * from "./Skeleton";
 export * from "./ServiceSearch";
 export * from "./ServicesProvider";
+export * from "./Checkout";
