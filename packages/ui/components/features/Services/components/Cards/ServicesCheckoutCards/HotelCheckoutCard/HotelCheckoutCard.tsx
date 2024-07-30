@@ -277,22 +277,22 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col justify-between w-full">
         <HStack className="justify-end text-[1.75rem] font-bold">
           <PriceDisplay price={total} />
         </HStack>
-        <div className="flex justify-between w-full gap-4 items-center">
-          <Button className="h-[3.25rem]" colorScheme="darkbrown">
+        <div className="flex justify-between w-full items-center">
+          <Button className="h-[3.25rem] w-fit" colorScheme="darkbrown">
             <HStack className="text-lg whitespace-nowrap font-semibold">
               <EditNoteIcon />
-              {t("Modify booking")}
+              {t("Modify Booking")}
             </HStack>
           </Button>
-          <Button className="h-[3.25rem]" colorScheme="darkbrown" outline>
-            <HStack className="font-semibold text-lg">
+          <Button className="h-[3.25rem] " colorScheme="darkbrown" outline>
+            <div className="flex items-center gap-2 flex-nowrap font-semibold text-lg">
               <HeartIcon />
               {t("Add to wishlist")}
-            </HStack>
+            </div>
           </Button>
           <Button
             colorScheme="danger"
