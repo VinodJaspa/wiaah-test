@@ -1183,7 +1183,7 @@ export const PersonalizeAction: GetSuggestedActionsQuery["getMyRecommendedAction
     id: "",
     ownerId: "",
     photo: getRandomImage(),
-    username: getRandomName().firstName,
+    username: "fake userName",
     verified: true,
   },
   location: {
