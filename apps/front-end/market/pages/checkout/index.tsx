@@ -1,4 +1,5 @@
-import { MasterLayout, CheckoutView } from "@components";
+import { MasterLayout } from "@components";
+import { CheckoutView } from "ui";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";

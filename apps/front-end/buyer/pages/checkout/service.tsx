@@ -1,5 +1,5 @@
-import { ServiceCheckoutView } from "@components";
 import { NextPage } from "next";
+import { CheckoutView } from "ui";
 import Head from "next/head";
 import React from "react";
 import { Collaboration, Container, SellerLayout } from "ui";
@@ -14,7 +14,7 @@ const ServiceCheckout: NextPage = () => {
       <SellerLayout>
         <div className="bg-[#F3F3F3]">
           <Container>
-            <ServiceCheckoutView />
+            <CheckoutView />
           </Container>
         </div>
         <Container>

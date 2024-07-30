@@ -1,8 +1,8 @@
-import { CheckoutView } from "@components";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { Collaboration, Container, SellerLayout } from "ui";
+import { CheckoutView } from "ui";
 
 const ServiceCheckout: NextPage = () => {
   return (

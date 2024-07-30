@@ -10,8 +10,8 @@ import {
   UserAddressesState,
   VoucherState,
 } from "@src/state";
-import { CheckoutView } from "@components";
 import { CheckoutCart } from "types";
+import { CheckoutView } from "ui";
 
 interface CheckoutPageProps {
   userAddresses: AddressCardDetails[];
