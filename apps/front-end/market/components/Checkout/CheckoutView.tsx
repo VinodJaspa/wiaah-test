@@ -22,9 +22,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
-export interface ServiceCheckoutViewProps {}
+export interface CheckoutViewProps { }
 
-export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
+export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
@@ -95,14 +95,14 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                     initialInputs={
                       editAddress
                         ? {
-                            address: editAddress.location.address,
-                            city: editAddress.location.city,
-                            contact: editAddress.phone,
-                            country: editAddress.location.country,
-                            firstName: editAddress.firstname,
-                            lastName: editAddress.lastname,
-                            zipCode: parseInt(editAddress.zipCode),
-                          }
+                          address: editAddress.location.address,
+                          city: editAddress.location.city,
+                          contact: editAddress.phone,
+                          country: editAddress.location.country,
+                          firstName: editAddress.firstname,
+                          lastName: editAddress.lastname,
+                          zipCode: parseInt(editAddress.zipCode),
+                        }
                         : null
                     }
                     onCancel={handleCancelEdit}
@@ -173,7 +173,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
               </div>
             </BoxShadow>
             <VoucherInput onSuccess={(data) => handleVoucherValidation(data)} />
-            <PaymentGateway onSuccess={(data) => {}} />
+            <PaymentGateway onSuccess={(data) => { }} />
           </div>
         </div>
         <div className="md:table-cell ">
@@ -197,11 +197,11 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                     <SpinnerFallback isError={isError} isLoading={isLoading}>
                       {res
                         ? res.data.bookedServices.map((service, i) => (
-                            <ServiceCheckoutCardSwitcher
-                              key={i}
-                              service={service}
-                            />
-                          ))
+                          <ServiceCheckoutCardSwitcher
+                            key={i}
+                            service={service}
+                          />
+                        ))
                         : null}
                     </SpinnerFallback>
                   </div>

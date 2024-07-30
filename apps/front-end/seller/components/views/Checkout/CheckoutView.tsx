@@ -27,9 +27,9 @@ import { countries, mapArray, useForm } from "utils";
 import { ServiceType } from "@features/API";
 import { ServiceCheckoutDataType } from "api";
 
-export interface ServiceCheckoutViewProps { }
+export interface CheckoutViewProps { }
 
-export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
+export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
