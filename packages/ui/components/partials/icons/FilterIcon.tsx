@@ -14,7 +14,7 @@ export const FilterIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M1 1H17M3.66667 5H14.3333M6.33333 9H11.6667"
         stroke="currentColor"
         stroke-width="1.4"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

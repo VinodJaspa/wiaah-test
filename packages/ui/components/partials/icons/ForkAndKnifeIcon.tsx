@@ -21,28 +21,28 @@ export const ForkAndKnifeIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M20.7139 1L16.5755 4.93022C16.257 5.23259 16.0044 5.59157 15.8321 5.98667C15.6597 6.38177 15.571 6.80524 15.571 7.2329V7.98892C15.571 8.09589 15.5489 8.20181 15.5057 8.30063C15.4626 8.39945 15.3994 8.48924 15.3198 8.56485L14.7139 9.14026"
         stroke="currentColor"
         stroke-width="0.094rem"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M16.4287 10.7685L17.0346 10.1931C17.1142 10.1174 17.2088 10.0574 17.3128 10.0165C17.4169 9.97553 17.5284 9.95447 17.641 9.95449H18.4371C18.8874 9.95449 19.3334 9.87025 19.7494 9.70657C20.1654 9.54289 20.5434 9.30298 20.8618 9.00055L25.0003 5.07031"
         stroke="currentColor"
         stroke-width="0.094rem"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M22.8571 3.03516L18.5713 7.1053"
         stroke="currentColor"
         stroke-width="0.094rem"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M9.99966 18.0937L4.65745 23.1956C4.2556 23.5771 3.71064 23.7914 3.14243 23.7914C2.57421 23.7914 2.02926 23.5771 1.62741 23.1956V23.1956C1.22568 22.8139 1 22.2964 1 21.7568C1 21.2172 1.22568 20.6996 1.62741 20.318L6.14247 16.0586"
         stroke="currentColor"
         stroke-width="0.094rem"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

@@ -23,14 +23,14 @@ export const LocationOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M4 9.59429L4.36057 9.188C4.76971 8.71943 5.13771 8.27486 5.46514 7.852L5.73543 7.49543C6.864 5.97486 7.42857 4.768 7.42857 3.876C7.42857 1.972 5.89371 0.428574 4 0.428574C2.10628 0.428574 0.571426 1.972 0.571426 3.876C0.571426 4.768 1.136 5.97486 2.26457 7.49543L2.53486 7.852C3.00196 8.45051 3.49067 9.03128 4 9.59429Z"
         stroke="currentColor"
         stroke-width="0.5"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M4 5.28572C4.78898 5.28572 5.42857 4.64612 5.42857 3.85715C5.42857 3.06817 4.78898 2.42857 4 2.42857C3.21102 2.42857 2.57143 3.06817 2.57143 3.85715C2.57143 4.64612 3.21102 5.28572 4 5.28572Z"
         stroke="currentColor"
         stroke-width="0.5"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>
@@ -68,7 +68,7 @@ export const LocationFillSquareIcon: React.FC<HtmlSvgProps> = (props) => {
         fill="currentColor"
         stroke="currentColor"
         stroke-width="1.14286"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
@@ -76,7 +76,7 @@ export const LocationFillSquareIcon: React.FC<HtmlSvgProps> = (props) => {
         fill="white"
         stroke="currentColor"
         stroke-width="1.14286"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <rect x="1" y="1" width="42" height="42" rx="4" stroke="#EFEFEF" />

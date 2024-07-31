@@ -25,7 +25,7 @@ export const HotelIcon: React.FC<HotelIconProps> = (props) => {
         <path
           d="M2 2H22"
           stroke="white"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
@@ -37,24 +37,24 @@ export const HotelIcon: React.FC<HotelIconProps> = (props) => {
         <path
           d="M10 16H14V22H10V16Z"
           stroke="black"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M7.5 6H8.5M7.5 9H8.5M11.5 6H12.5M11.5 9H12.5M15.5 6H16.5M15.5 9H16.5"
           stroke="black"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
         <path
           d="M2 22H22"
           stroke="white"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M14 16H15C15.276 16 15.505 15.774 15.452 15.503C15.176 14.083 13.7355 13 12 13C10.265 13 8.82396 14.0825 8.54796 15.503C8.49496 15.774 8.72396 16 8.99996 16H9.99996"
           stroke="black"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
       </mask>
@@ -87,7 +87,7 @@ export const HotelOutlineIcon: React.FC<HotelIconProps> = (props) => {
         <path
           d="M2 2H22"
           stroke="#20ECA7"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
@@ -98,24 +98,24 @@ export const HotelOutlineIcon: React.FC<HotelIconProps> = (props) => {
         <path
           d="M10 16H14V22H10V16Z"
           stroke="#20ECA7"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M7.5 6H8.5M7.5 9H8.5M11.5 6H12.5M11.5 9H12.5M15.5 6H16.5M15.5 9H16.5"
           stroke="#20ECA7"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
         <path
           d="M2 22H22"
           stroke="#20ECA7"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
         <path
           d="M14 16H15C15.276 16 15.505 15.774 15.452 15.503C15.176 14.083 13.7355 13 12 13C10.265 13 8.82401 14.0825 8.54801 15.503C8.49501 15.774 8.72401 16 9.00001 16H10"
           stroke="#20ECA7"
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
         />
       </mask>

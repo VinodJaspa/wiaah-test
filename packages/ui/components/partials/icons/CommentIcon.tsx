@@ -31,7 +31,7 @@ export const CommentOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M16.2143 6.71429H9.35712M17.3571 1C17.9633 1 18.5447 1.24082 18.9734 1.66947C19.402 2.09812 19.6428 2.67951 19.6428 3.28571V14.7143C19.6428 15.3205 19.402 15.9019 18.9734 16.3305C18.5447 16.7592 17.9633 17 17.3571 17L13.9297 16.9989L11.308 19.6206C11.1112 19.8173 10.8494 19.9356 10.5716 19.953C10.2939 19.9705 10.0193 19.886 9.7994 19.7154L9.69197 19.6206L7.07026 16.9989L3.64283 17C3.03662 17 2.45524 16.7592 2.02659 16.3305C1.59793 15.9019 1.35712 15.3205 1.35712 14.7143V3.28571C1.35712 2.67951 1.59793 2.09812 2.02659 1.66947C2.45524 1.24082 3.03662 1 3.64283 1H17.3571Z"
         stroke="currentColor"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
@@ -49,7 +49,7 @@ export const CommentOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M16.2143 11.7144H9.35712"
         stroke="currentColor"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

@@ -21,7 +21,7 @@ export const HexagonStatsIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M12 11V15M16 9V15M8 13V15"
         stroke="#06D6A0"
         stroke-width="1.4"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

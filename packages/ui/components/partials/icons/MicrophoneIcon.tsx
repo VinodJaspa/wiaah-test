@@ -18,14 +18,14 @@ export const MicrophoneFillIcon: React.FC<HtmlSvgProps> = (props) => {
         fill="currentColor"
         stroke="currentColor"
         stroke-width="1.14286"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M17.7143 10.8571C17.7124 12.3499 17.1264 13.7827 16.0817 14.8489C15.037 15.9152 13.6165 16.5303 12.1241 16.5627C10.6317 16.5951 9.18583 16.0422 8.09583 15.0223C7.00582 14.0024 6.35819 12.5964 6.29148 11.1051L6.28577 10.8571M12.0001 16.5714V21.1429"
         stroke="currentColor"
         stroke-width="1.14286"
-        stroke-linecap="round"
+        strokeLinecap="round"
         stroke-linejoin="round"
       />
     </svg>

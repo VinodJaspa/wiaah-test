@@ -25,7 +25,7 @@ export const EyeIconSlash: React.FC<HtmlSvgProps> = () => {
         <path
           d="M0.75 13.875L17.2841 4.32902"
           stroke="currentColor"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
       </g>
       {/* <defs>

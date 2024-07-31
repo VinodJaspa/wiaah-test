@@ -245,7 +245,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                               setActionVidBlob(data);
                               handleChange(
                                 "srcUploadId",
-                                URL.createObjectURL(data),
+                                URL.createObjectURL(data)
                               );
                               setStep(1);
                             }}
@@ -294,7 +294,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                               <p>{t("Link")}</p>
                               <Input
                                 placeholder={t(
-                                  "You can add a wiaah product link only",
+                                  "You can add a wiaah product link only"
                                 )}
                               />
                             </div>
@@ -369,7 +369,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                 setMedia(event.dataTransfer.files);
               }}
               style={{
-                backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23000000FF' stroke-width='3' stroke-dasharray='12' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e")`,
+                backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23000000FF' stroke-width='3' stroke-dasharray='12' stroke-dashoffset='0' strokeLinecap='butt'/%3e%3c/svg%3e")`,
               }}
               className="w-[960px] flex flex-col items-center  justify-center h-[616px]"
             >
