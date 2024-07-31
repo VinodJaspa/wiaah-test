@@ -35,13 +35,13 @@ export const CommentOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke-linejoin="round"
       />
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         clipRule="evenodd"
         d="M5.9273 8.28571C6.49873 8.28571 7.07016 7.71429 7.07016 7.14286C7.07016 6.57143 6.49873 6 5.9273 6C5.35587 6 4.78558 6.57143 4.78558 7.14286C4.78558 7.71429 5.35587 8.28571 5.9273 8.28571ZM5.9273 12.8571C6.49873 12.8571 7.07016 12.2857 7.07016 11.7143C7.07016 11.1429 6.49873 10.5714 5.9273 10.5714C5.35587 10.5714 4.78558 11.1429 4.78558 11.7143C4.78558 12.2857 5.35587 12.8571 5.9273 12.8571Z"
         fill="currentColor"
       />
       <path
-        fill-rule="evenodd"
+        fillRule="evenodd"
         clipRule="evenodd"
         d="M16.2143 11.7144H9.35712Z"
         fill="currentColor"

@@ -24,8 +24,8 @@ const DrawerCtx = React.createContext<DrawerCtxValues>({
   spaceBottom: "0px",
   active: true,
   full: false,
-  onClose: () => { },
-  onOpen: () => { },
+  onClose: () => {},
+  onOpen: () => {},
   draggable: false,
 });
 
@@ -42,7 +42,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   children,
   isOpen,
   onClose,
-  onOpen = () => { },
+  onOpen = () => {},
   position = "left",
   active = true,
   full,
@@ -72,7 +72,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   );
 };
 
-export interface DrawerContentProps extends HtmlDivProps { }
+export interface DrawerContentProps extends HtmlDivProps {}
 
 export const DrawerContent: React.FC<DrawerContentProps> = ({
   children,
@@ -89,8 +89,9 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
     switch (position) {
       case "bottom":
         return {
-          className: `${isOpen ? "" : `translate-y-[calc(105%)]`
-            } w-full left-0`,
+          className: `${
+            isOpen ? "" : `translate-y-[calc(105%)]`
+          } w-full left-0`,
           styles: {
             transform: isOpen
               ? undefined
@@ -103,20 +104,23 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         };
       case "top":
         return {
-          className: `${isOpen ? "" : "-translate-y-full"} top-0 ${full ? "h-full" : "h-[min(100%,20rem)]"
-            } w-full left-0`,
+          className: `${isOpen ? "" : "-translate-y-full"} top-0 ${
+            full ? "h-full" : "h-[min(100%,20rem)]"
+          } w-full left-0`,
           styles: {},
         };
       case "right":
         return {
-          className: `${isOpen ? "" : "translate-x-full"} right-0 ${full ? "w-full" : "w-[min(100%,20rem)]"
-            } h-full top-0`,
+          className: `${isOpen ? "" : "translate-x-full"} right-0 ${
+            full ? "w-full" : "w-[min(100%,20rem)]"
+          } h-full top-0`,
           styles: {},
         };
       default:
         return {
-          className: `${isOpen ? "" : "-translate-x-full"} left-0 ${full ? "w-full" : "w-[min(100%,20rem)]"
-            } h-full top-0`,
+          className: `${isOpen ? "" : "-translate-x-full"} left-0 ${
+            full ? "w-full" : "w-[min(100%,20rem)]"
+          } h-full top-0`,
           styles: {},
         };
     }
@@ -131,8 +135,9 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
         zIndex: overlap ? 100 : undefined,
         overflowY: draggable ? "visible" : "hidden",
       }}
-      className={`${className || ""} ${setPositionClasses().className
-        } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
+      className={`${className || ""} ${
+        setPositionClasses().className
+      } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
     >
       {draggable && isOpen ? (
         <>
@@ -151,7 +156,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 clipRule="evenodd"
                 d="M480.5 0C432.727 0 394 38.7274 394 86.5C394 134.273 432.727 173 480.5 173H1380.5C1428.27 173 1467 134.273 1467 86.5C1467 38.7274 1428.27 0 1380.5 0H480.5ZM222.899 86H0V359H1862V86H1641.3C1614.07 86 1592 108.074 1592 135.303C1592 223.225 1520.72 294.5 1432.8 294.5H431.399C342.261 294.5 270 222.239 270 133.101C270 107.088 248.912 86 222.899 86Z"
                 fill="currentColor"
@@ -183,7 +188,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   );
 };
 
-export interface DrawerOverlayProps extends HtmlDivProps { }
+export interface DrawerOverlayProps extends HtmlDivProps {}
 
 export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
   className,
@@ -197,10 +202,11 @@ export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
       style={{
         bottom: spaceBottom ? spaceBottom : "0px",
       }}
-      className={`${isOpen
+      className={`${
+        isOpen
           ? "bg-opacity-30 pointer-events-auto"
           : "bg-opacity-0 pointer-events-none"
-        } z-50 bg-black fixed transition-all left-0 w-full h-full`}
+      } z-50 bg-black fixed transition-all left-0 w-full h-full`}
     />
   ) : null;
 };
@@ -231,8 +237,9 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   const { active } = React.useContext(DrawerCtx);
   return active ? (
     <div
-      className={`${className || ""
-        } flex justify-between items-center relative`}
+      className={`${
+        className || ""
+      } flex justify-between items-center relative`}
       {...props}
     >
       {typeof onBack === "function" ? (
