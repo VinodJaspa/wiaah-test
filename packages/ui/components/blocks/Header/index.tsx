@@ -23,7 +23,7 @@ import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid, useBreakpointValue } from "utils";
 
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 export const Header: React.FC<HeaderProps> = () => {
   const { data: profile } = useGetMyProfileQuery();

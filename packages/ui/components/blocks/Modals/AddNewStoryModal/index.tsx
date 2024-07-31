@@ -18,7 +18,7 @@ import {
   ModalOverlay,
 } from "@UI";
 
-export interface AddNewStoryModalProps {}
+export interface AddNewStoryModalProps { }
 
 const colors: string[] = [
   "red",
@@ -78,8 +78,8 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
 
   return (
     <Modal
-      onOpen={() => {}}
-      isOpen={isOpen}
+      onOpen={() => { }}
+      isOpen={isOpen as boolean}
       onClose={() => {
         closeNewStoryModal();
         resetState();
@@ -122,20 +122,18 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
           <div className="flex w-full justify-between">
             <HStack className="gap-4">
               <BiImageAlt
-                className={`${
-                  fileAdded
+                className={`${fileAdded
                     ? "cursor-grab pointer-events-none"
                     : "cursor-pointer pointer-events-auto"
-                } text-xl fill-primary`}
+                  } text-xl fill-primary`}
                 data-testid="AttachPhotoBtn"
                 onClick={() => setUploadType("picture")}
               />
               <IoVideocam
-                className={`${
-                  fileAdded
+                className={`${fileAdded
                     ? "cursor-not-allowed pointer-events-none"
                     : "cursor-pointer pointer-events-auto"
-                } text-xl text-primary`}
+                  } text-xl text-primary`}
                 data-testid="AttachVideoBtn"
                 onClick={() => setUploadType("video")}
               />
