@@ -1,6 +1,6 @@
+import { UserDataState } from "@UI/../state";
 import { useRecoilState } from "recoil";
 import { CurrentUserDataType } from "types";
-import { UserDataState } from "../../state/Recoil/User";
 
 export const useUserData = () => {
   const [user, setUser] = useRecoilState(UserDataState);

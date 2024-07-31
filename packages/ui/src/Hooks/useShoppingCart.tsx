@@ -2,13 +2,13 @@ import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { getMyShoppingCartQueryKey } from "@UI";
-import { ShoppingCartToggleState } from "@UI";
 import {
   AddShoppingCartItemInput,
   Exact,
   ShoppingCartItemType,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
+import { ShoppingCartToggleState } from "@UI/../state";
 
 export const useShoppingCart = () => {
   const [ShoppingCartOpen, setShoppingCartOpen] = useRecoilState(

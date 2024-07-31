@@ -1,5 +1,6 @@
 import React from "react";
-import { SellerDrawerOpenState } from "state";
+
+import { SellerDrawerOpenState } from "@src/state";
 import { HiMenu } from "react-icons/hi";
 import { useRecoilState } from "recoil";
 import { NavigationLinkType } from "types";
@@ -31,7 +32,7 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
   return (
     <Drawer
       {...props}
-      isOpen={isOpen}
+      isOpen={isOpen as boolean}
       position="left"
       onClose={() => setOpen(false)}
     >

@@ -15,8 +15,8 @@ import {
 import { IoVideocam } from "react-icons/io5";
 import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
 import { t } from "i18next";
+import { NavigationLinkType } from "@UI/../types/src";
 
 export default {
   title: "UI/blocks/drawers/SellerNavigationDrawer",
@@ -26,32 +26,32 @@ export default {
 const NavigationLinks: NavigationLinkType[] = [
   {
     name: "homepage",
-    icon: HiOutlineHome,
-    activeIcon: HiHome,
+    icon: <HiOutlineHome />,
+    activeIcon: <HiHome />,
     url: "/home",
   },
   {
     name: "discover",
-    icon: HiOutlineUserGroup,
-    activeIcon: HiUserGroup,
+    icon: <HiOutlineUserGroup />,
+    activeIcon: <HiUserGroup />,
     url: "/discover",
   },
   {
     name: "action",
-    icon: CgPlayButtonR,
-    activeIcon: IoVideocam,
+    icon: <CgPlayButtonR />,
+    activeIcon: <IoVideocam />,
     url: "/action",
   },
   {
     name: "shop",
-    icon: AiOutlineShop,
-    activeIcon: AiFillShop,
+    icon: <AiOutlineShop />,
+    activeIcon: <AiFillShop />,
     url: "/shop",
   },
   {
     name: "affiliation",
-    icon: () => <AffiliationIconOutline />,
-    activeIcon: () => <AffiliationIcon />,
+    icon: <AffiliationIconOutline />,
+    activeIcon: <AffiliationIcon />,
     url: "/affiliation",
   },
 ];
@@ -154,13 +154,13 @@ const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
       >
         <Box textTransform={"capitalize"} px="2rem">
           <Text py="1rem" fontWeight={"bold"} textTransform={"capitalize"}>
-            {t("suggestions", "suggestions")}
+            {t("suggestions").toString()}
           </Text>
           <UsersProfiles
             maxShowMoreItems={8}
             maxLongItems={5}
             variant="long"
-            users={usersProfilesPlaceHolder}
+            users={placeholderUsers}
           />
         </Box>
       </SellerNavigationDrawer>
@@ -175,3 +175,36 @@ export const WithChildren = TempleteWithChildren.bind({});
 WithChildren.args = {
   links: NavigationLinks,
 };
+// Placeholder data
+const placeholderUsers = [
+  {
+    id: "1",
+    name: "John Doe",
+    userPhotoSrc: "https://via.placeholder.com/150",
+    profession: "Software Engineer",
+  },
+  {
+    id: "2",
+    name: "Jane Smith",
+    userPhotoSrc: "https://via.placeholder.com/150",
+    profession: "Graphic Designer",
+  },
+  {
+    id: "3",
+    name: "Alice Johnson",
+    userPhotoSrc: "https://via.placeholder.com/150",
+    profession: "Product Manager",
+  },
+  {
+    id: "4",
+    name: "Bob Brown",
+    userPhotoSrc: "https://via.placeholder.com/150",
+    profession: "Data Scientist",
+  },
+  {
+    id: "5",
+    name: "Charlie Green",
+    userPhotoSrc: "https://via.placeholder.com/150",
+    profession: "UX/UI Designer",
+  },
+];

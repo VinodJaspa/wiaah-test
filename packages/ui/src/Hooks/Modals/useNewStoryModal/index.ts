@@ -1,5 +1,5 @@
+import { newStoryModalOpenState } from "@src/state";
 import { useRecoilState } from "recoil";
-import { newStoryModalOpenState } from "@UI";
 export const useNewStoryModal = () => {
   const [isOpen, setOpen] = useRecoilState(newStoryModalOpenState);
 

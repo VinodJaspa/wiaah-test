@@ -16,6 +16,7 @@ import {
   Divider,
   SocialProfileProps,
   Image,
+  SocialNewsfeedPostsState,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -31,7 +32,6 @@ import {
 } from "placeholder";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState } from "state";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import {

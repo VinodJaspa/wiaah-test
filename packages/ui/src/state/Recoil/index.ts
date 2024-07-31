@@ -1,4 +1,3 @@
-export * from "./ShoppingCart";
 export * from "./SavedItems";
 export * from "./LoginPopup";
 export * from "./ProductDescTabs";

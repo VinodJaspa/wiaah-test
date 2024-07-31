@@ -4,7 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { CgShoppingBag } from "react-icons/cg";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
-import { SellerDrawerOpenState } from "state";
+import { SellerDrawerOpenState } from "@src/state";
 import { NavigationLinkType } from "types";
 import {
   MinimalHeader,

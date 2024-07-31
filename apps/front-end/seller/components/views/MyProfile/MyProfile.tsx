@@ -21,7 +21,6 @@ import { useReactPubsub } from "react-pubsub";
 import { useRecoilValue } from "recoil";
 import { useDisclouser } from "hooks";
 import { mapArray } from "utils";
-import { SocialStoryState } from "state";
 import { SocialShopProfileData } from "api";
 import { useRouting } from "routing";
 import { Profile } from "@features/API";
