@@ -10,7 +10,7 @@ export const VideoAaddIcon: React.FC<HtmlSvgProps> = (props) => {
       text-rendering="geometricPrecision"
       image-rendering="optimizeQuality"
       fill-rule="evenodd"
-      clip-rule="evenodd"
+      clipRule="evenodd"
       viewBox="0 0 512 329.79"
       width={"1em"}
       height={"1em"}

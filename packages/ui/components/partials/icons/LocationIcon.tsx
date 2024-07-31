@@ -19,7 +19,7 @@ export const LocationOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
     >
       <path
         fill-rule="evenodd"
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M4 9.59429L4.36057 9.188C4.76971 8.71943 5.13771 8.27486 5.46514 7.852L5.73543 7.49543C6.864 5.97486 7.42857 4.768 7.42857 3.876C7.42857 1.972 5.89371 0.428574 4 0.428574C2.10628 0.428574 0.571426 1.972 0.571426 3.876C0.571426 4.768 1.136 5.97486 2.26457 7.49543L2.53486 7.852C3.00196 8.45051 3.49067 9.03128 4 9.59429Z"
         stroke="currentColor"
         stroke-width="0.5"
@@ -63,7 +63,7 @@ export const LocationFillSquareIcon: React.FC<HtmlSvgProps> = (props) => {
     >
       <path
         fill-rule="evenodd"
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M22 31.1886L22.7211 30.376C23.5394 29.4389 24.2754 28.5497 24.9303 27.704L25.4709 26.9909C27.728 23.9497 28.8571 21.536 28.8571 19.752C28.8571 15.944 25.7874 12.8571 22 12.8571C18.2126 12.8571 15.1429 15.944 15.1429 19.752C15.1429 21.536 16.272 23.9497 18.5291 26.9909L19.0697 27.704C20.0039 28.901 20.9813 30.0625 22 31.1886Z"
         fill="currentColor"
         stroke="currentColor"

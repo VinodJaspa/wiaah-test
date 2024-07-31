@@ -34,7 +34,7 @@ export const DiscoverIcon: React.FC<HtmlSvgProps> = (props) => {
       />
       <path
         fill-rule="evenodd"
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M12.2858 11.1429L7.71436 14.5714V8.85716L12.2858 5.42859V11.1429Z"
         fill="white"
         stroke="currentColor"
@@ -62,7 +62,7 @@ export const DiscoverOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
       />
       <path
         fill-rule="evenodd"
-        clip-rule="evenodd"
+        clipRule="evenodd"
         d="M12.2858 11.1428L7.71436 14.5714V8.8571L12.2858 5.42853V11.1428Z"
         stroke="currentColor"
         stroke-linecap="round"
