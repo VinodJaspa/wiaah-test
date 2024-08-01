@@ -48,7 +48,7 @@ export const LockOutlineCircleIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke="currentColor"
         strokeWidth="1.14"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M50.0008 65.2779C52.4467 65.2779 54.4294 63.4125 54.4294 61.1113C54.4294 58.8102 52.4467 56.9447 50.0008 56.9447C47.555 56.9447 45.5723 58.8102 45.5723 61.1113C45.5723 63.4125 47.555 65.2779 50.0008 65.2779Z"

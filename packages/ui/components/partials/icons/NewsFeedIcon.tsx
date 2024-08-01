@@ -34,7 +34,7 @@ export const NewsFeedOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M19 1H3C1.89 1 1 1.89 1 3V17C1 18.11 1.89 19 3 19H19C20.11 19 21 18.11 21 17V3C21 1.89 20.11 1 19 1ZM4 5H9V11H4V5ZM18 15H4V13H18V15ZM18 11H11V9H18V11ZM18 7H11V5H18V7Z"
         stroke="#111312"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

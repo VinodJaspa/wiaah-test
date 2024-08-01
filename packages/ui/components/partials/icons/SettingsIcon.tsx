@@ -18,14 +18,14 @@ export const SettingsOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke="currentColor"
         strokeWidth="1.14"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M14 18C16.2091 18 18 16.2091 18 14C18 11.7909 16.2091 10 14 10C11.7909 10 10 11.7909 10 14C10 16.2091 11.7909 18 14 18Z"
         stroke="currentColor"
         strokeWidth="1.14"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

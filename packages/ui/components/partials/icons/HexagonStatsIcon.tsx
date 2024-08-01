@@ -15,14 +15,14 @@ export const HexagonStatsIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M20.5 7L12 2L3.5 7V17L12 22L20.5 17V7Z"
         stroke="#06D6A0"
         strokeWidth="1.4"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M12 11V15M16 9V15M8 13V15"
         stroke="#06D6A0"
         strokeWidth="1.4"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

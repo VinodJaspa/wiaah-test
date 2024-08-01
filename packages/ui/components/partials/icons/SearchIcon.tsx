@@ -19,14 +19,14 @@ export const SearchIcon: React.FC<SearchIconProps> = (props) => {
         stroke="black"
         strokeWidth="1.14286"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M15.0603 14.9994L10.2852 10.2852"
         stroke="black"
         strokeWidth="1.14286"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

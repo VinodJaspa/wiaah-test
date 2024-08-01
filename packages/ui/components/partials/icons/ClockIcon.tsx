@@ -22,14 +22,14 @@ export const ClockOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke="currentColor"
         strokeWidth="1.14286"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M7.00004 5V7.66667H9.33337"
         stroke="currentColor"
         strokeWidth="1.14286"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

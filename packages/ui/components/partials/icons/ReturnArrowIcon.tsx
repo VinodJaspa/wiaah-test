@@ -16,14 +16,14 @@ export const ReturnArrowIcon: React.FC<HtmlSvgProps> = (props) => {
         stroke="#EF476F"
         strokeWidth="1.4"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         d="M3 7H14.4969C17.9384 7 20.861 9.8102 20.9952 13.25C21.1369 16.8848 18.1335 20 14.4969 20H5.9992"
         stroke="#EF476F"
         strokeWidth="1.4"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

@@ -15,7 +15,7 @@ export const PlusIcon: React.FC<IconBaseProps> = ({ ...props }) => {
         d="M0.619049 3H5.38095M3 0.619049V5.38095"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -36,7 +36,7 @@ export const RoundedPlusIcon: React.FC<IconBaseProps> = ({ ...props }) => {
         stroke="currentColor"
         strokeWidth="1.14286"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

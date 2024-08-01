@@ -31,7 +31,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
           strokeWidth="0.07em"
         >
           <circle cx="8" cy="8" r="6.25" />
@@ -46,7 +46,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
           strokeWidth="0.05em"
           opacity={0.1}
         >

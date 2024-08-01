@@ -30,7 +30,7 @@ export const DiscoverIcon: React.FC<HtmlSvgProps> = (props) => {
         fill="currentColor"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         strokeLinejoin="evenodd"
@@ -39,7 +39,7 @@ export const DiscoverIcon: React.FC<HtmlSvgProps> = (props) => {
         fill="white"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -58,7 +58,7 @@ export const DiscoverOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M10 19.1428C15.0495 19.1428 19.1429 15.0494 19.1429 9.99997C19.1429 4.95051 15.0495 0.857117 10 0.857117C4.95057 0.857117 0.857178 4.95051 0.857178 9.99997C0.857178 15.0494 4.95057 19.1428 10 19.1428Z"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
       <path
         strokeLinejoin="evenodd"
@@ -66,7 +66,7 @@ export const DiscoverOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M12.2858 11.1428L7.71436 14.5714V8.8571L12.2858 5.42853V11.1428Z"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
