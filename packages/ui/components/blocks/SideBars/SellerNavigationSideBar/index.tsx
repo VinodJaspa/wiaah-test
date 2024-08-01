@@ -57,7 +57,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     {
       name: "discover",
       icon: <DiscoverOutlineIcon />,
-      activeIcon: <DiscoverIcon />,
+      activeIcon: <DiscoverIcon className="white" />,
       url: "discover",
     },
     {
@@ -110,7 +110,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
         >
           {!isMobile && (
             <Image
-              src="/logo.svg"
+              src="/wiaah_logo.png"
               className="cursor-pointer w-full pl-8 pr-16"
             />
           )}

@@ -136,7 +136,7 @@ export const CreateActionDrawer: React.FC = () => {
     startCountDown: () => any;
   }>(null);
 
-  const {} = useForm<Parameters<typeof mutate>[0]>({
+  const { } = useForm<Parameters<typeof mutate>[0]>({
     allowedActions: [ActionType.Comment],
     coverUploadId: "cover123",
     srcUploadId: "src456",
@@ -156,12 +156,12 @@ export const CreateActionDrawer: React.FC = () => {
         <StoryBottomControls />
         <CameraActionSettings />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <CameraCountDown ref={countingRef} onFinish={() => {}} />
+          <CameraCountDown ref={countingRef} onFinish={() => { }} />
         </div>
       </div>
       <ChooseActionRemix
         onCancel={() => createAction({ ...value, remixId: undefined })}
-        onSelect={() => {}}
+        onSelect={() => { }}
         actionId={remixId}
       />
       <SelectVideoFilters />
@@ -288,9 +288,8 @@ export const StoryBottomControls: React.FC = () => {
           <button>
             <div className="w-16 h-16 flex justify-center items-center border-4 rounded-full border-white">
               <div
-                className={`w-11 h-11 ${
-                  showOn(["video"]) ? "bg-red-500" : "bg-white"
-                } rounded-full`}
+                className={`w-11 h-11 ${showOn(["video"]) ? "bg-red-500" : "bg-white"
+                  } rounded-full`}
               ></div>
             </div>
           </button>
@@ -318,7 +317,7 @@ export const StoryBottomControls: React.FC = () => {
               className="cursor-pointer min-w-[2.25rem] h-9 rounded border-2 border-white relative isolate"
             >
               {settings.textBgGradient?.from === v.from &&
-              settings.textBgGradient.to === v.to ? (
+                settings.textBgGradient.to === v.to ? (
                 <CheckmarkIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white" />
               ) : null}
             </div>
@@ -333,11 +332,10 @@ export const StoryBottomControls: React.FC = () => {
               setSettings((old) => ({ ...old, mediaType: v.key }));
             }}
             key={i}
-            className={`${
-              settings.mediaType === v.key
+            className={`${settings.mediaType === v.key
                 ? "border-b-primary"
                 : "border-b-transparent"
-            } pb-1 border-b text-white`}
+              } pb-1 border-b text-white`}
           >
             {v.label}
           </p>
@@ -355,9 +353,8 @@ const ActionIcon: React.FC<HtmlDivProps> = ({
   return (
     <div
       {...props}
-      className={`${
-        className || ""
-      } bg-white bg-opacity-20 w-10 h-10 flex justify-center items-center rounded-full`}
+      className={`${className || ""
+        } bg-white bg-opacity-20 w-10 h-10 flex justify-center items-center rounded-full`}
     >
       {children}
     </div>
@@ -374,27 +371,27 @@ const CameraActionSettings: React.FC<{}> = () => {
     duration: number;
     label: string;
   }[] = [
-    {
-      duration: 30,
-      label: "30s",
-    },
-    {
-      duration: 60,
-      label: "1m",
-    },
-    {
-      duration: 90,
-      label: "1.5m",
-    },
-    {
-      duration: 120,
-      label: "2m",
-    },
-    {
-      duration: 180,
-      label: "3m",
-    },
-  ];
+      {
+        duration: 30,
+        label: "30s",
+      },
+      {
+        duration: 60,
+        label: "1m",
+      },
+      {
+        duration: 90,
+        label: "1.5m",
+      },
+      {
+        duration: 120,
+        label: "2m",
+      },
+      {
+        duration: 180,
+        label: "3m",
+      },
+    ];
 
   const showOn = (types: (typeof settings)["mediaType"][]) =>
     types.includes(settings.mediaType);
@@ -435,11 +432,10 @@ const CameraActionSettings: React.FC<{}> = () => {
                 <HStack className="gap-4 bg-white bg-opacity-80 rounded-full p-2">
                   {mapArray(Durations.reverse(), ({ duration, label }) => (
                     <p
-                      className={`${
-                        duration === settings.duration
+                      className={`${duration === settings.duration
                           ? "bg-primary text-white"
                           : "text-black"
-                      } w-10 h-10 text-sm cursor-pointer font-medium flex justify-center items-center rounded-full`}
+                        } w-10 h-10 text-sm cursor-pointer font-medium flex justify-center items-center rounded-full`}
                       onClick={() =>
                         setSettings((v) => ({ ...v, duration: duration }))
                       }
@@ -509,11 +505,10 @@ const CameraActionSettings: React.FC<{}> = () => {
                             speed: v,
                           }))
                         }
-                        className={`${
-                          settings.speed === v
+                        className={`${settings.speed === v
                             ? "bg-primary text-white"
                             : "text-black"
-                        } w-10 h-10 rounded-full flex justify-center items-center cursor-pointer text-xs`}
+                          } w-10 h-10 rounded-full flex justify-center items-center cursor-pointer text-xs`}
                         key={i}
                       >
                         {v}X
@@ -593,7 +588,7 @@ const CameraActionSettings: React.FC<{}> = () => {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                strokeLinejoin="evenodd"
+                strokeLinejoin="inherit"
                 clipRule="evenodd"
                 d="M22 11.0011C22 11.0007 22 11.0004 22 11L22.0001 10.9998H22C21.9999 4.92476 17.0751 0 11 0C4.92487 0 0 4.92487 0 11C0 11.6359 0.0539532 12.2591 0.157531 12.8655L10.9998 141.37L21.8429 12.8629C21.9461 12.2577 21.9999 11.6357 22 11.0011Z"
                 fill="white"
@@ -637,9 +632,8 @@ const CameraActionListMenu: React.FC<{
       })}
 
       <div
-        className={`${
-          open ? "right-[110%]" : "right-1/2 opacity-0"
-        } transition-all origin-right absolute top-1/2 -translate-y-1/2`}
+        className={`${open ? "right-[110%]" : "right-1/2 opacity-0"
+          } transition-all origin-right absolute top-1/2 -translate-y-1/2`}
       >
         {/* @ts-ignore */}
         {children}
