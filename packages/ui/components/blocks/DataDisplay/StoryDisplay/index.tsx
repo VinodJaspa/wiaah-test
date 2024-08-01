@@ -26,18 +26,17 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   return (
     <FloatingContainer className="w-full" {...floatingIcon}>
       <div
-        className={`${
-          seen ? "p-[0.0625rem]" : "p-[0.20rem]"
-        } rounded-[20%] bg-gradient-to-b from-primary to-blue-400`}
+        className={`${seen ? "p-[0.0625rem]" : "p-[0.20rem]"
+          } rounded-full bg-gradient-to-b from-primary to-blue-400`}
       >
-        <div className="w-full h-full overflow-hidden rounded-[20%] bg-white p-[0.125rem]">
+        <div className="w-full h-full overflow-hidden rounded-full bg-white p-[0.125rem]">
           <AspectRatio
             onClick={() => onProfileClick && onProfileClick()}
             className={"cursor-pointer"}
             ratio={1}
           >
             <Image
-              className="w-full h-full rounded-[20%] object-cover"
+              className="w-full h-full rounded-full object-cover"
               src={storyUserData.userPhotoSrc}
             />
           </AspectRatio>
