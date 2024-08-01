@@ -34,7 +34,7 @@ export const RoundedPlusIcon: React.FC<IconBaseProps> = ({ ...props }) => {
       <path
         d="M6.2852 11.5238H14.6662M10.4757 15.7729V7.3333M10.4757 19.9047C15.125 19.9047 18.8566 16.2108 18.8566 11.5615C18.8566 6.91216 15.125 3.14282 10.4757 3.14282C5.82635 3.14282 2.09473 6.91216 2.09473 11.5615C2.09473 16.2108 5.82635 19.9047 10.4757 19.9047Z"
         stroke="currentColor"
-        stroke-width="1.14286"
+        strokeWidth="1.14286"
         strokeLinecap="round"
         stroke-linejoin="round"
       />

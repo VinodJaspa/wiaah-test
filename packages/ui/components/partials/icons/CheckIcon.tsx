@@ -14,14 +14,14 @@ export const CheckmarkCircleFillIcon: React.FC<HtmlSvgProps> = (props) => {
         d="M19 37C28.9411 37 37 28.9411 37 19C37 9.05886 28.9411 0.999985 19 0.999985C9.05886 0.999985 0.999985 9.05886 0.999985 19C0.999985 28.9411 9.05886 37 19 37Z"
         fill="currentColor"
         stroke="currentColor"
-        stroke-width="1.2"
+        strokeWidth="1.2"
         strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M13 19.95L16.3 23.25L24.55 15"
         stroke="white"
-        stroke-width="1.2"
+        strokeWidth="1.2"
         strokeLinecap="round"
         stroke-linejoin="round"
       />
@@ -43,7 +43,7 @@ export const CheckmarkCircleWhiteFillIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M7 15.75L11.6271 19.3489C11.9725 19.6175 12.4696 19.5588 12.743 19.2171L21.5833 8.16666"
         stroke="currentColor"
-        stroke-width="1.41"
+        strokeWidth="1.41"
         strokeLinecap="round"
       />
     </svg>
@@ -89,7 +89,7 @@ export const CheckmarkIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M1.00024 10L6.37735 14.1822C6.72274 14.4508 7.21986 14.3922 7.4932 14.0505L17.6669 1.33334"
         stroke="currentColor"
-        stroke-width="1.41"
+        strokeWidth="1.41"
         strokeLinecap="round"
       />
     </svg>

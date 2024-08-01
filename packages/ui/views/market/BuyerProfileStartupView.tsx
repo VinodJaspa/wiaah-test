@@ -113,7 +113,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
         key: "2",
       },
     ],
-    [],
+    []
   );
 
   const currentStepComp = steps.at(currentStep) || null;
@@ -136,7 +136,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
               cy="50"
               r="48.5"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             />
           </svg>
 
@@ -155,7 +155,7 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
               cy="50"
               r="48.5"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             />
           </svg>
           <div className="bg-primary rounded-full w-10 h-10 text-2xl flex justify-center items-center">

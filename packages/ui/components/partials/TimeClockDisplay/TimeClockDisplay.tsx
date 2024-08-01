@@ -173,7 +173,7 @@ export const TimeClockDisplay: React.FC<TimeClockDisplayProps> = ({
                   cy="18"
                   r="17"
                   stroke="currentColor"
-                  stroke-width="1"
+                  strokeWidth="1"
                 />
               </svg>
             </div>
@@ -194,7 +194,7 @@ export const TimeClockDisplay: React.FC<TimeClockDisplayProps> = ({
                 cy="4"
                 r="2"
                 stroke="currentColor"
-                stroke-width="4"
+                strokeWidth="4"
               />
             </svg>
           </>

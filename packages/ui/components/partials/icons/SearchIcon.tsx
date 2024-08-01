@@ -17,14 +17,14 @@ export const SearchIcon: React.FC<SearchIconProps> = (props) => {
       <path
         d="M7.28571 11.5714C9.65265 11.5714 11.5714 9.65265 11.5714 7.28571C11.5714 4.91878 9.65265 3 7.28571 3C4.91878 3 3 4.91878 3 7.28571C3 9.65265 4.91878 11.5714 7.28571 11.5714Z"
         stroke="black"
-        stroke-width="1.14286"
+        strokeWidth="1.14286"
         strokeLinecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M15.0603 14.9994L10.2852 10.2852"
         stroke="black"
-        stroke-width="1.14286"
+        strokeWidth="1.14286"
         strokeLinecap="round"
         stroke-linejoin="round"
       />

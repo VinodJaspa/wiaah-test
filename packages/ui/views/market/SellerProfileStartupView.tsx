@@ -203,7 +203,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         key: 9,
       },
     ],
-    [],
+    []
   );
 
   const currentStepComp = steps.at(currentStep) || null;
@@ -226,7 +226,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               cy="50"
               r="48.5"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             />
           </svg>
 
@@ -245,7 +245,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               cy="50"
               r="48.5"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             />
           </svg>
           <div className="bg-primary rounded-full w-10 h-10 text-2xl flex justify-center items-center">
@@ -377,7 +377,7 @@ const SellerListingForm = React.forwardRef(
     }: {
       onSuccess: () => any;
     },
-    ref,
+    ref
   ) => {
     const stepperRef = React.useRef<{
       next: () => any;
@@ -419,7 +419,7 @@ const SellerListingForm = React.forwardRef(
               title: "Amazing Service",
               vat: 10.5,
             },
-            { onSuccess },
+            { onSuccess }
           );
         },
       };
@@ -437,7 +437,7 @@ const SellerListingForm = React.forwardRef(
         {/* ) : null} */}
       </div>
     );
-  },
+  }
 );
 
 export const AccountSignEmailVerificationStep = React.forwardRef(
@@ -447,7 +447,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     }: {
       onSuccess: () => any;
     },
-    ref,
+    ref
   ) => {
     const { t } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
@@ -520,7 +520,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
         />
       </div>
     );
-  },
+  }
 );
 
 export const SignupAccountVerificationStep = React.forwardRef(
@@ -542,7 +542,7 @@ export const SignupAccountVerificationStep = React.forwardRef(
         value={data}
       />
     );
-  },
+  }
 );
 
 export const SellerSignupPlansStep = React.forwardRef(
@@ -558,7 +558,7 @@ export const SellerSignupPlansStep = React.forwardRef(
           { id: packageId },
           {
             onSuccess,
-          },
+          }
         );
       },
     }));
@@ -570,5 +570,5 @@ export const SellerSignupPlansStep = React.forwardRef(
         onChange={(id) => setPackageId(id)}
       ></SelectPackageStep>
     );
-  },
+  }
 );

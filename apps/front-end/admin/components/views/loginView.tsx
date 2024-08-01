@@ -92,7 +92,7 @@ export const LoginView: React.FC = () => {
             <path
               d="M799 419C799 628.868 628.868 799 419 799C209.132 799 39 628.868 39 419C39 209.132 209.132 39 419 39C628.868 39 799 209.132 799 419Z"
               stroke="currentColor"
-              stroke-width="77"
+              strokeWidth="77"
             />
           </svg>
         </AspectRatio>

@@ -33,7 +33,7 @@ export const HashtagCircleIcon: React.FC<HtmlSvgProps> = (props) => {
       <path
         d="M25.7251 13.1251L22.5751 28.8751M19.4251 13.1251L16.2751 28.8751M14.7001 17.8501H28.8751M13.1251 24.1501H27.3001"
         stroke="currentColor"
-        stroke-width="1.14286"
+        strokeWidth="1.14286"
         strokeLinecap="round"
         stroke-linejoin="round"
       />
