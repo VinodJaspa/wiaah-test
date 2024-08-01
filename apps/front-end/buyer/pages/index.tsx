@@ -58,7 +58,34 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   },
   {
     storyUserData: {
-      id: "5",
+      id: "6",
+      name: "Jack",
+      userPhotoSrc: "/shop.jpeg",
+    },
+    seen: false,
+  },
+
+  {
+    storyUserData: {
+      id: "7",
+      name: "Jack",
+      userPhotoSrc: "/shop.jpeg",
+    },
+    seen: false,
+  },
+
+  {
+    storyUserData: {
+      id: "8",
+      name: "Jack",
+      userPhotoSrc: "/shop.jpeg",
+    },
+    seen: false,
+  },
+
+  {
+    storyUserData: {
+      id: "9",
       name: "Jack",
       userPhotoSrc: "/shop.jpeg",
     },
@@ -130,7 +157,7 @@ const Buyer: NextPage = () => {
             }
           >
             <RecentStories
-              className="justify-between mx-auto"
+              className="justify-start mx-auto"
               stories={RecentStoriesPlaceHolder}
             />
           </FloatingContainer>
