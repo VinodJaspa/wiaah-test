@@ -38,6 +38,12 @@ module.exports = withTM(
       register: true,
       skipWaiting: true,
     },
+    eslint: {
+      ignoreDuringBuilds: false,
+    },
+    typescript: {
+      ignoreBuildErrors: false,
+    },
     ...nextConfig,
   })
 );
