@@ -123,7 +123,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
               onClick={() => {
                 setCurrentTabIdx(i);
               }}
-              className={`px-2 py-1 cursor-pointer text-lg font-bold`}
+              className={`px-2 pt-0 pb-1 cursor-pointer text-lg font-bold`}
             >
               {PassPropsToFnOrElem<TabTitleChildrenPropsType>(tab.component, {
                 currentTabIdx,
@@ -152,7 +152,7 @@ export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
   children: TabTitleChildrenType;
 }
 export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
-  const { addTitle } = React.useContext(TabsContext);
+  const { addTitle, currentTabIdx } = React.useContext(TabsContext);
 
   React.useEffect(() => {
     addTitle({
@@ -164,7 +164,7 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
           <>{children}</>
         ),
     });
-  }, []);
+  }, [addTitle, children, currentTabIdx, TabKey]);
 
   return null;
 };
@@ -218,6 +218,14 @@ export const TabItem: React.FC<TabItemProps> = ({
           <>{children}</>
         ),
     });
-  }, []);
+  }, [key, children]);
   return null;
+};
+
+export const useTabsContext = () => {
+  const context = React.useContext(TabsContext);
+  if (!context) {
+    throw new Error("useTabsContext must be used within a TabsProvider");
+  }
+  return context;
 };
