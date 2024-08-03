@@ -1,3 +1,4 @@
+import { SocialView } from "@components";
 import { getMyProfileData } from "api";
 import { MyProfileViewCustomed } from "components/views/MyProfile/MyProfileViewCustomed";
 import { GetServerSideProps, NextPage } from "next";
@@ -21,7 +22,7 @@ const myProfile: NextPage = () => {
         <title>Wiaah | MyProfile</title>
       </Head>
       <SellerLayout>
-        <MyProfileViewCustomed />
+        <SocialView />
       </SellerLayout>
     </>
   );
