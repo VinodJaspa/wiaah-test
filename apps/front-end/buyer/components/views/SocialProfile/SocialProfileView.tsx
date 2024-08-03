@@ -4,7 +4,6 @@ import {
   Container,
   PostCardsListWrapper,
   SocialProfile,
-  TabsViewer,
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
   FilterModal,
@@ -17,6 +16,8 @@ import {
   SocialProfileProps,
   Image,
   SocialNewsfeedPostsState,
+  ShopDetailsView,
+  TabsViewer,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -42,9 +43,15 @@ import {
   StoreType,
 } from "@features/API";
 import { SocialActionsView } from "../SocialActionsView";
+import { AffiliationView } from "../AffiliationView";
+import { FaRegNewspaper, FaNewspaper } from "react-icons/fa6";
+import { RiShoppingBagLine, RiShoppingBagFill } from "react-icons/ri";
+import { HiMiniUsers, HiOutlineUsers } from "react-icons/hi2";
+import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
+import { useRouter } from "next/router";
 
 export interface SocialViewProps {
-  profileId: string;
+  profileId?: string;
 }
 
 export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
@@ -62,7 +69,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
   const sellerTabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: t("news_feed", "NEWSFEED"),
       component: (
         <PostCardsListWrapper
           grid={isMobile}
@@ -72,7 +79,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("shop", "shop"),
+      name: t("shop", "SHOP"),
       component: (
         <div className="flex flex-cl gap-4">
           <div className="flex justify-end">
@@ -96,7 +103,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("affiliation offers", "affiliation offers"),
+      name: t("affiliation offers", "AFFILATION"),
       component: (
         <AffiliationOffersCardListWrapper
           grid={isMobile}
@@ -106,25 +113,43 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("actions", "Actions"),
+      name: t("actions", "ACTIONS"),
       component: <SocialActionsView />,
     },
   ];
   const buyerTabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: t("news_feed", "NEWSFEED"),
       component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
+      outlineIcon: <FaRegNewspaper />,
+      solidIcon: <FaNewspaper />,
+    },
+
+    {
+      name: t("shop", "SHOP"),
+      component: <ShopDetailsView id="1" />,
+      outlineIcon: <RiShoppingBagLine />,
+      solidIcon: <RiShoppingBagFill />,
+    },
+
+    {
+      name: t("affiliation", "AFFILIATION"),
+      component: <AffiliationView />,
+      outlineIcon: <HiOutlineUsers />,
+      solidIcon: <HiMiniUsers />,
     },
     {
-      name: t("actions", "Actions"),
+      name: t("actions", "ACTIONS"),
       component: <SocialActionsView />,
+      outlineIcon: <MdOutlineVideoLibrary />,
+      solidIcon: <MdVideoLibrary />,
     },
   ];
   return (
-    <div className="flex flex-col h-full">
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+    <div className="flex flex-col h-full w-9/12 justify-center ">
+      <SpinnerFallback isLoading={false} isError={isError}>
         <Container className="flex-grow flex-col">
-          <div className="w-full flex overflow-hidden relative max-h-[26rem]">
+          <div className="w-full flex overflow-hidden items-center justify-center max-h-[26rem] gap-6 ">
             <SocialProfile
               storeType={FAKE_PROFILE_INFO.user.shop.storeType}
               isFollowed={true}
@@ -133,11 +158,6 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             />
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
-            <Image
-              alt="thumbnail"
-              src={image}
-              className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
-            />
           </div>
           {profileInfo && (
             <>
@@ -150,7 +170,6 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
                         : buyerTabs
                     }
                   ></TabsViewer>
-
                   <Divider className="my-4" />
                 </>
               ) : (
@@ -174,14 +193,14 @@ const FAKE_PROFILE_INFO: SocialProfileProps["profileInfo"] = {
   activeStatus: ActiveStatus.Active,
   bio: "This is a sample bio.",
   createdAt: new Date().toISOString(),
-  followers: 100,
-  following: 50,
+  followers: 1100,
+  following: 1510,
   id: "profile-123",
   lastActive: new Date().toISOString(),
   ownerId: "owner-456",
   photo: getRandomImage(),
   profession: "Software Developer",
-  publications: 2,
+  publications: 143,
   updatedAt: new Date().toISOString(),
   username: "sampleuser",
   visibility: ProfileVisibility.Public,
