@@ -57,7 +57,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     {
       name: "discover",
       icon: <DiscoverOutlineIcon />,
-      activeIcon: <DiscoverIcon className="white" />,
+      activeIcon: <DiscoverIcon />,
       url: "discover",
     },
     {

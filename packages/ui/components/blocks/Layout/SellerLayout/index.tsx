@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
 import { NavigationLinkType } from "types";
+import { getRandomImage } from "@UI";
 import {
   MinimalHeader,
   DiscoverHeader,
@@ -33,6 +34,7 @@ import { getRouting, useRouting } from "routing";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
 import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
+import { GetRecentStoriesInput } from "@features/API";
 
 export const usersProfilesPlaceHolder = [
   {
@@ -178,9 +180,12 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   const { pagination: storiesPagination } = usePaginationControls();
 
-  const { data: stories } = useGetRecentStories({
+  // Graphql is not ready yet
+  const { data: _stories } = useGetRecentStories({
     pagination: storiesPagination,
   });
+
+  const stories = FAKE_STORIES;
 
   const { pagination: hashtagPagi } = usePaginationControls();
   const { data: hashtags } = useGetDiscoverHashtags({
@@ -269,10 +274,9 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                   : undefined,
               }}
               className={`${containerProps?.className || ""
-                } overflow-hidden h-[max(fit,100%)]`}
+                } overflow-hidden h-[max(fit,100%)] flex justify-center `}
               {...containerProps}
             >
-              {/*@ts-ignore*/}
               {children}
             </main>
           </div>
@@ -434,5 +438,56 @@ const SellerNavLinks: HeaderNavLink[] = [
       href: "/logout",
     },
     icon: null,
+  },
+];
+
+const FAKE_STORIES = [
+  {
+    __typename: "RecentStory",
+    newStory: true,
+    userId: "user1",
+    user: {
+      __typename: "Account",
+      id: "account1",
+      profile: {
+        __typename: "Profile",
+        id: "profile1",
+        photo: "https://example.com/photo1.jpg",
+        profession: "Developer",
+        username: "user1",
+      },
+    },
+  },
+  {
+    __typename: "RecentStory",
+    newStory: false,
+    userId: "user2",
+    user: {
+      __typename: "Account",
+      id: "account2",
+      profile: {
+        __typename: "Profile",
+        id: "profile2",
+        photo: "https://example.com/photo2.jpg",
+        profession: "Designer",
+        username: "user2",
+      },
+    },
+  },
+  {
+    __typename: "RecentStory",
+    newStory: true,
+    userId: "user3",
+    user: {
+      __typename: "Account",
+      id: "account3",
+      profile: {
+        __typename: "Profile",
+        id: "profile3",
+        photo: "https://example.com/photo3.jpg",
+        profession: "Product Manager",
+        username: "user3",
+      },
+    },
   },
 ];
