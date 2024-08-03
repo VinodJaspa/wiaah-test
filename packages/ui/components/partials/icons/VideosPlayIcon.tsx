@@ -1,46 +1,56 @@
 import React from "react";
-import { HtmlSvgProps } from "types";
+import { HtmlDivProps, HtmlSvgProps } from "types";
 
-export const VideosPlayIcon: React.FC<HtmlSvgProps> = (props) => {
+import { BiSolidVideos, BiVideo } from "react-icons/bi";
+
+export const VideosPlayIcon: React.FC<HtmlDivProps> = (props) => {
   return (
-    <svg
-      width="1em"
-      height="1em"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <defs>
-        <mask id="icon-mask" x="0" y="0" width="24" height="24">
-          <rect x="0" y="0" width="24" height="24" fill="white" />
-          <path
-            d="M11.8477 11.46C11.8477 11.46 12.0579 11.4909 12.149 11.5456L15.382 13.4856C15.4711 13.5388 15.5448 13.6143 15.596 13.7046C15.6472 13.7948 15.6741 13.8968 15.6741 14.0006C15.6741 14.1044 15.6472 14.2064 15.596 14.2966C15.5448 14.3869 15.4711 14.4624 15.382 14.5156L12.149 16.4556C12.0579 16.5103 11.9539 16.5399 11.8477 16.5412C11.7414 16.5426 11.6367 16.5157 11.5442 16.4633C11.4518 16.4109 11.3749 16.3349 11.3214 16.2431C11.268 16.1513 11.2399 16.0469 11.24 15.9406L11.24 12.0606C11.2399 11.9543 11.268 11.8499 11.3214 11.7581C11.3749 11.6663 11.4518 11.5903 11.5442 11.5379C11.6367 11.4855 11.8477 11.46 11.8477 11.46Z"
-            stroke="black"
-            fill="black"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </mask>
-      </defs>
-      <path
-        d="M20.25 7.6V20.4C20.25 20.5591 20.1868 20.7117 20.0743 20.8243C19.9617 20.9368 19.8091 21 19.65 21H6.85C6.69087 21 6.53826 20.9368 6.42574 20.8243C6.31321 20.7117 6.25 20.5591 6.25 20.4L6.25 7.6C6.25 7.44087 6.31321 7.28826 6.42574 7.17574C6.53826 7.06321 6.69087 7 6.85 7L19.65 7C19.8091 7 19.9617 7.06321 20.0743 7.17574C20.1868 7.28826 20.25 7.44087 20.25 7.6Z"
-        fill="currentColor"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.25 4L3.85 4C3.69087 4 3.53826 4.06321 3.42574 4.17574C3.31321 4.28826 3.25 4.44087 3.25 4.6L3.25 18"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <div {...props}>
+      <BiSolidVideos />
+    </div>
   );
 };
 
+// export const VideosPlayIcon: React.FC<HtmlSvgProps> = (props) => {
+//   return (
+//     <svg
+//       width="1em"
+//       height="1em"
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       {...props}
+//     >
+//       <defs>
+//         <mask id="icon-mask" x="0" y="0" width="24" height="24">
+//           <rect x="0" y="0" width="24" height="24" fill="white" />
+//           <path
+//             d="M11.8477 11.46C11.8477 11.46 12.0579 11.4909 12.149 11.5456L15.382 13.4856C15.4711 13.5388 15.5448 13.6143 15.596 13.7046C15.6472 13.7948 15.6741 13.8968 15.6741 14.0006C15.6741 14.1044 15.6472 14.2064 15.596 14.2966C15.5448 14.3869 15.4711 14.4624 15.382 14.5156L12.149 16.4556C12.0579 16.5103 11.9539 16.5399 11.8477 16.5412C11.7414 16.5426 11.6367 16.5157 11.5442 16.4633C11.4518 16.4109 11.3749 16.3349 11.3214 16.2431C11.268 16.1513 11.2399 16.0469 11.24 15.9406L11.24 12.0606C11.2399 11.9543 11.268 11.8499 11.3214 11.7581C11.3749 11.6663 11.4518 11.5903 11.5442 11.5379C11.6367 11.4855 11.8477 11.46 11.8477 11.46Z"
+//             stroke="black"
+//             fill="black"
+//             strokeWidth="2"
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//           />
+//         </mask>
+//       </defs>
+//       <path
+//         d="M20.25 7.6V20.4C20.25 20.5591 20.1868 20.7117 20.0743 20.8243C19.9617 20.9368 19.8091 21 19.65 21H6.85C6.69087 21 6.53826 20.9368 6.42574 20.8243C6.31321 20.7117 6.25 20.5591 6.25 20.4L6.25 7.6C6.25 7.44087 6.31321 7.28826 6.42574 7.17574C6.53826 7.06321 6.69087 7 6.85 7L19.65 7C19.8091 7 19.9617 7.06321 20.0743 7.17574C20.1868 7.28826 20.25 7.44087 20.25 7.6Z"
+//         fill="currentColor"
+//         stroke="currentColor"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//       <path
+//         d="M17.25 4L3.85 4C3.69087 4 3.53826 4.06321 3.42574 4.17574C3.31321 4.28826 3.25 4.44087 3.25 4.6L3.25 18"
+//         stroke="currentColor"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </svg>
+//   );
+// };
+//
 export const VideosOutlinePlayIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
