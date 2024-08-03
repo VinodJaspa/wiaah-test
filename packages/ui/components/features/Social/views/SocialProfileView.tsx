@@ -41,6 +41,7 @@ import {
 } from "@features/API";
 import { useRouting } from "@UI/../routing";
 import { TabType } from "types";
+import { IconType } from "react-icons";
 
 export interface SocialViewProps {
   username: string;
@@ -99,7 +100,7 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
 
   const showOn = (types: AccountType[]) =>
     types.includes(
-      (profileInfo.user?.accountType as AccountType) || AccountType.Buyer,
+      (profileInfo.user?.accountType as AccountType) || AccountType.Buyer
     );
 
   const tabValue = parseInt(idx || "0");
@@ -110,21 +111,21 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
     .concat(
       showOn([AccountType.Seller])
         ? [
-            productsShop
-              ? {
-                  name: ShoppingBagIcon,
-                  component: ShoppingBagOutlineIcon,
-                }
-              : {
-                  name: ServicesIcon,
-                  component: ServicesOutlineIcon,
-                },
-            {
-              name: AffiliationIcon,
-              component: AffiliationIconOutline,
+          productsShop
+            ? {
+              name: ShoppingBagIcon,
+              component: ShoppingBagOutlineIcon,
+            }
+            : {
+              name: ServicesIcon,
+              component: ServicesOutlineIcon,
             },
-          ]
-        : [],
+          {
+            name: AffiliationIcon,
+            component: AffiliationIconOutline,
+          },
+        ]
+        : []
     )
     .concat([
       {
@@ -165,11 +166,10 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
                     <SimpleTabHead>
                       {tabs.map((v, i) => (
                         <div
-                          className={`${
-                            tabValue === i
+                          className={`${tabValue === i
                               ? "border-black"
                               : "border-transparent"
-                          } border-b-2 pb-2 px-4`}
+                            } border-b-2 pb-2 px-4`}
                         >
                           {runIfFn(tabValue === i ? v.name : v.component)}
                         </div>
