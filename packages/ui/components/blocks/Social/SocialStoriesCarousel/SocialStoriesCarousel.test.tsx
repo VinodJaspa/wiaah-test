@@ -1,8 +1,8 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { SocialStoryContentData } from "@UI/../types/src";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import { RecoilRoot } from "recoil";
-import { SocialStoryContentData } from "types/market/Social";
 import { SocialStoriesCarousel } from "./";
 
 const selectors = {
