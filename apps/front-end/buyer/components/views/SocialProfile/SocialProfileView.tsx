@@ -18,6 +18,11 @@ import {
   SocialNewsfeedPostsState,
   ShopDetailsView,
   TabsViewer,
+  AffiliationIconOutline,
+  AffiliationIcon,
+  ShoppingCartOutlineIcon,
+  ShoppingCartIcon,
+  SocialProfileShopPostsList,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -101,6 +106,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           />
         </div>
       ),
+
+      outlineIcon: <ShoppingCartOutlineIcon />,
+      solidIcon: <ShoppingCartIcon />,
     },
     {
       name: t("affiliation offers", "AFFILATION"),
@@ -127,7 +135,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
     {
       name: t("shop", "SHOP"),
-      component: <ShopDetailsView id="1" />,
+      component: <SocialProfileShopPostsList userId={profileId || "3"} />,
       outlineIcon: <RiShoppingBagLine />,
       solidIcon: <RiShoppingBagFill />,
     },
@@ -135,8 +143,8 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     {
       name: t("affiliation", "AFFILIATION"),
       component: <AffiliationView />,
-      outlineIcon: <HiOutlineUsers />,
-      solidIcon: <HiMiniUsers />,
+      outlineIcon: <AffiliationIconOutline />,
+      solidIcon: <AffiliationIcon />,
     },
     {
       name: t("actions", "ACTIONS"),
