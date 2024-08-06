@@ -22,7 +22,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
     let postion = 0;
     const newItems: { item: T; postion: number }[] = [];
 
-    items.map((item) => {
+    items.forEach((item) => {
       if (postion >= cols) postion = 0;
       newItems.push({ item, postion });
       postion++;
@@ -30,6 +30,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
 
     return newItems;
   }
+
   return (
     <div
       className={`flex justify-between w-full ${gap ? "gap-4" : ""}`}
@@ -45,14 +46,14 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
         >
           {sort(children || [], cols).map(
             ({ item, postion }, i) =>
-              postion == index && (
+              postion === index && (
                 <div
-                  className="flex flex-col gap-4"
+                  className={`list-wrapper-item flex flex-col gap-4 w-full`}
+                  style={{ aspectRatio: "1 / 1" }}
                   {...itemProps}
                   data-testid="ListWrapperItem"
                   key={i}
                 >
-                  {/*@ts-ignore*/}
                   {item}
                 </div>
               )
