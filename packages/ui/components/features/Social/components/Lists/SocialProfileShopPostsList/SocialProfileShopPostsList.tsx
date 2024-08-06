@@ -1,17 +1,29 @@
 import { GridListOrganiser, usePaginationControls } from "@blocks";
-import { useGetProfileShopPosts } from "@features/Social/services";
+import {
+  GetProfileShopPostsQuery,
+  useGetProfileShopPosts,
+} from "@features/Social/services";
 import { Image, ScrollPaginationWrapper } from "@partials";
 import React from "react";
 import { useResponsive } from "@UI/../hooks";
+import {
+  AccountType,
+  CashbackType,
+  PostVisibility,
+  PresentationType,
+  ProfileVisibility,
+} from "@features/API";
+import { getRandomImage } from "@UI/placeholder";
 
 export const SocialProfileShopPostsList: React.FC<{
   userId: string;
 }> = ({ userId }) => {
   const { controls, pagination } = usePaginationControls();
-  const { data: items } = useGetProfileShopPosts({
+  const { data: _items } = useGetProfileShopPosts({
     pagination,
     authorId: userId,
   });
+  const items = FAKE_ITEMS;
 
   const { isMobile, isTablet } = useResponsive();
 
@@ -233,3 +245,59 @@ export const SocialProfileShopPostsList: React.FC<{
     </ScrollPaginationWrapper>
   );
 };
+
+const FAKE_ITEMS: GetProfileShopPostsQuery["getUserProductPosts"] = [
+  {
+    __typename: "ProductPost",
+    id: "post-001",
+    visibility: PostVisibility.Public,
+    shares: 10,
+    comments: 5,
+    reactionNum: 20,
+    productId: "product-001",
+    views: 100,
+    product: {
+      __typename: "Product",
+      id: "product-001",
+      presentations: [
+        {
+          src: getRandomImage(),
+          type: PresentationType.Image, // Adjust this based on the actual PresentationType values
+        },
+      ],
+
+      hashtags: ["#example", "#test"],
+      title: "Sample Product 1",
+      cashback: {
+        __typename: "Cashback",
+        amount: 10,
+        id: "cashback-001",
+        type: CashbackType.Cash, // Adjust this based on the actual CashbackType values
+        units: 5,
+      },
+      discount: {
+        __typename: "Discount",
+        amount: 20,
+        id: "discount-001",
+        units: 3,
+      },
+
+      price: 50,
+      thumbnail: "http://example.com/product1-thumbnail.jpg",
+    },
+    user: {
+      __typename: "Account",
+      id: "user-001",
+      accountType: AccountType.Seller,
+      profile: {
+        __typename: "Profile",
+        photo: "http://example.com/user1-photo.jpg",
+        username: "user1",
+        verified: true,
+        id: "profile-001",
+        profession: "Photographer",
+        visibility: ProfileVisibility.Public,
+      },
+    },
+  },
+];
