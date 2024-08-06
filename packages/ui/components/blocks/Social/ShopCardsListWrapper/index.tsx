@@ -2,6 +2,7 @@ import React from "react";
 import { useRouting } from "routing";
 import {
   GridListOrganiser,
+  ListWrapper,
   SocialShopCardProps,
   ListWrapperProps,
   useShopPostPopup,
@@ -31,179 +32,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
   const { isMobile, isTablet } = useResponsive();
   return (
     <>
-      <GridListOrganiser
-        rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
-        presets={
-          isMobile
-            ? [
-              {
-                cols: 3,
-                points: [
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                ],
-              },
-              {
-                cols: 3,
-                points: [
-                  { c: 2, r: 2 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 2, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 2, r: 1 },
-                  { c: 1, r: 1 },
-                ],
-              },
-
-              {
-                cols: 2,
-                points: [
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                ],
-              },
-            ]
-            : [
-              {
-                cols: 5,
-                points: [
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                ],
-              },
-              {
-                cols: 5,
-                points: [
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 2 },
-                  { c: 2, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                ],
-              },
-
-              {
-                cols: 4,
-                points: [
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                ],
-              },
-            ]
-        }
-      >
+      <ListWrapper cols={cols}>
         {items.map((shop, i) => (
           <SocialShopPostcard
             key={i}
@@ -211,7 +40,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
             profileInfo={shop.profileInfo}
           />
         ))}
-      </GridListOrganiser>
+      </ListWrapper>
     </>
   );
 };
