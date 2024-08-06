@@ -184,7 +184,7 @@ export const rentalsPh = [
 
 export const getRandomServiceImage = (
   type: ServiceType,
-  menuType?: RestaurantDishType,
+  menuType?: RestaurantDishType
 ) => {
   const getRandom = (imgs: string[]) => imgs[randomNum(imgs.length)];
   switch (type) {
@@ -368,7 +368,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-    Math.floor(Math.random() * postProfilesPlaceholder.length)
+  Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -1175,7 +1175,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
     profileInfo: {
       id: "user123",
       verified: true,
-      photo: "http://example.com/photo.jpg",
+      photo: getRandomImage(),
       username: "john_doe",
       profession: "Software Developer",
     },
@@ -1190,7 +1190,127 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
         id: "product789",
         presentations: [
           {
-            src: "http://",
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user33",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "post456",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user223",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "post456",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user12253",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "post456",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: getRandomImage(),
             type: PresentationType.Image,
           },
         ],
