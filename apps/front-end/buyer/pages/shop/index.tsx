@@ -3,7 +3,7 @@ import React from "react";
 import { SellerLayout } from "ui";
 import { SellerShopView } from "../../components";
 
-interface SellerShopProps {}
+interface SellerShopProps { }
 
 const SellerShop: React.FC<SellerShopProps> = () => {
   return (

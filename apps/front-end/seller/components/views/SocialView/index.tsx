@@ -14,10 +14,15 @@ import {
   SocialProfileProps,
   SocialNewsfeedPostsState,
   TabsViewer,
+  SocialProfileShopPostsList,
+  ShopCardsListWrapper,
+  SocialShopsPostCardPlaceholder,
+  FilterModal,
+  SocialShopPostcardProps,
 } from "ui";
 import { useGetSocialProfile } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
-import { TabType } from "types";
+import { CashbackType, PresentationType, TabType } from "types";
 import { useRecoilValue } from "recoil";
 import { useTranslation } from "react-i18next";
 import {
@@ -34,6 +39,7 @@ import { RiShoppingBagLine, RiShoppingBagFill } from "react-icons/ri";
 import { HiMiniUsers, HiOutlineUsers } from "react-icons/hi2";
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import ShopView from "pages/shop/[id]";
+import { FaChevronDown } from "react-icons/fa";
 
 export interface SocialViewProps {
   profileId: string;
@@ -55,53 +61,39 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "NEWSFEED"),
-      component: (
-        <PostCardsListWrapper
-          grid={isMobile}
-          cols={cols}
-          posts={newsfeedPosts}
-        />
-      ),
+      component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
       outlineIcon: <FaRegNewspaper />,
       solidIcon: <FaNewspaper />,
     },
     {
       name: t("shop", "SHOP"),
 
-      component: <ShopView />,
-      // component: (
-      //   <div className="flex flex-cl gap-4 w-full h-full">
-      //     <div className="flex justify-end">
-      //       <div
-      //         onClick={() => {
-      //           setFilterOpen(true);
-      //         }}
-      //         className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
-      //       >
-      //         <samp>{t("Filter", "Filter")}</samp>
-      //         <FaChevronDown className="ml-2" />
-      //       </div>
-      //     </div>
-      //     <FilterModal />
-      //     <ShopCardsListWrapper
-      //       grid={isMobile}
-      //       cols={cols}
-      //       items={SocialShopsPostCardPlaceholder}
-      //     />
-      //   </div>
-      // ),
+      component: (
+        <div className="flex flex-col gap-4 w-full h-full">
+          <div className="flex justify-end">
+            <div
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs "
+            >
+              <samp>{t("Filter", "Filter")}</samp>
+              <FaChevronDown className="ml-2" />
+            </div>
+          </div>
+          <FilterModal />
+          <ShopCardsListWrapper
+            cols={cols}
+            items={SocialShopsPostCardPlaceholder}
+          />
+        </div>
+      ),
       outlineIcon: <RiShoppingBagLine />,
       solidIcon: <RiShoppingBagFill />,
     },
     {
-      name: t("affiliation offers", "AFFILATION"),
-      component: (
-        <AffiliationOffersCardListWrapper
-          grid={isMobile}
-          cols={cols}
-          items={socialAffiliationCardPlaceholders}
-        />
-      ),
+      name: t("affiliation", "AFFILIATION"),
+      component: <AffiliationView />,
       outlineIcon: <HiOutlineUsers />,
       solidIcon: <HiMiniUsers />,
     },
@@ -122,7 +114,26 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
     {
       name: t("shop", "SHOP"),
-      component: <ShopView />,
+      component: (
+        <div className="flex flex-col gap-4 w-full h-full">
+          <div className="flex justify-end">
+            <div
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs "
+            >
+              <samp>{t("Filter", "Filter")}</samp>
+              <FaChevronDown className="ml-2" />
+            </div>
+          </div>
+          <FilterModal />
+          <ShopCardsListWrapper
+            cols={cols}
+            items={SocialShopsPostCardPlaceholder}
+          />
+        </div>
+      ),
       outlineIcon: <RiShoppingBagLine />,
       solidIcon: <RiShoppingBagFill />,
     },
