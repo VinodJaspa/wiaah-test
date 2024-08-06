@@ -42,8 +42,8 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                   <div
                     onClick={() => setCurrentTabIdx(i)}
                     className={`flex items-center gap-2 space-x-2  font-semibold text-xs leading-none ${currentTabIdx === i
-                        ? "border-t-2 py-2.5 border-black text-black fill-black "
-                        : "border-none py-3 text-[#8E8E8E]"
+                        ? "border-t-2 py-[22px] border-black text-black fill-black "
+                        : "border-none py-6 text-[#8E8E8E]"
                       }`}
                   >
                     <>
