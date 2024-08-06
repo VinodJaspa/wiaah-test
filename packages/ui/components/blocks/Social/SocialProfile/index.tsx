@@ -87,6 +87,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   tabsSet,
 }) => {
   const router = useRouter();
+  const myprofile = router.route === "/myprofile";
   const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
   const { visit } = useRouting();
@@ -131,10 +132,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   if (!profileInfo) return null;
 
   return (
-    <div
-      className={`flex w-fit items-center gap-14 mt-8 ${router.route === "/myprofile" && "mb-5"
-        } `}
-    >
+    <div className={`flex w-fit items-center gap-14 mt-8 mb-6`}>
       {/*<div className="flex text-white justify-between px-4 items-center absolute top-0 left-0 z-10 w-full">
         <ArrowLeftIcon className="text-xl w-10" />
         <HStack className="text-lg">
@@ -180,24 +178,36 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       <div className="flex h-full">
         <Avatar
           onClick={() => setStoryProfileId(profileInfo.id)}
-          className="w-[8.625rem] object-cover h-[8.625rem] border-4 border-white shadow-md z-10"
+          className="w-[9.5rem] object-cover h-[9.5rem] border-4 border-white shadow-md z-10"
           src={profileInfo.photo}
         ></Avatar>
       </div>
 
-      <div className="flex flex-col gap-5 mb-6">
-        {router.route != "/myprofile" && (
-          <div className="flex gap-12">
-            <div className="flex items-center gap-12">
-              <div className="flex gap-2 items-center">
-                <p className="text-xl ">{profileInfo.username}</p>
-                <>
-                  {profileInfo.verified ? (
-                    <VerifiedIcon className="text-base text-primary" />
-                  ) : null}
-                </>
-              </div>
+      <div className="flex flex-col gap-4">
+        <div className={`flex gap-12 `}>
+          <div
+            className={`flex items-center ${myprofile ? "justify-between w-full" : "gap-12"
+              }`}
+          >
+            <div className="flex gap-2 items-center">
+              <p className="text-xl font-semibold ">{profileInfo.username}</p>
+              <>
+                {profileInfo.verified ? (
+                  <VerifiedIcon className="text-base text-primary" />
+                ) : null}
+              </>
+            </div>
 
+            {myprofile ? (
+              <Button
+                colorScheme="gray"
+                disabled={isPrivateForUser}
+                onClick={handleFollowProfile}
+                className=" whitespace-nowrap w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center "
+              >
+                {t("Edit Profile")}
+              </Button>
+            ) : (
               <HStack className="gap-3 flex ">
                 <Button
                   colorScheme="darkbrown"
@@ -228,9 +238,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   <SlCalender />
                 </Button>
               </HStack>
-            </div>
+            )}
           </div>
-        )}
+        </div>
 
         <div className="flex flex-col gap-4">
           <Stack
@@ -310,18 +320,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             <p className="font-semibold text-sm">Bio</p>
             <p className=" text-sm">{profileInfo.bio}</p>
           </div>
-
-          {router.route === "/myprofile" && (
-            <Button
-              colorScheme="gray"
-              disabled={isPrivateForUser}
-              onClick={handleFollowProfile}
-              className=" whitespace-nowrap w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center "
-            >
-              <TbEdit className="h-4 w-4" />
-              {t("Edit Profile")}
-            </Button>
-          )}
         </div>
       </div>
 
