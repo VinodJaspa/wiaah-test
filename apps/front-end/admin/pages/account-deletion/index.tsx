@@ -203,7 +203,7 @@ const FAKE_REQUESTS: AdminGetAccountDeletionRequestsQuery["getAccountDeletionReq
       createdAt: "2023-05-20T00:00:00Z",
       account: {
         __typename: "Account",
-        photo: "https://example.com/photo3.jpg",
+        photo: getRandomImage(),
         firstName: "Alice",
         lastName: "Johnson",
         email: "alice.johnson@example.com",
