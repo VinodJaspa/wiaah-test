@@ -237,7 +237,8 @@ export const PostCardPlaceHolder: PostCardInfo = {
     numberOfShares: 13,
     id: "1",
     tags: ["mood", "new"],
-    thumbnail: getRandomImage(),
+    thumbnail:
+      "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
     content:
       "Lorem ipsum dolor sectetur adipisicing elit. Beatae harum quaerat hic laudantium. Quisquam hic culpa odit aliquid obcaecati ea eaque! Modi facere eos, totam eligendi possimus atque in corporis?or sit amet consectetur adipisicing elit. Beatae harum quaerat hic laudantium.",
     numberOfComments: 5,
@@ -968,7 +969,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "4",
       attachments: [
         {
-          src: "getRandomImage()",
+          src: getRandomImage(),
           type: "image",
           postLocation: "New York",
         },
