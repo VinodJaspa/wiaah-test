@@ -2,10 +2,11 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { SocialProfileInfo, postProfilesPlaceholder } from "placeholder";
-import { MasterLayout, SocialView } from "@components";
+import { MasterLayout } from "@components";
 import { products } from "placeholder";
 import { SocialProfileData } from "api";
 import { AccountType } from "types";
+import { SocialView } from "ui";
 
 interface SocialPageProps {
   profile: SocialProfileData;

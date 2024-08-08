@@ -3,8 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { QueryClient, dehydrate } from "react-query";
-import { SellerLayout } from "ui";
-import { MyProfileView } from "../../components/views/MyProfile/MyProfileView";
+import { SellerLayout, SocialView } from "ui";
 
 interface MyProfilePageProps { }
 
@@ -29,7 +28,7 @@ const MyProfile: NextPage = () => {
         <title>Wiaah | MyProfile</title>
       </Head>
       <SellerLayout>
-        <MyProfileView />
+        <SocialView />
       </SellerLayout>
     </>
   );

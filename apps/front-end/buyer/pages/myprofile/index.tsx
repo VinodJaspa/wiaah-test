@@ -1,4 +1,3 @@
-import { SocialView } from "@components";
 import { getMyProfileData } from "api";
 import { MyProfileViewCustomed } from "components/views/MyProfile/MyProfileViewCustomed";
 import { GetServerSideProps, NextPage } from "next";
@@ -7,6 +6,7 @@ import React from "react";
 import { QueryClient, dehydrate } from "react-query";
 import { SellerLayout } from "ui";
 import { MyProfileView } from "../../components/views/MyProfile/MyProfileView";
+import { SocialView } from "ui";
 
 interface MyProfilePageProps { }
 

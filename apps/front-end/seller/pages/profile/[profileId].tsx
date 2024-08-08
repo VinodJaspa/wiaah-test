@@ -4,7 +4,7 @@ import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { getSocialProfileData } from "api";
 import { SellerLayout, useGetSocialProfile } from "ui";
-import { SocialView } from "components/views/SocialView";
+import { SocialView } from "ui";
 
 interface ProfilePageProps {
   profileId: string | null;
