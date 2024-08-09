@@ -8,6 +8,7 @@ export interface ListWrapperProps {
   listProps?: HtmlDivProps;
   itemProps?: HtmlDivProps;
   props?: HtmlDivProps;
+  squareItem?: boolean;
 }
 
 export const ListWrapper: React.FC<ListWrapperProps> = ({
@@ -17,6 +18,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
   props,
   listProps,
   itemProps,
+  squareItem = true,
 }) => {
   function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
     let postion = 0;
@@ -33,7 +35,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
 
   return (
     <div
-      className={`flex justify-between w-full ${gap ? "gap-4" : ""}`}
+      className={`flex justify-between w-full ${gap ? "gap-4" : "gap-1"}`}
       {...props}
     >
       {[...Array(cols)].map((_, index) => (
@@ -41,15 +43,15 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
           {...listProps}
           data-testid="ListWrapperListContainer"
           style={{ width: `${100 / cols}%` }}
-          className={`${gap ? "gap-4" : ""} flex flex-col`}
+          className={`${gap ? "gap-4" : "gap-1"} flex flex-col`}
           key={index}
         >
           {sort(children || [], cols).map(
             ({ item, postion }, i) =>
               postion === index && (
                 <div
-                  className={`list-wrapper-item flex flex-col gap-4 w-full`}
-                  style={{ aspectRatio: "1 / 1" }}
+                  className={`list-wrapper-item flex flex-col gap-4 w-full ${squareItem ? "aspect-square" : "aspect-[3/4]"
+                    }`}
                   {...itemProps}
                   data-testid="ListWrapperItem"
                   key={i}
