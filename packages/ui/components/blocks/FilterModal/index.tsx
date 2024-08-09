@@ -11,9 +11,9 @@ import {
   CloseIcon,
 } from "@UI";
 import { categories } from "placeholder";
-import { useModalDisclouser } from "hooks";
 import { useReactPubsub } from "react-pubsub";
 import { ProductCategoryStatus } from "@features/API";
+import { useModalDisclouser } from "@UI/../hooks";
 
 export interface FilterModalProps { }
 
