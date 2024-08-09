@@ -69,7 +69,7 @@ export const getServicePostsMetaDataFetcher = (
           postalCode: 43243,
           countryCode: "US",
         },
-        bio: "This is a sample bio.",
+        bio: "This is a a bit long bio smaple to check the design .",
         links: ["https://example.com"],
         isFollowed: false,
         profileCoverPhoto: "https://example.com/profile-cover.jpg",
