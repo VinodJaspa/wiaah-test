@@ -32,3 +32,4 @@ export * from "./SocialStoriesCarousel";
 export * from "./StoriesProgressBars";
 export * from "./StorySeenByPopup";
 export * from "./SocialView";
+export * from "./ServiceCardListWrapper";
