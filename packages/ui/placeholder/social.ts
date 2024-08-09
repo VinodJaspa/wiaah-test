@@ -50,6 +50,7 @@ import {
   ServicePostData,
   SocialAffiliationCardProps,
   SocialShopPostcardProps,
+  SocialServicesPostCardProps,
 } from "..";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
@@ -1170,6 +1171,156 @@ export const stringplaceholder =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
+
+export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
+  {
+    profileInfo: {
+      id: "profile123",
+      username: "john_doe",
+      photo: getRandomImage(),
+      profession: "Software Engineer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 35,
+      views: 1020,
+      comments: 18,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Cleaning",
+        hashtags: ["#cleaning", "#home", "#service"],
+      },
+    },
+    discount: 15,
+    price: 100,
+    cashback: 5,
+  },
+  {
+    profileInfo: {
+      id: "profile789",
+      username: "jane_smith",
+      photo: getRandomImage(),
+      profession: "Graphic Designer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post789",
+      reactionNum: 250,
+      shares: 50,
+      views: 2000,
+      comments: 45,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Graphic Design",
+        hashtags: ["#design", "#graphics", "#service"],
+      },
+    },
+    discount: 10,
+    price: 200,
+    cashback: 20,
+  },
+  {
+    profileInfo: {
+      id: "profile456",
+      username: "michael_brown",
+      photo: getRandomImage(),
+      profession: "Photographer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post123",
+      reactionNum: 80,
+      shares: 20,
+      views: 800,
+      comments: 10,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Photography",
+        hashtags: ["#photography", "#photo", "#service"],
+      },
+    },
+    discount: 5,
+    price: 150,
+    cashback: 10,
+  },
+
+  {
+    profileInfo: {
+      id: "profile123",
+      username: "john_doe",
+      photo: getRandomImage(),
+      profession: "Software Engineer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 35,
+      views: 1020,
+      comments: 18,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Cleaning",
+        hashtags: ["#cleaning", "#home", "#service"],
+      },
+    },
+    discount: 15,
+    price: 100,
+    cashback: 5,
+  },
+
+  {
+    profileInfo: {
+      id: "profile123",
+      username: "john_doe",
+      photo: getRandomImage(),
+      profession: "Software Engineer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 35,
+      views: 1020,
+      comments: 18,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Cleaning",
+        hashtags: ["#cleaning", "#home", "#service"],
+      },
+    },
+    discount: 15,
+    price: 100,
+    cashback: 5,
+  },
+
+  {
+    profileInfo: {
+      id: "profile123",
+      username: "john_doe",
+      photo: getRandomImage(),
+      profession: "Software Engineer",
+    },
+    postInfo: {
+      createdAt: new Date().toISOString(),
+      id: "post456",
+      reactionNum: 120,
+      shares: 35,
+      views: 1020,
+      comments: 18,
+      service: {
+        thumbnail: getRandomImage(),
+        title: "Cleaning",
+        hashtags: ["#cleaning", "#home", "#service"],
+      },
+    },
+    discount: 15,
+    price: 100,
+    cashback: 5,
+  },
+];
 
 export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
   {
