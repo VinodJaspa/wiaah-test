@@ -5,7 +5,6 @@ import {
   PostCardsListWrapper,
   SocialProfile,
   AffiliationOffersCardListWrapper,
-  useResponsive,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SpinnerFallback,
@@ -21,6 +20,12 @@ import {
   SocialShopPostcardProps,
   VideoThumbnail,
   ListWrapper,
+  NewsFeedIcon,
+  NewsFeedOutlineIcon,
+  ServicesOutlineIcon,
+  ServicesIcon,
+  ServiceCardsListWrapper,
+  SocialServicePostCardPlaceholder,
 } from "ui";
 import { useGetSocialProfile } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
@@ -47,6 +52,10 @@ import {
   AffiliationIconOutline,
   AffiliationIcon,
 } from "@UI";
+import { NumberShortner } from "@UI/../utils/src";
+import classNames from "classnames";
+import { useResponsive } from "@UI/../hooks";
+import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
 
 export interface SocialViewProps {
   profileId?: string;
@@ -69,58 +78,12 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
   const profileInfo = FAKE_DATA.data;
 
-  // const sellerTabs: TabType[] = [
-  //   {
-  //     name: t("news_feed", "NEWSFEED"),
-  //     component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
-  //     outlineIcon: <FaRegNewspaper />,
-  //     solidIcon: <FaNewspaper />,
-  //   },
-  //   {
-  //     name: t("shop", "SHOP"),
-  //
-  //     component: (
-  //       <div className="flex flex-col gap-4 w-full h-full">
-  //         <div className="flex justify-end">
-  //           <div
-  //             onClick={() => {
-  //               setFilterOpen(true);
-  //             }}
-  //             className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs "
-  //           >
-  //             <samp>{t("Filter", "Filter")}</samp>
-  //             <FaChevronDown className="ml-2" />
-  //           </div>
-  //         </div>
-  //         <FilterModal />
-  //         <ShopCardsListWrapper
-  //           cols={cols}
-  //           items={SocialShopsPostCardPlaceholder}
-  //         />
-  //       </div>
-  //     ),
-  //     outlineIcon: <ShoppingCartOutlineIcon />,
-  //     solidIcon: <ShoppingCartIcon />,
-  //   },
-  //   {
-  //     name: t("affiliation", "AFFILIATION"),
-  //     component: <AffiliationView />,
-  //     outlineIcon: <AffiliationIconOutline />,
-  //     solidIcon: <AffiliationIcon />,
-  //   },
-  //   {
-  //     name: t("actions", "ACTIONS"),
-  //     component: <SocialActionsView />,
-  //     outlineIcon: <MdOutlineVideoLibrary />,
-  //     solidIcon: <MdVideoLibrary />,
-  //   },
-  // ];
   const buyerTabs: TabType[] = [
     {
       name: t("news_feed", "NEWSFEED"),
       component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
-      outlineIcon: <FaRegNewspaper className="w-full h-full" />,
-      solidIcon: <FaNewspaper className="w-full h-full" />,
+      outlineIcon: <NewsFeedOutlineIcon className="w-full h-full" />,
+      solidIcon: <NewsFeedIcon className="w-full h-full" />,
     },
     {
       name: t("shop", "SHOP"),
@@ -151,8 +114,38 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       solidIcon: <ShoppingCartIcon className="w-full h-full" />,
     },
     {
+      name: t("service", "SERVICE"),
+
+      component: (
+        <div className="flex flex-col gap-4 w-full h-full">
+          <div className="flex justify-end">
+            <div
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs "
+            >
+              <samp>{t("Filter", "Filter")}</samp>
+              <FaChevronDown className="ml-2" />
+            </div>
+          </div>
+          <FilterModal />
+          <ServiceCardsListWrapper
+            cols={cols}
+            items={SocialServicePostCardPlaceholder}
+          />
+        </div>
+      ),
+      outlineIcon: (
+        <ServicesOutlineIcon className="w-full h-full text-[#8E8E8E]" />
+      ),
+      solidIcon: <ServicesIcon className="w-full h-full" />,
+    },
+    {
       name: t("affiliation", "AFFILIATION"),
-      component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
+      component: (
+        <AffiliationCardsListWrapper cols={cols} posts={newsfeedPosts} />
+      ),
       outlineIcon: (
         <AffiliationIconOutline className=" text-black w-full h-full " />
       ),
@@ -161,11 +154,20 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     {
       name: t("actions", "ACTIONS"),
       component: (
-        <ListWrapper>
-          {FAKE_VIDEOS.map((video) => (
+        <ListWrapper
+          listProps={{
+            className: "gap-1 md:gap-4 flex flex-col",
+          }}
+          props={{
+            className: "flex justify-between md:w-fit w-full gap-1 md:gap-4",
+          }}
+          cols={cols}
+        >
+          {FAKE_VIDEOS.map((video, i) => (
             <VideoThumbnail
+              key={i}
               videoSrc={video.videoSrc}
-              views={parseInt(video.videoSrc)}
+              views={NumberShortner(video.views)}
               description={video.description}
             />
           ))}
@@ -295,28 +297,48 @@ const FAKE_DATA = {
 
 const FAKE_VIDEOS = [
   {
-    videoSrc:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
     views: 230,
     description: "This is a short video description.",
   },
   {
-    videoSrc:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
     views: 450,
     description: "This is a short video description.",
   },
 
   {
-    videoSrc:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
     views: 1100,
     description: "This is a short video description.",
   },
 
   {
-    videoSrc:
-      "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: 7800,
+    description: "This is a short video description.",
+  },
+
+  {
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: 7800,
+    description: "This is a short video description.",
+  },
+
+  {
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: 7800,
+    description: "This is a short video description.",
+  },
+
+  {
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: 7800,
+    description: "This is a short video description.",
+  },
+
+  {
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
     views: 7800,
     description: "This is a short video description.",
   },
