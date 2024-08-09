@@ -218,7 +218,7 @@ export const TabItem: React.FC<TabItemProps> = ({
           <>{children}</>
         ),
     });
-  }, [key, children]);
+  }, [key, children, addTab]);
   return null;
 };
 
