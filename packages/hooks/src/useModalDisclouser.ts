@@ -1,34 +1,31 @@
 import React from "react";
 
-interface useModalDisclouserProps {
-  onClose?: () => any;
-  onOpen?: () => any;
+interface UseModalDisclosureProps {
+  onClose?: () => void;
+  onOpen?: () => void;
 }
 
-interface useModalDisclouserReturn {
+interface UseModalDisclosureReturn {
   isOpen: boolean;
-  handleOpen: () => any;
-  handleClose: () => any;
+  handleOpen: () => void;
+  handleClose: () => void;
 }
 
 export const useModalDisclouser = (
-  props: useModalDisclouserProps = {
-    onClose: () => {},
-    onOpen: () => {},
-  }
-): useModalDisclouserReturn => {
+  props: UseModalDisclosureProps = {}
+): UseModalDisclosureReturn => {
   const { onClose, onOpen } = props;
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  function handleClose() {
+  const handleClose = React.useCallback(() => {
     setIsOpen(false);
-    onClose && onClose();
-  }
+    onClose?.();
+  }, [onClose]);
 
-  function handleOpen() {
+  const handleOpen = React.useCallback(() => {
     setIsOpen(true);
-    onOpen && onOpen();
-  }
+    onOpen?.();
+  }, [onOpen]);
 
   return {
     isOpen,
