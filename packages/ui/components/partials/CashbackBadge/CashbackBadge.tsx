@@ -18,9 +18,8 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
   return (
     <span
       {...props}
-      className={`${
-        props ? props.className || "" : ""
-      } px-4 gap-2 py-1 flex flex-nowrap rounded text-white bg-red-500 whitespace-nowrap`}
+      className={`${props ? props.className || "" : ""
+        } md:px-4 px-1 md:gap-2 gap-0.5 py-1 flex flex-nowrap md:rounded-lg rounded text-white bg-[#3CD399] whitespace-nowrap`}
     >
       {type === "cash" ? (
         <PriceDisplay price={amount} />
