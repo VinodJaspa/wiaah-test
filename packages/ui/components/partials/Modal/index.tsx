@@ -116,9 +116,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         zIndex: z,
       }}
       className={`${className || ""} ${isOpen
-          ? "-translate-y-1/2 p-4 bg-white"
+          ? "-translate-y-1/2 p-4 bg-black"
           : "-translate-y-[calc(50% - 5rem)] hidden bg-transparent opacity-0 pointer-events-none"
-        } fixed top-1/2 w-[min(100%,40rem)] max-h-[90%] opacity-100 left-1/2  z-[60] transition-all rounded-xl -translate-x-1/2`}
+        } fixed top-1/2   opacity-100 left-1/2  z-[60] transition-all rounded-xl -translate-x-1/2`}
     >
       {/* @ts-ignore */}
       {show ? children : null}
