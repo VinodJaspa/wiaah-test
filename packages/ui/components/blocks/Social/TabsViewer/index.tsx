@@ -36,20 +36,20 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       {({ currentTabIdx, setCurrentTabIdx }) => (
         <>
           {showTabs && (
-            <TabsHeader className="justify-center flex-wrap py-[0px] border-t-2 gap-8">
+            <TabsHeader className="md:justify-center justify-between flex-wrap py-[0px]  border-t-2 md:gap-8 gap-1">
               {tabs.map(({ name, outlineIcon, solidIcon }, i) => (
                 <TabTitle key={i} TabKey={i}>
                   <div
                     onClick={() => setCurrentTabIdx(i)}
-                    className={`flex items-center gap-2 space-x-2  font-semibold text-xs leading-none ${currentTabIdx === i
-                        ? "border-t-2 py-[22px] border-black text-black fill-black "
-                        : "border-none py-6 text-[#8E8E8E]"
+                    className={`flex items-center gap-2 space-x-2 font-semibold md:text-xs text-[10px] leading-none ${currentTabIdx === i
+                        ? "border-b-2 md:border-t-2 md:border-b-0 border-t-0 md:py-[22px] py-[6px] border-black text-black fill-black "
+                        : "border-none md:py-6 py-2 text-[#8E8E8E]"
                       }`}
                   >
                     <>
                       {outlineIcon && solidIcon && (
                         <div
-                          className={`mb-[3px] ${currentTabIdx === i
+                          className={`mb-[3px] md:w-3 md:h-3 h-10 w-10 md:px-0 px-2 ${currentTabIdx === i
                               ? "text-black"
                               : "text-[#8E8E8E]"
                             }`}
@@ -57,7 +57,9 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                           {currentTabIdx === i ? solidIcon : outlineIcon}
                         </div>
                       )}
-                      {runIfFn(name, { active: currentTabIdx === i })}
+                      <p className="hidden md:flex">
+                        {runIfFn(name, { active: currentTabIdx === i })}
+                      </p>
                     </>
                   </div>
                 </TabTitle>
@@ -66,7 +68,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
           )}
           {children}
           {showPanels && (
-            <TabList className="">
+            <TabList className="flex w-full justify-center">
               {tabs.map(({ component }, i) => (
                 <TabItem key={i}>{runIfFn(component)}</TabItem>
               ))}
