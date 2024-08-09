@@ -132,7 +132,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   if (!profileInfo) return null;
 
   return (
-    <div className={`flex w-fit items-center gap-14 mt-8 mb-6`}>
+    <div
+      className={`flex flex-col md:w-fit w-9/12 md:flex-row items-center md:gap-14 gap-3 md:my-6 mt-16 `}
+    >
       {/*<div className="flex text-white justify-between px-4 items-center absolute top-0 left-0 z-10 w-full">
         <ArrowLeftIcon className="text-xl w-10" />
         <HStack className="text-lg">
@@ -184,12 +186,25 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className={`flex gap-12 `}>
+        <div className="gap-2 md:order-none order-1 justify-center items-center flex md:hidden">
+          <p className="text-[22px] font-bold ">{profileInfo.username}</p>
+          <>
+            {profileInfo.verified ? (
+              <VerifiedIcon className="text-base text-primary" />
+            ) : null}
+          </>
+        </div>
+        <div
+          className={` md:order-none order-3 md:flex flex-col md:gap-12 gap-2  items-center md:justify-between justify-center `}
+        >
           <div
-            className={`flex items-center ${myprofile ? "justify-between w-full" : "gap-12"
+            className={`flex  items-center w-full ${myprofile
+                ? "md:justify-between  justify-center"
+                : "md:gap-12 gap-0"
               }`}
           >
-            <div className="flex gap-2 items-center">
+            {/* USERNAME */}
+            <div className="gap-2 items-center hidden md:flex">
               <p className="text-xl font-semibold ">{profileInfo.username}</p>
               <>
                 {profileInfo.verified ? (
@@ -197,22 +212,34 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 ) : null}
               </>
             </div>
-
+            {/* BUTTONS */}
             {myprofile ? (
-              <Button
-                colorScheme="gray"
-                disabled={isPrivateForUser}
-                onClick={handleFollowProfile}
-                className=" whitespace-nowrap w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center "
-              >
-                {t("Edit Profile")}
-              </Button>
+              // Edit Button
+              <div className=" gap-3 md:flex md:justify-end  w-full grid grid-cols-2 ">
+                <Button
+                  colorScheme="gray"
+                  disabled={isPrivateForUser}
+                  onClick={handleFollowProfile}
+                  className=" whitespace-nowrap col-span-1 w-full md:w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center justify-center"
+                >
+                  {t("Edit Profile")}
+                </Button>
+
+                <Button
+                  colorScheme="gray"
+                  disabled={isPrivateForUser}
+                  className=" md:hidden flex col-span-1 whitespace-nowrap w-full gap-2 text-black font-semibold text-sm rounded-lg h-8 items-center justify-center "
+                >
+                  {t("Share Profile")}
+                </Button>
+              </div>
             ) : (
-              <HStack className="gap-3 flex ">
+              // Follow Buttons
+              <div className="gap-3 md:flex w-full grid grid-cols-2 ">
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
-                  className="whitespace-nowrap w-full capitalize text-sm font-semibold rounded-lg h-8"
+                  className="whitespace-nowrap col-span-1 w-full capitalize text-sm font-semibold rounded-lg h-8"
                 >
                   {isFollowed
                     ? t("Unfollow")
@@ -225,7 +252,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   colorScheme="gray"
                   disabled={isPrivateForUser}
                   onClick={handleFollowProfile}
-                  className="whitespace-nowrap w-full text-black font-semibold text-sm rounded-lg h-8"
+                  className="whitespace-nowrap w-full col-span-1 text-black font-semibold text-sm rounded-lg h-8"
                 >
                   {t("Message")}
                 </Button>
@@ -233,50 +260,53 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
-                  className="h-8 rounded-lg"
+                  className="h-8 gap-2 rounded-lg font-semibold col-span-2 flex text-sm items-center justify-center"
                 >
-                  <SlCalender />
+                  <SlCalender className="mb-1" />
+                  <p className="inline  md:hidden">Booking</p>
                 </Button>
-              </HStack>
+              </div>
             )}
           </div>
         </div>
-
-        <div className="flex flex-col gap-4">
+        {/* Profile Info*/}
+        <div className="flex gap-4 md:order-none order-2">
           <Stack
-            divider={<Divider variant="vert" className="mx-[1.25rem]" />}
-            className="w-[fit-content] justify-between gap-1 "
+            divider={
+              <Divider variant="vert" className="md:mx-[1.25rem] mx-[0.3rem]" />
+            }
+            className="w-[fit-content] md:w-full justify-between gap-1 "
           >
             <div
               className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer border-2 border-white flex gap-1 items-center `}
+                } cursor-pointer border-2 border-white flex flex-col md:flex-row gap-1 items-center `}
             >
-              <p className="font-semibold text-sm ">
+              <p className="font-semibold md:text-sm text-xl order-last md:order-none ">
                 {NumberShortner(profileInfo.publications)}
               </p>
-              <p className=" text-sm lowercase">{t("Posts")}</p>
+              <p className=" text-sm ">{t("Posts")}</p>
             </div>
 
             <div
               className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer flex gap-1 items-center `}
-              onClick={() => handleOpen()}
-            >
-              <p className="font-semibold text-sm ">
-                {NumberShortner(profileInfo.followers)}
-              </p>
-              <p className=" text-sm lowercase">{t("Followers")}</p>
-            </div>
-
-            <div
-              className={`${isPrivateForUser ? "text-[#969696]" : ""
-                } cursor-pointer border-2 border-white flex gap-1 items-center`}
+                } cursor-pointer border-2 border-white flex flex-col md:flex-row gap-1 items-center `}
               onClick={() => subscriptionsOnOpen()}
             >
-              <p className="font-semibold text-sm">
+              <p className="font-semibold  md:text-sm text-xl order-last md:order-none ">
                 {NumberShortner(profileInfo.following)}
               </p>
-              <p className=" text-sm lowercase">{t("Following")}</p>
+              <p className=" text-sm ">{t("Following")}</p>
+            </div>
+
+            <div
+              className={`${isPrivateForUser ? "text-[#969696]" : ""
+                } cursor-pointer flex flex-col md:flex-row gap-1 items-center `}
+              onClick={() => handleOpen()}
+            >
+              <p className="font-semibold md:text-sm text-xl order-last md:order-none ">
+                {NumberShortner(profileInfo.followers)}
+              </p>
+              <p className=" text-sm ">{t("Followers")}</p>
             </div>
           </Stack>
           {/*{ownProfile ? (
@@ -315,9 +345,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         </div>
 
         {/* <div className="flex flex-col "> */}
-        <div className="flex justify-between items-end">
+        <div className="flex md:justify-normal justify-start md:order-none order-4 ">
           <div className="flex flex-col gap-1">
-            <p className="font-semibold text-sm">Bio</p>
+            <p className="font-semibold text-sm hidden md:flex">Bio</p>
             <p className=" text-sm">{profileInfo.bio}</p>
           </div>
         </div>
@@ -326,8 +356,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       <Container className="flex-grow gap-4 flex-col">
         {profileInfo && profileInfo.visibility === ProfileVisibility.Public ? (
           <>
-            {/*<TabsViewer tabs={tabsSet!} />*/}
+            {/*<TabsViewer tabs={tabsSet!} />
             <Divider />
+*/}
           </>
         ) : (
           <>
