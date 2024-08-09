@@ -175,7 +175,9 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
           </GridListOrganiser>
         )
       ) : (
-        <ListWrapper cols={cols}>{childPosts}</ListWrapper>
+        <ListWrapper gap={!isMobile} cols={cols}>
+          {childPosts}
+        </ListWrapper>
       )}
     </>
   );
