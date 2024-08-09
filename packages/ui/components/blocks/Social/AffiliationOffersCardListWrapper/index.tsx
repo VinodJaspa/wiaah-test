@@ -228,7 +228,7 @@ export const AffiliationOffersCardListWrapper: React.FC<
     );
   } else {
     return (
-      <ListWrapper {...wrapperProps} cols={cols}>
+      <ListWrapper squareItem={false} {...wrapperProps} cols={cols}>
         {items.map((offer, i) => (
           <SocialAffiliationCard showComments key={i} post={offer} />
         ))}
