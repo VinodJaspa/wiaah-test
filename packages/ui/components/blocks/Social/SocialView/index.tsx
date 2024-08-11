@@ -78,7 +78,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
 
   const profileInfo = FAKE_DATA.data;
 
-  const buyerTabs: TabType[] = [
+  const tabs: TabType[] = [
     {
       name: t("news_feed", "NEWSFEED"),
       component: <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />,
@@ -136,9 +136,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           />
         </div>
       ),
-      outlineIcon: (
-        <ServicesOutlineIcon className="w-full h-full text-[#8E8E8E]" />
-      ),
+      outlineIcon: <ServicesOutlineIcon className="w-full h-full text-black" />,
       solidIcon: <ServicesIcon className="w-full h-full" />,
     },
     {
@@ -199,7 +197,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
               <>
                 {profileInfo.public ? (
                   <>
-                    <TabsViewer tabs={buyerTabs}></TabsViewer>
+                    <TabsViewer tabs={tabs}></TabsViewer>
                     <Divider className="my-4" />
                   </>
                 ) : (
