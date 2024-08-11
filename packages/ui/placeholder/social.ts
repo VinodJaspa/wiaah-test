@@ -1345,6 +1345,16 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             src: getRandomImage(),
             type: PresentationType.Image,
           },
+
+          {
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
+
+          {
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
         ],
         title: "Awesome Product",
         hashtags: ["#awesome", "#product"],
@@ -1381,6 +1391,11 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       product: {
         id: "product789",
         presentations: [
+          {
+            src: getRandomImage(),
+            type: PresentationType.Image,
+          },
+
           {
             src: getRandomImage(),
             type: PresentationType.Image,
