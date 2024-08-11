@@ -42,11 +42,13 @@ export interface SocialShopPostcardProps {
     >;
   };
   onInteraction?: (interaction: Interaction) => any;
+  handleOpen?: () => void;
 }
 
 export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
   postInfo,
   profileInfo,
+  handleOpen,
 }) => {
   const { OpenModal } = useSocialPostSettingsPopup();
   const { t } = useTranslation();
@@ -85,7 +87,10 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
           <PriceDisplay price={cashback.amount} /> {t("Cash Back")}
         </div>
       ) : null}
-      <div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
+      <div
+        onClick={handleOpen}
+        className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
+      >
         <div className="flex flex-col w-full ">
           <div className="flex gap-2 items-center">
             <div className="min-w-[2.5rem] ">
