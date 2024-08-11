@@ -13,8 +13,9 @@ export const Divider: React.FC<DividerProps> = ({
     <div
       {...props}
       className={twMerge(
-        `${
-          variant === "vert" ? "border-l h-full mx-2" : "border-b  w-full my-2"
+        `${variant === "vert"
+          ? "border-l h-full mx-2 min-h-[1rem]"
+          : "border-b  w-full my-2"
         } border-opacity-30 border-[#C1C1C1]`,
         className
       )}
