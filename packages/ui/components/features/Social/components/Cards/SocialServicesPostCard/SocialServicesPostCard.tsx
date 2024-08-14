@@ -33,6 +33,7 @@ export interface SocialServicesPostCardProps {
   price?: number;
   cashback?: number;
   onInteraction?: (interaction: Interaction) => any;
+  handleOpne?: () => void;
 }
 
 export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
@@ -41,6 +42,7 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
   postInfo,
   price,
   profileInfo,
+  handleOpne,
   onInteraction,
 }) => {
   const { OpenModal } = useSocialPostSettingsPopup();
@@ -53,42 +55,41 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
   const { emit } = useTypedReactPubsub((r) => r.openPostCommentInput);
   const date = getSince();
   return (
-    <div className="relative group rounded-[1.25rem] overflow-hidden w-full h-full">
+    <div className="relative group md:rounded-[1.25rem] rounded overflow-hidden w-full h-full">
       <Image
         className="w-full h-full object-cover"
         src={postInfo?.service.thumbnail}
         alt={postInfo.service.title}
       />
       {cashback ? (
-        <div className="absolute group-hover:opacity-0 transition-opacity bottom-4 left-4">
+        <div className="absolute group-hover:opacity-0 md:text-base text-xs transition-opacity bottom-1 left-1 md:bottom-4 md:left-4">
           <CashbackBadge amount={cashback} type={"cash"} />
         </div>
       ) : null}
-      {/* {serviceLabel ? (
-        <div className="absolute group-hover:opacity-0 transition-opacity bg-white text-primary rounded-lg px-4 py-1 flex justify-center items-center origin-center top-4 right-4">
-          {serviceLabel}
+      {postInfo.service.title ? (
+        <div className="absolute group-hover:opacity-0 bg-opacity-70 md:text-base text-xs transition-opacity bg-gray-400 text-white rounded-lg px-4 py-1 flex justify-center items-center origin-center md:top-4 md:right-4 top-1 right-1">
+          {postInfo.service.title}
         </div>
-      ) : null} */}
-      <div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
+      ) : null}
+      <div
+        onClick={handleOpne}
+        className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-4 py-3 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
+      >
         <div className="flex flex-col w-full ">
-          <div className="flex gap-2 items-center">
-            <div className="min-w-[2.5rem] ">
-              <UserProfileDisplay
-                storyUserData={{
-                  name: profileInfo.username,
-                  userPhotoSrc: profileInfo.photo,
-                  id: profileInfo.id,
-                }}
-              />
+          <div className="flex  gap-2 items-center">
+            <div className="flex gap-2 items-center">
+              <div className="min-w-[2.5rem] ">
+                <UserProfileDisplay
+                  storyUserData={{
+                    name: profileInfo.username,
+                    userPhotoSrc: profileInfo.photo,
+                    id: profileInfo.id,
+                  }}
+                />
+              </div>
+              <p className="font-bold">{profileInfo.username}</p>
             </div>
             <div className="flex w-full justify-between">
-              <div className="flex flex-col">
-                <p className="font-bold">{profileInfo.username}</p>
-                <div className="flex gap-1 items-center">
-                  <LocationIcon className="text-white" />
-                  <p>{profileInfo.profession}</p>
-                </div>
-              </div>
               <div className="flex items-end flex-col">
                 <div className="h-4 overflow-hidden">
                   <HorizontalDotsIcon
@@ -101,6 +102,9 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
                 </p>
               </div>
             </div>
+          </div>
+          <div className="flex gap-1 items-center">
+            <p>{profileInfo.profession}</p>
           </div>
           <div className="flex justify-between gap-4">
             <div className="flex noScroll gap-3 font-medium text-white overflow-x-scroll">
@@ -130,8 +134,8 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
               ) : null}
             </div>
           </div>
-          <div className="flex justify-between w-full">
-            <div className="flex gap-7">
+          <div className="flex justify-between items-start gap-3 w-full">
+            <div className="flex gap-2">
               <div
                 onClick={() => {
                   like({
@@ -141,7 +145,7 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
                     },
                   });
                 }}
-                className="flex gap-2 items-center"
+                className="flex flex-col gap-2 items-center"
               >
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <HeartIcon />
@@ -153,22 +157,22 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
                 onClick={() => {
                   emit({ id: postInfo.id });
                 }}
-                className="flex items-center gap-2"
+                className="flex flex-col items-center gap-2"
               >
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <CommentIcon />
                 </span>
                 <p className="font-bold text-base">{postInfo.comments}</p>
               </div>
-              <div className="flex gap-2 items-center">
+              <div className="flex flex-col gap-2 items-center">
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <ShareIcon />
                 </span>
                 <p className="font-bold text-base">{postInfo.shares}</p>
               </div>
             </div>
-            <div className="flex gap-4">
-              <div className="flex gap-2 items-center">
+            <div className="flex gap-2 ">
+              <div className="flex gap-2 items-center ">
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <PersonFillIcon />
                 </span>
