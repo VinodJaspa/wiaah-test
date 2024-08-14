@@ -12,6 +12,7 @@ import { useModalDisclouser, useResponsive } from "@UI/../hooks";
 import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 import { PostCardInfo } from "types";
+import { Carousel } from "@blocks/Carousel";
 
 export interface AffiliationCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
@@ -32,52 +33,59 @@ export const AffiliationCardsListWrapper: React.FC<
   onPostClick,
   onProfileClick,
 }) => {
-    const { isOpen, handleClose, handleOpen } = useModalDisclouser();
     const childPosts =
       posts &&
-      posts.map((post, idx) => (
-        <PostCard
-          onProfileClick={() =>
-            onProfileClick &&
-            post.profileInfo?.name &&
-            onProfileClick(post.profileInfo?.name)
-          }
-          // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
-          onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
-          post={post}
-          key={idx}
-          openPopup={handleOpen}
-        />
-      ));
+      posts.map((post, idx) => {
+        const { isOpen, handleClose, handleOpen } = useModalDisclouser();
+        const images = [post.postInfo.thumbnail];
+        return (
+          <>
+            <PostViewPopup
+              showLink={true}
+              fetcher={async ({ queryKey }) => {
+                const id = queryKey[1].postId;
 
+                const post = newsfeedPosts.find(
+                  (post) => post.postInfo.id === id
+                );
+                return post ? post : null;
+              }}
+              queryName="newFeedPost"
+              idParam="newsfeedpostid"
+              isOpen={isOpen}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              renderChild={(props: PostCardInfo) => {
+                return (
+                  <Carousel componentsPerView={1} controls={true}>
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image} alt={`Attachment ${index + 1}`} />
+                      </div>
+                    ))}
+                  </Carousel>
+                );
+              }}
+            />
+            <PostCard
+              onProfileClick={() =>
+                onProfileClick &&
+                post.profileInfo?.name &&
+                onProfileClick(post.profileInfo?.name)
+              }
+              // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
+              onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
+              post={post}
+              key={idx}
+              openPopup={handleOpen}
+            />
+          </>
+        );
+      });
     const { isMobile, isTablet } = useResponsive();
 
     return (
       <>
-        <PostViewPopup
-          fetcher={async ({ queryKey }) => {
-            const id = queryKey[1].postId;
-
-            const post = newsfeedPosts.find((post) => post.postInfo.id === id);
-            return post ? post : null;
-          }}
-          isOpen={isOpen}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-          queryName="affiliationPost"
-          idParam="affiliationPostId"
-          renderChild={(props: PostCardInfo) => {
-            return (
-              <PostAttachmentsViewer
-                attachments={props.postInfo.attachments || []}
-                profileInfo={props.profileInfo}
-                carouselProps={{
-                  arrows: true,
-                }}
-              />
-            );
-          }}
-        />
         {grid ? (
           isMobile ? (
             <div className="grid grid-cols-3 gap-[1px]">
