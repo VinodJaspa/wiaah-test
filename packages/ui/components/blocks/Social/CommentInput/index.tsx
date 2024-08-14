@@ -9,6 +9,8 @@ import {
   Input,
   HStack,
 } from "@UI";
+import { LuCamera } from "react-icons/lu";
+import { IoSend } from "react-icons/io5";
 export interface CommentInputProps {
   onCameraClick?: () => void;
   onCommentSubmit?: (comment: string) => void;
@@ -27,27 +29,22 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     onCommentSubmit && onCommentSubmit(input);
   }
   return (
-    <HStack>
-      <InputGroup className="rounded-full w-full px-1">
-        <InputLeftElement
-          data-testid="CommentCameraBtn"
-          onClick={handleCameraClick}
-          className={"cursor-pointer"}
-        >
-          <FaCamera className="text-2xl" />
-        </InputLeftElement>
-        <Input
-          className="rounded-full"
-          data-testid="CommentInput"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t("Enter comment")}
-        />
-      </InputGroup>
-      <button></button>
-      <button onClick={handleCommentSubmit}>
-        <MdSend className="text-2xl" />
-      </button>
-    </HStack>
+    <div className="relative h-[74px] border-t-2 border-[#EFEFEF]">
+      <input
+        className="w-full hover:ring-0 active:ring-offset-0 pt-1 active:right-0 h-full border-0 border-none px-16 py-0 text-xl placeholder-[#262626] "
+        data-testid="CommentInput"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder={t("Add a comment...")}
+      />
+      <LuCamera
+        className="w-7 h-7 absolute inset-0 my-auto left-4"
+        onClick={handleCameraClick}
+      />
+      <IoSend
+        className="w-7 h-7 absolute  text-[#20ECA7] inset-y-0 my-auto right-6 "
+        onClick={handleCommentSubmit}
+      />
+    </div>
   );
 };
