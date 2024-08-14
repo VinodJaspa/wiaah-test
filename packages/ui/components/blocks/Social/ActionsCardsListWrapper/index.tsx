@@ -1,0 +1,78 @@
+import { Carousel } from "@blocks/Carousel";
+import { PostViewPopup } from "@blocks/Popups";
+import { VideoThumbnail, VideoThumbnailProps } from "@blocks/VideoThumbnail";
+import { ListWrapper } from "@blocks/Wrappers";
+import { useModalDisclouser } from "@UI/../hooks";
+import { NumberShortner, useBreakpointValue } from "@UI/../utils/src";
+import React, { useState } from "react";
+
+type ActionsCardListWrapperProps = {
+  videos: VideoThumbnailProps[];
+};
+
+export const ActionsCardListWrapper: React.FC<ActionsCardListWrapperProps> = ({
+  videos,
+}) => {
+  const cols = useBreakpointValue({ base: 3 });
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+
+  return (
+    <ListWrapper
+      listProps={{
+        className: "gap-1 md:gap-4 flex flex-col",
+      }}
+      props={{
+        className: "flex justify-between md:w-fit w-full gap-1 md:gap-4",
+      }}
+      cols={cols}
+    >
+      {videos.map((video, i) => {
+        const { isOpen, handleClose, handleOpen } = useModalDisclouser();
+        const vids = [video.videoSrc];
+
+        return (
+          <React.Fragment key={i}>
+            <VideoThumbnail
+              key={i}
+              videoSrc={video.videoSrc}
+              views={NumberShortner(parseInt(video.views))}
+              description={video.description}
+              handleOpen={handleOpen}
+              isFocused={focusedIndex === i}
+              onFocus={() => setFocusedIndex(i)}
+              isShort={true}
+            />
+
+            <PostViewPopup
+              isOpen={isOpen}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              queryName="shopName"
+              idParam="shopId"
+              data={video}
+              renderChild={() => {
+                return (
+                  <Carousel componentsPerView={1} controls={vids.length > 1}>
+                    {vids.map((image, index) => (
+                      <div key={index}>
+                        <VideoThumbnail
+                          key={i}
+                          videoSrc={video.videoSrc}
+                          views={NumberShortner(parseInt(video.views))}
+                          description={video.description}
+                          isFocused={focusedIndex === i}
+                          onFocus={() => setFocusedIndex(i)}
+                          isShort={false}
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                );
+              }}
+            />
+          </React.Fragment>
+        );
+      })}
+    </ListWrapper>
+  );
+};
