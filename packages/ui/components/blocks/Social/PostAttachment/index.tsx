@@ -36,9 +36,9 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           className="flex justify-center items-center w-full h-full overflow-hidden relative"
           {...style}
         >
-          <div className="h-11 w-11 top-2 left-2 text-2xl flex justify-center items-center absolute z-[2] text-white fill-white bg-black bg-opacity-50 rounded-xl ">
+          {/*<div className="h-11 w-11 top-2 left-2 text-2xl flex justify-center items-center absolute z-[2] text-white fill-white bg-black bg-opacity-50 rounded-xl ">
             <HiDuplicate />
-          </div>
+          </div>*/}
           {blur && (
             <Image
               className="object-cover absolute w-full h-full blur-md"
@@ -56,7 +56,6 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           />
           {footer && (
             <div className="bg-gradient-to-t from-black to-transparent w-full bottom-0 left-0 absolute z-[5]">
-              {/*@ts-ignore*/}
               {footer}
             </div>
           )}
