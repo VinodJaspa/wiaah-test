@@ -1,8 +1,12 @@
 import React, { CSSProperties, FC, useCallback, ReactNode } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  MdOutlineArrowForwardIos,
+  MdOutlineArrowBackIos,
+} from "react-icons/md";
 
 export interface CarouselProps {
-  children?: React.ReactNode[];
+  children: React.ReactNode[];
   componentsPerView?: number;
   getCurrentComponent?: (component: number) => void;
   auto?: {
@@ -27,8 +31,13 @@ export const Carousel: FC<CarouselProps> = ({
     100 * currentComponent
   );
   const [dragging, setDragging] = React.useState<boolean>(false);
+  console.log("CHILDREN ========> " + children);
+  console.log("SINGLE CHILDREN ========> " + children[0]);
 
   let autoMoveInterval: any;
+  // Define a consistent transition duration and easing for smoother transitions
+  const transitionDuration = 500; // milliseconds
+  const transitionEasing = "ease-in-out";
 
   if (!children) return null;
 
@@ -74,6 +83,7 @@ export const Carousel: FC<CarouselProps> = ({
     setStyles((state) => ({
       ...state,
       transform: `translate(-${translation}%)`,
+      transition: `transform ${transitionDuration}ms ${transitionEasing}`,
     }));
     // if (getCurrentComponent) {
     //   getCurrentComponent(currentComponent);
@@ -91,14 +101,17 @@ export const Carousel: FC<CarouselProps> = ({
     }, auto.speedInMs);
   }, [currentComponent]);
 
+  const handleDotClick = (index: number) => {
+    setCurrentComponent(index);
+  };
   return (
     <div className="relative h-full w-full overflow-hidden ">
       {controls && (
         <div
           onClick={() => handlePrev()}
-          className="absolute top-1/2 left-8 z-50 -translate-y-1/2 cursor-pointer select-none rounded-full bg-black bg-opacity-50 p-2 text-white"
+          className="absolute top-1/2 left-6 z-50 -translate-y-1/2 cursor-pointer select-none rounded-full bg-white p-3 text-[#20ECA7]"
         >
-          <FaArrowLeft />
+          <MdOutlineArrowBackIos className="text-[#20ECA7] w-[22px] h-[22px]" />
         </div>
       )}
       <div className="relative h-full w-full">
@@ -119,7 +132,7 @@ export const Carousel: FC<CarouselProps> = ({
                 <div
                   key={i}
                   style={{ left: `${100 * i}%` }}
-                  className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center px-2`}
+                  className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center `}
                 >
                   {Component}
                 </div>
@@ -130,9 +143,23 @@ export const Carousel: FC<CarouselProps> = ({
       {controls && (
         <div
           onClick={() => handleNext()}
-          className="absolute top-1/2 right-8 z-50 -translate-y-1/2 cursor-pointer select-none rounded-full bg-black bg-opacity-50 p-2 text-white"
+          className="absolute top-1/2 right-6 z-50 -translate-y-1/2 cursor-pointer select-none rounded-full  p-3 bg-white text-white "
         >
-          <FaArrowRight />
+          <MdOutlineArrowForwardIos className="text-[#20ECA7] w-[22px] h-[22px]" />
+        </div>
+      )}
+
+      {controls && (
+        <div className="absolute bottom-6 left-1/2 z-50 flex -translate-x-1/2 space-x-2">
+          {children &&
+            children.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => handleDotClick(index)}
+                className={`h-2 w-2 rounded-full cursor-pointer ${currentComponent === index ? "bg-white" : "bg-gray-600"
+                  }`}
+              ></div>
+            ))}
         </div>
       )}
     </div>
