@@ -1332,7 +1332,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post456",
+      id: "post21456",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1342,17 +1342,15 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
         id: "product789",
         presentations: [
           {
-            src: getRandomImage(),
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
             type: PresentationType.Image,
           },
-
           {
-            src: getRandomImage(),
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
             type: PresentationType.Image,
           },
-
           {
-            src: getRandomImage(),
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
             type: PresentationType.Image,
           },
         ],
@@ -1372,7 +1370,6 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       console.log("User interaction:", interaction);
     },
   },
-
   {
     profileInfo: {
       id: "user33",
@@ -1382,22 +1379,22 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post456",
+      id: "post4564",
       comments: 10,
       shares: 5,
       reactionNum: 100,
       userId: "user123",
       createdAt: "2023-04-04",
       product: {
-        id: "product789",
+        id: "product7589",
         presentations: [
           {
-            src: getRandomImage(),
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
             type: PresentationType.Image,
           },
 
           {
-            src: getRandomImage(),
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
             type: PresentationType.Image,
           },
         ],
@@ -1427,7 +1424,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post456",
+      id: "post3356",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1437,7 +1434,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
         id: "product789",
         presentations: [
           {
-            src: getRandomImage(),
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
             type: PresentationType.Image,
           },
         ],
@@ -1467,7 +1464,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post456",
+      id: "post4456",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1477,7 +1474,15 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
         id: "product789",
         presentations: [
           {
-            src: getRandomImage(),
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
             type: PresentationType.Image,
           },
         ],
