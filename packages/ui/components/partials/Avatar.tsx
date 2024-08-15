@@ -39,7 +39,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       <AspectRatio ratio={1}>
         <Image
           onClick={handleAvatarClick}
-          src={photoSrc || src}
+          src={src || photoSrc}
           className={`w-full h-full overflow-hidden rounded-full  cursor-pointer object-cover`}
           {...props}
         />
@@ -50,7 +50,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   );
 };
 
-export interface AvatarBadgeProps extends HtmlDivProps {}
+export interface AvatarBadgeProps extends HtmlDivProps { }
 
 export const AvatarBadge: React.FC<AvatarBadgeProps> = ({
   children,
