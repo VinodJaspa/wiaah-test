@@ -40,11 +40,11 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
     >
       {[...Array(cols)].map((_, index) => (
         <div
-          {...listProps}
           data-testid="ListWrapperListContainer"
           style={{ width: `${100 / cols}%` }}
           className={`${gap ? "gap-4" : "gap-1"} flex flex-col`}
           key={index}
+          {...listProps}
         >
           {sort(children || [], cols).map(
             ({ item, postion }, i) =>
