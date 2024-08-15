@@ -1332,7 +1332,294 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post21456",
+      id: "1",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "2",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "3",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "4",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "5",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "6",
+      comments: 10,
+      shares: 5,
+      reactionNum: 100,
+      userId: "user123",
+      createdAt: "2023-04-04",
+      product: {
+        id: "product789",
+        presentations: [
+          {
+            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
+            type: PresentationType.Image,
+          },
+          {
+            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
+            type: PresentationType.Image,
+          },
+        ],
+        title: "Awesome Product",
+        hashtags: ["#awesome", "#product"],
+        price: 99.99,
+        cashback: {
+          amount: 20,
+          id: "cashback123",
+          type: CashbackType.Cash,
+          units: 5,
+        },
+        discount: { amount: 11, id: "432", units: 4 },
+      },
+    },
+    onInteraction: (interaction) => {
+      console.log("User interaction:", interaction);
+    },
+  },
+  {
+    profileInfo: {
+      id: "user123",
+      verified: true,
+      photo: getRandomImage(),
+      username: "john_doe",
+      profession: "Software Developer",
+    },
+    postInfo: {
+      id: "7",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1379,7 +1666,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post4564",
+      id: "8",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1424,7 +1711,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
       profession: "Software Developer",
     },
     postInfo: {
-      id: "post3356",
+      id: "9",
       comments: 10,
       shares: 5,
       reactionNum: 100,
@@ -1435,54 +1722,6 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
         presentations: [
           {
             src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
-            type: PresentationType.Image,
-          },
-        ],
-        title: "Awesome Product",
-        hashtags: ["#awesome", "#product"],
-        price: 99.99,
-        cashback: {
-          amount: 20,
-          id: "cashback123",
-          type: CashbackType.Cash,
-          units: 5,
-        },
-        discount: { amount: 11, id: "432", units: 4 },
-      },
-    },
-    onInteraction: (interaction) => {
-      console.log("User interaction:", interaction);
-    },
-  },
-
-  {
-    profileInfo: {
-      id: "user12253",
-      verified: true,
-      photo: getRandomImage(),
-      username: "john_doe",
-      profession: "Software Developer",
-    },
-    postInfo: {
-      id: "post4456",
-      comments: 10,
-      shares: 5,
-      reactionNum: 100,
-      userId: "user123",
-      createdAt: "2023-04-04",
-      product: {
-        id: "product789",
-        presentations: [
-          {
-            src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-            type: PresentationType.Image,
-          },
-          {
-            src: "https://www.kayak.com/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true",
-            type: PresentationType.Image,
-          },
-          {
-            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_Hotel_Suite_Bathroom_Panoramique.jpg",
             type: PresentationType.Image,
           },
         ],
