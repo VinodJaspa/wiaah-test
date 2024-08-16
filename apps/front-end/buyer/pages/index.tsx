@@ -104,26 +104,6 @@ const Buyer: NextPage = () => {
         <title>Wiaah | Buyer</title>
       </Head>
       <SellerLayout header="main">
-        <PostViewPopup
-          fetcher={async ({ queryKey }) => {
-            const id = queryKey[1].postId;
-            const post = newsfeedPosts.find((post) => post.postInfo.id === id);
-            return post ? post : null;
-          }}
-          queryName="newFeedPost"
-          idParam="newsfeedpostid"
-          renderChild={(props: PostCardInfo) => {
-            return (
-              <PostAttachmentsViewer
-                attachments={props.postInfo.attachments}
-                profileInfo={props.profileInfo}
-                carouselProps={{
-                  arrows: true,
-                }}
-              />
-            );
-          }}
-        />
         <AddNewPostModal />
         <AddNewStoryModal />
         <CommentReportModal />

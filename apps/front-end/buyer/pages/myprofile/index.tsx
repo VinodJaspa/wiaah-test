@@ -1,5 +1,4 @@
 import { getMyProfileData } from "api";
-import { MyProfileViewCustomed } from "components/views/MyProfile/MyProfileViewCustomed";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";

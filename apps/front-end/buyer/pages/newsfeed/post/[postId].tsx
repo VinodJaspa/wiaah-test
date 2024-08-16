@@ -5,8 +5,9 @@ import { PostCardInfo } from "types";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import Head from "next/head";
 import { SellerLayout } from "ui";
-import { NewsFeedPostView } from "../../../components";
+import { NewsFeedPostView } from "@UI";
 import { useRouting } from "routing";
+import { useRouter } from "next/router";
 
 interface NewsFeedPost { }
 
@@ -37,8 +38,8 @@ export const getServerSideProps: GetServerSideProps<NewsFeedPost> = async ({
 };
 
 const NewsFeedPost: NextPage<NewsFeedPost> = () => {
-  const { getParam } = useRouting();
-  const postId = getParam("postId");
+  const router = useRouter();
+  const postId = router.query.postId as string;
   return (
     <>
       <Head>

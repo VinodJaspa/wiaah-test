@@ -4,10 +4,10 @@ import { GetServerSideProps, NextPage } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { socialAffiliationCardPlaceholder } from "ui/placeholder";
 import { AffiliationOfferCardInfo } from "types";
-import { SellerLayout } from "ui";
-import { AffilitionOfferView } from "../../../components/views";
+import { AffiliationOfferView, SellerLayout } from "ui";
+import { useRouter } from "next/router";
 
-export interface affiliationOfferPageProps {}
+export interface affiliationOfferPageProps { }
 
 async function getAffiliationOffer({
   queryKey,
@@ -17,37 +17,40 @@ async function getAffiliationOffer({
   return socialAffiliationCardPlaceholder;
 }
 
-export const getServerSideProps: GetServerSideProps<affiliationOfferPageProps> =
-  async ({ query }) => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  affiliationOfferPageProps
+> = async ({ query }) => {
+  const queryClient = new QueryClient();
 
-    const offerId = query.offerId;
+  const offerId = query.offerId;
 
-    queryClient.prefetchQuery(
-      ["affiliationOffer", { offerId }],
-      getAffiliationOffer
-    );
+  queryClient.prefetchQuery(
+    ["affiliationOffer", { offerId }],
+    getAffiliationOffer
+  );
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
-const affiliationOffer: NextPage<affiliationOfferPageProps> = () => {
+const AffiliationOffer: NextPage<affiliationOfferPageProps> = () => {
+  const router = useRouter();
+  const offerId = router.query.offerId as string;
   return (
     <>
       <Head>
-        <title>seller | affilitionPost</title>
+        <title>Buyer | Affiliation Post</title>
       </Head>
       <>
         <SellerLayout>
-          <AffilitionOfferView />
+          <AffiliationOfferView offerId={offerId} />
         </SellerLayout>
       </>
     </>
   );
 };
 
-export default affiliationOffer;
+export default AffiliationOffer;

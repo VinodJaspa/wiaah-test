@@ -6,9 +6,9 @@ import {
   SocialShopsPostCardPlaceholder,
 } from "ui";
 
-interface SellerShopProps { }
+interface BuyerServicesProps { }
 
-const SellerShop: React.FC<SellerShopProps> = () => {
+const BuyerServices: React.FC<BuyerServicesProps> = () => {
   return (
     <>
       <Head>
@@ -29,4 +29,4 @@ const SellerShop: React.FC<SellerShopProps> = () => {
   );
 };
 
-export default SellerShop;
+export default BuyerServices;
