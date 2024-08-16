@@ -33,18 +33,6 @@ export const ActionsView: React.FC = () => {
       {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
         {t("action", "action")}
       </Text> */}
-      <PostViewPopup
-        fetcher={async ({ queryKey }) => {
-          const id = queryKey[1].postId;
-          const action = actionsPlaceholders.find((post) => post.id === id);
-          return action ? action : null;
-        }}
-        queryName="action"
-        idParam="actionId"
-        renderChild={(props: SocialActionData) => {
-          return <ActionViewer action={props} />;
-        }}
-      />
 
       <Flex
         h="100%"
