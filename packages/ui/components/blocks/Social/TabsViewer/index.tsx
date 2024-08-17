@@ -18,6 +18,7 @@ export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   showPanels?: boolean;
   showTabs?: boolean;
   children?: React.ReactNode;
+  border?: "top" | "bottom";
 }
 
 export const TabsViewer: React.FC<TabsViewerProps> = ({
@@ -26,6 +27,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   showPanels = true,
   showTabs = true,
   children,
+  border = "top",
   ...props
 }) => {
   if (!tabs || tabs.length === 0) {
@@ -36,13 +38,22 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       {({ currentTabIdx, setCurrentTabIdx }) => (
         <>
           {showTabs && (
-            <TabsHeader className="md:justify-center justify-between flex-wrap py-[0px]  border-t-2 md:gap-8 gap-1">
+            <TabsHeader
+              className={`md:justify-center justify-between flex-wrap py-[0px]  md:gap-8 gap-1 relative`}
+            >
+              <Divider
+                className={`absolute ${border === "top" ? "-top-1.5" : "-bottom-[5px]"
+                  } `}
+              />
               {tabs.map(({ name, outlineIcon, solidIcon }, i) => (
                 <TabTitle key={i} TabKey={i}>
                   <div
                     onClick={() => setCurrentTabIdx(i)}
                     className={`flex items-center gap-2 space-x-2 font-semibold md:text-xs text-[10px] leading-none ${currentTabIdx === i
-                        ? "border-b-2 md:border-t-2 md:border-b-0 border-t-0 md:py-[22px] py-[6px] border-black text-black fill-black "
+                        ? ` ${border === "top"
+                          ? "border-b-2 md:border-t-2 md:border-b-0 border-t-0"
+                          : "border-t-2 md:border-b-2 md:border-t-0"
+                        } md:py-[22px] py-[6px] border-black text-black fill-black `
                         : "border-none md:py-6 py-2 text-[#8E8E8E]"
                       }`}
                   >
@@ -57,7 +68,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                           {currentTabIdx === i ? solidIcon : outlineIcon}
                         </div>
                       )}
-                      <p className="hidden md:flex">
+                      <p className="flex text-sm">
                         {runIfFn(name, { active: currentTabIdx === i })}
                       </p>
                     </>
