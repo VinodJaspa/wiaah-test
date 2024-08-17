@@ -967,7 +967,7 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       thumbnail: getRandomImage(),
-      id: "4",
+      id: "3",
       attachments: [
         {
           src: getRandomImage(),
@@ -984,7 +984,7 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       thumbnail: getRandomImage(),
-      id: "5",
+      id: "4",
       attachments: [
         {
           src: getRandomImage(),
@@ -1001,7 +1001,7 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       thumbnail: getRandomImage(),
-      id: "3",
+      id: "5",
       attachments: [
         {
           src: getRandomImage(),
@@ -1071,23 +1071,6 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       thumbnail: getRandomImage(),
-      id: "9",
-      attachments: [
-        {
-          src: getRandomImage(),
-          type: "image",
-          postLocation: "New York",
-        },
-      ],
-      content: "",
-      comments: [],
-    },
-  },
-  {
-    profileInfo: PostCardPlaceHolder.profileInfo,
-    postInfo: {
-      ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
       id: "7",
       attachments: [
         {
@@ -1106,6 +1089,23 @@ export const newsfeedPosts: PostCardInfo[] = [
       ...PostCardPlaceHolder.postInfo,
       thumbnail: getRandomImage(),
       id: "8",
+      attachments: [
+        {
+          src: getRandomImage(),
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      thumbnail: getRandomImage(),
+      id: "9",
       attachments: [
         {
           src: images[Math.floor(Math.random() * images.length)],
@@ -1182,7 +1182,7 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post456",
+      id: "1",
       reactionNum: 120,
       shares: 35,
       views: 1020,
@@ -1206,7 +1206,7 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post789",
+      id: "2",
       reactionNum: 250,
       shares: 50,
       views: 2000,
@@ -1230,7 +1230,7 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post123",
+      id: "3",
       reactionNum: 80,
       shares: 20,
       views: 800,
@@ -1255,7 +1255,7 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post456",
+      id: "4",
       reactionNum: 120,
       shares: 35,
       views: 1020,
@@ -1280,7 +1280,7 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post456",
+      id: "5",
       reactionNum: 120,
       shares: 35,
       views: 1020,
@@ -1298,14 +1298,14 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
 
   {
     profileInfo: {
-      id: "profile123",
+      id: "432",
       username: "john_doe",
       photo: getRandomImage(),
       profession: "Software Engineer",
     },
     postInfo: {
       createdAt: new Date().toISOString(),
-      id: "post456",
+      id: "6",
       reactionNum: 120,
       shares: 35,
       views: 1020,
@@ -1319,6 +1319,57 @@ export const SocialServicePostCardPlaceholder: SocialServicesPostCardProps[] = [
     discount: 15,
     price: 100,
     cashback: 5,
+  },
+];
+
+export const SocialActionsCardPlaceholder = [
+  {
+    id: "1",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "230",
+    description: "This is a short video description.",
+  },
+  {
+    id: "2",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "450",
+    description: "This is a short video description.",
+  },
+  {
+    id: "3",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "1100",
+    description: "This is a short video description.",
+  },
+  {
+    id: "4",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
+    description: "This is a short video description.",
+  },
+  {
+    id: "5",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
+    description: "This is a short video description.",
+  },
+  {
+    id: "6",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
+    description: "This is a short video description.",
+  },
+  {
+    id: "7",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
+    description: "This is a short video description.",
+  },
+  {
+    id: "8",
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
+    description: "This is a short video description.",
   },
 ];
 
