@@ -3,6 +3,7 @@ import { HiOutlinePlay } from "react-icons/hi2";
 import { PiPause } from "react-icons/pi";
 
 export type VideoThumbnailProps = {
+  id?: string;
   videoSrc: string;
   views: string;
   description?: string;
@@ -10,12 +11,13 @@ export type VideoThumbnailProps = {
 
 export const VideoThumbnail: React.FC<
   VideoThumbnailProps & {
-    isFocused: boolean;
-    onFocus: () => void;
+    isFocused?: boolean;
+    onFocus?: () => void;
     handleOpen?: () => void;
     isShort: boolean;
   }
 > = ({
+  id,
   videoSrc,
   views,
   description,
