@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { maxLength } from "class-validator";
 import React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -30,35 +31,62 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   const helperTextRef = React.useRef<HTMLParagraphElement>(null);
   const EllipsisRef = React.useRef<HTMLParagraphElement>(null);
 
-  function getLineHeight(element: HTMLElement | null, text: string) {
-    if (!element) return;
-    const copy = element.cloneNode();
-    //@ts-ignore
-    copy.style.visibility = "hidden";
-    //@ts-ignore
-    copy.style.position = "absolute";
+  const useLinesCount = (ref: React.RefObject<HTMLElement>): number => {
+    const [lines, setLines] = React.useState<number>(0);
 
-    copy.textContent = "a";
-    if (element.parentNode) {
-      element.parentNode.appendChild(copy);
-    }
+    React.useEffect(() => {
+      if (ref.current) {
+        const element = ref.current;
+        const computedStyle = window.getComputedStyle(element);
+        const lineHeight = parseFloat(computedStyle.lineHeight);
+        const height = element.getBoundingClientRect().height;
 
-    //@ts-ignore
-    const lineHeight = copy.offsetHeight;
+        // Calculate the number of lines
+        const numberOfLines = Math.ceil(height / lineHeight);
+        setLines(numberOfLines);
+      }
+    }, [ref]);
 
-    //@ts-ignore
-    copy.remove();
+    return lines;
+  };
+  function getLineHeight(
+    element: React.RefObject<HTMLElement>,
+    text: string,
+    maxLines: number,
+    helperTextRef: React.RefObject<HTMLElement>
+  ) {
+    if (!element || !helperTextRef.current) return false;
 
-    if (helperTextRef.current) {
-      helperTextRef.current.textContent = text;
-    }
+    // Create a temporary container to measure line height
+    const tempContainer = document.createElement("div");
+    tempContainer.style.visibility = "hidden";
+    tempContainer.style.position = "absolute";
+    tempContainer.style.whiteSpace = "nowrap"; // Ensure single-line text measurement
+    tempContainer.textContent = "a"; // A single character for line height measurement
 
-    const textHeight = helperTextRef.current?.offsetHeight;
+    // Append temporary container to the body for measurement
+    document.body.appendChild(tempContainer);
+    const lineHeight = tempContainer.offsetHeight;
 
-    return (textHeight || 1 / lineHeight) > lineHeight * maxLines;
+    // Remove temporary container
+    document.body.removeChild(tempContainer);
+
+    // Set the text content to helper text and measure its height
+    helperTextRef.current.textContent = text;
+    const textHeight = helperTextRef.current.offsetHeight;
+
+    // Compare text height to the maximum allowed height
+    return textHeight > lineHeight * maxLines;
   }
 
-  const textEllipsising = getLineHeight(postTextRef.current, content || "");
+  const linesCount = useLinesCount(postTextRef);
+
+  const textEllipsising = getLineHeight(
+    postTextRef,
+    content || "",
+    maxLines,
+    helperTextRef
+  );
 
   function handleShowMore() {
     setMaxLines(10000);
@@ -75,9 +103,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   }, [MaxLines]);
 
   return (
-    <div className="relative font-semibold flex flex-col">
+    <div className="relative font-base flex flex-col">
       <p
-        className="absolute w-full pointer-events-none hidden"
+        className="absolute w-full text-[#262626] font-[15px] pointer-events-none hidden"
         ref={helperTextRef}
       ></p>
       <Text
@@ -93,24 +121,25 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
           {content}
         </>
       </Text>
-      {textEllipsising && !displayShowMore ? null : showMore === true ? (
-        <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
-          <div className={`${showMoreColor ? showMoreColor : ""} flex gap-1`}>
-            <p className="text-primary" ref={EllipsisRef}>
-              ...
-            </p>
-            <p className="cursor-pointer" onClick={handleShowMore}>
-              {t("more")}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div
-          className="
+      {linesCount === maxLines && (
+        <div>
+          {textEllipsising && displayShowMore ? null : showMore === true ? (
+            <span
+              className={` cursor-pointer justify-end flex w-full text-primary capitalize transform-cpu ${showMoreColor ? showMoreColor : ""
+                } flex gap-1`}
+              onClick={handleShowMore}
+            >
+              {t("show more")}
+            </span>
+          ) : (
+            <span
+              className="
         flex justify-end absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
-          onClick={handleShowLess}
-        >
-          <p className="w-fit pl-2">{t("show less")}</p>
+              onClick={handleShowLess}
+            >
+              {t("show less")}
+            </span>
+          )}
         </div>
       )}
     </div>
