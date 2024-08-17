@@ -1,22 +1,21 @@
-import { ServicePostView } from "@components";
+import { ServicePostView } from "ui";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import { SellerLayout } from "ui";
+import { useRouter } from "next/router";
 
 const ServicePost = () => {
   const { t } = useTranslation();
-  const { getParam } = useRouting();
-
-  const id = getParam("postid");
+  const router = useRouter();
+  const postId = router.query.postId as string;
   return (
     <>
       <Head>
         <title>{t("Service Post")}</title>
       </Head>
       <SellerLayout>
-        <ServicePostView id={id} />
+        <ServicePostView postId={postId} />
       </SellerLayout>
     </>
   );

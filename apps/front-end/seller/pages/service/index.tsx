@@ -1,17 +1,21 @@
-import { ServicesView } from "@components";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { ServerSideQueryClientProps } from "types";
-import { ScrollPaginationWrapper, SellerLayout } from "ui";
+import {
+  ScrollPaginationWrapper,
+  SellerLayout,
+  ServiceCardsListWrapper,
+  SocialServicePostCardPlaceholder,
+} from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
 > = async () => {
   const queryclient = new QueryClient();
 
-  queryclient.prefetchQuery("", () => {});
+  queryclient.prefetchQuery("", () => { });
 
   return {
     props: {
@@ -27,7 +31,14 @@ const ServicesPage: NextPage = () => {
         <title>services</title>
       </Head>
       <SellerLayout>
-        <ServicesView />
+        <div className="flex justify-center w-full h-fit">
+          <div className="md:w-8/12 w-11/12">
+            <ServiceCardsListWrapper
+              cols={3}
+              items={SocialServicePostCardPlaceholder}
+            />
+          </div>
+        </div>
       </SellerLayout>
     </>
   );
