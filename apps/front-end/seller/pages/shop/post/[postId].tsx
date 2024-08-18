@@ -7,10 +7,11 @@ import {
 import { dehydrate, QueryClient } from "react-query";
 import { ShopCardInfo } from "types";
 import Head from "next/head";
-import { SellerLayout } from "ui";
-import { SellerShopPostView } from "../../../components";
+import { SellerLayout, ShopCardsView } from "ui";
+import { useRouter } from "next/router";
+import ShopView from "../[id]";
 
-interface ShopPostProps {}
+interface ShopPostProps { }
 
 async function getShopPosts(): Promise<ShopCardInfo[]> {
   return ShopCardsInfoPlaceholder;
@@ -37,13 +38,15 @@ export const getServerSideProps: GetServerSideProps<ShopPostProps> = async ({
 };
 
 const ShopPost: NextPage<ShopPostProps> = () => {
+  const router = useRouter();
+  const postId = router.query.postId as string;
   return (
     <>
       <Head>
         <title>Seller | shop post</title>
       </Head>
       <SellerLayout>
-        <SellerShopPostView />
+        <ShopCardsView postId={postId} />
       </SellerLayout>
     </>
   );

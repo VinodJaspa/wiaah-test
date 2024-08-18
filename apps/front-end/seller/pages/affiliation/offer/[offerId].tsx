@@ -4,8 +4,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { socialAffiliationCardPlaceholder } from "ui/placeholder";
 import { AffiliationOfferCardInfo } from "types";
-import { SellerLayout } from "ui";
-import { AffilitionOfferView } from "../../../components/views";
+import { AffiliationOfferView, SellerLayout } from "ui";
 import { useRouter } from "next/router";
 
 export interface affiliationOfferPageProps { }
@@ -39,15 +38,15 @@ export const getServerSideProps: GetServerSideProps<
 
 const AffiliationOffer: NextPage<affiliationOfferPageProps> = () => {
   const router = useRouter();
-  const id = router.query.offerId as string;
+  const offerId = router.query.offerId as string;
   return (
     <>
       <Head>
-        <title>seller | affilitionPost</title>
+        <title>Seller | Affiliation Post</title>
       </Head>
       <>
         <SellerLayout>
-          <AffilitionOfferView id={id} />
+          <AffiliationOfferView offerId={offerId} />
         </SellerLayout>
       </>
     </>

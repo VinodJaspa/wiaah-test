@@ -1,11 +1,11 @@
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { SellerLayout, useResponsive, HashTagView } from "ui";
+import { HashtagPageView, SellerLayout, useResponsive } from "ui";
 import { dehydrate, QueryClient } from "react-query";
 import { useRouting } from "routing";
 
-interface HashtagPageProps {}
+interface HashtagPageProps { }
 function getHashtags() {
   return [];
 }
@@ -29,10 +29,10 @@ const HashtagPage: NextPage<HashtagPageProps> = () => {
   return (
     <>
       <Head>
-        <title>seller | hashtags</title>
+        <title>Seller | hashtags</title>
       </Head>
       <SellerLayout header={isMobile ? "minimal" : "main"}>
-        <HashTagView tag={tag} />
+        <HashtagPageView />
       </SellerLayout>
     </>
   );

@@ -5,9 +5,10 @@ import { PostCardInfo } from "types";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import Head from "next/head";
 import { SellerLayout } from "ui";
-import { NewsFeedPostView } from "../../../components";
+import { NewsFeedPostView } from "ui";
+import { useRouting } from "routing";
 
-interface NewsFeedPost {}
+interface NewsFeedPost { }
 
 async function getPost({ queryKey }: any): Promise<PostCardInfo> {
   const postId = queryKey[1].postId;
@@ -36,13 +37,15 @@ export const getServerSideProps: GetServerSideProps<NewsFeedPost> = async ({
 };
 
 const NewsFeedPost: NextPage<NewsFeedPost> = () => {
+  const { getParam } = useRouting();
+  const postId = getParam("postId");
   return (
     <>
       <Head>
         <title>Seller | NewsFeed Post</title>
       </Head>
       <SellerLayout>
-        <NewsFeedPostView />
+        <NewsFeedPostView postId={postId} />
       </SellerLayout>
     </>
   );

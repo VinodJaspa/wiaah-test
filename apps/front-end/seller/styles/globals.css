@@ -433,3 +433,13 @@ button.image-gallery-icon {
   background-color: #ffffff;
   border: 3px solid #57bf9c;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
