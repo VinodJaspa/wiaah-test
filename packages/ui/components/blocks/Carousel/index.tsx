@@ -31,9 +31,6 @@ export const Carousel: FC<CarouselProps> = ({
     100 * currentComponent
   );
   const [dragging, setDragging] = React.useState<boolean>(false);
-  console.log("CHILDREN ========> " + children);
-  console.log("SINGLE CHILDREN ========> " + children[0]);
-
   let autoMoveInterval: any;
   // Define a consistent transition duration and easing for smoother transitions
   const transitionDuration = 500; // milliseconds

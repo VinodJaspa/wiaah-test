@@ -151,6 +151,7 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
+  showMobileHeader?: boolean;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({
@@ -158,6 +159,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   header = "main",
   containerProps,
   sideBar = true,
+  showMobileHeader = false,
   noContainer = false,
 }) => {
   const { isMobile } = useResponsive();
@@ -254,7 +256,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
             } h-full`}
         >
-          {header && header !== null && showHeader ? (
+          {header && header !== null && (showMobileHeader || showHeader) ? (
             <div
               className={`bg-white fixed z-[35] w-full top-0 left-0 ${isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
                 }`}
