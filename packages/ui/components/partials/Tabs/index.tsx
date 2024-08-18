@@ -123,7 +123,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
               onClick={() => {
                 setCurrentTabIdx(i);
               }}
-              className={`px-2 pt-0 pb-1 cursor-pointer text-lg font-bold`}
+              className={`px-2 py-0 cursor-pointer text-lg font-bold`}
             >
               {PassPropsToFnOrElem<TabTitleChildrenPropsType>(tab.component, {
                 currentTabIdx,
@@ -179,7 +179,7 @@ export const TabList: React.FC<TabListProps> = ({
   const { currentTabIdx, tabsComponents, ...rest } =
     React.useContext(TabsContext);
   return (
-    <div {...props} className={`${className || ""} w-full`}>
+    <div {...props} className={`${className || ""}`}>
       {tabsComponents[currentTabIdx]
         ? PassPropsToFnOrElem<TabsContextValue>(
           tabsComponents[currentTabIdx].component,
