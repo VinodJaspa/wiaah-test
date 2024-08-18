@@ -26,11 +26,7 @@ interface PlaceCardProps {
   type: string;
 }
 
-export const PlaceCard: React.FC<PlaceCardProps> = ({
-  title,
-  location,
-  type,
-}) => {
+const PlaceCard: React.FC<PlaceCardProps> = ({ title, location, type }) => {
   return (
     <div className="md:w-1/2 w-full  flex justify-between items-center">
       <div className="flex gap-4 items-center">
