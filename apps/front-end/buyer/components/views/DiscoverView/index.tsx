@@ -1,190 +1,193 @@
-import { useQuery } from "react-query";
+import { useResponsive } from "hooks";
+import { getRandomImage, products } from "placeholder";
 import React from "react";
-import { products } from "ui/placeholder/products";
-import {
-  ListWrapper,
-  TabsViewer,
-  useDiscoverTabs,
-  UserProfile,
-  placesPlaceholder,
-  LocationButton,
-  HashTagSearchItem,
-  DiscoverItem,
-  VStack,
-} from "ui";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "ui/components/helpers";
-import { getRandomImage } from "placeholder";
-import { classNames } from "react-select/src/utils";
+import { TabType } from "types";
+import {
+  Container,
+  HashtagView,
+  TabsViewer,
+  PlacesList,
+  UsersView,
+  ListWrapper,
+  DiscoverItem,
+} from "ui";
+
+interface ExplorePageProps { }
 
 const discoverItemsPlaceholder = products.map((prod, i) => ({
   image: prod.imgUrl,
 }));
 
-const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce((acc) => {
-  return [...acc, ...placesPlaceholder];
-}, []);
-const hashTagsPlaceholder: string[] = ["gaming", "art", "funny"];
-const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
-  return [...acc, ...hashTagsPlaceholder];
-}, []);
-
-export const DiscoverView: React.FC = ({ }) => {
+export const DiscoverView: React.FC<ExplorePageProps> = () => {
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
-  const { discoverTabs, changeDiscoverTab, currentTab, setTabsData } =
-    useDiscoverTabs();
-  const { data, isLoading, isError } = useQuery(
-    "DiscoverPageItems",
-    () => discoverItemsPlaceholder
-  );
-
-  const usersProfilesPlaceHolder = FAKE_USERS;
-  React.useEffect(() => {
-    setTabsData([
-      {
-        name: t("community", "community"),
-        component: (
-          <ListWrapper cols={4}>
-            {discoverItemsPlaceholder.map((item, i) => (
-              <DiscoverItem thumbnail={item.image} key={i} />
-            ))}
-          </ListWrapper>
-        ),
-        link: "/",
-      },
-      {
-        name: t("users", "users"),
-        component: (
-          <ListWrapper>
-            {usersProfilesPlaceHolder.map((user, i) => (
-              <UserProfile user={user} key={i} />
-            ))}
-          </ListWrapper>
-        ),
-        link: "users",
-      },
-      {
-        name: t("places", "places"),
-        component: (
-          <ListWrapper>
-            {discoverPlacesPlaceHolder.map((place, i) => (
-              <LocationButton
-                key={i}
-                iconProps={{ className: "text-primary" }}
-                name={place}
-              />
-            ))}
-          </ListWrapper>
-        ),
-        link: "places",
-      },
-      {
-        name: t("hashtags", "hashtags"),
-        component: (
-          <ListWrapper>
-            {discoverHashtagsPlaceholder.map((tag, i) => (
-              <HashTagSearchItem
-                key={i}
-                hashtagName={tag}
-                hashtagViews={randomNum(50000000)}
-              />
-            ))}
-          </ListWrapper>
-        ),
-        link: "hashtags",
-      },
-    ]);
-  }, []);
+  const tabs: TabType[] = [
+    {
+      name: t("Discover"),
+      component: (
+        <ListWrapper cols={4}>
+          {discoverItemsPlaceholder.map((item, i) => (
+            <DiscoverItem thumbnail={item.image} key={i} />
+          ))}
+        </ListWrapper>
+      ),
+    },
+    { name: t("Stories"), component: <div></div> },
+    { name: t("Users"), component: <UsersView users={FAKE_USERS} /> },
+    { name: t("Places"), component: <PlacesList places={FAKE_PLACES} /> },
+    { name: t("Hashtag"), component: <HashtagView hashtags={FAKE_HASHTAGS} /> },
+  ];
   return (
-    <VStack className="overflow-scroll items-start h-full">
-      <TabsViewer
-        showTabs={false}
-        tabs={discoverTabs}
-        currentTabIdx={currentTab}
-      />
-    </VStack>
+    <Container className="flex-grow w-full flex flex-col gap-4">
+      <div className="w-full mt-20">
+        <TabsViewer tabs={tabs} border="bottom" />
+      </div>
+    </Container>
   );
 };
 
-const FAKE_USERS = [
+const FAKE_HASHTAGS = [
+  { title: "Fashion", num: 200000 },
+  { title: "Car", num: 100000 },
+  { title: "Rolex", num: 50000 },
+  { title: "Jewellery", num: 1000000 },
+  { title: "Adidas", num: 100000 },
+  { title: "Nike", num: 90000 },
+  { title: "Movie", num: 40000 },
+  { title: "Covid-19", num: 4000000 },
+  { title: "UFC", num: 10000 },
+  { title: "FIFA", num: 18000000 },
+  { title: "Midjourney", num: 1500000 },
+  { title: "Chatgpt", num: 2000000 },
+  { title: "Figma", num: 200000 },
+  { title: "Midjourney", num: 1500000 },
+  { title: "Chatgpt", num: 2000000 },
+  { title: "Figma", num: 200000 },
+];
+
+const FAKE_PLACES = [
   {
-    id: "1",
-    name: "Wiaah",
-    photo: "/shop-3.jpeg",
-    activityType: "Hotel",
-    verified: true,
-    profession: "Hotel Manager",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bar",
   },
   {
-    id: "2",
-    name: "Jack",
-    photo: "/shop.jpeg",
-    activityType: "Bar",
-    verified: false,
-    profession: "Bartender",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bank",
   },
   {
-    id: "3",
-    name: "sam",
-    photo: "/shop-2.jpeg",
-    activityType: "Singer",
-    verified: true,
-    profession: "Musician",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Hospital",
   },
   {
-    id: "4",
-    name: "Wiaah",
-    photo: "/shop-3.jpeg",
-    activityType: "MarketPlace",
-    verified: true,
-    profession: "Market Vendor",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Hospital",
   },
   {
-    id: "5",
-    name: "Jack",
-    photo: "/shop.jpeg",
-    activityType: "Artist",
-    verified: false,
-    profession: "Painter",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bar",
   },
   {
-    id: "6",
-    name: "Wiaah",
-    photo: "/shop-3.jpeg",
-    activityType: "Hotel",
-    verified: true,
-    profession: "Hotel Manager",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Hospital",
   },
   {
-    id: "7",
-    name: "Jack",
-    photo: "/shop.jpeg",
-    activityType: "Bar",
-    verified: false,
-    profession: "Bartender",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bank",
   },
   {
-    id: "8",
-    name: "sam",
-    photo: "/shop-2.jpeg",
-    activityType: "Singer",
-    verified: true,
-    profession: "Musician",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bar",
   },
   {
-    id: "9",
-    name: "Wiaah",
-    photo: "/shop-3.jpeg",
-    activityType: "MarketPlace",
-    verified: true,
-    profession: "Market Vendor",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Barbershop",
   },
   {
-    id: "10",
-    name: "Jack",
-    photo: "/shop.jpeg",
-    activityType: "Artist",
-    verified: false,
-    profession: "Painter",
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Groceries",
+  },
+  {
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Barbershop",
+  },
+  {
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Bar",
+  },
+  {
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Groceries",
+  },
+  {
+    title: "The Blushing Crate",
+    location: "3807 Ruckman Road, Oklahoma City",
+    type: "Groceries",
   },
 ];
+const FAKE_USERS = [
+  {
+    image: getRandomImage(),
+    name: "Alice",
+    isFollowed: true,
+  },
+  {
+    image: getRandomImage(),
+    name: "Bob",
+    isFollowed: false,
+  },
+  {
+    image: getRandomImage(),
+    name: "Charlie",
+    isFollowed: true,
+  },
+  {
+    image: getRandomImage(),
+    name: "Diana",
+    isFollowed: false,
+  },
+  {
+    image: getRandomImage(),
+    name: "Edward",
+    isFollowed: true,
+  },
+  {
+    image: getRandomImage(),
+    name: "Alice",
+    isFollowed: true,
+  },
+  {
+    image: getRandomImage(),
+    name: "Bob",
+    isFollowed: false,
+  },
+  {
+    image: getRandomImage(),
+    name: "Charlie",
+    isFollowed: true,
+  },
+  {
+    image: getRandomImage(),
+    name: "Diana",
+    isFollowed: false,
+  },
+  {
+    image: getRandomImage(),
+    name: "Edward",
+    isFollowed: true,
+  },
+];
+export default DiscoverView;

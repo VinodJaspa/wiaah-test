@@ -1,9 +1,8 @@
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { SellerLayout, useResponsive } from "ui";
+import { SellerLayout, useResponsive, HashtagPageView } from "ui";
 import { dehydrate, QueryClient } from "react-query";
-import { HashtagsView } from "../../components";
 
 interface HashtagPageProps { }
 
@@ -21,7 +20,7 @@ const HashtagPage: NextPage<HashtagPageProps> = () => {
         <title>Buyer | hashtags</title>
       </Head>
       <SellerLayout header={isMobile ? "minimal" : "main"}>
-        <HashtagsView />
+        <HashtagPageView />
       </SellerLayout>
     </>
   );

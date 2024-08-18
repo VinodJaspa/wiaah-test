@@ -3,7 +3,6 @@ export * from "./DiscoverView";
 export * from "./ActionsView";
 export * from "./Localisation";
 export * from "./Places";
-export * from "./HashtagsView";
 export * from "./Messages";
 export * from "./Wishlist";
 export * from "./CartSummary";
