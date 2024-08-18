@@ -9,7 +9,7 @@ import {
   TabsProps,
   Divider,
 } from "@UI";
-import { TabType } from "types";
+import { HtmlDivProps, TabType } from "types";
 import { runIfFn } from "utils";
 
 export interface TabsViewerProps extends Omit<TabsProps, "children"> {
@@ -19,6 +19,7 @@ export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   showTabs?: boolean;
   children?: React.ReactNode;
   border?: "top" | "bottom";
+  tabListProps?: HtmlDivProps;
 }
 
 export const TabsViewer: React.FC<TabsViewerProps> = ({
@@ -28,6 +29,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   showTabs = true,
   children,
   border = "top",
+  tabListProps,
   ...props
 }) => {
   if (!tabs || tabs.length === 0) {
@@ -68,7 +70,12 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                           {currentTabIdx === i ? solidIcon : outlineIcon}
                         </div>
                       )}
-                      <p className="flex text-sm">
+                      <p
+                        className={`${outlineIcon && solidIcon
+                            ? "hidden md:flex text-sm"
+                            : "flex text-sm"
+                          }`}
+                      >
                         {runIfFn(name, { active: currentTabIdx === i })}
                       </p>
                     </>
@@ -79,7 +86,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
           )}
           {children}
           {showPanels && (
-            <TabList className="flex w-full justify-center">
+            <TabList className="flex w-full justify-center" {...tabListProps}>
               {tabs.map(({ component }, i) => (
                 <TabItem key={i}>{runIfFn(component)}</TabItem>
               ))}

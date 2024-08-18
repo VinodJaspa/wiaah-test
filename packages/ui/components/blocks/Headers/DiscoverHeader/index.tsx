@@ -24,25 +24,16 @@ export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
   return (
     <div
       className="flex flex-col py-2 gap-2 w-full relative"
-      // {...containerProps}
+    // {...containerProps}
     >
-      <InputGroup className="rounded-2xl">
-        <InputLeftElement>
-          <Button
-            className="text-black rounded-l-2xl"
-            colorScheme="white"
-            aria-label="discover filter search"
-            color="black"
-          >
-            <HiSearch />
-          </Button>
-        </InputLeftElement>
+      <InputGroup className="rounded-2xl relative">
         <Input
-          className="rounded-2xl bg-gray-100"
+          className="rounded-2xl bg-gray-100 pl-6"
           value={searchFilter}
-          placeholder={`${t("search", "search")}`}
+          placeholder={`${t("Lets explore", "Lets explore")}`}
           onChange={(e) => handleSearchFilter(e.target.value)}
         />
+        <HiSearch className="absolute left-2 w-6 h-6" />
       </InputGroup>
 
       <TabsViewer

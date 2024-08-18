@@ -18,7 +18,6 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  const post = PostCardPlaceHolder;
   const { data: _post, isLoading: PostIsLoading } = useQuery<PostCardInfo>([
     "newsFeedPost",
     { postId: router.query.postId },
@@ -38,28 +37,38 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
     },
   ]);
 
+  const post = newsfeedPosts.filter((post) => post.postInfo.id === postId);
+
   return (
     <Flex pb={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
       <div className="flex items-start justify-center h-screen mx-28">
         <div className="w-full h-5/6 ">
-          <PostView
-            postId="4"
-            queryName="newFeedPost"
-            data={post}
-            idParam="newsfeedpostid"
-            renderChild={(props: PostCardInfo) => {
-              const images = [props.postInfo.thumbnail];
-              return (
-                <Carousel componentsPerView={1} controls={false}>
-                  {images.map((image, index) => (
-                    <div key={index}>
-                      <img src={image} alt={`Attachment ${index + 1}`} />
-                    </div>
-                  ))}
-                </Carousel>
-              );
-            }}
-          />
+          {post[0] ? (
+            <PostView
+              postId="4"
+              queryName="newFeedPost"
+              data={post[0]}
+              idParam="newsfeedpostid"
+              renderChild={(props: PostCardInfo) => {
+                const images = [props.postInfo.thumbnail];
+                return (
+                  <Carousel componentsPerView={1} controls={false}>
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image} alt={`Attachment ${index + 1}`} />
+                      </div>
+                    ))}
+                  </Carousel>
+                );
+              }}
+            />
+          ) : (
+            <div className="w-full flex justify-center items-center">
+              <h1 className="text-4xl font-semibold">
+                Post {postId} does not exist
+              </h1>
+            </div>
+          )}
         </div>
       </div>
       <Text
@@ -69,10 +78,13 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
         textAlign="center"
         textTransform="capitalize"
       >
-        {t("view", "view")} {post.profileInfo.name}{" "}
         {t("other_posts", "other posts")}
       </Text>
-      <PostCardsListWrapper cols={cols} posts={otherPosts} />
+      <div className="flex justify-center w-full h-fit">
+        <div className="md:w-8/12 w-11/12">
+          <PostCardsListWrapper cols={cols} posts={otherPosts} popup={false} />
+        </div>
+      </div>
       <Button
         _focus={{ ringColor: "primary.main" }}
         bgColor="white"

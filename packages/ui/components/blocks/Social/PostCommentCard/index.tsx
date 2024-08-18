@@ -27,6 +27,8 @@ import {
   useCommentOnContent,
   useOutsideClick,
 } from "@UI";
+import { FaRegHeart } from "react-icons/fa6";
+import { BsFillReplyFill } from "react-icons/bs";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -44,7 +46,7 @@ export interface PostCommentCardProps {
     | "updatedAt"
     | "replies"
   > & {
-    attachment: { __typename?: "Attachment" } & Pick<
+    attachment?: { __typename?: "Attachment" } & Pick<
       Attachment,
       "src" | "type"
     >;
@@ -61,11 +63,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 }) => {
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
-  const { getSince } = useDateDiff({
-    from: new Date(comment.commentedAt),
-    to: new Date(Date.now()),
-  });
-  const since = getSince();
   const { mutate } = useLikeContent();
   const { mutate: createComment } = useCommentOnContent();
 
@@ -88,48 +85,55 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 
   const profile = comment.author;
 
+  const TimeDiff = (createdAt: string) => {
+    const { timeUnit, value } = useDateDiff({
+      from: new Date(),
+      to: new Date(createdAt),
+    }).getSince();
+    return `${value} ${timeUnit} `;
+  };
+
   return (
-    <div ref={ref} className="flex bg-white w-full gap-2">
-      <Avatar src={profile?.photo} name={profile?.username} />
+    <div ref={ref} className="flex bg-white w-full gap-2 px-3">
+      <img
+        src={profile?.photo}
+        alt="avatar"
+        className="w-11 h-11 rounded-full"
+      />
       <div className="w-full flex flex-col">
         <div
           className={`w-full flex pb-2 px-2 flex-col rounded-xl ${main ? "bg-white" : "bg-primary-light"
             }`}
         >
-          <div className="flex items-center gap-2 justify-between">
+          <div className="flex items-center mt-2 gap-2 justify-between">
             <HStack>
-              <p className="text-lg font-bold">{profile?.username}</p>
-              {profile?.verified && <Verified className="text-primary" />}
-            </HStack>
-            <HStack>
-              <Menu>
-                <MenuButton>
-                  <HiDotsHorizontal className="cursor-pointer text-2xl fill-primary" />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>
-                    <p onClick={() => openModalWithId(profile?.id || "")}>
-                      {t("report_user", "Report User")}
-                    </p>
-                  </MenuItem>
-                </MenuList>
-              </Menu>
+              <div className="flex items-center gap-1  ">
+                <p className="text-xl font-semibold">{profile?.username}</p>
+                {profile?.verified && (
+                  <Verified className="text-[#0084FF] w-5 h-5" />
+                )}
+              </div>
+              <p className="text-[#8E8E8E] text-xs">
+                {TimeDiff(comment.commentedAt)} ago
+              </p>
             </HStack>
           </div>
           <div className="py-2">
             <EllipsisText
               showMoreColor={main ? "white" : undefined}
               content={comment.content}
-              maxLines={4}
+              maxLines={3}
             />
           </div>
 
           {comment.attachment && (
-            <PostAttachment
-              src={comment.attachment.src}
-              type={comment.attachment.type}
-              alt={profile?.username}
-            />
+            <div className="w-1/2">
+              <PostAttachment
+                src={comment.attachment.src}
+                type={comment.attachment.type}
+                alt={profile?.username}
+              />
+            </div>
           )}
         </div>
         <div className="flex px-2 w-full items-center justify-between">
@@ -148,17 +152,34 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               </div>
             </HStack>
           )}
-          <HStack className="whitespace-nowrap text-xs text-gray-500">
-            {!main && (
-              <>
-                <p>{comment.likes}</p>
-                <p>{t("Likes")}</p>
-              </>
-            )}
-            <p>
-              {!main && "|"} {since.value} {since.timeUnit} {t("ago", "ago")}
-            </p>
-          </HStack>
+          <div className="whitespace-nowrap font-[15px] flex  text-gray-500 justify-between w-full  ">
+            <div className="flex gap-4 items-center">
+              <button className="text-sm font-extrabold text-[#20ECA7]">
+                Likes
+              </button>
+              <button className="text-sm font-extrabold text-[#999999]">
+                Reply
+              </button>
+            </div>
+
+            <div className="flex gap-6 items-center text-[#8E8E8E] font-semibold">
+              <div className="flex gap-2 items-center">
+                <FaRegHeart className="w-4 h-4" />
+                <div className="flex gap-1 items-center">
+                  <p>{comment.likes}</p>
+                  <p>{t("Likes")}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-2 items-center">
+                <BsFillReplyFill className="w-5 h-5" />
+                <div className="flex gap-1 items-center">
+                  <p>{comment.replies}</p>
+                  <p>{t("Replies")}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {reply ? (
           <CommentInput
@@ -174,6 +195,20 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             }}
           />
         ) : null}
+      </div>
+      <div className="h-full">
+        <Menu>
+          <MenuButton>
+            <HiDotsHorizontal className="cursor-pointer text-2xl fill-black" />
+          </MenuButton>
+          <MenuList>
+            <MenuItem>
+              <p onClick={() => openModalWithId(profile?.id || "")}>
+                {t("report_user", "Report User")}
+              </p>
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </div>
     </div>
   );

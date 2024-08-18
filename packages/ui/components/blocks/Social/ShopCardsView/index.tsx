@@ -23,14 +23,14 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
         <div className="flex items-start justify-center h-screen mx-28">
           <div className="w-full h-5/6 ">
             <PostView
-              postId="4"
-              queryName="newFeedPost"
+              postId={postId}
+              queryName="shopPost"
               data={post[0]}
-              idParam="newsfeedpostid"
+              idParam="shopPostId"
               renderChild={(props: SocialShopPostcardProps) => {
                 const images = post[0].postInfo.product.presentations;
                 return (
-                  <Carousel componentsPerView={1} controls={false}>
+                  <Carousel componentsPerView={1} controls={images.length > 1}>
                     {images.map((image, index) => (
                       <div key={index}>
                         <img src={image.src} alt={`Attachment ${index + 1}`} />
@@ -64,6 +64,7 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
           <ShopCardsListWrapper
             cols={cols}
             items={SocialShopsPostCardPlaceholder}
+            popup={false}
           />
         </div>
       </div>

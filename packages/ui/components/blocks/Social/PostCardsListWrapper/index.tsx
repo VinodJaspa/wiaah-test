@@ -2,19 +2,21 @@ import { newsfeedPosts } from "placeholder";
 import React from "react";
 import { PostCard, PostCardProps } from "@UI/components/blocks/Social/PostCard";
 import { PostViewPopup } from "@UI/components/blocks/Popups";
-import { PostAttachmentsViewer } from "@UI/components/blocks/DataDisplay";
 import {
   ListWrapper,
   GridListOrganiser,
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
-import { useResponsive } from "@UI/../hooks";
+import { useModalDisclouser, useResponsive } from "@UI/../hooks";
 import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 import { PostCardInfo } from "types";
+import { Carousel } from "@blocks/Carousel";
+import { useRouter } from "next/router";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
+  popup?: boolean;
   cols?: number;
   grid?: boolean;
   onPostClick?: (postId: string) => any;
@@ -29,49 +31,61 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   onLocationClick,
   onPostClick,
   onProfileClick,
+  popup = true,
 }) => {
-  const childPosts =
-    posts &&
-    posts.map((post, idx) => (
-      <PostCard
-        onProfileClick={() =>
-          onProfileClick &&
-          post.profileInfo?.name &&
-          onProfileClick(post.profileInfo?.name)
-        }
-        // onLocationClick={()=> onLocationClick && onLocationClick(post.id)}
-        onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
-        post={post}
-        key={idx}
-      />
-    ));
+  const router = useRouter();
 
   const { isMobile, isTablet } = useResponsive();
+  const childPosts =
+    posts &&
+    posts.map((post, idx) => {
+      const { isOpen, handleOpen, handleClose } = useModalDisclouser();
+      const images = [post.postInfo.thumbnail];
+      return (
+        <React.Fragment key={idx}>
+          <PostCard
+            onProfileClick={() =>
+              onProfileClick &&
+              post.profileInfo?.name &&
+              onProfileClick(post.profileInfo?.name)
+            }
+            onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
+            post={post}
+            key={idx}
+            openPopup={
+              popup
+                ? handleOpen
+                : () => router.push(`/newsfeed/post/${post.postInfo.id}`)
+            }
+          />
+
+          {popup && (
+            <PostViewPopup
+              queryName="newFeedPost"
+              data={post}
+              idParam="newsfeedpostid"
+              isOpen={isOpen}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              renderChild={(props: PostCardInfo) => {
+                return (
+                  <Carousel componentsPerView={1} controls={images.length > 1}>
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image} alt={`Attachment ${index + 1}`} />
+                      </div>
+                    ))}
+                  </Carousel>
+                );
+              }}
+            />
+          )}
+        </React.Fragment>
+      );
+    });
 
   return (
     <>
-      <PostViewPopup
-        // @ts-ignore
-        fetcher={async ({ queryKey }) => {
-          const id = queryKey[1].postId;
-
-          const post = newsfeedPosts.find((post) => post.postInfo.id === id);
-          return post ? post : null;
-        }}
-        queryName="newFeedPost"
-        idParam="newsfeedpostid"
-        renderChild={(props: PostCardInfo) => {
-          return (
-            <PostAttachmentsViewer
-              attachments={props.postInfo.attachments || []}
-              profileInfo={props.profileInfo}
-              carouselProps={{
-                arrows: true,
-              }}
-            />
-          );
-        }}
-      />
       {grid ? (
         isMobile ? (
           <div className="grid grid-cols-3 gap-[1px]">

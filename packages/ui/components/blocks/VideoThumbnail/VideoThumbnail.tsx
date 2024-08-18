@@ -14,7 +14,7 @@ export const VideoThumbnail: React.FC<
     isFocused?: boolean;
     onFocus?: () => void;
     handleOpen?: () => void;
-    isShort: boolean;
+    isShort?: boolean;
   }
 > = ({
   id,
@@ -24,7 +24,7 @@ export const VideoThumbnail: React.FC<
   isFocused,
   onFocus,
   handleOpen,
-  isShort,
+  isShort = false,
 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef: RefObject<HTMLVideoElement> = useRef(null);
@@ -64,7 +64,7 @@ export const VideoThumbnail: React.FC<
 
     return (
       <div
-        className={`relative ${isShort && "max-w-xs"} mx-auto ${isFocused ? "focused" : ""
+        className={`relative ${isShort && "max-w-sm"} mx-auto ${isFocused ? "focused" : ""
           }`}
         onFocus={onFocus}
         tabIndex={0} // Makes the div focusable

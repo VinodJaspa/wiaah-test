@@ -10,6 +10,8 @@ import {
   useCommentOnContent,
   PostCommentCardProps,
   Divider,
+  PostView,
+  Carousel,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { PostCommentCard, Slider } from "@UI";
@@ -29,11 +31,12 @@ export interface PostViewPopupProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
   idParam?: string;
   queryName: string;
-  fetcher: (queryFn: any) => Promise<TData | null>;
+  fetcher?: (queryFn: any) => Promise<TData | null>;
   isOpen: boolean;
   handleOpen: () => void;
   handleClose: () => void;
   showLink?: boolean;
+  data?: TData;
 }
 
 export const goNextPost = async ({ currentId }: { currentId: string }) => {
@@ -53,6 +56,7 @@ export function PostViewPopup<TData extends {}>({
   handleOpen,
   handleClose,
   showLink = false,
+  data,
 }: PostViewPopupProps<TData>) {
   const { visit, getCurrentPath } = useRouting();
   const { CloseComments, OpenComments, ToggleComments, open } =
@@ -84,11 +88,12 @@ export function PostViewPopup<TData extends {}>({
   const postId = getParamFromAsPath(getCurrentPath(), idParam);
   const { mutate } = useCommentOnContent();
 
-  const {
-    data: post,
-    isLoading,
-    isError,
-  } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
+  // const {
+  //   data: post,
+  //   isLoading,
+  //   isError,
+  // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
+  const post = data;
 
   const reloadPath = () => {
     visit((routes) => routes.addPath(""));
@@ -107,77 +112,24 @@ export function PostViewPopup<TData extends {}>({
     reloadPath();
   }
 
-  function handleNextPost() {
-    if (postId) {
-      mutateNext({ currentId: postId });
-    }
-  }
-  function handlePrevPost() {
-    if (postId) {
-      mutatePrev({ currentId: postId });
-    }
-  }
   return (
     <>
       <Modal onOpen={() => { }} onClose={handlePostViewClose} isOpen={isOpen}>
-        <ModalContent className=" h-screen w-screen bg-opacity-15 bg-black flex justify-center items-center ">
-          <div className="flex justify-center items-center relative w-3/4 h-5/6 ">
+        <ModalContent className=" h-screen w-screen bg-opacity-80 bg-black flex justify-center items-center ">
+          <div className="relative w-3/5 h-4/5">
             <MdClose
-              onClick={handlePostViewClose}
+              onClick={handleClose}
               className={`absolute -top-2 -right-16 text-3xl w-9 h-9 cursor-pointer text-white`}
               aria-label="Close Post"
             />
-            <div className="flex w-1/2 h-full bg-black">
-              {renderChild(post!)}
-            </div>
-            <div
-              style={{
-                opacity: open ? 1 : 0,
-                pointerEvents: open ? "all" : "none",
-                width: open ? "50%" : "0px",
-              }}
-              className={`transition-all transform bg-white flex-col p-2 pr-3 gap-2 flex h-full `}
-            >
-              {/*Top section (Link)*/}
-              <BookingLinkBanner
-                showLink={showLink}
-                link="https://www.figma.com/design/zou6Q"
-              />
-              <div className="hide-scrollbar h-full overflow-y-scroll">
-                {PostCardPlaceHolder.postInfo.comments && (
-                  <>
-                    {FAKE_COMMENTS.length > 0 ? (
-                      FAKE_COMMENTS.map(
-                        (comment: PostCommentCardProps["comment"], i: any) => (
-                          <>
-                            <PostCommentCard
-                              main={true}
-                              key={i}
-                              comment={comment}
-                            />
+            <PostView
+              postId=""
+              queryName="newFeedPost"
+              data={post}
+              idParam="newsfeedpostid"
+              renderChild={renderChild}
+            />
 
-                            <Divider className="my-4" />
-                          </>
-                        )
-                      )
-                    ) : (
-                      <div className="flex justify-center items-center h-full">
-                        <p className="text-xl font-bold">
-                          {t("no comments in this post")}
-                        </p>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-              <CommentInput
-                onCommentSubmit={(v) => {
-                  // mutate({
-                  //   authorProfileId:
-                  // })
-                }}
-              />
-            </div>
             <div className="absolute bottom-0 -right-[68px] z-50  cursor-pointer select-none rounded-full  p-3 bg-white text-white ">
               <MdOutlineArrowForwardIos className="rotate-90 text-[#20ECA7] w-[22px] h-[22px]" />
             </div>

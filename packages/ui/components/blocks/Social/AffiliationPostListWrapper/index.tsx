@@ -13,6 +13,7 @@ import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 import { PostCardInfo } from "types";
 import { Carousel } from "@blocks/Carousel";
+import { useRouter } from "next/router";
 
 export interface AffiliationCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
@@ -21,6 +22,7 @@ export interface AffiliationCardsListWrapperProps extends ListWrapperProps {
   onPostClick?: (postId: string) => any;
   onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
+  popup?: boolean;
 }
 
 export const AffiliationCardsListWrapper: React.FC<
@@ -32,7 +34,9 @@ export const AffiliationCardsListWrapper: React.FC<
   onLocationClick,
   onPostClick,
   onProfileClick,
+  popup = true,
 }) => {
+    const router = useRouter();
     const childPosts =
       posts &&
       posts.map((post, idx) => {
@@ -40,33 +44,35 @@ export const AffiliationCardsListWrapper: React.FC<
         const images = [post.postInfo.thumbnail];
         return (
           <>
-            <PostViewPopup
-              showLink={true}
-              fetcher={async ({ queryKey }) => {
-                const id = queryKey[1].postId;
+            {popup && (
+              <PostViewPopup
+                showLink={true}
+                fetcher={async ({ queryKey }) => {
+                  const id = queryKey[1].postId;
 
-                const post = newsfeedPosts.find(
-                  (post) => post.postInfo.id === id
-                );
-                return post ? post : null;
-              }}
-              queryName="newFeedPost"
-              idParam="newsfeedpostid"
-              isOpen={isOpen}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              renderChild={(props: PostCardInfo) => {
-                return (
-                  <Carousel componentsPerView={1} controls={true}>
-                    {images.map((image, index) => (
-                      <div key={index}>
-                        <img src={image} alt={`Attachment ${index + 1}`} />
-                      </div>
-                    ))}
-                  </Carousel>
-                );
-              }}
-            />
+                  const post = newsfeedPosts.find(
+                    (post) => post.postInfo.id === id
+                  );
+                  return post ? post : null;
+                }}
+                queryName="newFeedPost"
+                idParam="newsfeedpostid"
+                isOpen={isOpen}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                renderChild={(props: PostCardInfo) => {
+                  return (
+                    <Carousel componentsPerView={1} controls={true}>
+                      {images.map((image, index) => (
+                        <div key={index}>
+                          <img src={image} alt={`Attachment ${index + 1}`} />
+                        </div>
+                      ))}
+                    </Carousel>
+                  );
+                }}
+              />
+            )}
             <PostCard
               onProfileClick={() =>
                 onProfileClick &&
@@ -77,7 +83,11 @@ export const AffiliationCardsListWrapper: React.FC<
               onPostClick={() => onPostClick && onPostClick(post.postInfo.id)}
               post={post}
               key={idx}
-              openPopup={handleOpen}
+              openPopup={
+                popup
+                  ? handleOpen
+                  : () => router.push(`/affilation/offer/${post.postInfo.id}`)
+              }
             />
           </>
         );

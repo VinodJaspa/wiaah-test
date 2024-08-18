@@ -8,19 +8,6 @@ export const SocialActionsView: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="bg-white w-full h-[40rem] overflow-hidden flex-col flex items-center justyf-center">
-      <PostViewPopup
-        //@ts-ignore
-        fetcher={async ({ queryKey }) => {
-          const id = queryKey[1].postId;
-          const action = actionsPlaceholders.find((post) => post.id === id);
-          return action ? action : null;
-        }}
-        queryName="action"
-        idParam="actionId"
-        renderChild={(props: SocialActionData) => {
-          return <ActionViewer action={props} />;
-        }}
-      />
       {/* actions View */}
       <Slider variant="vertical">
         {actionsPlaceholders.map((action, i) => (

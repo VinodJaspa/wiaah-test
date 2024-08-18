@@ -73,3 +73,4 @@ export * from "./ServiceSearch";
 export * from "./ServicesProvider";
 export * from "./Checkout";
 export * from "./VideoThumbnail";
+export * from "./PostView";

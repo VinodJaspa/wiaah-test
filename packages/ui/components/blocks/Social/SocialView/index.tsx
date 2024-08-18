@@ -27,6 +27,8 @@ import {
   ServiceCardsListWrapper,
   SocialServicePostCardPlaceholder,
 } from "ui";
+
+import { AttachmentType, ContentHostType } from "@features/API";
 import { useGetSocialProfile } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
 import { CashbackType, PresentationType, TabType } from "types";
@@ -56,6 +58,7 @@ import { NumberShortner } from "@UI/../utils/src";
 import classNames from "classnames";
 import { useResponsive } from "@UI/../hooks";
 import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
+import { ActionsCardListWrapper } from "../ActionsCardsListWrapper";
 
 export interface SocialViewProps {
   profileId?: string;
@@ -88,26 +91,11 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     {
       name: t("shop", "SHOP"),
       component: (
-        <div className="flex flex-col gap-4 w-full h-full">
-          <div className="flex justify-end">
-            <div
-              onClick={() => {
-                setFilterOpen(true);
-              }}
-              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs "
-            >
-              <samp>{t("Filter", "Filter")}</samp>
-              <FaChevronDown className="ml-2" />
-            </div>
-          </div>
-          <FilterModal />
-          <ShopCardsListWrapper
-            cols={cols}
-            items={SocialShopsPostCardPlaceholder}
-          />
-        </div>
+        <ShopCardsListWrapper
+          cols={cols}
+          items={SocialShopsPostCardPlaceholder}
+        />
       ),
-
       outlineIcon: (
         <ShoppingCartOutlineIcon className=" text-black w-full h-full " />
       ),
@@ -151,26 +139,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     },
     {
       name: t("actions", "ACTIONS"),
-      component: (
-        <ListWrapper
-          listProps={{
-            className: "gap-1 md:gap-4 flex flex-col",
-          }}
-          props={{
-            className: "flex justify-between md:w-fit w-full gap-1 md:gap-4",
-          }}
-          cols={cols}
-        >
-          {FAKE_VIDEOS.map((video, i) => (
-            <VideoThumbnail
-              key={i}
-              videoSrc={video.videoSrc}
-              views={NumberShortner(video.views)}
-              description={video.description}
-            />
-          ))}
-        </ListWrapper>
-      ),
+      component: <ActionsCardListWrapper videos={FAKE_VIDEOS} />,
       outlineIcon: <MdOutlineVideoLibrary className="w-full h-full" />,
       solidIcon: <MdVideoLibrary className="w-full h-full" />,
     },
@@ -296,48 +265,48 @@ const FAKE_DATA = {
 const FAKE_VIDEOS = [
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 230,
+    views: "230",
     description: "This is a short video description.",
   },
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 450,
-    description: "This is a short video description.",
-  },
-
-  {
-    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 1100,
+    views: "450",
     description: "This is a short video description.",
   },
 
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 7800,
+    views: "1100",
     description: "This is a short video description.",
   },
 
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 7800,
+    views: "7800",
     description: "This is a short video description.",
   },
 
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 7800,
+    views: "7800",
     description: "This is a short video description.",
   },
 
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 7800,
+    views: "7800",
     description: "This is a short video description.",
   },
 
   {
     videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
-    views: 7800,
+    views: "7800",
+    description: "This is a short video description.",
+  },
+
+  {
+    videoSrc: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    views: "7800",
     description: "This is a short video description.",
   },
 ];

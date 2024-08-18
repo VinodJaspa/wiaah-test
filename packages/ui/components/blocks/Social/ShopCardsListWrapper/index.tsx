@@ -17,6 +17,7 @@ import { AspectRatio } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 import { PostCardInfo } from "types";
 import { Carousel } from "@blocks/Carousel";
+import { useRouter } from "next/router";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
@@ -24,6 +25,7 @@ export interface ShopCardsListWrapperProps
   cols?: number;
   wrapperProps?: ListWrapperProps;
   grid?: boolean;
+  popup?: boolean;
 }
 
 export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
@@ -31,10 +33,10 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
   cols = 1,
   wrapperProps,
   grid,
+  popup = true,
   ...props
 }) => {
-  const { setCurrentPostId } = useShopPostPopup();
-
+  const router = useRouter();
   const { isMobile, isTablet } = useResponsive();
 
   return (
@@ -51,27 +53,33 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
               key={i}
               postInfo={item.postInfo}
               profileInfo={item.profileInfo}
-              handleOpen={handleOpen}
+              handleOpen={
+                popup
+                  ? handleOpen
+                  : () => router.push(`/shop/post/${item.postInfo.id}`)
+              }
             />
-            <PostViewPopup
-              isOpen={isOpen}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              queryName="shopName"
-              idParam="shopId"
-              data={item}
-              renderChild={(props: SocialShopPostcardProps) => {
-                return (
-                  <Carousel componentsPerView={1} controls={true}>
-                    {images.map((image, index) => (
-                      <div key={index}>
-                        <img src={image} alt={`Attachment ${index + 1}`} />
-                      </div>
-                    ))}
-                  </Carousel>
-                );
-              }}
-            />
+            {popup && (
+              <PostViewPopup
+                isOpen={isOpen}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                queryName="shopName"
+                idParam="shopId"
+                data={item}
+                renderChild={(props: SocialShopPostcardProps) => {
+                  return (
+                    <Carousel componentsPerView={1} controls={true}>
+                      {images.map((image, index) => (
+                        <div key={index}>
+                          <img src={image} alt={`Attachment ${index + 1}`} />
+                        </div>
+                      ))}
+                    </Carousel>
+                  );
+                }}
+              />
+            )}
           </React.Fragment>
         );
       })}
