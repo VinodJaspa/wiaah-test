@@ -88,22 +88,23 @@ export const HashtagPageView: React.FC = () => {
   const MostLikedPostData = newsfeedPosts.slice(0, 7);
   return (
     <div className="w-full flex flex-col items-center justify-center ">
-      <div className="flex  md:w-5/12 w-10/12 mt-4 md:mt-0 justify-between items-center mb-6 ">
+      <div className="flex  md:w-5/12 w-10/12 mt-4 md:mt-0 justify-center md:justify-between items-center mb-6 ">
         <Text fontWeight={"bold"} fontSize="2em">
           #{tag}
         </Text>
-        <button className="bg-[#3CD399] text-white font-semibold rounded-full w-[140px] h-[50px]">
+        <button className="hidden md:flex justify-center items-center bg-[#3CD399] text-white font-semibold rounded-full w-[140px] h-[50px]">
           Follow
         </button>
       </div>
       <div className="flex flex-col h-full md:w-10/12 w-11/12 justify-center ">
         <TabsViewer
+          border="bottom"
           tabs={tabs}
           tabListProps={{
-            className: "w-11/12 md:w-9/12 flex justify-center mx-auto",
+            className: "w-full md:w-9/12 flex justify-center mx-auto",
           }}
         >
-          <div className="w-full h-[400px] no-scrollbar flex gap-4 mb-8 overflow-x-scroll  ">
+          <div className="w-full md:h-[400px] h[220px] no-scrollbar flex gap-4 mb-8 overflow-x-scroll  ">
             {MostLikedPostData.map((post, i) => (
               <MostLikedPost image={post.postInfo.thumbnail || ""} key={i} />
             ))}
