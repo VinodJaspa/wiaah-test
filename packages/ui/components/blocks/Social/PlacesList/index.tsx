@@ -28,9 +28,9 @@ interface PlaceCardProps {
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ title, location, type }) => {
   return (
-    <div className="md:w-1/2 w-full  flex justify-between items-center">
+    <div className="md:w-1/2 w-full mt-2 flex justify-between items-center">
       <div className="flex gap-4 items-center">
-        <div className="rounded-lg border border-gray-300 p-2">
+        <div className="rounded-lg border border-gray-100 p-2">
           <FaLocationDot className="w-4 h-4 text-[#20ECA7]" />
         </div>
         <div className="flex flex-col gap-1">
