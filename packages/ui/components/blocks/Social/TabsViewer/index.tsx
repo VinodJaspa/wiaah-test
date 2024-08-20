@@ -20,6 +20,8 @@ export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   children?: React.ReactNode;
   border?: "top" | "bottom";
   tabListProps?: HtmlDivProps;
+  showIcons?: boolean;
+  showHeaderTitle?: boolean;
 }
 
 export const TabsViewer: React.FC<TabsViewerProps> = ({
@@ -30,10 +32,12 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   children,
   border = "top",
   tabListProps,
+  showIcons = true,
+  showHeaderTitle,
   ...props
 }) => {
   if (!tabs || tabs.length === 0) {
-    return <div>Loading...</div>; // Display loading state or message
+    return <div></div>; // Display loading state or message
   }
   return (
     <Tabs {...props}>
@@ -41,7 +45,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
         <>
           {showTabs && (
             <TabsHeader
-              className={`md:justify-center justify-between flex-wrap py-[0px]  md:gap-8 gap-1 relative`}
+              className={`md:justify-center justify-between flex-wrap py-[0px]  md:gap-8 px-2  relative`}
             >
               <Divider
                 className={`absolute ${border === "top" ? "-top-1.5" : "-bottom-[5px]"
@@ -52,15 +56,13 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                   <div
                     onClick={() => setCurrentTabIdx(i)}
                     className={`flex items-center gap-2 space-x-2 font-semibold md:text-xs text-[10px] leading-none ${currentTabIdx === i
-                        ? ` ${border === "top"
-                          ? "border-b-2 md:border-t-2 md:border-b-0 border-t-0"
-                          : "border-t-2 md:border-b-2 md:border-t-0"
+                        ? ` ${border === "top" ? "border-t-2 " : "border-b-2"
                         } md:py-[22px] py-[6px] border-black text-black fill-black `
                         : "border-none md:py-6 py-2 text-[#8E8E8E]"
                       }`}
                   >
                     <>
-                      {outlineIcon && solidIcon && (
+                      {outlineIcon && solidIcon && showIcons && (
                         <div
                           className={`mb-[3px] md:w-3 md:h-3 h-10 w-10 md:px-0 px-2 ${currentTabIdx === i
                               ? "text-black"
@@ -71,9 +73,9 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                         </div>
                       )}
                       <p
-                        className={`${outlineIcon && solidIcon
+                        className={`${outlineIcon && solidIcon && showIcons
                             ? "hidden md:flex text-sm"
-                            : "flex text-sm"
+                            : "flex text-xs"
                           }`}
                       >
                         {runIfFn(name, { active: currentTabIdx === i })}
