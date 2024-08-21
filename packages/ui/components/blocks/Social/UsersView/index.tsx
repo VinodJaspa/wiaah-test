@@ -8,7 +8,7 @@ interface UsersViewProps {
 
 export const UsersView: React.FC<UsersViewProps> = ({ users }) => {
   return (
-    <div className="w-full space-y-5 flex flex-col items-center md:mx-0 mx-3">
+    <div className="w-full hidden space-y-5 md:flex flex-col items-center md:mx-0 mx-3">
       {users.map((user: UserCardProps) => (
         <UserCard
           image={user.image}
