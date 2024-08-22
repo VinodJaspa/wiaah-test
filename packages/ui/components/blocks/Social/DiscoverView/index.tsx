@@ -55,7 +55,7 @@ export const DiscoverView: React.FC<ExplorePageProps> = () => {
   return (
     <Container className="flex-grow w-9/12 flex justify-center flex-col gap-4">
       <div className="w-full md:mt-0 mt-20">
-        <h1 className="text-xl md:text-4xl ">Explore</h1>
+        <h1 className="text-xl md:text-4xl hidden md:flex">Explore</h1>
         <TabsViewer tabs={tabs} border="bottom" />
       </div>
     </Container>
@@ -227,6 +227,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/men/1.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=1",
     seen: false,
+    isVerified: true,
   },
   {
     id: "2",
@@ -234,6 +235,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/women/2.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=2",
     seen: true,
+    isVerified: false,
   },
   {
     id: "3",
@@ -241,6 +243,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/women/3.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=3",
     seen: false,
+    isVerified: true,
   },
   {
     id: "4",
@@ -248,6 +251,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/men/4.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=4",
     seen: true,
+    isVerified: false,
   },
   {
     id: "5",
@@ -255,6 +259,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/women/5.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=5",
     seen: false,
+    isVerified: true,
   },
   {
     id: "6",
@@ -262,6 +267,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/men/6.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=6",
     seen: true,
+    isVerified: false,
   },
   {
     id: "7",
@@ -269,6 +275,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/women/7.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=7",
     seen: false,
+    isVerified: true,
   },
   {
     id: "8",
@@ -276,6 +283,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/men/8.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=8",
     seen: true,
+    isVerified: false,
   },
   {
     id: "9",
@@ -283,6 +291,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/women/9.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=9",
     seen: false,
+    isVerified: true,
   },
   {
     id: "10",
@@ -290,6 +299,7 @@ const FAKE_STORIES = [
     userPhoto: "https://randomuser.me/api/portraits/men/10.jpg",
     storyPhoto: "https://picsum.photos/200/300?random=10",
     seen: true,
+    isVerified: false,
   },
 ];
 const FAKE_IMAGES = [
