@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Tabs,
   TabList,
@@ -75,7 +75,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                       <p
                         className={`${outlineIcon && solidIcon && showIcons
                             ? "hidden md:flex text-sm"
-                            : "flex text-xs"
+                            : "flex text-sm"
                           }`}
                       >
                         {runIfFn(name, { active: currentTabIdx === i })}
