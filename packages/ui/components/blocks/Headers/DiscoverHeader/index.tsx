@@ -28,7 +28,7 @@ export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
     >
       <InputGroup className="rounded-2xl relative">
         <Input
-          className="rounded-2xl bg-gray-100 pl-6"
+          className="rounded-2xl bg-gray-100 pl-10 focus:ring-0 active:rign-0"
           value={searchFilter}
           placeholder={`${t("Lets explore", "Lets explore")}`}
           onChange={(e) => handleSearchFilter(e.target.value)}
