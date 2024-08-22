@@ -39,7 +39,9 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
       <div className="p-3 flex flex-col justify-between h-full">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-xl text-[#6B6498]">{name}</h3>
+            <h3 className="font-bold text-lg md:text-xl text-[#6B6498]">
+              {name}
+            </h3>
             {liked ? (
               <IoHeartSharp
                 className="w-5 h-5 cursor-pointer"
@@ -55,8 +57,10 @@ export const ShopProductCard: React.FC<ShopProductCardProps> = ({
           <p className="text-sm text-[#999999]">{title}</p>
         </div>
         <div className="flex items-center justify-between">
-          <p className="text-[#403A63] text-lg font-bold">${price}</p>
-          <button className=" bg-[#20ECA7] font-semibold py-1.5 px-3.5 rounded-full ">
+          <p className="text-[#403A63] md:text-lg text-base font-bold ">
+            ${price}
+          </p>
+          <button className=" bg-[#20ECA7] font-semibold md:py-1.5 py-1 md:px-3.5 px-2.5 md:text-base text-xs rounded-full ">
             Buy Now
           </button>
         </div>
