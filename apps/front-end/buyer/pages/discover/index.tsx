@@ -1,7 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { DiscoverView } from "../../components";
+import { DiscoverView } from "ui";
 import { SellerLayout } from "ui";
 import { GetServerSideProps } from "next";
 import { useResponsive } from "hooks";

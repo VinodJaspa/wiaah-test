@@ -1,10 +1,10 @@
 import React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { DiscoverView } from "@components";
+import { DiscoverView } from "ui";
 import { SellerLayout } from "ui";
 
-interface DiscoverPageProps {}
+interface DiscoverPageProps { }
 
 const discover: NextPage<DiscoverPageProps> = () => {
   return (
