@@ -1,5 +1,4 @@
 export * from "./ActionsView";
-export * from "./DiscoverView";
 export * from "./ActionsView";
 export * from "./Localisation";
 export * from "./Places";
