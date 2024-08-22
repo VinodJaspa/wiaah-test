@@ -26,7 +26,7 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   return (
     <FloatingContainer className="w-full" {...floatingIcon}>
       <div
-        className={`${seen ? "p-[0.0625rem]" : "p-[0.20rem]"
+        className={`${seen ? "p-[0rem]" : "p-[0.20rem]"
           } rounded-full bg-gradient-to-b from-primary to-blue-400`}
       >
         <div className="w-full h-full overflow-hidden rounded-full bg-white p-[0.125rem]">
