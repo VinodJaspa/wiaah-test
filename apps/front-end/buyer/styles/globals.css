@@ -14,9 +14,21 @@
   }
 }
 
+@layer components {
+  .masonry-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}
+
 * {
   scroll-behavior: smooth;
 }
+
 .thinScroll::-webkit-scrollbar {
   width: 5px;
   height: 5px;
