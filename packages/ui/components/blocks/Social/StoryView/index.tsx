@@ -14,6 +14,7 @@ interface StoryCardProps {
   userPhoto: string;
   storyPhoto: string;
   seen: boolean;
+  isVerified: boolean;
 }
 
 export const StoryView: React.FC<StoryViewProps> = ({ stories }) => {
@@ -36,6 +37,7 @@ export const StoryView: React.FC<StoryViewProps> = ({ stories }) => {
           userPhoto={story.userPhoto}
           storyPhoto={story.storyPhoto}
           seen={story.seen}
+          isVerified={story.isVerified}
         />
       ))}
     </ListWrapper>
@@ -48,6 +50,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
   name,
   storyPhoto,
   seen,
+  isVerified,
 }) => {
   return (
     <div className="w-full h-[253px] relative">
@@ -57,7 +60,9 @@ const StoryCard: React.FC<StoryCardProps> = ({
           storyUserData={{ id: id, name: name, userPhotoSrc: userPhoto }}
           seen={seen}
         />
-        <MdVerified className="absolute w-[14px] h-[14px] bottom-0 right-0 m-auto text-blue-500 z-10" />
+        {isVerified && (
+          <MdVerified className="absolute w-[14px] h-[14px] bottom-0 right-0 m-auto text-blue-500 z-10" />
+        )}
       </div>
     </div>
   );
