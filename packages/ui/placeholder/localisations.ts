@@ -33,7 +33,8 @@ const PostCardPlaceHolder: PostCardInfo = {
   profileInfo: {
     id: "1",
     name: "Wiaah",
-    thumbnail: "/wiaah_logo.png",
+    thumbnail:
+      "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
     accountType: AccountType.Seller,
     public: true,
   },
@@ -86,7 +87,7 @@ export const costumPH: PlaceCardProps[] = [
 export const placesWithCostum = costumPH.concat(
   [...Array(9)].map(() => ({
     ...placeCardPlaceholder,
-  })),
+  }))
 );
 
 export const placesPH = [...Array(20)].map(() => ({
