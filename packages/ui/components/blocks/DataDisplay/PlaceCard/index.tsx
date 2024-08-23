@@ -3,6 +3,7 @@ import { PostAttachment, ProfileInfo } from "types";
 import { ActionHeader, ActionHeaderProps, Image } from "@UI";
 import { PostAttachmentsViewer } from "@UI";
 import { useRouter } from "next/router";
+import { RiFoldersFill } from "react-icons/ri";
 
 export interface PlaceCardProps {
   user: ProfileInfo;
@@ -44,8 +45,14 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
     >
       <Image
         className="h-64 w-full object-cover"
-        src={placeAttachments.at(0)?.src}
+        src="https://picsum.photos/200/200?random=1"
       ></Image>
+      <div className="absolute top-2 w-full flex justify-between items-center px-2">
+        <div className="p-2 rounded-full bg-gray-600 bg-opacity-30">
+          <RiFoldersFill className="w-5 h-5 text-white" />
+        </div>
+        <p className="text-white text-sm">95m Views</p>
+      </div>
       {openFrom && openTo && (
         <div className="absolute bg-black bg-opacity-60 text-2xl font-bold gap-1 flex flex-col items-center top-1/2 left-0 just-ce text-white transform -translate-y-1/2 w-full">
           <div className="flex items-center gap-2">
