@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiUser } from "react-icons/hi";
 import { HtmlDivProps } from "types";
+import { Icon } from "@chakra-ui/react";
+import { MdPlace } from "react-icons/md";
 
 export interface ActionHeaderProps extends HtmlDivProps {
   userName: string;
@@ -41,7 +43,7 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
             name={userName}
             photoSrc={userThumbnail}
           />
-          <div className="flex flex-col">
+          <div className="flex gap-0.5 ">
             <span>{userName}</span>
 
             {subName && (
@@ -54,17 +56,19 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
             )}
           </div>
         </div>
-        <Button className="capitalize">{t("follow", "follow")}</Button>
+        <button className="bg-[#3CD399] text-white px-4 py-1 font-semibold rounded-full">
+          {t("follow", "follow")}
+        </button>
       </div>
       {actionTitle && <EllipsisText maxLines={2} content={actionTitle} />}
       <HashTags tags={actionHashtags || []} />
-      <div className="text-2xl flex items-center gap-2">
+      <div className="text-2xl flex items-center py-1 mt-1 justify-between bg-opacity-10 bg-black">
         {actionLocation && (
           <div
             className="cursor-pointer flex items-center gap-2"
             onClick={() => onLocationClick && onLocationClick(actionLocation)}
           >
-            <HiLocationMarker />
+            <Icon fontSize={"1em"} as={MdPlace} />
             <span className="text-lg">{actionLocation}</span>
           </div>
         )}
@@ -74,7 +78,7 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
             onClick={() => onProfileClick && onProfileClick(userName)}
           >
             <HiUser />
-            <span className="text-lg">{userName}</span>
+            <span className="text-lg">watch</span>
           </div>
         )}
       </div>
