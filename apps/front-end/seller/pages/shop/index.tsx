@@ -1,10 +1,7 @@
 import Head from "next/head";
 import React from "react";
-import {
-  SellerLayout,
-  ShopCardsListWrapper,
-  SocialShopsPostCardPlaceholder,
-} from "ui";
+import { SellerLayout, ShopProductCardsView } from "ui";
+import { shopProductCardsPlaceholder } from "placeholder";
 
 interface SellerShopProps { }
 
@@ -15,14 +12,7 @@ const SellerShop: React.FC<SellerShopProps> = () => {
         <title>Wiaah | shop</title>
       </Head>
       <SellerLayout>
-        <div className="flex justify-center w-full h-fit">
-          <div className="md:w-8/12 w-11/12">
-            <ShopCardsListWrapper
-              cols={3}
-              items={SocialShopsPostCardPlaceholder}
-            />
-          </div>
-        </div>
+        <ShopProductCardsView products={shopProductCardsPlaceholder} />
       </SellerLayout>
     </>
   );
