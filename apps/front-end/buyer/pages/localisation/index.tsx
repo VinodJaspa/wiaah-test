@@ -3,8 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { placesPH } from "ui/placeholder";
 import Head from "next/head";
-import { SellerLayout, useResponsive } from "ui";
-import { LocalisationsView } from "../../components";
+import { SellerLayout, useResponsive, LocalisationsView } from "ui";
 
 const getLoclisations = async () => {
   return placesPH;
