@@ -1,6 +1,5 @@
 export * from "./ActionsView";
 export * from "./ActionsView";
-export * from "./Localisation";
 export * from "./Places";
 export * from "./Messages";
 export * from "./Wishlist";
