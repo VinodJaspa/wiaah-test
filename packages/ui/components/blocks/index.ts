@@ -76,3 +76,4 @@ export * from "./VideoThumbnail";
 export * from "./PostView";
 export * from "./ShopProductCard";
 export * from "./ShopProductCardsView";
+export * from "./LocalisationView/";
