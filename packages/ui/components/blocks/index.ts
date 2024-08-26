@@ -77,3 +77,4 @@ export * from "./PostView";
 export * from "./ShopProductCard";
 export * from "./ShopProductCardsView";
 export * from "./LocalisationView/";
+export * from "./NewsFeedGrid/";
