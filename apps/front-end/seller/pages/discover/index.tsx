@@ -3,20 +3,22 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { DiscoverView } from "ui";
 import { SellerLayout } from "ui";
+import { useResponsive } from "hooks";
 
 interface DiscoverPageProps { }
 
-const discover: NextPage<DiscoverPageProps> = () => {
+const Discover: NextPage<DiscoverPageProps> = () => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>Wiaah | Discover</title>
       </Head>
-      <SellerLayout header="discover">
+      <SellerLayout header={`${isMobile ? "discover" : "main"}`}>
         <DiscoverView />
       </SellerLayout>
     </>
   );
 };
 
-export default discover;
+export default Discover;
