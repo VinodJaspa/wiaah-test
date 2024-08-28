@@ -10,16 +10,16 @@ interface TransformedImages {
 }
 
 const classPatterns: string[] = [
-  "col-span-5 row-span-1", // 0
-  "col-span-5 row-span-1", // 1
-  "col-span-2 row-span-2", // 2
-  "col-span-5 row-span-1", // 3
-  "col-span-5 row-span-1", // 4
-  "col-span-3 row-span-2", // 5
-  "col-span-3 row-span-1", // 6
-  "col-span-2 row-span-1", // 7
-  "col-span-3 row-span-1", // 8
-  "col-span-2 row-span-1", // 9
+  "col-span-18 row-span-1 ", // 0
+  "col-span-18 row-span-1 ", // 1
+  "col-span-14 row-span-2 ", // 2
+  "col-span-18 row-span-1 ", // 3
+  "col-span-18 row-span-1 ", // 4
+  "col-span-18 row-span-2 ", // 5
+  "col-span-18 row-span-1 ", // 6
+  "col-span-12 row-sann-1 ", // 7
+  "col-span-20 row-span-1 ", // 8
+  "col-span-14 row-span-1  ", // 9
 ];
 
 const transformImages = (images: string[]): TransformedImages[] => {
@@ -42,7 +42,7 @@ export const NewsFeedGrid: React.FC<NewsFeedGridProps> = ({ images }) => {
   const imageChunks = splitIntoChunks(transformedImages, 5);
 
   return (
-    <div className="space-y-3 w-full">
+    <div className="space-y-4 felx flex-col w-full ">
       {imageChunks.map((chunk, index) => (
         <Grid key={index} images={chunk} />
       ))}
@@ -51,13 +51,12 @@ export const NewsFeedGrid: React.FC<NewsFeedGridProps> = ({ images }) => {
 };
 
 const Grid: React.FC<{ images: TransformedImages[] }> = ({ images }) => (
-  <div className="grid grid-rows-2 grid-flow-col gap-3 w-full h-[500px]">
+  <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4  w-full aspect-[8/3]">
     {images.map((image, index) => (
       <div className={image.className} key={index}>
         <img
           src={image.src}
-          alt={`Image - ${index}`}
-          className="object-cover rounded-lg w-full h-full"
+          className="object-cover rounded-2xl w-full h-full"
         />
       </div>
     ))}
