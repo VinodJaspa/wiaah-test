@@ -12,6 +12,13 @@ module.exports = {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
         sf: ["SF Pro Display", ...defaultTheme.fontFamily.sans],
       },
+      gridColumn: {
+        "span-16": "span 16 / span 16",
+        "span-24": "span 24 / span 24",
+        "span-14": "span 14 / span 14",
+        "span-18": "span 18 / span 18",
+        "span-20": "span 20 / span 20",
+      },
       transitionProperty: {
         height: "height",
       },
