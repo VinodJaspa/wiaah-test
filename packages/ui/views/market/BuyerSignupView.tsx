@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { useForm } from "utils";
 
-export interface BuyerSignupInputType {}
+export interface BuyerSignupInputType { }
 
 export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
@@ -113,9 +113,11 @@ export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
                 </div>
               </div>
               <Spacer />
-              <Button className="uppercase" type="submit">
-                {t("signup", "sign up")}
-              </Button>
+              <div className="w-full flex justify-center items-center">
+                <Button className="uppercase px-4 " type="submit">
+                  {t("signup", "sign up")}
+                </Button>
+              </div>
             </Form>
           );
         }}
