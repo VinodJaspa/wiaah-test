@@ -21,5 +21,6 @@ export * from "./compare";
 export * from "./getRandomNumber";
 export * from "./passPropsToFnOrElem";
 export * from "./mocks";
+export * from "./cn";
 
 export const isDev = false;
