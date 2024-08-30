@@ -8,6 +8,7 @@ import {
   setTranslationStateValue,
 } from "@UI";
 import { startCase } from "lodash";
+import { cn } from "utils";
 
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType;
@@ -31,8 +32,9 @@ export function FormikInput<T = InputProps>({
   return (
     <>
       <div
-        className={`${containerProps ? containerProps.className : ""
-          } gap-2 flex flex-col w-full`}
+        className={
+          (cn("gap-2 flex flex-col w-full"), containerProps?.className)
+        }
       >
         {label && typeof label === "string" ? (
           <p
