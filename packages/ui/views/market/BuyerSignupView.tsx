@@ -95,21 +95,21 @@ export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
               />
               <Spacer />
               <div className="flex items-center justify-between font-light">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-start gap-3 w-full">
                   <FormikInput<CheckboxProps>
                     as={Checkbox}
                     name="termsConditionsAggrement"
                     className="pl-1"
+                    containerProps={{ className: "flex items-center w-fit" }}
                   />
-                  <p className="ml-2">
-                    I read and accept
+                  <div className="ml-2 flex gap-1 items-center">
+                    <p className="w-fit whitespace-nowrap">I read and accept</p>
                     <Link href="/terms-conditions">
-                      <span className="text-blue-400">
-                        {" "}
+                      <p className="text-blue-400 w-fit whitespace-nowrap ">
                         terms and conditions.
-                      </span>
+                      </p>
                     </Link>
-                  </p>
+                  </div>
                 </div>
               </div>
               <Spacer />
