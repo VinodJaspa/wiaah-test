@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Login } from "ui/views";
+import { Signup } from "ui/views";
 import { MasterLayout } from "@components";
 import { useBuyerSignupMutation } from "ui";
 
@@ -14,7 +14,7 @@ const BuyerSignup: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <Login
+          <Signup
             onSubmit={(data, type) => {
               type === "buyer-signup" ? mutate(data) : null;
             }}

@@ -15,55 +15,64 @@ import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
 import { CoomingSoon, SeoWrapper } from "@components";
 
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
+  const client = new ApolloClient({
+    uri: "http://localhost:3004/graphql",
+    cache: new InMemoryCache(),
+  });
+
   const router = useRouter();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <RoutingProvider
-          back={() => router.back()}
-          getBaseUrl={() => router.basePath}
-          getQuery={() => ClearNextJSQuery(router.query, router.pathname)}
-          getCurrentPath={() => {
-            return router.asPath;
-          }}
-          visit={(url) => (router ? router.push(url) : null)}
-          getParam={(paramName) => {
-            const params = router.query[paramName];
-            const param =
-              Array.isArray(params) && params.length > 0 ? params[0] : params;
+    <ApolloProvider client={client}>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <RoutingProvider
+            back={() => router.back()}
+            getBaseUrl={() => router.basePath}
+            getQuery={() => ClearNextJSQuery(router.query, router.pathname)}
+            getCurrentPath={() => {
+              return router.asPath;
+            }}
+            visit={(url) => (router ? router.push(url) : null)}
+            getParam={(paramName) => {
+              const params = router.query[paramName];
+              const param =
+                Array.isArray(params) && params.length > 0 ? params[0] : params;
 
-            return typeof param === "string" ? param : null;
-          }}
-        >
-          <ReactPubsubProvider
-            keys={ReactPubsubKeys}
-            client={new ReactPubsubClient()}
+              return typeof param === "string" ? param : null;
+            }}
           >
-            <ReactSeoProvider TagWrapper={NextHead}>
-              <SeoWrapper>
-                <ChakraProvider>
-                  <CookiesProvider>
-                    <RecoilRoot>
-                      {coomingSoon ? (
-                        <CoomingSoon />
-                      ) : (
-                        <Component {...pageProps} />
-                      )}
-                    </RecoilRoot>
-                  </CookiesProvider>
-                </ChakraProvider>
-              </SeoWrapper>
-            </ReactSeoProvider>
-          </ReactPubsubProvider>
-        </RoutingProvider>
-      </Hydrate>
-    </QueryClientProvider>
+            <ReactPubsubProvider
+              keys={ReactPubsubKeys}
+              client={new ReactPubsubClient()}
+            >
+              <ReactSeoProvider TagWrapper={NextHead}>
+                <SeoWrapper>
+                  <ChakraProvider>
+                    <CookiesProvider>
+                      <RecoilRoot>
+                        {coomingSoon ? (
+                          <CoomingSoon />
+                        ) : (
+                          <Component {...pageProps} />
+                        )}
+                      </RecoilRoot>
+                    </CookiesProvider>
+                  </ChakraProvider>
+                </SeoWrapper>
+              </ReactSeoProvider>
+            </ReactPubsubProvider>
+          </RoutingProvider>
+        </Hydrate>
+      </QueryClientProvider>
+    </ApolloProvider>
   );
 }
 

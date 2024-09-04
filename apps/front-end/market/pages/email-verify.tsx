@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Login } from "ui/views";
+import { Signup } from "ui/views";
 import { MasterLayout } from "@components";
 import { useVerifyEmailMutation } from "ui";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ const BuyerSignup: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <Login
+          <Signup
             onSubmit={(data, type) => {
               type === "email-verify" ? mutate(data) : null;
             }}

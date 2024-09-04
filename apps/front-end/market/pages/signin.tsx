@@ -1,5 +1,5 @@
 import { MasterLayout } from "@components";
-import { Login, useSigninMutation } from "ui";
+import { Signup, useSigninMutation } from "ui";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ const Signin = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <Login
+          <Signup
             onSubmit={(data, type) => {
               console.log("login", data, type);
               type === "login" ? mutate(data) : null;
