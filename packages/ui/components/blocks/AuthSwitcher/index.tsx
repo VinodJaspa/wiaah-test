@@ -53,40 +53,46 @@ export const AuthSwitcher: FC<AuthSwitcherProps> = ({
   switch (view) {
     case "login":
       return (
-        <Tabs onChange={handleActivateTabChange} centered>
-          <TabPane
-            className="login-form"
-            tab={
-              <span className="px-5 text-xl font-light text-gray-800">
-                {t("Login!", "Login!")}
-              </span>
-            }
-          >
-            <LoginView
-              onSubmit={(data) => {
-                onSubmit && onSubmit(data, "login");
-              }}
-              setAuthView={(view) => handleChangeView(view)}
-            />
-          </TabPane>
-        </Tabs>
+        <Tabs
+          onChange={handleActivateTabChange}
+          centered
+          items={[
+            {
+              key: "login",
+              label: (
+                <span className="px-5 text-xl font-light text-gray-800">
+                  {t("Login!", "Login!")}
+                </span>
+              ),
+              children: (
+                <LoginView
+                  onSubmit={(data) => {
+                    onSubmit && onSubmit(data, "login");
+                  }}
+                  setAuthView={(view) => handleChangeView(view)}
+                />
+              ),
+            },
+          ]}
+        ></Tabs>
       );
     case "buyer-signup":
       return (
-        <Tabs onChange={handleActivateTabChange} centered>
-          <TabPane
-            className="login-form"
-            tab={
-              <span className="px-5 text-xl font-light capitalize text-gray-800">
-                {t("buyer_signup", "Buyer Signup")}
-              </span>
-            }
-          >
-            <BuyerSignupView
-              onSubmit={(data) => onSubmit && onSubmit(data, "buyer-signup")}
-            />
-          </TabPane>
-        </Tabs>
+        <Tabs
+          onChange={handleActivateTabChange}
+          centered
+          items={[
+            {
+              key: "buyer-signup",
+              label: (
+                <span className="px-5 text-xl font-light capitalize text-gray-800">
+                  {t("buyer_signup", "Buyer Signup")}
+                </span>
+              ),
+              children: <BuyerSignupView />,
+            },
+          ]}
+        ></Tabs>
       );
     case "seller-signup":
       return (

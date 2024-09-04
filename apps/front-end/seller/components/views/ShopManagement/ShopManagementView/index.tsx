@@ -27,9 +27,9 @@ import { getRouting } from "routing";
 import { FcSettings } from "react-icons/fc";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
 
-export interface ShopManagementViewProps {}
+export interface ShopManagementViewProps { }
 
-export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
+export const ShopManagementView: React.FC<ShopManagementViewProps> = ({ }) => {
   const baseRoute = getRouting((r) => r.visitShopManagement());
   const router = useRouter();
   const { section } = router.query;

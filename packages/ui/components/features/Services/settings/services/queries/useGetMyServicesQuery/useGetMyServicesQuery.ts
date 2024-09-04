@@ -1,4 +1,4 @@
-import { isDev, randomNum } from "@UI/../utils/src";
+import { randomNum } from "@UI/../utils/src";
 import { getRandomServiceImage } from "@UI/placeholder";
 import {
   Exact,
@@ -21,7 +21,7 @@ import {
 import { useUserData } from "@src/index";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
-
+const isDev = true;
 export type GetUserServicesQueryVariables = Exact<{
   userId: Scalars["String"]["input"];
   pagination: GqlCursorPaginationInput;
@@ -32,73 +32,73 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
     ServicesCursorPaginationResponse,
     "cursor" | "hasMore"
   > & {
-      data: Array<
-        { __typename?: "Service" } & Pick<
-          Service,
-          | "id"
-          | "name"
-          | "reviews"
-          | "rating"
-          | "thumbnail"
-          | "price"
-          | "beds"
-          | "bathrooms"
-          | "brand"
-          | "model"
-          | "speciality"
-          | "createdAt"
-          | "num_of_rooms"
-          | "type"
-          | "menuType"
-          | "treatmentCategory"
-          | "ingredients"
-          | "description"
-          | "seats"
-          | "windows"
-          | "gpsAvailable"
-          | "airCondition"
-          | "lugaggeCapacity"
-          | "maxSpeedInKm"
-          | "includedAmenities"
-          | "adaptedFor"
-          | "treatmentCategoryId"
-          | "sellerId"
-          | "duration"
-          | "cleaningFee"
-          | "cancelable"
-          | "cancelationPolicy"
-          | "restriction"
-          | "propertyType"
-          | "typeOfPlace"
-        > & {
-            extras?: Maybe<
-              Array<
-                { __typename?: "ServiceExtra" } & Pick<
-                  ServiceExtra,
-                  "cost" | "name"
-                >
-              >
-            >;
-            measurements?: Maybe<
-              { __typename?: "ServicePropertyMeasurements" } & Pick<
-                ServicePropertyMeasurements,
-                "inFeet" | "inMeter"
-              >
-            >;
-            discount?: Maybe<
-              { __typename?: "ServiceDiscount" } & Pick<
-                ServiceDiscount,
-                "units" | "value"
-              >
-            >;
-            treatmentCategory?: string;
-          }
-      >;
-    };
+    data: Array<
+      { __typename?: "Service" } & Pick<
+        Service,
+        | "id"
+        | "name"
+        | "reviews"
+        | "rating"
+        | "thumbnail"
+        | "price"
+        | "beds"
+        | "bathrooms"
+        | "brand"
+        | "model"
+        | "speciality"
+        | "createdAt"
+        | "num_of_rooms"
+        | "type"
+        | "menuType"
+        | "treatmentCategory"
+        | "ingredients"
+        | "description"
+        | "seats"
+        | "windows"
+        | "gpsAvailable"
+        | "airCondition"
+        | "lugaggeCapacity"
+        | "maxSpeedInKm"
+        | "includedAmenities"
+        | "adaptedFor"
+        | "treatmentCategoryId"
+        | "sellerId"
+        | "duration"
+        | "cleaningFee"
+        | "cancelable"
+        | "cancelationPolicy"
+        | "restriction"
+        | "propertyType"
+        | "typeOfPlace"
+      > & {
+        extras?: Maybe<
+          Array<
+            { __typename?: "ServiceExtra" } & Pick<
+              ServiceExtra,
+              "cost" | "name"
+            >
+          >
+        >;
+        measurements?: Maybe<
+          { __typename?: "ServicePropertyMeasurements" } & Pick<
+            ServicePropertyMeasurements,
+            "inFeet" | "inMeter"
+          >
+        >;
+        discount?: Maybe<
+          { __typename?: "ServiceDiscount" } & Pick<
+            ServiceDiscount,
+            "units" | "value"
+          >
+        >;
+        treatmentCategory?: string;
+      }
+    >;
+  };
 };
 
 export const getUserServicesQueryKey = (
-  args: GetUserServicesQueryVariables,
+  args: GetUserServicesQueryVariables
 ) => ["myServices", { args }];
 export const useGetUserServicesQuery = (
   userId: string,
@@ -108,7 +108,7 @@ export const useGetUserServicesQuery = (
     unknown,
     GetUserServicesQuery["getUserServices"],
     any
-  >,
+  >
 ) => {
   return useQuery(
     getUserServicesQueryKey({ pagination, userId }),
@@ -118,7 +118,7 @@ export const useGetUserServicesQuery = (
           data: [...Array(10)].map((_, i) => {
             const menuType =
               Object.values(RestaurantDishType)[
-                randomNum(Object.values(RestaurantDishType).length)
+              randomNum(Object.values(RestaurantDishType).length)
               ];
 
             return {
@@ -131,7 +131,7 @@ export const useGetUserServicesQuery = (
               reviews: 162,
               thumbnail: getRandomServiceImage(
                 ServiceType.BeautyCenter,
-                menuType,
+                menuType
               ),
               type: ServiceType.BeautyCenter,
               bathrooms: 3,
@@ -243,7 +243,7 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
     }
   }
 }
-      `,
+      `
         )
         .setVariables<GetUserServicesQueryVariables>({
           pagination,
@@ -253,13 +253,13 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
 
       return res.data.getUserServices;
     },
-    options,
+    options
   );
 };
 
 export const useGetMyServicesQuery = (
   pagination: GetUserServicesQueryVariables["pagination"],
-  options: Parameters<typeof useGetUserServicesQuery>[2],
+  options: Parameters<typeof useGetUserServicesQuery>[2]
 ) => {
   const { user } = useUserData();
 

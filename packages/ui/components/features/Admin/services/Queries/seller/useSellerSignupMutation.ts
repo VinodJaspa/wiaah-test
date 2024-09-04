@@ -29,7 +29,7 @@ export const useSellerSignupMutation = () =>
     const client = createGraphqlRequestClient();
 
     client.setQuery(`
-      mutation sellerSignup($args:any!){
+      mutation register($args:any!){
         sellerSignup(args:$args){
           code
           message
