@@ -47,6 +47,7 @@ type Query {
 
 type Mutation {
   changePassword(changePasswordInput: ChangePasswordInput!): Boolean!
+  register(RegisterInput: RegisterDto!): GqlStatusResponse!
   login(LoginInput: LoginDto!): GqlStatusResponse!
   verifyLoginOTP(args: LoginWithOtpInput!): GqlStatusResponse!
   verifyEmail(EmailVerificationInput: VerifyEmailDto!): Boolean!
@@ -61,6 +62,20 @@ input ChangePasswordInput {
   currentPassword: String!
   newPassword: String!
   confirmNewPassword: String!
+}
+
+input RegisterDto {
+  firstName: String!
+  lastName: String!
+  email: String!
+  birthDate: String!
+  accountType: RegisterAccountType!
+  password: String!
+}
+
+enum RegisterAccountType {
+  seller
+  buyer
 }
 
 input LoginDto {
