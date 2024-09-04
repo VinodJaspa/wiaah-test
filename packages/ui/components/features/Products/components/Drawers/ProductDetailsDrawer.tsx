@@ -90,7 +90,7 @@ export const ProductDetailsDrawer = () => {
                 </HStack>
                 <Slider onSliderChange={(v) => setIdx(v)} currentItemIdx={idx}>
                   {mapArray(product.presentations, (v, i) => (
-                    <AspectRatio ratio={0.78}>
+                    <AspectRatio key={i} ratio={0.78}>
                       <div className="absolute  flex gap-2 top-2 left-1/2 -translate-x-1/2">
                         {[...Array(product.presentations)].map((_, i) => (
                           <div
@@ -183,7 +183,7 @@ export const ProductDetailsDrawer = () => {
                     {mapArray(
                       data?.pages?.reduce(
                         (acc, curr) => acc.concat(curr.data || []),
-                        [] as ArrElement<typeof data["pages"]>["data"]
+                        [] as ArrElement<(typeof data)["pages"]>["data"]
                       ),
                       (v, i) => (
                         <div className="w-[9.875rem] flex flex-col gap-1 overflow-hidden">

@@ -115,6 +115,7 @@ export const SocialPostSettingsPopup: React.FC = () => {
         >
           {options.map(({ label, onClick, className }, i) => (
             <MenuItem
+              key={i}
               className={`${className || ""} py-[0.5rem] w-full text-center`}
               onClick={onClick}
             >

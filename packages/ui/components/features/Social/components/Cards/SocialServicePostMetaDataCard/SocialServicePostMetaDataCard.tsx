@@ -64,9 +64,14 @@ export const SocialServicePostMetaDataCard: React.FC<
         <AspectRatio ratio={3 / 4}>
           <Slider>
             {post?.service?.thumbnail
-              ? [post.service.thumbnail].map((att) => (
-                  <PostAttachment blur src={att} type={AttachmentType.Img} />
-                ))
+              ? [post.service.thumbnail].map((att, i) => (
+                <PostAttachment
+                  key={i}
+                  blur
+                  src={att}
+                  type={AttachmentType.Img}
+                />
+              ))
               : null}
           </Slider>
         </AspectRatio>

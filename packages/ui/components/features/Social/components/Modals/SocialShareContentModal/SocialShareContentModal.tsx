@@ -135,6 +135,7 @@ export const SocialShareCotentModal: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 items-center justify-center h-[16rem] overflow-scroll gap-8 thinScroll">
             {mapArray(sharablePlatforms, ({ icon, label, onClick }, i) => (
               <div
+                key={i}
                 className="text-7xl flex items-center flex-col gap-2"
                 onClick={() => onClick()}
               >

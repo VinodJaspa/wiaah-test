@@ -183,10 +183,10 @@ export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
                 <Divider />
                 <FlexStack width={{ value: 30 }} direction="vertical">
                   {products.map((item, i) => (
-                    <>
-                      <CartSummaryProductCard minimal key={i} product={item} />
+                    <React.Fragment key={i}>
+                      <CartSummaryProductCard minimal product={item} />
                       <Divider />
-                    </>
+                    </React.Fragment>
                   ))}
                 </FlexStack>
                 <TotalCost

@@ -148,10 +148,11 @@ export const SocialNewsfeedPostMobileCard: React.FC<
           onSliderChange={(v) => setActiveImage(v)}
         >
           {mapArray(post.images || [], (src, i) => (
-            <AspectRatio ratio={1.2}>
+            <AspectRatio ratio={1.2} key={i}>
               <div className="absolute flex gap-2 top-2 left-1/2 -translate-x-1/2">
                 {[...Array(post.images.length)].map((_, i) => (
                   <div
+                    key={i}
                     className={`${i === activeImage ? "bg-primary w-4" : "bg-gray-400 w-2"
                       } h-2 rounded-full`}
                   />

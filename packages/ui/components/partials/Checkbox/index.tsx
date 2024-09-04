@@ -7,11 +7,11 @@ interface CheckBoxCtxValues {
 }
 
 const CheckBoxCtx = React.createContext<CheckBoxCtxValues>({
-  toggleCheckBox: () => {},
+  toggleCheckBox: () => { },
   values: [],
 });
 
-export interface CheckboxProps extends HtmlInputProps {}
+export interface CheckboxProps extends HtmlInputProps { }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
   children,
@@ -29,7 +29,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             : null
         }
         color="green"
-        className={`${className} ring-0 checked:bg-primary   checked:hover:bg-primary checked:focus:bg-primary focus:ring-0  active:ring-0`}
+        className={`${className} ring-0 checked:bg-primary cursor-pointer   checked:hover:bg-primary checked:focus:bg-primary focus:ring-0  active:ring-0`}
         type={"checkbox"}
         {...props}
       />
