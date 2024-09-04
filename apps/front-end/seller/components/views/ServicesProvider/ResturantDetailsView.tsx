@@ -378,7 +378,7 @@ export const RestaurantDetailsView: React.FC = () => {
                 <TabsHeader />
                 <TabList />
                 {ServicesProviderTabs.map((tab, i) => (
-                  <>
+                  <React.Fragment key={i}>
                     <TabTitle TabKey={i}>
                       {({ currentActive }) => (
                         <p
@@ -389,7 +389,7 @@ export const RestaurantDetailsView: React.FC = () => {
                         </p>
                       )}
                     </TabTitle>
-                  </>
+                  </React.Fragment>
                 ))}
                 {ServicesProviderTabs.at(currentTabIdx).component}
               </>
