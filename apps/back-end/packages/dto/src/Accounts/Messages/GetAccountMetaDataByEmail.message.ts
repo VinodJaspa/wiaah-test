@@ -4,7 +4,7 @@ import { KafkaMessage, KafkaMessageReply } from "../../Base";
 export class GetAccountMetaDataByEmailMessage extends KafkaMessage<{
   email: string;
   type?: AccountType;
-}> {}
+}> { }
 
 export class GetAccountMetaDataByEmailMessageReply extends KafkaMessageReply<{
   username?: string;
@@ -13,6 +13,6 @@ export class GetAccountMetaDataByEmailMessageReply extends KafkaMessageReply<{
   email: string;
   password: string;
   accountType: string;
-  emailVerified: boolean;
+  emailVerified?: boolean;
   id: string;
-} | null> {}
+} | null> { }
