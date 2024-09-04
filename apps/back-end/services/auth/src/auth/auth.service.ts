@@ -50,7 +50,8 @@ export class AuthService {
 
   async register(createAuthInput: RegisterDto): Promise<boolean> {
     try {
-      const { email, firstName, lastName, accountType } = createAuthInput;
+      const { email, firstName, lastName, accountType, password } =
+        createAuthInput;
 
       const registerations = await this.getRegisterationsByEmail(email);
       if (registerations.length > 0)
@@ -62,9 +63,13 @@ export class AuthService {
       // create registeration enitity to track verification email proccess
       await this.prisma.registeration.create({
         data: {
+          firstName,
+          lastName,
           email,
           expiresAt: AddToDate(new Date(), {}),
           verificationCode,
+          password,
+          accountType,
         },
       });
 
@@ -82,6 +87,45 @@ export class AuthService {
       return true;
     } catch (error) {
       throw new Error(error);
+    }
+  }
+
+  async simpleLogin(input: { email: string; password: string }) {
+    try {
+      const { email, password } = input;
+
+      // Find the user by email
+      const registeration = await this.prisma.registeration.findUnique({
+        where: { email },
+        rejectOnNotFound: () => {
+          throw new BadRequestException('Invalid email');
+        },
+      });
+
+      // Validate the password
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        registeration.password,
+      );
+      if (!isPasswordValid) {
+        throw new BadRequestException('Invalid password');
+      }
+
+      // Generate JWT token
+      const payload = { userId: registeration.id, email: registeration.email };
+      const token = this.JWTService.sign(payload);
+
+      // Return the token and user data
+      return {
+        accessToken: token,
+        user: {
+          id: registeration.id,
+          email: registeration.email,
+          // Add other relevant user fields
+        },
+      };
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 
@@ -122,7 +166,7 @@ export class AuthService {
       minutes: this.registerationVerificationTokenValidDurationInMin,
     });
 
-    await this.prisma.registeration.upsert({
+    await this.prisma.verificationCode.upsert({
       create: {
         email,
         expiresAt,

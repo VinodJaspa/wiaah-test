@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 
 export function OlderThan(date: Date, validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function(object: Object, propertyName: string) {
     registerDecorator({
       name: 'MaxWords',
       target: object.constructor,
@@ -54,4 +54,7 @@ export class RegisterDto {
 
   @Field((type) => RegisterAccountType)
   accountType: RegisterAccountType;
+
+  @Field((type) => String)
+  password: string;
 }

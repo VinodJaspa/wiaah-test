@@ -26,6 +26,7 @@ import {
   ChangePasswordInput,
   LoginDto,
   LoginWithOtpInput,
+  RegisterDto,
   VerifyEmailDto,
 } from './dto';
 import { AuthService } from './auth.service';
@@ -51,7 +52,7 @@ export class AuthResolver implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
     private readonly commandBus: CommandBus,
-  ) {}
+  ) { }
   cookiesKey = this.config.get('COOKIES_KEY');
 
   @Mutation(() => Boolean)
@@ -64,57 +65,72 @@ export class AuthResolver implements OnModuleInit {
   }
 
   @Mutation(() => GqlStatusResponse)
-  async login(
-    @Args('LoginInput') loginInput: LoginDto,
+  async register(
+    @Args('RegisterInput') registerInput: RegisterDto,
     @Context() ctx: any,
   ): Promise<GqlStatusResponse> {
     if (typeof this.cookiesKey !== 'string')
       return { success: false, code: ResponseCodes.InternalServiceError };
 
-    const { email, accountType, id } =
-      await this.authService.validateCredentials(
-        loginInput.email,
-        loginInput.password,
-      );
-
-    const code = await this.querybus.execute<
-      ValidateLoginSecurityFeaturesQuery,
-      number | null
-    >(new ValidateLoginSecurityFeaturesQuery(email));
-
-    if (code) {
-      if (
-        code === ResponseCodes.RequireEmailOTP ||
-        code === ResponseCodes.RequireSmsOTP
-      ) {
-        this.eventbus.publish(new AuthOtpRequestedEvent(email, code));
-      }
-
-      return {
-        success: false,
-        code,
-      };
-    }
-
-    const data = await this.authService.generateAccessToken(
-      id,
-      email,
-      accountType,
-    );
-
-    if (ctx && ctx.res && ctx.res.cookie) {
-      ctx.res.cookie(this.cookiesKey, data.access_token, {
-        secure: true,
-        httpOnly: true,
-        sameSite: 'None',
-        domain: process.env.CLIENT_DOMAIN,
-      });
-    }
+    await this.authService.register({
+      firstName: registerInput.firstName,
+      lastName: registerInput.lastName,
+      email: registerInput.email,
+      accountType: registerInput.accountType,
+      password: await bcrypt.hash(registerInput.password, 10),
+      birthDate: registerInput.birthDate,
+    });
 
     return {
       success: true,
       code: ResponseCodes.TokenInjected,
     };
+  }
+
+  @Mutation(() => GqlStatusResponse)
+  async login(
+    @Args('LoginInput') loginInput: LoginDto,
+    @Context() ctx: any,
+  ): Promise<GqlStatusResponse> {
+    // Validate the presence of cookiesKey
+    if (typeof this.cookiesKey !== 'string') {
+      return {
+        success: false,
+        code: ResponseCodes.InternalServiceError,
+        message: 'Invalid cookies configuration',
+      };
+    }
+
+    try {
+      const { email, password } = loginInput;
+
+      // Authenticate user
+      const data = await this.authService.simpleLogin({ email, password });
+
+      // Set the JWT in cookies if possible
+      if (ctx?.res?.cookie) {
+        ctx.res.cookie(this.cookiesKey, data.accessToken, {
+          secure: true,
+          httpOnly: true,
+          sameSite: 'None',
+          domain: process.env.CLIENT_DOMAIN,
+        });
+      }
+
+      // Return success response with user data
+      return {
+        success: true,
+        code: ResponseCodes.TokenInjected,
+        message: 'Login successful',
+      };
+    } catch (error) {
+      // Return a failure response with error message
+      return {
+        success: false,
+        code: ResponseCodes.InternalServiceError,
+        message: error.message || 'An error occurred during login',
+      };
+    }
   }
 
   @Mutation(() => GqlStatusResponse)
