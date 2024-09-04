@@ -21,11 +21,15 @@ model UserAuthSettings {
 
 model Registeration {
   id               String   @id() @default(auto()) @map("_id") @db.ObjectId()
+  firstName        String
+  lastName         String
   verificationCode String
   email            String   @unique()
   expiresAt        DateTime
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt()
+  password         String
+  accountType      RegisterAccountType
 }
 
 model authOTP {
@@ -44,4 +48,16 @@ model ChangePasswordRequest {
   accountId        String   @unique()
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt()
+}
+
+model VerificationCode {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId()
+  verificationCode String
+  email            String   @unique()
+  expiresAt        DateTime @default(now())
+}
+
+enum RegisterAccountType {
+  buyer
+  seller
 }
