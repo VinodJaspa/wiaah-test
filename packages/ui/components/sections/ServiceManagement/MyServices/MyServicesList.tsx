@@ -26,7 +26,7 @@ import {
 } from "@UI";
 import { ServiceType } from "@features/API";
 import { setTestid } from "utils";
-export interface MyServicesListProps {}
+export interface MyServicesListProps { }
 
 export const UserServicesList: React.FC<{ accountId: string }> = () => {
   const [deleteId, setDeleteId] = React.useState<string>();
@@ -122,64 +122,64 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
           <TBody>
             {res
               ? res.data.map((service, i) => {
-                  return (
-                    <Tr>
-                      <Td>
-                        <Checkbox />
-                      </Td>
-                      <Td>
-                        <Image src={service.thumbnail} className="w-24 h-16" />
-                      </Td>
-                      <Td>{service.name}</Td>
-                      <Td>{service.price}</Td>
-                      {showOn([ServiceType.Restaurant]) ? (
-                        <>
-                          <Td>{service.menuType}</Td>
-                        </>
-                      ) : null}
-                      {showOn([
-                        ServiceType.Hotel,
-                        ServiceType.HolidayRentals,
-                      ]) ? (
-                        <>
-                          <Td>{service.num_of_rooms}</Td>
-                          <Td>{service.beds}</Td>
-                          <Td>{service.bathrooms}</Td>
-                        </>
-                      ) : null}
-                      {showOn([ServiceType.HealthCenter]) ? (
-                        <>
-                          <Td>{service.speciality}</Td>
-                        </>
-                      ) : null}
-                      {showOn([ServiceType.BeautyCenter]) ? (
-                        <>
-                          <Td>{service.treatmentCategory}</Td>
-                        </>
-                      ) : null}
-                      <Td>{new Date(service.createdAt).toDateString()}</Td>
-                      <Td align="right">
-                        <HStack>
-                          <Button
-                            onClick={() => setDeleteId(service.id)}
-                            center
-                            className="p-2"
-                            colorScheme="danger"
-                          >
-                            <TrashIcon />
-                          </Button>
-                          <Button
-                            onClick={() => EditService(service.id)}
-                            center
-                            className="p-2"
-                          >
-                            <EditIcon />
-                          </Button>
-                        </HStack>
-                      </Td>
-                    </Tr>
-                  );
-                })
+                return (
+                  <Tr>
+                    <Td>
+                      <Checkbox />
+                    </Td>
+                    <Td>
+                      <Image src={service.thumbnail} className="w-24 h-16" />
+                    </Td>
+                    <Td>{service.name}</Td>
+                    <Td>{service.price}</Td>
+                    {showOn([ServiceType.Restaurant]) ? (
+                      <>
+                        <Td>{service.menuType}</Td>
+                      </>
+                    ) : null}
+                    {showOn([
+                      ServiceType.Hotel,
+                      ServiceType.HolidayRentals,
+                    ]) ? (
+                      <>
+                        <Td>{service.num_of_rooms}</Td>
+                        <Td>{service.beds}</Td>
+                        <Td>{service.bathrooms}</Td>
+                      </>
+                    ) : null}
+                    {showOn([ServiceType.HealthCenter]) ? (
+                      <>
+                        <Td>{service.speciality}</Td>
+                      </>
+                    ) : null}
+                    {showOn([ServiceType.BeautyCenter]) ? (
+                      <>
+                        <Td>{service.treatmentCategory}</Td>
+                      </>
+                    ) : null}
+                    <Td>{new Date(service.createdAt).toDateString()}</Td>
+                    <Td align="right">
+                      <HStack>
+                        <Button
+                          onClick={() => setDeleteId(service.id)}
+                          center
+                          className="p-2"
+                          colorScheme="danger"
+                        >
+                          <TrashIcon />
+                        </Button>
+                        <Button
+                          onClick={() => EditService(service.id)}
+                          center
+                          className="p-2"
+                        >
+                          <EditIcon />
+                        </Button>
+                      </HStack>
+                    </Td>
+                  </Tr>
+                );
+              })
               : null}
           </TBody>
         </Table>
