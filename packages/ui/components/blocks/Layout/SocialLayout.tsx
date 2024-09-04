@@ -94,7 +94,7 @@ interface SocialAtomValue {
 }
 
 const socialAtom = atom<SocialAtomValue>({
-  key: "socialLayout",
+  key: `socialLayout_${Date.now()}`, // Unique key using current timestamp
   default: {
     newPost: false,
     chatRoomId: undefined,

@@ -3,5 +3,5 @@ import { atom } from "recoil";
 
 export const ResturantsDataState = atom<ResturantMetaDataType[]>({
   default: [],
-  key: "ResturantDataState",
+  key: `ResturantDataState_${Date.now()}`,
 });

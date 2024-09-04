@@ -5,7 +5,7 @@ export const graphqlRequestCtx = atom<GraphqlRequestClient>({
   default: new GraphqlRequestClient("http://localhost:3003/graphql", {
     credentials: "include",
   }),
-  key: "graphql-request-client",
+  key: `graphql-request-client_${Date.now()}`,
 });
 
 export const useGraphqlRequestClient = () => {

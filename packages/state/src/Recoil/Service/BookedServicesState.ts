@@ -9,5 +9,5 @@ export interface BookedService {
 
 export const BookedServicesState = atom<BookedService[]>({
   default: [],
-  key: "BookedServicesState",
+  key: `BookedServicesState_${Date.now()}`,
 });

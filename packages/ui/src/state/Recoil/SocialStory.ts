@@ -7,36 +7,36 @@ import {
 } from "types";
 
 export const SocialStoryOpenState = atom<boolean>({
-  key: "SocialStoryOpenState",
+  key: `SocialStoryOpenState_${Date.now()}`,
   default: false,
 });
 
 export const SocialNewStoryState = atom<boolean>({
-  key: "SocialNewStoryState",
+  key: `SocialNewStoryState_${Date.now()}`,
   default: false,
 });
 
 export const SocialStoryState = atom<SocialStoryDataWithUser | null>({
-  key: "SocialStoryState",
+  key: `SocialStoryState_${Date.now()}`,
   default: null,
 });
 
 export const CurrentStoryIndexState = atom<number>({
-  key: "CurrentStoryIndexState",
+  key: `CurrentStoryIndexState_${Date.now()}`,
   default: 0,
 });
 export const CurrentStoryProgressState = atom<number>({
-  key: "CurrentStoryProgressState",
+  key: `CurrentStoryProgressState_${Date.now()}`,
   default: 0,
 });
 
 export const SocialStoriesState = atom<SocialStoryData[]>({
-  key: "SocialStoriesData",
+  key: `SocialStoriesData_${Date.now()}`,
   default: [],
 });
 
 export const SocialStoriesProgressBarDataState = selector<ProgressBar[]>({
-  key: "SocialStoriesProgressBarData",
+  key: `SocialStoriesProgressBarData_${Date.now()}`,
   get: ({ get }) => {
     const stories = get(SocialStoriesState);
     const currentStory = get(CurrentStoryIndexState);

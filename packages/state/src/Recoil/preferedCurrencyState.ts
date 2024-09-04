@@ -12,5 +12,5 @@ export const PreferedCurrencyState = atom<PreferedCurrency>({
     currencyRateToUsd: 1,
     currencySymbol: "$",
   },
-  key: "PreferedCurrencyState",
+  key: `PreferedCurrencyState_${Date.now()}`,
 });

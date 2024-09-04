@@ -7,5 +7,5 @@ export type RefSectionType = {
 
 export const pageRefSectionState = atom<RefSectionType[]>({
   default: [],
-  key: "PageRefSectionState",
+  key: `PageRefSectionState_${Date.now()}`,
 });

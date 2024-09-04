@@ -4,6 +4,6 @@ export const ProductViewState = atom<{
   productType: "service" | "product";
   productId: string;
 } | null>({
-  key: "ProductViewState",
+  key: `ProductViewState_${Date.now()}`,
   default: null,
 });

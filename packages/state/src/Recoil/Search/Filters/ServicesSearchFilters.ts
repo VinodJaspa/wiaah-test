@@ -3,5 +3,5 @@ import { atom } from "recoil";
 
 export const ServicesSearchFiltersState = atom<FormatedSearchableFilter>({
   default: {},
-  key: "ServicesSearchFiltersState",
+  key: `ServicesSearchFiltersState_${Date.now()}`,
 });

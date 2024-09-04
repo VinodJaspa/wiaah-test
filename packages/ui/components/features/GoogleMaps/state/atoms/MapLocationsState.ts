@@ -4,7 +4,7 @@ import { FocusedMapItemIdState } from "./FocusedMapItemIdState";
 
 export const servicesOnMapState = atom<onMapLocation[]>({
   default: [],
-  key: "servicesOnMapState",
+  key: `servicesOnMapState_${Date.now()}`,
 });
 
 export type onMapLocation = {
@@ -25,5 +25,5 @@ export const onMapLocationsState = selector<onMapLocation[]>({
     if (focusedItem) return [focusedItem];
     return alllocations;
   },
-  key: "onMapLocationsState",
+  key: `onMapLocationsState_${Date.now()}`, // Unique key using current timestamp
 });

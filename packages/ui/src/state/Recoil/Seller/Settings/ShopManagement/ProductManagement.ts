@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
 export const EditProductState = atom<string | null | undefined>({
-  key: "EditProductState",
+  key: `EditProductState_${Date.now()}`,
   default: undefined,
 });

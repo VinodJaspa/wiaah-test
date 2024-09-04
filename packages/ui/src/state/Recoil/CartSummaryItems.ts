@@ -3,12 +3,12 @@ import { CartSummaryItemData } from "types";
 import { VoucherState } from "./Checkout";
 
 export const CartSummaryItemsState = atom<CartSummaryItemData[]>({
-  key: "CartSummaryItemsData",
+  key: `CartSummaryItemsData_${Date.now()}`,
   default: [],
 });
 
 export const CartSummaryTotalPriceState = selector<number>({
-  key: "CartSummaryTotalPriceState",
+  key: `CartSummaryTotalPriceState_${Date.now()}`,
   get: ({ get }) => {
     const voucher = get(VoucherState);
     const currentItems = get(CartSummaryItemsState);
@@ -35,7 +35,7 @@ export const CartSummaryTotalPriceState = selector<number>({
   },
 });
 export const CartSummaryOnlyProdcutsState = selector<CartSummaryItemData[]>({
-  key: "CartSummaryOnlyProdcutsState",
+  key: `CartSummaryOnlyProdcutsState_${Date.now()}`,
   get: ({ get }) => {
     const currentItems = get(CartSummaryItemsState);
 
@@ -43,7 +43,7 @@ export const CartSummaryOnlyProdcutsState = selector<CartSummaryItemData[]>({
   },
 });
 export const CartSummaryOnlyServicesState = selector<CartSummaryItemData[]>({
-  key: "CartSummaryOnlyServicesState",
+  key: `CartSummaryOnlyServicesState_${Date.now()}`,
   get: ({ get }) => {
     const currentItems = get(CartSummaryItemsState);
 

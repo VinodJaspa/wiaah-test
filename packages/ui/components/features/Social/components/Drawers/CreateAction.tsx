@@ -122,7 +122,7 @@ const StorySettingsAtom = atom<{
     textContent: "",
     selectFilter: false,
   },
-  key: "CreateStorySettings",
+  key: `CreateStorySettings_${Date.now()}`,
 });
 
 export const CreateActionDrawer: React.FC = () => {
@@ -592,7 +592,7 @@ const CameraActionSettings: React.FC<{}> = () => {
                 clipRule="evenodd"
                 d="M22 11.0011C22 11.0007 22 11.0004 22 11L22.0001 10.9998H22C21.9999 4.92476 17.0751 0 11 0C4.92487 0 0 4.92487 0 11C0 11.6359 0.0539532 12.2591 0.157531 12.8655L10.9998 141.37L21.8429 12.8629C21.9461 12.2577 21.9999 11.6357 22 11.0011Z"
                 fill="white"
-                fill-opacity="0.6"
+                fillOpacity="0.6"
               />
             </svg>
           </div>

@@ -3,5 +3,5 @@ import { AccountType } from "types";
 
 export const AccountTypeState = atom<AccountType>({
   default: AccountType.Seller,
-  key: "AccountTypeState",
+  key: `AccountTypeState_${Date.now()}`,
 });

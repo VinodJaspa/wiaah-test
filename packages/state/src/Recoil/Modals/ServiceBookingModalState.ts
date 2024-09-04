@@ -3,5 +3,5 @@ import { ServiceType } from "types";
 
 export const ServiceBookingModalState = atom<ServiceType | null>({
   default: null,
-  key: "ServiceBookingModalState",
+  key: `ServiceBookingModalState_${Date.now()}`,
 });

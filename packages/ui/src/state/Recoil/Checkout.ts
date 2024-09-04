@@ -2,17 +2,17 @@ import { atom, selector } from "recoil";
 import { CartSummaryItem, VoucherType } from "types";
 
 export const VoucherState = atom<VoucherType | undefined>({
-  key: "VoucherState",
+  key: `VoucherState_${Date.now()}`,
   default: undefined,
 });
 
 export const CheckoutProductsState = atom<CartSummaryItem[]>({
-  key: "CheckoutProductsState",
+  key: `CheckoutProductsState_${Date.now()}`,
   default: [],
 });
 
 export const CheckoutProductsTotalPriceState = selector<number>({
-  key: "checkoutProductsTotalPriceState",
+  key: `checkoutProductsTotalPriceState_${Date.now()}`,
   get: ({ get }) => {
     const voucher = get(VoucherState);
     const currentItems = get(CheckoutProductsState);

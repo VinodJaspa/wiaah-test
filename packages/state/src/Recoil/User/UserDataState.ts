@@ -3,5 +3,5 @@ import { CurrentUserDataType } from "types";
 
 export const UserDataState = atom<CurrentUserDataType | undefined>({
   default: undefined,
-  key: "UserDataState",
+  key: `UserDataState_${Date.now()}`,
 });

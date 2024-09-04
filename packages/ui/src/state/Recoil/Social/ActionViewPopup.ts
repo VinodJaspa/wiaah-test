@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const ActionViewIdState = atom<string | undefined>({
   default: undefined,
-  key: "ActionViewIdState",
+  key: `ActionViewIdState_${Date.now()}`,
 });

@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const NewWithdrawalOpenState = atom<boolean>({
   default: false,
-  key: "NewWithdrawalOpenState",
+  key: `NewWithdrawalOpenState_${Date.now()}`,
 });

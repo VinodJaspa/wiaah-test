@@ -3,5 +3,5 @@ import { DateRange } from "types";
 
 export const ServiceBookedRangeState = atom<DateRange | null>({
   default: null,
-  key: "ServiceBookedRangeState",
+  key: `ServiceBookedRangeState_${Date.now()}`,
 });

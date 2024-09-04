@@ -76,7 +76,7 @@ const BookingHistoryAtom = atom<{
   viewId?: string;
   cancelId?: string;
 }>({
-  key: "bookingHistoryAtom",
+  key: `bookingHistoryAtom_${Date.now()}`,
   default: {
     paybackId: undefined,
     cancelId: undefined,
@@ -106,7 +106,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
     {
       status: Filter,
       pagination,
-    },
+    }
   );
 
   const { refetch } = useGetMyBookingsHistoryQuery(form);
@@ -166,7 +166,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
         id: "",
         amount: randomNum(50),
       },
-    }),
+    })
   );
 
   const startSearchYear = new Date().getFullYear() - yearsDiff;
@@ -193,13 +193,13 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
             <Select>
               {mapArray(
                 [...Array(yearsToAdd)].map(
-                  (_, i) => new Date(startSearchYear + i),
+                  (_, i) => new Date(startSearchYear + i)
                 ),
                 (date, i) => (
                   <SelectOption key={i} value={date}>
                     {new Date(date).getFullYear()}
                   </SelectOption>
-                ),
+                )
               )}
             </Select>
           </HStack>
@@ -421,7 +421,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
         </InputLeftElement>
         <Input
           placeholder={`${t("Search for order ID")}, ${t("customer")}, ${t(
-            "Order Status",
+            "Order Status"
           )}, ${t("Or")} ${t("something")}`}
         />
       </InputGroup>
@@ -433,11 +433,10 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                 setFilter(d);
                 return (
                   <TranslationText
-                    className={`${
-                      d === Filter
+                    className={`${d === Filter
                         ? "text-primary border-b-2 border-primary"
                         : ""
-                    } text-xs sm:text-sm md:text-base whitespace-nowrap`}
+                      } text-xs sm:text-sm md:text-base whitespace-nowrap`}
                     translationObject={d}
                   />
                 );
@@ -486,7 +485,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                     payment,
                     ...rest
                   },
-                  i,
+                  i
                 ) => (
                   <Tr className="cursor-pointer" key={i}>
                     <Td>
@@ -591,7 +590,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                       </Td>
                     )}
                   </Tr>
-                ),
+                )
               )
             ) : (
               <Tr>
@@ -623,7 +622,7 @@ const BookingViewModal: React.FC = () => {
 
         return state.viewId;
       },
-    }),
+    })
   );
 
   const setId = useSetRecoilState(BookingHistoryAtom);
@@ -723,7 +722,7 @@ const BookingPayBackModal: React.FC = () => {
 
         return state.paybackId;
       },
-    }),
+    })
   );
   const { mutate, isLoading } = usePaybackServiceInsuranceMutation();
 
@@ -771,7 +770,7 @@ const BookingCancelationModal: React.FC = () => {
 
         return state.cancelId;
       },
-    }),
+    })
   );
 
   const setId = useSetRecoilState(BookingHistoryAtom);
@@ -782,7 +781,7 @@ const BookingCancelationModal: React.FC = () => {
       appointmentId: id || "",
       cancelationReason: "",
     },
-    { appointmentId: id || "" },
+    { appointmentId: id || "" }
   );
 
   return (

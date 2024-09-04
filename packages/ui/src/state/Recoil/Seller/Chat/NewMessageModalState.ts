@@ -2,5 +2,5 @@ import { atom } from "recoil";
 
 export const NewMessageModalOpenState = atom<boolean>({
   default: false,
-  key: "NewMessageModalOpenState",
+  key: `NewMessageModalOpenState_${Date.now()}`,
 });
