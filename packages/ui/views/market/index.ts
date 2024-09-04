@@ -1,7 +1,5 @@
 export * from "./HomeView";
 export * from "./SearchView";
-// export * from "./ProductView";
-export * from "./Login";
 export * from "./SellerProfileStartupView";
 export * from "./BuyerProfileStartupView";
 export * from "./AboutWiaahView";
@@ -12,3 +10,4 @@ export * from "./Services";
 export * from "./SellerSignupView";
 export * from "./BuyerSignupView";
 export * from "./LoginView";
+export * from "./Signup";

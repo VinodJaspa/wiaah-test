@@ -83,7 +83,7 @@ export function useForm<TForm>(
         options?.addPlaceholder && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 
@@ -121,7 +121,7 @@ export function useForm<TForm>(
         options?.addPlaceholder && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 
@@ -139,7 +139,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 
@@ -157,7 +157,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 
@@ -175,7 +175,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 
@@ -195,7 +195,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
-      errorMessage: errors[key as string],
+      errormessage: errors[key as string],
     };
   }
 

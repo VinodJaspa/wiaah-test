@@ -10,11 +10,12 @@ export interface LoginViewProps {
   onSubmit?: (data: any, type: LoginType) => any;
 }
 
-export const Login: React.FC<LoginViewProps> = ({
+export const Signup: React.FC<LoginViewProps> = ({
   loginType = "login",
   onSubmit,
 }) => {
   const router = useRouter();
+
   return (
     <>
       <div
@@ -26,20 +27,20 @@ export const Login: React.FC<LoginViewProps> = ({
             <h1 className="text-3xl text-white lg:text-5xl">
               {t(
                 "Welcome_to_Wiaah",
-                "Welcome to Wiaah: The First and Reference Social Marketplace",
+                "Welcome to Wiaah: The First and Reference Social Marketplace"
               ).toString()}
             </h1>
             <p className="mt-5 mb-5 text-justify text-base font-light lg:mt-10 lg:text-xl">
               {t(
                 "With_Wiaah_Text",
-                "With Wiaah, connect with the world's leading fashion brands and your favourite brands, participate in their success while succeding in your turn.",
+                "With Wiaah, connect with the world's leading fashion brands and your favourite brands, participate in their success while succeding in your turn."
               ).toString()}
             </p>
             <div className="flex flex-col items-end text-lg font-light lg:text-xl">
               <cite className="text-justify">
                 {t(
                   "founder_of_wiaah_cite",
-                  '"It is by participating in the success of others that we acheive our own success"',
+                  '"It is by participating in the success of others that we acheive our own success"'
                 ).toString()}
               </cite>
               <div className="mt-5 mb-5 lg:mb-0">
@@ -52,7 +53,6 @@ export const Login: React.FC<LoginViewProps> = ({
               loginType={loginType}
               link={true}
               onViewChange={(view) => router.push(view)}
-              onSubmit={onSubmit}
             />
           </FormContainer>
         </div>

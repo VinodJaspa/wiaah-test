@@ -78,7 +78,7 @@ const HomeRecommendationSection: React.FC = () => {
       <SpinnerFallback {...props}>
         <div className="grid grid-cols-4 gap-1 sm:grid-cols-2">
           {mapArray(data?.data, (prod, i) => (
-            <div className="flex flex-col gap-4 sm:gap-2  p-1">
+            <div key={i} className="flex flex-col gap-4 sm:gap-2  p-1">
               <div className="flex flex-col gap-1">
                 <AspectRatioImage
                   className="rounded-xl"
@@ -205,59 +205,59 @@ const BestShopsHomeSection: React.FC = () => {
         presets={
           isMobile
             ? [
-                {
-                  cols: 5,
-                  points: [
-                    {
-                      c: 3,
-                      r: 1,
-                    },
-                    {
-                      c: 2,
-                      r: 1,
-                    },
-                    {
-                      c: 2,
-                      r: 1,
-                    },
-                    {
-                      c: 3,
-                      r: 1,
-                    },
-                    {
-                      c: 5,
-                      r: 1,
-                    },
-                  ],
-                },
-              ]
+              {
+                cols: 5,
+                points: [
+                  {
+                    c: 3,
+                    r: 1,
+                  },
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                  {
+                    c: 3,
+                    r: 1,
+                  },
+                  {
+                    c: 5,
+                    r: 1,
+                  },
+                ],
+              },
+            ]
             : [
-                {
-                  cols: 13,
-                  points: [
-                    {
-                      c: 4,
-                      r: 2,
-                    },
-                    {
-                      c: 2,
-                      r: 1,
-                    },
-                    {
-                      c: 5,
-                      r: 1,
-                    },
-                    {
-                      c: 4,
-                      r: 1,
-                    },
-                    {
-                      c: 5,
-                      r: 1,
-                    },
-                  ],
-                },
-              ]
+              {
+                cols: 13,
+                points: [
+                  {
+                    c: 4,
+                    r: 2,
+                  },
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                  {
+                    c: 5,
+                    r: 1,
+                  },
+                  {
+                    c: 4,
+                    r: 1,
+                  },
+                  {
+                    c: 5,
+                    r: 1,
+                  },
+                ],
+              },
+            ]
         }
       >
         {mapArray(data, (shop, i) => (
@@ -268,9 +268,8 @@ const BestShopsHomeSection: React.FC = () => {
               alt={shop.name}
             />
             <div className="absolute top-1/2 -translate-y-1/2 left-2 items-center flex flex-col gap-2">
-              <p className="text-[0.5rem] sm:text-sm">{`${
-                shop.storeCategory
-              } ${t("store")}`}</p>
+              <p className="text-[0.5rem] sm:text-sm">{`${shop.storeCategory
+                } ${t("store")}`}</p>
               <p className="text-[0.625rem] sm:text-xl">{shop.name}</p>
               <Button
                 className="text-xs sm:text-sm"
@@ -317,57 +316,57 @@ const TopSalesCategoryProducts: React.FC<{
         {isLoading
           ? mapArray([...Array(40)], () => <ProductSkeleton />)
           : mapArray(data?.data, (prod, i) => (
-              <div
-                onClick={() => visit((r) => r.visitProduct(prod.id))}
-                key={i}
-                className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
-                {...setTestid(`home-page-product`)}
-                data-itemID={prod.id}
-              >
-                <div className="flex flex-col gap-1">
-                  <AspectRatioImage
-                    className="rounded-xl"
-                    src={prod.thumbnail}
-                    alt={prod.title}
-                    ratio={0.85}
+            <div
+              onClick={() => visit((r) => r.visitProduct(prod.id))}
+              key={i}
+              className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
+              {...setTestid(`home-page-product`)}
+              data-itemID={prod.id}
+            >
+              <div className="flex flex-col gap-1">
+                <AspectRatioImage
+                  className="rounded-xl"
+                  src={prod.thumbnail}
+                  alt={prod.title}
+                  ratio={0.85}
+                >
+                  <button
+                    onClick={() => {
+                      // TODO: integrate
+                    }}
+                    className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
                   >
-                    <button
-                      onClick={() => {
-                        // TODO: integrate
-                      }}
-                      className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
-                    >
-                      {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
-                    </button>
-                  </AspectRatioImage>
-                  <Text maxLines={2} className="font-medium">
-                    {prod.title}
-                  </Text>
-                </div>
-                <Text className="text-xs text-grayText" maxLines={1}>
-                  {prod.description}
+                    {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
+                  </button>
+                </AspectRatioImage>
+                <Text maxLines={2} className="font-medium">
+                  {prod.title}
                 </Text>
-                <HStack className="gap-1">
-                  <StarIcon className="text-yellow-300" />
-                  <p className="text-xs">
-                    {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-                  </p>
-                </HStack>
-                <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
-                  <PriceDisplay
-                    price={prod.price}
-                    decimel
-                    className="font-semibold text-2xl sm:text-base"
-                  />
-                  <AddToCartProductButton
-                    productId={prod.id}
-                    className="sm:w-full"
-                    colorScheme="darkbrown"
-                    outline
-                  />
-                </div>
               </div>
-            ))}
+              <Text className="text-xs text-grayText" maxLines={1}>
+                {prod.description}
+              </Text>
+              <HStack className="gap-1">
+                <StarIcon className="text-yellow-300" />
+                <p className="text-xs">
+                  {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+                </p>
+              </HStack>
+              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
+                <PriceDisplay
+                  price={prod.price}
+                  decimel
+                  className="font-semibold text-2xl sm:text-base"
+                />
+                <AddToCartProductButton
+                  productId={prod.id}
+                  className="sm:w-full"
+                  colorScheme="darkbrown"
+                  outline
+                />
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -391,7 +390,7 @@ const HomeViewDesignsDisplay: React.FC = () => {
         currentItemIdx={idx}
       >
         {mapArray(designs, (design, i) => (
-          <>
+          <React.Fragment key={i}>
             <Image
               className="w-full h-full object-cover"
               alt={design.name}
@@ -404,16 +403,16 @@ const HomeViewDesignsDisplay: React.FC = () => {
                 {design.text}
               </h1>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </Slider>
 
       <div className="flex gap-1 items-center absolute left-1/2 -translate-x-1/2 bottom-2">
         {mapArray([...Array(designs?.length)], (_, i) => (
           <div
-            className={`${
-              idx === i ? "bg-primary w-4 h-2" : "w-2 h-2 bg-grayText"
-            } rounded-full`}
+            key={i}
+            className={`${idx === i ? "bg-primary w-4 h-2" : "w-2 h-2 bg-grayText"
+              } rounded-full`}
           />
         ))}
       </div>
@@ -461,11 +460,10 @@ const TopCategoriesHomePageSlider: React.FC<{
                   onClick={() => {
                     onCategorySelect(category.id);
                   }}
-                  className={`${
-                    selectedCategoryId === category.id
+                  className={`${selectedCategoryId === category.id
                       ? "bg-black text-white"
                       : "bg-white text-black"
-                  } border border-back rounded-full py-1 px-2`}
+                    } border border-back rounded-full py-1 px-2`}
                 >
                   {category.name}
                 </button>
