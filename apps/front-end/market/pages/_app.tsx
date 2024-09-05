@@ -15,7 +15,12 @@ import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
 import { CoomingSoon, SeoWrapper } from "@components";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
 
 const coomingSoon = false;
 
