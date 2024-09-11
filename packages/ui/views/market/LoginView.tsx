@@ -10,6 +10,7 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
+import nookies, { setCookie } from "nookies";
 
 type loginInput = {
   email: string;
@@ -30,7 +31,7 @@ const LOGIN_MUTATION = gql`
     login(LoginInput: $input) {
       success
       code
-      message
+      accessToken
     }
   }
 `;
@@ -72,7 +73,9 @@ export const LoginView: FC<{
       });
 
       if (result.data.login.success) {
+        setCookie(null, "access_token", result.data.login.accessToken);
         // Handle successful login (e.g., redirect the user)
+
         router.push("/"); // Example: redirect to a dashboard
       } else {
         setErrorMessage(result.data.login.message || "Login failed");
