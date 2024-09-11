@@ -17,7 +17,7 @@ export interface VerticalCarouselProps extends FlexProps {
   onPassMinLimit?: () => any;
 }
 
-const MotionFlex = motion<FlexProps>(Flex);
+const MotionFlex = motion<FlexProps>(Flex as any);
 
 export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   children,

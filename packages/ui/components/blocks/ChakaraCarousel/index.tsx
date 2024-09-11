@@ -24,7 +24,7 @@ import {
 import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
 import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@partials";
 
-const MotionFlex = motion<FlexProps>(Flex);
+const MotionFlex = motion<FlexProps>(Flex as any);
 
 const transitionProps = {
   stiffness: 400,
@@ -84,7 +84,10 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     setActiveItem && setActiveItem(ActiveItem);
   }, [ActiveItem]);
 
-  const initSliderWidth = useCallback((width) => setSliderWidth(width), []);
+  const initSliderWidth = useCallback(
+    (width: number) => setSliderWidth(width),
+    []
+  );
 
   const positions = useMemo(
     () =>
@@ -478,7 +481,7 @@ const Track: React.FC<TrackProps> = ({
   );
 
   const handleClick = useCallback(
-    (event) => {
+    (event: any) => {
       if (node.current) {
         node.current.contains(event.target)
           ? setTrackIsActive(true)
@@ -489,7 +492,7 @@ const Track: React.FC<TrackProps> = ({
   );
 
   const handleKeyDown = useCallback(
-    (event) => {
+    (event: any) => {
       if (trackIsActive) {
         if (activeItem < positions.length - constraint) {
           if (event.key === "ArrowRight" || event.key === "ArrowUp") {
