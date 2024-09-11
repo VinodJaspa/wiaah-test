@@ -283,7 +283,7 @@ model RestaurantService {
   updatedAt              DateTime                     @updatedAt
   vat                    Int                          @default(0)
   status                 ServiceStatus                @default(inActive)
-  presentations          ServicePresentation[]
+  presentations          ServicePresentationType[]
   policies               ServiceTranslationPolicies[]
   serviceMetaInfo        ServiceMetaTranslationInfo[]
   payment_methods        ServicePaymentMethods[]
