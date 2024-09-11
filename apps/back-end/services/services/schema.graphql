@@ -812,13 +812,14 @@ scalar Upload
 
 input CreateServiceInput {
   price: Float!
+  sellerId: String!
   name: [TranslationTextInput!]!
   description: [TranslationTextInput!]!
   policies: [ServicePolicyTranslatedInput!]!
   cancelable: Boolean!
   cancelationPolicy: ServiceCancelationType
   vat: Float!
-  thumbnail: Upload!
+  thumbnail: String!
   isExternal: Boolean!
   hashtags: [String!]!
   popularAmenities: [TranslationTextInput!]
@@ -855,6 +856,10 @@ input CreateServiceInput {
   sessionDurationMins: Int
   ingredients: [TranslationTextArrayInput!]
   menuType: RestaurantDishType
+  rating: Float!
+  reviews: Int!
+  status: ServiceStatus!
+  includedServices: [TranslationTextInput!]!
 }
 
 input TranslationTextInput {
@@ -873,6 +878,7 @@ input ServicePolicyInput {
 }
 
 input ServiceExtraInput {
+  id: String!
   name: [ServiceExtraNameTranslationInput!]!
   cost: Int!
 }
@@ -904,13 +910,14 @@ input TranslationTextArrayInput {
 
 input UpdateServiceInput {
   price: Float
+  sellerId: String
   name: [TranslationTextInput!]
   description: [TranslationTextInput!]
   policies: [ServicePolicyTranslatedInput!]
   cancelable: Boolean
   cancelationPolicy: ServiceCancelationType
   vat: Float
-  thumbnail: Upload
+  thumbnail: String
   isExternal: Boolean
   hashtags: [String!]
   popularAmenities: [TranslationTextInput!]
@@ -947,6 +954,10 @@ input UpdateServiceInput {
   sessionDurationMins: Int
   ingredients: [TranslationTextArrayInput!]
   menuType: RestaurantDishType
+  rating: Float
+  reviews: Int
+  status: ServiceStatus
+  includedServices: [TranslationTextInput!]
   id: String!
 }
 
