@@ -25,7 +25,9 @@ import {
   RentalTypeOfPlace,
   RestaurantDishType,
   Restriction,
+  ServiceStatus,
   ServiceType,
+  TranslationArrayText,
 } from 'prismaClient';
 
 import { GraphQLUpload, Upload } from 'graphql-upload-ts';
@@ -47,7 +49,7 @@ class ServiceHotelRoomMetaInfoInput {
 @InputType()
 class ServiceHotelRoomTranslationMetaInfoInput extends CreateInputGqlTranslationInputField<ServiceHotelRoomMetaInfoInput>(
   ServiceHotelRoomMetaInfoInput,
-) {}
+) { }
 
 @InputType()
 class ServiceHotelRoomInput {
@@ -187,6 +189,9 @@ export class CreateServiceInput {
   @Field(() => Float)
   price: number;
 
+  @Field(() => String)
+  sellerId: string;
+
   @Field(() => [TranslationTextInput])
   @IsValidTranslationArray()
   name: TranslationTextInput[];
@@ -211,8 +216,8 @@ export class CreateServiceInput {
   vat: number;
 
   // uploaded image id
-  @Field(() => GraphQLUpload)
-  thumbnail: Upload;
+  @Field(() => String)
+  thumbnail: string;
 
   @Field(() => Boolean)
   isExternal: boolean;
@@ -369,4 +374,16 @@ export class CreateServiceInput {
   @Field(() => RestaurantDishType, { nullable: true })
   @FieldRequired('type', ServiceType.restaurant)
   menuType?: RestaurantDishType;
+
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => Int)
+  reviews: number;
+
+  @Field(() => ServiceStatus)
+  status: ServiceStatus;
+
+  @Field(() => [TranslationTextInput])
+  includedServices: TranslationTextInput[];
 }
