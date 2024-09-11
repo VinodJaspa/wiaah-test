@@ -5,12 +5,12 @@ export class NewAccountCreatedEvent extends KafkaMessage<{
   email: string;
   firstName?: string;
   lastName?: string;
-  username: string;
+  username?: string;
   accountType?: string;
   profession?: string;
-  birthDate: string;
-  password: string;
-  confirmPassword: string;
+  birthDate: string | Date;
+  password?: string;
+  confirmPassword?: string;
 }> { }
 
 export class SellerAccountCreatedEvent extends KafkaMessage<{

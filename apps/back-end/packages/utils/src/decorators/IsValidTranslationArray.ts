@@ -8,7 +8,7 @@ export function IsValidTranslationArray(
   requiredLanguages: string[] = [],
   validationOptions?: ValidationOptions
 ) {
-  return function (object: Object, propertyName: string) {
+  return function(object: Object, propertyName: string) {
     registerDecorator({
       name: "IsValidTranslationArray",
       target: object.constructor,
@@ -17,16 +17,27 @@ export function IsValidTranslationArray(
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          const langs = args.constraints[0] as string[];
+          const requiredLangs = args.constraints[0] as string[];
 
+          // Check if value is an array
           if (!Array.isArray(value)) return false;
 
-          if (value.every((v) => typeof v.langId === "string")) return false;
+          // Check if each element in the array has a valid langId
+          if (!value.every((v) => typeof v.langId === "string")) return false;
 
-          if (!langs.every((v) => !!value.find((e) => e.langId === v)))
-            return false;
+          // Ensure that all required languages are present in the array
+          const hasAllRequiredLangs = requiredLangs.every((lang) =>
+            value.some((v) => v.langId === lang)
+          );
 
-          return true;
+          return hasAllRequiredLangs;
+        },
+        defaultMessage(args: ValidationArguments) {
+          const requiredLangs = args.constraints[0] as string[];
+          return `${args.property
+            } must contain translations for the following languages: ${requiredLangs.join(
+              ", "
+            )}`;
         },
       },
     });
