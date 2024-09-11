@@ -62,6 +62,7 @@ import { ObjectId } from 'mongodb';
 import { SearchServicesInput } from './dto/search-services.input';
 import { EventBus } from '@nestjs/cqrs';
 import { ServiceCreatedEvent } from './events';
+import { ServiceService } from './service.service';
 
 enum weekdaysNum {
   su = 0,
@@ -76,7 +77,7 @@ enum weekdaysNum {
 @ObjectType()
 class ServicesCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
   Service,
-) {}
+) { }
 
 @InputType()
 export class TestUploadFile {
@@ -95,8 +96,10 @@ export class ServiceResolver {
     @Inject(SERVICES.SERVICES_SERIVCE.token)
     private readonly eventClient: ClientKafka,
 
+    private readonly serviceService: ServiceService,
+
     private readonly eventBus: EventBus,
-  ) {}
+  ) { }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -152,8 +155,8 @@ export class ServiceResolver {
       data:
         res.length > pagination.take
           ? res
-              .slice(0, res.length - 2)
-              .map((v) => this.formatService(v, userLang))
+            .slice(0, res.length - 2)
+            .map((v) => this.formatService(v, userLang))
           : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
       nextCursor: res.at(res.length - 1).id,
@@ -162,73 +165,12 @@ export class ServiceResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
-  async createService(
-    @Args('args') args: CreateServiceInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    const { ...rest } = args;
-    // TODO
-    // const servicePresenetations = await this.uploadService.uploadFiles(
-    //   presentations.map((v) => ({
-    //     file: {
-    //       stream: v.file.createReadStream(),
-    //       meta: {
-    //         name: v.file.filename,
-    //         mimetype: v.file.mimetype,
-    //       },
-    //     },
-    //     options: {
-    //       allowedMimtypes: [
-    //         ...this.uploadService.mimetypes.image.all,
-    //         ...this.uploadService.mimetypes.videos.all,
-    //       ],
-    //       maxSecDuration: 60 * 10 * 1000,
-    //     },
-    //   })),
-    // );
+  // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  async createService(@Args('args') args: CreateServiceInput) {
+    const result = await this.serviceService.createService(args);
 
-    const thumbnail = args.thumbnail.file;
-    const thumb = await this.uploadService.uploadFiles([
-      {
-        file: {
-          meta: {
-            mimetype: thumbnail.mimetype,
-            name: thumbnail.filename,
-          },
-          stream: thumbnail.createReadStream(),
-        },
-        options: {
-          allowedMimtypes: this.uploadService.mimetypes.image.all,
-          maxSizeKb: 10 * 1000, // <= 10MB
-        },
-      },
-    ]);
-
-    const res = await this.prisma.service.create({
-      data: {
-        type: 'hotel',
-        ...rest,
-        sellerId: user.id,
-        thumbnail: thumb[0].src,
-        extras: rest.extras.map((v) => ({
-          ...v,
-          id: new ObjectId().toHexString(),
-        })),
-        // TODO
-        // presentations: servicePresenetations.map((v) => ({
-        //   src: v.src,
-        //   type:
-        //     v.mimetype === FileTypeEnum.video
-        //       ? ServicePresentationType.vid
-        //       : ServicePresentationType.img,
-        // })),
-      },
-    });
-
-    this.eventBus.publish(new ServiceCreatedEvent(res, user));
-
-    return true;
+    if (result) return true;
+    return false;
   }
 
   @Query(() => ServiceSearchResponse)
@@ -583,14 +525,14 @@ export class ServiceResolver {
 
     const services = multipleServices
       ? await this.prisma.service.findMany({
-          where: {
-            id: {
-              in: servicesIds,
-            },
-            sellerId: firstService.sellerId,
-            type: serviceType,
+        where: {
+          id: {
+            in: servicesIds,
           },
-        })
+          sellerId: firstService.sellerId,
+          type: serviceType,
+        },
+      })
       : [firstService];
 
     const validServices = multipleServices
