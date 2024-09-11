@@ -5,7 +5,7 @@ import { Service } from './entities/service.entity';
 
 @Resolver(() => Service)
 export class AdminServiceResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   @Query(() => Service)
   adminGetAccountService(@Args('accountId') id: string) {
@@ -23,7 +23,6 @@ export class AdminServiceResolver {
         where: {
           id: args.id,
         },
-        //@ts-ignore TODO: UPDATE SERVICE
         data: args,
       });
 
