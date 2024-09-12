@@ -753,10 +753,10 @@ input CreateProductInput {
   title: [StringTranslationField!]!
   description: [StringTranslationField!]!
   categoryId: ID!
-  attributes: [ProductAttributeInput!]!
+  attributesIds: [ProductAttributeInput!]!
   stock: Int!
   discount: DiscountInput!
-  cashback: CashBackInput!
+  cashbackId: String!
   presentations: [Upload!]!
   thumbnail: String!
   price: Float!
@@ -783,12 +783,6 @@ input DiscountInput {
   amount: Int!
 }
 
-input CashBackInput {
-  units: Int!
-  amount: Int!
-  type: CashbackType!
-}
-
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
@@ -798,10 +792,10 @@ input UpdateProductInput {
   title: [StringTranslationField!]
   description: [StringTranslationField!]
   categoryId: ID
-  attributes: [ProductAttributeInput!]
+  attributesIds: [ProductAttributeInput!]
   stock: Int
   discount: DiscountInput
-  cashback: CashBackInput
+  cashbackId: String
   presentations: [Upload!]
   thumbnail: String
   price: Float
