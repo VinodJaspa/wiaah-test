@@ -34,6 +34,7 @@ import {
   ConfirmPasswordDoesNotMatchException,
   EmailAlreadyExistsException,
 } from './exceptions';
+import { AccountCreationFailedException } from './exceptions/accountCreationFailed.exception';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -57,10 +58,9 @@ export class AccountsResolver {
       lastName,
       password,
       birthDate,
-      gender,
-      phone,
     }: CreateAccountInput,
   ) {
+    // Check if the email already exists in the system
     const emailExists = await this.prisma.account.findUnique({
       where: {
         email,
@@ -68,45 +68,48 @@ export class AccountsResolver {
     });
 
     if (emailExists) {
-      throw new EmailAlreadyExistsException();
+      throw new EmailAlreadyExistsException(); // Custom exception
     }
 
+    // Check if confirmPassword matches password
     if (confirmPassword !== password) {
-      throw new ConfirmPasswordDoesNotMatchException();
+      throw new ConfirmPasswordDoesNotMatchException(); // Custom exception
     }
 
+    // Hash the password
     const hashedPassword = await this.accountsService.hashPassword(password);
 
-    const Sacc = await this.stripe.createConnectedAccount();
-    const Cacc = await this.stripe.createCustomerAccount();
-    const acc = await this.prisma.account.create({
-      data: {
-        stripeCustomerId: Cacc.id,
-        stripeId: Sacc.id,
-        email,
-        firstName,
-        lastName,
-        password: hashedPassword,
-        accountType: accountType,
-        birthDate: new Date(birthDate),
-        gender,
-        phone,
-      },
+    // Handle potential errors during Stripe account creation
+    // let Sacc, Cacc;
+    // try {
+    //   Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
+    //   Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
+    // } catch (error) {
+    //   throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
+    // }
+
+    // Create the account record in the database
+    const createdAccount = await this.accountsService.createAccountRecord({
+      email,
+      firstName,
+      lastName,
+      password: hashedPassword,
+      birthDate: new Date(birthDate),
+      accountType,
+      // gender,
+      // phone,
+      // stripeCustomerId: Cacc.id,
+      // stripeId: Sacc.id,
     });
 
-    this.eventsClient.emit(
-      KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated(accountType),
-      new NewAccountCreatedEvent({
-        email: acc.email,
-        id: acc.id,
-        username: '',
-        accountType: acc.accountType,
-        firstName: acc.firstName,
-        lastName: acc.lastName,
-        profession: acc.profession,
-        birthDate,
-      }),
-    );
+    if (!createdAccount) {
+      throw new AccountCreationFailedException(); // Handle possible failure during account creation
+    }
+
+    // Optionally emit an event for account creation
+    // The event should not carry sensitive data like password or confirmPassword
+    // (This is already handled in createAccountRecord)
+
     return true;
   }
 

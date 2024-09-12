@@ -28,17 +28,21 @@ export class AccountsService {
       const { email, firstName, lastName, password, accountType, birthDate } =
         createAccountInput;
 
+      // Hash the password if not already done
+      const hashedPassword = await this.hashPassword(password);
       const createdUser = await this.prisma.account.create({
         data: {
           email,
           firstName,
           lastName,
-          password,
+          password: hashedPassword,
           accountType,
-          birthDate: new Date(birthDate),
+          birthDate,
           ...createAccountInput,
         },
       });
+
+      //Emit Kafka event
       this.eventsClient.emit<string, NewAccountCreatedEvent>(
         KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated,
         new NewAccountCreatedEvent({
@@ -47,17 +51,21 @@ export class AccountsService {
           accountType: createdUser.accountType,
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
-          username: createdUser.firstName,
-          birthDate: new Date(birthDate).toISOString(),
+          username: createdUser.firstName, // Use a dedicated field for username if possible
+          birthDate: birthDate,
         }),
       );
+
       return createdUser;
     } catch (error) {
-      return null;
+      // Log the error for better visibility
+      console.error('Error creating account:', error);
+      // Optionally, throw a custom exception
+      throw new Error('Account creation failed');
     }
   }
-  hashPassword(password: string) {
-    return bcrypt.hash(password, 12);
+  async hashPassword(password: string) {
+    return await bcrypt.hash(password, 12);
   }
   async emailExists(email: string): Promise<boolean> {
     try {
@@ -79,24 +87,33 @@ export class AccountsService {
 
   async getByEmail(email: string) {
     try {
-      console.log('get by email');
       if (typeof email !== 'string')
         throw new BadRequestException('invalid email type');
-
-      console.log('getting all by email');
-      const res = [];
-      console.log('got all', { res });
 
       const account = await this.prisma.account.findUnique({
         where: {
           email,
         },
-        rejectOnNotFound(error) {
-          throw new NotFoundException(
-            'could not find an account with this email, consider registering a new account',
-          );
+      });
+      console.log('Account ' + JSON.stringify(account));
+
+      return account;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getById(id: string) {
+    try {
+      if (typeof id !== 'string')
+        throw new BadRequestException('invalid email type');
+
+      const account = await this.prisma.account.findUnique({
+        where: {
+          id,
         },
       });
+      console.log('Account ' + JSON.stringify(account));
 
       return account;
     } catch (error) {
