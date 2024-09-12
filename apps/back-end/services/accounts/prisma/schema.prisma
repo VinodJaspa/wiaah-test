@@ -24,7 +24,7 @@ model Account {
   photo                      String?
   phone                      String?
   password                   String
-  products                   Int?                     @default(0)
+  products                   String[]                
   sales                      Int?                     @default(0)
   online                     Boolean                  @default(false)
   lastActiveAt               DateTime                 @default(now())
