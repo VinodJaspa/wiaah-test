@@ -48,64 +48,24 @@ export class AuthService {
     this.registerationVerificationTokenValidDurationInMin = 30;
   }
 
-  async register(createAuthInput: RegisterDto): Promise<boolean> {
-    try {
-      const { email, firstName, lastName, accountType, password } =
-        createAuthInput;
-
-      const registerations = await this.getRegisterationsByEmail(email);
-      if (registerations.length > 0)
-        await this.removeRegisterationsByEmail(email);
-
-      // generate random verification code
-      const verificationCode = `${generateVerificationToken()}`;
-
-      // create registeration enitity to track verification email proccess
-      await this.prisma.registeration.create({
-        data: {
-          firstName,
-          lastName,
-          email,
-          expiresAt: AddToDate(new Date(), {}),
-          verificationCode,
-          password,
-          accountType,
-        },
-      });
-
-      this.eventsClient.emit<any, AccountRegisteredEvent>(
-        KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
-        new AccountRegisteredEvent({
-          firstName,
-          lastName,
-          email,
-          accountType,
-          verificationCode,
-        }),
-      );
-
-      return true;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   async simpleLogin(input: { email: string; password: string }) {
     try {
       const { email, password } = input;
 
       // Find the user by email
-      const registeration = await this.prisma.registeration.findUnique({
-        where: { email },
-        rejectOnNotFound: () => {
-          throw new BadRequestException('Invalid email');
-        },
+      const registeration: any = await new Promise((resolve, reject) => {
+        this.eventsClient
+          .send('get.account.by.email', {
+            value: { value: { input: { email: input.email } } },
+          })
+          .subscribe({
+            next: (account) => resolve(account),
+            error: (err) => reject(err),
+          });
       });
-
-      // Validate the password
       const isPasswordValid = await bcrypt.compare(
         password,
-        registeration.password,
+        registeration.results.data.password,
       );
       if (!isPasswordValid) {
         throw new BadRequestException('Invalid password');
