@@ -98,7 +98,7 @@ export class CreateProductInput {
   categoryId: string;
 
   @Field(() => [ProductAttributeInput])
-  attributes: ProductAttributeInput[];
+  attributesIds: ProductAttributeInput[];
 
   @Field((type) => Int)
   stock: number;
@@ -106,8 +106,8 @@ export class CreateProductInput {
   @Field((type) => DiscountInput)
   discount: DiscountInput;
 
-  @Field((type) => CashBackInput)
-  cashback: CashBackInput;
+  @Field((type) => String)
+  cashbackId: string;
 
   @Field((type) => [GraphQLUpload])
   presentations: Upload[];
