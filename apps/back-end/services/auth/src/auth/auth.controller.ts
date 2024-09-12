@@ -14,13 +14,13 @@ export class AuthController {
     @Payload() { value }: { value: NewAccountCreatedEvent },
   ) {
     console.log('registeration event auth', value);
-    await this.authService.register({
-      accountType: value.input.accountType as RegisterAccountType,
-      email: value.input.email,
-      firstName: value.input.firstName,
-      lastName: value.input.lastName,
-      birthDate: value.input.birthDate,
-      password: value.input.password,
-    });
+    // await this.authService.register({
+    //   accountType: value.input.accountType as RegisterAccountType,
+    //   email: value.input.email,
+    //   firstName: value.input.firstName,
+    //   lastName: value.input.lastName,
+    //   birthDate: value.input.birthDate,
+    //   password: value.input.password,
+    // });
   }
 }

@@ -41,14 +41,20 @@ type Registeration {
   accountInputData: AccountInputData!
 }
 
+type LoginResponse {
+  code: Int!
+  accessToken: String
+  message: String
+  success: Boolean!
+}
+
 type Query {
   getRegistrations: [Registeration!]!
 }
 
 type Mutation {
   changePassword(changePasswordInput: ChangePasswordInput!): Boolean!
-  register(RegisterInput: RegisterDto!): GqlStatusResponse!
-  login(LoginInput: LoginDto!): GqlStatusResponse!
+  login(LoginInput: LoginDto!): LoginResponse!
   verifyLoginOTP(args: LoginWithOtpInput!): GqlStatusResponse!
   verifyEmail(EmailVerificationInput: VerifyEmailDto!): Boolean!
   resendRegisterationCode: Boolean!
@@ -62,20 +68,6 @@ input ChangePasswordInput {
   currentPassword: String!
   newPassword: String!
   confirmNewPassword: String!
-}
-
-input RegisterDto {
-  firstName: String!
-  lastName: String!
-  email: String!
-  birthDate: String!
-  accountType: RegisterAccountType!
-  password: String!
-}
-
-enum RegisterAccountType {
-  seller
-  buyer
 }
 
 input LoginDto {

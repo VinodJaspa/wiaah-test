@@ -41,6 +41,7 @@ import {
   GetAdminAccountByEmailMessageReply,
   GetAdminAccountByEmailMesssage,
 } from 'nest-dto';
+import { LoginResponse } from './dto/login-respnose.input';
 
 @Resolver(() => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -64,67 +65,32 @@ export class AuthResolver implements OnModuleInit {
     this.commandBus.execute(new ChangePasswordCommand(input, user));
   }
 
-  @Mutation(() => GqlStatusResponse)
-  async register(
-    @Args('RegisterInput') registerInput: RegisterDto,
-    @Context() ctx: any,
-  ): Promise<GqlStatusResponse> {
-    if (typeof this.cookiesKey !== 'string')
-      return { success: false, code: ResponseCodes.InternalServiceError };
-
-    await this.authService.register({
-      firstName: registerInput.firstName,
-      lastName: registerInput.lastName,
-      email: registerInput.email,
-      accountType: registerInput.accountType,
-      password: await bcrypt.hash(registerInput.password, 10),
-      birthDate: registerInput.birthDate,
-    });
-
-    return {
-      success: true,
-      code: ResponseCodes.TokenInjected,
-    };
-  }
-
-  @Mutation(() => GqlStatusResponse)
+  @Mutation(() => LoginResponse)
   async login(
     @Args('LoginInput') loginInput: LoginDto,
     @Context() ctx: any,
-  ): Promise<GqlStatusResponse> {
-    // Validate the presence of cookiesKey
-    if (typeof this.cookiesKey !== 'string') {
-      return {
-        success: false,
-        code: ResponseCodes.InternalServiceError,
-        message: 'Invalid cookies configuration',
-      };
-    }
-
+  ): Promise<LoginResponse> {
     try {
       const { email, password } = loginInput;
 
       // Authenticate user
       const data = await this.authService.simpleLogin({ email, password });
 
-      // Set the JWT in cookies if possible
-      if (ctx?.res?.cookie) {
-        ctx.res.cookie(this.cookiesKey, data.accessToken, {
-          secure: true,
-          httpOnly: true,
-          sameSite: 'None',
-          domain: process.env.CLIENT_DOMAIN,
-        });
-      }
+      // Set the JWT in an HttpOnly, Secure cookie
+      ctx.res.cookie('authToken', data.accessToken, {
+        secure: false, // Only secure in production
+        httpOnly: true, // Prevent client-side JavaScript from accessing the token
+        sameSite: 'None', // Adjust based on cross-origin requirements
+        path: '/',
+      });
 
-      // Return success response with user data
+      // Return success response without the token in the body (it's already in the cookie)
       return {
         success: true,
         code: ResponseCodes.TokenInjected,
-        message: 'Login successful',
+        accessToken: data.accessToken as string,
       };
     } catch (error) {
-      // Return a failure response with error message
       return {
         success: false,
         code: ResponseCodes.InternalServiceError,
