@@ -6,6 +6,7 @@ function makeKafkaDynamicEvent(event: string, regex: boolean = false) {
 export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
+    findAccount: "find.account",
     accountCreated: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`account.created.${type}`, regex),
     accountDeleted: "account.deleted",
@@ -250,6 +251,7 @@ export const KAFKA_MESSAGES = {
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
     getAccountById: "get.account.by.id",
+    addProductToAccount: "add.product.to.account",
     hasStripeId: "user.has.stripe.id",
     getAdminAccountByEmail: "account.admin.getby.email",
   },
