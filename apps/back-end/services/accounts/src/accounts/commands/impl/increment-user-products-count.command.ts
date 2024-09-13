@@ -1,3 +1,3 @@
 export class IncreamentUserProductsCount {
-  constructor(public userId: string, public amount: number) {}
+  constructor(public userId: string, public products: string) { }
 }
