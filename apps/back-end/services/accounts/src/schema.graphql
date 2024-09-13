@@ -183,7 +183,7 @@ input GetFilteredSellersAccountsInput {
   pagination: GqlPaginationInput!
   name: String
   id: String
-  products: Int
+  products: [String!]
   sales: Int
   email: String
   status: AccountStatus
