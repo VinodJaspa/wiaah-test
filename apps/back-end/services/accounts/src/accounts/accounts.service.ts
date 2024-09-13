@@ -106,11 +106,11 @@ export class AccountsService {
   async getById(id: string) {
     try {
       if (typeof id !== 'string')
-        throw new BadRequestException('invalid email type');
+        throw new BadRequestException('invalid id type');
 
       const account = await this.prisma.account.findUnique({
         where: {
-          id,
+          id: id,
         },
       });
       console.log('Account ' + JSON.stringify(account));
@@ -165,7 +165,7 @@ export class AccountsService {
     if (args.products)
       filters.push({
         products: {
-          gte: args.products,
+          has: args.products[0],
         },
       });
 
