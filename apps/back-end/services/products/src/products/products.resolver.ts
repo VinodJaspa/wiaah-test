@@ -435,7 +435,7 @@ export class ProductsResolver {
     // @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     const user = {
-      id: '669b4f27fc3283055b071ba4', // MongoDB ID
+      id: '66e42be211bc44f6d91d3865', // MongoDB ID
       shopId: null, // Since shopId is not provided, assuming it's null
       stripeId: 'acct_1PeW7VIvCtoLKD3l', // Provided Stripe ID
       stripeCustomerId: 'cus_QVXBv7WdaJovVe', // Provided Stripe Customer ID
@@ -604,5 +604,13 @@ export class ProductsResolver {
       .map((attribute) =>
         this.productAttributeService.formatProductAttribute(attribute, langId),
       );
+  }
+
+  async onModuleInit() {
+    this.eventClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
+    );
+
+    this.eventClient.subscribeToResponseOf('add.product.to.account');
   }
 }
