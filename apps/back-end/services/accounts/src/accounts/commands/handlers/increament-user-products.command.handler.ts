@@ -10,13 +10,13 @@ export class IncreamentUserProductsCountHandler
   constructor(private readonly repo: AccountRepository) { }
 
   async execute({
-    amount,
+    products,
     userId,
   }: IncreamentUserProductsCount): Promise<Account> {
+    const account = await this.repo.findAccount(userId); // Assuming findOne fetches account by userId
+    const updatedProducts = [...account.products, ...products]; // assuming `products` is an array of strings
     const res = await this.repo.updateAccount(userId, {
-      products: {
-        increment: amount,
-      },
+      products: updatedProducts,
     });
     return res;
   }
