@@ -50,7 +50,7 @@ export class ProductsService {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
     private readonly uploadService: UploadService,
-  ) {}
+  ) { }
 
   private readonly maxRate: number = 5;
 
@@ -58,16 +58,30 @@ export class ProductsService {
     createProductInput: CreateProductInput,
     user: AuthorizationDecodedUser,
   ) {
-    const isExternalSeller = await this.isExternalSeller(user.id);
+    // const isExternalSeller = await this.isExternalSeller(user.id);
+    //
+    // if (
+    //   isExternalSeller &&
+    //   typeof createProductInput.external_link !== 'string'
+    // )
+    //   throw new BadRequestException('external link is required');
+    //
+    // const { shopId } = user;
+    //
 
-    if (
-      isExternalSeller &&
-      typeof createProductInput.external_link !== 'string'
-    )
-      throw new BadRequestException('external link is required');
-
-    const { shopId } = user;
-
+    const checkAccount: any = await new Promise((resolve, reject) => {
+      this.eventClient
+        .send(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById, {
+          value: { value: { accountId: user.id } },
+        })
+        .subscribe({
+          next: (account) => resolve(account),
+          error: (err) => reject(err),
+        });
+    });
+    if (!checkAccount) {
+      throw new Error('User not found');
+    }
     const res = await this.uploadService.uploadFiles(
       createProductInput.presentations.map((v) => ({
         file: {
@@ -111,10 +125,17 @@ export class ProductsService {
       },
     });
 
-    this.eventClient.emit<string, NewProductCreatedEvent>(
-      KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated,
-      new NewProductCreatedEvent({ id: product.id, ownerId: user.id, shopId }),
-    );
+    // Add ProductId to Account
+    await new Promise((resolve, reject) => {
+      this.eventClient
+        .send('add.product.to.account', {
+          value: { value: { productId: product.id, sellerId: user.id } },
+        })
+        .subscribe({
+          next: (account) => resolve(account),
+          error: (err) => reject(err),
+        });
+    });
 
     return product;
   }
@@ -369,8 +390,8 @@ export class ProductsService {
             filters.stockStatus === 'available'
               ? { gt: 0 }
               : filters.stockStatus === 'unavailable'
-              ? 0
-              : undefined,
+                ? 0
+                : undefined,
         });
       }
       if (filters.rating) {
@@ -407,7 +428,7 @@ export class ProductsService {
         total: totalSearched,
         hasMore: products.length >= take,
       };
-    } catch (error) {}
+    } catch (error) { }
   }
 
   async isProductReviewable(productId: string, reviewerId: string) {
