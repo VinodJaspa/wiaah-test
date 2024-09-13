@@ -168,39 +168,74 @@ export class AccountsController implements OnModuleInit {
     }
   }
 
-  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.addProductToAccount)
+  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById)
+  async getAccountById(@Payload() payload: { value: { accountId: string } }) {
+    console.log(
+      'GET ACCOUNT BY ID Payload =======> ' + JSON.stringify(payload),
+    );
+    const { accountId } = payload.value;
+
+    console.log('GET ACCOUNT BY ID ACCOUNTID =======> ' + accountId);
+    try {
+      const accountExists = await this.accountService.getById(accountId);
+      if (!accountExists) {
+        throw new Error('Account for this ID was not found');
+      }
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  @MessagePattern('add.product.to.account')
   async addProductToAccount(
     @Payload() payload: { value: { sellerId: string; productId: string } },
   ) {
     const { sellerId, productId } = payload.value;
-    try {
-      // Step 1: Check if the account exists
-      const accountExists = await this.accountService.getById(sellerId);
-      if (!accountExists) {
-        throw new Error('Account for this ID was not found');
-      }
 
-      // Step 2: Fetch the current product IDs for the account
+    // Log payload details for debugging
+    console.log(
+      `Received payload for seller: ${sellerId}, product: ${productId}`,
+    );
+
+    try {
+      // Step 1: Fetch the current products for the account
       const account = await this.prisma.account.findUnique({
         where: { id: sellerId },
-        select: { products: true }, // Fetch only product IDs
+        select: { products: true }, // Only fetch the products field
       });
 
-      // Step 3: Append the new productId to the existing productIds array
-      const updatedProducts = account?.products
-        ? [...account.products, productId]
-        : [productId];
+      if (!account) {
+        throw new Error(`Account with ID ${sellerId} not found`);
+      }
 
-      // Step 4: Update the account with the new product list
+      const currentProducts = account.products ?? [];
+      console.log(`Current products for account ${sellerId}:`, currentProducts);
+
+      // Step 2: Append the new product ID to the list if it's not already present
+      if (currentProducts.includes(productId)) {
+        console.log(
+          `Product ${productId} is already in the account's products list`,
+        );
+        return { message: 'Product already exists in account' };
+      }
+
+      const updatedProducts = [...currentProducts, productId];
+      console.log(
+        `Updated products list for account ${sellerId}:`,
+        updatedProducts,
+      );
+
+      // Step 3: Update the account with the new product list
       await this.prisma.account.update({
         where: { id: sellerId },
         data: { products: updatedProducts },
       });
 
-      // Optionally, return a success response or log the update
       return { message: 'Product successfully added to account' };
     } catch (error) {
-      // Handle error properly with detailed error messages
+      // Enhanced error logging and rethrowing for better traceability
+      console.error(`Error adding product to account: ${error.message}`);
       throw new Error(`Failed to add product to account: ${error.message}`);
     }
   }
@@ -328,7 +363,9 @@ export class AccountsController implements OnModuleInit {
       input: { ownerId },
     } = value;
 
-    this.commandBus.execute(new IncreamentUserProductsCount(ownerId, 1));
+    this.commandBus.execute(
+      new IncreamentUserProductsCount(ownerId, value.input.id),
+    );
   }
 
   @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
@@ -344,5 +381,7 @@ export class AccountsController implements OnModuleInit {
 
   async onModuleInit() {
     await this.eventsClient.connect();
+
+    this.eventsClient.subscribeToResponseOf('add.product.to.account');
   }
 }
