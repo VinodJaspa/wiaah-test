@@ -1,43 +1,62 @@
+import { ServiceCancelationPolicy } from '@entities';
+import { InputType, Field, Float, ID, Int } from '@nestjs/graphql';
+import { } from '@restaurant/entities';
 import {
-  ServiceLocationInput,
-  ServiceMetaInfoTranslationInput,
-  ServicePolicyTranslatedInput,
-  ServicePresentationInput,
-} from '@dto';
-import { InputType, Int, Field, ID } from '@nestjs/graphql';
-import { ServiceStatus } from 'prismaClient';
-import { ServicePresentationsLength, TranslationsInput } from '@decorators';
-import { ServiceContactInput } from '@hotel/dto';
-import { RestaurantMenuInput } from './create-restaurant-menu.input';
-
+  ServiceStatus,
+  ServicePresentationType,
+  ServiceTranslationPolicies,
+  ServiceMetaTranslationInfo,
+  ServicePaymentMethods,
+  ServiceContact,
+  RestaurantMenu,
+  Location,
+} from 'prismaClient';
 @InputType()
 export class CreateRestaurantInput {
-  @Field(() => ServiceContactInput)
-  contact: ServiceContactInput;
+  @Field(() => ID)
+  id: string;
 
-  @Field(() => Int)
+  @Field(() => String)
+  ownerId: string;
+
+  @Field(() => Int, { defaultValue: 0 })
   vat: number;
 
-  @Field(() => ServiceStatus, { nullable: true })
+  @Field(() => ServiceStatus, {
+    nullable: true,
+    defaultValue: ServiceStatus.inActive,
+  })
   status?: ServiceStatus;
 
-  @Field(() => ServiceLocationInput)
-  location: ServiceLocationInput;
+  @Field(() => [])
+  presentations: ServicePresentationType[];
 
-  @Field(() => [ServicePresentationInput])
-  @ServicePresentationsLength()
-  presentations: ServicePresentationInput[];
+  @Field(() => [])
+  policies: ServiceTranslationPolicies[];
 
-  @Field(() => [ServicePolicyTranslatedInput])
-  @TranslationsInput()
-  policies: ServicePolicyTranslatedInput[];
+  @Field(() => [])
+  serviceMetaInfo: ServiceMetaTranslationInfo[];
 
-  @Field(() => [ServiceMetaInfoTranslationInput])
-  @TranslationsInput()
-  serviceMetaInfo: ServiceMetaInfoTranslationInput[];
+  @Field(() => [ServicePaymentMethods])
+  payment_methods: ServicePaymentMethods[];
 
-  @Field(() => [RestaurantMenuInput])
-  menus: RestaurantMenuInput[];
+  @Field(() => [])
+  cancelationPolicies: ServiceCancelationPolicy[];
+
+  @Field()
+  contact: ServiceContact;
+
+  @Field(() => Location)
+  location: Location;
+
+  @Field(() => Float, { defaultValue: 0 })
+  lowest_price: number;
+
+  @Field(() => Float, { defaultValue: 0 })
+  highest_price: number;
+
+  @Field(() => [])
+  menus: RestaurantMenu[];
 
   @Field(() => ID)
   establishmentTypeId: string;
@@ -50,4 +69,10 @@ export class CreateRestaurantInput {
 
   @Field(() => Int)
   michelin_guide_stars: number;
+
+  @Field(() => Float, { defaultValue: 0 })
+  rating: number;
+
+  @Field(() => Int, { defaultValue: 0 })
+  reviews: number;
 }

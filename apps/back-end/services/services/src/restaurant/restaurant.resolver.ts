@@ -10,11 +10,11 @@ import {
 } from '@nestjs/graphql';
 import { Restaurant } from '@restaurant';
 import {
-  CreateRestaurantInput,
   UpdateRestaurantInput,
   DeleteRestaurantInput,
   GetRestaurantInput,
   SearchFilteredRestaurantInput,
+  CreateRestaurantInput,
 } from '@restaurant';
 import {
   accountType,
@@ -44,14 +44,14 @@ export class RestaurantResolver {
   constructor(
     private readonly restaurantService: RestaurantService,
     private readonly queryBus: QueryBus,
-  ) {}
+  ) { }
 
   @Query(() => [Restaurant])
   getRestaurants() {
     return this.restaurantService.getRestaurants();
   }
 
-  @Query(() => Restaurant)
+  @Query(() => RestaurantService)
   getRestaurant(
     @Args('getRestaurantArgs') input: GetRestaurantInput,
     @GetLang() lang: UserPreferedLang,
@@ -59,14 +59,14 @@ export class RestaurantResolver {
     return this.restaurantService.getRestaurantById(input, lang);
   }
 
-  @Mutation(() => Restaurant)
-  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  @Mutation(() => RestaurantService)
+  // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createRestaurantService(
     @Args('createRestaurantArgs') args: CreateRestaurantInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @GetLang() lang: UserPreferedLang,
-  ): Promise<Restaurant> {
-    return this.restaurantService.createRestaurant(args, user.id, lang);
+    // @GqlCurrentUser() user: AuthorizationDecodedUser,
+    // @GetLang() lang: UserPreferedLang,
+  ): Promise<RestaurantService> {
+    return this.restaurantService.createRestaurant(args);
   }
 
   @Mutation(() => Restaurant)

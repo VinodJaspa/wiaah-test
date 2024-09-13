@@ -14,6 +14,7 @@ import { ErrorMessages } from '@utils';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { PrismaService } from 'prismaService';
 import { ServiceModule } from './service/service.module';
+import { HotelModule } from './hotel';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 import { InsuranceModule } from './insurance/insurance.module';
 import { ServiceDiscoveryModule } from './service-discovery/service-discovery.module';
@@ -21,6 +22,7 @@ import { ServiceDiscountModule } from './service-discount/service-discount.modul
 import { ServiceCashbackModule } from './service-cashback/service-cashback.module';
 import { BookServiceModule } from '@book-service/book-service.module';
 import { ServiceFiltersModule } from './service-filters/service-filters.module';
+import { RestaurantModule } from '@restaurant';
 
 @Global()
 @Module({
@@ -37,14 +39,14 @@ import { ServiceFiltersModule } from './service-filters/service-filters.module';
   exports: [ElasticsearchModule],
   providers: [],
 })
-class GlobalElasticsearchModule {}
+class GlobalElasticsearchModule { }
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class GlobalPrismaService {}
+export class GlobalPrismaService { }
 
 @Module({
   imports: [
@@ -68,6 +70,8 @@ export class GlobalPrismaService {}
     GlobalPrismaService,
     CategoryModule,
     BookServiceModule,
+    HotelModule,
+    RestaurantModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }

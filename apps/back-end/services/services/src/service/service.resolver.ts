@@ -40,6 +40,7 @@ import {
   KafkaMessageHandler,
   SERVICES,
   UserPreferedLang,
+  GqlStatusResponse,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { UploadService } from '@wiaah/upload';
@@ -164,13 +165,28 @@ export class ServiceResolver {
     };
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => GqlStatusResponse)
   // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
-  async createService(@Args('args') args: CreateServiceInput) {
-    const result = await this.serviceService.createService(args);
+  async createService(
+    @Args('args') args: CreateServiceInput,
+  ): Promise<GqlStatusResponse> {
+    try {
+      const result = await this.serviceService.createService(args);
 
-    if (result) return true;
-    return false;
+      if (result) {
+        return {
+          code: 1,
+          success: true,
+        };
+      }
+    } catch (error) {
+      // Handle the error appropriately
+      return {
+        code: 4,
+        success: false,
+        message: error,
+      };
+    }
   }
 
   @Query(() => ServiceSearchResponse)

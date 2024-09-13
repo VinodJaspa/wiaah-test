@@ -12,11 +12,11 @@ import {
   CreateRestaurantEstablishmentTypeInput,
   CreateRestaurantCuisinesTypeInput,
   CreateRestaurantSettingAndAmbianceInput,
-  CreateRestaurantInput,
   RestaurantEstablishmentType,
   RestaurantCuisinesType,
   RestaurantSettingAndAmbiance,
   DeleteRestaurantInput,
+  CreateRestaurantInput,
 } from '@restaurant';
 import { v4 as uuid } from 'uuid';
 import {
@@ -45,7 +45,7 @@ export class RestaurantService {
     private readonly ownerShipService: ServiceOwnershipService,
     @Inject(ErrorHandlingService)
     private readonly errorHandlingService: ErrorHandlingTypedService,
-  ) {}
+  ) { }
 
   getRestaurants() {
     return this.prisma.restaurantService.findMany();
@@ -53,19 +53,29 @@ export class RestaurantService {
 
   async createRestaurant(
     input: CreateRestaurantInput,
-    userId: string,
-    langId: UserPreferedLang = 'en',
-  ): Promise<Restaurant> {
-    await this.checkCreatePremissions(userId);
+    // userId: string,
+    // langId: UserPreferedLang = 'en',
+  ): Promise<RestaurantService> {
+    // await this.checkCreatePremissions(userId);
+    const restaurant = await this.prisma.restaurantService.findUnique({
+      where: { id: input.id },
+      include: {
+        menus: {
+          include: {
+            dishs: true,
+          },
+        },
+      },
+    });
     try {
-      const lowest_price = input.menus.reduce((acc, curr) => {
+      const lowest_price = restaurant.menus.reduce((acc, curr) => {
         const lowestDishPrice = curr.dishs.reduce((acc, curr) => {
           return curr.price < acc ? curr.price : acc;
         }, 0);
         return lowestDishPrice < acc ? lowestDishPrice : acc;
       }, 0);
 
-      const highest_price = input.menus.reduce((acc, curr) => {
+      const highest_price = restaurant.menus.reduce((acc, curr) => {
         const highestDishPrice = curr.dishs.reduce((acc, curr) => {
           return curr.price > acc ? curr.price : acc;
         }, 0);
@@ -74,13 +84,22 @@ export class RestaurantService {
 
       const created = await this.prisma.restaurantService.create({
         data: {
-          ownerId: userId,
-          ...input,
+          ownerId: input.ownerId,
+          contact: input.contact,
+          vat: input.vat,
+          location: input.location,
+          policies: input.policies,
+          presentations: input.presentations,
+          serviceMetaInfo: input.serviceMetaInfo,
+          establishmentTypeId: '44',
+          setting_and_ambianceId: input.setting_and_ambianceId,
+          michelin_guide_stars: input.michelin_guide_stars,
+          cuisinesTypeId: '543',
           highest_price,
           lowest_price,
           menus: {
             createMany: {
-              data: input.menus.map((v) => ({
+              data: restaurant.menus.map((v) => ({
                 id: uuid(),
                 dishs: v.dishs.map((v) => ({
                   id: uuid(),
@@ -91,19 +110,13 @@ export class RestaurantService {
             },
           },
         },
-        include: {
-          menus: {
-            include: {
-              dishs: true,
-            },
-          },
-        },
       });
       await this.ownerShipService.createRestaurantServiceOwnership({
-        ownerId: userId,
+        ownerId: 'lj43',
         serviceId: created.id,
       });
-      return this.formatRestaurant(created, langId);
+      return created;
+      // return this.formatRestaurant(created, '432');
     } catch (error) {
       console.log(error);
       throw new DBErrorException('error creating restaurant service');
@@ -147,22 +160,22 @@ export class RestaurantService {
 
     const lowest_price = all
       ? all.reduce((acc, curr) => {
-          const dishs = curr.dishs as RestaurantDish[];
-          const lowestDishPrice = dishs.reduce((acc, curr) => {
-            return curr.price < acc ? curr.price : acc;
-          }, 0);
-          return lowestDishPrice < acc ? lowestDishPrice : acc;
-        }, 0)
+        const dishs = curr.dishs as RestaurantDish[];
+        const lowestDishPrice = dishs.reduce((acc, curr) => {
+          return curr.price < acc ? curr.price : acc;
+        }, 0);
+        return lowestDishPrice < acc ? lowestDishPrice : acc;
+      }, 0)
       : null;
 
     const highest_price = all
       ? all.reduce((acc, curr) => {
-          const dishs = curr.dishs as RestaurantDish[];
-          const highestDishPrice = dishs.reduce((acc, curr) => {
-            return curr.price > acc ? curr.price : acc;
-          }, 0);
-          return highestDishPrice > acc ? highestDishPrice : acc;
-        }, 0)
+        const dishs = curr.dishs as RestaurantDish[];
+        const highestDishPrice = dishs.reduce((acc, curr) => {
+          return curr.price > acc ? curr.price : acc;
+        }, 0);
+        return highestDishPrice > acc ? highestDishPrice : acc;
+      }, 0)
       : null;
 
     try {
@@ -193,7 +206,7 @@ export class RestaurantService {
       const fn = this.formatRestaurant;
 
       return this.formatRestaurant(res as Parameters<typeof fn>[0], langId);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   async deleteRestaurant(
@@ -469,7 +482,7 @@ export class RestaurantService {
       ...input,
       serviceMetaInfo: getTranslatedResource({
         langId: langId,
-        resource: input.serviceMetaInfo,
+        value: input.serviceMetaInfo,
       }),
       policies: getTranslatedResource({
         langId: langId,

@@ -13,8 +13,8 @@ export class GetFilteredSellersAccountsInput {
   @Field(() => String, { nullable: true })
   id?: string;
 
-  @Field(() => Int, { nullable: true })
-  products?: number;
+  @Field(() => [String], { nullable: true })
+  products?: string[];
 
   @Field(() => Int, { nullable: true })
   sales?: number;

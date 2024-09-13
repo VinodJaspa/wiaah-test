@@ -193,11 +193,11 @@ export class CreateServiceInput {
   sellerId: string;
 
   @Field(() => [TranslationTextInput])
-  @IsValidTranslationArray()
+  @IsValidTranslationArray() // Custom validation to ensure valid translation array
   name: TranslationTextInput[];
 
   @Field(() => [TranslationTextInput])
-  @IsValidTranslationArray()
+  @IsValidTranslationArray() // Custom validation to ensure valid translation array
   description: TranslationTextInput[];
 
   @Field(() => [ServicePolicyTranslatedInput])
@@ -207,15 +207,14 @@ export class CreateServiceInput {
   cancelable: boolean;
 
   @Field(() => CancelationType, { nullable: true })
-  @FieldRequired('cancelable', true)
-  cancelationPolicy: CancelationType;
+  @FieldRequired('cancelable', true) // Conditional field required based on 'cancelable'
+  cancelationPolicy?: CancelationType; // Made optional
 
   @Field(() => Float)
   @Max(SERVICE_MAX_VAT_PERCENT)
   @Min(SERVICE_MIN_VAT_PERCENT)
   vat: number;
 
-  // uploaded image id
   @Field(() => String)
   thumbnail: string;
 
@@ -227,152 +226,146 @@ export class CreateServiceInput {
 
   // Hotel room & rental
   @Field(() => [TranslationTextInput], { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
-  @IsValidTranslationArray()
-  popularAmenities: TranslationTextInput[];
-
-  // @Field(() => [TranslationTextInput], { nullable: true })
-  // @IsValidTranslationArray()
-  // @FieldRequired('type', ServiceType.hotel)
-  // includedServices: TranslationTextInput[];
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
+  @IsValidTranslationArray() // Custom validation to ensure valid translation array
+  popularAmenities?: TranslationTextInput[];
 
   @Field(() => [ServiceExtraInput], { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
-  extras: ServiceExtraInput[];
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
+  extras?: ServiceExtraInput[];
 
   @Field(() => [TranslationTextInput], { nullable: true })
-  @IsValidTranslationArray()
-  @FieldRequired('type', ServiceType.hotel)
-  includedAmenities: TranslationTextInput[];
+  @IsValidTranslationArray() // Custom validation to ensure valid translation array
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
+  includedAmenities?: TranslationTextInput[];
 
   @Field(() => Boolean, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   dailyPrice?: boolean;
 
   @Field(() => ServiceDailyPricesInput, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   dailyPrices?: ServiceDailyPricesInput;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   beds?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   bathrooms?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   num_of_rooms?: number;
 
   @Field(() => ServicePropertyMeasurementsInput, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   measurements?: ServicePropertyMeasurementsInput;
 
   @Field(() => [Adaptation], { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
-  adaptedFor: Adaptation[];
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
+  adaptedFor?: Adaptation[];
 
   @Field(() => [Restriction], { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
-  restriction: Restriction[];
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
+  restriction?: Restriction[];
 
   @Field(() => Boolean, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   deposit?: boolean;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('deposit', true)
+  @FieldRequired('deposit', true) // Required if 'deposit' is true
   depositAmount?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel) // Required if service type is 'hotel'
   units?: number;
 
-  // rental only
-
+  // Rental specific fields
   @Field(() => RentalTypeOfPlace, { nullable: true })
-  @FieldRequired('type', ServiceType.holiday_rentals)
+  @FieldRequired('type', ServiceType.holiday_rentals) // Required if service type is 'holiday_rentals'
   typeOfPlace?: RentalTypeOfPlace;
 
   @Field(() => RentalPropertyType, { nullable: true })
-  @FieldRequired('type', ServiceType.holiday_rentals)
+  @FieldRequired('type', ServiceType.holiday_rentals) // Required if service type is 'holiday_rentals'
   propertyType?: RentalPropertyType;
 
   @Field(() => Float, { nullable: true })
   cleaningFee?: number;
 
-  // vehicle
+  // Vehicle specific fields
   @Field(() => String, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   brand?: string;
 
   @Field(() => String, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   model?: string;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   seats?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   windows?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   maxSpeedInKm?: number;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   lugaggeCapacity?: number;
 
   @Field(() => Boolean, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   gpsAvailable?: boolean;
 
   @Field(() => Boolean, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   airCondition?: boolean;
 
   @Field(() => String, { nullable: true })
-  @FieldRequired('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle) // Required if service type is 'vehicle'
   vehicleCategoryId?: string;
 
-  // beauty center
+  // Beauty center specific fields
   @Field(() => ID, { nullable: true })
-  @FieldRequired('type', ServiceType.beauty_center)
+  @FieldRequired('type', ServiceType.beauty_center) // Required if service type is 'beauty_center'
   treatmentCategoryId?: string;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.beauty_center)
+  @FieldRequired('type', ServiceType.beauty_center) // Required if service type is 'beauty_center'
   duration?: number;
 
-  // health center
+  // Health center specific fields
   @Field(() => ID, { nullable: true })
-  @FieldRequired('type', ServiceType.health_center)
+  @FieldRequired('type', ServiceType.health_center) // Required if service type is 'health_center'
   specialityId?: string;
 
   @Field(() => [HealthCenterDoctorSpeakingLanguage])
-  @FieldRequired('type', ServiceType.health_center)
+  @FieldRequired('type', ServiceType.health_center) // Required if service type is 'health_center'
   speakingLanguages: HealthCenterDoctorSpeakingLanguage[];
 
   @Field(() => [String], { nullable: true })
-  @FieldRequired('type', [ServiceType.health_center])
+  @FieldRequired('type', ServiceType.health_center) // Required if service type is 'health_center'
   availableAppointments?: Date[];
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', [ServiceType.health_center])
+  @FieldRequired('type', ServiceType.health_center) // Required if service type is 'health_center'
   sessionDurationMins: number;
 
-  // restaurant
+  // Restaurant specific fields
   @Field(() => [TranslationTextArrayInput], { nullable: true })
-  @IsValidTranslationArray()
-  @FieldRequired('type', ServiceType.restaurant)
+  @IsValidTranslationArray() // Custom validation to ensure valid translation array
+  @FieldRequired('type', ServiceType.restaurant) // Required if service type is 'restaurant'
   ingredients?: TranslationTextArrayInput[];
 
   @Field(() => RestaurantDishType, { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant) // Required if service type is 'restaurant'
   menuType?: RestaurantDishType;
 
   @Field(() => Float)

@@ -22,6 +22,12 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
+type GqlStatusResponse {
+  code: Int!
+  message: String
+  success: Boolean!
+}
+
 type ServicePresentation {
   type: ServicePresentationType!
   src: String!
@@ -395,6 +401,45 @@ type Dish {
   menu: RestaurantMenu!
 }
 
+type Restaurant {
+  owner: Account!
+  contact: ServiceContact!
+  workingHours: ServiceWorkingSchedule
+  id: ID!
+  ownerId: ID!
+  vat: Int!
+  status: ServiceStatus!
+  location: ServiceLocation!
+  presentations: [ServicePresentation!]!
+  policies: [ServicePolicy!]!
+  rating: Float!
+  reviews: Int!
+  cancelationPolicies: [ServiceCancelationPolicy!]!
+  serviceMetaInfo: ServiceMetaInfo!
+  payment_methods: [ServicePaymentMethod!]!
+  menus: [RestaurantMenu!]!
+  lowest_price: Float!
+  highest_price: Float!
+  setting_and_ambianceId: ID!
+  establishmentTypeId: ID!
+  cuisinesTypeId: ID!
+  michelin_guide_stars: Int!
+}
+
+enum ServiceStatus {
+  inActive
+  active
+  suspended
+}
+
+enum ServicePaymentMethod {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
 type Insurance {
   id: ID!
   bookId: ID!
@@ -476,20 +521,6 @@ type HealthCenter {
   payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   doctors: [Doctor!]!
-}
-
-enum ServiceStatus {
-  inActive
-  active
-  suspended
-}
-
-enum ServicePaymentMethod {
-  credit_card
-  visa
-  mastercard
-  check
-  cash
 }
 
 type VehicleProperties {
@@ -664,6 +695,12 @@ type Query {
   adminGetAccountBookingHistory(args: GetBookingsHistoryInput!, accountId: String!, accountType: String!): [BookedService!]!
   getBookingHistory(args: GetBookingsHistoryInput!): [BookedService!]!
   adminGetBookings(args: AdminGetBookingsInput!): [BookedService!]!
+  getHotels: [Hotel!]!
+  getHotelService(getHotelServiceArgs: GetHotelServiceArgs!): Hotel!
+  searchHotelRooms(searchHotelRoomsArgs: SearchHotelRoomLocationInput!): [HotelRoom!]!
+  getRestaurants: [Restaurant!]!
+  getRestaurant(getRestaurantArgs: GetRestaurantInput!): Restaurant!
+  searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
 }
 
 input GqlCursorPaginationInput {
@@ -777,9 +814,42 @@ input AdminGetBookingsInput {
   pagination: GqlPaginationInput!
 }
 
+input GetHotelServiceArgs {
+  id: ID!
+}
+
+input SearchHotelRoomLocationInput {
+  pagination: GqlPaginationInput
+  query: String
+  property_type: String
+  num_of_rooms: Int
+  num_of_beds: Int
+  hotel_class: Int
+  rating: Int
+  minPrice: Float
+  maxPrice: Float
+}
+
+input GetRestaurantInput {
+  id: ID!
+}
+
+input SearchFilteredRestaurantInput {
+  pagination: GqlPaginationInput
+  establishmentTypeId: ID
+  cusinesTypeId: ID
+  settingAndAmbinaceId: ID
+  foodType: String
+  paymentMethods: [ServicePaymentMethod!]
+  rating: Int
+  minPrice: Float
+  maxPrice: Int
+  query: String
+}
+
 type Mutation {
   uploadFile(file: TestUploadFile!): Boolean!
-  createService(args: CreateServiceInput!): Boolean!
+  createService(args: CreateServiceInput!): GqlStatusResponse!
   deleteService(id: String!): Boolean!
   toggleSaveService(serviceId: String!): Boolean!
   adminUpdateServiceById(args: UpdateServiceInput!): Boolean!
@@ -800,6 +870,11 @@ type Mutation {
   acceptAppointment(id: ID!): Boolean!
   declineAppointment(args: DeclineAppointmentInput!): Boolean!
   BookService(args: BookServiceInput!): BookedService!
+  createHotelService(createHotelServiceArgs: CreateHotelInput!): Hotel!
+  createRestaurantService(createRestaurantArgs: CreateRestaurantInput!): Restaurant!
+  updateRestaurant(updateRestaurantArgs: UpdateRestaurantInput!): Restaurant!
+  deleteRestaurant(deleteRestaurantArgs: DeleteRestaurantInput!): Restaurant!
+  activateRestaurant(id: Int!): Restaurant!
 }
 
 input TestUploadFile {
@@ -1198,6 +1273,91 @@ input BookServiceInput {
   serviceId: ID!
   checkin: DateTime!
   guests: Int!
+}
+
+input CreateHotelInput {
+  contact: ServiceContactInput!
+  presentations: [ServicePresentationInput!]!
+  location: ServiceLocationInput!
+  policies: [ServicePolicyTranslatedInput!]!
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
+  rooms: [HotelRoomInput!]!
+}
+
+input ServiceContactInput {
+  address: String!
+  country: String!
+  state: String
+  city: String!
+  email: String!
+  phone: String!
+}
+
+input HotelRoomInput {
+  roomMetaInfo: [HotelRoomTranslationMetaInfoInput!]!
+  pricePerNight: Int!
+  dailyPrice: Boolean!
+  dailyPrices: ServiceDailyPricesInput
+  discount: ServiceDiscountInput!
+  includedServices: [ServiceIncludedServicesInput!]!
+  popularAmenities: [ServiceAmenitiesInput!]!
+  cancelationPolicies: [ServiceCancelationPolicyInput!]!
+  beds: Int!
+  bathrooms: Int!
+  extras: [ServiceExtraInput!]!
+  num_of_rooms: Int!
+  includedAmenities: [ServiceIncludedAmenitiesInput!]!
+  measurements: ServicePropertyMeasurementsInput!
+  insurance: Float!
+  presentations: [ServicePresentationInput!]!
+}
+
+input CreateRestaurantInput {
+  contact: ServiceContactInput!
+  vat: Int!
+  status: ServiceStatus
+  location: ServiceLocationInput!
+  presentations: [ServicePresentationInput!]!
+  policies: [ServicePolicyTranslatedInput!]!
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
+  menus: [RestaurantMenuInput!]!
+  establishmentTypeId: ID!
+  cuisinesTypeId: ID!
+  setting_and_ambianceId: ID!
+  michelin_guide_stars: Int!
+}
+
+input RestaurantMenuInput {
+  name: [TranslationTextInput!]!
+  dishs: [RestaurantMenuDishInput!]!
+}
+
+input RestaurantMenuDishInput {
+  name: [TranslationTextInput!]!
+  price: Int!
+  ingredients: [TranslationTextArrayInput!]!
+  thumbnail: String!
+}
+
+input UpdateRestaurantInput {
+  vat: Int
+  status: ServiceStatus
+  location: ServiceLocationInput
+  presentations: [ServicePresentationInput!]
+  policies: [ServicePolicyTranslatedInput!]
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
+  payment_methods: [ServicePaymentMethod!]
+  menus: [UpdateRestaurantMenuInput!]
+  establishmentTypeId: ID
+  cuisinesTypeId: ID
+  setting_and_ambianceId: ID
+  michelin_guide_stars: Int
+  dishs: [UpdateRestaurantMenuDishInput!]
+  id: ID!
+}
+
+input DeleteRestaurantInput {
+  id: String!
 }
 
 scalar link__Import
