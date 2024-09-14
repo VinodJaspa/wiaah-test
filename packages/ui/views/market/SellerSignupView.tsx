@@ -10,10 +10,12 @@ import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
+import { useSignupMutation } from "@features/Auth";
 
 export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
 }) => {
+  const { mutate: SignUp } = useSignupMutation();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4" id="SellerSignupView">
@@ -23,7 +25,15 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
       <Formik<any>
         initialValues={{}}
         onSubmit={(data) => {
-          onSubmit && onSubmit(data);
+          SignUp(data, {
+            onSuccess: (response) => {
+              console.log("Signup successful:", response);
+              onSubmit && onSubmit(response); // Optional callback after success
+            },
+            onError: (err) => {
+              console.error("Signup error:", err);
+            },
+          });
         }}
       >
         {({ values, setFieldValue }) => {
