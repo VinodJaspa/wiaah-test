@@ -41,7 +41,6 @@ type Account {
   lastActiveAt: String!
   lang: String!
   currency: String!
-  shop: Shop
 }
 
 """
@@ -77,10 +76,6 @@ enum AccountDeletionRequestStatus {
   approved
   pending
   rejected
-}
-
-type Shop {
-  ownerId: String!
 }
 
 type IdentityVerification {
