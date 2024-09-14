@@ -7,8 +7,6 @@ import { MasterLayout } from "@components";
 import { useSellerSignupMutation } from "ui";
 
 const SellerSignup: NextPage = () => {
-  const { mutate, data } = useSellerSignupMutation();
-
   return (
     <>
       <Head>
@@ -16,12 +14,7 @@ const SellerSignup: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <Signup
-            onSubmit={(data, type) => {
-              type === "seller-signup" ? mutate(data) : null;
-            }}
-            loginType={"seller-signup"}
-          />
+          <Signup loginType={"seller-signup"} />
         </main>
       </MasterLayout>
     </>
