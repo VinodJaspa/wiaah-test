@@ -16,12 +16,12 @@ export const useSignupMutation = () => {
 
   client.setQuery(
     `
-mutation sellerSignup(
-  $args:CreateAccountInput!
-){
-  register(RegisterInput:$args)
-}
-    `,
+      mutation sellerSignup(
+        $input:RegisterDto!
+      ){
+        register(RegisterInput:$input)
+      }
+    `
   );
 
   return useMutation<string, unknown, SellerSignupMutationVariables["args"]>(
@@ -37,6 +37,6 @@ mutation sellerSignup(
         .send<SellerSignupMutation>();
 
       return res.data.register;
-    },
+    }
   );
 };
