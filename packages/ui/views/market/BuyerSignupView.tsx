@@ -55,7 +55,7 @@ const BuyerSignupSchema = Yup.object().shape({
 
 // creating a new account
 const REGISTER_MUTATION = gql`
-  mutation Regester($input: RegisterDto!) {
+  mutation Register($input: CreateAccountInput!) {
     register(RegisterInput: $input) {
       success
       code
