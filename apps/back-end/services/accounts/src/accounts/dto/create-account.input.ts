@@ -30,9 +30,6 @@ export class CreateAccountInput {
   @Field(() => String)
   password: string;
 
-  @Field(() => String)
-  confirmPassword: string;
-
   @Field(() => RegisterAccountType)
   accountType: RegisterAccountType;
 
@@ -85,4 +82,4 @@ export class AdminUpdateAdminAccountInput extends PartialType(
 }
 
 @InputType()
-export class CreateSellerAccountInput extends CreateAccountInput {}
+export class CreateSellerAccountInput extends CreateAccountInput { }
