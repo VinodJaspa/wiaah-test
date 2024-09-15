@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { useSignupMutation } from "@features/Auth";
+import { AccountGenderEnum, RegisterAccountType } from "@features/API";
 
 export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
@@ -23,17 +24,30 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
         {t("create_an_account", "create an account")}
       </h2>
       <Formik<any>
-        initialValues={{}}
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          birthDate: null,
+          password: "",
+          confirmPassword: "",
+          termsConditionAggrement: false,
+          gender: AccountGenderEnum.Male,
+          accountType: RegisterAccountType.Seller,
+        }}
         onSubmit={(data) => {
-          SignUp(data, {
-            onSuccess: (response) => {
-              console.log("Signup successful:", response);
-              onSubmit && onSubmit(response); // Optional callback after success
-            },
-            onError: (err) => {
-              console.error("Signup error:", err);
-            },
-          });
+          SignUp(
+            { ...data },
+            {
+              onSuccess: (response) => {
+                console.log("Signup successful:", response);
+                onSubmit && onSubmit(response); // Optional callback after success
+              },
+              onError: (err) => {
+                console.error("Signup error:", err);
+              },
+            }
+          );
         }}
       >
         {({ values, setFieldValue }) => {
