@@ -429,29 +429,29 @@ export class ProductsResolver {
   }
 
   @Mutation(() => Product)
-  // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createNewProduct(
     @Args('createNewProductInput') createProductInput: CreateProductInput,
-    // @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    const user = {
-      id: '66e42be211bc44f6d91d3865', // MongoDB ID
-      shopId: null, // Since shopId is not provided, assuming it's null
-      stripeId: 'acct_1PeW7VIvCtoLKD3l', // Provided Stripe ID
-      stripeCustomerId: 'cus_QVXBv7WdaJovVe', // Provided Stripe Customer ID
-      accountType: 'seller' as AccountType, // Provided accountType as "buyer"
-      firstName: 'John', // Provided firstName
-      lastName: 'Doe', // Provided lastName
-      email: 'test@example.com', // Provided email
-      ip: '192.168.1.1', // Placeholder IP (could be updated as needed)
-      city: 'New York', // Assuming city, as not provided
-      country: 'USA', // Assuming country, as not provided
-      lat: 40.7128, // Placeholder latitude for New York
-      lon: -74.006, // Placeholder longitude for New York
-      membershipId: null, // Assuming no membershipId is provided
-      iat: Math.floor(Date.now() / 1000), // Issued at (current timestamp)
-      exp: Math.floor(Date.now() / 1000) + 3600, // Expires in 1 hour
-    };
+    // const user = {
+    //   id: '66e42be211bc44f6d91d3865', // MongoDB ID
+    //   shopId: null, // Since shopId is not provided, assuming it's null
+    //   stripeId: 'acct_1PeW7VIvCtoLKD3l', // Provided Stripe ID
+    //   stripeCustomerId: 'cus_QVXBv7WdaJovVe', // Provided Stripe Customer ID
+    //   accountType: 'seller' as AccountType, // Provided accountType as "buyer"
+    //   firstName: 'John', // Provided firstName
+    //   lastName: 'Doe', // Provided lastName
+    //   email: 'test@example.com', // Provided email
+    //   ip: '192.168.1.1', // Placeholder IP (could be updated as needed)
+    //   city: 'New York', // Assuming city, as not provided
+    //   country: 'USA', // Assuming country, as not provided
+    //   lat: 40.7128, // Placeholder latitude for New York
+    //   lon: -74.006, // Placeholder longitude for New York
+    //   membershipId: null, // Assuming no membershipId is provided
+    //   iat: Math.floor(Date.now() / 1000), // Issued at (current timestamp)
+    //   exp: Math.floor(Date.now() / 1000) + 3600, // Expires in 1 hour
+    // };
     console.log(JSON.stringify(createProductInput));
     return this.productsService.createNewProduct(createProductInput, user);
   }
