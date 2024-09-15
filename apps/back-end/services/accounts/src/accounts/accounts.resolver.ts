@@ -35,6 +35,7 @@ import {
   EmailAlreadyExistsException,
 } from './exceptions';
 import { AccountCreationFailedException } from './exceptions/accountCreationFailed.exception';
+import { StripeAccountCreationException } from './exceptions/stirpeAccountCreation.exception';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -52,7 +53,6 @@ export class AccountsResolver {
     @Args('RegisterInput')
     {
       accountType,
-      confirmPassword,
       email,
       firstName,
       lastName,
@@ -72,21 +72,21 @@ export class AccountsResolver {
     }
 
     // Check if confirmPassword matches password
-    if (confirmPassword !== password) {
-      throw new ConfirmPasswordDoesNotMatchException(); // Custom exception
-    }
+    // if (confirmPassword !== password) {
+    //   throw new ConfirmPasswordDoesNotMatchException(); // Custom exception
+    // }
 
     // Hash the password
     const hashedPassword = await this.accountsService.hashPassword(password);
 
     // Handle potential errors during Stripe account creation
-    // let Sacc, Cacc;
-    // try {
-    //   Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
-    //   Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
-    // } catch (error) {
-    //   throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
-    // }
+    let Sacc, Cacc;
+    try {
+      Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
+      Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
+    } catch (error) {
+      throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
+    }
 
     // Create the account record in the database
     const createdAccount = await this.accountsService.createAccountRecord({
