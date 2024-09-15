@@ -6,8 +6,8 @@ import { TranslationTextType } from "types";
 
 export interface TranslationTextProps
   extends DetailedHTMLProps<
-    HtmlHTMLAttributes<HTMLParagraphElement>,
-    HTMLParagraphElement
+  HtmlHTMLAttributes<HTMLParagraphElement>,
+  HTMLParagraphElement
   > {
   translationObject: TranslationTextType | string;
 }

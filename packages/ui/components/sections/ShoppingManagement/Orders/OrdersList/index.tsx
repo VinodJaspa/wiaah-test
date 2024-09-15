@@ -47,7 +47,7 @@ import { useAskForRefundMutation, useGetMyOrdersQuery } from "@features/Orders";
 import { OrderStatusEnum, RefundType } from "@features/API";
 import { useResponsive } from "@UI/../hooks";
 
-export interface OrdersListProps {}
+export interface OrdersListProps { }
 
 export const OrdersList: React.FC<OrdersListProps> = () => {
   const [filter, setFilter] = React.useState<OrderStatusEnum>();
@@ -167,11 +167,10 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           <>
             <div onClick={() => setFilter(value)} className="px-4 py-2">
               <TranslationText
-                className={`${
-                  filter === value
+                className={`${filter === value
                     ? "text-primary border-b-2 border-primary"
                     : ""
-                }`}
+                  }`}
                 translationObject={value}
               />
             </div>
@@ -212,7 +211,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                 const date = AddToDate(createdAt, {
                   days: shipping.deliveryTimeRange.to,
                 });
-                function handleGoToTrackingLink(link: string) {}
+                function handleGoToTrackingLink(link: string) { }
                 return (
                   <Tr className="cursor-pointer" key={i}>
                     <Td>{id}</Td>
@@ -276,8 +275,8 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                             onClick={() => {
                               shopping
                                 ? handleGoToTrackingLink(
-                                    props.trackingLink || ""
-                                  )
+                                  props.trackingLink || ""
+                                )
                                 : null;
                             }}
                           />
