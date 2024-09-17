@@ -31,7 +31,6 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
           birthDate: null,
           password: "",
           confirmPassword: "",
-          termsConditionAggrement: false,
           gender: AccountGenderEnum.Male,
           accountType: RegisterAccountType.Seller,
         }}
