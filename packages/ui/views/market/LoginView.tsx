@@ -4,13 +4,12 @@ import { IoMdMail, IoMdKey } from "react-icons/io";
 import { Spacer, DividerWidthText, Input } from "@UI";
 import { LoginInputsType } from "types";
 import { LoginType } from "types";
-import { useUserData, useLoginPopup, Button, FormikInput } from "@UI";
+import { useLoginPopup, Button, FormikInput } from "@UI";
 import { useTranslation } from "react-i18next";
-import { Form, Formik, FormikHelpers } from "formik";
-import { gql, useMutation } from "@apollo/client";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
-import nookies, { setCookie } from "nookies";
+import { useSigninMutation } from "@features/Auth";
 
 type loginInput = {
   email: string;
@@ -26,16 +25,6 @@ const loginValidationSchema = Yup.object().shape({
   remember_me: Yup.boolean(),
 });
 
-const LOGIN_MUTATION = gql`
-  mutation Login($input: LoginDto!) {
-    login(LoginInput: $input) {
-      success
-      code
-      accessToken
-    }
-  }
-`;
-
 export const LoginView: FC<{
   setAuthView: (view: LoginType) => void;
   onSubmit: (data: loginInput) => any;
@@ -50,42 +39,11 @@ export const LoginView: FC<{
     remember_me: false,
   });
 
-  const [loginToAccount, { loading }] = useMutation(LOGIN_MUTATION);
+  const { mutate: SignIn } = useSigninMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormInput((state) => ({ ...state, [e.target.name]: e.target.checked }));
-  };
-
-  const handleSubmit = async (
-    values: loginInput,
-    { setSubmitting }: FormikHelpers<loginInput>
-  ) => {
-    setErrorMessage(null); // Clear any previous errors
-    try {
-      const result = await loginToAccount({
-        variables: {
-          input: {
-            email: values.email,
-            password: values.password,
-          },
-        },
-      });
-
-      if (result.data.login.success) {
-        setCookie(null, "access_token", result.data.login.accessToken);
-        // Handle successful login (e.g., redirect the user)
-
-        router.push("/"); // Example: redirect to a dashboard
-      } else {
-        setErrorMessage(result.data.login.message || "Login failed");
-      }
-    } catch (error) {
-      setErrorMessage("An unexpected error occurred. Please try again.");
-      console.error("Login error:", error);
-    }
-
-    setSubmitting(false);
   };
 
   return (
@@ -97,7 +55,19 @@ export const LoginView: FC<{
       <Formik<loginInput>
         validationSchema={loginValidationSchema}
         initialValues={{ email: "", password: "", remember_me: false }}
-        onSubmit={handleSubmit}
+        onSubmit={(data) => {
+          SignIn(
+            { email: data.email, password: data.password },
+            {
+              onSuccess: (response) => {
+                console.log("Signup successful:", response);
+              },
+              onError: (err) => {
+                console.error("Signup error:", err);
+              },
+            }
+          );
+        }}
       >
         {({ isSubmitting }) => (
           <Form className="flex flex-col">
