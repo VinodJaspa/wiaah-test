@@ -1,3 +1,4 @@
+import { LoginDto } from "@features/API/gql/generated";
 import { createGraphqlRequestClient } from "api/src/utils/GraphqlRequestClient";
 import { useMutation } from "react-query";
 
@@ -6,12 +7,12 @@ type args = {
   password: string;
 };
 
-export const SigninFetcher = (args: args) => {
+export const SigninFetcher = (args: LoginDto) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(
     `
-      mutation login($email:String!, $password:String!){
+      mutation login($args){
         login(
             LoginInput:{
                 email:$email
