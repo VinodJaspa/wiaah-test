@@ -18,6 +18,19 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
 }) => {
   const { mutate: SignUp } = useSignupMutation();
   const { t } = useTranslation();
+  const handleSignUpSubmit = (data: any) => {
+    SignUp(
+      { ...data },
+      {
+        onSuccess: (response) => {
+          console.log("Signup successful:", response);
+        },
+        onError: (err) => {
+          console.error("Signup error:", err);
+        },
+      }
+    );
+  };
   return (
     <div className="flex flex-col gap-4" id="SellerSignupView">
       <h2 className="text-3xl capitalize">
@@ -34,20 +47,7 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
           gender: AccountGenderEnum.Male,
           accountType: RegisterAccountType.Seller,
         }}
-        onSubmit={(data) => {
-          SignUp(
-            { ...data },
-            {
-              onSuccess: (response) => {
-                console.log("Signup successful:", response);
-                onSubmit && onSubmit(response); // Optional callback after success
-              },
-              onError: (err) => {
-                console.error("Signup error:", err);
-              },
-            }
-          );
-        }}
+        onSubmit={(data) => handleSignUpSubmit(data)}
       >
         {({ values, setFieldValue }) => {
           return (
