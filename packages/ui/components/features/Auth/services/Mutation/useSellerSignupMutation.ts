@@ -16,12 +16,8 @@ export const useSignupMutation = () => {
 
   client.setQuery(
     `
-  mutation SellerRegister($input: CreateAccountInput!) {
-    register(RegisterInput: $input) {
-      success
-      code
-      message
-    }
+  mutation SellerRegister($args: CreateAccountInput!) {
+    register(RegisterInput: $args) 
   }
     `
   );
