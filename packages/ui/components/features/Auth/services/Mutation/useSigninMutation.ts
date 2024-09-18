@@ -1,35 +1,41 @@
-import { LoginDto } from "@features/API/gql/generated";
+import { LoginDto, Exact, Mutation } from "@features/API/gql/generated";
 import { createGraphqlRequestClient } from "api/src/utils/GraphqlRequestClient";
 import { useMutation } from "react-query";
 
-type args = {
-  email: string;
-  password: string;
-};
+export type SigninMutationVariables = Exact<{
+  args: LoginDto;
+}>;
 
-export const SigninFetcher = (args: LoginDto) => {
-  const client = createGraphqlRequestClient();
+type SigninMutation = { __typename?: "Mutation" } & Pick<Mutation, "login">;
 
+const client = createGraphqlRequestClient();
+
+export const useSigninMutation = () => {
   client.setQuery(
     `
-      mutation login($args){
-        login(
-            LoginInput:{
-                email:$email
-                password:$password
-            }
-        ) {
-            code
-            message
-            success
-        }
+    mutation Login($args: LoginDto!) {
+      login(LoginInput: $args) {
+        code
+        message
+        success
+        accessToken
+      }
     }
     `
   );
 
-  return client.setVariables(args).send<{ access_token: string }>();
-};
+  return useMutation<any | null, unknown, SigninMutationVariables["args"]>(
+    "user-signin",
+    async (args) => {
+      const res = await client
+        .setVariables<SigninMutationVariables>({
+          args: {
+            ...args,
+          },
+        })
+        .send<SigninMutation>();
 
-export const useSigninMutation = () => {
-  return useMutation<unknown, unknown, args>((input) => SigninFetcher(input));
+      return res.data.login;
+    }
+  );
 };
