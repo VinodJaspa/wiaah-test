@@ -10,6 +10,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useSigninMutation } from "@features/Auth";
+import * as nookies from "nookies";
 
 type loginInput = {
   email: string;
@@ -60,7 +61,8 @@ export const LoginView: FC<{
             { email: data.email, password: data.password },
             {
               onSuccess: (response) => {
-                console.log("Signup successful:", response);
+                nookies.setCookie(null, "access_token", "FAKE_TOKEN");
+                console.log("RESULT =>>>> " + JSON.stringify(response));
               },
               onError: (err) => {
                 console.error("Signup error:", err);
