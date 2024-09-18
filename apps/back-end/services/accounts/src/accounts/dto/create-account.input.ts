@@ -30,6 +30,9 @@ export class CreateAccountInput {
   @Field(() => String)
   password: string;
 
+  @Field(() => String)
+  confirmPassword: string;
+
   @Field(() => RegisterAccountType)
   accountType: RegisterAccountType;
 
