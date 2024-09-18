@@ -35,7 +35,7 @@ import {
   EmailAlreadyExistsException,
 } from './exceptions';
 import { AccountCreationFailedException } from './exceptions/accountCreationFailed.exception';
-import { StripeAccountCreationException } from './exceptions/stirpeAccountCreation.exception';
+import { StripeAccountCreationException } from './exceptions/stripeAccountCreation.exception';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -58,6 +58,7 @@ export class AccountsResolver {
       lastName,
       password,
       birthDate,
+      confirmPassword,
     }: CreateAccountInput,
   ) {
     // Check if the email already exists in the system
@@ -72,9 +73,9 @@ export class AccountsResolver {
     }
 
     // Check if confirmPassword matches password
-    // if (confirmPassword !== password) {
-    //   throw new ConfirmPasswordDoesNotMatchException(); // Custom exception
-    // }
+    if (confirmPassword !== password) {
+      throw new ConfirmPasswordDoesNotMatchException(); // Custom exception
+    }
 
     // Hash the password
     const hashedPassword = await this.accountsService.hashPassword(password);
