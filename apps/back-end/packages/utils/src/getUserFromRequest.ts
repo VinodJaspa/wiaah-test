@@ -23,9 +23,7 @@ export function VerifyAndGetUserFromContext(
   ctx: any
 ): (AuthorizationDecodedUser & { token: string }) | null {
   if (typeof ctx["req"] !== "undefined") {
-    // @ts-ignore
     if (ctx?.req?.headers && ctx?.req?.headers["cookie"]) {
-      // @ts-ignore
       const rawCookies = ctx.req.headers["cookie"];
       const parsedCookies = parse(rawCookies);
       const cookiesKey = process.env.COOKIES_KEY || "jwt";
