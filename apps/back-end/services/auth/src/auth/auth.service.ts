@@ -53,7 +53,7 @@ export class AuthService {
       const { email, password } = input;
 
       // Find the user by email
-      const registeration: any = await new Promise((resolve, reject) => {
+      const invokedAccount: any = await new Promise((resolve, reject) => {
         this.eventsClient
           .send('get.account.by.email', {
             value: { value: { input: { email: input.email } } },
@@ -65,22 +65,24 @@ export class AuthService {
       });
       const isPasswordValid = await bcrypt.compare(
         password,
-        registeration.results.data.password,
+        invokedAccount.results.data.password,
       );
       if (!isPasswordValid) {
         throw new BadRequestException('Invalid password');
       }
 
       // Generate JWT token
-      const payload = { userId: registeration.id, email: registeration.email };
+      const payload = {
+        ...invokedAccount,
+      };
       const token = this.JWTService.sign(payload);
 
       // Return the token and user data
       return {
         accessToken: token,
         user: {
-          id: registeration.id,
-          email: registeration.email,
+          id: invokedAccount.id,
+          email: invokedAccount.email,
           // Add other relevant user fields
         },
       };
