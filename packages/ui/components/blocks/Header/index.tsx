@@ -22,11 +22,14 @@ import {
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid, useBreakpointValue } from "utils";
+import * as nookies from "nookies";
 
-export interface HeaderProps { }
+export interface HeaderProps {
+  token?: string;
+}
 
-export const Header: React.FC<HeaderProps> = () => {
-  const { data: profile } = useGetMyProfileQuery();
+export const Header: React.FC<HeaderProps> = ({ token }) => {
+  const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
 
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -34,6 +37,12 @@ export const Header: React.FC<HeaderProps> = () => {
   const { t } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
+
+  const onLogOut = () => {
+    console.log("destroy cookies");
+    nookies.destroyCookie(null, "auth_token", { path: "/" });
+    setSignedIn(false);
+  };
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
   const { data: serviceCategories } = useGetServiceCategoriesQuery();
@@ -64,14 +73,10 @@ export const Header: React.FC<HeaderProps> = () => {
             <Button
               {...setTestid("auth-btn")}
               colorScheme={isMobile ? "white" : "darkbrown"}
-              onClick={() =>
-                profile
-                  ? visit((r) => r.visitLogout())
-                  : visit((r) => r.visitSignin())
-              }
+              onClick={onLogOut}
               className="flex sm:text-sm items-center gap-2"
             >
-              {profile ? t("Logout") : t("Sign in")}
+              {signedIn ? t("Logout") : t("Sign in")}
               <PersonOutlineIcon className="text-xl sm:text-lg text-white fill-white stroke-white" />
             </Button>
             <button onClick={() => visit((r) => r.visitMarketSavedItems())}>
