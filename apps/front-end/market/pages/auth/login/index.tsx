@@ -1,18 +1,33 @@
 import React from "react";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { MasterLayout } from "@components";
 import { AuthSwitcher, FormContainer } from "@blocks";
-
 import { t } from "i18next";
+import nookies from "nookies";
 
-const LoginPage: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Get cookies from the request using nookies
+  const cookies = nookies.get(context);
+  const token = cookies.auth_token || null; // Assuming 'token' is the cookie name you're looking for
+
+  return {
+    props: {
+      token,
+    },
+  };
+};
+interface LoginPageProps {
+  token: string | null;
+}
+
+const LoginPage: NextPage<LoginPageProps> = ({ token }) => {
   return (
     <>
       <Head>
         <title>Wiaah | Login</title>
       </Head>
-      <MasterLayout>
+      <MasterLayout token={token}>
         <main className="block w-full grow">
           <div className="flex w-full justify-center items-center">
             <div

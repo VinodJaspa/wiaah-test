@@ -1,17 +1,33 @@
 import { MasterLayout } from "@components";
 import { CheckoutView } from "ui";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { Collaboration, Container } from "ui";
+import nookies from "nookies";
 
-const ServiceCheckout: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Get cookies from the request using nookies
+  const cookies = nookies.get(context);
+  const token = cookies.auth_token || null; // Assuming 'token' is the cookie name you're looking for
+
+  return {
+    props: {
+      token,
+    },
+  };
+};
+interface ServiceCheckoutProps {
+  token: string | null;
+}
+
+const ServiceCheckout: NextPage<ServiceCheckoutProps> = ({ token }) => {
   return (
     <>
       <Head>
         <title>Wiaah | Checkout</title>
       </Head>
-      <MasterLayout>
+      <MasterLayout token={token}>
         <div className="bg-[#F3F3F3]">
           <Container>
             <CheckoutView />
