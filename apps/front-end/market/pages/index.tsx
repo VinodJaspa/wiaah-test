@@ -1,13 +1,29 @@
 import React from "react";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { Container, CookiesInfoBanner } from "ui";
 import { HomeView } from "ui/views";
 import { MasterLayout } from "@components";
+import nookies from "nookies";
 
-const Market: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // Get cookies from the request using nookies
+  const cookies = nookies.get(context);
+  const token = cookies.auth_token || null; // Assuming 'token' is the cookie name you're looking for
+
+  return {
+    props: {
+      token,
+    },
+  };
+};
+interface MarketPageProps {
+  token: string | null;
+}
+
+const Market: NextPage<MarketPageProps> = ({ token }) => {
   return (
     <>
-      <MasterLayout>
+      <MasterLayout token={token}>
         <Container>
           <HomeView />
         </Container>
