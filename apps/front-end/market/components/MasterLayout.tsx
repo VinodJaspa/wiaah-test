@@ -23,12 +23,14 @@ export interface MasterLayoutProps {
   social?: boolean;
   rootProps?: RootProps;
   children: React.ReactNode;
+  token?: string;
 }
 
 const MasterLayout: React.FC<MasterLayoutProps> = ({
   children,
   social,
   rootProps,
+  token,
 }) => {
   let voucher;
   const { t } = useTranslation();
@@ -48,7 +50,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
       <MasterLocationMapModal />
       <AuthPopup />
       <SocialLayout />
-      {!social && <Header />}
+      {!social && <Header token={token} />}
       {social && <SocialHeader />}
       <main className="flex w-full flex-col">
         <>{children}</>
