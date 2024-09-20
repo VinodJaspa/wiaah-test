@@ -61,8 +61,7 @@ export const LoginView: FC<{
             { email: data.email, password: data.password },
             {
               onSuccess: (response) => {
-                nookies.setCookie(null, "access_token", "FAKE_TOKEN");
-                console.log("RESULT =>>>> " + JSON.stringify(response));
+                console.log("signed in");
               },
               onError: (err) => {
                 console.error("Signup error:", err);
