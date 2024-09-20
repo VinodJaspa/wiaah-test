@@ -144,18 +144,10 @@ export class AccountsController implements OnModuleInit {
       } = payload;
 
       const account = await this.accountService.getByEmail(email);
-      const { firstName, password, accountType, id, lastName, verified } =
-        account;
       return new GetAccountMetaDataByEmailMessageReply({
         success: true,
         data: {
-          accountType,
-          email,
-          password,
-          firstName,
-          lastName,
-          id,
-          emailVerified: verified,
+          ...account,
         },
         error: null,
       });
