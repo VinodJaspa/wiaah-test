@@ -47,7 +47,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <Formik initialValues={values as Record<string, any>} onSubmit={() => {}}>
+      <Formik initialValues={values as Record<string, any>} onSubmit={() => { }}>
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
           return (
@@ -55,20 +55,20 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("name_&_description", "Name & Description")}
               </span>
-              <FormikTransalationInput
+              <FormikInput
                 formikSetField={setFieldValue}
                 formikValues={values}
                 name="name"
                 placeholder={t("Name")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="description"
                 as={Textarea}
                 formikSetField={setFieldValue}
                 formikValues={values}
                 placeholder={t("Description")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="metaTagDescription"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -76,7 +76,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -84,7 +84,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="productTag"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -176,7 +176,6 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                       <video
                         className="w-full h-full object-cover"
                         key={i}
-                        //@ts-ignore
                         src={vid}
                       />
                     </div>

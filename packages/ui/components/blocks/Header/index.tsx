@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const onLogOut = () => {
     console.log("destroy cookies");
-    nookies.destroyCookie(null, "auth_token", { path: "/" });
+    nookies.destroyCookie(null, "auth_token", { path: "auth/login" });
     setSignedIn(false);
   };
 
@@ -50,7 +50,6 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   return (
     <nav className="w-full bg-white">
       {/* Top Navbar */}
-
       <Container className="h-[auto]">
         <div className="w-full h-fit flex p-4 gap-4 items-center justify-between">
           <div className="h-12 sm:h-20 cursor-pointer">
