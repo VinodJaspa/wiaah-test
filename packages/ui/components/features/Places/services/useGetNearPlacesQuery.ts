@@ -74,8 +74,8 @@ export const useGetNearPlacesQuery = (
     any
   >
 ) =>
-  useQuery(
-    getNearPlacesQueryKey(args),
-    () => getNearPlacesQueryFetcher(args),
-    options
-  );
+  useQuery(getNearPlacesQueryKey(args), () => getNearPlacesQueryFetcher(args), {
+    enabled: false, // Disable automatic refetching on mount/re-renders
+    cacheTime: Infinity, // Keep the data in cache indefinitely
+    staleTime: Infinity, // Prevent re-fetching due to stale data
+  });

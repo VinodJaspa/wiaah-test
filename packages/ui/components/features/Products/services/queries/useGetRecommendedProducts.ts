@@ -65,6 +65,12 @@ query getRecommendedProducts($args:GqlPaginationInput!){
 };
 
 export const useGetRecommendedProducts = (args: args) =>
-  useQuery(getRecommendedProductsQueryKey(args), () =>
-    getRecommendedProductsQueryFetcher(args)
+  useQuery(
+    getRecommendedProductsQueryKey(args),
+    () => getRecommendedProductsQueryFetcher(args),
+    {
+      enabled: false,
+      cacheTime: Infinity, // Keep the data in cache indefinitely
+      staleTime: Infinity, // Prevent re-fetching due to stale data
+    }
   );
