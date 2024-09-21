@@ -25,13 +25,13 @@ const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   handlerKeys: [],
   isFirstStep: true,
   isLastStep: false,
-  goToStep: () => {},
-  prevoiusStep: () => {},
-  validate: () => {},
-  unvalidate: () => {},
-  nextStep: () => {},
-  setHandler: () => {},
-  previousStep: () => {},
+  goToStep: () => { },
+  prevoiusStep: () => { },
+  validate: () => { },
+  unvalidate: () => { },
+  nextStep: () => { },
+  setHandler: () => { },
+  previousStep: () => { },
 });
 
 export interface StepperFormControllerProps<DataType> {
@@ -73,17 +73,20 @@ export function StepperFormController<FinaleDataType extends Data>({
     if (typeof obj === "undefined") return;
     setCurrentStepIdx(stepIdx);
   }
-  function validate(data: Data, handlerKey: string) {
+  const validate = React.useCallback((data: Data, handlerKey: string) => {
     setStepsValidation((state) => {
-      if (JSON.stringify(state[handlerKey]) === JSON.stringify(data))
+      // Compare using stringified values to avoid unnecessary state updates
+      if (JSON.stringify(state[handlerKey]) === JSON.stringify(data)) {
         return state;
+      }
 
       const _state = { ...state };
       _state[handlerKey] = data;
       return _state;
     });
+
     return MergedData;
-  }
+  }, []);
 
   function unvalidate(handlerKey: string) {
     delete stepsValidation[handlerKey];
