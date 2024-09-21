@@ -77,7 +77,7 @@ export class AuthResolver implements OnModuleInit {
       const data = await this.authService.simpleLogin({ email, password });
 
       // Set the JWT in an HttpOnly, Secure cookie
-      ctx.res.cookie('authToken', data.accessToken, {
+      ctx.res.cookie('auth_token', data.accessToken, {
         secure: false, // Only secure in production
         httpOnly: true, // Prevent client-side JavaScript from accessing the token
         sameSite: 'None', // Adjust based on cross-origin requirements
