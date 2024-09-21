@@ -69,7 +69,8 @@ export class ProductsService {
     // const { shopId } = user;
     //
 
-    const checkAccount: any = await new Promise((resolve, reject) => {
+    // Check account existence
+    const checkIfAccountExists: any = await new Promise((resolve, reject) => {
       this.eventClient
         .send(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById, {
           value: { value: { accountId: user.id } },
@@ -79,7 +80,7 @@ export class ProductsService {
           error: (err) => reject(err),
         });
     });
-    if (!checkAccount) {
+    if (!checkIfAccountExists) {
       throw new Error('User not found');
     }
     const res = await this.uploadService.uploadFiles(
@@ -101,7 +102,7 @@ export class ProductsService {
       })),
     );
 
-    const product = await this.prisma.product.create({
+    const createdProduct = await this.prisma.product.create({
       data: {
         ...createProductInput,
         discount: {
@@ -129,15 +130,14 @@ export class ProductsService {
     await new Promise((resolve, reject) => {
       this.eventClient
         .send('add.product.to.account', {
-          value: { value: { productId: product.id, sellerId: user.id } },
+          value: { value: { productId: createdProduct.id, sellerId: user.id } },
         })
         .subscribe({
           next: (account) => resolve(account),
           error: (err) => reject(err),
         });
     });
-
-    return product;
+    return createdProduct;
   }
 
   async updateProduct(
