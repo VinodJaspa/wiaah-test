@@ -55,20 +55,20 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("name_&_description", "Name & Description")}
               </span>
-              <FormikInput
+              <FormikTransalationInput
                 formikSetField={setFieldValue}
                 formikValues={values}
                 name="name"
                 placeholder={t("Name")}
               />
-              <FormikInput
+              <FormikTransalationInput
                 name="description"
                 as={Textarea}
                 formikSetField={setFieldValue}
                 formikValues={values}
                 placeholder={t("Description")}
               />
-              <FormikInput
+              <FormikTransalationInput
                 name="metaTagDescription"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -76,7 +76,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikInput
+              <FormikTransalationInput
                 name="metaTagKeyword"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -84,7 +84,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              <FormikInput
+              <FormikTransalationInput
                 name="productTag"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -176,6 +176,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                       <video
                         className="w-full h-full object-cover"
                         key={i}
+                        //@ts-ignore
                         src={vid}
                       />
                     </div>
