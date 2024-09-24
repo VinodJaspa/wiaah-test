@@ -11,6 +11,7 @@ import {
   Tabs,
   TabTitle,
   TabsHeader,
+  TabsContext,
   StepperFormController,
   StepperFormHandler,
   AddNewDigitalProductSection,
@@ -73,23 +74,21 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
         <SectionHeader sectionTitle={t("Add Product")} />
         {/* stepper */}
         <Tabs>
-          <>
-            <TabsHeader className="flex-wrap justify-center sm:justify-start" />
-            {addProductLanguagesSection.map((section, i) => (
-              <React.Fragment key={i}>
-                <MemoizedTabTitle
-                  TabKey={i}
-                  section={section}
-                  handleTabChange={handleTabChange}
-                />
-              </React.Fragment>
-            ))}
-          </>
+          <TabsHeader className="flex-wrap justify-center sm:justify-start" />
+          {addProductLanguagesSection.map((section, i) => (
+            <MemoizedTabTitle
+              key={i}
+              TabKey={i}
+              section={section}
+              handleTabChange={handleTabChange}
+            />
+          ))}
         </Tabs>
 
         <FormTranslationWrapper lang={lang} onLangChange={setLang}>
           <NewProductInputsSection
             onSubmit={(data) => {
+              console.log("Lang ================> " + lang);
               console.log("PRODUCT DATA ====> " + JSON.stringify(data));
               mutate(data);
               cancel();
@@ -104,24 +103,28 @@ const MemoizedTabTitle: React.FC<{
   TabKey: number;
   section: (typeof addProductLanguagesSection)[0];
   handleTabChange: (index: number) => void;
-}> = React.memo(({ TabKey, section, handleTabChange }) => (
-  <TabTitle TabKey={TabKey}>
-    {({ currentTabIdx }) => {
-      if (currentTabIdx === TabKey) {
-        handleTabChange(TabKey);
-      }
-      return (
-        <div
-          className={`${currentTabIdx === TabKey ? "border-primary" : "border-gray-300"
-            } flex items-center gap-2 border-b-[1px] shadow p-2`}
-        >
-          <FlagIcon code={section.language.countryCode} />
-          <span className="hidden sm:block">{section.language.name}</span>
-        </div>
-      );
-    }}
-  </TabTitle>
-));
+}> = ({ TabKey, section, handleTabChange }) => {
+  // Assuming `currentTabIdx` is being passed as a prop or from context
+  const { currentTabIdx } = React.useContext(TabsContext); // Example using context, or pass it as a prop
+  // Only call handleTabChange when the currentTabIdx changes to the TabKey
+  React.useEffect(() => {
+    if (currentTabIdx === TabKey) {
+      handleTabChange(TabKey);
+    }
+  }, [currentTabIdx, handleTabChange]);
+
+  return (
+    <TabTitle TabKey={TabKey}>
+      <div
+        className={`${currentTabIdx === TabKey ? "border-primary" : "border-gray-300"
+          } flex items-center gap-2 border-b-[1px] shadow p-2`}
+      >
+        <FlagIcon code={section.language.countryCode} />
+        <span className="hidden sm:block">{section.language.name}</span>
+      </div>
+    </TabTitle>
+  );
+};
 
 export const NewProductInputsSection: React.FC<{
   onSubmit: (data: any) => any;
