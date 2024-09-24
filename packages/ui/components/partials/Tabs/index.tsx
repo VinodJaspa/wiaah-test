@@ -19,7 +19,7 @@ interface TabsContextValue {
   addTab: (component: TrackableComponent) => any;
 }
 
-const TabsContext = React.createContext<TabsContextValue>({
+export const TabsContext = React.createContext<TabsContextValue>({
   currentTabIdx: 0,
   tabsComponents: [],
   tabsTitles: [],
@@ -36,50 +36,56 @@ export interface TabsProps {
   currentTabIdx?: number;
 }
 
-export const Tabs: React.FC<TabsProps> = ({
-  children,
-  currentTabIdx = 0,
-  onTabChange,
-  ...props
-}) => {
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [tabsTitles, setTabsTitle] = React.useState<TrackableComponent[]>([]);
-  const [tabsComponents, setTabsComponents] = React.useState<
-    TrackableComponent[]
-  >([]);
+export const Tabs: React.FC<TabsProps> = React.memo(
+  ({ children, currentTabIdx = 0, onTabChange, ...props }) => {
+    const [currentTab, setCurrentTab] = React.useState<number>(currentTabIdx);
+    const [tabsTitles, setTabsTitle] = React.useState<TrackableComponent[]>([]);
+    const [tabsComponents, setTabsComponents] = React.useState<
+      TrackableComponent[]
+    >([]);
 
-  React.useEffect(() => {
-    onTabChange && onTabChange(currentTab);
-  }, [currentTab]);
-  React.useEffect(() => {
-    setCurrentTab(currentTabIdx);
-  }, [currentTabIdx]);
-  function setTabs(components: TrackableComponent[]) {
-    setTabsComponents(components);
-  }
-  function addTitle(component: TrackableComponent) {
-    setTabsTitle((state) => {
-      const filteredState = state.filter((comp) => comp.id !== component.id);
-      return [...filteredState, component];
-    });
-  }
-  function addTab(component: TrackableComponent) {
-    setTabsComponents((state) => {
-      const filteredState = state.filter((comp) => comp.id !== component.id);
-      return [...filteredState, component];
-    });
-  }
-  function setTitles(components: TrackableComponent[]) {
-    setTabsTitle(components);
-  }
+    console.log("TEST RENDERING");
 
-  function setCurrentTabIdx(tabIdx: number) {
-    setCurrentTab(tabIdx);
-  }
+    React.useEffect(() => {
+      if (currentTab !== currentTabIdx) {
+        setCurrentTab(currentTabIdx);
+      }
+    }, [currentTabIdx]);
 
-  return (
-    <TabsContext.Provider
-      value={{
+    React.useEffect(() => {
+      if (onTabChange) {
+        onTabChange(currentTab);
+      }
+    }, [currentTab, onTabChange]);
+
+    const setTabs = React.useCallback((components: TrackableComponent[]) => {
+      setTabsComponents(components);
+    }, []);
+
+    const addTitle = React.useCallback((component: TrackableComponent) => {
+      setTabsTitle((state) => {
+        const filteredState = state.filter((comp) => comp.id !== component.id);
+        return [...filteredState, component];
+      });
+    }, []);
+
+    const addTab = React.useCallback((component: TrackableComponent) => {
+      setTabsComponents((state) => {
+        const filteredState = state.filter((comp) => comp.id !== component.id);
+        return [...filteredState, component];
+      });
+    }, []);
+
+    const setTitles = React.useCallback((components: TrackableComponent[]) => {
+      setTabsTitle(components);
+    }, []);
+
+    const setCurrentTabIdx = React.useCallback((tabIdx: number) => {
+      setCurrentTab(tabIdx);
+    }, []);
+
+    const contextValue = React.useMemo(
+      () => ({
         currentTabIdx: currentTab,
         setCurrentTabIdx,
         tabsComponents,
@@ -88,22 +94,34 @@ export const Tabs: React.FC<TabsProps> = ({
         setTabsTitlesComponents: setTitles,
         addTab,
         addTitle,
-      }}
-      {...props}
-    >
-      {runIfFn(children, {
-        currentTabIdx: currentTab,
-        setCurrentTabIdx,
+      }),
+      [
+        currentTab,
         tabsComponents,
         tabsTitles,
-        setTabsComponents: setTabs,
-        setTabsTitlesComponents: setTitles,
+        setTabs,
+        setTitles,
         addTab,
         addTitle,
-      })}
-    </TabsContext.Provider>
-  );
-};
+      ]
+    );
+
+    return (
+      <TabsContext.Provider value={contextValue} {...props}>
+        {runIfFn(children, {
+          currentTabIdx: currentTab,
+          setCurrentTabIdx,
+          tabsComponents,
+          tabsTitles,
+          setTabsComponents: setTabs,
+          setTabsTitlesComponents: setTitles,
+          addTab,
+          addTitle,
+        })}
+      </TabsContext.Provider>
+    );
+  }
+);
 
 export interface TabsHeaderProps extends HtmlDivProps { }
 
@@ -164,7 +182,7 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
           <>{children}</>
         ),
     });
-  }, [addTitle, children, currentTabIdx, TabKey]);
+  }, [addTitle, currentTabIdx, TabKey]);
 
   return null;
 };
