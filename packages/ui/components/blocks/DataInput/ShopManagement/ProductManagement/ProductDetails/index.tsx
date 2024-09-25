@@ -23,6 +23,7 @@ import {
 } from "@UI";
 import { FileRes } from "utils";
 import { ProductCondition, ProductType } from "@features/API";
+import * as Yup from "yup";
 
 export interface ProductGeneralDetailsProps {
   onChange?: (values: Record<string, any>) => any;
@@ -44,31 +45,67 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const { mutate } = useCreateNewProductMutation();
 
   const { t } = useTranslation();
+  const validationSchema = Yup.object({
+    title: Yup.string()
+      .required("Title is required")
+      .max(100, "Max 100 characters"),
+    description: Yup.string().required("Description is required"),
+    metaTagDescription: Yup.string().max(150, "Max 150 characters"),
+    metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
+    productTag: Yup.string().max(50, "Max 50 characters"),
+    external_url: Yup.string().url("Must be a valid URL"),
+    condition: Yup.mixed().oneOf(
+      Object.values(ProductCondition),
+      "Invalid condition"
+    ),
+    type: Yup.mixed().oneOf(Object.values(ProductType), "Invalid product type"),
+    price: Yup.number()
+      .required("Price is required")
+      .min(1, "Price must be at least 1"),
+    vat: Yup.number()
+      .required("VAT is required")
+      .min(0, "VAT must be at least 0"),
+    categoryId: Yup.string().required("Category is required"),
+    qty: Yup.number()
+      .required("Quantity is required")
+      .min(1, "Quantity must be at least 1"),
+    hashtags: Yup.array().of(
+      Yup.string().max(50, "Max 50 characters per hashtag")
+    ),
+  });
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <Formik initialValues={values as Record<string, any>} onSubmit={() => { }}>
+      <Formik
+        validationSchema={validationSchema}
+        initialValues={values as Record<string, any>}
+        onSubmit={(formValues, { setSubmitting }) => {
+          // Form submission logic
+          console.log("Form is valid and submitted:", formValues);
+          setSubmitting(false); // Stop submission process
+        }}
+      >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
           return (
             <Form className="w-full flex flex-col gap-4">
               <span className="text-2xl font-semibold">
-                {t("name_&_description", "Name & Description")}
+                {t("title_&_description", "Title & Description")}
               </span>
-              <FormikTransalationInput
+              <FormikInput
                 formikSetField={setFieldValue}
                 formikValues={values}
-                name="name"
-                placeholder={t("Name")}
+                name="title"
+                placeholder={t("Title")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="description"
                 as={Textarea}
                 formikSetField={setFieldValue}
                 formikValues={values}
                 placeholder={t("Description")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="metaTagDescription"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -76,7 +113,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
                 formikSetField={setFieldValue}
@@ -84,7 +121,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              <FormikTransalationInput
+              <FormikInput
                 name="productTag"
                 className="bg-white"
                 formikSetField={setFieldValue}
