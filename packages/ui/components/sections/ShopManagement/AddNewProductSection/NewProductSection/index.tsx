@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { StepperStepType } from "types";
+import { ProductCondition, StepperStepType } from "types";
 import {
   CheckMarkStepper,
   Button,
@@ -22,6 +22,8 @@ import {
 } from "@UI";
 import { ProductGeneralDetails } from "@blocks";
 import { mapArray, PassPropsToFnOrElem } from "utils";
+import * as Yup from "yup";
+import { ProductType } from "@features/API";
 
 export interface AddNewProductSectionProps { }
 
@@ -30,24 +32,28 @@ const addProductLanguagesSection = [
     language: {
       name: "English",
       countryCode: "GB",
+      languageCode: "en",
     },
   },
   {
     language: {
       name: "French",
       countryCode: "FR",
+      languageCode: "fr",
     },
   },
   {
     language: {
       name: "German",
       countryCode: "DE",
+      languageCode: "de",
     },
   },
   {
     language: {
       name: "Spanish",
       countryCode: "ES",
+      languageCode: "es",
     },
   },
 ];
@@ -61,13 +67,12 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
 
     const handleTabChange = React.useCallback(
       (index: number) => {
-        const currLang = addProductLanguagesSection[index].language.countryCode;
+        const currLang =
+          addProductLanguagesSection[index].language.languageCode;
         setLang(currLang);
       },
       [setLang]
     );
-
-    console.log("LANGUAGE =====>  " + lang);
 
     return (
       <div className="flex h-full flex-col gap-4 w-full">
@@ -88,9 +93,20 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
         <FormTranslationWrapper lang={lang} onLangChange={setLang}>
           <NewProductInputsSection
             onSubmit={(data) => {
-              console.log("Lang ================> " + lang);
-              console.log("PRODUCT DATA ====> " + JSON.stringify(data));
-              mutate(data);
+              console.log(
+                "DATE ==>  " +
+                JSON.stringify({
+                  ...data,
+                  name: { langId: lang, value: data.title },
+
+                  description: { langId: lang, value: data.description },
+                })
+              );
+              mutate({
+                ...data,
+                title: { langId: lang, value: data.title },
+                description: { langId: lang, value: data.description },
+              });
               cancel();
             }}
           />
@@ -129,12 +145,43 @@ const MemoizedTabTitle: React.FC<{
 export const NewProductInputsSection: React.FC<{
   onSubmit: (data: any) => any;
 }> = React.memo(({ onSubmit }) => {
-  const steps: StepperStepType[] = [
+  const steps: (StepperStepType & { validationSchema?: Yup.AnySchema })[] = [
     {
       stepName: {
         translationKey: "general",
         fallbackText: "General",
       },
+      validationSchema: Yup.object({
+        title: Yup.string()
+          .required("Title is required")
+          .max(100, "Max 100 characters"),
+        description: Yup.string().required("Description is required"),
+        metaTagDescription: Yup.string().max(150, "Max 150 characters"),
+        metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
+        productTag: Yup.string().max(50, "Max 50 characters"),
+        external_url: Yup.string().url("Must be a valid URL"),
+        condition: Yup.mixed().oneOf(
+          Object.values(ProductCondition),
+          "Invalid condition"
+        ),
+        type: Yup.mixed().oneOf(
+          Object.values(ProductType),
+          "Invalid product type"
+        ),
+        price: Yup.number()
+          .required("Price is required")
+          .min(1, "Price must be at least 1"),
+        vat: Yup.number()
+          .required("VAT is required")
+          .min(0, "VAT must be at least 0"),
+        categoryId: Yup.string().required("Category is required"),
+        qty: Yup.number()
+          .required("Quantity is required")
+          .min(1, "Quantity must be at least 1"),
+        hashtags: Yup.array().of(
+          Yup.string().max(50, "Max 50 characters per hashtag")
+        ),
+      }),
       stepComponent: <ProductGeneralDetails values={{}} />,
       key: "general",
     },
@@ -175,39 +222,50 @@ export const NewProductInputsSection: React.FC<{
         }}
         stepsNum={steps.length}
       >
-        {({ currentStepIdx, goToStep, nextStep, values }) => (
+        {({ currentStepIdx, goToStep, nextStep, values, validate }) => (
           <>
             <CheckMarkStepper
               currentStepIdx={currentStepIdx}
               onStepChange={(step) => goToStep(step)}
-              steps={mapArray(steps, ({ key, stepComponent, stepName }) =>
-                key === "shipping" && values["product_type"] === "downloadable"
-                  ? {
-                    key: "files",
-                    stepComponent: (
-                      <StepperFormHandler handlerKey="files">
-                        {({ validate }) => (
-                          <AddNewDigitalProductSection onChange={validate} />
-                        )}
-                      </StepperFormHandler>
-                    ),
-                    stepName: "Files",
-                  }
-                  : {
-                    key,
-                    stepName,
-                    stepComponent: (
-                      <StepperFormHandler handlerKey={String(key)}>
-                        {({ validate }) => (
-                          <>
-                            {PassPropsToFnOrElem(stepComponent, {
-                              onChange: validate,
-                            })}
-                          </>
-                        )}
-                      </StepperFormHandler>
-                    ),
-                  }
+              steps={mapArray(
+                steps,
+                ({ key, stepComponent, stepName, validationSchema }) =>
+                  key === "shipping" &&
+                    values["product_type"] === "downloadable"
+                    ? {
+                      key: "files",
+                      stepComponent: (
+                        <StepperFormHandler
+                          handlerKey="files"
+                          validationSchema={validationSchema}
+                        >
+                          {({ validate }) => (
+                            <AddNewDigitalProductSection
+                              onChange={validate}
+                            />
+                          )}
+                        </StepperFormHandler>
+                      ),
+                      stepName: "Files",
+                    }
+                    : {
+                      key,
+                      stepName,
+                      stepComponent: (
+                        <StepperFormHandler
+                          handlerKey={String(key)}
+                          validationSchema={validationSchema}
+                        >
+                          {({ validate }) => (
+                            <>
+                              {PassPropsToFnOrElem(stepComponent, {
+                                onChange: validate,
+                              })}
+                            </>
+                          )}
+                        </StepperFormHandler>
+                      ),
+                    }
               )}
             />
             <div className="w-full flex justify-end gap-4">
