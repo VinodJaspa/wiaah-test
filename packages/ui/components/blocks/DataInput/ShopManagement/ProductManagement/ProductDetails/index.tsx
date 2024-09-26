@@ -28,6 +28,8 @@ import * as Yup from "yup";
 export interface ProductGeneralDetailsProps {
   onChange?: (values: Record<string, any>) => any;
   values: any;
+  onValid?: (values: Object) => any;
+  validationSchema: Yup.AnySchema;
 }
 
 const MAX_PRODUCTS_IMAGE = 4;
@@ -35,6 +37,8 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   onChange,
   values = {},
+  onValid,
+  validationSchema,
 }) => {
   const { lang } = useFormTranslationWrapper();
   const { uploadImage, uploadVideo } = useFileUploadModal();
@@ -45,45 +49,12 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const { mutate } = useCreateNewProductMutation();
 
   const { t } = useTranslation();
-  const validationSchema = Yup.object({
-    title: Yup.string()
-      .required("Title is required")
-      .max(100, "Max 100 characters"),
-    description: Yup.string().required("Description is required"),
-    metaTagDescription: Yup.string().max(150, "Max 150 characters"),
-    metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
-    productTag: Yup.string().max(50, "Max 50 characters"),
-    external_url: Yup.string().url("Must be a valid URL"),
-    condition: Yup.mixed().oneOf(
-      Object.values(ProductCondition),
-      "Invalid condition"
-    ),
-    type: Yup.mixed().oneOf(Object.values(ProductType), "Invalid product type"),
-    price: Yup.number()
-      .required("Price is required")
-      .min(1, "Price must be at least 1"),
-    vat: Yup.number()
-      .required("VAT is required")
-      .min(0, "VAT must be at least 0"),
-    categoryId: Yup.string().required("Category is required"),
-    qty: Yup.number()
-      .required("Quantity is required")
-      .min(1, "Quantity must be at least 1"),
-    hashtags: Yup.array().of(
-      Yup.string().max(50, "Max 50 characters per hashtag")
-    ),
-  });
-
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik
-        validationSchema={validationSchema}
         initialValues={values as Record<string, any>}
-        onSubmit={(formValues, { setSubmitting }) => {
-          // Form submission logic
-          console.log("Form is valid and submitted:", formValues);
-          setSubmitting(false); // Stop submission process
-        }}
+        validationSchema={validationSchema}
+        onSubmit={() => { }}
       >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
@@ -135,7 +106,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               </span>
 
               <FormikInput<InputProps>
-                name="external url"
+                name="external_url"
                 value={values["external_url"]}
                 placeholder={t("Source Site Url")}
               />
@@ -176,6 +147,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               />
 
               <SubCategorySelect
+                name="categoryId"
                 onCateSelection={(category) => {
                   if (category[-1]) {
                     setFieldValue("categoryId", category[-1].id);
@@ -213,7 +185,6 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                       <video
                         className="w-full h-full object-cover"
                         key={i}
-                        //@ts-ignore
                         src={vid}
                       />
                     </div>
