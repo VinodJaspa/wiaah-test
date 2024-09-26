@@ -12,7 +12,6 @@ interface StepperFormCtxValues {
   isFirstStep: boolean;
   validate: (data: Data, handlerKey: string) => any;
   unvalidate: (handlerKey: string) => any;
-  prevoiusStep: () => any;
   previousStep: () => any;
   nextStep: () => any;
   goToStep: (stepIdx: number) => any;
@@ -26,7 +25,6 @@ const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   isFirstStep: true,
   isLastStep: false,
   goToStep: () => { },
-  prevoiusStep: () => { },
   validate: () => { },
   unvalidate: () => { },
   nextStep: () => { },
@@ -124,7 +122,7 @@ export function StepperFormController<FinaleDataType extends Data>({
     }
   }
 
-  function prevoiusStep() {
+  function previousStep() {
     const to = currentStepIdx - 1;
     const newHandlers = handlers.slice(0, to > 0 ? to : 0);
     setStepsValidation((state) => {
@@ -152,8 +150,7 @@ export function StepperFormController<FinaleDataType extends Data>({
         validate,
         nextStep,
         goToStep,
-        prevoiusStep,
-        previousStep: prevoiusStep,
+        previousStep,
         currentStepIdx,
         setHandler,
         handlerKeys: handlers,
@@ -165,8 +162,7 @@ export function StepperFormController<FinaleDataType extends Data>({
       {runIfFn<StepperFormCtxValues>(children, {
         currentStepIdx,
         goToStep,
-        prevoiusStep,
-        previousStep: prevoiusStep,
+        previousStep,
         validate,
         nextStep,
         setHandler,
