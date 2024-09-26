@@ -10,14 +10,11 @@ import {
   CashbackType,
   PresentationType,
   ProdcutType,
-  ProductAttributeDisplayType,
-  ProductAttributeSelectionType,
   ProductCondition,
   ProductSize,
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
-import { TranslationTextInput } from '@shop';
 import { GraphQLUpload, Upload } from 'graphql-upload-ts';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
@@ -88,11 +85,11 @@ export class CreateProductInput {
   @Field(() => ProdcutType)
   type: ProdcutType;
 
-  @Field((type) => [StringTranslationField])
-  title: StringTranslationField[];
+  @Field((type) => StringTranslationField)
+  title: StringTranslationField;
 
-  @Field((type) => [StringTranslationField])
-  description: StringTranslationField[];
+  @Field((type) => StringTranslationField)
+  description: StringTranslationField;
 
   @Field((type) => ID)
   categoryId: string;
