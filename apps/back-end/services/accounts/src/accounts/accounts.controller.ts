@@ -162,12 +162,8 @@ export class AccountsController implements OnModuleInit {
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById)
   async getAccountById(@Payload() payload: { value: { accountId: string } }) {
-    console.log(
-      'GET ACCOUNT BY ID Payload =======> ' + JSON.stringify(payload),
-    );
     const { accountId } = payload.value;
 
-    console.log('GET ACCOUNT BY ID ACCOUNTID =======> ' + accountId);
     try {
       const accountExists = await this.accountService.getById(accountId);
       if (!accountExists) {
