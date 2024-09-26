@@ -27,6 +27,27 @@ import { ProductType } from "@features/API";
 
 export interface AddNewProductSectionProps { }
 
+const FirstStepSchema = Yup.object().shape({
+  title: Yup.string()
+    .required("Title is required")
+    .min(4, "Min 4 characters")
+    .max(100, "Max 100 characters"),
+  description: Yup.string().required("Description is required"),
+  metaTagDescription: Yup.string().max(150, "Max 150 characters"),
+  metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
+  productTag: Yup.string().max(50, "Max 50 characters"),
+  external_url: Yup.string().url("Must be a valid URL"),
+  price: Yup.number()
+    .required("Price is required")
+    .min(1, "Price must be at least 1"),
+  vat: Yup.number()
+    .required("VAT is required")
+    .min(0, "VAT must be at least 0"),
+  quantity: Yup.number()
+    .required("Quantity is required")
+    .min(1, "Quantity must be at least 1"),
+});
+
 const addProductLanguagesSection = [
   {
     language: {
@@ -151,38 +172,9 @@ export const NewProductInputsSection: React.FC<{
         translationKey: "general",
         fallbackText: "General",
       },
-      validationSchema: Yup.object({
-        title: Yup.string()
-          .required("Title is required")
-          .max(100, "Max 100 characters"),
-        description: Yup.string().required("Description is required"),
-        metaTagDescription: Yup.string().max(150, "Max 150 characters"),
-        metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
-        productTag: Yup.string().max(50, "Max 50 characters"),
-        external_url: Yup.string().url("Must be a valid URL"),
-        condition: Yup.mixed().oneOf(
-          Object.values(ProductCondition),
-          "Invalid condition"
-        ),
-        type: Yup.mixed().oneOf(
-          Object.values(ProductType),
-          "Invalid product type"
-        ),
-        price: Yup.number()
-          .required("Price is required")
-          .min(1, "Price must be at least 1"),
-        vat: Yup.number()
-          .required("VAT is required")
-          .min(0, "VAT must be at least 0"),
-        categoryId: Yup.string().required("Category is required"),
-        qty: Yup.number()
-          .required("Quantity is required")
-          .min(1, "Quantity must be at least 1"),
-        hashtags: Yup.array().of(
-          Yup.string().max(50, "Max 50 characters per hashtag")
-        ),
-      }),
-      stepComponent: <ProductGeneralDetails values={{}} />,
+      stepComponent: (
+        <ProductGeneralDetails validationSchema={FirstStepSchema} values={{}} />
+      ),
       key: "general",
     },
     {
@@ -216,67 +208,75 @@ export const NewProductInputsSection: React.FC<{
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
       <StepperFormController
-        lock={false}
         onFormComplete={(data) => {
           onSubmit && onSubmit(data);
         }}
-        stepsNum={steps.length}
+        stepsNum={2}
       >
-        {({ currentStepIdx, goToStep, nextStep, values, validate }) => (
+        {({ currentStepIdx, goToStep, nextStep, previousStep, values }) => (
           <>
             <CheckMarkStepper
               currentStepIdx={currentStepIdx}
-              onStepChange={(step) => goToStep(step)}
-              steps={mapArray(
-                steps,
-                ({ key, stepComponent, stepName, validationSchema }) =>
-                  key === "shipping" &&
-                    values["product_type"] === "downloadable"
-                    ? {
-                      key: "files",
-                      stepComponent: (
-                        <StepperFormHandler
-                          handlerKey="files"
-                          validationSchema={validationSchema}
-                        >
-                          {({ validate }) => (
-                            <AddNewDigitalProductSection
-                              onChange={validate}
-                            />
-                          )}
-                        </StepperFormHandler>
-                      ),
-                      stepName: "Files",
-                    }
-                    : {
-                      key,
-                      stepName,
-                      stepComponent: (
-                        <StepperFormHandler
-                          handlerKey={String(key)}
-                          validationSchema={validationSchema}
-                        >
-                          {({ validate }) => (
-                            <>
-                              {PassPropsToFnOrElem(stepComponent, {
-                                onChange: validate,
-                              })}
-                            </>
-                          )}
-                        </StepperFormHandler>
-                      ),
-                    }
-              )}
+              onStepChange={goToStep}
+              steps={[
+                {
+                  stepName: {
+                    translationKey: "general",
+                    fallbackText: "General",
+                  },
+                  stepComponent: (
+                    <StepperFormHandler
+                      validationSchema={FirstStepSchema}
+                      handlerKey="general"
+                    >
+                      {({ validate }) => (
+                        <ProductGeneralDetails
+                          validationSchema={FirstStepSchema}
+                          onChange={validate}
+                          values={{}}
+                        />
+                      )}
+                    </StepperFormHandler>
+                  ),
+                  key: "general",
+                },
+                {
+                  stepName: {
+                    translationKey: "shipping",
+                    fallbackText: "Shipping",
+                  },
+
+                  stepComponent: (
+                    <StepperFormHandler handlerKey="shipping">
+                      {({ validate }) => <NewProductShippingOptions />}
+                    </StepperFormHandler>
+                  ),
+                  key: "shipping",
+                },
+
+                {
+                  stepName: {
+                    translationKey: "options",
+                    fallbackText: "Options",
+                  },
+
+                  stepComponent: (
+                    <StepperFormHandler handlerKey="shipping">
+                      {({ validate }) => <ProductOptions />}
+                    </StepperFormHandler>
+                  ),
+                  key: "options",
+                },
+              ]}
             />
             <div className="w-full flex justify-end gap-4">
-              <Button className="bg-gray-100 hover:bg-gray-300 active:bg-gray-400 text-black">
+              <Button
+                onClick={() => previousStep()}
+                className="bg-gray-100 hover:bg-gray-300 active:bg-gray-400 text-black"
+              >
                 {t("preview", "preview")}
               </Button>
-              <Button
-                onClick={() => {
-                  nextStep();
-                }}
-              >
+              <Button onClick={() => nextStep()}>
                 {t("save and continue", "Save and continue")}
               </Button>
             </div>
