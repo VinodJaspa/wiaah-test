@@ -6,7 +6,7 @@ import { Menu, MenuButton, MenuList, DateInput, Select, Input } from "@UI";
 import { SelectOption } from "@UI";
 
 export interface NewProductDiscountOptionsProps {
-  onChange: (props: any) => any;
+  onChange?: (props: any) => any;
 }
 
 const MAX_DISCOUNT = 100;
@@ -21,7 +21,7 @@ export const NewProductDiscountOptions: React.FC<
       <h1 className="text-xl font-bold">
         {t("create_discount_code", "Create Discount Code")}
       </h1>
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik initialValues={{}} onSubmit={() => { }}>
         {({ setFieldValue, values }) => {
           onChange && onChange(values);
           return (
