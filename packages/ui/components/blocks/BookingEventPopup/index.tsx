@@ -34,7 +34,7 @@ export const BookingEventPopup: React.FC<BookingEventProps> = ({
     closeBooking();
   }
 
-  function handleOpenBooking() {}
+  function handleOpenBooking() { }
 
   function handleSuccess(event: Event) {
     if (!onSuccess) return;
@@ -128,7 +128,7 @@ export const BookingServiceDateRangeStepper: React.FC<
         currentStepIdx,
         goToStep,
         nextStep,
-        prevoiusStep,
+        previousStep,
         isFirstStep,
         isLastStep,
       }) => {
@@ -167,7 +167,7 @@ export const BookingServiceDateRangeStepper: React.FC<
               </StepperFormHandler>
             ) : null}
             <div className="flex items-center gap-2 justify-between">
-              <Button onClick={prevoiusStep} disabled={isFirstStep}>
+              <Button onClick={previousStep} disabled={isFirstStep}>
                 {t("previous")}
               </Button>
               <Button onClick={nextStep}>
