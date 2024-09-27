@@ -20,7 +20,7 @@ const test3Schema = yup.object().shape({
   user: yup.string().required().min(5),
 });
 
-const preview: NextPage = () => {
+const Preview: NextPage = () => {
   return (
     <div className="w-1/2 mx-auto mt-8">
       <StepperFormController
@@ -29,7 +29,7 @@ const preview: NextPage = () => {
           console.log("complete", data);
         }}
       >
-        {({ currentStepIdx, goToStep, nextStep, prevoiusStep }) => {
+        {({ currentStepIdx, goToStep, nextStep, previousStep }) => {
           return (
             <div className="flex flex-col gap-8 w-full">
               <CheckMarkStepper
@@ -84,7 +84,7 @@ const preview: NextPage = () => {
                 ]}
               />
               <div className="flex justify-between w-full">
-                <Button onClick={() => prevoiusStep()}>prev</Button>
+                <Button onClick={() => previousStep()}>prev</Button>
                 <Button onClick={() => nextStep()}>next</Button>
               </div>
             </div>
@@ -155,4 +155,4 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
     </Formik>
   );
 };
-export default preview;
+export default Preview;
