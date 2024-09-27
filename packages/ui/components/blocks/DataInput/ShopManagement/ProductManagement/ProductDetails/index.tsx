@@ -28,7 +28,6 @@ import * as Yup from "yup";
 export interface ProductGeneralDetailsProps {
   onChange?: (values: Record<string, any>) => any;
   values: any;
-  onValid?: (values: Object) => any;
   validationSchema: Yup.AnySchema;
 }
 
@@ -37,16 +36,15 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   onChange,
   values = {},
-  onValid,
   validationSchema,
 }) => {
   const { lang } = useFormTranslationWrapper();
   const { uploadImage, uploadVideo } = useFileUploadModal();
-  const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
+  const [images, setImages] = React.useState<FileRes[] | string[]>(
+    values?.images || []
+  );
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { data: categories } = useGetProductCategories();
-
-  const { mutate } = useCreateNewProductMutation();
 
   const { t } = useTranslation();
   return (
@@ -206,7 +204,6 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                           <Image
                             className="w-full h-full object-cover"
                             key={i}
-                            //@ts-ignore
                             src={images[i]}
                           />
                         </>
