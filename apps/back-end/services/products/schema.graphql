@@ -743,10 +743,10 @@ input UpdateUserShopInput {
 }
 
 input CreateProductInput {
-  external_link: String
+  external_url: String
   type: ProductType!
-  title: [StringTranslationField!]!
-  description: [StringTranslationField!]!
+  title: StringTranslationField!
+  description: StringTranslationField!
   categoryId: ID!
   attributesIds: [ProductAttributeInput!]!
   stock: Int!
@@ -782,10 +782,10 @@ input DiscountInput {
 scalar Upload
 
 input UpdateProductInput {
-  external_link: String
+  external_url: String
   type: ProductType
-  title: [StringTranslationField!]
-  description: [StringTranslationField!]
+  title: StringTranslationField
+  description: StringTranslationField
   categoryId: ID
   attributesIds: [ProductAttributeInput!]
   stock: Int
