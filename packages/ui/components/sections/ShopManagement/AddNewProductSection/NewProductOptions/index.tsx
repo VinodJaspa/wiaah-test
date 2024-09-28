@@ -1,95 +1,167 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdCheckmark } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { FormOptWithCompType } from "types";
-import {
-  Select,
-  DropdownPanel,
-  TranslationText,
-  Checkbox,
-  SelectOption,
-} from "@UI";
+import { DropdownPanel, TranslationText } from "@UI";
+import { Field, Form, Formik } from "formik";
 
-export interface ProductOptionsProps {}
+export interface ProductOptionsProps { }
+
+export interface ProductOptionsFormValues {
+  options: {
+    colors: string[];
+    sizes: string[];
+  };
+}
 
 export const ProductOptions: React.FC<ProductOptionsProps> = () => {
-  const [selectedOptions, setSelectedOptions] = React.useState<
-    FormOptWithCompType<string[]>[]
-  >([]);
+  const [selectedOptions, setSelectedOptions] =
+    useState<FormOptWithCompType<string[]>[]>(options);
   const { t } = useTranslation();
-  function addOption(opt: number) {
-    if (typeof opt !== "number") return;
-    const option = options[opt];
-    if (!option) return;
-    setSelectedOptions((state) => [...state, option]);
-  }
 
-  function removeOption(optIdx: number) {
-    setSelectedOptions((state) => state.filter((_, i) => i !== optIdx));
-  }
+  const initialValues: ProductOptionsFormValues = {
+    options: {
+      colors: [],
+      sizes: [],
+    },
+  };
 
   return (
-    <div className="py-4 flex flex-col gap-4">
-      {selectedOptions.map((opt, i) => (
-        <div key={i} className="flex flex-col gap-2">
-          <div className="bg-gray-200 w-full px-4 py-2 flex justify-between">
-            <IoMdCheckmark />
-            <TranslationText translationObject={opt.name} />
-            <MdClose
-              onClick={() => removeOption(i)}
-              className="cursor-pointer"
-            />
-          </div>
-          <opt.component onData={() => {}} />
-        </div>
-      ))}
-      <Select
-        className="w-full min-w-32"
-        placeholder={"+" + t("Add Option")}
-        onOptionSelect={(v) => addOption(parseInt(v))}
-      >
-        {options.map((opt, i) => (
-          <SelectOption value={i} key={opt.value + i}>
-            <TranslationText translationObject={opt.name} />
-          </SelectOption>
-        ))}
-      </Select>
-    </div>
+    <Formik initialValues={initialValues} onSubmit={() => { }}>
+      {({ values, setFieldValue }) => (
+        <Form className="py-4 flex flex-col gap-4">
+          {selectedOptions.map((opt, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <div className="bg-gray-200 w-full px-4 py-2 flex justify-between">
+                <IoMdCheckmark />
+                <TranslationText translationObject={opt.name} />
+                <MdClose
+                  onClick={() => {
+                    const updatedOptions = selectedOptions.filter(
+                      (_, index) => index !== i
+                    );
+                    setSelectedOptions(updatedOptions);
+                    setFieldValue(`options.${opt.value}`, []);
+                  }}
+                  className="cursor-pointer"
+                />
+              </div>
+
+              <DropdownPanel className="w-[100%]" name={t("colors", "Colors")}>
+                {colors.map((color, i) => (
+                  <div key={color + i} className="flex gap-4">
+                    <Field
+                      type="checkbox"
+                      name="options.colors"
+                      value={color}
+                      as="input"
+                      checked={values.options.colors}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newColors = e.target.checked
+                          ? [...values.options.colors, color]
+                          : values.options.colors.filter((c) => c !== color);
+                        setFieldValue("options.colors", newColors);
+                      }}
+                    />
+                    <span
+                      style={{ backgroundColor: color }}
+                      className="w-8 h-8"
+                    ></span>
+                  </div>
+                ))}
+              </DropdownPanel>
+
+              <DropdownPanel className="w-[100%]" name={t("sizes", "Sizes")}>
+                {sizes.map((size, i) => (
+                  <div key={size + i} className="flex gap-4">
+                    <Field
+                      type="checkbox"
+                      name="options.sizes"
+                      value={size}
+                      as="input"
+                      checked={values.options.sizes.includes(size)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newSizes = e.target.checked
+                          ? [...values.options.sizes, size]
+                          : values.options.sizes.filter((s) => s !== size);
+                        setFieldValue("options.sizes", newSizes);
+                      }}
+                    />
+                    <span>{size}</span>
+                  </div>
+                ))}
+              </DropdownPanel>
+            </div>
+          ))}
+        </Form>
+      )}
+    </Formik>
   );
 };
 
-const AddProductColors = () => {
+interface AddProductColorsProps {
+  values: string[];
+  setFieldValue: (field: string, value: any) => void;
+}
+
+const AddProductColors: React.FC<AddProductColorsProps> = ({
+  values,
+  setFieldValue,
+}) => {
   const { t } = useTranslation();
-  const [checked, setChecked] = React.useState<boolean>(false);
+
   return (
     <DropdownPanel className="w-[100%]" name={t("colors", "Colors")}>
       {colors.map((color, i) => (
         <div key={color + i} className="flex gap-4">
-          <Checkbox
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
+          <Field
+            type="checkbox"
+            name="options.colors"
+            value={color}
+            as="input"
+            checked={values.includes(color)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const newColors = e.target.checked
+                ? [...values, color]
+                : values.filter((c) => c !== color);
+              setFieldValue("options.colors", newColors);
+            }}
           />
-          <span
-            style={{ backgroundColor: color }}
-            className={`w-8 h-8]`}
-          ></span>
+          <span style={{ backgroundColor: color }} className="w-8 h-8"></span>
         </div>
       ))}
     </DropdownPanel>
   );
 };
 
-const AddProductSizes = () => {
-  const [checked, setChecked] = React.useState<boolean>(false);
+interface AddProductSizesProps {
+  values: string[];
+  setFieldValue: (field: string, value: any) => void;
+}
+
+const AddProductSizes: React.FC<AddProductSizesProps> = ({
+  values,
+  setFieldValue,
+}) => {
   const { t } = useTranslation();
+
   return (
-    <DropdownPanel className="w-[100%]" name={t("sizes", "sizes")}>
+    <DropdownPanel className="w-[100%]" name={t("sizes", "Sizes")}>
       {sizes.map((size, i) => (
         <div key={size + i} className="flex gap-4">
-          <Checkbox
-            checked={checked}
-            onChange={(e) => setChecked(e.target.checked)}
+          <Field
+            type="checkbox"
+            name="options.sizes"
+            value={size}
+            as="input"
+            checked={values.includes(size)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const newSizes = e.target.checked
+                ? [...values, size]
+                : values.filter((s) => s !== size);
+              setFieldValue("options.sizes", newSizes);
+            }}
           />
           <span>{size}</span>
         </div>
@@ -117,7 +189,7 @@ const options: FormOptWithCompType<string[]>[] = [
   },
 ];
 
-const sizes: string[] = ["small", "meduim", "large", "x-large", "xx-large"];
+const sizes: string[] = ["small", "medium", "large", "x-large", "xx-large"];
 
 const colors: string[] = [
   "#2271B3",
