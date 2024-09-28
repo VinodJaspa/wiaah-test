@@ -1,9 +1,15 @@
 import { TranslationTextType } from "./TranslationText";
 
+export type OptionKeys = "colors" | "sizes";
+
 export type FormOptionType<T = string> = {
-  value: T;
+  value: OptionKeys;
   name: TranslationTextType;
 };
+
 export type FormOptWithCompType<TData = void> = FormOptionType & {
-  component: React.FC<{ onData: (data: TData) => any }>;
+  component: React.FC<{
+    values: TData;
+    setFieldValue: (field: string, value: any) => void;
+  }>;
 };
