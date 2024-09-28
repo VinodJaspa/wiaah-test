@@ -40,9 +40,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
 }) => {
   const { lang } = useFormTranslationWrapper();
   const { uploadImage, uploadVideo } = useFileUploadModal();
-  const [images, setImages] = React.useState<FileRes[] | string[]>(
-    values?.images || []
-  );
+  const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { data: categories } = useGetProductCategories();
 
@@ -204,7 +202,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                           <Image
                             className="w-full h-full object-cover"
                             key={i}
-                            src={images[i]}
+                            src={images[i] as string}
                           />
                         </>
                       ) : (
