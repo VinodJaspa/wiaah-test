@@ -7,7 +7,7 @@ import { TranslationText } from "@UI";
 
 export interface NewProductShippingOptions {
   onValid?: (values: Record<string, any>) => any;
-  validationSchema: Yup.AnySchema;
+  validationSchema?: Yup.AnySchema;
 }
 
 export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
@@ -20,43 +20,51 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
       initialValues={{
         shippingMethods: [] as string[], // Manage selected checkboxes as an array
       }}
-      onSubmit={(values) => {
-        onValid && onValid(values);
-      }}
+      onSubmit={() => { }}
     >
-      {({ values, handleChange }) => (
-        <Form className="flex flex-col gap-4">
-          <h1 className="text-xl font-bold">
-            {t("shipping_method", "Shipping Method")}
-          </h1>
+      {({ values, setFieldValue }) => {
+        onValid && onValid(values);
+        return (
+          <Form className="flex flex-col gap-4">
+            <h1 className="text-xl font-bold">
+              {t("shipping_method", "Shipping Method")}
+            </h1>
 
-          {shippingMethods.map((method, i) => (
-            <div key={i} className="flex gap-4 items-center">
-              <Field
-                type="checkbox"
-                name="shippingMethods"
-                value={method.value} // Unique value for each shipping method
-                checked={values.shippingMethods.includes(method.value)} // Ensure checkbox is checked based on value
-                formikSetField={handleChange}
-              />
-              <span className="flex gap-1">
-                <TranslationText translationObject={method.name} />
-                {method.period && (
-                  <span>
-                    ({method.period.from}-{method.period.to} {t("days", "days")}
-                    )
-                  </span>
-                )}
-                {method.price && (
-                  <span>
-                    {method.price.amount} {method.price.currency}
-                  </span>
-                )}
-              </span>
-            </div>
-          ))}
-        </Form>
-      )}
+            {shippingMethods.map((method, i) => (
+              <div key={i} className="flex gap-4 items-center">
+                <Field
+                  type="checkbox"
+                  name="shippingMethods"
+                  value={method.value} // Unique value for each shipping method
+                  checked={values.shippingMethods.includes(method.value)} // Ensure checkbox is checked based on value
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const newArray = e.target.checked
+                      ? [...values.shippingMethods, method.value] // Add to array if checked
+                      : values.shippingMethods.filter(
+                        (value) => value !== method.value
+                      ); // Remove from array if unchecked
+                    setFieldValue("shippingMethods", newArray);
+                  }}
+                />
+                <span className="flex gap-1">
+                  <TranslationText translationObject={method.name} />
+                  {method.period && (
+                    <span>
+                      ({method.period.from}-{method.period.to}{" "}
+                      {t("days", "days")})
+                    </span>
+                  )}
+                  {method.price && (
+                    <span>
+                      {method.price.amount} {method.price.currency}
+                    </span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
