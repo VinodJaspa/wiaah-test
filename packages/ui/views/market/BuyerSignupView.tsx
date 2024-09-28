@@ -14,7 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-
+import { useSignupMutation } from "@features/Auth";
 import { gql, useMutation } from "@apollo/client";
 import { RegisterAccountType } from "@features/API";
 
@@ -54,21 +54,23 @@ const BuyerSignupSchema = Yup.object().shape({
 });
 
 // creating a new account
-const REGISTER_MUTATION = gql`
-  mutation Register($input: CreateAccountInput!) {
-    register(RegisterInput: $input) {
-      success
-      code
-      message
-    }
-  }
-`;
 
 export const BuyerSignupView: FC<{}> = () => {
+  const { mutate: SignUp } = useSignupMutation();
   const { t } = useTranslation();
-
-  const [CreateNewAccount, { loading, error, data }] =
-    useMutation(REGISTER_MUTATION);
+  const handleSignUpSubmit = (data: any) => {
+    SignUp(
+      { ...data },
+      {
+        onSuccess: (response) => {
+          console.log("Signup successful:", response);
+        },
+        onError: (err) => {
+          console.error("Signup error:", err);
+        },
+      }
+    );
+  };
 
   return (
     <section id="BuyerSignupView">
@@ -87,25 +89,7 @@ export const BuyerSignupView: FC<{}> = () => {
           birthDate: "",
           termsConditionsAggrement: false,
         }}
-        onSubmit={async (values) => {
-          try {
-            const result = await CreateNewAccount({
-              variables: {
-                input: {
-                  firstName: values.firstName,
-                  lastName: values.lastName,
-                  email: values.email,
-                  birthDate: values.birthDate,
-                  accountType: RegisterAccountType.Buyer,
-                  password: values.password,
-                },
-              },
-            });
-            console.log("Registration result:", result);
-          } catch (error) {
-            console.error("Registration error:", error);
-          }
-        }}
+        onSubmit={(data) => handleSignUpSubmit(data)}
       >
         {({ values, setFieldValue }) => {
           return (
