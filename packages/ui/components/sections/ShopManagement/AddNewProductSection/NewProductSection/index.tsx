@@ -14,20 +14,20 @@ import {
   TabsContext,
   StepperFormController,
   StepperFormHandler,
-  AddNewDigitalProductSection,
   FormTranslationWrapper,
   useCreateNewProductMutation,
   useEditProductData,
   FlagIcon,
 } from "@UI";
 import { ProductGeneralDetails } from "@blocks";
-import { mapArray, PassPropsToFnOrElem } from "utils";
 import * as Yup from "yup";
-import { ProductType } from "@features/API";
 
 export interface AddNewProductSectionProps { }
+// const shippingValidationSchema = Yup.object().shape({
+//   shippingMethod: Yup.string().required("Please select a shipping method"), // Ensure the field is required
+// });
 
-const FirstStepSchema = Yup.object().shape({
+const detailedValidationSchema = Yup.object().shape({
   title: Yup.string()
     .required("Title is required")
     .min(4, "Min 4 characters")
@@ -35,7 +35,6 @@ const FirstStepSchema = Yup.object().shape({
   description: Yup.string().required("Description is required"),
   metaTagDescription: Yup.string().max(150, "Max 150 characters"),
   metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
-  productTag: Yup.string().max(50, "Max 50 characters"),
   external_url: Yup.string().url("Must be a valid URL"),
   price: Yup.number()
     .required("Price is required")
@@ -119,7 +118,6 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
                 JSON.stringify({
                   ...data,
                   name: { langId: lang, value: data.title },
-
                   description: { langId: lang, value: data.description },
                 })
               );
@@ -166,54 +164,18 @@ const MemoizedTabTitle: React.FC<{
 export const NewProductInputsSection: React.FC<{
   onSubmit: (data: any) => any;
 }> = React.memo(({ onSubmit }) => {
-  const steps: (StepperStepType & { validationSchema?: Yup.AnySchema })[] = [
-    {
-      stepName: {
-        translationKey: "general",
-        fallbackText: "General",
-      },
-      stepComponent: (
-        <ProductGeneralDetails validationSchema={FirstStepSchema} values={{}} />
-      ),
-      key: "general",
-    },
-    {
-      stepName: {
-        translationKey: "shipping",
-        fallbackText: "Shipping",
-      },
-      stepComponent: <NewProductShippingOptions />,
-      key: "shipping",
-    },
-    {
-      stepName: {
-        translationKey: "options",
-        fallbackText: "Options",
-      },
-      stepComponent: <ProductOptions />,
-      key: "options",
-    },
-    {
-      stepName: {
-        translationKey: "special_discount",
-        fallbackText: "Special Discount",
-      },
-      stepComponent: <NewProductDiscountOptions onChange={() => { }} />,
-      key: "special discount",
-    },
-  ];
-
   const { t } = useTranslation();
 
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
       <StepperFormController
+        lock={false}
         onFormComplete={(data) => {
           onSubmit && onSubmit(data);
         }}
-        stepsNum={2}
+        stepsNum={4}
       >
-        {({ currentStepIdx, goToStep, nextStep, previousStep, values }) => (
+        {({ currentStepIdx, goToStep, nextStep, previousStep }) => (
           <>
             <CheckMarkStepper
               currentStepIdx={currentStepIdx}
@@ -226,12 +188,12 @@ export const NewProductInputsSection: React.FC<{
                   },
                   stepComponent: (
                     <StepperFormHandler
-                      validationSchema={FirstStepSchema}
+                      validationSchema={detailedValidationSchema}
                       handlerKey="general"
                     >
                       {({ validate }) => (
                         <ProductGeneralDetails
-                          validationSchema={FirstStepSchema}
+                          validationSchema={detailedValidationSchema}
                           onChange={validate}
                           values={{}}
                         />
@@ -245,27 +207,41 @@ export const NewProductInputsSection: React.FC<{
                     translationKey: "shipping",
                     fallbackText: "Shipping",
                   },
-
                   stepComponent: (
                     <StepperFormHandler handlerKey="shipping">
-                      {({ validate }) => <NewProductShippingOptions />}
+                      {({ validate }) => (
+                        <NewProductShippingOptions onValid={validate} />
+                      )}
                     </StepperFormHandler>
                   ),
                   key: "shipping",
                 },
-
                 {
                   stepName: {
                     translationKey: "options",
                     fallbackText: "Options",
                   },
-
                   stepComponent: (
                     <StepperFormHandler handlerKey="shipping">
                       {({ validate }) => <ProductOptions />}
                     </StepperFormHandler>
                   ),
                   key: "options",
+                },
+                {
+                  stepName: {
+                    translationKey: "special_discount",
+                    fallbackText: "Special Discount",
+                  },
+
+                  stepComponent: (
+                    <StepperFormHandler handlerKey="shipping">
+                      {({ validate }) => (
+                        <NewProductDiscountOptions onChange={() => { }} />
+                      )}
+                    </StepperFormHandler>
+                  ),
+                  key: "special discount",
                 },
               ]}
             />
