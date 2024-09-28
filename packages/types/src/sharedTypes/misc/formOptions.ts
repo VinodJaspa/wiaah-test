@@ -1,6 +1,6 @@
 import { TranslationTextType } from "./TranslationText";
 
-export type OptionKeys = "colors" | "sizes";
+export type OptionKeys = string;
 
 export type FormOptionType<T = string> = {
   value: OptionKeys;
