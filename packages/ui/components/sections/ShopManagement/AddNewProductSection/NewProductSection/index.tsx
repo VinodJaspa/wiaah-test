@@ -114,10 +114,10 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
           <NewProductInputsSection
             onSubmit={(data) => {
               console.log(
-                "DATE ==>  " +
+                "DATA ==>  " +
                 JSON.stringify({
                   ...data,
-                  name: { langId: lang, value: data.title },
+                  title: { langId: lang, value: data.title },
                   description: { langId: lang, value: data.description },
                 })
               );
@@ -188,8 +188,8 @@ export const NewProductInputsSection: React.FC<{
                   },
                   stepComponent: (
                     <StepperFormHandler
-                      validationSchema={detailedValidationSchema}
                       handlerKey="general"
+                      validationSchema={detailedValidationSchema}
                     >
                       {({ validate }) => (
                         <ProductGeneralDetails
@@ -222,8 +222,8 @@ export const NewProductInputsSection: React.FC<{
                     fallbackText: "Options",
                   },
                   stepComponent: (
-                    <StepperFormHandler handlerKey="shipping">
-                      {({ validate }) => <ProductOptions />}
+                    <StepperFormHandler handlerKey="options">
+                      {({ validate }) => <ProductOptions onValid={validate} />}
                     </StepperFormHandler>
                   ),
                   key: "options",
@@ -235,7 +235,7 @@ export const NewProductInputsSection: React.FC<{
                   },
 
                   stepComponent: (
-                    <StepperFormHandler handlerKey="shipping">
+                    <StepperFormHandler handlerKey="discount">
                       {({ validate }) => (
                         <NewProductDiscountOptions onChange={() => { }} />
                       )}
