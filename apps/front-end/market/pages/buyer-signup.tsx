@@ -6,7 +6,7 @@ import { MasterLayout } from "@components";
 import { useBuyerSignupMutation } from "ui";
 
 const BuyerSignup: NextPage = () => {
-  const { mutate, data } = useBuyerSignupMutation();
+  // const { mutate, data } = useBuyerSignupMutation();
   return (
     <>
       <Head>
@@ -14,12 +14,7 @@ const BuyerSignup: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <Signup
-            onSubmit={(data, type) => {
-              type === "buyer-signup" ? mutate(data) : null;
-            }}
-            loginType={"buyer-signup"}
-          />
+          <Signup loginType={"buyer-signup"} />
         </main>
       </MasterLayout>
     </>
