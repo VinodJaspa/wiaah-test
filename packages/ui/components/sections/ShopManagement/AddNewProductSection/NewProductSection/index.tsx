@@ -18,15 +18,27 @@ import {
   useCreateNewProductMutation,
   useEditProductData,
   FlagIcon,
+  colors,
+  sizes,
 } from "@UI";
 import { ProductGeneralDetails } from "@blocks";
 import * as Yup from "yup";
 
 export interface AddNewProductSectionProps { }
-// const shippingValidationSchema = Yup.object().shape({
-//   shippingMethod: Yup.string().required("Please select a shipping method"), // Ensure the field is required
-// });
+const shippingValidationSchema = Yup.object().shape({
+  shippingMethods: Yup.array().of(Yup.string()).min(1, "select_at_least_one"),
+});
 
+const optionsValidationScheam = Yup.object().shape({
+  colors: Yup.array()
+    .of(Yup.string())
+    .min(1, "select_at_least_one_color")
+    .required("colors_required"),
+  sizes: Yup.array()
+    .of(Yup.string())
+    .min(1, "select_at_least_one_size")
+    .required("sizes_required"),
+});
 const detailedValidationSchema = Yup.object().shape({
   title: Yup.string()
     .required("Title is required")
@@ -169,7 +181,6 @@ export const NewProductInputsSection: React.FC<{
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
       <StepperFormController
-        lock={false}
         onFormComplete={(data) => {
           onSubmit && onSubmit(data);
         }}
@@ -208,9 +219,15 @@ export const NewProductInputsSection: React.FC<{
                     fallbackText: "Shipping",
                   },
                   stepComponent: (
-                    <StepperFormHandler handlerKey="shipping">
+                    <StepperFormHandler
+                      handlerKey="shipping"
+                      validationSchema={shippingValidationSchema}
+                    >
                       {({ validate }) => (
-                        <NewProductShippingOptions onValid={validate} />
+                        <NewProductShippingOptions
+                          onValid={validate}
+                          validationSchema={shippingValidationSchema}
+                        />
                       )}
                     </StepperFormHandler>
                   ),
@@ -222,8 +239,16 @@ export const NewProductInputsSection: React.FC<{
                     fallbackText: "Options",
                   },
                   stepComponent: (
-                    <StepperFormHandler handlerKey="options">
-                      {({ validate }) => <ProductOptions onValid={validate} />}
+                    <StepperFormHandler
+                      handlerKey="options"
+                      validationSchema={optionsValidationScheam}
+                    >
+                      {({ validate }) => (
+                        <ProductOptions
+                          onValid={validate}
+                          validationSchema={optionsValidationScheam}
+                        />
+                      )}
                     </StepperFormHandler>
                   ),
                   key: "options",
@@ -233,11 +258,10 @@ export const NewProductInputsSection: React.FC<{
                     translationKey: "special_discount",
                     fallbackText: "Special Discount",
                   },
-
                   stepComponent: (
                     <StepperFormHandler handlerKey="discount">
                       {({ validate }) => (
-                        <NewProductDiscountOptions onChange={() => { }} />
+                        <NewProductDiscountOptions onChange={validate} />
                       )}
                     </StepperFormHandler>
                   ),
