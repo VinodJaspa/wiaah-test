@@ -2,7 +2,15 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
-import { Menu, MenuButton, MenuList, DateInput, Select, Input } from "@UI";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  DateInput,
+  Select,
+  Input,
+  DateFormInput,
+} from "@UI";
 import { SelectOption } from "@UI";
 
 export interface NewProductDiscountOptionsProps {
@@ -17,7 +25,7 @@ export const NewProductDiscountOptions: React.FC<
 > = ({ onChange }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-20">
       <h1 className="text-xl font-bold">
         {t("create_discount_code", "Create Discount Code")}
       </h1>
