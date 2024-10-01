@@ -6,12 +6,13 @@ import * as Yup from "yup";
 import { TranslationText } from "@UI";
 
 export interface NewProductShippingOptions {
-  onValid?: (values: Record<string, any>) => any;
-  validationSchema?: Yup.AnySchema;
+  onValid: (values: Record<string, any>) => any;
+  validationSchema: Yup.AnySchema;
 }
 
 export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
   onValid,
+  validationSchema,
 }) => {
   const { t } = useTranslation();
 
@@ -20,10 +21,12 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
       initialValues={{
         shippingMethods: [] as string[], // Manage selected checkboxes as an array
       }}
+      validationSchema={validationSchema} // Use passed schema or fallback to local schema
       onSubmit={() => { }}
     >
-      {({ values, setFieldValue }) => {
+      {({ values, setFieldValue, errors, touched }) => {
         onValid && onValid(values);
+
         return (
           <Form className="flex flex-col gap-4">
             <h1 className="text-xl font-bold">
@@ -62,6 +65,10 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
                 </span>
               </div>
             ))}
+
+            {touched.shippingMethods && errors.shippingMethods && (
+              <div className="text-red-500">{errors.shippingMethods}</div>
+            )}
           </Form>
         );
       }}
