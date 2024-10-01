@@ -28,7 +28,7 @@ import * as Yup from "yup";
 export interface ProductGeneralDetailsProps {
   onChange?: (values: Record<string, any>) => any;
   values: any;
-  validationSchema: Yup.AnySchema;
+  validationSchema?: Yup.AnySchema;
 }
 
 const MAX_PRODUCTS_IMAGE = 4;
