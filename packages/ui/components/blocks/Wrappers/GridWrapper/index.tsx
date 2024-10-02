@@ -4,8 +4,8 @@ import {
   GridItem,
   GridItemProps,
   GridProps,
-  useDimensions,
 } from "@chakra-ui/react";
+import { useDimensions } from "@UI/../hooks";
 import React from "react";
 export type GridWrapperDataType = {
   displayVariant: "portrait" | "landscape" | "large" | "normal";
@@ -29,13 +29,12 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
 }) => {
   const gridItemRef = React.useRef<HTMLDivElement>(null);
 
-  const gridItemDim = useDimensions(gridItemRef, true);
+  const gridItemDim = useDimensions(gridItemRef);
 
   return (
     <Grid
       pr="1rem"
-      gridAutoRows={`${(gridItemDim?.borderBox.width || 128) * (portrait ? 2 : 1)
-        }px`}
+      gridAutoRows={`${(gridItemDim?.height || 128) * (portrait ? 2 : 1)}px`}
       templateColumns={`repeat(${cols}, calc(100% / ${cols}))`}
       gap={"0.5rem"}
       position={"relative"}
@@ -63,7 +62,6 @@ export const GridWrapper: React.FC<GridWrapperProps> = ({
                 : undefined
             }
           >
-            {/*@ts-ignore*/}
             {component}
           </GridItem>
         ))}

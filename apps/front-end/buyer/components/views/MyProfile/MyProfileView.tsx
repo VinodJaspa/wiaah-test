@@ -5,7 +5,6 @@ import {
   Image,
   Text,
   useBreakpointValue,
-  useDimensions,
   Divider,
 } from "@chakra-ui/react";
 import React from "react";
@@ -40,12 +39,13 @@ import {
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
 import { MyProfileCustomed } from "./MyProfileCustomed";
 import { ProfilePlaceholder as profile } from "ui/placeholder";
+import { useDimensions } from "hooks";
 
 export interface MyProfileView { }
 
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
-  const dims = useDimensions(boxRef, true);
+  const dims = useDimensions(boxRef);
   const { t } = useTranslation();
   const client = useQueryClient();
   const { uploadImage, cancelUpload } = useFileUploadModal();
@@ -131,7 +131,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
         <Box
           position={{ base: "absolute", md: "relative" }}
           w="100%"
-          h={{ base: dims ? dims.borderBox.height : "unset" }}
+          h={{ base: dims ? dims.height : "unset" }}
         >
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <>
