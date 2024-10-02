@@ -18,8 +18,6 @@ import {
   useCreateNewProductMutation,
   useEditProductData,
   FlagIcon,
-  colors,
-  sizes,
 } from "@UI";
 import { ProductGeneralDetails } from "@blocks";
 import * as Yup from "yup";
@@ -57,6 +55,18 @@ const detailedValidationSchema = Yup.object().shape({
   quantity: Yup.number()
     .required("Quantity is required")
     .min(1, "Quantity must be at least 1"),
+});
+const discountValidationSchema = Yup.object().shape({
+  percentOff: Yup.number().required("Percent off is required"),
+  units: Yup.number()
+    .required("Units are required")
+    .positive("Units must be a positive number")
+    .integer("Units must be an integer"),
+  startDate: Yup.date().required("Start date is required").nullable(),
+  expiryDate: Yup.date()
+    .required("End date is required")
+    .nullable()
+    .min(Yup.ref("startDate"), "End date must be after start date"),
 });
 
 const addProductLanguagesSection = [
