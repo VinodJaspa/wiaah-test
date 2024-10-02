@@ -1,7 +1,7 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { DateRange, HtmlDivProps } from "types";
-import { getTimeInAmPm, MaybeFn, PassPropsToFnOrElem } from "utils";
+import { MaybeFn, PassPropsToFnOrElem } from "utils";
 
 export interface DateMonth {
   name: string;
@@ -145,7 +145,7 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   React.useEffect(() => {
     if (Array.isArray(value)) setActiveDates(value);
-  }, [value]);
+  }, []);
 
   React.useEffect(() => {
     getDividedWeeks();
