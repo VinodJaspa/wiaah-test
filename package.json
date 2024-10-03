@@ -158,7 +158,7 @@
     "@nestjs/cqrs": "^10.2.7",
     "@nestjs/elasticsearch": "10.0.1",
     "@nestjs/graphql": "12.1.1",
-    "@nestjs/jwt": "^8.0.1",
+    "@nestjs/jwt": "10.2.0",
     "@nestjs/microservices": "^10.3.10",
     "@nestjs/mongoose": "^10.0.0",
     "@nestjs/platform-express": "^10.3.10",
