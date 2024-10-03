@@ -26,7 +26,6 @@
   },
   "shadow": {
     "devDependencies": [
-      "@testing-library/react-hooks",
       "@types/google.maps",
       "@types/react",
       "@types/react-dom",
