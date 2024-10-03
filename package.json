@@ -156,7 +156,7 @@
     "@nestjs/config": "3.2.3",
     "@nestjs/core": "^10.3.10",
     "@nestjs/cqrs": "^10.2.7",
-    "@nestjs/elasticsearch": "^9.0.0",
+    "@nestjs/elasticsearch": "10.0.1",
     "@nestjs/graphql": "12.1.1",
     "@nestjs/jwt": "^8.0.1",
     "@nestjs/microservices": "^10.3.10",
