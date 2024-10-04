@@ -28,7 +28,7 @@ export type ValidWorkspaceName = "app" | "ui";
 
 const ROOT_PATH = join(__dirname, "..");
 const ROOT_PACKAGE_PATH = join(ROOT_PATH, "package.json");
-const ROOT_LOCKFILE_PATH = join(ROOT_PATH, "yarn-lock");
+const ROOT_LOCKFILE_PATH = join(ROOT_PATH, "yarn.lock");
 const WORKSPACES_PATH = join(ROOT_PATH, "packages");
 
 async function ensureDir() { } /* stub - make sure a dir is present */
@@ -47,7 +47,7 @@ type ShadowDepInstallConfig = {
 export async function installShadowPackage(cfg: ShadowDepInstallConfig) {
   if (!(await isDirEmpty(cfg.shadowRoot)))
     throw new Error(
-      "Shadow package installation can only be run in empty directories!"
+      "Shadow package installation can only be run in empty directories!",
     );
 
   const pjsonPath = join(cfg.shadowRoot, "package.json");
@@ -76,7 +76,7 @@ export async function installShadowPackage(cfg: ShadowDepInstallConfig) {
   await writeJson(pjsonPath, pjson);
   await execaCommand(
     `npx prettier --ignore-path ./fake-dir --write ${pjsonPath}`,
-    { cwd: ROOT_PATH }
+    { cwd: ROOT_PATH },
   );
 
   console.log(`Shadow package installed to ${cfg.shadowRoot}`);
@@ -86,7 +86,7 @@ export async function installShadowPackage(cfg: ShadowDepInstallConfig) {
 
 export async function genConcretePackage(
   ws: ValidWorkspaceName,
-  includeWorkspaceDeps = false
+  includeWorkspaceDeps = false,
 ) {
   const validWorkspaces = await readdir(WORKSPACES_PATH, { encoding: "utf-8" });
 
@@ -95,7 +95,7 @@ export async function genConcretePackage(
 
   const rootPkg = await readJson<RootPJ>(ROOT_PACKAGE_PATH);
   const targetPkgJSON = await readJson<PJ>(
-    join(WORKSPACES_PATH, ws, "package.json")
+    join(WORKSPACES_PATH, ws, "package.json"),
   );
 
   const depTypes = [
@@ -111,18 +111,18 @@ export async function genConcretePackage(
         Object.entries(targetDepsOfType).map(([k, v]) => {
           if (!k.startsWith("@abc/")) {
             throw new Error(
-              `Concrete "${depType}" [${k}] declared for [${ws}] project which is not part of this workspace!`
+              `Concrete "${depType}" [${k}] declared for [${ws}] project which is not part of this workspace!`,
             );
           }
 
           if (v !== "*") {
             throw new Error(
-              `Concrete "${depType}" entry [${k}] declared for [${ws}] project which doesn't use a wildcard version!`
+              `Concrete "${depType}" entry [${k}] declared for [${ws}] project which doesn't use a wildcard version!`,
             );
           }
 
           return [k, rootPkg.dependencies[k] ?? v];
-        })
+        }),
       )
       : {};
 
@@ -134,12 +134,12 @@ export async function genConcretePackage(
 
           if (!rootVersion) {
             throw new Error(
-              `Shadow "${depType}" entry [${k}] declared for [${ws}] project, but missing in root package.json`
+              `Shadow "${depType}" entry [${k}] declared for [${ws}] project, but missing in root package.json`,
             );
           }
 
           return [k, rootVersion];
-        })
+        }),
       )
       : {};
 
