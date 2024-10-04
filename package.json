@@ -83,7 +83,7 @@
     "amqp-connection-manager": "^4.1.14",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
-    "babel-jest": "^27.4.6",
+    "babel-jest": "29.7.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-env": "^1.7.0",
