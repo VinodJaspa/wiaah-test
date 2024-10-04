@@ -42,7 +42,8 @@
       "react-windowed-select",
       "recoil",
       "swiper",
-      "tailwindcss"
+      "tailwindcss",
+      "execa"
     ],
     "devDependencies": [
       "@types/react",
