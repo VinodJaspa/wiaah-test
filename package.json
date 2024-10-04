@@ -174,7 +174,7 @@
     "blob-util": "^2.0.2",
     "cache-manager": "^5.7.1",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.13.2",
+    "class-validator": "0.14.1",
     "classnames": "^2.3.1",
     "clsx": "^2.1.1",
     "cookie": "^0.5.0",
