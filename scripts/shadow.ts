@@ -28,7 +28,7 @@ export type ValidWorkspaceName = "app" | "ui";
 
 const ROOT_PATH = join(__dirname, "..");
 const ROOT_PACKAGE_PATH = join(ROOT_PATH, "package.json");
-const ROOT_LOCKFILE_PATH = join(ROOT_PATH, "yarn.lock");
+const ROOT_LOCKFILE_PATH = join(ROOT_PATH, "package-lock.json");
 const WORKSPACES_PATH = join(ROOT_PATH, "packages");
 
 async function ensureDir() { } /* stub - make sure a dir is present */
@@ -51,7 +51,7 @@ export async function installShadowPackage(cfg: ShadowDepInstallConfig) {
     );
 
   const pjsonPath = join(cfg.shadowRoot, "package.json");
-  const lockFilePath = join(cfg.shadowRoot, "yarn.lock");
+  const lockFilePath = join(cfg.shadowRoot, "package-lock.json");
   await ensureDir(cfg.shadowRoot);
 
   let pjson = await genConcretePackage(cfg.ws, cfg.includeWorkspaceDeps);
