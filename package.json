@@ -128,10 +128,6 @@
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-  "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
-  },
   "dependencies": {
     "@apollo/gateway": "^2.8.3",
     "@apollo/server": "^4.10.4",
