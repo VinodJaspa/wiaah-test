@@ -21,6 +21,7 @@ import {
 } from "@UI";
 import { ProductGeneralDetails } from "@blocks";
 import * as Yup from "yup";
+import { ProductType } from "@features/API";
 
 export interface AddNewProductSectionProps { }
 const shippingValidationSchema = Yup.object().shape({
@@ -43,6 +44,7 @@ const detailedValidationSchema = Yup.object().shape({
     .min(4, "Min 4 characters")
     .max(100, "Max 100 characters"),
   description: Yup.string().required("Description is required"),
+  brand: Yup.string().required("Description is required"),
   metaTagDescription: Yup.string().max(150, "Max 150 characters"),
   metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
   external_url: Yup.string().url("Must be a valid URL"),
@@ -55,6 +57,9 @@ const detailedValidationSchema = Yup.object().shape({
   quantity: Yup.number()
     .required("Quantity is required")
     .min(1, "Quantity must be at least 1"),
+  type: Yup.mixed<ProductType>()
+    .oneOf(Object.values(ProductType), "Invalid product type")
+    .required("Product type is required"),
 });
 const discountValidationSchema = Yup.object().shape({
   percentOff: Yup.number().required("Percent off is required"),
@@ -62,11 +67,8 @@ const discountValidationSchema = Yup.object().shape({
     .required("Units are required")
     .positive("Units must be a positive number")
     .integer("Units must be an integer"),
-  startDate: Yup.date().required("Start date is required").nullable(),
-  expiryDate: Yup.date()
-    .required("End date is required")
-    .nullable()
-    .min(Yup.ref("startDate"), "End date must be after start date"),
+  startDate: Yup.string().required("Start Date is required"),
+  endDate: Yup.string().required("Start Date is required"),
 });
 
 const addProductLanguagesSection = [
@@ -113,7 +115,7 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
           addProductLanguagesSection[index].language.languageCode;
         setLang(currLang);
       },
-      [setLang]
+      [setLang],
     );
 
     return (
@@ -141,7 +143,7 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
                   ...data,
                   title: { langId: lang, value: data.title },
                   description: { langId: lang, value: data.description },
-                })
+                }),
               );
               mutate({
                 ...data,
@@ -269,9 +271,15 @@ export const NewProductInputsSection: React.FC<{
                     fallbackText: "Special Discount",
                   },
                   stepComponent: (
-                    <StepperFormHandler handlerKey="discount">
+                    <StepperFormHandler
+                      handlerKey="discount"
+                      validationSchema={discountValidationSchema}
+                    >
                       {({ validate }) => (
-                        <NewProductDiscountOptions onChange={validate} />
+                        <NewProductDiscountOptions
+                          onChange={validate}
+                          validationSchema={discountValidationSchema}
+                        />
                       )}
                     </StepperFormHandler>
                   ),
