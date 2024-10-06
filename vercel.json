@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/front-end/admin/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "apps/front-end/buyer/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "apps/front-end/market/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "apps/front-end/seller/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/admin/(.*)",
+      "dest": "apps/front-end/admin/$1"
+    },
+    {
+      "src": "/buyer/(.*)",
+      "dest": "apps/front-end/buyer/$1"
+    },
+    {
+      "src": "/market/(.*)",
+      "dest": "apps/front-end/market/$1"
+    },
+    {
+      "src": "/seller/(.*)",
+      "dest": "apps/front-end/seller/$1"
+    }
+  ]
+}
