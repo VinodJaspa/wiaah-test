@@ -56,7 +56,7 @@ export const ProductOptions: React.FC<ProductOptionsProps> = ({
       validationSchema={validationSchema}
       onSubmit={() => { }}
     >
-      {({ values, setFieldValue }) => {
+      {({ values, setFieldValue, errors }) => {
         onValid && onValid(values);
         return (
           <Form className="space-y-4">
@@ -102,6 +102,10 @@ export const ProductOptions: React.FC<ProductOptionsProps> = ({
                   </div>
                 ))}
               </div>
+              {/* Display color errors */}
+              {errors.colors && (
+                <div className="text-red-500 text-sm mt-2">{errors.colors}</div>
+              )}
             </DropdownPanel>
 
             <DropdownPanel name={t("sizes", "Sizes")} className="w-full">
@@ -117,7 +121,7 @@ export const ProductOptions: React.FC<ProductOptionsProps> = ({
                   onClick={() => setFieldValue("sizes", [])}
                 />
               </div>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 ml-2">
                 {sizes.map((size, index) => (
                   <div
                     key={size + index}
@@ -140,6 +144,11 @@ export const ProductOptions: React.FC<ProductOptionsProps> = ({
                   </div>
                 ))}
               </div>
+
+              {/* Display size errors */}
+              {errors.sizes && (
+                <div className="text-red-500 text-sm mt-2">{errors.sizes}</div>
+              )}
             </DropdownPanel>
           </Form>
         );
