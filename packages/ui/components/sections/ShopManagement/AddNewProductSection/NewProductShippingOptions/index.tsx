@@ -24,7 +24,7 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
       validationSchema={validationSchema} // Use passed schema or fallback to local schema
       onSubmit={() => { }}
     >
-      {({ values, setFieldValue, errors, touched }) => {
+      {({ values, setFieldValue, errors }) => {
         onValid && onValid(values);
 
         return (
@@ -44,7 +44,7 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
                     const newArray = e.target.checked
                       ? [...values.shippingMethods, method.value] // Add to array if checked
                       : values.shippingMethods.filter(
-                        (value) => value !== method.value
+                        (value) => value !== method.value,
                       ); // Remove from array if unchecked
                     setFieldValue("shippingMethods", newArray);
                   }}
@@ -66,7 +66,7 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
               </div>
             ))}
 
-            {touched.shippingMethods && errors.shippingMethods && (
+            {errors.shippingMethods && (
               <div className="text-red-500">{errors.shippingMethods}</div>
             )}
           </Form>
