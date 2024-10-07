@@ -58,7 +58,8 @@
     "react-windowed-select": "5.2.0",
     "@chakra-ui/icons": "^2.1.0",
     "formik": "^2.2.9",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@nestjs/utils": "^2.0.0"
   },
   
   "devDependencies": {
