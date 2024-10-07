@@ -59,7 +59,8 @@
     "@chakra-ui/icons": "^2.1.0",
     "formik": "^2.2.9",
     "yup": "^0.32.11",
-    "nest-utils": "*"    
+    "nest-utils": "*",
+    "@nestjs/common": "^10.0.0"
   },
   
   "devDependencies": {
