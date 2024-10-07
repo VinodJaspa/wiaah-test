@@ -245,19 +245,17 @@
     "tsconfig-paths": "4.0.0",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "util": "^0.12.5",
-    "webpack": "5"
+    "webpack": "5",
+    "@apollo/client": "^3.5.8" 
   },
   "resolutions": {
     "webpack": "^5",
-    "@nestjs/config": "3.2.3"
+    "@nestjs/config": "^3.2.3"
   },
   "engines": {
     "node": ">=18"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"    
-}, 
-  "optionalDependencies": {
-        "@apollo/client": "~3.2.5 || ~3.3.0 || ~3.4.0 || ~3.5.0 || ~3.6.0"
   }
 }
