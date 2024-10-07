@@ -67,7 +67,8 @@
     "graphql-kafkajs-subscriptions": "^3.0.0",
     "@nestjs/config": "3.2.3",
     "stripe": "9.11.0",
-    "supertest": "^6.1.3"
+    "supertest": "^6.1.3",
+    "graphql-request": "^5.1.0"
   },
   
   "devDependencies": {
