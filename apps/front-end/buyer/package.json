@@ -61,7 +61,8 @@
     "yup": "^0.32.11",
     "nest-utils": "*",
     "@nestjs/common": "^10.0.0",
-    "@nestjs/graphql": "12.1.1" 
+    "@nestjs/graphql": "12.1.1",
+    "mongodb": "^5.8.1"
   },
   
   "devDependencies": {
