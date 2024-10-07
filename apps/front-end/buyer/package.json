@@ -69,7 +69,8 @@
     "stripe": "9.11.0",
     "supertest": "^6.1.3",
     "graphql-request": "^5.1.0",
-    "graphql-ws": "^5.11.3"
+    "graphql-ws": "^5.11.3",
+    "country-state-city": "^3.0.1"
   },
   
   "devDependencies": {
