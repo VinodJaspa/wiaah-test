@@ -251,9 +251,7 @@
   "resolutions": {
     "webpack": "^5",
     "@nestjs/config": "^3.2.3"
-  },
-  "engines": {
-    "node": ">=18"
+ 
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"    
