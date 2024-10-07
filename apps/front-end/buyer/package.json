@@ -59,7 +59,7 @@
     "@chakra-ui/icons": "^2.1.0",
     "formik": "^2.2.9",
     "yup": "^0.32.11",
-    "util": "^0.12.5" 
+    
   },
   
   "devDependencies": {
