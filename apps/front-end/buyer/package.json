@@ -72,7 +72,8 @@
     "graphql-ws": "^5.11.3",
     "country-state-city": "^3.0.1",
     "tailwind-merge": "^2.5.2",
-    "nookies": "^2.5.2"
+    "nookies": "^2.5.2",
+    "@stripe/react-stripe-js": "^1.16.4"
   },
   
   "devDependencies": {
