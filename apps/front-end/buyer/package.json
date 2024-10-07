@@ -56,7 +56,8 @@
     "react-webcam": "^6.0.1",
     "react-window": "^1.8.10",
     "react-windowed-select": "5.2.0",
-    "@chakra-ui/icons": "^2.1.0"  
+    "@chakra-ui/icons": "^2.1.0",
+    "formik": "^2.2.9"
   },
   
   "devDependencies": {
