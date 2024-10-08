@@ -75,7 +75,7 @@ const SocialNewsfeedView: React.FC = () => {
   const { pagination: postsPagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetMyNewsfeedPostsQuery>[0]>(
     { pagination: postsPagination, type: PostType.NewsfeedPost },
-    { pagination: postsPagination }
+    { pagination: postsPagination },
   );
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
   const data = newsfeedPosts;
@@ -104,36 +104,39 @@ const SocialNewsfeedView: React.FC = () => {
         />
       </div>
       <div className="w-full">
-        {isMobile ? (
-          <div className="flex flex-col gap-8">
-            {mapArray(data, (v, i) => (
-              <SocialNewsfeedPostMobileCard
-                post={{
-                  id: v.postInfo.id,
-                  comments: v.postInfo.numberOfComments,
-                  content: v.postInfo.content!,
-                  createdAt: v.postInfo.createdAt,
-                  images: v.postInfo?.attachments?.map((v) => v.src) || [""],
-                  liked: true,
-                  likes: v.postInfo.numberOfLikes,
-                  location: {
-                    city: "geneve",
-                    country: "switzerland",
-                  },
-                  saved: true,
-                  shares: v.postInfo.numberOfShares,
-                  username: v.profileInfo?.name || "",
-                  userPhoto: v.profileInfo?.photo || "",
-                  verified: false,
-                }}
-              />
-            ))}
-          </div>
-        ) : (
+        {/* Mobile view */}
+        <div className="flex flex-col gap-8 lg:hidden">
+          {data.map((v, i) => (
+            <SocialNewsfeedPostMobileCard
+              key={i}
+              post={{
+                id: v.postInfo.id,
+                comments: v.postInfo.numberOfComments,
+                content: v.postInfo.content!,
+                createdAt: v.postInfo.createdAt,
+                images: v.postInfo?.attachments?.map((v) => v.src) || [""],
+                liked: true,
+                likes: v.postInfo.numberOfLikes,
+                location: {
+                  city: "geneve",
+                  country: "switzerland",
+                },
+                saved: true,
+                shares: v.postInfo.numberOfShares,
+                username: v.profileInfo?.name || "",
+                userPhoto: v.profileInfo?.photo || "",
+                verified: false,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Desktop view */}
+        <div className="hidden lg:block">
           <PostCardsListWrapper
             grid={true}
             onPostClick={(post) => {
-              // TODO
+              // TODO: Handle post click
               // openSocialPostModal(post.postInfo.id);
             }}
             onProfileClick={(username) =>
@@ -142,7 +145,7 @@ const SocialNewsfeedView: React.FC = () => {
             cols={cols}
             posts={data}
           />
-        )}
+        </div>
       </div>
     </div>
   );
