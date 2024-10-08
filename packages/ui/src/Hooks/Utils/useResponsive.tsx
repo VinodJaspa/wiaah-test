@@ -1,38 +1,36 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-export const useResponsive = (cb?: () => any) => {
-  const [screenWidth, setScreenWidth] = useState<number>(0);
-
-  // Function to handle screen size changes
-  function HandleScreenSize() {
-    if (
-      typeof window !== "undefined" &&
-      typeof window.innerWidth !== "undefined"
-    ) {
-      cb && cb();
-      setScreenWidth(window.innerWidth);
-      console.log("responsive", window.innerWidth);
-    }
-  }
+export const useResponsive = (
+  mobileBreakpoint: number = 768,
+  tabletBreakpoint: number = 1024,
+) => {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const [isMobile, setIsMobile] = useState<boolean>(
+    window.innerWidth <= mobileBreakpoint,
+  );
+  const [isTablet, setIsTablet] = useState<boolean>(
+    window.innerWidth > mobileBreakpoint &&
+    window.innerWidth <= tabletBreakpoint,
+  );
 
   useEffect(() => {
-    // Run the effect only on the client side
-    if (typeof window !== "undefined") {
-      // Call once on mount
-      HandleScreenSize();
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setScreenWidth(width);
+      setIsMobile(width <= mobileBreakpoint);
+      setIsTablet(width > mobileBreakpoint && width <= tabletBreakpoint);
+    };
 
-      // Add event listener for resize
-      window.addEventListener("resize", HandleScreenSize);
+    window.addEventListener("resize", handleResize);
 
-      // Cleanup event listener on unmount
-      return () => {
-        window.removeEventListener("resize", HandleScreenSize);
-      };
-    }
-  }, [cb]);
+    // Initial check on mount
+    handleResize();
 
-  const isMobile = screenWidth < 640;
-  const isTablet = screenWidth < 1024;
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileBreakpoint, tabletBreakpoint]);
 
   return {
     isMobile,
