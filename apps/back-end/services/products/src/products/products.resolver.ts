@@ -9,18 +9,10 @@ import {
   Parent,
   Int,
   Context,
-  GqlExecutionContext,
 } from '@nestjs/graphql';
 
 import type { AccountType } from 'nest-utils/src';
-import {
-  ExecutionContext,
-  Inject,
-  Ip,
-  Logger,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { ExecutionContext, Inject, Logger, UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -98,7 +90,7 @@ export class ProductsResolver {
     @Context() ctx: ExecutionContext,
     @GetLang() langId: UserPreferedLang,
   ): Promise<ProductPaginationResponse> {
-    const { page, skip, take, totalSearched } = ExtractPagination(pagination);
+    const { take, totalSearched } = ExtractPagination(pagination);
     const userIp = user.ip;
     const userCountry = lookup(userIp);
 
@@ -143,40 +135,46 @@ export class ProductsResolver {
         });
     }
 
-    const productScores = products.reduce((acc, curr) => {
-      let score = 0;
+    const productScores = products.reduce(
+      (acc, curr) => {
+        let score = 0;
 
-      if (userCategoryStats) {
-        const cateStats = userCategoryStats.stats.find(
-          (cate) => cate.categoryId === curr.categoryId,
-        );
-        if (cateStats) {
-          const purchasesWeightScore =
-            cateStats.purchases * this.categoryPurchaseWeight;
+        if (userCategoryStats) {
+          const cateStats = userCategoryStats.stats.find(
+            (cate) => cate.categoryId === curr.categoryId,
+          );
+          if (cateStats) {
+            const purchasesWeightScore =
+              cateStats.purchases * this.categoryPurchaseWeight;
 
-          const visitWeightScore = cateStats.visits * this.categoryVisitWeight;
+            const visitWeightScore =
+              cateStats.visits * this.categoryVisitWeight;
 
-          score += purchasesWeightScore;
-          score += visitWeightScore;
+            score += purchasesWeightScore;
+            score += visitWeightScore;
+          }
         }
-      }
 
-      const productShop = shops.find((shop) => shop.ownerId === curr.sellerId);
-      if (
-        productShop &&
-        productShop.location.countryCode === userCountry.country
-      ) {
-        score += this.shopCountryWeight;
-      }
+        const productShop = shops.find(
+          (shop) => shop.ownerId === curr.sellerId,
+        );
+        if (
+          productShop &&
+          productShop.location.countryCode === userCountry.country
+        ) {
+          score += this.shopCountryWeight;
+        }
 
-      const ratingScore = curr.rate * this.productRatingWeight;
-      const salesScore = curr.sales * this.productSaleWeight;
+        const ratingScore = curr.rate * this.productRatingWeight;
+        const salesScore = curr.sales * this.productSaleWeight;
 
-      score += ratingScore;
-      score += salesScore;
+        score += ratingScore;
+        score += salesScore;
 
-      return [...acc, { productId: curr.id, score }];
-    }, [] as { productId: string; score: number }[]);
+        return [...acc, { productId: curr.id, score }];
+      },
+      [] as { productId: string; score: number }[],
+    );
 
     const sortedProds = productScores.sort(
       (first, second) => first.score - second.score,
@@ -215,7 +213,7 @@ export class ProductsResolver {
 
     if (isClick) {
       const {
-        results: { data, error, success },
+        results: { data },
       } = await KafkaMessageHandler<
         string,
         CanPreformProductActionMessage,
@@ -494,11 +492,18 @@ export class ProductsResolver {
   }
 
   @ResolveReference()
-  async resolveReference(ref: { __typename: string; id: string }) {
+  async resolveReference({ id }: { __typename: string; id: string }) {
     try {
-      const res = await this.productsService.getProductById(ref.id);
-      return res;
+      const product = await this.productsService.getProductById(id);
+
+      if (!product) {
+        return null; // Handle case where no product is found
+      }
+
+      return product;
     } catch (error) {
+      // Optional: Log error for debugging
+      console.error(`Error resolving product with id ${id}:`, error);
       return null;
     }
   }
