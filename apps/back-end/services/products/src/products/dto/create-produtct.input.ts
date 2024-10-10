@@ -26,31 +26,31 @@ registerEnumType(ProductSize, { name: 'ProductSize' });
 
 @InputType()
 export class ProductPresentationInput {
-  @Field((type) => PresentationType)
+  @Field(() => PresentationType)
   type: PresentationType;
 
-  @Field((type) => String)
+  @Field(() => String)
   src: string;
 }
 
 @InputType()
 export class CashBackInput {
-  @Field((type) => Int)
+  @Field(() => Int)
   units: number;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   amount: number;
 
-  @Field((type) => CashbackType)
+  @Field(() => CashbackType)
   type: CashbackType;
 }
 
 @InputType()
 export class DiscountInput {
-  @Field((type) => Int)
+  @Field(() => Int)
   units: number;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   amount: number;
 }
 
@@ -85,40 +85,40 @@ export class CreateProductInput {
   @Field(() => ProdcutType)
   type: ProdcutType;
 
-  @Field((type) => StringTranslationField)
+  @Field(() => StringTranslationField)
   title: StringTranslationField;
 
-  @Field((type) => StringTranslationField)
+  @Field(() => StringTranslationField)
   description: StringTranslationField;
 
-  @Field((type) => ID)
+  @Field(() => ID)
   categoryId: string;
 
   @Field(() => [ProductAttributeInput])
-  attributesIds: ProductAttributeInput[];
+  attributesIds?: ProductAttributeInput[];
 
-  @Field((type) => Int)
+  @Field(() => Int)
   stock: number;
 
-  @Field((type) => DiscountInput)
+  @Field(() => DiscountInput)
   discount: DiscountInput;
 
-  @Field((type) => String)
+  @Field(() => String)
   cashbackId: string;
 
-  @Field((type) => [GraphQLUpload])
+  @Field(() => [GraphQLUpload])
   presentations: Upload[];
 
   @Field(() => String)
   thumbnail: string;
 
-  @Field((type) => Float)
+  @Field(() => Float)
   price: number;
 
-  @Field((type) => String)
+  @Field(() => String)
   brand: string;
 
-  @Field((type) => VisibilityEnum)
+  @Field(() => VisibilityEnum)
   visibility: VisibilityEnum;
 
   @Field(() => Float)
