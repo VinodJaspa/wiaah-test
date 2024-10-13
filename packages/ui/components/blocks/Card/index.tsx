@@ -5,7 +5,7 @@ export interface RecommendedShopCardProps {
   imgUrl: string;
   id: string;
   name: string;
-  type: string;
+  type?: string;
   label: string;
   onShopClick?: (shopId: string) => void;
 }

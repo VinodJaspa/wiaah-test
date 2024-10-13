@@ -1,11 +1,13 @@
-import { storybookBlocksTitle, Card } from "@UI";
+import { storybookBlocksTitle, RecommendedShopCard } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {
   title: storybookBlocksTitle + "Card",
-  component: Card,
-} as ComponentMeta<typeof Card>;
+  component: RecommendedShopCard,
+} as ComponentMeta<typeof RecommendedShopCard>;
 
 export const Default = () => {
-  return <Card id="15" imgUrl="/shop.jpeg" name="card" />;
+  return (
+    <RecommendedShopCard id="15" imgUrl="/shop.jpeg" name="card" label="card" />
+  );
 };
