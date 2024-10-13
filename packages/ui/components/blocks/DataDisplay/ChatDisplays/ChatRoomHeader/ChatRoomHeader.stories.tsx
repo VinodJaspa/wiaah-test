@@ -10,4 +10,4 @@ export default {
   component: ChatRoomHeader,
 } as ComponentMeta<typeof ChatRoomHeader>;
 
-export const Default = () => <ChatRoomHeader roomData={ChatRoomHeaderDataPH} />;
+export const Default = () => <ChatRoomHeader data={ChatRoomHeaderDataPH} />;

@@ -5,20 +5,20 @@ import { MessageAttachmentType } from "@features/API";
 
 export interface ChatMessageType {
   id: string;
+  userId: string;
   username: string;
   userPhoto: string;
   sendDate: string | number;
   messageContent?: string;
   messageAttachments?: ChatMessageAttachmentType[];
-  userId: string;
+  seen: boolean;
+  showUser: boolean;
 }
 
 export interface ChatMessageAttachmentType {
   type: MessageAttachmentType;
   src: string;
 }
-
-export type MessageAttachmentTypes = "image" | "video" | "audio" | "story";
 
 export interface ChatRoomContentProps {
   messages: ChatMessageType[];
@@ -31,20 +31,25 @@ export const ChatRoomContent: React.FC<ChatRoomContentProps> = ({
 
   const { user } = useUserData();
 
-  const dates = messages.reduce((acc, curr, idx) => {
-    const notSame =
-      new Date(acc.lastDate).getDate() !== new Date(curr.sendDate).getDate();
+  const dates = messages.reduce(
+    (acc, curr, idx) => {
+      const notSame =
+        new Date(acc.lastDate).getDate() !== new Date(curr.sendDate).getDate();
 
-    const lastDate = notSame ? new Date(curr.sendDate) : new Date(acc.lastDate);
+      const lastDate = notSame
+        ? new Date(curr.sendDate)
+        : new Date(acc.lastDate);
 
-    return {
-      lastDate: lastDate,
-      dates: {
-        ...acc.dates,
-        [idx]: notSame ? new Date(curr.sendDate) : null,
-      },
-    };
-  }, {} as { lastDate: Date; dates: Record<number, Date | null> });
+      return {
+        lastDate: lastDate,
+        dates: {
+          ...acc.dates,
+          [idx]: notSame ? new Date(curr.sendDate) : null,
+        },
+      };
+    },
+    {} as { lastDate: Date; dates: Record<number, Date | null> },
+  );
 
   return (
     <div className="flex flex-col py-4 justify-end gap-1 h-full w-full  overflow-y-scroll">
@@ -72,7 +77,7 @@ export const ChatRoomContent: React.FC<ChatRoomContentProps> = ({
               />
             </>
           );
-        }
+        },
       )}
     </div>
   );

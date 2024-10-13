@@ -68,6 +68,8 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
                       userPhoto: v.user.profile?.photo || "",
                       messageAttachments: v.attachments,
                       messageContent: v.content,
+                      seen: false, // Default value if 'seen' is not present
+                      showUser: true,
                     }))}
                 />
               ) : null}
