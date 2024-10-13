@@ -1,77 +1,73 @@
-import { ChatMessageType, ChatRoomHeaderData } from "types";
+import {
+  ChatMessageType,
+  ChatRoomHeaderData,
+  MessageAttachmentType,
+} from "types";
 
 export const ChatMessagesPH: ChatMessageType[] = [
   {
-    id: "13654",
+    id: "1",
+    userId: "user1",
+    username: "John Doe",
+    userPhoto: "https://example.com/photo1.jpg",
     sendDate: Date.now(),
-    userPhoto: "/place-2.jpg",
-    username: "user",
-    messageAttachments: [],
-    messageContent:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-  },
-  {
-    id: "159",
-    sendDate: Date.now(),
-    username: "Wiaah",
+    messageContent: "Here is an image",
     messageAttachments: [
       {
-        src: "/shop-2.jpeg",
-        type: "image",
+        type: MessageAttachmentType.Image,
+        src: "https://example.com/image1.jpg",
       },
     ],
-    messageContent:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis omnis voluptatem perferendis fuga cupiditate odit maiores sed nostrum. Deleniti earum tempora nisi eaque praesentium repellat quod sapiente molestiae quidem ullam.",
-    userPhoto: "/wiaah_logo.png",
+
+    seen: false,
+    showUser: true,
   },
   {
-    id: "465",
+    id: "2",
+    userId: "user2",
+    username: "Jane Smith",
+    userPhoto: "https://example.com/photo2.jpg",
     sendDate: Date.now(),
-    username: "Wiaah",
+    messageContent: "Check out this video",
     messageAttachments: [
       {
-        src: "/video.mp4",
-        type: "audio",
+        type: MessageAttachmentType.VideoMessage,
+        src: "https://example.com/video1.mp4",
       },
     ],
-    messageContent: "hi",
-    userPhoto: "/wiaah_logo.png",
+    seen: false,
+    showUser: true,
   },
   {
-    id: "123",
+    id: "3",
+    userId: "user3",
+    username: "Alice Johnson",
+    userPhoto: "https://example.com/photo3.jpg",
     sendDate: Date.now(),
-    username: "Wiaah",
-    messageAttachments: [],
-    messageContent: "hi, how are you?",
-    userPhoto: "/shop.jpeg",
-  },
-  {
-    id: "465",
-    sendDate: Date.now(),
-    username: "Wiaah",
+    messageContent: "Listen to this audio",
     messageAttachments: [
       {
-        src: "/video.mp4",
-        type: "video",
+        type: MessageAttachmentType.VoiceMessage,
+        src: "https://example.com/audio1.mp3",
       },
     ],
-    messageContent: "fine, how about you",
-    userPhoto: "/wiaah_logo.png",
+    seen: true,
+    showUser: false,
   },
   {
-    id: "123",
+    id: "4",
+    userId: "user4",
+    username: "Bob Brown",
+    userPhoto: "https://example.com/photo4.jpg",
     sendDate: Date.now(),
-    username: "Wiaah",
-    messageAttachments: [],
-    messageContent: "all good",
-    userPhoto: "/shop.jpeg",
+    messageContent: "Here’s a story to share",
+    messageAttachments: [
+      {
+        type: MessageAttachmentType.Story,
+        src: "https://example.com/story1.html",
+      },
+    ],
+    seen: true,
+    showUser: false,
   },
 ];
-
-export const ChatRoomHeaderDataPH: ChatRoomHeaderData = {
-  onlineMembers: 5,
-  roomId: "1456",
-  roomImage: "/shop.jpeg",
-  roomMembers: 12,
-  roomName: "Wiaah",
-};
