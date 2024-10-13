@@ -8,7 +8,7 @@ import { MdClose } from "react-icons/md";
 import * as Yup from "yup";
 import { DropdownPanel } from "@partials";
 
-interface ProductOptionsProps {
+export interface ProductOptionsProps {
   onValid?: (values: Record<string, any>) => any;
   validationSchema?: Yup.AnySchema;
 }
