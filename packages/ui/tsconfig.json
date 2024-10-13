@@ -3,12 +3,15 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES5",
     "jsx": "react-jsx",
     "rootDir": "../..",
+    "strict": false,
     "baseUrl": ".",
     "types": ["jest"],
     "paths": {
@@ -23,7 +26,8 @@
       "@const": ["constants"],
       "@src/*": ["src/*"],
       "@UI": ["."],
-      "@UI/*": ["./*"]
+      "@UI/*": ["./*"],
+      "placeholder": ["../placeholder"]
     }
   }
 }
