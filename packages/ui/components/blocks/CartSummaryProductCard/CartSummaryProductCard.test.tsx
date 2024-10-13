@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount, ShallowWrapper, render, ReactWrapper } from "enzyme";
 import { CartSummaryProductCard } from "../CartSummaryProductCard";
-import { CartSummaryItem, ShopContactDetails } from "types/market/CartSummary";
+import { CartSummaryItem, ShopContactDetails } from "types";
 import { getMountedComponent } from "../../helpers";
 
 const date = Date.UTC(2020, 5, 25);
@@ -43,7 +43,6 @@ const product: CartSummaryItem = {
     unit: "%",
     value: 15,
   },
-  color: "red/blue",
   date: date,
   description:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quam commodi error perferendis nostrum veritatis sunt blanditiis soluta sapiente nisi, sequi quo assumenda dolorem sed, distinctio et cum tempora voluptate.",
@@ -55,7 +54,6 @@ const product: CartSummaryItem = {
   eventDuration: 50,
   location: "test location",
   oldPrice: 20,
-  size: "large",
 };
 
 const shopProfile: ShopContactDetails = {
@@ -99,7 +97,7 @@ describe("CartSummaryProductCard render tests", () => {
         onQtyChange={onQtyChangeMock}
         onRemove={onRemoveMock}
         product={product}
-      />
+      />,
     );
     moveToWishList = getMountedComponent(wrapper, selectors.moveToWishList);
     removeItemButton = getMountedComponent(wrapper, selectors.removeItem);
@@ -113,23 +111,23 @@ describe("CartSummaryProductCard render tests", () => {
     productCashback = getMountedComponent(
       wrapper,
       selectors.productCashback,
-      2
+      2,
     );
     productDiscount = getMountedComponent(
       wrapper,
       selectors.productDiscount,
-      2
+      2,
     );
     productAddress = getMountedComponent(wrapper, selectors.productAddress, 2);
     productLocation = getMountedComponent(
       wrapper,
       selectors.productLocation,
-      2
+      2,
     );
     productOldPrice = getMountedComponent(
       wrapper,
       selectors.productOldPrice,
-      2
+      2,
     );
   });
 
@@ -192,11 +190,11 @@ describe("CartSummaryProductCard functionallity tests", () => {
         onQtyChange={onQtyChangeMock}
         onRemove={onRemoveMock}
         product={product}
-      />
+      />,
     );
     moveToWishListButton = getMountedComponent(
       wrapper,
-      selectors.moveToWishList
+      selectors.moveToWishList,
     );
     removeItemButton = getMountedComponent(wrapper, selectors.removeItem);
     productName = getMountedComponent(wrapper, selectors.productName, 2);
@@ -209,23 +207,23 @@ describe("CartSummaryProductCard functionallity tests", () => {
     productCashback = getMountedComponent(
       wrapper,
       selectors.productCashback,
-      2
+      2,
     );
     productDiscount = getMountedComponent(
       wrapper,
       selectors.productDiscount,
-      2
+      2,
     );
     productAddress = getMountedComponent(wrapper, selectors.productAddress, 2);
     productLocation = getMountedComponent(
       wrapper,
       selectors.productLocation,
-      2
+      2,
     );
     productOldPrice = getMountedComponent(
       wrapper,
       selectors.productOldPrice,
-      2
+      2,
     );
   });
   it("should call onRemove with the right id on removing item", () => {
@@ -249,19 +247,19 @@ describe("CartSummaryProductCard functionallity tests", () => {
 describe("CarySummaryProductCard snapshot tests", () => {
   it("should match snapshot without shop profile", () => {
     expect(
-      shallow(<CartSummaryProductCard product={product} />)
+      shallow(<CartSummaryProductCard product={product} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with shop profile", () => {
     expect(
       shallow(
-        <CartSummaryProductCard profile={shopProfile} product={product} />
-      )
+        <CartSummaryProductCard profile={shopProfile} product={product} />,
+      ),
     ).toMatchSnapshot();
   });
   it("should match snapshot Without profile in minimal variant", () => {
     expect(
-      shallow(<CartSummaryProductCard minimal product={product} />)
+      shallow(<CartSummaryProductCard minimal product={product} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with shop profile in minimal variant", () => {
@@ -271,8 +269,8 @@ describe("CarySummaryProductCard snapshot tests", () => {
           minimal
           profile={shopProfile}
           product={product}
-        />
-      )
+        />,
+      ),
     ).toMatchSnapshot();
   });
 });
