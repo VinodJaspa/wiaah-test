@@ -9,12 +9,9 @@ export default {
 
 export const Default = () => (
   <SubscriptionPlanCard
-    price={{
-      amount: 15,
-      currency: "CHF",
-    }}
+    price={5}
     trialDays={30}
     benifits={["All kits included", "unlimited downloads", "ios support"]}
-    onUpgradeRequest={() => {}}
+    onUpgradeRequest={() => { }}
   />
 );

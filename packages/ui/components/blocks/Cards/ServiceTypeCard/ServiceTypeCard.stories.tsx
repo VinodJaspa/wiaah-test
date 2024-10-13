@@ -1,6 +1,7 @@
 import { storybookCardsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import { ServiceTypeCard } from "@UI";
+import { ServiceType } from "@features/API";
 
 export default {
   title: storybookCardsTitle + "ServiceTypeCard",
@@ -14,9 +15,9 @@ export const Default = () => {
         serviceName: "sample service",
         serviceDescription: "sample service description",
         serviceIcon: <div>icon</div>,
-        serviceKey: "thingsRenting",
+        serviceKey: ServiceType.Hotel,
       }}
-      onServiceChoosen={(serviceKey) => {}}
+      onServiceChoosen={(serviceKey) => { }}
     />
   );
 };

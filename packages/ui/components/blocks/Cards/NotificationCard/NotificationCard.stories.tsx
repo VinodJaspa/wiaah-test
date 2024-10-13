@@ -1,19 +1,36 @@
 import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "@UI";
 import { ComponentMeta } from "@storybook/react";
+import { NotificationType } from "@features/API";
 
 export default {
   title: storybookCardsTitle + "NotificationCard",
   component: NotifiactionCard,
 } as ComponentMeta<typeof NotifiactionCard>;
 
+const NotificationPlaceholder = {
+  username: "john_doe",
+  count: 1,
+  orderId: "ORD12345",
+  thumbnail: "https://via.placeholder.com/150", // Placeholder image URL
+  createdAt: new Date().toISOString(),
+  seen: false,
+  children: null, // No child elements by default
+};
+
 export const infoNotifaction = () => (
-  <NotifiactionCard notificationDetails={NotificationsPH[0]} />
+  <NotifiactionCard type={NotificationType.Info} {...NotificationPlaceholder} />
 );
 
 export const followNotification = () => (
-  <NotifiactionCard notificationDetails={NotificationsPH[2]} />
+  <NotifiactionCard
+    type={NotificationType.Follow}
+    {...NotificationPlaceholder}
+  />
 );
 
 export const followRequestNotification = () => (
-  <NotifiactionCard notificationDetails={NotificationsPH[3]} />
+  <NotifiactionCard
+    type={NotificationType.FollowRequest}
+    {...NotificationPlaceholder}
+  />
 );
