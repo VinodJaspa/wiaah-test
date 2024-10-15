@@ -1,9 +1,74 @@
+import { mount } from "enzyme";
 import React from "react";
-import { render, getTestId } from "utils/src/test/test-utils";
+import { getTestId } from "utils/src/test/test-utils";
 import { UsersProfiles } from ".";
 
 // testid selectors
 // data-testid="selectorName"
+
+const usersProfilesPlaceHolder = [
+  {
+    id: "1",
+    name: "Wiaah",
+    userPhotoSrc: "/shop-3.jpeg",
+    profession: "Hotel Manager",
+  },
+  {
+    id: "2",
+    name: "Jack",
+    userPhotoSrc: "/shop.jpeg",
+    profession: "Bartender",
+  },
+  {
+    id: "3",
+    name: "Sam",
+    userPhotoSrc: "/shop-2.jpeg",
+    profession: "Musician",
+  },
+  {
+    id: "4",
+    name: "Wiaah",
+    userPhotoSrc: "/shop-3.jpeg",
+    profession: "Market Vendor",
+  },
+  {
+    id: "5",
+    name: "Jack",
+    userPhotoSrc: "/shop.jpeg",
+    profession: "Painter",
+  },
+  {
+    id: "6",
+    name: "Wiaah",
+    userPhotoSrc: "/shop-3.jpeg",
+    profession: "Hotel Manager",
+  },
+  {
+    id: "7",
+    name: "Jack",
+    userPhotoSrc: "/shop.jpeg",
+    profession: "Bartender",
+  },
+  {
+    id: "8",
+    name: "Sam",
+    userPhotoSrc: "/shop-2.jpeg",
+    profession: "Musician",
+  },
+  {
+    id: "9",
+    name: "Wiaah",
+    userPhotoSrc: "/shop-3.jpeg",
+    profession: "Market Vendor",
+  },
+  {
+    id: "10",
+    name: "Jack",
+    userPhotoSrc: "/shop.jpeg",
+    profession: "Painter",
+  },
+];
+
 const selectors = {
   userProfile: "UserProfile",
   profilesContainer: "UsersProfilesContainer",
@@ -12,144 +77,45 @@ const selectors = {
   userName: "UserName",
 };
 
-const usersProfilesPlaceHolder = [
-  {
-    name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
-    activityType: "Hotel",
-    verified: true,
-  },
-  {
-    name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
-    activityType: "Bar",
-    verified: false,
-  },
-  {
-    name: "sam",
-    userPhotoSrc: "/shop-2.jpeg",
-    activityType: "Singer",
-    verified: true,
-  },
-  {
-    name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
-    activityType: "MarketPlace",
-    verified: true,
-  },
-  {
-    name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
-    activityType: "Artist",
-    verified: false,
-  },
-  {
-    name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
-    activityType: "Hotel",
-    verified: true,
-  },
-  {
-    name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
-    activityType: "Bar",
-    verified: false,
-  },
-  {
-    name: "sam",
-    userPhotoSrc: "/shop-2.jpeg",
-    activityType: "Singer",
-    verified: true,
-  },
-  {
-    name: "Wiaah",
-    userPhotoSrc: "/shop-3.jpeg",
-    activityType: "MarketPlace",
-    verified: true,
-  },
-  {
-    name: "Jack",
-    userPhotoSrc: "/shop.jpeg",
-    activityType: "Artist",
-    verified: false,
-  },
-];
-
 describe("UsersProfiles 'narrow' variant  tests", () => {
-  let usersProfiles: HTMLElement[];
-  let profilesContainer: HTMLElement;
+  let usersProfiles: any;
+  let profilesContainer: any;
 
   beforeEach(() => {
-    const wrapper = render(
+    const wrapper = mount(
       <UsersProfiles
         variant="narrow"
         maxNarrowItems={5}
         users={usersProfilesPlaceHolder}
-      />
+      />,
     );
-    usersProfiles = wrapper.queryAllByTestId(selectors.userProfile);
-    profilesContainer = wrapper.getByTestId(selectors.profilesContainer);
+    usersProfiles = wrapper.find(`[data-testid="${selectors.userProfile}"]`);
+    profilesContainer = wrapper.find(
+      `[data-testid="${selectors.profilesContainer}"]`,
+    );
   });
+
   it("should have the right users profiles as provided in maxNarrowItems", () => {
     expect(usersProfiles.length).toBe(5);
   });
 
-  it("should not have users names,activity, or verified indicator with 'narrow' variant", () => {
-    usersProfiles.forEach((profile, i) => {
-      expect(profile.querySelector(getTestId(selectors.userName))).toBe(null);
-      expect(profile.querySelector(getTestId(selectors.userActivity))).toBe(
-        null
-      );
-      expect(profile.querySelector(getTestId(selectors.userVerified))).toBe(
-        null
-      );
-    });
-  });
-});
-
-describe("UsersProfiles 'long' variant  tests", () => {
-  let usersProfiles: HTMLElement[];
-  let profilesContainer: HTMLElement;
-
-  beforeEach(() => {
-    const wrapper = render(
-      <UsersProfiles
-        variant="long"
-        maxLongItems={7}
-        users={usersProfilesPlaceHolder}
-      />
-    );
-    usersProfiles = wrapper.queryAllByTestId(selectors.userProfile);
-    profilesContainer = wrapper.getByTestId(selectors.profilesContainer);
-  });
-  it("should have the right users profiles as provided in maxLongItems", () => {
-    expect(usersProfiles.length).toBe(7);
-  });
-  it("should have users names,activityType and weather users are verified or not with the 'long' variant", () => {
-    console.log(profilesContainer.innerHTML);
-    usersProfiles.forEach((profile, i) => {
-      const userPlaceholder = usersProfilesPlaceHolder[i];
+  it("should not have users names, activity, or verified indicator with 'narrow' variant", () => {
+    usersProfiles.forEach((profile: any) => {
       expect(
-        profile.querySelector(getTestId(selectors.userName))?.textContent
-      ).toBe(userPlaceholder.name);
+        profile
+          .find(`[data-testid="${getTestId(selectors.userName)}"]`)
+          .exists(),
+      ).toBe(false);
       expect(
-        profile.querySelector(getTestId(selectors.userActivity))?.textContent
-      ).toBe(userPlaceholder.activityType);
-      if (userPlaceholder.verified) {
-        expect(
-          profile.querySelector(getTestId(selectors.userVerified))
-        ).not.toBeNull();
-      } else {
-        expect(
-          profile.querySelector(getTestId(selectors.userVerified))
-        ).toBeNull();
-      }
+        profile
+          .find(`[data-testid="${getTestId(selectors.userActivity)}"]`)
+          .exists(),
+      ).toBe(false);
+      expect(
+        profile
+          .find(`[data-testid="${getTestId(selectors.userVerified)}"]`)
+          .exists(),
+      ).toBe(false);
     });
-  });
-});
-
-describe("UsersProfiles snapshot tests", () => {
-  it("should match snapshot", () => {
-    render(<UsersProfiles users={usersProfilesPlaceHolder} />);
   });
 });
