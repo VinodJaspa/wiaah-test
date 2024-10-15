@@ -6,13 +6,20 @@ describe("Product card render tests", () => {
   it("should render properly", () => {
     shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
   });
 
@@ -21,17 +28,19 @@ describe("Product card render tests", () => {
     const component = shallow(
       <ProductCard
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
         buttonText="add to cart"
-        colors={colors}
-        currency="USD"
-        currencySymbol="$"
-        discount={10}
-        oldPrice={20}
-      />
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
 
     const productName = component.find("[data-test='productName']");
@@ -40,13 +49,13 @@ describe("Product card render tests", () => {
     const productPrice = component.find("[data-test='productPrice']");
     const productDiscount = component.find("[data-test='productDiscount']");
     const productPriceContainer = component.find(
-      "[data-test='productPriceContainer']"
+      "[data-test='productPriceContainer']",
     );
     const productColors = component.find("[data-test='productColors']");
     const productOldPrice = component.find("[data-test='productOldPrice']");
     const productColor = component.find("[data-test='productColor']");
     const currencySymbol = component.find(
-      "[data-test='productCurrencySymbol']"
+      "[data-test='productCurrencySymbol']",
     );
 
     productColor.forEach((color, i) => {
@@ -74,13 +83,20 @@ describe("Product card render tests", () => {
   it("should not render 'booking' indicator when variant prop is not 'service'", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const serviceIndicator = component.find("[data-test='bookingText']");
     expect(serviceIndicator.length).toBe(0);
@@ -88,14 +104,20 @@ describe("Product card render tests", () => {
   it("should render 'booking' indicator when variant prop is 'service'", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        variant="service"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const serviceIndicator = component.find("[data-test='bookingText']");
     expect(serviceIndicator.length).toBe(1);
@@ -104,15 +126,20 @@ describe("Product card render tests", () => {
   it("should render filled heart if product is liked and position is save", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        variant="service"
-        liked={true}
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const liked = component.find("[data-test='productLiked']");
     const notLiked = component.find("[data-test='productNotLiked']");
@@ -123,15 +150,20 @@ describe("Product card render tests", () => {
   it("should render empty heart if product is not liked and position is save", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        variant="service"
-        liked={false}
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={false} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const liked = component.find("[data-test='productLiked']");
     const notLiked = component.find("[data-test='productNotLiked']");
@@ -142,14 +174,20 @@ describe("Product card render tests", () => {
   it("should render delete icon if position is delete", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        liked={false}
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={false} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const liked = component.find("[data-test='productLiked']");
     const notLiked = component.find("[data-test='productNotLiked']");
@@ -166,16 +204,20 @@ describe("productCard callback function tests", () => {
 
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        onLike={onLikeCbMock}
-        onDelete={onDeleteCbMock}
-        position="save"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const actionButton = component.find("[data-test='actionButton']");
     actionButton.simulate("click");
@@ -188,16 +230,20 @@ describe("productCard callback function tests", () => {
 
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        onLike={onLikeCbMock}
-        onDelete={onDeleteCbMock}
-        position="delete"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const actionButton = component.find("[data-test='actionButton']");
     actionButton.simulate("click");
@@ -211,16 +257,20 @@ describe("productCard callback function tests", () => {
 
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        onLike={onLikeCbMock}
-        onDelete={onDeleteCbMock}
-        onButtonClick={onButtonClick}
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     const mainButton = component.find("[data-test='productButtonText']");
     mainButton.simulate("click");
@@ -234,36 +284,40 @@ describe("productCard snapshot tests", () => {
   it("should match snapshot with the required props", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     expect(component).toMatchSnapshot();
   });
   it("should match snapshot with the all props", () => {
     const component = shallow(
       <ProductCard
-        buttonText="test"
         id="testid"
-        imageUrl="/shop.jpeg"
         name="test card"
         price={15}
-        cashback="15%"
-        colors={["#fff", "#900", "#000"]}
-        currency="USD"
-        currencySymbol="$"
-        discount={15}
-        forceHover={true}
-        liked={true}
-        oldPrice={20}
-        position="delete"
-        rating={5}
-        variant="service"
-      />
+        buttonText="add to cart"
+        discount={10} // optional
+        cashback={15}
+        liked={true} // optional
+        position="save" // optional, "save" or "delete"
+        onLike={() => { }} // optional
+        onDelete={() => { }} // optional
+        onButtonClick={() => { }} // optional
+        thumbnail=""
+        rate={4}
+      />,
     );
     expect(component).toMatchSnapshot();
   });
