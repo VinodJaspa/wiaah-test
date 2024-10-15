@@ -1,7 +1,8 @@
+import { render, RenderResult, fireEvent } from "@testing-library/react"; // Added fireEvent import
 import React from "react";
-import { render, fireEvent, RenderResult } from "utils/src/test//test-utils";
-
 import { SellerHeader } from ".";
+import "@testing-library/jest-dom"; // Ensure this import is present
+
 const selectors = {
   searchInput: "SearchInput",
   notifiactionsBtn: "NotificationsBtn",
@@ -23,18 +24,42 @@ describe("SellerHeader tests", () => {
 
   beforeEach(() => {
     onSearchSubmitMock = jest.fn();
-    wrapper = render(<SellerHeader onSearchSubmit={onSearchSubmitMock} />);
-    searchInput = wrapper.getByRole(selectors.searchInput) as HTMLInputElement;
-    notifiactionsBtn = wrapper.getByRole(
-      selectors.notifiactionsBtn
-    ) as HTMLButtonElement;
-    messagesBtn = wrapper.getByRole(selectors.messagesBtn) as HTMLButtonElement;
-    submitSearchBtn = wrapper.getByRole(
-      selectors.submitSearchBtn
-    ) as HTMLButtonElement;
+    wrapper = render(
+      <SellerHeader
+        onSearchSubmit={onSearchSubmitMock}
+        headerNavLinks={[
+          {
+            link: {
+              name: "Dashboard",
+              href: "/dashboard",
+              props: {
+                className: "hover:text-blue-500",
+              },
+            },
+            icon: <span>📊</span>,
+          },
+        ]}
+      />,
+    );
+    searchInput = wrapper.getByRole("textbox", {
+      name: selectors.searchInput,
+    }) as HTMLInputElement;
+    notifiactionsBtn = wrapper.getByRole("button", {
+      name: selectors.notifiactionsBtn,
+    }) as HTMLButtonElement;
+    messagesBtn = wrapper.getByRole("button", {
+      name: selectors.messagesBtn,
+    }) as HTMLButtonElement;
+    submitSearchBtn = wrapper.getByRole("button", {
+      name: selectors.submitSearchBtn,
+    }) as HTMLButtonElement;
 
-    messagesPopover = wrapper.queryByRole(selectors.messagesPopover);
-    notificationsPopover = wrapper.queryByRole(selectors.notificationsPopover);
+    messagesPopover = wrapper.queryByRole("dialog", {
+      name: selectors.messagesPopover,
+    });
+    notificationsPopover = wrapper.queryByRole("dialog", {
+      name: selectors.notificationsPopover,
+    });
   });
 
   it("should change search input value properly", () => {
@@ -49,10 +74,11 @@ describe("SellerHeader tests", () => {
     expect(onSearchSubmitMock).toBeCalledWith("test value cb");
   });
 
-  it("should not have messages popover shown intitialy", () => {
+  it("should not have messages popover shown initially", () => {
     expect(messagesPopover).not.toBeInTheDocument();
   });
-  it("should not have notifications popover shown intitialy", () => {
+
+  it("should not have notifications popover shown initially", () => {
     expect(notificationsPopover).not.toBeInTheDocument();
   });
 
@@ -61,9 +87,9 @@ describe("SellerHeader tests", () => {
     expect(messagesPopover).toBeInTheDocument();
   });
 
-  it("should open notifications popover on message button click", () => {
+  it("should open notifications popover on notifications button click", () => {
     fireEvent.click(notifiactionsBtn);
-    expect(messagesPopover).toBeInTheDocument();
+    expect(notificationsPopover).toBeInTheDocument();
   });
 });
 
