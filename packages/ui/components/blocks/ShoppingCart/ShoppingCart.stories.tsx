@@ -1,8 +1,8 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ShoppingCartItem } from "@UI/../types/src";
 import { useState } from "react";
 import { RecoilRoot } from "recoil";
 import { ShoppingCart } from "../";
-import { ShoppingCartItem } from "@UI/types/shoppingCart/shoppingCartItem.interface";
 
 export default {
   title: "UI/blocks/ShoppingCart",
@@ -38,7 +38,7 @@ Default.args = {
       thumbnail: "shop.jpeg",
     },
   ],
-  onItemDelete: () => {},
+  onItemDelete: () => { },
 };
 Default.decorators = [
   (Story, { args: { items, onItemDelete, ...args } }) => {
