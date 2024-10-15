@@ -14,7 +14,6 @@ const template: ComponentStory<typeof MultiChooseInput> = (args) => {
     <MultiChooseInput
       suggestions={["tes", "test"]}
       onChange={(data) => setSelected(data)}
-      selected={selected}
     />
   );
 };

@@ -1,6 +1,6 @@
+import { cleanup, render, fireEvent } from "@testing-library/react"; // Import fireEvent
 import React from "react";
 import { SellerPostInput } from "./index";
-import { fireEvent, render, screen, cleanup } from "utils/src/test/test-utils";
 
 // testid selectors
 // data-testid="selectorName"
@@ -28,42 +28,43 @@ describe("SellerPostInput render and functional tests", () => {
   let addStatusBtn: HTMLElement;
   let onSubmitMock: jest.Mock;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     onSubmitMock = jest.fn();
-    const wrapper = render(
+    const { getByTestId } = render(
       <SellerPostInput
         onPostSubmit={onSubmitMock}
         userName="test"
         userPhotoSrc="/wiaah_logo.png"
-      />
+      />,
     );
-    userImage = (await wrapper.findByTestId(
-      selectors.userImage
-    )) as HTMLImageElement;
-    postInput = wrapper.getByTestId(selectors.postInput) as HTMLInputElement;
-    submitBtn = wrapper.getByTestId(selectors.submitBtn) as HTMLButtonElement;
-    attachPhotoBtn = wrapper.getByTestId(selectors.attachPhotoBtn);
-    attachVideoBtn = wrapper.getByTestId(selectors.attachVideoBtn);
-    attachActionBtn = wrapper.getByTestId(selectors.attachActionBtn);
-    addLocationBtn = wrapper.getByTestId(selectors.addLocationBtn);
-    addStatusBtn = wrapper.getByTestId(selectors.addStatusBtn);
+
+    // No need to await, using synchronous querying
+    userImage = getByTestId(selectors.userImage) as HTMLImageElement;
+    postInput = getByTestId(selectors.postInput) as HTMLInputElement;
+    submitBtn = getByTestId(selectors.submitBtn) as HTMLButtonElement;
+    attachPhotoBtn = getByTestId(selectors.attachPhotoBtn);
+    attachVideoBtn = getByTestId(selectors.attachVideoBtn);
+    attachActionBtn = getByTestId(selectors.attachActionBtn);
+    addLocationBtn = getByTestId(selectors.addLocationBtn);
+    addStatusBtn = getByTestId(selectors.addStatusBtn);
   });
 
   it("should have button with the text 'post'", () => {
     expect(submitBtn.textContent).toBe("post");
   });
+
   it("should trigger onPostSubmit callback with the right value on post button", () => {
     fireEvent.change(postInput, { target: { value: "test post" } });
     fireEvent.click(submitBtn);
-    expect(onSubmitMock).toBeCalledTimes(1);
-    expect(onSubmitMock).toBeCalledWith("test post");
+    expect(onSubmitMock).toHaveBeenCalledTimes(1); // Use toHaveBeenCalledTimes instead of toBeCalledTimes
+    expect(onSubmitMock).toHaveBeenCalledWith("test post"); // Use toHaveBeenCalledWith instead of toBeCalledWith
   });
 });
 
 describe("SellerPostInput Snapshot tests", () => {
   it("should match snapshot", () => {
     const { asFragment } = render(
-      <SellerPostInput userName="test" userPhotoSrc="testsrc" />
+      <SellerPostInput userName="test" userPhotoSrc="testsrc" />,
     );
     expect(asFragment()).toMatchSnapshot();
   });

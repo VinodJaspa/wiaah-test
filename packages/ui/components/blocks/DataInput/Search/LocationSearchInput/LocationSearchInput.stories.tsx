@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof LocationSearchInput>;
 
 const template: ComponentStory<typeof LocationSearchInput> = () => {
-  return <LocationSearchInput />;
+  return <LocationSearchInput onLocationSelect={() => { }} />;
 };
 
 export const Default = template.bind({});

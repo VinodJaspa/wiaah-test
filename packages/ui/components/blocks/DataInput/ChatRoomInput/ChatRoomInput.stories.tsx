@@ -7,4 +7,4 @@ export default {
   component: ChatRoomInput,
 } as ComponentMeta<typeof ChatRoomInput>;
 
-export const Default = () => <ChatRoomInput />;
+export const Default = () => <ChatRoomInput roomId="2" />;

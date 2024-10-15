@@ -25,22 +25,20 @@ const times = [
 ];
 
 export const Default = () => {
-  const [range, setRange] = React.useState<TimeData>();
+  const [range, setRange] = React.useState<[Date, Date]>([
+    new Date(),
+    new Date(Date.now() + 3600000),
+  ]); // 1 hour range
   const mappedTimes = mapTimeRange(times);
   return (
     <div className="flex flex-col gap-8 items-center w-full">
       <pre className="text-xl font-bold">{JSON.stringify(range)}</pre>
       <TimeSlider
-        initialPos={{
-          from: mappedTimes[4].pos,
-          to: mappedTimes[7].pos,
-        }}
-        boundings={{
-          from: mappedTimes[2],
-          to: mappedTimes[8],
-        }}
-        timeRange={times}
-        onTimeChange={(range) => setRange(range)}
+        value={range}
+        onChange={(time) => setRange(time)}
+        onRemove={() => console.log("Removed")}
+        onSplit={(timeRange) => console.log("Split:", timeRange)}
+        onActive={(borders) => console.log("Active:", borders)}
       />
     </div>
   );
