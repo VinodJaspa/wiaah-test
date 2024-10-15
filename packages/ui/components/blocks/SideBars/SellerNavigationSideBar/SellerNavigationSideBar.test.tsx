@@ -1,11 +1,6 @@
 import React from "react";
 import { NavigationLinkType } from "types";
-import {
-  render,
-  getRoleId,
-  RenderResult,
-  fireEvent,
-} from "utils/src/test/test-utils";
+import { getRoleId } from "utils/src/test/test-utils";
 import { SellerNavigationSideBar } from ".";
 import {
   HiUserGroup,
@@ -17,6 +12,7 @@ import { IoVideocam } from "react-icons/io5";
 import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
 import { AffiliationIcon, AffiliationIconOutline } from "@UI";
+import { fireEvent, render, RenderResult } from "@testing-library/react";
 
 const selectors = {
   link: "NavigationSideBarLink",
@@ -34,28 +30,33 @@ const HeaderMock: React.FC = () => {
 const linksPlaceHolder: NavigationLinkType[] = [
   {
     name: "homepage",
-    icon: HiOutlineHome,
-    activeIcon: HiHome,
+    icon: <HiOutlineHome />,
+    activeIcon: <HiHome />,
+    url: "/",
   },
   {
     name: "discover",
-    icon: HiOutlineUserGroup,
-    activeIcon: HiUserGroup,
+    icon: <HiOutlineUserGroup />,
+    activeIcon: <HiUserGroup />,
+    url: "/discover",
   },
   {
     name: "action",
-    icon: CgPlayButtonR,
-    activeIcon: IoVideocam,
+    icon: <CgPlayButtonR />,
+    activeIcon: <IoVideocam />,
+    url: "/action",
   },
   {
     name: "shop",
-    icon: AiOutlineShop,
-    activeIcon: AiFillShop,
+    icon: <AiOutlineShop />,
+    activeIcon: <AiFillShop />,
+    url: "/shop",
   },
   {
     name: "affiliation",
-    icon: () => <AffiliationIconOutline />,
-    activeIcon: () => <AffiliationIcon />,
+    icon: <AffiliationIconOutline />,
+    activeIcon: <AffiliationIcon />,
+    url: "/affiliation",
   },
 ];
 
@@ -73,11 +74,10 @@ describe("SellerNavigationSideBar tests", () => {
     wrapper = render(
       <SellerNavigationSideBar
         onLinkClick={onLinkClickMock}
-        links={linksPlaceHolder}
         headerElement={<HeaderMock />}
       >
         <ChildMock />
-      </SellerNavigationSideBar>
+      </SellerNavigationSideBar>,
     );
 
     childMock = render(<ChildMock />);
@@ -101,8 +101,8 @@ describe("SellerNavigationSideBar tests", () => {
   it("should call onLinkClick callback with the right link name", () => {
     links.map((link, i) => {
       fireEvent.click(link);
-      expect(onLinkClickMock).toBeCalledTimes(i + 1);
-      expect(onLinkClickMock).toBeCalledWith(linksPlaceHolder[i], i);
+      expect(onLinkClickMock).toHaveBeenCalledTimes(i + 1);
+      expect(onLinkClickMock).toHaveBeenCalledWith(linksPlaceHolder[i], i);
     });
   });
 
@@ -119,10 +119,10 @@ describe("SellerNavigationSideBar snapshot tests", () => {
   it("should match snapshot", () => {
     expect(
       render(
-        <SellerNavigationSideBar links={linksPlaceHolder}>
+        <SellerNavigationSideBar>
           <ChildMock />
-        </SellerNavigationSideBar>
-      )
+        </SellerNavigationSideBar>,
+      ),
     ).toMatchSnapshot();
   });
 });
