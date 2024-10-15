@@ -1,7 +1,7 @@
+import { CardDetails } from "@UI/../types/src";
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { act } from "react-dom/test-utils";
-import { CardDetails } from "types/market/Checkout";
 import { getMountedComponent } from "../../helpers";
 import { PaymentGateway } from "../PaymentGateway";
 
@@ -27,7 +27,7 @@ describe("PaymentGateway render and props tests", () => {
   let onSuccess: jest.Mock;
   beforeEach(() => {
     onSuccess = jest.fn();
-    wrapper = mount(<PaymentGateway />);
+    wrapper = mount(<PaymentGateway onSuccess={() => { }} />);
     cardNumberInput = getMountedComponent(wrapper, selectors.cardNumber, 2);
     cardCvv = getMountedComponent(wrapper, selectors.cardCvv, 2);
     cardExpiryDate = getMountedComponent(wrapper, selectors.cardExpiryDate, 2);
@@ -35,7 +35,7 @@ describe("PaymentGateway render and props tests", () => {
   });
 
   it("should render properly", () => {
-    shallow(<PaymentGateway />);
+    shallow(<PaymentGateway onSuccess={() => { }} />);
   });
   it("should have the right elments", () => {
     expect(cardNumberInput.length).toBe(1);
