@@ -1,57 +1,94 @@
 import { storybookDataDisplayBlocksTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import {
-  WorkingDaysCalander,
-  WorkingDaysCalanderProps,
+  WorkingDaysCalender,
+  WorkingDaysCalenderProps,
 } from "./WorkingDaysCalander";
 import React from "react";
 
 export default {
   title: storybookDataDisplayBlocksTitle + "WeekCalander",
-  component: WorkingDaysCalander,
-} as ComponentMeta<typeof WorkingDaysCalander>;
+  component: WorkingDaysCalender,
+} as ComponentMeta<typeof WorkingDaysCalender>;
 
-const template: ComponentStory<typeof WorkingDaysCalander> = (args) => (
-  <WorkingDaysCalander {...args} />
+const template: ComponentStory<typeof WorkingDaysCalender> = (args) => (
+  <WorkingDaysCalender {...args} />
 );
 
-export const Default: { args: WorkingDaysCalanderProps } = template.bind({});
+export const Default: { args: WorkingDaysCalenderProps } = template.bind({});
 Default.args = {
-  hoursLimit: 3,
   workingDates: [
     {
-      date: Date.now(),
+      date: Date.now().toString(),
       workingHoursRanges: [...Array(2)].map(() => ({
-        from: Date.now(),
-        to: Date.now(),
+        from: Date.now().toString(),
+        to: Date.now().toString(),
       })),
     },
     {
-      date: Date.now(),
+      date: Date.now().toString(),
       workingHoursRanges: [...Array(1)].map(() => ({
-        from: Date.now(),
-        to: Date.now(),
+        from: Date.now().toString(),
+        to: Date.now().toString(),
       })),
     },
     {
-      date: Date.now(),
+      date: Date.now().toString(),
       workingHoursRanges: [...Array(2)].map(() => ({
-        from: Date.now(),
-        to: Date.now(),
+        from: Date.now().toString(),
+        to: Date.now().toString(),
       })),
     },
     {
-      date: Date.now(),
+      date: Date.now().toString(),
       workingHoursRanges: [...Array(1)].map(() => ({
-        from: Date.now(),
-        to: Date.now(),
+        from: Date.now().toString(),
+        to: Date.now().toString(),
       })),
     },
     {
-      date: Date.now(),
+      date: Date.now().toString(),
       workingHoursRanges: [...Array(2)].map(() => ({
-        from: Date.now(),
-        to: Date.now(),
+        from: Date.now().toString(),
+        to: Date.now().toString(),
+      })),
+    },
+  ],
+
+  takenDates: [
+    {
+      date: Date.now().toString(),
+      workingHoursRanges: [...Array(2)].map(() => ({
+        from: Date.now().toString(),
+        to: Date.now().toString(),
+      })),
+    },
+    {
+      date: Date.now().toString(),
+      workingHoursRanges: [...Array(1)].map(() => ({
+        from: Date.now().toString(),
+        to: Date.now().toString(),
+      })),
+    },
+    {
+      date: Date.now().toString(),
+      workingHoursRanges: [...Array(2)].map(() => ({
+        from: Date.now().toString(),
+        to: Date.now().toString(),
+      })),
+    },
+    {
+      date: Date.now().toString(),
+      workingHoursRanges: [...Array(1)].map(() => ({
+        from: Date.now().toString(),
+        to: Date.now().toString(),
+      })),
+    },
+    {
+      date: Date.now().toString(),
+      workingHoursRanges: [...Array(2)].map(() => ({
+        from: Date.now().toString(),
+        to: Date.now().toString(),
       })),
     },
   ],
