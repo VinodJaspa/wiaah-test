@@ -13,7 +13,7 @@ export const Default = () => {
   return (
     <>
       <Button onClick={handleOpen}>open</Button>
-      <FilterModal isOpen={isOpen} onClose={handleClose} />
+      <FilterModal />
     </>
   );
 };
