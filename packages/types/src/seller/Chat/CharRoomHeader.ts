@@ -1,7 +1,16 @@
 export interface ChatRoomHeaderData {
-  roomName: string;
-  roomMembers: number;
-  onlineMembers: number;
-  roomId: string;
-  roomImage: string;
+  thumbnail: string;
+  lastActive: string;
+  activeStatus: ActiveStatus;
+  id: string;
+  userId: string;
+  name: string;
+  verified: boolean;
+}
+
+export enum ActiveStatus {
+  Active = "active",
+  DoNotDisturb = "doNotDisturb",
+  Idle = "idle",
+  InActive = "inActive",
 }
