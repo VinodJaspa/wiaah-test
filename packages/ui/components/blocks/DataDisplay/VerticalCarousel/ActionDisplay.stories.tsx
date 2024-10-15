@@ -1,18 +1,18 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ActionsDisplay } from "@UI";
+import { VerticalCarousel } from "@UI";
 export default {
   title: "UI/blocks/Data Display/ActionsDisplay",
-  component: ActionsDisplay,
-} as ComponentMeta<typeof ActionsDisplay>;
+  component: VerticalCarousel,
+} as ComponentMeta<typeof VerticalCarousel>;
 
-const Template: ComponentStory<typeof ActionsDisplay> = ({ h, ...args }) => (
+const Template: ComponentStory<typeof VerticalCarousel> = ({ h, ...args }) => (
   <div className="h-[30rem] w-[20rem]">
-    <ActionsDisplay h={"24rem"} {...args}>
+    <VerticalCarousel h={"24rem"} {...args}>
       {[...Array(10)].map((_, i) => (
         <div className="h-96  bg-green-400">test {i}</div>
       ))}
-    </ActionsDisplay>
+    </VerticalCarousel>
   </div>
 );
 
