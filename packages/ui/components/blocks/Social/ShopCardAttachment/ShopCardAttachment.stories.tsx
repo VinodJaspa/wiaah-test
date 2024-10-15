@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof ShopCardAttachment> = (args) => (
   <ShopCardAttachment {...args} />
 );
 
-const { attachment, cashback, discount, type } = shopCardInfoPlaceholder;
+const { attachments, cashback, discount, type } = shopCardInfoPlaceholder;
 
 export const ImageAttachment = Template.bind({});
 ImageAttachment.args = {
@@ -23,7 +23,7 @@ ImageAttachment.args = {
 };
 export const VideoAttachment = Template.bind({});
 VideoAttachment.args = {
-  ...attachment,
+  ...attachments,
   src: "/video.mp4",
   type: "video",
   cashback,

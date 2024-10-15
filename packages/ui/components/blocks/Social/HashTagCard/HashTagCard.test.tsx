@@ -1,9 +1,9 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { PostAttachment } from "types/market/Social";
 import { HashTagCard } from "@UI";
 import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
-import { hashtagCardInfoPlaceholder } from "placeholder";
+import { hashtagCardInfoPlaceholder, PostCardPlaceHolder } from "placeholder";
+import { PostAttachment } from "@features/API";
 const selectors = {
   postAttachment: "[data-testid='PostAttachment']",
   viewPostBtn: "[data-testid='ViewPostBtn']",
@@ -25,7 +25,9 @@ describe("HashTagCard render tests", () => {
         onViewPost={onViewPostMock}
         {...cardPlaceholder}
         title={"test title"}
-      />
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
     postAttachment = getMountedComponent(wrapper, selectors.postAttachment, 3);
     viewPostBtn = getMountedComponent(wrapper, selectors.viewPostBtn, 3);
@@ -45,8 +47,9 @@ describe("HashTagCard render tests", () => {
       <HashTagCard
         onViewPost={onViewPostMock}
         {...cardPlaceholder}
-        attachment={attachment}
-      />
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
     const img = wrapper.find("img");
     expect(img.length).toBe(1);
@@ -58,8 +61,9 @@ describe("HashTagCard render tests", () => {
       <HashTagCard
         onViewPost={onViewPostMock}
         {...cardPlaceholder}
-        attachment={attachment}
-      />
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
     const video = wrapper.find("video");
     expect(video.length).toBe(1);
@@ -76,7 +80,12 @@ describe("HashTagCard functionality tests", () => {
   beforeEach(() => {
     onViewPostMock = jest.fn();
     wrapper = shallow(
-      <HashTagCard onViewPost={onViewPostMock} {...cardPlaceholder} />
+      <HashTagCard
+        onViewPost={onViewPostMock}
+        {...cardPlaceholder}
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
     postAttachment = wrapper.find(selectors.postAttachment);
     viewPostBtn = wrapper.find(selectors.viewPostBtn);
@@ -94,7 +103,12 @@ describe("HashTagCard snapshot tests", () => {
   beforeEach(() => {
     onViewPostMock = jest.fn();
     wrapper = shallow(
-      <HashTagCard onViewPost={onViewPostMock} {...cardPlaceholder} />
+      <HashTagCard
+        onViewPost={onViewPostMock}
+        {...cardPlaceholder}
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
   });
 
@@ -106,8 +120,9 @@ describe("HashTagCard snapshot tests", () => {
       <HashTagCard
         onViewPost={onViewPostMock}
         {...cardPlaceholder}
-        attachment={{ src: "/video.mp4", type: "video" }}
-      />
+        post={PostCardPlaceHolder.postInfo}
+        profile={PostCardPlaceHolder.profileInfo}
+      />,
     );
     expect(wrapper).toMatchSnapshot();
   });

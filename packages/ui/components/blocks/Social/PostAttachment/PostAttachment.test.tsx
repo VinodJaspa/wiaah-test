@@ -1,6 +1,7 @@
+import { AttachmentType } from "@features/API/gql/generated";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { PostAttachment as PostAttachmentType } from "types/market/Social";
+import { PostAttachment as PostAttachmentType } from "types";
 import { PostAttachment } from "../PostAttachment";
 
 const selectors = {
@@ -8,14 +9,14 @@ const selectors = {
   video: "[data-testid='PostAttachmentVideo']",
 };
 
-const ImagePlaceholder: PostAttachmentType = {
+const ImagePlaceholder: { src: string; type: AttachmentType } = {
   src: "/shop.jpeg",
-  type: "image",
+  type: AttachmentType.Img,
 };
 
-const VideoPlaceholder: PostAttachmentType = {
+const VideoPlaceholder: { src: string; type: AttachmentType } = {
   src: "video.mp4",
-  type: "video",
+  type: AttachmentType.Vid,
 };
 
 describe("PostAttachment render tests", () => {

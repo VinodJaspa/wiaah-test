@@ -1,5 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { SocialStoryContentData } from "@UI/../types/src";
+import { GetUserSocialStoryPlaceHolder } from "@UI/placeholder";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
 import { RecoilRoot } from "recoil";
@@ -9,24 +10,7 @@ const selectors = {
   story: "[data-testid='StoryContent']",
 };
 
-const storiesPlaceholder: SocialStoryContentData[] = [
-  {
-    id: "1",
-    storyType: "text",
-    storyText: "test story",
-  },
-  {
-    id: "2",
-    storyType: "image",
-    storyText: "test story",
-  },
-  {
-    id: "3",
-    storyType: "video",
-    storyText: "test story",
-  },
-];
-
+const storiesPlaceholder = {};
 describe("SocialStoriesCarousel render tests", () => {
   let wrapper: ReactWrapper;
   let stories: ReactWrapper;
@@ -35,9 +19,13 @@ describe("SocialStoriesCarousel render tests", () => {
     wrapper = mount(
       <RecoilRoot>
         <ChakraProvider>
-          <SocialStoriesCarousel stories={storiesPlaceholder} />
+          <SocialStoriesCarousel
+            story={GetUserSocialStoryPlaceHolder}
+            next={() => { }}
+            prev={() => { }}
+          />
         </ChakraProvider>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     stories = wrapper.find(selectors.story);
   });
@@ -46,7 +34,7 @@ describe("SocialStoriesCarousel render tests", () => {
     // console.log(wrapper.debug());
     wrapper.update();
     console.log(wrapper.debug());
-    expect(stories.length).toBe(storiesPlaceholder.length);
+    expect(stories.length).toBe(storiesPlaceholder);
   });
 });
 

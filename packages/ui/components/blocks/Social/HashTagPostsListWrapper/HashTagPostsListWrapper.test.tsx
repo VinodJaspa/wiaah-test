@@ -1,8 +1,9 @@
+import { SocialHashTagTopPosts } from "@src/state";
+import { HashTagCardInfo } from "@UI/../types/src";
+import { PostCardPlaceHolder } from "@UI/placeholder";
 import { mount, ReactWrapper, ShallowWrapper } from "enzyme";
 import React from "react";
 import { RecoilRoot, selector, useSetRecoilState } from "recoil";
-import { HashTagCardInfo } from "types/market/Social";
-import { SocialHashTagTopPosts } from "../../../../state";
 import { getMountedComponent } from "../../../helpers";
 import { HashTagPostsListWrapper } from "../HashTagPostsListWrapper";
 
@@ -13,39 +14,27 @@ const selectors = {
 
 const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
   {
-    attachment: {
-      src: "/verticalImage.jpg",
-      type: "image",
-    },
-    title: "most liked post",
+    title: "title",
+    postInfo: PostCardPlaceHolder.postInfo,
+    profileInfo: PostCardPlaceHolder.profileInfo,
+  },
+
+  {
+    title: "title",
+    postInfo: PostCardPlaceHolder.postInfo,
+    profileInfo: PostCardPlaceHolder.profileInfo,
   },
   {
-    attachment: {
-      src: "/shop.jpeg",
-      type: "image",
-    },
-    title: "most commented post",
-  },
-  {
-    attachment: {
-      src: "/verticalVideo.mp4",
-      type: "video",
-    },
-    title: "most viewed video",
-  },
-  {
-    attachment: {
-      src: "/video.mp4",
-      type: "video",
-    },
-    title: "most liked video",
+    title: "title",
+    postInfo: PostCardPlaceHolder.postInfo,
+    profileInfo: PostCardPlaceHolder.profileInfo,
   },
 ];
 
-const StateWrapper: React.FC<{ state: HashTagCardInfo[] }> = ({
-  children,
-  state,
-}) => {
+const StateWrapper: React.FC<{
+  state: HashTagCardInfo[];
+  children: React.ReactNode;
+}> = ({ children, state }) => {
   const setState = useSetRecoilState(SocialHashTagTopPosts);
   setState(state);
   return <>{children}</>;
@@ -60,22 +49,22 @@ describe("HashTagPostsListWrapper render tests", () => {
     wrapperWithItems = mount(
       <RecoilRoot>
         <StateWrapper state={hashTagCardsInfoPlaceholder}>
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={[]} />
         </StateWrapper>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     tagsContainer = getMountedComponent(
       wrapperWithItems,
       selectors.tagsContainer,
-      3
+      3,
     );
     tags = wrapperWithItems.find(selectors.hashTagCard);
     wrapperWithNoItems = mount(
       <RecoilRoot>
         <StateWrapper state={[]}>
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={[]} />
         </StateWrapper>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
   });
 
@@ -100,16 +89,16 @@ describe("HashTagPostsListWrapper Snapshot Tests", () => {
     wrapperWithItems = mount(
       <RecoilRoot>
         <StateWrapper state={hashTagCardsInfoPlaceholder}>
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={[]} />
         </StateWrapper>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     wrapperWithNoItems = mount(
       <RecoilRoot>
         <StateWrapper state={[]}>
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={[]} />
         </StateWrapper>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
   });
   it("should match snapshot with items", () => {

@@ -17,16 +17,26 @@ const Template: ComponentStory<typeof SocialProfile> = (args) => {
 
   React.useEffect(() =>
     setStoryData({
-      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
-      storyType: "image",
-      storyViews: 12300,
-      storySrc: "/verticalImage.jpg",
-      user: PostCardPlaceHolder.profileInfo,
-    })
+      id: "story-456", // Unique identifier for the story
+      storyType: "image", // Type of the story (can be 'text', 'image', etc.)
+      storySrc: "https://example.com/story-image.jpg", // URL for the story source (optional)
+      storyText: "This is a sample story text.", // Optional text for the story
+      storyCreationDate: new Date().toISOString(), // Creation date in ISO format
+      storyViews: 100, // Number of views for the story
+      user: {
+        id: "user-123", // Unique ID for the user
+        name: "Jane Doe", // User's name
+        thumbnail: "https://example.com/user-thumbnail.jpg", // URL for the user's thumbnail
+        accountType: "buyer", // Can be 'seller' or 'buyer'
+        public: true, // Indicates if the user's profile is public
+        profession: "Graphic Designer", // Optional profession
+        photo: "https://example.com/user-profile.jpg", // URL for the user's profile photo
+      },
+    }),
   );
   return (
     <>
-      {storyData && <SocialStoryModal />}
+      {storyData && <SocialStoryModal profileId="3" />}
       <SocialProfile {...args} />
     </>
   );

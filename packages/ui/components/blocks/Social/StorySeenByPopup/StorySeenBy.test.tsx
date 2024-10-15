@@ -2,9 +2,9 @@ import React from "react";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import { StorySeenByPopup } from "./";
 import { RecoilRoot } from "recoil";
-import { StorySeenByUserInfo } from "types/market/Social";
 import { useStorySeenBy } from "@UI";
 import { getMountedComponent } from "../../../helpers";
+import { StorySeenByUserInfo } from "@UI/../types/src";
 
 const selectors = {
   usersListContainer: "[data-testid='UsersListContainer']",
@@ -29,7 +29,9 @@ const users: StorySeenByUserInfo[] = [
   },
 ];
 
-const WrapperComponent: React.FC = ({ children }) => {
+const WrapperComponent: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { setStorySeenBy, OpenStorySeenBy } = useStorySeenBy();
 
   React.useEffect(() => {
@@ -55,13 +57,13 @@ describe("StorySeenBy component render tests", () => {
     wrapper = mount(
       <RecoilRoot>
         <WrapperComponent>
-          <StorySeenByPopup storyId={storyId} />
+          <StorySeenByPopup />
         </WrapperComponent>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     usersListContainer = getMountedComponent(
       wrapper,
-      selectors.usersListContainer
+      selectors.usersListContainer,
     );
     searchUserInput = getMountedComponent(wrapper, selectors.searchUserInput);
     closeModalBtn = wrapper.find(selectors.closeModalBtn);
@@ -77,7 +79,7 @@ describe("StorySeenBy component render tests", () => {
     usersListContainer = getMountedComponent(
       wrapper,
       selectors.usersListContainer,
-      3
+      3,
     );
 
     usersListContainer.children().map((userCard) => {

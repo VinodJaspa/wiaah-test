@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof SubscribersPopup> = ({
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>{t("open", "open")}</Button>
+      <Button onClick={() => setOpen(true)}>Open</Button>
       <SubscribersPopup
         isOpen={open}
         onClose={() => setOpen(false)}

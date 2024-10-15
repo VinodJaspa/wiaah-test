@@ -1,6 +1,6 @@
+import { SubscribersUserInfo } from "@UI/../types/src";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { SubscribersUserInfo } from "types/market/Social";
 import { SubscriberCard } from ".";
 
 const selectors = {
@@ -54,7 +54,7 @@ describe("Subscriber component functionality tests", () => {
         onFollow={onFollowMock}
         onProfileClick={onProfileClickMock}
         {...SubscriberPlaceholder}
-      />
+      />,
     );
     userInfo = wrapper.find(selectors.userInfo);
     userPhoto = wrapper.find(selectors.userPhoto);
@@ -84,7 +84,7 @@ describe("SubscriberCard component snapshot tests", () => {
         onFollow={onFollowMock}
         onProfileClick={onProfileClickMock}
         {...SubscriberPlaceholder}
-      />
+      />,
     );
   });
   it("should match snapshot", () => {

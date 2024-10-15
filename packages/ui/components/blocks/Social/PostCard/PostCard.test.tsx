@@ -2,10 +2,10 @@ import { shallow } from "enzyme";
 import React from "react";
 import { PostCard } from "../PostCard";
 import { PostCardInfo } from "types";
+import { PostCardPlaceHolder } from "@UI/placeholder";
 
 const postCardPlaceholder: PostCardInfo = {
   postInfo: {
-    url: "test",
     numberOfShares: 4,
     views: 159,
     createdAt: new Date(Date.UTC(2022, 3)).toString(),
@@ -35,12 +35,12 @@ const postCardPlaceholder: PostCardInfo = {
 
 describe("PostCard render tests", () => {
   it("should render properly", () => {
-    shallow(<PostCard {...postCardPlaceholder} />);
+    shallow(<PostCard post={PostCardPlaceHolder} />);
   });
 });
 
 describe("PostCard Snapshot tests", () => {
   it("should match snapshot", () => {
-    expect(shallow(<PostCard {...postCardPlaceholder} />)).toMatchSnapshot;
+    expect(shallow(<PostCard post={PostCardPlaceHolder} />)).toMatchSnapshot;
   });
 });

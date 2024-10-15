@@ -4,6 +4,9 @@ import { CommentsViewer } from "@UI";
 import { PostCardPlaceHolder } from "placeholder";
 import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
 import { RecoilRoot } from "recoil";
+import { AttachmentType } from "@features/API/gql/generated";
+import { PostCommentCardProps } from "@UI";
+import { ContentHostType } from "@features/API";
 const selectors = {
   commentsWrapper: "[data-testid='CommentsWrapper']",
   comment: "[data-testid='CommentCard']",
@@ -11,7 +14,32 @@ const selectors = {
   showLessBtn: "[data-testid='ShowLessBtn']",
 };
 
-const commentsMock = PostCardPlaceHolder.postInfo.comments || [];
+const commentsMock: PostCommentCardProps["comment"][] = [
+  {
+    __typename: "Comment",
+    id: "1", // or generate a unique ID if needed
+    content: "This is a sample comment.",
+    commentedAt: new Date().toISOString(),
+    likes: 10,
+    userId: "user-1",
+    hostId: "host-1",
+    updatedAt: new Date().toISOString(),
+    hostType: ContentHostType.Story,
+    replies: 5, // an array for replies, can be populated later
+    attachment: {
+      __typename: "Attachment",
+      src: "https://example.com/attachment.jpg",
+      type: AttachmentType.Img, // could be 'video', 'audio', etc.
+    },
+    author: {
+      __typename: "Profile",
+      username: "sampleUser",
+      photo: "https://example.com/profile.jpg",
+      verified: true,
+      id: "profile-1",
+    },
+  },
+];
 
 describe("CommentsViewer render tests", () => {
   let wrapper: ShallowWrapper;
@@ -26,7 +54,7 @@ describe("CommentsViewer render tests", () => {
       <CommentsViewer
         comments={commentsMock}
         maxInitailComments={maxInitialComments}
-      />
+      />,
     );
     commentsWrapper = wrapper.find(selectors.commentsWrapper);
     comments = wrapper.find(selectors.comment);
@@ -39,7 +67,7 @@ describe("CommentsViewer render tests", () => {
       <CommentsViewer
         comments={commentsMock}
         maxInitailComments={maxInitialComments}
-      />
+      />,
     );
   });
   it("should have the same amount of comments as the maxInitialComments prop", () => {
@@ -54,7 +82,7 @@ describe("CommentsViewer render tests", () => {
       <CommentsViewer
         comments={commentsMock.slice(0, maxInitialComments - 1)}
         maxInitailComments={maxInitialComments}
-      />
+      />,
     );
 
     showMoreBtn = wrapper.find(selectors.showMoreBtn);
@@ -77,12 +105,12 @@ describe("CommentsViewer functionality", () => {
           comments={commentsMock}
           maxInitailComments={maxInitialComments}
         />
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     commentsWrapper = getMountedComponent(
       wrapper,
       selectors.commentsWrapper,
-      3
+      3,
     );
     comments = commentsWrapper.children();
     showMoreBtn = getMountedComponent(wrapper, selectors.showMoreBtn, 3);
@@ -98,7 +126,7 @@ describe("CommentsViewer functionality", () => {
     wrapper.update();
     comments = getMountedComponent(
       wrapper,
-      selectors.commentsWrapper
+      selectors.commentsWrapper,
     ).children();
     expect(comments.length).toBe(commentsMock.length);
 
@@ -113,7 +141,7 @@ describe("CommentsViewer functionality", () => {
     wrapper.update();
     comments = getMountedComponent(
       wrapper,
-      selectors.commentsWrapper
+      selectors.commentsWrapper,
     ).children();
 
     expect(comments.length).toBe(maxInitialComments);
@@ -129,13 +157,13 @@ describe("CommentsViewer functionality", () => {
 describe("CommentsViewer Snapshot Tests", () => {
   it("should match snapshot with no comments", () => {
     const wrapper = shallow(
-      <CommentsViewer maxInitailComments={4} comments={[]} />
+      <CommentsViewer maxInitailComments={4} comments={[]} />,
     );
     expect(wrapper).toMatchSnapshot();
   });
   it("should match snapshot with comments", () => {
     const wrapper = shallow(
-      <CommentsViewer maxInitailComments={4} comments={commentsMock} />
+      <CommentsViewer maxInitailComments={4} comments={commentsMock} />,
     );
     expect(wrapper).toMatchSnapshot();
   });
@@ -143,13 +171,13 @@ describe("CommentsViewer Snapshot Tests", () => {
     const wrapper = mount(
       <RecoilRoot>
         <CommentsViewer maxInitailComments={4} comments={commentsMock} />
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     expect(commentsMock.length).toBeGreaterThan(4);
     let comments = getMountedComponent(
       wrapper,
       selectors.commentsWrapper,
-      3
+      3,
     ).children();
     const showMore = getMountedComponent(wrapper, selectors.showMoreBtn, 3);
     expect(comments.length).toBe(4);
@@ -159,7 +187,7 @@ describe("CommentsViewer Snapshot Tests", () => {
     comments = getMountedComponent(
       wrapper,
       selectors.commentsWrapper,
-      3
+      3,
     ).children();
 
     expect(comments.length).toBe(commentsMock.length);
