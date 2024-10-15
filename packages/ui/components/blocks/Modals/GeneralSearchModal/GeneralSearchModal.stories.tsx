@@ -18,7 +18,9 @@ export const Default = () => {
       <ModalButton>
         <Button>open</Button>
       </ModalButton>
-      <GeneralSearchModal />
+      <GeneralSearchModal>
+        <></>
+      </GeneralSearchModal>
     </ModalExtendedWrapper>
   );
 };

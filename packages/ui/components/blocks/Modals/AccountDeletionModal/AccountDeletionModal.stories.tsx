@@ -18,7 +18,7 @@ export const Default = () => {
       <ModalButton>
         <Button>open</Button>
       </ModalButton>
-      <AccountDeletionModal />
+      <AccountDeletionModal onSubmit={() => { }} />
     </ModalExtendedWrapper>
   );
 };
