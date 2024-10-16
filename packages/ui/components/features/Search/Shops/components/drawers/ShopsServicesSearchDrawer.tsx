@@ -26,7 +26,7 @@ export const ShopsSearchDrawer: React.FC<{}> = () => {
   const { t } = useTranslation();
   const { viewShop } = useSocialControls();
   const { cancelSearchMixedShopsServices, value } = useSocialControls(
-    "searchMixShopAndService"
+    "searchMixShopAndService",
   );
 
   const isOpen = typeof value === "string";
@@ -60,7 +60,7 @@ export const ShopsSearchDrawer: React.FC<{}> = () => {
         <Slider>
           {mapArray(data?.pages, (page) => (
             <>
-              {mapArray(page.data, (shop, i) => {
+              {mapArray(page.shops, (shop, i) => {
                 return (
                   <button
                     onClick={() => viewShop(shop.id)}
@@ -93,7 +93,7 @@ export const ShopsSearchDrawer: React.FC<{}> = () => {
                     <Button
                       className="self-end"
                       colorScheme="darkbrown"
-                      onClick={() => {}}
+                      onClick={() => { }}
                     >
                       <p className="text-semibold text-sm">
                         {t("Vist service")}
