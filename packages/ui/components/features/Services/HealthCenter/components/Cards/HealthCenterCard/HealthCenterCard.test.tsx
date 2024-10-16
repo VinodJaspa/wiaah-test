@@ -2,6 +2,9 @@ import React from "react";
 import { HealthCenterCard, HealthCenterCardProps } from "./HealthCenterCard";
 import { mount, ReactWrapper } from "enzyme";
 import { getTestId, randomNum } from "utils";
+import { ServiceStatus } from "@features/Services/Services";
+import { ServicePresentationType } from "@features/API";
+import { ServicePaymentMethods } from "@UI/../api";
 
 const testids = {
   servicePresentation: "ServicePresentation",
@@ -26,17 +29,86 @@ describe("HealthCenterCard tests", () => {
   beforeEach(() => {
     props = {
       centerData: {
-        location: {
-          address: "Boulvard James-Fazy 4",
-          city: "Geneve",
-          cords: {
-            lat: randomNum(100),
-            lng: randomNum(100),
+        healthCenter: {
+          id: "43543",
+          vat: 14,
+          workingHours: {
+            id: "1",
+            weekdays: {
+              mo: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              tu: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              we: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              th: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              fr: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              sa: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+              su: { periods: ["09:00 AM - 12:00 PM", "01:00 PM - 05:00 PM"] },
+            },
           },
-          country: "france",
-          countryCode: "CHF",
-          state: "Geneve",
-          postalCode: 1201,
+          //@ts-ignore
+          doctors: {},
+          ownerId: "321",
+          totalReviews: 43,
+          status: ServiceStatus.Active,
+          payment_methods: [ServicePaymentMethods.Cash],
+          cancelationPolicies: [
+            {
+              duration: 24, // Duration in hours
+              cost: 50, // Cost associated with cancellation
+            },
+          ],
+          serviceMetaInfo: {
+            __typename: "ServiceMetaInfo",
+            title: "Health Center A",
+            description:
+              "A comprehensive health center offering a range of services.",
+            metaTagDescription:
+              "Visit Health Center A for top-notch health services.",
+            metaTagKeywords: ["health", "clinic", "services", "wellness"],
+            hashtags: ["#HealthCenterA", "#Wellness", "#Healthcare"],
+          },
+
+          policies: [
+            {
+              __typename: "ServicePolicy",
+              policyTitle: "Cancellation Policy",
+              terms: [
+                "Cancellations made 24 hours before the appointment will receive a full refund.",
+                "Cancellations made less than 24 hours before the appointment will incur a 50% cancellation fee.",
+              ],
+            },
+            {
+              __typename: "ServicePolicy",
+              policyTitle: "Privacy Policy",
+              terms: [
+                "Your information will not be shared with third parties without your consent.",
+                "We use encryption to protect your personal information.",
+              ],
+            },
+          ],
+          presentations: [
+            {
+              type: ServicePresentationType.Img, // or ServicePresentationType.Vid
+              src: "https://example.com/image.jpg",
+            },
+          ],
+          rating: 4,
+          contact: {
+            address: "456 Elm Street",
+            country: "Sample Country",
+            state: "Sample State", // Optional
+            city: "Sample City",
+            email: "contact@sampleservice.com",
+            phone: "+123-456-7890",
+          },
+          location: {
+            address: "123 Main St",
+            city: "Sample City",
+            lat: 37.7749,
+            lon: -122.4194,
+            state: "Sample State", // optional
+            country: "Sample Country",
+            postalCode: 12345,
+          },
         },
         id: `123`,
         rate: randomNum(15),
@@ -91,7 +163,7 @@ describe("HealthCenterCard tests", () => {
   it("should have AspectRatioImage component with the right props", () => {
     const img = servicePresentation.find("AspectRatioImage");
     expect(img.length).toBe(1);
-    expect(img.props().src).toBe(props.centerData.photo);
+    expect(img.props().src).toBe(props.centerData.__typename);
     expect(img.props().alt).toBe(props.centerData.name);
   });
   it("should have a Button with Details text in the service presentation section that triggers visitService with the service data and service key", () => {
@@ -104,29 +176,30 @@ describe("HealthCenterCard tests", () => {
   it("should contain the right service info in the ServiceInfo section", () => {
     expect(
       serviceInfo.findWhere(
-        (node) => node.name() !== null && node.text() === props.centerData.name
-      ).length
-    ).toBe(1);
-    expect(
-      serviceInfo.findWhere(
-        (node) =>
-          node.name() !== null && node.text() === props.centerData.specialty
-      ).length
+        (node) => node.name() !== null && node.text() === props.centerData.name,
+      ).length,
     ).toBe(1);
     expect(
       serviceInfo.findWhere(
         (node) =>
           node.name() !== null &&
-          node.text() === `${props.centerData.location.address}`
-      ).length
+          node.text() === props.centerData.speciality.name,
+      ).length,
+    ).toBe(1);
+    expect(
+      serviceInfo.findWhere(
+        (node) =>
+          node.name() !== null &&
+          node.text() === `${props.centerData.healthCenter.location}`,
+      ).length,
     ).toBe(1);
     expect(
       serviceInfo.findWhere(
         (node) =>
           node.name() !== null &&
           node.text() ===
-            `${props.centerData.location.postalCode} ${props.centerData.location.city}`
-      )
+          `${props.centerData.healthCenter.location.postalCode} ${props.centerData.healthCenter.location.city}`,
+      ),
     );
   });
   it("should have a WorkingDaysCalander component", () => {

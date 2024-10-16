@@ -12,13 +12,12 @@ describe("SearchHealthPractitionerCard tests", () => {
   beforeEach(() => {
     props = {
       practitioner: {
+        reviews: 4,
         location: {
           address: "Boulvard James-Fazy 4",
           city: "Geneve",
-          cords: {
-            lat: randomNum(100),
-            lng: randomNum(100),
-          },
+          lat: randomNum(100),
+          lon: randomNum(100),
           country: "france",
           countryCode: "CHF",
           state: "Geneve",
@@ -43,9 +42,9 @@ describe("SearchHealthPractitionerCard tests", () => {
     expect(
       wrapper.findWhere(
         FilterNodeByText(
-          `${props.practitioner.specialty}, ${props.practitioner.location.city}`
-        )
-      ).length
+          `${props.practitioner.specialty}, ${props.practitioner.location.city}`,
+        ),
+      ).length,
     ).toBe(1);
   });
   it("should have HighlightText components with the right props", () => {

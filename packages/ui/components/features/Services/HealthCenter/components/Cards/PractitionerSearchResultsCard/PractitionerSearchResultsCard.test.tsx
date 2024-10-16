@@ -16,13 +16,12 @@ describe("PractitionerSearchResultsCard tests", () => {
   beforeEach(() => {
     props = {
       practitioner: {
+        reviews: 4,
         location: {
           address: "Boulvard James-Fazy 4",
           city: "Geneve",
-          cords: {
-            lat: randomNum(100),
-            lng: randomNum(100),
-          },
+          lat: randomNum(100),
+          lon: randomNum(100),
           country: "france",
           countryCode: "CHF",
           state: "Geneve",
@@ -44,29 +43,29 @@ describe("PractitionerSearchResultsCard tests", () => {
     expect(
       serviceInfo.findWhere(
         (node) =>
-          node.name() !== null && node.text() === props.practitioner.name
-      ).length
+          node.name() !== null && node.text() === props.practitioner.name,
+      ).length,
     ).toBe(1);
     expect(
       serviceInfo.findWhere(
         (node) =>
-          node.name() !== null && node.text() === props.practitioner.specialty
-      ).length
+          node.name() !== null && node.text() === props.practitioner.specialty,
+      ).length,
     ).toBe(1);
     expect(
       serviceInfo.findWhere(
         (node) =>
           node.name() !== null &&
-          node.text() === `${props.practitioner.location.address}`
-      ).length
+          node.text() === `${props.practitioner.location.address}`,
+      ).length,
     ).toBe(1);
     expect(
       serviceInfo.findWhere(
         (node) =>
           node.name() !== null &&
           node.text() ===
-            `${props.practitioner.location.postalCode} ${props.practitioner.location.city}`
-      )
+          `${props.practitioner.location.postalCode} ${props.practitioner.location.city}`,
+      ),
     );
   });
 
