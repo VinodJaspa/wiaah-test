@@ -20,10 +20,8 @@ describe("HolidayRentalsMyServiceCard", () => {
     location: {
       address: "street name",
       city: "Geneve",
-      cords: {
-        lat: 15,
-        lng: 16,
-      },
+      lat: 15,
+      lon: 16,
       country: "switzerland",
       countryCode: "CHF",
       postalCode: 1565,
@@ -58,13 +56,13 @@ describe("HolidayRentalsMyServiceCard", () => {
           onEdit={onEditMock}
           onRemove={onRemoveMock}
         />
-      </RecoilRoot>
+      </RecoilRoot>,
     );
   });
 
   it("should trigger on edit when edit btn is clicked", () => {
     getMountedComponent(wrapper, getTestId(selectors.editBtn)).simulate(
-      "click"
+      "click",
     );
     expect(onEditMock).toBeCalledTimes(1);
     expect(onEditMock).toBeCalledWith(props.id);
@@ -72,7 +70,7 @@ describe("HolidayRentalsMyServiceCard", () => {
 
   it("should trigger onRemove when remove btn is clicked", () => {
     getMountedComponent(wrapper, getTestId(selectors.removeBtn)).simulate(
-      "click"
+      "click",
     );
     expect(onRemoveMock).toBeCalledTimes(1);
     expect(onRemoveMock).toBeCalledWith(props.id);

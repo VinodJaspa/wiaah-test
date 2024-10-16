@@ -5,7 +5,9 @@ import {
 } from "./MyServicesCardSwitcher";
 import React from "react";
 
-const services = [
+import { MyServiceData } from "api";
+
+const services: MyServiceData[] = [
   {
     id: "1",
     title: "hotel service",
@@ -14,55 +16,192 @@ const services = [
     thumbnail: "/shop-2.jpeg",
     provider: "hotel service provider",
     type: "hotel",
+    amenites: [{ name: "Bar", slug: "bar" }],
+    cancelationPolicies: [{ cost: 15, duration: 2, id: "" }],
+    extras: ["pool", "parking", "restaurant"],
+    location: {
+      address: "address",
+      city: "city",
+      lat: 456,
+      lon: 45,
+      country: "country",
+      countryCode: "US",
+      postalCode: 12345,
+      state: "state",
+    },
   },
   {
-    id: "2",
-    title: "restaurant service",
-    description: "restaruant service description",
+    id: "restaurant-456",
+    title: "Gourmet Restaurant",
+    thumbnail: "https://example.com/restaurant.jpg",
+    provider: "Restaurant Provider",
+    description: "A high-end restaurant with gourmet cuisine",
     type: "restaurant",
-    provider: "restaurant provider name",
-    thumbnail: "/place-2.jpeg",
+    averagePrice: 75,
+    discount: { amount: 100, rule: "rule" },
+    isGoodDeal: true,
+    location: {
+      address: "123 Main St",
+      city: "Sample City",
+      lat: 37.7749,
+      lon: -122.4194,
+      state: "Sample State", // optional
+      country: "Sample Country",
+      postalCode: 12345,
+      countryCode: "SC", // for Sample Country
+    },
+    name: "Delicious Dishes",
+    rate: 4.7,
+    reviewsCount: 120,
+    tags: ["Gourmet", "Fine dining"],
+    thumbnails: [
+      "https://example.com/restaurant1.jpg",
+      "https://example.com/restaurant2.jpg",
+    ],
   },
   {
-    id: "3",
-    title: "health center service",
-    description: "health center service description",
+    id: "health-center-789",
+    title: "Health Clinic",
+    thumbnail: "https://example.com/health-center.jpg",
+    provider: "Health Center Provider",
+    description: "Comprehensive healthcare services",
     type: "health_center",
-    provider: "health center provider name",
-    thumbnail: "/doctor.jpg",
+    location: {
+      address: "123 Main St",
+      city: "Sample City",
+      lat: 37.7749,
+      lon: -122.4194,
+      state: "Sample State", // optional
+      country: "Sample Country",
+      postalCode: 12345,
+      countryCode: "SC", // for Sample Country
+    },
+    specialty: "General Healthcare",
+    workingDates: [
+      {
+        date: new Date().toString(), // Example: current date as a placeholder
+        workingHoursRanges: [
+          {
+            from: "09:00",
+            to: "17:00",
+          },
+        ],
+      },
+      {
+        date: new Date().toString(), // Example: current date as a placeholder
+        workingHoursRanges: [
+          {
+            from: "09:00",
+            to: "17:00",
+          },
+        ],
+      },
+    ],
   },
   {
-    id: "4",
-    title: "beauty center service",
-    description: "beauty center service description",
+    id: "beauty-center-101",
+    title: "Beauty Salon",
+    thumbnail: "https://example.com/beauty-center.jpg",
+    provider: "Beauty Provider",
+    description: "Top-notch beauty treatments and services",
     type: "beauty_center",
-    provider: "beauty center provider name",
-    thumbnail: "/place-2.jpeg",
+    name: "Glamour Beauty Center",
+    owners: ["Owner 1", "Owner 2"],
+    rate: 4.8,
+    reviews: 85,
   },
   {
-    id: "5",
-    title: "Holiday rentals service",
-    description: "holiday rentals service description",
+    id: "holiday-rental-202",
+    title: "Beach House Rental",
+    thumbnail: "https://example.com/holiday-rental.jpg",
+    provider: "Holiday Rentals Provider",
+    description: "A cozy beach house for your holiday stay",
+    pricePerNight: 300,
     type: "holiday_rentals",
-    provider: "provider name",
-    thumbnail: "/shop-3.jpeg",
-    pricePerNight: 150,
+    extras: ["Ocean view", "Private pool"],
+    location: {
+      address: "123 Main St",
+      city: "Sample City",
+      lat: 37.7749,
+      lon: -122.4194,
+      state: "Sample State", // optional
+      country: "Sample Country",
+      postalCode: 12345,
+      countryCode: "SC", // for Sample Country
+    },
+    cancelationPolicies: [
+      {
+        duration: 24,
+        cost: 50,
+        id: "policy123",
+      },
+    ],
+    amenites: [
+      {
+        name: "Free WiFi", // Example: amenity name
+        slug: "free-wifi", // Example: amenity slug
+      },
+      {
+        name: "Swimming Pool", // Another example amenity
+        slug: "swimming-pool",
+      },
+    ],
   },
   {
-    id: "6",
-    title: "vehicle service",
-    description: "vehicle service description",
+    id: "vehicle-303",
+    title: "SUV Rental",
+    thumbnail: "https://example.com/vehicle.jpg",
+    provider: "Vehicle Rentals",
+    description: "Luxury SUV for rent",
     type: "vehicle",
-    provider: "provider name",
-    thumbnail: "/shop-3.jpeg",
+    pricePerDay: 100,
+    vehicleProps: [
+      {
+        type: "a/c", // Example: a boolean property type
+        value: true, // Example: a boolean value
+      },
+      {
+        type: "gps", // Another boolean property type
+        value: false, // Example: another boolean value
+      },
+      {
+        type: "passengers", // Example: a numeric property type
+        value: 4, // Example: a numeric value
+      },
+      {
+        type: "windows", // Another numeric property type
+        value: 6, // Example: another numeric value
+      },
+      {
+        type: "bags", // Another numeric property type
+        value: 2, // Example: another numeric value
+      },
+    ],
+    location: {
+      address: "123 Main St",
+      city: "Sample City",
+      lat: 37.7749,
+      lon: -122.4194,
+      state: "Sample State", // optional
+      country: "Sample Country",
+      postalCode: 12345,
+      countryCode: "SC", // for Sample Country
+    },
+    cancelationPolicies: [
+      {
+        duration: 24,
+        cost: 50,
+        id: "policy123",
+      },
+    ],
   },
 ];
 
 describe("MyServicesCardSwticher", () => {
   let wrapper: ShallowWrapper;
   let props: MyServicesCardSwitcherProps = {
-    onEdit() {},
-    onRemove() {},
+    onEdit() { },
+    onRemove() { },
     //@ts-ignore
     data: { ...services[0], type: "" },
   };
@@ -76,32 +215,32 @@ describe("MyServicesCardSwticher", () => {
   });
   it("should match snapshot with hotel service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[0]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[0]} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with restaurant service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[1]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[1]} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with health center service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[2]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[2]} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with beauty center service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[3]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[3]} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with holiday rentals service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[4]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[4]} />),
     ).toMatchSnapshot();
   });
   it("should match snapshot with vehicle service type", () => {
     expect(
-      shallow(<MyServicesCardSwitcher {...props} data={services[5]} />)
+      shallow(<MyServicesCardSwitcher {...props} data={services[5]} />),
     ).toMatchSnapshot();
   });
 });

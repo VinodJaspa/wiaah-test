@@ -70,10 +70,8 @@ describe("VehicleMyServiceCard", () => {
     location: {
       address: "street name",
       city: "Geneve",
-      cords: {
-        lat: 15,
-        lng: 16,
-      },
+      lat: 15,
+      lon: 16,
       country: "switzerland",
       countryCode: "CHF",
       postalCode: 1565,
@@ -90,7 +88,7 @@ describe("VehicleMyServiceCard", () => {
         {...props}
         onEdit={onEditMock}
         onRemove={onRemoveMock}
-      />
+      />,
     );
   });
 

@@ -5,6 +5,7 @@ import {
 import React from "react";
 import { shallow, ShallowWrapper } from "enzyme";
 import { getTestId } from "utils";
+import { ProductType } from "@features/API";
 
 const selectors = {
   moveToWishlistBtn: "MoveToWishlistBtn",
@@ -21,34 +22,32 @@ describe("ProductCheckoutCard functional testing", () => {
     MoveToWishlistMock = jest.fn();
     RemoveItemMock = jest.fn();
     props = {
-      onItemDelete: RemoveItemMock,
-      id: "13",
-      color: "red",
-      cashback: {
-        amount: 500,
-        type: "cash",
-      },
-      description: "description",
-      discount: 30,
-      location: {
-        address: "address",
-        city: "city",
-        cords: {
-          lat: 25,
-          lng: 45,
+      id: "1",
+      shopName: "Sample Shop",
+      shopVerified: true,
+      title: "Sample Product",
+      size: "M",
+      color: "Red",
+      thumbnail: "https://via.placeholder.com/150",
+      qty: 1,
+      price: 29.99,
+      total: 29.99,
+      shippingMethods: [
+        {
+          name: "Standard Shipping",
+          price: 5.99,
+          deliveryRange: [3, 5],
         },
-        country: "country",
-        countryCode: "CH",
-        postalCode: 135,
-        state: "state",
-      },
-      name: "name",
-      onMoveToWishlist: MoveToWishlistMock,
-      price: 26,
-      qty: 15,
-      shippingMethods: [],
-      size: "small",
-      thumbnail: "/shop-2.jpeg",
+        {
+          name: "Express Shipping",
+          price: 9.99,
+          deliveryRange: [1, 2],
+        },
+      ],
+      type: ProductType.Goods, // Adjust according to your ProductType definition
+      format: "New",
+      onItemDelete: (id) => console.log(`Item deleted: ${id}`),
+      onMoveToWishlist: (id) => console.log(`Moved to wishlist: ${id}`),
     };
     wrapper = shallow(<ProductCheckoutCard {...props} />);
   });
