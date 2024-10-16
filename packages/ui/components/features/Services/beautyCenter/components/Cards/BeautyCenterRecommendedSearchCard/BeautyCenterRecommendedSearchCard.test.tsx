@@ -26,12 +26,16 @@ describe("BeautyCenterRecommentedSearchCard tests", () => {
   let props: BeautyCenterRecommendedSearchCardProps;
   beforeEach(() => {
     props = {
-      id: "123",
-      name: "name",
-      rate: 4,
-      owners: ["test2", "test2"],
-      reviews: 150,
-      thumbnail: "test src",
+      treatment: {
+        title: "Relaxing Facial",
+        price: 75,
+        duration: 60, // Duration in minutes
+        id: "treatment-101",
+        category: "Skincare",
+        thumbnail: "https://example.com/facial-thumbnail.jpg", // Replace with a valid image URL
+        rate: 4.8, // Average rating
+        reviews: 120, // Number of reviews
+      },
     };
     mockVisit.mockClear();
     mockVisitService.mockClear();
@@ -53,7 +57,7 @@ describe("BeautyCenterRecommentedSearchCard tests", () => {
           node.props().src === "test src" &&
           node.props().alt === "name"
         );
-      }).length
+      }).length,
     ).toBe(1);
   });
   it("should trigger visitService routing function on details click", () => {
@@ -62,19 +66,19 @@ describe("BeautyCenterRecommentedSearchCard tests", () => {
     expect(mockVisitService).toBeCalledTimes(1);
     expect(mockVisitService).toBeCalledWith(
       props,
-      ServicesRequestKeys.beauty_center
+      ServicesRequestKeys.beauty_center,
     );
   });
   it("should trigger visit visitServiceOnmap routing function on show on map click ", () => {
     const showOnmapBtn = wrapper.findWhere(
-      (node) => node.type() === "p" && node.text() === "Show on map"
+      (node) => node.type() === "p" && node.text() === "Show on map",
     );
     showOnmapBtn.simulate("click");
     expect(mockVisit).toBeCalledTimes(1);
     expect(mockVisitServiceOnMap).toBeCalledTimes(1);
     expect(mockVisitServiceOnMap).toBeCalledWith(
       props,
-      ServicesRequestKeys.beauty_center
+      ServicesRequestKeys.beauty_center,
     );
   });
   it("should have rate component with the right rating prop", () => {
@@ -84,12 +88,14 @@ describe("BeautyCenterRecommentedSearchCard tests", () => {
   });
   it("should have reviews text", () => {
     const nodes = wrapper.findWhere(
-      (node) => node.type() !== "undefiend" && node.text() === `${150} review`
+      (node) => node.type() !== "undefiend" && node.text() === `${150} review`,
     );
     expect(nodes.length).toBeGreaterThan(0);
   });
   it("should have name text", () => {
-    const nodes = wrapper.findWhere((node) => node.text() === props.name);
+    const nodes = wrapper.findWhere(
+      (node) => node.text() === props.treatment.title,
+    );
     expect(nodes.length).toBeGreaterThan(1);
   });
 });
