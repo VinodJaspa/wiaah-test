@@ -28,10 +28,8 @@ mockSearchData = {
     location: {
       address: "address",
       city: "city",
-      cords: {
-        lat: 15,
-        lng: 15,
-      },
+      lat: 15,
+      lon: 15,
       country: "france",
       countryCode: "FR",
       postalCode: 1322,
@@ -45,9 +43,10 @@ mockSearchData = {
     specialty: "Dentist",
     reviews: 150,
   })),
-  specialties: [...Array(50)].map(() => ({
-    title: mockSpecialties[randomNum(mockSpecialties.length)],
-    photo: undefined,
+  specialties: [...Array(50)].map((e, i) => ({
+    id: `${i}`,
+    name: mockSpecialties[randomNum(mockSpecialties.length)],
+    description: "",
   })),
 };
 jest.mock("api", () => ({
@@ -75,21 +74,21 @@ describe("HealthCenterSearchBox tests", () => {
   let searchQueryInput: ReactWrapper;
   let searchLocationInput: ReactWrapper;
 
-  beforeAll(() => {});
+  beforeAll(() => { });
 
   beforeEach(() => {
     wrapper = mount(
       <QueryClientProvider client={new QueryClient()}>
         <HealthCenterSearchBox />
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
     searchQueryInput = getMountedComponent(
       wrapper,
-      getTestId(testids.searchQueryInput)
+      getTestId(testids.searchQueryInput),
     );
     searchLocationInput = getMountedComponent(
       wrapper,
-      getTestId(testids.searchLocationInput)
+      getTestId(testids.searchLocationInput),
     );
   });
 
