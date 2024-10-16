@@ -10,7 +10,7 @@ jest.mock("api", () => ({
   createGraphqlRequestClient: jest.fn(),
 }));
 
-const Provider: React.FC = ({ children }) => (
+const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <QueryClientProvider client={new QueryClient()}>
     <>{children}</>
   </QueryClientProvider>
@@ -34,7 +34,7 @@ describe("useBuyerSignupMutation", () => {
     wrapper = mount(
       <Provider>
         <Hook />
-      </Provider>
+      </Provider>,
     );
   });
 
