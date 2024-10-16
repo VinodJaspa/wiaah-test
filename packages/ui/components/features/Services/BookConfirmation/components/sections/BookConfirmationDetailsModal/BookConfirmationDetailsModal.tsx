@@ -16,7 +16,7 @@ import {
 } from "@UI";
 
 export const BookConfirmationDataDisplayModal: React.FC = () => {
-  const { Listen } = useReactPubsub((keys) => keys.openBookConfirmationModal);
+  const { Listen } = useReactPubsub((e) => "OpenSocail");
   const [id, setId] = React.useState<string>();
   const { t } = useTranslation();
   const {
@@ -34,7 +34,7 @@ export const BookConfirmationDataDisplayModal: React.FC = () => {
   });
 
   return (
-    <Modal isOpen={!!id} onOpen={() => {}} onClose={() => setId(undefined)}>
+    <Modal isOpen={!!id} onOpen={() => { }} onClose={() => setId(undefined)}>
       <ModalOverlay />
       <ModalContent className="w-[95%]">
         <div className="flex flex-col lg:flex-row gap-32">
@@ -65,7 +65,7 @@ export const BookConfirmationDataDisplayModal: React.FC = () => {
               <SpinnerFallback isError={isError} isLoading={isLoading}>
                 {res ? (
                   <ServiceWorkingHoursSection
-                    workingDays={res.data.workingDays}
+                    workingHours={res.data.workingDays}
                   />
                 ) : null}
               </SpinnerFallback>
