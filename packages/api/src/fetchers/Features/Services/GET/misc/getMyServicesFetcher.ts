@@ -35,7 +35,7 @@ export type HolidayRentalsMyServiceDataType = InferType<
 export type MyServiceData = InferType<typeof MyServiceValidationSchema>;
 
 export const getMyServicesFetcher = async (
-  pagination: QueryPaginationInputs
+  pagination: QueryPaginationInputs,
 ): Promise<InferType<typeof MyServicesApiResponseValidationSchema>> => {
   const res: AsyncReturnType<typeof getMyServicesFetcher> = {
     hasMore: false,

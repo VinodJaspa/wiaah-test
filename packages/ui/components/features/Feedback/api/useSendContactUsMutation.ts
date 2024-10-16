@@ -1,23 +1,43 @@
 import { createGraphqlRequestClient } from "api";
-import { useMutation } from "react-query";
+import { useMutation, UseMutationResult } from "react-query";
 
-export const useSendContactUsMutation = () =>
-  useMutation<
-    boolean,
-    unknown,
-    { name: string; email: string; message: string }
-  >(async (args) => {
-    const client = createGraphqlRequestClient();
-    const res = await client
-      .setQuery(
-        `query sendContactUsMessage($args:SendContactUsMessageInput!){
-    sendContactUsMessage(
-        args:$args
-    )
-}`
-      )
-      .setVariables<>()
-      .send<>();
+// Define types for the mutation variables and response
+type SendContactUsMessageInput = {
+  name: string;
+  email: string;
+  message: string;
+};
 
-    return res.data;
-  });
+type SendContactUsMessageResponse = {
+  sendContactUsMessage: boolean;
+};
+
+// Define the GraphQL mutation
+const SEND_CONTACT_US_MESSAGE_MUTATION = `
+  mutation SendContactUsMessage($args: SendContactUsMessageInput!) {
+    sendContactUsMessage(args: $args)
+  }
+`;
+
+export const useSendContactUsMutation = (): UseMutationResult<
+  boolean,
+  Error,
+  SendContactUsMessageInput
+> => {
+  const client = createGraphqlRequestClient();
+
+  return useMutation<boolean, Error, SendContactUsMessageInput>(
+    async (args) => {
+      try {
+        const response = await client.request<SendContactUsMessageResponse>(
+          SEND_CONTACT_US_MESSAGE_MUTATION,
+          { args },
+        );
+
+        return response.sendContactUsMessage;
+      } catch (error) {
+        throw new Error("Failed to send contact message");
+      }
+    },
+  );
+};
