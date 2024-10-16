@@ -1,10 +1,7 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import { HashTagView } from "./HashTagView";
-import {
-  GetHashtagTopServicePostsInput,
-  useGetTopHashtagPostsQuery,
-  useGetTopHashtagServicePost,
-} from "ui";
+import { useGetTopHashtagPostsQuery, useGetTopHashtagServicePost } from "ui";
+import { GetHashtagTopServicePostsInput } from "@features/API";
 
 jest.mock("ui", () => ({
   ...jest.requireActual("ui"),
