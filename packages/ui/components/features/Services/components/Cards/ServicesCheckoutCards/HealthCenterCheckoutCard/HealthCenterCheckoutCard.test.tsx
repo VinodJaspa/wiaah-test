@@ -12,43 +12,41 @@ describe("HealthCenterCheckoutCard tests", () => {
   let props: HealthCenterCheckoutCardProps;
   beforeEach(() => {
     props = {
-      serviceType: "health_center",
-      bookedDates: {
-        from: new Date(Date.now()).toString(),
-        to: new Date(Date.now()).toString(),
-      },
-      rate: randomNum(5),
+      children: <></>,
+      serviceType: "health_center", // Hard-coded service type
+      id: "service-001", // Unique service ID
+      title: "Comprehensive Health Checkup", // Title of the service
+      thumbnail: "https://example.com/images/health-checkup.jpg", // Service thumbnail URL
+      rate: 4.5, // Rating (out of 5)
+      reviews: 120, // Total number of reviews
       refundingRule: {
-        cost: 60,
-        duration: 0,
-        id: "12",
+        duration: 48, // Duration in hours before the service starts for cancellation
+        cost: 10.0, // Cost of cancellation (e.g., a fee charged for cancelling)
+        id: "policy-001", // Unique ID for the cancellation policy
+      }, // Hard-coded refund policy
+      rateReason: "High quality of service and care.", // Reason for the rate
+      bookedDates: {
+        from: "2024-11-01", // Start date of the booking
+        to: null, // End date can be null if ongoing
       },
-
-      reviews: randomNum(153),
-      thumbnail:
-        "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
-      id: "123",
-      rateReason: "cleanliness",
-      title: "Citadines Montmartre Paris",
-
-      duration: [30, 60],
-      guests: randomNum(5),
       cashback: {
-        amount: randomNum(20),
-        type: "percent",
+        amount: 20.0, // Fixed cashback amount
+        type: "cash",
       },
-      price: randomNum(500),
+      price: 50.0, // Fixed price of the service
+      duration: [30, 60], // Example durations in minutes
+      guests: 2, // Hard-coded number of guests
       doctor: {
-        id: "123",
-        rating: 3,
-        name: "Doctor 1",
-        specialty: "spine",
-        description: "doctor description",
-        healthCenterId: "3",
-        price: randomNum(50),
-        availabilityStatus: "available",
-        photo:
-          "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
+        id: "doctor-001", // Unique doctor ID
+        name: "Dr. Jane Smith", // Doctor's name
+        specialty: "Internal Medicine", // Doctor's specialty
+        photo: "https://example.com/images/dr-jane-smith.jpg", // Doctor's photo URL
+        price: 40.0, // Price for the doctor's service
+        rating: 4.8, // Doctor's rating (out of 5)
+        description:
+          "Experienced internal medicine physician with 15 years of practice.", // Doctor's description
+        healthCenterId: "healthcenter-001", // ID of the health center
+        availabilityStatus: "available", // Doctor's availability status
       },
     };
     wrapper = shallow(<HealthCenterCheckoutCard {...props} />);
