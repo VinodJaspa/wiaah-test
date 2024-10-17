@@ -1,10 +1,11 @@
 import React from "react";
 import {
-  HotelCheckoutCard,
+  ServiceCheckoutCard,
   ServiceCheckoutCardProps,
 } from "./HotelCheckoutCard";
 import { shallow, ShallowWrapper } from "enzyme";
 import { getTestId, randomNum } from "utils";
+import { ServiceType } from "@features/API";
 
 const testids = {
   extrasContainer: "extrasContainer",
@@ -16,38 +17,70 @@ describe("HotelCheckoutCard tests", () => {
   let props: ServiceCheckoutCardProps;
   beforeEach(() => {
     props = {
-      serviceType: "hotel",
-      bookedDates: {
-        from: new Date(Date.now()).toString(),
-        to: new Date(Date.now()).toString(),
+      thumbnail: "https://example.com/images/service-thumbnail.jpg", // Service thumbnail URL
+      name: "Luxury Health Retreat", // Name of the service
+      shopName: "Wellness Center", // Shop/Service provider name
+      fullAddress: "123 Wellness Ave, Health City, HC 12345", // Full address of the service
+      amenities: [
+        { slug: "spa", label: "Spa Services" },
+        { slug: "pool", label: "Swimming Pool" },
+        { slug: "gym", label: "Fitness Center" },
+      ], // List of amenities available
+      cancelationPolicy: {
+        duration: 24, // Duration in hours for cancellation
+        cost: 15.0, // Cost for cancelling the service
       },
-      rate: randomNum(5),
-      refundingRule: {
-        cost: 12,
-        duration: 3,
-        id: "12",
-      },
-
-      reviews: randomNum(153),
-      thumbnail: "/place-1.jpg",
-      id: "123",
-      rateReason: "cleanliness",
-      title: "Citadines Montmartre Paris",
-      duration: [30, 60],
       extras: [
-        {
-          name: "Breakfast + book now, pay later",
-          price: randomNum(100),
-        },
-      ],
-      guests: randomNum(5),
-      cashback: {
-        amount: randomNum(20),
-        type: "percent",
+        { name: "Late Check-out", cost: 30.0 },
+        { name: "Breakfast Included", cost: 15.0 },
+      ], // List of extra services
+      guests: {
+        adults: 2, // Number of adults
+        childrens: 1, // Number of children
       },
-      price: randomNum(500),
+      checkin: new Date("2024-11-01"), // Check-in date
+      checkout: new Date("2024-11-05"), // Check-out date
+      total: 500.0, // Total cost for the service
+      serviceType: ServiceType.Hotel, // Hard-coded service type, ensure it matches the ServiceType definition
+      doctors: [
+        {
+          thumbnail: "https://example.com/images/dr-jane-doe.jpg", // Doctor's thumbnail URL
+          name: "Dr. Jane Doe", // Doctor's name
+          speciality: "General Practitioner", // Doctor's specialty
+          price: 100.0, // Price for the doctor's consultation
+        },
+      ], // Optional array of doctors
+      treatments: [
+        {
+          name: "Relaxing Massage", // Name of the treatment
+          price: 80.0, // Price of the treatment
+          thumbnail: "https://example.com/images/massage.jpg", // Treatment thumbnail URL
+          qty: 1, // Quantity of the treatment
+        },
+      ], // Optional array of treatments
+      menus: [
+        {
+          name: "Healthy Breakfast Menu", // Name of the menu
+          dishs: [
+            {
+              name: "Avocado Toast", // Name of the dish
+              price: 10.0, // Price of the dish
+              qty: 1, // Quantity of the dish
+              ingredints: ["Avocado", "Bread", "Salt", "Pepper"], // Ingredients of the dish
+              thumbnail: "https://example.com/images/avocado-toast.jpg", // Dish thumbnail URL
+            },
+            {
+              name: "Fruit Smoothie", // Name of another dish
+              price: 7.0, // Price of the dish
+              qty: 1, // Quantity of the dish
+              ingredints: ["Banana", "Strawberries", "Yogurt"], // Ingredients of the dish
+              thumbnail: "https://example.com/images/fruit-smoothie.jpg", // Dish thumbnail URL
+            },
+          ],
+        },
+      ], // Optional array of menus
     };
-    wrapper = shallow(<HotelCheckoutCard {...props} />);
+    wrapper = shallow(<ServiceCheckoutCard {...props} />);
   });
 
   it("should be contained in the ServiceCheckoutCommonCardWrapper", () => {
@@ -56,7 +89,7 @@ describe("HotelCheckoutCard tests", () => {
   it("should display the guests properly", () => {
     expect(
       wrapper.findWhere((node) => node.text() === `Guests:${props.guests}`)
-        .length
+        .length,
     ).toBe(1);
   });
   it("should display extras properly", () => {
@@ -68,7 +101,7 @@ describe("HotelCheckoutCard tests", () => {
       const priceDisplay = item.find("PriceDisplay");
       expect(item.text()).toContain(props.extras[i].name);
       expect(priceDisplay.length).toBe(1);
-      expect(priceDisplay.prop("price")).toBe(props.extras[i].price);
+      expect(priceDisplay.prop("price")).toBe(props.extras[i].name);
     });
   });
 });

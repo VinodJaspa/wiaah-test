@@ -1,14 +1,14 @@
 import { randomNum, storybookHotelCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { HotelCheckoutCard } from "./HotelCheckoutCard";
+import { ServiceCheckoutCard } from "./HotelCheckoutCard";
 
 export default {
   title: storybookHotelCardsTitle + "HotelCheckoutCard",
-  component: HotelCheckoutCard,
-} as ComponentMeta<typeof HotelCheckoutCard>;
+  component: ServiceCheckoutCard,
+} as ComponentMeta<typeof ServiceCheckoutCard>;
 
-const template: ComponentStory<typeof HotelCheckoutCard> = (args) => (
-  <HotelCheckoutCard {...args} />
+const template: ComponentStory<typeof ServiceCheckoutCard> = (args) => (
+  <ServiceCheckoutCard {...args} />
 );
 
 export const Default = template.bind({});
