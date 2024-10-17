@@ -9,39 +9,16 @@ describe("SellerServiceWorkingHoursSection", () => {
   let props: SellerServiceWorkingHoursSectionProps = {
     workingDays: [
       {
-        weekDay: "Sunday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Friday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Monday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Saturday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Thursday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Tuesday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
-      },
-      {
-        weekDay: "Wednesday",
-        from: new Date(2022, 8, 21).toString(),
-        to: new Date(2022, 8, 24).toString(),
+        __typename: "ShopDayWorkingHours",
+        periods: [
+          "Monday: 09:00 AM - 05:00 PM",
+          "Tuesday: 09:00 AM - 05:00 PM",
+          "Wednesday: 09:00 AM - 05:00 PM",
+          "Thursday: 09:00 AM - 05:00 PM",
+          "Friday: 09:00 AM - 05:00 PM",
+          "Saturday: 10:00 AM - 02:00 PM",
+          "Sunday: Closed",
+        ],
       },
     ],
   };
