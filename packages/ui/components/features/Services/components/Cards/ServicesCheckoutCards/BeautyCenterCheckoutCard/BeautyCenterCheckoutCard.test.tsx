@@ -15,45 +15,46 @@ describe("BeautyCenterCheckoutCard tests", () => {
   let props: BeautyCenterCheckoutCardProps;
   beforeEach(() => {
     props = {
-      serviceType: "beauty_center",
-      bookedDates: {
-        from: new Date(Date.now()).toString(),
-        to: new Date(Date.now()).toString(),
-      },
-      rate: randomNum(5),
+      children: <></>,
+      serviceType: "beauty_center", // Replace with a valid ServicesType value
+      id: "service-123",
+      title: "Luxury Facial Treatment",
+      thumbnail: "https://example.com/thumbnail.jpg", // Replace with a valid image URL
+      rate: 4.5,
+      reviews: 50,
       refundingRule: {
-        cost: 0,
-        duration: 4,
-        id: "12",
+        duration: 7, // Duration in days for cancellation
+        cost: 50, // Cost for cancellation
+        id: "policy-456",
       },
-      duration: [30, 60],
-      reviews: randomNum(153),
-      thumbnail:
-        "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/big/Tacha+Beauty+Center-01.jpg",
-      id: "123",
-      rateReason: "cleanliness",
-      title: "Citadines Montmartre Paris",
+      rateReason: "Highly rated by clients",
+      bookedDates: {
+        from: "2024-10-20T10:00:00Z", // ISO 8601 date format
+        to: "2024-10-20T12:00:00Z", // ISO 8601 date format
+      },
       cashback: {
-        amount: randomNum(20),
-        type: "percent",
+        amount: 10, // Amount of cashback
+        type: "cash", // Cashback type, could be "cash" or "percent"
       },
-      price: randomNum(500),
+      price: 150, // Price of the service
+      duration: [60, 90], // Duration of treatments in minutes
+      guests: null, // Nullable for guests; can be set to a number if needed
       bookedTreatments: [
         {
-          id: "123",
-          category: "Facial",
-          title: "Hydro facial with chemical peel",
-          durationInMinutes: [30, 60],
-          price: randomNum(50),
-          discount: randomNum(60),
+          id: "treatment-001", // Unique identifier for the treatment
+          category: "Skincare", // Category of the treatment
+          title: "Hydrating Facial", // Title of the treatment
+          price: 80, // Price of the treatment
+          durationInMinutes: [60, 75], // Duration of the treatment in minutes (must have 1-2 entries)
+          discount: 15, // Discount value, e.g., in dollars
         },
         {
-          id: "123",
-          category: "Facial",
-          title: "Hydro facial with chemical peel",
-          durationInMinutes: [30, 60],
-          price: randomNum(50),
-          discount: randomNum(60),
+          id: "treatment-001", // Unique identifier for the treatment
+          category: "Skincare", // Category of the treatment
+          title: "Hydrating Facial", // Title of the treatment
+          price: 80, // Price of the treatment
+          durationInMinutes: [60, 75], // Duration of the treatment in minutes (must have 1-2 entries)
+          discount: 15, // Discount value, e.g., in dollars
         },
       ],
     };
@@ -65,7 +66,7 @@ describe("BeautyCenterCheckoutCard tests", () => {
   });
   it("should display the treatments list properly", () => {
     expect(wrapper.find(getTestId(testids.bookedTreatmentItem)).length).toBe(
-      props.bookedTreatments.length
+      props.bookedTreatments.length,
     );
   });
   it("should display the treatment items with the right components with the right props", () => {
@@ -74,20 +75,20 @@ describe("BeautyCenterCheckoutCard tests", () => {
       // expect title
       expect(
         item.findWhere(
-          (node) => node.text() === props.bookedTreatments[i].title
-        )
+          (node) => node.text() === props.bookedTreatments[i].title,
+        ),
       );
 
       // expect TimeRangeDisplay component
       expect(item.find("TimeRangeDisplay").length).toBe(1);
       expect(item.find("TimeRangeDisplay").prop("rangeInMinutes")).toEqual(
-        props.bookedTreatments[i].durationInMinutes
+        props.bookedTreatments[i].durationInMinutes,
       );
 
       // expect PriceDisplay component
       expect(item.find("PriceDisplay").length).toBe(1);
       expect(item.find("PriceDisplay").prop("price")).toBe(
-        props.bookedTreatments[i].price
+        props.bookedTreatments[i].price,
       );
     });
   });
