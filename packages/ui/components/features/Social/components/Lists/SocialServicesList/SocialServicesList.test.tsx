@@ -7,6 +7,7 @@ let mockuseGetServicesPostsQuery: jest.Mock;
 let mockuseRouting: jest.Mock;
 let mockVisitRouting: jest.Mock;
 let mockAddQueryVisitRouting: jest.Mock;
+
 jest.mock("routing", () => {
   mockuseRouting = jest.fn();
   mockVisitRouting = jest.fn();
@@ -20,7 +21,7 @@ jest.mock("routing", () => {
             query: {},
             addQuery: mockAddQueryVisitRouting,
           });
-        }
+        },
       ),
     })),
   };
@@ -60,7 +61,7 @@ jest.mock("ui", () => {
             },
           })),
         },
-      })
+      }),
     ),
   };
 });
@@ -69,21 +70,53 @@ describe("SocialServicesList tests", () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<SocialServicePostsList />);
+    const postsData = [...Array(10)].map((_, i) => ({
+      profileInfo: {
+        id: "profile-id",
+        username: "sampleUser",
+        photo: "https://example.com/sample-photo.jpg",
+        profession: "Software Engineer",
+      },
+      postInfo: {
+        createdAt: new Date().toISOString(),
+        id: "post-id",
+        reactionNum: 100,
+        shares: 10,
+        views: 1000,
+        comments: 5,
+        service: {
+          thumbnail: "https://example.com/sample-thumbnail.jpg",
+          title: "Sample Service Title",
+          hashtags: ["#example", "#service", "#placeholder"],
+        },
+      },
+      discount: 15, // Optional, can be omitted if not needed
+      price: 99.99, // Optional, can be omitted if not needed
+      cashback: 5, // Optional, can be omitted if not needed
+    }));
+
+    wrapper = shallow(<SocialServicePostsList posts={postsData} />);
   });
 
   it("should match snapshot", () => {
     expect(wrapper).toMatchSnapshot();
   });
+
   it("should call useGetServicesPostsQuery with the right pagination", () => {
     expect(mockuseGetServicesPostsQuery).toBeCalledWith({ page: 1, take: 16 });
   });
-  it("should have a service component and triggering the onServiceClick prop should visit the current route with the service id query", () => {
-    expect(mockuseRouting).toBeCalled();
+
+  it("should render the correct number of service components", () => {
     const services = wrapper.findWhere(
-      (node) => typeof node.prop("onServiceClick") === "function"
+      (node) => typeof node.prop("onServiceClick") === "function",
     );
     expect(services.length).toBe(10);
+  });
+
+  it("should visit the current route with the correct service id query when a service is clicked", () => {
+    const services = wrapper.findWhere(
+      (node) => typeof node.prop("onServiceClick") === "function",
+    );
     services.at(0).prop("onServiceClick")(0);
     expect(mockVisitRouting).toBeCalled();
     expect(mockAddQueryVisitRouting).toBeCalledWith({ servicepostid: 0 });
