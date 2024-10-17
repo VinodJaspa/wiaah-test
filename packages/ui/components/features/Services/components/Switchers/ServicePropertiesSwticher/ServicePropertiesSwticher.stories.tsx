@@ -15,10 +15,10 @@ const template: ComponentStory<typeof ServicePropertiesSwticher> = (args) => (
     <ServicePropertiesSwticher {...args} />
 
     <div className="flex flex-wrap gap-4">
-      {Object.entries(ServiceProperties).map((value, i) => (
-        <div className="flex gap-2 items-center whitespace-nowrap">
-          {runIfFn(value[1])}
-          <p>{value[0]}</p>
+      {Object.entries(ServiceProperties).map(([key, IconComponent], i) => (
+        <div key={i} className="flex gap-2 items-center whitespace-nowrap">
+          {runIfFn(IconComponent as React.FC<any>)}
+          <p>{key}</p>
         </div>
       ))}
     </div>

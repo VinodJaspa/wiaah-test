@@ -28,32 +28,32 @@ import { IconBaseProps } from "react-icons";
 import { HtmlSvgProps } from "types";
 type IconProps = HtmlSvgProps | IconBaseProps | TransportGuestsIconProps;
 
+export const ServiceProperties: Record<string, React.FC<any>> = {
+  "a/c": SnowFlakeIcon,
+  gps: GPSIcon,
+  passengers: TransportGuestsIcon,
+  windows: CarWindowIcon,
+  bags: TransportLuggageIcon,
+  pool: PoolIcon,
+  restaurant: SpoonCrossKnifeIcon,
+  parking: ParkingIcon,
+  business_services: BusinessServiceIcon,
+  room_service: DiningBellIcon,
+  "pet-friendly": PetPawIcon,
+  breakfast: CupIcon,
+  laundry: LaundryIcon,
+  wifi: WifiIcon,
+  gym: DumbbellIcon,
+  bar: BarGlassIcon,
+  "24/7_front_desk": DeskIcon,
+  kitchen: ForkAndKnifeIcon,
+  balcony: BalconyIcon,
+  tv: TelevisionIcon,
+};
+
 export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
   slug,
 }) => {
-  const ServiceProperties = {
-    "a/c": SnowFlakeIcon,
-    gps: GPSIcon,
-    passengers: TransportGuestsIcon,
-    windows: CarWindowIcon,
-    bags: TransportLuggageIcon,
-    pool: PoolIcon,
-    restaurant: SpoonCrossKnifeIcon,
-    parking: ParkingIcon,
-    business_services: BusinessServiceIcon,
-    room_service: DiningBellIcon,
-    "pet-friendly": PetPawIcon,
-    breakfast: CupIcon,
-    laundry: LaundryIcon,
-    wifi: WifiIcon,
-    gym: DumbbellIcon,
-    bar: BarGlassIcon,
-    "24/7_front_desk": DeskIcon,
-    kitchen: ForkAndKnifeIcon,
-    balcony: BalconyIcon,
-    tv: TelevisionIcon,
-  };
-
   const Slug = slug as keyof typeof ServiceProperties;
   const icon = ServiceProperties[Slug];
   return (
