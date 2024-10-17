@@ -5,6 +5,7 @@ import {
   ResturantCheckoutCardProps,
 } from "./ResturantCheckoutCard";
 import { getTestId, randomNum } from "utils";
+import { ServiceType } from "@features/API/gql/generated";
 
 const testids = {
   bookedMenusContainer: "BookedMenusContainer",
@@ -18,7 +19,7 @@ describe("ResturantCheckoutCard tests", () => {
   let props: ResturantCheckoutCardProps;
   beforeEach(() => {
     props = {
-      serviceType: "resturant",
+      serviceType: ServiceType.Restaurant,
       bookedDates: {
         from: new Date(Date.now()).toString(),
         to: null,
@@ -77,7 +78,7 @@ describe("ResturantCheckoutCard tests", () => {
     expect(bookedMenuCards.length).toBe(props.bookedMenus.length);
     bookedMenuCards.forEach((item, i) => {
       expect(item.props()).toEqual(
-        expect.objectContaining(props.bookedMenus[i])
+        expect.objectContaining(props.bookedMenus[i]),
       );
     });
   });
