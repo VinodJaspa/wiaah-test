@@ -1,3 +1,4 @@
+import { ServicePresentationType } from "@features/Services";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import {
@@ -9,34 +10,24 @@ describe("SocialServicePostDetails tests", () => {
   let wrapper: ShallowWrapper;
   let props: SocialServicePostDetailsCardProps;
   beforeEach(() => {
-    props = {
-      id: "123",
-      content: "service content",
-      createdAt: new Date(2022, 8, 15).toString(),
-      hashtags: ["fashion", "gaming"],
-      label: "restaurant",
-      name: "service name",
-      attachements: [
-        {
-          type: "image",
-          src: "/shop-2.jpeg",
+    (props = {
+      post: {
+        id: "123",
+        comments: 4,
+        reactionNum: 0,
+        service: {
+          presentation: [
+            {
+              type: ServicePresentationType.Img,
+              src: "",
+            },
+          ], // Assuming this is a type like "image", "video", etc.
+          title: "Sample Service Title",
+          hashtags: ["#example", "#service", "#placeholder"],
         },
-      ],
-      postInteraction: {
-        comments: 50,
-        likes: 100,
       },
-      type: "restaurant",
-      user: {
-        accountType: "seller",
-        id: "1312",
-        name: "username",
-        public: true,
-        thumbnail: "/shop.jpeg",
-        verified: true,
-      },
-    };
-    wrapper = shallow(<SocialServicePostDetailsCard {...props} />);
+    }),
+      (wrapper = shallow(<SocialServicePostDetailsCard {...props} />));
   });
 
   it("should match snapshot with required props", () => {
@@ -47,7 +38,7 @@ describe("SocialServicePostDetails tests", () => {
       <SocialServicePostDetailsCard
         {...props}
         onServiceClick={(...props) => ({ ...props })}
-      />
+      />,
     );
     expect(wrapper).toMatchSnapshot();
   });
