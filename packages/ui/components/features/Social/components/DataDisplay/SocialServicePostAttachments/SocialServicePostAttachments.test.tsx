@@ -1,6 +1,7 @@
+import { ServicePresentationType } from "@UI/../api";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { ReactPubSubEventKeys as mockReactPubsubEventKeys } from "react-pubsub";
+import { useReactPubsubModal as mockReactPubsubEventKeys } from "react-pubsub";
 import { getTestId } from "utils";
 import {
   SocialServicePostAttachment,
@@ -17,7 +18,7 @@ let mockReactPubsubEmit: jest.Mock = jest.fn();
 jest.mock("react-pubsub", () => ({
   ...jest.requireActual("react-pubsub"),
   useReactPubsub: (
-    fn: (keys: Partial<typeof mockReactPubsubEventKeys>) => string
+    fn: (keys: Partial<typeof mockReactPubsubEventKeys>) => string,
   ) => {
     mockUseReactPubsub(fn({ serviceModal: "openServiceModal" }));
     return {
@@ -32,10 +33,13 @@ describe("SocialServicePostAttachment tests", () => {
 
   beforeEach(() => {
     props = {
-      id: "123",
-      alt: "service name",
-      src: "/shop-2.jpeg",
-      type: "image",
+      id: "sample-id",
+      attachment: {
+        __typename: "ServicePresentation",
+        type: ServicePresentationType.Img, // Assuming this corresponds to the ServicePresentationType
+        src: "https://example.com/sample-image.jpg",
+      },
+      alt: "Sample alt text",
     };
     wrapper = shallow(<SocialServicePostAttachment {...props} />);
   });
@@ -47,23 +51,21 @@ describe("SocialServicePostAttachment tests", () => {
       <SocialServicePostAttachment
         {...props}
         attachmentProps={{ blur: true }}
-        innerProps={{ onClick: () => {} }}
-        onInteraction={() => {}}
+        innerProps={{ onClick: () => { } }}
+        onInteraction={() => { }}
         cashback={{
           amount: 15,
           type: "percent",
         }}
         discount={15}
-      />
+      />,
     );
     expect(wrapper).toMatchSnapshot();
   });
   it("should emit ReactPubsub openServiceModal event with the right id on calender icon click", () => {
-    expect(mockUseReactPubsub).toBeCalledWith(
-      mockReactPubsubEventKeys.serviceModal
-    );
+    expect(mockUseReactPubsub).toBeCalledWith(mockReactPubsubEventKeys);
     const openServiceModal = wrapper.find(
-      getTestId(testids.openServiceDetailsModalBtn)
+      getTestId(testids.openServiceDetailsModalBtn),
     );
     openServiceModal.simulate("click");
     expect(mockReactPubsubEmit).toBeCalledWith({ id: props.id });
