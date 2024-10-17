@@ -1,3 +1,8 @@
+import {
+  AccountType,
+  AttachmentType,
+  ServicePresentationType,
+} from "@features/API";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import {
@@ -17,6 +22,13 @@ describe("SocialServiceDetailsCard tests", () => {
     props = {
       name: "service name",
       content: "service content",
+      createdAt: "",
+      attachements: [
+        {
+          type: "image", // or "video"
+          src: "https://example.com/placeholder.jpg",
+        },
+      ],
       cashback: {
         amount: 13,
         type: "cash",
@@ -25,11 +37,11 @@ describe("SocialServiceDetailsCard tests", () => {
       attachments: [
         {
           src: "/shop.jpeg",
-          type: "image",
+          type: ServicePresentationType.Img,
         },
         {
           src: "/video.np4",
-          type: "video",
+          type: ServicePresentationType.Vid,
         },
       ],
       hashtags: ["fashion", "gaming"],
@@ -44,12 +56,31 @@ describe("SocialServiceDetailsCard tests", () => {
       type: "restaurant",
       views: 300,
       profileInfo: {
-        accountType: "seller",
-        id: "121",
-        name: "username",
-        public: true,
-        thumbnail: "/shop-2.jpeg",
-        verified: true,
+        id: "profile-12345", // Unique profile ID
+        userId: "user-67890", // User ID associated with the profile
+        verified: true, // Profile verification status
+        name: "John Doe", // Profile name
+        thumbnail: "https://example.com/profile.jpg", // Thumbnail URL for the profile picture
+        accountType: AccountType.Seller, // Account type (e.g., admin, buyer, mod, etc.)
+        public: true, // Profile visibility (public or private)
+        profession: "Software Engineer", // User's profession
+        publications: 25, // Number of publications/posts
+        subscriptions: 10, // Number of subscriptions
+        subscribers: 100, // Number of subscribers/followers
+        location: {
+          address: "123 Main St", // Address of the location
+          city: "Springfield", // City where the location is
+          lat: 37.12345, // Latitude of the location
+          lon: -93.12345, // Longitude of the location
+          state: "MO", // State (optional)
+          country: "United States", // Country of the location
+          postalCode: 12345, // Postal code
+          countryCode: "US",
+        }, // Location object
+        bio: "Experienced software developer with a passion for technology.", // Bio text
+        links: ["https://example.com", "https://github.com/johndoe"], // Array of profile links
+        isFollowed: false, // Follow status
+        profileCoverPhoto: "https://example.com/cover-photo.jpg", // Cover photo URL
       },
     };
     wrapper = shallow(<SocialServiceDetailsCard {...props} />);
@@ -63,14 +94,14 @@ describe("SocialServiceDetailsCard tests", () => {
       showComments: true,
       showInteraction: true,
       showCommentInput: true,
-      onCardClick(id) {},
+      onCardClick(id) { },
       interactionsProps: {
-        onInteraction(intraction) {},
-        onShare(shareMothed) {},
+        onInteraction(intraction) { },
+        onShare(shareMothed) { },
       },
     };
     expect(
-      shallow(<SocialServiceDetailsCard {...newProps} />)
+      shallow(<SocialServiceDetailsCard {...newProps} />),
     ).toMatchSnapshot();
   });
   it("should emit openSharePostWithModal react pubsub event onShare with the right props", () => {
