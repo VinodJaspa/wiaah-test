@@ -8,25 +8,16 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BeautyCenterRecommendedSearchCard } from "@UI";
 
 const mockedData = [...Array(15)].map((_, i) => ({
+  title: "Hair Salon",
+  price: 54,
+  duration: 3,
+  category: "category",
   id: `${i}`,
-  name: `name-${i}`,
-  thumbnail: `src-${i}`,
-  rate: i,
-  reviews: 150 + i,
-  owners: ["test-1", "test-2"],
-}));
-
-let mockFetching = FetchingMock;
-jest.mock("api", () => ({
-  getRecommendedBeautyCenterFetcher: async () => {
-    await mockFetching;
-    const res: AsyncReturnType<typeof getRecommendedBeautyCenterFetcher> = {
-      data: mockedData,
-      hasMore: false,
-      total: 150,
-    };
-    return res;
-  },
+  name: "Wiaah Beauty",
+  rate: 5,
+  reviews: 1565,
+  thumbnail:
+    "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/Tacha+Beauty+Center-desktop.jpg",
 }));
 
 describe("BeautyCenterSearchList tests", () => {
@@ -35,8 +26,8 @@ describe("BeautyCenterSearchList tests", () => {
   beforeEach(() => {
     wrapper = mount(
       <QueryClientProvider client={new QueryClient()}>
-        <RecommendedBeautyCenterSearchList />
-      </QueryClientProvider>
+        <RecommendedBeautyCenterSearchList treatments={mockedData} />
+      </QueryClientProvider>,
     );
   });
   it("should render spinnerFallback component with isloading props being false durning the fetching procces", () => {
@@ -54,7 +45,7 @@ describe("BeautyCenterSearchList tests", () => {
         wrapper.update();
         expect(wrapper.find("SpinnerFallback").prop("isLoading")).toBe(false);
       },
-      { interval: 200, timeout: 2000 }
+      { interval: 200, timeout: 2000 },
     );
   });
 
@@ -69,10 +60,10 @@ describe("BeautyCenterSearchList tests", () => {
         expect(serviceGrid.length).toBe(1);
         expect(serviceGrid.prop("data")).toEqual(mockedData);
         expect(serviceGrid.prop("component")).toEqual(
-          BeautyCenterRecommendedSearchCard
+          BeautyCenterRecommendedSearchCard,
         );
       },
-      { interval: 200, timeout: 2000 }
+      { interval: 200, timeout: 2000 },
     );
   });
 });

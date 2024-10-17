@@ -1,96 +1,79 @@
 import React from "react";
 import { mount, shallow, ShallowWrapper } from "enzyme";
-import { BeautyCenterTreatmentsList } from "./BeautyCenterTreatmentsList";
 import {
-  BeautyCenterTreatmentDataType,
-  ServiceCancelationPolicyType,
-} from "api";
+  BeautyCenterTreatmentsList,
+  BeautyCenterTreatmentsListProps,
+} from "./BeautyCenterTreatmentsList";
 import { randomNum } from "utils";
 import { RecoilRoot } from "recoil";
 
-let mockedTreatments: BeautyCenterTreatmentDataType[] = [
+const mockedTreatments: BeautyCenterTreatmentsListProps["treatments"] = [
   {
-    id: "132",
-    category: "Facial",
-    title: "Hydro pro skin facial",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
+    __typename: "Treatment",
+    beautyCenterServiceId: "bcs123",
+    category: {
+      createdAt: new Date().toISOString(), // Current timestamp
+      createdById: "user123", // ID of the creator
+      id: "cat123", // Unique ID for the category
+      title: "Facial Treatments", // Title of the category
+      updatedAt: new Date().toISOString(),
+    },
+    discount: {
+      units: 5,
+      value: 10.0, // 10% discount
+    },
+    duration: [30, 60],
+    id: "treatment123",
+    price: 120.0,
+    thumbnail: "https://example.com/facial-thumbnail.jpg",
+    title: "Relaxing Facial",
+    treatmentCategoryId: "cat123",
   },
   {
-    id: "132",
-    category: "Facial",
-    title: "Hydro facial with chemical peel",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
+    __typename: "Treatment",
+    beautyCenterServiceId: "bcs124",
+    category: {
+      createdAt: new Date().toISOString(), // Current timestamp
+      createdById: "user123", // ID of the creator
+      id: "cat123", // Unique ID for the category
+      title: "Facial Treatments", // Title of the category
+      updatedAt: new Date().toISOString(),
+    },
+    discount: {
+      units: 3,
+      value: 15.0, // 15% discount
+    },
+    duration: [45, 90],
+    id: "treatment124",
+    price: 150.0,
+    thumbnail: "https://example.com/massage-thumbnail.jpg",
+    title: "Swedish Massage",
+    treatmentCategoryId: "cat124",
   },
   {
-    id: "132",
-    category: "Facial",
-    title: "Hydro pro skin facial",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro facial with chemical peel",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro pro skin facial",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro facial with chemical peel",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro pro skin facial",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro facial with chemical peel",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    category: "Facial",
-    id: "132",
-    title: "Hydro pro skin facial",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
-  },
-  {
-    id: "132",
-    category: "Facial",
-    title: "Hydro facial with chemical peel",
-    durationInMinutes: [30, 60],
-    price: randomNum(50),
-    discount: randomNum(60),
+    __typename: "Treatment",
+    beautyCenterServiceId: "bcs125",
+    category: {
+      createdAt: new Date().toISOString(), // Current timestamp
+      createdById: "user123", // ID of the creator
+      id: "cat123", // Unique ID for the category
+      title: "Facial Treatments", // Title of the category
+      updatedAt: new Date().toISOString(),
+    },
+    discount: {
+      units: 10,
+      value: 5.0, // 5% discount
+    },
+    duration: [20, 40],
+    id: "treatment125",
+    price: 50.0,
+    thumbnail: "https://example.com/manicure-thumbnail.jpg",
+    title: "Classic Manicure",
+    treatmentCategoryId: "cat125",
   },
 ];
-let mockedCancilation: ServiceCancelationPolicyType[] = [
+
+let mockedCancilation = [
   {
     duration: 6,
     cost: 0,
@@ -116,7 +99,7 @@ describe("BeautyCenterTreatmentsList tests", () => {
       <BeautyCenterTreatmentsList
         cancelation={mockedCancilation}
         treatments={mockedTreatments}
-      />
+      />,
     );
   });
 
@@ -126,7 +109,7 @@ describe("BeautyCenterTreatmentsList tests", () => {
 
     mockedTreatments.forEach((treatment, i) => {
       expect(treatments.at(i).props()).toEqual(
-        expect.objectContaining(treatment)
+        expect.objectContaining(treatment),
       );
     });
   });
@@ -143,12 +126,12 @@ describe("BeautyCenterTreatmentsList tests", () => {
     const wrapper = mount(
       <RecoilRoot>
         <BeautyCenterTreatmentsList cancelation={[]} treatments={[]} />
-      </RecoilRoot>
+      </RecoilRoot>,
     );
     expect(
       wrapper.findWhere((node) => {
         return node.name() === "Button" && node.text() === "Book now";
-      }).length
+      }).length,
     ).toBe(1);
   });
 });
