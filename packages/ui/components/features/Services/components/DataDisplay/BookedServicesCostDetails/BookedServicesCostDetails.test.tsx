@@ -37,7 +37,7 @@ let mockSubtotal = mockServices.reduce((acc, curr) => {
   return acc + curr.price * curr.qty;
 }, 0);
 
-const Wrapper: React.FC = ({ children }) => {
+const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { addService } = useSetBookedServicesState();
   React.useEffect(() => {
     mockServices.forEach((item) => {
@@ -52,15 +52,19 @@ describe("BookedServicesCostDetails tests", () => {
   let props: BookedServicesCostDetailsProps;
   beforeEach(() => {
     props = {
-      title: "test title",
-      vat: 8,
+      vat: 10, // Placeholder value for VAT percentage
+      title: "Sample Service", // Placeholder title
+      deposit: 50, // Optional deposit amount
+      subTotal: 200, // Placeholder subtotal
+      total: 220, // Placeholder total (subTotal + VAT, for example)
+      vatAmount: 20, // Placeholder VAT amount
     };
     wrapper = mount(
       <RecoilRoot>
         <Wrapper>
           <BookedServicesCostDetails {...props} />
         </Wrapper>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
   });
   it("should render the title", () => {
@@ -77,11 +81,11 @@ describe("BookedServicesCostDetails tests", () => {
     expect(services.length).toBe(mockServices.length);
     services.forEach((node, i) => {
       expect(node.text()).toContain(
-        `${mockServices[i].qty}x ${mockServices[i].name}`
+        `${mockServices[i].qty}x ${mockServices[i].name}`,
       );
       expect(node.find("PriceDisplay").length).toBe(1);
       expect(node.find("PriceDisplay").prop("price")).toBe(
-        mockServices[i].price
+        mockServices[i].price,
       );
     });
   });
@@ -90,7 +94,7 @@ describe("BookedServicesCostDetails tests", () => {
     expect(vatNode.text()).toContain(`Vat(${props.vat}%)`);
     expect(vatNode.find("PriceDisplay").length).toBe(1);
     expect(vatNode.find("PriceDisplay").prop("price")).toBe(
-      CalculateVat(mockSubtotal, props.vat)
+      CalculateVat(mockSubtotal, props.vat),
     );
   });
   it("should display total cost correctly", () => {
@@ -98,12 +102,12 @@ describe("BookedServicesCostDetails tests", () => {
     expect(node.text()).toContain(`Total`);
     expect(node.find("PriceDisplay").length).toBe(1);
     expect(node.find("PriceDisplay").prop("price")).toBe(
-      mockSubtotal + CalculateVat(mockSubtotal, props.vat)
+      mockSubtotal + CalculateVat(mockSubtotal, props.vat),
     );
   });
   it("should render a button with the text Checkout that triggers the service checkout routing", () => {
     const checkoutBtn = wrapper.findWhere(
-      (node) => node.name() === "Button" && node.text() === "Checkout"
+      (node) => node.name() === "Button" && node.text() === "Checkout",
     );
     expect(checkoutBtn.length).toBe(1);
     checkoutBtn.simulate("click");
