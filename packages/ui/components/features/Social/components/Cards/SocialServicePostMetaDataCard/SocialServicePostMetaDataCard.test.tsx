@@ -1,3 +1,4 @@
+import { TypeOfService } from "@features/API";
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import {
@@ -12,14 +13,44 @@ describe("SocialServicePostMetaDataCard tests", () => {
   beforeEach(() => {
     mockOnClick = jest.fn();
     props = {
-      id: "132",
-      label: "restaruant",
-      name: "service name",
-      thumbnail: "/shop-2.jpeg",
-      type: "restaurant",
+      post: {
+        id: "post-id",
+        userId: "user-id",
+        comments: 10,
+        reactionNum: 200,
+        shares: 5,
+        createdAt: new Date().toISOString(),
+        views: 1000,
+        location: {
+          address: "123 Main St",
+          city: "Sample City",
+          state: "Sample State",
+          country: "Sample Country",
+        },
+        serviceId: "service-id",
+        serviceType: TypeOfService.Vehicle,
+        service: {
+          id: "service-id",
+          thumbnail: "https://example.com/sample-thumbnail.jpg",
+          price: 49.99,
+          rating: 4.5,
+          title: "Sample Service Title",
+        },
+        user: {
+          id: "user-id",
+          profile: {
+            id: "profile-id",
+            username: "sampleUser",
+            verified: true,
+            profession: "Software Engineer",
+            photo: "https://example.com/sample-photo.jpg",
+            followers: 1000,
+          },
+        },
+      },
     };
     wrapper = shallow(
-      <SocialServicePostMetaDataCard {...props} onClick={mockOnClick} />
+      <SocialServicePostMetaDataCard {...props} onClick={mockOnClick} />,
     );
   });
   it("should trigger mockOnClick on card click", () => {
