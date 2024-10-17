@@ -32,6 +32,11 @@ export type GetFilteredShopsCursorQuery = {
       banner: string;
       name: string;
       ownerId: string;
+      location: {
+        address: string;
+        country: string;
+        city: string;
+      };
       verified: boolean;
       storeType: StoreType;
       type?: ServiceType | null;
@@ -98,6 +103,11 @@ export const getFilteredCursorShopsQueryFetcher: QueryFunction<
         verified: true,
         storeType: StoreType.Product,
         type: ServiceType.Hotel,
+        location: {
+          address: "123 St",
+          country: "fake country",
+          city: "fake city",
+        },
         thumbnail: getRandomImage(),
         storeCategory: "Mock Category",
         workingSchedule: {
