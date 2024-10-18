@@ -1,4 +1,7 @@
-import { Exact, GetAdminFitleredProductReviewsInput } from "@features/API";
+import {
+  Exact,
+  GetAdminFitleredProductReviewsInput,
+} from "../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 

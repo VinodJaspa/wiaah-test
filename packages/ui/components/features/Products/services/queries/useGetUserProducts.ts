@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
-import { isDev, randomNum } from "@UI/../utils/src";
-import { getRandomImage } from "@UI/placeholder";
+import { isDev, randomNum } from "utils";
+import { getRandomImage } from "ui";
 import {
   Exact,
   GetSellerProductsInput,
@@ -8,7 +8,7 @@ import {
   Product,
   ProductPresentation,
   ProductsCursorPaginationResponse,
-} from "@features/API";
+} from "../../../../features/API";
 import {
   UseInfiniteQueryOptions,
   UseQueryOptions,
@@ -89,7 +89,7 @@ query getUserProducts($args:GetSellerProductsInput!){
     nextCursor
   }
 }
-    `
+    `,
     )
     .setVariables<GetUserProductsQueryVariables>({ args })
     .send<GetUserProductsQuery>();
@@ -104,13 +104,11 @@ export const useGetUserProducts = (
     any,
     GetUserProductsQuery["getSellerProducts"],
     any
-  >
+  >,
 ) =>
-  useInfiniteQuery(
-    getUserProductsQueryKey(args),
-    async (pageArgs) =>
-      getUserProductsQueryFetcher({
-        ...args,
-        idCursor: pageArgs.pageParam,
-      }),
+  useInfiniteQuery(getUserProductsQueryKey(args), async (pageArgs) =>
+    getUserProductsQueryFetcher({
+      ...args,
+      idCursor: pageArgs.pageParam,
+    }),
   );

@@ -1,4 +1,4 @@
-import { Exact, UpdateProductReviewInput } from "@features/API";
+import { Exact, UpdateProductReviewInput } from "../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 

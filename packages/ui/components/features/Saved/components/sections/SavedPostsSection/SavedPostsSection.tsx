@@ -1,3 +1,4 @@
+import { mapArray } from "utils";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,11 +9,10 @@ import {
   GetUserSavesCollectionsQuery,
   AspectRatio,
   Image,
-} from "@UI";
-import { mapArray } from "@UI/../utils/src";
-import { getRandomImage } from "@UI/placeholder";
+} from "ui";
+import { getRandomImage } from "ui";
 
-//Placeholder
+// Placeholder data
 export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
   [
     {
@@ -62,25 +62,25 @@ export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["ge
 export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();
 
-  // WARNING: this graqphql query is not working right now so it has been replaced with placeholder once the graphql is ready replace it back
-  const { data: _account } = useGetMyAccountQuery();
-  const { data: _data } = useGetUserSavedCollections(
-    { userId: _account?.id! },
-    { enabled: !!_account?.id }
-  );
-  const data = GetUserSavedCollectionPlaceholder;
+  // WARNING: this GraphQL query is not working right now so it has been replaced with placeholder
+  // const { data: _account } = useGetMyAccountQuery();
+  // const { data: _data } = useGetUserSavedCollections(
+  //   { userId: _account?.id! },
+  //   { enabled: !!_account?.id },
+  // );
+
+  const data: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
+    GetUserSavedCollectionPlaceholder;
+
   return (
     <SectionWrapper>
-      <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
+      <SectionHeader sectionTitle={t("Saved")} />
       <div className="flex gap-8 justify-center">
         {mapArray(data, (collection, i) => (
-          <div
-            key={collection.id + i}
-            className="flex flex-col gap-2 items-center w-1/3"
-          >
+          <div key={i} className="flex flex-col gap-2 items-center w-1/3">
             <AspectRatio ratio={1}>
               {collection.recentSaves.length === 4 ? (
-                <div className="grid grid-col-2">
+                <div className="grid grid-cols-2">
                   {mapArray(collection.recentSaves, (savedPost, i) => (
                     <Image
                       key={i}
@@ -96,14 +96,14 @@ export const SavedPostsSection: React.FC = () => {
                 />
               )}
             </AspectRatio>
-            <p className="font-medium ">{collection.name}</p>
+            <p className="font-medium">{collection.name}</p>
           </div>
         ))}
       </div>
 
       {!data || data.length < 1 ? (
         <div className="text-black font-bold text-2xl text-center py-60">
-          {t("You Dont Have Any Saved Collections")}
+          {t("You Don't Have Any Saved Collections")}
         </div>
       ) : null}
     </SectionWrapper>
