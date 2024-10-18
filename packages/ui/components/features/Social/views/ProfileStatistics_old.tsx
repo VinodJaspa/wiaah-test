@@ -205,7 +205,7 @@ export const ProfileStatistics: React.FC<{
     Parameters<typeof useGetProfileTopStoriesQuery>[0]
   >({
     pagination: storiesPagination,
-    profileId: profile?.id || "",
+    userId: profile?.id || "",
     sinceHours: form.topStories,
   });
   const { data: topStories } = useGetProfileTopStoriesQuery(storiesForm);
@@ -270,42 +270,42 @@ export const ProfileStatistics: React.FC<{
     color: string;
     visits: number;
   }[] = [
-    {
-      name: "France",
-      color: "#87B2D2",
-      visits: randomNum(500000),
-    },
-    {
-      name: "United States",
-      color: "#70AB51",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Saudi Arabia",
-      color: "#DB5E31",
-      visits: randomNum(500000),
-    },
-    {
-      name: "New Zeeland",
-      color: "#6BC5E1",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Belgium",
-      color: "#82E37B",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Italy",
-      color: "#E89D64",
-      visits: randomNum(500000),
-    },
-    {
-      name: "Germeny",
-      color: "#F8F679",
-      visits: randomNum(500000),
-    },
-  ];
+      {
+        name: "France",
+        color: "#87B2D2",
+        visits: randomNum(500000),
+      },
+      {
+        name: "United States",
+        color: "#70AB51",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Saudi Arabia",
+        color: "#DB5E31",
+        visits: randomNum(500000),
+      },
+      {
+        name: "New Zeeland",
+        color: "#6BC5E1",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Belgium",
+        color: "#82E37B",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Italy",
+        color: "#E89D64",
+        visits: randomNum(500000),
+      },
+      {
+        name: "Germeny",
+        color: "#F8F679",
+        visits: randomNum(500000),
+      },
+    ];
 
   const totalVisits = countries.reduce((acc, curr) => acc + curr.visits, 0);
 
@@ -454,7 +454,7 @@ export const ProfileStatistics: React.FC<{
                 <BarChartLegend
                   amount={
                     (reachedAudience || []).filter(
-                      (v, i) => v.gender === ProfileReachedGender.Female
+                      (v, i) => v.gender === ProfileReachedGender.Female,
                     ).length
                   }
                   color="#EA4335"
@@ -463,7 +463,7 @@ export const ProfileStatistics: React.FC<{
                 <BarChartLegend
                   amount={
                     (reachedAudience || []).filter(
-                      (v, i) => v.gender === ProfileReachedGender.Male
+                      (v, i) => v.gender === ProfileReachedGender.Male,
                     ).length
                   }
                   color="#4285F4"
@@ -526,7 +526,9 @@ export const ProfileStatistics: React.FC<{
       <div className="grid w-full grid-cols-2">
         <div style={boxShadowStyles} className="flex p-8 flex-col">
           <div className="flex justify-between w-full  gap-2 ">
-            <p className="font-bold whitespace-nowrap text-xl">{t("Age and Gender")}</p>
+            <p className="font-bold whitespace-nowrap text-xl">
+              {t("Age and Gender")}
+            </p>
             <Select {...selectProps("ageGender")} className="w-28">
               <SelectOption value={day}>{t("day")}</SelectOption>
               <SelectOption value={month}>{t("month")}</SelectOption>
@@ -585,7 +587,7 @@ export const ProfileStatistics: React.FC<{
             {[...Array(6)].map((_, v) => (
               <Button className="text-xs " colorScheme="white">
                 {new Date(
-                  new Date().setDate(new Date().getDate() - v)
+                  new Date().setDate(new Date().getDate() - v),
                 ).toLocaleDateString("en-us", {
                   weekday: "long",
                 })}
@@ -627,7 +629,9 @@ export const ProfileStatistics: React.FC<{
       </div>
       <div className="flex flex-col p-8" style={boxShadowStyles}>
         <div className="flex justify-between items-center w-full gap-2">
-          <p className="font-bold text-xl whitespace-nowrap">{t("Detials Level")}</p>
+          <p className="font-bold text-xl whitespace-nowrap">
+            {t("Detials Level")}
+          </p>
 
           <Select {...selectProps("details")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
@@ -654,7 +658,7 @@ export const ProfileStatistics: React.FC<{
                 onClick={() =>
                   handleChange(
                     "detailsOrderBy",
-                    form.detailsOrderBy < 0 ? 1 : -1
+                    form.detailsOrderBy < 0 ? 1 : -1,
                   )
                 }
                 className="bg-[#F3F3F3] text-black"
@@ -676,7 +680,7 @@ export const ProfileStatistics: React.FC<{
                 onClick={() =>
                   handleChange(
                     "detailsOrderBy",
-                    form.detailsOrderBy < 0 ? 1 : -1
+                    form.detailsOrderBy < 0 ? 1 : -1,
                   )
                 }
                 className="bg-[#F3F3F3] text-black"
@@ -751,7 +755,9 @@ export const ProfileStatistics: React.FC<{
       </div>
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
         <div className="flex justify-between items-center gap-2 w-full">
-          <p className="font-bold text-xl whitespace-nowrap">{t("Most Popular Post")}</p>
+          <p className="font-bold text-xl whitespace-nowrap">
+            {t("Most Popular Post")}
+          </p>
           <Select {...selectProps("topPosts")} className="w-28">
             <SelectOption value={day}>{t("day")}</SelectOption>
             <SelectOption value={month}>{t("month")}</SelectOption>
@@ -869,11 +875,10 @@ export const StatisticsCard: React.FC<{
         <p className="font-bold text-sm">{title}</p>
         <div className="w-full items-center flex justify-between">
           <div
-            className={`${
-              positive
+            className={`${positive
                 ? "text-primary bg-primary-100"
                 : "text-secondaryRed bg-red-100"
-            } flex items-center px-1 rounded`}
+              } flex items-center px-1 rounded`}
           >
             {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
             {Math.floor(change)}%
@@ -889,7 +894,7 @@ export const BarChartLegend: React.FC<{
   name: string;
   amount?: number;
   color: string;
-}> = ({ amount, name, children, color }) => {
+}> = ({ amount, name, color }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-4">
