@@ -1,22 +1,21 @@
 import React from "react";
-import { Sidebar } from "../../";
 import { shallow, mount } from "enzyme";
-import { SidebarContext } from "../../helpers/SidebarContext";
+import { SidebarContext, SidebarProvider } from "../../helpers/SidebarContext";
 
 describe("Sidebar work as expected", () => {
   it("check for last snapshot", () => {
-    const wrapper = shallow(<Sidebar />);
+    const wrapper = shallow(<SidebarProvider />);
     expect(wrapper).toMatchSnapshot();
   });
   const context = { visible: true };
   let visible = false;
   it("visible when context visibility is true", () => {
-    const wrapper = mount(<Sidebar />, {
+    const wrapper = mount(<SidebarProvider />, {
       wrappingComponent: SidebarContext.Provider,
       wrappingComponentProps: {
         value: {
           visible: true,
-          toggleVisibility: () => {},
+          toggleVisibility: () => { },
         },
       },
     });
@@ -53,16 +52,16 @@ describe("Sidebar work as expected", () => {
         url: "/home-and-living",
       },
     ];
-    const wrapper = mount(<Sidebar menu={menu} />);
+    const wrapper = mount(<SidebarProvider />);
     expect(wrapper.find(".nasted-menu .nasted-menu-children").length).toBe(2);
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").first().text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").first().text(),
     ).toBe("Clothing");
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text(),
     ).toBe("Home & Living");
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children Link").prop("href")
+      wrapper.find(".nasted-menu .nasted-menu-children Link").prop("href"),
     ).toBe("/home-and-living");
     wrapper
       .find(".nasted-menu .nasted-menu-children p")
@@ -70,10 +69,10 @@ describe("Sidebar work as expected", () => {
       .simulate("click");
     expect(wrapper.find(".nasted-menu .nasted-menu-children").length).toBe(2);
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").first().text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").first().text(),
     ).toBe("Women's");
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text(),
     ).toBe("Men's");
     wrapper
       .find(".nasted-menu .nasted-menu-children p")
@@ -81,10 +80,10 @@ describe("Sidebar work as expected", () => {
       .simulate("click");
     expect(wrapper.find(".nasted-menu .nasted-menu-children").length).toBe(2);
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").first().text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").first().text(),
     ).toBe("Dresses");
     expect(
-      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text()
+      wrapper.find(".nasted-menu .nasted-menu-children p").at(1).text(),
     ).toBe("Shirts");
   });
 });
