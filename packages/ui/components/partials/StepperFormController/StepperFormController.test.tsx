@@ -35,12 +35,12 @@ describe("StepperFormController tests", () => {
         stepsNum={2}
         onFormComplete={(data) => console.log(data)}
       >
-        {({ nextStep, prevoiusStep, currentStepIdx }) => {
+        {({ nextStep, previousStep, currentStepIdx }) => {
           return (
             <div data-currentstep={`${currentStepIdx}`}>
               <button
                 {...setTestid(testids.previousStepBtn)}
-                onClick={() => prevoiusStep()}
+                onClick={() => previousStep()}
               >
                 previous
               </button>
@@ -155,7 +155,7 @@ describe("StepperFormController tests", () => {
             </div>
           );
         }}
-      </StepperFormController>
+      </StepperFormController>,
     );
     previousStepBtn = wrapper.find(getTestId(testids.previousStepBtn));
   });

@@ -182,7 +182,7 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
     `}
     >
       <StepperFormController stepsNum={3} onFormComplete={setData}>
-        {({ currentStepIdx, goToStep, nextStep, prevoiusStep }) => {
+        {({ currentStepIdx, goToStep, nextStep, previousStep }) => {
           return (
             <div className="flex flex-col gap-8 w-full">
               <CheckMarkStepper
@@ -237,7 +237,7 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
                 ]}
               />
               <div className="flex justify-between w-full">
-                <Button onClick={() => prevoiusStep()}>prev</Button>
+                <Button onClick={() => previousStep()}>prev</Button>
                 <Button onClick={() => nextStep()}>next</Button>
               </div>
             </div>
@@ -256,7 +256,7 @@ const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test1Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
@@ -276,7 +276,7 @@ const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test2Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
@@ -296,7 +296,7 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
     <Formik
       validationSchema={test3Schema}
       initialValues={{}}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
     >
       {({ values }) => {
         onValid(values);
