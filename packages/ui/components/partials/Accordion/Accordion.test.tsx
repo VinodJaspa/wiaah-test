@@ -1,10 +1,11 @@
+import { getTestId } from "@src/utils";
+import { waitFor } from "@testing-library/dom";
 import {
   Accordion,
   AccordionButton,
   AccordionItem,
   AccordionPanel,
 } from "@UI/components/partials/Accordion";
-import { getTestId, waitFor } from "utils/src/test-utils";
 import { shallow, mount, ShallowWrapper, ReactWrapper } from "enzyme";
 import React from "react";
 
@@ -27,7 +28,7 @@ describe("Accordion not lazy functional tests", () => {
             <span data-testid={selectors.accordionPanel}>test</span>
           </AccordionPanel>
         </AccordionItem>
-      </Accordion>
+      </Accordion>,
     );
   });
 
@@ -61,7 +62,7 @@ describe("Accordion lazy functional tests", () => {
             <span data-testid={selectors.accordionPanel}>test</span>
           </AccordionPanel>
         </AccordionItem>
-      </Accordion>
+      </Accordion>,
     );
   });
 
@@ -111,8 +112,8 @@ describe("Accordion snapshot tests", () => {
               tempore deserunt, quas commodi? Deleniti, sint.
             </AccordionPanel>
           </AccordionItem>
-        </Accordion>
-      )
+        </Accordion>,
+      ),
     );
   });
 });
