@@ -21,14 +21,17 @@ import {
   TelevisionIcon,
   SnowFlakeIcon,
   BalconyIcon,
-  TransportGuestsIconProps,
 } from "@UI";
 import { runIfFn } from "utils";
-import { IconBaseProps } from "react-icons";
-import { HtmlSvgProps } from "types";
-type IconProps = HtmlSvgProps | IconBaseProps | TransportGuestsIconProps;
 
-export const ServiceProperties: Record<string, React.FC<any>> = {
+// Define a common interface for all icon components
+interface CommonIconProps {
+  style?: React.CSSProperties;
+}
+
+type IconComponent = React.ComponentType<CommonIconProps>;
+
+export const ServiceProperties: Record<string, IconComponent> = {
   "a/c": SnowFlakeIcon,
   gps: GPSIcon,
   passengers: TransportGuestsIcon,
@@ -51,18 +54,22 @@ export const ServiceProperties: Record<string, React.FC<any>> = {
   tv: TelevisionIcon,
 };
 
-export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
-  slug,
-}) => {
-  const Slug = slug as keyof typeof ServiceProperties;
-  const icon = ServiceProperties[Slug];
+export interface ServicePropertiesSwitcherProps {
+  slug: string;
+}
+
+export const ServicePropertiesSwticher: React.FC<
+  ServicePropertiesSwitcherProps
+> = ({ slug }) => {
+  const Icon = ServiceProperties[slug] || SuccessIcon;
+
   return (
-    <>
-      {icon
-        ? runIfFn(icon as React.FC<IconProps>)
-        : runIfFn(SuccessIcon, {
-          style: { color: "white", fill: "black", backgroundColor: "black" },
-        })}
-    </>
+    <Icon
+      style={
+        Icon === SuccessIcon
+          ? { color: "white", fill: "black", backgroundColor: "black" }
+          : undefined
+      }
+    />
   );
 };

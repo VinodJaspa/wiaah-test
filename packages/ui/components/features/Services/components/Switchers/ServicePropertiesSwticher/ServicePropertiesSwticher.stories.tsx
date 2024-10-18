@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { runIfFn, storybookOtherServicesDataDisplayTitle } from "utils";
 import {
-  ServicePropertiesSwticher,
   ServiceProperties,
+  ServicePropertiesSwticher, // Component, not the props type
 } from "./ServicePropertiesSwticher";
 
 export default {
   title: storybookOtherServicesDataDisplayTitle + "ServicePropertiesSwitcher",
-  component: ServicePropertiesSwticher,
+  component: ServicePropertiesSwticher, // Component, not the props type
 } as ComponentMeta<typeof ServicePropertiesSwticher>;
 
 const template: ComponentStory<typeof ServicePropertiesSwticher> = (args) => (
