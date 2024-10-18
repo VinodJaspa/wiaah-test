@@ -21,16 +21,18 @@ export type AdminGetProfileQuery = { __typename?: "Query" } & {
     | "profession"
     | "coverPhoto"
   > & {
-      user?: Maybe<{ __typename?: "Account" } & Pick<Account, "type" | "id">>;
-    };
+    user?: Maybe<
+      { __typename?: "Account" } & Pick<Account, "accountType" | "id">
+    >;
+  };
 };
 
 export const AdminGetProfileQueryKey = (
-  args: AdminGetProfileQueryVariables["id"]
+  args: AdminGetProfileQueryVariables["id"],
 ) => ["get-profile"];
 
 export const AdminGetProfileQueryFetcher = async (
-  args: AdminGetProfileQueryVariables["id"]
+  args: AdminGetProfileQueryVariables["id"],
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -66,13 +68,13 @@ query adminGetProfile (
 };
 
 export const useAdminGetProfileQuery = (
-  args: AdminGetProfileQueryVariables["id"]
+  args: AdminGetProfileQueryVariables["id"],
 ) => {
   return useQuery(
     AdminGetProfileQueryKey(args),
     () => AdminGetProfileQueryFetcher(args),
     {
       enabled: !!args,
-    }
+    },
   );
 };
