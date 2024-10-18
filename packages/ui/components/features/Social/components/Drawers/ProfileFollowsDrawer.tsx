@@ -1,4 +1,8 @@
-import { ScrollingWrapper, useSocialControls } from "@blocks";
+import {
+  ScrollingWrapper,
+  usePaginationControls,
+  useSocialControls,
+} from "@blocks";
 import {
   useGetSocialProfileFollowers,
   useGetSocialProfileFollowersInfiniteQuery,
@@ -26,7 +30,10 @@ export const ProfileFollowsDrawer: React.FC = () => {
 
   const isOpen = typeof value === "string";
 
-  const { data } = useGetSocialProfileFollowingsInfiniteQuery();
+  const { data } = useGetSocialProfileFollowingsInfiniteQuery({
+    take: 1,
+    userId: "3",
+  });
   const { data: profile } = useGetSocialProfile(value!);
 
   const { t } = useTranslation();
@@ -53,7 +60,7 @@ const ProfileFollowersList: React.FC<{ userId: string }> = ({ userId }) => {
         userId,
         take: 10,
       },
-      { getNextPageParam: (last, all) => last.nextCursor }
+      { getNextPageParam: (last, all) => last.nextCursor },
     );
 
   return (
@@ -76,7 +83,7 @@ const ProfileFollowersList: React.FC<{ userId: string }> = ({ userId }) => {
                     <p className="font-medium">{profile.username}</p>
                   </div>
                 </div>
-                <Button onClick={() => {}}>{t("Follow")}</Button>
+                <Button onClick={() => { }}>{t("Follow")}</Button>
               </HStack>
             ))}
           </React.Fragment>
