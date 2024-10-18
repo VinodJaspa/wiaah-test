@@ -165,9 +165,8 @@ return (
                   console.log("current", currentTabIdx);
                   return (
                     <span
-                      className={`${
-                        currentTabIdx === i ? "text-black" : "text-gray-600"
-                      }`}
+                      className={`${currentTabIdx === i ? "text-black" : "text-gray-600"
+                        }`}
                     >
                       {title.planTitle} {currentTabIdx}
                     </span>
@@ -176,21 +175,15 @@ return (
               </TabTitle>
 
               <TabItem>
-                {() => {
-                  return;
-                }}
                 <SubscriptionPlanCard
-                  price={{
-                    amount: i,
-                    currency: "CHF",
-                  }}
+                  price={i}
                   trialDays={30}
                   benifits={[
                     "All kits included",
                     "unlimited downloads",
                     "ios support",
                   ]}
-                  onUpgradeRequest={() => {}}
+                  onUpgradeRequest={() => { }}
                 />
               </TabItem>
             </>
