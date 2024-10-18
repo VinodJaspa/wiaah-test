@@ -4,6 +4,6 @@ import { ProgressBars } from "./index";
 
 describe("progressbars snapshot tests", () => {
   it("should match snapshot", () => {
-    expect(shallow(<ProgressBars progressBarsData={[]} />));
+    expect(shallow(<ProgressBars srcKey="" />));
   });
 });
