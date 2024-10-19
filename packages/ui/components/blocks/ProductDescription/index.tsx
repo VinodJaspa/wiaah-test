@@ -1,8 +1,8 @@
 import React from "react";
-import { BuyerComment } from "@UI";
 import { Collapse } from "antd";
-import { useProductDescTabs } from "@src/Hooks";
+import { useProductDescTabs } from "../../../src/Hooks";
 import { useTranslation } from "react-i18next";
+import { BuyerComment } from "../../blocks/BuyerComment";
 
 const { Panel } = Collapse;
 
@@ -76,11 +76,10 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
               onClick={() => {
                 ChangeTab("description");
               }}
-              className={`${
-                tab === "description"
+              className={`${tab === "description"
                   ? "green-background text-white"
                   : "text-gray-500"
-              }  h-9 px-4`}
+                }  h-9 px-4`}
             >
               {t("Description", "Description")}
             </button>
@@ -88,19 +87,17 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
               onClick={() => {
                 ChangeTab("reviews");
               }}
-              className={`${
-                tab === "reviews"
+              className={`${tab === "reviews"
                   ? "green-background text-white"
                   : "text-gray-500"
-              }  h-9 px-4`}
+                }  h-9 px-4`}
             >
               {t("Reviews", "Reviews")} ({comments.length})
             </button>
           </div>
           <div
-            className={`${
-              tab === "reviews" ? "" : "hidden"
-            } h-96 overflow-scroll`}
+            className={`${tab === "reviews" ? "" : "hidden"
+              } h-96 overflow-scroll`}
           >
             {comments.map((item, key: number) => {
               return (
@@ -116,9 +113,8 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
             })}
           </div>
           <div
-            className={`${
-              tab === "description" ? "" : "hidden"
-            } no-scroll mt-2 h-96 overflow-scroll rounded-lg border-2 border-gray-500  border-opacity-30 p-3`}
+            className={`${tab === "description" ? "" : "hidden"
+              } no-scroll mt-2 h-96 overflow-scroll rounded-lg border-2 border-gray-500  border-opacity-30 p-3`}
           >
             <div>{description}</div>
           </div>

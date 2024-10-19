@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  ChakraCarousel,
-  CarouselPreviewer,
-  Slider,
-  SocialServicePostAttachment,
-} from "@UI";
 import { ProductGalleryItem } from "types";
 import { useResponsive } from "hooks";
-import { PostAttachment } from "@UI";
-import { AttachmentType } from "@features/API";
+import { PostAttachment, CarouselPreviewer } from "../../blocks";
+import { Slider } from "../../partials/";
+import { AttachmentType } from "../../features/API";
 
 export interface ProductImageGalleryProps {
   images?: ProductGalleryItem[];

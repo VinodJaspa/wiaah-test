@@ -1,8 +1,7 @@
+import { Image, PriceDisplay, Rate } from "../../partials";
 import React from "react";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
 import { usePreferedCurrency } from "state";
-import { Image, PriceDisplay, Rate } from "@UI";
-import { Product } from "@features/API";
 
 export interface ProductCardProps {
   buttonText?: string;
