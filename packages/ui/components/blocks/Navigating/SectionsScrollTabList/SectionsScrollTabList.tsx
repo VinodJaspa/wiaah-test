@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useScrollTo } from "state";
-import { Tabs, TabsHeader, TabTitle } from "@UI";
+import { Tabs, TabsHeader, TabTitle } from "../../../partials/";
 
 export type SectionTabType = {
   name: string;

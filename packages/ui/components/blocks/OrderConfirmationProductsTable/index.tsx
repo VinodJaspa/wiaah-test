@@ -12,7 +12,7 @@ import {
   AspectRatioImage,
   Text,
   TableContainer,
-} from "@UI";
+} from "../../partials";
 
 export interface OrderConfirmationProductsTableProps {
   products?: CartSummaryItemData[];

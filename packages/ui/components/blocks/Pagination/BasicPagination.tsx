@@ -1,5 +1,5 @@
-import { usePaginationControls } from "@blocks/Navigating";
-import { ArrowLeftIcon, ArrowRightIcon } from "@partials";
+import { usePaginationControls } from "../../blocks/Navigating";
+import { ArrowLeftIcon, ArrowRightIcon } from "../../partials";
 import React from "react";
 
 export const BasicPagination: React.FC<{ controls: usePaginationControls }> = ({
