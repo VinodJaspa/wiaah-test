@@ -1,7 +1,7 @@
+import { ListWrapper } from "../../../blocks/Wrappers";
 import React from "react";
-import { HashTagCard, HashTagCardProps, ListWrapper } from "@UI";
-import { HashTagCardInfo } from "types";
 import { useBreakpointValue } from "utils";
+import { HashTagCard, HashTagCardProps } from "../HashTagCard";
 
 export interface HashTagPostsListWrapperProps {
   hashtags: (HashTagCardProps["post"] & {

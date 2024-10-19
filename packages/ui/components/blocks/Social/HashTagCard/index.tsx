@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PostAttachment, PostCard, PostCardProps } from "@UI";
+import { PostCard, PostCardProps } from "../PostCard";
 
 export interface HashTagCardProps {
   post: PostCardProps["post"]["postInfo"];

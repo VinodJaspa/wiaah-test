@@ -1,8 +1,8 @@
+import { ScrollableContainer } from "../../../blocks/DataDisplay";
 import React from "react";
-import { PostCommentCardProps } from "@UI";
-import { ScrollableContainer } from "@UI";
-import { mapArray } from "@UI/../utils/src";
-import { CommentCard } from "@features/Social/components/Drawers/CommentsDrawer";
+import { mapArray } from "utils";
+import { CommentCard } from "../../../features/Social/components/Drawers/CommentsDrawer";
+import { PostCommentCardProps } from "../PostCommentCard";
 export interface CommentsViewerProps {
   comments: PostCommentCardProps["comment"][];
   maxInitailComments?: number;
