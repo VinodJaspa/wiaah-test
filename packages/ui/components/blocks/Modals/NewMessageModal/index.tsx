@@ -1,19 +1,18 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
-  useNewMessage,
-  useUserData,
   Avatar,
+  CloseIcon,
+  HStack,
+  Input,
   Modal,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  CloseIcon,
-  HStack,
-  Input,
   Radio,
   Spinner,
-} from "@UI";
+} from "../../../partials";
+import { useNewMessage, useUserData } from "../../../../src/Hooks";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import { ChatNewMessageUserInfo } from "types";
 
@@ -95,13 +94,13 @@ export const NewMessageModal: React.FC = () => {
     getSuggestedUsers,
     {
       enabled: !!user,
-    }
+    },
   );
 
   if (!user) return null;
 
   return (
-    <Modal onOpen={() => {}} isOpen={isOpen} onClose={closeModal}>
+    <Modal onOpen={() => { }} isOpen={isOpen as boolean} onClose={closeModal}>
       <ModalOverlay />
       <ModalContent className="h-full rounded-xl">
         <ModalHeader title="" className="flex items-center justify-between">
