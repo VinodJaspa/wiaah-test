@@ -31,7 +31,9 @@ const { login, signup } = {
 
 describe("loginView inputs functionality", () => {
   it("should be only 1 email, password and remember_me inputs", () => {
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     let emailInput = component.find(email.selector);
     let passwordInput = component.find(password.selector);
     let rememberMeCheckbox = component.find(remember_me.selector);
@@ -42,7 +44,9 @@ describe("loginView inputs functionality", () => {
   });
 
   it("should update text input state on typing", async () => {
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     let emailInput = component.find(email.selector);
     let passwordInput = component.find(password.selector);
 
@@ -63,7 +67,9 @@ describe("loginView inputs functionality", () => {
   });
 
   it("remember me should alternate between false and true on click", () => {
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     let RememberMeCheckbox = component.find(remember_me.selector);
 
     // simulate user typing
@@ -79,7 +85,9 @@ describe("loginView inputs functionality", () => {
 
 describe("login buttons", () => {
   it("should exists", () => {
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     const loginBtn = component.find(login.selector);
     const createNewAccountBtn = component.find(signup.selector);
 
@@ -99,10 +107,12 @@ describe("login functaionalty", () => {
         default: {
           HandleLoginRequest: LoginApiMockFn,
         },
-      })
+      }),
     );
 
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     const loginBtn = component.find("#LoginBtn");
 
     loginBtn.simulate("click");
@@ -120,10 +130,12 @@ describe("login functaionalty", () => {
         default: {
           HandleLoginRequest: LoginApiMockFn,
         },
-      })
+      }),
     );
 
-    const component = mount(<LoginView />);
+    const component = mount(
+      <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
+    );
     let emailInput = component.find(email.selector);
     let passwordInput = component.find(password.selector);
     let RememberMeCheckbox = component.find(remember_me.selector);
