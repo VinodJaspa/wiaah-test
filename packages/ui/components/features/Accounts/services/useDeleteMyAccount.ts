@@ -1,6 +1,6 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
-import { DeleteAccountRequestInput, Mutation } from "@features/API";
+import { DeleteAccountRequestInput, Mutation } from "../../../features/API";
 import { useMutation } from "react-query";
 
 export type DeleteMyAccountMutationVariables = Exact<{
@@ -26,6 +26,6 @@ export const useDeleteMyAccountMutation = () => {
     async () => {
       const res = await client.send<DeleteMyAccountMutation>();
       return res.data.requestAccountDeletion;
-    }
+    },
   );
 };

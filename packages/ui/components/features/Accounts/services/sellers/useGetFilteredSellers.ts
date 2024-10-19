@@ -8,7 +8,7 @@ import {
   Membership,
   Profile,
   SellerSalesStat,
-} from "@features/API";
+} from "../../../../features/API";
 import { Exact } from "types";
 import { useQuery } from "react-query";
 
@@ -52,7 +52,7 @@ export type GetFilteredSellersQuery = { __typename?: "Query" } & {
 };
 
 export const useGetFilteredSellers = (
-  input: GetFilteredSellersAccountsInput
+  input: GetFilteredSellersAccountsInput,
 ) => {
   const client = createGraphqlRequestClient();
   client.setQuery(`

@@ -5,8 +5,8 @@ import {
   Maybe,
   Profile,
   Scalars,
-} from "@features/API";
-import { isDev } from "@UI/../utils/src";
+} from "../../../features/API";
+import { isDev } from "utils";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
@@ -30,7 +30,7 @@ export const useAdminGetAccount = (
     any,
     AdminGetAccountQuery["adminGetAccount"],
     any
-  >
+  >,
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -70,6 +70,6 @@ query adminGetAccount($id:String!){
 
       return res.data.adminGetAccount;
     },
-    options
+    options,
   );
 };

@@ -1,4 +1,8 @@
-import { Account, Exact, UpdateSellerAccountAdminInput } from "@features/API";
+import {
+  Account,
+  Exact,
+  UpdateSellerAccountAdminInput,
+} from "../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
@@ -28,7 +32,7 @@ mutation adminUpdateAccount(
     id
   }
 }
-        `
+        `,
       )
       .setVariables<AdminUpdateAccountMutationVariables>({
         args,

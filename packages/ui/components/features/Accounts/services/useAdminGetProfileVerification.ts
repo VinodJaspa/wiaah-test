@@ -1,8 +1,4 @@
-import {
-  AccountVerificationStatus,
-  Exact,
-  GetAccountVerificationRequestsInput,
-} from "@features/API";
+import { AccountVerificationStatus, Exact } from "../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { UseQueryOptions, useQuery } from "react-query";
 
@@ -30,7 +26,7 @@ export const useAdminGetProfileVerificationQuery = (
     any,
     GetAdminProfileVerificationRequestQuery["adminGetProfileVerificationRequest"],
     any
-  >
+  >,
 ) =>
   useQuery(
     ["admin-get-profile-verification-request", { args }],
@@ -50,12 +46,12 @@ export const useAdminGetProfileVerificationQuery = (
         username
     }
 }
-    `
+    `,
         )
         .setVariables<GetAdminProfileVerificationRequestQueryVariables>(args)
         .send<GetAdminProfileVerificationRequestQuery>();
 
       return res.data.adminGetProfileVerificationRequest;
     },
-    options
+    options,
   );

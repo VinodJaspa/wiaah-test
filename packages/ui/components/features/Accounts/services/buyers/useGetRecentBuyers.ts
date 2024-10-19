@@ -1,11 +1,9 @@
-import { AddToDate, isDev } from "@UI/../utils/src";
-import { getRandomUser } from "@UI/placeholder";
+import { AddToDate, isDev } from "utils";
 import {
   Account,
   Exact,
   GetBuyersAccountsInput,
-  GetFilteredSellersAccountsInput,
-} from "@features/API";
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -20,11 +18,11 @@ export type GetRecentBuyersQuery = { __typename?: "Query" } & {
 };
 
 export const GetRecentBuyersQueryKey = (
-  args: GetRecentBuyersQueryVariables["args"]
+  args: GetRecentBuyersQueryVariables["args"],
 ) => ["get-recent-sellers", { args }];
 
 export const GetRecentBuyersQueryFetcher = async (
-  args: GetRecentBuyersQueryVariables["args"]
+  args: GetRecentBuyersQueryVariables["args"],
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -48,7 +46,7 @@ query GetRecentBuyers($args:GetBuyersAccountsInput!){
 
 export const useGetRecentBuyers = (
   pagination: GetRecentBuyersQueryVariables["args"]["pagination"],
-  since: Date
+  since: Date,
 ) => {
   const args: GetRecentBuyersQueryVariables["args"] = {
     pagination,
@@ -60,9 +58,9 @@ export const useGetRecentBuyers = (
         (_, i) => ({
           createdAt: AddToDate(new Date(), { hours: i }),
           id: i.toString(),
-        })
+        }),
       );
-      
+
       return res;
     }
     return GetRecentBuyersQueryFetcher(args);
