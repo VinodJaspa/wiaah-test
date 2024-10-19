@@ -15,7 +15,7 @@ import {
   Menu,
   MenuList,
   MenuButton,
-} from "@UI";
+} from "ui";
 import { RecentSearchItemsPH } from "placeholder";
 import { randomNum } from "utils";
 
@@ -27,7 +27,7 @@ const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce(
   (acc: any[]) => {
     return acc.concat([]);
   },
-  []
+  [],
 );
 const hashTagsPlaceholder: string[] = ["gaming", "art", "funny"];
 const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {

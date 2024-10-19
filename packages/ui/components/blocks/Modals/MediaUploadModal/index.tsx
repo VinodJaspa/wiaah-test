@@ -1,16 +1,12 @@
+import { PostsViewModalsHeader } from "../../../blocks/Headers";
+import { Input, ModalContent, ModalOverlay, Modal } from "../../../partials";
+import { useFileUploadModal } from "../../../../src/Hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
-import {
-  useFileUploadModal,
-  PostsViewModalsHeader,
-  Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-} from "@UI";
-import { TakePictureModal, RecordVideoModal } from "@UI";
 import { getFileSrcData, FileRes } from "utils";
+import { RecordVideoModal } from "../RecordVideoModal";
+import { TakePictureModal } from "../TakePictureModal";
 
 export type MediaUploadType = "image" | "video";
 
@@ -54,12 +50,12 @@ export interface MediaUploadModalProps {
   onImgUpload?: (
     converted: FileRes,
     raw?: File,
-    getBlob?: () => Blob | undefined
+    getBlob?: () => Blob | undefined,
   ) => any;
   onVidUpload?: (
     converted: string,
     raw?: File,
-    getBlob?: () => Blob | undefined
+    getBlob?: () => Blob | undefined,
   ) => any;
   controls?: MediaUploadModalControls;
   multiple?: boolean;
@@ -133,7 +129,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     const raw = videoFiles ? videoFiles[idx] : null;
     onVidUpload &&
       onVidUpload(vidSrc, raw ? raw : (undefined as any), () =>
-        raw ? new Blob([raw], { type: raw.type }) : undefined
+        raw ? new Blob([raw], { type: raw.type }) : undefined,
       );
 
     cancelUpload();
@@ -145,12 +141,12 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     onImgUpload &&
       onImgUpload(img, raw, () => new Blob([raw], { type: raw.type }));
   }
-  function handleOpen() {}
+  function handleOpen() { }
 
   return (
     <Modal
       isLazy
-      onOpen={() => {}}
+      onOpen={() => { }}
       isOpen={!!uploadType}
       onClose={cancelUpload}
     >
@@ -161,8 +157,8 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
             {uploadImg
               ? t("upload_a_picture", "Upload a Picture")
               : uploadVid
-              ? t("upload_a_video", "Upload a Video")
-              : null}
+                ? t("upload_a_video", "Upload a Video")
+                : null}
           </p>
         </PostsViewModalsHeader>
         <div className="gap-8 justify-center flex flex-col sm:flex-row">

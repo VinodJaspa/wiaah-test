@@ -1,14 +1,13 @@
-import React from "react";
-import { HiCamera } from "react-icons/hi";
 import {
-  Modal,
-  ModalOverlay,
-  ModalProps,
-  ModalContent,
-  ModalHeader,
   ArrowLeftIcon,
   Button,
-} from "@UI";
+  ModalContent,
+  ModalOverlay,
+  ModalProps,
+  Modal,
+} from "../../../partials";
+import React from "react";
+import { HiCamera } from "react-icons/hi";
 
 export interface CameraPreviewProps extends Omit<ModalProps, "children"> {
   onImgCapture?: (imgDataUrl: string, fileConverted?: File) => any;
@@ -81,12 +80,12 @@ export const TakePictureModal: React.FC<CameraPreviewProps> = ({
           0,
           0,
           vidRef.current.videoWidth,
-          vidRef.current.videoHeight
+          vidRef.current.videoHeight,
         );
         const imgSrc = canv.toDataURL();
         const toFile = new File(
           [new Blob([imgSrc], { type: "image/jpeg" })],
-          `${new Date(Date.now()).toISOString()}`
+          `${new Date(Date.now()).toISOString()}`,
         );
         onImgCapture && onImgCapture(imgSrc, toFile);
       }

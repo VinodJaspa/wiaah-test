@@ -1,13 +1,13 @@
+import { ProductView } from "../../../features/Products/views";
 import {
-  useProductViewModal,
-  ServiceView,
   Modal,
   ModalCloseButton,
   ModalContent,
-  ModalOverlay,
   ModalHeader,
-} from "@UI";
-import { ProductView } from "@UI/views/market/ProductView";
+  ModalOverlay,
+} from "../../../partials";
+import { useProductViewModal } from "../../../../src/Hooks";
+import { ServiceView } from "../../../../views/";
 import React from "react";
 
 export interface ProductViewModalProps { }
