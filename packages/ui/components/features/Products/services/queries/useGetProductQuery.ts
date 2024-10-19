@@ -1,13 +1,13 @@
 import { createGraphqlRequestClient } from "api";
-import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
-import { getRandomImage } from "@UI/placeholder";
+import { getRandomName, isDev, randomNum } from "utils";
+import { getRandomImage } from "../../../../../placeholder";
 import {
   Exact,
   PresentationType,
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
   ProductSize,
-} from "@features/API";
+} from "../../../../features/API";
 import { UseQueryOptions, useQuery } from "react-query";
 
 export type GetProductDetailsQueryVariables = Exact<{
@@ -138,7 +138,7 @@ query getProductDetails($id: ID!) {
     title
   }
 }
-    `
+    `,
     )
     .setVariables<GetProductDetailsQueryVariables>(args)
     .send<GetProductDetailsQuery>();
@@ -148,10 +148,15 @@ query getProductDetails($id: ID!) {
 
 export const useGetProductDetailsQuery = (
   args: args,
-  options?: UseQueryOptions<any, any, GetProductDetailsQuery["getProduct"], any>
+  options?: UseQueryOptions<
+    any,
+    any,
+    GetProductDetailsQuery["getProduct"],
+    any
+  >,
 ) =>
   useQuery(
     getProductQueryDetailsKey(args),
     () => getProductqueryDetailsQueryFetcher(args),
-    options
+    options,
   );

@@ -12,7 +12,7 @@ import {
   QueryGetMyProductsArgs,
   ShippingDetails,
   VisibilityEnum,
-} from "@features/API";
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
@@ -52,44 +52,44 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
       | "negitiveFeedback"
       | "external_clicks"
     > & {
-        attributes: Array<
-          { __typename?: "ProductAttribute" } & Pick<
-            ProductAttribute,
-            "name" | "values"
-          >
+      attributes: Array<
+        { __typename?: "ProductAttribute" } & Pick<
+          ProductAttribute,
+          "name" | "values"
+        >
+      >;
+      cashback: { __typename?: "Cashback" } & Pick<
+        Cashback,
+        "amount" | "type" | "units"
+      >;
+      category?: Maybe<
+        { __typename?: "Category" } & Pick<
+          Category,
+          "id" | "name" | "parantId"
+        >
+      >;
+      discount: { __typename?: "Discount" } & Pick<
+        Discount,
+        "amount" | "units"
+      >;
+      presentations: Array<
+        { __typename?: "ProductPresentation" } & Pick<
+          ProductPresentation,
+          "src" | "type"
+        >
+      >;
+      seller: { __typename?: "Account" } & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<Profile, "username">
         >;
-        cashback: { __typename?: "Cashback" } & Pick<
-          Cashback,
-          "amount" | "type" | "units"
-        >;
-        category?: Maybe<
-          { __typename?: "Category" } & Pick<
-            Category,
-            "id" | "name" | "parantId"
-          >
-        >;
-        discount: { __typename?: "Discount" } & Pick<
-          Discount,
-          "amount" | "units"
-        >;
-        presentations: Array<
-          { __typename?: "ProductPresentation" } & Pick<
-            ProductPresentation,
-            "src" | "type"
-          >
-        >;
-        seller: { __typename?: "Account" } & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<Profile, "username">
-          >;
-        };
-        shippingDetails?: Maybe<
-          { __typename?: "ShippingDetails" } & Pick<
-            ShippingDetails,
-            "country" | "shippingRulesIds"
-          >
-        >;
-      }
+      };
+      shippingDetails?: Maybe<
+        { __typename?: "ShippingDetails" } & Pick<
+          ShippingDetails,
+          "country" | "shippingRulesIds"
+        >
+      >;
+    }
   >;
 };
 

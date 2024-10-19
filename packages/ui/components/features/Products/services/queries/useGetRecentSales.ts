@@ -1,5 +1,11 @@
-import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
-import { Account, Exact, Maybe, OrderItem, Scalars } from "@features/API";
+import { getRandomName, isDev, randomNum } from "utils";
+import {
+  Account,
+  Exact,
+  Maybe,
+  OrderItem,
+  Scalars,
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -22,11 +28,11 @@ export type GetRecentsalesQuery = { __typename?: "Query" } & {
 };
 
 export const AdminGetRecentSalesQueryKey = (
-  args: GetRecentsalesQueryVariables["take"]
+  args: GetRecentsalesQueryVariables["take"],
 ) => ["get-recent-sales", { args }];
 
 export const AdminGetRecentSalesQueryFetcher = async (
-  args: GetRecentsalesQueryVariables["take"]
+  args: GetRecentsalesQueryVariables["take"],
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -52,7 +58,7 @@ query GetRecentsales($take:Int){
 };
 
 export const useGetAdminRecentSalesQuery = (
-  args: GetRecentsalesQueryVariables["take"]
+  args: GetRecentsalesQueryVariables["take"],
 ) => {
   return useQuery(AdminGetRecentSalesQueryKey(args), () => {
     if (isDev) {
@@ -66,7 +72,7 @@ export const useGetAdminRecentSalesQuery = (
           },
           createdAt: new Date().toString(),
           paid: randomNum(150),
-        })
+        }),
       );
 
       return res;

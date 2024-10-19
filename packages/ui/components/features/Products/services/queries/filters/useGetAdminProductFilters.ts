@@ -3,7 +3,7 @@ import {
   Filter,
   GetFiltersInput,
   ProductFilterGroupValue,
-} from "@features/API";
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -14,13 +14,13 @@ export type GetProductFitlersQueryVariables = Exact<{
 export type GetProductFitlersQuery = { __typename?: "Query" } & {
   getAdminProductsFilters: Array<
     { __typename?: "Filter" } & Pick<Filter, "id" | "name" | "sortOrder"> & {
-        values: Array<
-          { __typename?: "ProductFilterGroupValue" } & Pick<
-            ProductFilterGroupValue,
-            "name" | "sortOrder"
-          >
-        >;
-      }
+      values: Array<
+        { __typename?: "ProductFilterGroupValue" } & Pick<
+          ProductFilterGroupValue,
+          "name" | "sortOrder"
+        >
+      >;
+    }
   >;
 };
 
@@ -60,6 +60,6 @@ query getProductFitlers(
 
 export const useGetAdminProductsFitlersQuery = (args: args) => {
   return useQuery(getAdminProductFiltersQueryKey(args), () =>
-    getAdminProductFitlersFetcher(args)
+    getAdminProductFitlersFetcher(args),
   );
 };

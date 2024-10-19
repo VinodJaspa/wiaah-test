@@ -1,46 +1,33 @@
 import { Scalars, createGraphqlRequestClient } from "api";
-import { isDev, randomNum } from "@UI/../utils/src";
-import { getRandomImage } from "@UI/placeholder";
-import {
-  Exact,
-  GetSellerProductsInput,
-  PresentationType,
-  Product,
-  ProductPresentation,
-  ProductStatus,
-  ProductsCursorPaginationResponse,
-} from "@features/API";
-import {
-  UseInfiniteQueryOptions,
-  UseQueryOptions,
-  useInfiniteQuery,
-  useQuery,
-} from "react-query";
+import { Exact, Product } from "../../../../features/API";
+import { useQuery } from "react-query";
 
 export type GetSellerProductsDetailsQueryVariables = Exact<{
-  args:{sellerId: Scalars["ID"]}
+  args: { sellerId: Scalars["ID"] };
 }>;
 
 export type GetSellerProductsDetailsQuery = { __typename?: "Query" } & {
-  getSellerProductsDetails: { __typename?: "Products" } & Array<Pick<
-    Product,
-    | "title"
-    | "thumbnail"
-    | "price"
-    | "stock"
-    | "earnings"
-    | "sales"
-    | "totalOrdered"
-    | "totalDiscounted"
-    | "totalDiscountedAmount"
-    | "unitsRefunded"
-    | "id"
-    | "positiveFeedback"
-    | "reviews"
-    | "negitiveFeedback"
-    | "status"
-    | "external_clicks"
-  >>;
+  getSellerProductsDetails: { __typename?: "Products" } & Array<
+    Pick<
+      Product,
+      | "title"
+      | "thumbnail"
+      | "price"
+      | "stock"
+      | "earnings"
+      | "sales"
+      | "totalOrdered"
+      | "totalDiscounted"
+      | "totalDiscountedAmount"
+      | "unitsRefunded"
+      | "id"
+      | "positiveFeedback"
+      | "reviews"
+      | "negitiveFeedback"
+      | "status"
+      | "external_clicks"
+    >
+  >;
 };
 
 type args = GetSellerProductsDetailsQueryVariables["args"];
@@ -51,7 +38,6 @@ export const getSellerProductsDetailsQueryKey = (args: args) => [
 ];
 
 export const getSellerProductsDetailsQueryFetcher = async (args: args) => {
-
   const client = createGraphqlRequestClient();
 
   const res = await client
@@ -78,7 +64,7 @@ query getUserProducts($args:GetSellerProductsInput!){
     external_clicks
   }
 }
-    `
+    `,
     )
     .setVariables<GetSellerProductsDetailsQueryVariables>({ args })
     .send<GetSellerProductsDetailsQuery>();
@@ -103,5 +89,5 @@ query getUserProducts($args:GetSellerProductsInput!){
 
 export const useGetSellerProductsDetails = (args: args) =>
   useQuery(getSellerProductsDetailsQueryKey(args), () =>
-     getSellerProductsDetailsQueryFetcher(args)
+    getSellerProductsDetailsQueryFetcher(args),
   );

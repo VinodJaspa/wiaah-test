@@ -1,4 +1,7 @@
-import { Exact, UpdateProductAttributeInput } from "@features/API";
+import {
+  Exact,
+  UpdateProductAttributeInput,
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
@@ -29,7 +32,7 @@ mutation adminCreateProductAttribute(
         args:$args
     )
 }
-    `
+    `,
       )
       .setVariables<AdminUpdateProductAttributeMutationVariables>({ args })
       .send<AdminUpdateProductAttributeMutation>();

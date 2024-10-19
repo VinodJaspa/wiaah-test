@@ -1,10 +1,10 @@
-import { GetFilteredProductsInput } from "@features/API";
+import { GetFilteredProductsInput } from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetProductsQuery = (
   input: GetFilteredProductsInput,
-  options?: UseQueryOptions<unknown, unknown, any, any>
+  options?: UseQueryOptions<unknown, unknown, any, any>,
 ) => {
   const client = createGraphqlRequestClient();
 

@@ -1,4 +1,7 @@
-import { Exact, GetAdminProductAttributesPaginationInput } from "@features/API";
+import {
+  Exact,
+  GetAdminProductAttributesPaginationInput,
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -37,7 +40,7 @@ query getAdminProductAttributes(
     total
   }
 }
-    `
+    `,
       )
       .setVariables<GetAdminProductAttributesQueryVariables>({ args })
       .send<GetAdminProductAttributesQuery>();

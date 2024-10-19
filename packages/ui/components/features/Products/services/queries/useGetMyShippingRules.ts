@@ -3,7 +3,7 @@ import {
   GetShippingRulesInput,
   ShippingDestination,
   ShippingType,
-} from "@features/API";
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { isDev } from "utils";
@@ -33,7 +33,7 @@ export type GetMyShippingSettingsQuery = {
 };
 
 export const useGetMyShippingRules = (
-  args: GetMyShippingSettingsQueryVariables["args"]
+  args: GetMyShippingSettingsQueryVariables["args"],
 ) => {
   const client = createGraphqlRequestClient();
 

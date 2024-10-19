@@ -1,4 +1,8 @@
-import { Exact, ShippingDestination, ShippingType } from "@features/API";
+import {
+  Exact,
+  ShippingDestination,
+  ShippingType,
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { UseQueryOptions, useQuery } from "react-query";
 
@@ -30,7 +34,7 @@ export const useGetShippingRuleById = (
     GetShippingRuleByIdQueryVariables,
     any,
     GetShippingRuleByIdQuery["getShippingRuleById"]
-  >
+  >,
 ) =>
   useQuery<
     GetShippingRuleByIdQueryVariables,
@@ -62,12 +66,12 @@ query getShippingRuleById(
         shippingType
     }
 }
-    `
+    `,
         )
         .setVariables<GetShippingRuleByIdQueryVariables>(args)
         .send<GetShippingRuleByIdQuery>();
 
       return res.data.getShippingRuleById;
     },
-    options
+    options,
   );

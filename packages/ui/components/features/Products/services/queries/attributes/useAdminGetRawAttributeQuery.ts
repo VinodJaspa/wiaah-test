@@ -2,8 +2,7 @@ import {
   Exact,
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
-  Scalars,
-} from "@features/API";
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -65,7 +64,7 @@ query getAdminRawProductAttribute(
         }
     }
 }
-    `
+    `,
       )
       .setVariables<GetAdminRawProductAttributeQueryVariables>(args)
       .send<GetAdminRawProductAttributeQuery>();

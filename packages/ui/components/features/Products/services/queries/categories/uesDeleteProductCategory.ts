@@ -1,4 +1,4 @@
-import { Category, Exact, Scalars } from "@features/API";
+import { Category, Exact, Scalars } from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 

@@ -1,4 +1,9 @@
-import { Exact, Filter, ProductFilterGroupValue, Scalars } from "@features/API";
+import {
+  Exact,
+  Filter,
+  ProductFilterGroupValue,
+  Scalars,
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -11,13 +16,13 @@ export type GetProductFitlerQuery = { __typename?: "Query" } & {
     Filter,
     "id" | "name" | "sortOrder"
   > & {
-      values: Array<
-        { __typename?: "ProductFilterGroupValue" } & Pick<
-          ProductFilterGroupValue,
-          "name" | "sortOrder"
-        >
-      >;
-    };
+    values: Array<
+      { __typename?: "ProductFilterGroupValue" } & Pick<
+        ProductFilterGroupValue,
+        "name" | "sortOrder"
+      >
+    >;
+  };
 };
 
 type args = GetProductFitlerQueryVariables["id"];
@@ -60,6 +65,6 @@ export const useGetAdminProductFitlerQuery = (args: args) => {
     () => getAdminProductFitlerFetcher(args),
     {
       enabled: !!args,
-    }
+    },
   );
 };

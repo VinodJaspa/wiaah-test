@@ -7,7 +7,7 @@ import {
   ProductStatus,
   ProductUsageStatus,
   Profile,
-} from "@features/API";
+} from "../../../../features/API";
 import { useQuery } from "react-query";
 import { randomNum } from "utils";
 
@@ -39,17 +39,17 @@ export type GetAdminProductsQuery = { __typename?: "Query" } & {
       | "updatedAt"
       | "external_clicks"
     > & {
-        seller: { __typename?: "Account" } & {
-          profile?: Maybe<
-            { __typename?: "Profile" } & Pick<Profile, "username">
-          >;
-        };
-      }
+      seller: { __typename?: "Account" } & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<Profile, "username">
+        >;
+      };
+    }
   >;
 };
 
 export const useGetAdminProductsQuery = (
-  input: GetFilteredProductsAdminInput
+  input: GetFilteredProductsAdminInput,
 ) => {
   const client = createGraphqlRequestClient();
 

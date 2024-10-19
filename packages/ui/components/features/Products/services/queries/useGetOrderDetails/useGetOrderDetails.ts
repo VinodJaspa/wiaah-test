@@ -7,7 +7,7 @@ import {
   Product,
   ServicePaymentMethod,
   ShippingAddress,
-} from "@features/API";
+} from "../../../../../features/API";
 
 export const getOrderDetailsQueryKey = (props: { id: string }) => [
   "OrderDetails",
@@ -58,7 +58,7 @@ export const useGetOrderDetailsQuery = (
     unknown, // Type for error (you can define a custom error type if needed)
     AsyncReturnType<() => Promise<GetOrderDetailsQuery["getOrderDetails"]>>, // Return type of the fetcher function
     ReturnType<typeof getOrderDetailsQueryKey> // Type for query key
-  >
+  >,
 ) => {
   return useQuery<
     GetOrderDetailsQuery, // Type for the query data

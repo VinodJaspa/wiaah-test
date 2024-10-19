@@ -1,6 +1,10 @@
-import { Category, Exact, UpdateCategoryInput } from "@features/API";
+import {
+  Category,
+  Exact,
+  UpdateCategoryInput,
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 
 export type UpdateProductCategoryMutationVariables = Exact<{
   args: UpdateCategoryInput;

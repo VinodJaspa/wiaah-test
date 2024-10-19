@@ -1,4 +1,4 @@
-import { Exact, ProductCategoryStatus } from "@features/API";
+import { Exact, ProductCategoryStatus } from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -40,7 +40,7 @@ query getCategoryByIdQuery($id:String!) {
         sales
     }
 }   
-    `
+    `,
     )
     .setVariables<GetCategoryByIdQueryQueryVariables>({
       id,

@@ -7,8 +7,8 @@ import {
   ProductReview,
   Profile,
   SellerProductsRating,
-} from "@features/API";
-import { getRandomImage } from "@UI/placeholder";
+} from "../../../../features/API";
+import { getRandomImage } from "../../../../../placeholder";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -28,19 +28,19 @@ export type GetMyReviewsQuery = { __typename?: "Query" } & {
       | "reviewerId"
       | "updatedAt"
     > & {
-        product: { __typename?: "Product" } & Pick<
-          Product,
-          "id" | "price" | "thumbnail" | "description" | "title"
+      product: { __typename?: "Product" } & Pick<
+        Product,
+        "id" | "price" | "thumbnail" | "description" | "title"
+      >;
+      reviewer: { __typename?: "Account" } & Pick<Account, "photo"> & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<
+            Profile,
+            "id" | "photo" | "username"
+          >
         >;
-        reviewer: { __typename?: "Account" } & Pick<Account, "photo"> & {
-            profile?: Maybe<
-              { __typename?: "Profile" } & Pick<
-                Profile,
-                "id" | "photo" | "username"
-              >
-            >;
-          };
-      }
+      };
+    }
   >;
   getMySellerProductsRating: { __typename?: "SellerProductsRating" } & Pick<
     SellerProductsRating,
@@ -113,7 +113,7 @@ export const useGetMyReviewsQuery = (input: GetMyReviewsInput) => {
         },
         reviewerId: "test",
         updatedAt: new Date().toString(),
-      })
+      }),
     );
 
     const mockRes1: GetMyReviewsQuery["getMySellerProductsRating"] = {

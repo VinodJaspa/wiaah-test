@@ -2,7 +2,7 @@ import {
   Exact,
   GetFilteredCategory,
   ProductCategoryStatus,
-} from "@features/API";
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -56,6 +56,6 @@ query getProductCategories(
 
 export const useGetAdminProductCategoriesQuery = (args: args) => {
   return useQuery(getAdminProductCategoriesQueryKey(args), () =>
-    getAdminProductCategoriesFetcher(args)
+    getAdminProductCategoriesFetcher(args),
   );
 };

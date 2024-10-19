@@ -2,7 +2,7 @@ import {
   Exact,
   GetProductCategoriesCursorPaginationInput,
   ProductCategoryStatus,
-} from "@features/API";
+} from "../../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import {
   UseInfiniteQueryOptions,
@@ -60,7 +60,7 @@ hasMore
 total
 nextCursor
     }
-}`
+}`,
     )
     .setVariables<GetTopProductCategoriesQueryVariables>({ args })
     .send<GetTopProductCategoriesQuery>();
@@ -76,11 +76,11 @@ export const useGetTopProductCategoriesQuery = (
     GetTopProductCategoriesQuery["getTopProductCategories"],
     GetTopProductCategoriesQuery["getTopProductCategories"],
     any
-  >
+  >,
 ) =>
   useInfiniteQuery(
     getTopCategoriesQueryKey(args),
     ({ pageParam }) =>
       getTopCategoriesQueryFetcher({ ...args, cursor: pageParam }),
-    options
+    options,
   );

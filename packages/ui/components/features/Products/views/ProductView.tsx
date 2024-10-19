@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useGetProductDetailsQuery } from "../services";
-import { useMutateShoppingCart, useResponsive } from "@src/index";
-import { SectionHeader } from "@sections/ShoppingManagement";
+import { useMutateShoppingCart, useResponsive } from "../../../../src/index";
+import { SectionHeader } from "../../../sections/ShoppingManagement";
 import { useTranslation } from "react-i18next";
-import { PorductDetailsPlaceHolder } from "ui/placeholder";
 import {
   AspectRatioImage,
   HStack,
@@ -12,9 +11,13 @@ import {
   PlayFillIcon,
   Slider,
   Spacer,
-} from "@partials";
-import { mapArray, useForm } from "@UI/../utils/src";
-import { PresentationType, ShoppingCartItemType } from "@features/API";
+} from "../../../partials";
+import { mapArray, useForm } from "utils";
+import {
+  CartItemAttributeInput,
+  PresentationType,
+  ShoppingCartItemType,
+} from "../../../features/API";
 import { ProductAttributeDisplay } from "../components/ProductAttributeDisplay";
 import {
   BreadCrumb,
@@ -22,8 +25,9 @@ import {
   ProductImageGallery,
   ProductViewRight,
   SellerCard,
-} from "@blocks";
-import { ProductGalleryItem } from "@UI/../types/src";
+} from "../../../blocks";
+import { ProductGalleryItem } from "types";
+import { PorductDetailsPlaceHolder } from "ui/placeholder";
 
 const breadcrumb = [
   {
@@ -127,7 +131,7 @@ export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
       <div className="flex flex-col gap-2">
         <Slider
           currentItemIdx={productImgIdx}
-          onSliderChange={(idx) => setProductIdx(idx)}
+          onSliderChange={(idx: number) => setProductIdx(idx)}
         >
           {mapArray(data?.presentations, (pres, i) => (
             <AspectRatioImage
@@ -169,12 +173,12 @@ export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
             <HStack className="flex-wrap">
               <ProductAttributeDisplay
                 {...att}
-                onChange={(value) => {
+                onChange={(value: string[]) => {
                   handleChange(
                     "attributes",
                     form.attributes
-                      ?.filter((v) => v.id !== att.name)
-                      .concat([{ id: att.name, value }])
+                      ?.filter((v: CartItemAttributeInput) => v.id !== att.name)
+                      .concat([{ id: att.name, value }]),
                   );
                 }}
                 value={[]}

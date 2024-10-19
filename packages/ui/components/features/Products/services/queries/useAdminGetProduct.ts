@@ -9,7 +9,7 @@ import {
   ProductAttribute,
   ProductPresentation,
   ShippingDetails,
-} from "@features/API";
+} from "../../../../features/API";
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars["String"];
@@ -39,39 +39,39 @@ export type GetProductQuery = { __typename?: "Query" } & {
       | "vendor_external_link"
       | "visibility"
     > & {
-        attributes: Array<
-          { __typename?: "ProductAttribute" } & Pick<
-            ProductAttribute,
-            "name" | "values"
-          >
-        >;
-        cashback: { __typename?: "Cashback" } & Pick<
-          Cashback,
-          "amount" | "type" | "units"
-        >;
-        category?: Maybe<
-          { __typename?: "Category" } & Pick<
-            Category,
-            "id" | "name" | "parantId" | "sortOrder" | "status"
-          >
-        >;
-        discount: { __typename?: "Discount" } & Pick<
-          Discount,
-          "amount" | "units"
-        >;
-        presentations: Array<
-          { __typename?: "ProductPresentation" } & Pick<
-            ProductPresentation,
-            "src" | "type"
-          >
-        >;
-        shippingDetails?: Maybe<
-          { __typename?: "ShippingDetails" } & Pick<
-            ShippingDetails,
-            "country" | "shippingRulesIds"
-          >
-        >;
-      }
+      attributes: Array<
+        { __typename?: "ProductAttribute" } & Pick<
+          ProductAttribute,
+          "name" | "values"
+        >
+      >;
+      cashback: { __typename?: "Cashback" } & Pick<
+        Cashback,
+        "amount" | "type" | "units"
+      >;
+      category?: Maybe<
+        { __typename?: "Category" } & Pick<
+          Category,
+          "id" | "name" | "parantId" | "sortOrder" | "status"
+        >
+      >;
+      discount: { __typename?: "Discount" } & Pick<
+        Discount,
+        "amount" | "units"
+      >;
+      presentations: Array<
+        { __typename?: "ProductPresentation" } & Pick<
+          ProductPresentation,
+          "src" | "type"
+        >
+      >;
+      shippingDetails?: Maybe<
+        { __typename?: "ShippingDetails" } & Pick<
+          ShippingDetails,
+          "country" | "shippingRulesIds"
+        >
+      >;
+    }
   >;
 };
 
