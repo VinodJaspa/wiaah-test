@@ -1,12 +1,12 @@
-import React from "react";
-import { useRouting } from "routing";
+import { LocationSearchInput } from "../../../blocks/DataInput";
 import {
   RecommendedBeautyCenterSearchList,
-  LocationSearchInput,
   ServicesRequestKeys,
   useGetRecommendedBeautyCentersQuery,
-  Pagination,
-} from "@UI";
+} from "../../../features";
+import { Pagination } from "../../../partials";
+import React from "react";
+import { useRouting } from "routing";
 
 export const BeautyCenterSearchView: React.FC = () => {
   const { visit } = useRouting();
@@ -18,8 +18,8 @@ export const BeautyCenterSearchView: React.FC = () => {
           visit((routes) =>
             routes.visitServiceLocationSearchResults(
               ServicesRequestKeys.beauty_center,
-              location
-            )
+              location,
+            ),
           );
         }}
       />

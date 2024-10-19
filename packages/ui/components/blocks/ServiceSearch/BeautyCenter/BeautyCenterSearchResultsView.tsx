@@ -1,23 +1,18 @@
+import { DateInput, SearchFilter, TimeInput } from "../../../blocks/DataInput";
+import { SpinnerFallback } from "../../../blocks/FallbackDisplays";
+import { usePaginationControls } from "../../../blocks/Navigating";
+import { ServiceType } from "../../../features/API";
+import {
+  DisplayFoundServices,
+  RecommendedBeautyCenterSearchList,
+  ServiceBookingStepper,
+  ServicesSearchResultsFiltersSidebar,
+  useGetFilteredBeautyCenterTreatmentsQuery,
+} from "../../../features/Services";
+import { CalenderIcon, ClockIcon, Pagination } from "../../../partials";
+import { useGetServiceSearchFiltersQuery } from "../../../../src/Hooks";
 import { Formik, Form } from "formik";
 import React from "react";
-import {
-  RecommendedBeautyCenterSearchList,
-  SearchFilter,
-  ServicesSearchResultsFiltersSidebar,
-  useGetServiceSearchFiltersQuery,
-  useSearchFilters,
-  DisplayFoundServices,
-  ServiceBookingStepper,
-  CalenderIcon,
-  DateInput,
-  ClockIcon,
-  TimeInput,
-  useGetFilteredBeautyCenterTreatmentsQuery,
-  SpinnerFallback,
-  Pagination,
-  usePaginationControls,
-  ServiceType,
-} from "@UI";
 
 const FAKE_TREATMENTS = [
   {
