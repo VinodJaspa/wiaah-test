@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { SelectOption } from "../../../partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Select, SelectOption } from "@UI";
 export interface ItemsPaginationProps {
   controls: usePaginationControls;
 }
@@ -21,7 +21,7 @@ export type usePaginationControls = {
 };
 
 export const usePaginationControls = (
-  options: usePaginationControlsOptions = { itemsPerPage: 10 }
+  options: usePaginationControlsOptions = { itemsPerPage: 10 },
 ) => {
   const { itemsPerPage } = options;
   const [totalItems, setTotalItems] = React.useState<number>(0);
@@ -67,10 +67,10 @@ export const usePaginationControls = (
 
 export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
   controls = {
-    changeItemsPerPage() {},
-    changePage() {},
-    next() {},
-    previous() {},
+    changeItemsPerPage() { },
+    changePage() { },
+    next() { },
+    previous() { },
     itemsPerPage: 10,
     page: 0,
     totalItems: 0,
@@ -87,7 +87,8 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
   return (
     <div className="w-full flex whitespace-nowrap items-center gap-4 text-gray-500 justify-end">
       <p>{t("items_per_page", "Items Per Page")}</p>
-      <Select
+      <SelectOption
+        value={"item"}
         onOptionSelect={handleItemsPerPageChange}
         className={"w-fit min-w-[4rem]"}
       >
@@ -96,7 +97,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
             {i + 1}
           </SelectOption>
         ))}
-      </Select>
+      </SelectOption>
       <p className="flex">
         {page} {t("of", "of")}{" "}
         {totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : "Unkown"}
