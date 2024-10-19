@@ -1,17 +1,19 @@
-import React from "react";
-import { Interaction } from "types";
+import { PostsViewModalsHeader } from "../../../blocks/Headers";
+import { PostCard } from "../../../blocks/Social";
 import {
-  useNewsFeedPostPopup,
-  PostCard,
-  PostsViewModalsHeader,
-  useUserData,
-  useGetNewsFeedPostQuery,
-  usePostsCommentsDrawer,
   Modal,
   ModalContent,
-  ModalOverlay,
   ModalHeader,
-} from "@UI";
+  ModalOverlay,
+} from "../../../partials";
+import {
+  useGetNewsFeedPostQuery,
+  useNewsFeedPostPopup,
+  usePostsCommentsDrawer,
+  useUserData,
+} from "../../../../src/Hooks";
+import React from "react";
+import { Interaction } from "types";
 
 export interface NewsfeedPostDetailsPopupProps { }
 
@@ -27,7 +29,7 @@ export const NewsfeedPostDetailsPopup: React.FC<
     isLoading,
     isError,
     error,
-  } = useGetNewsFeedPostQuery(postId || null);
+  } = useGetNewsFeedPostQuery(postId);
 
   if (!postId) return null;
   // if (!user) {
