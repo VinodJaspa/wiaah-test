@@ -1,26 +1,24 @@
 import React from "react";
-import {
-  ServicesProviderHeader,
-  SpinnerFallback,
-  useSearchFilters,
-  Divider,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServiceWorkingHoursSection,
-  ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  SectionsScrollTabList,
-  useGetBeautyCenterDetailsQuery,
-  BeautyCenterTreatmentsList,
-  WorkingDaysCalender,
-} from "ui";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { randomNum } from "utils";
+import { SpinnerFallback } from "../../blocks/FallbackDisplays";
+import { Divider } from "../../partials";
+import { SectionsScrollTabList, SectionTabType } from "@blocks/Navigating";
+import { StaticSideBarWrapper } from "../../blocks/Wrappers";
+import { WorkingDaysCalender } from "../../blocks/DataDisplay";
+import {
+  useGetBeautyCenterDetailsQuery,
+  ServicesProviderHeader,
+  ServicePresentationCarosuel,
+  ServicesProviderDescriptionSection,
+  BeautyCenterTreatmentsList,
+  ServiceReachOutSection,
+  ServiceWorkingHoursSection,
+  ServicePoliciesSection,
+  ServiceOnMapLocalizationSection,
+} from "../../features";
+import { Reviews } from "@blocks/Reviews";
 
 export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   id,

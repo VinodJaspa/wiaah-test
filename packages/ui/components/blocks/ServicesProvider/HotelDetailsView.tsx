@@ -24,7 +24,7 @@ import {
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
-import { PresentationType, ServicePresentationType } from "@features/API";
+import { PresentationType, ServicePresentationType } from "../../features/API";
 
 const ServicesProviderTabs: SectionTabType[] = [
   {

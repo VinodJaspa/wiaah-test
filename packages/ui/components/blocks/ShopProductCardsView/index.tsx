@@ -1,6 +1,9 @@
-import { ShopProductCard, ShopProductCardProps } from "@blocks/ShopProductCard";
-import { ListWrapper } from "@blocks/Wrappers";
-import { useResponsive } from "@UI/../hooks";
+import {
+  ShopProductCard,
+  ShopProductCardProps,
+} from "../../blocks/ShopProductCard";
+import { ListWrapper } from "../../blocks/Wrappers";
+import { useResponsive } from "hooks";
 import React from "react";
 
 interface ShopProductCardsViewProps {

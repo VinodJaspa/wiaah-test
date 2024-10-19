@@ -1,30 +1,30 @@
+import { DateInput, SearchFilter, TimeInput } from "../../../blocks/DataInput";
+import { SpinnerFallback } from "../../../blocks/FallbackDisplays";
+import { usePaginationControls } from "../../../blocks/Navigating";
+import {
+  DisplayFoundServices,
+  HealthCenterSearchBox,
+  HealthCenterServiceSearchResultsList,
+  ResturantFindTableFilterStepperHeader,
+  ServicesSearchResultsFiltersSidebar,
+  useGetFilteredHealthCenters,
+  useGetHealthCenterFiltersQuery,
+} from "../../../features/Services";
+import {
+  CalenderIcon,
+  ClockIcon,
+  Pagination,
+  PersonIcon,
+  ResturantFindTableFilterDateDayComponent,
+  ResturantReplacableTimeComponent,
+  Stepper,
+  StepperContent,
+  StepperHeader,
+} from "../../../partials";
+import { useSearchFilters } from "../../../../src/Hooks";
 import { Form, Formik } from "formik";
 import { useResponsive } from "hooks";
 import React from "react";
-import {
-  DateInput,
-  HealthCenterServiceSearchResultsList,
-  SearchFilter,
-  useGetHealthCenterFiltersQuery,
-  ResturantFindTableFilterDateDayComponent,
-  HealthCenterSearchBox,
-  ServicesSearchResultsFiltersSidebar,
-  Stepper,
-  TimeInput,
-  ResturantReplacableTimeComponent,
-  ResturantFindTableFilterStepperHeader,
-  StepperHeader,
-  StepperContent,
-  DisplayFoundServices,
-  useSearchFilters,
-  useGetFilteredHealthCenters,
-  usePaginationControls,
-  Pagination,
-  SpinnerFallback,
-  CalenderIcon,
-  ClockIcon,
-  PersonIcon,
-} from "@UI";
 import { useTranslation } from "react-i18next";
 
 export const HealthCenterSearchResultsView: React.FC = () => {

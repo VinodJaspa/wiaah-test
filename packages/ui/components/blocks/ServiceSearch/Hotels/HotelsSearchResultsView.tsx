@@ -4,24 +4,23 @@ import { useRouter } from "next/router";
 import { debounce } from "utils";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useResponsive } from "hooks";
+import { ServiceType } from "../../../features/API";
+import { useMutateSearchFilters } from "../../../../src/Hooks";
 import {
-  Button,
+  ServicesSearchResultsFiltersSidebar,
+  useGetFilteredHotelRoomsQuery,
+  useGetServiceFiltersQuery,
+} from "../../../features/Services";
+import {
   DateFormInput,
   DateFormInputProps,
   FormikInput,
   SearchInput,
   SearchInputProps,
-  Select,
-  SelectOption,
-  SelectProps,
-  ServiceSearchFilter,
-  ServicesSearchResultsFiltersSidebar,
-  useMutateSearchFilters,
-  useGetFilteredHotelRoomsQuery,
-  useGetServiceFiltersQuery,
-} from "@UI";
-import { useResponsive } from "hooks";
-import { ServiceType } from "@features/API";
+} from "../../../blocks/DataInput";
+import { Button, Select, SelectOption, SelectProps } from "../../../partials";
+import { ServiceSearchFilter } from "../../../blocks/SideBars";
 
 export const HotelsSearchResultsView: React.FC = () => {
   const { addFilter, setFilters, filtersKeys } = useMutateSearchFilters();
@@ -41,7 +40,7 @@ export const HotelsSearchResultsView: React.FC = () => {
   const handleFiltersUpdate = debounce(
     (filters: FormatedSearchableFilter) =>
       setFilters((state) => ({ ...state, ...filters })),
-    1000
+    1000,
   );
 
   return (

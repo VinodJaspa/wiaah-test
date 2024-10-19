@@ -1,11 +1,15 @@
 import React from "react";
 import { MdDeleteOutline, MdClose } from "react-icons/md";
-import { ShoppingCartOutlineIcon, useOutsideClick } from "@UI";
 import { ArrElement } from "types";
-import { useCartSummary, Badge } from "@UI";
-import { useShoppingCart, useGetMyShoppingCartQuery, PriceDisplay } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { useGetMyShoppingCartQuery } from "../../features/Cart";
+import {
+  useCartSummary,
+  useOutsideClick,
+  useShoppingCart,
+} from "../../../src/Hooks";
+import { Badge, PriceDisplay } from "../../partials";
 
 export interface ShoppingCartProps {
   children: React.ReactNode;

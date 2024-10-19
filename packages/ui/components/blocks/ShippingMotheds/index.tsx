@@ -1,8 +1,8 @@
 import { Table, Tbody, Td, Tr } from "@chakra-ui/react";
+import { BoxShadow, FilterInput, Padding } from "../../partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ShippingMothed } from "types";
-import { BoxShadow, Padding, FilterInput, Spacer } from "@UI";
 export interface ShippingMothedsProps {
   motheds: ShippingMothed[];
   onSelection?: (mothedId: string) => void;
