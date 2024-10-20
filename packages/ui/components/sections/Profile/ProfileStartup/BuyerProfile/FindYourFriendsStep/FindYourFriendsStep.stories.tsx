@@ -5,4 +5,4 @@ export default {
   title: storybookSectionsTitle + "FindYourFriendsStep",
 } as ComponentMeta<typeof FindYourFriendsStep>;
 
-export const Default = () => <FindYourFriendsStep />;
+export const Default = () => <FindYourFriendsStep onSuccess={() => { }} />;
