@@ -27,11 +27,13 @@ describe("MyWishListSection", () => {
   let mockRemoveWishlist = useRemoveItemFromWishlistMutation as jest.Mock;
   let mockMutateRemove = jest.fn();
 
+  // Ensure the structure matches your GraphQL schema
   const mockWishlistItems = [
     {
       itemId: "testitem1",
       itemType: "product",
       product: {
+        __typename: "Product", // Added __typename for the product
         price: 15,
         stock: 156,
         thumbnail: "test thum 1",
@@ -43,6 +45,7 @@ describe("MyWishListSection", () => {
       itemId: "testitem2",
       itemType: "service",
       service: {
+        __typename: "Service", // Added __typename for the service
         price: 16,
         stock: 150,
         thumbnail: "test thum 2",
@@ -59,7 +62,7 @@ describe("MyWishListSection", () => {
         ownerId: "testownerid",
         __typename: "Wishlist",
         wishedItems: mockWishlistItems,
-      } as ReturnType<typeof useGetMyWishlistQuery>["data"],
+      },
       isLoading: false,
       isError: false,
     });
@@ -73,7 +76,7 @@ describe("MyWishListSection", () => {
     wrapper = shallow(<MyWishListSection />);
   });
 
-  it("should display the right wishedItems", async () => {
+  it("should display the right wishedItems", () => {
     expect(useGetMyWishlistQuery).toBeCalledTimes(1);
 
     const items = wrapper.find(getTestId(testIds.item));
@@ -83,40 +86,38 @@ describe("MyWishListSection", () => {
       const data = mockWishlistItems[i];
 
       expect(item.find(getTestId(testIds.title)).dive().text()).toBe(
-        data.itemType === "product" ? data.product?.title : data.service?.title
+        data.itemType === "product" ? data.product.title : data.service.title,
       );
       expect(item.find(getTestId(testIds.thumbnail)).prop("src")).toBe(
         data.itemType === "product"
-          ? data.product?.thumbnail
-          : data.service?.thumbnail
+          ? data.product.thumbnail
+          : data.service.thumbnail,
       );
       expect(item.find(getTestId(testIds.price)).prop("price")).toBe(
-        data.itemType === "product" ? data.product?.price : data.service?.price
+        data.itemType === "product" ? data.product.price : data.service.price,
       );
       expect(item.find(getTestId(testIds.stock)).dive().text()).toBe(
-        data.itemType === "product" ? `${data.product?.stock}` : "Avaiable"
+        data.itemType === "product" ? `${data.product.stock}` : "Available",
       );
     });
   });
 
-  it("should call the remove item from wishlist hook with the right id", async () => {
+  it("should call the remove item from wishlist hook with the right id", () => {
     expect(useGetMyWishlistQuery).toBeCalledTimes(1);
 
     const items = wrapper.find(getTestId(testIds.item));
     expect(items).toHaveLength(2);
 
-    await Promise.all(
-      items.map(async (item, i) => {
-        const data = mockWishlistItems[i];
+    items.forEach((item, i) => {
+      const data = mockWishlistItems[i];
+      const deleteBtn = item.find(getTestId(testIds.deleteBtn));
 
-        const deleteBtn = item
-          .find(getTestId(testIds.deleteBtn))
-          .simulate("click");
+      // Simulate click on delete button
+      deleteBtn.simulate("click");
 
-        expect(mockMutateRemove).toBeCalledTimes(1);
-        expect(mockMutateRemove).toHaveBeenCalledWith({ itemId: data.itemId });
-        mockMutateRemove.mockClear();
-      })
-    );
+      expect(mockMutateRemove).toBeCalledTimes(i + 1); // Count should increase per item
+      expect(mockMutateRemove).toHaveBeenCalledWith({ itemId: data.itemId });
+      mockMutateRemove.mockClear(); // Clear mock for the next iteration
+    });
   });
 });
