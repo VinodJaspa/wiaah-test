@@ -208,18 +208,18 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
   }, []);
 
 export const getServicesOnMapLocationsFetcher = async (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter | undefined,
 ): Promise<
   InferType<typeof ServicesOnMapLocationsApiResponseValidationSchema>
 > => {
   const res: AsyncReturnType<typeof getServicesOnMapLocationsFetcher> = {
     total: 20,
     hasMore: false,
-    data: servicesPH.filter((v) => v.serviceType === filters["serviceType"]),
+    data: servicesPH.filter((v) => v.serviceType === filters!["serviceType"]),
   };
 
   return CheckValidation(
     ServicesOnMapLocationsApiResponseValidationSchema,
-    res
+    res,
   );
 };
