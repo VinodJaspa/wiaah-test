@@ -19,7 +19,7 @@
       "@blocks": ["components/blocks"],
       "@blocks/*": ["components/blocks/*"],
       "@sections/*": ["components/sections/*"],
-      "@features/*": ["components/features/*"],
+      "@features/*": ["./components/features/*"],
       "@sections": ["components/sections"],
       "@features": ["components/features"],
       "@libs": ["libs"],

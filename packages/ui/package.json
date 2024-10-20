@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc "
   },
   "dependencies": {
     "@types/google.maps": "^3.49.2",
