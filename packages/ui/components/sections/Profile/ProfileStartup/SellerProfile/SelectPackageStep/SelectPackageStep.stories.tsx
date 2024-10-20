@@ -5,4 +5,6 @@ export default {
   title: storybookSectionsTitle + "SelectPackageStep",
 } as ComponentMeta<typeof SelectPackageStep>;
 
-export const Default = () => <SelectPackageStep />;
+export const Default = () => (
+  <SelectPackageStep shopType={""} onChange={() => { }} value="" />
+);
