@@ -6,4 +6,4 @@ export default {
   component: OrdersSection,
 } as ComponentMeta<typeof OrdersSection>;
 
-export const Default = () => <OrdersSection />;
+export const Default = () => <OrdersSection shopping={true} />;
