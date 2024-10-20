@@ -7,7 +7,7 @@ import {
   Maybe,
   Membership,
   Profile,
-} from "@features/API";
+} from "../../../../features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -31,19 +31,19 @@ export type GetFilteredBuyersQuery = { __typename?: "Query" } & {
       | "ips"
       | "membershipId"
     > & {
-        profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "visits">>;
-        shop: { __typename?: "Shop" } & {
-          location: { __typename?: "Location" } & Pick<
-            Location,
-            "address" | "city" | "country"
-          >;
-        };
-        Membership: { __typename?: "Membership" } & Pick<Membership, "name">;
-        balance: { __typename?: "Balance" } & Pick<
-          Balance,
-          "withdrawableBalance"
+      profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "visits">>;
+      shop: { __typename?: "Shop" } & {
+        location: { __typename?: "Location" } & Pick<
+          Location,
+          "address" | "city" | "country"
         >;
-      }
+      };
+      Membership: { __typename?: "Membership" } & Pick<Membership, "name">;
+      balance: { __typename?: "Balance" } & Pick<
+        Balance,
+        "withdrawableBalance"
+      >;
+    }
   >;
 };
 
@@ -104,6 +104,6 @@ export const useGetFilteredBuyers = (args: args) => {
   return useQuery(
     GetFilteredBuyersQueryKey(args),
     () => GetFilteredBuyersQueryFetcher(args),
-    { enabled: args.name !== "" }
+    { enabled: args.name !== "" },
   );
 };
