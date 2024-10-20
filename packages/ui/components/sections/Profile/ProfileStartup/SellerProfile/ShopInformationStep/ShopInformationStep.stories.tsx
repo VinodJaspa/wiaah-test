@@ -7,4 +7,4 @@ export default {
   component: ShopInformationStep,
 } as ComponentMeta<typeof ShopInformationStep>;
 
-export const Default = () => <ShopInformationStep />;
+export const Default = () => <ShopInformationStep onSuccess={() => { }} />;
