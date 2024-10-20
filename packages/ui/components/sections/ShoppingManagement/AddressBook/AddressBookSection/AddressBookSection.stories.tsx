@@ -6,4 +6,4 @@ export default {
   component: AddressBookSection,
 } as ComponentMeta<typeof AddressBookSection>;
 
-export const Default = () => <AddressBookSection />;
+export const Default = () => <AddressBookSection accountId="fake-1" />;

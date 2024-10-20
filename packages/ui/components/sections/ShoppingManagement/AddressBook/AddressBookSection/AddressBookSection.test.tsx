@@ -50,7 +50,7 @@ describe("addressBookSection tests", () => {
 
   beforeAll(() => {
     mockGetQuery.mockReturnValue(mockData);
-    wrapper = shallow(<AddressBookSection />);
+    wrapper = shallow(<AddressBookSection accountId="fake-2" />);
   });
 
   it("should display the right data", async () => {
@@ -65,7 +65,7 @@ describe("addressBookSection tests", () => {
           mobileNumber: data.phone,
           instructions: data.instractions,
         });
-      })
+      }),
     );
   });
 });
