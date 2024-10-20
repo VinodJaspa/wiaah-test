@@ -52,7 +52,6 @@ describe("MyWishListSection", () => {
         thumbnail: "prodthumb 2",
         title: "title 2",
       },
-      productId: "prodid 2",
       qty: 5,
       reason: "test reason 2",
       requestedById: "buyer id 2",
@@ -84,23 +83,23 @@ describe("MyWishListSection", () => {
       const data = mockReturnedItems![i];
 
       expect(item.find(getTestId(testIds.title)).dive().text()).toBe(
-        data.product?.title
+        data.product?.title,
       );
       expect(item.find(getTestId(testIds.thumbnail)).prop("src")).toBe(
-        data.product?.thumbnail
+        data.product?.thumbnail,
       );
       expect(item.find(getTestId(testIds.price)).prop("price")).toBe(
-        data.amount
+        data.amount,
       );
 
       expect(item.find(getTestId(testIds.qty)).dive().text()).toBe(
-        data.qty.toString()
+        data.qty.toString(),
       );
       expect(item.find(getTestId(testIds.reason)).dive().text()).toBe(
-        data.reason
+        data.reason,
       );
       expect(item.find(getTestId(testIds.status)).dive().text()).toBe(
-        data.status
+        data.status,
       );
     });
   });
