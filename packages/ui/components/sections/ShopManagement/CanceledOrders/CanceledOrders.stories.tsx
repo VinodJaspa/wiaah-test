@@ -1,9 +1,9 @@
-import { storybookSectionsTitle, CanceledOrdersSection } from "@UI";
+import { storybookSectionsTitle, ReturnedOrders } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {
   title: storybookSectionsTitle + "CanceledOrdersSection",
-  component: CanceledOrdersSection,
-} as ComponentMeta<typeof CanceledOrdersSection>;
+  component: ReturnedOrders,
+} as ComponentMeta<typeof ReturnedOrders>;
 
-export const Default = () => <CanceledOrdersSection />;
+export const Default = () => <ReturnedOrders />;
