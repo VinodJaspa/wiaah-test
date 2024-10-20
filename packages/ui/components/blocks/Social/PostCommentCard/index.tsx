@@ -9,7 +9,7 @@ import {
   ContentHostType,
   Maybe,
   Profile,
-} from "@features/API";
+} from "../../../features/API";
 import {
   PostAttachment,
   Verified,
@@ -26,7 +26,7 @@ import {
   HStack,
   useCommentOnContent,
   useOutsideClick,
-} from "@UI";
+} from "ui";
 import { FaRegHeart } from "react-icons/fa6";
 import { BsFillReplyFill } from "react-icons/bs";
 

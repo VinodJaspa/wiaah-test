@@ -7,9 +7,9 @@ import {
   Divider,
   Stack,
   TranslationText,
-} from "@partials";
+} from "../../../partials";
 import { PassPropsToFnOrElem, setTestid } from "utils";
-import { useResponsive } from "@src/index";
+import { useResponsive } from "../../../../src";
 
 export interface SettingsSectionsSidebarProps {
   innerProps?: HtmlDivProps;
@@ -32,163 +32,157 @@ export const SettingsSectionsSidebar: React.FC<
   deepSlugs = [],
   iconOnly = false,
 }) => {
-  const { isMobile } = useResponsive();
-  return isMobile ? (
-    <Stack
-      divider={<Divider className="my-0" />}
-      col
-      className={`flex cursor-pointer flex-col ${
-        sub ? "" : ""
-      } border-primary-100`}
-      {...innerProps}
-    >
-      {Array.isArray(panelsInfo) &&
-        panelsInfo.map(
-          ({ panelIcon: Icon, panelName, panelUrl, subSections }, i) => {
-            const [open, setOpen] = React.useState<boolean>(false);
+    const { isMobile } = useResponsive();
+    return isMobile ? (
+      <Stack
+        divider={<Divider className="my-0" />}
+        col
+        className={`flex cursor-pointer flex-col ${sub ? "" : ""
+          } border-primary-100`}
+        {...innerProps}
+      >
+        {Array.isArray(panelsInfo) &&
+          panelsInfo.map(
+            ({ panelIcon: Icon, panelName, panelUrl, subSections }, i) => {
+              const [open, setOpen] = React.useState<boolean>(false);
 
-            const hasSub = subSections && subSections.length > 0;
-            const parantOfCurrent = hasSub
-              ? subSections[0].sections.find(
-                  (v) => v.panelUrl === currentActive
+              const hasSub = subSections && subSections.length > 0;
+              const parantOfCurrent = hasSub
+                ? subSections[0].sections.find(
+                  (v) => v.panelUrl === currentActive,
                 )
-              : null;
+                : null;
 
-            React.useEffect(() => {
-              if (parantOfCurrent && open === false) {
-                setOpen(true);
-              }
-            }, [open]);
+              React.useEffect(() => {
+                if (parantOfCurrent && open === false) {
+                  setOpen(true);
+                }
+              }, [open]);
 
-            return (
-              <>
-                <div
-                  key={panelUrl + i}
-                  onClick={() => {
-                    if (hasSub) {
-                      if (!parantOfCurrent) {
-                        setOpen((v) => !v);
+              return (
+                <>
+                  <div
+                    key={panelUrl + i}
+                    onClick={() => {
+                      if (hasSub) {
+                        if (!parantOfCurrent) {
+                          setOpen((v) => !v);
+                        }
+                      } else {
+                        onPanelClick && onPanelClick(panelUrl, panelName);
                       }
-                    } else {
-                      onPanelClick && onPanelClick(panelUrl, panelName);
-                    }
-                  }}
-                  className={`${
-                    currentActive === panelUrl ? "bg-primary-50" : ""
-                  } hover:bg-primary-light flex justify-between gap-2 ${
-                    iconOnly ? "px-2" : ""
-                  } py-4 items-center`}
-                >
-                  <div className="flex gap-2 items-center">
-                    {PassPropsToFnOrElem(Icon, { className: "" })}
+                    }}
+                    className={`${currentActive === panelUrl ? "bg-primary-50" : ""
+                      } hover:bg-primary-light flex justify-between gap-2 ${iconOnly ? "px-2" : ""
+                      } py-4 items-center`}
+                  >
+                    <div className="flex gap-2 items-center">
+                      {PassPropsToFnOrElem(Icon, { className: "" })}
 
-                    {iconOnly ? null : (
-                      <div className="flex flex-col">
-                        <TranslationText
-                          className="font-medium"
-                          translationObject={panelName}
-                        />
-                      </div>
-                    )}
+                      {iconOnly ? null : (
+                        <div className="flex flex-col">
+                          <TranslationText
+                            className="font-medium"
+                            translationObject={panelName}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {hasSub ? (
+                      open ? (
+                        <ArrowUpIcon className="text-2xl" />
+                      ) : (
+                        <ArrowRightIcon className="text-2xl" />
+                      )
+                    ) : null}
                   </div>
-                  {hasSub ? (
-                    open ? (
-                      <ArrowUpIcon className="text-2xl" />
-                    ) : (
-                      <ArrowRightIcon className="text-2xl" />
-                    )
+                  {hasSub && open && !iconOnly ? (
+                    <div className="pl-4">
+                      <SettingsSectionsSidebar
+                        onPanelClick={onPanelClick}
+                        panelsInfo={subSections[0].sections}
+                        sub={true}
+                        deepSlugs={[panelUrl]}
+                        currentActive={currentActive}
+                      />
+                    </div>
                   ) : null}
-                </div>
-                {hasSub && open && !iconOnly ? (
-                  <div className="pl-4">
-                    <SettingsSectionsSidebar
-                      onPanelClick={onPanelClick}
-                      panelsInfo={subSections[0].sections}
-                      sub={true}
-                      deepSlugs={[panelUrl]}
-                      currentActive={currentActive}
-                    />
-                  </div>
-                ) : null}
-              </>
-            );
-          }
-        )}
-    </Stack>
-  ) : (
-    <div
-      className={`flex cursor-pointer flex-col ${
-        sub ? "" : "border-r-[1px]"
-      } border-primary-100`}
-      {...innerProps}
-    >
-      {Array.isArray(panelsInfo) &&
-        panelsInfo.map(
-          ({ panelIcon: Icon, panelName, panelUrl, subSections }, i) => {
-            const [open, setOpen] = React.useState<boolean>(false);
+                </>
+              );
+            },
+          )}
+      </Stack>
+    ) : (
+      <div
+        className={`flex cursor-pointer flex-col ${sub ? "" : "border-r-[1px]"
+          } border-primary-100`}
+        {...innerProps}
+      >
+        {Array.isArray(panelsInfo) &&
+          panelsInfo.map(
+            ({ panelIcon: Icon, panelName, panelUrl, subSections }, i) => {
+              const [open, setOpen] = React.useState<boolean>(false);
 
-            const hasSub = subSections && subSections.length > 0;
-            const parantOfCurrent = hasSub
-              ? subSections[0].sections.find(
-                  (v) => v.panelUrl === currentActive
+              const hasSub = subSections && subSections.length > 0;
+              const parantOfCurrent = hasSub
+                ? subSections[0].sections.find(
+                  (v) => v.panelUrl === currentActive,
                 )
-              : null;
+                : null;
 
-            React.useEffect(() => {
-              if (parantOfCurrent && open === false) {
-                setOpen(true);
-              }
-            }, [open]);
+              React.useEffect(() => {
+                if (parantOfCurrent && open === false) {
+                  setOpen(true);
+                }
+              }, [open]);
 
-            return (
-              <>
-                <div
-                  {...setTestid(`section-${panelUrl}`)}
-                  key={panelUrl + i}
-                  onClick={() => {
-                    if (hasSub) {
-                      if (!parantOfCurrent) {
-                        setOpen((v) => !v);
+              return (
+                <>
+                  <div
+                    {...setTestid(`section-${panelUrl}`)}
+                    key={panelUrl + i}
+                    onClick={() => {
+                      if (hasSub) {
+                        if (!parantOfCurrent) {
+                          setOpen((v) => !v);
+                        }
+                      } else {
+                        onPanelClick && onPanelClick(panelUrl, panelName);
                       }
-                    } else {
-                      onPanelClick && onPanelClick(panelUrl, panelName);
-                    }
-                  }}
-                  className={`${
-                    currentActive === panelUrl ? "bg-primary-50" : ""
-                  } hover:bg-primary-light flex justify-between gap-2 ${
-                    iconOnly ? "px-2" : "px-8"
-                  } py-4 px-8 items-center`}
-                >
-                  <div className="flex gap-2 items-center">
-                    {PassPropsToFnOrElem(Icon, { className: "" })}
+                    }}
+                    className={`${currentActive === panelUrl ? "bg-primary-50" : ""
+                      } hover:bg-primary-light flex justify-between gap-2 ${iconOnly ? "px-2" : "px-8"
+                      } py-4 px-8 items-center`}
+                  >
+                    <div className="flex gap-2 items-center">
+                      {PassPropsToFnOrElem(Icon, { className: "" })}
 
-                    {iconOnly ? null : (
-                      <div className="flex flex-col">
-                        <TranslationText
-                          className="font-bold"
-                          translationObject={panelName}
-                        />
-                      </div>
-                    )}
+                      {iconOnly ? null : (
+                        <div className="flex flex-col">
+                          <TranslationText
+                            className="font-bold"
+                            translationObject={panelName}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {hasSub ? open ? <ArrowDownIcon /> : <ArrowUpIcon /> : null}
                   </div>
-                  {hasSub ? open ? <ArrowDownIcon /> : <ArrowUpIcon /> : null}
-                </div>
-                {hasSub && open && !iconOnly ? (
-                  <div className="pl-4">
-                    <SettingsSectionsSidebar
-                      onPanelClick={onPanelClick}
-                      panelsInfo={subSections[0].sections}
-                      sub={true}
-                      deepSlugs={[panelUrl]}
-                      currentActive={currentActive}
-                    />
-                  </div>
-                ) : null}
-              </>
-            );
-          }
-        )}
-    </div>
-  );
-};
+                  {hasSub && open && !iconOnly ? (
+                    <div className="pl-4">
+                      <SettingsSectionsSidebar
+                        onPanelClick={onPanelClick}
+                        panelsInfo={subSections[0].sections}
+                        sub={true}
+                        deepSlugs={[panelUrl]}
+                        currentActive={currentActive}
+                      />
+                    </div>
+                  ) : null}
+                </>
+              );
+            },
+          )}
+      </div>
+    );
+  };

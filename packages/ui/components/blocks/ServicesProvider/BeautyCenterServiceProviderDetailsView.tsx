@@ -1,10 +1,9 @@
 import React from "react";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
 import { SpinnerFallback } from "../../blocks/FallbackDisplays";
 import { Divider } from "../../partials";
-import { SectionsScrollTabList, SectionTabType } from "@blocks/Navigating";
+import { SectionsScrollTabList, SectionTabType } from "../../blocks/Navigating";
 import { StaticSideBarWrapper } from "../../blocks/Wrappers";
 import { WorkingDaysCalender } from "../../blocks/DataDisplay";
 import {
@@ -18,7 +17,7 @@ import {
   ServicePoliciesSection,
   ServiceOnMapLocalizationSection,
 } from "../../features";
-import { Reviews } from "@blocks/Reviews";
+import { Reviews } from "../../blocks/Reviews";
 
 export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   id,

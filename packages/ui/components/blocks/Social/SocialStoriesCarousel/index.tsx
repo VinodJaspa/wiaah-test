@@ -1,8 +1,7 @@
 import React from "react";
-import { SocialStoryData } from "types";
 import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
-import { Slider, Spinner } from "@partials";
-import { Story } from "@features/API";
+import { Slider, Spinner } from "../../../partials";
+import { Story } from "../../../features/API";
 
 export interface SocialStoriesCarouselProps {
   story: Story;

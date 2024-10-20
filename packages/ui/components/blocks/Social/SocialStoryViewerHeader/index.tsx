@@ -7,10 +7,10 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-} from "@partials";
+} from "../../../partials";
 import { MdClose } from "react-icons/md";
 import { HiEye, HiDotsHorizontal } from "react-icons/hi";
-import { NumberShortner } from "@UI/components/helpers/numberShortener";
+import { NumberShortner } from "../../../../components/helpers/numberShortener";
 import { useTranslation } from "react-i18next";
 import { useStorySeenByPopup } from "../StorySeenByPopup";
 

@@ -1,5 +1,5 @@
-import { Divider, Select, SelectOption } from "@UI";
-import { Language } from "@UI/languages/enums/Language";
+import { Divider, Select, SelectOption } from "ui";
+import { Language } from "../../../../languages/enums/Language";
 import { useRouter } from "next/router";
 import { Country } from "country-state-city";
 import { useTranslation } from "react-i18next";
@@ -30,27 +30,27 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     label: string;
     link: string;
   }[] = [
-    {
-      label: t("about", "about"),
-      link: "",
-    },
-    {
-      label: t("contact_us", "contact us"),
-      link: "",
-    },
-    {
-      label: t("help_and_faqs", "help and FAQs"),
-      link: "",
-    },
-    {
-      label: t("terms_&_conditions", "terms & conditions"),
-      link: "",
-    },
-    {
-      label: t("privacy_policy", "privacy policy"),
-      link: "",
-    },
-  ];
+      {
+        label: t("about", "about"),
+        link: "",
+      },
+      {
+        label: t("contact_us", "contact us"),
+        link: "",
+      },
+      {
+        label: t("help_and_faqs", "help and FAQs"),
+        link: "",
+      },
+      {
+        label: t("terms_&_conditions", "terms & conditions"),
+        link: "",
+      },
+      {
+        label: t("privacy_policy", "privacy policy"),
+        link: "",
+      },
+    ];
 
   if ("locale" in router) {
     const { locale } = router;

@@ -10,9 +10,9 @@ import {
   GridWrapper,
   GridListOrganiser,
   useResponsive,
-} from "@UI";
+} from "ui";
 import { Text } from "@chakra-ui/react";
-import { AttachmentType } from "@features/API";
+import { AttachmentType } from "../../../features/API";
 import { getRandomImage } from "placeholder";
 
 export interface AffiliationOffersCardListWrapperProps {

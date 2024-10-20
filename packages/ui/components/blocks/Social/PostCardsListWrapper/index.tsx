@@ -1,17 +1,20 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
-import { PostCard, PostCardProps } from "@UI/components/blocks/Social/PostCard";
-import { PostViewPopup } from "@UI/components/blocks/Popups";
+import {
+  PostCard,
+  PostCardProps,
+} from "../../../../components/blocks/Social/PostCard";
+import { PostViewPopup } from "../../../../components/blocks/Popups";
 import {
   ListWrapper,
   GridListOrganiser,
   ListWrapperProps,
-} from "@UI/components/blocks/Wrappers";
-import { useModalDisclouser, useResponsive } from "@UI/../hooks";
-import { AspectRatio } from "@partials";
-import { mapArray } from "@UI/../utils/src";
+} from "../../../../components/blocks/Wrappers";
+import { useModalDisclouser, useResponsive } from "hooks";
+import { AspectRatio } from "../../../partials";
+import { mapArray } from "utils";
 import { PostCardInfo } from "types";
-import { Carousel } from "@blocks/Carousel";
+import { Carousel } from "../../../blocks/Carousel";
 import { useRouter } from "next/router";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {

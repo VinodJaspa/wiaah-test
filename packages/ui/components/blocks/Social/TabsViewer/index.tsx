@@ -8,7 +8,7 @@ import {
   TabsHeader,
   TabsProps,
   Divider,
-} from "@UI";
+} from "ui";
 import { HtmlDivProps, TabType } from "types";
 import { runIfFn } from "utils";
 

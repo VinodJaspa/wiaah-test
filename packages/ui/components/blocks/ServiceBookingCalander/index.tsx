@@ -1,7 +1,7 @@
+import { Button, Divider, Spacer } from "../../partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { Spacer, Divider, Button } from "@UI";
 import { getTimeInAmPm } from "utils";
 
 export interface ServiceBookingCalanderProps {
@@ -62,7 +62,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
 
   function getDays(): FormatedDays[] {
     const firstDayOffset = weekDays.findIndex(
-      (day) => day === month.firstDayName
+      (day) => day === month.firstDayName,
     );
     const lastMonthDays: FormatedDays[] = [...Array(firstDayOffset)]
       .map((_, i) => ({
@@ -75,7 +75,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
       (_, i) => ({
         currentMonth: true,
         dayNum: i + 1,
-      })
+      }),
     );
 
     const LastAndCurrentDays: FormatedDays[] = [
@@ -89,7 +89,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
       (_, i) => ({
         currentMonth: false,
         dayNum: i + 1,
-      })
+      }),
     );
 
     const allDays = [...lastMonthDays, ...currentMonthDays, ...nextMonthDays];
@@ -143,7 +143,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
 
   React.useEffect(() => {
     const currentActiveDayEvents: Event[] = month.events.filter(
-      (event) => event.day === activeDay
+      (event) => event.day === activeDay,
     );
     setEvents(currentActiveDayEvents);
   }, [activeDay]);
@@ -205,15 +205,13 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
                         if (!currentMonth) return;
                         setActiveDay(dayNum);
                       }}
-                      className={`${
-                        currentMonth
+                      className={`${currentMonth
                           ? "cursor-pointer"
                           : "cursor-not-allowed text-gray-400"
-                      } ${
-                        activeDay === dayNum && currentMonth
+                        } ${activeDay === dayNum && currentMonth
                           ? "bg-primary text-white"
                           : ""
-                      } flex w-full items-center justify-center`}
+                        } flex w-full items-center justify-center`}
                     >
                       <span>{dayNum}</span>
                     </td>
@@ -238,45 +236,44 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
               {/* evemts  */}
               {events.length > 0
                 ? events.map((event, i) => (
-                    <div
-                      key={i}
-                      className={`${
-                        activeEvent && activeEvent.id === event.id
-                          ? "bg-primary-100"
-                          : "bg-white"
+                  <div
+                    key={i}
+                    className={`${activeEvent && activeEvent.id === event.id
+                        ? "bg-primary-100"
+                        : "bg-white"
                       } flex w-full cursor-pointer justify-between rounded p-4 shadow`}
+                  >
+                    <div
+                      onClick={() => handleSetActiveEvent(event)}
+                      className="flex w-full gap-4"
                     >
-                      <div
-                        onClick={() => handleSetActiveEvent(event)}
-                        className="flex w-full gap-4"
-                      >
-                        <div className="flex flex-col">
-                          {/* from, to */}
-                          <span className="font-bold">
-                            {getTimeInAmPm(new Date(event.from))}
-                          </span>
+                      <div className="flex flex-col">
+                        {/* from, to */}
+                        <span className="font-bold">
+                          {getTimeInAmPm(new Date(event.from))}
+                        </span>
 
-                          <span className="">
-                            {getTimeInAmPm(new Date(event.to))}
-                          </span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-bold">
-                            {event.availablity ? "Available" : "Unavailable"}
-                          </span>
-                          <span className="font-semibold">{event.name}</span>
-                        </div>
+                        <span className="">
+                          {getTimeInAmPm(new Date(event.to))}
+                        </span>
                       </div>
-                      {activeEvent && activeEvent.id === event.id ? (
-                        <div
-                          onClick={() => handleCancelEvent()}
-                          className="p-4"
-                        >
-                          <MdClose />
-                        </div>
-                      ) : null}
+                      <div className="flex flex-col">
+                        <span className="font-bold">
+                          {event.availablity ? "Available" : "Unavailable"}
+                        </span>
+                        <span className="font-semibold">{event.name}</span>
+                      </div>
                     </div>
-                  ))
+                    {activeEvent && activeEvent.id === event.id ? (
+                      <div
+                        onClick={() => handleCancelEvent()}
+                        className="p-4"
+                      >
+                        <MdClose />
+                      </div>
+                    ) : null}
+                  </div>
+                ))
                 : "No events for this day"}
             </div>
           </div>
@@ -284,11 +281,10 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
         <Spacer />
         <div className="flex w-full items-center justify-center">
           <div
-            className={`${
-              activeEvent
+            className={`${activeEvent
                 ? "cursor-pointer opacity-100"
                 : "cursor-not-allowed opacity-50"
-            } max-w-40`}
+              } max-w-40`}
           >
             <Button onClick={() => handleSubmitEvent()}>
               {t("Confirm_Booking", "Confirm Booking")}

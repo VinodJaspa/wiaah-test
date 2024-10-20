@@ -5,8 +5,8 @@ import {
   SearchFilter,
   SearchFilterProps,
   useGetServiceSearchFiltersQuery,
-} from "@UI";
-import { ServiceType } from "@features/API";
+} from "ui";
+import { ServiceType } from "../../../features/API";
 
 export interface ServiceSidebarFilterProps {
   onChange: Pick<

@@ -25,10 +25,10 @@ import { Container, TabsViewer } from "ui";
 import { NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useDisclouser } from "hooks";
-import { useSendFollowRequestMutation } from "@features/Social";
+import { useSendFollowRequestMutation } from "../../../features/Social";
 import { SlCalender } from "react-icons/sl";
 
-import { useUnFollowProfileMutation } from "@features/Social";
+import { useUnFollowProfileMutation } from "../../../features/Social";
 import {
   Account,
   Maybe,
@@ -36,9 +36,9 @@ import {
   ProfileVisibility,
   Shop,
   StoreType,
-} from "@features/API";
-import { useRouting } from "@UI/../routing";
-import { TabsTabType, TabType } from "@UI/../types/src";
+} from "../../../features/API";
+import { useRouting } from "routing";
+import { TabsTabType, TabType } from "types";
 import { useRouter } from "next/router";
 import { TbEdit } from "react-icons/tb";
 

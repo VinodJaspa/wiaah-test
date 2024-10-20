@@ -8,10 +8,10 @@ import {
   ServicePresentation,
   useDateDiff,
   useHandlePostSharing,
-} from "@UI";
-import { CommentsViewer, PostInteractions } from "@UI";
+} from "ui";
+import { CommentsViewer, PostInteractions } from "ui";
 import { useTranslation } from "react-i18next";
-import { PostAttachmentsViewer, PostInteractionsProps } from "@UI";
+import { PostAttachmentsViewer, PostInteractionsProps } from "ui";
 import { HtmlDivProps } from "types";
 import { useDimensions } from "hooks";
 import {
@@ -22,7 +22,7 @@ import {
   ServicePresentationType,
 } from "@features/API";
 import { getRandomImage } from "placeholder";
-import { AttachmentType } from "@features/API/gql/generated";
+import { AttachmentType } from "../../../features/API/gql/generated";
 
 export interface SocialAffiliationCardProps {
   post: Pick<

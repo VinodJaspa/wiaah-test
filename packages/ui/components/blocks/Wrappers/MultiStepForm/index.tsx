@@ -2,9 +2,9 @@ import { Box, useTheme } from "@chakra-ui/react";
 import { Progress } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Container } from "@UI";
+import { Container } from "ui";
 import { StepperStepType } from "types";
-import { runIfFn } from "@UI/../utils/src";
+import { runIfFn } from "utils";
 
 export type MultiStepFromHandle = {
   handleNextStep: () => any;

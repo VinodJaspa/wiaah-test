@@ -1,44 +1,38 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ChatSearchInput,
-  ChatUserCard,
-  useNewMessage,
-  ArrowLeftIcon,
-  Button,
-  EditIcon,
-  Divider,
-  useGetMyChatRoomsQuery,
-  HStack,
-  ArrowLeftAlt1Icon,
-  useUserProfile,
-  EditNoteIcon,
-  InputGroup,
-  InputLeftElement,
-  SearchIcon,
-  Input,
-  useGetRecentStories,
-  usePaginationControls,
-  ScrollingWrapper,
-  ScrollPaginationWrapper,
-  Image,
-  Avatar,
-  useGetMyProfileQuery,
-  DotIcon,
-  DisplayDate,
-  CheckmarkCircleFillIcon,
-  EditAltIcon,
-  ChatUserActiveStatusIndicator,
-  AvatarBadge,
-  PlusIcon,
-  SocialLayout,
-  useSocialControls,
-} from "@UI";
 import { HtmlDivProps } from "types";
-import { useResponsive } from "@UI";
 import { useRouting } from "routing";
 import { isDate, mapArray } from "utils";
-import { ActiveStatus } from "@features/API";
+import { ActiveStatus } from "../../../features/API";
+import { useSocialControls } from "../../../blocks/Layout";
+import { useResponsive } from "../../../../src/Hooks";
+import { useUserProfile } from "../../../features/Auth";
+import { usePaginationControls } from "../../../blocks/Navigating";
+import { useGetRecentStories } from "../../../features/Social";
+import { useGetMyChatRoomsQuery } from "../../../features/Chat";
+import {
+  ArrowLeftAlt1Icon,
+  ArrowLeftIcon,
+  Avatar,
+  Button,
+  CheckmarkCircleFillIcon,
+  Divider,
+  EditAltIcon,
+  EditIcon,
+  HStack,
+  Image,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  PlusIcon,
+  ScrollPaginationWrapper,
+  SearchIcon,
+} from "../../../partials";
+import {
+  ChatUserActiveStatusIndicator,
+  ChatUserCard,
+} from "../../../blocks/DataDisplay";
+import { ChatSearchInput } from "../../../blocks/DataInput";
 
 export interface ChatMessagesSideBarProps {
   props: HtmlDivProps;
@@ -123,7 +117,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
 
               const lastMsg = v.messages.at(0);
               const memberSeen = lastMsg?.seenBy.find(
-                (v) => v.userId === member?.profile?.ownerId
+                (v) => v.userId === member?.profile?.ownerId,
               );
 
               const date: string =

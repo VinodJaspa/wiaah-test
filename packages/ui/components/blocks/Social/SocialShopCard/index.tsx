@@ -7,12 +7,12 @@ import {
   CommentsViewer,
   useProductViewModal,
   useHandlePostSharing,
-} from "@UI";
+} from "ui";
 import { ShopCardInfo } from "types";
-import { useLoginPopup } from "@UI";
-import { ControlledCarousel } from "@UI";
+import { useLoginPopup } from "ui";
+import { ControlledCarousel } from "ui";
 import { PostInteractionsProps } from "../PostInteractions";
-import { AttachmentType, ContentHostType } from "@features/API";
+import { AttachmentType, ContentHostType } from "../../../features/API";
 
 export interface SocialShopCardProps {
   showComments?: boolean;

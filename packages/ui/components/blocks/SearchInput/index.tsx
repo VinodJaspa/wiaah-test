@@ -1,15 +1,14 @@
-import React from "react";
-import { useOutsideClick } from "@src/Hooks";
 import {
   InputGroup,
   InputLeftElement,
   InputProps,
   InputRightElement,
+  Input,
   ScrollCursorPaginationWrapper,
   useCursorScrollPaginationControls,
-} from "@UI";
-import { Input } from "@UI";
-import { HtmlInputProps } from "types";
+} from "../../partials";
+import React from "react";
+import { useOutsideClick } from "../../../src/Hooks";
 export interface SearchFilterInputProps extends InputProps {
   value: string;
   icon?: () => JSX.Element | undefined;
@@ -34,11 +33,14 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   rightElement,
   onNotFound,
   controls,
+  id,
+  flushed,
+  className,
   ...props
 }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
   const [Components, setComponents] = React.useState<Component[]>(
-    components || []
+    components || [],
   );
   const inputStyles: React.CSSProperties = {};
 
@@ -52,7 +54,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         components.filter((item) => {
           if (!value || value.length < 1) return state;
           return item.name.toLowerCase().includes(value.toLowerCase());
-        })
+        }),
       );
       onNotFound && onNotFound(components.length > 0);
     }
@@ -69,12 +71,12 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   return (
     <InputGroup
       ref={containerRef}
-      flushed={props.flushed}
+      flushed={flushed}
       className="relative h-12 px-2"
     >
       {iconRes && (
         <InputLeftElement>
-          <label className={`px-2 text-lg text-gray-400`} htmlFor={props.id}>
+          <label className={`px-2 text-lg text-gray-400`} htmlFor={id}>
             {iconRes}
           </label>
         </InputLeftElement>
@@ -84,8 +86,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         style={inputStyles}
         onFocus={() => setDropdownOpen(true)}
         value={value}
-        className={`${props.className || ""} ${iconRes ? "pl-10" : "pl-0"
-          } w-full`}
+        className={`${className || ""} ${iconRes ? "pl-10" : "pl-0"} w-full`}
         {...props}
       />
       {Components && dropdownOpen && (
@@ -99,7 +100,6 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
               onClick={() => handleSelect(i)}
               key={i}
             >
-              {/*@ts-ignore*/}
               {comp.comp}
             </div>
           ))}

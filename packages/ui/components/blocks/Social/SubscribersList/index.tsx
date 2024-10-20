@@ -1,6 +1,6 @@
 import React from "react";
-import { SubscribersUserInfo } from "@UI/../types/src";
-import { SubscriberCard, Input, Divider } from "@UI";
+import { SubscribersUserInfo } from "types";
+import { SubscriberCard, Input, Divider } from "ui";
 import { useTranslation } from "react-i18next";
 
 export interface SubscribersListProps {

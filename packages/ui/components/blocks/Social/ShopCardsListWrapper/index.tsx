@@ -8,15 +8,11 @@ import {
   SocialShopPostcardProps,
   useResponsive,
   PostCommentCardProps,
-} from "@UI";
-import { useModalDisclouser } from "@UI/../hooks";
+} from "ui";
+import { useModalDisclouser } from "hooks";
 
-import { newsfeedPosts } from "placeholder";
-import { PostViewPopup } from "@UI/components/blocks/Popups";
-import { AspectRatio } from "@partials";
-import { mapArray } from "@UI/../utils/src";
-import { PostCardInfo } from "types";
-import { Carousel } from "@blocks/Carousel";
+import { PostViewPopup } from "../../../../components/blocks/Popups";
+import { Carousel } from "../../../blocks/Carousel";
 import { useRouter } from "next/router";
 
 export interface ShopCardsListWrapperProps
@@ -44,7 +40,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
       {items.map((item, i) => {
         const { isOpen, handleClose, handleOpen } = useModalDisclouser();
         const images = item.postInfo.product.presentations.map(
-          (image) => image.src
+          (image) => image.src,
         );
 
         return (

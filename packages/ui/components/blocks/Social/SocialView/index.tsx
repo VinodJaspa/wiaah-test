@@ -27,8 +27,6 @@ import {
   ServiceCardsListWrapper,
   SocialServicePostCardPlaceholder,
 } from "ui";
-
-import { AttachmentType, ContentHostType } from "@features/API";
 import { useGetSocialProfile } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
 import { CashbackType, PresentationType, TabType } from "types";
@@ -40,12 +38,7 @@ import {
   ProfileVisibility,
   ServiceType,
   StoreType,
-} from "@features/API";
-import { SocialActionsView } from "../SocialActionsView";
-import { AffiliationView } from "../AffiliationView";
-import { FaRegNewspaper, FaNewspaper } from "react-icons/fa6";
-import { RiShoppingBagLine, RiShoppingBagFill } from "react-icons/ri";
-import { HiMiniUsers, HiOutlineUsers } from "react-icons/hi2";
+} from "../../../features/API";
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import {
@@ -53,10 +46,8 @@ import {
   ShoppingCartIcon,
   AffiliationIconOutline,
   AffiliationIcon,
-} from "@UI";
-import { NumberShortner } from "@UI/../utils/src";
-import classNames from "classnames";
-import { useResponsive } from "@UI/../hooks";
+} from "ui";
+import { useResponsive } from "hooks";
 import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
 import { ActionsCardListWrapper } from "../ActionsCardsListWrapper";
 
@@ -175,7 +166,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
                       <p className="font-bold capitalize w-fit text-4xl">
                         {t(
                           "this_profile_is_private",
-                          "this profile is private"
+                          "this profile is private",
                         )}
                       </p>
                     </div>

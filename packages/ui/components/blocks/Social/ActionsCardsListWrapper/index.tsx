@@ -1,9 +1,12 @@
-import { Carousel } from "@blocks/Carousel";
-import { PostViewPopup } from "@blocks/Popups";
-import { VideoThumbnail, VideoThumbnailProps } from "@blocks/VideoThumbnail";
-import { ListWrapper } from "@blocks/Wrappers";
-import { useModalDisclouser } from "@UI/../hooks";
-import { NumberShortner, useBreakpointValue } from "@UI/../utils/src";
+import { Carousel } from "../../../blocks/Carousel";
+import { PostViewPopup } from "../../../blocks/Popups";
+import {
+  VideoThumbnail,
+  VideoThumbnailProps,
+} from "../../../blocks/VideoThumbnail";
+import { ListWrapper } from "../../../blocks/Wrappers";
+import { useModalDisclouser } from "hooks";
+import { NumberShortner, useBreakpointValue } from "utils";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 

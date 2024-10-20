@@ -9,8 +9,8 @@ import {
   HStack,
   ProductNestedCategory,
   FormatCategoryFilters,
-} from "@UI";
-import { Category as ProductCategory } from "@features/API";
+} from "ui";
+import { Category as ProductCategory } from "../../../features/API";
 import { Country, City } from "country-state-city";
 import { useTranslation } from "react-i18next";
 
@@ -86,9 +86,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
           open={open}
           name={t("Category", "Category")}
         >
-          {_categories?.map((cate, i) => (
-            <>{renderNested(cate)}</>
-          ))}
+          {_categories?.map((cate, i) => <>{renderNested(cate)}</>)}
           <Spacer />
         </DropdownPanel>
       )}

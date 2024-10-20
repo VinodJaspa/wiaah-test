@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar, Button, VStack } from "@UI";
-import { useStory } from "@src/Hooks";
+import { Avatar, Button, VStack } from "ui";
+import { useStory } from "../../../../src/Hooks";
 export interface SocialPostHeaderProps {
   thumbnail: string;
   name: string;

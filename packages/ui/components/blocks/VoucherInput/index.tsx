@@ -8,7 +8,7 @@ import {
   InputGroup,
   InputLeftElement,
   DiscountTicketIcon,
-} from "@UI";
+} from "ui";
 import { useTranslation } from "react-i18next";
 
 const VoucherSchema = object().shape({
@@ -35,7 +35,7 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
       (rej) => {
         setErrorMsg({ error: true, msg: rej.message });
         return false;
-      }
+      },
     );
   }
 

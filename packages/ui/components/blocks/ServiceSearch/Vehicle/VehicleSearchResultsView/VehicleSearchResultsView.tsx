@@ -1,4 +1,4 @@
-import { ServiceType } from "@features/API";
+import { ServiceType } from "../../../../features/API";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -22,18 +22,18 @@ export const VehicleSearchResultsView: React.FC = () => {
   const { getLocationFilterQuery } = useSearchFilters();
   return (
     <div className="flex gap-4 flex-col md:flex-row px-2">
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
-        <Formik initialValues={{}} onSubmit={() => {}}>
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+        <Formik initialValues={{}} onSubmit={() => { }}>
           {({ setFieldValue, values }) => {
             return (
               <Form className="flex gap-4 flex-col">
                 <div className="flex flex-col gap-2">
                   <DateAndTimeInput
-                    onDateChange={() => {}}
+                    onDateChange={() => { }}
                     dateLabel={t("Pick-up Date")}
                   />
                   <DateAndTimeInput
-                    onDateChange={() => {}}
+                    onDateChange={() => { }}
                     dateLabel={t("Return Date")}
                   />
                 </div>

@@ -1,8 +1,8 @@
 import { Flex, Button, Text } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "@UI";
-import { SubscribersUserInfo } from "@UI/../types/src";
+import { Avatar } from "ui";
+import { SubscribersUserInfo } from "types";
 
 export interface SubscriberCardProps extends SubscribersUserInfo {
   onFollow?: () => any;

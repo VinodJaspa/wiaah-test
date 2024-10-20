@@ -8,25 +8,25 @@ import {
   PersonFillIcon,
   StarIcon,
   Image,
-} from "@UI/components/partials";
+} from "../../../../components/partials";
 import {
   useSocialPostSettingsPopup,
   useSocialPostMentionsModal,
-} from "@UI/components/features";
-import { useLikeContent } from "@features/Social";
-import { UserProfileDisplay } from "@UI/components/blocks/DataDisplay";
+} from "../../../../components/features";
+import { useLikeContent } from "../../../features/Social";
+import { UserProfileDisplay } from "../../../../components/blocks/DataDisplay";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { useTypedReactPubsub } from "@libs";
+import { useTypedReactPubsub } from "../../../../libs";
 import {
   Attachment,
   ContentHostType,
   NewsfeedPost,
   Profile,
-} from "@features/API";
-import { NumberShortner, setTestid } from "@UI/../utils/src";
-import { useSocialControls } from "@blocks/Layout";
+} from "../../../features/API";
+import { NumberShortner, setTestid } from "utils";
+import { useSocialControls } from "../../../blocks/Layout";
 import { PostCardInfo } from "types";
 
 export interface PostCardProps {
@@ -136,7 +136,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                           ...post.profileInfo,
                           profileId: post.profileInfo!.id,
                           tag,
-                        })
+                        }),
                       )
                     }
                     key={i}
@@ -161,7 +161,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 {NumberShortner(
                   post.postInfo.numberOfComments +
                   post.postInfo.numberOfLikes +
-                  post.postInfo.numberOfShares
+                  post.postInfo.numberOfShares,
                 )}
               </p>
             </div>
@@ -186,7 +186,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               <span
                 onClick={() =>
                   shareLink(
-                    getUrl((r) => r.visitNewsfeedPostPage(post.postInfo))
+                    getUrl((r) => r.visitNewsfeedPostPage(post.postInfo)),
                   )
                 }
                 className="cursor-pointer w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"

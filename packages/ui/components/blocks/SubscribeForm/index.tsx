@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import { FaAt, FaUserAlt } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { Button, Input, InputGroup, InputLeftElement } from "@partials";
-import { useSubscribeToNewsletterMutation } from "@features/Newsletter";
+import { Button, Input, InputGroup, InputLeftElement } from "../../partials";
+import { useSubscribeToNewsletterMutation } from "../../features/Newsletter";
 import { useForm } from "utils";
 import * as yup from "yup";
 
-export interface SubscribeFormProps {}
+export interface SubscribeFormProps { }
 
 export const SubscribeForm: FC<SubscribeFormProps> = () => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ export const SubscribeForm: FC<SubscribeFormProps> = () => {
         email: yup.string().email().required(),
         name: yup.string().min(3).required(),
       }),
-    }
+    },
   );
   const { mutate } = useSubscribeToNewsletterMutation();
 

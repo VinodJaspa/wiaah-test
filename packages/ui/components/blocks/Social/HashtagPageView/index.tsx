@@ -24,8 +24,8 @@ import {
   SocialServicePostCardPlaceholder,
   SocialActionsCardPlaceholder,
 } from "ui/placeholder";
-import { AffiliationCardsListWrapper } from "@blocks/Social/AffiliationPostListWrapper";
-import { ActionsCardListWrapper } from "@blocks/Social/ActionsCardsListWrapper";
+import { AffiliationCardsListWrapper } from "../../../blocks/Social/AffiliationPostListWrapper";
+import { ActionsCardListWrapper } from "../../../blocks/Social/ActionsCardsListWrapper";
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 
 export const HashtagPageView: React.FC = () => {

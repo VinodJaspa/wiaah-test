@@ -7,18 +7,18 @@ import {
   Input,
   HStack,
   Button,
-} from "@partials";
+} from "../../../partials";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-import { useTypedReactPubsub } from "@libs";
-import { useGetMyStoryViewers } from "@features/Social";
-import { usePaginationControls } from "@blocks/Navigating";
+import { useTypedReactPubsub } from "../../../../libs";
+import { useGetMyStoryViewers } from "../../../features/Social";
+import { usePaginationControls } from "../../../blocks/Navigating";
 
-export interface StorySeenByPopupProps {}
+export interface StorySeenByPopupProps { }
 
 export const useStorySeenByPopup = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
-    (k) => k.openSocialStoryViewersModal
+    (k) => k.openSocialStoryViewersModal,
   );
 
   React.useEffect(() => removeListner, []);
@@ -78,7 +78,9 @@ export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = () => {
           <Input
             data-testid="SearchUserInput"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setSearch(e.target.value)
+            }
             flushed
             placeholder={t("search")}
           />
@@ -88,23 +90,23 @@ export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = () => {
           >
             {users
               ? users.map((user, i) => (
-                  <HStack
-                    data-testid="UserCard"
-                    className="text-lg justify-between"
-                    key={i}
-                  >
-                    <HStack>
-                      <Avatar
-                        name={user.viewer?.profile?.username}
-                        photoSrc={user.viewer?.profile?.photo}
-                      />
-                      <p data-testid="Username">
-                        {user.viewer?.profile?.username}
-                      </p>
-                    </HStack>
-                    <Button>{t("Follow")}</Button>
+                <HStack
+                  data-testid="UserCard"
+                  className="text-lg justify-between"
+                  key={i}
+                >
+                  <HStack>
+                    <Avatar
+                      name={user.viewer?.profile?.username}
+                      photoSrc={user.viewer?.profile?.photo}
+                    />
+                    <p data-testid="Username">
+                      {user.viewer?.profile?.username}
+                    </p>
                   </HStack>
-                ))
+                  <Button>{t("Follow")}</Button>
+                </HStack>
+              ))
               : null}
           </div>
         </div>

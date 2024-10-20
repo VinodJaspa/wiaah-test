@@ -1,16 +1,19 @@
 import React from "react";
 import {
+  useCartSummary,
+  useMutateShoppingCart,
+  useProductDescTabs,
+} from "../../../src/Hooks";
+import { CartSummaryItem } from "types";
+import { useTranslation } from "react-i18next";
+import {
+  Button,
   FlexStack,
-  WishListIcon,
   Rate,
   Select,
   SelectOption,
-  HStack,
-} from "@UI";
-import { useMutateShoppingCart, Button } from "@UI";
-import { useCartSummary, useProductDescTabs } from "@src/Hooks";
-import { CartSummaryItem } from "types";
-import { useTranslation } from "react-i18next";
+  WishListIcon,
+} from "../../partials";
 
 export interface ProductProps {
   id: string;
@@ -61,7 +64,7 @@ export const ProductViewRight: React.FC<ProductProps> = ({
     // add to wishList
   }
 
-  function sendToReviews() {}
+  function sendToReviews() { }
   return (
     <div className="flex h-full flex-col items-start justify-between">
       <div className="flex w-full flex-col">
@@ -106,9 +109,9 @@ export const ProductViewRight: React.FC<ProductProps> = ({
           <div className="text-red-500">
             {shippedToYourCountry
               ? t(
-                  "Shipping_available_in_your_country",
-                  "Shipping available in your country"
-                )
+                "Shipping_available_in_your_country",
+                "Shipping available in your country",
+              )
               : ""}
           </div>
         </div>

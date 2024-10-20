@@ -1,13 +1,18 @@
 import React from "react";
 import { SocialStoryViewer } from "../SocialStoryViewer";
-import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
-import { useTypedReactPubsub } from "@libs";
-import { useGetPrevStory, useGetUserStory } from "@features/Social";
-import { Profile, Story } from "@features/API";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  useProgressBars,
+} from "../../../partials";
+import { useTypedReactPubsub } from "../../../../libs";
+import { useGetPrevStory, useGetUserStory } from "../../../features/Social";
+import { Profile, Story } from "../../../features/API";
 
 export const useStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
-    (k) => k.openSocialStoryModal
+    (k) => k.openSocialStoryModal,
   );
   const { update } = useProgressBars();
 
@@ -56,7 +61,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
     refetch();
   }
 
-  function handlePrev() {}
+  function handlePrev() { }
 
   return (
     <>

@@ -23,8 +23,8 @@ import {
   ServicesOutlineIcon,
   AffiliationIconOutline,
   useSocialControls,
-} from "@UI";
-import { runIfFn } from "@UI/../utils/src";
+} from "ui";
+import { runIfFn } from "utils";
 
 export interface SellerSideBarProps extends HtmlDivProps {
   onLinkClick?: (link: NavigationLinkType) => any;
@@ -88,7 +88,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
           activeIcon: <AffiliationIcon />,
           url: "affiliation",
         },
-      ]
+      ],
   );
 
   const { user } = useUserData();
