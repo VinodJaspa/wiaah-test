@@ -5,7 +5,7 @@ import { waitFor } from "utils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 
-const Wrapper: React.FC = ({ children }) => {
+const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient();
   return (
     <RecoilRoot>
@@ -31,8 +31,12 @@ describe("useAddProductTrackingLink hook test", () => {
         return <div data-isLoading={isLoading} />;
       })(),
       {
-        wrappingComponent: () => <Wrapper />,
-      }
+        wrappingComponent: () => (
+          <Wrapper>
+            <></>
+          </Wrapper>
+        ),
+      },
     );
   });
 
