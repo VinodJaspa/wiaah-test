@@ -21,7 +21,7 @@
       "@sections/*": ["../ui/components/sections/*"],
       "@features/*": ["../ui/components/features/*"],
       "@sections": ["../ui/components/sections"],
-      "@features": ["../uicomponents/features"],
+      "@features": ["../ui/components/features"],
       "@libs": ["../ui/libs"],
       "@const": ["../ui/constants"],
       "@src/*": ["../ui/src/*"],
