@@ -6,4 +6,6 @@ export default {
   component: AccountNewsLetterSettingsSection,
 } as ComponentMeta<typeof AccountNewsLetterSettingsSection>;
 
-export const Default = () => <AccountNewsLetterSettingsSection />;
+export const Default = () => (
+  <AccountNewsLetterSettingsSection userId="fake-3" />
+);
