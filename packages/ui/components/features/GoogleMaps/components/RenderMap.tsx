@@ -3,7 +3,6 @@ import { LocationCords } from "api";
 import React, { CSSProperties } from "react";
 import { useRecoilValue } from "recoil";
 import { PreferedCurrencyState } from "state";
-import { AspectRatio } from "@UI";
 import {
   onMapLocation,
   useGetFocusedMapItemId,
