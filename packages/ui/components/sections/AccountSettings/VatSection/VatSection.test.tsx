@@ -16,7 +16,7 @@ describe("Vat Section testing", () => {
   let mockUpdateShop = jest.fn();
 
   beforeAll(() => {
-    wrapper = shallow(<VatSection />);
+    wrapper = shallow(<VatSection accountId="fake-3" />);
   });
 
   it("should call the updateShop mutation with the right data", async () => {
