@@ -1,13 +1,14 @@
 import React from "react";
-import { mount, ReactWrapper } from "enzyme";
+import { mount } from "enzyme";
 import { AccountSettingsSection } from "@UI";
-import * as apiHooks from "@UI/Hooks/ApiHooks";
-import { UpdateAccouuntSettingsDto } from "types";
+import * as apiHooks from "@UI/src/Hooks/ApiHooks";
+import { AccountType, UpdateAccouuntSettingsDto } from "types";
 import { getMountedComponent, getTestId, waitFor } from "utils";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useAccountType } from "hooks";
 
+// Define selectors for input fields
 const selectors: Record<keyof UpdateAccouuntSettingsDto, string> = {
   address: "Address1Input",
   address2: "Address2Input",
@@ -29,7 +30,7 @@ const selectors: Record<keyof UpdateAccouuntSettingsDto, string> = {
   shopType: "ShopTypeInput",
 };
 
-describe("AccountSettingsSection functionallity tests", () => {
+describe("AccountSettingsSection functionality tests", () => {
   it("inputs should display the right values", async () => {
     const mockData: UpdateAccouuntSettingsDto = {
       address: "test address1",
@@ -51,89 +52,88 @@ describe("AccountSettingsSection functionallity tests", () => {
       shopType: "shop 1",
       profilePhoto: undefined,
     };
-    jest.mock(
-      "ui",
-      (): Partial<typeof apiHooks> => ({
-        useGetAccountSettingsQuery: jest.fn().mockReturnValue({
-          data: mockData,
-        }),
-      })
-    );
-    const Initilize: React.FC = ({ children }) => {
+
+    const Initilize: React.FC<{ children: React.ReactNode }> = ({
+      children,
+    }) => {
       const { setAccountType } = useAccountType();
-      setAccountType("buyer");
+      setAccountType(AccountType.Buyer);
       return <>{children}</>;
     };
+
     const wrapper = mount(
       <RecoilRoot>
         <QueryClientProvider client={new QueryClient()}>
           <Initilize>
-            <AccountSettingsSection />;
+            <AccountSettingsSection accountId="fake-2" />
           </Initilize>
         </QueryClientProvider>
-      </RecoilRoot>
+      </RecoilRoot>,
     );
+
     await waitFor(() => {
       wrapper.update();
       const address1 = getMountedComponent(
         wrapper,
-        getTestId(selectors.address)
+        getTestId(selectors.address),
       );
       const address2 = getMountedComponent(
         wrapper,
-        getTestId(selectors.address2)
+        getTestId(selectors.address2),
       );
       const bio = getMountedComponent(wrapper, getTestId(selectors.bio));
       const brandDescription = getMountedComponent(
         wrapper,
-        getTestId(selectors.brandDescription)
+        getTestId(selectors.brandDescription),
       );
       const city = getMountedComponent(wrapper, getTestId(selectors.city));
       const clientType = getMountedComponent(
         wrapper,
-        getTestId(selectors.clientType)
+        getTestId(selectors.clientType),
       );
       const country = getMountedComponent(
         wrapper,
-        getTestId(selectors.country)
+        getTestId(selectors.country),
       );
       const countryCode = getMountedComponent(
         wrapper,
-        getTestId(selectors.countryCode)
+        getTestId(selectors.countryCode),
       );
       const email = getMountedComponent(wrapper, getTestId(selectors.email));
       const firstName = getMountedComponent(
         wrapper,
-        getTestId(selectors.firstName)
+        getTestId(selectors.firstName),
       );
       const language = getMountedComponent(
         wrapper,
-        getTestId(selectors.language)
+        getTestId(selectors.language),
       );
       const lastName = getMountedComponent(
         wrapper,
-        getTestId(selectors.lastName)
+        getTestId(selectors.lastName),
       );
       const phoneNumber = getMountedComponent(
         wrapper,
-        getTestId(selectors.phoneNumber)
+        getTestId(selectors.phoneNumber),
       );
       const photoSrc = getMountedComponent(
         wrapper,
-        getTestId(selectors.photoSrc)
+        getTestId(selectors.photoSrc),
       );
       const profilePhoto = getMountedComponent(
         wrapper,
-        getTestId(selectors.profilePhoto)
+        getTestId(selectors.profilePhoto),
       );
       const storeFor = getMountedComponent(
         wrapper,
-        getTestId(selectors.storeFor)
+        getTestId(selectors.storeFor),
       );
       const username = getMountedComponent(
         wrapper,
-        getTestId(selectors.username)
+        getTestId(selectors.username),
       );
+
+      // Assertions for the input field lengths
       expect(address1.length).toBe(1);
       expect(address2.length).toBe(1);
       expect(bio.length).toBe(1);
