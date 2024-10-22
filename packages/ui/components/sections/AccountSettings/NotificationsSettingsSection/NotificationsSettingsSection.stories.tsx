@@ -1,8 +1,5 @@
 import { NotificationsSettingsSection } from "@UI";
-import {
-  StorybookImplemntationLayout,
-  storybookSectionsTitle,
-} from "utils";
+import { StorybookImplemntationLayout, storybookSectionsTitle } from "utils";
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
 
@@ -12,5 +9,5 @@ export default {
 } as ComponentMeta<typeof NotificationsSettingsSection>;
 
 export const Default = () => {
-  return <NotificationsSettingsSection />;
+  return <NotificationsSettingsSection accountId="fake-3" />;
 };
