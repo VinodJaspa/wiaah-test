@@ -17,9 +17,9 @@ Default.args = {
 Default.decorators = [
   (Story, { args }) => (
     <div>
-      <Button text="Element" />
+      <Button children="Element" />
       <Story args={args} />
-      <Button text="Element">test</Button>
+      <Button>test</Button>
     </div>
   ),
 ];
