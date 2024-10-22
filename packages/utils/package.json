@@ -9,7 +9,9 @@
   },
   "devDependencies": {
     "config": "*",
-    "tsconfig": "*",
+    "tsconfig": "*"
+  },
+  "dependencies": {
     "types": "*"
   },
   "shadow": {
