@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["node_modules/@types"],
+    "target": "es5" /* Target ECMAScript version, 'ES5' ensures compatibility across most environments. */,
+    "module": "esnext" /* Use 'ESNext' modules for modern JavaScript. */,
+    "moduleResolution": "node" /* Use Node.js-style module resolution. */,
+    "lib": ["dom", "esnext"] /* Include DOM and modern JavaScript features. */,
+    "declaration": true /* Generate .d.ts files for TypeScript definitions. */,
+    "declarationMap": true /* Generate sourcemaps for .d.ts files. */,
+    "sourceMap": true /* Generate sourcemaps for debugging. */,
+    "outDir": "dist" /* Output directory for compiled files. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "jsx": "react" /* Enable JSX support for React. */,
+    "esModuleInterop": true /* Enable compatibility between ES Modules and CommonJS. */,
+    "skipLibCheck": true /* Skip checking of library declaration files for faster compilation. */,
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "test-package": ["../test-package/src"]
+    }
+  },
+  "include": ["src/**/*"] /* Include all TypeScript files in the src folder. */,
+  "exclude": [
+    "node_modules",
+    "dist"
+  ] /* Exclude unnecessary folders like node_modules and the output dist folder. */
+}
