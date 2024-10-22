@@ -6,14 +6,13 @@ import React, {
   ReactElement,
 } from "react";
 import { Field } from "formik";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
-import { useOutsideClick } from "../../Hooks";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
-import { InputErrorMsg } from "types/sharedTypes/misc/ErrorMsg";
+import { CSSValueUnit, InputErrorMsg } from "@UI/../types/src";
+import { useOutsideClick } from "@src/Hooks";
 export interface oldInputProps
   extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
+  InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
   > {
   icon?: ReactElement;
   iconAlign?: "start" | "end";
@@ -85,9 +84,8 @@ export const oldInput: FC<oldInputProps> = ({
           >
             <div
               style={ContainerStyles}
-              className={`flex w-full items-center gap-2 rounded border-2 ${
-                focus ? "border-black" : "border-gray-400"
-              } border-opacity-50  transition-all`}
+              className={`flex w-full items-center gap-2 rounded border-2 ${focus ? "border-black" : "border-gray-400"
+                } border-opacity-50  transition-all`}
             >
               {icon && (
                 <label
@@ -108,9 +106,8 @@ export const oldInput: FC<oldInputProps> = ({
             {message && (
               <span
                 id={`${props.id || ""}InputMessage`}
-                className={`${
-                  message.error ? "text-red-500" : "text-green-500"
-                } w-full px-1 text-sm `}
+                className={`${message.error ? "text-red-500" : "text-green-500"
+                  } w-full px-1 text-sm `}
               >
                 {message.msg}
               </span>
@@ -139,9 +136,8 @@ export const oldInput: FC<oldInputProps> = ({
           >
             <div
               style={ContainerStyles}
-              className={`flex w-full items-center gap-2 rounded border-2 ${
-                focus ? "border-black" : "border-gray-400"
-              } border-opacity-50  transition-all`}
+              className={`flex w-full items-center gap-2 rounded border-2 ${focus ? "border-black" : "border-gray-400"
+                } border-opacity-50  transition-all`}
             >
               {icon && (
                 <label
@@ -163,9 +159,8 @@ export const oldInput: FC<oldInputProps> = ({
             </div>
             {message && (
               <span
-                className={`${
-                  message.error ? "text-red-500" : "text-green-500"
-                } w-full px-1 text-sm `}
+                className={`${message.error ? "text-red-500" : "text-green-500"
+                  } w-full px-1 text-sm `}
               >
                 {message.msg}
               </span>
