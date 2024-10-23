@@ -3,12 +3,10 @@ import { CallbackAfter } from "utils";
 
 export const useResponsive = (cb?: () => any) => {
   const [screenWidth, setScreenWidth] = React.useState<number>(0);
+  const [isBrowser, setIsBrowser] = React.useState<boolean>(false);
 
   function HandleScreenSize() {
-    if (
-      typeof window !== "undefined" &&
-      typeof window.innerWidth !== "undefined"
-    ) {
+    if (isBrowser && typeof window !== "undefined") {
       cb && cb();
       setScreenWidth(window.innerWidth);
       console.log("responsive", window.innerWidth);
@@ -19,23 +17,29 @@ export const useResponsive = (cb?: () => any) => {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
+      setIsBrowser(true); // Check if running in browser
       window.addEventListener("resize", HandleScreenSize);
       window.addEventListener("load", HandleScreenSize);
-      window.addEventListener("DOMContentLoaded", HandleScreenSize);
     }
+
     if (typeof document !== "undefined") {
       document.addEventListener("DOMContentLoaded", HandleScreenSize);
       document.addEventListener("load", HandleScreenSize);
     }
-    HandleScreenSize();
+
+    HandleScreenSize(); // Initial call
+
     return () => {
-      document.removeEventListener("DOMContentLoaded", HandleScreenSize);
-      document.removeEventListener("load", HandleScreenSize);
-      window.removeEventListener("resize", HandleScreenSize);
-      window.removeEventListener("load", HandleScreenSize);
-      window.removeEventListener("DOMContentLoaded", HandleScreenSize);
+      if (typeof document !== "undefined") {
+        document.removeEventListener("DOMContentLoaded", HandleScreenSize);
+        document.removeEventListener("load", HandleScreenSize);
+      }
+      if (isBrowser) {
+        window.removeEventListener("resize", HandleScreenSize);
+        window.removeEventListener("load", HandleScreenSize);
+      }
     };
-  }, [typeof window, typeof document]);
+  }, [isBrowser]);
 
   const isMobile = screenWidth < 640;
   const isTablet = screenWidth < 1024;
