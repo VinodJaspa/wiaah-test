@@ -10,7 +10,7 @@ import {
   AspectRatio,
   Image,
 } from "ui";
-import { getRandomImage } from "ui";
+import { getRandomImage } from "@UI/../placeholder";
 
 // Placeholder data
 export const GetUserSavedCollectionPlaceholder: GetUserSavesCollectionsQuery["getUserSaveCollections"] =
