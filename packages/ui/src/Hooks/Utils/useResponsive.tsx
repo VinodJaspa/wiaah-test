@@ -1,40 +1,53 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import { CallbackAfter } from "utils";
 
-export const useResponsive = (
-  mobileBreakpoint: number = 768,
-  tabletBreakpoint: number = 1024,
-) => {
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
-  const [isMobile, setIsMobile] = useState<boolean>(
-    window.innerWidth <= mobileBreakpoint,
-  );
-  const [isTablet, setIsTablet] = useState<boolean>(
-    window.innerWidth > mobileBreakpoint &&
-    window.innerWidth <= tabletBreakpoint,
-  );
+export const useResponsive = (cb?: () => any) => {
+  const [screenWidth, setScreenWidth] = React.useState<number>(0);
+  const [isBrowser, setIsBrowser] = React.useState<boolean>(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setScreenWidth(width);
-      setIsMobile(width <= mobileBreakpoint);
-      setIsTablet(width > mobileBreakpoint && width <= tabletBreakpoint);
-    };
+  function HandleScreenSize() {
+    if (isBrowser && typeof window !== "undefined") {
+      cb && cb();
+      setScreenWidth(window.innerWidth);
+      console.log("responsive", window.innerWidth);
+    } else {
+      CallbackAfter(100, HandleScreenSize);
+    }
+  }
 
-    window.addEventListener("resize", handleResize);
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsBrowser(true); // Check if running in browser
+      window.addEventListener("resize", HandleScreenSize);
+      window.addEventListener("load", HandleScreenSize);
+    }
 
-    // Initial check on mount
-    handleResize();
+    if (typeof document !== "undefined") {
+      document.addEventListener("DOMContentLoaded", HandleScreenSize);
+      document.addEventListener("load", HandleScreenSize);
+    }
 
-    // Clean up the event listener on component unmount
+    HandleScreenSize(); // Initial call
+
     return () => {
-      window.removeEventListener("resize", handleResize);
+      if (typeof document !== "undefined") {
+        document.removeEventListener("DOMContentLoaded", HandleScreenSize);
+        document.removeEventListener("load", HandleScreenSize);
+      }
+      if (isBrowser) {
+        window.removeEventListener("resize", HandleScreenSize);
+        window.removeEventListener("load", HandleScreenSize);
+      }
     };
-  }, [mobileBreakpoint, tabletBreakpoint]);
+  }, [isBrowser]);
+
+  const isMobile = screenWidth < 640;
+  const isTablet = screenWidth < 1024;
 
   return {
     isMobile,
     isTablet,
+    isPortable: isMobile || isTablet,
     screenWidth,
   };
 };
