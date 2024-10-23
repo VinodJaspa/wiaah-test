@@ -21,7 +21,7 @@ export const useRouting = () => {
 
   function visit(
     fn: (routes: RoutesType) => RoutesType,
-    presistQuery: boolean = true
+    presistQuery: boolean = true,
   ) {
     const routes = fn({ ...MainRoutes });
     const route =
@@ -31,13 +31,12 @@ export const useRouting = () => {
     const query = { ...presistedQuery, ...routes.query };
     const queries = Object.entries(query);
     const combinedQueries = queries.reduce((acc, curr, idx) => {
-      return `${acc}${idx >= queries.length ? "" : idx === 0 ? "" : "&"}${
-        curr[0]
-      }=${curr[1]}`;
+      return `${acc}${idx >= queries.length ? "" : idx === 0 ? "" : "&"}${curr[0]
+        }=${curr[1]}`;
     }, "");
 
     VisitRoute(
-      `${route}${combinedQueries.length > 0 ? "?" : ""}${combinedQueries}`
+      `${route}${combinedQueries.length > 0 ? "?" : ""}${combinedQueries}`,
     );
   }
 
