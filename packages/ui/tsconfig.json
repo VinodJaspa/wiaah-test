@@ -10,7 +10,6 @@
     "module": "CommonJS",
     "target": "ES5",
     "jsx": "react-jsx",
-    "rootDir": "../..",
     "strict": false,
     "baseUrl": ".",
     "types": ["jest"],
@@ -27,7 +26,8 @@
       "@src/*": ["src/*"],
       "@UI": ["."],
       "@UI/*": ["./*"],
-      "placeholder": ["../placeholder"]
+      "placeholder": ["../placeholder"],
+      "utils": ["../utils/"]
     }
   }
 }
