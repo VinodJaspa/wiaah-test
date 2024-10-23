@@ -5,7 +5,7 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "script": "tsc"
+    "build": "tsc"
   },
   "devDependencies": {
     "config": "*",
