@@ -5,8 +5,7 @@ export function useReactPubsub<TKeys>(getKey: (keys: TKeys) => string) {
   const { publish, subscribe, unSubscribe, keys } =
     React.useContext(ReactPubsubContext);
 
-  //@ts-ignore
-  const key = getKey(keys);
+  const key = getKey(keys as TKeys);
 
   function emit(props?: object) {
     publish(key, props);
