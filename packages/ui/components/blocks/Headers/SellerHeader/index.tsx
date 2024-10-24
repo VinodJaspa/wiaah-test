@@ -39,6 +39,8 @@ import { runIfFn, setTestid } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
+import { IoIosStarOutline } from "react-icons/io";
+import { FaThList } from "react-icons/fa";
 
 export interface HeaderNavLink {
   link: {
@@ -258,7 +260,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       icon: <IoSettingsOutline />,
     },
     {
-      icon: <StarOutlineIcon />,
+      icon: <IoIosStarOutline />,
       link: {
         href: "/saved",
         name: {
@@ -286,7 +288,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         href: getRouting((r) => r.visitServiceManagement()),
         props: setTestid("header_settings_service"),
       },
-      icon: <ServicesIcon />,
+      icon: <FaThList />,
     },
     {
       link: {
