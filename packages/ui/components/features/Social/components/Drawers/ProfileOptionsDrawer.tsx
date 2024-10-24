@@ -17,6 +17,7 @@ import { CgShoppingBag } from "react-icons/cg";
 import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
 import { mapArray, runIfFn } from "@UI/../utils/src";
+import { FaThList } from "react-icons/fa";
 
 export const ProfileOptionsDrawer = () => {
   const { visit } = useRouting();
@@ -124,7 +125,7 @@ export const ProfileOptionsDrawer = () => {
         },
         href: getRouting((r) => r.visitServiceManagement()),
       },
-      icon: <ServicesIcon />,
+      icon: <FaThList />,
     },
     {
       link: {
