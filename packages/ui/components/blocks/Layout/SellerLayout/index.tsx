@@ -35,6 +35,8 @@ import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
 import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
 import { GetRecentStoriesInput } from "@features/API";
+import { IoIosStarOutline } from "react-icons/io";
+import { FaThList } from "react-icons/fa";
 
 export const usersProfilesPlaceHolder = [
   {
@@ -382,7 +384,8 @@ const SellerNavLinks: HeaderNavLink[] = [
     icon: <IoSettingsOutline />,
   },
   {
-    icon: <StarOutlineIcon />,
+    icon: <IoIosStarOutline />,
+
     link: {
       href: "/saved",
       name: {
@@ -409,7 +412,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitServiceManagement()),
     },
-    icon: <ServicesIcon />,
+    icon: <FaThList />,
   },
   {
     link: {
