@@ -1,5 +1,28 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "types": ["jest"],
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "outDir": "./dist",
+    "strict": false,
+    "module": "CommonJS",
+    "paths": {
+      "@partials": ["../ui/components/partials"],
+      "@blocks": ["../ui/components/blocks"],
+      "@blocks/*": ["../ui/components/blocks/*"],
+      "@sections/*": ["../ui/components/sections/*"],
+      "@features/*": ["../ui/components/features/*"],
+      "@sections": ["../ui/components/sections"],
+      "@features": ["../ui/components/features"],
+      "@libs": ["../ui/libs"],
+      "@const": ["../ui/constants"],
+      "@src/*": ["../ui/src/*"],
+      "@UI": ["../ui"],
+      "@UI/*": ["../ui/*"],
+      "placeholder": ["../placeholder"]
+    }
+  }
 }
