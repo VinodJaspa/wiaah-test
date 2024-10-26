@@ -44,8 +44,6 @@ export const Tabs: React.FC<TabsProps> = React.memo(
       TrackableComponent[]
     >([]);
 
-    console.log("TEST RENDERING");
-
     React.useEffect(() => {
       if (currentTab !== currentTabIdx) {
         setCurrentTab(currentTabIdx);
@@ -103,7 +101,7 @@ export const Tabs: React.FC<TabsProps> = React.memo(
         setTitles,
         addTab,
         addTitle,
-      ]
+      ],
     );
 
     return (
@@ -120,7 +118,7 @@ export const Tabs: React.FC<TabsProps> = React.memo(
         })}
       </TabsContext.Provider>
     );
-  }
+  },
 );
 
 export interface TabsHeaderProps extends HtmlDivProps { }
@@ -205,7 +203,7 @@ export const TabList: React.FC<TabListProps> = ({
             currentTabIdx,
             tabsComponents,
             ...rest,
-          }
+          },
         )
         : null}
       {children}
