@@ -29,10 +29,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useGraphqlRequestErrorCode(
-    (v) => v.unAuthorized,
+    (v) => v.Unauthorized,
     () => {
       handleAutoRedirect("login", router);
-    }
+    },
   );
 
   return (
