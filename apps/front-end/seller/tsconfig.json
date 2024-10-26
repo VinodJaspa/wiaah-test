@@ -12,8 +12,8 @@
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
     "jsx": "preserve",
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@components": ["components"],
@@ -28,7 +28,8 @@
       "@features/*": ["../../../packages/ui/components/features/*"],
       "@features": ["../../../packages/ui/components/features"],
       "@UI": ["../../../packages/ui"],
-      "@UI/*": ["../../../packages/ui/*"]
+      "@UI/*": ["../../../packages/ui/*"],
+      "@shared-hooks": ["../../../packages/shared-hooks/src"] // Adjust this path to point to the actual directory of the hooks.
     }
   }
 }
