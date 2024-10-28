@@ -30,7 +30,7 @@ export const PlacesView: React.FC = () => {
     async () => placesPH,
     {
       enabled: !!place,
-    }
+    },
   );
 
   return (
@@ -38,13 +38,14 @@ export const PlacesView: React.FC = () => {
       <HStack className="px-4 justify-between w-full">
         {!isMobile && (
           <div className="w-40">
-            <ShowMapButton onClick={() => {}} />
+            <ShowMapButton onClick={() => { }} />
           </div>
         )}
         <HStack>
           <Image
             className="rounded-xl h-12 w-auto object-cover"
             src="/place-1.jpg"
+            alt="place"
           />
           <Icon fontSize={"xx-large"} as={AiOutlineShop} />
           <div className="flex flex-col items-center">
