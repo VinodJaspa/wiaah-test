@@ -1211,32 +1211,90 @@ export const AffiliationPostSuggestionsPlaceholder: SocialAffiliationCardProps["
     },
   ];
 
-export const PersonalizeAction: GetSuggestedActionsQuery["getMyRecommendedAction"] =
-{
-  comments: 12,
-  reactionNum: 144,
-  shares: 43,
-  src: "/action.mp4",
-  id: "Teasdasd",
-  musicId: "Kafir - Nile",
-  tags: [{ userId: "" }, { userId: "" }, { userId: "" }],
-  effect: {
-    name: "Clarendon",
-  },
-  profile: {
-    id: "",
-    ownerId: "",
-    photo: getRandomImage(),
-    username: "fake userName",
-    verified: true,
-  },
-  location: {
-    postalCode: 643253,
-    city: "city",
-    country: "country",
-    address: "address",
-    state: "state",
-    lat: 54,
-    lon: 42,
-  },
-};
+export const PersonalizeActions: GetSuggestedActionsQuery["getMyRecommendedAction"][] =
+  [
+    {
+      comments: 12,
+      reactionNum: 144,
+      shares: 43,
+      src: "/action.mp4",
+      id: "Teasdasd123",
+      musicId: "Kafir - Nile",
+      tags: [{ userId: "user1" }, { userId: "user2" }, { userId: "user3" }],
+      effect: {
+        name: "Clarendon",
+      },
+      profile: {
+        id: "profile123",
+        ownerId: "owner123",
+        photo: getRandomImage(), // Assuming getRandomImage() is defined elsewhere
+        username: "fakeUserName1",
+        verified: true,
+      },
+      location: {
+        postalCode: 643253,
+        city: "Sample City",
+        country: "Sample Country",
+        address: "123 Sample St",
+        state: "Sample State",
+        lat: 54.123456,
+        lon: 42.654321,
+      },
+    },
+    {
+      comments: 25,
+      reactionNum: 200,
+      shares: 60,
+      src: "/action.mp4",
+      id: "Teasdasd456",
+      musicId: "Kafir - Nile",
+      tags: [{ userId: "user4" }, { userId: "user5" }, { userId: "user6" }],
+      effect: {
+        name: "Gingham",
+      },
+      profile: {
+        id: "profile456",
+        ownerId: "owner456",
+        photo: getRandomImage(),
+        username: "fakeUserName2",
+        verified: false,
+      },
+      location: {
+        postalCode: 643254,
+        city: "Another City",
+        country: "Another Country",
+        address: "456 Another Ave",
+        state: "Another State",
+        lat: 54.654321,
+        lon: 42.123456,
+      },
+    },
+    {
+      comments: 5,
+      reactionNum: 75,
+      shares: 20,
+      src: "/action.mp4",
+      id: "Teasdasd789",
+      musicId: "Kafir - Nile",
+      tags: [{ userId: "user7" }, { userId: "user8" }, { userId: "user9" }],
+      effect: {
+        name: "Lark",
+      },
+      profile: {
+        id: "profile789",
+        ownerId: "owner789",
+        photo: getRandomImage(),
+        username: "fakeUserName3",
+        verified: true,
+      },
+      location: {
+        postalCode: 643255,
+        city: "Yet Another City",
+        country: "Yet Another Country",
+        address: "789 Yet Another St",
+        state: "Yet Another State",
+        lat: 54.789012,
+        lon: 42.987654,
+      },
+    },
+  ];
