@@ -5,13 +5,11 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import {
   FloatingContainer,
   PostCardsListWrapper,
-  PostViewPopup,
   RecentStories,
   SellerLayout,
   SellerPostInput,
   StoryDisplayProps,
   AddNewPostModal,
-  PostAttachmentsViewer,
   AddNewStoryModal,
   CommentReportModal,
   VStack,
@@ -21,7 +19,6 @@ import { newsfeedPosts } from "ui";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
-import { PostCardInfo } from "types";
 
 const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   {
@@ -94,8 +91,6 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
 ];
 
 const Buyer: NextPage = () => {
-  const router = useRouter();
-  const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (
