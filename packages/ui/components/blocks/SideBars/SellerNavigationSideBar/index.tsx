@@ -110,7 +110,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
         >
           {!isMobile && (
             <Image
-              src="/wiaah_logo.png"
+              src="/Logo.svg"
               className="cursor-pointer w-full pl-8 pr-16"
             />
           )}
