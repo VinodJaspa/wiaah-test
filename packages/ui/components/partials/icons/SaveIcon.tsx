@@ -64,9 +64,9 @@ export const SaveFlagFIllIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
       {...props}
-      width="0.54em"
+      width="0.65em"
       height="1em"
-      viewBox="0 0 12 18"
+      viewBox="0 0 13 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
