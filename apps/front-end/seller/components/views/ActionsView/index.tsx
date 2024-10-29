@@ -16,6 +16,7 @@ import {
   MusicNoteFillIcon,
   PersonGroupIcon,
   SaveFlagOutlineIcon,
+  SaveFlagFIllIcon,
   ShareIcon,
   ShoppingCartOutlinePlusIcon,
   Slider,
@@ -24,11 +25,11 @@ import {
   Verified,
   VerticalDotsIcon,
   VolumeIcon,
-  useGetPeronalizedActionsQuery,
   useLikeContent,
   useSocialControls,
+  HeartOutlineIcon,
 } from "ui";
-import { PersonalizeAction } from "placeholder";
+import { PersonalizeActions } from "placeholder";
 import { NumberShortner, mapArray } from "utils";
 
 export const ActionsView: React.FC = () => {
@@ -36,21 +37,28 @@ export const ActionsView: React.FC = () => {
   const { shareLink, showContentComments } = useSocialControls();
   const { mutate } = useLikeContent();
   const { getUrl } = useRouting();
-  // use this only if the database is ready if not use placeholder data
-  // const { data } = useGetPeronalizedActionsQuery();
   const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
     useSocialControls();
 
-  const memoizedCreateRemixAction = useCallback(createRemixAction, [,]); // If createRemixAction is expensive
-
+  const memoizedCreateRemixAction = useCallback(createRemixAction, []);
   const memoizedShowContentTaggedProfiles = useCallback(
     showContentTaggedProfiles,
-    []
-  ); // If showContentTaggedProfiles is expensive
-  const memoizedOpenMusicDetails = useCallback(openMusicDetails, []); // If openMusicDetails is expensive
+    [],
+  );
+  const memoizedOpenMusicDetails = useCallback(openMusicDetails, []);
+  const [isSaved, setIsSaved] = useState(false);
 
-  const [data] = useState(PersonalizeAction);
-  const actions = [data];
+  // Toggle the saved state
+  const toggleSave = () => setIsSaved(!isSaved);
+  const [isLiked, setIsLiked] = useState(false);
+
+  // Toggle the liked state and update count accordingly
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+  };
+
+  const [data] = useState(PersonalizeActions);
+  const actions = data;
 
   const hasProduct = true;
   const product = useMemo(() => {
@@ -66,6 +74,88 @@ export const ActionsView: React.FC = () => {
     return null;
   }, [hasProduct]);
 
+  // State to manage the currently playing video
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoContainersRef = useRef<(HTMLDivElement | null)[]>([]); // Ref for video containers
+
+  const handlePlayPause = (index: number) => {
+    const currentVideo = videoRefs.current[index];
+    if (currentVideo) {
+      if (playingIndex === index) {
+        // Pause the currently playing video
+        currentVideo.pause();
+        setPlayingIndex(null);
+      } else {
+        // Play the selected video
+        if (playingIndex !== null && videoRefs.current[playingIndex]) {
+          videoRefs.current[playingIndex].pause(); // Pause the previous video
+        }
+        currentVideo.play();
+        setPlayingIndex(index);
+        videoContainersRef.current[index]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }
+  };
+  // Effect to handle video end event
+  React.useEffect(() => {
+    const videoElements = videoRefs.current;
+
+    const handleEnded = (index: number) => {
+      const nextIndex = (index + 1) % actions.length; // Loop back to first video
+      handlePlayPause(nextIndex); // Play the next video
+    };
+
+    // Add ended event listeners
+    videoElements.forEach((videoElement, index) => {
+      if (videoElement) {
+        const onEnded = () => handleEnded(index);
+        videoElement.addEventListener("ended", onEnded);
+
+        // Clean up event listener on component unmount
+        return () => {
+          videoElement.removeEventListener("ended", onEnded);
+        };
+      }
+    });
+
+    // Clean up effect
+    return () => {
+      videoElements.forEach((videoElement, index) => {
+        if (videoElement) {
+          videoElement.removeEventListener("ended", () => handleEnded(index));
+        }
+      });
+    };
+  }, [actions, playingIndex]); // Re-run if actions change
+  // Scroll event handling to detect up or down scroll and play the corresponding video
+  React.useEffect(() => {
+    const handleScroll = (event: WheelEvent) => {
+      const delta = event.deltaY;
+
+      // Determine the next index based on scroll direction (down for next video, up for previous video)
+      const nextIndex =
+        delta > 0
+          ? playingIndex !== null
+            ? (playingIndex + 1) % actions.length
+            : 0
+          : playingIndex !== null
+            ? (playingIndex - 1 + actions.length) % actions.length
+            : actions.length - 1;
+
+      handlePlayPause(nextIndex);
+    };
+
+    // Add event listener to handle scroll
+    window.addEventListener("wheel", handleScroll);
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, [playingIndex, actions]);
+
   return (
     <div suppressHydrationWarning={true} className="h-screen w-fit ">
       {/* actions View */}
@@ -73,9 +163,14 @@ export const ActionsView: React.FC = () => {
         {mapArray(actions, (v, i) => (
           <div
             key={i}
+            ref={(el) => (videoContainersRef.current[i] = el)} // Assign video container ref
             className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative"
           >
-            <video src={v.src} className="w-full h-full object-cover" />
+            <video
+              ref={(el) => (videoRefs.current[i] = el)} // Assign video ref
+              src={v.src}
+              className="w-full h-full object-cover"
+            />
             <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
               <div className="flex flex-col w-full gap-6">
                 <div className="flex justify-between">
@@ -101,58 +196,63 @@ export const ActionsView: React.FC = () => {
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>
-              <div className="flex flex-col  w-full gap-4">
-                {/* TODO: interations */}
+              <div className="flex flex-col w-full gap-4">
                 <div className="flex flex-col gap-4 w-fit text-3xl self-end">
-                  <VStack>
-                    <SaveFlagOutlineIcon />
-                    <p className="font-medium text-xs">{t("Save")}</p>
+                  <VStack onClick={toggleSave} className="cursor-pointer">
+                    {/* Toggle between outline and filled icon based on saved state */}
+                    {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
+                    {/* Update text based on saved state */}
+                    <p className="font-medium text-xs">
+                      {isSaved ? t("Saved") : t("Save")}
+                    </p>
                   </VStack>
                   <button
                     onClick={() =>
                       mutate(
                         {
                           args: {
-                            contentId: data.id,
+                            contentId: v.id,
                             contentType: ContentHostType.Action,
                           },
                         },
                         {
                           onSuccess(data, variables, context) { },
-                        }
+                        },
                       )
                     }
                   >
-                    <VStack>
-                      <HeartFillIcon />
+                    <VStack onClick={toggleLike} className="cursor-pointer">
+                      {/* Toggle between filled and outline heart based on liked state */}
+                      {isLiked ? <HeartFillIcon /> : <HeartOutlineIcon />}
+                      {/* Display the updated like count */}
                       <p className="font-medium text-xs">
-                        {NumberShortner(data.reactionNum)}
+                        {NumberShortner(v.reactionNum)}
                       </p>
                     </VStack>
                   </button>
                   <button
                     onClick={() =>
-                      showContentComments(ContentHostType.Action, data.id)
+                      showContentComments(ContentHostType.Action, v.id)
                     }
                   >
                     <VStack>
                       <CommentIcon />
                       <p className="font-medium text-xs">
-                        {NumberShortner(data.comments)}
+                        {NumberShortner(v.comments)}
                       </p>
                     </VStack>
                   </button>
                   <button
                     onClick={() =>
                       shareLink(
-                        getUrl((routes) => routes.visitSocialPost(data.id))
+                        getUrl((routes) => routes.visitSocialPost(v.id)),
                       )
                     }
                   >
                     <VStack>
                       <ShareIcon />
                       <p className="text-xs font-medium">
-                        {NumberShortner(data.shares)}
+                        {NumberShortner(v.shares)}
                       </p>
                     </VStack>
                   </button>
@@ -203,7 +303,7 @@ export const ActionsView: React.FC = () => {
                           onClick={() =>
                             memoizedShowContentTaggedProfiles(
                               v.id,
-                              ContentHostType.Action
+                              ContentHostType.Action,
                             )
                           }
                           className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2"
@@ -222,6 +322,14 @@ export const ActionsView: React.FC = () => {
                     </EllipsisText>
                   </div>
                 </div>
+                {/* Add the Play/Pause Button */}
+                <Button
+                  onClick={() => handlePlayPause(i)} // Call the play/pause function
+                  className="self-end"
+                  colorScheme={playingIndex === i ? "success" : "primary"}
+                >
+                  {playingIndex === i ? "Pause" : "Play"} {/* Toggle label */}
+                </Button>
               </div>
             </div>
           </div>
