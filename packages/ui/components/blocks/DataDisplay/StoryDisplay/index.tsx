@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { HtmlDivProps } from "types";
 import { FloatingContainer, FloatingContainerProps } from "@UI";
-import { AspectRatio, Image } from "@UI";
+import { AspectRatio, Image, SocialStoryModal, SocialStoryType } from "@UI";
 
 export type StoryUserData = {
   id: string;
@@ -10,7 +10,8 @@ export type StoryUserData = {
 };
 
 export interface StoryDisplayProps {
-  storyUserData: StoryUserData;
+  story?: SocialStoryType;
+  storyUserData?: StoryUserData;
   seen?: boolean;
   floatingIcon?: FloatingContainerProps;
   innerProps?: HtmlDivProps;
@@ -18,13 +19,21 @@ export interface StoryDisplayProps {
 }
 
 export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
+  story,
   storyUserData,
   seen,
   floatingIcon,
   onProfileClick,
 }) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const onStoryClick = () => {
+    setShowModal(true);
+  };
   return (
     <FloatingContainer className="w-full" {...floatingIcon}>
+      {story && showModal && (
+        <SocialStoryModal storyData={story} profileId="4" />
+      )}
       <div
         className={`${seen ? "p-[0rem]" : "p-[0.20rem]"
           } rounded-full bg-gradient-to-b from-primary to-blue-400`}
@@ -37,7 +46,7 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
           >
             <Image
               className="w-full h-full rounded-full object-cover"
-              src={storyUserData.userPhotoSrc}
+              src={story ? story.publisher.photo : storyUserData.userPhotoSrc}
             />
           </AspectRatio>
         </div>
