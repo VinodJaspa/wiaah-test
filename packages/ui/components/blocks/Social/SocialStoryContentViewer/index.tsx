@@ -5,13 +5,12 @@ import {
   useTimer,
   CurrentStoryProgressState,
   PostAttachment,
-  ActionPostStory,
   AffiliationPostStory,
   NewsFeedPostStory,
   ShopPostStory,
   ServicePostStory,
 } from "ui";
-import { StoryType, AttachmentType } from "../../../features/API";
+import { StoryType } from "@features/API";
 
 export interface SocialStoryContentViewerProps {
   type: StoryType;
