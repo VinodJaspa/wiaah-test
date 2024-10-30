@@ -4,7 +4,7 @@ import {
   SocialStoriesCarousel,
   SocialStoriesCarouselProps,
 } from "../SocialStoriesCarousel";
-import { ProgressBars } from "../../../partials";
+import { ProgressBars } from "@partials";
 
 export interface SocialStoryViewerProps extends SocialStoriesCarouselProps {
   user: { name: string; thumbnail: string; id: string };
