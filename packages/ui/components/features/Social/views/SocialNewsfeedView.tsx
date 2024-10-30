@@ -13,7 +13,7 @@ import { useResponsive } from "@src/index";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 import { useRouting } from "routing";
 import { PostType } from "@features/API";
-import { getRandomImage } from "placeholder";
+import { getRandomImage, socialStoriesPlaceholder } from "placeholder";
 import { newsfeedPosts } from "@UI/placeholder";
 
 const FAKE_RECENT_STORIES_DATA = [
@@ -90,18 +90,7 @@ const SocialNewsfeedView: React.FC = () => {
             </div>
           </AspectRatio>
         </div>
-        <RecentStories
-          onStoryClick={(props) => open(props.storyUserData.id)}
-          stories={
-            recentStories?.map((v) => ({
-              storyUserData: {
-                id: v.user?.id || "3",
-                name: v.user?.profile?.username || "name",
-                userPhotoSrc: v.user?.profile?.photo || getRandomImage(),
-              },
-            })) || []
-          }
-        />
+        <RecentStories stories={socialStoriesPlaceholder} />
       </div>
       <div className="w-full">
         {/* Mobile view */}
