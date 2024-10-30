@@ -1,12 +1,14 @@
 import React from "react";
+import { SocialStoryData } from "types";
 import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
-import { Slider, Spinner } from "../../../partials";
-import { Story } from "../../../features/API";
+import { Slider, Spinner } from "@partials";
+import { Story } from "@features/API";
+import { SocialStoryType } from "../SocialStoriesModal";
 
 export interface SocialStoriesCarouselProps {
-  story: Story;
-  next: (story: Story) => any;
-  prev: (story: Story) => any;
+  story: SocialStoryType;
+  next: (story: SocialStoryType) => any;
+  prev: (story: SocialStoryType) => any;
 }
 
 export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
