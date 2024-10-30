@@ -9,6 +9,7 @@ import {
 import { useTypedReactPubsub } from "../../../../libs";
 import { useGetPrevStory, useGetUserStory } from "../../../features/Social";
 import { Profile, Story } from "../../../features/API";
+import { Maybe } from "graphql/jsutils/Maybe";
 
 export const useStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
@@ -34,14 +35,37 @@ export const useStoryModal = () => {
   };
 };
 
+export type SocialStoryType = Pick<
+  Story,
+  | "id"
+  | "content"
+  | "createdAt"
+  | "publisherId"
+  | "reactionsNum"
+  | "type"
+  | "updatedAt"
+  | "viewsCount"
+  | "views"
+  | "attachements"
+> & {
+  publisher?: Maybe<
+    { __typename?: "Profile" } & Pick<
+      Profile,
+      "photo" | "username" | "visibility" | "id"
+    >
+  >;
+};
+
 export interface SocialStoriesModalProps {
+  storyData?: SocialStoryType;
   profileId: string;
 }
 
 export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
   profileId,
+  storyData,
 }) => {
-  const [story, setStory] = React.useState<Story>();
+  const [story, setStory] = React.useState<SocialStoryType>(storyData);
   const { close } = useStoryModal();
 
   const { refetch } = useGetUserStory(profileId, {
