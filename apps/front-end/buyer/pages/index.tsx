@@ -19,6 +19,7 @@ import { newsfeedPosts } from "ui";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
+import { socialStoriesPlaceholder } from "placeholder";
 
 const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   {
@@ -105,7 +106,6 @@ const Buyer: NextPage = () => {
         <VStack className="w-full gap-4">
           <FloatingContainer
             className="w-full"
-            // px="1rem"
             items={
               isMobile
                 ? []
@@ -133,7 +133,7 @@ const Buyer: NextPage = () => {
           >
             <RecentStories
               className="justify-start mx-auto"
-              stories={RecentStoriesPlaceHolder}
+              stories={socialStoriesPlaceholder}
             />
           </FloatingContainer>
           {!isMobile && (
