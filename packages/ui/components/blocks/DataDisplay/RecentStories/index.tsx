@@ -2,18 +2,18 @@ import React from "react";
 import { HtmlDivProps } from "types";
 import { UserProfileDisplay, StoryDisplayProps } from "../StoryDisplay";
 import { useResponsive } from "hooks";
+import { SocialStoryType } from "@blocks/Social";
 export interface RecentStoriesProps extends HtmlDivProps {
-  stories: StoryDisplayProps[];
-  onStoryClick?: (story: StoryDisplayProps) => any;
+  stories: SocialStoryType[];
 }
 
 export const RecentStories: React.FC<RecentStoriesProps> = ({
   stories,
-  onStoryClick,
   className,
   ...props
 }) => {
   const { isMobile } = useResponsive();
+
   return (
     <div
       {...props}
@@ -22,10 +22,7 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
     >
       {stories.map((story, i) => (
         <div className="w-[4.75rem]" key={i}>
-          <UserProfileDisplay
-            onProfileClick={() => onStoryClick && onStoryClick(story)}
-            {...story}
-          />
+          <UserProfileDisplay story={story} />
         </div>
       ))}
     </div>
