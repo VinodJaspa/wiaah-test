@@ -30,8 +30,14 @@ import {
   GetSuggestedActionsQuery,
   SocialAffiliationCardProps,
   SocialShopPostcardProps,
+  SocialStoryType,
 } from "ui";
 import { getRandomName } from "utils";
+import {
+  ProfileReachedGender,
+  ProfileVisibility,
+  StoryType,
+} from "@features/API";
 const randomNum = (num: number) => num;
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
@@ -1298,3 +1304,63 @@ export const PersonalizeActions: GetSuggestedActionsQuery["getMyRecommendedActio
       },
     },
   ];
+
+export const socialStoriesPlaceholder: SocialStoryType[] = [
+  {
+    id: "1",
+    content: "This is a placeholder story content.",
+    createdAt: new Date().toISOString(),
+    publisherId: "user_123",
+    reactionsNum: 5,
+    type: StoryType.Post,
+    updatedAt: new Date().toISOString(),
+    viewsCount: 100,
+    views: [
+      {
+        createdAt: new Date().toISOString(),
+        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
+        id: "view_1",
+        storyId: "story_123",
+        viewerId: "viewer_456",
+      },
+    ],
+    //@ts-ignore
+    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
+    publisher: {
+      __typename: "Profile",
+      photo: "https://via.placeholder.com/150",
+      username: "user123",
+      visibility: ProfileVisibility.Public,
+      id: "user_123",
+    },
+  },
+  {
+    id: "2",
+    content: "This is a placeholder story content.",
+    createdAt: new Date().toISOString(),
+    publisherId: "user_123",
+    reactionsNum: 5,
+    type: StoryType.Post,
+    updatedAt: new Date().toISOString(),
+    viewsCount: 100,
+    views: [
+      {
+        createdAt: new Date().toISOString(),
+        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
+        id: "view_1",
+        storyId: "story_123",
+        viewerId: "viewer_456",
+      },
+    ],
+    //@ts-ignore
+    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
+    publisher: {
+      __typename: "Profile",
+      photo: "https://via.placeholder.com/150",
+      username: "user123",
+      visibility: ProfileVisibility.Public,
+      id: "user_123",
+    },
+  },
+  // Add more placeholder entries as needed
+];
