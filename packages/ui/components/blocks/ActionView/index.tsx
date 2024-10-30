@@ -132,11 +132,15 @@ export const ActionsView: React.FC = () => {
     };
   }, [actions, playingIndex]); // Re-run if actions change
   // Scroll event handling to detect up or down scroll and play the corresponding video
-  React.useEffect(() => {
-    const handleScroll = (event: WheelEvent) => {
-      const delta = event.deltaY;
+  const debouncedScrollHandler = useCallback(() => {
+    let lastCallTime = Date.now();
 
-      // Determine the next index based on scroll direction (down for next video, up for previous video)
+    return (event: WheelEvent) => {
+      const now = Date.now();
+      if (now - lastCallTime < 200) return;
+      lastCallTime = now;
+
+      const delta = event.deltaY;
       const nextIndex =
         delta > 0
           ? playingIndex !== null
@@ -148,13 +152,16 @@ export const ActionsView: React.FC = () => {
 
       handlePlayPause(nextIndex);
     };
+  }, [actions.length, handlePlayPause, playingIndex]);
 
-    // Add event listener to handle scroll
+  React.useEffect(() => {
+    const handleScroll = debouncedScrollHandler();
+
     window.addEventListener("wheel", handleScroll);
     return () => {
       window.removeEventListener("wheel", handleScroll);
     };
-  }, [playingIndex, actions]);
+  }, [debouncedScrollHandler]);
 
   return (
     <div suppressHydrationWarning={true} className="h-screen w-fit ">
@@ -164,7 +171,7 @@ export const ActionsView: React.FC = () => {
           <div
             key={i}
             ref={(el) => (videoContainersRef.current[i] = el)} // Assign video container ref
-            className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative"
+            className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative "
           >
             <video
               ref={(el) => (videoRefs.current[i] = el)} // Assign video ref
@@ -197,67 +204,6 @@ export const ActionsView: React.FC = () => {
                 </Button>
               </div>
               <div className="flex flex-col w-full gap-4">
-                <div className="flex flex-col gap-4 w-fit text-3xl self-end">
-                  <VStack onClick={toggleSave} className="cursor-pointer">
-                    {/* Toggle between outline and filled icon based on saved state */}
-                    {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
-                    {/* Update text based on saved state */}
-                    <p className="font-medium text-xs">
-                      {isSaved ? t("Saved") : t("Save")}
-                    </p>
-                  </VStack>
-                  <button
-                    onClick={() =>
-                      mutate(
-                        {
-                          args: {
-                            contentId: v.id,
-                            contentType: ContentHostType.Action,
-                          },
-                        },
-                        {
-                          onSuccess(data, variables, context) { },
-                        },
-                      )
-                    }
-                  >
-                    <VStack onClick={toggleLike} className="cursor-pointer">
-                      {/* Toggle between filled and outline heart based on liked state */}
-                      {isLiked ? <HeartFillIcon /> : <HeartOutlineIcon />}
-                      {/* Display the updated like count */}
-                      <p className="font-medium text-xs">
-                        {NumberShortner(v.reactionNum)}
-                      </p>
-                    </VStack>
-                  </button>
-                  <button
-                    onClick={() =>
-                      showContentComments(ContentHostType.Action, v.id)
-                    }
-                  >
-                    <VStack>
-                      <CommentIcon />
-                      <p className="font-medium text-xs">
-                        {NumberShortner(v.comments)}
-                      </p>
-                    </VStack>
-                  </button>
-                  <button
-                    onClick={() =>
-                      shareLink(
-                        getUrl((routes) => routes.visitSocialPost(v.id)),
-                      )
-                    }
-                  >
-                    <VStack>
-                      <ShareIcon />
-                      <p className="text-xs font-medium">
-                        {NumberShortner(v.shares)}
-                      </p>
-                    </VStack>
-                  </button>
-                </div>
-
                 <div className="flex flex-col gap-2">
                   <HStack className="flex-wrap gap-2">
                     {[
@@ -331,6 +277,64 @@ export const ActionsView: React.FC = () => {
                   {playingIndex === i ? "Pause" : "Play"} {/* Toggle label */}
                 </Button>
               </div>
+            </div>
+            <div className="  flex flex-col gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-4 -right-12">
+              <VStack onClick={toggleSave} className="cursor-pointer">
+                {/* Toggle between outline and filled icon based on saved state */}
+                {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
+                {/* Update text based on saved state */}
+                <p className="font-medium text-xs">
+                  {isSaved ? t("Saved") : t("Save")}
+                </p>
+              </VStack>
+              <button
+                onClick={() =>
+                  mutate(
+                    {
+                      args: {
+                        contentId: v.id,
+                        contentType: ContentHostType.Action,
+                      },
+                    },
+                    {
+                      onSuccess(data, variables, context) { },
+                    },
+                  )
+                }
+              >
+                <VStack onClick={toggleLike} className="cursor-pointer">
+                  {/* Toggle between filled and outline heart based on liked state */}
+                  {isLiked ? <HeartFillIcon /> : <HeartOutlineIcon />}
+                  {/* Display the updated like count */}
+                  <p className="font-medium text-xs">
+                    {NumberShortner(v.reactionNum)}
+                  </p>
+                </VStack>
+              </button>
+              <button
+                onClick={() =>
+                  showContentComments(ContentHostType.Action, v.id)
+                }
+              >
+                <VStack>
+                  <CommentIcon />
+                  <p className="font-medium text-xs">
+                    {NumberShortner(v.comments)}
+                  </p>
+                </VStack>
+              </button>
+              <button
+                onClick={() =>
+                  shareLink(getUrl((routes) => routes.visitSocialPost(v.id)))
+                }
+              >
+                <VStack>
+                  <ShareIcon />
+                  <p className="text-xs font-medium">
+                    {NumberShortner(v.shares)}
+                  </p>
+                </VStack>
+              </button>
             </div>
           </div>
         ))}
