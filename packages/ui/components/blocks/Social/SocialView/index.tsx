@@ -26,7 +26,9 @@ import {
   ServicesIcon,
   ServiceCardsListWrapper,
   SocialServicePostCardPlaceholder,
+  MoreOptionsPopup,
 } from "ui";
+import { HiDotsVertical } from "react-icons/hi";
 import { useGetSocialProfile } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
 import { CashbackType, PresentationType, TabType } from "types";
@@ -137,6 +139,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   ];
   return (
     <div className="w-full flex flex-col items-center justify-center relative">
+      <MoreOptionsPopup className="absolute z-20 top-4 right-4 text-white text-2xl" />
       <div className="absolute md:hidden visible top-[-420px] bg-[#3ad398]  h-[580px]  w-[1300px] rounded-b-full"></div>
       <div className="flex flex-col h-full md:w-9/12 w-11/12 justify-center ">
         <SpinnerFallback isLoading={false} isError={isError}>
