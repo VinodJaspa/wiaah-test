@@ -20,6 +20,7 @@ import {
   useGetUserShopType,
   ShoppingBagIcon,
   ShoppingCartIcon,
+  MoreOptionsPopup,
 } from "@UI";
 import { Container, TabsViewer } from "ui";
 import { NumberShortner } from "utils";
@@ -265,6 +266,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   <SlCalender className="mb-1" />
                   <p className="inline  md:hidden">Booking</p>
                 </Button>
+                <MoreOptionsPopup className="md:flex hidden text-3xl " />
               </div>
             )}
           </div>
