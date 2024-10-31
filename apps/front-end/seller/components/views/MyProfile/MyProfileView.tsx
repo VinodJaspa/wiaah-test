@@ -28,7 +28,6 @@ import {
 } from "ui";
 import { ProfilePlaceholder as profile } from "ui/placeholder";
 import { useBreakpointValue } from "utils";
-import { ActionsView } from "../ActionsView";
 import { SocialActionsView } from "../SocialActionsView";
 import { MyProfile } from "./MyProfile";
 
