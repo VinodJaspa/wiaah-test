@@ -24,7 +24,7 @@ const FAKE_RECENT_STORIES_DATA = [
       id: "user123",
       profile: {
         id: "profile123",
-        photo: getRandomImage(),
+        photo: "/shop-2.jpeg",
         profession: "Software Engineer",
         username: "tech_guru",
       },
@@ -37,7 +37,7 @@ const FAKE_RECENT_STORIES_DATA = [
       id: "user456",
       profile: {
         id: "profile456",
-        photo: getRandomImage(),
+        photo: "/shop-3.jpeg",
         profession: "Travel Blogger",
         username: "wanderlust_jane",
       },
@@ -50,7 +50,7 @@ const FAKE_RECENT_STORIES_DATA = [
       id: "user789",
       profile: {
         id: "profile789",
-        photo: getRandomImage(),
+        photo: "/shop-4.jpeg",
         profession: "Chef",
         username: "foodie_chef",
       },
@@ -83,13 +83,7 @@ const SocialNewsfeedView: React.FC = () => {
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
       <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
-        <div className="min-w-[4.75rem]">
-          <AspectRatio ratio={1}>
-            <div className="flex justify-center bg-gray-200 rounded-[20%] w-full h-full items-center">
-              <SquarePlusOutlineIcon className="text-icon text-lightBlack " />
-            </div>
-          </AspectRatio>
-        </div>
+        <div className="min-w-[4.75rem]"></div>
         <RecentStories stories={socialStoriesPlaceholder} />
       </div>
       <div className="w-full">
