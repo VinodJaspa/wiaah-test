@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
   if (id) {
     const queryClient = new QueryClient();
     await queryClient.prefetchQuery(["SocialProfile", { profileId: id }], () =>
-      getSocialProfileData(id)
+      getSocialProfileData(id),
     );
 
     return {
@@ -49,7 +49,7 @@ const Profile: NextPage<ProfilePageProps> = ({ profileId }) => {
   return (
     <>
       <Head>
-        <title>{"Buyer | profile"}</title>
+        <title>{"Seller | profile"}</title>
       </Head>
       <SellerLayout>
         <SocialView profileId={profileId} />
