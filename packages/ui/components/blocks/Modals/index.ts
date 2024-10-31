@@ -17,3 +17,4 @@ export * from "./AccountDeletionModal";
 export * from "./AskForReturnModal";
 export * from "./SpecialDaysOpenTimeModal";
 export * from "./CommentsModal";
+export * from "./MoreOptionsPopup";
