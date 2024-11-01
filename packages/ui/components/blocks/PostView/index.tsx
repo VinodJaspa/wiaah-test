@@ -1,16 +1,16 @@
-import { BookingLinkBanner } from "../../blocks/BookingLinkBanner";
+import { BookingLinkBanner } from "@blocks/BookingLinkBanner";
 import {
   CommentInput,
   PostCommentCard,
   PostCommentCardProps,
-} from "../../blocks/Social";
-import { useActionComments } from "../../../src/Hooks";
+} from "@blocks/Social";
+import { useActionComments } from "@src/Hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
-import { AttachmentType, ContentHostType } from "../../features/API";
-import { Divider } from "../../partials";
+import { AttachmentType, ContentHostType } from "@features/API";
+import { Divider } from "@partials";
 
 interface PostViewProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
