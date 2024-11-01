@@ -23,12 +23,14 @@ const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {
   // return acc.concat(LocalizationsPH);
 }, []);
 
-const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce(
-  (acc: any[]) => {
-    return acc.concat([]);
-  },
-  [],
-);
+const discoverPlacesPlaceHolder: string[] = [
+  "Paris",
+  "London",
+  "New York",
+  "Tokyo",
+  "Sydney",
+];
+
 const hashTagsPlaceholder: string[] = ["gaming", "art", "funny"];
 const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
   return [...acc, ...hashTagsPlaceholder];
@@ -45,30 +47,30 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   const { closeModal, isOpen } = useGeneralSearchModal();
 
   const tabs: TabType[] = [
-    {
-      name: "Recent",
-      component: (
-        <ListWrapper>
-          {RecentSearchItemsPH.map((item, i) => (
-            <RecentSearchItemSwticher key={i} itemData={item} />
-          ))}
-        </ListWrapper>
-      ),
-    },
+    // {
+    //   name: "Recent",
+    //   component: (
+    //     <ListWrapper>
+    //       {RecentSearchItemsPH.map((item, i) => (
+    //         <RecentSearchItemSwticher key={i} itemData={item} />
+    //       ))}
+    //     </ListWrapper>
+    //   ),
+    // },
     {
       name: t("users", "users"),
       component: (
-        <ListWrapper>
+        <div className="flex flex-col gap-2 justify-start w-full">
           {usersProfilesPlaceHolder.map((user, i) => (
             <UserProfile user={user} key={i} />
           ))}
-        </ListWrapper>
+        </div>
       ),
     },
     {
       name: t("places", "places"),
       component: (
-        <ListWrapper>
+        <div className="flex flex-col gap-2 justify-start w-full">
           {discoverPlacesPlaceHolder.map((place, i) => (
             <LocationButton
               iconProps={{ className: "text-primary" }}
@@ -76,30 +78,30 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
               key={i}
             />
           ))}
-        </ListWrapper>
+        </div>
       ),
     },
     {
       name: t("hashtags", "hashtags"),
       component: (
-        <ListWrapper props={{ style: { width: "full" } }}>
+        <div className="flex flex-col gap-2 justify-start w-full">
           {discoverHashtagsPlaceholder.map((tag, i) => (
             <HashTagSearchItem
               hashtagName={tag}
               hashtagViews={randomNum(50000000)}
             />
           ))}
-        </ListWrapper>
+        </div>
       ),
     },
     {
       name: t("localization", "Localization"),
       component: (
-        <ListWrapper props={{ style: { width: "full" } }}>
+        <div className="flex flex-col gap-2 justify-start w-full">
           {LocalizationsPH.map((city, i) => (
             <LocalizationSearchItem key={i} location={city} />
           ))}
-        </ListWrapper>
+        </div>
       ),
     },
   ];
@@ -107,10 +109,9 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   return (
     <Menu isLazy>
       <MenuButton>
-        {/*@ts-ignore*/}
         <div className="w-full">{children}</div>
       </MenuButton>
-      <MenuList origin="top" className="-right-1/2 p-2">
+      <MenuList origin="top" className="-right-1/2 p-2 w-[420px]">
         <h1 className="font-semibold text-xl">{t("search", "Search")}</h1>
         <div className="thinScroll max-h-[25rem] overflow-y-scroll">
           <TabsViewer tabs={tabs} />
