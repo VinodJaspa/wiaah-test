@@ -47,16 +47,16 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   const { closeModal, isOpen } = useGeneralSearchModal();
 
   const tabs: TabType[] = [
-    // {
-    //   name: "Recent",
-    //   component: (
-    //     <ListWrapper>
-    //       {RecentSearchItemsPH.map((item, i) => (
-    //         <RecentSearchItemSwticher key={i} itemData={item} />
-    //       ))}
-    //     </ListWrapper>
-    //   ),
-    // },
+    {
+      name: "Recent",
+      component: (
+        <div className="flex flex-col gap-2 justify-start w-full">
+          {RecentSearchItemsPH.map((item, i) => (
+            <RecentSearchItemSwticher key={i} itemData={item} />
+          ))}
+        </div>
+      ),
+    },
     {
       name: t("users", "users"),
       component: (
@@ -111,9 +111,9 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
       <MenuButton>
         <div className="w-full">{children}</div>
       </MenuButton>
-      <MenuList origin="top" className="-right-1/2 p-2 w-[420px]">
+      <MenuList origin="top" className="-right-1/2 p-2 w-[500px]">
         <h1 className="font-semibold text-xl">{t("search", "Search")}</h1>
-        <div className="thinScroll max-h-[25rem] overflow-y-scroll">
+        <div className="thinScroll max-h-[25rem] overflow-y-scroll ">
           <TabsViewer tabs={tabs} />
         </div>
       </MenuList>
