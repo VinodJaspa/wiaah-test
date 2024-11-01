@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { ShareWithPostIdState } from "@UI";
 
-export const useShareWithModal = () => {
+const useShareWithModal = () => {
   const [postId, setPostId] = useRecoilState(ShareWithPostIdState);
 
   function ShareWith(id: typeof postId) {
