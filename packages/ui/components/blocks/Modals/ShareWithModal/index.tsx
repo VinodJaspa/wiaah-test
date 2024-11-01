@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
 import { useReactPubsub } from "react-pubsub";
 import {
-  useShareWithModal,
   useGetShareWithFriends,
   SpinnerFallback,
   Modal,
@@ -26,31 +25,65 @@ interface Events {
   sharePostWithModal: () => void;
 }
 
-export const ShareWithModal: React.FC<ShareWithModalProps> = ({ }) => {
-  const { Listen } = useReactPubsub<Events>((keys) => "sharePostWithModal");
-  const [postId, setPostId] = React.useState<string>();
-  const { t } = useTranslation();
+export const useShareWithModal = () => {
+  const { Listen, emit, removeListner } = useReactPubsub(
+    (e) => "OpenShareWithModal",
+  );
 
-  const [messageValue, setMessageValue] = React.useState<string>("");
-  const [search, setSearch] = React.useState<string>("");
-  const { data, isLoading, isError } = useGetShareWithFriends(search);
+  function OpenModal(id: string) {
+    emit({ id });
+  }
+
+  function CloseModal() {
+    emit();
+  }
+
+  return {
+    emit,
+    Listen,
+    removeListner,
+    OpenModal,
+    CloseModal,
+  };
+};
+
+export const ShareWithModal: React.FC = () => {
+  const { Listen } = useShareWithModal();
+  const [postId, setPostId] = React.useState<string | undefined>();
+  const { t } = useTranslation();
+  const [messageValue, setMessageValue] = React.useState("");
+  const [search, setSearch] = React.useState("");
+
+  // Fetch data with the search key
+  const { data: _data, isLoading, isError } = useGetShareWithFriends(search);
+  const data = FAKE_DATA;
+
+  // State to store the filtered results
   const [filtered, setFiltered] = React.useState<typeof data>([]);
 
   const [shareWith, setShareWith] = React.useState<string[]>([]);
 
+  // Listen for modal opening with a post ID
   React.useEffect(() => {
     Listen((props) => {
       if ("id" in props && typeof props.id === "string") {
         setPostId(props.id);
       }
     });
-  }, []);
+  }, [Listen]);
+
+  // Update `filtered` whenever `data` or `search` changes
   React.useEffect(() => {
     if (data) {
-      setFiltered(data.filter(({ name }) => name.includes(search)));
+      setFiltered(
+        data.filter(({ name }) =>
+          name.toLowerCase().includes(search.toLowerCase()),
+        ),
+      );
     }
-  }, [search]);
+  }, [data, search]);
 
+  // Functions to add/remove users from share list
   function handleAddToShareList(userId: string) {
     setShareWith((state) => [...state, userId]);
   }
@@ -59,20 +92,13 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({ }) => {
   }
 
   return (
-    <Modal
-      isOpen={!!postId}
-      onClose={() => setPostId(undefined)}
-      onOpen={() => { }}
-    >
+    <Modal isOpen={!!postId} onClose={() => setPostId(undefined)}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader title="">
-          <p>{t("share_with", "Share with")}</p>
-
-          <ModalCloseButton>
-            <CloseIcon />
-          </ModalCloseButton>
-        </ModalHeader>
+        <p>{t("share_with", "Share with")}</p>
+        <ModalCloseButton>
+          <CloseIcon />
+        </ModalCloseButton>
         <div>
           <div className="flex flex-col gap-4">
             <Input
@@ -94,34 +120,53 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({ }) => {
             </InputGroup>
             <div className="thinScroll flex max-h-[20rem] overflow-scroll flex-col gap-4">
               <SpinnerFallback isLoading={isLoading} isError={isError}>
-                {filtered &&
-                  filtered.map((user, idx) => (
-                    <HStack key={user.id + idx}>
+                {filtered && filtered.length > 0 ? (
+                  filtered.map((user) => (
+                    <HStack key={user.id}>
                       <Checkbox
-                        onChange={(e) => {
+                        onChange={(e) =>
                           e.target.checked
                             ? handleAddToShareList(user.id)
-                            : handleRemoveFromShareList(user.id);
-                        }}
+                            : handleRemoveFromShareList(user.id)
+                        }
                         className="border-black"
                       />
                       <div className="w-12 h-12">
                         <img
                           className="bg-black object-contain w-full h-full rounded-lg"
                           src={user.photo}
+                          alt={user.name}
                         />
                       </div>
                       <p>{user.name}</p>
                     </HStack>
-                  ))}
+                  ))
+                ) : (
+                  <p>{t("no_results", "No results found")}</p>
+                )}
               </SpinnerFallback>
             </div>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button>{t("share", "Share")}</Button>
+          <Button
+            onClick={() => {
+              /* handle share logic */
+            }}
+          >
+            {t("share", "Share")}
+          </Button>
         </div>
       </ModalContent>
     </Modal>
   );
 };
+
+const FAKE_DATA = [
+  { id: "1", name: "wiaah", photo: "/wiaah_logo.png" },
+  { id: "2", name: "seller", photo: "/shop.jpeg" },
+  { id: "3", name: "buyer", photo: "/shop-2.jpeg" },
+  { id: "4", name: "wiaah", photo: "/wiaah_logo.png" },
+  { id: "5", name: "seller", photo: "/shop.jpeg" },
+  { id: "6", name: "buyer", photo: "/shop-2.jpeg" },
+];
