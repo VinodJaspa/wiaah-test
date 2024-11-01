@@ -2,12 +2,12 @@ import { ShareMotheds } from "types";
 import { useShareWithModal } from "@UI";
 
 export const useHandlePostSharing = () => {
-  const { ShareWith } = useShareWithModal();
+  const { OpenModal } = useShareWithModal();
 
   function handleShare(ShareMothed: ShareMotheds, postId: string) {
     switch (ShareMothed) {
       case "followers":
-        ShareWith(postId);
+        OpenModal(postId);
         break;
 
       default:
