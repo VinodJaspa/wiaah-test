@@ -1,33 +1,34 @@
 import React from "react";
 import {
-  CommentIcon,
-  HeartIcon,
-  ShareIcon,
-  HorizontalDotsIcon,
-  LocationIcon,
-  PersonFillIcon,
-  StarIcon,
-  Image,
-} from "../../../../components/partials";
-import {
-  useSocialPostSettingsPopup,
+  useLikeContent,
   useSocialPostMentionsModal,
-} from "../../../../components/features";
-import { useLikeContent } from "../../../features/Social";
-import { UserProfileDisplay } from "../../../../components/blocks/DataDisplay";
+  useSocialPostSettingsPopup,
+} from "@features/Social";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { useTypedReactPubsub } from "../../../../libs";
+import { useTypedReactPubsub } from "@libs";
 import {
   Attachment,
   ContentHostType,
   NewsfeedPost,
   Profile,
-} from "../../../features/API";
+} from "@features/API";
 import { NumberShortner, setTestid } from "utils";
-import { useSocialControls } from "../../../blocks/Layout";
+import { useSocialControls } from "@blocks/Layout";
 import { PostCardInfo } from "types";
+import {
+  CommentIcon,
+  HeartIcon,
+  HorizontalDotsIcon,
+  Image,
+  LocationIcon,
+  PersonFillIcon,
+  ShareIcon,
+  StarIcon,
+} from "@partials";
+import { UserProfileDisplay } from "@blocks/DataDisplay";
+import { useShareWithModal } from "@blocks/Modals";
 
 export interface PostCardProps {
   post: PostCardInfo;
@@ -51,6 +52,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { t } = useTranslation();
   const { mutate } = useLikeContent();
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
+  const { OpenModal: OpenShareWithModal } = useShareWithModal();
 
   function handleLike() {
     if (!post.profileInfo) return;
@@ -84,7 +86,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
       <div
         onClick={openPopup}
-        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
+        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between z-10"
       >
         <div className="flex flex-col w-full">
           <div className="flex flex-col gap-2">
@@ -98,7 +100,10 @@ export const PostCard: React.FC<PostCardProps> = ({
                       userPhotoSrc: post.profileInfo?.thumbnail || "",
                       id: post.profileInfo?.id || "",
                     }}
-                    onProfileClick={() => onProfileClick && onProfileClick()}
+                    onProfileClick={(e) => {
+                      e.stopPropagation;
+                      onProfileClick && onProfileClick();
+                    }}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -106,9 +111,12 @@ export const PostCard: React.FC<PostCardProps> = ({
                 </div>
               </div>
               <div className="flex items-end flex-col">
-                <div className="h-4 absolute right-2 top-2">
+                <div className="h-4 absolute right-2 top-2 z-30">
                   <HorizontalDotsIcon
-                    onClick={() => OpenModal(post.postInfo?.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      OpenModal(post.postInfo?.id);
+                    }}
                     className="text-2xl text-white fill-white cursor-pointer"
                   />
                 </div>
@@ -119,7 +127,10 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
             <div className="flex justify-between items-center">
               <div
-                onClick={() => onLocationClick && onLocationClick()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onLocationClick && onLocationClick();
+                }}
                 className="cursor-pointer flex gap-1 items-center"
               >
                 <LocationIcon className="text-white" />
@@ -168,12 +179,13 @@ export const PostCard: React.FC<PostCardProps> = ({
 
             <div className="flex flex-col items-center gap-2">
               <span
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation();
                   emit({
                     id: post.postInfo.id,
                     type: ContentHostType.PostNewsfeed,
-                  })
-                }
+                  });
+                }}
                 className="w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
                 <CommentIcon />
@@ -184,11 +196,10 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
             <div className="flex flex-col gap-2 items-center">
               <span
-                onClick={() =>
-                  shareLink(
-                    getUrl((r) => r.visitNewsfeedPostPage(post.postInfo)),
-                  )
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  OpenShareWithModal(post.postInfo.id);
+                }}
                 className="cursor-pointer w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
                 <ShareIcon />
@@ -201,12 +212,13 @@ export const PostCard: React.FC<PostCardProps> = ({
           <div className="flex md:gap-4 gap-1">
             <div className="flex gap-2 flex-col items-center">
               <span
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation();
                   openPostMentions({
                     postId: post.postInfo.id,
                     postType: "newsfeed-post",
-                  })
-                }
+                  });
+                }}
                 className="cursor-pointer w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
                 <PersonFillIcon />
