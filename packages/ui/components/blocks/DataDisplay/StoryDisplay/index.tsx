@@ -15,7 +15,7 @@ export interface StoryDisplayProps {
   seen?: boolean;
   floatingIcon?: FloatingContainerProps;
   innerProps?: HtmlDivProps;
-  onProfileClick?: () => any;
+  onProfileClick?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
@@ -30,7 +30,11 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
     setShowModal(true);
   };
   return (
-    <FloatingContainer className="w-full" {...floatingIcon}>
+    <FloatingContainer
+      className="w-full"
+      {...floatingIcon}
+      onClick={() => onProfileClick && onProfileClick()}
+    >
       {story && showModal && (
         <SocialStoryModal storyData={story} profileId="4" />
       )}
