@@ -457,7 +457,7 @@ const FAKE_STORIES = [
       profile: {
         __typename: "Profile",
         id: "profile1",
-        photo: "https://example.com/photo1.jpg",
+        photo: "/shop.jpeg",
         profession: "Developer",
         username: "user1",
       },
@@ -473,7 +473,7 @@ const FAKE_STORIES = [
       profile: {
         __typename: "Profile",
         id: "profile2",
-        photo: "https://example.com/photo2.jpg",
+        photo: "/shop.jpeg",
         profession: "Designer",
         username: "user2",
       },
@@ -489,7 +489,7 @@ const FAKE_STORIES = [
       profile: {
         __typename: "Profile",
         id: "profile3",
-        photo: "https://example.com/photo3.jpg",
+        photo: "/shop.jpeg",
         profession: "Product Manager",
         username: "user3",
       },
