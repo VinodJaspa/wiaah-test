@@ -62,7 +62,7 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
       component: (
         <div className="flex flex-col gap-2 justify-start w-full">
           {usersProfilesPlaceHolder.map((user, i) => (
-            <UserProfile user={user} key={i} />
+            <UserProfile className="w-full h-full" user={user} key={i} />
           ))}
         </div>
       ),
@@ -111,10 +111,14 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
       <MenuButton>
         <div className="w-full">{children}</div>
       </MenuButton>
-      <MenuList origin="top" className="-right-1/2 p-2 w-[500px]">
+      <MenuList origin="top" className="-right-1/2 p-2 w-[460px]">
         <h1 className="font-semibold text-xl">{t("search", "Search")}</h1>
         <div className="thinScroll max-h-[25rem] overflow-y-scroll ">
-          <TabsViewer tabs={tabs} />
+          <TabsViewer
+            headerClassName="md:gap-2 text-sm md:px-2"
+            tabs={tabs}
+            tabItemClassName="px-3"
+          />
         </div>
       </MenuList>
     </Menu>
