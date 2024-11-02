@@ -22,7 +22,7 @@ import {
   ServicePresentationType,
 } from "@features/API";
 import { getRandomImage } from "placeholder";
-import { AttachmentType } from "../../../features/API/gql/generated";
+import { AttachmentType } from "@features/API/gql/generated";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -113,15 +113,15 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
 
   return (
     <div
-      className="text-white w-full gap-4 rounded-lg max-h-full max-w-full flex flex-col bg-primary p-4"
+      className="text-white w-full gap-4 rounded-lg h-[460px] max-w-full flex flex-col bg-primary p-4"
       data-testid="socialAffiliationContainer"
       onClick={() => onCardClick && onCardClick(post.id)}
     >
-      <div className="w-full pb-4">
+      <div className="w-full h-full pb-4">
         <div className="flex text-lg justify-end w-full">
           <HiDotsHorizontal />
         </div>
-        <div className="flex justify-between h-full gap-2 flex-col">
+        <div className="flex h-full justify-between h-full gap-2 flex-col">
           <div>
             <div className="flex items-center w-full justify-between">
               <div className="flex items-center">
@@ -144,14 +144,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <p>{t("of commision by affiliating it")}</p>
             </div>
           </div>
-          <div
-            className="bg-black align-center relative"
-            style={{
-              height: detailsDimensions
-                ? `calc(100% - ${detailsDimensions.height}px)`
-                : "100%",
-            }}
-          >
+          <div className="bg-black align-center relative h-full">
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
               attachments={
