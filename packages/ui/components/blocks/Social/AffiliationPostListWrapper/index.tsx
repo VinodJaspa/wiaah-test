@@ -1,21 +1,18 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
-import {
-  PostCard,
-  PostCardProps,
-} from "../../../../components/blocks/Social/PostCard";
-import { PostViewPopup } from "../../../../components/blocks/Popups";
-import {
-  ListWrapper,
-  GridListOrganiser,
-  ListWrapperProps,
-} from "../../../../components/blocks/Wrappers";
 import { useModalDisclouser, useResponsive } from "hooks";
-import { AspectRatio } from "../../../partials";
+import { AspectRatio } from "@partials";
 import { mapArray } from "utils";
 import { PostCardInfo } from "types";
-import { Carousel } from "../../../blocks/Carousel";
+import { Carousel } from "@blocks/Carousel";
 import { useRouter } from "next/router";
+import {
+  GridListOrganiser,
+  ListWrapper,
+  ListWrapperProps,
+} from "@blocks/Wrappers";
+import { PostViewPopup } from "@blocks/Popups";
+import { PostCard } from "../PostCard";
 
 export interface AffiliationCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
