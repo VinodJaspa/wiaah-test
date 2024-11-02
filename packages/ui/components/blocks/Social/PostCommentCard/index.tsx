@@ -152,7 +152,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               </div>
             </HStack>
           )}
-          <div className="whitespace-nowrap font-[15px] flex  text-gray-500 justify-between w-full  ">
+          <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full  ">
             <div className="flex gap-4 items-center">
               <button className="text-sm font-extrabold text-[#20ECA7]">
                 Likes
@@ -162,7 +162,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               </button>
             </div>
 
-            <div className="flex gap-6 items-center text-[#8E8E8E] font-semibold">
+            <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
                 <FaRegHeart className="w-4 h-4" />
                 <div className="flex gap-1 items-center">
