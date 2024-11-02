@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { Image } from "ui";
-import { AttachmentType, StoryType } from "../../../features/API";
+import { AttachmentType, StoryType } from "@features/API";
 export interface PostAttachmentProps {
   src: string;
   type: AttachmentType | StoryType;
