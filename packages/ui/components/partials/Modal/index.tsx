@@ -2,6 +2,7 @@ import React from "react";
 import { HtmlDivProps } from "types";
 import { PassPropsToChild, CallbackAfter } from "utils";
 import { CloseIcon } from "../icons";
+import { cn } from "utils";
 
 interface ModalContextValues {
   isOpen: boolean;
@@ -115,12 +116,14 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       style={{
         zIndex: z,
       }}
-      className={`${className || ""} ${isOpen
-          ? "-translate-y-1/2 p-4 bg-black"
-          : "-translate-y-[calc(50% - 5rem)] hidden bg-transparent opacity-0 pointer-events-none"
-        } fixed top-1/2 left-1/2  z-[60] transition-all -translate-x-1/2`}
+      className={cn(
+        "fixed top-1/2 left-1/2 z-[60] transition-all -translate-x-1/2 p-4",
+        isOpen
+          ? "-translate-y-1/2 bg-white"
+          : "-translate-y-[calc(50% - 5rem)] hidden bg-transparent opacity-0 pointer-events-none",
+        className,
+      )}
     >
-      {/* @ts-ignore */}
       {show ? children : null}
     </div>
   );
@@ -140,8 +143,8 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
       style={{
         zIndex: z,
       }}
-      className={`${className || ""} ${isOpen ? "bg-opacity-30" : "bg-opacity-0 pointer-events-none"
-        } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black`}
+      className={`${className || ""} ${isOpen ? "bg-opacity-60" : "bg-opacity-0 pointer-events-none"
+        } fixed top-0 left-0 z-50 transition-all w-screen h-screen bg-black`}
     />
   );
 };
@@ -181,7 +184,6 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
       className={`${className || ""} flex items-center gap-2 justify-between`}
     >
       {centerTitle ? <div></div> : null}
-      {/* @ts-ignore */}
       <span>{title}</span>
       <ModalCloseButton>
         <CloseIcon className="text-2xl" />
