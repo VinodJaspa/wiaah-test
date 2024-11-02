@@ -95,11 +95,8 @@ export const ShareWithModal: React.FC = () => {
     <Modal isOpen={!!postId} onClose={() => setPostId(undefined)}>
       <ModalOverlay />
       <ModalContent>
-        <p>{t("share_with", "Share with")}</p>
-        <ModalCloseButton>
-          <CloseIcon />
-        </ModalCloseButton>
-        <div>
+        <p className="text-xl font-semibold">{t("share_with", "Share with")}</p>
+        <div className="w-[400px]">
           <div className="flex flex-col gap-4">
             <Input
               flushed
@@ -148,7 +145,7 @@ export const ShareWithModal: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end">
           <Button
             onClick={() => {
               /* handle share logic */
