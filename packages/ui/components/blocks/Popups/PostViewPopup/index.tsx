@@ -4,6 +4,7 @@ import { MdClose } from "react-icons/md";
 import {
   Modal,
   ModalContent,
+  ModalOverlay,
   ArrowUpIcon,
   ArrowDownIcon,
   CommentInput,
@@ -21,9 +22,6 @@ import { useActionComments } from "@src/Hooks";
 import { useRouting } from "routing";
 import { AttachmentType, ContentHostType } from "@features/API";
 import { GoLink } from "react-icons/go";
-
-import { BiBookmark } from "react-icons/bi";
-import { BookingLinkBanner } from "@blocks/BookingLinkBanner";
 
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 
@@ -115,8 +113,9 @@ export function PostViewPopup<TData extends {}>({
   return (
     <>
       <Modal onOpen={() => { }} onClose={handlePostViewClose} isOpen={isOpen}>
-        <ModalContent className=" h-screen w-screen bg-opacity-80 bg-black flex justify-center items-center ">
-          <div className="relative w-3/5 h-4/5">
+        <ModalOverlay />
+        <ModalContent className="w-3/5 h-4/5 p-0 ">
+          <div className="w-full h-full">
             <MdClose
               onClick={handleClose}
               className={`absolute -top-2 -right-16 text-3xl w-9 h-9 cursor-pointer text-white`}
