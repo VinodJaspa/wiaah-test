@@ -10,7 +10,7 @@ import {
   Divider,
 } from "ui";
 import { HtmlDivProps, TabType } from "types";
-import { runIfFn } from "utils";
+import { cn, runIfFn } from "utils";
 
 export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   tabs: TabType[];
@@ -22,6 +22,9 @@ export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   tabListProps?: HtmlDivProps;
   showIcons?: boolean;
   showHeaderTitle?: boolean;
+  headerClassName?: string;
+  tabTitleClassName?: string;
+  tabItemClassName?: string;
 }
 
 export const TabsViewer: React.FC<TabsViewerProps> = ({
@@ -34,61 +37,82 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   tabListProps,
   showIcons = true,
   showHeaderTitle,
+  headerClassName,
+  tabTitleClassName,
+  tabItemClassName,
   ...props
 }) => {
-  if (!tabs || tabs.length === 0) {
-    return <div></div>; // Display loading state or message
-  }
+  if (!tabs || tabs.length === 0) return <div></div>;
+
+  const borderPositionClass = border === "top" ? "border-t-2" : "border-b-2";
+  const dividerPositionClass = border === "top" ? "-top-1.5" : "-bottom-[5px]";
+
   return (
     <Tabs {...props}>
       {({ currentTabIdx, setCurrentTabIdx }) => (
         <>
           {showTabs && (
             <TabsHeader
-              className={`md:justify-center justify-between flex-wrap py-[0px]  md:gap-8 px-2  relative`}
+              className={cn(
+                "md:justify-center justify-between flex-wrap py-0 md:gap-8 px-2 relative",
+                headerClassName,
+              )}
             >
-              <Divider
-                className={`absolute ${border === "top" ? "-top-1.5" : "-bottom-[5px]"
-                  } `}
-              />
-              {tabs.map(({ name, outlineIcon, solidIcon }, i) => (
-                <TabTitle key={i} TabKey={i}>
-                  <div
-                    onClick={() => setCurrentTabIdx(i)}
-                    className={`flex items-center gap-2 space-x-2 font-semibold md:text-xs text-[10px] leading-none ${currentTabIdx === i
-                        ? ` ${border === "top" ? "border-t-2 " : "border-b-2"
-                        } md:py-[22px] py-[6px] border-black text-black fill-black `
-                        : "border-none md:py-6 py-2 text-[#8E8E8E]"
-                      }`}
+              <Divider className={cn("absolute", dividerPositionClass)} />
+              {tabs.map(({ name, outlineIcon, solidIcon }, i) => {
+                const isActive = currentTabIdx === i;
+
+                return (
+                  <TabTitle
+                    key={i}
+                    TabKey={i}
+                    className={cn(tabTitleClassName)}
                   >
-                    <>
-                      {outlineIcon && solidIcon && showIcons && (
+                    <div
+                      onClick={() => setCurrentTabIdx(i)}
+                      className={cn(
+                        "flex items-center gap-2 font-semibold md:text-xs text-[10px] leading-none",
+                        isActive ? "text-black" : "text-[#8E8E8E]",
+                        isActive ? borderPositionClass : "border-none",
+                        isActive ? "md:py-[22px] py-[6px]" : "md:py-6 py-2",
+                      )}
+                    >
+                      {showIcons && outlineIcon && solidIcon && (
                         <div
-                          className={`mb-[3px] md:w-3 md:h-3 h-10 w-10 md:px-0 px-2 ${currentTabIdx === i
-                              ? "text-black"
-                              : "text-[#8E8E8E]"
-                            }`}
+                          className={cn(
+                            "mb-[3px] md:w-3 md:h-3 h-10 w-10 md:px-0 px-2",
+                            isActive ? "text-black" : "text-[#8E8E8E]",
+                          )}
                         >
-                          {currentTabIdx === i ? solidIcon : outlineIcon}
+                          {isActive ? solidIcon : outlineIcon}
                         </div>
                       )}
                       <p
-                        className={`${outlineIcon && solidIcon && showIcons
-                            ? "hidden md:flex text-sm"
-                            : "flex text-sm"
-                          }`}
+                        className={cn(
+                          "text-sm",
+                          showIcons && outlineIcon && solidIcon
+                            ? "hidden md:flex"
+                            : "flex",
+                        )}
                       >
-                        {runIfFn(name, { active: currentTabIdx === i })}
+                        {runIfFn(name, { active: isActive })}
                       </p>
-                    </>
-                  </div>
-                </TabTitle>
-              ))}
+                    </div>
+                  </TabTitle>
+                );
+              })}
             </TabsHeader>
           )}
           {children}
           {showPanels && (
-            <TabList className="flex w-full justify-center" {...tabListProps}>
+            <TabList
+              className={cn(
+                "flex w-full justify-center",
+                tabItemClassName,
+                tabListProps?.className,
+              )}
+              {...tabListProps}
+            >
               {tabs.map(({ component }, i) => (
                 <TabItem key={i}>{runIfFn(component)}</TabItem>
               ))}
