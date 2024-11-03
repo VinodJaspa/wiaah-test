@@ -113,7 +113,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
 
   return (
     <div
-      className="text-white w-full gap-4 rounded-lg h-[460px] max-w-full flex flex-col bg-primary p-4"
+      className="text-white w-full gap-4 rounded-lg h-[520px] w-full flex flex-col bg-primary p-4"
       data-testid="socialAffiliationContainer"
       onClick={() => onCardClick && onCardClick(post.id)}
     >
@@ -122,16 +122,19 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
           <HiDotsHorizontal />
         </div>
         <div className="flex h-full justify-between h-full gap-2 flex-col">
-          <div>
-            <div className="flex items-center w-full justify-between">
-              <div className="flex items-center">
+          {/* User Info */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center w-full justify-between ">
+              <div className="flex items-center gap-2">
                 <Avatar
                   className="bg-black"
                   src={post?.user?.profile?.photo}
                   name={post?.user?.profile?.username}
                 />
-                <div className="flex flex-col">
-                  <p>{post?.user?.profile?.username}</p>
+                <div className="flex flex-col ">
+                  <p className="text-lg fong-semibold">
+                    {post?.user?.profile?.username}
+                  </p>
                   <p>
                     {since.value} {since.timeUnit}
                   </p>
@@ -144,7 +147,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <p>{t("of commision by affiliating it")}</p>
             </div>
           </div>
-          <div className="bg-black align-center relative h-full">
+          <div className="bg-black align-center relative h-[200px]">
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
               attachments={
