@@ -70,14 +70,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       style={{ width: full ? "100%" : "14rem" }}
-      className="flex w-56 flex-col bg-white"
+      className="flex  flex-col bg-white "
     >
       <div
-        style={{ height: full ? "45rem" : "18rem" }}
+        // style={{ height: full ? "24rem" : "18rem" }}
         data-test="image-container"
         onMouseOver={handleHoverIn}
         onMouseLeave={handleHoverOut}
-        className="relative w-full "
+        className="relative w-full aspect-[3/4]  "
       >
         {/* image */}
         <div className="absolute top-0 z-10 flex w-full items-center justify-between p-2">
@@ -86,7 +86,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               data-test="productCashback"
               className="bg-red-400 bg-opacity-70 px-4 text-white flex gap-2"
             >
-              {/* cash ack */}
+              {/* cash back */}
               <PriceDisplay priceObject={{ amount: cashback }} />
               Cashback
             </div>
