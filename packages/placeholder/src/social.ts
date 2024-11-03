@@ -549,7 +549,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
@@ -737,7 +737,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
@@ -925,7 +925,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
@@ -1113,7 +1113,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
@@ -1301,7 +1301,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
@@ -1488,7 +1488,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           id: "user-456",
           username: "johndoe",
           verified: true,
-          photo: "https://example.com/profile_pics/johndoe.jpg",
+          photo: "/shop.jpeg",
           ownerId: "owner-123", // Optional owner ID
         },
       },
