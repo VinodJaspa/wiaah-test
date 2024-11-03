@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
-import { SavedView, SellerLayout } from "ui";
+import { SavedPostsSection, SavedView, SellerLayout } from "ui";
 import { ServerSideQueryClientProps } from "types";
 
 export const getServerSideProps: GetServerSideProps<
@@ -26,10 +26,10 @@ const Saved: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{t("Saved")}</title>
+        <title>{t("Saved Items")}</title>
       </Head>
-      <SellerLayout noContainer header={"main"}>
-        <SavedView />
+      <SellerLayout header={"main"}>
+        <SavedPostsSection />
       </SellerLayout>
     </>
   );
