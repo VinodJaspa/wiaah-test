@@ -19,13 +19,13 @@ export type GetProfileStoryQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "viewsCount"
   > & {
-      publisher?: Maybe<
-        { __typename?: "Profile" } & Pick<
-          Profile,
-          "photo" | "username" | "visibility" | "id"
-        >
-      >;
-    };
+    publisher?: Maybe<
+      { __typename?: "Profile" } & Pick<
+        Profile,
+        "photo" | "username" | "visibility" | "id"
+      >
+    >;
+  };
 };
 
 export const useGetUserStory = (
@@ -35,7 +35,7 @@ export const useGetUserStory = (
     unknown,
     GetProfileStoryQuery["getUserStory"],
     any
-  >
+  >,
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -75,6 +75,6 @@ export const useGetUserStory = (
 
       return res.data.getUserStory;
     },
-    opts
+    opts,
   );
 };
