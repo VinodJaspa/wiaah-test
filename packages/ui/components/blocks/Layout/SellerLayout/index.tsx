@@ -256,7 +256,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         <Container
           noContainer={true}
           className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
-            } h-full`}
+            } h-full w-full`}
         >
           {header && header !== null && (showMobileHeader || showHeader) ? (
             <div
