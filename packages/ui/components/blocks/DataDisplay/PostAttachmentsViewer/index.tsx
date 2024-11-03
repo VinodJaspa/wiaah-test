@@ -31,15 +31,16 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
       {attachments && !renderOne && attachments.length > 1 ? (
         <Slider
           leftArrowComponent={() => (
-            <ArrowLeftIcon className="text-primary text-4xl text-center bg-gray-200 bg-opacity-50 rounded-full" />
+            <ArrowLeftIcon className=" cursor-pointer text-primary text-4xl text-center bg-gray-200 bg-opacity-50 rounded-full" />
           )}
           rightArrowComponent={() => (
-            <ArrowRightIcon className="text-primary text-4xl text-center bg-gray-200 bg-opacity-50  rounded-full" />
+            <ArrowRightIcon className="cursor-pointer text-primary text-4xl text-center bg-gray-200 bg-opacity-50  rounded-full" />
           )}
           data-testid="test"
         >
           {attachments.map((attachment, i) => (
             <PostAttachment
+              cover={true}
               key={attachment.src + i}
               type={AttachmentType.Img}
               src={getRandomImage()}
@@ -70,6 +71,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
       ) : (
         <PostAttachment
           {...attachments[0]}
+          cover={true}
           alt={"thumbnail"}
           src={getRandomImage()}
           type={AttachmentType.Img}
