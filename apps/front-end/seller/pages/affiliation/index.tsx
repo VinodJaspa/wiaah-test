@@ -1,28 +1,25 @@
-import { AffiliationCardsListWrapper } from "@blocks/Social/AffiliationPostListWrapper";
 import Head from "next/head";
-import { newsfeedPosts } from "placeholder";
+import { socialAffiliationCardPlaceholders } from "placeholder";
 import React from "react";
-import { SellerLayout } from "ui";
+import { ListWrapper, SellerLayout, SocialAffiliationCard } from "ui";
 
-const affiliation: React.FC = () => {
+const Affiliation: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | affiliation</title>
+        <title>Wiaah | Affiliation</title>
       </Head>
       <SellerLayout header="main">
-        <div className="flex justify-center w-full h-fit">
-          <div className="md:w-8/12 w-11/12">
-            <AffiliationCardsListWrapper
-              cols={3}
-              posts={newsfeedPosts}
-              popup={false}
-            />
-          </div>
+        <div className="flex justify-center w-11/12 pr-12  h-full">
+          <ListWrapper cols={4}>
+            {socialAffiliationCardPlaceholders.map((post, i) => (
+              <SocialAffiliationCard key={i} post={post} />
+            ))}
+          </ListWrapper>
         </div>
       </SellerLayout>
     </>
   );
 };
 
-export default affiliation;
+export default Affiliation;
