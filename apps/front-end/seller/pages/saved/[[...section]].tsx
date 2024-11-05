@@ -26,7 +26,7 @@ const Saved: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{t("Saved Items")}</title>
+        <title>{t("Saved ")}</title>
       </Head>
       <SellerLayout header={"main"}>
         <SavedPostsSection />
