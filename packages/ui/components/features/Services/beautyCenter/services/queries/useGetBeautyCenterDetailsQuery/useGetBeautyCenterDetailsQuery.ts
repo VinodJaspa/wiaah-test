@@ -44,167 +44,172 @@ export type GetBeautyQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "vat"
   > & {
-      cancelationPolicies: Array<
-        { __typename?: "ServiceCancelationPolicy" } & Pick<
-          ServiceCancelationPolicy,
-          "cost" | "duration"
-        >
-      >;
-      location: { __typename?: "ServiceLocation" } & Pick<
-        ServiceLocation,
-        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-      >;
-      owner?: Maybe<
-        { __typename?: "Account" } & Pick<
-          Account,
-          "firstName" | "lastName" | "email" | "photo" | "verified"
-        >
-      >;
-      policies: Array<
-        { __typename?: "ServicePolicy" } & Pick<
-          ServicePolicy,
-          "policyTitle" | "terms"
-        >
-      >;
-      presentations: Array<
-        { __typename?: "ServicePresentation" } & Pick<
-          ServicePresentation,
-          "src" | "type"
-        >
-      >;
-      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-        ServiceMetaInfo,
-        | "description"
-        | "hashtags"
-        | "metaTagDescription"
-        | "metaTagKeywords"
+    cancelationPolicies: Array<
+      { __typename?: "ServiceCancelationPolicy" } & Pick<
+        ServiceCancelationPolicy,
+        "cost" | "duration"
+      >
+    >;
+    location: { __typename?: "ServiceLocation" } & Pick<
+      ServiceLocation,
+      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+    >;
+    owner?: Maybe<
+      { __typename?: "Account" } & Pick<
+        Account,
+        "firstName" | "lastName" | "email" | "photo" | "verified"
+      >
+    >;
+    policies: Array<
+      { __typename?: "ServicePolicy" } & Pick<
+        ServicePolicy,
+        "policyTitle" | "terms"
+      >
+    >;
+    presentations: Array<
+      { __typename?: "ServicePresentation" } & Pick<
+        ServicePresentation,
+        "src" | "type"
+      >
+    >;
+    serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+      ServiceMetaInfo,
+      | "description"
+      | "hashtags"
+      | "metaTagDescription"
+      | "metaTagKeywords"
+      | "title"
+    >;
+    treatments: Array<
+      { __typename?: "Treatment" } & Pick<
+        Treatment,
+        | "duration"
+        | "id"
+        | "price"
         | "title"
-      >;
-      treatments: Array<
-        { __typename?: "Treatment" } & Pick<
-          Treatment,
-          | "duration"
-          | "id"
-          | "price"
-          | "title"
-          | "treatmentCategoryId"
-          | "beautyCenterServiceId"
-          | "thumbnail"
-        > & {
-            category?: Maybe<
-              { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
-                BeautyCenterTreatmentCategory,
-                "createdAt" | "createdById" | "id" | "title" | "updatedAt"
-              >
-            >;
-            discount: { __typename?: "ServiceDiscount" } & Pick<
-              ServiceDiscount,
-              "units" | "value"
-            >;
-          }
-      >;
-      contact: { __typename?: "ServiceContact" } & Pick<
-        ServiceContact,
-        "address" | "city" | "country" | "email" | "phone" | "state"
-      >;
-      workingHours?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
-            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-              fr?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              mo?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              sa?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              su?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              th?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              tu?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              we?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-            };
-          }
-      >;
-      takenHours?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
-            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-              fr?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              mo?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              sa?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              su?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              th?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              tu?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              we?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-            };
-          }
-      >;
-
-    };
+        | "treatmentCategoryId"
+        | "beautyCenterServiceId"
+        | "thumbnail"
+      > & {
+        category?: Maybe<
+          { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
+            BeautyCenterTreatmentCategory,
+            "createdAt" | "createdById" | "id" | "title" | "updatedAt"
+          >
+        >;
+        discount: { __typename?: "ServiceDiscount" } & Pick<
+          ServiceDiscount,
+          "units" | "value"
+        >;
+      }
+    >;
+    contact: { __typename?: "ServiceContact" } & Pick<
+      ServiceContact,
+      "address" | "city" | "country" | "email" | "phone" | "state"
+    >;
+    workingHours?: Maybe<
+      { __typename?: "WorkingSchedule" } & Pick<
+        ServiceWorkingSchedule,
+        "id"
+      > & {
+        weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+          fr?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          mo?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          sa?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          su?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          th?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          tu?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          we?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+        };
+      }
+    >;
+    takenHours?: Maybe<
+      { __typename?: "WorkingSchedule" } & Pick<
+        ServiceWorkingSchedule,
+        "id"
+      > & {
+        weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+          fr?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          mo?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          sa?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          su?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          th?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          tu?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          we?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+        };
+      }
+    >;
+  };
 };
 
 export const getBeautyCenterDetailsDataQueryKey = (args: { id: string }) => [
@@ -485,7 +490,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -493,7 +498,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -501,7 +506,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -509,7 +514,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -517,7 +522,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -525,7 +530,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -533,7 +538,7 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
