@@ -45,65 +45,67 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
     | "storeType"
     | "verified"
   > & {
-      sellerProfile: { __typename?: "Profile" } & Pick<
-        Profile,
-        "photo" | "username" | "ownerId" | "id"
-      >;
-      location: { __typename?: "ServiceLocation" } & Pick<
-        ServiceLocation,
-        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-      > & {countryCode:string};
-      
-      workingSchedule?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
-            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-              fr?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              mo?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              sa?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              su?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              th?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              tu?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              we?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-            };
-          }
-      >;
+    sellerProfile: { __typename?: "Profile" } & Pick<
+      Profile,
+      "photo" | "username" | "ownerId" | "id"
+    >;
+    location: { __typename?: "ServiceLocation" } & Pick<
+      ServiceLocation,
+      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+    > & { countryCode: string };
 
-    };
+    workingSchedule?: Maybe<
+      { __typename?: "WorkingSchedule" } & Pick<
+        ServiceWorkingSchedule,
+        "id"
+      > & {
+        weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+          fr?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          mo?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          sa?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          su?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          th?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          tu?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+          we?: Maybe<
+            { __typename?: "ServiceDayWorkingHours" } & Pick<
+              ServiceDayWorkingHours,
+              "periods"
+            >
+          >;
+        };
+      }
+    >;
+  };
 };
 
 export const getShopDetailsQueryKey = (userId: string) => [
@@ -139,7 +141,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
         lon: 9.18854,
         postalCode: 1546,
         state: "state",
-        countryCode:"AED"
+        countryCode: "AED",
       },
       name: "service name",
       phone: "1324658",
@@ -289,11 +291,11 @@ export const useGetShopDetailsQuery = (
     unknown,
     GetShopDetailsQuery["getUserShop"],
     any
-  >
+  >,
 ) => {
   return useQuery(
     getShopDetailsQueryKey(userId),
     () => getShopDetailsQueryFetcher(userId),
-    options
+    options,
   );
 };
