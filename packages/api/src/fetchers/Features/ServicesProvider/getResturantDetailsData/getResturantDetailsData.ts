@@ -101,7 +101,7 @@ export type GetResturantServiceDetialsQuery = GqlResponse<
 >;
 
 export const getResturantServiceDetialsData = async (
-  id: string
+  id: string,
 ): Promise<GqlResponse<Restaurant, "getRestaurant">> => {
   const client = createGraphqlRequestClient();
 
@@ -352,10 +352,5 @@ query getRestaurant($args:GetRestaurantInput!){
   //   name: "Gourmet Delight",
   // };
 
-  const res = await client.send<GetResturantServiceDetialsQuery>();
-  if (!res.data) {
-    throw new Error("Restaurant not found");
-  }
-
-  return res.data;
+  return client.setVariables({ id }).send();
 };
