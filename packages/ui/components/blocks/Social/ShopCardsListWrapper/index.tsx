@@ -8,11 +8,11 @@ import {
   SocialShopPostcardProps,
   useResponsive,
   PostCommentCardProps,
+  PostViewPopup,
 } from "ui";
 import { useModalDisclouser } from "hooks";
 
-import { PostViewPopup } from "../../../../components/blocks/Popups";
-import { Carousel } from "../../../blocks/Carousel";
+import { Carousel } from "@blocks/Carousel";
 import { useRouter } from "next/router";
 
 export interface ShopCardsListWrapperProps
