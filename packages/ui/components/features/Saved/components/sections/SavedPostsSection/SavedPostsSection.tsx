@@ -36,8 +36,8 @@ export const SavedPostsSection: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8  w-11/12 ">
-      <h2 className="w-full text-center font-semibold text-2xl">Saved Items</h2>
+    <div className="flex flex-col gap-8  w-9/12 ">
+      <h2 className="w-full text-center font-semibold text-2xl">Saved</h2>
       <ListWrapper cols={4}>
         {productCardPlaceholders.map((item, i) => (
           <ProductCard
