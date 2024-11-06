@@ -8,10 +8,10 @@ export default {
 } as ComponentMeta<typeof ShareWithModal>;
 
 export const Default = () => {
-  const { ShareWith } = useShareWithModal();
+  const { OpenModal } = useShareWithModal();
   return (
     <>
-      <Button onClick={() => ShareWith("12")}>open</Button>
+      <Button onClick={() => OpenModal("12")}>open</Button>
       <ShareWithModal />
     </>
   );
