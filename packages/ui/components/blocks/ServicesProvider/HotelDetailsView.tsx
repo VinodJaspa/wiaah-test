@@ -19,23 +19,22 @@ import {
   HotelMarketDescriptionSection,
   useGetShopDetailsQuery,
   useGetShopServicesQuery,
+  GetShopDetailsQuery,
   ServiceReservastionForm,
   GetServiceDetailsQuery,
 } from "ui";
-import { getRandomImage, reviews } from "placeholder";
+import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 import {
   BusinessType,
   PresentationType,
   ServicePresentationType,
-} from "../../features/API";
-import {
   ServiceType,
   ServiceTypeOfSeller,
   StoreType,
-} from "@features/API/gql/generated";
-import { getRandomName } from "@UI/../utils/src";
+  StoryType,
+} from "@features/API";
 
 const ServicesProviderTabs: SectionTabType[] = [
   {
@@ -70,13 +69,9 @@ const ServicesProviderTabs: SectionTabType[] = [
 
 export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
-  const {
-    data: _res,
-    isError,
-    isLoading: _isLoading,
-  } = useGetShopDetailsQuery(id);
   const res = FAKE_SHOP_DETAILS;
   const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
+  const { data: _res, isError, isLoading } = useGetShopDetailsQuery(id);
   const data = FAKE_DATA;
   const { t } = useTranslation();
   return (
@@ -100,7 +95,7 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
             : []
         }
       />
-      <SpinnerFallback isLoading={false} isError={isError} />
+      <SpinnerFallback isLoading={isLoading} isError={isError} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
@@ -280,85 +275,75 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
   },
 };
 
-const FAKE_SHOP_DETAILS = {
+export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
+  __typename: "Shop",
+  banner: "https://placeholder.com/banner.jpg",
+  businessType: BusinessType.Company,
+  images: [
+    "https://placeholder.com/image1.jpg",
+    "https://placeholder.com/image2.jpg",
+  ],
+  videos: ["https://placeholder.com/video1.mp4"],
+  createdAt: new Date().toISOString(),
+  description: "This is a placeholder description for the shop.",
+  email: "shop@example.com",
+  id: "shop-123",
+  ownerId: "owner-123",
+  name: "Placeholder Shop",
+  phone: "+1234567890",
+  rating: 4.5,
+  reviews: 120,
+  thumbnail: "https://placeholder.com/thumbnail.jpg",
+  type: ServiceType.Hotel,
   storeType: StoreType.Service,
-  type: ServiceType.BeautyCenter,
-  ownerId: "",
-  banner: "",
-  businessType: BusinessType.Individual,
-  createdAt: new Date().toUTCString(),
-  description:
-    "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",
-  email: "test@email.com",
-  id: "testid",
-  images: [...Array(10)].map(() => getRandomImage()),
+  verified: true,
   sellerProfile: {
-    id: "",
-    ownerId: "",
-    photo: getRandomImage(),
-    username: getRandomName().firstName,
+    __typename: "Profile",
+    photo: "https://placeholder.com/photo.jpg",
+    username: "placeholder_user",
+    ownerId: "owner-123",
+    id: "profile-123",
   },
   location: {
-    address: "Burj Al Arab Jumeirah Jumeira Road Umm Suqeim 3",
-    city: "Dubai",
-    country: "United Arab Emirates",
-    lat: 45.464664,
-    lon: 9.18854,
-    postalCode: 1546,
-    state: "state",
-    countryCode: "AED",
+    __typename: "ServiceLocation",
+    address: "123 Placeholder St",
+    city: "Placeholder City",
+    country: "Placeholder Country",
+    lat: 12.34,
+    lon: 56.78,
+    postalCode: 12345,
+    state: "Placeholder State",
+    countryCode: "PC",
   },
-  name: "service name",
-  phone: "1324658",
-  rating: 5,
-  reviews: 160,
-  thumbnail: getRandomImage(),
-  verified: true,
-  videos: [],
   workingSchedule: {
-    id: "",
+    __typename: "WorkingSchedule",
+    id: "schedule-123",
     weekdays: {
-      mo: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
-      },
-      tu: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
-      },
-      we: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
-      },
-      th: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
-      },
+      __typename: "WeekdaysWorkingHours",
       fr: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-13:00", "14:00-18:00"],
+      },
+      mo: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-13:00", "14:00-18:00"],
       },
       sa: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-14:00"],
       },
-      su: {
-        periods: [
-          new Date(2023, 4, 15, 10).toUTCString(),
-          new Date(2023, 4, 15, 18).toUTCString(),
-        ],
+      su: null,
+      th: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-13:00", "14:00-18:00"],
+      },
+      tu: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-13:00", "14:00-18:00"],
+      },
+      we: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-13:00", "14:00-18:00"],
       },
     },
   },
