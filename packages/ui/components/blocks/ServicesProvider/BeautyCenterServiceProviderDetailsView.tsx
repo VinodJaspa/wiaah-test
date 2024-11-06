@@ -5,7 +5,6 @@ import { SpinnerFallback } from "@blocks/FallbackDisplays";
 import { Divider } from "@partials";
 import { SectionsScrollTabList, SectionTabType } from "../../blocks/Navigating";
 import { StaticSideBarWrapper } from "@blocks/Wrappers";
-import { random } from "lodash";
 import { WorkingDaysCalender } from "@blocks/DataDisplay";
 import {
   useGetBeautyCenterDetailsQuery,
@@ -19,30 +18,24 @@ import {
   ServiceOnMapLocalizationSection,
   GetBeautyQuery,
 } from "@features";
+import { Reviews } from "@blocks/Reviews";
 import {
+  ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
   ServiceTypeOfSeller,
 } from "@features/API";
 
-import { Reviews } from "@blocks/Reviews";
-import { ServicePaymentMethod } from "@features/API";
-
 export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   id,
 }) => {
-  const {
-    data: _res,
-    isError,
-    isLoading: _isLoading,
-  } = useGetBeautyCenterDetailsQuery(id);
-  const res = FAKE_BEAUTY_CENTER_DETAILS;
+  const { data: res, isError, isLoading } = useGetBeautyCenterDetailsQuery(id);
 
   const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
@@ -141,7 +134,6 @@ const ServicesProviderTabs: SectionTabType[] = [
     name: "Customer reviews",
   },
 ];
-
 const FAKE_BEAUTY_CENTER_DETAILS: GetBeautyQuery["getBeautyCenterById"] = {
   createdAt: "2023-03-06T00:00:00Z",
   id: "12345",
@@ -295,60 +287,32 @@ const FAKE_BEAUTY_CENTER_DETAILS: GetBeautyQuery["getBeautyCenterById"] = {
     id: "",
     weekdays: {
       fr: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["18:00-22:00"],
       },
       mo: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       sa: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-23:00"],
       },
       su: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-20:00"],
       },
       th: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       tu: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       we: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
     },
   },
