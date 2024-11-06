@@ -183,60 +183,25 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
     id: "",
     weekdays: {
       fr: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       mo: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       sa: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       su: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       th: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       tu: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
       we: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        periods: [new Date().toString(), new Date().toString()],
       },
     },
   },
