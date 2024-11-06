@@ -1,5 +1,4 @@
 import React from "react";
-import { random } from "lodash";
 import {
   SpinnerFallback,
   Divider,
@@ -30,18 +29,14 @@ import {
 } from "@features/API";
 
 export const HealthCenterDetailsView: React.FC<{ id: string }> = ({ id }) => {
-  const {
-    data: _res,
-    isError,
-    isLoading: _isLoading,
-  } = useGetHealthCenterDetailsQuery(id);
+  const { data: _res, isError, isLoading } = useGetHealthCenterDetailsQuery(id);
   const res = FAKE_HEALTH_CENTER_DETAILS;
 
   const { isMobile } = useResponsive();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
             serviceTitle={res.serviceMetaInfo.title}
@@ -148,7 +143,6 @@ const ServicesProviderTabs: SectionTabType[] = [
     name: "Customer reviews",
   },
 ];
-
 const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
   // createdAt: "2023-03-06T00:00:00Z",
   cancelationPolicies: [
@@ -277,60 +271,32 @@ const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
     id: "",
     weekdays: {
       fr: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["18:00-22:00"],
       },
       mo: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       sa: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-23:00"],
       },
       su: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-20:00"],
       },
       th: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       tu: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       we: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
     },
   },
@@ -338,60 +304,32 @@ const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
     id: "",
     weekdays: {
       fr: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["18:00-22:00"],
       },
       mo: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       sa: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-23:00"],
       },
       su: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-20:00"],
       },
       th: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       tu: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
       we: {
-        periods: [
-          new Date().toString(),
-          new Date(
-            new Date().setHours(new Date().getHours() + random(5, 11)),
-          ).toString(),
-        ],
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
       },
     },
   },
