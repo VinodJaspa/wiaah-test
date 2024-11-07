@@ -267,7 +267,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={Object.values(res.workingHours.weekdays) || []}
+                    workingDays={res.workingHours.weekdays}
                   />
                 </>
               ) : null}
@@ -343,7 +343,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
           ),
         },
       ],
-      [res]
+      [res],
     );
 
   return (
