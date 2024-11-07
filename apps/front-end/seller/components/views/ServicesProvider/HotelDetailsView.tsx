@@ -13,6 +13,7 @@ import {
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
   ServiceReservastionForm,
+  GetServiceDetailsQuery,
   SpinnerFallback,
   ServiceDetailsReviewsSection,
   SellerServiceWorkingHoursSection,
@@ -22,247 +23,12 @@ import {
   Divider,
   LocationOnPointFillIcon,
   ServiceRangeBookingCalander,
+  HotelRoomDetailsCardProps,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { getRandomImage } from "placeholder";
-import { ServiceAdaptation } from "@features/API";
-import { ServicePresentationType } from "api";
-
-const FAKE_HOTEL_DATA = {
-  __typename: "ServiceDetails",
-  createdAt: "2023-01-01T00:00:00Z",
-  cuisinesTypeId: "cuisine123",
-  establishmentTypeId: "establishment123",
-  highest_price: 100,
-  id: "service123",
-  lowest_price: 10,
-  michelin_guide_stars: 3,
-  ownerId: "owner123",
-  payment_methods: ["Credit Card", "Paypal"],
-  setting_and_ambianceId: "ambiance123",
-  type_of_seller: "individual",
-  updatedAt: "2023-06-01T00:00:00Z",
-  contact: {
-    __typename: "ServiceContact",
-    address: "123 Main St",
-    city: "Anytown",
-    country: "USA",
-    email: "contact@example.com",
-    phone: "+1234567890",
-    state: "NY",
-  },
-  workingHours: {
-    id: "schedule123",
-    weekdays: {
-      fr: {
-        periods: ["09:00", "17:00"],
-      },
-      mo: {
-        periods: ["09:00", "17:00"],
-      },
-      sa: {
-        periods: ["10:00", "14:00"],
-      },
-      su: {
-        periods: ["10:00", "14:00"],
-      },
-      th: {
-        periods: ["09:00", "17:00"],
-      },
-      tu: {
-        periods: ["09:00", "17:00"],
-      },
-      we: {
-        periods: ["09:00", "17:00"],
-      },
-    },
-  },
-  doctors: [
-    {
-      __typename: "Doctor",
-      availablityStatus: "Available",
-      description: "Experienced general physician.",
-      healthCenterId: "healthCenter123",
-      id: "doctor123",
-      name: "Dr. John Doe",
-      price: 100,
-      rating: 4.8,
-      thumbnail: getRandomImage(),
-      specialityId: "speciality123",
-      speciality: {
-        __typename: "HealthCenterSpecialty",
-        description: "General Medicine",
-        id: "speciality123",
-        name: "General Medicine",
-      },
-    },
-  ],
-  location: {
-    address: "123 Main St",
-    city: "Anytown",
-    country: "USA",
-    lat: 40.7128,
-    lon: -74.006,
-    postalCode: 12345,
-    state: "NY",
-  },
-  menus: [
-    {
-      __typename: "RestaurantMenu",
-      id: "menu123",
-      name: "Main Menu",
-      dishs: [
-        {
-          __typename: "Dish",
-          id: "dish123",
-          ingredients: ["ingredient1", "ingredient2"],
-          name: "Dish Name",
-          price: 15,
-          thumbnail: getRandomImage(),
-        },
-      ],
-    },
-  ],
-  policies: [
-    {
-      __typename: "ServicePolicy",
-      policyTitle: "No Smoking",
-      terms: "Smoking is prohibited inside the premises.",
-    },
-  ],
-  presentations: [
-    {
-      src: getRandomImage(),
-      type: ServicePresentationType.Img,
-    },
-  ],
-  rooms: {
-    bathrooms: 1,
-    beds: 2,
-    createdAt: "2023-01-01T00:00:00Z",
-    dailyPrice: true,
-    description: "Spacious room with a beautiful view.",
-    hotelId: "hotel123",
-    id: "room123",
-    includedAmenities: ["WiFi", "Air Conditioning"],
-    includedServices: ["Room Service", "Daily Housekeeping"],
-    num_of_rooms: 1,
-    pricePerNight: 150,
-    rating: 4.7,
-    updatedAt: "2023-06-01T00:00:00Z",
-    title: "Deluxe Room",
-    sellerId: "seller123",
-    reviews: 5,
-    adaptedFor: [ServiceAdaptation.Wheelchair],
-    thumbnail: getRandomImage(),
-    cancelationPolicies: [
-      {
-        cost: 20,
-        duration: 1,
-      },
-    ],
-    discount: {
-      units: 1,
-      value: 10,
-    },
-    dailyPrices: {
-      fr: 150,
-      mo: 130,
-      sa: 160,
-      su: 140,
-      th: 135,
-      tu: 130,
-      we: 130,
-    },
-    extras: [
-      {
-        cost: 20,
-        name: "Extra Bed",
-      },
-    ],
-    measurements: {
-      inFeet: 300,
-      inMeter: 27.87,
-    },
-    popularAmenities: [
-      {
-        label: "Free WiFi",
-        value: "",
-      },
-    ],
-    presentations: [
-      {
-        src: getRandomImage(),
-        type: ServicePresentationType.Img,
-      },
-    ],
-  },
-  serviceMetaInfo: {
-    __typename: "ServiceMetaInfo",
-    description: "Luxury hotel offering the best services.",
-    hashtags: ["#luxury", "#hotel"],
-    metaTagDescription: "Luxury hotel in the heart of the city.",
-    metaTagKeywords: ["hotel", "luxury", "service"],
-    title: "Luxury Hotel",
-  },
-  treatments: [
-    {
-      __typename: "Treatment",
-      beautyCenterServiceId: "beautyCenter123",
-      duration: "60 mins",
-      id: "treatment123",
-      price: 100,
-      thumbnail: getRandomImage(),
-      title: "Full Body Massage",
-      treatmentCategoryId: "category123",
-      category: {
-        __typename: "BeautyCenterTreatmentCategory",
-        createdAt: "2022-01-01T00:00:00Z",
-        createdById: "creator123",
-        id: "category123",
-        title: "Massage Therapy",
-      },
-      discount: {
-        __typename: "ServiceDiscount",
-        units: "percent",
-        value: 15,
-      },
-    },
-  ],
-  vehicles: [
-    {
-      __typename: "Vehicle",
-      brand: "Toyota",
-      id: "vehicle123",
-      model: "Camry",
-      price: 100,
-      title: "Toyota Camry",
-      cancelationPolicies: [
-        {
-          __typename: "ServiceCancelationPolicy",
-          cost: 30,
-          duration: "12 hours",
-        },
-      ],
-      presentations: [
-        {
-          __typename: "ServicePresentation",
-          src: getRandomImage(),
-          type: "image",
-        },
-      ],
-      properties: {
-        __typename: "VehicleProperties",
-        airCondition: true,
-        gpsAvailable: true,
-        lugaggeCapacity: 3,
-        maxSpeedInKm: 200,
-        seats: 5,
-        windows: 4,
-      },
-    },
-  ],
-};
+import { HealthCenterDoctorAvailablityStatus, WeekdaysWorkingHours } from "api";
+import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
@@ -272,7 +38,8 @@ export const HotelDetailsView: React.FC = () => {
     isLoading: _isLoading,
   } = useGetServicesProviderQuery("");
   const { t } = useTranslation();
-  const res = FAKE_HOTEL_DATA;
+  const res = FAKE_DATA;
+
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
       () => [
@@ -350,7 +117,7 @@ export const HotelDetailsView: React.FC = () => {
               {res && res.workingHours ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={Object.values(res.workingHours.weekdays)}
+                    workingDays={res.workingHours.weekdays}
                   />
                 </>
               ) : null}
@@ -363,7 +130,7 @@ export const HotelDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={false}>
               {res ? (
                 <>
-                  <HotelServiceRoomsSection rooms={[res.rooms]} />
+                  <HotelServiceRoomsSection rooms={res ? res.rooms : []} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -425,11 +192,12 @@ export const HotelDetailsView: React.FC = () => {
           ),
         },
       ],
-      [res]
+      [res],
     );
 
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      {/*
       <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-between shadow p-4">
         <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
           <Image
@@ -460,6 +228,7 @@ export const HotelDetailsView: React.FC = () => {
           <Button outline>{t("Contact")}</Button>
         </div>
       </div>
+*/}
       <Divider />
       <ServicePresentationCarosuel data={res.presentations} />
       <SpinnerFallback isLoading={false}>
@@ -513,4 +282,160 @@ export const HotelDetailsView: React.FC = () => {
       </StaticSideBarWrapper>
     </div>
   );
+};
+
+const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
+  workingHours: {
+    id: "schedule1",
+    weekdays: {
+      fr: {
+        periods: ["09:00", "17:00"],
+      },
+      mo: {
+        periods: ["09:00", "17:00"],
+      },
+      sa: {
+        periods: ["10:00", "14:00"],
+      },
+      su: {
+        periods: ["10:00", "14:00"],
+      },
+      th: {
+        periods: ["09:00", "17:00"],
+      },
+      tu: {
+        periods: ["09:00", "17:00"],
+      },
+      we: {
+        periods: ["09:00", "17:00"],
+      },
+    },
+  },
+  createdAt: "2023-03-06T00:00:00Z",
+  id: "12345",
+  ownerId: "67890",
+  cuisinesTypeId: "543",
+  establishmentTypeId: "423",
+  highest_price: 500,
+  lowest_price: 100,
+  michelin_guide_stars: 3,
+  payment_methods: [],
+  setting_and_ambianceId: "44",
+  type_of_seller: ServiceTypeOfSeller.Individual,
+
+  policies: [
+    {
+      policyTitle: "Cancellation Policy",
+      terms: ["Full refund if canceled within 24 hours"],
+    },
+  ],
+  presentations: [
+    {
+      src: "https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://image-tc.galaxy.tf/wijpeg-5fj3s48cv2nf9rs8mv5amtpab/select-room-one-bedroom-3.jpg?width=1920",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://www.ohotelsindia.com/pune/images/b32d5dc553ee2097368bae13f83e93cf.jpg",
+      type: ServicePresentationType.Img,
+    },
+  ],
+  location: {
+    address: "123 Main St",
+    city: "Anytown",
+    country: "USA",
+    lat: 37.7749,
+    lon: -122.4194,
+    postalCode: 12345,
+    state: "CA",
+  },
+  rooms: [
+    {
+      cancelationPolicies: [
+        {
+          cost: 50,
+          duration: 60,
+        },
+      ],
+      presentations: [],
+      reviews: 15,
+      rating: 4.5,
+      createdAt: "2023-03-05T00:00:00Z",
+      dailyPrice: true,
+      dailyPrices: {
+        fr: 90,
+        mo: 100,
+        sa: 110,
+        su: 120,
+        th: 95,
+        tu: 105,
+        we: 100,
+      },
+      description: "Cozy room with a view",
+      discount: {
+        units: 3,
+        value: 10,
+      },
+      extras: [
+        {
+          cost: 20,
+          name: "Mini-bar",
+        },
+        {
+          cost: 10,
+          name: "Late check-out",
+        },
+      ],
+      hotelId: "67890",
+      id: "54321",
+      includedAmenities: ["Free Wi-Fi", "Parking"],
+      includedServices: ["Room cleaning", "Towels"],
+      measurements: {
+        inFeet: 15,
+        inMeter: 20,
+      },
+      popularAmenities: [
+        {
+          label: "Swimming pool",
+          value: "yes",
+        },
+        {
+          label: "Gym",
+          value: "yes",
+        },
+      ],
+      pricePerNight: 90,
+      title: "Standard Room",
+      updatedAt: "2023-03-06T00:00:00Z",
+      bathrooms: 2,
+      beds: 3,
+      num_of_rooms: 2,
+      sellerId: "",
+      thumbnail: "",
+    },
+  ],
+  serviceMetaInfo: {
+    description: "A great hotel in a prime location",
+    hashtags: ["#travel", "#vacation", "#hotel"],
+    metaTagDescription:
+      "Book your stay at our hotel and enjoy great amenities and services",
+    metaTagKeywords: ["hotel, travel, vacation"],
+    title: "Book Your Stay at Our Hotel",
+  },
+  updatedAt: "2023-03-06T00:00:00Z",
+  contact: {
+    address: "address",
+    city: "city",
+    country: "country",
+    email: "email",
+    phone: "123456789",
+    state: "state",
+  },
 };
