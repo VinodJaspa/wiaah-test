@@ -42,9 +42,8 @@ export const TimeClockDisplay: React.FC<TimeClockDisplayProps> = ({
   return (
     <AspectRatio ratio={1}>
       <div
-        className={`${
-          off ? "border-grayText" : "border-black"
-        } relative border w-full h-full rounded-full`}
+        className={`${off ? "border-grayText" : "border-black"
+          } relative border w-full h-full rounded-full`}
       >
         {[...Array(12)].map((_, i) => {
           const percentage = (i + 1) / 12;
@@ -59,18 +58,16 @@ export const TimeClockDisplay: React.FC<TimeClockDisplayProps> = ({
               className="absolute top-1/2 origin-top -translate-y-full left-1/2 z-10 h-[45%] w-[5%] flex items-start justify-start"
             >
               <span
-                className={`${
-                  off ? "bg-grayText" : "bg-black"
-                } h-1/5 w-full rounded-full `}
+                className={`${off ? "bg-grayText" : "bg-black"
+                  } h-1/5 w-full rounded-full `}
               ></span>
             </div>
           );
         })}
 
         <div
-          className={`absolute h-[10%] w-[10%] z-20 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
-            off ? "border-grayText bg-grayText" : "bg-primary border-black"
-          }`}
+          className={`absolute h-[10%] w-[10%] z-20 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${off ? "border-grayText bg-grayText" : "bg-primary border-black"
+            }`}
         ></div>
 
         {off ? null : (
