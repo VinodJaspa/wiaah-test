@@ -23,7 +23,7 @@ import {
   ServiceReservastionForm,
   GetServiceDetailsQuery,
 } from "ui";
-import { reviews } from "placeholder";
+import { getRandomImage, reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 import {
@@ -71,7 +71,11 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
   const res = FAKE_SHOP_DETAILS;
   const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
-  const { data: _res, isError, isLoading } = useGetShopDetailsQuery(id);
+  const {
+    data: _res,
+    isError,
+    isLoading: _isLoading,
+  } = useGetShopDetailsQuery(id);
   const data = FAKE_DATA;
   const { t } = useTranslation();
   return (
@@ -95,7 +99,7 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
             : []
         }
       />
-      <SpinnerFallback isLoading={isLoading} isError={isError} />
+      <SpinnerFallback isLoading={false} isError={isError} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
@@ -293,13 +297,13 @@ export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
   phone: "+1234567890",
   rating: 4.5,
   reviews: 120,
-  thumbnail: "https://placeholder.com/thumbnail.jpg",
+  thumbnail: getRandomImage(),
   type: ServiceType.Hotel,
   storeType: StoreType.Service,
   verified: true,
   sellerProfile: {
     __typename: "Profile",
-    photo: "https://placeholder.com/photo.jpg",
+    photo: getRandomImage(),
     username: "placeholder_user",
     ownerId: "owner-123",
     id: "profile-123",
