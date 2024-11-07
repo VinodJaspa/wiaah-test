@@ -28,10 +28,12 @@ import {
   Vehicle,
   VehicleProperties,
   ServiceTypeOfSeller,
+  ServiceWorkingSchedule,
+  ServiceWeekdaysWorkingHours,
 } from "@features/API";
 import { useQuery } from "react-query";
 import { random } from "lodash";
-import { createGraphqlRequestClient } from "api";
+import { createGraphqlRequestClient, WeekdaysWorkingHours } from "api";
 
 export type GetServiceDetailsQueryVariables = Exact<{
   id: Scalars["String"]["input"];
@@ -54,205 +56,212 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
       | "type_of_seller"
       | "updatedAt"
     > & {
-        contact: { __typename?: "ServiceContact" } & Pick<
-          ServiceContact,
-          "address" | "city" | "country" | "email" | "phone" | "state"
-        >;
-        doctors?: Maybe<
-          Array<
-            { __typename?: "Doctor" } & Pick<
-              Doctor,
-              | "availablityStatus"
-              | "description"
-              | "healthCenterId"
-              | "id"
-              | "name"
-              | "price"
-              | "rating"
-              | "thumbnail"
-              | "specialityId"
-            > & {
-                speciality?: Maybe<
-                  { __typename?: "HealthCenterSpecialty" } & Pick<
-                    HealthCenterSpecialty,
-                    "description" | "id" | "name"
-                  >
-                >;
-              }
-          >
-        >;
-        location: { __typename?: "ServiceLocation" } & Pick<
-          ServiceLocation,
-          | "address"
-          | "city"
-          | "country"
-          | "lat"
-          | "lon"
-          | "postalCode"
-          | "state"
-        >;
-        menus?: Maybe<
-          Array<
-            { __typename?: "RestaurantMenu" } & Pick<
-              RestaurantMenu,
-              "id" | "name"
-            > & {
-                dishs: Array<
-                  { __typename?: "Dish" } & Pick<
-                    Dish,
-                    "id" | "ingredients" | "name" | "price" | "thumbnail"
-                  >
-                >;
-              }
-          >
-        >;
-        policies: Array<
-          { __typename?: "ServicePolicy" } & Pick<
-            ServicePolicy,
-            "policyTitle" | "terms"
-          >
-        >;
-        presentations: Array<
-          { __typename?: "ServicePresentation" } & Pick<
-            ServicePresentation,
-            "src" | "type"
-          >
-        >;
-        rooms?: Maybe<
-          Array<
-            { __typename?: "HotelRoom" } & Pick<
-              HotelRoom,
-              | "bathrooms"
-              | "beds"
-              | "createdAt"
-              | "dailyPrice"
-              | "description"
-              | "hotelId"
-              | "id"
-              | "includedAmenities"
-              | "includedServices"
-              | "num_of_rooms"
-              | "pricePerNight"
-              | "rating"
-              | "updatedAt"
-              | "title"
-              | "sellerId"
-              | "reviews"
-              |"adaptedFor"
-              | "title"
-              |"pricePerNight"
-              |"thumbnail"
-              |"includedAmenities"
-            > & {
-                cancelationPolicies?: Array<
-                  { __typename?: "ServiceCancelationPolicy" } & Pick<
-                    ServiceCancelationPolicy,
-                    "cost" | "duration"
-                  >
-                >;
-                discount?: { __typename?: "ServiceDiscount" } & Pick<
-                  ServiceDiscount,
-                  "units" | "value"
-                >;
-                dailyPrices?: Maybe<
-                  { __typename?: "ServiceDailyPrices" } & Pick<
-                    ServiceDailyPrices,
-                    "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we"
-                  >
-                >;
-                extras?: Maybe<
-                  Array<
-                    { __typename?: "ServiceExtra" } & Pick<
-                      ServiceExtra,
-                      "cost" | "name"
-                    >
-                  >
-                >;
-                measurements?: {
-                  __typename?: "ServicePropertyMeasurements";
-                } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
-                popularAmenities?: Maybe<
-                  Array<
-                    { __typename?: "ServiceAmenity" } & Pick<
-                      ServiceAmenity,
-                      "label" | "value"
-                    >
-                  >
-                >;
-                presentations: Array<
-                  { __typename?: "ServicePresentation" } & Pick<
-                    ServicePresentation,
-                    "src" | "type"
-                  >
-                >;
-
-              }
-          >
-        >;
-        serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-          ServiceMetaInfo,
-          | "description"
-          | "hashtags"
-          | "metaTagDescription"
-          | "metaTagKeywords"
-          | "title"
-        >;
-        treatments?: Maybe<
-          Array<
-            { __typename?: "Treatment" } & Pick<
-              Treatment,
-              | "beautyCenterServiceId"
-              | "duration"
-              | "id"
-              | "price"
-              | "thumbnail"
-              | "title"
-              | "treatmentCategoryId"
-            > & {
-                category?: Maybe<
-                  { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
-                    BeautyCenterTreatmentCategory,
-                    "createdAt" | "createdById" | "id" | "title"
-                  >
-                >;
-                discount: { __typename?: "ServiceDiscount" } & Pick<
-                  ServiceDiscount,
-                  "units" | "value"
-                >;
-              }
-          >
-        >;
-        vehicles?: Maybe<
-          Array<
-            { __typename?: "Vehicle" } & Pick<
-              Vehicle,
-              "brand" | "id" | "model" | "price" | "title"
-            > & {
-                cancelationPolicies: Array<
-                  { __typename?: "ServiceCancelationPolicy" } & Pick<
-                    ServiceCancelationPolicy,
-                    "cost" | "duration"
-                  >
-                >;
-                presentations: Array<
-                  { __typename?: "ServicePresentation" } & Pick<
-                    ServicePresentation,
-                    "src" | "type"
-                  >
-                >;
-                properties: { __typename?: "VehicleProperties" } & Pick<
-                  VehicleProperties,
-                  | "airCondition"
-                  | "gpsAvailable"
-                  | "lugaggeCapacity"
-                  | "maxSpeedInKm"
-                  | "seats"
-                  | "windows"
-                >;
-              }
-          >
-        >;
-      }
+      contact: { __typename?: "ServiceContact" } & Pick<
+        ServiceContact,
+        "address" | "city" | "country" | "email" | "phone" | "state"
+      >;
+      doctors?: Maybe<
+        Array<
+          { __typename?: "Doctor" } & Pick<
+            Doctor,
+            | "availablityStatus"
+            | "description"
+            | "healthCenterId"
+            | "id"
+            | "name"
+            | "price"
+            | "rating"
+            | "thumbnail"
+            | "specialityId"
+          > & {
+            speciality?: Maybe<
+              { __typename?: "HealthCenterSpecialty" } & Pick<
+                HealthCenterSpecialty,
+                "description" | "id" | "name"
+              >
+            >;
+          }
+        >
+      >;
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        | "address"
+        | "city"
+        | "country"
+        | "lat"
+        | "lon"
+        | "postalCode"
+        | "state"
+      >;
+      menus?: Maybe<
+        Array<
+          { __typename?: "RestaurantMenu" } & Pick<
+            RestaurantMenu,
+            "id" | "name"
+          > & {
+            dishs: Array<
+              { __typename?: "Dish" } & Pick<
+                Dish,
+                "id" | "ingredients" | "name" | "price" | "thumbnail"
+              >
+            >;
+          }
+        >
+      >;
+      policies: Array<
+        { __typename?: "ServicePolicy" } & Pick<
+          ServicePolicy,
+          "policyTitle" | "terms"
+        >
+      >;
+      presentations: Array<
+        { __typename?: "ServicePresentation" } & Pick<
+          ServicePresentation,
+          "src" | "type"
+        >
+      >;
+      rooms?: Maybe<
+        Array<
+          { __typename?: "HotelRoom" } & Pick<
+            HotelRoom,
+            | "bathrooms"
+            | "beds"
+            | "createdAt"
+            | "dailyPrice"
+            | "description"
+            | "hotelId"
+            | "id"
+            | "includedAmenities"
+            | "includedServices"
+            | "num_of_rooms"
+            | "pricePerNight"
+            | "rating"
+            | "updatedAt"
+            | "title"
+            | "sellerId"
+            | "reviews"
+            | "adaptedFor"
+            | "title"
+            | "pricePerNight"
+            | "thumbnail"
+            | "includedAmenities"
+          > & {
+            cancelationPolicies?: Array<
+              { __typename?: "ServiceCancelationPolicy" } & Pick<
+                ServiceCancelationPolicy,
+                "cost" | "duration"
+              >
+            >;
+            discount?: { __typename?: "ServiceDiscount" } & Pick<
+              ServiceDiscount,
+              "units" | "value"
+            >;
+            dailyPrices?: Maybe<
+              { __typename?: "ServiceDailyPrices" } & Pick<
+                ServiceDailyPrices,
+                "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we"
+              >
+            >;
+            extras?: Maybe<
+              Array<
+                { __typename?: "ServiceExtra" } & Pick<
+                  ServiceExtra,
+                  "cost" | "name"
+                >
+              >
+            >;
+            measurements?: {
+              __typename?: "ServicePropertyMeasurements";
+            } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
+            popularAmenities?: Maybe<
+              Array<
+                { __typename?: "ServiceAmenity" } & Pick<
+                  ServiceAmenity,
+                  "label" | "value"
+                >
+              >
+            >;
+            presentations: Array<
+              { __typename?: "ServicePresentation" } & Pick<
+                ServicePresentation,
+                "src" | "type"
+              >
+            >;
+          }
+        >
+      >;
+      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+        ServiceMetaInfo,
+        | "description"
+        | "hashtags"
+        | "metaTagDescription"
+        | "metaTagKeywords"
+        | "title"
+      >;
+      treatments?: Maybe<
+        Array<
+          { __typename?: "Treatment" } & Pick<
+            Treatment,
+            | "beautyCenterServiceId"
+            | "duration"
+            | "id"
+            | "price"
+            | "thumbnail"
+            | "title"
+            | "treatmentCategoryId"
+          > & {
+            category?: Maybe<
+              { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
+                BeautyCenterTreatmentCategory,
+                "createdAt" | "createdById" | "id" | "title"
+              >
+            >;
+            discount: { __typename?: "ServiceDiscount" } & Pick<
+              ServiceDiscount,
+              "units" | "value"
+            >;
+          }
+        >
+      >;
+      vehicles?: Maybe<
+        Array<
+          { __typename?: "Vehicle" } & Pick<
+            Vehicle,
+            "brand" | "id" | "model" | "price" | "title"
+          > & {
+            cancelationPolicies: Array<
+              { __typename?: "ServiceCancelationPolicy" } & Pick<
+                ServiceCancelationPolicy,
+                "cost" | "duration"
+              >
+            >;
+            presentations: Array<
+              { __typename?: "ServicePresentation" } & Pick<
+                ServicePresentation,
+                "src" | "type"
+              >
+            >;
+            properties: { __typename?: "VehicleProperties" } & Pick<
+              VehicleProperties,
+              | "airCondition"
+              | "gpsAvailable"
+              | "lugaggeCapacity"
+              | "maxSpeedInKm"
+              | "seats"
+              | "windows"
+            >;
+          }
+        >
+      >;
+      workingHours?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<
+          ServiceWorkingSchedule,
+          "id"
+        > & {
+          weekdays: ServiceWeekdaysWorkingHours;
+        }
+      >;
+    }
   >;
 };
 
@@ -470,14 +479,14 @@ query GetServiceDetails($id:String!){
       createdAt: "2023-03-06T00:00:00Z",
       id: "12345",
       ownerId: "67890",
-      cuisinesTypeId:"543",
-      establishmentTypeId:"423",
-      highest_price:500,
-      lowest_price:100,
-      michelin_guide_stars:3,
-      payment_methods:[],
-      setting_and_ambianceId:"44",
-      type_of_seller:ServiceTypeOfSeller.Individual,
+      cuisinesTypeId: "543",
+      establishmentTypeId: "423",
+      highest_price: 500,
+      lowest_price: 100,
+      michelin_guide_stars: 3,
+      payment_methods: [],
+      setting_and_ambianceId: "44",
+      type_of_seller: ServiceTypeOfSeller.Individual,
 
       policies: [
         {
@@ -574,7 +583,7 @@ query GetServiceDetails($id:String!){
           beds: 3,
           num_of_rooms: 2,
           sellerId: "",
-          thumbnail:""
+          thumbnail: "",
         },
       ],
       serviceMetaInfo: {
