@@ -22,19 +22,24 @@ import {
   Button,
   Divider,
   ServiceReservastionForm,
+  GetHealthCenterQuery,
 } from "ui";
 import { getRandomImage } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { HealthCenterDoctorAvailablityStatus } from "api";
-import { ServicePresentationType } from "@features/API";
+import {
+  ServicePaymentMethod,
+  ServicePresentationType,
+  ServiceStatus,
+} from "@features/API";
 
-const FAKE_HEALTH_CENTER_DATA = {
+const FAKE_HEALTH_CENTER_DATA: GetHealthCenterQuery["getHealthCenter"] = {
   id: "hc123",
   ownerId: "owner789",
-  payment_methods: ["credit_card", "cash", "insurance"],
+  payment_methods: [ServicePaymentMethod.Cash],
   rating: 4.5,
-  status: "open",
+  status: ServiceStatus.Active,
   totalReviews: 120,
   vat: 0.08,
   cancelationPolicies: [
@@ -258,7 +263,7 @@ export const HealthCenterDetailsView: React.FC = () => {
                 <>
                   <SellerServiceWorkingHoursSection
                     workingDays={
-                      Object.values(res.workingSchedule.weekdays) || []
+                      (Object.values(res.workingSchedule.weekdays) as any) || []
                     }
                   />
                 </>
@@ -335,7 +340,7 @@ export const HealthCenterDetailsView: React.FC = () => {
           ),
         },
       ],
-      [res]
+      [res],
     );
 
   return (
