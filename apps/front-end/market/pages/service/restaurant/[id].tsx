@@ -1,8 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { MasterLayout } from "@components";
-
-import { RestaurantDetailsView } from "ui";
+import { MarketRestaurantDetailsView } from "ui";
 import {
   Container,
   GetServiceDetailsQueryKey,
@@ -45,12 +44,12 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = (await getServiceDetailsDataSwitcher(
     serviceType,
-    serviceId
+    serviceId,
   )) as GqlResponse<Restaurant, "getRestaurant">;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data
+    () => data,
   );
 
   return {
@@ -92,7 +91,7 @@ const RestaurantServiceDetailsPage: NextPage<
       ) : null}
       <MasterLayout>
         <Container>
-          <RestaurantDetailsView id={id} />
+          <MarketRestaurantDetailsView id={id} />
         </Container>
       </MasterLayout>
     </>

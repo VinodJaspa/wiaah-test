@@ -1,7 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { MasterLayout } from "@components";
-import { VehicleServiceDetailsView } from "ui";
+import { MarketVehicleServiceDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
@@ -41,12 +41,12 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = (await getServiceDetailsDataSwitcher(
     serviceType,
-    serviceId
+    serviceId,
   )) as GqlResponse<VehicleService, "getVehicleService">;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data
+    () => data,
   );
 
   return {
@@ -86,7 +86,7 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
       ) : null}
       <MasterLayout>
         <Container>
-          <VehicleServiceDetailsView />
+          <MarketVehicleServiceDetailsView />
         </Container>
       </MasterLayout>
     </>
