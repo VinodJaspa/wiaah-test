@@ -1,7 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { MasterLayout } from "@components";
-import { HealthCenterDetailsView } from "ui";
+import { MarketHealthCenterDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
@@ -34,12 +34,12 @@ export const getServerSideProps: GetServerSideProps<
 
   const data = (await getServiceDetailsDataSwitcher(
     serviceType,
-    serviceId
+    serviceId,
   )) as AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data
+    () => data,
   );
 
   return {
@@ -80,7 +80,7 @@ const HealthCenterServiceDetailsPage: NextPage<
       ) : null}
       <MasterLayout>
         <Container>
-          <HealthCenterDetailsView id={id} />
+          <MarketHealthCenterDetailsView id={id} />
         </Container>
       </MasterLayout>
     </>
