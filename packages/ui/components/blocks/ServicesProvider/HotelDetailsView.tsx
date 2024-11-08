@@ -1,155 +1,313 @@
 import React from "react";
 import {
-  SpinnerFallback,
+  Tabs,
+  TabList,
+  TabTitle,
+  TabsHeader,
   useGetServicesProviderQuery,
-  Divider,
-  SectionsScrollTabList,
-  Accordion,
-  HotelServiceRoomsSection,
-  PopularAmenitiesSection,
-  Reviews,
+  ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
+  HotelServiceRoomsSection,
+  ServicesProviderDescriptionSection,
   ServicePresentationCarosuel,
-  ServiceReachOutSection,
-  MarketServicesProviderHeader,
-  ServiceWorkingHoursSection,
   StaticSideBarWrapper,
-  SectionTabType,
-  HotelMarketDescriptionSection,
-  useGetShopDetailsQuery,
-  useGetShopServicesQuery,
-  GetShopDetailsQuery,
-  ServiceReservastionForm,
   GetServiceDetailsQuery,
+  SpinnerFallback,
+  ServiceDetailsReviewsSection,
+  SellerServiceWorkingHoursSection,
+  ServicesProviderHeader,
+  Divider,
+  ServiceRangeBookingCalander,
 } from "ui";
-import { getRandomImage, reviews } from "placeholder";
-import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
-import {
-  BusinessType,
-  PresentationType,
-  ServicePresentationType,
-  ServiceType,
-  ServiceTypeOfSeller,
-  StoreType,
-  StoryType,
-} from "@features/API";
+import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
 
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
-  },
-  {
-    name: "Contact",
-    slug: "contact",
-  },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    slug: "rooms",
-    name: "Rooms",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];
-
-export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
-  const { isMobile } = useResponsive();
-  const res = FAKE_SHOP_DETAILS;
-  const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
+export const HotelDetailsView: React.FC = () => {
+  //WARNING: grphql query endpoint is not ready yet
   const {
     data: _res,
-    isError,
+    isError: _isError,
     isLoading: _isLoading,
-  } = useGetShopDetailsQuery(id);
-  const data = FAKE_DATA;
+  } = useGetServicesProviderQuery("");
   const { t } = useTranslation();
+  const res = FAKE_DATA;
+
+  const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
+    React.useMemo(
+      () => [
+        {
+          name: "Description",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <div className="flex flex-col gap-8">
+                  <ServicesProviderDescriptionSection
+                    description={res.serviceMetaInfo.description}
+                    amenities={res.popularAmenities}
+                    bedRooms={res.rooms.length}
+                    bathRooms={res.rooms[0].bathrooms}
+                    petAllowed={true}
+                  />
+                </div>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Contact",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceReachOutSection
+                    email={res.contact.email}
+                    location={res.location}
+                    telephone={res.contact.phone}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Policies",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServicePoliciesSection
+                    title={"Check-in Checout Terms"}
+                    // deposit={15}
+                    policies={[
+                      {
+                        policyTitle: "Check-in and Check-out",
+                        terms: [
+                          "Check-in time is after 3:00 PM",
+                          "Check-out time is before 12:00 PM",
+                          "Early check-in or late check-out may be available upon request and subject to availability",
+                        ],
+                      },
+                      {
+                        policyTitle: "Cancellation",
+                        terms: [
+                          "Cancellation policy varies depending on the rate plan booked",
+                          "Some rate plans may be non-refundable",
+                          "Cancellation requests must be made by 6:00 PM local time on the day prior to arrival to avoid cancellation fees",
+                        ],
+                      },
+                      {
+                        policyTitle: "Pets",
+                        terms: ["Pets are not allowed in the hotel"],
+                      },
+                    ]}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Working hours",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res && res.workingHours ? (
+                <>
+                  <SellerServiceWorkingHoursSection
+                    workingDays={res.workingHours.weekdays}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Rooms",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <HotelServiceRoomsSection rooms={res ? res.rooms : []} />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Localization",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceOnMapLocalizationSection location={res.location} />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Customer reviews",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceDetailsReviewsSection
+                    overAllRating={5}
+                    ratingLevels={[
+                      {
+                        rate: 4.9,
+                        name: "Amenities",
+                      },
+                      {
+                        name: "Communication",
+                        rate: 5,
+                      },
+                      {
+                        name: "Value for Money",
+                        rate: 5,
+                      },
+                      {
+                        name: "Hygiene",
+                        rate: 5,
+                      },
+                      {
+                        name: "Location of Property",
+                        rate: 5,
+                      },
+                    ]}
+                    reviews={[...Array(6)].map((_, i) => ({
+                      name: "John Doberman",
+                      content:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      thumbnail: `/profile (${i + 1}).jfif`,
+                      date: new Date().toString(),
+                    }))}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+      ],
+      [res],
+    );
+
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
-      {res ? (
-        <MarketServicesProviderHeader
-          name={res.sellerProfile.username}
-          rating={res.rating}
-          reviewsCount={res.reviews}
-          thumbnail={res.sellerProfile.photo}
-        />
-      ) : null}
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      {/*
+      <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-between shadow p-4">
+        <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
+          <Image
+            alt="cover"
+            className="w-40 h-28 sm:h-20 sm:w-28 rounded-xl object-cover"
+            src={
+              res
+                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
+                : ""
+            }
+          />
+          <div className="flex flex-col">
+            <p className=" font-bold text-xl">
+              {res ? res.serviceMetaInfo.title : null}
+            </p>
+            <div className="flex text-black gap-1 items-center">
+              <LocationOnPointFillIcon />
+              {res ? (
+                <p>
+                  {res.location.city}, {res.location.country}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button>{t("Follow")}</Button>
+          <Button outline>{t("Contact")}</Button>
+        </div>
+      </div>
+*/}
       <Divider />
-      <ServicePresentationCarosuel
-        data={
-          res
-            ? res.images.map((v) => ({
-              src: v,
-              type: ServicePresentationType.Img,
-            })) || []
-            : []
-        }
-      />
-      <SpinnerFallback isLoading={false} isError={isError} />
-      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
+      <ServicePresentationCarosuel data={res.presentations} />
+      <SpinnerFallback isLoading={false}>
+        {res ? (
+          <ServicesProviderHeader
+            rating={15}
+            reviewsCount={150}
+            serviceTitle={"service title"}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          />
+        ) : null}
+      </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={
-          <ServiceReservastionForm
-            sellerId={res?.ownerId! || ""}
-            selectedServicesIds={[]}
-          />
+          res ? (
+            <ServiceRangeBookingCalander
+              bookedDates={[]}
+              date={new Date()}
+              onChange={() => { }}
+              value={[]}
+            />
+          ) : null
         }
       >
-        {res ? (
-          <>
-            <HotelMarketDescriptionSection
-              description={res.description}
-              name={res.name}
-              proprtyType={t("Hotel")}
-            />
-            <Divider />
-            <Accordion>
-              {/* TODO: It should go inside RoomCardDetails */}
-              {/* <PopularAmenitiesSection
-                cols={2}
-                amenities={data?.rooms[0].includedAmenities || []}
-              /> */}
-              <Divider />
-              <ServiceReachOutSection
-                email={res.email}
-                location={res.location}
-                telephone={res.phone}
-              />
-              <HotelServiceRoomsSection rooms={data.rooms} />
-              {res.workingSchedule.weekdays ? (
-                <ServiceWorkingHoursSection
-                  workingHours={res.workingSchedule}
-                />
-              ) : null}
-              <ServicePoliciesSection
-                title={t("Hotel Polices")}
-                policies={[]}
-              />
-              <ServiceOnMapLocalizationSection location={res.location} />
-            </Accordion>
-          </>
-        ) : null}
-        <Reviews id={res?.ownerId || ""} reviews={reviews} />
+        <Tabs>
+          {({ currentTabIdx }) => {
+            return (
+              <>
+                <TabsHeader className="flex ">
+                  {ServicesProviderTabs.map((tab, i) => (
+                    <>
+                      <TabTitle TabKey={i}>
+                        {({ currentActive }) => (
+                          <p
+                            className={`${currentActive ? "text-primary" : "text-lightBlack"
+                              } font-bold text-sm`}
+                          >
+                            {t(tab.name)}
+                          </p>
+                        )}
+                      </TabTitle>
+                    </>
+                  ))}
+                </TabsHeader>
+                <TabList />
+                {ServicesProviderTabs.at(currentTabIdx).component}
+              </>
+            );
+          }}
+        </Tabs>
       </StaticSideBarWrapper>
     </div>
   );
 };
 
 const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
+  workingHours: {
+    id: "schedule1",
+    weekdays: {
+      fr: {
+        periods: ["09:00", "17:00"],
+      },
+      mo: {
+        periods: ["09:00", "17:00"],
+      },
+      sa: {
+        periods: ["10:00", "14:00"],
+      },
+      su: {
+        periods: ["10:00", "14:00"],
+      },
+      th: {
+        periods: ["09:00", "17:00"],
+      },
+      tu: {
+        periods: ["09:00", "17:00"],
+      },
+      we: {
+        periods: ["09:00", "17:00"],
+      },
+    },
+  },
   createdAt: "2023-03-06T00:00:00Z",
   id: "12345",
   ownerId: "67890",
@@ -195,6 +353,16 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
     postalCode: 12345,
     state: "CA",
   },
+  popularAmenities: [
+    {
+      label: "Swimming pool",
+      value: "yes",
+    },
+    {
+      label: "Gym",
+      value: "yes",
+    },
+  ],
   rooms: [
     {
       cancelationPolicies: [
@@ -276,79 +444,5 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
     email: "email",
     phone: "123456789",
     state: "state",
-  },
-};
-
-export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
-  __typename: "Shop",
-  banner: "https://placeholder.com/banner.jpg",
-  businessType: BusinessType.Company,
-  images: [
-    "https://placeholder.com/image1.jpg",
-    "https://placeholder.com/image2.jpg",
-  ],
-  videos: ["https://placeholder.com/video1.mp4"],
-  createdAt: new Date().toISOString(),
-  description: "This is a placeholder description for the shop.",
-  email: "shop@example.com",
-  id: "shop-123",
-  ownerId: "owner-123",
-  name: "Placeholder Shop",
-  phone: "+1234567890",
-  rating: 4.5,
-  reviews: 120,
-  thumbnail: getRandomImage(),
-  type: ServiceType.Hotel,
-  storeType: StoreType.Service,
-  verified: true,
-  sellerProfile: {
-    __typename: "Profile",
-    photo: getRandomImage(),
-    username: "placeholder_user",
-    ownerId: "owner-123",
-    id: "profile-123",
-  },
-  location: {
-    __typename: "ServiceLocation",
-    address: "123 Placeholder St",
-    city: "Placeholder City",
-    country: "Placeholder Country",
-    lat: 12.34,
-    lon: 56.78,
-    postalCode: 12345,
-    state: "Placeholder State",
-    countryCode: "PC",
-  },
-  workingSchedule: {
-    __typename: "WorkingSchedule",
-    id: "schedule-123",
-    weekdays: {
-      __typename: "WeekdaysWorkingHours",
-      fr: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-13:00", "14:00-18:00"],
-      },
-      mo: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-13:00", "14:00-18:00"],
-      },
-      sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-14:00"],
-      },
-      su: null,
-      th: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-13:00", "14:00-18:00"],
-      },
-      tu: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-13:00", "14:00-18:00"],
-      },
-      we: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-13:00", "14:00-18:00"],
-      },
-    },
   },
 };

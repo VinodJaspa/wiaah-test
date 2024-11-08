@@ -1,318 +1,430 @@
 import React from "react";
-import { reviews } from "placeholder";
-import { useTranslation } from "react-i18next";
-import { SpinnerFallback } from "@blocks/FallbackDisplays";
-import { Divider } from "@partials";
-import { SectionsScrollTabList, SectionTabType } from "../../blocks/Navigating";
-import { StaticSideBarWrapper } from "@blocks/Wrappers";
-import { WorkingDaysCalender } from "@blocks/DataDisplay";
 import {
-  useGetBeautyCenterDetailsQuery,
   ServicesProviderHeader,
-  ServicePresentationCarosuel,
-  ServicesProviderDescriptionSection,
-  BeautyCenterTreatmentsList,
+  SpinnerFallback,
+  Divider,
   ServiceReachOutSection,
-  ServiceWorkingHoursSection,
-  ServicePoliciesSection,
   ServiceOnMapLocalizationSection,
-  GetBeautyQuery,
-} from "@features";
-import { Reviews } from "@blocks/Reviews";
-import {
-  ServicePaymentMethod,
-  ServicePresentationType,
-  ServiceStatus,
-  ServiceTypeOfSeller,
-} from "@features/API";
+  ServicePoliciesSection,
+  ServicePresentationCarosuel,
+  StaticSideBarWrapper,
+  useGetBeautyCenterDetailsQuery,
+  BeautyCenterTreatmentsList,
+  Tabs,
+  TabsHeader,
+  TabList,
+  TabTitle,
+  RestaurantDetailsDescriptionSection,
+  SellerServiceWorkingHoursSection,
+  ServiceDetailsReviewsSection,
+  Image,
+  LocationOnPointFillIcon,
+  Button,
+  ServiceReservastionForm,
+} from "ui";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import { getRandomImage } from "placeholder";
+import { ServicePresentationType } from "@features/API";
 
-export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
-  id,
-}) => {
-  const { data: res, isError, isLoading } = useGetBeautyCenterDetailsQuery(id);
-
+export const BeautyCenterServiceDetailsView: React.FC = () => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
+  //WARNING: grqphql endpoint query is not ready
+  const {
+    data: _res,
+    isError: _isError,
+    isLoading: _isLoading,
+  } = useGetBeautyCenterDetailsQuery(id);
+  const res = FAKE_BEAUTY_CENTER_DATA;
   const { t } = useTranslation();
 
+  const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
+    React.useMemo(
+      () => [
+        {
+          name: "Description",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <div className="flex flex-col gap-8">
+                  <RestaurantDetailsDescriptionSection
+                    description={res.serviceMetaInfo.description}
+                  />
+                </div>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Contact",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceReachOutSection
+                    email={res.contact.email}
+                    location={res.location}
+                    telephone={res.contact.phone}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Policies",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServicePoliciesSection
+                    title={"Beauty center Policies and terms"}
+                    // deposit={15}
+                    policies={res.policies}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Working hours",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <SellerServiceWorkingHoursSection
+                    workingDays={res.workingHours.weekdays}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Treatments",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <BeautyCenterTreatmentsList
+                  cancelation={res.cancelationPolicies || []}
+                  treatments={res.treatments || []}
+                />
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Localization",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceOnMapLocalizationSection location={res.location} />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Customer reviews",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceDetailsReviewsSection
+                    overAllRating={5}
+                    ratingLevels={[
+                      {
+                        rate: 4.9,
+                        name: "Amenities",
+                      },
+                      {
+                        name: "Communication",
+                        rate: 5,
+                      },
+                      {
+                        name: "Value for Money",
+                        rate: 5,
+                      },
+                      {
+                        name: "Hygiene",
+                        rate: 5,
+                      },
+                      {
+                        name: "Location of Property",
+                        rate: 5,
+                      },
+                    ]}
+                    reviews={[...Array(6)].map((_, i) => ({
+                      name: "John Doberman",
+                      content:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      thumbnail: `/profile (${i + 1}).jfif`,
+                      date: new Date().toString(),
+                    }))}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+      ],
+      [res],
+    );
+
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      {/*<div className="flex w-full items-center justify-between shadow p-4">
+        <div className="flex gap-4">
+          <Image
+            alt="avetar"
+            className="w-28 h-20 rounded-xl object-cover"
+            src={
+              res
+                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
+                : ""
+            }
+          />
+          <div className="flex flex-col">
+            <p className=" font-bold text-xl">
+              {res ? res.serviceMetaInfo.title : null}
+            </p>
+            <div className="flex text-black gap-1 items-center">
+              <LocationOnPointFillIcon />
+              {res ? (
+                <p>
+                  {res.location.city}, {res.location.country}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button>{t("Follow")}</Button>
+          <Button outline>{t("Contact")}</Button>
+        </div>
+      </div>
+*/}
+      <Divider />
+      <ServicePresentationCarosuel data={res.presentations} />
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
             reviewsCount={res.totalReviews}
             serviceTitle={res.serviceMetaInfo.title}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
-      <Divider />
-      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="w-full h-full overflow-hidden">
-            <WorkingDaysCalender
-              takenDates={
-                res
-                  ? Object.values(res.takenHours!.weekdays).map((value) => ({
-                    date: new Date().toString(),
-                    workingHoursRanges:
-                      typeof value === "object"
-                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                        : [],
-                  }))
-                  : []
-              }
-              workingDates={
-                res
-                  ? Object.values(res.workingHours!.weekdays).map((value) => ({
-                    date: new Date().toString(),
-                    workingHoursRanges:
-                      typeof value === "object"
-                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                        : [],
-                  }))
-                  : []
-              }
-            />
-          </div>
+          <ServiceReservastionForm
+            sellerId={"test"}
+            selectedServicesIds={[]}
+          // serviceId={""}
+          />
         }
       >
-        {res ? (
-          <>
-            <ServicesProviderDescriptionSection
-              description={res.serviceMetaInfo.description}
-            />
-            <Divider />
-            <BeautyCenterTreatmentsList
-              cancelation={res.cancelationPolicies || []}
-              treatments={res.treatments}
-            />
-            <ServiceReachOutSection
-              email={res.contact.email}
-              location={res.location}
-              telephone={res.contact.phone}
-            />
-
-            <ServiceWorkingHoursSection workingHours={res.workingHours!} />
-            <ServicePoliciesSection policies={res.policies} title="" />
-            <ServiceOnMapLocalizationSection location={res.location} />
-          </>
-        ) : null}
-        <Reviews id={res?.id || ""} reviews={reviews} />
+        <Tabs>
+          {({ currentTabIdx }) => {
+            return (
+              <>
+                <TabsHeader />
+                <TabList />
+                {ServicesProviderTabs.map((tab, i) => (
+                  <React.Fragment key={i}>
+                    <TabTitle TabKey={i}>
+                      {({ currentActive }) => (
+                        <p
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
+                        >
+                          {t(tab.name)}
+                        </p>
+                      )}
+                    </TabTitle>
+                  </React.Fragment>
+                ))}
+                {ServicesProviderTabs.at(currentTabIdx).component}
+              </>
+            );
+          }}
+        </Tabs>
       </StaticSideBarWrapper>
     </div>
   );
 };
 
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
+const FAKE_BEAUTY_CENTER_DATA = {
+  beauty_center_typeId: "bct1",
+  createdAt: "2023-01-01T00:00:00Z",
+  id: "bc123",
+  ownerId: "owner456",
+  payment_methods: ["credit_card", "cash", "paypal"],
+  rating: 4.7,
+  status: "active",
+  title: "Glamour Beauty Center",
+  totalReviews: 230,
+  type_of_seller: "individual",
+  updatedAt: "2023-06-01T00:00:00Z",
+  vat: 0.15,
+  cancelationPolicies: [
+    {
+      cost: 20.0,
+      duration: 24,
+    },
+    {
+      cost: 50.0,
+      duration: 12,
+    },
+  ],
+  location: {
+    address: "123 Beauty St",
+    city: "Beautville",
+    country: "Beautland",
+    lat: 40.7128,
+    lon: -74.006,
+    postalCode: 12345,
+    state: "Beautystate",
   },
-  {
-    name: "Contact",
-    slug: "contact",
+  owner: {
+    firstName: "Jane",
+    lastName: "Doe",
+    email: "jane.doe@example.com",
+    photo: getRandomImage(),
+    verified: true,
   },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    name: "Treatments",
-    slug: "treatments",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];
-const FAKE_BEAUTY_CENTER_DETAILS: GetBeautyQuery["getBeautyCenterById"] = {
-  createdAt: "2023-03-06T00:00:00Z",
-  id: "12345",
-  ownerId: "67890",
   policies: [
     {
-      policyTitle: "Cancellation Policy",
-      terms: ["Full refund if canceled within 24 hours"],
+      policyTitle: "No Pets",
+      terms: ["Pets are not allowed inside the beauty center."],
+    },
+    {
+      policyTitle: "Appointment Required",
+      terms: ["All visits require a prior appointment."],
     },
   ],
   presentations: [
     {
-      src: "https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg",
+      src: getRandomImage(),
       type: ServicePresentationType.Img,
     },
     {
-      src: "https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg",
-      type: ServicePresentationType.Img,
-    },
-    {
-      src: "https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg",
-      type: ServicePresentationType.Img,
-    },
-    {
-      src: "https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg",
+      src: getRandomImage(),
       type: ServicePresentationType.Img,
     },
   ],
-  location: {
-    address: "123 Main St",
-    city: "Anytown",
-    country: "USA",
-    lat: 37.7749,
-    lon: -122.4194,
-    postalCode: 12345,
-    state: "CA",
+  serviceMetaInfo: {
+    description:
+      "A luxurious beauty center offering a wide range of beauty treatments.",
+    hashtags: ["#beauty", "#spa", "#wellness"],
+    metaTagDescription:
+      "Experience luxury at Glamour Beauty Center with top-notch beauty treatments.",
+    metaTagKeywords: ["beauty center", "spa", "wellness", "beauty treatments"],
+    title: "Glamour Beauty Center",
   },
-  beauty_center_typeId: "",
-  cancelationPolicies: [
-    {
-      cost: 5,
-      duration: 4,
-    },
-    {
-      cost: 0,
-      duration: 2,
-    },
-    {
-      cost: 10,
-      duration: 6,
-    },
-  ],
-  payment_methods: [ServicePaymentMethod.Cash, ServicePaymentMethod.CreditCard],
-  rating: 4,
-  status: ServiceStatus.Active,
-  title: "title",
-  totalReviews: 156,
   treatments: [
     {
-      discount: {
-        units: 15,
-        value: 10,
-      },
-      duration: [30, 60],
-      id: "",
-      price: 160,
-      beautyCenterServiceId: "test",
-      thumbnail:
-        "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
-      title: "back pain treatment",
-      treatmentCategoryId: "",
+      duration: [60],
+      id: "treatment1",
+      price: 100.0,
+      title: "Relaxing Massage",
+      treatmentCategoryId: "cat1",
+      beautyCenterServiceId: "bcs1",
+      thumbnail: getRandomImage(),
       category: {
-        title: "body treatment",
-        createdAt: new Date().toString(),
-        createdById: "",
-        id: "",
-        updatedAt: new Date().toString(),
+        createdAt: "2022-01-01T00:00:00Z",
+        createdById: "admin1",
+        id: "cat1",
+        title: "Massage",
+        updatedAt: "2022-12-01T00:00:00Z",
+      },
+      discount: {
+        units: 4,
+        value: 10,
       },
     },
     {
-      beautyCenterServiceId: "test",
-      thumbnail:
-        "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
-      discount: {
-        units: 15,
-        value: 10,
-      },
-      duration: [30, 60],
-      id: "",
-      price: 160,
-      title: "back pain treatment",
-      treatmentCategoryId: "",
+      duration: [30],
+      id: "treatment2",
+      price: 50.0,
+      title: "Facial Treatment",
+      treatmentCategoryId: "cat2",
+      beautyCenterServiceId: "bcs2",
+      thumbnail: getRandomImage(),
       category: {
-        title: "body treatment",
-        createdAt: new Date().toString(),
-        createdById: "",
-        id: "",
-        updatedAt: new Date().toString(),
+        createdAt: "2022-02-01T00:00:00Z",
+        createdById: "admin2",
+        id: "cat2",
+        title: "Facial",
+        updatedAt: "2022-11-01T00:00:00Z",
       },
-    },
-    {
-      beautyCenterServiceId: "test",
-      thumbnail:
-        "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
       discount: {
-        units: 15,
-        value: 10,
-      },
-      duration: [30, 60],
-      id: "",
-      price: 160,
-      title: "back pain treatment",
-      treatmentCategoryId: "",
-      category: {
-        title: "body treatment",
-        createdAt: new Date().toString(),
-        createdById: "",
-        id: "",
-        updatedAt: new Date().toString(),
+        units: 4,
+        value: 15,
       },
     },
   ],
-  type_of_seller: ServiceTypeOfSeller.Individual,
-  vat: 10,
-  serviceMetaInfo: {
-    description: "A great hotel in a prime location",
-    hashtags: ["#travel", "#vacation", "#hotel"],
-    metaTagDescription:
-      "Book your stay at our hotel and enjoy great amenities and services",
-    metaTagKeywords: ["hotel, travel, vacation"],
-    title: "Book Your Stay at Our Hotel",
-  },
-  updatedAt: "2023-03-06T00:00:00Z",
   contact: {
-    address: "address",
-    city: "city",
-    country: "country",
-    email: "email",
-    phone: "1345",
-    state: "state",
-  },
-  owner: {
-    email: "email",
-    firstName: "first",
-    // id: "id",
-    lastName: "last",
-    verified: true,
-    photo: "photo",
+    address: "123 Beauty St",
+    city: "Beautville",
+    country: "Beautland",
+    email: "contact@beautycenter.com",
+    phone: "+1234567890",
+    state: "Beautystate",
   },
   workingHours: {
-    id: "",
+    id: "wh1",
     weekdays: {
       fr: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["18:00-22:00"],
+        periods: ["09:00", "18:00"],
       },
       mo: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "18:00"],
       },
       sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-23:00"],
+        periods: ["10:00", "16:00"],
       },
       su: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-20:00"],
+        periods: [],
       },
       th: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "18:00"],
       },
       tu: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "18:00"],
       },
       we: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "18:00"],
+      },
+    },
+  },
+  takenHours: {
+    id: "th1",
+    weekdays: {
+      fr: {
+        periods: ["13:00", "14:00"],
+      },
+      mo: {
+        periods: ["13:00", "14:00"],
+      },
+      sa: {
+        periods: ["11:00", "12:00"],
+      },
+      su: {
+        periods: [],
+      },
+      th: {
+        periods: ["13:00", "14:00"],
+      },
+      tu: {
+        periods: ["13:00", "14:00"],
+      },
+      we: {
+        periods: ["13:00", "14:00"],
       },
     },
   },

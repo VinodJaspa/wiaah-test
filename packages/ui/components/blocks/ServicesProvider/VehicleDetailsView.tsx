@@ -2,45 +2,183 @@ import React from "react";
 import {
   ServicesProviderHeader,
   SpinnerFallback,
-  useSearchFilters,
-  Divider,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
-  ServiceWorkingHoursSection,
-  ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  SectionsScrollTabList,
   useGetVehicleProviderDetailsQuery,
-  DateAndTimeInput,
+  Tabs,
+  TabsHeader,
+  TabList,
+  TabTitle,
+  ServiceDetailsReviewsSection,
   VehiclesSelectableList,
+  SellerServiceWorkingHoursSection,
+  DateAndTimeInput,
+  VehicleServiceDescriptionSection,
+  ServiceReservastionForm,
   GetVehicleQuery,
 } from "ui";
-import { random } from "lodash";
-import { reviews } from "placeholder";
-import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
-import { ServicePaymentMethod, ServicePresentationType } from "@features/API";
+import { useRouting } from "routing";
+import { VehicleMyServiceDataType } from "api";
+type VehicleServiceDetailsViewProps = {
+  vehicleData: GetVehicleQuery["getVehicleServicebyId"];
+};
 
-export const VehicleServiceDetailsView: React.FC = () => {
-  const { filters } = useSearchFilters();
+export const VehicleServiceDetailsView: React.FC<
+  VehicleServiceDetailsViewProps
+> = ({ vehicleData }) => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
+  // WARNING: grqphql endpoint query is not
   const {
     data: _res,
     isError,
-    isLoading: _isLoading,
-  } = useGetVehicleProviderDetailsQuery(filters);
-  const res = FAKE_VEHICLE_DETAILS;
-
+    isLoading,
+  } = useGetVehicleProviderDetailsQuery({ id });
+  const res = vehicleData;
   const { t } = useTranslation();
 
-  const VehiclesRef = usePublishRef("vehicles");
+  const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
+    React.useMemo(
+      () => [
+        {
+          name: "Description",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <div className="flex flex-col gap-8">
+                  <VehicleServiceDescriptionSection
+                    description={res.serviceMetaInfo.description}
+                    GPS
+                    airCondition
+                    maxSpeed={240}
+                    seats={4}
+                  />
+                </div>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Contact",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceReachOutSection
+                    email={res.contact.email}
+                    location={res.location}
+                    telephone={res.contact.phone}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Policies",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServicePoliciesSection
+                    title={"Health Center Policies and terms"}
+                    // deposit={15}
+                    policies={res.policies}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Working hours",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <SellerServiceWorkingHoursSection
+                    workingDays={res.workingHours.weekdays}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Vehicles",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? <VehiclesSelectableList vehicles={res.vehicles} /> : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Localization",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceOnMapLocalizationSection location={res.location} />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Customer reviews",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceDetailsReviewsSection
+                    overAllRating={5}
+                    ratingLevels={[
+                      {
+                        rate: 4.9,
+                        name: "Amenities",
+                      },
+                      {
+                        name: "Communication",
+                        rate: 5,
+                      },
+                      {
+                        name: "Value for Money",
+                        rate: 5,
+                      },
+                      {
+                        name: "Hygiene",
+                        rate: 5,
+                      },
+                      {
+                        name: "Location of Property",
+                        rate: 5,
+                      },
+                    ]}
+                    reviews={[...Array(6)].map((_, i) => ({
+                      name: "John Doberman",
+                      content:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      thumbnail: `/profile (${i + 1}).jfif`,
+                      date: new Date().toString(),
+                    }))}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+      ],
+      [res],
+    );
 
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
@@ -49,262 +187,37 @@ export const VehicleServiceDetailsView: React.FC = () => {
           />
         ) : null}
       </SpinnerFallback>
-      <Divider />
-      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="flex flex-col gap-2 text-xl">
-            <DateAndTimeInput
-              onDateChange={() => { }}
-              dateLabel={t("Pick-up Date")}
-            />
-            <DateAndTimeInput
-              onDateChange={() => { }}
-              dateLabel={t("Return Date")}
-            />
-          </div>
+          <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
         }
       >
-        {res ? (
-          <>
-            <ServicesProviderDescriptionSection
-              description={res.serviceMetaInfo.description}
-            />
-            <Divider />
-            <ServiceReachOutSection
-              email={res.contact.email}
-              location={res.location}
-              telephone={res.contact.phone}
-            />
-            <VehiclesSelectableList vehicles={res.vehicles || []} />
-            <ServiceWorkingHoursSection workingHours={res.workingHours} />
-            <ServicePoliciesSection
-              title={t("Vehicle Policies")}
-              policies={res.policies}
-            />
-            <ServiceOnMapLocalizationSection location={res.location} />
-          </>
-        ) : null}
-        <Reviews id={res?.id || ""} reviews={reviews} />
+        <Tabs>
+          {({ currentTabIdx }) => {
+            return (
+              <>
+                <TabsHeader />
+                <TabList />
+                {ServicesProviderTabs.map((tab, i) => (
+                  <>
+                    <TabTitle TabKey={i}>
+                      {({ currentActive }) => (
+                        <p
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
+                        >
+                          {t(tab.name)}
+                        </p>
+                      )}
+                    </TabTitle>
+                  </>
+                ))}
+                {ServicesProviderTabs.at(currentTabIdx).component}
+              </>
+            );
+          }}
+        </Tabs>
       </StaticSideBarWrapper>
     </div>
   );
-};
-
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
-  },
-  {
-    name: "Contact",
-    slug: "contact",
-  },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    slug: "vehicles",
-    name: "Vehicles",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];
-
-const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
-  cancelationPolicies: [
-    {
-      cost: 20,
-      duration: 24,
-    },
-  ],
-  createdAt: "2022-01-01T00:00:00Z",
-  id: "123",
-  location: {
-    address: "123 Main St",
-    city: "New York",
-    country: "USA",
-    lat: 40.712776,
-    lon: -74.005974,
-    postalCode: 10001,
-    state: "NY",
-  },
-  ownerId: "456",
-  payment_methods: [ServicePaymentMethod.Cash, ServicePaymentMethod.CreditCard],
-  contact: {
-    address: "address",
-    city: "city",
-    country: "country",
-    email: "email",
-    phone: "1345",
-    state: "state",
-  },
-  policies: [
-    {
-      policyTitle: "Cancellation Policy",
-      terms: ["Cancellation must be made at least 24 hours in advance."],
-    },
-  ],
-  presentations: [
-    {
-      src: "https://content-images.carmax.com/qeontfmijmzv/MY19MKj0XutK084z874jt/9632621fd8464b5c0e54a9dee64ad4e5/tesla.jpg",
-      type: ServicePresentationType.Img,
-    },
-    {
-      src: "https://www.autocar.co.uk/sites/autocar.co.uk/files/range-rover-2022-001-tracking-front.jpg",
-      type: ServicePresentationType.Img,
-    },
-    {
-      src: "https://carwow-uk-wp-3.imgix.net/18015-MC20BluInfinito-scaled-e1666008987698.jpg",
-      type: ServicePresentationType.Img,
-    },
-  ],
-  rating: 4.5,
-  serviceMetaInfo: {
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    hashtags: ["car rental", "rent a car"],
-    metaTagDescription: "Rent a car for your next trip",
-    metaTagKeywords: ["car rental", " rent a car", "car hire"],
-    title: "Rent a Car",
-  },
-  workingHours: {
-    id: "",
-    weekdays: {
-      fr: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      mo: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      sa: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      su: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      th: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      tu: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-      we: {
-        periods: [new Date().toString(), new Date().toString()],
-      },
-    },
-  },
-  totalReviews: 100,
-  updatedAt: "2022-01-02T00:00:00Z",
-  vat: 10,
-  vehicles: [
-    {
-      brand: "Toyota",
-      cancelationPolicies: [
-        {
-          cost: 10,
-          duration: 12,
-        },
-      ],
-      id: "789",
-      model: "Corolla",
-      presentations: [
-        {
-          src: "https://hips.hearstapps.com/hmg-prod/images/2023-mclaren-artura-101-1655218102.jpg?crop=1.00xw:0.847xh;0,0.153xh&resize=1200:*",
-          type: ServicePresentationType.Img,
-        },
-        {
-          src: "https://imgd.aeplcdn.com/0x0/n/cw/ec/106785/exterior-right-front-three-quarter-2.jpeg?isig=0",
-          type: ServicePresentationType.Img,
-        },
-      ],
-      price: 50,
-      properties: {
-        airCondition: true,
-        gpsAvailable: true,
-        lugaggeCapacity: 2,
-        maxSpeedInKm: 120,
-        seats: 5,
-        windows: 4,
-      },
-      title: "Toyota Corolla",
-    },
-    {
-      brand: "Honda",
-      cancelationPolicies: [
-        {
-          cost: 15,
-          duration: 18,
-        },
-      ],
-      id: "ABC",
-      model: "Accord",
-      presentations: [
-        {
-          src: "https://www.usnews.com/object/image/00000184-2f95-db4d-a387-afdf94b80000/2020-chevrolet-camaross-001-1.jpg?update-time=1667566268348&size=responsive640",
-          type: ServicePresentationType.Img,
-        },
-      ],
-      price: 60,
-      properties: {
-        airCondition: true,
-        gpsAvailable: true,
-        lugaggeCapacity: 3,
-        maxSpeedInKm: 140,
-        seats: 5,
-        windows: 4,
-      },
-      title: "Honda Accord",
-    },
-    {
-      brand: "Toyota",
-      cancelationPolicies: [
-        {
-          cost: 10,
-          duration: 12,
-        },
-      ],
-      id: "789",
-      model: "Corolla",
-      presentations: [
-        {
-          src: "https://hips.hearstapps.com/hmg-prod/images/2023-mclaren-artura-101-1655218102.jpg?crop=1.00xw:0.847xh;0,0.153xh&resize=1200:*",
-          type: ServicePresentationType.Img,
-        },
-        {
-          src: "https://imgd.aeplcdn.com/0x0/n/cw/ec/106785/exterior-right-front-three-quarter-2.jpeg?isig=0",
-          type: ServicePresentationType.Img,
-        },
-      ],
-      price: 50,
-      properties: {
-        airCondition: true,
-        gpsAvailable: true,
-        lugaggeCapacity: 2,
-        maxSpeedInKm: 120,
-        seats: 5,
-        windows: 4,
-      },
-      title: "Toyota Corolla",
-    },
-  ],
-  owner: {
-    email: "john@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    id: "",
-    verified: true,
-    photo: "",
-  },
 };

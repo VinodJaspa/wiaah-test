@@ -1,329 +1,411 @@
 import React from "react";
 import {
-  ServicesProviderHeader,
   SpinnerFallback,
-  Divider,
   ServiceOnMapLocalizationSection,
   ServiceReachOutSection,
-  ServiceWorkingHoursSection,
   ServicePoliciesSection,
-  ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  SectionsScrollTabList,
   ResturantFindTableFilterStepper,
-  Accordion,
   ResturantMenuListSection,
   useGetRestaurantServiceDetailsDataQuery,
+  Tabs,
+  TabsHeader,
+  TabList,
+  TabTitle,
+  ServiceDetailsReviewsSection,
+  SellerServiceWorkingHoursSection,
+  RestaurantDetailsDescriptionSection,
+  ServicesProviderHeader,
+  Image,
+  LocationOnPointFillIcon,
+  Button,
+  Divider,
+  ServiceReservastionForm,
   GetRestaurantQuery,
 } from "ui";
-import { getRandomImage, reviews } from "placeholder";
-import { useResponsive } from "hooks";
-import { random } from "lodash";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import { getRandomImage } from "placeholder";
 import {
   ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
-  ServiceTypeOfSeller,
 } from "@features/API";
 
-export const RestaurantDetailsView: React.FC<{ id?: string }> = ({ id }) => {
+export const RestaurantDetailsView: React.FC = () => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
   const {
     data: _res,
-    isError,
-    isLoading,
-  } = useGetRestaurantServiceDetailsDataQuery(id!);
-  const { isMobile } = useResponsive();
-  const res = FAKE_RESTAURNAT_DETAILS;
+    isError: _isError,
+    isLoading: _isLoading,
+  } = useGetRestaurantServiceDetailsDataQuery(id);
+  const { t } = useTranslation();
+
+  const res = FAKE_RESTAURANT_DETAILS_DATA;
+
+  const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
+    React.useMemo(
+      () => [
+        {
+          name: "Description",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <div className="flex flex-col gap-8">
+                  <RestaurantDetailsDescriptionSection
+                    description={res?.serviceMetaInfo?.description}
+                  />
+                </div>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Contact",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceReachOutSection
+                    email={res?.contact?.email}
+                    location={res?.location}
+                    telephone={res?.contact?.phone}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Policies",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServicePoliciesSection
+                    title={"Restaurant Policies and terms"}
+                    policies={res?.policies}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Working hours",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <SellerServiceWorkingHoursSection
+                    workingDays={res?.workingHours.weekdays}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Menus",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <ResturantMenuListSection
+                  cancelation={res?.cancelationPolicies || []}
+                  menus={res?.menus || []}
+                />
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Localization",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceOnMapLocalizationSection location={res?.location} />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+        {
+          name: "Customer reviews",
+          component: (
+            <SpinnerFallback isLoading={false}>
+              {res ? (
+                <>
+                  <ServiceDetailsReviewsSection
+                    overAllRating={5}
+                    ratingLevels={[
+                      {
+                        rate: 4.9,
+                        name: "Amenities",
+                      },
+                      {
+                        name: "Communication",
+                        rate: 5,
+                      },
+                      {
+                        name: "Value for Money",
+                        rate: 5,
+                      },
+                      {
+                        name: "Hygiene",
+                        rate: 5,
+                      },
+                      {
+                        name: "Location of Property",
+                        rate: 5,
+                      },
+                    ]}
+                    reviews={[...Array(6)].map((_, i) => ({
+                      name: "John Doberman",
+                      content:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      thumbnail: `/profile (${i + 1}).jfif`,
+                      date: new Date().toString(),
+                    }))}
+                  />
+                </>
+              ) : null}
+            </SpinnerFallback>
+          ),
+        },
+      ],
+      [res],
+    );
 
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      {/*<div className="flex w-full items-center justify-between shadow p-4">
+        <div className="flex gap-4">
+          <Image
+            alt="avetar"
+            className="w-28 h-20 rounded-xl object-cover"
+            src={
+              res
+                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
+                : ""
+            }
+          />
+          <div className="flex flex-col">
+            <p className=" font-bold text-xl">
+              {res ? res.serviceMetaInfo.title : null}
+            </p>
+            <div className="flex text-black gap-1 items-center">
+              <LocationOnPointFillIcon />
+              {res ? (
+                <p>
+                  {res.location.city}, {res.location.country}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button>{t("Follow")}</Button>
+          <Button outline>{t("Contact")}</Button>
+        </div>
+      </div>
+*/}
+      <Divider />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
+      <SpinnerFallback isLoading={false}>
         {res ? (
           <ServicesProviderHeader
-            rating={4}
-            reviewsCount={156}
-            serviceTitle="Restaurant name"
+            rating={4.5}
+            reviewsCount={15}
+            serviceTitle={res.serviceMetaInfo.title}
+          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
-      <Divider />
-      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
-      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={<ResturantFindTableFilterStepper />}>
-        <SpinnerFallback isError={isError} isLoading={false}>
-          {res ? (
-            <ServicesProviderDescriptionSection
-              description={res.serviceMetaInfo.description}
-            />
-          ) : null}
-        </SpinnerFallback>
-        <Divider />
-        <Accordion defaultOpenItems={[...Array(10)].map((_, i) => `${i}`)}>
-          <SpinnerFallback isLoading={isLoading} isError={isError}>
-            {res ? (
-              <ServiceReachOutSection
-                email={res.contact.email}
-                location={res.location}
-                telephone={res.contact.phone}
-              />
-            ) : null}
-          </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
-            {res ? (
-              <ResturantMenuListSection
-                cancelation={res.cancelationPolicies || []}
-                menus={res.menus}
-              />
-            ) : null}
-          </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
-            {res ? (
-              <ServiceWorkingHoursSection
-                workingHours={{
-                  id: "",
-                  weekdays: {
-                    fr: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    mo: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    sa: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    su: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    th: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    tu: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    we: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                  },
-                }}
-              />
-            ) : null}
-          </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
-            {res ? (
-              <ServicePoliciesSection policies={res.policies} title="" />
-            ) : null}
-          </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
-            {res ? (
-              <ServiceOnMapLocalizationSection location={res.location} />
-            ) : null}
-          </SpinnerFallback>
-        </Accordion>
-        <SpinnerFallback isLoading={false} isError={isError}>
-          {res ? <Reviews id={res?.id || ""} reviews={reviews} /> : null}
-        </SpinnerFallback>
+      <StaticSideBarWrapper
+        sidebar={
+          <ServiceReservastionForm
+            sellerId={""}
+            selectedServicesIds={[]}
+          // serviceId={""}
+          />
+        }
+      >
+        <Tabs>
+          {({ currentTabIdx }) => {
+            return (
+              <>
+                <TabsHeader />
+                <TabList />
+                {ServicesProviderTabs.map((tab, i) => (
+                  <React.Fragment key={i}>
+                    <TabTitle TabKey={i}>
+                      {({ currentActive }) => (
+                        <p
+                          className={`${currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
+                        >
+                          {t(tab.name)}
+                        </p>
+                      )}
+                    </TabTitle>
+                  </React.Fragment>
+                ))}
+                {ServicesProviderTabs.at(currentTabIdx).component}
+              </>
+            );
+          }}
+        </Tabs>
       </StaticSideBarWrapper>
     </div>
   );
 };
 
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
-  },
-  {
-    name: "Contact",
-    slug: "contact",
-  },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    slug: "menu",
-    name: "Menu",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];
-
-export const FAKE_RESTAURNAT_DETAILS: GetRestaurantQuery["getRestaurant"] = {
-  __typename: "Restaurant",
-  cuisinesTypeId: "1",
-  establishmentTypeId: "1",
-  highest_price: 150,
-  id: "restaurant_1",
-  lowest_price: 20,
-  michelin_guide_stars: 3,
-  ownerId: "owner_1",
-  payment_methods: [ServicePaymentMethod.Cash, ServicePaymentMethod.Visa],
-  setting_and_ambianceId: "ambiance_1",
+const FAKE_RESTAURANT_DETAILS_DATA: GetRestaurantQuery["getRestaurant"] = {
+  cuisinesTypeId: 1,
+  establishmentTypeId: 2,
+  highest_price: 100.0,
+  id: "rest123",
+  lowest_price: 20.0,
+  michelin_guide_stars: 2,
+  ownerId: "owner456",
+  payment_methods: [ServicePaymentMethod.Cash],
+  setting_and_ambianceId: 3,
   status: ServiceStatus.Active,
-  vat: 10,
+  vat: 0.08,
   location: {
-    __typename: "ServiceLocation",
-    address: "123 Main St",
-    city: "Sample City",
-    country: "CountryName",
+    address: "123 Food Street",
+    city: "Gourmet City",
+    country: "Foodland",
     lat: 40.7128,
     lon: -74.006,
-    postalCode: 42353,
-    state: "Sample State",
+    postalCode: 12345,
+    state: "Delicious",
   },
   menus: [
     {
-      __typename: "RestaurantMenu",
-      id: "menu_1",
-      name: "Dinner Specials",
+      id: "menu1",
+      name: "Lunch Menu",
       dishs: [
         {
-          __typename: "Dish",
-          id: "dish_1",
-          ingredients: ["Chicken", "Garlic", "Pepper"],
-          price: 25,
-          name: "Grilled Chicken",
-          thumbnail: "image_url_1",
+          id: "dish1",
+          ingredients: ["chicken", "rice", "spices"],
+          price: 25.0,
+          name: "Chicken Rice",
+          thumbnail: getRandomImage(),
         },
         {
-          __typename: "Dish",
-          id: "dish_2",
-          ingredients: ["Beef", "Onion", "Salt"],
-          price: 30,
-          name: "Beef Steak",
-          thumbnail: "image_url_2",
+          id: "dish2",
+          ingredients: ["beef", "noodles", "vegetables"],
+          price: 30.0,
+          name: "Beef Noodles",
+          thumbnail: getRandomImage(),
+        },
+      ],
+    },
+    {
+      id: "menu2",
+      name: "Dinner Menu",
+      dishs: [
+        {
+          id: "dish3",
+          ingredients: ["fish", "potatoes", "herbs"],
+          price: 35.0,
+          name: "Herb Fish",
+          thumbnail: getRandomImage(),
+        },
+        {
+          id: "dish4",
+          ingredients: ["pasta", "tomato", "cheese"],
+          price: 28.0,
+          name: "Tomato Pasta",
+          thumbnail: getRandomImage(),
         },
       ],
     },
   ],
   policies: [
     {
-      __typename: "ServicePolicy",
-      policyTitle: "Cancellation Policy",
-      terms: ["Cancel 24 hours in advance for a full refund."],
-    },
-
-    {
-      __typename: "ServicePolicy",
-      policyTitle: "Cancellation Policy",
-      terms: ["Cancel 24 hours in advance for a full refund."],
-    },
-
-    {
-      __typename: "ServicePolicy",
-      policyTitle: "Cancellation Policy",
-      terms: ["Cancel 24 hours in advance for a full refund."],
+      policyTitle: "No Smoking",
+      terms: ["Smoking is not allowed inside the restaurant."],
     },
     {
-      __typename: "ServicePolicy",
-      policyTitle: "Cancellation Policy",
-      terms: ["Cancel 24 hours in advance for a full refund."],
+      policyTitle: "Pet Friendly",
+      terms: ["Pets are allowed in the outdoor seating area."],
     },
   ],
   presentations: [
     {
-      __typename: "ServicePresentation",
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: getRandomImage(),
+      type: ServicePresentationType.Img,
+    },
+    {
       src: getRandomImage(),
       type: ServicePresentationType.Img,
     },
   ],
   serviceMetaInfo: {
-    __typename: "ServiceMetaInfo",
-    description: "A fine dining restaurant with exquisite cuisine.",
-    hashtags: ["#dining", "#restaurant"],
-    metaTagDescription: "Fine dining restaurant",
-    title: "Sample Restaurant",
-    metaTagKeywords: ["dining", "restaurant", "cuisine"],
+    description:
+      "A fine dining restaurant offering a variety of gourmet dishes.",
+    hashtags: ["#gourmet", "#finedining", "#restaurant"],
+    metaTagDescription: "Enjoy gourmet dishes at our fine dining restaurant.",
+    title: "Gourmet Restaurant",
+    metaTagKeywords: ["gourmet", "fine dining", "restaurant"],
   },
   contact: {
-    __typename: "ServiceContact",
-    address: "123 Main St",
-    city: "Sample City",
-    country: "CountryName",
-    email: "contact@restaurant.com",
-    phone: "+123456789",
-    state: "Sample State",
+    address: "123 Food Street",
+    city: "Gourmet City",
+    country: "Foodland",
+    email: "contact@gourmetrestaurant.com",
+    phone: "+1234567890",
+    state: "Delicious",
   },
   cancelationPolicies: [
     {
-      __typename: "ServiceCancelationPolicy",
-      cost: 20,
+      cost: 10.0,
+      duration: 24,
+    },
+    {
+      cost: 20.0,
       duration: 24,
     },
   ],
   owner: {
-    __typename: "Account",
     firstName: "John",
     lastName: "Doe",
-    id: "owner_1",
+    id: "owner456",
     photo: getRandomImage(),
     verified: true,
   },
   workingHours: {
-    __typename: "WorkingSchedule",
-    id: "schedule_1",
+    id: "workingHours123",
     weekdays: {
       fr: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["18:00-22:00"],
+        periods: ["18:00", "22:00"],
       },
       mo: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["18:00", "22:00"],
       },
       sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-23:00"],
+        periods: ["18:00", "23:00"],
       },
       su: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-20:00"],
+        periods: ["12:00", "15:00"],
       },
       th: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["18:00", "22:00"],
       },
       tu: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["18:00", "22:00"],
       },
       we: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["18:00", "22:00"],
       },
     },
   },
