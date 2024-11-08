@@ -21,7 +21,6 @@ export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
         }}
         className="flex flex-col gap-4"
       >
-        {/*@ts-ignore*/}
         {children}
       </div>
       <div className="w-[0px] overflow-hidden md:overflow-visible md:w-[min(30rem,100%)] h-[900px]  ">
@@ -46,7 +45,6 @@ export const FixedScrollingWrapper: React.FC<{ children: React.ReactNode }> = ({
         className={`${passed ? `absolute left-0` : ""
           } w-full h-fit transition-all`}
       >
-        {/*@ts-ignore*/}
         {children}
       </div>
     </div>
