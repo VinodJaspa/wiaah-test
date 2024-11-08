@@ -6,6 +6,7 @@ import {
   ServicePaymentMethod,
   ServiceCancelationPolicy,
   Scalars,
+  ServiceWeekdaysWorkingHours,
 } from "@features/API";
 import {
   Exact,
@@ -96,50 +97,7 @@ export type GetRestaurantQuery = { __typename?: "Query" } & {
     >;
     workingHours?: Maybe<
       { __typename?: "WorkingSchedule" } & Pick<WorkingSchedule, "id"> & {
-        weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-          fr?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          mo?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          sa?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          su?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          th?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          tu?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          we?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-        };
+        weekdays: ServiceWeekdaysWorkingHours;
       }
     >;
   };
