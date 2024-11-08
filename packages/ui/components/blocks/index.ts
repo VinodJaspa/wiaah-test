@@ -71,6 +71,7 @@ export * from "./Draggable";
 export * from "./Pagination";
 export * from "./Skeleton";
 export * from "./ServiceSearch";
+export * from "./MarketServicesProvider";
 export * from "./ServicesProvider";
 export * from "./Checkout";
 export * from "./VideoThumbnail";
