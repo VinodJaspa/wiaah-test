@@ -8,7 +8,6 @@ export * from "./ShopManagement";
 export * from "./ShoppingManagement";
 export * from "./Wallet";
 export * from "./ServiceManagement";
-export * from "./ServicesProvider";
 export * from "./Search";
 export * from "./Saved";
 export * from "./Management";
