@@ -2,7 +2,6 @@ import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import {
   getHealthCenterDetailsQueryKey,
-  getRestaurantServiceProviderDetailsDataQuerykey,
   SellerLayout,
   useGetHealthCenterDetailsQuery,
 } from "ui";
@@ -12,7 +11,7 @@ import { ServerSideQueryClientProps } from "types";
 import { dehydrate, QueryClient } from "react-query";
 import { getHealthCenterDetailsFetcher } from "api";
 import { useRouting } from "routing";
-import { HealthCenterDetailsView } from "@components";
+import { HealthCenterDetailsView } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -22,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (id) {
     client.prefetchQuery(getHealthCenterDetailsQueryKey({ id }), () =>
-      getHealthCenterDetailsFetcher({ id })
+      getHealthCenterDetailsFetcher({ id }),
     );
   }
 

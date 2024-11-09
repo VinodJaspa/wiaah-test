@@ -1,4 +1,4 @@
-import { HotelDetailsView } from "@components";
+import { HotelDetailsView } from "ui";
 import { getHealthCenterDetailsFetcher } from "api";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";

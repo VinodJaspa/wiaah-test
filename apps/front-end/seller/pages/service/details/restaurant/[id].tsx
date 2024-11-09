@@ -11,7 +11,7 @@ import { ServerSideQueryClientProps } from "types";
 import { dehydrate, QueryClient } from "react-query";
 import { getResturantServiceDetialsData } from "api";
 import { useRouting } from "routing";
-import { RestaurantDetailsView } from "@components";
+import { RestaurantDetailsView } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<
   if (id) {
     client.prefetchQuery(
       getRestaurantServiceProviderDetailsDataQuerykey(id),
-      () => getResturantServiceDetialsData(id)
+      () => getResturantServiceDetialsData(id),
     );
   }
 
