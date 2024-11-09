@@ -120,6 +120,14 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
           "src" | "type"
         >
       >;
+      popularAmenities?: Maybe<
+        Array<
+          { __typename?: "ServiceAmenity" } & Pick<
+            ServiceAmenity,
+            "label" | "value"
+          >
+        >
+      >;
       rooms?: Maybe<
         Array<
           { __typename?: "HotelRoom" } & Pick<
