@@ -2,8 +2,8 @@ import React from "react";
 import { DateDetails } from "utils";
 import { AspectRatio } from "@UI";
 export interface TimeClockDisplayProps {
-  from: Date;
-  to: Date;
+  from: Date | undefined;
+  to: Date | undefined;
   off?: boolean;
 }
 
