@@ -4,7 +4,6 @@ import {
   getBeautyCenterDetailsDataQueryKey,
   SellerLayout,
   useGetBeautyCenterDetailsQuery,
-  useGetHealthCenterDetailsQuery,
 } from "ui";
 import { MetaTitle } from "react-seo";
 import { useTranslation } from "react-i18next";
@@ -12,7 +11,7 @@ import { ServerSideQueryClientProps } from "types";
 import { dehydrate, QueryClient } from "react-query";
 import { getBeautyCenterDetailsDataFetcher } from "api";
 import { useRouting } from "routing";
-import { BeautyCenterServiceDetailsView } from "@components";
+import { BeautyCenterServiceDetailsView } from "ui";
 import { ExtractParamFromQuery } from "utils";
 
 export const getServerSideProps: GetServerSideProps<
@@ -23,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (id) {
     client.prefetchQuery(getBeautyCenterDetailsDataQueryKey({ id }), () =>
-      getBeautyCenterDetailsDataFetcher(id)
+      getBeautyCenterDetailsDataFetcher(id),
     );
   }
 
