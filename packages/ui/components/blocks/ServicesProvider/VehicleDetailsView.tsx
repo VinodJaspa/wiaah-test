@@ -8,6 +8,7 @@ import {
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
   useGetVehicleProviderDetailsQuery,
+  ServicesProviderDetailsTabs,
   Tabs,
   TabsHeader,
   TabList,
@@ -192,31 +193,7 @@ export const VehicleServiceDetailsView: React.FC<
           <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
         }
       >
-        <Tabs>
-          {({ currentTabIdx }) => {
-            return (
-              <>
-                <TabsHeader />
-                <TabList />
-                {ServicesProviderTabs.map((tab, i) => (
-                  <>
-                    <TabTitle TabKey={i}>
-                      {({ currentActive }) => (
-                        <p
-                          className={`${currentActive ? "text-primary" : "text-lightBlack"
-                            } font-bold text-sm`}
-                        >
-                          {t(tab.name)}
-                        </p>
-                      )}
-                    </TabTitle>
-                  </>
-                ))}
-                {ServicesProviderTabs.at(currentTabIdx).component}
-              </>
-            );
-          }}
-        </Tabs>
+        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
       </StaticSideBarWrapper>
     </div>
   );

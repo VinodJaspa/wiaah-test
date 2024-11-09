@@ -1,9 +1,6 @@
 import React from "react";
 import {
-  Tabs,
-  TabList,
-  TabTitle,
-  TabsHeader,
+  ServicesProviderDetailsTabs,
   useGetServicesProviderQuery,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
@@ -250,32 +247,7 @@ export const HotelDetailsView: React.FC = () => {
           ) : null
         }
       >
-        <Tabs>
-          {({ currentTabIdx }) => {
-            return (
-              <>
-                <TabsHeader className="flex ">
-                  {ServicesProviderTabs.map((tab, i) => (
-                    <>
-                      <TabTitle TabKey={i}>
-                        {({ currentActive }) => (
-                          <p
-                            className={`${currentActive ? "text-primary" : "text-lightBlack"
-                              } font-bold text-sm`}
-                          >
-                            {t(tab.name)}
-                          </p>
-                        )}
-                      </TabTitle>
-                    </>
-                  ))}
-                </TabsHeader>
-                <TabList />
-                {ServicesProviderTabs.at(currentTabIdx).component}
-              </>
-            );
-          }}
-        </Tabs>
+        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
       </StaticSideBarWrapper>
     </div>
   );

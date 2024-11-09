@@ -11,11 +11,7 @@ import {
   HealthCenterDoctorsList,
   RestaurantDetailsDescriptionSection,
   ServiceDetailsReviewsSection,
-  TabList,
-  Tabs,
-  TabsHeader,
-  TabTitle,
-  WorkingDaysCalender,
+  ServicesProviderDetailsTabs,
   ServicesProviderHeader,
   Image,
   LocationOnPointFillIcon,
@@ -184,8 +180,8 @@ export const HealthCenterDetailsView: React.FC = () => {
     );
 
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
-      <div className="flex w-full items-center justify-between shadow p-4">
+    <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
+      {/*<div className="flex w-full items-center justify-between shadow p-4">
         <div className="flex gap-4">
           <Image
             alt="avetar"
@@ -215,6 +211,7 @@ export const HealthCenterDetailsView: React.FC = () => {
           <Button outline>{t("Contact")}</Button>
         </div>
       </div>
+*/}
       <Divider />
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SpinnerFallback isLoading={false}>
@@ -236,31 +233,7 @@ export const HealthCenterDetailsView: React.FC = () => {
           />
         }
       >
-        <Tabs>
-          {({ currentTabIdx }) => {
-            return (
-              <>
-                <TabsHeader />
-                <TabList />
-                {ServicesProviderTabs.map((tab, i) => (
-                  <>
-                    <TabTitle TabKey={i}>
-                      {({ currentActive }) => (
-                        <p
-                          className={`${currentActive ? "text-primary" : "text-lightBlack"
-                            } font-bold text-sm`}
-                        >
-                          {t(tab.name)}
-                        </p>
-                      )}
-                    </TabTitle>
-                  </>
-                ))}
-                {ServicesProviderTabs.at(currentTabIdx).component}
-              </>
-            );
-          }}
-        </Tabs>
+        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
       </StaticSideBarWrapper>
     </div>
   );
@@ -355,11 +328,19 @@ const FAKE_HEALTH_CENTER_DATA: GetHealthCenterQuery["getHealthCenter"] = {
   ],
   presentations: [
     {
-      src: getRandomImage(),
+      src: "https://images.pexels.com/photos/8460030/pexels-photo-8460030.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       type: ServicePresentationType.Img,
     },
     {
-      src: getRandomImage(),
+      src: "https://images.pexels.com/photos/7659569/pexels-photo-7659569.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://images.pexels.com/photos/8460234/pexels-photo-8460234.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://images.pexels.com/photos/8413430/pexels-photo-8413430.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       type: ServicePresentationType.Img,
     },
   ],

@@ -6,20 +6,13 @@ import {
   ServicePoliciesSection,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  ResturantFindTableFilterStepper,
+  ServicesProviderDetailsTabs,
   ResturantMenuListSection,
   useGetRestaurantServiceDetailsDataQuery,
-  Tabs,
-  TabsHeader,
-  TabList,
-  TabTitle,
   ServiceDetailsReviewsSection,
   SellerServiceWorkingHoursSection,
   RestaurantDetailsDescriptionSection,
   ServicesProviderHeader,
-  Image,
-  LocationOnPointFillIcon,
-  Button,
   Divider,
   ServiceReservastionForm,
   GetRestaurantQuery,
@@ -233,31 +226,7 @@ export const RestaurantDetailsView: React.FC = () => {
           />
         }
       >
-        <Tabs>
-          {({ currentTabIdx }) => {
-            return (
-              <>
-                <TabsHeader />
-                <TabList />
-                {ServicesProviderTabs.map((tab, i) => (
-                  <React.Fragment key={i}>
-                    <TabTitle TabKey={i}>
-                      {({ currentActive }) => (
-                        <p
-                          className={`${currentActive ? "text-primary" : "text-lightBlack"
-                            } font-bold text-sm`}
-                        >
-                          {t(tab.name)}
-                        </p>
-                      )}
-                    </TabTitle>
-                  </React.Fragment>
-                ))}
-                {ServicesProviderTabs.at(currentTabIdx).component}
-              </>
-            );
-          }}
-        </Tabs>
+        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
       </StaticSideBarWrapper>
     </div>
   );
@@ -338,15 +307,19 @@ const FAKE_RESTAURANT_DETAILS_DATA: GetRestaurantQuery["getRestaurant"] = {
   ],
   presentations: [
     {
-      src: getRandomImage(),
+      src: "https://media.timeout.com/images/105455622/image.jpg",
       type: ServicePresentationType.Img,
     },
     {
-      src: getRandomImage(),
+      src: "https://assets3.thrillist.com/v1/image/2771371/size/tl-horizontal_main/fit/1200x600.jpg",
       type: ServicePresentationType.Img,
     },
     {
-      src: getRandomImage(),
+      src: "https://media.timeout.com/images/105455622/image.jpg",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://assets3.thrillist.com/v1/image/2771371/size/tl-horizontal_main/fit/1200x600.jpg",
       type: ServicePresentationType.Img,
     },
   ],
