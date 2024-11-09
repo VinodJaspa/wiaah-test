@@ -1,28 +1,20 @@
 import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import {
-  getHealthCenterDetailsQueryKey,
   getRandomImage,
-  getRestaurantServiceProviderDetailsDataQuerykey,
   getVehicleProviderDetailsQueryKey,
+  GetVehicleQuery,
   SellerLayout,
-  useGetHealthCenterDetailsQuery,
   useGetVehicleProviderDetailsQuery,
 } from "ui";
 import { MetaTitle } from "react-seo";
 import { useTranslation } from "react-i18next";
 import { ServerSideQueryClientProps } from "types";
 import { dehydrate, QueryClient } from "react-query";
-import {
-  getHealthCenterDetailsFetcher,
-  getVehicleServiceProviderDetailsFetcher,
-} from "api";
+import { getVehicleServiceProviderDetailsFetcher } from "api";
 import { useRouting } from "routing";
-import {
-  BeautyCenterServiceDetailsView,
-  HealthCenterDetailsView,
-  VehicleServiceDetailsView,
-} from "@components";
+import { VehicleServiceDetailsView } from "ui";
+import { ServicePaymentMethod, ServicePresentationType } from "@features/API";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -32,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<
 
   if (id) {
     client.prefetchQuery(getVehicleProviderDetailsQueryKey({ id }), () =>
-      getVehicleServiceProviderDetailsFetcher({ id })
+      getVehicleServiceProviderDetailsFetcher({ id }),
     );
   }
 
@@ -43,12 +35,12 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const FAKE_VEHICLE_DATA = {
+const FAKE_VEHICLE_DATA: GetVehicleQuery["getVehicleServicebyId"] = {
   __typename: "VehicleService",
   createdAt: "2023-01-01T00:00:00Z",
   id: "service123",
   ownerId: "owner123",
-  payment_methods: ["Credit Card", "Paypal"],
+  payment_methods: [ServicePaymentMethod.Cash],
   rating: 4.5,
   totalReviews: 123,
   updatedAt: "2023-06-01T00:00:00Z",
@@ -57,7 +49,7 @@ const FAKE_VEHICLE_DATA = {
     {
       __typename: "ServiceCancelationPolicy",
       cost: 50,
-      duration: "24 hours",
+      duration: 24,
     },
   ],
   location: {
@@ -67,7 +59,7 @@ const FAKE_VEHICLE_DATA = {
     country: "USA",
     lat: 40.7128,
     lon: -74.006,
-    postalCode: "12345",
+    postalCode: 333,
     state: "NY",
   },
   contact: {
@@ -84,29 +76,25 @@ const FAKE_VEHICLE_DATA = {
     id: "schedule123",
     weekdays: {
       fr: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "17:00"],
       },
       mo: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "17:00"],
       },
       sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-14:00"],
+        periods: ["10:00", "14:00"],
       },
-      su: null,
+      su: {
+        periods: ["10:00", "14:00"],
+      },
       th: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "17:00"],
       },
       tu: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "17:00"],
       },
       we: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00", "17:00"],
       },
     },
   },
@@ -114,14 +102,25 @@ const FAKE_VEHICLE_DATA = {
     {
       __typename: "ServicePolicy",
       policyTitle: "No Smoking",
-      terms: "Smoking is prohibited inside the vehicles.",
+      terms: ["Smoking is prohibited inside the vehicles."],
     },
   ],
   presentations: [
     {
-      __typename: "ServicePresentation",
-      src: getRandomImage(),
-      type: "image",
+      src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
+    },
+    {
+      src: "https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      type: ServicePresentationType.Img,
     },
   ],
   serviceMetaInfo: {
@@ -144,14 +143,14 @@ const FAKE_VEHICLE_DATA = {
         {
           __typename: "ServiceCancelationPolicy",
           cost: 30,
-          duration: "12 hours",
+          duration: 12,
         },
       ],
       presentations: [
         {
           __typename: "ServicePresentation",
-          src: "vehicle1.jpg",
-          type: "image",
+          type: ServicePresentationType.Img,
+          src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         },
       ],
       properties: {
