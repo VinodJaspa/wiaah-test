@@ -23,7 +23,7 @@ export const AccountProductManagement: React.FC<{
     {
       pagination,
     },
-    { pagination }
+    { pagination },
   );
   const { data } = useGetMyProducts(form);
 
