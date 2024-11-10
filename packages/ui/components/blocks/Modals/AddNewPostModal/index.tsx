@@ -24,6 +24,8 @@ import {
   CheckMarkStepper,
   useCreateActionMutation,
   useSocialControls,
+  StepperFormController,
+  StepperFormHandler,
 } from "@UI";
 import { useUserData } from "hooks";
 import { mapArray, useForm } from "utils";
@@ -108,42 +110,64 @@ export const AddNewPostModal: React.FC = () => {
     </div>
   );
 
-  const renderVideoContent = () => (
-    <div className="flex h-[616px] bg-white w-full flex-col gap-4">
+  const renderVideoContent: React.FC<{ onSubmit: (data: any) => void }> = ({
+    onSubmit,
+  }) => (
+    <div className="flex h-[616px] bg-white w-full flex-col gap-4 relative">
       <div className="w-full h-full flex text-2xl font-bold justify-center">
         {step === 0 ? t("Video Editing") : t("Video Details")}
       </div>
       <div className="h-full w-full mx-auto">
-        <CheckMarkStepper
-          className="h-full"
-          stepHeaderClassName="w-[24rem] mx-auto"
-          currentStepIdx={1}
-          steps={[
-            {
-              key: "editor",
-              stepName: t("Editor"),
-              stepComponent: (
-                <VideoEditorStep
-                  media={media}
-                  setActionVidBlob={setActionVidBlob}
-                  handleChange={handleChange}
-                  setStep={setStep}
-                />
-              ),
-            },
-            {
-              key: "details",
-              stepName: t("Details"),
-              stepComponent: (
-                <VideoDetailsStep
-                  form={form}
-                  coversRef={coversRef}
-                  setCoversRef={setCoversRef}
-                />
-              ),
-            },
-          ]}
-        />
+        <StepperFormController
+          lock={false}
+          onFormComplete={(data) => {
+            onSubmit && onSubmit(data);
+          }}
+          stepsNum={2}
+        >
+          {({ currentStepIdx, goToStep, nextStep }) => (
+            <React.Fragment>
+              <CheckMarkStepper
+                className="h-full"
+                onStepChange={goToStep}
+                stepHeaderClassName="w-[24rem] mx-auto"
+                currentStepIdx={currentStepIdx}
+                steps={[
+                  {
+                    key: "editor",
+                    stepName: t("Editor"),
+                    stepComponent: (
+                      <StepperFormHandler handlerKey="edite">
+                        <VideoEditorStep
+                          media={media}
+                          setActionVidBlob={setActionVidBlob}
+                          handleChange={handleChange}
+                        />
+                      </StepperFormHandler>
+                    ),
+                  },
+                  {
+                    key: "details",
+                    stepName: t("Details"),
+                    stepComponent: (
+                      <StepperFormHandler handlerKey="details">
+                        <VideoDetailsStep
+                          form={form}
+                          coversRef={coversRef}
+                          setCoversRef={setCoversRef}
+                        />
+                      </StepperFormHandler>
+                    ),
+                  },
+                ]}
+              />
+              <ModalFooter className="justify-between absolute bottom-4 w-full ">
+                <Button>{t("Cancel")}</Button>
+                <Button onClick={() => nextStep()}>{t("Next")}</Button>
+              </ModalFooter>
+            </React.Fragment>
+          )}
+        </StepperFormController>
       </div>
     </div>
   );
@@ -192,14 +216,12 @@ export const AddNewPostModal: React.FC = () => {
         {mediaType === "photo"
           ? renderPhotoContent()
           : mediaType === "video" && media?.item(0)
-            ? renderVideoContent()
+            ? renderVideoContent({ onSubmit: (data) => console.log(...data) })
             : renderDropZone()}
         {media && (
           <ModalFooter className="justify-between">
-            <Button>{t("Cancel")}</Button>
-            <Button>
-              {mediaType === "video" && step === 0 ? t("Next") : t("Share")}
-            </Button>
+            {mediaType === "photo" && <Button> {t("Cancel")}</Button>}
+            {mediaType === "photo" && <Button> {t("Share")}</Button>}
           </ModalFooter>
         )}
       </ModalContent>
@@ -322,8 +344,7 @@ const VideoEditorStep: React.FC<{
   media: FileList | undefined;
   setActionVidBlob: (blob: Blob) => void;
   handleChange: (key: string, value: string) => void;
-  setStep: (step: number) => void;
-}> = ({ media, setActionVidBlob, handleChange, setStep }) => (
+}> = ({ media, setActionVidBlob, handleChange }) => (
   <div className="mx-auto w-[20.5rem]">
     <VideoEditor
       video={media?.item(0)!}
@@ -332,7 +353,6 @@ const VideoEditorStep: React.FC<{
         if (data.size > MAX_ACTION_SIZE) return;
         setActionVidBlob(data);
         handleChange("srcUploadId", URL.createObjectURL(data));
-        setStep(1);
       }}
     />
   </div>
