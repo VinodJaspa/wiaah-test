@@ -4,8 +4,6 @@ import { TimeClockDisplay } from "@UI";
 import {
   ServiceDayWorkingHours,
   ServiceWeekdaysWorkingHours,
-  ServiceWorkingSchedule,
-  WeekdaysWorkingHours,
 } from "@features/API";
 
 export interface SellerServiceWorkingHoursSectionProps {
@@ -29,26 +27,36 @@ const days = {
   su: "Sunday",
 };
 
+const getTodayKey = () => {
+  const dayIndex = new Date().getDay(); // 0 (Sunday) - 6 (Saturday)
+  return ["su", "mo", "tu", "we", "th", "fr", "sa"][dayIndex];
+};
+
 export const SellerServiceWorkingHoursSection: React.FC<
   SellerServiceWorkingHoursSectionProps
 > = ({ workingDays }) => {
   const { t } = useTranslation();
+  const todayKey = getTodayKey();
 
   return (
     <div className="flex flex-col gap-3 w-full">
       <p className="font-bold text-3xl">{t("Working Hours")}</p>
-      <div className="flex gap-4 items-center w-fit">
+      <div className="flex gap-4 items-center w-full flex-wrap">
         {Object.entries(workingDays).map(([dayKey, dayInfo]) => {
           const dayData = dayInfo as ServiceDayWorkingHours; // Narrow the type here
-          const today = dayKey === "mo"; // Example logic for "Today"; adjust as needed
+          const today = dayKey === todayKey;
           const isDayOff = dayData.periods.length === 0;
-          const fromDate = parseTimeToDate(dayData.periods[0]);
-          const toDate = parseTimeToDate(dayData.periods[1]);
+
+          // Only parse dates if it's not a day off
+          const fromDate = !isDayOff
+            ? parseTimeToDate(dayData.periods[0])
+            : null;
+          const toDate = !isDayOff ? parseTimeToDate(dayData.periods[1]) : null;
 
           return (
             <div
               key={dayKey}
-              className="flex flex-col items-center w-full gap-[0.625rem]"
+              className="flex flex-col items-center w-fit gap-[0.625rem]"
             >
               <p className="text-primary font-bold text-xs">
                 {today ? t("Today") : ""}
