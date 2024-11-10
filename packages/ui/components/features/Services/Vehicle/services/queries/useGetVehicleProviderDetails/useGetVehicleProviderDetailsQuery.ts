@@ -14,6 +14,8 @@ import {
   WorkingSchedule,
   Maybe,
   ServiceDayWorkingHours,
+  ServiceWorkingSchedule,
+  ServiceWeekdaysWorkingHours,
 } from "@features/API";
 import { useQuery } from "react-query";
 import { Account } from "@features/API";
@@ -36,130 +38,90 @@ export type GetVehicleQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "vat"
   > & {
-      cancelationPolicies: Array<
-        { __typename?: "ServiceCancelationPolicy" } & Pick<
-          ServiceCancelationPolicy,
-          "cost" | "duration"
-        >
-      >;
-      location: { __typename?: "ServiceLocation" } & Pick<
-        ServiceLocation,
-        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-      >;
-      contact: { __typename?: "ServiceContact" } & Pick<
-        ServiceContact,
-        "address" | "city" | "country" | "email" | "phone" | "state"
-      >;
+    cancelationPolicies: Array<
+      { __typename?: "ServiceCancelationPolicy" } & Pick<
+        ServiceCancelationPolicy,
+        "cost" | "duration"
+      >
+    >;
+    location: { __typename?: "ServiceLocation" } & Pick<
+      ServiceLocation,
+      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+    >;
+    contact: { __typename?: "ServiceContact" } & Pick<
+      ServiceContact,
+      "address" | "city" | "country" | "email" | "phone" | "state"
+    >;
 
-      workingHours?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<WorkingSchedule, "id"> & {
-            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-              fr?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              mo?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              sa?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              su?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              th?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              tu?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-              we?: Maybe<
-                { __typename?: "ServiceDayWorkingHours" } & Pick<
-                  ServiceDayWorkingHours,
-                  "periods"
-                >
-              >;
-            };
-          }
-      >;
-      policies: Array<
-        { __typename?: "ServicePolicy" } & Pick<
-          ServicePolicy,
-          "policyTitle" | "terms"
-        >
-      >;
-      presentations: Array<
-        { __typename?: "ServicePresentation" } & Pick<
-          ServicePresentation,
-          "src" | "type"
-        >
-      >;
-      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-        ServiceMetaInfo,
-        | "description"
-        | "hashtags"
-        | "metaTagDescription"
-        | "metaTagKeywords"
-        | "title"
-      >;
-      vehicles: Array<
-        { __typename?: "Vehicle" } & Pick<
-          Vehicle,
-          "brand" | "id" | "model" | "price" | "title"
-        > & {
-            cancelationPolicies: Array<
-              { __typename?: "ServiceCancelationPolicy" } & Pick<
-                ServiceCancelationPolicy,
-                "cost" | "duration"
-              >
-            >;
-            presentations: Array<
-              { __typename?: "ServicePresentation" } & Pick<
-                ServicePresentation,
-                "src" | "type"
-              >
-            >;
-            properties: { __typename?: "VehicleProperties" } & Pick<
-              VehicleProperties,
-              | "airCondition"
-              | "gpsAvailable"
-              | "lugaggeCapacity"
-              | "maxSpeedInKm"
-              | "seats"
-              | "windows"
-            >;
-          }
-      >;
-      owner: { __typename?: "Account" } & Pick<
-        Account,
-        "email" | "firstName" | "lastName" | "id" | "photo" | "verified"
-      >;
-    };
+    workingHours?: Maybe<
+      { __typename?: "WorkingSchedule" } & Pick<
+        ServiceWorkingSchedule,
+        "id"
+      > & {
+        weekdays: ServiceWeekdaysWorkingHours;
+      }
+    >;
+    policies: Array<
+      { __typename?: "ServicePolicy" } & Pick<
+        ServicePolicy,
+        "policyTitle" | "terms"
+      >
+    >;
+    presentations: Array<
+      { __typename?: "ServicePresentation" } & Pick<
+        ServicePresentation,
+        "src" | "type"
+      >
+    >;
+    serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+      ServiceMetaInfo,
+      | "description"
+      | "hashtags"
+      | "metaTagDescription"
+      | "metaTagKeywords"
+      | "title"
+    >;
+    vehicles: Array<
+      { __typename?: "Vehicle" } & Pick<
+        Vehicle,
+        "brand" | "id" | "model" | "price" | "title"
+      > & {
+        cancelationPolicies: Array<
+          { __typename?: "ServiceCancelationPolicy" } & Pick<
+            ServiceCancelationPolicy,
+            "cost" | "duration"
+          >
+        >;
+        presentations: Array<
+          { __typename?: "ServicePresentation" } & Pick<
+            ServicePresentation,
+            "src" | "type"
+          >
+        >;
+        properties: { __typename?: "VehicleProperties" } & Pick<
+          VehicleProperties,
+          | "airCondition"
+          | "gpsAvailable"
+          | "lugaggeCapacity"
+          | "maxSpeedInKm"
+          | "seats"
+          | "windows"
+        >;
+      }
+    >;
+    owner: { __typename?: "Account" } & Pick<
+      Account,
+      "email" | "firstName" | "lastName" | "id" | "photo" | "verified"
+    >;
+  };
 };
 
 export const getVehicleProviderDetailsQueryKey = (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ) => ["vehicleServiceProviderDetails", { filters }];
 
 export const useGetVehicleProviderDetailsQuery = (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ) => {
   return useQuery(getVehicleProviderDetailsQueryKey(filters), () => {
     const client = createGraphqlRequestClient();
@@ -343,7 +305,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -351,7 +313,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -359,7 +321,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -367,7 +329,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -375,7 +337,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -383,7 +345,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -391,7 +353,7 @@ export const useGetVehicleProviderDetailsQuery = (
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
