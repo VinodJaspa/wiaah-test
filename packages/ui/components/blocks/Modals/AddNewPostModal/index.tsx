@@ -161,7 +161,7 @@ export const AddNewPostModal: React.FC = () => {
                   },
                 ]}
               />
-              <ModalFooter className="justify-between absolute bottom-4 w-full ">
+              <ModalFooter className="justify-between absolute bottom-1 w-full ">
                 <Button>{t("Cancel")}</Button>
                 <Button onClick={() => nextStep()}>{t("Next")}</Button>
               </ModalFooter>
