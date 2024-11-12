@@ -52,7 +52,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
         validationSchema={validationSchema}
         onSubmit={() => { }}
       >
-        {({ values, setFieldValue }) => {
+        {({ values, setFieldValue, errors }) => {
           onChange && onChange(values);
           return (
             <Form className="w-full flex flex-col gap-4">
