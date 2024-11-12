@@ -34,7 +34,7 @@ export const NewProductDiscountOptions: React.FC<
         validationSchema={validationSchema}
         onSubmit={() => { }}
       >
-        {({ setFieldValue, values, errors, touched }) => {
+        {({ setFieldValue, values, errors }) => {
           onChange && onChange(values);
           return (
             <Form className="flex flex-col gap-4">
