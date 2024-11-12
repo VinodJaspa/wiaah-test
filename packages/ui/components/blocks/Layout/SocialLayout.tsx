@@ -132,17 +132,17 @@ const socialLayoutSelector = selectorFamily({
 });
 
 export function useSocialControls<TKey extends keyof SocialAtomValue>(
-  subKey?: TKey
+  subKey?: TKey,
 ) {
   const setState = useSetRecoilState(socialAtom);
   const value = useRecoilValue(
-    socialLayoutSelector(subKey)
+    socialLayoutSelector(subKey),
   ) as SocialAtomValue[TKey];
 
   function setControls<
     TKey extends keyof SocialAtomValue,
-    TValue extends SocialAtomValue[TKey]
-  >(key: TKey, value: TValue) {
+    TValue extends SocialAtomValue[TKey],
+    >(key: TKey, value: TValue) {
     setState((v) => ({ ...v, [key]: value }));
   }
 
@@ -207,7 +207,7 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     closeMyProfileNav: () => setControls("showMyProfileNav", false),
     showContentTaggedProfiles: (
       contentId: string,
-      contentType: SocialContentType
+      contentType: SocialContentType,
     ) => setControls("showTaggedProfiles", { contentId, contentType }),
     hideContentTaggedProfiles: () =>
       setControls("showTaggedProfiles", undefined),
@@ -294,7 +294,7 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      {/* <SocialStoryDrawer /> */}
+      <SocialStoryDrawer />
       {/* <ServiceBookingDrawer /> */}
       <SocialReportModal />
       <SocialPostSettingsPopup />
