@@ -44,10 +44,10 @@ const detailedValidationSchema = Yup.object().shape({
     .min(4, "Min 4 characters")
     .max(100, "Max 100 characters"),
   description: Yup.string().required("Description is required"),
-  brand: Yup.string().required("Description is required"),
+  // brand: Yup.string().required("Description is required"),
   metaTagDescription: Yup.string().max(150, "Max 150 characters"),
   metaTagKeyword: Yup.string().max(100, "Max 100 characters"),
-  external_url: Yup.string().url("Must be a valid URL"),
+  // external_url: Yup.string().url("Must be a valid URL"),
   price: Yup.number()
     .required("Price is required")
     .min(1, "Price must be at least 1"),
