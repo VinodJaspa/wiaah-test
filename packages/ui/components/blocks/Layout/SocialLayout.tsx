@@ -38,6 +38,7 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from "recoil";
+import { ShowStoryModal } from "@features/Social/components/Modals/StoryModal";
 
 export const SocialContentType = ContentHostType;
 export type SocialContentType = ContentHostType;
@@ -294,7 +295,8 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
     <>
       <AddNewPostModal />
       <SocialShareCotentModal />
-      <SocialStoryDrawer />
+      {/*<SocialStoryDrawer /> */}
+      <ShowStoryModal />
       {/* <ServiceBookingDrawer /> */}
       <SocialReportModal />
       <SocialPostSettingsPopup />
