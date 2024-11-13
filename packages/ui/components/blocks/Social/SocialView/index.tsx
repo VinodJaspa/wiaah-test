@@ -40,7 +40,7 @@ import {
   ProfileVisibility,
   ServiceType,
   StoreType,
-} from "../../../features/API";
+} from "@features/API";
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import {
