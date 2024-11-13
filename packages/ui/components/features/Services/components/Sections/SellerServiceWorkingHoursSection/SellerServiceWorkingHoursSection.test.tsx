@@ -7,20 +7,37 @@ import {
 describe("SellerServiceWorkingHoursSection", () => {
   let wrapper: ShallowWrapper;
   let props: SellerServiceWorkingHoursSectionProps = {
-    workingDays: [
-      {
-        __typename: "ShopDayWorkingHours",
-        periods: [
-          "Monday: 09:00 AM - 05:00 PM",
-          "Tuesday: 09:00 AM - 05:00 PM",
-          "Wednesday: 09:00 AM - 05:00 PM",
-          "Thursday: 09:00 AM - 05:00 PM",
-          "Friday: 09:00 AM - 05:00 PM",
-          "Saturday: 10:00 AM - 02:00 PM",
-          "Sunday: Closed",
-        ],
+    workingDays: {
+      __typename: "ServiceWeekdaysWorkingHours",
+      mo: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["09:00-12:00", "13:00-17:00"],
       },
-    ],
+      tu: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["09:00-12:00", "13:00-17:00"],
+      },
+      we: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["09:00-12:00", "13:00-17:00"],
+      },
+      th: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["09:00-12:00", "13:00-17:00"],
+      },
+      fr: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["09:00-12:00", "13:00-17:00"],
+      },
+      sa: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["10:00-14:00"],
+      },
+      su: {
+        __typename: "ServiceServiceDayWorkingHours",
+        periods: ["10:00-14:00"],
+      },
+    },
   };
 
   beforeEach(() => {
