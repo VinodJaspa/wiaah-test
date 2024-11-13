@@ -1,8 +1,9 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { UserProfileDisplay, StoryDisplayProps } from "../StoryDisplay";
+import { UserProfileDisplay } from "../StoryDisplay";
 import { useResponsive } from "hooks";
 import { SocialStoryType } from "@blocks/Social";
+import { useShowStoryModal } from "@features/Social/components/Modals/StoryModal";
 export interface RecentStoriesProps extends HtmlDivProps {
   stories: SocialStoryType[];
 }
@@ -14,8 +15,14 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
 }) => {
   const { isMobile } = useResponsive();
 
+  const { OpenModal } = useShowStoryModal();
+
   return (
     <div
+      onClick={() => {
+        console.log("OPEN STORY");
+        OpenModal("5");
+      }}
       {...props}
       className={`${className || ""} ${isMobile ? "gap-4" : "gap-6"
         } flex no-scrollBar `}
