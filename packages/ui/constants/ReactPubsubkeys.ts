@@ -8,6 +8,7 @@ export const ReactPubsubKeys = {
   openSocialShopPostsFilterDrawer: "OpenSocialShopPostsFilterDrawer",
   openSocialReportModal: "OpenSocialReportModal",
   shareUrlModal: "shareUrlModal",
+  showStoryModal: "showStoryModal",
   postMentionsModal: "PostMentionsModal",
   openSocialStoryModal: "open.social.story.modal",
   socialStoryProgressBarsState: "social.story.progress.bars.state",
