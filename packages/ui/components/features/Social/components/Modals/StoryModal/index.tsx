@@ -1,27 +1,65 @@
-import { ModalContent, ModalOverlay } from "@chakra-ui/react";
-import { getRandomName, Modal, StoryViewer, useNewWithdrawalModal } from "@UI";
-import { getRandomImage } from "placeholder";
+import { useTypedReactPubsub } from "@libs";
+import { Modal, StoryViewer, ModalOverlay, ModalContent } from "@UI";
 import React from "react";
 
-export const StoryModal = () => {
-  const { isOpen, onClose, onOpen } = useNewWithdrawalModal();
+export const useShowStoryModal = () => {
+  const { Listen, emit, removeListner } = useTypedReactPubsub(
+    (events) => events.showStoryModal,
+  );
+
+  function OpenModal(id: string) {
+    emit({ id });
+  }
+  function CloseModal() {
+    emit();
+  }
+  return {
+    OpenModal,
+    CloseModal,
+    Listen,
+    removeListner,
+  };
+};
+
+export const ShowStoryModal = () => {
+  const { Listen, removeListner } = useShowStoryModal();
+  const [id, setId] = React.useState<string>();
+
+  function handleclose() {
+    setId(undefined);
+  }
+
+  Listen((props) => {
+    if (props) {
+      if ("id" in props) {
+        setId(props.id);
+      } else {
+        handleclose();
+      }
+    }
+  });
+
+  React.useEffect(() => {
+    return removeListner;
+  }, []);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+    <Modal isOpen={!!id} onClose={handleclose} onOpen={() => { }}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent className="w-1/3 h-4/5 p-0">
         <StoryViewer
           story={{
             content:
               "Lorem Ipsum is simply dummy text of the printing and typesetting",
             createdAt: new Date().toUTCString(),
             id: "",
-            src: getRandomImage(),
+            src: "/shop.jpeg",
             type: "img",
           }}
           user={{
             id: "",
-            photo: getRandomImage(),
-            username: getRandomName().firstName,
+            photo: "/shop.jpeg",
+            username: "name",
           }}
           onClose={() => { }}
           onNext={() => { }}
