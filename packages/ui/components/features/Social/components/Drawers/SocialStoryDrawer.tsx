@@ -180,23 +180,13 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
               {/*<Verified className="text-blue-500 text-sm" /> */}
             </HStack>
           </div>
-          <div>
-            <HStack className="text-[#BFBFBF] gap-[0.25rem]">
-              <ClockIcon className="text-sm" />
-              <p className=" text-xs">
-                {since.value}
-                {since.timeUnitNarrow}
-              </p>
-            </HStack>
-          </div>
         </HStack>
         {/* Views & Time */}
         <div className="flex justify-between">
-          <HStack className="px-3 py-1 rounded-full w-fit self-center border text-white border-white">
+          <div className="flex gap-1">
             <EyeIcon className="text-lg" />
-            <p>{t("Views")}</p>
-          </HStack>
-
+            <p>44</p>
+          </div>
           <div>
             <HStack className="text-[#BFBFBF] gap-[0.25rem]">
               <ClockIcon className="text-sm" />
