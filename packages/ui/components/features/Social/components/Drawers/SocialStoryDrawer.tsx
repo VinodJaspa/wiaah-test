@@ -31,6 +31,7 @@ import {
 import { useDateDiff } from "@src/index";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { VStack } from "@chakra-ui/react";
 
 export const SocialStoryDrawer: React.FC = () => {
   const { closeStory, value } = useSocialControls("userStory");
@@ -49,7 +50,7 @@ export const SocialStoryDrawer: React.FC = () => {
           src: "",
         },
       ],
-    }
+    },
   );
 
   const { data } = useGetUserStory(value!, {
@@ -63,7 +64,7 @@ export const SocialStoryDrawer: React.FC = () => {
 
   return (
     <Drawer full position="bottom" isOpen={!!value} onClose={closeStory}>
-      <DrawerContent className="p-4 max-h-[100vh] noScroll flex flex-col gap-6 bg-[#000]">
+      <DrawerContent className="p-4 w-full h-full noScroll flex flex-col gap-6 bg-[#000]">
         <div className="h-[93%]">
           <StoryViewer
             story={{
@@ -80,8 +81,8 @@ export const SocialStoryDrawer: React.FC = () => {
               username: getRandomName().firstName,
             }}
             onClose={closeStory}
-            onNext={() => {}}
-            onPrev={() => {}}
+            onNext={() => { }}
+            onPrev={() => { }}
             totalStoryCount={3}
             currentStory={0}
           />
@@ -119,7 +120,7 @@ export const SocialStoryDrawer: React.FC = () => {
                           roomId: data.id,
                         });
                       },
-                    }
+                    },
                   );
                 }
               }}
@@ -169,15 +170,18 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
 
   return (
     <div className="w-full h-full flex flex-col bg-black gap-4">
-      <HStack className="gap-4">
+      <VStack className="gap-4 p-2">
+        {/* USER INFO */}
         <HStack>
-          <Avatar src={user.photo} className="min-w-[2.125rem]" />
-          <div>
+          <div className=" flex flex-col justify-center items-center gap-3">
+            <Avatar src={user.photo} className="min-w-[2.125rem] " />
             <HStack className="text-sm">
               <p className="font-semibold text-white">{user.username}</p>
-              <Verified className="text-blue-500 text-sm"></Verified>
+              {/*<Verified className="text-blue-500 text-sm" /> */}
             </HStack>
-
+          </div>
+          {/*
+          <div>
             <HStack className="text-[#BFBFBF] gap-[0.25rem]">
               <ClockIcon className="text-sm" />
               <p className=" text-xs">
@@ -186,41 +190,44 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
               </p>
             </HStack>
           </div>
+          */}
         </HStack>
+        {/* PROGRESS BAR*/}
         <HStack className="w-full">
-          {[...Array(totalStoryCount)].map((_, i) => (
-            <div
-              className={`h-[1.5px] w-full relative rounded-3xl ${
-                i < currentStory ? "bg-white" : "bg-[#B9B9B9]"
-              }`}
-            >
-              {currentStory === i ? (
-                <div className="h-full absolute top-0 right-1/2 left-0 bg-white"></div>
-              ) : null}
-            </div>
-          ))}
+          <HStack className="w-full">
+            {[...Array(totalStoryCount)].map((_, i) => (
+              <div
+                className={`h-[1.5px] w-full relative rounded-3xl ${i < currentStory ? "bg-white" : "bg-[#B9B9B9]"
+                  }`}
+              >
+                {currentStory === i ? (
+                  <div className="h-full absolute top-0 right-1/2 left-0 bg-white"></div>
+                ) : null}
+              </div>
+            ))}
+          </HStack>
+          <Menu>
+            <MenuButton>
+              <HorizontalDotsIcon className="text-white text-lg" />
+            </MenuButton>
+            <MenuList>
+              <MenuItem
+                onClick={() => {
+                  reportContent(story.id, SocialContentType.Story);
+                }}
+              >
+                <p>{t("Report")}</p>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <CloseIcon
+            onClick={() => {
+              onClose && onClose();
+            }}
+            className="text-sm text-white"
+          />
         </HStack>
-        <Menu>
-          <MenuButton>
-            <HorizontalDotsIcon className="text-white text-lg" />
-          </MenuButton>
-          <MenuList>
-            <MenuItem
-              onClick={() => {
-                reportContent(story.id, SocialContentType.Story);
-              }}
-            >
-              <p>{t("Report")}</p>
-            </MenuItem>
-          </MenuList>
-        </Menu>
-        <CloseIcon
-          onClick={() => {
-            onClose && onClose();
-          }}
-          className="text-sm text-white"
-        />
-      </HStack>
+      </VStack>
       {story?.content?.length > 0 ? (
         <p className="text-white text-center font-semibold text-xl">
           {story.content}
