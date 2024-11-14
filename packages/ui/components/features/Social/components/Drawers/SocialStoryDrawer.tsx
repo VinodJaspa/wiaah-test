@@ -169,7 +169,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
   const since = getSince();
 
   return (
-    <div className="w-full h-full flex flex-col bg-black gap-4">
+    <div className="w-full h-full flex flex-col bg-black gap-4 relative">
       <VStack className="gap-4 p-2">
         {/* USER INFO */}
         <HStack>
@@ -180,7 +180,6 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
               {/*<Verified className="text-blue-500 text-sm" /> */}
             </HStack>
           </div>
-          {/*
           <div>
             <HStack className="text-[#BFBFBF] gap-[0.25rem]">
               <ClockIcon className="text-sm" />
@@ -190,14 +189,30 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
               </p>
             </HStack>
           </div>
-          */}
         </HStack>
+        {/* Views & Time */}
+        <div className="flex justify-between">
+          <HStack className="px-3 py-1 rounded-full w-fit self-center border text-white border-white">
+            <EyeIcon className="text-lg" />
+            <p>{t("Views")}</p>
+          </HStack>
+
+          <div>
+            <HStack className="text-[#BFBFBF] gap-[0.25rem]">
+              <ClockIcon className="text-sm" />
+              <p className=" text-xs">
+                {since.value}
+                {since.timeUnitNarrow}
+              </p>
+            </HStack>
+          </div>
+        </div>
         {/* PROGRESS BAR*/}
         <HStack className="w-full">
           <HStack className="w-full">
             {[...Array(totalStoryCount)].map((_, i) => (
               <div
-                className={`h-[1.5px] w-full relative rounded-3xl ${i < currentStory ? "bg-white" : "bg-[#B9B9B9]"
+                className={`h-[1.5px] w-full relative rounded-3xl ${i < currentStory ? "bg-green-400" : "bg-[#B9B9B9]"
                   }`}
               >
                 {currentStory === i ? (
@@ -206,7 +221,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
               </div>
             ))}
           </HStack>
-          <Menu>
+          <Menu className="absolute top-2 right-2">
             <MenuButton>
               <HorizontalDotsIcon className="text-white text-lg" />
             </MenuButton>
@@ -224,7 +239,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
             onClick={() => {
               onClose && onClose();
             }}
-            className="text-sm text-white"
+            className="text-sm text-white absolute top-2 left-2"
           />
         </HStack>
       </VStack>
