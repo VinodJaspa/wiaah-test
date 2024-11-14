@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import { HtmlDivProps } from "types";
 import { useOutsideClick } from "hooks";
+import { cn } from "utils";
 export interface MenuChildProps {
   OpenMenu: () => any;
   CloseMenu: () => any;
@@ -15,9 +16,9 @@ export interface MenuProps extends HtmlDivProps {
 export const MenuContext = createContext({
   isOpen: false,
   isLazy: false,
-  onClose: () => {},
-  onOpen: () => {},
-  onToggle: () => {},
+  onClose: () => { },
+  onOpen: () => { },
+  onToggle: () => { },
 });
 
 export const Menu: React.FC<MenuProps> = ({
@@ -51,7 +52,7 @@ export const Menu: React.FC<MenuProps> = ({
         onToggle: handleToggle,
       }}
     >
-      <div {...props} ref={ref} className={`${className || ""} relative `}>
+      <div {...props} ref={ref} className={cn("relative", className)}>
         {children}
       </div>
     </MenuContext.Provider>
