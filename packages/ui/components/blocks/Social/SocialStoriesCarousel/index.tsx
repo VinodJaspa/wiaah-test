@@ -42,7 +42,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
           play={true}
           id={story.id}
           type={story.type}
-          src={story.attachements?.src}
+          src={story.attachements?.src || ""}
           text={story.content || ""}
         />
         <div className="w-full h-full bg-black justify-center flex items-center">
