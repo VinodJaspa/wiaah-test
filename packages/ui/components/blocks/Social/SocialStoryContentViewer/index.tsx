@@ -2,7 +2,6 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import {
   useStory,
-  useTimer,
   CurrentStoryProgressState,
   PostAttachment,
   AffiliationPostStory,
@@ -11,6 +10,7 @@ import {
   ServicePostStory,
 } from "ui";
 import { StoryType } from "@features/API";
+import { useTimer } from "@UI/../hooks";
 
 export interface SocialStoryContentViewerProps {
   type: StoryType;
@@ -21,9 +21,10 @@ export interface SocialStoryContentViewerProps {
   onProgress?: (progress: number) => any;
   onFinish?: () => any;
 }
+
 export const SocialStoryContentViewer: React.FC<
   SocialStoryContentViewerProps
-> = ({ type, src, text, play, id }) => {
+> = ({ type, src = "", text, play = false, id }) => {
   const { nextStory } = useStory();
   const setCurrentStoryProgress = useSetRecoilState(CurrentStoryProgressState);
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -31,21 +32,26 @@ export const SocialStoryContentViewer: React.FC<
   React.useEffect(() => {
     if (videoRef.current) {
       if (play) {
-        videoRef.current.play();
+        videoRef.current
+          .play()
+          .catch((error) => console.error("Video play error:", error));
       } else {
         videoRef.current.currentTime = 0;
         videoRef.current.pause();
       }
     }
+
     if (play) {
-      useTimer(7, setCurrentStoryProgress, 200, nextStory);
+      // Ensure useTimer is only called when `play` becomes true
+      const cleanup = useTimer(7, setCurrentStoryProgress, 200, nextStory);
+      return cleanup; // If `useTimer` returns a cleanup function, it will be called on component unmount or when `play` changes.
     }
-  }, [play]);
+  }, [play, setCurrentStoryProgress, nextStory]);
 
   const Content = () => {
     switch (type) {
       case "image":
-        return <PostAttachment src={src || ""} type={type} />;
+        return <PostAttachment src={src} type={type} />;
       case "video":
         return (
           <div>
@@ -53,6 +59,7 @@ export const SocialStoryContentViewer: React.FC<
               ref={videoRef}
               style={{ maxHeight: "100%", objectFit: "contain" }}
               src={src}
+              onEnded={nextStory}
             />
           </div>
         );
@@ -62,19 +69,15 @@ export const SocialStoryContentViewer: React.FC<
         return <ShopPostStory postId={id} />;
       case StoryType.Affiliation:
         return <AffiliationPostStory postId={id} />;
-      // case StoryType.Base:
-      //   return <ActionPostStory postId={id} />;
       case StoryType.Service:
         return <ServicePostStory postId={id} />;
       default:
         return null;
     }
   };
+
   return (
-    <div
-      className="flex flex-col items-center h-full w-full justify-center"
-    // maxW="container.md"
-    >
+    <div className="flex flex-col items-center h-full w-full justify-center">
       {text && (
         <p
           className={`w-full text-center font-bold py-4 ${type === "text" ? "text-3xl" : "text-lg"
