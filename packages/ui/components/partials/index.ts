@@ -82,3 +82,4 @@ export * from "./FormTranslationWrapper";
 export * from "./ScrollPaginationWrapper";
 export * from "./Skeleton";
 export * from "./Video";
+export * from "./StoryProgressBar";
