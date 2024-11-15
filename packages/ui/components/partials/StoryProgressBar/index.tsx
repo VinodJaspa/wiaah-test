@@ -33,15 +33,12 @@ export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
   }, [currentStory, stories.length, duration, onClose]);
 
   const handleVideoEnd = () => {
-    setCurrentStory((prevStory) => {
-      if (prevStory + 1 < stories.length) {
-        return prevStory + 1;
-      } else {
-        setCurrentStory(0);
-        onClose(); // Close modal when the last video finishes
-        return prevStory;
-      }
-    });
+    if (currentStory + 1 < stories.length) {
+      setCurrentStory((prevStory) => prevStory + 1);
+    } else {
+      onClose(); // Close modal when the last video finishes
+      setCurrentStory(0); // Reset story index for the next session
+    }
   };
 
   return (
