@@ -16,46 +16,43 @@ export const useShowStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
     (events) => events.showStoryModal,
   );
+  const [id, setId] = React.useState<string>();
+
+  React.useEffect(() => {
+    const listener = (props?: { id?: string }) => {
+      if (props?.id) {
+        setId(props.id);
+      } else {
+        setId(undefined);
+      }
+    };
+    Listen(listener);
+
+    return removeListner;
+  }, [Listen, removeListner]);
 
   function OpenModal(id: string) {
     emit({ id });
   }
+
   function CloseModal() {
-    emit();
+    setId(undefined);
   }
+
   return {
+    id,
+    setId,
     OpenModal,
     CloseModal,
-    Listen,
-    removeListner,
   };
 };
 
 export const ShowStoryModal = () => {
   const { t } = useTranslation();
-  const { Listen, removeListner } = useShowStoryModal();
-  const [id, setId] = React.useState<string>();
-
-  function handleclose() {
-    setId(undefined);
-  }
-
-  Listen((props) => {
-    if (props) {
-      if ("id" in props) {
-        setId(props.id);
-      } else {
-        handleclose();
-      }
-    }
-  });
-
-  React.useEffect(() => {
-    return removeListner;
-  }, []);
+  const { id, setId, CloseModal } = useShowStoryModal();
 
   return (
-    <Modal isOpen={!!id} onClose={handleclose} onOpen={() => { }}>
+    <Modal isOpen={!!id} onClose={CloseModal} onOpen={() => { }}>
       <ModalOverlay />
       <ModalContent className="w-1/3 h-4/5 p-0">
         <div className="h-[93%]">
@@ -73,7 +70,7 @@ export const ShowStoryModal = () => {
               photo: "/shop.jpeg",
               username: "name",
             }}
-            onClose={() => { }}
+            onClose={CloseModal}
             onNext={() => { }}
             onPrev={() => { }}
             totalStoryCount={3}
@@ -97,26 +94,7 @@ export const ShowStoryModal = () => {
                 <SmilingFaceFillEmoji className="text-white text-xl" />
               </InputRightElement>
             </InputGroup>
-            <PaperPlaneAngleIcon
-              className="text-3xl text-white cursor-pointer"
-            // onClick={() => {
-            //   if (typeof value === "string") {
-            //     getUserRoom(
-            //       {
-            //         userId: value,
-            //       },
-            //       {
-            //         onSuccess(data) {
-            //           mutate({
-            //             ...form,
-            //             roomId: data.id,
-            //           });
-            //         },
-            //       },
-            //     );
-            //   }
-            // }}
-            />
+            <PaperPlaneAngleIcon className="text-3xl text-white cursor-pointer" />
           </HStack>
         )}
       </ModalContent>
