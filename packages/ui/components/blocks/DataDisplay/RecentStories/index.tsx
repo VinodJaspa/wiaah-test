@@ -15,13 +15,12 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
 }) => {
   const { isMobile } = useResponsive();
 
-  const { OpenModal } = useShowStoryModal();
+  const { OpenModal } = useStoryModal();
 
   return (
     <div
       onClick={() => {
-        console.log("OPEN STORY");
-        OpenModal("5");
+        OpenModal("0");
       }}
       {...props}
       className={`${className || ""} ${isMobile ? "gap-4" : "gap-6"
