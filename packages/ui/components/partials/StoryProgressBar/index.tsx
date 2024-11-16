@@ -28,16 +28,17 @@ export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
 
       return () => clearTimeout(timeout); // Cleanup timeout on component unmount or reset
     } else {
+      setCurrentStory(0);
       onClose(); // Close modal when all stories are finished
     }
   }, [currentStory, stories.length, duration, onClose]);
 
   const handleVideoEnd = () => {
-    if (currentStory + 1 < stories.length) {
+    if (currentStory < stories.length) {
       setCurrentStory((prevStory) => prevStory + 1);
     } else {
-      onClose(); // Close modal when the last video finishes
       setCurrentStory(0); // Reset story index for the next session
+      onClose(); // Close modal when the last video finishes
     }
   };
 
