@@ -61,7 +61,7 @@ const FAKE_RECENT_STORIES_DATA = [
 const SocialNewsfeedView: React.FC = () => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const { open } = useStoryModal();
+  const { OpenModal } = useStoryModal();
   const { visit } = useRouting();
 
   const { openSocialNewPostModal } = useSocialControls();
