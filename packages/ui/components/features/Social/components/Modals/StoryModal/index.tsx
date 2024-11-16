@@ -33,6 +33,7 @@ export const useShowStoryModal = () => {
 
   function OpenModal(id: string) {
     emit({ id });
+    setId(id);
   }
 
   function CloseModal() {
