@@ -341,7 +341,7 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
           );
         }}
       /> */}
-      <SocialStoryModal profileId="" />
+      <SocialStoryModal />
       <AddNewPostModal />
       <AddNewStoryModal />
       <CommentReportModal />
