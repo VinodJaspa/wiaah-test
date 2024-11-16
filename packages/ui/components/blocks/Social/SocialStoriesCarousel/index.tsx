@@ -34,21 +34,13 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <Slider currentItemIdx={slideIdx} onSliderChange={handleSlideChange}>
-        <div className="w-full h-full bg-black justify-center flex items-center">
-          <Spinner />
-        </div>
-        <SocialStoryContentViewer
-          play={true}
-          id={story.id}
-          type={story.type}
-          src={story.attachements?.src || ""}
-          text={story.content || ""}
-        />
-        <div className="w-full h-full bg-black justify-center flex items-center">
-          <Spinner />
-        </div>
-      </Slider>
+      <SocialStoryContentViewer
+        play={true}
+        id={story.id}
+        type={story.type}
+        src={story.attachements?.src || ""}
+        text={story.content || ""}
+      />
     </div>
   );
 };
