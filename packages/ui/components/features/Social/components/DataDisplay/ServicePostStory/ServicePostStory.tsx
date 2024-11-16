@@ -30,7 +30,7 @@ export const ServicePostStory: React.FC<ServicePostStoryProps> = ({
           serviceType: TypeOfService.HotelRoom,
           service: {
             id: "100",
-            thumbnail: "sample_thumbnail_url",
+            thumbnail: "/shop.jpeg",
             price: 99.99,
             rating: 4.5,
             title: "Sample Service Title",
@@ -42,7 +42,7 @@ export const ServicePostStory: React.FC<ServicePostStoryProps> = ({
               username: "sampleuser",
               verified: true,
               profession: "Sample Profession",
-              photo: "sample_photo_url",
+              photo: "/shop.jpeg",
               followers: 200,
             },
           },
