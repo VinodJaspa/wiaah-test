@@ -15,7 +15,7 @@ export const StoryModal = () => {
 
   return (
     <>
-      <SocialStoryModal profileId={userId} />
+      <SocialStoryModal />
       <StorySeenByPopup />
     </>
   );
