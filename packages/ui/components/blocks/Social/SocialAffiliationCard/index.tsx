@@ -147,12 +147,12 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <p>{t("of commision by affiliating it")}</p>
             </div>
           </div>
-          <div className="bg-black align-center relative h-[200px]">
+          <div className="bg-black align-center relative w-full h-[200px] ">
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
               attachments={
                 post.affiliation.product?.presentations || [
-                  { src: getRandomImage(), type: AttachmentType.Img },
+                  { src: "/shop.jpeg", type: AttachmentType.Img },
                 ]
               }
             />
