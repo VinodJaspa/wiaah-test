@@ -106,7 +106,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
     <>
       <Modal onClose={CloseModal} isOpen={!!userId}>
         <ModalOverlay />
-        <ModalContent className="bg-[#000] max-h-[80vh] h-5/6 w-1/3 text-white">
+        <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
           {story ? (
             <SocialStoryViewer
               next={() => { }}
@@ -131,7 +131,7 @@ const FAKE_STORY: SocialStoryType = {
   createdAt: new Date().toISOString(),
   publisherId: "publisher456",
   reactionsNum: 42,
-  type: StoryType.Affiliation, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+  type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
   updatedAt: new Date().toISOString(),
   viewsCount: 123,
   views: [
@@ -146,7 +146,7 @@ const FAKE_STORY: SocialStoryType = {
   ], // Adjust structure if needed
   publisher: {
     __typename: "Profile",
-    photo: "https://via.placeholder.com/50",
+    photo: "/shop-2.jpeg",
     username: "sampleUser",
     visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
     id: "profile123",
