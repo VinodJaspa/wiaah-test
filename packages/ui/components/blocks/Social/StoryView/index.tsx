@@ -1,5 +1,5 @@
-import { UserProfileDisplay } from "../../../blocks/DataDisplay";
-import { ListWrapper } from "../../../blocks/Wrappers";
+import { UserProfileDisplay } from "@blocks/DataDisplay";
+import { ListWrapper } from "@blocks/Wrappers";
 import { useResponsive } from "hooks";
 import React from "react";
 import { MdVerified } from "react-icons/md";
