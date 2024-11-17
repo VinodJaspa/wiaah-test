@@ -33,7 +33,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
   }, [story]);
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-2 w-full">
       <SocialStoryContentViewer
         play={true}
         id={story.id}
