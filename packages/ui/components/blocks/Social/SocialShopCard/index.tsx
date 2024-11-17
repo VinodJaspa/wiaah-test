@@ -12,7 +12,7 @@ import { ShopCardInfo } from "types";
 import { useLoginPopup } from "ui";
 import { ControlledCarousel } from "ui";
 import { PostInteractionsProps } from "../PostInteractions";
-import { AttachmentType, ContentHostType } from "../../../features/API";
+import { AttachmentType, ContentHostType } from "@features/API";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
@@ -55,7 +55,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
 
   return (
     <div
-      className="flex w-full h-full flex-col justify-between rounded-lg"
+      className="flex w-full md:h-[200px] h-full flex-col justify-between rounded-lg "
       onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
       data-testid="ShopCardContainer"
     >
@@ -69,6 +69,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
               productType={shopCardInfo.type}
               cashback={shopCardInfo.cashback}
               discount={shopCardInfo.discount}
+              src={attachment.src}
               innerProps={{
                 // ["data-testid"]: "test attachment",
                 ref: attachmentRef,
@@ -85,11 +86,12 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
             productType={shopCardInfo.type}
             cashback={shopCardInfo.cashback}
             discount={shopCardInfo.discount}
+            src={shopCardInfo.attachments[0].src}
           />
         )
       )}
       <div
-        className="bg-white w-full text-black self-center"
+        className="bg-white w-full text-black self-center z-[65]"
         ref={productDetailsRef}
       >
         <ShopCardDetails
@@ -107,7 +109,13 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
             {...interactionsProps}
           />
         )}
-        {showCommentInput && <CommentInput />}
+        {showCommentInput && (
+          <CommentInput
+            className="bg-black text-white rouneded-full"
+            inputClassName="bg-black placeholder-white border-2 border-white"
+            sendIconClassName="text-white"
+          />
+        )}
       </div>
       {showComments && (
         <div className="py-2">
