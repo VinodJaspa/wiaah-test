@@ -80,7 +80,7 @@ export const SocialStoryContentViewer: React.FC<
     <div className="flex flex-col items-center h-full w-full justify-center">
       {text && (
         <p
-          className={`w-full text-center font-bold py-4 ${type === "text" ? "text-3xl" : "text-lg"
+          className={`w-full text-center font-bold pb-4 pt-2 ${type === "text" ? "text-3xl" : "text-lg"
             }`}
         >
           {text}
