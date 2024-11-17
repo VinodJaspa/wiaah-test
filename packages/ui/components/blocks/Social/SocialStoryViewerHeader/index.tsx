@@ -7,12 +7,12 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-} from "../../../partials";
+} from "@partials";
 import { MdClose } from "react-icons/md";
 import { HiEye, HiDotsHorizontal } from "react-icons/hi";
-import { NumberShortner } from "../../../../components/helpers/numberShortener";
 import { useTranslation } from "react-i18next";
 import { useStorySeenByPopup } from "../StorySeenByPopup";
+import { NumberShortner } from "@UI/components/helpers";
 
 export interface SocialStoryViewerHeaderProps {
   user: {
@@ -32,7 +32,7 @@ export const SocialStoryViewerHeader: React.FC<
   const { t } = useTranslation();
   const { open } = useStorySeenByPopup();
   return (
-    <div className="flex text-xl gap-8 w-full flex-col">
+    <div className="flex text-xl gap-3 w-full flex-col px-2">
       <div className="flex w-full justify-between">
         <MdClose
           className="cursor-pointer"
@@ -57,7 +57,7 @@ export const SocialStoryViewerHeader: React.FC<
           </MenuList>
         </Menu>
       </div>
-      <div className="w-full justify-between">
+      <div className="flex w-full justify-between">
         <HStack className="cursor-pointer" onClick={() => open(storyId)}>
           <p>{NumberShortner(views)}</p>
           <HiEye />
