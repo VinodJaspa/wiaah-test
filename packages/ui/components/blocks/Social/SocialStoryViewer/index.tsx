@@ -17,7 +17,7 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
 }) => {
   try {
     return (
-      <div className="flex flex-col gap-4 max-h-[100%] max-w-[100%]">
+      <div className="flex flex-col gap-2 max-h-[100%] max-w-[100%]">
         <SocialStoryViewerHeader
           storyId={story.id}
           user={user}
