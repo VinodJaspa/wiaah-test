@@ -18,6 +18,8 @@ export interface PostAttachmentsViewerProps {
   renderOne?: boolean;
 }
 
+const randomImage = getRandomImage();
+
 export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
   attachments,
   profileInfo,
@@ -43,7 +45,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
               cover={true}
               key={attachment.src + i}
               type={AttachmentType.Img}
-              src={getRandomImage()}
+              src={randomImage}
               alt={attachment.postLocation}
               footer={
                 showFooter ? (
@@ -73,7 +75,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
           {...attachments[0]}
           cover={true}
           alt={"thumbnail"}
-          src={getRandomImage()}
+          src={randomImage}
           type={AttachmentType.Img}
           footer={
             <div className="flex items center gap-2 p-2 text-white font-4xl">
