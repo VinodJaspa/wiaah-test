@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   ShopCardAttachment,
   ShopCardDetails,
@@ -7,10 +7,10 @@ import {
   CommentsViewer,
   useProductViewModal,
   useHandlePostSharing,
+  ControlledCarousel,
+  useLoginPopup,
 } from "ui";
 import { ShopCardInfo } from "types";
-import { useLoginPopup } from "ui";
-import { ControlledCarousel } from "ui";
 import { PostInteractionsProps } from "../PostInteractions";
 import { AttachmentType, ContentHostType } from "@features/API";
 
@@ -20,9 +20,50 @@ export interface SocialShopCardProps {
   shopCardInfo: ShopCardInfo;
   showCommentInput?: boolean;
   showbook?: boolean;
-  onCardClick?: (id: string) => any;
+  onCardClick?: (id: string) => void;
   interactionsProps?: Partial<PostInteractionsProps>;
 }
+
+const ShopCardAttachments: React.FC<{
+  attachments: ShopCardInfo["attachments"];
+  shopCardInfo: ShopCardInfo;
+  showbook?: boolean;
+  onInteraction: () => void;
+  onActiveChange?: (index: number) => void;
+}> = ({
+  attachments,
+  shopCardInfo,
+  showbook,
+  onInteraction,
+  onActiveChange,
+}) => {
+    if (!attachments || attachments.length === 0) return null;
+
+    return attachments.length > 1 ? (
+      <ControlledCarousel onCurrentActiveChange={onActiveChange}>
+        {attachments.map((attachment, index) => (
+          <ShopCardAttachment
+            key={index}
+            showbook={showbook}
+            onInteraction={onInteraction}
+            productType={shopCardInfo.type}
+            cashback={shopCardInfo.cashback}
+            discount={shopCardInfo.discount}
+            src={attachment.src}
+          />
+        ))}
+      </ControlledCarousel>
+    ) : (
+      <ShopCardAttachment
+        showbook={showbook}
+        onInteraction={onInteraction}
+        productType={shopCardInfo.type}
+        cashback={shopCardInfo.cashback}
+        discount={shopCardInfo.discount}
+        src={attachments[0].src}
+      />
+    );
+  };
 
 export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showComments,
@@ -33,90 +74,63 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   onCardClick,
   interactionsProps,
 }) => {
-  const attachmentRef = React.useRef(null);
-  const productDetailsRef = React.useRef(null);
+  const attachmentRef = useRef(null);
+  const productDetailsRef = useRef(null);
   const { showProduct } = useProductViewModal();
-
   const { handleShare } = useHandlePostSharing();
-  const [active, setActive] = React.useState<number>(0);
   const { OpenLoginPopup } = useLoginPopup();
-  function handleAddToCart(productId: string) {
-    showProduct({
-      productType: "product",
-      productId,
-    });
-  }
-  function handleBookService(serviceId: string) {
-    showProduct({
-      productType: "service",
-      productId: serviceId,
-    });
-  }
+  const [active, setActive] = useState<number>(0);
+
+  const handleAddToCart = () =>
+    showProduct({ productType: "product", productId: shopCardInfo.id });
+
+  const handleBookService = () =>
+    showProduct({ productType: "service", productId: shopCardInfo.id });
 
   return (
     <div
-      className="flex w-full md:h-[200px] h-full flex-col justify-between rounded-lg "
-      onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
-      data-testid="ShopCardContainer"
+      className="flex w-full md:h-[200px] h-full flex-col justify-between rounded-lg"
+      onClick={() => onCardClick?.(shopCardInfo.id)}
     >
-      {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
-        <ControlledCarousel onCurrentActiveChange={setActive}>
-          {shopCardInfo.attachments.map((attachment, i) => (
-            <ShopCardAttachment
-              key={i}
-              showbook={showbook}
-              onInteraction={OpenLoginPopup}
-              productType={shopCardInfo.type}
-              cashback={shopCardInfo.cashback}
-              discount={shopCardInfo.discount}
-              src={attachment.src}
-              innerProps={{
-                // ["data-testid"]: "test attachment",
-                ref: attachmentRef,
-              }}
-            />
-          ))}
-        </ControlledCarousel>
-      ) : (
-        shopCardInfo.attachments &&
-        shopCardInfo.attachments.length === 1 && (
-          <ShopCardAttachment
-            showbook={showbook}
-            onInteraction={OpenLoginPopup}
-            productType={shopCardInfo.type}
-            cashback={shopCardInfo.cashback}
-            discount={shopCardInfo.discount}
-            src={shopCardInfo.attachments[0].src}
-          />
-        )
-      )}
+      <ShopCardAttachments
+        attachments={shopCardInfo.attachments}
+        shopCardInfo={shopCardInfo}
+        showbook={showbook}
+        onInteraction={OpenLoginPopup}
+        onActiveChange={setActive}
+      />
+
       <div
-        className="bg-white w-full text-black self-center z-[65]"
+        className="bg-white w-full text-black self-center"
         ref={productDetailsRef}
       >
         <ShopCardDetails
-          onBook={() => handleBookService(shopCardInfo.id)}
+          onBook={handleBookService}
+          onAddToCart={handleAddToCart}
           views={shopCardInfo.views || 0}
           data-testid="ShopCardDetails"
-          onAddToCart={() => handleAddToCart(shopCardInfo.id)}
           {...shopCardInfo}
         />
+
         {showInteraction && (
           <PostInteractions
+            className="bg-black text-white"
             comments={shopCardInfo.noOfComments}
-            onShare={(mothed) => handleShare(mothed, shopCardInfo.id)}
+            onShare={(method) => handleShare(method, shopCardInfo.id)}
             likes={shopCardInfo.likes}
             {...interactionsProps}
           />
         )}
+
         {showCommentInput && (
           <CommentInput
-            className="bg-black text-white rouneded-full"
-            inputClassName="bg-black placeholder-white border-2 border-white"
+            className="bg-black text-white rounded-full border-0"
+            inputClassName="bg-black placeholder-white border-2 border-white  placeholder-white"
             sendIconClassName="text-white"
           />
         )}
       </div>
+
       {showComments && (
         <div className="py-2">
           <CommentsViewer
@@ -133,7 +147,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
                 replies: 0,
                 attachment: {
                   src: "placeholder-src",
-                  type: AttachmentType.Img, // or "video", "audio", etc.
+                  type: AttachmentType.Img,
                 },
                 author: {
                   username: "placeholder-username",
