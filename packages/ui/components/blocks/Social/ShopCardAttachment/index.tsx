@@ -39,6 +39,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   return (
     <div className="max-w-full h-full  relative bg-black" {...innerProps}>
       <PostAttachment
+        className="px-0"
         src={src || ""}
         type={AttachmentType.Img}
         alt={alt}
