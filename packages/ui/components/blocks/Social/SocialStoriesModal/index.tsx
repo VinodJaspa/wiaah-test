@@ -50,7 +50,7 @@ export const useStoryModal = () => {
   };
 };
 
-export type SocialStoryType = Pick<
+export type SocialStoryFields = Pick<
   Story,
   | "id"
   | "content"
@@ -62,13 +62,20 @@ export type SocialStoryType = Pick<
   | "viewsCount"
   | "views"
   | "attachements"
-> & {
-  publisher?: Maybe<
-    { __typename?: "Profile" } & Pick<
-      Profile,
-      "photo" | "username" | "visibility" | "id"
-    >
-  >;
+>;
+
+// Define a type for Profile fields
+export type SocialStoryPublisher = Maybe<
+  { __typename?: "Profile" } & Pick<
+    Profile,
+    "photo" | "username" | "visibility" | "id"
+  >
+>;
+
+// Define the main SocialStoryType
+export type SocialStoryType = {
+  stories: Array<SocialStoryFields>;
+  publisher?: SocialStoryPublisher;
 };
 
 export interface SocialStoriesModalProps {
@@ -109,9 +116,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
         <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
           {story ? (
             <SocialStoryViewer
-              next={() => { }}
-              prev={handlePrev}
-              story={story}
+              stories={story}
               user={{
                 name: story.publisher?.username || "",
                 thumbnail: story.publisher?.photo || "",
@@ -126,26 +131,49 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
 };
 
 const FAKE_STORY: SocialStoryType = {
-  id: "story123",
-  content: "This is a sample story content.",
-  createdAt: new Date().toISOString(),
-  publisherId: "publisher456",
-  reactionsNum: 42,
-  type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
-  updatedAt: new Date().toISOString(),
-  viewsCount: 123,
-  views: [
+  stories: [
     {
-      __typename: "StoryView",
-      createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
-      gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
-      id: "storyView123",
-      storyId: "story456",
-      viewerId: "viewer789",
+      id: "story123",
+      content: "This is a sample story content.",
+      createdAt: new Date().toISOString(),
+      publisherId: "publisher456",
+      reactionsNum: 42,
+      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      updatedAt: new Date().toISOString(),
+      viewsCount: 123,
+      views: [
+        {
+          __typename: "StoryView",
+          createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
+          gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+          id: "storyView123",
+          storyId: "story456",
+          viewerId: "viewer789",
+        },
+      ], // Adjust structure if needed
     },
-  ], // Adjust structure if needed
+    {
+      id: "story123",
+      content: "This is a sample story content.",
+      createdAt: new Date().toISOString(),
+      publisherId: "publisher456",
+      reactionsNum: 42,
+      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      updatedAt: new Date().toISOString(),
+      viewsCount: 123,
+      views: [
+        {
+          __typename: "StoryView",
+          createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
+          gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+          id: "storyView123",
+          storyId: "story456",
+          viewerId: "viewer789",
+        },
+      ], // Adjust structure if needed
+    },
+  ],
   publisher: {
-    __typename: "Profile",
     photo: "/shop-2.jpeg",
     username: "sampleUser",
     visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
