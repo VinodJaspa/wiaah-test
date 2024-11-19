@@ -19,10 +19,8 @@ export const ShopPostStory: React.FC<ShopPostStoryProps> = ({ postId }) => {
   }
 
   return (
-    <div className="cursor-pointer" onClick={handleRoute}>
-      <div className="pointer-events-none">
-        <SocialShopCard shopCardInfo={shopCardInfoPlaceholder} />
-      </div>
+    <div className="cursor-pointer w-full h-full">
+      <SocialShopCard shopCardInfo={shopCardInfoPlaceholder} />
     </div>
   );
 };
