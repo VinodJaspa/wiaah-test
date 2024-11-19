@@ -50,14 +50,15 @@ export const SocialStoryContentViewer: React.FC<
 
   const Content = () => {
     switch (type) {
-      case "image":
+      case StoryType.Image:
         return <PostAttachment src={src} type={type} />;
-      case "video":
+      case StoryType.Video:
         return (
           <div>
             <video
+              className="w-full "
               ref={videoRef}
-              style={{ maxHeight: "100%", objectFit: "contain" }}
+              style={{ objectFit: "contain" }}
               src={src}
               onEnded={nextStory}
             />
