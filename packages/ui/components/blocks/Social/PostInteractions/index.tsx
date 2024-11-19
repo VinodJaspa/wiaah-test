@@ -14,14 +14,15 @@ import { useTranslation } from "react-i18next";
 import { CgPlayButtonR } from "react-icons/cg";
 import { HiHeart, HiOutlineChat, HiShare, HiUserGroup } from "react-icons/hi";
 import { Interaction, Interactions, ShareMotheds } from "types";
-import { NumberShortner } from "../../../../components/helpers/numberShortener";
 import { FaFacebook, FaTwitter, FaWhatsapp, FaPinterest } from "react-icons/fa";
+import { NumberShortner } from "@UI/components/helpers";
 
 export interface PostInteractionsProps {
   likes: number;
   comments: number;
   onInteraction?: (intraction: Interaction) => any;
   onShare?: (shareMothed: ShareMotheds) => any;
+  className?: string;
 }
 
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
@@ -29,6 +30,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   likes,
   onInteraction,
   onShare,
+  className,
 }) => {
   const { t } = useTranslation();
   function handleInteraction(type: Interactions) {
@@ -40,7 +42,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   }
 
   return (
-    <Flex py="0.5rem" justify={"space-around"}>
+    <Flex py="0.5rem" justify={"space-around"} className={className}>
       <VStack
         data-testid="PostInteractionLikes"
         cursor={"pointer"}
