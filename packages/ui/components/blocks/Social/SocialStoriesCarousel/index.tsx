@@ -3,30 +3,26 @@ import { SocialStoryData } from "types";
 import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
 import { Slider, Spinner } from "@partials";
 import { Story } from "@features/API";
-import { SocialStoryType } from "../SocialStoriesModal";
+import { SocialStoryFields } from "../SocialStoriesModal";
 
 export interface SocialStoriesCarouselProps {
-  story: SocialStoryType;
-  next: (story: SocialStoryType) => any;
-  prev: (story: SocialStoryType) => any;
+  story: SocialStoryFields;
 }
 
 export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
-  next,
   story,
-  prev,
 }) => {
   const [slideIdx, setSlideIdx] = React.useState<number>(1);
 
-  function handleSlideChange(newIdx: number) {
-    if (newIdx > 1) {
-      next(story);
-      setSlideIdx(2);
-    } else if (newIdx < 1) {
-      prev(story);
-      setSlideIdx(0);
-    }
-  }
+  // function handleSlideChange(newIdx: number) {
+  //   if (newIdx > 1) {
+  //     next(story);
+  //     setSlideIdx(2);
+  //   } else if (newIdx < 1) {
+  //     prev(story);
+  //     setSlideIdx(0);
+  //   }
+  // }
 
   React.useEffect(() => {
     setSlideIdx(1);
