@@ -20,7 +20,7 @@ export const AffiliationPostStory: React.FC<AffiliationPostStoryProps> = ({
     }
   }
   return (
-    <div className="cursor-pointer" onClick={handleRoute}>
+    <div className="cursor-pointer w-full h-full" onClick={handleRoute}>
       <div className="pointer-events-none">
         <SocialAffiliationCard post={AffiliationPostListPlaceholder[0]} />;
       </div>
