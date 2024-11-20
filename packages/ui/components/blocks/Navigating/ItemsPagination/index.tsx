@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { SelectOption } from "../../../partials";
+import { SelectOption } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 export interface ItemsPaginationProps {

@@ -7,12 +7,12 @@ import {
   Input,
   HStack,
   Button,
-} from "../../../partials";
+} from "@partials";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-import { useTypedReactPubsub } from "../../../../libs";
-import { useGetMyStoryViewers } from "../../../features/Social";
-import { usePaginationControls } from "../../../blocks/Navigating";
+import { useTypedReactPubsub } from "@libs";
+import { useGetMyStoryViewers } from "@features/Social";
+import { usePaginationControls } from "@blocks/Navigating";
 
 export interface StorySeenByPopupProps { }
 
