@@ -2246,118 +2246,95 @@ export const PersonalizeActions: GetSuggestedActionsQuery["getMyRecommendedActio
 
 export const socialStoriesPlaceholder: SocialStoryType[] = [
   {
-    id: "1",
-    content: "This is a placeholder story content.",
-    createdAt: new Date().toISOString(),
-    publisherId: "user_123",
-    reactionsNum: 5,
-    type: StoryType.Post,
-    updatedAt: new Date().toISOString(),
-    viewsCount: 100,
-    views: [
+    stories: [
       {
+        id: "story123",
+        content: "This is a sample story content.",
         createdAt: new Date().toISOString(),
-        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
-        id: "view_1",
-        storyId: "story_123",
-        viewerId: "viewer_456",
+        publisherId: "publisher456",
+        reactionsNum: 42,
+        type: StoryType.Service, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+        updatedAt: new Date().toISOString(),
+        viewsCount: 123,
+        views: [
+          {
+            __typename: "StoryView",
+            createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
+            gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+            id: "storyView123",
+            storyId: "story456",
+            viewerId: "viewer789",
+          },
+        ], // Adjust structure if needed
       },
     ],
-    //@ts-ignore
-    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
     publisher: {
-      __typename: "Profile",
-      photo: "/shop-3.jpeg",
-      username: "user123",
-      visibility: ProfileVisibility.Public,
-      id: "user_123",
-    },
-  },
-  {
-    id: "2",
-    content: "This is a placeholder story content.",
-    createdAt: new Date().toISOString(),
-    publisherId: "user_123",
-    reactionsNum: 5,
-    type: StoryType.Post,
-    updatedAt: new Date().toISOString(),
-    viewsCount: 100,
-    views: [
-      {
-        createdAt: new Date().toISOString(),
-        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
-        id: "view_1",
-        storyId: "story_123",
-        viewerId: "viewer_456",
-      },
-    ],
-    //@ts-ignore
-    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
-    publisher: {
-      __typename: "Profile",
-      photo: "/shop-3.jpeg",
-      username: "user123",
-      visibility: ProfileVisibility.Public,
-      id: "user_123",
-    },
-  },
-  // Add more placeholder entries as needed
-  //
-  {
-    id: "2",
-    content: "This is a placeholder story content.",
-    createdAt: new Date().toISOString(),
-    publisherId: "user_123",
-    reactionsNum: 5,
-    type: StoryType.Post,
-    updatedAt: new Date().toISOString(),
-    viewsCount: 100,
-    views: [
-      {
-        createdAt: new Date().toISOString(),
-        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
-        id: "view_1",
-        storyId: "story_123",
-        viewerId: "viewer_456",
-      },
-    ],
-    //@ts-ignore
-    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
-    publisher: {
-      __typename: "Profile",
-      photo: "/shop-3.jpeg",
-      username: "user123",
-      visibility: ProfileVisibility.Public,
-      id: "user_123",
+      photo: "/shop-2.jpeg",
+      username: "sampleUser",
+      visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
+      id: "profile123",
     },
   },
 
   {
-    id: "4",
-    content: "This is a placeholder story content.",
-    createdAt: new Date().toISOString(),
-    publisherId: "user_123",
-    reactionsNum: 5,
-    type: StoryType.Post,
-    updatedAt: new Date().toISOString(),
-    viewsCount: 100,
-    views: [
+    stories: [
       {
+        id: "story124",
+        content: "This is a sample story content.",
         createdAt: new Date().toISOString(),
-        gender: ProfileReachedGender.Male, // Replace with appropriate ProfileReachedGender enum value
-        id: "view_1",
-        storyId: "story_123",
-        viewerId: "viewer_456",
+        publisherId: "publisher456",
+        reactionsNum: 42,
+        type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+        updatedAt: new Date().toISOString(),
+        viewsCount: 123,
+        views: [
+          {
+            __typename: "StoryView",
+            createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
+            gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+            id: "storyView123",
+            storyId: "story456",
+            viewerId: "viewer789",
+          },
+        ], // Adjust structure if needed
       },
     ],
-    //@ts-ignore
-    attachements: [{ src: "/shop-3.jpeg", type: StoryType.Post }],
     publisher: {
-      __typename: "Profile",
-      photo: "/shop-3.jpeg",
-      username: "user123",
-      visibility: ProfileVisibility.Public,
-      id: "user_123",
+      photo: "/shop-2.jpeg",
+      username: "sampleUser",
+      visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
+      id: "profile123",
+    },
+  },
+
+  {
+    stories: [
+      {
+        id: "story125",
+        content: "This is a sample story content.",
+        createdAt: new Date().toISOString(),
+        publisherId: "publisher456",
+        reactionsNum: 42,
+        type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+        updatedAt: new Date().toISOString(),
+        viewsCount: 123,
+        views: [
+          {
+            __typename: "StoryView",
+            createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
+            gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+            id: "storyView123",
+            storyId: "story456",
+            viewerId: "viewer789",
+          },
+        ], // Adjust structure if needed
+      },
+    ],
+    publisher: {
+      photo: "/shop-2.jpeg",
+      username: "sampleUser",
+      visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
+      id: "profile123",
     },
   },
 ];
