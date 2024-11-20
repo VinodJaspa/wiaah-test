@@ -1,43 +1,28 @@
 import React from "react";
-import {
-  Avatar,
-  DisplayPostedSince,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@partials";
+import { Avatar, Menu, MenuButton, MenuItem, MenuList } from "@partials";
 import { MdClose } from "react-icons/md";
-import { HiEye, HiDotsHorizontal } from "react-icons/hi";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import { useStorySeenByPopup } from "../StorySeenByPopup";
-import { NumberShortner } from "@UI/components/helpers";
 
 export interface SocialStoryViewerHeaderProps {
   user: {
     name: string;
     thumbnail: string;
   };
-  createdAt: string;
-  views: number;
   newStory?: boolean;
   onClose?: () => any;
-  storyId: string;
 }
 
 export const SocialStoryViewerHeader: React.FC<
   SocialStoryViewerHeaderProps
-> = ({ user, views, createdAt, newStory, onClose, storyId }) => {
+> = ({ user, newStory, onClose }) => {
   const { t } = useTranslation();
   const { open } = useStorySeenByPopup();
   return (
     <div className="flex text-xl gap-3 w-full flex-col px-2">
       <div className="flex w-full justify-between">
-        <MdClose
-          className="cursor-pointer"
-          onClick={() => onClose && onClose()}
-        />
+        <MdClose className="cursor-pointer" onClick={onClose} />
         <div className="flex flex-col gap-2 items-center">
           <Avatar
             newStory={newStory}
@@ -56,13 +41,6 @@ export const SocialStoryViewerHeader: React.FC<
             <MenuItem>{t("copy url")}</MenuItem>
           </MenuList>
         </Menu>
-      </div>
-      <div className="flex w-full justify-between">
-        <HStack className="cursor-pointer" onClick={() => open(storyId)}>
-          <p>{NumberShortner(views)}</p>
-          <HiEye />
-        </HStack>
-        <DisplayPostedSince ago since={createdAt} />
       </div>
     </div>
   );
