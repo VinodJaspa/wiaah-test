@@ -3,7 +3,6 @@ import { HtmlDivProps } from "types";
 import { UserProfileDisplay } from "../StoryDisplay";
 import { useResponsive } from "hooks";
 import { SocialStoryType, useStoryModal } from "@blocks/Social";
-import { useShowStoryModal } from "@features/Social/components/Modals/StoryModal";
 export interface RecentStoriesProps extends HtmlDivProps {
   stories: SocialStoryType[];
 }
