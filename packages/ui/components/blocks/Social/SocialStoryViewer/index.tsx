@@ -4,32 +4,53 @@ import {
   SocialStoriesCarousel,
   SocialStoriesCarouselProps,
 } from "../SocialStoriesCarousel";
-import { ProgressBars } from "@partials";
+import {
+  DisplayPostedSince,
+  HStack,
+  ProgressBars,
+  StoryProgressBar,
+} from "@partials";
+import { SocialStoryType, useStoryModal } from "../SocialStoriesModal";
+import { HiEye } from "react-icons/hi";
+import { NumberShortner } from "@UI/components/helpers";
 
-export interface SocialStoryViewerProps extends SocialStoriesCarouselProps {
+export interface SocialStoryViewerProps {
+  stories: SocialStoryType; // An array of stories, not just a single object
   user: { name: string; thumbnail: string; id: string };
+  id: string;
 }
 
 export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
-  story,
+  stories,
   user,
+  id,
   ...props
 }) => {
-  try {
-    return (
-      <div className="flex flex-col gap-2 max-h-[100%] max-w-[100%]">
-        <SocialStoryViewerHeader
-          storyId={story.id}
-          user={user}
-          createdAt={story.createdAt}
-          views={story.viewsCount}
-        />
-        <ProgressBars srcKey={user.id} />
-        <SocialStoriesCarousel {...props} story={story} />
-      </div>
-    );
-  } catch (error) {
-    console.error(error);
-    return null;
+  const { CloseModal } = useStoryModal();
+  const storyComponents = stories.stories.map((story) => ({
+    component: <SocialStoriesCarousel {...props} story={story} />, // Story component
+    storyData: {
+      views: story.views.length, // or the actual value for views
+      createdAt: story.createdAt, // or the actual value for createdAt
+    },
+  }));
+
+  if (!stories || !stories.stories || stories.stories.length === 0) {
+    return null; // Return nothing if no stories exist
   }
+
+  return (
+    <div className="flex flex-col gap-2 max-h-[100%] max-w-[100%]">
+      {/* Header Section */}
+      <SocialStoryViewerHeader user={user} onClose={() => CloseModal()} />
+      {/* Story Progress Bar Section */}
+      {id && (
+        <StoryProgressBar
+          duration={3000}
+          onClose={CloseModal}
+          stories={storyComponents}
+        />
+      )}
+    </div>
+  );
 };
