@@ -2,6 +2,8 @@ import React from "react";
 import { HtmlDivProps } from "types";
 import { Image } from "ui";
 import { AttachmentType, StoryType } from "@features/API";
+import { cn } from "utils";
+
 export interface PostAttachmentProps {
   src: string;
   type: AttachmentType | StoryType;
@@ -10,6 +12,7 @@ export interface PostAttachmentProps {
   style?: HtmlDivProps;
   blur?: boolean;
   cover?: boolean;
+  className?: string;
   tags?: {
     x: number;
     y: number;
@@ -21,48 +24,91 @@ export interface PostAttachmentProps {
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
   type = AttachmentType.Img,
   src,
-  alt,
+  alt = "",
   footer,
   style,
-  blur,
+  blur = false,
   cover = true,
+  className,
   tags,
 }) => {
+  // Render image with optional blur and cover mode
+  const renderImage = () => (
+    <>
+      {blur && (
+        <Image
+          className="absolute w-full h-full object-cover blur-md"
+          alt={alt}
+          src={src}
+          data-testid="PostAttachmentBlurImage"
+        />
+      )}
+      <Image
+        className={cn(
+          `w-full h-full ${cover ? "object-cover" : "object-contain"} ${blur ? "absolute" : ""
+          } px-2`,
+          className,
+        )}
+        alt={alt}
+        src={src}
+        data-testid="PostAttachmentImage"
+      />
+    </>
+  );
+
+  // Render footer if provided
+  const renderFooter = () =>
+    footer && (
+      <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent z-[5]">
+        {footer}
+      </div>
+    );
+
+  // Render tags (if applicable in the future)
+  const renderTags = () =>
+    tags?.map((tag, index) => (
+      <div
+        key={index}
+        style={{
+          position: "absolute",
+          top: `${tag.y}%`,
+          left: `${tag.x}%`,
+        }}
+        className="bg-black bg-opacity-50 text-white text-sm px-2 py-1 rounded"
+      >
+        {tag.title}: {tag.value}
+      </div>
+    ));
+
+  // Conditional rendering based on attachment type
   switch (type) {
     case AttachmentType.Img:
       return (
         <div
-          className="flex justify-center items-center w-full h-full overflow-hidden relative"
+          className="relative flex justify-center items-center w-full h-full overflow-hidden"
           {...style}
         >
-          {/*<div className="h-11 w-11 top-2 left-2 text-2xl flex justify-center items-center absolute z-[2] text-white fill-white bg-black bg-opacity-50 rounded-xl ">
-            <HiDuplicate />
-          </div>*/}
-          {blur && (
-            <Image
-              className="object-cover absolute w-full h-full blur-md"
-              alt={alt && alt}
-              src={src}
-              data-testid="PostAttachmentBlurImage"
-            />
-          )}
-          <Image
-            className={`${cover ? "object-cover" : "object-contain"} ${blur ? "absolute" : ""
-              }  w-full h-full px-2`}
-            alt={alt && alt}
-            src={src}
-            data-testid="PostAttachmentImage"
-          />
-          {footer && (
-            <div className="bg-gradient-to-t from-black to-transparent w-full bottom-0 left-0 absolute z-[5]">
-              {footer}
-            </div>
-          )}
+          {renderImage()}
+          {renderFooter()}
+          {renderTags()}
         </div>
       );
 
     case AttachmentType.Vid:
-      return <video src={src}></video>;
+      return (
+        <div className="relative flex justify-center items-center w-full h-full overflow-hidden">
+          <video
+            src={src}
+            controls
+            className="w-full h-full object-contain"
+            data-testid="PostAttachmentVideo"
+          >
+            Your browser does not support the video tag.
+          </video>
+          {renderFooter()}
+        </div>
+      );
+
     default:
       return null;
   }
