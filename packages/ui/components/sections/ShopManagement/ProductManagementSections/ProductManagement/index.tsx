@@ -10,14 +10,14 @@ import {
 } from "@UI";
 import { useForm } from "utils";
 
-export interface ProductManagementSectionProps {}
+export interface ProductManagementSectionProps { }
 
 export const ProductManagementSection: React.FC<
   ProductManagementSectionProps
 > = () => {
   const { product } = useEditProductData();
 
-  const { mutate: deleteProd } = useDeleteMyProductMutation();
+  // const { mutate: _deleteProd } = useDeleteMyProductMutation();
 
   const { controls, pagination } = usePaginationControls();
 
@@ -27,14 +27,13 @@ export const ProductManagementSection: React.FC<
     },
     { pagination },
   );
-  const { data } = useGetMyProducts(form);
 
   return typeof product === "undefined" ? (
     <>
       <ProductDetailsTable
         filters={(v: any) => setValue(v)}
-        products={data || []}
-        onDelete={(id) => deleteProd(id)}
+        products={[]}
+        onDelete={(id) => { }}
       />
       <Pagination controls={controls} />
     </>
