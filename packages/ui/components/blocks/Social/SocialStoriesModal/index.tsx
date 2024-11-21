@@ -33,12 +33,13 @@ export const useStoryModal = () => {
   }, [Listen, removeListner]);
 
   function OpenModal(id: string) {
-    emit({ id });
     setUserId(id);
+    emit({ id });
   }
 
   function CloseModal() {
-    setUserId(undefined);
+    setUserId(undefined); // Reset state to undefined
+    emit({ id: undefined }); // Emit an event with no ID to signal closure
   }
 
   return {
@@ -116,6 +117,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
         <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
           {story ? (
             <SocialStoryViewer
+              id={userId}
               stories={story}
               user={{
                 name: story.publisher?.username || "",
@@ -138,7 +140,7 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
@@ -152,13 +154,14 @@ const FAKE_STORY: SocialStoryType = {
         },
       ], // Adjust structure if needed
     },
+
     {
-      id: "story123",
-      content: "This is a sample story content.",
+      id: "story124",
+      content: "This is a sample story .",
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Service, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
