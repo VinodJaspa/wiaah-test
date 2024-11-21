@@ -1,16 +1,14 @@
-import { useShowStoryModal } from "@features/Social/components/Modals/StoryModal";
 import React, { useEffect, useState } from "react";
-import { HStack, VStack } from "ui";
-
-interface Story {
-  type: "img" | "video";
-  src: string;
-}
+import { HiEye } from "react-icons/hi";
+import { HStack, VStack, DisplayPostedSince } from "ui";
 
 interface StoryProgressBarProps {
-  stories: Story[]; // Array of story objects with type and source
+  stories: {
+    component: React.ReactNode;
+    storyData: { views: number; createdAt: any };
+  }[]; // Array of custom story components
   duration?: number; // Duration for each story in milliseconds (default 3000 ms)
-  onClose: () => {};
+  onClose: () => void; // Callback when all stories are finished
 }
 
 export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
@@ -28,24 +26,30 @@ export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
 
       return () => clearTimeout(timeout); // Cleanup timeout on component unmount or reset
     } else {
-      setCurrentStory(0);
       onClose(); // Close modal when all stories are finished
+      setCurrentStory(0);
     }
-  }, [currentStory, stories.length, duration, onClose]);
-
-  const handleVideoEnd = () => {
-    if (currentStory < stories.length) {
-      setCurrentStory((prevStory) => prevStory + 1);
-    } else {
-      setCurrentStory(0); // Reset story index for the next session
-      onClose(); // Close modal when the last video finishes
-    }
-  };
+  }, [currentStory, stories.length, onClose]);
 
   return (
     <VStack className="w-full space-y-4">
       {/* Progress Bar */}
-      <HStack className="w-full space-x-2">
+      <div className="flex w-full justify-between px-3">
+        <HStack className="cursor-pointer">
+          <p>
+            {stories[currentStory] && stories[currentStory].storyData.views}
+          </p>
+          <HiEye />
+        </HStack>
+        <DisplayPostedSince
+          ago
+          since={
+            stories[currentStory] && stories[currentStory].storyData.createdAt
+          }
+        />
+      </div>
+
+      <HStack className="w-full space-x-2 px-3">
         {[...Array(stories.length)].map((_, i) => (
           <div
             key={i}
@@ -65,27 +69,15 @@ export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
       </HStack>
 
       {/* Media Section */}
-      <div className="w-full h-64 rounded-2xl overflow-hidden">
-        {stories[currentStory]?.type === "img" ? (
-          <img
-            src={stories[currentStory]?.src}
-            alt={`Story ${currentStory + 1}`}
-            className="w-full h-full object-cover"
-            onLoad={() => {
-              if (currentStory === stories.length - 1) {
-                setTimeout(() => onClose(), duration);
-              }
-            }}
-          />
-        ) : (
-          <video
-            src={stories[currentStory]?.src}
-            autoPlay
-            muted
-            className="w-full h-full object-cover"
-            onEnded={handleVideoEnd}
-          />
-        )}
+      <div
+        className="w-full h-full rounded-2xl"
+        onEnded={() => {
+          if (currentStory === stories.length - 1) {
+            onClose();
+          }
+        }}
+      >
+        {stories[currentStory] && stories[currentStory].component}
       </div>
 
       {/* Animation Style */}
