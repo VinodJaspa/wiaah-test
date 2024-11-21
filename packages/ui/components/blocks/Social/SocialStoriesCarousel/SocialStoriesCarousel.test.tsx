@@ -19,11 +19,7 @@ describe("SocialStoriesCarousel render tests", () => {
     wrapper = mount(
       <RecoilRoot>
         <ChakraProvider>
-          <SocialStoriesCarousel
-            story={GetUserSocialStoryPlaceHolder}
-            next={() => { }}
-            prev={() => { }}
-          />
+          <SocialStoriesCarousel story={GetUserSocialStoryPlaceHolder} />
         </ChakraProvider>
       </RecoilRoot>,
     );
