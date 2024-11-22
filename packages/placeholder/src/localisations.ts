@@ -1,5 +1,6 @@
+import { DesignType } from "@features/API";
 import { AccountType, PostCardInfo } from "types";
-import { PlaceCardProps } from "ui";
+import { GetDesignByPlacementQuery, PlaceCardProps } from "ui";
 const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
     id: "1",
@@ -87,9 +88,58 @@ export const costumPH: PlaceCardProps[] = [
 export const placesWithCostum = costumPH.concat(
   [...Array(9)].map(() => ({
     ...placeCardPlaceholder,
-  }))
+  })),
 );
 
 export const placesPH = [...Array(9)].map(() => ({
   ...placeCardPlaceholder,
 }));
+
+export const designByPlacementPlaceholder: GetDesignByPlacementQuery["getDesignByPlacement"] =
+  [
+    {
+      __typename: "Design",
+      id: "design1",
+      src: "/shop.jpeg",
+      type: DesignType.Partner, // Replace with the appropriate `DesignType` value
+      distenation: "Homepage",
+      name: "Homepage Banner",
+      text: "Welcome to our site!",
+    },
+    {
+      __typename: "Design",
+      id: "design2",
+      src: "/shop.jpeg",
+      type: DesignType.Collaboration, // Replace with the appropriate `DesignType` value
+      distenation: "Product Page",
+      name: "Product Spotlight",
+      text: "Check out our new arrivals!",
+    },
+    {
+      __typename: "Design",
+      id: "design3",
+      src: "/shop.jpeg",
+      type: DesignType.Slideshow, // Replace with the appropriate `DesignType` value
+      distenation: "Sidebar",
+      name: "Sidebar Ad",
+      text: "Limited-time discounts available now.",
+    },
+    {
+      __typename: "Design",
+      id: "design4",
+      src: "/shop.jpeg",
+      type: DesignType.Slideshow, // Replace with the appropriate `DesignType` value
+      distenation: "Footer",
+      name: "Footer Promotion",
+      text: "Subscribe to our newsletter!",
+    },
+    {
+      __typename: "Design",
+      id: "design5",
+      src: "/shop.jpeg",
+      type: DesignType.Slideshow, // Replace with the appropriate `DesignType` value
+      distenation: "Checkout Page",
+      name: "Checkout Reminder",
+      text: "Don't forget to apply your coupon!",
+    },
+  ];
