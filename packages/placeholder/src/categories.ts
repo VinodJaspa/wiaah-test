@@ -1,3 +1,5 @@
+import { ProductCategoryStatus } from "@features/API";
+import { GetCategoryByIdQueryQuery, GetTopProductCategoriesQuery } from "@UI";
 import { Category } from "types";
 
 export const categories: Category[] = [
@@ -98,3 +100,58 @@ export const categories: Category[] = [
     ],
   },
 ];
+
+export const productCategoryByIdPlaceholder: GetCategoryByIdQueryQuery["getProductCategoryById"] =
+{
+  __typename: "Category",
+  id: "category1",
+  name: "Electronics",
+  status: ProductCategoryStatus.Active, // Replace "ACTIVE" with a valid `ProductCategoryStatus` value
+  sortOrder: 1,
+  sales: 1500,
+};
+
+export const topProductCategoriesPlaceholder: GetTopProductCategoriesQuery["getTopProductCategories"] =
+{
+  cursor: "cursor1",
+  nextCursor: "cursor2",
+  hasMore: true,
+  total: 5,
+  data: [
+    {
+      id: "cat1",
+      name: "Electronics",
+      parantId: "root",
+      sortOrder: 1,
+      status: "ACTIVE" as ProductCategoryStatus, // Replace with your defined enum value
+    },
+    {
+      id: "cat2",
+      name: "Fashion",
+      parantId: "root",
+      sortOrder: 2,
+      status: "ACTIVE" as ProductCategoryStatus,
+    },
+    {
+      id: "cat3",
+      name: "Home Appliances",
+      parantId: "root",
+      sortOrder: 3,
+      status: "ACTIVE" as ProductCategoryStatus,
+    },
+    {
+      id: "cat4",
+      name: "Books",
+      parantId: "root",
+      sortOrder: 4,
+      status: "INACTIVE" as ProductCategoryStatus,
+    },
+    {
+      id: "cat5",
+      name: "Sports",
+      parantId: "root",
+      sortOrder: 5,
+      status: "ACTIVE" as ProductCategoryStatus,
+    },
+  ],
+};
