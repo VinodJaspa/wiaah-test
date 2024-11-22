@@ -117,6 +117,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
         <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
           {story ? (
             <SocialStoryViewer
+              onClose={CloseModal}
               id={userId}
               stories={story}
               user={{
@@ -140,7 +141,7 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Post, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
