@@ -1,3 +1,5 @@
+import { GetTopSalesProductsQueryQuery } from "@features/Products/services/queries/getTopSalesProductsByCategory";
+import { GetBestShopsQuery } from "@features/Shop/services/queries/useGetBestShopsQuery";
 import { CartSummaryItemData } from "types";
 import { ProductDetails } from "types";
 
@@ -797,3 +799,132 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
 ];
+
+export const bestShopsPlaceholder: GetBestShopsQuery["getTopShops"] = [
+  {
+    __typename: "Shop",
+    name: "Elite Electronics",
+    id: "shop1",
+    storeCategory: "Electronics",
+    ownerId: "owner1",
+    thumbnail: "/shop.jpeg",
+  },
+  {
+    __typename: "Shop",
+    name: "Chic Boutique",
+    id: "shop2",
+    storeCategory: "Fashion",
+    ownerId: "owner2",
+    thumbnail: "/shop.jpeg",
+  },
+  {
+    __typename: "Shop",
+    name: "Gourmet Grocers",
+    id: "shop3",
+    storeCategory: "Grocery",
+    ownerId: "owner3",
+    thumbnail: "/shop.jpeg",
+  },
+  {
+    __typename: "Shop",
+    name: "Tech Haven",
+    id: "shop4",
+    storeCategory: "Technology",
+    ownerId: "owner4",
+    thumbnail: "/shop.jpeg",
+  },
+  {
+    __typename: "Shop",
+    name: "Fit & Fine",
+    id: "shop5",
+    storeCategory: "Fitness",
+    ownerId: "owner5",
+    thumbnail: "/shop.jpeg",
+  },
+];
+
+export const topSaleProductsPlaceholder: GetTopSalesProductsQueryQuery["getTopSalesProducts"]["data"] =
+  [
+    {
+      __typename: "Product",
+      thumbnail: "/shop-3.jpeg",
+      title: "Wireless Headphones",
+      rate: 4.5,
+      description: "High-quality wireless headphones with noise cancellation.",
+      reviews: 120,
+      price: 99.99,
+      id: "product1",
+      vendor_external_link: "https://example.com/product1",
+      saved: true,
+      isExternalShopping: true,
+      category: {
+        __typename: "Category",
+        name: "Electronics",
+      },
+    },
+    {
+      __typename: "Product",
+      thumbnail: "/shop-3.jpeg",
+      title: "Smartphone Stand",
+      rate: 4.3,
+      description: "Adjustable smartphone stand for desk use.",
+      reviews: 85,
+      price: 19.99,
+      id: "product2",
+      vendor_external_link: "https://example.com/product2",
+      saved: false,
+      isExternalShopping: false,
+      category: {
+        __typename: "Category",
+        name: "Accessories",
+      },
+    },
+    {
+      __typename: "Product",
+      thumbnail: "/shop-3.jpeg",
+      title: "Gaming Keyboard",
+      rate: 4.7,
+      description: "RGB mechanical gaming keyboard with customizable keys.",
+      reviews: 200,
+      price: 79.99,
+      id: "product3",
+      vendor_external_link: "https://example.com/product3",
+      saved: true,
+      isExternalShopping: true,
+      category: null, // No category assigned
+    },
+    {
+      __typename: "Product",
+      thumbnail: "/shop-3.jpeg",
+      title: "Portable Charger",
+      rate: 4.8,
+      description: "High-capacity portable charger with fast charging support.",
+      reviews: 150,
+      price: 39.99,
+      id: "product4",
+      vendor_external_link: "https://example.com/product4",
+      saved: false,
+      isExternalShopping: false,
+      category: {
+        __typename: "Category",
+        name: "Power",
+      },
+    },
+    {
+      __typename: "Product",
+      thumbnail: "/shop-3.jpeg",
+      title: "Bluetooth Speaker",
+      rate: 4.4,
+      description: "Compact Bluetooth speaker with excellent sound quality.",
+      reviews: 95,
+      price: 29.99,
+      id: "product5",
+      vendor_external_link: "https://example.com/product5",
+      saved: true,
+      isExternalShopping: true,
+      category: {
+        __typename: "Category",
+        name: "Audio",
+      },
+    },
+  ];
