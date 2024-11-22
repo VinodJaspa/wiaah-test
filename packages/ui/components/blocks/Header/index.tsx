@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
               id="burger-menu-toggle"
               className="flex cursor-pointer items-center space-x-2"
               onClick={() => {
-                setisopen(true);
+                visit((routes) => routes.visitMainPage());
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
