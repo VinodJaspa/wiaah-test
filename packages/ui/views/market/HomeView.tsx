@@ -12,7 +12,10 @@ import {
   useGetTopProductCategoriesQuery,
 } from "@features/Products";
 import { useGetTopSalesProductsByCategoryIdQuery } from "@features/Products/services/queries/getTopSalesProductsByCategory";
-import { useGetRecommendedProducts } from "@features/Products/services/queries/useGetRecommendedProducts";
+import {
+  GetRecommendedProductsQuery,
+  useGetRecommendedProducts,
+} from "@features/Products/services/queries/useGetRecommendedProducts";
 import { useGetBestShopsQuery } from "@features/Shop/services/queries/useGetBestShopsQuery";
 import {
   AddToCartProductButton,
@@ -31,6 +34,14 @@ import {
   StarIcon,
   Text,
 } from "@partials";
+import {
+  nearPlacesPlaceholder,
+  bestShopsPlaceholder,
+  designByPlacementPlaceholder,
+  productCategoryByIdPlaceholder,
+  topSaleProductsPlaceholder,
+  topProductCategoriesPlaceholder,
+} from "placeholder";
 import { useGeoLocation } from "@src/utils/React-utils/useGeolocation";
 import { useResponsive } from "hooks";
 import React, { useRef, useState } from "react";
@@ -68,7 +79,8 @@ const HomeRecommendationSection: React.FC = () => {
 
   const { pagination } = usePaginationControls();
 
-  const { data, ...props } = useGetRecommendedProducts(pagination);
+  const { data: _data, ...props } = useGetRecommendedProducts(pagination);
+  const data = recommendedProductsPlaceholder;
 
   return (
     <div className="flex flex-col gap-4">
@@ -132,11 +144,9 @@ const PlacesNearYouHomeSection: React.FC = () => {
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
 
-  console.log({ lat, lng });
-
   const {
-    data: places,
-    isLoading,
+    data: _places,
+    isLoading: _isLoading,
     isError,
     error,
   } = useGetNearPlacesQuery(
@@ -147,13 +157,14 @@ const PlacesNearYouHomeSection: React.FC = () => {
     },
     {
       enabled: typeof lat === "number" && typeof lng === "number",
-    }
+    },
   );
+  const places = nearPlacesPlaceholder;
 
   return (
     <div className="flex flex-col gap-8">
       <p>{t("Places near you")}</p>
-      <SpinnerFallback error={error} isError={isError} isLoading={isLoading}>
+      <SpinnerFallback error={error} isError={isError} isLoading={false}>
         <div
           {...setTestid("homepage-near-places-container")}
           className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
@@ -174,7 +185,6 @@ const PlacesNearYouHomeSection: React.FC = () => {
                   {place.name}
                 </Text>
               </div>
-
               <HStack className="justify-between">
                 <HStack>
                   <StarIcon className="text-yellow-200" />
@@ -196,7 +206,8 @@ const BestShopsHomeSection: React.FC = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
-  const { data } = useGetBestShopsQuery({ take: 5 });
+  const { data: _data } = useGetBestShopsQuery({ take: 5 });
+  const data = bestShopsPlaceholder;
 
   return (
     <div className="flex flex-col gap-4">
@@ -291,14 +302,16 @@ const TopSalesCategoryProducts: React.FC<{
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { pagination } = usePaginationControls({ itemsPerPage: 40 });
-  const { data: categoryRes } = useGetCategoryByIdQuery(categoryId!);
-  const { data, isLoading } = useGetTopSalesProductsByCategoryIdQuery(
+  const { data: _categoryRes } = useGetCategoryByIdQuery(categoryId!);
+  const { data: _data, isLoading } = useGetTopSalesProductsByCategoryIdQuery(
     {
       categoryId: categoryId === "all" ? undefined : categoryId!,
       pagination,
     },
-    { enabled: !!categoryId }
+    { enabled: !!categoryId },
   );
+  const data = topSaleProductsPlaceholder;
+  const categoryRes = productCategoryByIdPlaceholder;
 
   const isAll = categoryId === "all";
 
@@ -315,7 +328,7 @@ const TopSalesCategoryProducts: React.FC<{
       >
         {isLoading
           ? mapArray([...Array(40)], () => <ProductSkeleton />)
-          : mapArray(data?.data, (prod, i) => (
+          : mapArray(data, (prod, i) => (
             <div
               onClick={() => visit((r) => r.visitProduct(prod.id))}
               key={i}
@@ -373,7 +386,7 @@ const TopSalesCategoryProducts: React.FC<{
 };
 
 const HomeViewDesignsDisplay: React.FC = () => {
-  const { data: designs } = useGetDesignPlacementQuery({
+  const { data: _designs } = useGetDesignPlacementQuery({
     placement: DesignPlacement.Homepage,
     pagination: {
       page: 1,
@@ -381,6 +394,7 @@ const HomeViewDesignsDisplay: React.FC = () => {
     },
   });
   const [idx, setIdx] = useState<number>(0);
+  const designs = designByPlacementPlaceholder;
 
   return (
     <AspectRatio className="w-full overflow-hidden" ratio={0.3}>
@@ -428,9 +442,8 @@ const TopCategoriesHomePageSlider: React.FC<{
   const ref = useRef<HTMLDivElement>(null);
   const { data, hasNextPage } = useGetTopProductCategoriesQuery(
     { take: 10 },
-    { getNextPageParam: (last) => last.nextCursor }
+    { getNextPageParam: (last) => last.nextCursor },
   );
-
   const scroll = (scrollOffset: number) => {
     if (ref.current) {
       ref.current.scrollLeft += scrollOffset;
@@ -477,4 +490,67 @@ const TopCategoriesHomePageSlider: React.FC<{
       </HStack>
     </div>
   );
+};
+const recommendedProductsPlaceholder: GetRecommendedProductsQuery["getProductRecommendation"] =
+{
+  __typename: "ProductPaginationResponse",
+  hasMore: true,
+  total: 5,
+  data: [
+    {
+      __typename: "Product",
+      id: "1",
+      rate: 4.5,
+      reviews: 120,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 1",
+      description: "A great product for everyday use.",
+      saved: true,
+      price: 19.99,
+    },
+    {
+      __typename: "Product",
+      id: "2",
+      rate: 4.2,
+      reviews: 95,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 2",
+      description: "This product is loved by everyone.",
+      saved: false,
+      price: 29.99,
+    },
+    {
+      __typename: "Product",
+      id: "3",
+      rate: 4.8,
+      reviews: 210,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 3",
+      description: "Top-rated product with excellent features.",
+      saved: true,
+      price: 39.99,
+    },
+    {
+      __typename: "Product",
+      id: "4",
+      rate: 3.9,
+      reviews: 45,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 4",
+      description: "A budget-friendly product for everyone.",
+      saved: false,
+      price: 14.99,
+    },
+    {
+      __typename: "Product",
+      id: "5",
+      rate: 4.0,
+      reviews: 85,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 5",
+      description: "A product with good value for money.",
+      saved: true,
+      price: 24.99,
+    },
+  ],
 };
