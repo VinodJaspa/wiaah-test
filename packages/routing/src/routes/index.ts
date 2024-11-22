@@ -16,7 +16,7 @@ export type MainRouterInterface = {
   removeQuery: (query: string) => RoutesType;
   mapProps: (
     keys: readonly string[],
-    data: Record<string, any>
+    data: Record<string, any>,
   ) => Record<string, any>;
   id: (id: string) => RoutesType;
   addPath: (path: string) => RoutesType;
@@ -33,6 +33,7 @@ export type MainRouterInterface = {
   visitMarketSavedItems: () => RoutesType;
   visitContactUs: () => RoutesType;
   visitHelpAndFaqs: () => RoutesType;
+  visitMainPage: () => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
   ShopRoutesType &
@@ -60,11 +61,14 @@ export const MainRoutes: MainRouterInterface = {
   },
   mapProps<TKeys extends readonly string[]>(
     keys: TKeys,
-    data: Record<string, any>
+    data: Record<string, any>,
   ): Record<ArrElement<TKeys>, any> {
-    const props: Record<ArrElement<TKeys>, any> = keys.reduce((acc, curr) => {
-      return { ...acc, [curr]: data[curr] };
-    }, {} as Record<ArrElement<TKeys>, any>);
+    const props: Record<ArrElement<TKeys>, any> = keys.reduce(
+      (acc, curr) => {
+        return { ...acc, [curr]: data[curr] };
+      },
+      {} as Record<ArrElement<TKeys>, any>,
+    );
     return props;
   },
   location(location) {
@@ -122,5 +126,8 @@ export const MainRoutes: MainRouterInterface = {
   },
   visitHelpAndFaqs() {
     return this.addPath("help-and-faqs");
+  },
+  visitMainPage() {
+    return this.addPath("/");
   },
 };
