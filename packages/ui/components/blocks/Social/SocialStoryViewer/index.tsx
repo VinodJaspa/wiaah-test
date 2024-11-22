@@ -18,15 +18,16 @@ export interface SocialStoryViewerProps {
   stories: SocialStoryType; // An array of stories, not just a single object
   user: { name: string; thumbnail: string; id: string };
   id: string;
+  onClose: () => void;
 }
 
 export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
   stories,
   user,
   id,
+  onClose,
   ...props
 }) => {
-  const { CloseModal } = useStoryModal();
   const storyComponents = stories.stories.map((story) => ({
     component: <SocialStoriesCarousel {...props} story={story} />, // Story component
     storyData: {
@@ -42,12 +43,12 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
   return (
     <div className="flex flex-col gap-2 max-h-[100%] max-w-[100%]">
       {/* Header Section */}
-      <SocialStoryViewerHeader user={user} onClose={() => CloseModal()} />
+      <SocialStoryViewerHeader user={user} onClose={() => onClose()} />
       {/* Story Progress Bar Section */}
       {id && (
         <StoryProgressBar
           duration={3000}
-          onClose={CloseModal}
+          onClose={onClose}
           stories={storyComponents}
         />
       )}
