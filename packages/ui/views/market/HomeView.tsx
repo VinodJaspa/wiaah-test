@@ -404,7 +404,11 @@ const HomeViewDesignsDisplay: React.FC = () => {
         currentItemIdx={idx}
       >
         {mapArray(designs, (design, i) => (
-          <React.Fragment key={i}>
+          <div
+            key={i}
+            className={`relative w-full h-full ${idx === i ? "block" : "hidden"
+              }`}
+          >
             <Image
               className="w-full h-full object-cover"
               alt={design.name}
@@ -412,12 +416,14 @@ const HomeViewDesignsDisplay: React.FC = () => {
             />
             <div className="absolute left-0 top-0 bg-black/10 w-full h-full" />
 
-            <div className="absolute flex flex-col gap-4 left-8 top-1/2 -translate-y-1/2">
-              <h1 className="text-4xl text-white font-semibold">
-                {design.text}
-              </h1>
-            </div>
-          </React.Fragment>
+            {idx === i && (
+              <div className="absolute flex flex-col gap-4 left-8 top-1/2 -translate-y-1/2">
+                <h1 className="text-4xl text-white font-semibold">
+                  {design.text}
+                </h1>
+              </div>
+            )}
+          </div>
         ))}
       </Slider>
 
