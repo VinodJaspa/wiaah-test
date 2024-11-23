@@ -23,6 +23,7 @@ export interface PostInteractionsProps {
   onInteraction?: (intraction: Interaction) => any;
   onShare?: (shareMothed: ShareMotheds) => any;
   className?: string;
+  onHeartIConClick?: () => void;
 }
 
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
@@ -31,6 +32,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   onInteraction,
   onShare,
   className,
+  onHeartIConClick,
 }) => {
   const { t } = useTranslation();
   function handleInteraction(type: Interactions) {
@@ -48,7 +50,12 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
         cursor={"pointer"}
         onClick={() => handleInteraction("like")}
       >
-        <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiHeart} />
+        <Icon
+          onClick={onHeartIConClick}
+          fontSize={"xx-large"}
+          fill={"primary.main"}
+          as={HiHeart}
+        />
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
           {NumberShortner(likes)} {t("likes", "likes")}
         </Text>
