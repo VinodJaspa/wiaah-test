@@ -16,6 +16,7 @@ import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useDimensions, useResponsive } from "hooks";
+import { Category, ProductCategoryStatus } from "@features/API";
 
 export const SearchView: React.FC = () => {
   const { t } = useTranslation();
@@ -27,12 +28,12 @@ export const SearchView: React.FC = () => {
       ...(Array.isArray(router.query.categories)
         ? router.query.categories
         : router.query.categories
-        ? [router.query.categories]
-        : []),
+          ? [router.query.categories]
+          : []),
     ].map((cate, i) => ({
       text: cate,
       url: `/${cate}`,
-    }))
+    })),
   );
   const [filters, setFilters] = React.useState<Record<string, any>>({});
   const { controls, pagination } = usePaginationControls();
@@ -41,7 +42,8 @@ export const SearchView: React.FC = () => {
     isLoading,
     isError,
   } = useGetProductsQuery({ ...filters, pagination });
-  const { data: categories } = useGetProductCategories();
+  const { data: _categories } = useGetProductCategories();
+  const categories = placeholderCategories;
 
   const { isTablet, isMobile } = useResponsive();
 
@@ -70,26 +72,23 @@ export const SearchView: React.FC = () => {
             onClick={() => {
               setGrid(false);
             }}
-            className={`${
-              isGrid ? "" : "bg-gray-200"
-            } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+            className={`${isGrid ? "" : "bg-gray-200"
+              } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
           />
           <HiOutlineViewGrid
             onClick={() => {
               setGrid(true);
             }}
-            className={`${
-              isGrid ? "bg-gray-200" : ""
-            } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+            className={`${isGrid ? "bg-gray-200" : ""
+              } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
           />
         </div>
         <div className="flex items-start justify-center">
           <div
-            className={`${
-              !filterVisibleOnMobile
+            className={`${!filterVisibleOnMobile
                 ? "hidden"
                 : "fixed h-screen overflow-y-scroll pb-4 pl-3"
-            } filter-section inset-0 z-50  w-full bg-white pr-3 `}
+              } filter-section inset-0 z-50  w-full bg-white pr-3 `}
           >
             <div className="flex h-20 w-full items-center justify-start md:hidden">
               <BsArrowLeft
@@ -146,12 +145,12 @@ export const SearchView: React.FC = () => {
                 {/* shop items */}
                 {res
                   ? res.data.getProducts.map((product, i) => (
-                      <ProductCard
-                        {...product}
-                        buttonText="Add to Cart"
-                        key={i}
-                      />
-                    ))
+                    <ProductCard
+                      {...product}
+                      buttonText="Add to Cart"
+                      key={i}
+                    />
+                  ))
                   : ["", ""]}
                 <Pagination controls={controls} />
               </div>
@@ -164,3 +163,46 @@ export const SearchView: React.FC = () => {
     </>
   );
 };
+
+const placeholderCategories: Category[] = [
+  {
+    id: "1",
+    name: "Electronics",
+    parantId: "0",
+    sales: 1500,
+    sortOrder: 1,
+    status: ProductCategoryStatus.Active, // Assuming "ACTIVE" is a valid status
+  },
+  {
+    id: "2",
+    name: "Clothing",
+    parantId: "0",
+    sales: 800,
+    sortOrder: 2,
+    status: ProductCategoryStatus.Active, // Assuming "ACTIVE" is a valid status
+  },
+  {
+    id: "3",
+    name: "Home Appliances",
+    parantId: "0",
+    sales: 1200,
+    sortOrder: 3,
+    status: ProductCategoryStatus.InActive, // Assuming "ACTIVE" is a valid status
+  },
+  {
+    id: "4",
+    name: "Toys & Games",
+    parantId: "0",
+    sales: 500,
+    sortOrder: 4,
+    status: ProductCategoryStatus.Active, // Assuming "ACTIVE" is a valid status
+  },
+  {
+    id: "5",
+    name: "Books",
+    parantId: "0",
+    sales: 700,
+    sortOrder: 5,
+    status: ProductCategoryStatus.InActive, // Assuming "ACTIVE" is a valid status
+  },
+];
