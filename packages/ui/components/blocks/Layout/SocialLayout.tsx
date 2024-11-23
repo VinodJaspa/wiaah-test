@@ -1,6 +1,7 @@
 import {
   AddNewPostModal,
   AddNewStoryModal,
+  AuthenticationModal,
   CommentReportModal,
 } from "@blocks/Modals";
 import { SocialStoryModal } from "@blocks/Social";
@@ -293,6 +294,7 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
   return (
     <>
       <AddNewPostModal />
+      <AuthenticationModal />
       <SocialShareCotentModal />
       {/*<SocialStoryDrawer /> */}
       {/* <ServiceBookingDrawer /> */}
