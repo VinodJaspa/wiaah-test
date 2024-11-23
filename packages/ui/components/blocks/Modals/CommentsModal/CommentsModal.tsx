@@ -1,8 +1,8 @@
-import { usePaginationControls } from "../../../blocks/Navigating";
-import { PostCommentCard } from "../../../blocks/Social";
-import { ContentHostType } from "../../../features/API";
-import { useAdminGetContentCommentsQuery } from "../../../features/Social";
-import { Modal, ModalContent, Pagination } from "../../../partials";
+import { usePaginationControls } from "@blocks/Navigating";
+import { PostCommentCard } from "@blocks/Social";
+import { ContentHostType } from "@features/API";
+import { useAdminGetContentCommentsQuery } from "@features/Social";
+import { Modal, ModalContent, Pagination } from "@partials";
 import { mapArray } from "utils";
 import React from "react";
 
