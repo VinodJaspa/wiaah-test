@@ -9,7 +9,7 @@ import {
   useDateDiff,
   useHandlePostSharing,
 } from "ui";
-import { CommentsViewer, PostInteractions } from "ui";
+import { CommentsViewer, PostInteractions, useAuthenticationModal } from "ui";
 import { useTranslation } from "react-i18next";
 import { PostAttachmentsViewer, PostInteractionsProps } from "ui";
 import { HtmlDivProps } from "types";
@@ -23,6 +23,7 @@ import {
 } from "@features/API";
 import { getRandomImage } from "placeholder";
 import { AttachmentType } from "@features/API/gql/generated";
+import { useGetMyUserData } from "@UI/../api";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -69,6 +70,9 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   showComments = true,
   interactionsProps,
 }) => {
+  const { isOpen, openModal } = useAuthenticationModal();
+  // FAKE USER
+  const user = undefined;
   const detailsRef = React.useRef(null);
   const detailsDimensions = useDimensions(detailsRef);
   const { handleShare } = useHandlePostSharing();
@@ -170,7 +174,18 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 <HiOutlineLink onClick={handleCopyLink} />
               </div>
 
-              <Input value={affiliationLink} onChange={() => { }} />
+              <Input
+                onClick={
+                  !user
+                    ? () => {
+                      console.log("Input Clicked");
+                      openModal();
+                    }
+                    : undefined
+                }
+                value={affiliationLink}
+                onChange={() => { }}
+              />
             </div>
 
             {showPostInteraction && (
@@ -180,6 +195,10 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                   comments={post.comments}
                   onShare={(mothed) => handleShare(mothed, post.id)}
                   likes={post.reactionNum}
+                  onHeartIConClick={() => {
+                    console.log("heart Icon clicked ");
+                    openModal();
+                  }}
                 />
               </div>
             )}
