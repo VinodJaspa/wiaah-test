@@ -14,6 +14,7 @@ export const ReactPubsubKeys = {
   socialStoryProgressBarsState: "social.story.progress.bars.state",
   openSocialStoryViewersModal: "open.social.story.viewers.modal",
   openPostCommentInput: "open.post.comment.input",
+  openAuthenticationModal: "open.authentication.modal",
 } as const;
 
 export type ReactPubsubKeysType = typeof ReactPubsubKeys;
