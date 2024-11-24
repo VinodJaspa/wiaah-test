@@ -52,6 +52,7 @@ import { mapArray, setTestid } from "utils";
 import {
   MdKeyboardDoubleArrowRight,
   MdKeyboardDoubleArrowLeft,
+  MdOutlineStarPurple500,
 } from "react-icons/md";
 
 export const HomeView: React.FC = () => {
@@ -219,7 +220,7 @@ const TopSalesCategoryProducts: React.FC<{
       </p>
       <div
         {...setTestid("home-page-products-container")}
-        className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4"
+        className="grid grid-cols-2 md:gap-5 gap-2 sm:grid-cols-3 md:grid-cols-4"
       >
         {/*{isLoading
           ? mapArray([...Array(40)], () => <ProductSkeleton />)
@@ -229,13 +230,13 @@ const TopSalesCategoryProducts: React.FC<{
           <div
             onClick={() => visit((r) => r.visitProduct(prod.id))}
             key={i}
-            className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
+            className="cursor-pointer flex flex-col gap-4 sm:gap-2 test  rounded-xl shadow-md"
             {...setTestid(`home-page-product`)}
             data-itemID={prod.id}
           >
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1  ">
               <AspectRatioImage
-                className="rounded-xl"
+                imageClassName="rounded-t-xl"
                 src={prod.thumbnail}
                 alt={prod.title}
                 ratio={0.85}
@@ -249,31 +250,31 @@ const TopSalesCategoryProducts: React.FC<{
                   {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
                 </button>
               </AspectRatioImage>
-              <Text maxLines={2} className="font-medium">
-                {prod.title}
-              </Text>
             </div>
-            <Text className="text-xs text-grayText" maxLines={1}>
-              {prod.description}
-            </Text>
-            <HStack className="gap-1">
-              <StarIcon className="text-yellow-300" />
-              <p className="text-xs">
-                {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-              </p>
-            </HStack>
-            <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
-              <PriceDisplay
-                price={prod.price}
-                decimel
-                className="font-semibold text-2xl sm:text-base"
-              />
-              <AddToCartProductButton
-                productId={prod.id}
-                className="sm:w-full"
-                colorScheme="darkbrown"
-                outline
-              />
+            <div className="p-3 rounded-b-xl flex flex-col justify-between h-full">
+              <div className="flex flex-col gap-2 ">
+                <p className="font-semibold text-xl">{prod.title}</p>
+                <p className="text-[#7B7B7B]">{prod.description}</p>
+                <div className="flex items-center gap-1">
+                  <MdOutlineStarPurple500 className="text-[#FFDF00]" />
+                  <p className="text-xs">
+                    {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+                  </p>
+                </div>
+              </div>
+              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
+                <PriceDisplay
+                  price={prod.price}
+                  decimel
+                  className="font-semibold text-2xl sm:text-base"
+                />
+                <AddToCartProductButton
+                  productId={prod.id}
+                  className="w-fit px-4 py-2"
+                  colorScheme="darkbrown"
+                  outline
+                />
+              </div>
             </div>
           </div>
         ))}
