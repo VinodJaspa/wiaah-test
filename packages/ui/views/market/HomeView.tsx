@@ -41,6 +41,7 @@ import {
   productCategoryByIdPlaceholder,
   topSaleProductsPlaceholder,
   topProductCategoriesPlaceholder,
+  getTopProductCategoriesPlaceholder,
 } from "placeholder";
 import { useGeoLocation } from "@src/utils/React-utils/useGeolocation";
 import { useResponsive } from "hooks";
@@ -48,25 +49,235 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, setTestid } from "utils";
+import {
+  MdKeyboardDoubleArrowRight,
+  MdKeyboardDoubleArrowLeft,
+} from "react-icons/md";
 
 export const HomeView: React.FC = () => {
-  const [category, setCategory] = useState<string>("all");
+  const [category, setCategory] = useState({
+    id: "category-id-0",
+    name: "All",
+  });
+
   return (
     <div className="flex flex-col gap-4">
       <HomeViewDesignsDisplay />
-      <div className="w-5/6 mx-auto">
+      <div className="w-5/6 mx-auto flex justify-center ">
         <TopCategoriesHomePageSlider
-          onCategorySelect={(id) => {
-            setCategory(id);
+          onCategorySelect={({ id, name }) => {
+            setCategory({ id, name });
           }}
           selectedCategoryId={category}
         />
       </div>
 
-      <TopSalesCategoryProducts categoryId={category} />
+      <TopSalesCategoryProducts category={category} />
       <BestShopsHomeSection />
       <PlacesNearYouHomeSection />
       <HomeRecommendationSection />
+    </div>
+  );
+};
+
+const HomeViewDesignsDisplay: React.FC = () => {
+  const { data: _designs } = useGetDesignPlacementQuery({
+    placement: DesignPlacement.Homepage,
+    pagination: {
+      page: 1,
+      take: 10,
+    },
+  });
+  const [idx, setIdx] = useState<number>(0);
+  const designs = designByPlacementPlaceholder;
+
+  return (
+    <AspectRatio className="w-full overflow-hidden" ratio={0.3}>
+      <Slider
+        gap={32}
+        onSliderChange={(idx) => setIdx(idx)}
+        currentItemIdx={idx}
+        draggingActive={true}
+      >
+        {mapArray(designs, (design, i) => (
+          <div
+            key={i}
+            className={`relative w-full h-full ${idx === i ? "block" : "hidden"
+              }`}
+          >
+            <Image
+              className="w-full h-full object-cover"
+              alt={design.name}
+              src={design.src}
+            />
+            <div className="absolute left-0 top-0 bg-black/10 w-full h-full" />
+
+            {idx === i && (
+              <div className="absolute flex flex-col gap-4 left-8 top-1/2 -translate-y-1/2">
+                <h1 className="text-4xl text-white font-semibold">
+                  {design.text}
+                </h1>
+              </div>
+            )}
+          </div>
+        ))}
+      </Slider>
+
+      <div className="flex gap-1 items-center absolute left-1/2 -translate-x-1/2 bottom-2">
+        {mapArray([...Array(designs?.length)], (_, i) => (
+          <div
+            key={i}
+            className={`${idx === i ? "bg-primary w-4 h-2" : "w-2 h-2 bg-grayText"
+              } rounded-full`}
+          />
+        ))}
+      </div>
+    </AspectRatio>
+  );
+};
+
+const TopCategoriesHomePageSlider: React.FC<{
+  selectedCategoryId?: { id: string; name: string };
+  onCategorySelect: ({ id, name }: { id: string; name: string }) => any;
+}> = ({ onCategorySelect, selectedCategoryId }) => {
+  const { t } = useTranslation();
+  const ref = useRef<HTMLDivElement>(null);
+  const { data: _data, hasNextPage } = useGetTopProductCategoriesQuery(
+    { take: 10 },
+    { getNextPageParam: (last) => last.nextCursor },
+  );
+  const data = { pages: [getTopProductCategoriesPlaceholder] };
+  const scroll = (scrollOffset: number) => {
+    if (ref.current) {
+      ref.current.scrollLeft += scrollOffset;
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-4 w-fit">
+      <p className="font-semibold self-center text-3xl sm:text-xl">
+        {t("Best sales by categories")}
+      </p>
+      <HStack>
+        <button onClick={() => scroll(-20)}>
+          <MdKeyboardDoubleArrowLeft className="text-[2rem]" />
+        </button>
+        <div
+          ref={ref}
+          {...setTestid("productCategoriesContainer")}
+          className="flex items-center w-full overflow-x-scroll noScroll gap-4"
+        >
+          {mapArray(data?.pages, (page, i) => (
+            <React.Fragment key={i}>
+              {mapArray(page.data, (category, i) => (
+                <button
+                  {...setTestid(`category-${category.id}`)}
+                  key={i + category.id}
+                  onClick={() => {
+                    onCategorySelect({ id: category.id, name: category.name });
+                  }}
+                  className={`${selectedCategoryId.id === category.id
+                      ? "bg-black text-white"
+                      : "bg-white text-black"
+                    } border border-back rounded-full py-1 px-2`}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <button onClick={() => scroll(20)}>
+          <MdKeyboardDoubleArrowRight className="text-[2rem]" />
+        </button>
+      </HStack>
+    </div>
+  );
+};
+
+const TopSalesCategoryProducts: React.FC<{
+  category?: { id: string; name: string };
+}> = ({ category }) => {
+  const { t } = useTranslation();
+  const { visit } = useRouting();
+  const { pagination } = usePaginationControls({ itemsPerPage: 40 });
+  const { data: _categoryRes } = useGetCategoryByIdQuery(category.id!);
+  const { data: _data, isLoading: _isLoading } =
+    useGetTopSalesProductsByCategoryIdQuery(
+      {
+        categoryId: category.name === "All" ? undefined : category.id!,
+        pagination,
+      },
+      { enabled: !!category.name },
+    );
+  const data = topSaleProductsPlaceholder;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="font-semibold text-lg  sm:text-2xl">
+        {category.name === "All" ? t("Products") : category.name} {t("for you")}
+      </p>
+      <div
+        {...setTestid("home-page-products-container")}
+        className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4"
+      >
+        {/*{isLoading
+          ? mapArray([...Array(40)], () => <ProductSkeleton />)
+          :*/}
+
+        {mapArray(data, (prod, i) => (
+          <div
+            onClick={() => visit((r) => r.visitProduct(prod.id))}
+            key={i}
+            className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
+            {...setTestid(`home-page-product`)}
+            data-itemID={prod.id}
+          >
+            <div className="flex flex-col gap-1">
+              <AspectRatioImage
+                className="rounded-xl"
+                src={prod.thumbnail}
+                alt={prod.title}
+                ratio={0.85}
+              >
+                <button
+                  onClick={() => {
+                    // TODO: integrate
+                  }}
+                  className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
+                >
+                  {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
+                </button>
+              </AspectRatioImage>
+              <Text maxLines={2} className="font-medium">
+                {prod.title}
+              </Text>
+            </div>
+            <Text className="text-xs text-grayText" maxLines={1}>
+              {prod.description}
+            </Text>
+            <HStack className="gap-1">
+              <StarIcon className="text-yellow-300" />
+              <p className="text-xs">
+                {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+              </p>
+            </HStack>
+            <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
+              <PriceDisplay
+                price={prod.price}
+                decimel
+                className="font-semibold text-2xl sm:text-base"
+              />
+              <AddToCartProductButton
+                productId={prod.id}
+                className="sm:w-full"
+                colorScheme="darkbrown"
+                outline
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -296,207 +507,6 @@ const BestShopsHomeSection: React.FC = () => {
   );
 };
 
-const TopSalesCategoryProducts: React.FC<{
-  categoryId?: string;
-}> = ({ categoryId }) => {
-  const { t } = useTranslation();
-  const { visit } = useRouting();
-  const { pagination } = usePaginationControls({ itemsPerPage: 40 });
-  const { data: _categoryRes } = useGetCategoryByIdQuery(categoryId!);
-  const { data: _data, isLoading } = useGetTopSalesProductsByCategoryIdQuery(
-    {
-      categoryId: categoryId === "all" ? undefined : categoryId!,
-      pagination,
-    },
-    { enabled: !!categoryId },
-  );
-  const data = topSaleProductsPlaceholder;
-  const categoryRes = productCategoryByIdPlaceholder;
-
-  const isAll = categoryId === "all";
-
-  const category = categoryRes?.name;
-
-  return (
-    <div className="flex flex-col gap-4">
-      <p className="font-medium text-3xl sm:text-lg">
-        {isAll ? t("Products") : category} {t("for you")}
-      </p>
-      <div
-        {...setTestid("home-page-products-container")}
-        className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4"
-      >
-        {isLoading
-          ? mapArray([...Array(40)], () => <ProductSkeleton />)
-          : mapArray(data, (prod, i) => (
-            <div
-              onClick={() => visit((r) => r.visitProduct(prod.id))}
-              key={i}
-              className="cursor-pointer flex flex-col gap-4 sm:gap-2 test p-1"
-              {...setTestid(`home-page-product`)}
-              data-itemID={prod.id}
-            >
-              <div className="flex flex-col gap-1">
-                <AspectRatioImage
-                  className="rounded-xl"
-                  src={prod.thumbnail}
-                  alt={prod.title}
-                  ratio={0.85}
-                >
-                  <button
-                    onClick={() => {
-                      // TODO: integrate
-                    }}
-                    className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
-                  >
-                    {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
-                  </button>
-                </AspectRatioImage>
-                <Text maxLines={2} className="font-medium">
-                  {prod.title}
-                </Text>
-              </div>
-              <Text className="text-xs text-grayText" maxLines={1}>
-                {prod.description}
-              </Text>
-              <HStack className="gap-1">
-                <StarIcon className="text-yellow-300" />
-                <p className="text-xs">
-                  {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-                </p>
-              </HStack>
-              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
-                <PriceDisplay
-                  price={prod.price}
-                  decimel
-                  className="font-semibold text-2xl sm:text-base"
-                />
-                <AddToCartProductButton
-                  productId={prod.id}
-                  className="sm:w-full"
-                  colorScheme="darkbrown"
-                  outline
-                />
-              </div>
-            </div>
-          ))}
-      </div>
-    </div>
-  );
-};
-
-const HomeViewDesignsDisplay: React.FC = () => {
-  const { data: _designs } = useGetDesignPlacementQuery({
-    placement: DesignPlacement.Homepage,
-    pagination: {
-      page: 1,
-      take: 10,
-    },
-  });
-  const [idx, setIdx] = useState<number>(0);
-  const designs = designByPlacementPlaceholder;
-
-  return (
-    <AspectRatio className="w-full overflow-hidden" ratio={0.3}>
-      <Slider
-        gap={32}
-        onSliderChange={(idx) => setIdx(idx)}
-        currentItemIdx={idx}
-      >
-        {mapArray(designs, (design, i) => (
-          <div
-            key={i}
-            className={`relative w-full h-full ${idx === i ? "block" : "hidden"
-              }`}
-          >
-            <Image
-              className="w-full h-full object-cover"
-              alt={design.name}
-              src={design.src}
-            />
-            <div className="absolute left-0 top-0 bg-black/10 w-full h-full" />
-
-            {idx === i && (
-              <div className="absolute flex flex-col gap-4 left-8 top-1/2 -translate-y-1/2">
-                <h1 className="text-4xl text-white font-semibold">
-                  {design.text}
-                </h1>
-              </div>
-            )}
-          </div>
-        ))}
-      </Slider>
-
-      <div className="flex gap-1 items-center absolute left-1/2 -translate-x-1/2 bottom-2">
-        {mapArray([...Array(designs?.length)], (_, i) => (
-          <div
-            key={i}
-            className={`${idx === i ? "bg-primary w-4 h-2" : "w-2 h-2 bg-grayText"
-              } rounded-full`}
-          />
-        ))}
-      </div>
-    </AspectRatio>
-  );
-};
-
-const TopCategoriesHomePageSlider: React.FC<{
-  selectedCategoryId?: string;
-  onCategorySelect: (id: string) => any;
-}> = ({ onCategorySelect, selectedCategoryId }) => {
-  const { t } = useTranslation();
-  const ref = useRef<HTMLDivElement>(null);
-  const { data, hasNextPage } = useGetTopProductCategoriesQuery(
-    { take: 10 },
-    { getNextPageParam: (last) => last.nextCursor },
-  );
-  const scroll = (scrollOffset: number) => {
-    if (ref.current) {
-      ref.current.scrollLeft += scrollOffset;
-    }
-  };
-
-  return (
-    <div className="flex flex-col gap-4">
-      <p className="font-semibold self-center text-3xl sm:text-xl">
-        {t("Best sales by categories")}
-      </p>
-      <HStack>
-        <button onClick={() => scroll(-20)}>
-          <ArrowLeftIcon className="text-[2rem]" />
-        </button>
-        <div
-          ref={ref}
-          {...setTestid("productCategoriesContainer")}
-          className="flex items-center w-full overflow-x-scroll noScroll gap-4"
-        >
-          {mapArray(data?.pages, (page, i) => (
-            <React.Fragment key={i}>
-              {mapArray(page.data, (category, i) => (
-                <button
-                  {...setTestid(`category-${category.id}`)}
-                  key={i + category.id}
-                  onClick={() => {
-                    onCategorySelect(category.id);
-                  }}
-                  className={`${selectedCategoryId === category.id
-                      ? "bg-black text-white"
-                      : "bg-white text-black"
-                    } border border-back rounded-full py-1 px-2`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-        <button onClick={() => scroll(20)}>
-          <ArrowRightIcon className="text-[2rem]" />
-        </button>
-      </HStack>
-    </div>
-  );
-};
 const recommendedProductsPlaceholder: GetRecommendedProductsQuery["getProductRecommendation"] =
 {
   __typename: "ProductPaginationResponse",
