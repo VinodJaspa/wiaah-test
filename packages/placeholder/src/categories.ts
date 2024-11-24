@@ -155,3 +155,62 @@ export const topProductCategoriesPlaceholder: GetTopProductCategoriesQuery["getT
     },
   ],
 };
+
+export const getTopProductCategoriesPlaceholder: GetTopProductCategoriesQuery["getTopProductCategories"] =
+{
+  cursor: null, // Adjust to your needs
+  nextCursor: "next-cursor-placeholder",
+  hasMore: true,
+  total: 100,
+  data: [
+    {
+      id: "category-id-0",
+      name: "All",
+      parantId: null, // Top-level category
+      sortOrder: 0,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-1",
+      name: "Holidays Rentals",
+      parantId: null, // Top-level category
+      sortOrder: 1,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-2",
+      name: "Hotels",
+      parantId: null, // Top-level category
+      sortOrder: 2,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-3",
+      name: "Restaurants",
+      parantId: null, // Top-level category
+      sortOrder: 3,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-4",
+      name: "Health Center",
+      parantId: null, // Top-level category
+      sortOrder: 4,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-5",
+      name: "Vehicle",
+      parantId: null, // Top-level category
+      sortOrder: 5,
+      status: ProductCategoryStatus.Active,
+    },
+    {
+      id: "category-id-6",
+      name: "Beauty Center",
+      parantId: null, // Top-level category
+      sortOrder: 6,
+      status: ProductCategoryStatus.Active,
+    },
+  ],
+};
