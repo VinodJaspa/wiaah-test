@@ -60,7 +60,6 @@ export const Slide: React.FC<SlideProps> = ({
           return false;
         }}
       >
-        {/* @ts-ignore */}
         {child}
       </div>
     </div>
@@ -180,7 +179,7 @@ export const DraggableSlider = React.forwardRef(
         if (
           key === "ArrowRight" &&
           currentIndex.current <
-            (Array.isArray(children) ? children.length - 1 : 0)
+          (Array.isArray(children) ? children.length - 1 : 0)
         ) {
           currentIndex.current += 1;
         }
@@ -193,18 +192,16 @@ export const DraggableSlider = React.forwardRef(
       };
 
       window.addEventListener("resize", handleResize);
-      // @ts-ignore
-      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener("keydown", () => handleKeyDown);
 
       return () => {
         window.removeEventListener("resize", handleResize);
-        // @ts-ignore
-        window.removeEventListener("keydown", handleKeyDown);
+        window.removeEventListener("keydown", () => handleKeyDown);
       };
     }, [children, setPositionByIndex, onSlideComplete, onSlideStart]);
 
     function touchStart(index: number) {
-      return function (event: React.MouseEvent | React.TouchEvent) {
+      return function(event: React.MouseEvent | React.TouchEvent) {
         transitionOn();
         currentIndex.current = index;
         startPos.current = vertical ? getPositionY(event) : getPositionX(event);
@@ -240,9 +237,9 @@ export const DraggableSlider = React.forwardRef(
       if (
         movedBy < -threshHold &&
         currentIndex.current <
-          (Array.isArray(children)
-            ? children.length - ((itemsCount > 1 ? itemsCount : 0) + 1)
-            : 0)
+        (Array.isArray(children)
+          ? children.length - ((itemsCount > 1 ? itemsCount : 0) + 1)
+          : 0)
       )
         currentIndex.current += 1;
 
@@ -267,11 +264,9 @@ export const DraggableSlider = React.forwardRef(
 
     function setSliderPosition() {
       sliderRef.current
-        ? (sliderRef.current.style.transform = `translate${
-            vertical ? "Y" : "X"
-          }(${
-            currentTranslate.current / (itemsCount || 1) +
-            -(currentIndex.current === 0 ? 0 : gap * currentIndex.current)
+        ? (sliderRef.current.style.transform = `translate${vertical ? "Y" : "X"
+          }(${currentTranslate.current / (itemsCount || 1) +
+          -(currentIndex.current === 0 ? 0 : gap * currentIndex.current)
           }px)`)
         : null;
     }
@@ -285,9 +280,8 @@ export const DraggableSlider = React.forwardRef(
           }}
           ref={sliderRef}
           data-dims={JSON.stringify(dimensions)}
-          className={`w-full h-full inline-flex ${
-            draggingActive ? "cursor-pointer" : ""
-          }`}
+          className={`w-full h-full inline-flex ${draggingActive ? "cursor-pointer" : ""
+            }`}
         >
           {React.Children.map(children, (child, index) => {
             if (child) {
