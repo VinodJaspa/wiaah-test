@@ -1,5 +1,6 @@
 import React from "react";
 import { AspectRatioProps, AspectRatio, Image } from "@UI";
+import { cn } from "utils";
 
 export interface AspectRatioImageProps extends AspectRatioProps {
   src: string;
@@ -8,6 +9,7 @@ export interface AspectRatioImageProps extends AspectRatioProps {
   children?: React.ReactNode; // Add this line
   onClick?: () => void;
   className?: string;
+  imageClassName?: string;
 }
 
 export const AspectRatioImage: React.FC<AspectRatioImageProps> = ({
@@ -17,6 +19,7 @@ export const AspectRatioImage: React.FC<AspectRatioImageProps> = ({
   className,
   children,
   onClick,
+  imageClassName,
   ...props
 }) => {
   return (
@@ -26,7 +29,11 @@ export const AspectRatioImage: React.FC<AspectRatioImageProps> = ({
       className={` ${className}`}
       onClick={onClick}
     >
-      <Image className="w-full h-full object-cover" src={src} alt={alt} />
+      <Image
+        className={cn("w-full h-full object-cover", imageClassName)}
+        src={src}
+        alt={alt}
+      />
       {children}
     </AspectRatio>
   );
