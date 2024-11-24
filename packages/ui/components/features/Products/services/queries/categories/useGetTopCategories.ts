@@ -2,7 +2,7 @@ import {
   Exact,
   GetProductCategoriesCursorPaginationInput,
   ProductCategoryStatus,
-} from "../../../../../features/API";
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import {
   UseInfiniteQueryOptions,
