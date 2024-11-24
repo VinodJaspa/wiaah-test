@@ -91,16 +91,16 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
       <div className="flex w-full bg-white p-4 text-black">
         <Container className="flex">
-          <ul className="no-scrollBar inline-flex w-full items-center space-x-10 overflow-x-scroll">
+          <ul className="no-scrollBar flex w-full justify-between text-[18px] items-center  overflow-x-scroll">
             <li
               id="burger-menu-toggle"
-              className="flex cursor-pointer items-center space-x-2"
+              className="flex cursor-pointer items-center space-x-2 hover:text-primary"
               onClick={() => {
                 visit((routes) => routes.visitMainPage());
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
-              <span className="inline-flex">{t("All")}</span>
+              <span className="inline-flex mt-1">{t("All")}</span>
             </li>
             {!isMobile &&
               Array.isArray(categories) &&
