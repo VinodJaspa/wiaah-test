@@ -4,6 +4,7 @@ import { Container, CookiesInfoBanner } from "ui";
 import { HomeView } from "ui/views";
 import { MasterLayout } from "@components";
 import nookies from "nookies";
+import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get cookies from the request using nookies
@@ -23,6 +24,7 @@ interface MarketPageProps {
 const Market: NextPage<MarketPageProps> = ({ token }) => {
   return (
     <>
+      <Head>Wiaah | Market</Head>
       <MasterLayout token={token}>
         <Container>
           <HomeView />
