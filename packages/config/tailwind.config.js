@@ -18,6 +18,12 @@ module.exports = {
         "span-14": "span 14 / span 14",
         "span-18": "span 18 / span 18",
         "span-20": "span 20 / span 20",
+        "span-15": "span 15 / span 15",
+        "span-8": "span 8 / span 8",
+        "span-19": "span 19 / span 19",
+        "span-26": "span 26 / span 26",
+        "span-10": "span 10 / span 10",
+        "span-24": "span 24 / span 24",
       },
       transitionProperty: {
         height: "height",
