@@ -54,6 +54,8 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdOutlineStarPurple500,
 } from "react-icons/md";
+import { GoDotFill } from "react-icons/go";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState({
@@ -75,8 +77,8 @@ export const HomeView: React.FC = () => {
 
       <TopSalesCategoryProducts category={category} />
       <BestShopsHomeSection />
-      <PlacesNearYouHomeSection />
-      <HomeRecommendationSection />
+      {/*<PlacesNearYouHomeSection />
+      <HomeRecommendationSection />*/}
     </div>
   );
 };
@@ -220,7 +222,7 @@ const TopSalesCategoryProducts: React.FC<{
       </p>
       <div
         {...setTestid("home-page-products-container")}
-        className="grid grid-cols-2 md:gap-5 gap-2 sm:grid-cols-3 md:grid-cols-4"
+        className="grid grid-cols-2 md:gap-6 gap-2 sm:grid-cols-3 md:grid-cols-4"
       >
         {/*{isLoading
           ? mapArray([...Array(40)], () => <ProductSkeleton />)
@@ -245,21 +247,31 @@ const TopSalesCategoryProducts: React.FC<{
                   onClick={() => {
                     // TODO: integrate
                   }}
-                  className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
+                  className=" text-white z-30  p-3 flex justify-center items-center absolute bg-black bg-opacity-30 rounded-full top-2 right-2"
                 >
-                  {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
+                  {prod.saved ? (
+                    <FaRegHeart className="w-5 h-5" />
+                  ) : (
+                    <FaHeart className="w-5 h-5" />
+                  )}
                 </button>
               </AspectRatioImage>
             </div>
             <div className="p-3 rounded-b-xl flex flex-col justify-between h-full">
               <div className="flex flex-col gap-2 ">
                 <p className="font-semibold text-xl">{prod.title}</p>
-                <p className="text-[#7B7B7B]">{prod.description}</p>
+                <p className="text-[#7B7B7B] truncate">{prod.description}</p>
                 <div className="flex items-center gap-1">
-                  <MdOutlineStarPurple500 className="text-[#FFDF00]" />
-                  <p className="text-xs">
-                    {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-                  </p>
+                  <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
+                  <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
+                    <p className="text-[#515151]">
+                      {prod.rate}/{5}
+                    </p>
+                    <GoDotFill className="w-[6px] h-[6px]  text-[#6D6D6D]" />
+                    <p className=" text-[#6D6D6D]">
+                      {`(${prod.reviews} ${t("Reviews")})`}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
@@ -418,92 +430,87 @@ const BestShopsHomeSection: React.FC = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
-  const { data: _data } = useGetBestShopsQuery({ take: 5 });
+  const { data: _shopData } = useGetBestShopsQuery({ take: 5 });
   const data = bestShopsPlaceholder;
 
+  const images = data.map((shop) => shop.thumbnail);
+
+  const classPatterns: string[] = [
+    "col-span-16 row-span-2 ",
+    "col-span-10 row-span-1 ",
+    "col-span-15 row-sann-1 ",
+    "col-span-24 row-span-1 ",
+    "col-span-19 row-span-1 ",
+  ];
+  const descriptionClassPatterns: string[] = [
+    "top-5 left-5",
+    "left-1/2 transform -translate-x-1/2 top-2 text-base",
+    "bottom-5 left-5",
+    "top-1/2 transform -translate-y-1/2 left-5 ",
+    "top-5 right-5",
+  ];
+
+  const transformImages = (images: string[]): TransformedImages[] => {
+    return images.map((src, index) => ({
+      src,
+      imageClassName: classPatterns[index % classPatterns.length],
+      descriptionClassName:
+        descriptionClassPatterns[index % descriptionClassPatterns.length],
+    }));
+  };
+
+  interface TransformedImages {
+    src: string;
+    imageClassName: string;
+    descriptionClassName: string;
+  }
+
+  const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
+    const chunks: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
+  const transformedImages = transformImages(images);
+  const imageChunks = splitIntoChunks(transformedImages, 5);
+
+  const Grid: React.FC<{ images: TransformedImages[] }> = ({ images }) => (
+    <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4  w-full ">
+      {images.map((image, index) => (
+        <div className={`relative + ${image.imageClassName}`} key={index}>
+          <img
+            src={image.src}
+            className="object-cover rounded-2xl w-full h-full "
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black bg-opacity-30 rounded-2xl"></div>
+          {/* Text and Button */}
+          <div
+            className={`flex flex-col justify-center items-center gap-1 absolute ${image.descriptionClassName}`}
+          >
+            <p className="text-[14px] text-white font-medium">Fashion shop</p>
+            <p className="text-[22px] w-full font-semibold text-white drop-shadow-lg">
+              {data[index]?.name}
+            </p>
+            <Button className="px-3 w-fit h-fit py-1 bg-[#20ECA7] text-white font-semibold text-lg">
+              Visit now
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-3xl sm:text-lg">{t("Best shops")}</p>
-      <GridListOrganiser
-        presets={
-          isMobile
-            ? [
-              {
-                cols: 5,
-                points: [
-                  {
-                    c: 3,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 3,
-                    r: 1,
-                  },
-                  {
-                    c: 5,
-                    r: 1,
-                  },
-                ],
-              },
-            ]
-            : [
-              {
-                cols: 13,
-                points: [
-                  {
-                    c: 4,
-                    r: 2,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 5,
-                    r: 1,
-                  },
-                  {
-                    c: 4,
-                    r: 1,
-                  },
-                  {
-                    c: 5,
-                    r: 1,
-                  },
-                ],
-              },
-            ]
-        }
-      >
-        {mapArray(data, (shop, i) => (
-          <div key={i} className={`relative`}>
-            <Image
-              src={shop.thumbnail}
-              className="w-full h-full object-cover"
-              alt={shop.name}
-            />
-            <div className="absolute top-1/2 -translate-y-1/2 left-2 items-center flex flex-col gap-2">
-              <p className="text-[0.5rem] sm:text-sm">{`${shop.storeCategory
-                } ${t("store")}`}</p>
-              <p className="text-[0.625rem] sm:text-xl">{shop.name}</p>
-              <Button
-                className="text-xs sm:text-sm"
-                onClick={() => visit((r) => r.visitShop(shop))}
-              >
-                {t("Visit now")}
-              </Button>
-            </div>
-          </div>
+      <p className="text-lg sm:text-2xl font-semibold">{t("Best shops")}</p>
+      <div className="space-y-4 felx flex-col w-full ">
+        {imageChunks.map((chunk, index) => (
+          <Grid key={index} images={chunk} />
         ))}
-      </GridListOrganiser>
+      </div>
     </div>
   );
 };
