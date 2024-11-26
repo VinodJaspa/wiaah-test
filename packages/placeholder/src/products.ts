@@ -815,7 +815,7 @@ export const bestShopsPlaceholder: GetBestShopsQuery["getTopShops"] = [
     id: "shop2",
     storeCategory: "Fashion",
     ownerId: "owner2",
-    thumbnail: "/shop.jpeg",
+    thumbnail: "/shop-2.jpeg",
   },
   {
     __typename: "Shop",
@@ -823,7 +823,7 @@ export const bestShopsPlaceholder: GetBestShopsQuery["getTopShops"] = [
     id: "shop3",
     storeCategory: "Grocery",
     ownerId: "owner3",
-    thumbnail: "/shop.jpeg",
+    thumbnail: "/shop-3.jpeg",
   },
   {
     __typename: "Shop",
@@ -831,7 +831,7 @@ export const bestShopsPlaceholder: GetBestShopsQuery["getTopShops"] = [
     id: "shop4",
     storeCategory: "Technology",
     ownerId: "owner4",
-    thumbnail: "/shop.jpeg",
+    thumbnail: "/shop-2.jpeg",
   },
   {
     __typename: "Shop",
