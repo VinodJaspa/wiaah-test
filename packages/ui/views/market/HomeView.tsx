@@ -77,8 +77,8 @@ export const HomeView: React.FC = () => {
 
       <TopSalesCategoryProducts category={category} />
       <BestShopsHomeSection />
-      {/*<PlacesNearYouHomeSection />
-      <HomeRecommendationSection />*/}
+      <PlacesNearYouHomeSection />
+      <HomeRecommendationSection />
     </div>
   );
 };
@@ -295,137 +295,6 @@ const TopSalesCategoryProducts: React.FC<{
   );
 };
 
-const HomeRecommendationSection: React.FC = () => {
-  const { t } = useTranslation();
-  const products: Array<
-    Pick<Product, "thumbnail" | "title" | "rate" | "price" | "discount" | "id">
-  > = [];
-
-  const { pagination } = usePaginationControls();
-
-  const { data: _data, ...props } = useGetRecommendedProducts(pagination);
-  const data = recommendedProductsPlaceholder;
-
-  return (
-    <div className="flex flex-col gap-4">
-      <p className="font-medium text-3xl sm:text-lg">
-        {t("Recommended for you")}
-      </p>
-      <SpinnerFallback {...props}>
-        <div className="grid grid-cols-4 gap-1 sm:grid-cols-2">
-          {mapArray(data?.data, (prod, i) => (
-            <div key={i} className="flex flex-col gap-4 sm:gap-2  p-1">
-              <div className="flex flex-col gap-1">
-                <AspectRatioImage
-                  className="rounded-xl"
-                  src={prod.thumbnail}
-                  alt={prod.title}
-                  ratio={0.85}
-                >
-                  <button
-                    onClick={() => {
-                      // TODO: integrate
-                    }}
-                    className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
-                  >
-                    {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
-                  </button>
-                </AspectRatioImage>
-                <p className="font-medium">{prod.title}</p>
-              </div>
-              <Text className="text-xs text-grayText" maxLines={1}>
-                {prod.description}
-              </Text>
-              <HStack className="gap-1">
-                <StarIcon className="text-yellow-300" />
-                <p className="text-xs">
-                  {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
-                </p>
-              </HStack>
-              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center sm:flex-col gap-8 sm:gap-4">
-                <PriceDisplay
-                  price={prod.price}
-                  decimel
-                  className="font-semibold text-2xl sm:text-base"
-                />
-                <AddToCartProductButton
-                  productId={prod.id}
-                  className="sm:w-full"
-                  colorScheme="darkbrown"
-                  outline
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </SpinnerFallback>
-    </div>
-  );
-};
-
-const PlacesNearYouHomeSection: React.FC = () => {
-  const { lat, lng } = useGeoLocation();
-  const { isMobile } = useResponsive();
-  const { t } = useTranslation();
-
-  const {
-    data: _places,
-    isLoading: _isLoading,
-    isError,
-    error,
-  } = useGetNearPlacesQuery(
-    {
-      lat: lat!,
-      lon: lng!,
-      take: isMobile ? 6 : 5,
-    },
-    {
-      enabled: typeof lat === "number" && typeof lng === "number",
-    },
-  );
-  const places = nearPlacesPlaceholder;
-
-  return (
-    <div className="flex flex-col gap-8">
-      <p>{t("Places near you")}</p>
-      <SpinnerFallback error={error} isError={isError} isLoading={false}>
-        <div
-          {...setTestid("homepage-near-places-container")}
-          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-        >
-          {mapArray(places, (place, i) => (
-            <div
-              {...setTestid("service-card")}
-              key={i}
-              className="flex flex-col p-1 gap-4"
-            >
-              <div className="flex flex-col gap-1">
-                <AspectRatioImage
-                  src={place.thumbnail}
-                  alt={place.name}
-                  ratio={1}
-                />
-                <Text maxLines={1} className="font-medium text-sm sm:text-lg">
-                  {place.name}
-                </Text>
-              </div>
-              <HStack className="justify-between">
-                <HStack>
-                  <StarIcon className="text-yellow-200" />
-                  <p className="text-grayText text-xs">
-                    {place.rating}/{5}
-                  </p>
-                </HStack>
-                <BookServiceButton serviceId={place.id} />
-              </HStack>
-            </div>
-          ))}
-        </div>
-      </SpinnerFallback>
-    </div>
-  );
-};
-
 const BestShopsHomeSection: React.FC = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
@@ -511,6 +380,140 @@ const BestShopsHomeSection: React.FC = () => {
           <Grid key={index} images={chunk} />
         ))}
       </div>
+    </div>
+  );
+};
+
+const PlacesNearYouHomeSection: React.FC = () => {
+  const { lat, lng } = useGeoLocation();
+  const { isMobile } = useResponsive();
+  const { t } = useTranslation();
+
+  const {
+    data: _places,
+    isLoading: _isLoading,
+    isError,
+    error,
+  } = useGetNearPlacesQuery(
+    {
+      lat: lat!,
+      lon: lng!,
+      take: isMobile ? 6 : 5,
+    },
+    {
+      enabled: typeof lat === "number" && typeof lng === "number",
+    },
+  );
+  const places = nearPlacesPlaceholder;
+
+  return (
+    <div className="flex flex-col gap-8">
+      <p className="font-semibold text-lg sm:text-2xl">
+        {t("Places near you")}
+      </p>
+      <SpinnerFallback error={error} isError={isError} isLoading={false}>
+        <div
+          {...setTestid("homepage-near-places-container")}
+          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
+          {mapArray(places, (place, i) => (
+            <div
+              {...setTestid("service-card")}
+              key={i}
+              className="flex flex-col p-1 gap-8"
+            >
+              <div className="flex flex-col gap-1">
+                <AspectRatioImage
+                  imageClassName="rounded-xl"
+                  src={place.thumbnail}
+                  alt={place.name}
+                  ratio={1}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="font-medium text-sm sm:text-[18px]">
+                  {place.name}
+                </p>
+                <HStack>
+                  <StarIcon className="text-yellow-200" />
+                  <p className="text-grayText text-xs">
+                    {place.rating}/{5}
+                  </p>
+                </HStack>
+                <BookServiceButton serviceId={place.id} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </SpinnerFallback>
+    </div>
+  );
+};
+
+const HomeRecommendationSection: React.FC = () => {
+  const { t } = useTranslation();
+  const products: Array<
+    Pick<Product, "thumbnail" | "title" | "rate" | "price" | "discount" | "id">
+  > = [];
+
+  const { pagination } = usePaginationControls();
+
+  const { data: _data, ...props } = useGetRecommendedProducts(pagination);
+  const data = recommendedProductsPlaceholder;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="font-medium text-3xl sm:text-lg">
+        {t("Recommended for you")}
+      </p>
+      <SpinnerFallback {...props}>
+        <div className="grid grid-cols-4 gap-1 sm:grid-cols-2">
+          {mapArray(data?.data, (prod, i) => (
+            <div key={i} className="flex flex-col gap-4 sm:gap-2  p-1">
+              <div className="flex flex-col gap-1">
+                <AspectRatioImage
+                  className="rounded-xl"
+                  src={prod.thumbnail}
+                  alt={prod.title}
+                  ratio={0.85}
+                >
+                  <button
+                    onClick={() => {
+                      // TODO: integrate
+                    }}
+                    className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
+                  >
+                    {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
+                  </button>
+                </AspectRatioImage>
+                <p className="font-medium">{prod.title}</p>
+              </div>
+              <Text className="text-xs text-grayText" maxLines={1}>
+                {prod.description}
+              </Text>
+              <HStack className="gap-1">
+                <StarIcon className="text-yellow-300" />
+                <p className="text-xs">
+                  {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+                </p>
+              </HStack>
+              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center sm:flex-col gap-8 sm:gap-4">
+                <PriceDisplay
+                  price={prod.price}
+                  decimel
+                  className="font-semibold text-2xl sm:text-base"
+                />
+                <AddToCartProductButton
+                  productId={prod.id}
+                  className="sm:w-full"
+                  colorScheme="darkbrown"
+                  outline
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </SpinnerFallback>
     </div>
   );
 };
