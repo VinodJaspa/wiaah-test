@@ -434,12 +434,18 @@ const PlacesNearYouHomeSection: React.FC = () => {
                 <p className="font-medium text-sm sm:text-[18px]">
                   {place.name}
                 </p>
-                <HStack>
-                  <StarIcon className="text-yellow-200" />
-                  <p className="text-grayText text-xs">
-                    {place.rating}/{5}
-                  </p>
-                </HStack>
+                <div className="flex items-center gap-1">
+                  <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
+                  <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
+                    <p className="text-[#515151]">
+                      {place.rating}/{5}
+                    </p>
+                    <GoDotFill className="w-[6px] h-[6px]  text-[#6D6D6D]" />
+                    <p className=" text-[#6D6D6D]">
+                      {`(${place.reviews} ${t("Reviews")})`}
+                    </p>
+                  </div>
+                </div>
                 <BookServiceButton serviceId={place.id} />
               </div>
             </div>
