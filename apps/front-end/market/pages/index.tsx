@@ -24,7 +24,9 @@ interface MarketPageProps {
 const Market: NextPage<MarketPageProps> = ({ token }) => {
   return (
     <>
-      <Head>Wiaah | Market</Head>
+      <Head>
+        <title>Wiaah | Market</title>
+      </Head>
       <MasterLayout token={token}>
         <Container>
           <HomeView />
