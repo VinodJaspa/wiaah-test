@@ -1,11 +1,12 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { PreferedCurrencyState, usePreferedCurrency } from "state";
 import { HtmlDivProps, PriceType } from "types";
 
 export interface PriceDisplayProps extends HtmlDivProps {
   priceObject?: PriceType;
   price?: number;
+  oldPrice?: number; // Added oldPrice prop
   symbol?: boolean;
   decimel?: boolean;
   compact?: boolean;
@@ -18,6 +19,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   className,
   displayCurrency = true,
   price = 0,
+  oldPrice,
   symbol = true,
   decimel,
   compact,
@@ -25,6 +27,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   ...props
 }) => {
   const { preferedCurrency } = usePreferedCurrency();
+
   return (
     <p {...props} className={`${className || ""} whitespace-nowrap`}>
       {symbolProps ? (
@@ -42,6 +45,18 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
         compact,
         displayCurrency: symbolProps ? false : displayCurrency,
       })}
+
+      {oldPrice !== undefined && (
+        <span className="line-through text-sm text-[#A7A7A7] ml-2 font-medium">
+          {PriceConverter({
+            amount: oldPrice,
+            symbol: symbolProps ? false : symbol,
+            decimel,
+            compact,
+            displayCurrency: symbolProps ? false : displayCurrency,
+          })}
+        </span>
+      )}
     </p>
   );
 };
@@ -63,12 +78,10 @@ export const PriceConverter = ({
   if (typeof amount !== "number") return null;
   return currency
     ? `${symbol ? currency.currencySymbol : ""}${Intl.NumberFormat(undefined, {
-        minimumFractionDigits: decimel ? 2 : 0,
-        notation: compact ? "compact" : undefined,
-      }).format(amount * currency.currencyRateToUsd)}${
-        !symbol && displayCurrency ? ` ${currency.currencyCode}` : ""
-      }`
-    : `${symbol ? "$" : ""}${amount.toFixed(decimel ? 2 : 0)}${
-        symbol ? "" : " usd"
-      }`;
+      minimumFractionDigits: decimel ? 2 : 0,
+      notation: compact ? "compact" : undefined,
+    }).format(amount * currency.currencyRateToUsd)}${!symbol && displayCurrency ? ` ${currency.currencyCode}` : ""
+    }`
+    : `${symbol ? "$" : ""}${amount.toFixed(decimel ? 2 : 0)}${symbol ? "" : " usd"
+    }`;
 };
