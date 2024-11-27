@@ -159,7 +159,7 @@ const TopCategoriesHomePageSlider: React.FC<{
 
   return (
     <div className="flex flex-col gap-4 w-fit">
-      <p className="font-semibold self-center text-3xl sm:text-xl">
+      <p className="font-semibold self-center text-3xl sm:text-xl py-4">
         {t("Best sales by categories")}
       </p>
       <HStack>
@@ -169,7 +169,7 @@ const TopCategoriesHomePageSlider: React.FC<{
         <div
           ref={ref}
           {...setTestid("productCategoriesContainer")}
-          className="flex items-center w-full overflow-x-scroll noScroll gap-4"
+          className="flex items-center w-full overflow-x-scroll noScroll gap-4 mb-4"
         >
           {mapArray(data?.pages, (page, i) => (
             <React.Fragment key={i}>
@@ -218,7 +218,7 @@ const TopSalesCategoryProducts: React.FC<{
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-semibold text-lg  sm:text-2xl">
+      <p className="font-semibold text-lg  sm:text-2xl py-4">
         {category.name === "All" ? t("Products") : category.name} {t("for you")}
       </p>
       <div
@@ -233,7 +233,7 @@ const TopSalesCategoryProducts: React.FC<{
           <div
             onClick={() => visit((r) => r.visitProduct(prod.id))}
             key={i}
-            className="cursor-pointer flex flex-col gap-4 sm:gap-2 test  rounded-xl shadow-md"
+            className="cursor-pointer flex flex-col mb-4 gap-4 sm:gap-2 test  rounded-xl shadow-md"
             {...setTestid(`home-page-product`)}
             data-itemID={prod.id}
           >
@@ -375,8 +375,10 @@ const BestShopsHomeSection: React.FC = () => {
   );
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-lg sm:text-2xl font-semibold">{t("Best shops")}</p>
-      <div className="space-y-4 felx flex-col w-full ">
+      <p className="text-lg sm:text-2xl font-semibold py-4">
+        {t("Best shops")}
+      </p>
+      <div className="space-y-4 felx flex-col w-full mb-4 ">
         {imageChunks.map((chunk, index) => (
           <Grid key={index} images={chunk} />
         ))}
@@ -408,14 +410,14 @@ const PlacesNearYouHomeSection: React.FC = () => {
   const places = nearPlacesPlaceholder;
 
   return (
-    <div className="flex flex-col gap-8">
-      <p className="font-semibold text-lg sm:text-2xl">
+    <div className="flex flex-col gap-4">
+      <p className="font-semibold text-lg sm:text-2xl py-4">
         {t("Places near you")}
       </p>
       <SpinnerFallback error={error} isError={isError} isLoading={false}>
         <div
           {...setTestid("homepage-near-places-container")}
-          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 "
+          className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4 "
         >
           {mapArray(places, (place, i) => (
             <div
@@ -439,7 +441,7 @@ const PlacesNearYouHomeSection: React.FC = () => {
                   <div className="flex  items-center gap-1">
                     <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
                     <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
-                      <p className="text-[#515151]">
+                      <p className="text-[#515151] text-[16px]">
                         {place.rating}/{5}
                       </p>
                     </div>
@@ -474,52 +476,51 @@ const HomeRecommendationSection: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-medium text-3xl sm:text-lg">
+      <p className="font-semibold sm:text-3xl text-lg w-full flex justify-center py-4 ">
         {t("Recommended for you")}
       </p>
       <SpinnerFallback {...props}>
-        <div className="grid grid-cols-4 gap-1 sm:grid-cols-2">
+        <div className="grid sm:grid-cols-5 gap-3 grid-cols-2 mb-4">
           {mapArray(data?.data, (prod, i) => (
-            <div key={i} className="flex flex-col gap-4 sm:gap-2  p-1">
-              <div className="flex flex-col gap-1">
+            <div
+              {...setTestid("service-card")}
+              key={i}
+              className="flex flex-col p-1 gap-2"
+            >
+              <div className="flex flex-col ">
                 <AspectRatioImage
-                  className="rounded-xl"
                   src={prod.thumbnail}
                   alt={prod.title}
-                  ratio={0.85}
-                >
-                  <button
-                    onClick={() => {
-                      // TODO: integrate
-                    }}
-                    className="w-8 h-8 flex justify-center items-center absolute bg-black bg-opacity-10 rounded-full top-2 right-2"
-                  >
-                    {prod.saved ? <HeartOutlineIcon /> : <HeartFillIcon />}
-                  </button>
-                </AspectRatioImage>
-                <p className="font-medium">{prod.title}</p>
+                  ratio={1}
+                />
               </div>
-              <Text className="text-xs text-grayText" maxLines={1}>
-                {prod.description}
-              </Text>
-              <HStack className="gap-1">
-                <StarIcon className="text-yellow-300" />
-                <p className="text-xs">
-                  {prod.rate}/{5} {`(${prod.reviews} ${t("Reviews")})`}
+              <div className="flex flex-col gap-2">
+                <p className="font-medium text-sm sm:text-[18px] font-semibold">
+                  {prod.title}
                 </p>
-              </HStack>
-              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center sm:flex-col gap-8 sm:gap-4">
+
                 <PriceDisplay
+                  oldPrice={prod.price + 20}
                   price={prod.price}
                   decimel
                   className="font-semibold text-2xl sm:text-base"
                 />
-                <AddToCartProductButton
-                  productId={prod.id}
-                  className="sm:w-full"
-                  colorScheme="darkbrown"
-                  outline
-                />
+                <div className="flex justify-between items-center">
+                  <div className="flex  items-center gap-1">
+                    <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
+                    <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
+                      <p className="text-[#515151] text-[16px]">
+                        {prod.rate}/{5}
+                      </p>
+                    </div>
+                  </div>
+                  <AddToCartProductButton
+                    productId={prod.id}
+                    className="p-1 font-bold"
+                    colorScheme="darkbrown"
+                    outline
+                  />
+                </div>
               </div>
             </div>
           ))}
@@ -535,6 +536,61 @@ const recommendedProductsPlaceholder: GetRecommendedProductsQuery["getProductRec
   hasMore: true,
   total: 5,
   data: [
+    {
+      __typename: "Product",
+      id: "1",
+      rate: 4.5,
+      reviews: 120,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 1",
+      description: "A great product for everyday use.",
+      saved: true,
+      price: 19.99,
+    },
+    {
+      __typename: "Product",
+      id: "2",
+      rate: 4.2,
+      reviews: 95,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 2",
+      description: "This product is loved by everyone.",
+      saved: false,
+      price: 29.99,
+    },
+    {
+      __typename: "Product",
+      id: "3",
+      rate: 4.8,
+      reviews: 210,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 3",
+      description: "Top-rated product with excellent features.",
+      saved: true,
+      price: 39.99,
+    },
+    {
+      __typename: "Product",
+      id: "4",
+      rate: 3.9,
+      reviews: 45,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 4",
+      description: "A budget-friendly product for everyone.",
+      saved: false,
+      price: 14.99,
+    },
+    {
+      __typename: "Product",
+      id: "5",
+      rate: 4.0,
+      reviews: 85,
+      thumbnail: "/shop-2.jpeg",
+      title: "Product Title 5",
+      description: "A product with good value for money.",
+      saved: true,
+      price: 24.99,
+    },
     {
       __typename: "Product",
       id: "1",
