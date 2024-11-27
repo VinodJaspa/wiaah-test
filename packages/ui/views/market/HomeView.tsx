@@ -56,6 +56,7 @@ import {
 } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState({
@@ -414,15 +415,15 @@ const PlacesNearYouHomeSection: React.FC = () => {
       <SpinnerFallback error={error} isError={isError} isLoading={false}>
         <div
           {...setTestid("homepage-near-places-container")}
-          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          className="grid xl:grid-cols-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 "
         >
           {mapArray(places, (place, i) => (
             <div
               {...setTestid("service-card")}
               key={i}
-              className="flex flex-col p-1 gap-8"
+              className="flex flex-col p-1 gap-2"
             >
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col ">
                 <AspectRatioImage
                   imageClassName="rounded-xl"
                   src={place.thumbnail}
@@ -430,23 +431,27 @@ const PlacesNearYouHomeSection: React.FC = () => {
                   ratio={1}
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <p className="font-medium text-sm sm:text-[18px]">
+              <div className="flex flex-col  ">
+                <p className="font-medium text-sm sm:text-[18px] font-semibold">
                   {place.name}
                 </p>
-                <div className="flex items-center gap-1">
-                  <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
-                  <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
-                    <p className="text-[#515151]">
-                      {place.rating}/{5}
-                    </p>
-                    <GoDotFill className="w-[6px] h-[6px]  text-[#6D6D6D]" />
-                    <p className=" text-[#6D6D6D]">
-                      {`(${place.reviews} ${t("Reviews")})`}
-                    </p>
+                <div className="flex justify-between items-center gap-2">
+                  <div className="flex  items-center gap-1">
+                    <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
+                    <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
+                      <p className="text-[#515151]">
+                        {place.rating}/{5}
+                      </p>
+                    </div>
                   </div>
+                  <Button
+                    colorScheme="darkbrown"
+                    className="bg-black text-white flex items-center justify-between gap-2 px-2 py-1"
+                  >
+                    <p>Book now</p>
+                    <IoIosArrowForward className="w-5 h-5" />
+                  </Button>
                 </div>
-                <BookServiceButton serviceId={place.id} />
               </div>
             </div>
           ))}
