@@ -40,7 +40,9 @@ import {
   designByPlacementPlaceholder,
   productCategoryByIdPlaceholder,
   topSaleProductsPlaceholder,
+  recommendedProductsPlaceholder,
   topProductCategoriesPlaceholder,
+  mostViewdVideos,
   getTopProductCategoriesPlaceholder,
 } from "placeholder";
 import { useGeoLocation } from "@src/utils/React-utils/useGeolocation";
@@ -55,8 +57,9 @@ import {
   MdOutlineStarPurple500,
 } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaPlay } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
+import { FaPause } from "react-icons/fa6";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState({
@@ -80,6 +83,7 @@ export const HomeView: React.FC = () => {
       <BestShopsHomeSection />
       <PlacesNearYouHomeSection />
       <HomeRecommendationSection />
+      <MostViewdVideso />
     </div>
   );
 };
@@ -530,121 +534,159 @@ const HomeRecommendationSection: React.FC = () => {
   );
 };
 
-const recommendedProductsPlaceholder: GetRecommendedProductsQuery["getProductRecommendation"] =
-{
-  __typename: "ProductPaginationResponse",
-  hasMore: true,
-  total: 5,
-  data: [
-    {
-      __typename: "Product",
-      id: "1",
-      rate: 4.5,
-      reviews: 120,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 1",
-      description: "A great product for everyday use.",
-      saved: true,
-      price: 19.99,
-    },
-    {
-      __typename: "Product",
-      id: "2",
-      rate: 4.2,
-      reviews: 95,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 2",
-      description: "This product is loved by everyone.",
-      saved: false,
-      price: 29.99,
-    },
-    {
-      __typename: "Product",
-      id: "3",
-      rate: 4.8,
-      reviews: 210,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 3",
-      description: "Top-rated product with excellent features.",
-      saved: true,
-      price: 39.99,
-    },
-    {
-      __typename: "Product",
-      id: "4",
-      rate: 3.9,
-      reviews: 45,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 4",
-      description: "A budget-friendly product for everyone.",
-      saved: false,
-      price: 14.99,
-    },
-    {
-      __typename: "Product",
-      id: "5",
-      rate: 4.0,
-      reviews: 85,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 5",
-      description: "A product with good value for money.",
-      saved: true,
-      price: 24.99,
-    },
-    {
-      __typename: "Product",
-      id: "1",
-      rate: 4.5,
-      reviews: 120,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 1",
-      description: "A great product for everyday use.",
-      saved: true,
-      price: 19.99,
-    },
-    {
-      __typename: "Product",
-      id: "2",
-      rate: 4.2,
-      reviews: 95,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 2",
-      description: "This product is loved by everyone.",
-      saved: false,
-      price: 29.99,
-    },
-    {
-      __typename: "Product",
-      id: "3",
-      rate: 4.8,
-      reviews: 210,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 3",
-      description: "Top-rated product with excellent features.",
-      saved: true,
-      price: 39.99,
-    },
-    {
-      __typename: "Product",
-      id: "4",
-      rate: 3.9,
-      reviews: 45,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 4",
-      description: "A budget-friendly product for everyone.",
-      saved: false,
-      price: 14.99,
-    },
-    {
-      __typename: "Product",
-      id: "5",
-      rate: 4.0,
-      reviews: 85,
-      thumbnail: "/shop-2.jpeg",
-      title: "Product Title 5",
-      description: "A product with good value for money.",
-      saved: true,
-      price: 24.99,
-    },
-  ],
+const MostViewdVideso: React.FC = () => {
+  const data = mostViewdVideos;
+
+  const { t } = useTranslation();
+
+  const { visit } = useRouting();
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="font-semibold text-lg  sm:text-2xl py-4">
+        Most Viewd Videos
+      </p>
+      <div
+        {...setTestid("home-page-products-container")}
+        className="grid grid-cols-2 md:gap-6 gap-2 sm:grid-cols-3 md:grid-cols-4"
+      >
+        {mapArray(data, (prod, i) => (
+          <div
+            key={i}
+            className="cursor-pointer flex flex-col mb-4 gap-4 sm:gap-2 test  rounded-xl "
+            {...setTestid(`home-page-product`)}
+            data-itemID={prod.id}
+          >
+            <div className="flex flex-col gap-1  ">
+              <VideoPlayer
+                src={prod.thumbnail}
+                loop
+                muted
+                className="border-4 h-[300px] sm:h-[400px]"
+              />
+              <button
+                onClick={() => {
+                  // TODO: integrate
+                }}
+                className=" text-white z-30  p-3 flex justify-center items-center absolute bg-black bg-opacity-30 rounded-full top-2 right-2"
+              >
+                {prod.saved ? (
+                  <FaRegHeart className="w-5 h-5" />
+                ) : (
+                  <FaHeart className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+            <div className="p-3 rounded-b-xl flex flex-col justify-between h-full">
+              <div className="flex flex-col gap-2 ">
+                <p className="font-semibold text-xl">{prod.title}</p>
+                <p className="text-[#7B7B7B] truncate">{prod.description}</p>
+                <div className="flex items-center gap-1">
+                  <MdOutlineStarPurple500 className="text-[#FFDF00] w-5 h-5" />
+                  <div className="flex gap-[3px] mt-[2px] text-[14px] items-center">
+                    <p className="text-[#515151]">
+                      {prod.rate}/{5}
+                    </p>
+                    <GoDotFill className="w-[6px] h-[6px]  text-[#6D6D6D]" />
+                    <p className=" text-[#6D6D6D]">
+                      {`(${prod.reviews} ${t("Reviews")})`}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex pt-4 sm:pt-2 justify-between w-full items-center flex-col sm:flex-row gap-8 sm:gap-4">
+                <PriceDisplay
+                  price={prod.price}
+                  decimel
+                  className="font-semibold text-2xl sm:text-base"
+                />
+                <AddToCartProductButton
+                  productId={prod.id}
+                  className="w-fit px-4 py-2"
+                  colorScheme="darkbrown"
+                  outline
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+interface VideoPlayerProps {
+  src: string; // Path to the video source
+  poster?: string; // Optional poster image for the video
+  autoplay?: boolean; // Autoplay the video
+  loop?: boolean; // Loop the video
+  muted?: boolean; // Mute the video by default
+  className?: string; // Additional classes for the video
+  controls?: boolean; // Show native video controls
+}
+
+const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  src,
+  poster,
+  autoplay = false,
+  loop = false,
+  muted = false,
+  className = "",
+  controls = false,
+}) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showControls, setShowControls] = useState(false); // Tracks hover state
+
+  // Handle play and pause
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
+  return (
+    <div
+      className="relative w-full max-w-md mx-auto overflow-hidden rounded-xl shadow-lg"
+      onMouseEnter={() => setShowControls(true)} // Show controls on hover
+      onMouseLeave={() => setShowControls(false)} // Hide controls on mouse leave
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        autoPlay={autoplay}
+        loop={loop}
+        muted={muted}
+        className={`w-full h-auto object-cover rounded-xl ${className}`}
+        controls={controls} // Optional native controls
+        onClick={togglePlay}
+      >
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Custom Play/Pause Button */}
+      {!controls && (
+        <button
+          className={`absolute inset-0 m-auto border border-white w-14 h-14 bg-white bg-opacity-30 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform duration-300 ${isPlaying && !showControls ? "opacity-0" : "opacity-100"
+            }`}
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause video" : "Play video"}
+        >
+          {isPlaying ? (
+            <FaPause className="w-6 h-6 text-white" /> // Pause icon
+          ) : (
+            <FaPlay className="w-6 h-6 text-white" /> // Play icon
+          )}
+        </button>
+      )}
+    </div>
+  );
 };
