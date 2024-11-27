@@ -83,18 +83,4 @@ export const nearPlacesPlaceholder: GetNearPlacesQuery["getNearShops"] = [
       state: "CA",
     },
   },
-  {
-    id: "5",
-    thumbnail: "/shop.jpeg",
-    name: "Shop Five",
-    email: "shopfive@example.com",
-    rating: 4.0,
-    reviews: 99,
-    location: {
-      address: "654 Pine Ln",
-      city: "Coast City",
-      country: "USA",
-      state: "FL",
-    },
-  },
 ];
