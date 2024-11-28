@@ -13,7 +13,7 @@ export const Container: FC<ContainerProps> = ({
   return (
     <div
       {...props}
-      className={`${props.className || ""} ${noContainer ? "" : "container mx-auto h-full"
+      className={`${props.className || ""} ${noContainer ? "" : "container mx-auto h-full mt-8"
         }`}
     >
       {children}
