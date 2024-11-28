@@ -55,7 +55,7 @@ export const Slider: React.FC<SliderProps> = ({
     if (onSliderChange) {
       onSliderChange(
         currComponent,
-        [...Array(itemsCount)].map((_, i) => currComponent + i)
+        [...Array(itemsCount)].map((_, i) => currComponent + i),
       );
     }
   }, [currComponent]);
@@ -73,19 +73,13 @@ export const Slider: React.FC<SliderProps> = ({
   }, [children]);
 
   function handlePrev() {
-    setCurrComponent((state) => {
-      const nextRunState = state - 1;
-      return nextRunState < 0 ? 0 : nextRunState;
-    });
+    setCurrComponent((state) => Math.max(state - 1, 0)); // Prevent going below 0
   }
 
   function handleNext() {
-    setCurrComponent((state) => {
-      const nextRunState = state + 1;
-      return nextRunState > childrenCount - itemsCount
-        ? childrenCount - itemsCount
-        : nextRunState;
-    });
+    setCurrComponent((state) =>
+      Math.min(state + 1, childrenCount - itemsCount),
+    ); // Prevent exceeding bounds
   }
 
   // const itemWidth = sliderWidth / itemsCount;
