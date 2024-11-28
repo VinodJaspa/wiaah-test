@@ -4,8 +4,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { socialAffiliationCardPlaceholder } from "ui/placeholder";
 import { AffiliationOfferCardInfo } from "types";
-import { AffiliationOfferView, SellerLayout } from "ui";
+import { AffiliationOfferView, Container, SellerLayout } from "ui";
 import { useRouter } from "next/router";
+import { AffiliationPostView, MasterLayout } from "@components";
 
 export interface affiliationOfferPageProps { }
 
@@ -26,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<
 
   queryClient.prefetchQuery(
     ["affiliationOffer", { offerId }],
-    getAffiliationOffer
+    getAffiliationOffer,
   );
 
   return {
@@ -45,9 +46,11 @@ const AffiliationOffer: NextPage<affiliationOfferPageProps> = () => {
         <title>Market | Affiliation Post</title>
       </Head>
       <>
-        <SellerLayout>
-          <AffiliationOfferView offerId={offerId} />
-        </SellerLayout>
+        <MasterLayout social>
+          <Container>
+            <AffiliationPostView id={offerId} />
+          </Container>
+        </MasterLayout>
       </>
     </>
   );
