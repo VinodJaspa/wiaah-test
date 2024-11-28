@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<
   const paginaton: QueryPaginationInputs = { page: 1, take: 20 };
   queryClient.prefetchQuery(
     getServicesPostsOnMapQueryKey(filters, paginaton),
-    () => getServicePostsOnMapDataFetcher(filters, paginaton)
+    () => getServicePostsOnMapDataFetcher(filters, paginaton),
   );
 
   return {
@@ -54,20 +54,18 @@ const ServicePostOnMapPage: NextPage = () => {
   return (
     <>
       <MetaTitle
-        content={`Wiaah | ${data ? data.total : ""} service posts by ${
-          profileName ?? ""
-        }`}
+        content={`Wiaah | ${data ? data.total : ""} service posts by ${profileName ?? ""
+          }`}
       />
       <MetaImage content={data ? data.data.at(0).attachments.at(0).src : ""} />
       <MetaDescription
-        content={`serivces posts search by ${
-          profileName ?? ""
-        } in wiaah marketplace`}
+        content={`serivces posts search by ${profileName ?? ""
+          } in wiaah marketplace`}
       />
       <RequiredSocialMediaTags />
 
       <MasterLayout social>
-        <ServicePostOnMapView id={data.data.at(0).id} />
+        <ServicePostOnMapView id={"3"} />
       </MasterLayout>
     </>
   );

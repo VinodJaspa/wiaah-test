@@ -1,13 +1,12 @@
-import { MasterLayout, ServicePostView } from "@components";
+import { MasterLayout } from "@components";
 import { getServicePostDataFetcher } from "api";
 import { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
 import { useRouting } from "routing";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
-import { Container, getServicePostDetailsQueryKey } from "ui";
+import { Container, getServicePostDetailsQueryKey, ServicePostView } from "ui";
 import {
   MetaAuthor,
   MetaImage,
@@ -17,6 +16,7 @@ import {
   MetaUrl,
   RequiredSocialMediaTags,
 } from "react-seo";
+import { useBreakpointValue } from "utils";
 
 interface ServicePostPageProps {
   data: AsyncReturnType<typeof getServicePostDataFetcher>;
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<
 
   queryClient.prefetchQuery(
     getServicePostDetailsQueryKey({ id, publisher: profileName }),
-    () => data
+    () => data,
   );
   return {
     props: {
@@ -47,12 +47,12 @@ const ServicePostPage: NextPage<ServicePostPageProps> = ({ data }) => {
   const { t } = useTranslation();
   const { getCurrentPath } = useRouting();
   const firstPostAttachement = data?.data?.attachements[0];
+  const cols = useBreakpointValue({ base: 3 });
   return (
     <>
       <MetaTitle
-        content={`${t("Wiaah | Service post by ")}${
-          data.data.profileInfo.name
-        }`}
+        content={`${t("Wiaah | Service post by ")}${data.data.profileInfo.name
+          }`}
       />
       {firstPostAttachement ? (
         firstPostAttachement.type === "video" ? (
@@ -67,7 +67,7 @@ const ServicePostPage: NextPage<ServicePostPageProps> = ({ data }) => {
       <RequiredSocialMediaTags />
       <MasterLayout social>
         <Container>
-          <ServicePostView />
+          <ServicePostView postId={"2"} />
         </Container>
       </MasterLayout>
     </>
