@@ -1,0 +1,105 @@
+import { useBreakpointValue, Flex, Button, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useQuery } from "react-query";
+import React from "react";
+import { PostCardInfo } from "types";
+import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
+import { useTranslation } from "react-i18next";
+import { PostCardsListWrapper, PostView, Carousel } from "ui";
+
+export interface GeneralPostViewProps {
+  postId: string;
+  children: React.ReactNode;
+  allPostsData: any[];
+}
+
+export const GeneralPostView: React.FC<GeneralPostViewProps> = ({
+  postId,
+  children,
+  allPostsData,
+}) => {
+  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const { data: _post, isLoading: PostIsLoading } = useQuery<PostCardInfo>([
+    "newsFeedPost",
+    { postId: router.query.postId },
+    () => {
+      return PostCardPlaceHolder;
+    },
+  ]);
+
+  const otherPosts = newsfeedPosts;
+  const { data: _otherPosts, isLoading: otherPostsIsLoading } = useQuery<
+    PostCardInfo[]
+  >([
+    "newsFeedPost",
+    { postId: router.query.postId },
+    () => {
+      return newsfeedPosts;
+    },
+  ]);
+
+  const post = allPostsData.filter((post) => post.postInfo.id === postId);
+
+  return (
+    <Flex pb={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
+      <div className="flex items-start justify-center h-screen mx-28">
+        <div className="w-full h-5/6 ">
+          {post[0] ? (
+            <PostView
+              postId="4"
+              queryName="newFeedPost"
+              data={post[0]}
+              idParam="newsfeedpostid"
+              renderChild={(props: PostCardInfo) => {
+                const images = [props.postInfo.thumbnail];
+                return (
+                  <Carousel componentsPerView={1} controls={false}>
+                    {images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image} alt={`Attachment ${index + 1}`} />
+                      </div>
+                    ))}
+                  </Carousel>
+                );
+              }}
+            />
+          ) : (
+            <div className="w-full flex justify-center items-center">
+              <h1 className="text-4xl font-semibold">
+                Post {postId} does not exist
+              </h1>
+            </div>
+          )}
+        </div>
+      </div>
+      <Text
+        fontSize="xx-large"
+        fontWeight="bold"
+        w="100%"
+        textAlign="center"
+        textTransform="capitalize"
+      >
+        {t("other_posts", "other posts")}
+      </Text>
+      <div className="flex justify-center w-full h-fit">
+        <div className="md:w-8/12 w-11/12">{children}</div>
+      </div>
+      <Button
+        _focus={{ ringColor: "primary.main" }}
+        bgColor="white"
+        borderWidth={"0.25rem"}
+        borderColor="gray"
+        mt="2rem"
+        fontSize={"xl"}
+        color="black"
+        py="0.5rem"
+        textTransform={"capitalize"}
+      >
+        {t("view_more", "view more")}
+      </Button>
+    </Flex>
+  );
+};

@@ -47,3 +47,4 @@ export * from "./HashtagView";
 export * from "./HashtagPageView";
 export * from "./StoryView";
 export * from "./DiscoverView";
+export * from "./GeneralPostView";
