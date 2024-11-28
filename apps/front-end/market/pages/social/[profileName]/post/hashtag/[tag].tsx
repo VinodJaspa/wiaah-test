@@ -1,15 +1,22 @@
 import React from "react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { Container, HashTagView } from "ui";
+import { Container, HashtagPageView } from "ui";
 import { MasterLayout } from "@components";
-import { useRouting } from "routing";
 
-export interface HashTagPageProps {}
+export interface HashTagPageProps { }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { tag } = context.query;
+
+  return {
+    props: {
+      tag: tag || null,
+    },
+  };
+};
 
 const HashTag: NextPage<HashTagPageProps> = () => {
-  const { getParam } = useRouting();
-  const tag = getParam("tag");
   return (
     <>
       <Head>
@@ -17,7 +24,7 @@ const HashTag: NextPage<HashTagPageProps> = () => {
       </Head>
       <MasterLayout social>
         <Container>
-          <HashTagView tag={tag} />
+          <HashtagPageView />
         </Container>
       </MasterLayout>
     </>
