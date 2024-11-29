@@ -25,6 +25,7 @@ const withTM = require("next-transpile-modules")([
   "react-seo",
   "lib",
 ]);
+
 const withPWA = require("next-pwa");
 
 module.exports = withTM(
@@ -39,6 +40,9 @@ module.exports = withTM(
       register: true,
       skipWaiting: true,
     },
+    images: {
+      domains: ["www.eisenberg.com"], // Add the allowed hostname here
+    },
     ...nextConfig,
-  })
+  }),
 );
