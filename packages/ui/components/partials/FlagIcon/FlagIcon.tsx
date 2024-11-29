@@ -7,7 +7,6 @@ export interface FlagIconProps {
 }
 
 export const FlagIcon: React.FC<FlagIconProps> = ({ code, size }) => {
-  // @ts-ignore
   const Flag = Flags[code];
 
   return <Flag className="w-6 h-6" code={code} />;
