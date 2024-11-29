@@ -8,13 +8,10 @@ import {
   CollaboratorCard,
 } from "ui";
 import { useScreenWidth } from "hooks";
-import { ShopProfile } from "../Shop/ShopProfile";
-import {
-  CollaboratorCategory,
-  CollaboratorShop,
-} from "../../../../../packages/types/src/market/Collaboration";
 import { useRouter } from "next/router";
 import { shopRouting } from "uris";
+import { ShopProfile } from "components/Shop";
+import { CollaboratorCategory, CollaboratorShop } from "types";
 export interface CollaborationViewProps {
   shopId: string;
   categories: CollaboratorCategory[];
