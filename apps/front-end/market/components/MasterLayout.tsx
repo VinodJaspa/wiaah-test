@@ -68,25 +68,32 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
           </div>
         </div>
       )}
-      {!social && <Footer />}
-      {!social && <AuthFooter />}
+      {/* Footer */}
       {!social && (
-        <div className="flex w-full justify-start bg-black p-6">
-          <p className="text-gray-500">
-            Copyrights &copy; Wiaah 2021.
-            {t("copyrights", "All Rights Reserved.")}
-          </p>
-        </div>
+        <>
+          <Footer />
+          <AuthFooter />
+          <div className="flex w-full justify-start bg-black p-6">
+            <p className="text-gray-500">
+              Copyright &copy; Wiaah 2021.{" "}
+              {t("copyrights", "All Rights Reserved.")}
+            </p>
+          </div>
+        </>
       )}
+
+      {/* Social Footer */}
       {social && (
-        <div className="fixed bottom-0 w-full z-50 sm:hidden">
-          <SocialAuthFooter
-            onLoginClick={handleOpenLogin}
-            onSignupClick={handleOpenLogin}
-          />
-        </div>
+        <>
+          <div className="fixed bottom-0 w-full z-50 sm:hidden">
+            <SocialAuthFooter
+              onLoginClick={handleOpenLogin}
+              onSignupClick={handleOpenLogin}
+            />
+          </div>
+          <SocialFooter copyRightYear={2022} />
+        </>
       )}
-      {social && <SocialFooter copyRightYear={2022} />}
     </Root>
   );
 };
