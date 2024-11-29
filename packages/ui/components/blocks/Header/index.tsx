@@ -45,7 +45,6 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   };
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
-  const { data: serviceCategories } = useGetServiceCategoriesQuery();
 
   return (
     <nav className="w-full bg-white">
