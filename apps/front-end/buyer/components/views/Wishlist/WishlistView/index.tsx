@@ -44,6 +44,7 @@ export const WishlistView: React.FC = () => {
               const type = Math.random() * 100;
               return (
                 <ProductCard
+                  name={item.name}
                   key={i}
                   id={item.id}
                   price={item.price}
