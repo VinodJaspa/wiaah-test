@@ -1,4 +1,5 @@
-import { MasterLayout, ShopsSearchView } from "@components";
+import { MasterLayout } from "@components";
+import { ShopsSearchView } from "ui";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
@@ -14,7 +15,7 @@ const ShopsSearch: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container>
-          <ShopsSearchView />
+          <ShopsSearchView slug="" />
         </Container>
       </MasterLayout>
     </>
