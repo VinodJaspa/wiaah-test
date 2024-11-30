@@ -9,6 +9,7 @@ import {
   usePaginationControls,
   Pagination,
   useGetProductCategories,
+  ProductOutput,
 } from "@UI";
 import { BreadCrumb } from "@UI";
 import { BsArrowLeft } from "react-icons/bs";
@@ -16,7 +17,13 @@ import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useDimensions, useResponsive } from "hooks";
-import { Category, ProductCategoryStatus } from "@features/API";
+import {
+  Category,
+  ProductCategoryStatus,
+  ProductCondition,
+  ProductType,
+} from "@features/API";
+import { product } from "@blocks/Modals/ProductViewModal/ProductViewModal.stories";
 
 export const SearchView: React.FC = () => {
   const { t } = useTranslation();
@@ -37,11 +44,12 @@ export const SearchView: React.FC = () => {
   );
   const [filters, setFilters] = React.useState<Record<string, any>>({});
   const { controls, pagination } = usePaginationControls();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetProductsQuery({ ...filters, pagination });
+  // const {
+  //   data: _res,
+  //   isLoading: _isLoading,
+  //   isError: _isError,
+  // } = useGetProductsQuery({ ...filters, pagination });
+  const res = FAKE_PRODUCTS;
   const { data: _categories } = useGetProductCategories();
   const categories = placeholderCategories;
 
@@ -140,18 +148,34 @@ export const SearchView: React.FC = () => {
                   paddingRight: minGap,
                   paddingLeft: minGap,
                 }}
-                className={`h-full`}
+                className={`h-full flex flex-col justify-between`}
               >
                 {/* shop items */}
-                {res
-                  ? res.data.getProducts.map((product, i) => (
-                    <ProductCard
-                      {...product}
-                      buttonText="Add to Cart"
-                      key={i}
-                    />
-                  ))
-                  : ["", ""]}
+                <div className="h-ful w-full grid  grid-cols-4 gap-4">
+                  {res
+                    ? res.map((product, i) => (
+                      <ProductCard
+                        cashback={
+                          product.cashback
+                            ? product.cashback.amount
+                            : undefined
+                        }
+                        discount={
+                          product.discount
+                            ? product.discount.amount
+                            : undefined
+                        }
+                        id={product.id}
+                        price={product.price}
+                        thumbnail={product.presentations[0].src}
+                        name={product.title}
+                        rate={product.rate}
+                        buttonText="Add to Cart"
+                        key={i}
+                      />
+                    ))
+                    : ["", ""]}
+                </div>
                 <Pagination controls={controls} />
               </div>
             </div>
@@ -204,5 +228,361 @@ const placeholderCategories: Category[] = [
     sales: 700,
     sortOrder: 5,
     status: ProductCategoryStatus.InActive, // Assuming "ACTIVE" is a valid status
+  },
+];
+const FAKE_PRODUCTS: ProductOutput[] = [
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-006",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-005",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-008",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-009",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-0011",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-001",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Red", "Blue", "Green"],
+      },
+      {
+        name: "Size",
+        values: ["Small", "Medium", "Large"],
+      },
+    ],
+    brand: "Brand A",
+    cashback: {
+      amount: 10,
+      type: "percent",
+      units: "USD",
+    },
+    categoryId: "category-001",
+    description: "A high-quality product with multiple size and color options.",
+    discount: {
+      amount: 5.0,
+      units: "USD",
+    },
+    id: "product-0012",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 49.99,
+    rate: 4.2,
+    reviews: 34,
+    title: "Product A",
+    vat: 10.0,
+  },
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Black", "White", "Gray"],
+      },
+      {
+        name: "Material",
+        values: ["Leather", "Suede"],
+      },
+    ],
+    brand: "Brand B",
+    cashback: {
+      amount: 15.0,
+      type: "fixed",
+      units: "USD",
+    },
+    categoryId: "category-002",
+    description: "Stylish leather product for all occasions.",
+    discount: {
+      amount: 10.0,
+      units: "USD",
+    },
+    id: "product-002",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop.jpeg",
+        type: "video",
+      },
+    ],
+    price: 120.0,
+    rate: 4.8,
+    reviews: 56,
+    title: "Product B",
+    vat: 15.0,
+  },
+  {
+    attributes: [
+      {
+        name: "Color",
+        values: ["Yellow", "Orange", "Pink"],
+      },
+      {
+        name: "Size",
+        values: ["Medium", "Large"],
+      },
+    ],
+    brand: "Brand C",
+    cashback: null,
+    categoryId: "category-003",
+    description: "Affordable and durable product with bright color options.",
+    discount: null,
+    id: "product-003",
+    presentations: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+    ],
+    price: 19.99,
+    rate: 3.9,
+    reviews: 15,
+    title: "Product C",
+    vat: 5.0,
   },
 ];
