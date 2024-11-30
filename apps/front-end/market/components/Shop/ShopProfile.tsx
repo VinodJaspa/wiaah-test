@@ -1,8 +1,9 @@
+import { BusinessType, ServiceType, StoreType } from "@features/API";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FlagIcon, Rate } from "ui";
+import { FlagIcon, getRandomName, GetShopDetailsQuery, Rate } from "ui";
 import {
   Spacer,
   Button,
@@ -23,9 +24,15 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
   shopId,
 }) => {
   const { filters } = useSearchFilters();
-  const { data: res, isError, isLoading } = useGetShopDetailsQuery(shopId);
+  const {
+    data: _res,
+    isError: _isError,
+    isLoading: _isLoading,
+  } = useGetShopDetailsQuery(shopId);
+  const res = resMock;
   const { t } = useTranslation();
   const router = useRouter();
+  const isError = false;
 
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
@@ -42,7 +49,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
           <div className="relative flex h-3/4 w-full flex-col items-center justify-between">
             <div className="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-2 border-white ">
               {/* shop thumbnail */}
-              <SpinnerFallback isLoading={isLoading} isError={isError}>
+              <SpinnerFallback isLoading={false} isError={isError}>
                 {res ? (
                   <Image
                     className="h-full w-full object-cover"
@@ -57,7 +64,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
             <Spacer spaceInRem={5} />
             <div className="flex w-full flex-col items-center gap-2">
               {/* shop name, rating and creatation date */}
-              <SpinnerFallback isLoading={isLoading} isError={isError}>
+              <SpinnerFallback isLoading={false} isError={isError}>
                 {res ? (
                   <>
                     <div className="flex items-center gap-2 text-lg font-bold">
@@ -97,12 +104,12 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               </div>
             </div>
             <Spacer />
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false} isError={isError}>
               {res ? (
                 <div className="flex w-full items-center justify-end gap-2">
                   {/* shop location */}
                   <FlagIcon code={res.location.countryCode} />
-                  {location
+                  {res.location
                     ? ` ${res.location.state}, ${res.location.city}, ${res.location.country}`
                     : null}
                 </div>
@@ -116,7 +123,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
 
           <div className="flex h-16 items-center justify-between rounded-md bg-white p-4 text-lg font-bold">
             {/* shop name */}
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false} isError={isError}>
               {res ? (
                 <>
                   <p>{res.name}</p>
@@ -128,7 +135,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
           </div>
           <div className="h-full bg-white p-4">
             {/* shop Desc */}
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
+            <SpinnerFallback isLoading={false} isError={isError}>
               {res ? res.description : null}
             </SpinnerFallback>
           </div>
@@ -136,4 +143,88 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
       </div>
     </div>
   );
+};
+
+const resMock: GetShopDetailsQuery["getUserShop"] = {
+  storeType: StoreType.Service,
+  type: ServiceType.BeautyCenter,
+  ownerId: "",
+  banner: "",
+  businessType: BusinessType.Individual,
+  createdAt: new Date().toUTCString(),
+  description:
+    "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",
+  email: "test@email.com",
+  id: "testid",
+  images: [...Array(10)].map(() => "/shop.jpeg"),
+  sellerProfile: {
+    id: "",
+    ownerId: "",
+    photo: "/shop.jpeg",
+    username: getRandomName().firstName,
+  },
+  location: {
+    address: "Burj Al Arab Jumeirah Jumeira Road Umm Suqeim 3",
+    city: "Dubai",
+    country: "United Arab Emirates",
+    lat: 45.464664,
+    lon: 9.18854,
+    postalCode: 1546,
+    state: "state",
+    countryCode: "AD",
+  },
+  name: "service name",
+  phone: "1324658",
+  rating: 5,
+  reviews: 160,
+  thumbnail: "/shop.jpeg",
+  verified: true,
+  videos: [],
+  workingSchedule: {
+    id: "",
+    weekdays: {
+      mo: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      tu: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      we: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      th: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      fr: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      sa: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      su: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+    },
+  },
 };
