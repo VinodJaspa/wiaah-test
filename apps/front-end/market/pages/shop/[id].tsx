@@ -2,18 +2,19 @@ import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import MasterLayout from "../../components/MasterLayout";
-import { ShopView } from "../../components/Shop/ShopView";
+import { ShopDetailsView } from "../../components";
 import {
   Container,
   ServiceDetailsView,
-  ShopDetailsView,
   getShopDetailsQueryFetcher,
   getShopDetailsQueryKey,
   setQueryClientServerSideProps,
   useGetShopDetailsQuery,
+  GetShopDetailsQuery,
+  getRandomName,
 } from "ui";
 import { Collaboration } from "ui/components/blocks/Collaboration";
-import { StoreType } from "@features/API";
+import { BusinessType, ServiceType, StoreType } from "@features/API";
 import { useRouting } from "routing";
 import { QueryClient, dehydrate } from "react-query";
 import nookies from "nookies";
@@ -26,31 +27,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = nookies.get(context);
   const token = cookies.auth_token || null; // Assuming 'auth_token' is your cookie name
 
-  // If the ID exists, fetch the shop details
-  if (id) {
-    const client = new QueryClient();
-
-    // Fetch the shop details data and prefetch it into react-query cache
-    await client.prefetchQuery(getShopDetailsQueryKey(id), () =>
-      getShopDetailsQueryFetcher(id)
-    );
-
-    return {
-      props: {
-        token,
-        // Use the dehydrated state to pass pre-fetched data
-        ...setQueryClientServerSideProps(dehydrate(client)),
-      },
-    };
-  }
-
-  // Handle the case where ID is missing or invalid
   return {
     props: {
-      token,
+      id: id || null,
     },
-    notFound: true, // Optional: Show a 404 page if the ID is missing
-    redirect: id ? undefined : "/", // Optional: Redirect to homepage if no ID
   };
 };
 
@@ -62,7 +42,8 @@ const ServiceDetailPage: NextPage<ServiceDetailedPageProps> = ({ token }) => {
   const { getParam } = useRouting();
 
   const id = getParam("id");
-  const { data: shop } = useGetShopDetailsQuery(id, { enabled: !!id });
+  // const { data: _shop } = useGetShopDetailsQuery(id, { enabled: !!id });
+  const shop = FAKE_SHOP;
 
   // get product details from api
   return (
@@ -71,17 +52,98 @@ const ServiceDetailPage: NextPage<ServiceDetailedPageProps> = ({ token }) => {
         <title>Wiaah | Shop</title>
       </Head>
       <MasterLayout token={token}>
-        {shop?.storeType === StoreType.Service ? (
-          <ServiceDetailsView id={id} />
+        {shop.storeType === StoreType.Service ? (
+          <ServiceDetailsView id={FAKE_SHOP.id} />
         ) : (
-          <ShopDetailsView id={id} />
+          <ShopDetailsView id={FAKE_SHOP.id} />
         )}
-        <Container>
-          <Collaboration />
-        </Container>
       </MasterLayout>
     </>
   );
+};
+
+const FAKE_SHOP: GetShopDetailsQuery["getUserShop"] = {
+  storeType: StoreType.Product,
+  type: ServiceType.HolidayRentals,
+  ownerId: "",
+  banner: "",
+  businessType: BusinessType.Individual,
+  createdAt: new Date().toUTCString(),
+  description:
+    "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",
+  email: "test@email.com",
+  id: "testid",
+  images: [...Array(10)].map(() => "/shop.jpeg"),
+  sellerProfile: {
+    id: "",
+    ownerId: "",
+    photo: "/shop.jpeg",
+    username: getRandomName().firstName,
+  },
+  location: {
+    address: "Burj Al Arab Jumeirah Jumeira Road Umm Suqeim 3",
+    city: "Dubai",
+    country: "United Arab Emirates",
+    lat: 45.464664,
+    lon: 9.18854,
+    postalCode: 1546,
+    state: "state",
+    countryCode: "",
+  },
+  name: "service name",
+  phone: "1324658",
+  rating: 5,
+  reviews: 160,
+  thumbnail: "/shop.jpeg",
+  verified: true,
+  videos: [],
+  workingSchedule: {
+    id: "",
+    weekdays: {
+      mo: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      tu: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      we: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      th: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      fr: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      sa: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+      su: {
+        periods: [
+          new Date(2023, 4, 15, 10).toUTCString(),
+          new Date(2023, 4, 15, 18).toUTCString(),
+        ],
+      },
+    },
+  },
 };
 
 export default ServiceDetailPage;
