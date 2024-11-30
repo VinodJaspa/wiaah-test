@@ -108,7 +108,7 @@ export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
               <GridContainerPager componentsLimit={20}>
                 {/* shop items */}
                 {res
-                  ? res.data.map((product, i) => (
+                  ? res.map((product, i) => (
                     <SpinnerFallback
                       key={i}
                       isLoading={isLoading}
@@ -116,10 +116,15 @@ export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
                     >
                       {res ? (
                         <ProductCard
+                          cashback={product.cashback.amount}
+                          discount={product.discount.amount}
+                          id={product.id}
+                          price={product.price}
+                          thumbnail={product.presentations[0].src}
+                          name={product.title}
+                          rate={product.rate}
                           buttonText="Add to Cart"
-                          {...product}
                           key={i}
-                          full={min}
                         />
                       ) : null}
                     </SpinnerFallback>
