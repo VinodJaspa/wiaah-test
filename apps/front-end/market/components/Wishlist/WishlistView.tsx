@@ -48,6 +48,7 @@ export const WishlistView: React.FC = () => {
           const type = Math.random() * 100;
           return (
             <ProductCard
+              name={"fake name"}
               key={i}
               onButtonClick={() => handleAddToCart(item)}
               onDelete={(id) => DeleteItem(id)}
