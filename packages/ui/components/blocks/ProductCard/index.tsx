@@ -15,10 +15,10 @@ export interface ProductCardProps {
   id: string;
   price: number;
   thumbnail: string;
-  cashback: number;
-  discount: number;
+  cashback?: number;
+  discount?: number;
   rate: number;
-  name?: string;
+  name: string;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
