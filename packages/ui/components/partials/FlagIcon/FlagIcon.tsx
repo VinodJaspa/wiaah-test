@@ -6,8 +6,26 @@ export interface FlagIconProps {
   size?: string | number;
 }
 
-export const FlagIcon: React.FC<FlagIconProps> = ({ code, size }) => {
-  const Flag = Flags[code];
+export const FlagIcon: React.FC<FlagIconProps> = ({ code, size = 24 }) => {
+  const Flag = Flags[code as keyof typeof Flags];
 
-  return <Flag className="w-6 h-6" code={code} />;
+  // Convert `size` to a number if it's a string
+  const numericSize = typeof size === "string" ? parseFloat(size) : size;
+
+  if (!Flag) {
+    return (
+      <div
+        className="flex items-center justify-center bg-gray-200 text-gray-500"
+        style={{
+          width: numericSize,
+          height: numericSize,
+          fontSize: numericSize * 0.5,
+        }}
+      >
+        ?
+      </div>
+    );
+  }
+
+  return <Flag style={{ width: numericSize, height: numericSize }} />;
 };
