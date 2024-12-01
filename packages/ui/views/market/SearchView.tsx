@@ -64,127 +64,121 @@ export const SearchView: React.FC = () => {
   const leftPanelwidth = width || null;
 
   return (
-    <>
-      <div className=" w-full py-4 relative">
-        <div className="flex justify-end">
-          <div
-            onClick={() => {
-              setFilterVisibleOnMobile(true);
-            }}
-            className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
-          >
-            <samp>{t("Filter", "Filter")}</samp>
-            <FaChevronDown className="ml-2" />
-          </div>
-          <HiOutlineViewList
-            onClick={() => {
-              setGrid(false);
-            }}
-            className={`${isGrid ? "" : "bg-gray-200"
-              } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
-          />
-          <HiOutlineViewGrid
-            onClick={() => {
-              setGrid(true);
-            }}
-            className={`${isGrid ? "bg-gray-200" : ""
-              } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
-          />
+    <div className=" w-full py-4 relative h-full">
+      <div className="flex justify-end">
+        <div
+          onClick={() => {
+            setFilterVisibleOnMobile(true);
+          }}
+          className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+        >
+          <samp>{t("Filter", "Filter")}</samp>
+          <FaChevronDown className="ml-2" />
         </div>
-        <div className="flex items-start justify-center">
-          <div
-            className={`${!filterVisibleOnMobile
-                ? "hidden"
-                : "fixed h-screen overflow-y-scroll pb-4 pl-3"
-              } filter-section inset-0 z-50  w-full bg-white pr-3 `}
-          >
-            <div className="flex h-20 w-full items-center justify-start md:hidden">
-              <BsArrowLeft
-                onClick={() => {
-                  setFilterVisibleOnMobile(false);
-                }}
-                className="back-button ml-2  h-full text-xl"
-              />
-              <span className="ml-8">{t("Filter", "Filter")}</span>
-            </div>
-            <div className="flex w-full justify-center gap-4">
-              <ShopProductFilter
-                open={true}
-                shipping={["Click and Collect", "Free", "International"]}
-                locations={["USA", "FR", "UK"]}
-                colors={["#920", "#059", "#229"]}
-                rating={true}
-              />
-            </div>
-          </div>
-          <div className="flex w-full justify-center gap-4">
-            <div className="h-full w-full flex gap-8">
-              <div className="ml-12" ref={leftPanelRef}>
-                {!isMobile && (
-                  <div className="flex flex-col gap-2">
-                    <div className="px-4">
-                      <BreadCrumb links={breadCrumbLinks} />
-                    </div>
-
-                    <ShopProductFilter
-                      open={true}
-                      priceRange={{ max: 1000, min: 10 }}
-                      shipping={["Click and Collect", "Free", "International"]}
-                      colors={["#920", "#059", "#229"]}
-                      size={["S", "M", "L", "XL", "XXL", "XXXL"]}
-                      stockStatus={true}
-                      rating={true}
-                      brands={["nike", "or", "zake"]}
-                      categories={categories || []}
-                      countryFilter={true}
-                      cityFilter={true}
-                    />
-                  </div>
-                )}
-              </div>
-              <div
-                style={{
-                  width: `calc(100% - (${leftPanelwidth || 0}px + 3rem))`,
-                  paddingRight: minGap,
-                  paddingLeft: minGap,
-                }}
-                className={`h-full flex flex-col justify-between`}
-              >
-                {/* shop items */}
-                <div className="h-ful w-full grid  grid-cols-4 gap-4">
-                  {res
-                    ? res.map((product, i) => (
-                      <ProductCard
-                        cashback={
-                          product.cashback
-                            ? product.cashback.amount
-                            : undefined
-                        }
-                        discount={
-                          product.discount
-                            ? product.discount.amount
-                            : undefined
-                        }
-                        id={product.id}
-                        price={product.price}
-                        thumbnail={product.presentations[0].src}
-                        name={product.title}
-                        rate={product.rate}
-                        buttonText="Add to Cart"
-                        key={i}
-                      />
-                    ))
-                    : ["", ""]}
-                </div>
-                <Pagination controls={controls} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <Divider />
-        <Collaboration />
+        <HiOutlineViewList
+          onClick={() => {
+            setGrid(false);
+          }}
+          className={`${isGrid ? "" : "bg-gray-200"
+            } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+        />
+        <HiOutlineViewGrid
+          onClick={() => {
+            setGrid(true);
+          }}
+          className={`${isGrid ? "bg-gray-200" : ""
+            } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
+        />
       </div>
-    </>
+      <div className="flex h-full items-start justify-center">
+        <div
+          className={`${!filterVisibleOnMobile
+              ? "hidden"
+              : "fixed h-screen overflow-y-scroll pb-4 pl-3"
+            } filter-section inset-0 z-50  w-full bg-white pr-3 `}
+        >
+          <div className="flex h-20 w-full items-center justify-start md:hidden">
+            <BsArrowLeft
+              onClick={() => {
+                setFilterVisibleOnMobile(false);
+              }}
+              className="back-button ml-2 h-full text-xl"
+            />
+            <span className="ml-8">{t("Filter", "Filter")}</span>
+          </div>
+          <div className="flex w-fit justify-center gap-8">
+            <ShopProductFilter
+              open={true}
+              shipping={["Click and Collect", "Free", "International"]}
+              locations={["USA", "FR", "UK"]}
+              colors={["#920", "#059", "#229"]}
+              rating={true}
+            />
+          </div>
+        </div>
+        <div className="flex w-fit h-full justify-center gap-4">
+          <div className="h-full w-fit flex gap-8 justify-center ">
+            <div className="h-full ml-12" ref={leftPanelRef}>
+              {!isMobile && (
+                <div className="flex flex-col gap-2 w-[300px] ">
+                  <div className="px-4">
+                    <BreadCrumb links={breadCrumbLinks} />
+                  </div>
+
+                  <ShopProductFilter
+                    open={true}
+                    priceRange={{ max: 1000, min: 10 }}
+                    shipping={["Click and Collect", "Free", "International"]}
+                    colors={["#920", "#059", "#229"]}
+                    size={["S", "M", "L", "XL", "XXL", "XXXL"]}
+                    stockStatus={true}
+                    rating={true}
+                    brands={["nike", "or", "zake"]}
+                    categories={categories || []}
+                    countryFilter={true}
+                    cityFilter={true}
+                  />
+                </div>
+              )}
+            </div>
+            <div
+              style={{
+                width: `calc(100% - (${leftPanelwidth || 0}px + 3rem))`,
+                paddingRight: minGap,
+                paddingLeft: minGap,
+              }}
+              className={`h-full flex flex-col justiry-between`}
+            >
+              {/* shop items */}
+              <div className="h-full w-fit grid  grid-cols-2 md:grid-cols-4 md:gap-4 gap-2">
+                {res
+                  ? res.map((product, i) => (
+                    <ProductCard
+                      cashback={
+                        product.cashback ? product.cashback.amount : undefined
+                      }
+                      discount={
+                        product.discount ? product.discount.amount : undefined
+                      }
+                      id={product.id}
+                      price={product.price}
+                      thumbnail={product.presentations[0].src}
+                      name={product.title}
+                      rate={product.rate}
+                      buttonText="Add to Cart"
+                      key={i}
+                    />
+                  ))
+                  : ["", ""]}
+              </div>
+              <Pagination controls={controls} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <Divider />
+      <Collaboration />
+    </div>
   );
 };
 
