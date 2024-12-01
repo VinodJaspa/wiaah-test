@@ -20,6 +20,7 @@ export const ShopsSearchCardsList: React.FC = () => {
   return (
     <PaginationWrapper>
       <ServicesSearchGrid
+        cols={1}
         data={res?.data || []}
         handlePassData={(data) => data}
         component={ShopMapSearchCard}
