@@ -21,14 +21,17 @@ export type ShopsMapSearchDataApiResponse = InferType<
 
 export const getShopsMapSearchDataFetcher = async (
   pagination: QueryPaginationInputs,
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<ShopsMapSearchDataApiResponse> => {
   const res: AsyncReturnType<typeof getShopsMapSearchDataFetcher> = {
     data: [...Array(pagination.take)].map(() => ({
       id: "123",
       name: "shop name",
-      rate: randomNum(5),
+      description: "this is a fake description for onMap product card",
+      rate: 4.5,
       categories: [{ icon: "/", name: "electronics" }],
+      price: 999,
+      reviews: 142,
       thumbnail: "/shop-2.jpeg",
       location: {
         address: "address",
