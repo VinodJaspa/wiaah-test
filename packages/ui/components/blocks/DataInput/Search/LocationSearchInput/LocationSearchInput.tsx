@@ -40,7 +40,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
       onSuccess: (data) => {
         setLocations(data);
       },
-    }
+    },
   );
   useOutsideClick(ref, () => setFocused(false));
 
@@ -48,7 +48,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
     <div
       ref={ref}
       className={`${className || ""
-        } rounded-lg relative z-10 isolate w-full border-[1px] border-gray-200 border-b-0 p-2`}
+        } rounded-lg relative z-[100] isolate w-full border-[1px] border-gray-200 border-b-0 p-2`}
     >
       <InputGroup flushed className="border-b-black ">
         <InputLeftElement className="flex px-2 justify-center items-center">
@@ -65,7 +65,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
       </InputGroup>
       <div
         className={`${focused ? "" : " scale-y-0 opacity-0 pointer-events-none"
-          } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-20`}
+          } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-[100]`}
       >
         <Prefix
           PrefixClassName="text-2xl"
