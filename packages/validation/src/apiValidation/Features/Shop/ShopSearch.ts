@@ -16,9 +16,12 @@ export const ShopMapSearchDataValidationSchema = object({
   rate: number().required(),
   categories: array().of(CategoryValidationSchema.required()).min(0).required(),
   location: Location().required(),
+  description: string().required(),
+  reviews: number().required(),
+  price: number().required(),
 });
 
 export const ShopsMapSearchDataApiResponseValidationSchema =
   CreatePaginationApiResponseValidationSchemaOf(
-    ShopMapSearchDataValidationSchema
+    ShopMapSearchDataValidationSchema,
   );
