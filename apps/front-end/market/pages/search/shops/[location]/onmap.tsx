@@ -1,11 +1,21 @@
 import { MasterLayout, ShopOnMapSearchView } from "@components";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Container } from "ui";
 
-const ShopsOnmapSearch: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { location } = context.query;
+
+  return {
+    props: {
+      location: location || null,
+    },
+  };
+};
+
+const ShopsOnmapSearch: NextPage<{ location: string }> = ({ location }) => {
   const { t } = useTranslation();
   return (
     <>
@@ -14,7 +24,7 @@ const ShopsOnmapSearch: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container>
-          <ShopOnMapSearchView />
+          <ShopOnMapSearchView location={location} />
         </Container>
       </MasterLayout>
     </>
