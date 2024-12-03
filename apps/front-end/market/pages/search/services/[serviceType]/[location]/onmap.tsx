@@ -1,22 +1,28 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import React from "react";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
-import { OnMapView, MasterLayout } from "@components";
 import { useRouter } from "next/router";
 import { Container, SERVICESTYPE_INDEXKEY, useMutateSearchFilters } from "ui";
-import { ServicesViewsList } from "@data";
+import { ServicesViewsList } from "../../../../../data";
+import { MasterLayout, OnMapView } from "../../../../../components";
 import { ExtractServiceTypeFromQuery } from "utils";
+import { useRouting } from "routing";
 
 const Onmap: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
-  const serviceType = ExtractServiceTypeFromQuery(router.query);
+  const { getParam, getCurrentPath } = useRouting();
+  const serviceType = getParam("serviceType");
+  const searchLocation = getParam("location");
+
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
     addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
   }
-  console.log(router.query);
+
+  console.log();
+
   return (
     <>
       <Head>
@@ -24,7 +30,7 @@ const Onmap: NextPage = () => {
       </Head>
       <MasterLayout>
         {/* <Container> */}
-        <OnMapView />
+        <OnMapView searchLocation={searchLocation} />
         {/* </Container> */}
       </MasterLayout>
     </>
