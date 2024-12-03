@@ -1,4 +1,5 @@
 import { Wrapper } from "@googlemaps/react-wrapper";
+import { getLatLngFromCity } from "@UI/../utils/src";
 import { LocationCords } from "api";
 import React, { CSSProperties } from "react";
 import { useRecoilValue } from "recoil";
@@ -13,18 +14,29 @@ import {
 import { Map } from "./Map";
 import { Marker } from "./Marker";
 
-export const RenderMap: React.FC = () => {
+interface RenderMapProps {
+  location?: string;
+}
+
+export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
   const { itemId } = useGetFocusedMapItemId();
   const currency = useRecoilValue(PreferedCurrencyState);
   const [map, setMap] = React.useState<HTMLElement>();
   const [center, setCenter] = React.useState<LocationCords>({
-    lat: 45.464664,
+    lat: 44.464664,
     lng: 9.18854,
   });
   const [zoom, setZoom] = React.useState<number>(12);
   const { locations: services } = useGetMapLocationsState();
   const { setLocations } = useSetMapLocationsState();
 
+  const handleGetCords = async () => {
+    const result = await getLatLngFromCity(
+      location,
+      process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,
+    );
+    setCenter({ lat: result.lat, lng: result.lng });
+  };
   const handleFocusService = (serviceData: onMapLocation) => {
     try {
       const { lat, lng } = serviceData;
@@ -103,6 +115,10 @@ export const RenderMap: React.FC = () => {
       }
     }
   }, [map, services]);
+
+  React.useEffect(() => {
+    handleGetCords();
+  }, []);
   return (
     <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
       <Map
