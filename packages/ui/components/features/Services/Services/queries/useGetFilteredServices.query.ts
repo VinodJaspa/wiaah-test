@@ -115,7 +115,6 @@ query SearchService($args: SearchServicesInput!) {
       availableAppointments
       healthCenterBookedAppointments
       saved
-      saved
       sellerId
       updatedAt
       shop {
@@ -142,7 +141,7 @@ query SearchService($args: SearchServicesInput!) {
   }
 }
 
-    `
+    `,
       )
       .setVariables<SearchServiceQueryVariables>({
         args,
