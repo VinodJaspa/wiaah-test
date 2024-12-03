@@ -1,16 +1,41 @@
 import { useResponsive } from "hooks";
+import { ServerType } from "mongodb";
 import { useRouter } from "next/router";
 import React from "react";
-import { RenderMap, ScrollingWrapper, LocationSearchInput } from "ui";
+import { ServiceType } from "@features/API";
+import {
+  RenderMap,
+  ScrollingWrapper,
+  LocationSearchInput,
+  MarketServiceSearchResaultsView,
+  useGetFilteredServicesQuery,
+  usePaginationControls,
+  ServicesSwitcher,
+} from "ui";
 import {
   ExtractServiceTypeFromQuery,
   getServiceView,
   ServicesTypeSwitcher,
+  useForm,
 } from "utils";
 
-export const OnMapView: React.FC = () => {
+interface OnMapViewProps {
+  searchLocation: string;
+}
+
+export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
   const router = useRouter();
-  const serviceType = ExtractServiceTypeFromQuery(router.query);
+  const { controls, pagination } = usePaginationControls();
+  const { form } = useForm<Parameters<typeof useGetFilteredServicesQuery>[0]>({
+    pagination,
+    filters: [],
+  });
+  const {
+    data: services,
+    isLoading,
+    isError,
+  } = useGetFilteredServicesQuery(form);
+  const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
   const { isTablet } = useResponsive();
   return (
     <div className="flex p-4 flex-col gap-2">
@@ -19,15 +44,8 @@ export const OnMapView: React.FC = () => {
       </span>
       <div className="w-full relative pb-40 md:pb-0 flex-col-reverse md:flex-row h-auto md:h-[75vh] flex gap-8 md:gap-4 justify-between">
         <div className="w-full absolute bottom-0 left-0 z-50 md:static md:w-full md:h-full">
-          <ScrollingWrapper horizonatal={isTablet}>
-            <ServicesTypeSwitcher
-              get={
-                isTablet ? getServiceView.HORIZONTAL_LIST : getServiceView.LIST
-              }
-              serviceType={serviceType}
-              props={{ horizontal: isTablet }}
-            />
-          </ScrollingWrapper>
+          <ScrollingWrapper horizonatal={isTablet}></ScrollingWrapper>
+          <ServicesSwitcher serviceType={serviceType} services={services} />
         </div>
         <div className="w-full h-[75vh] md:h-auto">
           <RenderMap />
