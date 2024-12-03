@@ -27,7 +27,8 @@ export const getShopsMapSearchDataFetcher = async (
     data: [...Array(pagination.take)].map(() => ({
       id: "123",
       name: "shop name",
-      description: "this is a fake description for onMap product card",
+      description:
+        "this is a fake description for onMap product card, Makging this descrition longer buy typing nonsense description",
       rate: 4.5,
       categories: [{ icon: "/", name: "electronics" }],
       price: 999,
