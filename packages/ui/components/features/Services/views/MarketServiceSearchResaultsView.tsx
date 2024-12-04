@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@UI/../hooks";
 import {
+  SearchServiceQuery,
   ServicePaymentMethods,
   useGetFilteredServicesQuery,
 } from "../Services";
@@ -93,112 +94,10 @@ export const MarketServiceSearchResaultsView: React.FC<{
       </SectionHeader>
 
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <div className="grid grid-cols-2 gap-2">
-          {mapArray(
-            services?.data,
-            ({
-              name,
-              price,
-              rating,
-              shop,
-              thumbnail,
-              description,
-              reviews,
-              speciality,
-              availableAppointments,
-              healthCenterBookedAppointments,
-              airCondition,
-              gpsAvailable,
-              lugaggeCapacity,
-              seats,
-              windows,
-              id,
-              treatmentCategory,
-              saved,
-            }) => {
-              switch (serviceType) {
-                case ServiceType.Hotel:
-                  return (
-                    <MarketHotelServiceSearchCardAlt
-                      description={description}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      name={name}
-                      price={price}
-                      rating={rating}
-                      thumbnail={thumbnail}
-                    />
-                  );
-
-                case ServiceType.Restaurant:
-                  return (
-                    <MarketRestaurantServiceSearchCardAlt
-                      reviews={reviews}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      name={name}
-                      price={price}
-                      rating={rating}
-                      thumbnail={thumbnail}
-                    />
-                  );
-                case ServiceType.HealthCenter:
-                  return (
-                    <MarketHealthCenterServiceCardAlt
-                      bookedAppointments={healthCenterBookedAppointments}
-                      title={name}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      thumbnail={thumbnail}
-                      speciality={speciality || ""}
-                      appointments={availableAppointments || []}
-                    />
-                  );
-                case ServiceType.Vehicle:
-                  return (
-                    <MarketVehicleServiceSearchCardAlt
-                      title={name}
-                      airCondition={!!airCondition}
-                      gps={!!gpsAvailable}
-                      thumbnail={thumbnail}
-                      luggage={lugaggeCapacity || 0}
-                      pricePerDay={price}
-                      windows={windows || 0}
-                      passengers={seats || 0}
-                    />
-                  );
-
-                case ServiceType.BeautyCenter:
-                  return (
-                    <MarketBeautyCenterSearchCardAlt
-                      title={name}
-                      thumbnail={thumbnail}
-                      id={id}
-                      rate={rating}
-                      reviews={reviews}
-                      category={treatmentCategory!}
-                    />
-                  );
-                case ServiceType.HolidayRentals:
-                  return (
-                    <MarketHolidayRentalsServiceSearchCardAlt
-                      title={name}
-                      thumbnail={thumbnail}
-                      reviews={reviews}
-                      description={description}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      monthlyPrice={price}
-                      rating={rating}
-                      saved={saved}
-                      sellerName={shop.sellerProfile.username}
-                      sellerThumbnail={shop.sellerProfile.photo}
-                      sellerVerified={shop.sellerProfile.verified}
-                    />
-                  );
-
-                default:
-                  break;
-              }
-            }
-          )}
-        </div>
+        <MobileServicesCardsSwitcherView
+          services={services}
+          serviceType={serviceType}
+        />
       </SpinnerFallback>
 
       <MarketServiceSearchResultsFiltersModal
@@ -256,246 +155,12 @@ export const MarketServiceSearchResaultsView: React.FC<{
 
         <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
       </ServicesSearchResultsFiltersSidebar>
-
-      <div className="flex flex-col w-full gap-4">
-        {serviceType === ServiceType.Hotel ? (
-          <div className="flex flex-col gap-2">
-            <div className="w-full flex flex-col gap-4 justify-center">
-              <DisplayFoundServices
-                location={searchQuery}
-                servicesNum={services?.data.length || 0}
-              />
-              {(services?.data?.length || 0) < 1 ? (
-                <div className="w-fit h-48 flex just-center items-center text-2xl">
-                  <span>{t("no services found")}</span>
-                </div>
-              ) : (
-                <>
-                  {mapArray(services?.data, (service, i) => (
-                    <HotelDetailedSearchCard
-                      name={service.name}
-                      price={service.price}
-                      rate={service.rating}
-                      reviews={service.reviews}
-                      sellerName={service?.shop?.sellerProfile?.username}
-                      description={service.description}
-                      id={service.id}
-                      location={{
-                        ...service.shop.location,
-                        cords: {
-                          lat: service.shop.location.lat,
-                          lng: service.shop.location.long,
-                        },
-                      }}
-                      taxesAndFeesIncluded
-                      thumbnail={service.thumbnail}
-                      vertical={isTablet}
-                      key={i}
-                    />
-                  ))}
-                </>
-              )}
-            </div>
-          </div>
-        ) : null}
-
-        {serviceType === ServiceType.Restaurant ? (
-          <ResturantSearchList
-            restaurants={[...Array(20)].map(() => ({
-              hashtags: [],
-              location: {
-                address: "address",
-                city: "city",
-                country: "country",
-              },
-              price: randomNum(150),
-              rating: randomNum(5),
-              reviews: randomNum(200),
-              thumbnail:
-                "https://media-cdn.tripadvisor.com/media/photo-s/1a/8e/55/e6/variety-of-choices.jpg",
-              title: "Dish name",
-            }))}
-          />
-        ) : null}
-
-        {showOn([ServiceType.HealthCenter]) ? (
-          <div className="flex flex-col">
-            <DisplayFoundServices
-              location={searchQuery || ""}
-              servicesNum={randomNum(500)}
-            />
-            <HealthCenterServiceSearchResultsList
-              doctors={[...Array(15)].map(() => ({
-                id: "doctor123",
-                rating: 3,
-                healthCenterId: "33",
-                healthCenter: {
-                  __typename: "HealthCenter",
-                  owner: null,
-                  contact: {
-                    __typename: "ServiceContact",
-                    address: "123 Main St",
-                    country: "Country",
-                    state: "State",
-                    city: "City",
-                    email: "contact@example.com",
-                    phone: "+1234567890",
-                  },
-                  id: "healthcenter123",
-                  ownerId: "owner456",
-                  vat: 10.0,
-                  rating: 4.5,
-                  totalReviews: 100,
-                  location: {
-                    __typename: "ServiceLocation",
-                    address: "456 Elm St",
-                    country: "Country",
-                    state: "State",
-                    city: "City",
-                    lat: 40.7128,
-                    lon: -74.006,
-                    postalCode: 10001,
-                  },
-                  status: ServiceStatus.Active,
-                  presentations: [
-                    {
-                      __typename: "ServicePresentation",
-                      type: ServicePresentationType.Img,
-                      src: "https://example.com/presentation.jpg",
-                    },
-                  ],
-                  policies: [
-                    {
-                      __typename: "ServicePolicy",
-                      policyTitle: "Cancellation Policy",
-                      terms: ["Term 1", "Term 2"],
-                    },
-                  ],
-                  serviceMetaInfo: {
-                    __typename: "ServiceMetaInfo",
-                    title: "Health Center Title",
-                    description: "Description of the health center",
-                    metaTagDescription: "Meta description",
-                    metaTagKeywords: ["keyword1", "keyword2"],
-                    hashtags: ["health", "center", "medical"],
-                  },
-                  payment_methods: [
-                    ServicePaymentMethods.Cash,
-                    ServicePaymentMethods.CreditCard,
-                  ],
-                  cancelationPolicies: [
-                    {
-                      __typename: "ServiceCancelationPolicy",
-                      duration: 24,
-                      cost: 10,
-                    },
-                  ],
-                  doctors: [], // Placeholder array, add mock doctors as needed
-                  workingHours: {
-                    __typename: "WorkingSchedule",
-                    id: "schedule789",
-                    weekdays: {
-                      __typename: "WeekdaysWorkingHours",
-                      mo: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-                      tu: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-                      we: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-                      th: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-                      fr: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-
-                      sa: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-
-                      su: {
-                        __typename: "ServiceDayWorkingHours",
-                        periods: ["09:00 AM - 05:00 PM"],
-                      },
-                    },
-                  },
-                },
-                specialityId: "speciality123",
-                name: "Dr. John Doe",
-                thumbnail: "https://example.com/thumbnail.jpg",
-                price: 100,
-                description:
-                  "Experienced doctor specializing in internal medicine.",
-                availablityStatus:
-                  HealthCenterDoctorAvailablityStatus.Available,
-              }))}
-            />
-          </div>
-        ) : null}
-
-        {showOn([ServiceType.BeautyCenter]) ? (
-          <RecommendedBeautyCenterSearchList
-            treatments={[...Array(24)].map(() => ({
-              id: "",
-              category: "Facial",
-              duration: 40,
-              price: randomNum(150),
-              rate: 4,
-              reviews: randomNum(1500),
-              thumbnail: getRandomServiceImage(ServiceType.BeautyCenter),
-              title: "Treatment name",
-            }))}
-          />
-        ) : null}
-
-        {showOn([ServiceType.Vehicle]) ? (
-          <ServicesSearchGrid
-            data={[...Array(24)].map(() => ({
-              id: "",
-              title: "Vehicle Name",
-              brand: "",
-              model: "",
-              price: randomNum(150),
-              cancelationPolicies: [],
-              presentations: [
-                {
-                  src: getRandomServiceImage(ServiceType.Vehicle),
-                  type: ServicePresentationType.Img,
-                },
-              ],
-              thumbnail:
-                "https://d.newsweek.com/en/full/2203419/2023-ford-expedition.jpg?w=1600&h=1600&q=88&f=1f6dd5c5cc318e1239e31777f34a50d2",
-              properties: {
-                airCondition: true,
-                gpsAvailable: true,
-                lugaggeCapacity: 4,
-                maxSpeedInKm: 150,
-                seats: 4,
-                windows: 4,
-              },
-            }))}
-            component={VehicleSearchCard}
-            handlePassData={(props) => ({
-              ...props,
-              showTotal: false,
-              presentations: [
-                { src: props.thumbnail, type: ServicePresentationType.Img },
-              ],
-            })}
-          />
-        ) : null}
-
-        <Pagination />
-      </div>
+      <ServicesCardsSwitcherView
+        serviceType={serviceType}
+        services={services}
+        showOn={showOn}
+        searchQuery={searchQuery}
+      />
     </div>
   );
 };
@@ -505,19 +170,19 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
     filters: {
       id: string;
       value: string[];
-    }[]
+    }[],
   ) => void;
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
   const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
-    serviceType as ServiceType
+    serviceType as ServiceType,
   );
 
   const { data: filters } = useGetServiceCategoryFiltersQuery(
     { serviceType: serviceType! },
-    { enabled: isOpen }
+    { enabled: isOpen },
   );
 
   const [selectedValues, setSelectedValues] = React.useState<
@@ -623,5 +288,411 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
         </div>
       </ModalContent>
     </Drawer>
+  );
+};
+
+interface MobileServicesCardsSwitcherViewProps {
+  services: any;
+  serviceType: ServiceType;
+}
+
+export const MobileServicesCardsSwitcherView: React.FC<
+  MobileServicesCardsSwitcherViewProps
+> = ({ services, serviceType }) => {
+  const placeholderData = Array.from({ length: 4 }).map((_, idx) => ({
+    id: `placeholder-${idx}`,
+    name: "Service Name Placeholder",
+    price: 0,
+    rating: 0,
+    shop: {
+      location: { city: "City Placeholder", country: "Country Placeholder" },
+      sellerProfile: {
+        username: "Seller Placeholder",
+        photo: "/shop.jpeg",
+        verified: false,
+      },
+    },
+    thumbnail: "/shop.jpeg",
+    description: "Description Placeholder",
+    reviews: 0,
+    speciality: "Speciality Placeholder",
+    availableAppointments: [],
+    healthCenterBookedAppointments: [],
+    airCondition: false,
+    gpsAvailable: false,
+    lugaggeCapacity: 0,
+    seats: 0,
+    windows: 0,
+    treatmentCategory: "Category Placeholder",
+    saved: false,
+  }));
+
+  const dataToRender = services?.data?.length ? services.data : placeholderData;
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {mapArray(
+        dataToRender?.data,
+        ({
+          name,
+          price,
+          rating,
+          shop,
+          thumbnail,
+          description,
+          reviews,
+          speciality,
+          availableAppointments,
+          healthCenterBookedAppointments,
+          airCondition,
+          gpsAvailable,
+          lugaggeCapacity,
+          seats,
+          windows,
+          id,
+          treatmentCategory,
+          saved,
+        }) => {
+          switch (serviceType) {
+            case ServiceType.Hotel:
+              return (
+                <MarketHotelServiceSearchCardAlt
+                  description={description}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  name={name}
+                  price={price}
+                  rating={rating}
+                  thumbnail={thumbnail}
+                />
+              );
+
+            case ServiceType.Restaurant:
+              return (
+                <MarketRestaurantServiceSearchCardAlt
+                  reviews={reviews}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  name={name}
+                  price={price}
+                  rating={rating}
+                  thumbnail={thumbnail}
+                />
+              );
+            case ServiceType.HealthCenter:
+              return (
+                <MarketHealthCenterServiceCardAlt
+                  bookedAppointments={healthCenterBookedAppointments}
+                  title={name}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  thumbnail={thumbnail}
+                  speciality={speciality || ""}
+                  appointments={availableAppointments || []}
+                />
+              );
+            case ServiceType.Vehicle:
+              return (
+                <MarketVehicleServiceSearchCardAlt
+                  title={name}
+                  airCondition={!!airCondition}
+                  gps={!!gpsAvailable}
+                  thumbnail={thumbnail}
+                  luggage={lugaggeCapacity || 0}
+                  pricePerDay={price}
+                  windows={windows || 0}
+                  passengers={seats || 0}
+                />
+              );
+
+            case ServiceType.BeautyCenter:
+              return (
+                <MarketBeautyCenterSearchCardAlt
+                  title={name}
+                  thumbnail={thumbnail}
+                  id={id}
+                  rate={rating}
+                  reviews={reviews}
+                  category={treatmentCategory!}
+                />
+              );
+            case ServiceType.HolidayRentals:
+              return (
+                <MarketHolidayRentalsServiceSearchCardAlt
+                  title={name}
+                  thumbnail={thumbnail}
+                  reviews={reviews}
+                  description={description}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  monthlyPrice={price}
+                  rating={rating}
+                  saved={saved}
+                  sellerName={shop.sellerProfile.username}
+                  sellerThumbnail={shop.sellerProfile.photo}
+                  sellerVerified={shop.sellerProfile.verified}
+                />
+              );
+
+            default:
+              break;
+          }
+        },
+      )}
+    </div>
+  );
+};
+
+interface ServicesCardsSwitcherViewProps {
+  services: SearchServiceQuery["searchServices"];
+  serviceType: ServiceType;
+  showOn: (serviceTypes: ServiceType[]) => boolean;
+  searchQuery: string;
+}
+
+export const ServicesCardsSwitcherView: React.FC<
+  ServicesCardsSwitcherViewProps
+> = ({ services, serviceType, showOn, searchQuery }) => {
+  const { isTablet, isMobile } = useResponsive();
+
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col w-full gap-4">
+      {serviceType === ServiceType.Hotel ? (
+        <div className="flex flex-col gap-2">
+          <div className="w-full flex flex-col gap-4 justify-center">
+            <DisplayFoundServices
+              location={searchQuery}
+              servicesNum={services?.data.length || 0}
+            />
+            {(services?.data?.length || 0) < 1 ? (
+              <div className="w-fit h-48 flex just-center items-center text-2xl">
+                <span>{t("no services found")}</span>
+              </div>
+            ) : (
+              <>
+                {mapArray(services?.data, (service, i) => (
+                  <HotelDetailedSearchCard
+                    name={service.name || "Fake Name"}
+                    price={service.price || 0}
+                    rate={service.rating || 0}
+                    reviews={service.reviews || 0}
+                    sellerName={
+                      service?.shop?.sellerProfile?.username || "Unknown Seller"
+                    }
+                    description={
+                      service.description || "No description available"
+                    }
+                    id={service.id || "unknown-id"}
+                    location={{
+                      ...service.shop?.location,
+                      cords: {
+                        lat: service.shop?.location?.lat || 0,
+                        lng: service.shop?.location?.long || 0,
+                      },
+                    }}
+                    taxesAndFeesIncluded
+                    thumbnail={service.thumbnail || "/shop.jpeg"}
+                    vertical={isTablet}
+                    key={i}
+                  />
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      {serviceType === ServiceType.Restaurant ? (
+        <ResturantSearchList
+          restaurants={[...Array(20)].map(() => ({
+            hashtags: [],
+            location: {
+              address: "address",
+              city: "city",
+              country: "country",
+            },
+            price: randomNum(150),
+            rating: randomNum(5),
+            reviews: randomNum(200),
+            thumbnail:
+              "https://media-cdn.tripadvisor.com/media/photo-s/1a/8e/55/e6/variety-of-choices.jpg",
+            title: "Dish name",
+          }))}
+        />
+      ) : null}
+
+      {showOn([ServiceType.HealthCenter]) ? (
+        <div className="flex flex-col">
+          <DisplayFoundServices
+            location={searchQuery || ""}
+            servicesNum={randomNum(500)}
+          />
+          <HealthCenterServiceSearchResultsList
+            doctors={[...Array(15)].map(() => ({
+              id: "doctor123",
+              rating: 3,
+              healthCenterId: "33",
+              healthCenter: {
+                __typename: "HealthCenter",
+                owner: null,
+                contact: {
+                  __typename: "ServiceContact",
+                  address: "123 Main St",
+                  country: "Country",
+                  state: "State",
+                  city: "City",
+                  email: "contact@example.com",
+                  phone: "+1234567890",
+                },
+                id: "healthcenter123",
+                ownerId: "owner456",
+                vat: 10.0,
+                rating: 4.5,
+                totalReviews: 100,
+                location: {
+                  __typename: "ServiceLocation",
+                  address: "456 Elm St",
+                  country: "Country",
+                  state: "State",
+                  city: "City",
+                  lat: 40.7128,
+                  lon: -74.006,
+                  postalCode: 10001,
+                },
+                status: ServiceStatus.Active,
+                presentations: [
+                  {
+                    __typename: "ServicePresentation",
+                    type: ServicePresentationType.Img,
+                    src: "https://example.com/presentation.jpg",
+                  },
+                ],
+                policies: [
+                  {
+                    __typename: "ServicePolicy",
+                    policyTitle: "Cancellation Policy",
+                    terms: ["Term 1", "Term 2"],
+                  },
+                ],
+                serviceMetaInfo: {
+                  __typename: "ServiceMetaInfo",
+                  title: "Health Center Title",
+                  description: "Description of the health center",
+                  metaTagDescription: "Meta description",
+                  metaTagKeywords: ["keyword1", "keyword2"],
+                  hashtags: ["health", "center", "medical"],
+                },
+                payment_methods: [
+                  ServicePaymentMethods.Cash,
+                  ServicePaymentMethods.CreditCard,
+                ],
+                cancelationPolicies: [
+                  {
+                    __typename: "ServiceCancelationPolicy",
+                    duration: 24,
+                    cost: 10,
+                  },
+                ],
+                doctors: [], // Placeholder array, add mock doctors as needed
+                workingHours: {
+                  __typename: "WorkingSchedule",
+                  id: "schedule789",
+                  weekdays: {
+                    __typename: "WeekdaysWorkingHours",
+                    mo: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00 "],
+                    },
+                    tu: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+                    we: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+                    th: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+                    fr: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+
+                    sa: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+
+                    su: {
+                      __typename: "ServiceDayWorkingHours",
+                      periods: ["09:00-05:00"],
+                    },
+                  },
+                },
+              },
+              specialityId: "speciality123",
+              name: "Dr. John Doe",
+              thumbnail: "https://example.com/thumbnail.jpg",
+              price: 100,
+              description:
+                "Experienced doctor specializing in internal medicine.",
+              availablityStatus: HealthCenterDoctorAvailablityStatus.Available,
+            }))}
+          />
+        </div>
+      ) : null}
+
+      {showOn([ServiceType.BeautyCenter]) ? (
+        <RecommendedBeautyCenterSearchList
+          treatments={[...Array(24)].map(() => ({
+            id: "",
+            category: "Facial",
+            duration: 40,
+            price: randomNum(150),
+            rate: 4,
+            reviews: randomNum(1500),
+            thumbnail: getRandomServiceImage(ServiceType.BeautyCenter),
+            title: "Treatment name",
+          }))}
+        />
+      ) : null}
+
+      {showOn([ServiceType.Vehicle]) ? (
+        <ServicesSearchGrid
+          data={[...Array(24)].map(() => ({
+            id: "",
+            title: "Vehicle Name",
+            brand: "",
+            model: "",
+            price: randomNum(150),
+            cancelationPolicies: [],
+            presentations: [
+              {
+                src: getRandomServiceImage(ServiceType.Vehicle),
+                type: ServicePresentationType.Img,
+              },
+            ],
+            thumbnail:
+              "https://d.newsweek.com/en/full/2203419/2023-ford-expedition.jpg?w=1600&h=1600&q=88&f=1f6dd5c5cc318e1239e31777f34a50d2",
+            properties: {
+              airCondition: true,
+              gpsAvailable: true,
+              lugaggeCapacity: 4,
+              maxSpeedInKm: 150,
+              seats: 4,
+              windows: 4,
+            },
+          }))}
+          component={VehicleSearchCard}
+          handlePassData={(props) => ({
+            ...props,
+            showTotal: false,
+            presentations: [
+              { src: props.thumbnail, type: ServicePresentationType.Img },
+            ],
+          })}
+        />
+      ) : null}
+
+      <Pagination />
+    </div>
   );
 };
