@@ -38,22 +38,22 @@ export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
   const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
   const { isTablet } = useResponsive();
 
+  console.log("SEARCH LOCATION ===> " + searchLocation);
+
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
   return (
     <div className="flex p-4 flex-col gap-2">
       <span className="w-full md:w-1/2">
         <LocationSearchInput onLocationSelect={() => { }} />
       </span>
-      <div className="w-full relative pb-40 md:pb-0 flex-col-reverse md:flex-row h-auto md:h-[75vh] flex gap-8 md:gap-4 justify-between">
-        <div className="w-full h-full flex">
-          <ServicesCardsSwitcherView
-            serviceType={serviceType}
-            services={services}
-            showOn={showOn}
-            searchQuery={searchLocation}
-          />
-        </div>
-        <div className="w-full h-[75vh] md:h-auto">
+      <div className="w-full h-full flex">
+        <ServicesCardsSwitcherView
+          serviceType={serviceType}
+          services={services}
+          showOn={showOn}
+          searchQuery={searchLocation}
+        />
+        <div className="w-full h-[500px] ">
           <RenderMap location={searchLocation} />
         </div>
       </div>
