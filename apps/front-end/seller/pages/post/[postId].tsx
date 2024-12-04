@@ -1,15 +1,15 @@
 import { SocialPostView } from "@UI";
-import { SellerLayout } from "@blocks";
+import { NewsFeedPostView, SellerLayout } from "@blocks";
 import { NextPage } from "next";
 import React from "react";
 import { useRouter } from "next/router";
 
 export default function PostDetailsView() {
   const router = useRouter();
-  const { postId } = router.query;
+  const postId = router.query.postId as string;
   return (
     <SellerLayout>
-      <SocialPostView postId="44" />
+      <NewsFeedPostView postId={postId} />
     </SellerLayout>
   );
 }
