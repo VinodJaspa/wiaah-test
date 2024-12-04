@@ -3,6 +3,8 @@ import { WorkingDayColumn } from "./WorkingDayColumn";
 import { Slider, ArrowLeftIcon, ArrowRightIcon } from "@UI";
 import { isSameMinute } from "utils";
 import { ServiceDayWorkingHours } from "@features/API";
+import { string } from "yup";
+import { WorkingDate } from "@UI/../types/src";
 
 export interface WorkingDaysCalenderProps {
   workingDates: {
@@ -25,8 +27,45 @@ interface SplitDay {
   day: Date;
   dates: Date[];
 }
+type WorkingHourRange = { from: string; to: string };
+type InputData = { date: string; workingHoursRanges: WorkingHourRange[] };
 
-function splitDatesByDay(dates: Date[]): SplitDay[] {
+function splitDatesByDay(data: InputData[]): SplitDay[] {
+  const daysMap: { [key: string]: number } = {
+    mo: 1,
+    tu: 2,
+    we: 3,
+    th: 4,
+    fr: 5,
+    sa: 6,
+    su: 0,
+  };
+
+  const dates: Date[] = [];
+
+  for (const item of data) {
+    const weekday = daysMap[item.date.toLowerCase()]; // Map to day index
+    if (weekday === undefined) continue; // Skip invalid days
+
+    for (const range of item.workingHoursRanges) {
+      // Parse time ranges into `Date` objects
+      const today = new Date();
+      const start = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        parseInt(range.from.split(":")[0]),
+        parseInt(range.from.split(":")[1]),
+      );
+
+      // Adjust `start` date to align with the specified weekday
+      start.setDate(start.getDate() - start.getDay() + weekday);
+
+      dates.push(start);
+    }
+  }
+
+  // Use the original function logic to split the processed dates
   dates.sort((a, b) => a.getTime() - b.getTime());
 
   const splitDays: SplitDay[] = [];
@@ -40,7 +79,7 @@ function splitDatesByDay(dates: Date[]): SplitDay[] {
       currentDay = day;
       currentDayIndex++;
       splitDays[currentDayIndex] = {
-        day: new Date(date),
+        day: new Date(day),
         dates: [],
       };
     }
@@ -55,12 +94,12 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
   takenDates,
 }) => {
-  const dates = splitDatesByDay(workingDates.map((d) => new Date(d.date)));
+  const dates = splitDatesByDay(workingDates);
 
   return (
     <Slider
-      rightArrowComponent={ArrowRightIcon}
-      leftArrowComponent={ArrowLeftIcon}
+      rightArrowComponent={<ArrowRightIcon className="text-black" />}
+      leftArrowComponent={<ArrowLeftIcon className="text-black" />}
       itemsCount={5}
       gap={8}
       containerProps={{
@@ -78,18 +117,16 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
     >
       {Array.isArray(dates)
         ? dates.map((date, i) => (
-            <WorkingDayColumn
-              dates={date.dates.map((date) => ({
-                date,
-                available: !!takenDates.find((d) =>
-                  isSameMinute(new Date(d.date), date)
-                ),
-              }))}
-              onClick={() => {}}
-              dayDate={date.day}
-              key={i}
-            />
-          ))
+          <WorkingDayColumn
+            dates={date.dates.map((date) => ({
+              date,
+              available: true,
+            }))}
+            onClick={() => { }}
+            dayDate={date.day}
+            key={i}
+          />
+        ))
         : null}
     </Slider>
   );
