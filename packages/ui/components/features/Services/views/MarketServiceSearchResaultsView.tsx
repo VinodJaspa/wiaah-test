@@ -560,7 +560,7 @@ export const ServicesCardsSwitcherView: React.FC<
                   {
                     __typename: "ServicePresentation",
                     type: ServicePresentationType.Img,
-                    src: "https://example.com/presentation.jpg",
+                    src: "/shop.jpeg",
                   },
                 ],
                 policies: [
@@ -593,44 +593,45 @@ export const ServicesCardsSwitcherView: React.FC<
                 workingHours: {
                   __typename: "WorkingSchedule",
                   id: "schedule789",
+
                   weekdays: {
                     __typename: "WeekdaysWorkingHours",
                     mo: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00 "],
+                      periods: ["09:00-10:00", "11:00-12:00", "13:00-14:00"],
                     },
                     tu: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00"],
                     },
                     we: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00"],
                     },
                     th: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00"],
                     },
                     fr: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00"],
                     },
 
                     sa: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00", "11:00-12:00"],
                     },
 
                     su: {
                       __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-05:00"],
+                      periods: ["09:00-10:00", "11:00-12:00"],
                     },
                   },
                 },
               },
               specialityId: "speciality123",
               name: "Dr. John Doe",
-              thumbnail: "https://example.com/thumbnail.jpg",
+              thumbnail: "/shop-2.jpeg",
               price: 100,
               description:
                 "Experienced doctor specializing in internal medicine.",
