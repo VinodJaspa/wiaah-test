@@ -456,10 +456,7 @@ export const ServicesCardsSwitcherView: React.FC<
       {serviceType === ServiceType.Hotel ? (
         <div className="flex flex-col gap-2">
           <div className="w-full flex flex-col gap-4 justify-center">
-            <DisplayFoundServices
-              location={searchQuery}
-              servicesNum={services?.data.length || 0}
-            />
+            <DisplayFoundServices location={searchQuery} servicesNum={30} />
             {(services?.data?.length || 0) < 1 ? (
               <div className="w-fit h-48 flex just-center items-center text-2xl">
                 <span>{t("no services found")}</span>
