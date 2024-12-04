@@ -13,3 +13,4 @@ export * from "./getFileSrcData";
 export * from "./getRouteAfter";
 export * from "./FitlerAndAddToArray";
 export * from "./useBreakPointValue";
+export * from "./getLatLngFromCity";
