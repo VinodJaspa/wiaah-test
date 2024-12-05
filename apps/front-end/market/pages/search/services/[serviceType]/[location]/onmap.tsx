@@ -9,19 +9,23 @@ import { MasterLayout, OnMapView } from "../../../../../components";
 import { ExtractServiceTypeFromQuery } from "utils";
 import { useRouting } from "routing";
 
-const Onmap: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { location } = context.query;
+
+  return {
+    props: {
+      location: (location as string) || null,
+    },
+  };
+};
+
+const Onmap: NextPage<{ location: string }> = ({ location }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
   const { getParam, getCurrentPath } = useRouting();
   const serviceType = getParam("serviceType");
-  const searchLocation = getParam("location");
-
-  if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
-    addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
-  }
-
-  console.log();
+  const searchLocation = location;
 
   return (
     <>
@@ -29,9 +33,7 @@ const Onmap: NextPage = () => {
         <title>{t("on map search")}</title>
       </Head>
       <MasterLayout>
-        {/* <Container> */}
         <OnMapView searchLocation={searchLocation} />
-        {/* </Container> */}
       </MasterLayout>
     </>
   );
