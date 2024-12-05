@@ -1,11 +1,12 @@
-import { Maybe, ServiceAmenity } from "@features/API";
-import { BathTubeIcon, BedIcon, CarIcon, PetPawIcon } from "@partials";
-import { HtmlSvgProps } from "@UI/../types/src";
-import { runIfFn } from "@UI/../utils/src";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Maybe, ServiceAmenity } from "@features/API";
+import { BathTubeIcon, BedIcon, PetPawIcon } from "@partials";
+import { runIfFn } from "@UI/../utils/src";
+import { HtmlSvgProps } from "@UI/../types/src";
 import { usePublishRef } from "state";
 import { PopularAmenitiesSection } from "../PopularAmenitiesSection";
+
 export interface ServicesProviderDescriptionSectionProps {
   description: string;
   bedRooms?: number;
@@ -26,52 +27,41 @@ export const ServicesProviderDescriptionSection: React.FC<
 > = ({ description, amenities, bedRooms, bathRooms, petAllowed }) => {
   const descriptionRef = usePublishRef((keys) => keys.description);
   const { t } = useTranslation();
-  const items: {
-    text: string;
-    icon: React.ReactNode;
-  }[] = [
-      {
-        text: `${3} ${t("BedRooms")}`,
-        icon: <BedIcon />,
-      },
-      {
-        text: `${1} ${t("Bathrooms")}`,
-        icon: <BathTubeIcon />,
-      },
-      // {
-      //   text: `${4} ${t("Cards")}/${2} ${t("Bikes")}`,
-      //   icon: <CarIcon />,
-      // },
-      {
-        text: ` ${t("Pets Allowed")}`,
-        icon: <PetPawIcon />,
-      },
-    ];
+
+  const items = [
+    bedRooms && {
+      text: `${bedRooms} ${t("BedRooms")}`,
+      icon: <BedIcon />,
+    },
+    bathRooms && {
+      text: `${bathRooms} ${t("Bathrooms")}`,
+      icon: <BathTubeIcon />,
+    },
+    petAllowed && {
+      text: t("Pets Allowed"),
+      icon: <PetPawIcon />,
+    },
+  ].filter(Boolean); // Filters out undefined/null entries.
 
   return (
     <div ref={descriptionRef} className="flex flex-col gap-[1.875rem]">
       <p className="md:text-lg">{description}</p>
-      <div
-        // style={{
-        //   gridTemplateColumns:
-        //     "repeat(auto-fit, minmax(3rem,calc(25% - 0.6rem)))",
-        // }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-3"
-      >
-        {items.map(({ icon, text }, i) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {items.map(({ icon, text }, index) => (
           <div
             className="flex rounded-lg bg-[#EFF0F2] text-darkBrown flex-col gap-4 justify-center items-center h-[9.375rem] w-full"
-            key={i}
+            key={index}
           >
             {runIfFn<HtmlSvgProps>(icon, { className: "text-[2.125rem]" })}
             <p className="font-semibold">{text}</p>
           </div>
         ))}
       </div>
-
-      <PopularAmenitiesSection
-        amenities={amenities.map((amenity) => amenity.label)}
-      />
+      {amenities && (
+        <PopularAmenitiesSection
+          amenities={amenities?.map((amenity) => amenity.label).filter(Boolean)}
+        />
+      )}
     </div>
   );
 };
