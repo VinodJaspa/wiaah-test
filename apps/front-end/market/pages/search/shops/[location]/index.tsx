@@ -1,9 +1,9 @@
-import { MasterLayout, ShopsSearchResultsView } from "@components";
+import { MasterLayout } from "@components";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Container } from "ui";
+import { Container, SearchView } from "ui";
 
 const ShopsLocationSearch: NextPage = () => {
   const { t } = useTranslation();
@@ -14,7 +14,7 @@ const ShopsLocationSearch: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container>
-          <ShopsSearchResultsView />
+          <SearchView />
         </Container>
       </MasterLayout>
     </>

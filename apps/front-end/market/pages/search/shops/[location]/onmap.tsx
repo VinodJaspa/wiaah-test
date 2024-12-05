@@ -23,9 +23,7 @@ const ShopsOnmapSearch: NextPage<{ location: string }> = ({ location }) => {
         <title>{t("Shops on map search")}</title>
       </Head>
       <MasterLayout>
-        <Container>
-          <ShopOnMapSearchView location={location} />
-        </Container>
+        <ShopOnMapSearchView location={location} />
       </MasterLayout>
     </>
   );
