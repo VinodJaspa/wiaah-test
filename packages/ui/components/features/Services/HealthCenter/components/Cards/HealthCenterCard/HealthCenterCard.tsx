@@ -47,11 +47,11 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
     }));
   };
   const convertedWrokingDates = convertWorkingDates(workingDates);
+
   return (
     <div
-      className={`${
-        vertical ? "flex-col" : "flex-row min-w-[50rem]"
-      } flex gap-8 shadow justify-between rounded w-full `}
+      className={`${vertical ? "flex-col" : "flex-row "
+        } flex shadow justify-between rounded w-full p-2 `}
     >
       <div className="flex flex-col justify-between gap-4">
         <div className="flex gap-4">
@@ -90,7 +90,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
           {t("Book now")}
         </Button>
       </div>
-      <div className="flex w-1/2 h-full overflow-hidden flex-col gap-2 thinScroll py-4">
+      <div className="flex w-fit gap-4">
         <WorkingDaysCalender
           workingDates={convertedWrokingDates}
           takenDates={convertedWrokingDates}
