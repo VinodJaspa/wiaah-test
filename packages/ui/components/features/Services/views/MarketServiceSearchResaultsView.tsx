@@ -452,7 +452,7 @@ export const ServicesCardsSwitcherView: React.FC<
 
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex flex-col w-full gap-4 ">
       {serviceType === ServiceType.Hotel ? (
         <div className="flex flex-col gap-2">
           <div className="w-full flex flex-col gap-4 justify-center">
@@ -612,16 +612,6 @@ export const ServicesCardsSwitcherView: React.FC<
                     fr: {
                       __typename: "ServiceDayWorkingHours",
                       periods: ["09:00-10:00"],
-                    },
-
-                    sa: {
-                      __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-10:00", "11:00-12:00"],
-                    },
-
-                    su: {
-                      __typename: "ServiceDayWorkingHours",
-                      periods: ["09:00-10:00", "11:00-12:00"],
                     },
                   },
                 },
