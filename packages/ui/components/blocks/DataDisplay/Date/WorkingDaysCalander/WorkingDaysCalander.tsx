@@ -97,24 +97,7 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   const dates = splitDatesByDay(workingDates);
 
   return (
-    <Slider
-      rightArrowComponent={<ArrowRightIcon className="text-black" />}
-      leftArrowComponent={<ArrowLeftIcon className="text-black" />}
-      itemsCount={5}
-      gap={8}
-      containerProps={{
-        style: { overflow: "visible" },
-      }}
-      childsWrapperProps={{
-        className: "max-h-64 overflow-y-scroll thinScroll",
-      }}
-      arrowLeftProps={{
-        className: "top-[1rem] text-4xl -translate-x-[100%] text-primary",
-      }}
-      arrowRightProps={{
-        className: "top-[1rem] text-4xl translate-x-[calc(70%)] text-primary",
-      }}
-    >
+    <div className="flex gap-4 px-2 ">
       {Array.isArray(dates)
         ? dates.map((date, i) => (
           <WorkingDayColumn
@@ -128,6 +111,6 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
           />
         ))
         : null}
-    </Slider>
+    </div>
   );
 };
