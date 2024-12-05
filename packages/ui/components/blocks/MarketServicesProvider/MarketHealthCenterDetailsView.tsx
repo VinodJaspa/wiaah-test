@@ -31,7 +31,12 @@ import {
 export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
   id,
 }) => {
-  const { data: _res, isError, isLoading } = useGetHealthCenterDetailsQuery(id);
+  const {
+    data: _res,
+    isError,
+    isLoading: _isloading,
+  } = useGetHealthCenterDetailsQuery(id);
+  const isLoading = false;
   const res = FAKE_HEALTH_CENTER_DETAILS;
 
   const { isMobile } = useResponsive();
@@ -57,30 +62,30 @@ export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
               takenDates={
                 res
                   ? Object.values(res.takenSchedule!.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                          : [],
-                    }))
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
               workingDates={
                 res
                   ? Object.values(res.workingSchedule!.weekdays).map(
-                      (value) => ({
-                        date: new Date().toString(),
-                        workingHoursRanges:
-                          typeof value === "object"
-                            ? [
-                                {
-                                  from: value!.periods[0],
-                                  to: value!.periods[1],
-                                },
-                              ]
-                            : [],
-                      }),
-                    )
+                    (value) => ({
+                      date: new Date().toString(),
+                      workingHoursRanges:
+                        typeof value === "object"
+                          ? [
+                            {
+                              from: value!.periods[0],
+                              to: value!.periods[1],
+                            },
+                          ]
+                          : [],
+                    }),
+                  )
                   : []
               }
             />
