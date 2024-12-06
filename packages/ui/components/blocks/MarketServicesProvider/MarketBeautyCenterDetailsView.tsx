@@ -29,7 +29,13 @@ import {
 export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   id,
 }) => {
-  const { data: res, isError, isLoading } = useGetBeautyCenterDetailsQuery(id);
+  const {
+    data: _res,
+    isError,
+    isLoading: _isLoading,
+  } = useGetBeautyCenterDetailsQuery(id);
+  const res = FAKE_BEAUTY_CENTER_DETAILS;
+  const isLoading = false;
 
   const { t } = useTranslation();
 
@@ -49,28 +55,28 @@ export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="w-full h-full overflow-hidden">
+          <div className="w-full h-full ">
             <WorkingDaysCalender
               takenDates={
                 res
-                  ? Object.values(res.takenHours!.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                          : [],
-                    }))
+                  ? Object.values(res.takenHours.weekdays).map((value) => ({
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
               workingDates={
                 res
                   ? Object.values(res.workingHours!.weekdays).map((value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                          : [],
-                    }))
+                    date: new Date().toString(),
+                    workingHoursRanges:
+                      typeof value === "object"
+                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                        : [],
+                  }))
                   : []
               }
             />
@@ -282,6 +288,39 @@ const FAKE_BEAUTY_CENTER_DETAILS: GetBeautyQuery["getBeautyCenterById"] = {
     lastName: "last",
     verified: true,
     photo: "photo",
+  },
+  takenHours: {
+    id: "",
+    weekdays: {
+      fr: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["18:00-22:00"],
+      },
+      mo: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
+      },
+      sa: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["11:00-23:00"],
+      },
+      su: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["10:00-20:00"],
+      },
+      th: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
+      },
+      tu: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
+      },
+      we: {
+        __typename: "ServiceDayWorkingHours",
+        periods: ["09:00-17:00"],
+      },
+    },
   },
   workingHours: {
     id: "",
