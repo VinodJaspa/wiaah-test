@@ -1,7 +1,7 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout } from "@components";
-import { MarketBeautyCenterServiceDetailsView } from "ui";
+import { MasterLayout, MetaTags } from "@components";
+import { MarketBeautyCenterServiceDetailsView, ServiceTypeCard } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
@@ -31,9 +31,79 @@ interface BeautyCenterServiceDetailsPageProps {
   data: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> | null;
 }
 
+export const getServerSideProps: GetServerSideProps<
+  ServerSideQueryClientProps<BeautyCenterServiceDetailsPageProps>
+> = async ({ query }) => {
+  const queryClient = new QueryClient();
+
+  const serviceType = "beauty_center";
+  const serviceId = ExtractParamFromQuery(query, "id");
+
+  let data = null;
+  try {
+    data = (await getServiceDetailsDataSwitcher(
+      serviceType,
+      serviceId,
+    )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
+
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
+      () => data,
+    );
+  } catch (error) {
+    console.error("Failed to fetch service details:", error);
+  }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      data: data || null,
+    },
+  };
+};
+
+const BeautyCenterServiceDetailsPage: NextPage<
+  BeautyCenterServiceDetailsPageProps
+> = ({ data }) => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
+  const finalData = data || mockData; // Use placeholder data if query fails
+
+  const { serviceMetaInfo, presentations, owner } =
+    finalData.data.getBeautyCenterById;
+
+  return (
+    <>
+      <MetaTags
+        metaConfig={{
+          title: serviceMetaInfo.title,
+          description: serviceMetaInfo.description,
+          presentation: presentations[0],
+          ownerFirstName: owner.firstName || "no_name",
+        }}
+      />
+      <MasterLayout>
+        <Container>
+          <MarketBeautyCenterServiceDetailsView id={id} />
+        </Container>
+      </MasterLayout>
+    </>
+  );
+};
+
+export default BeautyCenterServiceDetailsPage;
+
 const mockData: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> = {
   data: {
     getBeautyCenterById: {
+      owner: {
+        firstName: "owner_firstName",
+        lastName: "owner_lastName",
+        verified: true,
+        email: "owner_email",
+        photo: "/shop.jpeg",
+        id: "2",
+      },
       id: "1",
       contact: {
         address: "123 Placeholder Street",
@@ -121,79 +191,3 @@ const mockData: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> = {
     },
   },
 };
-export const getServerSideProps: GetServerSideProps<
-  ServerSideQueryClientProps<BeautyCenterServiceDetailsPageProps>
-> = async ({ query }) => {
-  const queryClient = new QueryClient();
-
-  const serviceType = "beauty_center";
-  const serviceId = ExtractParamFromQuery(query, "id");
-
-  let data = null;
-  try {
-    data = (await getServiceDetailsDataSwitcher(
-      serviceType,
-      serviceId,
-    )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
-
-    queryClient.prefetchQuery(
-      GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-      () => data,
-    );
-  } catch (error) {
-    console.error("Failed to fetch service details:", error);
-  }
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data: data || null,
-    },
-  };
-};
-
-const BeautyCenterMetaTags: React.FC<{
-  data: BeautyCenterServiceDetailsPageProps["data"];
-}> = ({ data }) => {
-  const serviceMetaInfo = data?.data?.getBeautyCenterById.serviceMetaInfo;
-  const presentation = data?.data?.getBeautyCenterById.presentations?.[0];
-
-  if (!serviceMetaInfo) return null;
-
-  return (
-    <>
-      <MetaTitle
-        content={`Wiaah | Service Details by ${serviceMetaInfo.title}`}
-      />
-      <MetaDescription content={serviceMetaInfo.description} />
-      {presentation?.type === "vid" ? (
-        <MetaVideo content={presentation.src} />
-      ) : (
-        <MetaImage content={presentation?.src} />
-      )}
-      <MetaAuthor author={data?.data?.getBeautyCenterById.owner?.firstName} />
-      <RequiredSocialMediaTags />
-    </>
-  );
-};
-
-const BeautyCenterServiceDetailsPage: NextPage<
-  BeautyCenterServiceDetailsPageProps
-> = ({ data }) => {
-  const { getParam } = useRouting();
-  const id = getParam("id");
-  const finalData = data || mockData; // Use placeholder data if query fails
-
-  return (
-    <>
-      <BeautyCenterMetaTags data={finalData} />
-      <MasterLayout>
-        <Container>
-          <MarketBeautyCenterServiceDetailsView id={id} />
-        </Container>
-      </MasterLayout>
-    </>
-  );
-};
-
-export default BeautyCenterServiceDetailsPage;
