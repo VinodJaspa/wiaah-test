@@ -67,7 +67,7 @@ export const ServiceWorkingHoursSection: React.FC<
         {workingDays.map((day, i) => (
           <div
             key={i}
-            className="flex justify-between w-full rounded border-t-[1px] border-x-[1px] py-2"
+            className="flex justify-between w-full rounded border-t-[1px] border-x-[1px] px-2"
           >
             <p className="font-bold">{t(day.weekday)}</p>
             <p className="whitespace-nowrap">
