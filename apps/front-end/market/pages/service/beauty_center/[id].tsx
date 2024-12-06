@@ -10,6 +10,7 @@ import {
   GetHotelServiceArgs,
   getBeautyCenterDetailsDataFetcher,
   getServiceDetailsDataSwitcher,
+  ServicePaymentMethods,
 } from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import {
@@ -21,11 +22,105 @@ import {
   RequiredSocialMediaTags,
 } from "react-seo";
 import { useRouting } from "routing";
+import {
+  ServiceStatus,
+  ServiceTypeOfSeller,
+} from "@features/API/gql/generated";
 
 interface BeautyCenterServiceDetailsPageProps {
-  data: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
+  data: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> | null;
 }
 
+const mockData: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> = {
+  data: {
+    getBeautyCenterById: {
+      id: "1",
+      contact: {
+        address: "123 Placeholder Street",
+        country: "Placeholder Country",
+        city: "Placeholder City",
+        email: "contact@example.com",
+        phone: "+123456789",
+      },
+      ownerId: "owner-1",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      vat: 15.0,
+      rating: 4.5,
+      totalReviews: 100,
+      beauty_center_typeId: "type-1",
+      status: ServiceStatus.Active, // Corresponding to ServiceStatus.Active
+      title: "Placeholder Beauty Center",
+      location: {
+        address: "123 Placeholder Street",
+        country: "Placeholder Country",
+        state: "Placeholder State",
+        city: "Placeholder City",
+        lat: 12.345678,
+        lon: 98.765432,
+        postalCode: 12345,
+      },
+      presentations: [],
+      policies: [],
+      serviceMetaInfo: {
+        title: "Placeholder Service",
+        description: "Description of the placeholder service.",
+        metaTagDescription: "Meta tag description for placeholder.",
+        metaTagKeywords: ["placeholder", "beauty", "center"],
+        hashtags: ["#beauty", "#placeholder"],
+      },
+      payment_methods: [ServicePaymentMethods.Cash], // Corresponding to ServicePaymentMethods.Cash
+      cancelationPolicies: [],
+      type_of_seller: ServiceTypeOfSeller.Individual, // Corresponding to ServiceTypeOfSeller.Individual
+      treatments: [
+        {
+          id: "treatment-1",
+          treatmentCategoryId: "category-1",
+          category: null,
+          title: "Placeholder Treatment",
+          price: 100.0,
+          duration: [60],
+          discount: {
+            value: 10, // Example discount object, replace with your type definition
+            units: 10,
+          },
+        },
+      ],
+
+      workingHours: {
+        __typename: "WorkingSchedule",
+        id: "1",
+        weekdays: {
+          __typename: "WeekdaysWorkingHours",
+          mo: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["09:00-12:00", "13:00-18:00"],
+          },
+          tu: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["09:00-12:00", "13:00-18:00"],
+          },
+          we: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["09:00-12:00", "13:00-18:00"],
+          },
+          th: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["09:00-12:00", "13:00-18:00"],
+          },
+          fr: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["09:00-12:00", "13:00-18:00"],
+          },
+          sa: {
+            __typename: "ServiceDayWorkingHours",
+            periods: ["10:00-14:00"],
+          },
+        },
+      },
+    },
+  },
+};
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps<BeautyCenterServiceDetailsPageProps>
 > = async ({ query }) => {
@@ -33,27 +128,53 @@ export const getServerSideProps: GetServerSideProps<
 
   const serviceType = "beauty_center";
   const serviceId = ExtractParamFromQuery(query, "id");
-  const beautyCenterDetailsArgs: GetHotelServiceArgs &
-    FormatedSearchableFilter = {
-    id: "your_beauty_center_id",
-  };
 
-  const data = (await getServiceDetailsDataSwitcher(
-    serviceType,
-    beautyCenterDetailsArgs.id,
-  )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
+  let data = null;
+  try {
+    data = (await getServiceDetailsDataSwitcher(
+      serviceType,
+      serviceId,
+    )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data,
-  );
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
+      () => data,
+    );
+  } catch (error) {
+    console.error("Failed to fetch service details:", error);
+  }
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      data,
+      data: data || null,
     },
   };
+};
+
+const BeautyCenterMetaTags: React.FC<{
+  data: BeautyCenterServiceDetailsPageProps["data"];
+}> = ({ data }) => {
+  const serviceMetaInfo = data?.data?.getBeautyCenterById.serviceMetaInfo;
+  const presentation = data?.data?.getBeautyCenterById.presentations?.[0];
+
+  if (!serviceMetaInfo) return null;
+
+  return (
+    <>
+      <MetaTitle
+        content={`Wiaah | Service Details by ${serviceMetaInfo.title}`}
+      />
+      <MetaDescription content={serviceMetaInfo.description} />
+      {presentation?.type === "vid" ? (
+        <MetaVideo content={presentation.src} />
+      ) : (
+        <MetaImage content={presentation?.src} />
+      )}
+      <MetaAuthor author={data?.data?.getBeautyCenterById.owner?.firstName} />
+      <RequiredSocialMediaTags />
+    </>
+  );
 };
 
 const BeautyCenterServiceDetailsPage: NextPage<
@@ -61,29 +182,11 @@ const BeautyCenterServiceDetailsPage: NextPage<
 > = ({ data }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
+  const finalData = data || mockData; // Use placeholder data if query fails
+
   return (
     <>
-      {data && data.data ? (
-        <>
-          <MetaTitle
-            content={`Wiaah | Service Details by ${data.data.getBeautyCenterById.serviceMetaInfo.title}`}
-          />
-          <MetaDescription
-            content={data.data.getBeautyCenterById.serviceMetaInfo.description}
-          />
-          {data.data.getBeautyCenterById.presentations.at(0).type === "vid" ? (
-            <MetaVideo
-              content={data.data.getBeautyCenterById.presentations.at(0).src}
-            />
-          ) : (
-            <MetaImage
-              content={data.data.getBeautyCenterById.presentations.at(0).src}
-            />
-          )}
-          <MetaAuthor author={data.data.getBeautyCenterById.owner?.firstName} />
-          <RequiredSocialMediaTags />
-        </>
-      ) : null}
+      <BeautyCenterMetaTags data={finalData} />
       <MasterLayout>
         <Container>
           <MarketBeautyCenterServiceDetailsView id={id} />
