@@ -1,6 +1,6 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout } from "@components";
+import { MasterLayout, MetaTags } from "@components";
 import { MarketHotelDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
@@ -12,16 +12,7 @@ import {
   GqlResponse,
   ServerSideQueryClientProps,
 } from "types";
-import {
-  MetaAuthor,
-  MetaDescription,
-  MetaImage,
-  MetaTitle,
-  MetaVideo,
-  RequiredSocialMediaTags,
-} from "react-seo";
 import { useRouting } from "routing";
-import { ServicePresentationType } from "@features/API";
 
 interface HotelServiceDetailsPageProps {
   data: AsyncReturnType<typeof getServiceDetailsDataSwitcher>;
@@ -66,26 +57,14 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
   return (
     <>
       {data && data.data ? (
-        <>
-          <MetaTitle
-            content={`Wiaah | Service Details by ${data.data.getHotelService.owner.firstName}`}
-          />
-          <MetaDescription
-            content={data.data.getHotelService.serviceMetaInfo.description}
-          />
-          {data.data.getHotelService.presentations.at(0).type ===
-            ServicePresentationType.Vid ? (
-            <MetaVideo
-              content={data.data.getHotelService.presentations.at(0).src}
-            />
-          ) : (
-            <MetaImage
-              content={data.data.getHotelService.presentations.at(0).src}
-            />
-          )}
-          <MetaAuthor author={data.data.getHotelService.owner.firstName} />
-          <RequiredSocialMediaTags />
-        </>
+        <MetaTags
+          metaConfig={{
+            title: data.data.getHotelService.serviceMetaInfo.title,
+            description: data.data.getHotelService.serviceMetaInfo.description,
+            presentation: data.data.getHotelService.presentations[0],
+            ownerFirstName: data.data.getHotelService.owner.firstName,
+          }}
+        />
       ) : null}
       <MasterLayout>
         <Container>
