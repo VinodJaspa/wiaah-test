@@ -69,6 +69,7 @@ const ServicesProviderTabs: SectionTabType[] = [
 
 export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
+
   const res = FAKE_SHOP_DETAILS;
   const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
   const {
@@ -93,9 +94,9 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
         data={
           res
             ? res.images.map((v) => ({
-                src: v,
-                type: ServicePresentationType.Img,
-              })) || []
+              src: v,
+              type: ServicePresentationType.Img,
+            })) || []
             : []
         }
       />
@@ -170,19 +171,19 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
   ],
   presentations: [
     {
-      src: "https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg",
+      src: "/shop.jpeg",
       type: ServicePresentationType.Img,
     },
     {
-      src: "https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg",
+      src: "/shop-2.jpeg",
       type: ServicePresentationType.Img,
     },
     {
-      src: "https://image-tc.galaxy.tf/wijpeg-5fj3s48cv2nf9rs8mv5amtpab/select-room-one-bedroom-3.jpg?width=1920",
+      src: "/shop-2.jpeg",
       type: ServicePresentationType.Img,
     },
     {
-      src: "https://www.ohotelsindia.com/pune/images/b32d5dc553ee2097368bae13f83e93cf.jpg",
+      src: "/shop-2.jpeg",
       type: ServicePresentationType.Img,
     },
   ],
@@ -257,7 +258,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       beds: 3,
       num_of_rooms: 2,
       sellerId: "",
-      thumbnail: "",
+      thumbnail: "/shop.jpeg",
     },
   ],
   serviceMetaInfo: {
@@ -281,12 +282,9 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
 
 export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
   __typename: "Shop",
-  banner: "https://placeholder.com/banner.jpg",
+  banner: "/shop.jpeg",
   businessType: BusinessType.Company,
-  images: [
-    "https://placeholder.com/image1.jpg",
-    "https://placeholder.com/image2.jpg",
-  ],
+  images: ["/shop.jpeg", "/shop.jpeg"],
   videos: ["https://placeholder.com/video1.mp4"],
   createdAt: new Date().toISOString(),
   description: "This is a placeholder description for the shop.",
@@ -297,13 +295,13 @@ export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
   phone: "+1234567890",
   rating: 4.5,
   reviews: 120,
-  thumbnail: getRandomImage(),
+  thumbnail: "/shop.jpeg",
   type: ServiceType.Hotel,
   storeType: StoreType.Service,
   verified: true,
   sellerProfile: {
     __typename: "Profile",
-    photo: getRandomImage(),
+    photo: "/shop.jpeg",
     username: "placeholder_user",
     ownerId: "owner-123",
     id: "profile-123",
@@ -323,7 +321,6 @@ export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
     __typename: "WorkingSchedule",
     id: "schedule-123",
     weekdays: {
-      __typename: "WeekdaysWorkingHours",
       fr: {
         __typename: "ServiceDayWorkingHours",
         periods: ["09:00-13:00", "14:00-18:00"],
