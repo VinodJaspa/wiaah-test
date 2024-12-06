@@ -23,6 +23,7 @@ import {
 } from "react-seo";
 import { useRouting } from "routing";
 import { ServicePresentationType } from "@features/API";
+import { MetaTags } from "components/Wrappers";
 
 interface HealthCenterServiceDetailsPageProps {
   data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
@@ -36,6 +37,14 @@ const placeholderData: AsyncReturnType<typeof getHealthCenterDetailsFetcher> = {
       __typename: "HealthCenter",
       id: "health-center-id-placeholder",
       ownerId: "owner-id-placeholder",
+      owner: {
+        firstName: "owner_firstName",
+        lastName: "owner_lastName",
+        verified: true,
+        email: "owner_email",
+        photo: "/shop.jpeg",
+        id: "2",
+      },
       vat: 20.0,
       rating: 4.5,
       totalReviews: 100,
@@ -134,7 +143,6 @@ export const getServerSideProps: GetServerSideProps<
     );
   } catch (error) {
     console.error("Error fetching service details:", error);
-    data = placeholderData;
   }
 
   return {
@@ -145,38 +153,29 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const MetaTags: React.FC<{
-  data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
-}> = ({ data }) => {
-  const { serviceMetaInfo, presentations, owner } = data.data.getHealthCenter;
-  const primaryPresentation = presentations.at(0);
-
-  return (
-    <>
-      <MetaTitle
-        content={`Wiaah | Service Details by ${serviceMetaInfo.title}`}
-      />
-      <MetaDescription content={serviceMetaInfo.description} />
-      {primaryPresentation.type === "vid" ? (
-        <MetaVideo content={primaryPresentation.src} />
-      ) : (
-        <MetaImage content={primaryPresentation.src} />
-      )}
-      <MetaAuthor author={owner?.firstName} />
-      <RequiredSocialMediaTags />
-    </>
-  );
-};
-
 const HealthCenterServiceDetailsPage: NextPage<
   HealthCenterServiceDetailsPageProps
 > = ({ data }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
 
+  const finalData = data || placeholderData; // Use placeholder data if query fails
+
+  const { serviceMetaInfo, presentations, owner } =
+    finalData.data.getHealthCenter;
+
   return (
     <>
-      {data && data.data && <MetaTags data={data} />}
+      {finalData && finalData.data && (
+        <MetaTags
+          metaConfig={{
+            title: serviceMetaInfo.title,
+            description: serviceMetaInfo.description,
+            presentation: presentations[0],
+            ownerFirstName: owner.firstName,
+          }}
+        />
+      )}
       <MasterLayout>
         <Container>
           <MarketHealthCenterDetailsView id={id} />
