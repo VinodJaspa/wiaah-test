@@ -544,6 +544,68 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
           },
         },
       },
+
+      takenHours: {
+        id: "",
+        weekdays: {
+          fr: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          mo: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          sa: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          su: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          th: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          tu: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+          we: {
+            periods: [
+              new Date().toString(),
+              new Date(
+                new Date().setHours(new Date().getHours() + random(5, 11)),
+              ).toString(),
+            ],
+          },
+        },
+      },
     };
 
     return data;
