@@ -1,3 +1,7 @@
+import {
+  ServiceWeekdaysWorkingHours,
+  ServiceWorkingSchedule,
+} from "@features/API";
 import { WorkingSchedule } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -5,7 +9,9 @@ import { usePublishRef } from "state";
 import { ArrElement } from "types";
 
 export interface ServiceWorkingHoursSectionProps {
-  workingHours: WorkingSchedule;
+  workingHours:
+  | Pick<ServiceWorkingSchedule, "id" | "weekdays">
+  | WorkingSchedule;
 }
 
 export const ServiceWorkingHoursSection: React.FC<
