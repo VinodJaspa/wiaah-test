@@ -8,19 +8,10 @@ import { dehydrate, QueryClient } from "react-query";
 import {
   getHealthCenterDetailsFetcher,
   getServiceDetailsDataSwitcher,
-  HealthCenter,
   ServicePaymentMethods,
   ServiceStatus,
 } from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
-import {
-  MetaAuthor,
-  MetaDescription,
-  MetaImage,
-  MetaTitle,
-  MetaVideo,
-  RequiredSocialMediaTags,
-} from "react-seo";
 import { useRouting } from "routing";
 import { ServicePresentationType } from "@features/API";
 import { MetaTags } from "components/Wrappers";
@@ -29,8 +20,6 @@ interface HealthCenterServiceDetailsPageProps {
   data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
 }
 
-// Placeholder data for fallback
-// Corrected placeholder data structure
 const placeholderData: AsyncReturnType<typeof getHealthCenterDetailsFetcher> = {
   data: {
     getHealthCenter: {
