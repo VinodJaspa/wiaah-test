@@ -34,15 +34,17 @@ export const MarketRestaurantDetailsView: React.FC<{ id?: string }> = ({
 }) => {
   const {
     data: _res,
-    isError,
-    isLoading,
+    isError: _isError,
+    isLoading: _isLoading,
   } = useGetRestaurantServiceDetailsDataQuery(id!);
   const { isMobile } = useResponsive();
   const res = FAKE_RESTAURNAT_DETAILS;
+  const isError = false;
+  const isLoading = false;
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
             rating={4}
@@ -55,7 +57,7 @@ export const MarketRestaurantDetailsView: React.FC<{ id?: string }> = ({
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={<ResturantFindTableFilterStepper />}>
-        <SpinnerFallback isError={isError} isLoading={false}>
+        <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
             <ServicesProviderDescriptionSection
               description={res.serviceMetaInfo.description}
@@ -73,7 +75,7 @@ export const MarketRestaurantDetailsView: React.FC<{ id?: string }> = ({
               />
             ) : null}
           </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ResturantMenuListSection
                 cancelation={res.cancelationPolicies || []}
@@ -81,71 +83,23 @@ export const MarketRestaurantDetailsView: React.FC<{ id?: string }> = ({
               />
             ) : null}
           </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
-              <ServiceWorkingHoursSection
-                workingHours={{
-                  id: "",
-                  weekdays: {
-                    fr: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    mo: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    sa: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    su: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    th: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    tu: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                    we: {
-                      periods: [
-                        new Date().toUTCString(),
-                        new Date().toUTCString(),
-                      ],
-                    },
-                  },
-                }}
-              />
+              <ServiceWorkingHoursSection workingHours={res.workingHours} />
             ) : null}
           </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ServicePoliciesSection policies={res.policies} title="" />
             ) : null}
           </SpinnerFallback>
-          <SpinnerFallback isLoading={false} isError={isError}>
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
               <ServiceOnMapLocalizationSection location={res.location} />
             ) : null}
           </SpinnerFallback>
         </Accordion>
-        <SpinnerFallback isLoading={false} isError={isError}>
+        <SpinnerFallback isLoading={isLoading} isError={isError}>
           {res ? <Reviews id={res?.id || ""} reviews={reviews} /> : null}
         </SpinnerFallback>
       </StaticSideBarWrapper>
@@ -296,29 +250,28 @@ export const FAKE_RESTAURNAT_DETAILS: GetRestaurantQuery["getRestaurant"] = {
     verified: true,
   },
   workingHours: {
-    __typename: "WorkingSchedule",
     id: "schedule_1",
     weekdays: {
       fr: {
-        periods: ["18:00", "22:00"],
+        periods: ["09:00-17:00"],
       },
       mo: {
-        periods: ["09:00", "17:00"],
+        periods: ["09:00-17:00"],
       },
       sa: {
-        periods: ["10:00", "23:00"],
+        periods: ["09:00-17:00"],
       },
       su: {
-        periods: ["10:00", "20:00"],
+        periods: ["09:00-17:00"],
       },
       th: {
-        periods: ["09:00", "17:00"],
+        periods: ["09:00-17:00"],
       },
       tu: {
-        periods: ["09:00", "17:00"],
+        periods: ["09:00-17:00"],
       },
       we: {
-        periods: ["09:00", "17:00"],
+        periods: ["09:00-17:00"],
       },
     },
   },
