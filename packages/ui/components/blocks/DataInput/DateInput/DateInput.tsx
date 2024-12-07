@@ -63,19 +63,19 @@ const getMonthData = (dateTimeStamp: Date): DateMonth => {
   const yearNum: number = parseInt(
     new Date(dateTimeStamp).toLocaleDateString("en", {
       year: "numeric",
-    })
+    }),
   );
   const monthNum: number = parseInt(
     new Date(dateTimeStamp).toLocaleDateString("en", {
       month: "numeric",
-    })
+    }),
   );
 
   const firstDay: string = new Date(yearNum, monthNum - 1).toLocaleDateString(
     "en",
     {
       weekday: "short",
-    }
+    },
   );
 
   const lastMonthDays: number = daysInMonth(yearNum, monthNum - 1);
@@ -138,7 +138,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   const [activeDates, setActiveDates] = React.useState<string[]>(value);
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
   const [month, setMonth] = React.useState<DateMonth>(
-    getMonthData(new Date(Date.now()))
+    getMonthData(new Date(Date.now())),
   );
 
   const [allDays, setAllDays] = React.useState<FormatedDays[]>(getDays());
@@ -174,14 +174,14 @@ export const DateInput: React.FC<DateInputProps> = ({
 
   function getDays(): FormatedDays[] {
     const firstDayOffset = weekDays.findIndex(
-      (day) => day === month.firstDayName
+      (day) => day === month.firstDayName,
     );
     const lastMonthDays: FormatedDays[] = [...Array(firstDayOffset)]
       .map((_, i) => ({
         date: new Date(
           month.year,
           month.number - 1,
-          month.lastMonthDaysNum - i
+          month.lastMonthDaysNum - i,
         ).toISOString(),
         currentMonth: false,
         dayNum: month.lastMonthDaysNum - i,
@@ -193,7 +193,7 @@ export const DateInput: React.FC<DateInputProps> = ({
         date: new Date(month.year, month.number, i + 1).toISOString(),
         currentMonth: true,
         dayNum: i + 1,
-      })
+      }),
     );
 
     const LastAndCurrentDays: FormatedDays[] = [
@@ -208,7 +208,7 @@ export const DateInput: React.FC<DateInputProps> = ({
         date: new Date(month.year, month.number, i).toISOString(),
         currentMonth: false,
         dayNum: i + 1,
-      })
+      }),
     );
 
     const allDays = [...lastMonthDays, ...currentMonthDays, ...nextMonthDays];
@@ -251,7 +251,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   }
 
   return (
-    <section {...rest} className={`${className || ""} h-fit w-fit bg-white`}>
+    <section {...rest} className={`${className || ""} h-fit w-full bg-white`}>
       {/* calander */}
       <div className="flex items-center justify-between px-1">
         <div onClick={handlePrevMonth} className="cursor-pointer text-3xl">
