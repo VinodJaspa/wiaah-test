@@ -28,25 +28,37 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType = "restaurant";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(
-    serviceType,
-    serviceId,
-  )) as GqlResponse<Restaurant, "getRestaurant">;
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
+  }
+  try {
+    const data = await getRestaurantServiceMetadataQuery(serviceId);
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data,
-  );
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType: "restaurant", id: serviceId }),
+      () => data,
+    );
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data,
-    },
-  };
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
 };
 
 const RestaurantServiceDetailsPage: NextPage<
@@ -54,7 +66,7 @@ const RestaurantServiceDetailsPage: NextPage<
 > = ({ data }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
-  const finaleData = mockData;
+  const finaleData = data || mockData;
   const { owner, serviceMetaInfo, presentation } =
     finaleData.data.getRestaurantMetaData;
   return (
