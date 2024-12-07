@@ -96,7 +96,10 @@ export type GetRestaurantQuery = { __typename?: "Query" } & {
       "firstName" | "lastName" | "id" | "photo" | "verified"
     >;
     workingHours?: Maybe<
-      { __typename?: "WorkingSchedule" } & Pick<WorkingSchedule, "id"> & {
+      { __typename?: "WorkingSchedule" } & Pick<
+        WorkingSchedule,
+        "id" | "weekdays"
+      > & {
         weekdays: ServiceWeekdaysWorkingHours;
       }
     >;
