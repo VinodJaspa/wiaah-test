@@ -40,6 +40,7 @@ export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
   const res = FAKE_HEALTH_CENTER_DETAILS;
 
   const { isMobile } = useResponsive();
+  console.log("workingDays ===> " + res.workingSchedule.weekdays);
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
@@ -57,39 +58,46 @@ export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="w-full h-full overflow-hidden">
-            <WorkingDaysCalender
-              takenDates={
-                res
-                  ? Object.values(res.takenSchedule!.weekdays).map((value) => ({
-                    date: new Date().toString(),
-                    workingHoursRanges:
-                      typeof value === "object"
-                        ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                        : [],
-                  }))
-                  : []
-              }
-              workingDates={
-                res
-                  ? Object.values(res.workingSchedule!.weekdays).map(
-                    (value) => ({
-                      date: new Date().toString(),
-                      workingHoursRanges:
-                        typeof value === "object"
-                          ? [
-                            {
-                              from: value!.periods[0],
-                              to: value!.periods[1],
-                            },
-                          ]
-                          : [],
-                    }),
-                  )
-                  : []
-              }
-            />
-          </div>
+          <WorkingDaysCalender
+            takenDates={
+              res
+                ? Object.values(res.takenSchedule!.weekdays).map((value) => ({
+                  date: new Date().toString(),
+                  workingHoursRanges:
+                    typeof value === "object"
+                      ? [{ from: value!.periods[0], to: value!.periods[1] }]
+                      : [],
+                }))
+                : []
+            }
+            workingDates={
+              res
+                ? Object.entries(res.workingSchedule?.weekdays || {}).map(
+                  ([key, value]) => {
+                    if (
+                      value &&
+                      typeof value === "object" &&
+                      value.periods.length > 0
+                    ) {
+                      return {
+                        date: new Date().toISOString(), // Replace with actual logic if needed
+                        workingHoursRanges: value.periods.map(
+                          (period: string) => {
+                            const [from, to] = period.split("-");
+                            return { from, to };
+                          },
+                        ),
+                      };
+                    }
+                    return {
+                      date: new Date().toISOString(), // Placeholder if no periods
+                      workingHoursRanges: [],
+                    };
+                  },
+                )
+                : []
+            }
+          />
         }
       >
         {res ? (
