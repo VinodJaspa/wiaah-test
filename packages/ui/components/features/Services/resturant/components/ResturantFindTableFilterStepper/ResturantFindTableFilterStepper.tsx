@@ -15,11 +15,11 @@ import {
 } from "@UI";
 import { FilterAndAddToArray } from "utils";
 import { useTranslation } from "react-i18next";
-export interface ResturantFindTableFilterStepper {}
+export interface ResturantFindTableFilterStepper { }
 
 export const ResturantFindTableFilterStepper: React.FC<
   ResturantFindTableFilterStepper
-> = ({}) => {
+> = ({ }) => {
   const { t } = useTranslation();
   const [filters, setFilters] = React.useState<FormatedSearchableFilter[]>([]);
 
@@ -53,7 +53,6 @@ export const ResturantFindTableFilterStepper: React.FC<
             />
             <StepperContent>
               <DateInput
-                className="w-[100%]"
                 value={[]}
                 dayComponent={ResturantFindTableFilterDateDayComponent}
                 onDaySelect={(date) => {
@@ -65,7 +64,7 @@ export const ResturantFindTableFilterStepper: React.FC<
                         reservationDate: date,
                       },
                       "exclude",
-                      "reservationDate"
+                      "reservationDate",
                     );
                     return filteredState;
                   });
@@ -86,7 +85,7 @@ export const ResturantFindTableFilterStepper: React.FC<
                         reservationTime: `${time.hour}:${time.minutes}`,
                       },
                       "exclude",
-                      "reservationTime"
+                      "reservationTime",
                     );
                     return filteredState;
                   });
@@ -107,6 +106,14 @@ export const ResturantFindTableFilterStepper: React.FC<
                 })}
               </div>
             </StepperContent>
+            <div className="flex justify-end items-center">
+              <button
+                className="px-4 py-2 bg-gray-200 w-fit text-semibold"
+                onClick={previousStep}
+              >
+                {t("Previous")}
+              </button>
+            </div>
           </div>
         );
       }}
