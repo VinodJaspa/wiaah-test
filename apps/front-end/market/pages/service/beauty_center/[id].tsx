@@ -6,21 +6,11 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
-  FormatedSearchableFilter,
-  GetHotelServiceArgs,
   getBeautyCenterDetailsDataFetcher,
   getServiceDetailsDataSwitcher,
   ServicePaymentMethods,
 } from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
-import {
-  MetaAuthor,
-  MetaDescription,
-  MetaImage,
-  MetaTitle,
-  MetaVideo,
-  RequiredSocialMediaTags,
-} from "react-seo";
 import { useRouting } from "routing";
 import {
   ServiceStatus,
