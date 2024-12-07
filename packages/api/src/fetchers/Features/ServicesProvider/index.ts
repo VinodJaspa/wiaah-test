@@ -4,3 +4,4 @@ export * from "./getHealthCenterDetails";
 export * from "./getVehicleServiceProviderDetails";
 export * from "./getBeautyCenterDetailsData";
 export * from "./getServiceDetailsDataSwitcher";
+export * from "./getServiceMetaData";
