@@ -13,6 +13,18 @@ import {
 } from "@UI";
 import { setTestid } from "utils";
 
+export const convertWorkingDates = (
+  workingDates: WorkingDate[],
+): ConvertedWorkingDate[] => {
+  return workingDates.map(({ date, workingHoursRanges }) => ({
+    date: String(date),
+    workingHoursRanges: workingHoursRanges.map(({ from, to }) => ({
+      from: String(from),
+      to: String(to),
+    })),
+  }));
+};
+
 export interface HealthCenterCardProps {
   centerData: HealthCenterDoctor & { healthCenter: HealthCenter };
   workingDates: WorkingDate[];
@@ -35,17 +47,6 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
   const { t } = useTranslation();
   // this function converts the WrokingDate type to get passed to WorkingDaysCalender
-  const convertWorkingDates = (
-    workingDates: WorkingDate[],
-  ): ConvertedWorkingDate[] => {
-    return workingDates.map(({ date, workingHoursRanges }) => ({
-      date: String(date),
-      workingHoursRanges: workingHoursRanges.map(({ from, to }) => ({
-        from: String(from),
-        to: String(to),
-      })),
-    }));
-  };
   const convertedWrokingDates = convertWorkingDates(workingDates);
 
   return (
