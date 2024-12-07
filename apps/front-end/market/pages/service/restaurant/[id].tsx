@@ -1,37 +1,26 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout } from "@components";
+import { MasterLayout, MetaTags } from "@components";
 import { MarketRestaurantDetailsView } from "ui";
-import {
-  Container,
-  GetServiceDetailsQueryKey,
-  ServicePresentationCarosuel,
-} from "ui";
+import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
   Restaurant,
   ServicePresentationType,
-  getResturantSearchFiltersFetcher,
   getServiceDetailsDataSwitcher,
+  getRestaurantServiceMetadataQuery,
+  GetRestaurantServiceMetaDataQuery,
 } from "api";
 import {
   AsyncReturnType,
   GqlResponse,
   ServerSideQueryClientProps,
 } from "types";
-import {
-  MetaAuthor,
-  MetaDescription,
-  MetaImage,
-  MetaTitle,
-  MetaVideo,
-  RequiredSocialMediaTags,
-} from "react-seo";
 import { useRouting } from "routing";
 
 interface RestaurantServiceDetailsPageProps {
-  data: GqlResponse<Restaurant, "getRestaurant">;
+  data: GetRestaurantServiceMetaDataQuery;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -65,30 +54,22 @@ const RestaurantServiceDetailsPage: NextPage<
 > = ({ data }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
+  const finaleData = mockData;
+  const { owner, serviceMetaInfo, presentation } =
+    finaleData.data.getRestaurantMetaData;
   return (
     <>
       {data && data.data ? (
-        <>
-          <MetaTitle
-            content={`Wiaah | Service Details by ${data.data.getRestaurant.name}`}
-          />
-          <MetaDescription
-            content={data.data.getRestaurant.serviceMetaInfo.description}
-          />
-          {data.data.getRestaurant.presentations.at(0).type ===
-            ServicePresentationType.Vid ? (
-            <MetaVideo
-              content={data.data.getRestaurant.presentations.at(0).src}
-            />
-          ) : (
-            <MetaImage
-              content={data.data.getRestaurant.presentations.at(0).src}
-            />
-          )}
-          <MetaAuthor author={data.data.getRestaurant.owner.firstName} />
-          <RequiredSocialMediaTags />
-        </>
+        <MetaTags
+          metaConfig={{
+            title: serviceMetaInfo.title,
+            description: serviceMetaInfo.description,
+            presentation: presentation,
+            ownerFirstName: owner.firstName,
+          }}
+        />
       ) : null}
+
       <MasterLayout>
         <Container>
           <MarketRestaurantDetailsView id={id} />
@@ -99,3 +80,22 @@ const RestaurantServiceDetailsPage: NextPage<
 };
 
 export default RestaurantServiceDetailsPage;
+
+const mockData: AsyncReturnType<typeof getRestaurantServiceMetadataQuery> = {
+  data: {
+    getRestaurantMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
+      serviceMetaInfo: {
+        title: "Placeholder Service",
+        description: "Description of the placeholder service.",
+        metaTagDescription: "Meta tag description for placeholder.",
+        metaTagKeywords: ["placeholder", "beauty", "center"],
+        hashtags: ["#beauty", "#placeholder"],
+      },
+      owner: {
+        id: "4",
+        firstName: "firstName",
+      },
+    },
+  },
+};
