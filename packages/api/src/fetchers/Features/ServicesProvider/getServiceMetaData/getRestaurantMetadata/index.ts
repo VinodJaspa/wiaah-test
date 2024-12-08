@@ -55,10 +55,9 @@ export const getRestaurantServiceMetadataQuery = async (
     if (response && response.data) {
       return response.data as GetRestaurantServiceMetaDataQuery;
     } else {
-      throw new Error("Failed to fetch data: response is null");
+      console.error("Failed to fetch data: response is null");
     }
   } catch (error) {
     console.error("Error fetching restaurant service details:", error);
-    throw new Error("Failed to fetch restaurant service details");
   }
 };
