@@ -2,8 +2,8 @@ import { ServicePostView } from "ui";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SellerLayout } from "ui";
 import { useRouter } from "next/router";
+import { MasterLayout } from "@components";
 
 const ServicePost = () => {
   const { t } = useTranslation();
@@ -14,9 +14,9 @@ const ServicePost = () => {
       <Head>
         <title>{t("Service Post")}</title>
       </Head>
-      <SellerLayout>
+      <MasterLayout>
         <ServicePostView postId={postId} />
-      </SellerLayout>
+      </MasterLayout>
     </>
   );
 };
