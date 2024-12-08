@@ -6,19 +6,15 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
-  Hotel,
-  getServiceDetailsDataSwitcher,
-  getServicesProviderDataFetcher,
+  getHotelServiceMetadataQuery,
+  ServicePresentationType,
+  GetHotelServiceMetaDataQuery,
 } from "api";
-import {
-  AsyncReturnType,
-  GqlResponse,
-  ServerSideQueryClientProps,
-  ServicesType,
-} from "types";
+import { AsyncReturnType, ServerSideQueryClientProps } from "types";
+import { useRouting } from "routing";
 
 interface HotelServiceDetailsPageProps {
-  data: GqlResponse<Hotel, "getHotelService">;
+  data: GetHotelServiceMetaDataQuery | undefined;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -26,49 +22,65 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType: ServicesType = "holidays_rentals";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(
-    serviceType,
-    serviceId,
-  )) as GqlResponse<Hotel, "getHotelService">;
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
+  }
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data,
-  );
+  try {
+    const data = await getHotelServiceMetadataQuery(serviceId);
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data,
-    },
-  };
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType: "hotel", id: serviceId }),
+      () => data,
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
 };
 
 const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
   data,
 }) => {
-  const finalData = data || mockData;
+  const { getParam } = useRouting();
+  const id = getParam("id");
+  const finaleData = data || mockData;
 
-  const { serviceMetaInfo, presentations, owner } =
-    finalData.data.getHotelService;
+  const { serviceMetaInfo, owner, presentation } =
+    finaleData.data.getHotelMetaData;
+
   return (
     <>
-      {finalData && finalData.data && (
+      {finaleData && finaleData.data ? (
         <MetaTags
           metaConfig={{
             title: serviceMetaInfo.title,
             description: serviceMetaInfo.description,
-            presentation: presentations[0],
+            presentation: presentation,
             ownerFirstName: owner.firstName,
           }}
         />
-      )}
+      ) : null}
       <MasterLayout>
         <Container>
-          <MarketHotelDetailsView id={""} />
+          <MarketHotelDetailsView id={id || ""} />
         </Container>
       </MasterLayout>
     </>
@@ -77,40 +89,10 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
 
 export default HotelServiceDetailsPage;
 
-const mockData: AsyncReturnType<typeof getServicesProviderDataFetcher> = {
+const mockData: AsyncReturnType<typeof getHotelServiceMetadataQuery> = {
   data: {
-    getHotelService: {
-      rooms: [],
-      owner: {
-        firstName: "owner_firstName",
-        lastName: "owner_lastName",
-        verified: true,
-        email: "owner_email",
-        photo: "/shop.jpeg",
-        id: "2",
-      },
-      id: "1",
-      contact: {
-        address: "123 Placeholder Street",
-        country: "Placeholder Country",
-        city: "Placeholder City",
-        email: "contact@example.com",
-        phone: "+123456789",
-      },
-      presentations: [],
-      ownerId: "owner-1",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      location: {
-        address: "123 Placeholder Street",
-        country: "Placeholder Country",
-        state: "Placeholder State",
-        city: "Placeholder City",
-        lat: 12.345678,
-        lon: 98.765432,
-        postalCode: 12345,
-      },
-      policies: [],
+    getHotelMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
       serviceMetaInfo: {
         title: "Placeholder Service",
         description: "Description of the placeholder service.",
@@ -118,36 +100,9 @@ const mockData: AsyncReturnType<typeof getServicesProviderDataFetcher> = {
         metaTagKeywords: ["placeholder", "beauty", "center"],
         hashtags: ["#beauty", "#placeholder"],
       },
-      workingHours: {
-        __typename: "WorkingSchedule",
-        id: "1",
-        weekdays: {
-          __typename: "WeekdaysWorkingHours",
-          mo: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          tu: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          we: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          th: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          fr: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          sa: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["10:00-14:00"],
-          },
-        },
+      owner: {
+        id: "4",
+        firstName: "firstName",
       },
     },
   },
