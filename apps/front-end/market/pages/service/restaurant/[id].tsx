@@ -6,17 +6,11 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
-  Restaurant,
   ServicePresentationType,
-  getServiceDetailsDataSwitcher,
   getRestaurantServiceMetadataQuery,
   GetRestaurantServiceMetaDataQuery,
 } from "api";
-import {
-  AsyncReturnType,
-  GqlResponse,
-  ServerSideQueryClientProps,
-} from "types";
+import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import { useRouting } from "routing";
 
 interface RestaurantServiceDetailsPageProps {
@@ -71,7 +65,7 @@ const RestaurantServiceDetailsPage: NextPage<
     finaleData.data.getRestaurantMetaData;
   return (
     <>
-      {data && data.data ? (
+      {finaleData && finaleData.data ? (
         <MetaTags
           metaConfig={{
             title: serviceMetaInfo.title,
