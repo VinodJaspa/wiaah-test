@@ -1,34 +1,24 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import { MasterLayout } from "@components";
+import { MasterLayout, MetaTags } from "@components";
 import { MarketVehicleServiceDetailsView } from "ui";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
+  GetVehicleServiceMetaDataQuery,
+  getVehicleServiceMetadataQuery,
   ServicePresentationType,
-  Vehicle,
   VehicleService,
-  getServiceDetailsDataSwitcher,
-  getVehicleSearchDataFetcher,
-  getVehicleServiceProviderDetailsFetcher,
 } from "api";
 import {
   AsyncReturnType,
   GqlResponse,
   ServerSideQueryClientProps,
 } from "types";
-import {
-  MetaAuthor,
-  MetaDescription,
-  MetaImage,
-  MetaTitle,
-  MetaVideo,
-  RequiredSocialMediaTags,
-} from "react-seo";
 
 interface VehicleServiceDetailsPageProps {
-  data: GqlResponse<VehicleService, "getVehicleService">;
+  data: GetVehicleServiceMetaDataQuery;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -36,53 +26,57 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType = "vehicle";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(
-    serviceType,
-    serviceId,
-  )) as GqlResponse<VehicleService, "getVehicleService">;
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
+  }
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data,
-  );
+  try {
+    const data = await getVehicleServiceMetadataQuery(serviceId);
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data,
-    },
-  };
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType: "vehicle", id: serviceId }),
+      () => data,
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
 };
 
 const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
   data,
 }) => {
+  const finaleData = data || mockData;
+  const { serviceMetaInfo, owner, presentation } =
+    finaleData.data.getVehicleMetaData;
   return (
     <>
-      {data && data ? (
-        <>
-          <MetaTitle
-            content={`Wiaah | Service Details by ${data.data.getVehicleService.owner.firstName}`}
-          />
-          <MetaDescription
-            content={data.data.getVehicleService.serviceMetaInfo.description}
-          />
-          {data.data.getVehicleService.presentations.at(0).type ===
-            ServicePresentationType.Vid ? (
-            <MetaVideo
-              content={data.data.getVehicleService.presentations.at(0).src}
-            />
-          ) : (
-            <MetaImage
-              content={data.data.getVehicleService.presentations.at(0).src}
-            />
-          )}
-          <MetaAuthor author={data.data.getVehicleService.owner.firstName} />
-          <RequiredSocialMediaTags />
-        </>
+      {finaleData && finaleData.data ? (
+        <MetaTags
+          metaConfig={{
+            title: serviceMetaInfo.title,
+            description: serviceMetaInfo.description,
+            presentation: presentation,
+            ownerFirstName: owner.firstName,
+          }}
+        />
       ) : null}
       <MasterLayout>
         <Container>
@@ -94,3 +88,22 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
 };
 
 export default VehicleServiceDetailsPage;
+
+const mockData: AsyncReturnType<typeof getVehicleServiceMetadataQuery> = {
+  data: {
+    getVehicleMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
+      serviceMetaInfo: {
+        title: "Placeholder Service",
+        description: "Description of the placeholder service.",
+        metaTagDescription: "Meta tag description for placeholder.",
+        metaTagKeywords: ["placeholder", "beauty", "center"],
+        hashtags: ["#beauty", "#placeholder"],
+      },
+      owner: {
+        id: "4",
+        firstName: "firstName",
+      },
+    },
+  },
+};
