@@ -30,10 +30,12 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
   const {
     data: _res,
-    isError,
+    isError: _isError,
     isLoading: _isLoading,
   } = useGetVehicleProviderDetailsQuery(filters);
   const res = FAKE_VEHICLE_DETAILS;
+  const isError = false;
+  const isLoading = false;
 
   const { t } = useTranslation();
 
@@ -41,7 +43,7 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <SpinnerFallback isLoading={false} isError={isError}>
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? (
           <ServicesProviderHeader
             rating={res.rating}
@@ -57,11 +59,11 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
         sidebar={
           <div className="flex flex-col gap-2 text-xl">
             <DateAndTimeInput
-              onDateChange={() => {}}
+              onDateChange={() => { }}
               dateLabel={t("Pick-up Date")}
             />
             <DateAndTimeInput
-              onDateChange={() => {}}
+              onDateChange={() => { }}
               dateLabel={t("Return Date")}
             />
           </div>
@@ -79,11 +81,7 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
               telephone={res.contact.phone}
             />
             <VehiclesSelectableList vehicles={res.vehicles || []} />
-            <ServiceWorkingHoursSection
-              workingHours={
-                res.workingHours.weekdays as unknown as WorkingSchedule
-              }
-            />
+            <ServiceWorkingHoursSection workingHours={res.workingHours} />
             <ServicePoliciesSection
               title={t("Vehicle Policies")}
               policies={res.policies}
@@ -158,13 +156,31 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
   },
   policies: [
     {
+      __typename: "ServicePolicy",
       policyTitle: "Cancellation Policy",
-      terms: ["Cancellation must be made at least 24 hours in advance."],
+      terms: ["Cancel 24 hours in advance for a full refund."],
+    },
+
+    {
+      __typename: "ServicePolicy",
+      policyTitle: "Cancellation Policy",
+      terms: ["Cancel 24 hours in advance for a full refund."],
+    },
+
+    {
+      __typename: "ServicePolicy",
+      policyTitle: "Cancellation Policy",
+      terms: ["Cancel 24 hours in advance for a full refund."],
+    },
+    {
+      __typename: "ServicePolicy",
+      policyTitle: "Cancellation Policy",
+      terms: ["Cancel 24 hours in advance for a full refund."],
     },
   ],
   presentations: [
     {
-      src: "https://content-images.carmax.com/qeontfmijmzv/MY19MKj0XutK084z874jt/9632621fd8464b5c0e54a9dee64ad4e5/tesla.jpg",
+      src: "https://carwow-uk-wp-3.imgix.net/18015-MC20BluInfinito-scaled-e1666008987698.jpg",
       type: ServicePresentationType.Img,
     },
     {
@@ -185,28 +201,28 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
     title: "Rent a Car",
   },
   workingHours: {
-    id: "",
+    id: "schedule_1",
     weekdays: {
       fr: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       mo: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       sa: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       su: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       th: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       tu: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
       we: {
-        periods: [new Date().toString(), new Date().toString()],
+        periods: ["09:00-17:00"],
       },
     },
   },
