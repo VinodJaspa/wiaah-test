@@ -6,19 +6,15 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
-  getBeautyCenterDetailsDataFetcher,
-  getServiceDetailsDataSwitcher,
-  ServicePaymentMethods,
+  GetBeautyCenterServiceMetaDataQuery,
+  getBeautyCenterServiceMetadataQuery,
+  ServicePresentationType,
 } from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import { useRouting } from "routing";
-import {
-  ServiceStatus,
-  ServiceTypeOfSeller,
-} from "@features/API/gql/generated";
 
 interface BeautyCenterServiceDetailsPageProps {
-  data: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> | null;
+  data: GetBeautyCenterServiceMetaDataQuery;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -26,32 +22,42 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType = "beauty_center";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  let data = null;
-  try {
-    data = (await getServiceDetailsDataSwitcher(
-      serviceType,
-      serviceId,
-    )) as AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher>;
-
-    queryClient.prefetchQuery(
-      GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-      () => data,
-    );
-  } catch (error) {
-    console.error("Failed to fetch service details:", error);
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
   }
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data: data || null,
-    },
-  };
-};
+  try {
+    const data = await getBeautyCenterServiceMetadataQuery(serviceId);
 
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({
+        serviceType: "beauty_center",
+        id: serviceId,
+      }),
+      () => data,
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
+};
 const BeautyCenterServiceDetailsPage: NextPage<
   BeautyCenterServiceDetailsPageProps
 > = ({ data }) => {
@@ -59,8 +65,8 @@ const BeautyCenterServiceDetailsPage: NextPage<
   const id = getParam("id");
   const finalData = data || mockData; // Use placeholder data if query fails
 
-  const { serviceMetaInfo, presentations, owner } =
-    finalData.data.getBeautyCenterById;
+  const { serviceMetaInfo, presentation, owner } =
+    finalData.data.getBeautyCenterMetaData;
 
   return (
     <>
@@ -68,7 +74,7 @@ const BeautyCenterServiceDetailsPage: NextPage<
         metaConfig={{
           title: serviceMetaInfo.title,
           description: serviceMetaInfo.description,
-          presentation: presentations[0],
+          presentation: presentation,
           ownerFirstName: owner.firstName || "no_name",
         }}
       />
@@ -83,45 +89,10 @@ const BeautyCenterServiceDetailsPage: NextPage<
 
 export default BeautyCenterServiceDetailsPage;
 
-const mockData: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> = {
+const mockData: AsyncReturnType<typeof getBeautyCenterServiceMetadataQuery> = {
   data: {
-    getBeautyCenterById: {
-      owner: {
-        firstName: "owner_firstName",
-        lastName: "owner_lastName",
-        verified: true,
-        email: "owner_email",
-        photo: "/shop.jpeg",
-        id: "2",
-      },
-      id: "1",
-      contact: {
-        address: "123 Placeholder Street",
-        country: "Placeholder Country",
-        city: "Placeholder City",
-        email: "contact@example.com",
-        phone: "+123456789",
-      },
-      ownerId: "owner-1",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      vat: 15.0,
-      rating: 4.5,
-      totalReviews: 100,
-      beauty_center_typeId: "type-1",
-      status: ServiceStatus.Active, // Corresponding to ServiceStatus.Active
-      title: "Placeholder Beauty Center",
-      location: {
-        address: "123 Placeholder Street",
-        country: "Placeholder Country",
-        state: "Placeholder State",
-        city: "Placeholder City",
-        lat: 12.345678,
-        lon: 98.765432,
-        postalCode: 12345,
-      },
-      presentations: [],
-      policies: [],
+    getBeautyCenterMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
       serviceMetaInfo: {
         title: "Placeholder Service",
         description: "Description of the placeholder service.",
@@ -129,54 +100,9 @@ const mockData: AsyncReturnType<typeof getBeautyCenterDetailsDataFetcher> = {
         metaTagKeywords: ["placeholder", "beauty", "center"],
         hashtags: ["#beauty", "#placeholder"],
       },
-      payment_methods: [ServicePaymentMethods.Cash], // Corresponding to ServicePaymentMethods.Cash
-      cancelationPolicies: [],
-      type_of_seller: ServiceTypeOfSeller.Individual, // Corresponding to ServiceTypeOfSeller.Individual
-      treatments: [
-        {
-          id: "treatment-1",
-          treatmentCategoryId: "category-1",
-          category: null,
-          title: "Placeholder Treatment",
-          price: 100.0,
-          duration: [60],
-          discount: {
-            value: 10, // Example discount object, replace with your type definition
-            units: 10,
-          },
-        },
-      ],
-
-      workingHours: {
-        __typename: "WorkingSchedule",
-        id: "1",
-        weekdays: {
-          __typename: "WeekdaysWorkingHours",
-          mo: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          tu: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          we: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          th: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          fr: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          sa: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["10:00-14:00"],
-          },
-        },
+      owner: {
+        id: "4",
+        firstName: "firstName",
       },
     },
   },
