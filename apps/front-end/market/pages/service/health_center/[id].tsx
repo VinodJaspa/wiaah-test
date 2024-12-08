@@ -6,10 +6,8 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
 import {
-  getHealthCenterDetailsFetcher,
-  getServiceDetailsDataSwitcher,
-  ServicePaymentMethods,
-  ServiceStatus,
+  getHealthCenterServiceMetadataQuery,
+  GetHealthCenterServiceMetaDataQuery,
 } from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import { useRouting } from "routing";
@@ -17,129 +15,50 @@ import { ServicePresentationType } from "@features/API";
 import { MetaTags } from "components/Wrappers";
 
 interface HealthCenterServiceDetailsPageProps {
-  data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
+  data: GetHealthCenterServiceMetaDataQuery;
 }
-
-const placeholderData: AsyncReturnType<typeof getHealthCenterDetailsFetcher> = {
-  data: {
-    getHealthCenter: {
-      __typename: "HealthCenter",
-      id: "health-center-id-placeholder",
-      ownerId: "owner-id-placeholder",
-      owner: {
-        firstName: "owner_firstName",
-        lastName: "owner_lastName",
-        verified: true,
-        email: "owner_email",
-        photo: "/shop.jpeg",
-        id: "2",
-      },
-      vat: 20.0,
-      rating: 4.5,
-      totalReviews: 100,
-      location: {
-        __typename: "ServiceLocation",
-        address: "123 Main St",
-        country: "CountryName",
-        state: "StateName",
-        city: "CityName",
-        lat: 40.7128,
-        lon: -74.006,
-        postalCode: 10001,
-      },
-      contact: {
-        __typename: "ServiceContact",
-        address: "123 Main St",
-        country: "CountryName",
-        state: "StateName",
-        city: "CityName",
-        email: "contact@example.com",
-        phone: "+123456789",
-      },
-      status: ServiceStatus.Active,
-      presentations: [
-        {
-          type: ServicePresentationType.Img,
-          src: "/shop.jpeg",
-        },
-      ],
-      policies: [],
-      serviceMetaInfo: {
-        __typename: "ServiceMetaInfo",
-        title: "Health Center Placeholder",
-        description: "A description for the placeholder health center.",
-        metaTagDescription: "Meta tag description placeholder.",
-        metaTagKeywords: ["health", "center", "placeholder"],
-        hashtags: ["#health", "#wellness"],
-      },
-      payment_methods: [ServicePaymentMethods.Cash],
-      cancelationPolicies: [],
-      doctors: [],
-      workingHours: {
-        __typename: "WorkingSchedule",
-        id: "1",
-        weekdays: {
-          __typename: "WeekdaysWorkingHours",
-          mo: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          tu: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          we: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          th: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          fr: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["09:00-12:00", "13:00-18:00"],
-          },
-          sa: {
-            __typename: "ServiceDayWorkingHours",
-            periods: ["10:00-14:00"],
-          },
-        },
-      },
-    },
-  },
-};
 
 // Server-side props fetching
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps<HealthCenterServiceDetailsPageProps>
 > = async ({ query }) => {
   const queryClient = new QueryClient();
-  const serviceType = "health_center";
+
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  let data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
-
-  try {
-    data = (await getServiceDetailsDataSwitcher(
-      serviceType,
-      serviceId,
-    )) as AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
-
-    queryClient.prefetchQuery(
-      GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-      () => data,
-    );
-  } catch (error) {
-    console.error("Error fetching service details:", error);
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
   }
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data,
-    },
-  };
+  try {
+    const data = await getHealthCenterServiceMetadataQuery(serviceId);
+
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({
+        serviceType: "beauty_center",
+        id: serviceId,
+      }),
+      () => data,
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
 };
 
 const HealthCenterServiceDetailsPage: NextPage<
@@ -148,19 +67,19 @@ const HealthCenterServiceDetailsPage: NextPage<
   const { getParam } = useRouting();
   const id = getParam("id");
 
-  const finalData = data || placeholderData; // Use placeholder data if query fails
+  const finalData = data || mockData; // Use placeholder data if query fails
 
-  const { serviceMetaInfo, presentations, owner } =
-    finalData.data.getHealthCenter;
+  const { serviceMetaInfo, presentation, owner } =
+    finalData.data.getHealthCenterMetaData;
 
   return (
     <>
-      {finalData && finalData.data && (
+      {finalData && (
         <MetaTags
           metaConfig={{
             title: serviceMetaInfo.title,
             description: serviceMetaInfo.description,
-            presentation: presentations[0],
+            presentation: presentation,
             ownerFirstName: owner.firstName,
           }}
         />
@@ -175,3 +94,22 @@ const HealthCenterServiceDetailsPage: NextPage<
 };
 
 export default HealthCenterServiceDetailsPage;
+
+const mockData: AsyncReturnType<typeof getHealthCenterServiceMetadataQuery> = {
+  data: {
+    getHealthCenterMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
+      serviceMetaInfo: {
+        title: "Placeholder Service",
+        description: "Description of the placeholder service.",
+        metaTagDescription: "Meta tag description for placeholder.",
+        metaTagKeywords: ["placeholder", "beauty", "center"],
+        hashtags: ["#beauty", "#placeholder"],
+      },
+      owner: {
+        id: "4",
+        firstName: "firstName",
+      },
+    },
+  },
+};
