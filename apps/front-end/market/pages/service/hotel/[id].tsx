@@ -6,16 +6,16 @@ import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
-import { Hotel, getServiceDetailsDataSwitcher } from "api";
 import {
-  AsyncReturnType,
-  GqlResponse,
-  ServerSideQueryClientProps,
-} from "types";
+  ServicePresentationType,
+  GetHotelServiceMetaDataQuery,
+  getHotelServiceMetadataQuery,
+} from "api";
+import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import { useRouting } from "routing";
 
 interface HotelServiceDetailsPageProps {
-  data: AsyncReturnType<typeof getServiceDetailsDataSwitcher>;
+  data: GetHotelServiceMetaDataQuery | undefined;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -23,46 +23,61 @@ export const getServerSideProps: GetServerSideProps<
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType = "hotel";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = (await getServiceDetailsDataSwitcher(
-    serviceType,
-    serviceId,
-  )) as GqlResponse<Hotel, "getHotelService">;
+  if (!serviceId) {
+    return {
+      notFound: true,
+    };
+  }
 
-  queryClient.prefetchQuery(
-    GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
-    () => data,
-  );
+  try {
+    const data = await getHotelServiceMetadataQuery(serviceId);
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      data: data as GqlResponse<Hotel, "getHotelService">,
-    },
-  };
+    queryClient.prefetchQuery(
+      GetServiceDetailsQueryKey({ serviceType: "hotel", id: serviceId }),
+      () => data,
+    );
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getServerSideProps:", error);
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+        data: null, // Provide a fallback
+      },
+    };
+  }
 };
 
 const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
   data,
-}: {
-  data: GqlResponse<Hotel, "getHotelService">;
 }) => {
   const { getParam } = useRouting();
   const router = useRouter();
   const id = getParam("id");
   const serviceType = ExtractServiceTypeFromQuery(router.query);
+  const finaleData = data || mockData;
+
+  const { serviceMetaInfo, owner, presentation } =
+    finaleData.data.getHotelMetaData;
 
   return (
     <>
-      {data && data.data ? (
+      {finaleData && finaleData.data ? (
         <MetaTags
           metaConfig={{
-            title: data.data.getHotelService.serviceMetaInfo.title,
-            description: data.data.getHotelService.serviceMetaInfo.description,
-            presentation: data.data.getHotelService.presentations[0],
-            ownerFirstName: data.data.getHotelService.owner.firstName,
+            title: serviceMetaInfo.title,
+            description: serviceMetaInfo.description,
+            presentation: presentation,
+            ownerFirstName: owner.firstName,
           }}
         />
       ) : null}
@@ -76,3 +91,22 @@ const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
 };
 
 export default HotelServiceDetailsPage;
+
+const mockData: AsyncReturnType<typeof getHotelServiceMetadataQuery> = {
+  data: {
+    getHotelMetaData: {
+      presentation: { src: "/shop.jpeg", type: ServicePresentationType.Img },
+      serviceMetaInfo: {
+        title: "Placeholder Service",
+        description: "Description of the placeholder service.",
+        metaTagDescription: "Meta tag description for placeholder.",
+        metaTagKeywords: ["placeholder", "beauty", "center"],
+        hashtags: ["#beauty", "#placeholder"],
+      },
+      owner: {
+        id: "4",
+        firstName: "firstName",
+      },
+    },
+  },
+};
