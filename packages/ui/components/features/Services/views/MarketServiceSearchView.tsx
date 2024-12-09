@@ -5,7 +5,7 @@ import {
   WorkingDaysCalenderProps,
   usePaginationControls,
 } from "@blocks";
-import { ServiceType } from "@features/API";
+import { ServiceAdaptation, ServiceType, ShopStatus } from "@features/API";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useRouting } from "routing";
@@ -37,7 +37,7 @@ import {
 } from "@partials";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
-import { useGetFilteredServicesQuery } from "../Services";
+import { SearchServiceQuery, useGetFilteredServicesQuery } from "../Services";
 import { ServicesRequestKeys } from "../constants";
 import { HealthCenterSearchBox } from "../HealthCenter";
 import { VehicleSearchBox } from "../Vehicle";
@@ -48,20 +48,135 @@ export const MarketServiceSearchView: React.FC<{
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
-
   const { controls, pagination } = usePaginationControls();
-
-  const { data: services } = useGetFilteredServicesQuery({
+  const { data: _services } = useGetFilteredServicesQuery({
     pagination,
     filters: [],
   });
-
+  const services = FAKE_SERVICES;
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
   return (
     <div className="flex flex-col gap-4">
       {/* search bar */}
+      <ServiceSearchBar showOn={showOn} serviceType={serviceType} />
+      <div className="grid grid-cols-2 gap-2">
+        {mapArray(
+          services?.data,
+          ({
+            name,
+            price,
+            rating,
+            shop,
+            thumbnail,
+            description,
+            reviews,
+            speciality,
+            availableAppointments,
+            healthCenterBookedAppointments,
+            airCondition,
+            gpsAvailable,
+            lugaggeCapacity,
+            seats,
+            windows,
+            id,
+            treatmentCategory,
+            saved,
+          }) => (
+            <>
+              {showOn([ServiceType.Hotel]) ? (
+                <MarketHotelServiceSearchCardAlt
+                  description={description}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  name={name}
+                  price={price}
+                  rating={rating}
+                  thumbnail={thumbnail}
+                />
+              ) : null}
+              {showOn([ServiceType.Restaurant]) ? (
+                <MarketRestaurantServiceSearchCardAlt
+                  reviews={reviews}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  name={name}
+                  price={price}
+                  rating={rating}
+                  thumbnail={thumbnail}
+                />
+              ) : null}
 
+              {showOn([ServiceType.HealthCenter]) ? (
+                <MarketHealthCenterServiceCardAlt
+                  bookedAppointments={healthCenterBookedAppointments}
+                  title={name}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  thumbnail={thumbnail}
+                  speciality={speciality || ""}
+                  appointments={availableAppointments || []}
+                />
+              ) : null}
+
+              {showOn([ServiceType.Vehicle]) ? (
+                <MarketVehicleServiceSearchCardAlt
+                  title={name}
+                  airCondition={!!airCondition}
+                  gps={!!gpsAvailable}
+                  thumbnail={thumbnail}
+                  luggage={lugaggeCapacity || 0}
+                  pricePerDay={price}
+                  windows={windows || 0}
+                  passengers={seats || 0}
+                />
+              ) : null}
+
+              {showOn([ServiceType.BeautyCenter]) ? (
+                <MarketBeautyCenterSearchCardAlt
+                  title={name}
+                  thumbnail={thumbnail}
+                  id={id}
+                  rate={rating}
+                  reviews={reviews}
+                  category={treatmentCategory!}
+                />
+              ) : null}
+
+              {showOn([ServiceType.HolidayRentals]) ? (
+                <MarketHolidayRentalsServiceSearchCardAlt
+                  title={name}
+                  thumbnail={thumbnail}
+                  reviews={reviews}
+                  description={description}
+                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  monthlyPrice={price}
+                  rating={rating}
+                  saved={saved}
+                  sellerName={shop.sellerProfile.username}
+                  sellerThumbnail={shop.sellerProfile.photo}
+                  sellerVerified={shop.sellerProfile.verified}
+                />
+              ) : null}
+            </>
+          ),
+        )}
+      </div>
+      <Pagination controls={controls} />
+    </div>
+  );
+};
+
+const ServiceSearchBar = ({
+  showOn,
+  serviceType,
+}: {
+  showOn: (types: ServiceType[]) => boolean;
+  serviceType: ServiceType;
+}) => {
+  const { isMobile } = useResponsive();
+  const { t } = useTranslation();
+
+  const { visit } = useRouting();
+  return (
+    <React.Fragment>
       {isMobile ? (
         <>
           {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
@@ -88,8 +203,8 @@ export const MarketServiceSearchView: React.FC<{
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
                     serviceType,
-                    location
-                  )
+                    location,
+                  ),
                 );
               }}
             />
@@ -101,8 +216,8 @@ export const MarketServiceSearchView: React.FC<{
                 visit((routes) =>
                   routes.visitServiceLocationSearchResults(
                     ServicesRequestKeys.restaurant,
-                    "location"
-                  )
+                    "location",
+                  ),
                 )
               }
             />
@@ -114,114 +229,7 @@ export const MarketServiceSearchView: React.FC<{
           {showOn([ServiceType.Vehicle]) ? <VehicleSearchBox /> : null}
         </>
       )}
-
-      {isMobile ? (
-        <>
-          <div className="grid grid-cols-2 gap-2">
-            {mapArray(
-              services?.data,
-              ({
-                name,
-                price,
-                rating,
-                shop,
-                thumbnail,
-                description,
-                reviews,
-                speciality,
-                availableAppointments,
-                healthCenterBookedAppointments,
-                airCondition,
-                gpsAvailable,
-                lugaggeCapacity,
-                seats,
-                windows,
-                id,
-                treatmentCategory,
-                saved,
-              }) => (
-                <>
-                  {showOn([ServiceType.Hotel]) ? (
-                    <MarketHotelServiceSearchCardAlt
-                      description={description}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      name={name}
-                      price={price}
-                      rating={rating}
-                      thumbnail={thumbnail}
-                    />
-                  ) : null}
-                  {showOn([ServiceType.Restaurant]) ? (
-                    <MarketRestaurantServiceSearchCardAlt
-                      reviews={reviews}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      name={name}
-                      price={price}
-                      rating={rating}
-                      thumbnail={thumbnail}
-                    />
-                  ) : null}
-
-                  {showOn([ServiceType.HealthCenter]) ? (
-                    <MarketHealthCenterServiceCardAlt
-                      bookedAppointments={healthCenterBookedAppointments}
-                      title={name}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      thumbnail={thumbnail}
-                      speciality={speciality || ""}
-                      appointments={availableAppointments || []}
-                    />
-                  ) : null}
-
-                  {showOn([ServiceType.Vehicle]) ? (
-                    <MarketVehicleServiceSearchCardAlt
-                      title={name}
-                      airCondition={!!airCondition}
-                      gps={!!gpsAvailable}
-                      thumbnail={thumbnail}
-                      luggage={lugaggeCapacity || 0}
-                      pricePerDay={price}
-                      windows={windows || 0}
-                      passengers={seats || 0}
-                    />
-                  ) : null}
-
-                  {showOn([ServiceType.BeautyCenter]) ? (
-                    <MarketBeautyCenterSearchCardAlt
-                      title={name}
-                      thumbnail={thumbnail}
-                      id={id}
-                      rate={rating}
-                      reviews={reviews}
-                      category={treatmentCategory!}
-                    />
-                  ) : null}
-
-                  {showOn([ServiceType.HolidayRentals]) ? (
-                    <MarketHolidayRentalsServiceSearchCardAlt
-                      title={name}
-                      thumbnail={thumbnail}
-                      reviews={reviews}
-                      description={description}
-                      location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                      monthlyPrice={price}
-                      rating={rating}
-                      saved={saved}
-                      sellerName={shop.sellerProfile.username}
-                      sellerThumbnail={shop.sellerProfile.photo}
-                      sellerVerified={shop.sellerProfile.verified}
-                    />
-                  ) : null}
-                </>
-              )
-            )}
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-      <Pagination controls={controls} />
-    </div>
+    </React.Fragment>
   );
 };
 
@@ -281,9 +289,7 @@ export const MarketRestaurantServiceSearchCardAlt: React.FC<{
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-1 p-1">
-      <AspectRatioImage alt={name} src={thumbnail} ratio={1.2}>
-        <></>
-      </AspectRatioImage>
+      <AspectRatioImage alt={name} src={thumbnail} ratio={1.2} />
       <div className="flex flex-col gap-2 p-1">
         <p className="text-[0.938rem] font-medium">{name}</p>
         <HStack>
@@ -548,3 +554,216 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<{
       </div>
     );
   };
+const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
+  __typename: "ServiceSearchResponse",
+  hasMore: true,
+  total: 100,
+  data: [
+    {
+      __typename: "Service",
+      id: "service-1",
+      name: "Luxury Hotel Suite",
+      price: 250,
+      beds: 2,
+      bathrooms: 2,
+      adaptedFor: [ServiceAdaptation.NewBorn],
+      airCondition: true,
+      gpsAvailable: false,
+      seats: null,
+      windows: 4,
+      lugaggeCapacity: null,
+      treatmentCategory: null,
+      maxSpeedInKm: null,
+      brand: null,
+      description: "A luxurious suite with all modern amenities.",
+      ingredients: null,
+      cleaningFee: 50,
+      reviews: 85,
+      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      rating: 4.8,
+      type: ServiceType.Hotel,
+      title: "Luxury Suite",
+      speciality: null,
+      availableAppointments: null,
+      healthCenterBookedAppointments: [],
+      saved: true,
+      sellerId: "seller-1",
+      updatedAt: "2024-12-08T12:00:00.000Z",
+      shop: {
+        __typename: "Shop",
+        id: "shop-1",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "123 Main Street",
+          city: "Metropolis",
+          country: "Countryland",
+          lat: 40.7128,
+          long: -74.006,
+          state: "Stateville",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "LuxurySeller",
+          verified: true,
+          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+        },
+      },
+    },
+    {
+      __typename: "Service",
+      id: "service-2",
+      name: "Economy Car Rental",
+      price: 40,
+      beds: null,
+      bathrooms: null,
+      adaptedFor: null,
+      airCondition: true,
+      gpsAvailable: true,
+      seats: 4,
+      windows: 4,
+      lugaggeCapacity: 2,
+      treatmentCategory: null,
+      maxSpeedInKm: 180,
+      brand: "EconomyBrand",
+      description: "A reliable car for your travel needs.",
+      ingredients: null,
+      cleaningFee: 10,
+      reviews: 64,
+      thumbnail: "https://via.placeholder.com/150?text=Economy+Car",
+      rating: 4.2,
+      type: ServiceType.Vehicle,
+      title: "Compact Car",
+      speciality: null,
+      availableAppointments: null,
+      healthCenterBookedAppointments: [],
+      saved: false,
+      sellerId: "seller-2",
+      updatedAt: "2024-12-08T12:00:00.000Z",
+      shop: {
+        __typename: "Shop",
+        id: "shop-2",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "456 Side Street",
+          city: "Smalltown",
+          country: "Countryland",
+          lat: 38.8977,
+          long: -77.0365,
+          state: "Stateburg",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "CarRentalPro",
+          verified: false,
+          photo: "https://via.placeholder.com/50?text=Car+Rental",
+        },
+      },
+    },
+
+    {
+      __typename: "Service",
+      id: "service-1",
+      name: "Luxury Hotel Suite",
+      price: 250,
+      beds: 2,
+      bathrooms: 2,
+      adaptedFor: [ServiceAdaptation.NewBorn],
+      airCondition: true,
+      gpsAvailable: false,
+      seats: null,
+      windows: 4,
+      lugaggeCapacity: null,
+      treatmentCategory: null,
+      maxSpeedInKm: null,
+      brand: null,
+      description: "A luxurious suite with all modern amenities.",
+      ingredients: null,
+      cleaningFee: 50,
+      reviews: 85,
+      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      rating: 4.8,
+      type: ServiceType.Hotel,
+      title: "Luxury Suite",
+      speciality: null,
+      availableAppointments: null,
+      healthCenterBookedAppointments: [],
+      saved: true,
+      sellerId: "seller-1",
+      updatedAt: "2024-12-08T12:00:00.000Z",
+      shop: {
+        __typename: "Shop",
+        id: "shop-1",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "123 Main Street",
+          city: "Metropolis",
+          country: "Countryland",
+          lat: 40.7128,
+          long: -74.006,
+          state: "Stateville",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "LuxurySeller",
+          verified: true,
+          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+        },
+      },
+    },
+
+    {
+      __typename: "Service",
+      id: "service-1",
+      name: "Luxury Hotel Suite",
+      price: 250,
+      beds: 2,
+      bathrooms: 2,
+      adaptedFor: [ServiceAdaptation.NewBorn],
+      airCondition: true,
+      gpsAvailable: false,
+      seats: null,
+      windows: 4,
+      lugaggeCapacity: null,
+      treatmentCategory: null,
+      maxSpeedInKm: null,
+      brand: null,
+      description: "A luxurious suite with all modern amenities.",
+      ingredients: null,
+      cleaningFee: 50,
+      reviews: 85,
+      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      rating: 4.8,
+      type: ServiceType.Hotel,
+      title: "Luxury Suite",
+      speciality: null,
+      availableAppointments: null,
+      healthCenterBookedAppointments: [],
+      saved: true,
+      sellerId: "seller-1",
+      updatedAt: "2024-12-08T12:00:00.000Z",
+      shop: {
+        __typename: "Shop",
+        id: "shop-1",
+        status: ShopStatus.Active,
+        location: {
+          __typename: "Location",
+          address: "123 Main Street",
+          city: "Metropolis",
+          country: "Countryland",
+          lat: 40.7128,
+          long: -74.006,
+          state: "Stateville",
+        },
+        sellerProfile: {
+          __typename: "Profile",
+          username: "LuxurySeller",
+          verified: true,
+          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+        },
+      },
+    },
+  ],
+};
