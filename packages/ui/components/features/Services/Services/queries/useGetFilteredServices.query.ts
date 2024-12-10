@@ -8,7 +8,6 @@ import {
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-import { WorkingDate } from "types";
 
 type SearchServiceQueryVariables = Exact<{
   args: SearchServicesInput;
@@ -134,7 +133,6 @@ query SearchService($args: SearchServicesInput!) {
           photo
         }
       }
-      sellerId
     }
     hasMore
     total
