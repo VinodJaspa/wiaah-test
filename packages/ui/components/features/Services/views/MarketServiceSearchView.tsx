@@ -60,7 +60,7 @@ export const MarketServiceSearchView: React.FC<{
     <div className="flex flex-col gap-4">
       {/* search bar */}
       <ServiceSearchBar showOn={showOn} serviceType={serviceType} />
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid md:grid-cols-4 grid-cols-2 gap-2">
         {mapArray(
           services?.data,
           ({
@@ -331,7 +331,7 @@ export const MarketHealthCenterServiceCardAlt: React.FC<{
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-2 p-1">
-        <AspectRatioImage alt={title} ratio={1.7} src={thumbnail} />
+        <AspectRatioImage alt={title} ratio={1} src={thumbnail} />
 
         <div className="p-1 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
@@ -521,7 +521,6 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<{
             <div className="flex flex-col items-center gap-1">
               <div className="flex gap-1 items-center">
                 <StarIcon className="text-yellow-300" />
-
                 <p className="text-xs">{rating}/5</p>
               </div>
               <p className="text-xs">{`(${reviews}) ${t("Reviews")}`}</p>
@@ -579,7 +578,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
-      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      thumbnail: "/shop.jpeg",
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
@@ -606,14 +605,14 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
           __typename: "Profile",
           username: "LuxurySeller",
           verified: true,
-          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+          photo: "/shop-2.jpeg",
         },
       },
     },
     {
       __typename: "Service",
       id: "service-2",
-      name: "Economy Car Rental",
+      name: "Service",
       price: 40,
       beds: null,
       bathrooms: null,
@@ -630,7 +629,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: null,
       cleaningFee: 10,
       reviews: 64,
-      thumbnail: "https://via.placeholder.com/150?text=Economy+Car",
+      thumbnail: "/shop.jpeg",
       rating: 4.2,
       type: ServiceType.Vehicle,
       title: "Compact Car",
@@ -657,7 +656,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
           __typename: "Profile",
           username: "CarRentalPro",
           verified: false,
-          photo: "https://via.placeholder.com/50?text=Car+Rental",
+          photo: "/shop-2.jpeg",
         },
       },
     },
@@ -682,7 +681,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
-      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      thumbnail: "/shop.jpeg",
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
@@ -709,7 +708,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
           __typename: "Profile",
           username: "LuxurySeller",
           verified: true,
-          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+          photo: "/shop-2.jpeg",
         },
       },
     },
@@ -734,7 +733,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
-      thumbnail: "https://via.placeholder.com/150?text=Luxury+Hotel",
+      thumbnail: "/shop.jpeg",
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
@@ -761,7 +760,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
           __typename: "Profile",
           username: "LuxurySeller",
           verified: true,
-          photo: "https://via.placeholder.com/50?text=Luxury+Seller",
+          photo: "/shop-2.jpeg",
         },
       },
     },
