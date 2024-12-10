@@ -331,16 +331,16 @@ export const MarketHealthCenterServiceCardAlt: React.FC<{
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-2 p-1">
-        <AspectRatioImage alt={title} ratio={1} src={thumbnail} />
+        <AspectRatioImage alt={title} ratio={1.2} src={thumbnail} />
 
         <div className="p-1 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <p className="text-lg font-medium">{title}</p>
-            <p className="text-sm text-grayText">{speciality}</p>
-            <HStack>
-              <LocationIcon className="text-primary" />
+            <p className="text font-medium text-primary">{title}</p>
+            <p className="text-lg text-gray-800 font-semibold">{speciality}</p>
+            <div className="flex text-gray-500 flex-col gap-2">
+              <p className="text-sm ">Address</p>
               <p className="text-sm">{location}</p>
-            </HStack>
+            </div>
           </div>
 
           <div className="max-h-40 overflow-y-scroll">
@@ -506,8 +506,8 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<{
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-1 p-1">
-        <AspectRatioImage ratio={1.7} src={thumbnail} alt={title}>
-          <div className="top-2 right-2 flex justify-center items-center bg-black/30 rounded-full h-24 w-24">
+        <AspectRatioImage ratio={1.2} src={thumbnail} alt={title}>
+          <div className="top-2 right-2 flex justify-center items-center  rounded-full h-24 w-24">
             {saved ? <HeartFillIcon /> : <HeartOutlineAltIcon />}
           </div>
         </AspectRatioImage>
@@ -561,7 +561,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
     {
       __typename: "Service",
       id: "service-1",
-      name: "Luxury Hotel Suite",
+      name: "Service",
       price: 250,
       beds: 2,
       bathrooms: 2,
@@ -574,7 +574,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       treatmentCategory: null,
       maxSpeedInKm: null,
       brand: null,
-      description: "A luxurious suite with all modern amenities.",
+      description: "A service description.",
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
@@ -582,7 +582,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
-      speciality: null,
+      speciality: "Dentist",
       availableAppointments: null,
       healthCenterBookedAppointments: [],
       saved: true,
@@ -625,7 +625,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       treatmentCategory: null,
       maxSpeedInKm: 180,
       brand: "EconomyBrand",
-      description: "A reliable car for your travel needs.",
+      description: "A service description.",
       ingredients: null,
       cleaningFee: 10,
       reviews: 64,
@@ -633,7 +633,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       rating: 4.2,
       type: ServiceType.Vehicle,
       title: "Compact Car",
-      speciality: null,
+      speciality: "Dentist",
       availableAppointments: null,
       healthCenterBookedAppointments: [],
       saved: false,
@@ -664,7 +664,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
     {
       __typename: "Service",
       id: "service-1",
-      name: "Luxury Hotel Suite",
+      name: "Service",
       price: 250,
       beds: 2,
       bathrooms: 2,
@@ -677,7 +677,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       treatmentCategory: null,
       maxSpeedInKm: null,
       brand: null,
-      description: "A luxurious suite with all modern amenities.",
+      description: "A service description.",
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
@@ -685,7 +685,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
-      speciality: null,
+      speciality: "Dentist",
       availableAppointments: null,
       healthCenterBookedAppointments: [],
       saved: true,
@@ -716,7 +716,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
     {
       __typename: "Service",
       id: "service-1",
-      name: "Luxury Hotel Suite",
+      name: "Service",
       price: 250,
       beds: 2,
       bathrooms: 2,
@@ -729,7 +729,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       treatmentCategory: null,
       maxSpeedInKm: null,
       brand: null,
-      description: "A luxurious suite with all modern amenities.",
+      description: "A service description.",
       ingredients: null,
       cleaningFee: 50,
       reviews: 85,
@@ -737,7 +737,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       rating: 4.8,
       type: ServiceType.Hotel,
       title: "Luxury Suite",
-      speciality: null,
+      speciality: "Dentist",
       availableAppointments: null,
       healthCenterBookedAppointments: [],
       saved: true,
