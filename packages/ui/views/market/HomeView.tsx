@@ -252,7 +252,7 @@ const TopSalesCategoryProducts: React.FC<{
                   onClick={() => {
                     // TODO: integrate
                   }}
-                  className=" text-white z-30  p-3 flex justify-center items-center absolute bg-black bg-opacity-30 rounded-full top-2 right-2"
+                  className=" text-white z-30 p-3 flex justify-center items-center absolute bg-black bg-opacity-30 rounded-full top-2 right-2"
                 >
                   {prod.saved ? (
                     <FaRegHeart className="w-5 h-5" />
