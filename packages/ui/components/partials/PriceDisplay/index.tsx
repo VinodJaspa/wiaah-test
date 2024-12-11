@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { PreferedCurrencyState, usePreferedCurrency } from "state";
 import { HtmlDivProps, PriceType } from "types";
+import { cn } from "utils";
 
 export interface PriceDisplayProps extends HtmlDivProps {
   priceObject?: PriceType;
@@ -29,31 +30,29 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   const { preferedCurrency } = usePreferedCurrency();
 
   return (
-    <p {...props} className={`${className || ""} whitespace-nowrap`}>
-      {symbolProps ? (
-        <span
-          {...symbolProps}
-          className={`${symbolProps.className || ""} pr-1`}
-        >
+    <p {...props} className={cn(className, "whitespace-nowrap")}>
+      {symbolProps && (
+        <span {...symbolProps} className={cn(symbolProps.className, "pr-1")}>
           {preferedCurrency.currencySymbol}
         </span>
-      ) : null}
+      )}
+
       {PriceConverter({
-        amount: priceObject ? priceObject.amount || price : price,
-        symbol: symbolProps ? false : symbol,
+        amount: priceObject?.amount || price,
+        symbol: !symbolProps && symbol,
         decimel,
         compact,
-        displayCurrency: symbolProps ? false : displayCurrency,
+        displayCurrency: !symbolProps && displayCurrency,
       })}
 
       {oldPrice !== undefined && (
         <span className="line-through text-sm text-[#A7A7A7] ml-2 font-medium">
           {PriceConverter({
             amount: oldPrice,
-            symbol: symbolProps ? false : symbol,
+            symbol: !symbolProps && symbol,
             decimel,
             compact,
-            displayCurrency: symbolProps ? false : displayCurrency,
+            displayCurrency: !symbolProps && displayCurrency,
           })}
         </span>
       )}
