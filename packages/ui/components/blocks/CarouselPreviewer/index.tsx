@@ -21,7 +21,7 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
   const [itemStyles, setItemStyles] = React.useState<CSSProperties>({});
   const [currentComponent, setCurrentComponent] = React.useState<number>(0);
   const [containerStyles, setContainerStyles] = React.useState<CSSProperties>(
-    {}
+    {},
   );
   const [subContainerStyles, setSubContainerStyles] =
     React.useState<CSSProperties>({});
@@ -62,7 +62,6 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
                 className={`h-16 w-28  overflow-clip ${currentComponent === i ? `border-4` : ""
                   } rounded`}
               >
-                {/*@ts-ignore*/}
                 {Component}
               </div>
             ))}
@@ -87,7 +86,6 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
                 className={`h-fit w-full overflow-clip ${currentComponent === i ? `border-4` : ""
                   } rounded`}
               >
-                {/*@ts-ignore*/}
                 {Component}
               </div>
             ))}
