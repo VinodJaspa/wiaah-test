@@ -28,9 +28,6 @@ export const ResturantSearchInput: React.FC<ResturantSearchInputProps> = ({
   return (
     <div className="flex gap-2 items-center">
       <InputGroup className="relative rounded-lg border-gray-400 w-full">
-        <span className="absolute top-0 left-0 -translate-y-full text-xs text-gray-400">
-          {t("What")}
-        </span>
         <InputLeftElement className="px-2 text-gray-500">
           <ForkAndSpoonIcon />
         </InputLeftElement>
@@ -41,9 +38,6 @@ export const ResturantSearchInput: React.FC<ResturantSearchInputProps> = ({
         />
         <InputRightElement className="w-[min(35%,20rem)]">
           <InputGroup className="px-2 py-1 border-y-0 border-r-0 border-l-2 relative">
-            <span className="absolute top-0 left-0 -translate-y-full text-xs text-gray-400">
-              {t("where")}
-            </span>
             <InputLeftElement>
               <LocationOutlineIcon />
             </InputLeftElement>
