@@ -13,19 +13,14 @@ import {
   AirConditionIcon,
   ArrowRightIcon,
   AspectRatioImage,
-  Avatar,
   Button,
   CarWindowIcon,
   DotIcon,
   GPSIcon,
   HStack,
-  HeartFillIcon,
-  HeartOutlineAltIcon,
   Input,
   InputGroup,
   InputLeftElement,
-  LocationIcon,
-  LocationOutlineIcon,
   MapIcon,
   Pagination,
   PersonGroupIcon,
@@ -33,8 +28,6 @@ import {
   SearchIcon,
   StarIcon,
   TransportLuggageIcon,
-  Verified,
-  Rate,
 } from "@partials";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
@@ -42,7 +35,10 @@ import { SearchServiceQuery, useGetFilteredServicesQuery } from "../Services";
 import { ServicesRequestKeys } from "../constants";
 import { HealthCenterSearchBox } from "../HealthCenter";
 import { VehicleSearchBox } from "../Vehicle";
-import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import {
+  MarketHolidayRentalsServiceSearchCardAlt,
+  MarketRestaurantServiceSearchCardAlt,
+} from "./MarketSearviceSearchItes";
 
 export const MarketServiceSearchView: React.FC<{
   serviceType: ServiceType;
@@ -106,7 +102,7 @@ export const MarketServiceSearchView: React.FC<{
               {showOn([ServiceType.Restaurant]) ? (
                 <MarketRestaurantServiceSearchCardAlt
                   reviews={reviews}
-                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  location={shop.location}
                   name={name}
                   price={price}
                   rating={rating}
@@ -241,86 +237,6 @@ const ServiceSearchBar = ({
         </>
       )}
     </React.Fragment>
-  );
-};
-
-export const MarketHotelServiceSearchCardAlt: React.FC<{
-  thumbnail: string;
-  name: string;
-  rating: number;
-  description: string;
-  price: number;
-  location: string;
-}> = ({ description, location, name, price, rating, thumbnail }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="flex flex-col gap-1 p-1">
-      <AspectRatioImage
-        className="rounded-xl"
-        ratio={1.2}
-        src={thumbnail}
-        alt={name}
-      >
-        <button className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full bg-black/30">
-          <HeartOutlineAltIcon className="text-sm text-white fill-white" />
-        </button>
-      </AspectRatioImage>
-      <div className="p-1 flex flex-col gap-8">
-        <HStack className="justify-between">
-          <p className="font-medium">{location}</p>
-          <HStack className="text-xs">
-            <StarIcon />
-            <p>
-              {rating}/{5}
-            </p>
-          </HStack>
-        </HStack>
-        <p className="text-grayText text-xs">{description}</p>
-        <div className="flex items-end">
-          <PriceDisplay
-            price={price}
-            className="mt-1"
-            symbolProps={{ className: "text-primary" }}
-          />
-          /<span className="text-[0.625rem]">{t("Night")}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const MarketRestaurantServiceSearchCardAlt: React.FC<{
-  name: string;
-  thumbnail: string;
-  rating: number;
-  reviews: number;
-  location: string;
-  price: number;
-}> = ({ location, name, price, rating, reviews, thumbnail }) => {
-  const { t } = useTranslation();
-  return (
-    <div className="flex flex-col gap-1 p-1">
-      <AspectRatioImage alt={name} src={thumbnail} ratio={1.2} />
-      <div className="flex flex-col gap-2 p-1">
-        <p className="text-[0.938rem] font-medium">{name}</p>
-        <HStack>
-          <LocationIcon className="text-primary" />
-          <p className="text-xs">{location}</p>
-        </HStack>
-        <HStack>
-          <StarIcon className="text-yellow-300" />
-          <HStack className="text-xs text-grayText">
-            <p>{rating}/5</p>
-            <DotIcon />
-            <p>{`(${reviews}) ${t("Reviews")}`}</p>
-          </HStack>
-        </HStack>
-        <p className="flex items-end text-[0.938rem]">
-          <PriceDisplay price={price} className="font-medium" />/
-          <span className="text-[0.625rem]">{t("Serving")}</span>
-        </p>
-      </div>
-    </div>
   );
 };
 
@@ -488,93 +404,7 @@ export const MarketBeautyCenterSearchCardAlt: React.FC<{
     </div>
   );
 };
-interface SellerInfo {
-  thumbnail: string;
-  name: string;
-  verified: boolean;
-}
 
-interface MarketHolidayRentalsProps {
-  title: string;
-  thumbnail: string;
-  monthlyPrice: number;
-  description: string;
-  saved: boolean;
-  seller: SellerInfo;
-  rating: number;
-  location: string;
-  date: { from: string; to: string };
-}
-
-export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
-  MarketHolidayRentalsProps
-> = ({
-  title,
-  thumbnail,
-  monthlyPrice,
-  description,
-  saved,
-  rating,
-  location,
-  date,
-}) => {
-    const { t } = useTranslation();
-    const [isSaved, setIsSaved] = React.useState(saved);
-    const toggleSaved = () => {
-      setIsSaved((prevState) => !prevState);
-    };
-    return (
-      <div className="flex flex-col gap-1 p-1">
-        <AspectRatioImage
-          ratio={1.04}
-          imageClassName="rounded-xl relative"
-          src={thumbnail}
-          alt={title}
-        >
-          <div
-            className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40"
-            onClick={toggleSaved}
-          >
-            {isSaved ? (
-              <IoIosHeart className="w-5 h-5 " />
-            ) : (
-              <IoIosHeartEmpty className="w-5 h-5" />
-            )}
-          </div>
-        </AspectRatioImage>
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-between mt-2">
-            <p className="font-semibold ">{location}</p>
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex gap-2 items-center">
-                <Rate rating={4} className="gap-1" starSize={18} />
-                <p className="text-sm mt-1 font-medium">{rating}</p>
-              </div>
-            </div>
-          </div>
-          <div className="text-gray-500 flex gap-2 items-center">
-            <span>{date.from}</span>
-            <span>-</span>
-            <span>{date.to}</span>
-          </div>
-          <p className="text-gray-500 font-medium">{description}</p>
-          <div className="flex justify-between gap-4">
-            <div className="flex flex-col gap-1">
-              <p className="flex items-start gap-1 text-lg font-semibold">
-                <span>
-                  <PriceDisplay
-                    price={monthlyPrice}
-                    className="text-lg font-semibold"
-                  />
-                </span>
-                <span>total</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
 const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
   __typename: "ServiceSearchResponse",
   hasMore: true,
