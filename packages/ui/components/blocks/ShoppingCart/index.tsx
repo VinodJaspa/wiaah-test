@@ -96,7 +96,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ children }) => {
           ></div>
         </div>
 
-        <div className="flex flex-col gap-2 bg-gray-200 py-2 ">
+        <div className="flex flex-col gap-2 bg-gray-200 py-2 z-30 ">
           <div className="flex justify-between px-4 font-bold">
             <span>
               {t("My Cart")}, {items.length} {t("items")}
