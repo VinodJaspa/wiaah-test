@@ -50,9 +50,6 @@ import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
 import {
   MarketBeautyCenterSearchCardAlt,
   MarketHealthCenterServiceCardAlt,
-  MarketHolidayRentalsServiceSearchCardAlt,
-  MarketHotelServiceSearchCardAlt,
-  MarketRestaurantServiceSearchCardAlt,
   MarketVehicleServiceSearchCardAlt,
 } from "./MarketServiceSearchView";
 import { useGetServiceCategoryFiltersQuery } from "../Services/queries/getServiceCategoryFilters.fetcher";
@@ -60,6 +57,11 @@ import {
   ServicePaymentMethod,
   ServiceStatus,
 } from "@features/API/gql/generated";
+import {
+  MarketHolidayRentalsServiceSearchCardAlt,
+  MarketHotelServiceSearchCardAlt,
+  MarketRestaurantServiceSearchCardAlt,
+} from "./MarketSearviceSearchItes";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
@@ -369,7 +371,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
               return (
                 <MarketRestaurantServiceSearchCardAlt
                   reviews={reviews}
-                  location={`${shop?.location?.city}, ${shop?.location?.country}`}
+                  location={shop.location}
                   name={name}
                   price={price}
                   rating={rating}
@@ -417,15 +419,17 @@ export const MobileServicesCardsSwitcherView: React.FC<
                 <MarketHolidayRentalsServiceSearchCardAlt
                   title={name}
                   thumbnail={thumbnail}
-                  reviews={reviews}
                   description={description}
                   location={`${shop?.location?.city}, ${shop?.location?.country}`}
                   monthlyPrice={price}
+                  seller={{
+                    name: shop.sellerProfile.username,
+                    thumbnail: shop.sellerProfile.photo,
+                    verified: shop.sellerProfile.verified,
+                  }}
                   rating={rating}
                   saved={saved}
-                  sellerName={shop.sellerProfile.username}
-                  sellerThumbnail={shop.sellerProfile.photo}
-                  sellerVerified={shop.sellerProfile.verified}
+                  date={{ from: "Jul 30", to: "Jul 30" }}
                 />
               );
 
