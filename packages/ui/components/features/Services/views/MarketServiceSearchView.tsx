@@ -34,6 +34,7 @@ import {
   StarIcon,
   TransportLuggageIcon,
   Verified,
+  Rate,
 } from "@partials";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
@@ -41,6 +42,7 @@ import { SearchServiceQuery, useGetFilteredServicesQuery } from "../Services";
 import { ServicesRequestKeys } from "../constants";
 import { HealthCenterSearchBox } from "../HealthCenter";
 import { VehicleSearchBox } from "../Vehicle";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 
 export const MarketServiceSearchView: React.FC<{
   serviceType: ServiceType;
@@ -85,13 +87,20 @@ export const MarketServiceSearchView: React.FC<{
           }) => (
             <>
               {showOn([ServiceType.Hotel]) ? (
-                <MarketHotelServiceSearchCardAlt
+                <MarketHolidayRentalsServiceSearchCardAlt
+                  title={name}
+                  thumbnail={thumbnail}
                   description={description}
                   location={`${shop?.location?.city}, ${shop?.location?.country}`}
-                  name={name}
-                  price={price}
+                  monthlyPrice={price}
+                  seller={{
+                    name: shop.sellerProfile.username,
+                    thumbnail: shop.sellerProfile.photo,
+                    verified: shop.sellerProfile.verified,
+                  }}
                   rating={rating}
-                  thumbnail={thumbnail}
+                  saved={saved}
+                  date={{ from: "Jul 30", to: "Jul 30" }}
                 />
               ) : null}
               {showOn([ServiceType.Restaurant]) ? (
@@ -144,15 +153,17 @@ export const MarketServiceSearchView: React.FC<{
                 <MarketHolidayRentalsServiceSearchCardAlt
                   title={name}
                   thumbnail={thumbnail}
-                  reviews={reviews}
                   description={description}
                   location={`${shop?.location?.city}, ${shop?.location?.country}`}
                   monthlyPrice={price}
+                  seller={{
+                    name: shop.sellerProfile.username,
+                    thumbnail: shop.sellerProfile.photo,
+                    verified: shop.sellerProfile.verified,
+                  }}
                   rating={rating}
                   saved={saved}
-                  sellerName={shop.sellerProfile.username}
-                  sellerThumbnail={shop.sellerProfile.photo}
-                  sellerVerified={shop.sellerProfile.verified}
+                  date={{ from: "Jul 30", to: "Jul 30" }}
                 />
               ) : null}
             </>
@@ -477,76 +488,87 @@ export const MarketBeautyCenterSearchCardAlt: React.FC<{
     </div>
   );
 };
+interface SellerInfo {
+  thumbnail: string;
+  name: string;
+  verified: boolean;
+}
 
-export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<{
+interface MarketHolidayRentalsProps {
   title: string;
   thumbnail: string;
   monthlyPrice: number;
   description: string;
   saved: boolean;
-  sellerThumbnail: string;
-  sellerName: string;
-  sellerVerified: boolean;
+  seller: SellerInfo;
   rating: number;
-  reviews: number;
   location: string;
-}> = ({
-  description,
-  monthlyPrice,
-  thumbnail,
+  date: { from: string; to: string };
+}
+
+export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
+  MarketHolidayRentalsProps
+> = ({
   title,
+  thumbnail,
+  monthlyPrice,
+  description,
   saved,
   rating,
-  reviews,
-  sellerName,
-  sellerThumbnail,
-  sellerVerified,
   location,
+  date,
 }) => {
     const { t } = useTranslation();
+    const [isSaved, setIsSaved] = React.useState(saved);
+    const toggleSaved = () => {
+      setIsSaved((prevState) => !prevState);
+    };
     return (
       <div className="flex flex-col gap-1 p-1">
-        <AspectRatioImage ratio={1.2} src={thumbnail} alt={title}>
-          <div className="top-2 right-2 flex justify-center items-center  rounded-full h-24 w-24">
-            {saved ? <HeartFillIcon /> : <HeartOutlineAltIcon />}
+        <AspectRatioImage
+          ratio={1.04}
+          imageClassName="rounded-xl relative"
+          src={thumbnail}
+          alt={title}
+        >
+          <div
+            className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40"
+            onClick={toggleSaved}
+          >
+            {isSaved ? (
+              <IoIosHeart className="w-5 h-5 " />
+            ) : (
+              <IoIosHeartEmpty className="w-5 h-5" />
+            )}
           </div>
         </AspectRatioImage>
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between">
-            <HStack>
-              <Avatar src={sellerThumbnail} />
-              <p className="font-medium">{sellerName}</p>
-              {sellerVerified ? <Verified /> : null}
-            </HStack>
+          <div className="flex justify-between mt-2">
+            <p className="font-semibold ">{location}</p>
             <div className="flex flex-col items-center gap-1">
-              <div className="flex gap-1 items-center">
-                <StarIcon className="text-yellow-300" />
-                <p className="text-xs">{rating}/5</p>
+              <div className="flex gap-2 items-center">
+                <Rate rating={4} className="gap-1" starSize={18} />
+                <p className="text-sm mt-1 font-medium">{rating}</p>
               </div>
-              <p className="text-xs">{`(${reviews}) ${t("Reviews")}`}</p>
             </div>
           </div>
-
-          <p className="text-lg font-medium">{title}</p>
-          <p className="text-sm">{description}</p>
-
+          <div className="text-gray-500 flex gap-2 items-center">
+            <span>{date.from}</span>
+            <span>-</span>
+            <span>{date.to}</span>
+          </div>
+          <p className="text-gray-500 font-medium">{description}</p>
           <div className="flex justify-between gap-4">
-            <div className="flex gap-1">
-              <LocationOutlineIcon className="text-primary" />
-              <p className="text-xs text-grayText">{location}</p>
-            </div>
-
             <div className="flex flex-col gap-1">
-              <p className="flex items-end">
+              <p className="flex items-start gap-1 text-lg font-semibold">
                 <span>
                   <PriceDisplay
                     price={monthlyPrice}
                     className="text-lg font-semibold"
                   />
                 </span>
-                /<span>{t("Month")}</span>
+                <span>total</span>
               </p>
-              <p className="text-xs">{t("Includes tax & fees") + "*"}</p>
             </div>
           </div>
         </div>
