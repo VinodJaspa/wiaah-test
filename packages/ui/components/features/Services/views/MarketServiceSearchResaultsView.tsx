@@ -47,21 +47,19 @@ import { getRandomServiceImage } from "@UI/placeholder";
 import { VehicleSearchCard } from "../Vehicle";
 import { SectionHeader } from "@sections/ShoppingManagement";
 import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
-import {
-  MarketBeautyCenterSearchCardAlt,
-  MarketHealthCenterServiceCardAlt,
-  MarketVehicleServiceSearchCardAlt,
-} from "./MarketServiceSearchView";
 import { useGetServiceCategoryFiltersQuery } from "../Services/queries/getServiceCategoryFilters.fetcher";
 import {
   ServicePaymentMethod,
   ServiceStatus,
 } from "@features/API/gql/generated";
 import {
+  MarketBeautyCenterSearchCardAlt,
   MarketHolidayRentalsServiceSearchCardAlt,
   MarketHotelServiceSearchCardAlt,
   MarketRestaurantServiceSearchCardAlt,
-} from "./MarketSearviceSearchItes";
+  MarketVehicleServiceSearchCardAlt,
+} from "./MarketSearviceSearchItems";
+import { MarketHealthCenterServiceCardAlt } from "./MarketSearviceSearchItems/MarketHealthCenterServiceCardAlt";
 
 export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
@@ -335,6 +333,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
       {mapArray(
         dataToRender?.data,
         ({
+          title,
           name,
           price,
           rating,
@@ -375,7 +374,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
                   name={name}
                   price={price}
                   rating={rating}
-                  thumbnail={thumbnail}
+                  images={[thumbnail]}
                 />
               );
             case ServiceType.HealthCenter:
@@ -406,12 +405,13 @@ export const MobileServicesCardsSwitcherView: React.FC<
             case ServiceType.BeautyCenter:
               return (
                 <MarketBeautyCenterSearchCardAlt
-                  title={name}
+                  title={title}
                   thumbnail={thumbnail}
                   id={id}
                   rate={rating}
                   reviews={reviews}
                   category={treatmentCategory!}
+                  name={name}
                 />
               );
             case ServiceType.HolidayRentals:
