@@ -2,13 +2,16 @@ import { AspectRatioImage, PriceDisplay, Rate } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
 
+// Interface for seller information
 interface SellerInfo {
   thumbnail: string;
   name: string;
   verified: boolean;
 }
 
+// Props for the holiday rentals card component
 interface MarketHolidayRentalsProps {
   title: string;
   thumbnail: string;
@@ -20,6 +23,8 @@ interface MarketHolidayRentalsProps {
   location: string;
   date: { from: string; to: string };
 }
+
+// Functional component to display a holiday rental card
 export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   MarketHolidayRentalsProps
 > = ({
@@ -32,46 +37,63 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   location,
   date,
 }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(); // Translation hook for localization
+
+    // State to manage whether the rental is saved
     const [isSaved, setIsSaved] = React.useState(saved);
+
+    // Toggles the "saved" state
     const toggleSaved = () => {
       setIsSaved((prevState) => !prevState);
     };
+
     return (
       <div className="flex flex-col gap-1 p-1">
-        <AspectRatioImage
-          ratio={1.04}
-          imageClassName="rounded-xl relative"
-          src={thumbnail}
-          alt={title}
-        >
-          <div
-            className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40"
-            onClick={toggleSaved}
+        {/* Image with aspect ratio and save toggle button */}
+        <MarkdetServiceSearchHoverOverlay>
+          <AspectRatioImage
+            ratio={1.04}
+            imageClassName="rounded-xl relative"
+            src={thumbnail}
+            alt={title}
           >
-            {isSaved ? (
-              <IoIosHeart className="w-5 h-5 " />
-            ) : (
-              <IoIosHeartEmpty className="w-5 h-5" />
-            )}
-          </div>
-        </AspectRatioImage>
+            <div
+              className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40 cursor-pointer"
+              onClick={toggleSaved}
+            >
+              {isSaved ? (
+                <IoIosHeart className="w-5 h-5" />
+              ) : (
+                <IoIosHeartEmpty className="w-5 h-5" />
+              )}
+            </div>
+          </AspectRatioImage>
+        </MarkdetServiceSearchHoverOverlay>
+
+        {/* Rental details section */}
         <div className="flex flex-col gap-2">
+          {/* Location and rating */}
           <div className="flex justify-between mt-2">
-            <p className="font-semibold ">{location}</p>
+            <p className="font-semibold">{location}</p>
             <div className="flex flex-col items-center gap-1">
               <div className="flex gap-2 items-center">
-                <Rate rating={4} className="gap-1" starSize={18} />
+                <Rate rating={rating} className="gap-1" starSize={18} />
                 <p className="text-sm mt-1 font-medium">{rating}</p>
               </div>
             </div>
           </div>
+
+          {/* Availability dates */}
           <div className="text-gray-500 flex gap-2 items-center">
             <span>{date.from}</span>
             <span>-</span>
             <span>{date.to}</span>
           </div>
+
+          {/* Description */}
           <p className="text-gray-500 font-medium">{description}</p>
+
+          {/* Pricing section */}
           <div className="flex justify-between gap-4">
             <div className="flex flex-col gap-1">
               <p className="flex items-start gap-1 text-lg font-semibold">
@@ -81,7 +103,7 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
                     className="text-lg font-semibold"
                   />
                 </span>
-                <span>total</span>
+                <span>{t("total")}</span>
               </p>
             </div>
           </div>
