@@ -14,3 +14,4 @@ export * from "./Search";
 export * from "./TypeOfAccount";
 export * from "./staticData";
 export * from "./BlockList";
+export * from "./services";
