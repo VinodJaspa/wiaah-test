@@ -1,8 +1,6 @@
 import {
   LocationSearchInput,
   ResturantSearchInput,
-  WorkingDaysCalender,
-  WorkingDaysCalenderProps,
   usePaginationControls,
 } from "@blocks";
 import { ServiceAdaptation, ServiceType, ShopStatus } from "@features/API";
@@ -10,24 +8,13 @@ import { useResponsive } from "hooks";
 import React from "react";
 import { useRouting } from "routing";
 import {
-  AirConditionIcon,
-  ArrowRightIcon,
-  AspectRatioImage,
   Button,
-  CarWindowIcon,
-  DotIcon,
-  GPSIcon,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  MapIcon,
   Pagination,
-  PersonGroupIcon,
-  PriceDisplay,
   SearchIcon,
-  StarIcon,
-  TransportLuggageIcon,
 } from "@partials";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
@@ -38,20 +25,21 @@ import { VehicleSearchBox } from "../Vehicle";
 import {
   MarketHolidayRentalsServiceSearchCardAlt,
   MarketRestaurantServiceSearchCardAlt,
-} from "./MarketSearviceSearchItes";
+  MarketVehicleServiceSearchCardAlt,
+  MarketHealthCenterServiceCardAlt,
+  MarketBeautyCenterSearchCardAlt,
+} from "./MarketSearviceSearchItems";
+import { FAKE_FILTERED_SERVICES } from "placeholder";
 
 export const MarketServiceSearchView: React.FC<{
   serviceType: ServiceType;
 }> = ({ serviceType }) => {
-  const { visit } = useRouting();
-  const { isMobile } = useResponsive();
-  const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { data: _services } = useGetFilteredServicesQuery({
     pagination,
     filters: [],
   });
-  const services = FAKE_SERVICES;
+  const services = FAKE_FILTERED_SERVICES;
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
   return (
@@ -106,7 +94,7 @@ export const MarketServiceSearchView: React.FC<{
                   name={name}
                   price={price}
                   rating={rating}
-                  thumbnail={thumbnail}
+                  images={[thumbnail, thumbnail]}
                 />
               ) : null}
 
@@ -142,6 +130,7 @@ export const MarketServiceSearchView: React.FC<{
                   rate={rating}
                   reviews={reviews}
                   category={treatmentCategory!}
+                  name={shop.sellerProfile.username}
                 />
               ) : null}
 
@@ -180,441 +169,78 @@ const ServiceSearchBar = ({
 }) => {
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
-
   const { visit } = useRouting();
+
+  const renderMobileSearchBar = () => {
+    if (showOn([ServiceType.Hotel, ServiceType.HolidayRentals])) {
+      return (
+        <HStack>
+          <InputGroup className="w-full">
+            <InputLeftElement>
+              <SearchIcon />
+            </InputLeftElement>
+            <Input />
+          </InputGroup>
+          <Button>{t("Submit")}</Button>
+        </HStack>
+      );
+    }
+    return null;
+  };
+
+  const renderDesktopSearchBar = () => {
+    const searchComponents = [
+      {
+        types: [
+          ServiceType.Hotel,
+          ServiceType.HolidayRentals,
+          ServiceType.BeautyCenter,
+        ],
+        component: (
+          <LocationSearchInput
+            onLocationSelect={(location) =>
+              visit((routes) =>
+                routes.visitServiceLocationSearchResults(serviceType, location),
+              )
+            }
+          />
+        ),
+      },
+      {
+        types: [ServiceType.Restaurant],
+        component: (
+          <ResturantSearchInput
+            onSubmit={() =>
+              visit((routes) =>
+                routes.visitServiceLocationSearchResults(
+                  ServicesRequestKeys.restaurant,
+                  "location",
+                ),
+              )
+            }
+          />
+        ),
+      },
+      {
+        types: [ServiceType.HealthCenter],
+        component: <HealthCenterSearchBox />,
+      },
+      {
+        types: [ServiceType.Vehicle],
+        component: <VehicleSearchBox />,
+      },
+    ];
+
+    return searchComponents
+      .filter(({ types }) => showOn(types))
+      .map(({ component }, idx) => (
+        <React.Fragment key={idx}>{component}</React.Fragment>
+      ));
+  };
+
   return (
     <React.Fragment>
-      {isMobile ? (
-        <>
-          {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-            <HStack>
-              <InputGroup className="w-full">
-                <InputLeftElement>
-                  <SearchIcon />
-                </InputLeftElement>
-                <Input />
-              </InputGroup>
-              <Button>{t("Submit")}</Button>
-            </HStack>
-          ) : null}
-        </>
-      ) : (
-        <>
-          {showOn([
-            ServiceType.Hotel,
-            ServiceType.HolidayRentals,
-            ServiceType.BeautyCenter,
-          ]) ? (
-            <LocationSearchInput
-              onLocationSelect={(location) => {
-                visit((routes) =>
-                  routes.visitServiceLocationSearchResults(
-                    serviceType,
-                    location,
-                  ),
-                );
-              }}
-            />
-          ) : null}
-
-          {showOn([ServiceType.Restaurant]) ? (
-            <ResturantSearchInput
-              onSubmit={() =>
-                visit((routes) =>
-                  routes.visitServiceLocationSearchResults(
-                    ServicesRequestKeys.restaurant,
-                    "location",
-                  ),
-                )
-              }
-            />
-          ) : null}
-
-          {showOn([ServiceType.HealthCenter]) ? (
-            <HealthCenterSearchBox />
-          ) : null}
-          {showOn([ServiceType.Vehicle]) ? <VehicleSearchBox /> : null}
-        </>
-      )}
+      {isMobile ? renderMobileSearchBar() : renderDesktopSearchBar()}
     </React.Fragment>
   );
-};
-
-export const MarketHealthCenterServiceCardAlt: React.FC<{
-  title: string;
-  location: string;
-  speciality: string;
-  thumbnail: string;
-  appointments: WorkingDaysCalenderProps["workingDates"];
-  bookedAppointments: WorkingDaysCalenderProps["workingDates"];
-}> = ({
-  location,
-  speciality,
-  thumbnail,
-  title,
-  appointments,
-  bookedAppointments,
-}) => {
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-2 p-1">
-        <AspectRatioImage alt={title} ratio={1.2} src={thumbnail} />
-
-        <div className="p-1 flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text font-medium text-primary">{title}</p>
-            <p className="text-lg text-gray-800 font-semibold">{speciality}</p>
-            <div className="flex text-gray-500 flex-col gap-2">
-              <p className="text-sm ">Address</p>
-              <p className="text-sm">{location}</p>
-            </div>
-          </div>
-
-          <div className="max-h-40 overflow-y-scroll">
-            <WorkingDaysCalender
-              takenDates={bookedAppointments}
-              workingDates={appointments}
-            />
-          </div>
-
-          <Button className="w-full" colorScheme="darkbrown">
-            <HStack className="text-white">
-              <p className="text-sm font-semibold">{t("Book now")}</p>
-              <ArrowRightIcon />
-            </HStack>
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-export const MarketVehicleServiceSearchCardAlt: React.FC<{
-  pricePerDay: number;
-  title: string;
-  thumbnail: string;
-  airCondition: boolean;
-  windows: number;
-  passengers: number;
-  gps: boolean;
-  luggage: number;
-}> = ({
-  pricePerDay,
-  thumbnail,
-  title,
-  airCondition = true,
-  gps = true,
-  luggage = 0,
-  passengers = 0,
-  windows = 0,
-}) => {
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-2 p-1">
-        <AspectRatioImage src={thumbnail} alt={title} ratio={1.2} />
-        <div className="flex flex-col gap-2">
-          <p>{title}</p>
-
-          <HStack className="flex-wrap">
-            {airCondition ? (
-              <HStack>
-                <AirConditionIcon className="text-sm" />
-                <p className="text-xs">{t("A/C")}</p>
-              </HStack>
-            ) : null}
-
-            {gps ? (
-              <HStack>
-                <GPSIcon className="text-sm" />
-                <p className="text-xs">{t("GPS")}</p>
-              </HStack>
-            ) : null}
-
-            {passengers ? (
-              <HStack>
-                <PersonGroupIcon className="text-sm" />
-                <p className="text-xs">{passengers}</p>
-              </HStack>
-            ) : null}
-
-            {luggage ? (
-              <HStack>
-                <TransportLuggageIcon className="text-sm" />
-                <p className="text-xs">{luggage}</p>
-              </HStack>
-            ) : null}
-
-            {windows ? (
-              <HStack>
-                <CarWindowIcon className="text-sm" />
-                <p className="text-xs">{windows}</p>
-              </HStack>
-            ) : null}
-          </HStack>
-
-          <div className="flex items-end">
-            <PriceDisplay
-              price={pricePerDay}
-              symbolProps={{ className: "text-primary" }}
-            />
-            /{t("day")}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-export const MarketBeautyCenterSearchCardAlt: React.FC<{
-  title: string;
-  thumbnail: string;
-  category: string;
-  rate: number;
-  reviews: number;
-  id: string;
-}> = ({ category, id, rate, reviews, thumbnail, title }) => {
-  const { t } = useTranslation();
-
-  return (
-    <div className="flex flex-col gap-1 p-1">
-      <AspectRatioImage
-        className="rounded-md"
-        alt={title}
-        ratio={1.2}
-        src={thumbnail}
-      />
-      <div className="p-1 flex flex-col gap-4">
-        <p className="font-semibold">{title}</p>
-        <p className="text-sm">{category}</p>
-        <HStack>
-          <StarIcon className="text-yellow-300" />
-          <HStack className="gap-1 text-grayText text-xs">
-            <p>
-              {rate}/{5}
-            </p>
-            <DotIcon />
-            <p>{`(${reviews}) ${t("Reviews")}`}</p>
-          </HStack>
-        </HStack>
-        <Button className="w-full">
-          <HStack>
-            <p className="text-sm">{t("Show on map")}</p>
-            <MapIcon className="text-xl" />
-          </HStack>
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
-  __typename: "ServiceSearchResponse",
-  hasMore: true,
-  total: 100,
-  data: [
-    {
-      __typename: "Service",
-      id: "service-1",
-      name: "Service",
-      price: 250,
-      beds: 2,
-      bathrooms: 2,
-      adaptedFor: [ServiceAdaptation.NewBorn],
-      airCondition: true,
-      gpsAvailable: false,
-      seats: null,
-      windows: 4,
-      lugaggeCapacity: null,
-      treatmentCategory: null,
-      maxSpeedInKm: null,
-      brand: null,
-      description: "A service description.",
-      ingredients: null,
-      cleaningFee: 50,
-      reviews: 85,
-      thumbnail: "/shop.jpeg",
-      rating: 4.8,
-      type: ServiceType.Hotel,
-      title: "Luxury Suite",
-      speciality: "Dentist",
-      availableAppointments: null,
-      healthCenterBookedAppointments: [],
-      saved: true,
-      sellerId: "seller-1",
-      updatedAt: "2024-12-08T12:00:00.000Z",
-      shop: {
-        __typename: "Shop",
-        id: "shop-1",
-        status: ShopStatus.Active,
-        location: {
-          __typename: "Location",
-          address: "123 Main Street",
-          city: "Metropolis",
-          country: "Countryland",
-          lat: 40.7128,
-          long: -74.006,
-          state: "Stateville",
-        },
-        sellerProfile: {
-          __typename: "Profile",
-          username: "LuxurySeller",
-          verified: true,
-          photo: "/shop-2.jpeg",
-        },
-      },
-    },
-    {
-      __typename: "Service",
-      id: "service-2",
-      name: "Service",
-      price: 40,
-      beds: null,
-      bathrooms: null,
-      adaptedFor: null,
-      airCondition: true,
-      gpsAvailable: true,
-      seats: 4,
-      windows: 4,
-      lugaggeCapacity: 2,
-      treatmentCategory: null,
-      maxSpeedInKm: 180,
-      brand: "EconomyBrand",
-      description: "A service description.",
-      ingredients: null,
-      cleaningFee: 10,
-      reviews: 64,
-      thumbnail: "/shop.jpeg",
-      rating: 4.2,
-      type: ServiceType.Vehicle,
-      title: "Compact Car",
-      speciality: "Dentist",
-      availableAppointments: null,
-      healthCenterBookedAppointments: [],
-      saved: false,
-      sellerId: "seller-2",
-      updatedAt: "2024-12-08T12:00:00.000Z",
-      shop: {
-        __typename: "Shop",
-        id: "shop-2",
-        status: ShopStatus.Active,
-        location: {
-          __typename: "Location",
-          address: "456 Side Street",
-          city: "Smalltown",
-          country: "Countryland",
-          lat: 38.8977,
-          long: -77.0365,
-          state: "Stateburg",
-        },
-        sellerProfile: {
-          __typename: "Profile",
-          username: "CarRentalPro",
-          verified: false,
-          photo: "/shop-2.jpeg",
-        },
-      },
-    },
-
-    {
-      __typename: "Service",
-      id: "service-1",
-      name: "Service",
-      price: 250,
-      beds: 2,
-      bathrooms: 2,
-      adaptedFor: [ServiceAdaptation.NewBorn],
-      airCondition: true,
-      gpsAvailable: false,
-      seats: null,
-      windows: 4,
-      lugaggeCapacity: null,
-      treatmentCategory: null,
-      maxSpeedInKm: null,
-      brand: null,
-      description: "A service description.",
-      ingredients: null,
-      cleaningFee: 50,
-      reviews: 85,
-      thumbnail: "/shop.jpeg",
-      rating: 4.8,
-      type: ServiceType.Hotel,
-      title: "Luxury Suite",
-      speciality: "Dentist",
-      availableAppointments: null,
-      healthCenterBookedAppointments: [],
-      saved: true,
-      sellerId: "seller-1",
-      updatedAt: "2024-12-08T12:00:00.000Z",
-      shop: {
-        __typename: "Shop",
-        id: "shop-1",
-        status: ShopStatus.Active,
-        location: {
-          __typename: "Location",
-          address: "123 Main Street",
-          city: "Metropolis",
-          country: "Countryland",
-          lat: 40.7128,
-          long: -74.006,
-          state: "Stateville",
-        },
-        sellerProfile: {
-          __typename: "Profile",
-          username: "LuxurySeller",
-          verified: true,
-          photo: "/shop-2.jpeg",
-        },
-      },
-    },
-
-    {
-      __typename: "Service",
-      id: "service-1",
-      name: "Service",
-      price: 250,
-      beds: 2,
-      bathrooms: 2,
-      adaptedFor: [ServiceAdaptation.NewBorn],
-      airCondition: true,
-      gpsAvailable: false,
-      seats: null,
-      windows: 4,
-      lugaggeCapacity: null,
-      treatmentCategory: null,
-      maxSpeedInKm: null,
-      brand: null,
-      description: "A service description.",
-      ingredients: null,
-      cleaningFee: 50,
-      reviews: 85,
-      thumbnail: "/shop.jpeg",
-      rating: 4.8,
-      type: ServiceType.Hotel,
-      title: "Luxury Suite",
-      speciality: "Dentist",
-      availableAppointments: null,
-      healthCenterBookedAppointments: [],
-      saved: true,
-      sellerId: "seller-1",
-      updatedAt: "2024-12-08T12:00:00.000Z",
-      shop: {
-        __typename: "Shop",
-        id: "shop-1",
-        status: ShopStatus.Active,
-        location: {
-          __typename: "Location",
-          address: "123 Main Street",
-          city: "Metropolis",
-          country: "Countryland",
-          lat: 40.7128,
-          long: -74.006,
-          state: "Stateville",
-        },
-        sellerProfile: {
-          __typename: "Profile",
-          username: "LuxurySeller",
-          verified: true,
-          photo: "/shop-2.jpeg",
-        },
-      },
-    },
-  ],
 };
