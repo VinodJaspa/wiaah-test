@@ -13,6 +13,7 @@ export interface PriceDisplayProps extends HtmlDivProps {
   compact?: boolean;
   displayCurrency?: boolean;
   symbolProps?: HtmlDivProps;
+  className?: string;
 }
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
