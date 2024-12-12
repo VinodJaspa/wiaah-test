@@ -11,6 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { LuMessageSquare } from "react-icons/lu";
+import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
 
 export interface Location {
   address: string;
@@ -23,7 +24,7 @@ export interface Location {
 
 interface MarketRestaurantServiceSearchCardAltProps {
   name: string;
-  thumbnail: string;
+  images: string[];
   rating: number;
   reviews: number;
   location: Location;
@@ -32,11 +33,11 @@ interface MarketRestaurantServiceSearchCardAltProps {
 
 export const MarketRestaurantServiceSearchCardAlt: React.FC<
   MarketRestaurantServiceSearchCardAltProps
-> = ({ name, thumbnail, rating, reviews, location, price }) => {
+> = ({ name, images, rating, reviews, location, price }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-1 p-1">
-      <Carousel slides={["/shop.jpeg", "/shop-2.jpeg", "/shop-3.jpeg"]} />
+      <Carousel slides={images} />
       <div className="flex flex-col gap-2 p-1">
         <HStack>
           <p className="font-semibold">{location.country}</p>
@@ -95,23 +96,17 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-transform duration-200 ${
-              index === currentIndex ? "translate-x-0" : "translate-x-full"
-            } ${index < currentIndex ? "-translate-x-full" : ""}`}
+            className={`absolute inset-0 transition-transform duration-200 ${index === currentIndex ? "translate-x-0" : "translate-x-full"
+              } ${index < currentIndex ? "-translate-x-full" : ""}`}
           >
-            <AspectRatioImage
-              alt={`slide-${index}`}
-              imageClassName="relative hover:bg-opacity-40"
-              src={slide}
-              ratio={1.05}
-            >
-              <Button
-                colorScheme="primary"
-                className="hidden hover:visible absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              >
-                Details
-              </Button>
-            </AspectRatioImage>
+            <MarkdetServiceSearchHoverOverlay>
+              <AspectRatioImage
+                alt={`slide-${index}`}
+                imageClassName="relative hover:bg-opacity-40"
+                src={slide}
+                ratio={1.05}
+              />
+            </MarkdetServiceSearchHoverOverlay>
             {slide && (
               <div className="absolute top-4 left-4 bg-gray-200 text-black px-2 py-1 rounded-md shadow-md">
                 % Great Deal
@@ -124,13 +119,13 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
       {/* Navigation Buttons */}
       <button
         onClick={handlePrev}
-        className="absolute top-1/2 -translate-y-1/2 left-4 bg-gray-200 text-black  p-1"
+        className=" z-30 absolute top-1/2 -translate-y-1/2 left-4 bg-gray-200 text-black  p-1"
       >
         <IoIosArrowBack />
       </button>
       <button
         onClick={handleNext}
-        className="absolute top-1/2 -translate-y-1/2 right-4 bg-gray-200 text-black  p-1"
+        className=" z-30 absolute top-1/2 -translate-y-1/2 right-4 bg-gray-200 text-black  p-1"
       >
         <IoIosArrowForward />
       </button>
@@ -141,9 +136,8 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 mx-1 rounded-full ${
-              index === currentIndex ? "bg-white" : "bg-gray-400"
-            }`}
+            className={` z-30 w-2 h-2 mx-1 rounded-full ${index === currentIndex ? "bg-white" : "bg-gray-400"
+              }`}
           ></button>
         ))}
       </div>
