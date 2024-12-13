@@ -1,16 +1,16 @@
 import React from "react";
 
 interface HoverOverlayProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onButtonClick?: () => void;
 }
 
-export const MarkdetServiceSearchHoverOverlay: React.FC<HoverOverlayProps> = ({
+export const MarketServiceSearchHoverOverlay: React.FC<HoverOverlayProps> = ({
   children,
   onButtonClick,
 }) => {
   return (
-    <div className="relative group">
+    <div className="relative group w-full h-full">
       {children}
       <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
         <button
