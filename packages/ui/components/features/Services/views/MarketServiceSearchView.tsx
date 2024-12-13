@@ -72,6 +72,7 @@ export const MarketServiceSearchView: React.FC<{
             <>
               {showOn([ServiceType.Hotel]) ? (
                 <MarketHolidayRentalsServiceSearchCardAlt
+                  id={id}
                   title={name}
                   thumbnail={thumbnail}
                   description={description}
@@ -89,6 +90,7 @@ export const MarketServiceSearchView: React.FC<{
               ) : null}
               {showOn([ServiceType.Restaurant]) ? (
                 <MarketRestaurantServiceSearchCardAlt
+                  id={id}
                   reviews={reviews}
                   location={shop.location}
                   name={name}
@@ -100,6 +102,7 @@ export const MarketServiceSearchView: React.FC<{
 
               {showOn([ServiceType.HealthCenter]) ? (
                 <MarketHealthCenterServiceCardAlt
+                  id={id}
                   bookedAppointments={healthCenterBookedAppointments}
                   title={name}
                   location={`${shop?.location?.city}, ${shop?.location?.country}`}
@@ -111,6 +114,7 @@ export const MarketServiceSearchView: React.FC<{
 
               {showOn([ServiceType.Vehicle]) ? (
                 <MarketVehicleServiceSearchCardAlt
+                  id={id}
                   title={name}
                   airCondition={!!airCondition}
                   gps={!!gpsAvailable}
@@ -136,6 +140,7 @@ export const MarketServiceSearchView: React.FC<{
 
               {showOn([ServiceType.HolidayRentals]) ? (
                 <MarketHolidayRentalsServiceSearchCardAlt
+                  id={id}
                   title={name}
                   thumbnail={thumbnail}
                   description={description}
