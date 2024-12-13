@@ -26,21 +26,50 @@ import {
   ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
+  ServiceWeekdaysWorkingHours,
+  WeekdaysWorkingHours,
 } from "@features/API";
+const convertMapScheduleToDates = (
+  schedule: WeekdaysWorkingHours,
+  capitalizeWeekdays: boolean = true,
+): { date: string; workingHoursRanges: { from: string; to: string }[] }[] => {
+  if (!schedule) return [];
+
+  return Object.entries(schedule).map(([key, value]) => {
+    const date = capitalizeWeekdays
+      ? key.charAt(0).toUpperCase() + key.slice(1) // Capitalize weekday (e.g., "Mo")
+      : key;
+
+    if (value && typeof value === "object" && value.periods.length > 0) {
+      return {
+        date,
+        workingHoursRanges: value.periods.map((period: string) => {
+          const [from, to] = period.split("-");
+          return { from, to };
+        }),
+      };
+    }
+
+    return {
+      date,
+      workingHoursRanges: [], // Empty for null or undefined values
+    };
+  });
+};
 
 export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
   id,
 }) => {
   const {
     data: _res,
-    isError,
+    isError: _isError,
     isLoading: _isloading,
   } = useGetHealthCenterDetailsQuery(id);
   const isLoading = false;
+  const isError = false;
   const res = FAKE_HEALTH_CENTER_DETAILS;
 
   const { isMobile } = useResponsive();
-  console.log("workingDays ===> " + res.workingSchedule.weekdays);
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
@@ -58,46 +87,16 @@ export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <WorkingDaysCalender
-            takenDates={
-              res
-                ? Object.values(res.takenSchedule!.weekdays).map((value) => ({
-                  date: new Date().toString(),
-                  workingHoursRanges:
-                    typeof value === "object"
-                      ? [{ from: value!.periods[0], to: value!.periods[1] }]
-                      : [],
-                }))
-                : []
-            }
-            workingDates={
-              res
-                ? Object.entries(res.workingSchedule?.weekdays || {}).map(
-                  ([key, value]) => {
-                    if (
-                      value &&
-                      typeof value === "object" &&
-                      value.periods.length > 0
-                    ) {
-                      return {
-                        date: new Date().toISOString(), // Replace with actual logic if needed
-                        workingHoursRanges: value.periods.map(
-                          (period: string) => {
-                            const [from, to] = period.split("-");
-                            return { from, to };
-                          },
-                        ),
-                      };
-                    }
-                    return {
-                      date: new Date().toISOString(), // Placeholder if no periods
-                      workingHoursRanges: [],
-                    };
-                  },
-                )
-                : []
-            }
-          />
+          <div className="w-full h-full mt-4 ">
+            <WorkingDaysCalender
+              takenDates={convertMapScheduleToDates(
+                res?.takenSchedule?.weekdays,
+              )}
+              workingDates={convertMapScheduleToDates(
+                res?.workingSchedule?.weekdays,
+              )}
+            />
+          </div>
         }
       >
         {res ? (
@@ -293,14 +292,8 @@ const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
         __typename: "ServiceDayWorkingHours",
         periods: ["09:00-17:00"],
       },
-      sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-23:00"],
-      },
-      su: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-20:00"],
-      },
+      sa: null,
+      su: null,
       th: {
         __typename: "ServiceDayWorkingHours",
         periods: ["09:00-17:00"],
@@ -324,16 +317,10 @@ const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
       },
       mo: {
         __typename: "ServiceDayWorkingHours",
-        periods: ["09:00-17:00"],
+        periods: ["09:00-17:00", "07:00-11:00"],
       },
-      sa: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-23:00"],
-      },
-      su: {
-        __typename: "ServiceDayWorkingHours",
-        periods: ["10:00-20:00"],
-      },
+      sa: null,
+      su: null,
       th: {
         __typename: "ServiceDayWorkingHours",
         periods: ["09:00-17:00"],
