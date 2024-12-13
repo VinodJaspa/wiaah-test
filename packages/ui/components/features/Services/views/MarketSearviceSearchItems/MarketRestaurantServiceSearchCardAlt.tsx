@@ -11,7 +11,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { LuMessageSquare } from "react-icons/lu";
-import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { useRouter } from "next/router";
 
 export interface Location {
   address: string;
@@ -29,15 +30,16 @@ interface MarketRestaurantServiceSearchCardAltProps {
   reviews: number;
   location: Location;
   price: number;
+  id: string;
 }
 
 export const MarketRestaurantServiceSearchCardAlt: React.FC<
   MarketRestaurantServiceSearchCardAltProps
-> = ({ name, images, rating, reviews, location, price }) => {
+> = ({ name, id, images, rating, reviews, location, price }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-1 p-1">
-      <Carousel slides={images} />
+      <Carousel slides={images} id={id} />
       <div className="flex flex-col gap-2 p-1">
         <HStack>
           <p className="font-semibold">{location.country}</p>
@@ -74,9 +76,11 @@ export const MarketRestaurantServiceSearchCardAlt: React.FC<
 
 interface CarouselProps {
   slides: string[];
+  id: string;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ slides }) => {
+const Carousel: React.FC<CarouselProps> = ({ slides, id }) => {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -94,52 +98,50 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
       {/* Image */}
       <div className="relative w-full h-[300px] overflow-hidden">
         {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-transform duration-200 ${index === currentIndex ? "translate-x-0" : "translate-x-full"
-              } ${index < currentIndex ? "-translate-x-full" : ""}`}
-          >
-            <MarkdetServiceSearchHoverOverlay>
+          <>
+            <MarketServiceSearchHoverOverlay
+              onButtonClick={() => router.push(`/service/restaurant/${id}`)}
+            >
               <AspectRatioImage
                 alt={`slide-${index}`}
                 imageClassName="relative hover:bg-opacity-40"
                 src={slide}
                 ratio={1.05}
               />
-            </MarkdetServiceSearchHoverOverlay>
+            </MarketServiceSearchHoverOverlay>
             {slide && (
               <div className="absolute top-4 left-4 bg-gray-200 text-black px-2 py-1 rounded-md shadow-md">
                 % Great Deal
               </div>
             )}
-          </div>
+          </>
         ))}
-      </div>
 
-      {/* Navigation Buttons */}
-      <button
-        onClick={handlePrev}
-        className=" z-30 absolute top-1/2 -translate-y-1/2 left-4 bg-gray-200 text-black  p-1"
-      >
-        <IoIosArrowBack />
-      </button>
-      <button
-        onClick={handleNext}
-        className=" z-30 absolute top-1/2 -translate-y-1/2 right-4 bg-gray-200 text-black  p-1"
-      >
-        <IoIosArrowForward />
-      </button>
+        {/* Navigation Buttons */}
+        <button
+          onClick={handlePrev}
+          className=" z-30 absolute top-1/2 -translate-y-1/2 left-4 bg-gray-200 text-black  p-1"
+        >
+          <IoIosArrowBack />
+        </button>
+        <button
+          onClick={handleNext}
+          className=" z-30 absolute top-1/2 -translate-y-1/2 right-4 bg-gray-200 text-black  p-1"
+        >
+          <IoIosArrowForward />
+        </button>
 
-      {/* Dot Indicators */}
-      <div className="flex justify-center mt-4 absolute left-1/2 transform -translate-x-1/2 bottom-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={` z-30 w-2 h-2 mx-1 rounded-full ${index === currentIndex ? "bg-white" : "bg-gray-400"
-              }`}
-          ></button>
-        ))}
+        {/* Dot Indicators */}
+        <div className="flex justify-center mt-4 absolute left-1/2 transform -translate-x-1/2 bottom-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={` z-30 w-2 h-2 mx-1 rounded-full ${index === currentIndex ? "bg-white" : "bg-gray-400"
+                }`}
+            ></button>
+          ))}
+        </div>
       </div>
     </div>
   );
