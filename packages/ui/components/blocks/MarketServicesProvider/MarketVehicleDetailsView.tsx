@@ -57,7 +57,7 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="flex flex-col gap-2 text-xl">
+          <div className="flex flex-col gap-2 text-xl mt-4">
             <DateAndTimeInput
               onDateChange={() => { }}
               dateLabel={t("Pick-up Date")}
