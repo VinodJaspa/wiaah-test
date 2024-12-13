@@ -104,10 +104,12 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <ServiceReservastionForm
-            sellerId={res?.ownerId! || ""}
-            selectedServicesIds={[]}
-          />
+          <div className="w-full h-full mt-4">
+            <ServiceReservastionForm
+              sellerId={res?.ownerId! || ""}
+              selectedServicesIds={[]}
+            />
+          </div>
         }
       >
         {res ? (
