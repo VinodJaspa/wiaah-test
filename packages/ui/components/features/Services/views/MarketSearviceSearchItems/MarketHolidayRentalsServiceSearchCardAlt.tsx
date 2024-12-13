@@ -1,8 +1,9 @@
 import { AspectRatioImage, PriceDisplay, Rate } from "@partials";
+import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
 
 // Interface for seller information
 interface SellerInfo {
@@ -13,6 +14,7 @@ interface SellerInfo {
 
 // Props for the holiday rentals card component
 interface MarketHolidayRentalsProps {
+  id: string;
   title: string;
   thumbnail: string;
   monthlyPrice: number;
@@ -28,6 +30,7 @@ interface MarketHolidayRentalsProps {
 export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   MarketHolidayRentalsProps
 > = ({
+  id,
   title,
   thumbnail,
   monthlyPrice,
@@ -37,6 +40,7 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   location,
   date,
 }) => {
+    const router = useRouter();
     const { t } = useTranslation(); // Translation hook for localization
 
     // State to manage whether the rental is saved
@@ -50,25 +54,32 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
     return (
       <div className="flex flex-col gap-1 p-1">
         {/* Image with aspect ratio and save toggle button */}
-        <MarkdetServiceSearchHoverOverlay>
-          <AspectRatioImage
-            ratio={1.04}
-            imageClassName="rounded-xl relative"
-            src={thumbnail}
-            alt={title}
+        <div className="relative">
+          <MarketServiceSearchHoverOverlay
+            onButtonClick={() => router.push(`/service/holiday_rentals/${id}`)}
           >
-            <div
-              className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40 cursor-pointer"
-              onClick={toggleSaved}
-            >
-              {isSaved ? (
-                <IoIosHeart className="w-5 h-5" />
-              ) : (
-                <IoIosHeartEmpty className="w-5 h-5" />
-              )}
-            </div>
-          </AspectRatioImage>
-        </MarkdetServiceSearchHoverOverlay>
+            <AspectRatioImage
+              ratio={1.04}
+              imageClassName="rounded-xl relative"
+              src={thumbnail}
+              alt={title}
+            ></AspectRatioImage>
+          </MarketServiceSearchHoverOverlay>
+
+          <div
+            className="absolute top-2 right-2 text-white flex justify-center items-center rounded-full p-1 bg-black bg-opacity-40 cursor-pointer z-30"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleSaved();
+            }}
+          >
+            {isSaved ? (
+              <IoIosHeart className="w-5 h-5" />
+            ) : (
+              <IoIosHeartEmpty className="w-5 h-5" />
+            )}
+          </div>
+        </div>
 
         {/* Rental details section */}
         <div className="flex flex-col gap-2">

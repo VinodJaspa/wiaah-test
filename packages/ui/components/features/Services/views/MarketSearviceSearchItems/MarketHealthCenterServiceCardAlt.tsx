@@ -2,8 +2,10 @@ import React from "react";
 import { WorkingDaysCalender, WorkingDaysCalenderProps } from "@blocks";
 import { useTranslation } from "react-i18next";
 import { ArrowRightIcon, AspectRatioImage, Button, HStack } from "@partials";
-import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { useRouter } from "next/router";
 interface MarketHealthCenterServiceCardAltProps {
+  id: string;
   title: string;
   location: string;
   speciality: string;
@@ -15,6 +17,7 @@ interface MarketHealthCenterServiceCardAltProps {
 export const MarketHealthCenterServiceCardAlt: React.FC<
   MarketHealthCenterServiceCardAltProps
 > = ({
+  id,
   location,
   speciality,
   thumbnail,
@@ -22,13 +25,16 @@ export const MarketHealthCenterServiceCardAlt: React.FC<
   appointments,
   bookedAppointments,
 }) => {
+    const router = useRouter();
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-2 p-1">
         {/* Render the thumbnail image with a specific aspect ratio */}
-        <MarkdetServiceSearchHoverOverlay>
+        <MarketServiceSearchHoverOverlay
+          onButtonClick={() => router.push(`/service/health_center/${id}`)}
+        >
           <AspectRatioImage alt={title} ratio={1.2} src={thumbnail} />
-        </MarkdetServiceSearchHoverOverlay>
+        </MarketServiceSearchHoverOverlay>
 
         <div className="p-1 flex flex-col gap-4">
           {/* Render the card header containing title, speciality, and location */}

@@ -2,34 +2,38 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "antd";
 import { AspectRatioImage, HStack, Rate } from "@partials";
-import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { useRouter } from "next/router";
 
 interface MarketBeautyCenterSearchCardAltProps {
+  id: string;
   title: string;
   thumbnail: string;
   category: string;
   rate: number;
   reviews: number;
-  id: string;
   name: string;
 }
 
 export const MarketBeautyCenterSearchCardAlt: React.FC<
   MarketBeautyCenterSearchCardAltProps
 > = ({ category, id, rate, reviews, thumbnail, title, name }) => {
+  const router = useRouter();
   const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-1 p-1 shadow-md">
       {/* Image section with an aspect ratio */}
-      <MarkdetServiceSearchHoverOverlay>
+      <MarketServiceSearchHoverOverlay
+        onButtonClick={() => router.push(`/service/beauty_center/${id}`)}
+      >
         <AspectRatioImage
           className="rounded-md"
           alt={title}
           ratio={0.7}
           src={thumbnail}
         />
-      </MarkdetServiceSearchHoverOverlay>
+      </MarketServiceSearchHoverOverlay>
 
       {/* Content section */}
       <div className="p-1 flex flex-col gap-3">
