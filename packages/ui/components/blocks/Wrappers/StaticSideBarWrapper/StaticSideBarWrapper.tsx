@@ -14,16 +14,19 @@ export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
 }) => {
   const { isTablet } = useResponsive();
   return (
-    <div className="flex gap-[3.75rem] ">
+    <div className="flex gap-[3.75rem]">
+      {/* Main content area */}
       <div
         style={{
-          width: `calc(100% - min(${isTablet ? "0rem" : "30rem"} , 100%))`,
+          width: `calc(100% - min(${isTablet ? "0rem" : "30rem"}, 100%))`,
         }}
         className="flex flex-col gap-4"
       >
         {children}
       </div>
-      <div className="w-[0px] overflow-hidden md:overflow-visible md:w-[min(30rem,100%)] h-[900px]  ">
+
+      {/* Sidebar */}
+      <div className="w-[0px] overflow-hidden md:overflow-visible md:w-[min(30rem,100%)]">
         <FixedScrollingWrapper>{runIfFn(sidebar)}</FixedScrollingWrapper>
       </div>
     </div>
@@ -33,20 +36,14 @@ export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
 export const FixedScrollingWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const WrapperRef = React.useRef<HTMLDivElement>(null);
-  const { passed, y } = useElementScrolling(WrapperRef);
-
   return (
-    <div ref={WrapperRef} className={`w-full relative h-fit`}>
-      <div
-        style={{
-          top: `${Math.abs(0) + 16 || 0}px`,
-        }}
-        className={`${passed ? `absolute left-0` : ""
-          } w-full h-fit transition-all`}
-      >
-        {children}
-      </div>
+    <div
+      className="sticky top-0 max-h-screen overflow-y-auto mt-4"
+      style={{
+        zIndex: 10, // Ensure it stays above other content
+      }}
+    >
+      {children}
     </div>
   );
 };
