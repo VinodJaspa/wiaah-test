@@ -1,10 +1,5 @@
 import React from "react";
 import { WorkingDayColumn } from "./WorkingDayColumn";
-import { Slider, ArrowLeftIcon, ArrowRightIcon } from "@UI";
-import { isSameMinute } from "utils";
-import { ServiceDayWorkingHours } from "@features/API";
-import { string } from "yup";
-import { WorkingDate } from "@UI/../types/src";
 
 export interface WorkingDaysCalenderProps {
   workingDates: {
@@ -95,9 +90,10 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   takenDates,
 }) => {
   const dates = splitDatesByDay(workingDates);
+  console.log("DATES ==> " + JSON.stringify(workingDates[0]));
 
   return (
-    <div className="flex gap-4 px-2 ">
+    <div className="flex gap-4 px-2 w-full">
       {Array.isArray(dates)
         ? dates.map((date, i) => (
           <WorkingDayColumn
