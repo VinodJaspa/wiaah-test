@@ -10,10 +10,12 @@ import {
   PriceDisplay,
   TransportLuggageIcon,
 } from "@partials";
-import { MarkdetServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
+import { useRouter } from "next/router";
 
 // Define an interface for the component props
 interface MarketVehicleServiceSearchCardAltProps {
+  id: string;
   pricePerDay: number;
   title: string;
   thumbnail: string;
@@ -27,6 +29,7 @@ interface MarketVehicleServiceSearchCardAltProps {
 export const MarketVehicleServiceSearchCardAlt: React.FC<
   MarketVehicleServiceSearchCardAltProps
 > = ({
+  id,
   pricePerDay,
   thumbnail,
   title,
@@ -36,15 +39,18 @@ export const MarketVehicleServiceSearchCardAlt: React.FC<
   passengers = 0, // Default: no passenger capacity
   windows = 0, // Default: no windows
 }) => {
+    const router = useRouter();
     const { t } = useTranslation(); // Localization hook
 
     return (
       <div className="flex flex-col gap-2 p-1">
         {/* Display the vehicle's thumbnail with a fixed aspect ratio */}
 
-        <MarkdetServiceSearchHoverOverlay>
+        <MarketServiceSearchHoverOverlay
+          onButtonClick={() => router.push(`/service/vehicle/${id}`)}
+        >
           <AspectRatioImage src={thumbnail} alt={title} ratio={1.05} />
-        </MarkdetServiceSearchHoverOverlay>
+        </MarketServiceSearchHoverOverlay>
 
         <div className="flex flex-col gap-2 ">
           {/* Display the vehicle's title */}
