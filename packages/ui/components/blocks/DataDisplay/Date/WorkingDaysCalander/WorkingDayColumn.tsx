@@ -42,7 +42,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
               onClick={date.available ? () => onClick(date.date) : undefined}
               key={i}
               className={`${date.available ? "bg-primary-100" : "bg-gray-100"
-                } w-full p-[2px] h-8 flex justify-center items-center rounded font-bold`}
+                } w-full p-[2px] px-2 h-8  flex justify-center items-center rounded font-bold whitespace-nowrap`}
             >
               {time ?? "--"}
             </button>
