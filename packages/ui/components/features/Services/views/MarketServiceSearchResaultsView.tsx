@@ -369,6 +369,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
             case ServiceType.Restaurant:
               return (
                 <MarketRestaurantServiceSearchCardAlt
+                  id={id}
                   reviews={reviews}
                   location={shop.location}
                   name={name}
@@ -380,6 +381,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
             case ServiceType.HealthCenter:
               return (
                 <MarketHealthCenterServiceCardAlt
+                  id={id}
                   bookedAppointments={healthCenterBookedAppointments}
                   title={name}
                   location={`${shop?.location?.city}, ${shop?.location?.country}`}
@@ -391,6 +393,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
             case ServiceType.Vehicle:
               return (
                 <MarketVehicleServiceSearchCardAlt
+                  id={id}
                   title={name}
                   airCondition={!!airCondition}
                   gps={!!gpsAvailable}
@@ -417,6 +420,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
             case ServiceType.HolidayRentals:
               return (
                 <MarketHolidayRentalsServiceSearchCardAlt
+                  id={id}
                   title={name}
                   thumbnail={thumbnail}
                   description={description}
