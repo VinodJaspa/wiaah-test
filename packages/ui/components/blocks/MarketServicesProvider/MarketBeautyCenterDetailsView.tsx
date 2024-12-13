@@ -55,7 +55,7 @@ export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <div className="w-full h-full ">
+          <div className="w-full h-full mt-4 ">
             <WorkingDaysCalender
               takenDates={
                 res
