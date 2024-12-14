@@ -14,7 +14,8 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   title,
 }) => {
   const { t } = useTranslation();
-  const policiesRef = usePublishRef((keys) => keys.polices);
+  const policiesRef = usePublishRef((keys) => keys.policies);
+
   return (
     <div ref={policiesRef} className="flex flex-col gap-4">
       <p className="font-bold text-3xl text-black text-opacity-80">{title}</p>
