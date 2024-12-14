@@ -19,23 +19,30 @@ export const SectionsScrollTabList: React.FC<SectionsScrollTabListProps> = ({
 }) => {
   const { t } = useTranslation();
   const { ScrollTo } = useScrollTo();
-  return visible ? (
+
+  if (!visible) return null;
+
+  return (
     <Tabs>
-      <TabsHeader className="justify-center flex-wrap" />
-      {tabs.map(({ slug, name }, i) => (
-        <React.Fragment key={i}>
-          <TabTitle TabKey={i}>
-            {({ currentTabIdx }) => (
-              <p
-                onClick={() => ScrollTo(slug)}
-                className={`${currentTabIdx === i ? "text-primary" : ""}`}
-              >
-                {t(name)}
-              </p>
-            )}
-          </TabTitle>
-        </React.Fragment>
-      ))}
+      {({ currentTabIdx, setCurrentTabIdx }) => (
+        <>
+          <TabsHeader className="justify-center flex-wrap">
+            {tabs.map(({ slug, name }, index) => (
+              <TabTitle key={index} TabKey={index}>
+                <p
+                  onClick={() => {
+                    ScrollTo(slug);
+                    setCurrentTabIdx(index);
+                  }}
+                  className={`cursor-pointer ${currentTabIdx === index ? "text-primary" : "text-black"}`}
+                >
+                  {t(name)}
+                </p>
+              </TabTitle>
+            ))}
+          </TabsHeader>
+        </>
+      )}
     </Tabs>
-  ) : null;
+  );
 };
