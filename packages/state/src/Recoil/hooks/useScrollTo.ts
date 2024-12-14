@@ -44,12 +44,13 @@ type PublishableRefs = {
   contact: string;
   rooms: string;
   resturants: string;
-  polices: string;
+  policies: string;
   reviews: string;
   doctors: string;
   workingHours: string;
   localization: string;
   treatments: string;
+  menu: string;
 };
 
 const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
@@ -57,7 +58,7 @@ const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
   contact: "contact",
   description: "description",
   map: "map",
-  polices: "polices",
+  policies: "policies",
   resturants: "resturants",
   reviews: "reviews",
   rooms: "rooms",
@@ -65,10 +66,11 @@ const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
   workingHours: "workingHours",
   localization: "localization",
   treatments: "treatments",
+  menu: "menu",
 };
 
 export const usePublishRef = (
-  param: string | ((refs: typeof publishableRefs) => string)
+  param: string | ((refs: typeof publishableRefs) => string),
 ) => {
   const { addRef, removeRef } = useSetSectionRef();
   const key = typeof param === "function" ? param(publishableRefs) : param;
