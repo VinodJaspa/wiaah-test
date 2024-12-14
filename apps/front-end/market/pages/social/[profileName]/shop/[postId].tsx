@@ -12,10 +12,10 @@ import {
   SocialStoryState,
 } from "@src/state";
 import { PostCardPlaceHolder } from "placeholder";
-import { MasterLayout } from "@components";
+import { MasterLayout, ShopDetailsView } from "@components";
 import { ShopProductView } from "@components";
 
-const SocialShopPost: NextPage = ({}) => {
+const SocialShopPost: NextPage = ({ }) => {
   const shopProductPost: ShopCardInfo = shopCardInfoPlaceholder;
   const otherPosts: ShopCardInfo[] = ShopCardsInfoPlaceholder;
   const setPost = useSetRecoilState(SocialShopPostState);
@@ -105,7 +105,7 @@ const SocialShopPost: NextPage = ({}) => {
         <title>Wiaah | social shop post</title>
       </Head>
       <MasterLayout social>
-        <Container>{shopProductPost && <ShopProductView />}</Container>
+        <ShopDetailsView id={"4"} />
       </MasterLayout>
     </>
   );
