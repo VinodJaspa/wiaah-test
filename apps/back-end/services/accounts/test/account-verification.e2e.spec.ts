@@ -15,8 +15,9 @@ import { AppModule } from '../src/app.module';
 
 describe('account verification e2e', () => {
   let app: INestApplication;
-  let mockKafka = new NestKafkaClientMock();
-  let prisma: PrismaClient;
+  const mockKafka = new NestKafkaClientMock();
+
+  const prisma: PrismaClient;
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule],
