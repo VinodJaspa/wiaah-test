@@ -56,7 +56,13 @@ export const MarketRestaurantDetailsView: React.FC<{ id?: string }> = ({
       <Divider />
       <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={<ResturantFindTableFilterStepper />}>
+      <StaticSideBarWrapper
+        sidebar={
+          <div className="w-full h-full mt-4">
+            <ResturantFindTableFilterStepper />
+          </div>
+        }
+      >
         <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
             <ServicesProviderDescriptionSection
@@ -173,7 +179,7 @@ export const FAKE_RESTAURNAT_DETAILS: GetRestaurantQuery["getRestaurant"] = {
           ingredients: ["Chicken", "Garlic", "Pepper"],
           price: 25,
           name: "Grilled Chicken",
-          thumbnail: "image_url_1",
+          thumbnail: "/shop.jpeg",
         },
         {
           __typename: "Dish",
@@ -181,7 +187,7 @@ export const FAKE_RESTAURNAT_DETAILS: GetRestaurantQuery["getRestaurant"] = {
           ingredients: ["Beef", "Onion", "Salt"],
           price: 30,
           name: "Beef Steak",
-          thumbnail: "image_url_2",
+          thumbnail: "/shop.jpeg",
         },
       ],
     },
