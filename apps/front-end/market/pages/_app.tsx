@@ -4,35 +4,36 @@ import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider } from "@chakra-ui/react";
-import { ReactPubsubKeys } from "ui";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { AuthLayout, DataInitializationWrapper, ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
 import NextHead from "next/head";
 import { RoutingProvider } from "routing";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
-import { CoomingSoon, SeoWrapper } from "@components";
+import { useGraphqlRequestErrorCode } from "api";
+import { AccountType } from "types";
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-} from "@apollo/client";
-
-const coomingSoon = false;
+const handleAutoRedirect = (route: string, router: NextRouter) => {
+  const currRoute = router.route;
+  if (currRoute !== route && currRoute !== "/404") {
+    // router.push(`/${route}`);
+  }
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
-  // const client = new ApolloClient({
-  //   uri: "http://localhost:3004/graphql",
-  //   cache: new InMemoryCache(),
-  // });
-
   const router = useRouter();
+
+  // useGraphqlRequestErrorCode(
+  //   (v) => v.Unauthorized,
+  //   () => {
+  //     handleAutoRedirect("login", router);
+  //   },
+  // );
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -40,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <RoutingProvider
           back={() => router.back()}
           getBaseUrl={() => router.basePath}
-          getQuery={() => ClearNextJSQuery(router.query, router.pathname)}
+          getQuery={() => ClearNextJSQuery(router.query, router.route)}
           getCurrentPath={() => {
             return router.asPath;
           }}
@@ -53,26 +54,26 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-          <ReactPubsubProvider
-            keys={ReactPubsubKeys}
-            client={new ReactPubsubClient()}
-          >
-            <ReactSeoProvider TagWrapper={NextHead}>
-              <SeoWrapper>
-                <ChakraProvider>
-                  <CookiesProvider>
+          <ChakraProvider>
+            <CookiesProvider>
+              <AuthLayout>
+                <ReactPubsubProvider
+                  keys={ReactPubsubKeys}
+                  client={new ReactPubsubClient()}
+                >
+                  <ReactSeoProvider TagWrapper={NextHead}>
                     <RecoilRoot>
-                      {coomingSoon ? (
-                        <CoomingSoon />
-                      ) : (
-                        <Component {...pageProps} />
-                      )}
+                      <DataInitializationWrapper
+                        accountType={AccountType.Seller}
+                      >
+                        <Component suppressHydrationWarning {...pageProps} />
+                      </DataInitializationWrapper>
                     </RecoilRoot>
-                  </CookiesProvider>
-                </ChakraProvider>
-              </SeoWrapper>
-            </ReactSeoProvider>
-          </ReactPubsubProvider>
+                  </ReactSeoProvider>
+                </ReactPubsubProvider>
+              </AuthLayout>
+            </CookiesProvider>
+          </ChakraProvider>
         </RoutingProvider>
       </Hydrate>
     </QueryClientProvider>
