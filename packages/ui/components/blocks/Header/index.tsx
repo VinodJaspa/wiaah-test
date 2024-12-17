@@ -10,6 +10,7 @@ import {
   useGetMyProfileQuery,
   ShoppingCartOutlineIcon,
   SearchInput,
+  MultiStepDrawer,
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -23,6 +24,7 @@ import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid, useBreakpointValue } from "utils";
 import * as nookies from "nookies";
+import { ServiceType } from "@features/API";
 
 export interface HeaderProps {
   token?: string;
@@ -33,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [isopen, setisopen] = React.useState(false);
+  const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
@@ -45,6 +47,111 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   };
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
+
+  const steps = [
+    {
+      label: "holidays rentals",
+      url: ServiceType.HolidayRentals,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific rental",
+          url: "specific_rental",
+          steps: [
+            { label: "sub category 1", url: "rental_sub_category_1" },
+            { label: "sub category 2", url: "rental_sub_category_2" },
+            { label: "sub category 3", url: "rental_sub_category_3" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "hotels",
+      url: ServiceType.Hotel,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific hotel",
+          url: "specific_hotel",
+          steps: [
+            { label: "sub category 1", url: "hotel_sub_category_1" },
+            { label: "sub category 2", url: "hotel_sub_category_2" },
+            { label: "sub category 3", url: "hotel_sub_category_3" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "restaurants",
+      url: ServiceType.Restaurant,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific restaurant",
+          url: "specific_restaurant",
+          steps: [
+            { label: "sub category 1", url: "restaurant_sub_category_1" },
+            { label: "sub category 2", url: "restaurant_sub_category_2" },
+            { label: "sub category 3", url: "restaurant_sub_category_3" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "health center",
+      url: ServiceType.HealthCenter,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific health center",
+          url: "specific_health_center",
+          steps: [
+            { label: "sub category 1", url: "health_center_sub_category_1" },
+            { label: "sub category 2", url: "health_center_sub_category_2" },
+            { label: "sub category 3", url: "health_center_sub_category_3" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "vehicle",
+      url: ServiceType.Vehicle,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific vehicle",
+          url: "specific_vehicle",
+          steps: [
+            { label: "sub category 1", url: "vehicle_sub_category_1" },
+            { label: "sub category 2", url: "vehicle_sub_category_2" },
+            { label: "sub category 3", url: "vehicle_sub_category_3" },
+          ],
+        },
+      ],
+    },
+    {
+      label: "beauty center",
+      url: ServiceType.BeautyCenter,
+      steps: [
+        { label: "sub category 1", url: "sub_category_1" },
+        { label: "sub category 2", url: "sub_category_2" },
+        {
+          label: "specific beauty center",
+          url: "specific_beauty_center",
+          steps: [
+            { label: "sub category 1", url: "beauty_center_sub_category_1" },
+            { label: "sub category 2", url: "beauty_center_sub_category_2" },
+            { label: "sub category 3", url: "beauty_center_sub_category_3" },
+          ],
+        },
+      ],
+    },
+  ];
 
   return (
     <nav className="w-full bg-white">
@@ -95,7 +202,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
               id="burger-menu-toggle"
               className="flex cursor-pointer items-center space-x-2 hover:text-primary"
               onClick={() => {
-                visit((routes) => routes.visitMainPage());
+                setIsopen(true);
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
@@ -123,11 +230,11 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
           )}
         </Container>
       </div>
-      {/* <MultiStepDrawer
+      <MultiStepDrawer
         isOpen={isopen}
-        onClose={() => setisopen(false)}
+        onClose={() => setIsopen(false)}
         steps={steps}
-      /> */}
+      />
     </nav>
   );
 };
