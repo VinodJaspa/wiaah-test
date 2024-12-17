@@ -241,7 +241,7 @@ const TopSalesCategoryProducts: React.FC<{
             {...setTestid(`home-page-product`)}
             data-itemID={prod.id}
           >
-            <div className="flex flex-col gap-1  ">
+            <div className="flex flex-col gap-1 relative  ">
               <AspectRatioImage
                 imageClassName="rounded-t-xl"
                 src={prod.thumbnail}
@@ -564,18 +564,6 @@ const MostViewdVideso: React.FC = () => {
                 muted
                 className="border-4 h-[300px] sm:h-[400px]"
               />
-              <button
-                onClick={() => {
-                  // TODO: integrate
-                }}
-                className=" text-white z-30  p-3 flex justify-center items-center absolute bg-black bg-opacity-30 rounded-full top-2 right-2"
-              >
-                {prod.saved ? (
-                  <FaRegHeart className="w-5 h-5" />
-                ) : (
-                  <FaHeart className="w-5 h-5" />
-                )}
-              </button>
             </div>
             <div className="p-3 rounded-b-xl flex flex-col justify-between h-full">
               <div className="flex flex-col gap-2 ">
