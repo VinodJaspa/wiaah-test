@@ -35,7 +35,7 @@ const LinksStack: React.FC<{
   onClick?: (cate: string) => any;
 }> = ({ onStepSelect, steps, onClick }) => {
   return (
-    <div className="flex flex-col justify-center gap-2">
+    <div className="flex flex-col justify-center gap-2 pl-2 ">
       {steps &&
         steps.map((step, i) => {
           if (step.steps && step.steps.length > 0) {
@@ -44,7 +44,7 @@ const LinksStack: React.FC<{
                 className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-2 hover:bg-green-100"
                 onClick={() => onStepSelect(step)}
               >
-                <p className="group-hover:text-green-400">{step.label}</p>
+                <p className="group-hover:text-green-400 pl-2">{step.label}</p>
                 <FaChevronRight className="h-4 w-4" />
               </li>
             );
@@ -55,7 +55,7 @@ const LinksStack: React.FC<{
                 className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-2 hover:bg-green-100"
               >
                 <Link href={step.url}>
-                  <span className="group-hover:text-green-400">
+                  <span className="group-hover:text-green-400 ">
                     {step.label}
                   </span>
                 </Link>
@@ -95,7 +95,7 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
   const updateCurrentStep = (link: BreadCrumbLink) => {
     const stepIndex =
       path.findIndex(
-        (step) => step.label.toLowerCase() == link.text.toLowerCase()
+        (step) => step.label.toLowerCase() == link.text.toLowerCase(),
       ) + 1;
 
     if (stepIndex > -1) {
@@ -133,7 +133,7 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
             <div className="flex w-full items-center justify-between bg-gray-800 p-4 text-white">
               <span className="inline-flex items-center">
                 <Link href="/login">
-                  <span className="flex items-center">
+                  <span className="flex items-center font-semibold text-lg  ">
                     <FaUserAlt className="mr-2 h-4 w-4" />{" "}
                     {t("Hello_Sign_in", "Hello, Sign in")}
                   </span>
@@ -156,16 +156,23 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
                 className="group flex w-full cursor-pointer items-center justify-between rounded py-2 hover:bg-green-100"
                 onClick={() => resetInitalStep()}
               >
-                <FaChevronLeft className="h-4 w-4" />
-                <p className="uppercase group-hover:text-green-400">
-                  {t("Main_Menu", "Main Menu")}
-                </p>
+                <div className="flex items-center gap-2 px-2">
+                  {path.map((segment, index) => (
+                    <React.Fragment key={index}>
+                      {/* Display the segment */}
+                      <p className=" group-hover:text-green-400 ">
+                        {segment.label}
+                      </p>
+
+                      {/* Add an arrow between segments except after the last */}
+                      {index < path.length - 1 && (
+                        <FaChevronLeft className="h-4 w-4 rotate-180" />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
               </li>
             )}
-            <BreadCrumb
-              onLinkClick={(link) => updateCurrentStep(link)}
-              links={breadcrumbPath}
-            />
             <LinksStack
               onClick={handleNavToCate}
               onStepSelect={handleStepSelection}
