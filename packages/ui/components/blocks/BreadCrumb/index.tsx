@@ -20,7 +20,10 @@ export const BreadCrumb: React.FC<BreadCrumbProps> = ({
         links.length > 0 &&
         links.map((link, i) => (
           <BreadcrumbItem isLastChild={i + 1 == links.length}>
-            <BreadcrumbLink onClick={() => onLinkClick && onLinkClick(link)}>
+            <BreadcrumbLink
+              sx={{ pl: "4" }}
+              onClick={() => onLinkClick && onLinkClick(link)}
+            >
               {link.text}
             </BreadcrumbLink>
           </BreadcrumbItem>
