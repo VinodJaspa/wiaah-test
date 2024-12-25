@@ -14,7 +14,9 @@
   },
   "shadow": {
     "dependencies": [
-      "recoil"
+      "recoil",
+      "react",
+      "react-dom"
     ],
     "devDependencies": [
       "@types/react",
