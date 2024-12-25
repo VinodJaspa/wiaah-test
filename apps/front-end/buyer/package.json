@@ -9,16 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "hooks": "*",
     "api": "*",
+    "hooks": "*",
+    "nest-utils": "*",
+    "react-seo": "*",
+    "shared-hooks": "*",
     "state": "*",
+    "types": "*",
     "ui": "*",
     "uris": "*",
     "utils": "*",
     "validation": "*",
-    "types": "*",
-    "nest-utils": "*",
-    "placeholder": "*"
+    "placeholder": "*",
+    "react-pubsub": "*"
   },
   "devDependencies": {
     "config": "*",
