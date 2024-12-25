@@ -6,7 +6,6 @@
     "types": ["jest"],
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "rootDir": "./",
     "outDir": "./dist",
     "strict": false,
     "module": "CommonJS",
