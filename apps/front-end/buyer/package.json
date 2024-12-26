@@ -29,6 +29,7 @@
   },
   "shadow": {
     "dependencies": [
+      "@ffmpeg/ffmpeg",
       "@tailwindcss/forms",
       "@types/react-image-gallery",
       "@types/react-window",
