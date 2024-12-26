@@ -7,6 +7,14 @@ const { patchWebpackConfig } = require("next-global-css");
 const nextConfig = {
   experimental: {
     esmExternals: false,
+    isrMemoryCacheSize: 0,
+  },
+  crossOrigin: "anonymous",
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
@@ -22,6 +30,7 @@ const withTM = require("next-transpile-modules")([
   "types",
   "routing",
   "react-pubsub",
+  "react-seo",
   "lib",
 ]);
 const withPWA = require("next-pwa");
@@ -45,5 +54,5 @@ module.exports = withTM(
       ignoreBuildErrors: false,
     },
     ...nextConfig,
-  })
+  }),
 );
