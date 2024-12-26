@@ -9,6 +9,8 @@
     "outDir": "./dist",
     "strict": false,
     "module": "CommonJS",
+    "target": "ES5",
+    "jsx": "react",
     "paths": {
       "@partials": ["../ui/components/partials"],
       "@blocks": ["../ui/components/blocks"],
