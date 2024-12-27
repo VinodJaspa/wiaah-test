@@ -60,6 +60,7 @@ import { GoDotFill } from "react-icons/go";
 import { FaHeart, FaRegHeart, FaPlay } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaPause } from "react-icons/fa6";
+import { useRouter } from "next/router";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState({
@@ -302,42 +303,51 @@ const TopSalesCategoryProducts: React.FC<{
 
 const BestShopsHomeSection: React.FC = () => {
   const { t } = useTranslation();
-  const { visit } = useRouting();
+  const router = useRouter();
   const { isMobile } = useResponsive();
   const { data: _shopData } = useGetBestShopsQuery({ take: 5 });
   const data = bestShopsPlaceholder;
 
-  const images = data.map((shop) => shop.thumbnail);
-
-  const classPatterns: string[] = [
-    "col-span-16 row-span-2 ",
-    "col-span-10 row-span-1 ",
-    "col-span-15 row-sann-1 ",
-    "col-span-24 row-span-1 ",
-    "col-span-19 row-span-1 ",
-  ];
-  const descriptionClassPatterns: string[] = [
-    "top-5 left-5",
-    "left-1/2 transform -translate-x-1/2 top-2 text-base",
-    "bottom-5 left-5",
-    "top-1/2 transform -translate-y-1/2 left-5 ",
-    "top-5 right-5",
-  ];
-
-  const transformImages = (images: string[]): TransformedImages[] => {
-    return images.map((src, index) => ({
-      src,
-      imageClassName: classPatterns[index % classPatterns.length],
-      descriptionClassName:
-        descriptionClassPatterns[index % descriptionClassPatterns.length],
-    }));
+  const handleVisitShop = (id: string) => {
+    console.log("inside handleVisitShop");
+    router.push(`/shop/${id}`);
   };
 
-  interface TransformedImages {
+  interface ShopCard {
     src: string;
+    shopId: string;
+    name: string;
     imageClassName: string;
     descriptionClassName: string;
   }
+
+  const images = data.map((shop) => shop.thumbnail);
+
+  const GRID_PATTERNS = {
+    image: [
+      "col-span-16 row-span-2",
+      "col-span-10 row-span-1",
+      "col-span-15 row-span-1",
+      "col-span-24 row-span-1",
+      "col-span-19 row-span-1",
+    ],
+    description: [
+      "top-5 left-5",
+      "left-1/2 transform -translate-x-1/2 top-2 text-base",
+      "bottom-5 left-5",
+      "top-1/2 transform -translate-y-1/2 left-5",
+      "top-5 right-5",
+    ],
+  } as const;
+
+  const ShopCards: ShopCard[] = data.map((shop, index) => ({
+    src: shop.thumbnail,
+    shopId: shop.id,
+    name: shop.name,
+    imageClassName: GRID_PATTERNS.image[index % GRID_PATTERNS.image.length],
+    descriptionClassName:
+      GRID_PATTERNS.description[index % GRID_PATTERNS.description.length],
+  }));
 
   const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
     const chunks: T[][] = [];
@@ -347,15 +357,14 @@ const BestShopsHomeSection: React.FC = () => {
     return chunks;
   };
 
-  const transformedImages = transformImages(images);
-  const imageChunks = splitIntoChunks(transformedImages, 5);
+  const imageChunks = splitIntoChunks(ShopCards, 5);
 
-  const Grid: React.FC<{ images: TransformedImages[] }> = ({ images }) => (
+  const Grid: React.FC<{ shopCards: ShopCard[] }> = ({ shopCards }) => (
     <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4  w-full ">
-      {images.map((image, index) => (
-        <div className={`relative + ${image.imageClassName}`} key={index}>
+      {shopCards.map((shopCard, index) => (
+        <div className={`relative + ${shopCard.imageClassName}`} key={index}>
           <img
-            src={image.src}
+            src={shopCard.src}
             className="object-cover rounded-2xl w-full h-full "
           />
 
@@ -363,13 +372,16 @@ const BestShopsHomeSection: React.FC = () => {
           <div className="absolute inset-0 bg-black bg-opacity-30 rounded-2xl"></div>
           {/* Text and Button */}
           <div
-            className={`flex flex-col justify-center items-center gap-1 absolute ${image.descriptionClassName}`}
+            className={`flex flex-col justify-center items-center gap-1 absolute ${shopCard.descriptionClassName}`}
           >
             <p className="text-[14px] text-white font-medium">Fashion shop</p>
             <p className="text-[22px] w-full font-semibold text-white drop-shadow-lg">
-              {data[index]?.name}
+              {shopCard.name}
             </p>
-            <Button className="px-3 w-fit h-fit py-1 bg-[#20ECA7] text-white font-semibold text-lg">
+            <Button
+              className="px-3 w-fit h-fit py-1 bg-[#20ECA7] text-white font-semibold text-lg"
+              onClick={() => handleVisitShop(shopCard.shopId)}
+            >
               Visit now
             </Button>
           </div>
@@ -384,7 +396,7 @@ const BestShopsHomeSection: React.FC = () => {
       </p>
       <div className="space-y-4 felx flex-col w-full mb-4 ">
         {imageChunks.map((chunk, index) => (
-          <Grid key={index} images={chunk} />
+          <Grid key={index} shopCards={chunk} />
         ))}
       </div>
     </div>
