@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { VoucherState } from "@src/state";
 import { useLoginPopup } from "ui";
+import { useRouter } from "next/router";
 
 export interface MasterLayoutProps {
   social?: boolean;
@@ -34,6 +35,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
 }) => {
   let voucher;
   const { t } = useTranslation();
+  const router = useRouter();
   const setVoucher = useSetRecoilState(VoucherState);
   useEffect(() => {
     setVoucher(voucher);
@@ -63,7 +65,11 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
           </div>
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {[...Array(4)].map((_, i: number) => (
-              <ImageCard key={i} imgUrl="/shop-3.jpeg" />
+              <ImageCard
+                key={i}
+                imgUrl="/shop-3.jpeg"
+                onClick={() => router.push(`/collaboration/${i}`)}
+              />
             ))}
           </div>
         </div>
