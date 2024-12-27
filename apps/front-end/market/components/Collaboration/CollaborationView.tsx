@@ -28,7 +28,9 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
 
   React.useEffect(() => {
     const category = categories.find((cate) => cate.name === shopType);
-    setShops((state) => (category ? category.shops : state));
+    setShops((state) =>
+      category ? category.shops : collaborationShopsPlaceholder,
+    );
   }, [shopType, categories]);
 
   React.useEffect(() => {
@@ -76,3 +78,36 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
     </FlexStack>
   );
 };
+
+const collaborationShopsPlaceholder = [
+  {
+    id: "1",
+    thumbnailUrl: "/shop.jpeg",
+    name: "Shop One",
+    location: "New York, USA",
+  },
+  {
+    id: "2",
+    thumbnailUrl: "/shop.jpeg",
+    name: "Shop Two",
+    location: "Los Angeles, USA",
+  },
+  {
+    id: "3",
+    thumbnailUrl: "/shop.jpeg",
+    name: "Shop Three",
+    location: "London, UK",
+  },
+  {
+    id: "4",
+    thumbnailUrl: "/shop.jpeg",
+    name: "Shop Four",
+    location: "Tokyo, Japan",
+  },
+  {
+    id: "5",
+    thumbnailUrl: "/shop.jpeg",
+    name: "Shop Five",
+    location: "Berlin, Germany",
+  },
+];
