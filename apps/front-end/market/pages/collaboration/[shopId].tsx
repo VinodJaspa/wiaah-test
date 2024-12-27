@@ -20,7 +20,6 @@ const CollaborationShop: React.FC<CollaborationShopProps> = ({ shopId }) => {
         <Container>
           <Spacer spaceInRem={2} />
           <Divider />
-          <Collaboration />
         </Container>
       </MasterLayout>
     </>
