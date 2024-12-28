@@ -29,83 +29,6 @@ import {
 import { ProductGalleryItem } from "types";
 import { PorductDetailsPlaceHolder } from "ui/placeholder";
 
-const breadcrumb = [
-  {
-    text: "Home",
-    url: "/",
-  },
-  {
-    text: "Horology",
-    url: "/category/horology",
-  },
-  {
-    text: "Golden Whatch Rolex 1988",
-    url: "",
-  },
-];
-const productGalleryitems: ProductGalleryItem[] = [
-  {
-    type: "image",
-    original: "https://picsum.photos/id/1018/1000/600/",
-    thumbnail: "https://picsum.photos/id/1018/250/150/",
-  },
-  {
-    type: "image",
-    original: "https://picsum.photos/id/1015/1000/600/",
-    thumbnail: "https://picsum.photos/id/1015/250/150/",
-  },
-  {
-    type: "image",
-    original: "https://picsum.photos/id/1019/1000/600/",
-    thumbnail: "https://picsum.photos/id/1019/250/150/",
-  },
-  {
-    type: "image",
-    original: "https://picsum.photos/id/1020/1000/600/",
-    thumbnail: "https://picsum.photos/id/1020/250/150/",
-  },
-  {
-    type: "video",
-    original:
-      "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-    thumbnail:
-      "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-  },
-];
-
-const productComments = [
-  {
-    name: "Rehan",
-    date: "08-Oct-2020",
-    rating: 5,
-    comment: "Good product",
-  },
-  {
-    name: "John",
-    date: "08-Oct-2020",
-    rating: 3,
-    comment: "Really great product highly recommand it",
-  },
-  {
-    name: "Jane",
-    date: "08-Oct-2020",
-    rating: 4,
-    comment: "Amazing!!!",
-  },
-  {
-    name: "Rehan",
-    date: "08-Oct-2020",
-    rating: 5,
-    comment: "Good product",
-  },
-  {
-    name: "John",
-    date: "08-Oct-2020",
-    rating: 3,
-    comment: "Really great product highly recommand it",
-  },
-];
-
 export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
   //WARNING: This graphql is not working right now
   const { data: _data } = useGetProductDetailsQuery({ id: productId });
@@ -237,3 +160,73 @@ export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
     </>
   );
 };
+
+const breadcrumb = [
+  {
+    text: "Home",
+    url: "/",
+  },
+  {
+    text: "Horology",
+    url: "/category/horology",
+  },
+  {
+    text: "Golden Whatch Rolex 1988",
+    url: "",
+  },
+];
+const productGalleryitems: ProductGalleryItem[] = [
+  {
+    type: "image",
+    original: "https://picsum.photos/id/1018/1000/600/",
+    thumbnail: "https://picsum.photos/id/1018/250/150/",
+  },
+  {
+    type: "image",
+    original: "https://picsum.photos/id/1015/1000/600/",
+    thumbnail: "https://picsum.photos/id/1015/250/150/",
+  },
+  {
+    type: "image",
+    original: "https://picsum.photos/id/1019/1000/600/",
+    thumbnail: "https://picsum.photos/id/1019/250/150/",
+  },
+  {
+    type: "image",
+    original: "https://picsum.photos/id/1020/1000/600/",
+    thumbnail: "https://picsum.photos/id/1020/250/150/",
+  },
+];
+
+const productComments = [
+  {
+    name: "Rehan",
+    date: "08-Oct-2020",
+    rating: 5,
+    comment: "Good product",
+  },
+  {
+    name: "John",
+    date: "08-Oct-2020",
+    rating: 3,
+    comment: "Really great product highly recommand it",
+  },
+  {
+    name: "Jane",
+    date: "08-Oct-2020",
+    rating: 4,
+    comment: "Amazing!!!",
+  },
+  {
+    name: "Rehan",
+    date: "08-Oct-2020",
+    rating: 5,
+    comment: "Good product",
+  },
+  {
+    name: "John",
+    date: "08-Oct-2020",
+    rating: 3,
+    comment: "Really great product highly recommand it",
+  },
+];
