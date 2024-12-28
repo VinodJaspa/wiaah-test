@@ -18,7 +18,8 @@ import { CartSummaryItem, ShopContactDetails } from "types";
 export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();
   const { OpenShoppingCart } = useShoppingCart();
-  const { DeleteItem, savedItems } = useSavedItems();
+  const { DeleteItem, savedItems: _savedItems } = useSavedItems();
+  const savedItems = SAVED_ITEMS;
   const { AddNewItem } = useCartSummary();
   const { t } = useTranslation();
   const shop: ShopContactDetails = {
@@ -32,7 +33,6 @@ export const WishlistView: React.FC = () => {
       item: item,
       shop: shop,
     });
-    handleLoginPopup();
   }
   function handleLoginPopup() {
     OpenLoginPopup();
@@ -83,3 +83,45 @@ export const WishlistView: React.FC = () => {
     </div>
   );
 };
+
+const SAVED_ITEMS: CartSummaryItem[] = [
+  {
+    id: "1",
+    name: "Product A",
+    imageUrl: "https://via.placeholder.com/150",
+    qty: 2,
+    price: 100,
+    type: "product",
+    location: "New York, USA",
+    sizes: ["M", "L"],
+    colors: ["Red", "Blue"],
+    oldPrice: 120,
+    description: "A great product for daily use",
+  },
+  {
+    id: "2",
+    name: "Service X",
+    imageUrl: "https://via.placeholder.com/150",
+    qty: 1,
+    price: 200,
+    type: "service",
+    location: "Los Angeles, USA",
+    date: 1672531199000, // Timestamp for the service date
+    eventDuration: 120, // Event duration in minutes
+    eventAdresses: "123 Event Street, LA",
+    description: "Service for event management",
+  },
+  {
+    id: "3",
+    name: "Product B",
+    imageUrl: "https://via.placeholder.com/150",
+    qty: 3,
+    price: 50,
+    type: "product",
+    location: "Berlin, Germany",
+    sizes: ["S", "M"],
+    colors: ["Green"],
+    oldPrice: 60,
+    description: "A lightweight product for casual wear",
+  },
+];
