@@ -1,4 +1,4 @@
-import { Link } from "@partials";
+import Link from "next/link";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
