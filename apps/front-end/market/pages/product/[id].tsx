@@ -6,6 +6,14 @@ import { Container } from "ui";
 import { useRouter } from "next/router";
 import { ProductView } from "ui/components/features/Products/views/ProductView";
 
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { id } = query;
+  // get product details by its id and return it to the page as props
+  return {
+    props: {},
+  };
+};
+
 const ProductDetailPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -25,11 +33,3 @@ const ProductDetailPage: NextPage = () => {
 };
 
 export default ProductDetailPage;
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { id } = query;
-  // get product details by its id and return it to the page as props
-  return {
-    props: {},
-  };
-};
