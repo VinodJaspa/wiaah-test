@@ -54,22 +54,22 @@ const Dashboard: NextPage = () => {
   const { data: latestOrders } = useAdminGetLatestOrdersQuery(10);
   const { data: recentSellers } = useGetRecentSellers(
     { page: 1, take: 100000 },
-    SubtractFromDate(new Date(), { hours: 12 })
+    SubtractFromDate(new Date(), { hours: 12 }),
   );
 
   const { data: recentBuyers } = useGetRecentBuyers(
     { page: 1, take: 100000 },
-    SubtractFromDate(new Date(), { hours: 12 })
+    SubtractFromDate(new Date(), { hours: 12 }),
   );
 
   const accounts = [...(recentBuyers || []), ...(recentSellers || [])];
 
   const dateSorted = accounts.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   );
   const dates = getDatesInRangeHours(
     new Date(accounts[0]?.createdAt),
-    new Date(accounts[accounts.length - 1]?.createdAt)
+    new Date(accounts[accounts.length - 1]?.createdAt),
   );
 
   const GetDurationFromDateDiffHook = (createdAt: string) => {
@@ -80,29 +80,17 @@ const Dashboard: NextPage = () => {
     return getSince();
   };
 
-  const charData = dates.reduce((acc, curr, idx, arr) => {
-    const from = curr;
-    const to = arr[idx + 1] || new Date();
-
-    return [
-      ...acc,
-      {
-        time: `${from.toLocaleTimeString("en-us", {
-          timeStyle: "short",
-        })} - ${to.toLocaleTimeString("en-us", {
-          timeStyle: "short",
-        })}`,
-        sellers: randomNum(10),
-        // recentSellers.filter(
-        //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
-        // ).length,
-        buyers: randomNum(10),
-        // recentBuyers.filter(
-        //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
-        // ).length,
-      },
-    ];
-  }, [] as { time: string; sellers: number; buyers: number }[]);
+  const charData = [
+    { time: "9:00 AM", sellers: 7, buyers: 13 },
+    { time: "10:00 AM", sellers: 10, buyers: 15 },
+    { time: "11:00 AM", sellers: 8, buyers: 12 },
+    { time: "12:00 PM", sellers: 9, buyers: 14 },
+    { time: "1:00 PM", sellers: 6, buyers: 11 },
+    { time: "2:00 PM", sellers: 10, buyers: 15 },
+    { time: "3:00 PM", sellers: 8, buyers: 12 },
+    { time: "4:00 PM", sellers: 9, buyers: 14 },
+    { time: "5:00 PM", sellers: 6, buyers: 11 },
+  ];
 
   return (
     <div className="grid grid-cols-3 gap-4">
@@ -218,7 +206,7 @@ const Dashboard: NextPage = () => {
                       <DownloadIcon />
                     </Td>
                   </Tr>
-                )
+                ),
               )}
             </TBody>
           </Table>
@@ -248,7 +236,7 @@ const Dashboard: NextPage = () => {
                       <p className="font-bold">{percent}%</p>
                     </div>
                   </div>
-                )
+                ),
               )}
             </div>
             <div ref={radialChartRef} className="w-full">
@@ -271,7 +259,7 @@ const Dashboard: NextPage = () => {
                     analyticsData?.monthlyProfit.profitAnalytics.map((v) => ({
                       ...v,
                       fill: "#fff",
-                    })) || []
+                    })) || [],
                   )}
                   startAngle={450}
                   endAngle={90}
