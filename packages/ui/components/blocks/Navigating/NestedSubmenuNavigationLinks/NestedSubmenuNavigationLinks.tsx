@@ -29,74 +29,69 @@ export const NestedSubmenuNavigationLinks: React.FC<{
   canBeSelected,
   onRouting,
 }) => {
-  const { visit } = useRouting();
-  const currDeepNum = lastDeepNum + 1;
+    const { visit } = useRouting();
+    const currDeepNum = lastDeepNum + 1;
 
-  return (
-    <div className="flex flex-col gap-2 w-full">
-      {mapArray(links, ({ icon, name, onClick, slug, subLinks }, i) => {
-        const selected = routeSlugs[lastDeepNum] === slug && canBeSelected;
+    return (
+      <div className="flex flex-col gap-2 w-full">
+        {mapArray(links, ({ icon, name, onClick, slug, subLinks }, i) => {
+          const selected = routeSlugs[lastDeepNum] === slug && canBeSelected;
 
-        return subLinks.length > 0 ? (
-          <AccordionItem itemkey={`${currDeepNum}-${i}`}>
-            <AccordionButton
-              className={`${
-                lastDeepNum === 0 && selected
-                  ? "text-white"
-                  : selected
-                  ? "text-primary"
-                  : "text-black"
-              }`}
-            >
-              <div
-                style={{
-                  paddingLeft: `${currDeepNum * 0.5}rem`,
-                }}
-                className={`${
-                  selected
-                    ? `${
-                        lastDeepNum === 0
-                          ? "bg-primary rounded text-white fill-white"
-                          : "text-primary"
-                      }`
-                    : "text-black fill-black"
-                } flex text-lg items-center py-2 gap-2`}
+          return subLinks.length > 0 ? (
+            <AccordionItem itemkey={`${currDeepNum}-${i}`}>
+              <AccordionButton
+                className={`${lastDeepNum === 0 && selected
+                    ? "text-white"
+                    : selected
+                      ? "text-primary"
+                      : "text-black"
+                  } `}
               >
-                {runIfFn(icon)} {name}
-              </div>
-            </AccordionButton>
-            <AccordionPanel initialState={selected === true ? true : undefined}>
-              <NestedSubmenuNavigationLinks
-                canBeSelected={selected}
-                lastDeepNum={currDeepNum}
-                links={subLinks}
-                routeSlugs={routeSlugs}
-                deepSlugs={[...deepSlugs, slug]}
-              />
-            </AccordionPanel>
-          </AccordionItem>
-        ) : (
-          <div
-            onClick={() =>
-              visit((r) => r.addPath([...deepSlugs, slug].join("/")), false)
-            }
-            style={{
-              paddingLeft: `${currDeepNum * 0.5}rem`,
-            }}
-            className={`${
-              selected
-                ? `${
-                    lastDeepNum === 0
-                      ? "rounded text-indigo-500"
-                      : "text-primary"
+                <div
+                  style={{
+                    paddingLeft: `${currDeepNum * 0.5}rem`,
+                  }}
+                  className={` cursor-pointer ${selected
+                      ? `${lastDeepNum === 0
+                        ? "bg-primary rounded text-white fill-white"
+                        : "text-primary"
+                      }`
+                      : "text-black fill-black"
+                    } flex text-lg items-center py-2 gap-2`}
+                >
+                  {runIfFn(icon)} {name}
+                </div>
+              </AccordionButton>
+              <AccordionPanel initialState={selected === true ? true : undefined}>
+                <NestedSubmenuNavigationLinks
+                  canBeSelected={selected}
+                  lastDeepNum={currDeepNum}
+                  links={subLinks}
+                  routeSlugs={routeSlugs}
+                  deepSlugs={[...deepSlugs, slug]}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          ) : (
+            <div
+              onClick={() =>
+                visit((r) => r.addPath([...deepSlugs, slug].join("/")), false)
+              }
+              style={{
+                paddingLeft: `${currDeepNum * 0.5}rem`,
+              }}
+              className={` cursor-pointer ${selected
+                  ? `${lastDeepNum === 0
+                    ? "rounded text-indigo-500"
+                    : "text-primary"
                   }`
-                : "text-black"
-            } flex text-lg items-center py-2 gap-2`}
-          >
-            {runIfFn(icon)} {name}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+                  : "text-black"
+                } flex text-lg items-center py-2 gap-2`}
+            >
+              {runIfFn(icon)} {name}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
