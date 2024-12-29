@@ -2,14 +2,15 @@ import { GetServerSideProps, NextPage } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    redirect: "/dashbaord",
-    notFound: true,
-    props: {},
+    redirect: {
+      destination: "/dashboard", // Corrected the string into an object
+      permanent: false, // Set to false for a temporary redirect
+    },
   };
 };
 
-const index: NextPage = () => {
-  return null;
+const Index: NextPage = () => {
+  return <div></div>;
 };
 
-export default index;
+export default Index;
