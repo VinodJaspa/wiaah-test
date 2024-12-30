@@ -20,6 +20,7 @@ import {
   useGetRecentSellers,
   useGetRecentBuyers,
   useGetAdminRecentSalesQuery,
+  GetLatestOrdersQuery,
 } from "ui";
 import {
   Area,
@@ -39,6 +40,7 @@ import {
 } from "utils";
 import { useTranslation } from "react-i18next";
 import { useDateDiff, useResponsive } from "hooks";
+import { OrderStatusEnum } from "@features/API";
 
 const Dashboard: NextPage = () => {
   useResponsive();
@@ -51,7 +53,8 @@ const Dashboard: NextPage = () => {
 
   const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
   const recentSales = FAKE_RECENT_SALES;
-  const { data: latestOrders } = useAdminGetLatestOrdersQuery(10);
+  const { data: _latestOrders } = useAdminGetLatestOrdersQuery(10);
+  const latestOrders = placeholderData;
   const { data: recentSellers } = useGetRecentSellers(
     { page: 1, take: 100000 },
     SubtractFromDate(new Date(), { hours: 12 }),
@@ -371,6 +374,52 @@ const FAKE_RECENT_SALES = [
       firstName: "Jane",
       lastName: "Smith",
       photo: "https://example.com/photos/jane.jpg",
+    },
+  },
+];
+
+const placeholderData: GetLatestOrdersQuery["getLatestOrders"] = [
+  {
+    __typename: "Order",
+    createdAt: new Date().toISOString(), // Current date
+    paid: 2, // Fully paid order
+    billing: {
+      __typename: "BillingAddress",
+      firstName: "John", // Placeholder name
+    },
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.Pending, // Example order status
+    },
+  },
+  {
+    __typename: "Order",
+    createdAt: new Date(
+      new Date().setDate(new Date().getDate() - 1),
+    ).toISOString(), // Yesterday's date
+    paid: 0, // Unpaid order
+    billing: {
+      __typename: "BillingAddress",
+      firstName: "Jane", // Another placeholder name
+    },
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.Paid, // Example order status
+    },
+  },
+  {
+    __typename: "Order",
+    createdAt: new Date(
+      new Date().setDate(new Date().getDate() - 2),
+    ).toISOString(), // 2 days ago
+    paid: 1, // Partially paid order
+    billing: {
+      __typename: "BillingAddress",
+      firstName: "Alice", // Another placeholder name
+    },
+    status: {
+      __typename: "OrderStatus",
+      of: OrderStatusEnum.Canceled, // Example order status
     },
   },
 ];
