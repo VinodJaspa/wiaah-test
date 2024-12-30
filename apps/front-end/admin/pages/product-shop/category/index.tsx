@@ -34,34 +34,20 @@ const ProductShopCategory = () => {
   const data = FAKE_PROD_CATE;
   const { visit, getCurrentPath } = useRouting();
 
-  const categories =
-    data?.reduce(
-      (acc, { id, name, parantId, sortOrder }, i, og) => {
-        const names = [name];
-        let parent = parantId;
+  const categories = (data || []).map(({ id, name, parantId, sortOrder }) => {
+    const names = [];
+    let parent = parantId;
 
-        while (parent) {
-          const parentCategory = og.find((v) => v.id === parent);
-          if (!parentCategory) break;
-          names.unshift(parentCategory.name); // Add parent category name at the beginning
-          parent = parentCategory.parantId; // Move to the next parent
-        }
+    while (parent) {
+      const parentCategory = data.find((v) => v.id === parent);
+      if (!parentCategory) break;
+      names.unshift(parentCategory.name);
+      parent = parentCategory.parantId;
+    }
 
-        return [
-          ...acc,
-          {
-            name: names,
-            sortOrder,
-            id,
-          },
-        ];
-      },
-      [] as {
-        name: string[];
-        sortOrder: number;
-        id: string;
-      }[]
-    ) || [];
+    names.push(name); // Add the current category name at the end
+    return { id, name: names, sortOrder };
+  });
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -139,7 +125,7 @@ const ProductShopCategory = () => {
                         r
                           .addPath(getCurrentPath({ noParams: true }))
                           .addPath("form")
-                          .addQuery({ category_id: id })
+                          .addQuery({ category_id: id }),
                       )
                     }
                     className="flex items-center justify-center  text-2xl h-12 w-12"
