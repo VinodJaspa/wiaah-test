@@ -1,0 +1,103 @@
+import { createGraphqlRequestClient, Exact } from "api";
+import {
+  GetFilteredProductsAdminInput,
+  Maybe,
+  Product,
+  ProductStatus,
+  ProductUsageStatus,
+  Profile,
+  Service,
+} from "@features/API";
+import { useQuery } from "react-query";
+import { randomNum } from "utils";
+
+export type GetAdminProductsQueryVariables = Exact<{
+  args: GetFilteredProductsAdminInput;
+}>;
+
+export type GetAdminProductsQuery = { __typename?: "Query" } & {
+  getAdminFilteredProducts: Array<
+    { __typename?: "Service" } & Pick<
+      Service,
+      "name" | "sellerId" | "id" | "price" | "thumbnail" | "type"
+    > & {
+      seller: { __typename?: "Account" } & {
+        profile?: Maybe<
+          { __typename?: "Profile" } & Pick<Profile, "username">
+        >;
+      };
+    }
+  >;
+};
+
+export const useGetAdminProductsQuery = (
+  input: GetFilteredProductsAdminInput,
+) => {
+  const client = createGraphqlRequestClient();
+
+  client.setQuery(`
+    query getAdminProducts(
+        $args:GetFilteredProductsAdminInput!
+    ){
+        getAdminFilteredProducts(
+            args:$args
+        ){
+            title
+            sellerId
+            id
+            price
+            stock
+            usageStatus
+            thumbnail
+            status
+            totalOrdered
+            totalDiscountedAmount
+            totalDiscounted
+            unitsRefunded
+            positiveFeedback
+            negitiveFeedback
+            sales
+            reviews
+            earnings
+            updatedAt
+            external_clicks
+        }
+    }
+    `);
+
+  client.setVariables<GetAdminProductsQueryVariables>({
+    args: input,
+  });
+
+  return useQuery(["get-admin-products", { input }], async () => {
+    const res: GetAdminProductsQuery["getAdminFilteredProducts"] = [
+      ...Array(5),
+    ].map((_, i) => ({
+      id: i.toString(),
+      negitiveFeedback: 15,
+      positiveFeedback: 35,
+      price: 15,
+      sellerId: "15",
+      status: ProductStatus.Active,
+      stock: 12,
+      thumbnail: "/place-1.jpg",
+      title: "title",
+      totalDiscounted: 15,
+      totalDiscountedAmount: 132,
+      totalOrdered: 15,
+      unitsRefunded: 48,
+      usageStatus: ProductUsageStatus.New,
+      updatedAt: new Date().toString(),
+      reviews: 16,
+      sales: 65,
+      earnings: 156,
+      external_clicks: randomNum(150),
+      seller: {
+        profile: {
+          username: "Seller-name",
+        },
+      },
+    }));
+    return res;
+  });
+};
