@@ -6,7 +6,6 @@ import {
   Button,
   EditIcon,
   Input,
-  ItemsPagination,
   ListIcon,
   RefreshIcon,
   Table,
@@ -19,6 +18,9 @@ import {
   useGetServiceCategoriesQuery,
   getTranslationStateValue,
   GetServiceCategoriesQuery,
+  Pagination,
+  PlusIcon,
+  TrashIcon,
 } from "ui";
 import { mapArray } from "utils";
 
@@ -39,6 +41,18 @@ const ServiceShopCategory = () => {
         <div onClick={() => refetch()} className="flex items-center gap-1">
           <span className="border text-lg flex justify-center items-center shadow rounded h-12 w-12">
             <RefreshIcon />
+          </span>
+
+          <span
+            onClick={() =>
+              visit((r) => r.addPath(getCurrentPath()).addPath("form"))
+            }
+            className="border text-lg  text-white flex justify-center items-center bg-primary shadow rounded h-12 w-12"
+          >
+            <PlusIcon />
+          </span>
+          <span className="border text-lg text-white flex justify-center items-center bg-secondaryRed shadow rounded h-12 w-12">
+            <TrashIcon />
           </span>
         </div>
       </div>
@@ -94,7 +108,7 @@ const ServiceShopCategory = () => {
                         r
                           .addPath(getCurrentPath({ noParams: true }))
                           .addPath("form")
-                          .addQuery({ category_id: id })
+                          .addQuery({ category_id: id }),
                       )
                     }
                     className="flex items-center justify-center  text-2xl h-12 w-12"
@@ -106,7 +120,7 @@ const ServiceShopCategory = () => {
             ))}
           </TBody>
         </Table>
-        <ItemsPagination controls={controls} />
+        <Pagination controls={controls} />
       </div>
     </div>
   );
