@@ -145,7 +145,7 @@ const Products: NextPage = () => {
                             r
                               .addPath(getCurrentPath())
                               .addPath("edit")
-                              .addPath(prod.id)
+                              .addPath(prod.id),
                           )
                         }
                         className="w-8 h-8 p-2 bg-cyan-400"
@@ -175,7 +175,7 @@ const FAKE_PROD: GetAdminProductsQuery["getAdminFilteredProducts"] = [
     price: 50,
     stock: 100,
     usageStatus: ProductUsageStatus.New,
-    thumbnail: "https://example.com/product1.jpg",
+    thumbnail: "/shop.jpeg",
     status: ProductStatus.Active,
     totalOrdered: 500,
     totalDiscountedAmount: 100,
@@ -204,7 +204,7 @@ const FAKE_PROD: GetAdminProductsQuery["getAdminFilteredProducts"] = [
     price: 70,
     stock: 50,
     usageStatus: ProductUsageStatus.New,
-    thumbnail: "https://example.com/product2.jpg",
+    thumbnail: "/shop.jpeg",
     status: ProductStatus.Active,
     totalOrdered: 200,
     totalDiscountedAmount: 50,
