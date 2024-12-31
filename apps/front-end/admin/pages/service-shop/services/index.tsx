@@ -26,6 +26,8 @@ import {
   usePaginationControls,
   ServiceType,
   SearchServiceQuery,
+  useGetAdminServiceQuery,
+  DateFormInput,
 } from "ui";
 import { mapArray, useForm } from "utils";
 
@@ -35,12 +37,13 @@ const Services: NextPage = () => {
   const { pagination } = usePaginationControls();
 
   const filters = [{ id: "432", value: ["id"] }];
+  const type = ServiceType.Hotel;
 
-  const { form, inputProps } = useForm<
-    Parameters<typeof useGetFilteredServicesQuery>[0]
-  >({ filters, pagination });
+  const { form, inputProps, dateInputProps } = useForm<
+    Parameters<typeof useGetAdminServiceQuery>[0]
+  >({ pagination, type });
 
-  const { data: _services } = useGetFilteredServicesQuery(form);
+  const { data: _services } = useGetAdminServiceQuery(form);
   const services = FAKE_SERVICES;
 
   const { mutate } = useAdminDeleteServiceMutation();
@@ -63,13 +66,56 @@ const Services: NextPage = () => {
                   <Checkbox />
                 </Th>
                 <Th className="w-32">{t("Image")}</Th>
-                <Th>{t("Service")}</Th>
+                <Th>{t("name")}</Th>
                 <Th>{t("Seller")}</Th>
                 <Th>{t("Id")}</Th>
                 <Th>{t("Type of item")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Date modified")}</Th>
                 <Th>{t("Action")}</Th>
+              </Tr>
+
+              <Tr>
+                <Th></Th>
+                <Th></Th>
+                <Th>
+                  <Input {...inputProps("title")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("sellerName")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("id")} />
+                </Th>
+                <Th>
+                  <Select {...inputProps("type")}>
+                    <SelectOption value={ServiceType.Hotel}>
+                      {t("Hotel")}
+                    </SelectOption>
+                    <SelectOption value={ServiceType.Restaurant}>
+                      {t("Restaurant")}
+                    </SelectOption>
+                    <SelectOption value={ServiceType.BeautyCenter}>
+                      {t("Beauty Center")}
+                    </SelectOption>
+                    <SelectOption value={ServiceType.HealthCenter}>
+                      {t("Health Center")}
+                    </SelectOption>
+                    <SelectOption value={ServiceType.HolidayRentals}>
+                      {t("Holiday Rentals")}
+                    </SelectOption>
+                    <SelectOption value={ServiceType.Vehicle}>
+                      {t("Vehicle")}
+                    </SelectOption>
+                  </Select>
+                </Th>
+                <Th>
+                  <Input type="number" {...inputProps("price")} />
+                </Th>
+                <Th></Th>
+                <Th>
+                  <DateFormInput {...dateInputProps("updatedAt")} />
+                </Th>
               </Tr>
             </THead>
             <TBody>
@@ -87,7 +133,8 @@ const Services: NextPage = () => {
                   </Td>
                   <Td>{serv.title}</Td>
                   <Td>{serv.shop.sellerProfile.username}</Td>
-                  <Td>{serv.id.slice(0, 8)}...</Td>
+                  <Td>{serv.id}</Td>
+                  <Td>{serv.type}</Td>
                   <Td>
                     <PriceDisplay price={serv.price} />
                   </Td>
@@ -129,7 +176,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
   data: [
     {
       __typename: "Service",
-      id: "1",
+      id: "154",
       name: "Sample Service 1",
       price: 100,
       beds: 2,
@@ -147,7 +194,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: ["Ingredient A", "Ingredient B"],
       cleaningFee: 10,
       reviews: 4,
-      thumbnail: "https://example.com/thumbnail1.jpg",
+      thumbnail: "/shop.jpeg",
       rating: 4.5,
       type: ServiceType.Hotel,
       title: "Sample Service Title 1",
@@ -210,7 +257,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
     },
     {
       __typename: "Service",
-      id: "1",
+      id: "431",
       name: "Sample Service 1",
       price: 100,
       beds: 2,
@@ -228,7 +275,7 @@ const FAKE_SERVICES: SearchServiceQuery["searchServices"] = {
       ingredients: ["Ingredient A", "Ingredient B"],
       cleaningFee: 10,
       reviews: 4,
-      thumbnail: "https://example.com/thumbnail1.jpg",
+      thumbnail: "/shop.jpeg",
       rating: 4.5,
       type: ServiceType.Hotel,
       title: "Sample Service Title 1",
