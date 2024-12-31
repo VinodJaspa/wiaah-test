@@ -7,7 +7,7 @@ import {
   ProductStatus,
   ProductUsageStatus,
   Profile,
-} from "../../../../features/API";
+} from "@features/API";
 import { useQuery } from "react-query";
 import { randomNum } from "utils";
 
