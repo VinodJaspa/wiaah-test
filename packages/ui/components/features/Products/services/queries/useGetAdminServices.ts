@@ -1,21 +1,18 @@
 import { createGraphqlRequestClient, Exact } from "api";
 import {
-  GetFilteredProductsAdminInput,
+  GetFilteredServicesAdminInput,
   Maybe,
-  Product,
-  ProductStatus,
-  ProductUsageStatus,
   Profile,
   Service,
+  ServiceType,
 } from "@features/API";
 import { useQuery } from "react-query";
-import { randomNum } from "utils";
 
-export type GetAdminProductsQueryVariables = Exact<{
-  args: GetFilteredProductsAdminInput;
+export type GetAdminServicesQueryVariables = Exact<{
+  args: GetFilteredServicesAdminInput;
 }>;
 
-export type GetAdminProductsQuery = { __typename?: "Query" } & {
+export type GetAdminServicesQuery = { __typename?: "Query" } & {
   getAdminFilteredProducts: Array<
     { __typename?: "Service" } & Pick<
       Service,
@@ -30,71 +27,52 @@ export type GetAdminProductsQuery = { __typename?: "Query" } & {
   >;
 };
 
-export const useGetAdminProductsQuery = (
-  input: GetFilteredProductsAdminInput,
+export const useGetAdminServiceQuery = (
+  input: GetFilteredServicesAdminInput,
 ) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
     query getAdminProducts(
-        $args:GetFilteredProductsAdminInput!
+        $args: GetFilteredProductsAdminInput!
     ){
         getAdminFilteredProducts(
-            args:$args
+            args: $args
         ){
-            title
+            name
             sellerId
             id
             price
-            stock
-            usageStatus
             thumbnail
-            status
-            totalOrdered
-            totalDiscountedAmount
-            totalDiscounted
-            unitsRefunded
-            positiveFeedback
-            negitiveFeedback
-            sales
-            reviews
-            earnings
-            updatedAt
-            external_clicks
+            type
+            seller {
+                profile {
+                    username
+                }
+            }
         }
     }
-    `);
+  `);
 
-  client.setVariables<GetAdminProductsQueryVariables>({
+  client.setVariables<GetAdminServicesQueryVariables>({
     args: input,
   });
 
   return useQuery(["get-admin-products", { input }], async () => {
-    const res: GetAdminProductsQuery["getAdminFilteredProducts"] = [
+    const res: GetAdminServicesQuery["getAdminFilteredProducts"] = [
       ...Array(5),
     ].map((_, i) => ({
-      id: i.toString(),
-      negitiveFeedback: 15,
-      positiveFeedback: 35,
-      price: 15,
-      sellerId: "15",
-      status: ProductStatus.Active,
-      stock: 12,
-      thumbnail: "/place-1.jpg",
-      title: "title",
-      totalDiscounted: 15,
-      totalDiscountedAmount: 132,
-      totalOrdered: 15,
-      unitsRefunded: 48,
-      usageStatus: ProductUsageStatus.New,
-      updatedAt: new Date().toString(),
-      reviews: 16,
-      sales: 65,
-      earnings: 156,
-      external_clicks: randomNum(150),
+      name: `Product ${i + 1}`,
+      sellerId: "seller-123",
+      id: `${i}`,
+      price: 99.99,
+      thumbnail: `/images/product-${i + 1}.jpg`,
+      type: ServiceType.Hotel,
       seller: {
+        __typename: "Account",
         profile: {
-          username: "Seller-name",
+          __typename: "Profile",
+          username: `seller_${i + 1}`,
         },
       },
     }));
