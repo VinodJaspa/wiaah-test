@@ -86,7 +86,12 @@ const EditCategory = () => {
                 onChange={(e) =>
                   handleChange(
                     "name",
-                    setTranslationStateValue(form, "name", e.target.value, lang)
+                    setTranslationStateValue(
+                      form,
+                      "name",
+                      e.target.value,
+                      lang,
+                    ),
                   )
                 }
                 className="col-span-7"
@@ -101,8 +106,8 @@ const EditCategory = () => {
                       form,
                       "description",
                       e.target.value,
-                      lang
-                    )
+                      lang,
+                    ),
                   )
                 }
                 className="col-span-7"
@@ -121,8 +126,8 @@ const EditCategory = () => {
                       form,
                       "metaTagTitle",
                       v.target.value,
-                      lang
-                    )
+                      lang,
+                    ),
                   );
                 }}
                 value={getTranslationStateValue(form, "metaTagTitle", lang)}
@@ -138,14 +143,14 @@ const EditCategory = () => {
                       form,
                       "metaTagDescription",
                       v.target.value,
-                      lang
-                    )
+                      lang,
+                    ),
                   );
                 }}
                 value={getTranslationStateValue(
                   form,
                   "metaTagDescription",
-                  lang
+                  lang,
                 )}
                 placeholder={t("Meta Tag Description")}
               />
@@ -211,7 +216,7 @@ const EditCategory = () => {
             <p className="inline">
               <ExclamationCircleIcon className="inline mx-2" />
               {t(
-                "Do not use spaces, instead replace spaces with - and make sur the SEO URL is globally unique."
+                "Do not use spaces, instead replace spaces with - and make sur the SEO URL is globally unique.",
               )}
             </p>
           </div>
@@ -235,8 +240,8 @@ const EditCategory = () => {
                       form,
                       "metaTagKeywords",
                       v.target.value,
-                      lang
-                    )
+                      lang,
+                    ),
                   );
                 }}
                 value={getTranslationStateValue(form, "metaTagKeywords", lang)}
@@ -323,7 +328,7 @@ const FilterValuesValidationSchema = object({
       filterName: string().required(),
       sortOrder: number().required(),
       countryIsoCode: string().required(),
-    }).required()
+    }).required(),
   )
     .min(1)
     .required(),
@@ -399,7 +404,7 @@ const ServiceCategoryFilterView: React.FC<{
                 onChange={(v) => {
                   onChange([
                     ...value.filter(
-                      (v) => v.filteringKey !== filter.filteringKey
+                      (v) => v.filteringKey !== filter.filteringKey,
                     ),
                     {
                       ...filter,
@@ -407,7 +412,7 @@ const ServiceCategoryFilterView: React.FC<{
                         filter,
                         "filterGroupName",
                         v.target.value,
-                        lang
+                        lang,
                       ),
                     },
                   ]);
@@ -473,7 +478,7 @@ const ServiceCategoryFilterView: React.FC<{
                                         >
                                           <FlagIcon code={code} />
                                         </SelectOption>
-                                      )
+                                      ),
                                     )}
                                   </Select>
                                 </InputLeftElement>
@@ -489,8 +494,8 @@ const ServiceCategoryFilterView: React.FC<{
                                   setFieldValue(
                                     "filterValues",
                                     values.filterValues.filter(
-                                      (_, i) => i !== idx
-                                    )
+                                      (_, i) => i !== idx,
+                                    ),
                                   )
                                 }
                                 colorScheme="danger"
@@ -502,7 +507,7 @@ const ServiceCategoryFilterView: React.FC<{
                               </Button>
                             </Td>
                           </Tr>
-                        )
+                        ),
                       )}
                       <Tr>
                         <Td></Td>
@@ -542,7 +547,7 @@ const ServiceCategoryFilterView: React.FC<{
           <Button
             onClick={() =>
               visit((r) =>
-                r.addPath(getCurrentPath({ noParams: true })).addPath("form")
+                r.addPath(getCurrentPath({ noParams: true })).addPath("form"),
               )
             }
           >
@@ -591,7 +596,7 @@ const ServiceCategoryFilterView: React.FC<{
                       {getTranslationStateValue(
                         rest,
                         "filterGroupName",
-                        ctxLang
+                        ctxLang,
                       )}
                     </p>
                   </div>
