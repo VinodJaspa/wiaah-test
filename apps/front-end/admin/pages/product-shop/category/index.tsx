@@ -7,6 +7,7 @@ import {
   EditIcon,
   ListIcon,
   RefreshIcon,
+  Pagination,
   Table,
   TBody,
   Td,
@@ -137,7 +138,7 @@ const ProductShopCategory = () => {
             ))}
           </TBody>
         </Table>
-        <ItemsPagination controls={controls} />
+        <Pagination controls={controls} />
       </div>
     </div>
   );
