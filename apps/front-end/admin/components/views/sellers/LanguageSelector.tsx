@@ -13,7 +13,7 @@ export const LanguageSelector = ({
   };
 
   return (
-    <div className="language-selector">
+    <div className="language-selector flex">
       {WiaahLanguageCountriesIsoCodes.map((v: string, i: number) => (
         <div
           key={i}
