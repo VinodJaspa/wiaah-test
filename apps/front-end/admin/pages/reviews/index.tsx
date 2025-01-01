@@ -118,7 +118,7 @@ const Reviews: NextPage = () => {
                     "dateAdded",
                     "dateValue",
                     "onDateChange",
-                    (e) => e
+                    (e) => e,
                   )}
                 />
               </Th>
@@ -150,7 +150,7 @@ const Reviews: NextPage = () => {
                           r
                             .addPath(getCurrentPath())
                             .addPath("edit")
-                            .addPath(v.id)
+                            .addPath(v.id),
                         )
                       }
                       className="w-8 h-8 p-2 bg-cyan-400"
@@ -183,7 +183,7 @@ const FAKE_REIVEWS: AdminGetReviewsQuery["adminGetFilteredProductReviews"] = [
     product: {
       __typename: "Product",
       title: "Product A",
-      thumbnail: "https://example.com/productA.jpg",
+      thumbnail: "/shop.jpeg",
       id: "product1",
       seller: {
         __typename: "Account",
@@ -200,7 +200,7 @@ const FAKE_REIVEWS: AdminGetReviewsQuery["adminGetFilteredProductReviews"] = [
       profile: {
         __typename: "Profile",
         username: "reviewer1username",
-        photo: "https://example.com/reviewer1.jpg",
+        photo: "/shop.jpeg",
         id: "reviewer1",
       },
     },
@@ -214,14 +214,14 @@ const FAKE_REIVEWS: AdminGetReviewsQuery["adminGetFilteredProductReviews"] = [
     product: {
       __typename: "Product",
       title: "Product B",
-      thumbnail: "https://example.com/productB.jpg",
+      thumbnail: "/shop.jpeg",
       id: "product2",
       seller: {
         __typename: "Account",
         id: "seller2",
         profile: {
           __typename: "Profile",
-          photo: "https://example.com/seller2.jpg",
+          photo: "/shop.jpeg",
           username: "seller2username",
         },
       },
