@@ -21,43 +21,6 @@ import {
   usePaginationControls,
 } from "ui";
 import { useForm } from "utils";
-const FAKE_HISTORY_DATA = [
-  {
-    id: "1",
-    itemId: "item-1",
-    itemType: "product",
-    paidCommissionAmount: 50,
-    paidCommissionPercent: 10,
-    affiliatorId: "affiliator-1",
-    purchaserId: "purchaser-1",
-    sellerId: "seller-1",
-    product: {
-      title: "Sample Product",
-      thumbnail: "path/to/thumbnail.jpg",
-      price: 100,
-    },
-    service: null,
-    seller: {
-      profile: {
-        username: "seller_username",
-      },
-    },
-    purchaser: {
-      profile: {
-        username: "purchaser_username",
-      },
-    },
-    affiliation: {
-      id: "affiliation-1",
-    },
-    affiliator: {
-      profile: {
-        username: "affiliator_username",
-        photo: "path/to/photo.jpg",
-      },
-    },
-  },
-];
 
 const AffiliationHistory: NextPage = () => {
   const { t } = useTranslation();
@@ -116,7 +79,7 @@ const AffiliationHistory: NextPage = () => {
                     "purchasedAfter",
                     "dateValue",
                     "onDateChange",
-                    (e) => e
+                    (e) => e,
                   )}
                 />
               </Th>
@@ -150,12 +113,13 @@ const AffiliationHistory: NextPage = () => {
                       alt="thumbnail"
                     />
                   </Td>
-                  {product?.title ||
-                    (service?.title && (
-                      <Td>
+                  {(product?.title || service?.title) && (
+                    <Td>
+                      <p>
                         {(product?.title || service?.title).slice(0, 15)}...
-                      </Td>
-                    ))}
+                      </p>
+                    </Td>
+                  )}
                   <Td>
                     <Link
                       href={(r) =>
@@ -208,7 +172,7 @@ const AffiliationHistory: NextPage = () => {
                     </div>
                   </Td>
                 </Tr>
-              )
+              ),
             )}
           </TBody>
         </Table>
@@ -219,3 +183,113 @@ const AffiliationHistory: NextPage = () => {
 };
 
 export default AffiliationHistory;
+
+const FAKE_HISTORY_DATA = [
+  {
+    id: "1",
+    itemId: "item-1",
+    itemType: "product",
+    paidCommissionAmount: 50,
+    paidCommissionPercent: 10,
+    affiliatorId: "affiliator-1",
+    purchaserId: "purchaser-1",
+    sellerId: "seller-1",
+    product: {
+      title: "Sample Product",
+      thumbnail: "/shop.jpeg",
+      price: 100,
+    },
+    service: null,
+    seller: {
+      profile: {
+        username: "seller_username",
+      },
+    },
+    purchaser: {
+      profile: {
+        username: "purchaser_username",
+      },
+    },
+    affiliation: {
+      id: "affiliation-1",
+    },
+    affiliator: {
+      profile: {
+        username: "affiliator_username",
+        photo: "/shop.jpeg",
+      },
+    },
+  },
+
+  {
+    id: "2",
+    itemId: "item-1",
+    itemType: "product",
+    paidCommissionAmount: 50,
+    paidCommissionPercent: 10,
+    affiliatorId: "affiliator-1",
+    purchaserId: "purchaser-1",
+    sellerId: "seller-1",
+    product: {
+      title: "Sample Product",
+      thumbnail: "/shop.jpeg",
+      price: 100,
+    },
+    service: null,
+    seller: {
+      profile: {
+        username: "seller_username",
+      },
+    },
+    purchaser: {
+      profile: {
+        username: "purchaser_username",
+      },
+    },
+    affiliation: {
+      id: "affiliation-1",
+    },
+    affiliator: {
+      profile: {
+        username: "affiliator_username",
+        photo: "/shop.jpeg",
+      },
+    },
+  },
+
+  {
+    id: "3",
+    itemId: "item-1",
+    itemType: "product",
+    paidCommissionAmount: 50,
+    paidCommissionPercent: 10,
+    affiliatorId: "affiliator-1",
+    purchaserId: "purchaser-1",
+    sellerId: "seller-1",
+    product: {
+      title: "Sample Product",
+      thumbnail: "/shop.jpeg",
+      price: 100,
+    },
+    service: null,
+    seller: {
+      profile: {
+        username: "seller_username",
+      },
+    },
+    purchaser: {
+      profile: {
+        username: "purchaser_username",
+      },
+    },
+    affiliation: {
+      id: "affiliation-1",
+    },
+    affiliator: {
+      profile: {
+        username: "affiliator_username",
+        photo: "/shop.jpeg",
+      },
+    },
+  },
+];
