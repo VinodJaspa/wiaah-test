@@ -26,7 +26,7 @@ const stories = [...Array(10)].map(() => ({
   username: "Wiaah",
   authorId: "test id",
   description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It h",
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   hashtags: ["new", "sports", "fun", "world cup"],
   comments: randomNum(500000),
   likes: randomNum(50000),
@@ -101,16 +101,9 @@ const SocialStories: NextPage = () => {
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>
                 <Td className="text-primary">
-                  <Link
-                    href={(r) =>
-                      r.visitSocialPostAuthorProfile({ id: data.authorId })
-                        .route
-                    }
-                  >
-                    <p className="text-primary underline cursor-pointer">
-                      {data.username}
-                    </p>
-                  </Link>
+                  <p className="text-primary underline cursor-pointer">
+                    {data.username}
+                  </p>
                 </Td>
                 <Td className="w-[30%]">
                   <div className="flex flex-col gap-4">
