@@ -117,17 +117,9 @@ const SocialPosts = () => {
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>
                 <Td className="text-primary">
-                  <Link
-                    href={(r) =>
-                      r.visitSocialPostAuthorProfile({
-                        id: data?.userId,
-                      }).route
-                    }
-                  >
-                    <p className="text-primary underline cursor-pointer">
-                      {data?.publisher?.username}
-                    </p>
-                  </Link>
+                  <p className="text-primary underline cursor-pointer">
+                    {data?.publisher?.username}
+                  </p>
                 </Td>
                 <Td className="w-[30%]">
                   <div className="flex flex-col gap-4">
@@ -223,4 +215,8 @@ const FAKE_POSTS: GetAdminFilteredPostsQuery["getFilteredNewsfeedPosts"] = [
   title: `post title ${i}`,
   userId: i.toString(),
   views: randomNum(10000),
+  publisher: {
+    username: "Username ",
+    photo: "/shop.jpeg",
+  },
 }));
