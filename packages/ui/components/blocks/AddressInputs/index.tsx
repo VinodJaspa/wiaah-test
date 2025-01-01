@@ -42,21 +42,21 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   const [input, setInputs] = React.useState<AddressInputsFields>(
     initialInputs
       ? {
-          ...initialInputs,
-          defaultBillingAddress: false,
-          defaultDeliveryAddress: false,
-        }
+        ...initialInputs,
+        defaultBillingAddress: false,
+        defaultDeliveryAddress: false,
+      }
       : {
-          firstName: "",
-          lastName: "",
-          address2: "",
-          address: "",
-          city: "",
-          country: "",
-          contact: "",
-          defaultBillingAddress: false,
-          defaultDeliveryAddress: false,
-        }
+        firstName: "",
+        lastName: "",
+        address2: "",
+        address: "",
+        city: "",
+        country: "",
+        contact: "",
+        defaultBillingAddress: false,
+        defaultDeliveryAddress: false,
+      },
   );
 
   onChange && onChange(input);
@@ -111,15 +111,17 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           name: country.name,
                           value: country.isoCode,
                           comp: (
-                            //@ts-ignore
                             <Prefix
-                              //@ts-ignore
-                              Prefix={<FlagIcon code={country.isoCode} />}
+                              Prefix={
+                                <FlagIcon
+                                  code={country.isoCode as FlagIconCode}
+                                />
+                              }
                             >
                               {country.name}
                             </Prefix>
                           ),
-                        })
+                        }),
                       )}
                       onSelection={(code: any) => setCurrentCountryCode(code)}
                     />
