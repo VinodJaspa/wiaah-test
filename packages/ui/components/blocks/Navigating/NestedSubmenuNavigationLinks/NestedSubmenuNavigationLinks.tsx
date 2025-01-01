@@ -82,7 +82,7 @@ export const NestedSubmenuNavigationLinks: React.FC<{
               }}
               className={` cursor-pointer ${selected
                   ? `${lastDeepNum === 0
-                    ? "rounded text-indigo-500"
+                    ? "rounded bg-primary text-white"
                     : "text-primary"
                   }`
                   : "text-black"
