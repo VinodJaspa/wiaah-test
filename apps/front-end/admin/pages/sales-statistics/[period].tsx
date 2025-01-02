@@ -158,7 +158,7 @@ const SalesStatistics: NextPage = () => {
                       </Td>
                       <Td>{new Date(createdAt).toDateString()}</Td>
                     </Tr>
-                  )
+                  ),
                 )}
               </TBody>
             </Table>
@@ -186,7 +186,7 @@ const FAKE_SALES: AdminGetSalesDurningPeriodQuery["getSalesDurningPeriod"] = [
     product: {
       __typename: "Product",
       title: "Product A",
-      thumbnail: "https://example.com/productA.jpg",
+      thumbnail: "/shop.jpeg",
     },
     buyer: {
       __typename: "Account",
@@ -229,7 +229,7 @@ const FAKE_SALES: AdminGetSalesDurningPeriodQuery["getSalesDurningPeriod"] = [
     product: {
       __typename: "Product",
       title: "Product B",
-      thumbnail: "https://example.com/productB.jpg",
+      thumbnail: "/shop.jpeg",
     },
     buyer: {
       __typename: "Account",
