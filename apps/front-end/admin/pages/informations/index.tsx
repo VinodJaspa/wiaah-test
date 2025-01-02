@@ -17,6 +17,7 @@ import {
   Input,
   useAdminGetSiteInformationsQuery,
   AdminGetSiteSettingsQuery,
+  Pagination,
 } from "ui";
 import { mapArray, useForm } from "utils";
 
@@ -26,7 +27,7 @@ const Informations = () => {
   const { visit, getCurrentPath } = useRouting();
 
   const { form } = useForm<Parameters<typeof useAdminGetSiteInformationsQuery>>(
-    []
+    [],
   );
   // NOTE: graphql is not ready so I replaced it with placehlder
   const { data: _info } = useAdminGetSiteInformationsQuery();
@@ -79,7 +80,7 @@ const Informations = () => {
                       r
                         .addPath(getCurrentPath({ noParams: true }))
                         .addPath("form")
-                        .addPath(info.id)
+                        .addPath(info.id),
                     )
                   }
                   className="flex items-center justify-center  text-2xl h-12 w-12"
@@ -90,7 +91,7 @@ const Informations = () => {
             </Tr>
           </TBody>
         </Table>
-        <ItemsPagination controls={controls} />
+        <Pagination controls={controls} />
       </div>
     </div>
   );
