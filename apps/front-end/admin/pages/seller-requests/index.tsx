@@ -113,7 +113,7 @@ const PendingProducts = () => {
                     "dateCreated",
                     "dateValue",
                     "onDateChange",
-                    (e) => e
+                    (e) => e,
                   )}
                 />
               </Th>
@@ -143,7 +143,7 @@ const PendingProducts = () => {
                           r
                             .addPath(getCurrentPath())
                             .addPath("info")
-                            .addPath(v.id)
+                            .addPath(v.id),
                         )
                       }
                       className="w-8 h-8 p-2 bg-cyan-400"
@@ -197,7 +197,7 @@ const PendingProducts = () => {
                   >
                     {t(
                       "seller_refuse_inappropriate_images",
-                      "Product/Service images inappropriate"
+                      "Product/Service images inappropriate",
                     )}
                   </Radio>
                   <Radio
@@ -222,7 +222,7 @@ const PendingProducts = () => {
                   >
                     {t(
                       "seller_refuse_verify_identity",
-                      "Impossible to verify the identity of the seller"
+                      "Impossible to verify the identity of the seller",
                     )}
                   </Radio>
                   <Radio
@@ -281,7 +281,7 @@ const FAKE_PENDING_PRODS: AdminGetSellerRequestsQuery["getPendingSellers"] = [
     lastName: "Doe",
     email: "johndoe@example.com",
     createdAt: "2024-07-13T12:00:00Z",
-    photo: "https://example.com/profile_photo.jpg",
+    photo: "/shop.jpeg",
     id: "seller1",
     shop: {
       id: "shop1",
@@ -293,7 +293,7 @@ const FAKE_PENDING_PRODS: AdminGetSellerRequestsQuery["getPendingSellers"] = [
     lastName: "Smith",
     email: "janesmith@example.com",
     createdAt: "2024-07-12T15:30:00Z",
-    photo: "https://example.com/profile_photo.jpg",
+    photo: "/shop.jpeg",
     id: "seller2",
     shop: {
       id: "shop2",
