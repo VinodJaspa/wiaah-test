@@ -52,7 +52,7 @@ const ProductReturns = () => {
         <div className="flex flex-col gap-4 w-full shadow-lg border p-2 rounded-lg">
           <div className="flex items-center text-xl font-bold gap-2">
             <ListIcon className="text-base" />
-            <p>{t("Product Retrun List")}</p>
+            <p className="mt-1">{t("Product Retrun List")}</p>
           </div>
           <TableContainer>
             <Table
@@ -142,7 +142,7 @@ const ProductReturns = () => {
                               r
                                 .addPath(getCurrentPath())
                                 .addPath("edit")
-                                .addPath(prod.id)
+                                .addPath(prod.id),
                             )
                           }
                           className="w-8 h-8 p-2 text-white cursor-pointer fill-white rounded hover:bg-cyan-600 bg-cyan-500"
@@ -198,7 +198,7 @@ const FAKE_REQUEST = [...Array(10)].map((_, i) => ({
     title: "prod" + i,
   },
   reason:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took",
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
   status:
     Object.values(RefundStatusType)[i % Object.values(RefundStatusType).length],
   updatedAt: new Date().toString(),
