@@ -1,6 +1,6 @@
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -32,6 +32,12 @@ const Maintenance: React.FC = () => {
     t("Page Settings"),
   ];
 
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleIsChecked = () => {
+    setIsChecked((prevState) => !prevState);
+  };
+
   return (
     <section>
       <div className="flex flex-col gap-4 border border-gray-300 p-4">
@@ -43,7 +49,7 @@ const Maintenance: React.FC = () => {
           </div>
           <SimpleTabItemList>
             <div className="flex items-center gap-4">
-              <Switch />
+              <Switch onChange={toggleIsChecked} checked={isChecked} />
               <span>{t("Enable Maintenance")}</span>
             </div>
             <Formik
@@ -52,7 +58,7 @@ const Maintenance: React.FC = () => {
                   return { ...acc, [curr.label]: curr.link };
                 }, {}),
               }}
-              onSubmit={() => {}}
+              onSubmit={() => { }}
             >
               {({ values, handleChange }) => (
                 <Form>
@@ -69,7 +75,7 @@ const Maintenance: React.FC = () => {
                 </Form>
               )}
             </Formik>
-            <Formik initialValues={{}} onSubmit={() => {}}>
+            <Formik initialValues={{}} onSubmit={() => { }}>
               <div className="flex flex-col gap-4">
                 <div className="flex items-start gap-2">
                   <Switch />
