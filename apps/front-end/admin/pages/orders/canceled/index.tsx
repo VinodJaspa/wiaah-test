@@ -40,7 +40,7 @@ const CanceledOrders: NextPage = () => {
         <div className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ListIcon />
-            <p>{t("Canceled Orders")}</p>
+            <p className="whitespace-nowrap w-full">{t("Canceled Orders")}</p>
           </div>
           <Select className="w-1/2" flushed>
             <SelectOption value={"filter"}>{t("Filter")}</SelectOption>
@@ -51,7 +51,7 @@ const CanceledOrders: NextPage = () => {
             <Table className="min-w-max">
               <THead>
                 <Tr>
-                  <Th className="w-32">{t("Product Image")}</Th>
+                  <Th className="w-40">{t("Product Image")}</Th>
                   <Th>{t("Product Name")}</Th>
                   <Th>{t("Seller Name")}</Th>
                   <Th>{t("Buyer Name")}</Th>
@@ -143,7 +143,7 @@ const FAKE_ORDERS: AdminGetFilteredReturnOrdersQuery["adminGetReturnedOrders"] =
         product: {
           __typename: "Product",
           title: "Sample Product 1",
-          thumbnail: "https://example.com/product1.jpg",
+          thumbnail: "/shop.jpeg",
         },
         seller: {
           __typename: "Account",
@@ -171,7 +171,7 @@ const FAKE_ORDERS: AdminGetFilteredReturnOrdersQuery["adminGetReturnedOrders"] =
         product: {
           __typename: "Product",
           title: "Sample Product 2",
-          thumbnail: "https://example.com/product2.jpg",
+          thumbnail: "/shop.jpeg",
         },
         seller: {
           __typename: "Account",
