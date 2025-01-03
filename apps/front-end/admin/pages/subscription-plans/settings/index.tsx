@@ -10,6 +10,7 @@ import {
 } from "ui";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
+import Head from "next/head";
 
 interface Plan {
   id: string;
@@ -46,64 +47,72 @@ const SubscriptionPlans: NextPage = () => {
 
   const { data } = useAdminGetPlansQuery(form);
   return (
-    <section>
-      <AdminListTable
-        headers={[
-          {
-            type: AdminTableCellTypeEnum.checkbox,
-          },
-          {
-            value: t("Subscription Plan Name"),
-          },
-          {
-            value: t("Sort Order"),
-          },
-          {
-            value: t("Action"),
-            props: { align: "right" },
-          },
-        ]}
-        data={mapArray(plans, (v) => ({
-          id: v.id,
-          cols: [
+    <React.Fragment>
+      <Head>
+        <title>Plans | Settings</title>
+      </Head>
+      <section>
+        <AdminListTable
+          headers={[
             {
               type: AdminTableCellTypeEnum.checkbox,
             },
             {
-              value: v.name,
+              value: t("Subscription Plan Name"),
             },
             {
-              type: AdminTableCellTypeEnum.number,
-              value: v.sortOrder.toString(),
+              value: t("Sort Order"),
             },
             {
-              type: AdminTableCellTypeEnum.action,
+              value: t("Action"),
               props: { align: "right" },
-              actionBtns: [
-                <Button
-                  key={v.id}
-                  onClick={() =>
-                    visit((r) =>
-                      r.addPath(getCurrentPath()).addPath("form").addPath(v.id)
-                    )
-                  }
-                  center
-                  className="w-8 h-8"
-                >
-                  <EditIcon />
-                </Button>,
-              ],
             },
-          ],
-        }))}
-        onAdd={() =>
-          visit((r) =>
-            r.addPath(getCurrentPath()).addPath("form").addPath("new")
-          )
-        }
-        title={t("Subscription Plan List")}
-      />
-    </section>
+          ]}
+          data={mapArray(plans, (v) => ({
+            id: v.id,
+            cols: [
+              {
+                type: AdminTableCellTypeEnum.checkbox,
+              },
+              {
+                value: v.name,
+              },
+              {
+                type: AdminTableCellTypeEnum.number,
+                value: v.sortOrder.toString(),
+              },
+              {
+                type: AdminTableCellTypeEnum.action,
+                props: { align: "right" },
+                actionBtns: [
+                  <Button
+                    key={v.id}
+                    onClick={() =>
+                      visit((r) =>
+                        r
+                          .addPath(getCurrentPath())
+                          .addPath("form")
+                          .addPath(v.id),
+                      )
+                    }
+                    center
+                    className="w-8 h-8"
+                  >
+                    <EditIcon />
+                  </Button>,
+                ],
+              },
+            ],
+          }))}
+          onAdd={() =>
+            visit((r) =>
+              r.addPath(getCurrentPath()).addPath("form").addPath("new"),
+            )
+          }
+          title={t("Subscription Plan List")}
+        />
+      </section>
+    </React.Fragment>
   );
 };
 
