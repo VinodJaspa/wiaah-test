@@ -4,6 +4,7 @@ import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 import { useTranslation } from "react-i18next";
 import { Button, EditIcon } from "ui";
 import { useRouting } from "routing";
+import Head from "next/head";
 
 const classes = [
   {
@@ -20,55 +21,60 @@ const TaxClasses: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
-    <AdminListTable
-      data={classes.map((v) => ({
-        id: v.id,
-        cols: [
+    <React.Fragment>
+      <Head>
+        <title>Admin | Vat Classes</title>
+      </Head>
+      <AdminListTable
+        data={classes.map((v) => ({
+          id: v.id,
+          cols: [
+            {
+              type: AdminTableCellTypeEnum.checkbox,
+            },
+            {
+              value: v.title,
+            },
+            {
+              props: {
+                align: "right",
+              },
+              type: AdminTableCellTypeEnum.action,
+              actionBtns: [
+                <Button
+                  key={v.id}
+                  onClick={() =>
+                    visit((r) =>
+                      r.addPath(getCurrentPath()).addPath("form").addPath(v.id),
+                    )
+                  }
+                  center
+                  className="w-8 h-8"
+                >
+                  <EditIcon />
+                </Button>,
+              ],
+            },
+          ],
+        }))}
+        headers={[
           {
+            props: { className: "w-fit" },
             type: AdminTableCellTypeEnum.checkbox,
           },
           {
-            value: v.title,
+            value: t("Tax Class Title"),
           },
           {
-            props: {
-              align: "right",
-            },
-            type: AdminTableCellTypeEnum.action,
-            actionBtns: [
-              <Button
-                key={v.id}
-                onClick={() =>
-                  visit((r) =>
-                    r.addPath(getCurrentPath()).addPath("form").addPath(v.id)
-                  )
-                }
-                center
-                className="w-8 h-8"
-              >
-                <EditIcon />
-              </Button>,
-            ],
+            props: { align: "right" },
+            value: t("Action"),
           },
-        ],
-      }))}
-      headers={[
-        {
-          props: { className: "w-fit" },
-          type: AdminTableCellTypeEnum.checkbox,
-        },
-        {
-          value: t("Tax Class Title"),
-        },
-        {
-          props: { align: "right" },
-          value: t("Action"),
-        },
-      ]}
-      onAdd={() => {}}
-      onDelete={() => {}}
-      title={t("Tax Class List")}
-    />
+        ]}
+        onAdd={() => { }}
+        onDelete={() => { }}
+        title={t("Tax Class List")}
+      />
+    </React.Fragment>
   );
 };
 
