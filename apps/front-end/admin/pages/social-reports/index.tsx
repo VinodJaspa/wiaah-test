@@ -28,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 import { ImCheckmark } from "react-icons/im";
 import { AttachmentType, ReportStatus, ReportType } from "@features/API";
+import Head from "next/head";
 
 const SocialReports: NextPage = () => {
   const { t } = useTranslation();
@@ -43,6 +44,9 @@ const SocialReports: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Admin | Social Reports</title>
+      </Head>
       <TableContainer>
         <Table
           ThProps={{ className: "max-w-[10rem]" }}
@@ -77,11 +81,15 @@ const SocialReports: NextPage = () => {
                 <Select
                   {...inputProps("status", "value", "onOptionChange", (e) => e)}
                 >
-                  <SelectOption value={"appropriate"}>
-                    {t("Appropriate")}
+                  <SelectOption value={ReportStatus.Clean}>
+                    {t("Clean")}
                   </SelectOption>
-                  <SelectOption value={"inappropriate"}>
-                    {t("inAppropriate")}
+                  <SelectOption value={ReportStatus.Pending}>
+                    {t("Pending")}
+                  </SelectOption>
+
+                  <SelectOption value={ReportStatus.Suspended}>
+                    {t("Suspended")}
                   </SelectOption>
                 </Select>
               </Td>
@@ -106,7 +114,7 @@ const SocialReports: NextPage = () => {
                     "publishDate",
                     "dateValue",
                     "onDateChange",
-                    (e) => e
+                    (e) => e,
                   )}
                 />
               </Td>
@@ -127,7 +135,7 @@ const SocialReports: NextPage = () => {
                       />
                     )}
                   </Td>
-                  <Td>{id.slice(0, 4)}...</Td>
+                  <Td>{id.slice(0, 4)}</Td>
                   <Td>{message.slice(0, 30)}</Td>
                   <Td>{status}</Td>
                   <Td className="w-[30%]">
@@ -164,7 +172,7 @@ const SocialReports: NextPage = () => {
                     </div>
                   </Td>
                 </Tr>
-              )
+              ),
             )}
           </TBody>
         </Table>
