@@ -44,7 +44,7 @@ const GeoZoneForm: NextPage = () => {
       id,
       ...data,
     },
-    { id, ...data }
+    { id, ...data },
   );
   const { mutate: update } = useAdminUpdateShippingRuleTypeMutation();
 
