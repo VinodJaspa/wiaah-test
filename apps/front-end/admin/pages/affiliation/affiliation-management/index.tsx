@@ -1,5 +1,6 @@
 import { Link } from "@components";
 import { NextPage } from "next";
+import Head from "next/head";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -38,112 +39,119 @@ const AffiliationManagement: NextPage = () => {
   const data = FAKE_AFFILIATION;
 
   return (
-    <section>
-      <TableContainer className="w-full">
-        <Table className="w-full">
-          <THead>
-            <Tr>
-              <Th className="w-32">{t("Photo")}</Th>
-              <Th>{t("Seller")}</Th>
-              <Th>{t("commission")}</Th>
-              <Th>{t("Price")}</Th>
-              <Th>{t("Link")}</Th>
-              <Th>{t("Created at")}</Th>
-              <Th>{t("action")}</Th>
-            </Tr>
-            <Tr>
-              <Th></Th>
-              <Th>
-                <Input {...inputProps("seller")} />
-              </Th>
-              <Th>
-                <Input {...inputProps("commission")} type={"number"} />
-              </Th>
-              <Th>
-                <Input {...inputProps("price")} type={"number"} />
-              </Th>
-              <Th>
-                <Input {...inputProps("link")} />
-              </Th>
-              <Th>
-                <DateFormInput
-                  {...inputProps(
-                    "createdAfter",
-                    "dateValue",
-                    "onDateChange",
-                    (e) => e
-                  )}
-                />
-              </Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {mapArray(
-              data,
-              ({
-                commision,
-                createdAt,
-                id,
-                product,
-                seller,
-                sellerId,
-                service,
-                itemId,
-                itemType,
-              }) => (
-                <Tr key={id}>
-                  <Td>
-                    <Image
-                      src={product?.thumbnail || service?.thumbnail}
-                      alt="thumbnail"
-                    />
-                  </Td>
-                  <Td>
-                    <Link
-                      href={
-                        (r) => ""
-                        // r.visitSocialPostAuthorProfile({ id: sellerId }).route
-                      }
-                    >
-                      <p className="underline text-primary">
-                        {seller?.profile?.username}
-                      </p>
-                    </Link>
-                  </Td>
-                  <Td>{commision}%</Td>
-                  <Td>
-                    <PriceDisplay price={product?.price || service?.price} />
-                  </Td>
-                  <Td>
-                    {itemType === "product"
-                      ? getUrl((r) => r.visitProduct(itemId))
-                      : getUrl((r) => r.visitService({ id: itemId }, itemType))}
-                  </Td>
-                  <Td>{new Date(createdAt).toDateString()}</Td>
-                  <Td>
-                    <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
-                      <EditIcon
-                        onClick={() =>
-                          visit((r) =>
-                            r
-                              .addPath(getCurrentPath())
-                              .addPath("edit")
-                              .addPath(id)
-                          )
-                        }
-                        className="w-8 h-8 p-2 bg-cyan-400"
+    <React.Fragment>
+      <Head>
+        <title>Admin | Affilation Managment </title>
+      </Head>
+      <section>
+        <TableContainer className="w-full">
+          <Table className="w-full">
+            <THead>
+              <Tr>
+                <Th className="w-32">{t("Photo")}</Th>
+                <Th>{t("Seller")}</Th>
+                <Th>{t("commission")}</Th>
+                <Th>{t("Price")}</Th>
+                <Th>{t("Link")}</Th>
+                <Th>{t("Created at")}</Th>
+                <Th>{t("action")}</Th>
+              </Tr>
+              <Tr>
+                <Th></Th>
+                <Th>
+                  <Input {...inputProps("seller")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("commission")} type={"number"} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("price")} type={"number"} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("link")} />
+                </Th>
+                <Th>
+                  <DateFormInput
+                    {...inputProps(
+                      "createdAfter",
+                      "dateValue",
+                      "onDateChange",
+                      (e) => e,
+                    )}
+                  />
+                </Th>
+              </Tr>
+            </THead>
+            <TBody>
+              {mapArray(
+                data,
+                ({
+                  commision,
+                  createdAt,
+                  id,
+                  product,
+                  seller,
+                  sellerId,
+                  service,
+                  itemId,
+                  itemType,
+                }) => (
+                  <Tr key={id}>
+                    <Td>
+                      <Image
+                        src={product?.thumbnail || service?.thumbnail}
+                        alt="thumbnail"
                       />
-                      <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
-                    </div>
-                  </Td>
-                </Tr>
-              )
-            )}
-          </TBody>
-        </Table>
-      </TableContainer>
-      <Pagination />
-    </section>
+                    </Td>
+                    <Td>
+                      <Link
+                        href={
+                          (r) => ""
+                          // r.visitSocialPostAuthorProfile({ id: sellerId }).route
+                        }
+                      >
+                        <p className="underline text-primary">
+                          {seller?.profile?.username}
+                        </p>
+                      </Link>
+                    </Td>
+                    <Td>{commision}%</Td>
+                    <Td>
+                      <PriceDisplay price={product?.price || service?.price} />
+                    </Td>
+                    <Td>
+                      {itemType === "product"
+                        ? getUrl((r) => r.visitProduct(itemId))
+                        : getUrl((r) =>
+                          r.visitService({ id: itemId }, itemType),
+                        )}
+                    </Td>
+                    <Td>{new Date(createdAt).toDateString()}</Td>
+                    <Td>
+                      <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
+                        <EditIcon
+                          onClick={() =>
+                            visit((r) =>
+                              r
+                                .addPath(getCurrentPath())
+                                .addPath("edit")
+                                .addPath(id),
+                            )
+                          }
+                          className="w-8 h-8 p-2 bg-cyan-400"
+                        />
+                        <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
+                      </div>
+                    </Td>
+                  </Tr>
+                ),
+              )}
+            </TBody>
+          </Table>
+        </TableContainer>
+        <Pagination />
+      </section>
+    </React.Fragment>
   );
 };
 

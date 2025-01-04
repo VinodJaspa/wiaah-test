@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiTruck } from "react-icons/hi";
@@ -31,9 +32,14 @@ const ServiceBook = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="flex flex-col gap-4 w-full">
-      <BookDetailsSection onGoBack={() => back()} bookId="13545" />
-    </section>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Edit Active Service Bookings </title>
+      </Head>
+      <section className="flex flex-col gap-4 w-full">
+        <BookDetailsSection onGoBack={() => back()} bookId="13545" />
+      </section>
+    </React.Fragment>
   );
 };
 

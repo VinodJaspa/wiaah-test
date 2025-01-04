@@ -8,6 +8,7 @@ import { startCase } from "lodash";
 import { usePaginationControls } from "@blocks";
 import { useRouting } from "routing";
 import { getRandomImage } from "placeholder";
+import Head from "next/head";
 
 type DownloadedRecord = {
   id: string;
@@ -114,132 +115,140 @@ const Downloadables: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { controls } = usePaginationControls();
   return (
-    <section>
-      <AdminListTable
-        contain
-        pagination={controls}
-        title={t("Download List")}
-        headers={[
-          {
-            props: { className: "w-fit" },
-            type: AdminTableCellTypeEnum.checkbox,
-          },
-          {
-            props: { className: "w-32" },
-            type: AdminTableCellTypeEnum.image,
-            value: t("Photo"),
-          },
-          {
-            value: t("Order Id"),
-            type: AdminTableCellTypeEnum.text,
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Download Name"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Seller"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Buyer"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Status"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Total"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Date Added"),
-          },
-          {
-            props: { align: "right" },
-            type: AdminTableCellTypeEnum.action,
-            value: t("Action"),
-          },
-        ]}
-        data={items.map(
-          ({
-            buyer,
-            createdAt,
-            id,
-            name,
-            seller,
-            status,
-            total,
-            thubmnail,
-          }) => ({
-            id,
-            cols: [
-              {
-                type: AdminTableCellTypeEnum.checkbox,
-              },
-              {
-                type: AdminTableCellTypeEnum.image,
-                value: thubmnail,
-              },
-              {
-                value: id,
-              },
-              {
-                value: name,
-              },
-              {
-                value: seller.name,
-              },
-              {
-                value: buyer.name,
-              },
-              {
-                type: AdminTableCellTypeEnum.custom,
-                custom: (
-                  <Badge
-                    className="justify-center flex"
-                    cases={{
-                      off: "pending",
-                      fail: "canceled",
-                    }}
-                    value={status}
-                  >
-                    {startCase(status)}
-                  </Badge>
-                ),
-              },
-              {
-                type: AdminTableCellTypeEnum.custom,
-                custom: <PriceDisplay price={total} />,
-              },
-              {
-                value: new Date(createdAt).toDateString(),
-              },
-              {
-                props: { align: "right" },
-                type: AdminTableCellTypeEnum.action,
-                actionBtns: [
-                  <Button
-                    key={id}
-                    onClick={() => {
-                      visit((r) =>
-                        r.addPath(getCurrentPath()).addPath("form").addPath(id)
-                      );
-                    }}
-                    center
-                    className="w-8 h-8"
-                  >
-                    <SearchIcon />
-                  </Button>,
-                ],
-              },
-            ],
-          })
-        )}
-      />
-    </section>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Product Downloadables </title>
+      </Head>
+      <section>
+        <AdminListTable
+          contain
+          pagination={controls}
+          title={t("Download List")}
+          headers={[
+            {
+              props: { className: "w-fit" },
+              type: AdminTableCellTypeEnum.checkbox,
+            },
+            {
+              props: { className: "w-32" },
+              type: AdminTableCellTypeEnum.image,
+              value: t("Photo"),
+            },
+            {
+              value: t("Order Id"),
+              type: AdminTableCellTypeEnum.text,
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Download Name"),
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Seller"),
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Buyer"),
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Status"),
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Total"),
+            },
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: t("Date Added"),
+            },
+            {
+              props: { align: "right" },
+              type: AdminTableCellTypeEnum.action,
+              value: t("Action"),
+            },
+          ]}
+          data={items.map(
+            ({
+              buyer,
+              createdAt,
+              id,
+              name,
+              seller,
+              status,
+              total,
+              thubmnail,
+            }) => ({
+              id,
+              cols: [
+                {
+                  type: AdminTableCellTypeEnum.checkbox,
+                },
+                {
+                  type: AdminTableCellTypeEnum.image,
+                  value: thubmnail,
+                },
+                {
+                  value: id,
+                },
+                {
+                  value: name,
+                },
+                {
+                  value: seller.name,
+                },
+                {
+                  value: buyer.name,
+                },
+                {
+                  type: AdminTableCellTypeEnum.custom,
+                  custom: (
+                    <Badge
+                      className="justify-center flex"
+                      cases={{
+                        off: "pending",
+                        fail: "canceled",
+                      }}
+                      value={status}
+                    >
+                      {startCase(status)}
+                    </Badge>
+                  ),
+                },
+                {
+                  type: AdminTableCellTypeEnum.custom,
+                  custom: <PriceDisplay price={total} />,
+                },
+                {
+                  value: new Date(createdAt).toDateString(),
+                },
+                {
+                  props: { align: "right" },
+                  type: AdminTableCellTypeEnum.action,
+                  actionBtns: [
+                    <Button
+                      key={id}
+                      onClick={() => {
+                        visit((r) =>
+                          r
+                            .addPath(getCurrentPath())
+                            .addPath("form")
+                            .addPath(id),
+                        );
+                      }}
+                      center
+                      className="w-8 h-8"
+                    >
+                      <SearchIcon />
+                    </Button>,
+                  ],
+                },
+              ],
+            }),
+          )}
+        />
+      </section>
+    </React.Fragment>
   );
 };
 

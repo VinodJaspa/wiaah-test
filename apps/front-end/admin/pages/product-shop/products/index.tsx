@@ -1,5 +1,6 @@
 import { ProductStatus, ProductUsageStatus } from "@features/API";
 import { NextPage } from "next";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -42,7 +43,10 @@ const Products: NextPage = () => {
   const products = FAKE_PROD;
 
   return (
-    <>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Products </title>
+      </Head>
       <section>
         <TableContainer>
           <Table ThProps={{ className: "whitespace-nowrap" }}>
@@ -160,7 +164,7 @@ const Products: NextPage = () => {
         </TableContainer>
         <Pagination controls={controls} />
       </section>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -23,7 +23,7 @@ interface ServiceCheckoutProps {
 
 const ServiceCheckout: NextPage<ServiceCheckoutProps> = ({ token }) => {
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Wiaah | Checkout</title>
       </Head>
@@ -37,7 +37,7 @@ const ServiceCheckout: NextPage<ServiceCheckoutProps> = ({ token }) => {
           <Collaboration />
         </Container>
       </MasterLayout>
-    </>
+    </React.Fragment>
   );
 };
 

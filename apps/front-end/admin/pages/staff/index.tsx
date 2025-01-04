@@ -43,7 +43,7 @@ const Staff: NextPage = () => {
         <Button
           onClick={() =>
             visit((r) =>
-              r.addPath(getCurrentPath()).addPath("form").addPath("new")
+              r.addPath(getCurrentPath()).addPath("form").addPath("new"),
             )
           }
           className="flex gap-2 items-center"
@@ -152,7 +152,7 @@ const Staff: NextPage = () => {
                 })(),
               },
             ],
-          })
+          }),
         )}
         pagination={controls}
       />

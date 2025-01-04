@@ -4,6 +4,7 @@ import React from "react";
 import { useRouting } from "routing";
 import { randomNum } from "utils";
 import { getRandomImage } from "placeholder";
+import Head from "next/head";
 
 const products: any[] = [...Array(15)].map((_, i) => ({
   id: String(i),
@@ -28,24 +29,29 @@ const DownloadableForm: NextPage = () => {
   const orderId = getParam("id");
 
   return (
-    <section className="flex flex-col gap-4 w-full">
-      <OrderDetailsSection
-        order={{
-          customer: "customer",
-          dateAdded: new Date(Date.now()).toDateString(),
-          orderId: `${randomNum(100000)}`,
-          orderStatus: "confirmed",
-          paymentMethod: "stripe",
-          productsNum: randomNum(10),
-          total: {
-            amount: randomNum(5000),
-            currency: "USD",
-          },
+    <React.Fragment>
+      <Head>
+        <title>Admin | Product Downloadables Form </title>
+      </Head>
+      <section className="flex flex-col gap-4 w-full">
+        <OrderDetailsSection
+          order={{
+            customer: "customer",
+            dateAdded: new Date(Date.now()).toDateString(),
+            orderId: `${randomNum(100000)}`,
+            orderStatus: "confirmed",
+            paymentMethod: "stripe",
+            productsNum: randomNum(10),
+            total: {
+              amount: randomNum(5000),
+              currency: "USD",
+            },
 
-          products,
-        }}
-      />
-    </section>
+            products,
+          }}
+        />
+      </section>
+    </React.Fragment>
   );
 };
 

@@ -13,6 +13,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { mapArray, useForm } from "utils";
+import Head from "next/head";
 
 const AttributesList: NextPage = () => {
   const { controls, pagination } = usePaginationControls();
@@ -25,7 +26,7 @@ const AttributesList: NextPage = () => {
       name: "",
       pagination,
     },
-    { pagination }
+    { pagination },
   );
   const {
     data: _data,
@@ -38,57 +39,62 @@ const AttributesList: NextPage = () => {
   console.log({ error });
 
   return (
-    <section>
-      {/* ADD isLoading and isError when graphql is ready*/}
-      <SpinnerFallback isLoading={false}>
-        <AdminListTable
-          pagination={controls}
-          onAdd={() => {
-            visit((r) => r.addPath(getCurrentPath()).addPath("form"));
-          }}
-          title={t("Profession")}
-          headers={[
-            {
-              type: AdminTableCellTypeEnum.text,
-              value: t("Name"),
-              inputProps: inputProps("name"),
-            },
-            {
-              type: AdminTableCellTypeEnum.action,
-            },
-          ]}
-          data={mapArray(data?.data, ({ id, name }) => ({
-            id,
-            cols: [
+    <React.Fragment>
+      <Head>
+        <title>Admin | Product Attributs </title>
+      </Head>
+      <section>
+        {/* ADD isLoading and isError when graphql is ready*/}
+        <SpinnerFallback isLoading={false}>
+          <AdminListTable
+            pagination={controls}
+            onAdd={() => {
+              visit((r) => r.addPath(getCurrentPath()).addPath("form"));
+            }}
+            title={t("Profession")}
+            headers={[
               {
-                value: name,
+                type: AdminTableCellTypeEnum.text,
+                value: t("Name"),
+                inputProps: inputProps("name"),
               },
-
               {
                 type: AdminTableCellTypeEnum.action,
-                actionBtns: [
-                  <Button
-                    key={id}
-                    onClick={() =>
-                      visit((r) =>
-                        r
-                          .addPath(getCurrentPath())
-                          .addPath("form")
-                          .addQuery({ id })
-                      )
-                    }
-                    center
-                    className="w-8 h-8"
-                  >
-                    <EditIcon />
-                  </Button>,
-                ],
               },
-            ],
-          }))}
-        />
-      </SpinnerFallback>
-    </section>
+            ]}
+            data={mapArray(data?.data, ({ id, name }) => ({
+              id,
+              cols: [
+                {
+                  value: name,
+                },
+
+                {
+                  type: AdminTableCellTypeEnum.action,
+                  actionBtns: [
+                    <Button
+                      key={id}
+                      onClick={() =>
+                        visit((r) =>
+                          r
+                            .addPath(getCurrentPath())
+                            .addPath("form")
+                            .addQuery({ id }),
+                        )
+                      }
+                      center
+                      className="w-8 h-8"
+                    >
+                      <EditIcon />
+                    </Button>,
+                  ],
+                },
+              ],
+            }))}
+          />
+        </SpinnerFallback>
+      </section>
+    </React.Fragment>
   );
 };
 

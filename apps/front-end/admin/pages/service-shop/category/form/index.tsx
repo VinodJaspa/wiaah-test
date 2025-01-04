@@ -51,6 +51,7 @@ import {
 import { array, InferType, number, object, string } from "yup";
 import { useUpdateServiceCategory } from "@features/Services/Services/mutation";
 import { LanguageSelector } from "components/views/sellers/LanguageSelector";
+import Head from "next/head";
 
 const EditCategory = () => {
   const { getParam, back } = useRouting();
@@ -264,59 +265,64 @@ const EditCategory = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex justify-between w-full items-center">
-        <p className="font-bold text-xl">{t("Categories")}</p>
-        <div className="flex items-center fill-white h-12 gap-1">
-          <Button onClick={handleSave} className="w-12 h-full">
-            <SaveIcon />
-          </Button>
-          <Button onClick={back} className="w-12 h-full">
-            <ArrowRoundBack />
-          </Button>
-        </div>
-      </div>
-      <Divider />
-      <div className="border pb-4">
-        <div className="flex text-xl xl:text-2xl px-4 py-2 items-center gap-2">
-          <EditIcon />
-          <p className="font-semibold">{t("Edit Category")}</p>
-        </div>
-        <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
-        <FormTranslationWrapper onLangChange={setLang} lang={lang}>
-          <div className="px-4 flex flex-col gap-8 w-full">
-            <SimpleTabs>
-              <div className="flex items-center gap-4">
-                <SimpleTabHead>
-                  <LanguageSelector
-                    WiaahLanguageCountriesIsoCodes={
-                      WiaahLanguageCountriesIsoCodes
-                    }
-                  />
-                </SimpleTabHead>
-              </div>
-            </SimpleTabs>
-            <SimpleTabs>
-              <div className="flex border-b text-xl">
-                <SimpleTabHead>
-                  {mapArray(tabs, ({ name }, i) => (
-                    <div
-                      className={`${i === 3 ? "border-b-white" : ""
-                        } border px-8 py-2`}
-                    >
-                      {name}
-                    </div>
-                  ))}
-                </SimpleTabHead>
-              </div>
-              <SimpleTabItemList>
-                {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
-              </SimpleTabItemList>
-            </SimpleTabs>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Service Category Form </title>
+      </Head>
+      <div className="flex flex-col w-full gap-4">
+        <div className="flex justify-between w-full items-center">
+          <p className="font-bold text-xl">{t("Categories")}</p>
+          <div className="flex items-center fill-white h-12 gap-1">
+            <Button onClick={handleSave} className="w-12 h-full">
+              <SaveIcon />
+            </Button>
+            <Button onClick={back} className="w-12 h-full">
+              <ArrowRoundBack />
+            </Button>
           </div>
-        </FormTranslationWrapper>
+        </div>
+        <Divider />
+        <div className="border pb-4">
+          <div className="flex text-xl xl:text-2xl px-4 py-2 items-center gap-2">
+            <EditIcon />
+            <p className="font-semibold">{t("Edit Category")}</p>
+          </div>
+          <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
+          <FormTranslationWrapper onLangChange={setLang} lang={lang}>
+            <div className="px-4 flex flex-col gap-8 w-full">
+              <SimpleTabs>
+                <div className="flex items-center gap-4">
+                  <SimpleTabHead>
+                    <LanguageSelector
+                      WiaahLanguageCountriesIsoCodes={
+                        WiaahLanguageCountriesIsoCodes
+                      }
+                    />
+                  </SimpleTabHead>
+                </div>
+              </SimpleTabs>
+              <SimpleTabs>
+                <div className="flex border-b text-xl">
+                  <SimpleTabHead>
+                    {mapArray(tabs, ({ name }, i) => (
+                      <div
+                        className={`${i === 3 ? "border-b-white" : ""
+                          } border px-8 py-2`}
+                      >
+                        {name}
+                      </div>
+                    ))}
+                  </SimpleTabHead>
+                </div>
+                <SimpleTabItemList>
+                  {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
+                </SimpleTabItemList>
+              </SimpleTabs>
+            </div>
+          </FormTranslationWrapper>
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

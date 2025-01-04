@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Head from "next/head";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -46,87 +47,96 @@ const Payback: NextPage = () => {
   }));
 
   return (
-    <section>
-      <TableContainer>
-        <Table className="min-w-max">
-          <THead>
-            <Tr>
-              <Th className="w-32">{t("Photo")}</Th>
-              <Th>{t("ID")}</Th>
-              <Th>{t("Seller")}</Th>
-              <Th>{t("Buyer")}</Th>
-              <Th>{t("Service")}</Th>
-              <Th className="w-16">{t("Guarantee")}</Th>
-              <Th>{t("Status")}</Th>
-              <Th className="w-[20rem]">{t("Refuse Reason")}</Th>
-            </Tr>
-            <Tr>
-              <Th></Th>
-              <Th>
-                <Input />
-              </Th>
-              <Th>
-                <Input />
-              </Th>
-              <Th>
-                <Input />
-              </Th>
-              <Th>
-                <Input />
-              </Th>
-              <Th>
-                <Input type="number" />
-              </Th>
-              <Th>
-                <Select>
-                  <SelectOption value={"pending"}>{t("Pending")}</SelectOption>
-                  <SelectOption value={"refused"}>{t("Refused")}</SelectOption>
-                  <SelectOption value={"refunded"}>
-                    {t("Refunded")}
-                  </SelectOption>
-                </Select>
-              </Th>
-              <Th>
-                <Input />
-              </Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {mapArray(
-              paybackHistory,
-              ({
-                buyer,
-                guarantee,
-                id,
-                rejectReason,
-                seller,
-                service,
-                status,
-                thumbnail,
-              }) => (
-                <Tr>
-                  <Td>
-                    <Image src={thumbnail} alt="thumbnail" />
-                  </Td>
-                  <Td>{id.slice(0, 10)}</Td>
-                  <Td>{seller}</Td>
-                  <Td>{buyer}</Td>
-                  <Td>{service}</Td>
-                  <Td>
-                    <PriceDisplay price={guarantee} />
-                  </Td>
-                  <Td>
-                    <Badge className="flex justify-center">{status}</Badge>
-                  </Td>
-                  <Td>{rejectReason}</Td>
-                </Tr>
-              )
-            )}
-          </TBody>
-        </Table>
-      </TableContainer>
-      <Pagination />
-    </section>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Payback Service Bookings </title>
+      </Head>
+      <section>
+        <TableContainer>
+          <Table className="min-w-max">
+            <THead>
+              <Tr>
+                <Th className="w-32">{t("Photo")}</Th>
+                <Th>{t("ID")}</Th>
+                <Th>{t("Seller")}</Th>
+                <Th>{t("Buyer")}</Th>
+                <Th>{t("Service")}</Th>
+                <Th className="w-16">{t("Guarantee")}</Th>
+                <Th>{t("Status")}</Th>
+                <Th className="w-[20rem]">{t("Refuse Reason")}</Th>
+              </Tr>
+              <Tr>
+                <Th></Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input type="number" />
+                </Th>
+                <Th>
+                  <Select>
+                    <SelectOption value={"pending"}>
+                      {t("Pending")}
+                    </SelectOption>
+                    <SelectOption value={"refused"}>
+                      {t("Refused")}
+                    </SelectOption>
+                    <SelectOption value={"refunded"}>
+                      {t("Refunded")}
+                    </SelectOption>
+                  </Select>
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+              </Tr>
+            </THead>
+            <TBody>
+              {mapArray(
+                paybackHistory,
+                ({
+                  buyer,
+                  guarantee,
+                  id,
+                  rejectReason,
+                  seller,
+                  service,
+                  status,
+                  thumbnail,
+                }) => (
+                  <Tr>
+                    <Td>
+                      <Image src={thumbnail} alt="thumbnail" />
+                    </Td>
+                    <Td>{id.slice(0, 10)}</Td>
+                    <Td>{seller}</Td>
+                    <Td>{buyer}</Td>
+                    <Td>{service}</Td>
+                    <Td>
+                      <PriceDisplay price={guarantee} />
+                    </Td>
+                    <Td>
+                      <Badge className="flex justify-center">{status}</Badge>
+                    </Td>
+                    <Td>{rejectReason}</Td>
+                  </Tr>
+                ),
+              )}
+            </TBody>
+          </Table>
+        </TableContainer>
+        <Pagination />
+      </section>
+    </React.Fragment>
   );
 };
 

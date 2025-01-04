@@ -45,6 +45,7 @@ import {
   GetUserShopTypeQuery,
 } from "ui";
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
+import Head from "next/head";
 
 const Edit = () => {
   const { getParam } = useRouting();
@@ -60,50 +61,12 @@ const Edit = () => {
 
   const productsTitle = isProducts ? "Products" : "Services";
 
-  const tabsTitles = [
-    "General",
-    "Listing",
-    "Fees",
-    "Affiliation",
-    productsTitle,
-    "Orders",
-    "Bookings",
-    "Social Info",
-    "Sales",
-    "Wishlist",
-    "returns",
-    "PaymentMethods",
-    "AddressBook",
-    "Notifications",
-    "Newsletter",
-    "Blocklist",
-    "Privacy",
-    "Account Verification",
-    "Personalization and data",
-    "Rendez-vous",
-    "Pending Appointments",
-    "Opening time management",
-    "Saved Posts",
-    "Shop Returns",
-    "Shipping Settings",
-    "Shop Reviews",
-    "Transactions",
-    "Payout",
-    "Vouchers",
-    "Statistics",
-    "Security",
-    "Sales Statistics",
-  ];
-
   return (
-    <>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Edit Seller Form</title>
+      </Head>
       <SimpleTabs>
-        <div className="flex flex-wrap gap-2 ">
-          <SimpleTabHead>
-            <TabHighlighter tabsTitles={tabsTitles} />
-          </SimpleTabHead>
-        </div>
-
         <SimpleTabItemList>
           <AccountGeneralView accountId={id} />
           <SellerListing accountId={id}></SellerListing>
@@ -143,7 +106,7 @@ const Edit = () => {
           <SalesStatistics accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
-    </>
+    </React.Fragment>
   );
 };
 

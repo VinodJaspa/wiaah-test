@@ -4,6 +4,7 @@ import {
   usePaginationControls,
 } from "@blocks";
 import { HStack, PriceDisplay } from "@partials";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getRandomName, mapArray, randomNum } from "utils";
@@ -29,70 +30,75 @@ const Profit = () => {
   const { pagination, controls } = usePaginationControls();
 
   return (
-    <section>
-      <AdminListTable
-        pagination={controls}
-        title={t("Profit")}
-        headers={[
-          {
-            type: AdminTableCellTypeEnum.image,
-            value: t("Photo"),
-            // inputProps: inputProps("name"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Seller"),
-            // inputProps: inputProps("accounts"),
-          },
-          {
-            type: AdminTableCellTypeEnum.number,
-            value: t("Amount"),
-          },
-          {
-            type: AdminTableCellTypeEnum.text,
-            value: t("Type"),
-          },
-          {
-            type: AdminTableCellTypeEnum.date,
-            value: t("Date"),
-          },
-        ]}
-        data={mapArray(data, ({ amount, date, photo, type, user }) => ({
-          id: "",
-          cols: [
+    <React.Fragment>
+      <Head>
+        <title>Admin | Profit </title>
+      </Head>
+      <section>
+        <AdminListTable
+          pagination={controls}
+          title={t("Profit")}
+          headers={[
             {
-              type: AdminTableCellTypeEnum.avatar,
-              value: photo,
+              type: AdminTableCellTypeEnum.image,
+              value: t("Photo"),
+              // inputProps: inputProps("name"),
             },
             {
-              value: user,
+              type: AdminTableCellTypeEnum.text,
+              value: t("Seller"),
+              // inputProps: inputProps("accounts"),
             },
             {
-              type: AdminTableCellTypeEnum.custom,
-              custom: (
-                <HStack className="text-primary text-lg font-semibold gap-0">
-                  <PriceDisplay price={amount}></PriceDisplay>+
-                </HStack>
-              ),
+              type: AdminTableCellTypeEnum.number,
+              value: t("Amount"),
             },
             {
-              value: type,
+              type: AdminTableCellTypeEnum.text,
+              value: t("Type"),
             },
             {
               type: AdminTableCellTypeEnum.date,
-              value: new Date(date).toLocaleDateString("en-us", {
-                year: "numeric",
-                month: "long",
-                day: "2-digit",
-                hour12: true,
-                hour: "2-digit",
-                minute: "2-digit",
-              }),
+              value: t("Date"),
             },
-          ],
-        }))}
-      />
-    </section>
+          ]}
+          data={mapArray(data, ({ amount, date, photo, type, user }) => ({
+            id: "",
+            cols: [
+              {
+                type: AdminTableCellTypeEnum.avatar,
+                value: photo,
+              },
+              {
+                value: user,
+              },
+              {
+                type: AdminTableCellTypeEnum.custom,
+                custom: (
+                  <HStack className="text-primary text-lg font-semibold gap-0">
+                    <PriceDisplay price={amount}></PriceDisplay>+
+                  </HStack>
+                ),
+              },
+              {
+                value: type,
+              },
+              {
+                type: AdminTableCellTypeEnum.date,
+                value: new Date(date).toLocaleDateString("en-us", {
+                  year: "numeric",
+                  month: "long",
+                  day: "2-digit",
+                  hour12: true,
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }),
+              },
+            ],
+          }))}
+        />
+      </section>
+    </React.Fragment>
   );
 };
 

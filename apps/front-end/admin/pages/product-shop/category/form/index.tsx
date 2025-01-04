@@ -1,6 +1,7 @@
 import { CreateCategoryInput, ProductCategoryStatus } from "@features/API";
 import { LanguageSelector } from "components/views/sellers/LanguageSelector";
 import { Formik } from "formik";
+import Head from "next/head";
 import React from "react";
 import { FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
@@ -49,7 +50,7 @@ const EditCategory = () => {
   >({});
 
   const [lang, changeLang] = React.useState<string>(
-    WiaahLanguageCountriesIsoCodes.at(0)
+    WiaahLanguageCountriesIsoCodes.at(0),
   );
 
   const { data: _cates } = useGetAdminProductCategoriesQuery({
@@ -197,7 +198,7 @@ const EditCategory = () => {
             <p className="inline">
               <ExclamationCircleIcon className="inline mx-2" />
               {t(
-                "Do not use spaces, instead replace spaces with - and make sure the SEO URL is globally unique."
+                "Do not use spaces, instead replace spaces with - and make sure the SEO URL is globally unique.",
               )}
             </p>
           </div>
@@ -222,59 +223,64 @@ const EditCategory = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full gap-4">
-      <div className="flex justify-between w-full items-center">
-        <p className="font-bold text-xl">{t("Categories")}</p>
-        <div className="flex items-center fill-white h-12 gap-1">
-          <Button onClick={handleSubmit} className="w-12 h-full">
-            <SaveIcon />
-          </Button>
-          <Button onClick={() => back()} className="w-12 h-full">
-            <ArrowRoundBack />
-          </Button>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Product Category Form </title>
+      </Head>
+      <div className="flex flex-col w-full gap-4">
+        <div className="flex justify-between w-full items-center">
+          <p className="font-bold text-xl">{t("Categories")}</p>
+          <div className="flex items-center fill-white h-12 gap-1">
+            <Button onClick={handleSubmit} className="w-12 h-full">
+              <SaveIcon />
+            </Button>
+            <Button onClick={() => back()} className="w-12 h-full">
+              <ArrowRoundBack />
+            </Button>
+          </div>
         </div>
-      </div>
-      <Divider />
-      <div className="border pb-4">
-        <div className="flex text-xl xl:text-2xl px-4 py-2 items-center gap-2">
-          <EditIcon />
-          <p className="font-semibold">{t("Edit Category")}</p>
-        </div>
-        <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
-        <div className="px-4 flex flex-col gap-8 w-full">
-          <SimpleTabs>
-            <div className="flex items-center">
-              <SimpleTabHead>
-                <LanguageSelector
-                  WiaahLanguageCountriesIsoCodes={
-                    WiaahLanguageCountriesIsoCodes
-                  }
-                />
-              </SimpleTabHead>
-            </div>
-          </SimpleTabs>
-          <FormTranslationWrapper onLangChange={changeLang} lang={lang}>
+        <Divider />
+        <div className="border pb-4">
+          <div className="flex text-xl xl:text-2xl px-4 py-2 items-center gap-2">
+            <EditIcon />
+            <p className="font-semibold">{t("Edit Category")}</p>
+          </div>
+          <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
+          <div className="px-4 flex flex-col gap-8 w-full">
             <SimpleTabs>
-              <div className="flex border-b text-xl">
+              <div className="flex items-center">
                 <SimpleTabHead>
-                  {mapArray(tabs, ({ name }, i) => (
-                    <div
-                      className={`${i === 3 ? "border-b-white" : ""
-                        } border px-8 py-2`}
-                    >
-                      {name}
-                    </div>
-                  ))}
+                  <LanguageSelector
+                    WiaahLanguageCountriesIsoCodes={
+                      WiaahLanguageCountriesIsoCodes
+                    }
+                  />
                 </SimpleTabHead>
               </div>
-              <SimpleTabItemList>
-                {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
-              </SimpleTabItemList>
             </SimpleTabs>
-          </FormTranslationWrapper>
+            <FormTranslationWrapper onLangChange={changeLang} lang={lang}>
+              <SimpleTabs>
+                <div className="flex border-b text-xl">
+                  <SimpleTabHead>
+                    {mapArray(tabs, ({ name }, i) => (
+                      <div
+                        className={`${i === 3 ? "border-b-white" : ""
+                          } border px-8 py-2`}
+                      >
+                        {name}
+                      </div>
+                    ))}
+                  </SimpleTabHead>
+                </div>
+                <SimpleTabItemList>
+                  {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
+                </SimpleTabItemList>
+              </SimpleTabs>
+            </FormTranslationWrapper>
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
