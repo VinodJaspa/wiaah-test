@@ -31,43 +31,19 @@ import { AccountReturns } from "components/views/sellers/returns";
 import { AccountSocialInfo } from "components/views/sellers/socialInfo";
 import { AccountWishlist } from "components/views/sellers/wishlist";
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
+import Head from "next/head";
 
 const Edit = () => {
   const { getParam } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const tabsTitles = [
-    "General",
-    "Affiliation",
-    "Orders",
-    "Bookings",
-    "Social Info",
-    "Wishlist",
-    "Returns",
-    "PaymentMethods",
-    "AddressBook",
-    "Notifications",
-    "Newsletter",
-    "Blocklist",
-    "Privacy",
-    "Personalization and data",
-    "Saved Posts",
-    "Transactions",
-    "Payout",
-    "Vouchers",
-    "Shopping Statistics",
-  ];
-
   return (
-    <>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Edit Buyer Form</title>
+      </Head>
       <SimpleTabs>
-        <div className="flex flex-wrap gap-2 ">
-          <SimpleTabHead>
-            <TabHighlighter tabsTitles={tabsTitles} />
-          </SimpleTabHead>
-        </div>
-
         <SimpleTabItemList>
           <AccountSettingsSection accountId={id} />
           <AccountAffiliation accountId={id} />
@@ -90,7 +66,7 @@ const Edit = () => {
           <ShoppingStats accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
-    </>
+    </React.Fragment>
   );
 };
 
