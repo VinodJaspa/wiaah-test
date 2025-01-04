@@ -16,6 +16,7 @@ import {
   useGetCountryCititesQuery,
 } from "@UI";
 import { Formik } from "formik";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -120,65 +121,70 @@ const EditBannedCountry = () => {
   });
 
   return (
-    <section>
-      <AdminListTable
-        data={[]}
-        headers={[]}
-        edit
-        onBack={() => back()}
-        onSave={() => {
-          const removed = cities.filter(
-            (v) => !form.citiesIds.includes(v.cityId)
-          );
-          const newCitites = form.citiesIds.filter(
-            (v) => !cities.map((v) => v.cityId).includes(v as string)
-          );
+    <React.Fragment>
+      <Head>
+        <title>Admin | Banned Countries Edit Form </title>
+      </Head>
+      <section>
+        <AdminListTable
+          data={[]}
+          headers={[]}
+          edit
+          onBack={() => back()}
+          onSave={() => {
+            const removed = cities.filter(
+              (v) => !form.citiesIds.includes(v.cityId),
+            );
+            const newCitites = form.citiesIds.filter(
+              (v) => !cities.map((v) => v.cityId).includes(v as string),
+            );
 
-          if (removed && removed.length > 0) {
-            unban({
-              citiesIds: removed.map((v) => v.cityId),
-            });
-          }
-          if (newCitites && newCitites.length > 0) {
-            ban({
-              citiesIds: newCitites,
-            });
-          }
-        }}
-        title={t("Edit Seller Banned Country")}
-      >
-        <div className="w-full grid gap-4 grid-cols-4">
-          <HStack>
-            <InputRequiredStar />
-            <p>{t("Country")}</p>
-          </HStack>
-          <Select placeholder={t("Select Country")} className="col-span-3">
-            {mapArray(countries, ({ name, code, id }) => (
-              <SelectOption value={id}>
-                <HStack>
-                  <FlagIcon code={code} />
-                  <p>{name}</p>
-                </HStack>
-              </SelectOption>
-            ))}
-          </Select>
-          <HStack>
-            <InputRequiredStar />
-            <p>{t("City")}</p>
-          </HStack>
-          <div className="col-span-3">
-            <MultiChooseInput
-              placeholder={t("Select country to see its cities here")}
-              {...inputProps("citiesIds")}
-              suggestions={cities.map((v) => ({
-                label: v.name,
-                value: v.id,
-              }))}
-            />
+            if (removed && removed.length > 0) {
+              unban({
+                citiesIds: removed.map((v) => v.cityId),
+              });
+            }
+            if (newCitites && newCitites.length > 0) {
+              ban({
+                citiesIds: newCitites,
+              });
+            }
+          }}
+          title={t("Edit Seller Banned Country")}
+        >
+          <div className="w-full grid gap-4 grid-cols-4">
+            <HStack>
+              <InputRequiredStar />
+              <p>{t("Country")}</p>
+            </HStack>
+            <Select placeholder={t("Select Country")} className="col-span-3">
+              {mapArray(countries, ({ name, code, id }) => (
+                <SelectOption value={id}>
+                  <HStack>
+                    <FlagIcon code={code} />
+                    <p>{name}</p>
+                  </HStack>
+                </SelectOption>
+              ))}
+            </Select>
+            <HStack>
+              <InputRequiredStar />
+              <p>{t("City")}</p>
+            </HStack>
+            <div className="col-span-3">
+              <MultiChooseInput
+                placeholder={t("Select country to see its cities here")}
+                {...inputProps("citiesIds")}
+                suggestions={cities.map((v) => ({
+                  label: v.name,
+                  value: v.id,
+                }))}
+              />
+            </div>
           </div>
-        </div>
-      </AdminListTable>
-    </section>
+        </AdminListTable>
+      </section>
+    </React.Fragment>
   );
 };
 
