@@ -103,7 +103,6 @@ export function Select<ValueType = string>({
               data-testid="SelectedOption"
               className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
             >
-              {/* @ts-ignore */}
               {selectedOption &&
                 React.cloneElement(selectedOption, {
                   selectable: false,
