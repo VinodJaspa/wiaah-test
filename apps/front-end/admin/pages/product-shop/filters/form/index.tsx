@@ -55,7 +55,7 @@ const ProductShopFiltersForm = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Admin | Product Filters </title>
+        <title>Admin | Product Filters Form </title>
       </Head>
       <div className="flex flex-col gap-8">
         <div className="flex justify-between items-center">
