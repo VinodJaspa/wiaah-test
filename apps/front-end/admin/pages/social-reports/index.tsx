@@ -43,7 +43,7 @@ const SocialReports: NextPage = () => {
   const { mutate: suspense } = useAdminSuspenseReportedContentMutation();
 
   return (
-    <>
+    <React.Fragment>
       <Head>
         <title>Admin | Social Reports</title>
       </Head>
@@ -178,7 +178,7 @@ const SocialReports: NextPage = () => {
         </Table>
       </TableContainer>
       <Pagination controls={controls} />
-    </>
+    </React.Fragment>
   );
 };
 

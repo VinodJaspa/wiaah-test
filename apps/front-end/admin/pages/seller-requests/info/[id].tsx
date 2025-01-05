@@ -1,5 +1,6 @@
 import { ProductStatus, ServiceType } from "@features/API";
 import { TabHighlighter } from "components/views/sellers/TabHighlighter";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -66,77 +67,29 @@ const SellerInfo = () => {
   const tabsTitles = ["General", "Fees", productsTitle];
 
   return (
-    <section className="flex flex-col gap-4">
-      <div className="flex text-white fill-white justify-end py-4 text-xl gap-2">
-        <SaveIcon className="w-8 h-8 p-2 bg-cyan-600 border border-blue-800" />
-        <ArrowRoundBack
-          onClick={() => back()}
-          className="text-black fill-black w-8 h-8 p-2 border border-gray-300"
-        />
-      </div>
-      <SimpleTabs>
-        <div className="flex gap-2 items-center">
-          <SimpleTabHead>
-            <TabHighlighter tabsTitles={tabsTitles} />
-          </SimpleTabHead>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Seller Reqeust Info </title>
+      </Head>
+      <section className="flex flex-col gap-4">
+        <div className="flex text-white fill-white justify-end py-4 text-xl gap-2">
+          <SaveIcon className="w-8 h-8 p-2 bg-cyan-600 border border-blue-800" />
+          <ArrowRoundBack
+            onClick={() => back()}
+            className="text-black fill-black w-8 h-8 p-2 border border-gray-300"
+          />
         </div>
-        <SimpleTabItemList>
-          <div className="flex flex-col border border-gray-300">
-            <div className="flex items-center gap-2 p-2 bg-gray-100 border-b border-b-gray-300">
-              <SearchIcon />
-              <p>{t("Informations")}</p>
-            </div>
-            <Table
-              TdProps={{ align: "left" }}
-              TrProps={{ className: "border-b border-b-gray-200" }}
-            >
-              <TBody>
-                <Tr>
-                  <Td>
-                    <div className="flex w-fit items-start">
-                      {t("Thumbnail")}
-                    </div>
-                  </Td>
-                  <Td className="w-8/12" align="left">
-                    <Avatar className="w-16" src={seller.photo} />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <div className="flex w-fit">{t("Name")}</div>
-                  </Td>
-                  <Td align="left">
-                    <p>
-                      {seller.firstName} {seller.lastName}
-                    </p>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>{t("Email")}</Td>
-                  <Td>{seller.email}</Td>
-                </Tr>
-                <Tr>
-                  <Td>{t("Bio")}</Td>
-                  <Td>{seller.profile?.bio}</Td>
-                </Tr>
-                <Tr>
-                  <Td>{t("Company Registeration Number")}</Td>
-                  <Td>{seller.companyRegisterationNumber}</Td>
-                </Tr>
-                <Tr>
-                  <Td>{t("Date Added")}</Td>
-                  <Td align="left">
-                    {new Date(seller.createdAt).toDateString()}
-                  </Td>
-                </Tr>
-              </TBody>
-            </Table>
+        <SimpleTabs>
+          <div className="flex gap-2 items-center">
+            <SimpleTabHead>
+              <TabHighlighter tabsTitles={tabsTitles} />
+            </SimpleTabHead>
           </div>
-          <div>
+          <SimpleTabItemList>
             <div className="flex flex-col border border-gray-300">
               <div className="flex items-center gap-2 p-2 bg-gray-100 border-b border-b-gray-300">
-                <CashPaymentIcon />
-                <p>{t("Fees")}</p>
+                <SearchIcon />
+                <p>{t("Informations")}</p>
               </div>
               <Table
                 TdProps={{ align: "left" }}
@@ -145,20 +98,73 @@ const SellerInfo = () => {
                 <TBody>
                   <Tr>
                     <Td>
-                      <div className="flex w-fit items-start">{t("Vat")}</div>
+                      <div className="flex w-fit items-start">
+                        {t("Thumbnail")}
+                      </div>
                     </Td>
                     <Td className="w-8/12" align="left">
-                      <p className="font-bold">{randomNum(20)}%</p>
+                      <Avatar className="w-16" src={seller.photo} />
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      <div className="flex w-fit">{t("Name")}</div>
+                    </Td>
+                    <Td align="left">
+                      <p>
+                        {seller.firstName} {seller.lastName}
+                      </p>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Email")}</Td>
+                    <Td>{seller.email}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Bio")}</Td>
+                    <Td>{seller.profile?.bio}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Company Registeration Number")}</Td>
+                    <Td>{seller.companyRegisterationNumber}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Date Added")}</Td>
+                    <Td align="left">
+                      {new Date(seller.createdAt).toDateString()}
                     </Td>
                   </Tr>
                 </TBody>
               </Table>
             </div>
-          </div>
-          {productComp}
-        </SimpleTabItemList>
-      </SimpleTabs>
-    </section>
+            <div>
+              <div className="flex flex-col border border-gray-300">
+                <div className="flex items-center gap-2 p-2 bg-gray-100 border-b border-b-gray-300">
+                  <CashPaymentIcon />
+                  <p>{t("Fees")}</p>
+                </div>
+                <Table
+                  TdProps={{ align: "left" }}
+                  TrProps={{ className: "border-b border-b-gray-200" }}
+                >
+                  <TBody>
+                    <Tr>
+                      <Td>
+                        <div className="flex w-fit items-start">{t("Vat")}</div>
+                      </Td>
+                      <Td className="w-8/12" align="left">
+                        <p className="font-bold">{randomNum(20)}%</p>
+                      </Td>
+                    </Tr>
+                  </TBody>
+                </Table>
+              </div>
+            </div>
+            {productComp}
+          </SimpleTabItemList>
+        </SimpleTabs>
+      </section>
+    </React.Fragment>
   );
 };
 

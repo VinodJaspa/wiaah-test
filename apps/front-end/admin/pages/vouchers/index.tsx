@@ -1,4 +1,5 @@
 import { VoucherStatus } from "@features/API/gql/generated";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,72 +41,87 @@ const Voucher = () => {
   const vouchers = FAKE_VOUCHERS;
 
   return (
-    <section>
-      <TableContainer>
-        <Table className="w-full">
-          <THead>
-            <Tr>
-              <Th>{t("Voucher Number")}</Th>
-              <Th>{t("User Name")}</Th>
-              <Th>{t("Voucher Currency")}</Th>
-              <Th>{t("Voucher Price")}</Th>
-              <Th>{t("Status")}</Th>
-              <Th>{t("Date")}</Th>
-            </Tr>
-            <Tr>
-              <Th>
-                <Input {...inputProps("voucherNumber")} />
-              </Th>
-              <Th>
-                <Input {...inputProps("name")} />
-              </Th>
-              <Th>
-                <Input {...inputProps("currency")} />
-              </Th>
-              <Th>
-                <Input {...inputProps("price")} />
-              </Th>
-              <Th>
-                <Select
-                  {...inputProps("status", "value", "onOptionSelect", (e) => e)}
-                >
-                  <SelectOption value={VoucherStatus.Active}>
-                    {t("Active")}
-                  </SelectOption>
-                  <SelectOption value={VoucherStatus.InActive}>
-                    {t("InActive")}
-                  </SelectOption>
-                </Select>
-              </Th>
-              <Th>
-                <DateFormInput
-                  {...inputProps("date", "dateValue", "onDateChange", (e) => e)}
-                />
-              </Th>
-            </Tr>
-          </THead>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Vouchers</title>
+      </Head>
+      <section>
+        <TableContainer>
+          <Table className="w-full">
+            <THead>
+              <Tr>
+                <Th>{t("Voucher Number")}</Th>
+                <Th>{t("User Name")}</Th>
+                <Th>{t("Voucher Currency")}</Th>
+                <Th>{t("Voucher Price")}</Th>
+                <Th>{t("Status")}</Th>
+                <Th>{t("Date")}</Th>
+              </Tr>
+              <Tr>
+                <Th>
+                  <Input {...inputProps("voucherNumber")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("name")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("currency")} />
+                </Th>
+                <Th>
+                  <Input {...inputProps("price")} />
+                </Th>
+                <Th>
+                  <Select
+                    {...inputProps(
+                      "status",
+                      "value",
+                      "onOptionSelect",
+                      (e) => e,
+                    )}
+                  >
+                    <SelectOption value={VoucherStatus.Active}>
+                      {t("Active")}
+                    </SelectOption>
+                    <SelectOption value={VoucherStatus.InActive}>
+                      {t("InActive")}
+                    </SelectOption>
+                  </Select>
+                </Th>
+                <Th>
+                  <DateFormInput
+                    {...inputProps(
+                      "date",
+                      "dateValue",
+                      "onDateChange",
+                      (e) => e,
+                    )}
+                  />
+                </Th>
+              </Tr>
+            </THead>
 
-          <TBody>
-            {mapArray(
-              vouchers,
-              ({ createdAt, currency, amount, code, status, user }, i) => (
-                <Tr {...setTestid("voucher-record")} key={i}>
-                  <Td {...setTestid("voucher-code")}>{code}</Td>
-                  <Td {...setTestid("voucher-name")}>{user?.firstName}</Td>
-                  <Td {...setTestid("voucher-currency")}>{currency}</Td>
-                  <Td {...setTestid("voucher-price")}>{amount}</Td>
-                  <Td {...setTestid("voucher-status")}>{status}</Td>
-                  <Td {...setTestid("voucher-date")}>
-                    {new Date(createdAt).toDateString()}
-                  </Td>
-                </Tr>
-              )
-            )}
-          </TBody>
-        </Table>
-      </TableContainer>
-      <Pagination controls={controls} />
-    </section>
+            <TBody>
+              {mapArray(
+                vouchers,
+                ({ createdAt, currency, amount, code, status, user }, i) => (
+                  <Tr {...setTestid("voucher-record")} key={i}>
+                    <Td {...setTestid("voucher-code")}>{code}</Td>
+                    <Td {...setTestid("voucher-name")}>{user?.firstName}</Td>
+                    <Td {...setTestid("voucher-currency")}>{currency}</Td>
+                    <Td {...setTestid("voucher-price")}>{amount}</Td>
+                    <Td {...setTestid("voucher-status")}>{status}</Td>
+                    <Td {...setTestid("voucher-date")}>
+                      {new Date(createdAt).toDateString()}
+                    </Td>
+                  </Tr>
+                ),
+              )}
+            </TBody>
+          </Table>
+        </TableContainer>
+        <Pagination controls={controls} />
+      </section>
+    </React.Fragment>
   );
 };
 

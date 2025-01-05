@@ -1,6 +1,7 @@
 import { ServiceAdaptation, ShopStatus } from "@features/API";
 import { useAdminDeleteServiceMutation } from "@features/Services/Services/mutation";
 import { NextPage } from "next";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -56,7 +57,10 @@ const Services: NextPage = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Services </title>
+      </Head>
       <section>
         <TableContainer>
           <Table ThProps={{ className: "whitespace-nowrap" }}>
@@ -163,7 +167,7 @@ const Services: NextPage = () => {
         </TableContainer>
         <Pagination />
       </section>
-    </>
+    </React.Fragment>
   );
 };
 

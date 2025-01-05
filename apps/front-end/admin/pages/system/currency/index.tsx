@@ -23,6 +23,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
+import Head from "next/head";
 
 interface Currency {
   name: string;
@@ -59,95 +60,102 @@ const Currency: NextPage = () => {
   const { pagination, controls } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useAdminGetCurrenciesQuery>[0]>(
     { pagination },
-    { pagination }
+    { pagination },
   );
   const { data: _currencies } = useAdminGetCurrenciesQuery(form);
   const currencies = FAKE_CURRENCIES;
 
   return (
-    <section>
-      <div className="border border-gray-300">
-        <div className="flex border-b border-gray-300 items-center gap-2 p-4">
-          <ListIcon />
-          <p>{t("Currency List")}</p>
-        </div>
-        <div className="p-4">
-          <TableContainer>
-            <Table ThProps={{ align: "left" }} className="w-full">
-              <THead>
-                <Tr>
-                  <Th>
-                    <Checkbox />
-                  </Th>
-                  <Th>{t("Currency Title")}</Th>
-                  <Th>{t("Code")}</Th>
-                  <Th>{t("Value")}</Th>
-                  <Th>{t("Status")}</Th>
-                  <Th>{t("Action")}</Th>
-                </Tr>
-                <Tr>
-                  <Th></Th>
-                  <Th>
-                    <Input />
-                  </Th>
-                  <Th>
-                    <Input />
-                  </Th>
-                  <Th>
-                    <Input type="number" />
-                  </Th>
-                  <Th>
-                    <Select>
-                      <SelectOption value={true}>{t("Enabled")}</SelectOption>
-                      <SelectOption value={false}>{t("Disabled")}</SelectOption>
-                    </Select>
-                  </Th>
-                  <Th></Th>
-                </Tr>
-              </THead>
-              <TBody>
-                {mapArray(
-                  currencies,
-                  ({ code, id, name, exchangeRate, symbol, enabled }) => (
-                    <Tr>
-                      <Td>
-                        <Checkbox />
-                      </Td>
-                      <Td>
-                        <p>
-                          {name}
-                          {/* <span className="font-bold">
+    <React.Fragment>
+      <Head>
+        <title>Admin | System Currency</title>
+      </Head>
+      <section>
+        <div className="border border-gray-300">
+          <div className="flex border-b border-gray-300 items-center gap-2 p-4">
+            <ListIcon />
+            <p>{t("Currency List")}</p>
+          </div>
+          <div className="p-4">
+            <TableContainer>
+              <Table ThProps={{ align: "left" }} className="w-full">
+                <THead>
+                  <Tr>
+                    <Th>
+                      <Checkbox />
+                    </Th>
+                    <Th>{t("Currency Title")}</Th>
+                    <Th>{t("Code")}</Th>
+                    <Th>{t("Value")}</Th>
+                    <Th>{t("Status")}</Th>
+                    <Th>{t("Action")}</Th>
+                  </Tr>
+                  <Tr>
+                    <Th></Th>
+                    <Th>
+                      <Input />
+                    </Th>
+                    <Th>
+                      <Input />
+                    </Th>
+                    <Th>
+                      <Input type="number" />
+                    </Th>
+                    <Th>
+                      <Select>
+                        <SelectOption value={true}>{t("Enabled")}</SelectOption>
+                        <SelectOption value={false}>
+                          {t("Disabled")}
+                        </SelectOption>
+                      </Select>
+                    </Th>
+                    <Th></Th>
+                  </Tr>
+                </THead>
+                <TBody>
+                  {mapArray(
+                    currencies,
+                    ({ code, id, name, exchangeRate, symbol, enabled }) => (
+                      <Tr>
+                        <Td>
+                          <Checkbox />
+                        </Td>
+                        <Td>
+                          <p>
+                            {name}
+                            {/* <span className="font-bold">
                             {isDefault ? `(${t("Default")})` : ""}
                           </span> */}
-                        </p>
-                      </Td>
-                      <Td>{code}</Td>
-                      <Td>{exchangeRate}</Td>
-                      <Td>{enabled ? t("Enabled") : t("Disabled")}</Td>
-                      <Td>
-                        <Button
-                          onClick={() => {
-                            visit((r) =>
-                              r
-                                .addPath(getCurrentPath())
-                                .addPath("edit")
-                                .addPath(id)
-                            );
-                          }}
-                        >
-                          <EditIcon />
-                        </Button>
-                      </Td>
-                    </Tr>
-                  )
-                )}
-              </TBody>
-            </Table>
-          </TableContainer>
-          <Pagination controls={controls} />
+                          </p>
+                        </Td>
+                        <Td>{code}</Td>
+                        <Td>{exchangeRate}</Td>
+                        <Td>{enabled ? t("Enabled") : t("Disabled")}</Td>
+                        <Td>
+                          <Button
+                            onClick={() => {
+                              visit((r) =>
+                                r
+                                  .addPath(getCurrentPath())
+                                  .addPath("edit")
+                                  .addPath(id),
+                              );
+                            }}
+                          >
+                            <EditIcon />
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ),
+                  )}
+                </TBody>
+              </Table>
+            </TableContainer>
+            <Pagination controls={controls} />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </React.Fragment>
   );
 };
 

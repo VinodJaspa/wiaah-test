@@ -10,6 +10,7 @@ import {
   AdminGetHashtagsQuery,
 } from "@UI";
 import { NextPage } from "next";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
@@ -29,53 +30,58 @@ const Hashtags: NextPage = () => {
   const { mutate: suspense, isLoading } = useAdminSuspenseHashtag();
 
   return (
-    <AdminListTable
-      title={t("Hashtags")}
-      headers={[
-        {
-          value: t("Name"),
-        },
-        {
-          value: t("Usage"),
-        },
-        {
-          type: AdminTableCellTypeEnum.action,
-          value: t("Action"),
-        },
-      ]}
-      data={mapArray(data, (v) => ({
-        id: v.id,
-        cols: [
+    <React.Fragment>
+      <Head>
+        <title>Admin | Social Hashtags</title>
+      </Head>
+      <AdminListTable
+        title={t("Hashtags")}
+        headers={[
           {
-            type: AdminTableCellTypeEnum.text,
-            value: v.tag,
+            value: t("Name"),
           },
           {
-            type: AdminTableCellTypeEnum.number,
-            value: v?.usage?.toString(),
+            value: t("Usage"),
           },
           {
             type: AdminTableCellTypeEnum.action,
-            actionBtns: [
-              <Button
-                key={v.id}
-                onClick={() => {
-                  suspense(v.tag);
-                }}
-                loading={isLoading}
-                center
-                className="p-2"
-              >
-                <NotAllowedIcon />
-              </Button>,
-              <Button key={v.id} center className="p-2">
-                <TrashIcon onClick={() => { }} />
-              </Button>,
-            ],
+            value: t("Action"),
           },
-        ],
-      }))}
-    />
+        ]}
+        data={mapArray(data, (v) => ({
+          id: v.id,
+          cols: [
+            {
+              type: AdminTableCellTypeEnum.text,
+              value: v.tag,
+            },
+            {
+              type: AdminTableCellTypeEnum.number,
+              value: v?.usage?.toString(),
+            },
+            {
+              type: AdminTableCellTypeEnum.action,
+              actionBtns: [
+                <Button
+                  key={v.id}
+                  onClick={() => {
+                    suspense(v.tag);
+                  }}
+                  loading={isLoading}
+                  center
+                  className="p-2"
+                >
+                  <NotAllowedIcon />
+                </Button>,
+                <Button key={v.id} center className="p-2">
+                  <TrashIcon onClick={() => { }} />
+                </Button>,
+              ],
+            },
+          ],
+        }))}
+      />
+    </React.Fragment>
   );
 };
 

@@ -45,6 +45,7 @@ import {
   PercentBar,
   SalesStatisticsCard,
 } from "@UI";
+import Head from "next/head";
 interface Profit {
   type: string;
   user: string;
@@ -226,7 +227,7 @@ const Profit = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Admin | Product Profit </title>
+        <title>Admin | Service Profit </title>
       </Head>
       <div
         style={{

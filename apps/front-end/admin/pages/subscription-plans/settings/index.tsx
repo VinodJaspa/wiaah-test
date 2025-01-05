@@ -49,7 +49,7 @@ const SubscriptionPlans: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Plans | Settings</title>
+        <title>Admin | Subscription Plans Settings</title>
       </Head>
       <section>
         <AdminListTable

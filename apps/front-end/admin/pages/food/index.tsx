@@ -6,6 +6,7 @@ import {
 import { RestaurantDishType } from "@features/API";
 import { Select, SelectOption } from "@partials";
 import { GetAdminDishsQuery, useGetAdminFoodQuery } from "@UI";
+import Head from "next/head";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -23,99 +24,104 @@ const FoodAdminMenu = () => {
   const data = FAKE_FOOD;
 
   return (
-    <AdminListTable
-      pagination={controls}
-      data={
-        data?.map((v, i) => ({
-          id: v.id,
-          cols: [
-            {
-              value: v.thumbnail,
-              type: AdminTableCellTypeEnum.image,
-              props: {
-                className: "w-24 h-16 object-cover",
+    <React.Fragment>
+      <Head>
+        <title>Admin | Food</title>
+      </Head>
+      <AdminListTable
+        pagination={controls}
+        data={
+          data?.map((v, i) => ({
+            id: v.id,
+            cols: [
+              {
+                value: v.thumbnail,
+                type: AdminTableCellTypeEnum.image,
+                props: {
+                  className: "w-24 h-16 object-cover",
+                },
               },
-            },
-            {
-              value: v.name,
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: v.menu?.restaurant?.owner?.profile?.username || "",
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: v.type,
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: v.menu?.restaurant?.establishmentType?.name || "",
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: v.menu.restaurant.location.country,
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: v.menu.restaurant.location.city,
-              type: AdminTableCellTypeEnum.text,
-            },
-            {
-              value: String(v.sales),
-              type: AdminTableCellTypeEnum.number,
-            },
-          ],
-        })) || []
-      }
-      headers={[
-        {
-          value: t("Image"),
-          type: AdminTableCellTypeEnum.image,
-        },
-        {
-          value: t("Food name"),
-          type: AdminTableCellTypeEnum.text,
-          filtersProps: inputProps("name"),
-        },
-        {
-          value: t("Seller"),
-          filtersProps: inputProps("seller"),
-          type: AdminTableCellTypeEnum.text,
-        },
-        {
-          value: t("Food type"),
-          type: AdminTableCellTypeEnum.custom,
-          custom: (
-            <Select {...selectProps("type")}>
-              <SelectOption value={"starter"}>{t("Starter")}</SelectOption>
-              <SelectOption value={"main"}>{t("Main")}</SelectOption>
-              <SelectOption value={"dessert"}>{t("Dessert")}</SelectOption>
-            </Select>
-          ),
-        },
-        {
-          value: t("Type of restaurant"),
-          type: AdminTableCellTypeEnum.text,
-          //   filtersProps:inputProps(""),
-        },
-        {
-          value: t("Country"),
-          type: AdminTableCellTypeEnum.text,
-          filtersProps: inputProps("country"),
-        },
-        {
-          value: t("City"),
-          type: AdminTableCellTypeEnum.text,
-          filtersProps: inputProps("city"),
-        },
-        {
-          value: t("Number of bookings"),
-          type: AdminTableCellTypeEnum.text,
-          filtersProps: inputProps("sales"),
-        },
-      ]}
-      title={t("Dishs")}
-    ></AdminListTable>
+              {
+                value: v.name,
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: v.menu?.restaurant?.owner?.profile?.username || "",
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: v.type,
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: v.menu?.restaurant?.establishmentType?.name || "",
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: v.menu.restaurant.location.country,
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: v.menu.restaurant.location.city,
+                type: AdminTableCellTypeEnum.text,
+              },
+              {
+                value: String(v.sales),
+                type: AdminTableCellTypeEnum.number,
+              },
+            ],
+          })) || []
+        }
+        headers={[
+          {
+            value: t("Image"),
+            type: AdminTableCellTypeEnum.image,
+          },
+          {
+            value: t("Food name"),
+            type: AdminTableCellTypeEnum.text,
+            filtersProps: inputProps("name"),
+          },
+          {
+            value: t("Seller"),
+            filtersProps: inputProps("seller"),
+            type: AdminTableCellTypeEnum.text,
+          },
+          {
+            value: t("Food type"),
+            type: AdminTableCellTypeEnum.custom,
+            custom: (
+              <Select {...selectProps("type")}>
+                <SelectOption value={"starter"}>{t("Starter")}</SelectOption>
+                <SelectOption value={"main"}>{t("Main")}</SelectOption>
+                <SelectOption value={"dessert"}>{t("Dessert")}</SelectOption>
+              </Select>
+            ),
+          },
+          {
+            value: t("Type of restaurant"),
+            type: AdminTableCellTypeEnum.text,
+            //   filtersProps:inputProps(""),
+          },
+          {
+            value: t("Country"),
+            type: AdminTableCellTypeEnum.text,
+            filtersProps: inputProps("country"),
+          },
+          {
+            value: t("City"),
+            type: AdminTableCellTypeEnum.text,
+            filtersProps: inputProps("city"),
+          },
+          {
+            value: t("Number of bookings"),
+            type: AdminTableCellTypeEnum.text,
+            filtersProps: inputProps("sales"),
+          },
+        ]}
+        title={t("Dishs")}
+      ></AdminListTable>
+    </React.Fragment>
   );
 };
 

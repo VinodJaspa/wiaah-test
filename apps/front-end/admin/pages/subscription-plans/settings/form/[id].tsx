@@ -86,7 +86,7 @@ const EditSubscriptionPlan = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Plans | Settings Form</title>
+        <title>Admin | Subscription Plans Settings Form</title>
       </Head>
       <section>
         <div className="w-full gpa-2 flex justify-end py-4">

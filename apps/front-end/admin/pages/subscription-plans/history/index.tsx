@@ -37,7 +37,7 @@ const History: React.FC = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Plans | History</title>
+        <title>Admin | Subscription Plans History</title>
       </Head>
       <div className="flex flex-col gap-2 w-full">
         <HStack className="justify-between items-start">

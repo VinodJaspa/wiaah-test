@@ -1,5 +1,6 @@
 import { Link } from "@components";
 import { AttachmentType, ContentHostType } from "@features/API";
+import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiChat } from "react-icons/bi";
@@ -57,7 +58,10 @@ const SocialPosts = () => {
     React.useState<[string, ContentHostType]>();
 
   return (
-    <>
+    <React.Fragment>
+      <Head>
+        <title>Admin | Social Posts</title>
+      </Head>
       <TableContainer>
         <Table className="w-full">
           <THead>
@@ -189,7 +193,7 @@ const SocialPosts = () => {
         postId={showComments?.at(0)}
       />
       <Pagination controls={controls} />
-    </>
+    </React.Fragment>
   );
 };
 
