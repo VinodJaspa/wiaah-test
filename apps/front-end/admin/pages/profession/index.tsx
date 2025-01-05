@@ -28,7 +28,7 @@ const Profession: NextPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Admin | Products </title>
+        <title>Admin | Profession </title>
       </Head>
       <section>
         <AdminListTable
