@@ -29,6 +29,7 @@ import {
 } from "ui";
 import { FaRegHeart } from "react-icons/fa6";
 import { BsFillReplyFill } from "react-icons/bs";
+import Link from "next/link";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -46,15 +47,15 @@ export interface PostCommentCardProps {
     | "updatedAt"
     | "replies"
   > & {
-    attachment?: { __typename?: "Attachment" } & Pick<
-      Attachment,
-      "src" | "type"
-    >;
-    author?: { __typename?: "Profile" } & Pick<
-      Profile,
-      "username" | "photo" | "verified" | "id"
-    >;
-  };
+      attachment?: { __typename?: "Attachment" } & Pick<
+        Attachment,
+        "src" | "type"
+      >;
+      author?: { __typename?: "Profile" } & Pick<
+        Profile,
+        "username" | "photo" | "verified" | "id"
+      >;
+    };
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -95,20 +96,31 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 
   return (
     <div ref={ref} className="flex bg-white w-full gap-2 px-3">
-      <img
-        src={profile?.photo}
-        alt="avatar"
-        className="w-11 h-11 rounded-full"
-      />
+      <Link
+        href={`/profile/${profile.id}`}
+        className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0"
+      >
+        <img
+          src={profile?.photo}
+          alt="avatar"
+          className="w-full h-full object-cover"
+        />
+      </Link>
       <div className="w-full flex flex-col">
         <div
-          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${main ? "bg-white" : "bg-primary-light"
-            }`}
+          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${
+            main ? "bg-white" : "bg-primary-light"
+          }`}
         >
           <div className="flex items-center mt-2 gap-2 justify-between">
             <HStack>
               <div className="flex items-center gap-1  ">
-                <p className="text-xl font-semibold">{profile?.username}</p>
+                <Link
+                  href={`/profile/${profile.id}`}
+                  className="text-xl font-semibold"
+                >
+                  {profile?.username}
+                </Link>
                 {profile?.verified && (
                   <Verified className="text-[#0084FF] w-5 h-5" />
                 )}
