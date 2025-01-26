@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,9 +25,14 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   displayShowMore,
   index,
 }) => {
+  content += " #react #typescript #python #tailwindcss #neuralink #pneuma";
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
   const [showMore, setShowMore] = React.useState<boolean>(true);
+  const [modifiedContent, setModifiedContent] = React.useState<string>(
+    content || "",
+  );
+
   const postTextRef = React.useRef<HTMLParagraphElement>(null);
   const helperTextRef = React.useRef<HTMLParagraphElement>(null);
 
@@ -54,48 +60,40 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   ) {
     if (!element || !helperTextRef.current) return false;
 
-    // Create a temporary container to measure line height
     const tempContainer = document.createElement("div");
     tempContainer.style.visibility = "hidden";
     tempContainer.style.position = "absolute";
-    tempContainer.style.whiteSpace = "nowrap"; // Ensure single-line text measurement
-    tempContainer.textContent = "a"; // A single character for line height measurement
-
-    // Append temporary container to the body for measurement
+    tempContainer.style.whiteSpace = "nowrap";
+    tempContainer.textContent = "a";
     document.body.appendChild(tempContainer);
     const lineHeight = tempContainer.offsetHeight;
-
-    // Remove temporary container
     document.body.removeChild(tempContainer);
-
-    // Set the text content to helper text and measure its height
     helperTextRef.current.textContent = text;
     const textHeight = helperTextRef.current.offsetHeight;
 
-    // Compare text height to the maximum allowed height
     return textHeight > lineHeight * maxLines;
   }
 
   const linesCount = useLinesCount(postTextRef);
-  const textEllipsising = getLineHeight(postTextRef, content || "", maxLines);
+  const textEllipsising = getLineHeight(postTextRef, content, maxLines);
 
   function handleShowMore() {
-    setMaxLines(10000); // Expand the text
-    setShowMore(false); // Hide the "Show More" button after expansion
+    setMaxLines(10000);
+    setShowMore(false);
   }
 
   function handleShowLess() {
-    setMaxLines(maxLines); // Collapse back to original limit
-    setShowMore(true); // Show the "Show More" button again
+    setMaxLines(maxLines);
+    setShowMore(true);
   }
 
   React.useEffect(() => {
-    if (MaxLines > maxLines) {
-      setShowMore(false);
+    if (index === 0 && content?.length > 150 && showMore) {
+      setModifiedContent(content?.substring(0, 150) + "...");
     } else {
-      setShowMore(true);
+      setModifiedContent(content);
     }
-  }, [MaxLines]);
+  }, [content, index, showMore]);
 
   return (
     <div className="relative font-base flex flex-col">
@@ -103,30 +101,48 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         className="absolute w-full text-[#262626] font-[15px] pointer-events-none hidden"
         ref={helperTextRef}
       ></p>
-
-      {/* Container for content and absolute positioned button */}
       <div className="relative">
-        {/* Text content with ellipsis */}
         <Text
           wordBreak={wordBreak ? "break-all" : "break-word"}
           ref={postTextRef}
           noOfLines={MaxLines}
           textAlign={"start"}
-          // overflow="clip"
-          // textOverflow="clip"
         >
           <>
             {children}
+            {modifiedContent.split(" ").map((word, index, arr) => {
+              if (word.startsWith("#")) {
+                return (
+                  <Link
+                    key={index + word}
+                    href={`/hashtag/${word.slice(1)}`}
+                    className="text-primary"
+                  >
+                    {" "}
+                    {word}{" "}
+                  </Link>
+                );
+              }
+              return word + (index === arr.length - 1 ? "" : " ");
+            })}
             {index === 0 &&
               content?.length > 150 &&
               showMore &&
-              content?.substring(0, 150) + "..."}
-            {index === 0 && !showMore && content}
-            {(index !== 0 || content?.length <= 150) && content}
+              content
+                .split(" ")
+                .filter((word) => word.startsWith("#"))
+                .map((word, index) => (
+                  <Link
+                    key={index + word}
+                    href={`/hashtag/${word.slice(1)}`}
+                    className="text-primary"
+                  >
+                    {` ${word} `}
+                  </Link>
+                ))
+                .slice(0, 3)}
           </>
         </Text>
-
-        {/* Show More button at the end of the content */}
         {linesCount === maxLines && showMore && content?.length > 150 && (
           <div
             className="absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
@@ -138,8 +154,6 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
             </span>
           </div>
         )}
-
-        {/* Show Less button after expanding the content */}
         {MaxLines > maxLines && (
           <div
             className="absolute -bottom-4 right-0 cursor-pointer text-primary capitalize"
