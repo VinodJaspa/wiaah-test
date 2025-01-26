@@ -36,6 +36,7 @@ export interface PostCommentCardProps {
   onReply?: (message: string) => void;
   onLike?: () => void;
   main?: boolean;
+  index?: number;
   comment: { __typename?: "Comment" } & Pick<
     Comment,
     | "id"
@@ -62,6 +63,7 @@ export interface PostCommentCardProps {
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   comment,
   main,
+  index,
 }) => {
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
@@ -141,12 +143,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {TimeDiff(comment.commentedAt)} ago
               </p>
             </HStack>
-            {!isFollowing && (
-              <Button outline onClick={() => handleFollow(profile.id)}>
+            {index === 0 && !isFollowing && (
+              <Button
+                className="w-[89.23px]"
+                outline
+                onClick={() => handleFollow(profile.id)}
+              >
                 Follow
               </Button>
             )}
-            {isFollowing && (
+            {index === 0 && isFollowing && (
               <Button outline onClick={() => handleUnfollow(profile.id)}>
                 Unfollow
               </Button>

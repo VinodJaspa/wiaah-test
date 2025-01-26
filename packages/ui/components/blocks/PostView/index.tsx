@@ -69,7 +69,12 @@ export function PostView<TData extends {}>({
                 FAKE_COMMENTS.map(
                   (comment: PostCommentCardProps["comment"], i: any) => (
                     <>
-                      <PostCommentCard main={true} key={i} comment={comment} />
+                      <PostCommentCard
+                        main={true}
+                        key={i}
+                        comment={comment}
+                        index={i}
+                      />
 
                       <Divider className="my-4" />
                     </>
