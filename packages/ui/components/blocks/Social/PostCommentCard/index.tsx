@@ -163,6 +163,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               showMoreColor={main ? "white" : undefined}
               content={comment.content}
               maxLines={3}
+              index={index}
             />
           </div>
 

@@ -1,6 +1,6 @@
 import { Text } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export interface EllipsisTextProps {
   content?: string;
@@ -11,6 +11,7 @@ export interface EllipsisTextProps {
   showMoreTextColor?: string;
   displayShowMore?: boolean;
   children?: React.ReactNode;
+  index?: number;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
@@ -21,6 +22,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   showMoreColor,
   children,
   displayShowMore,
+  index,
 }) => {
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
@@ -110,17 +112,22 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
           ref={postTextRef}
           noOfLines={MaxLines}
           textAlign={"start"}
-          overflow="clip"
-          textOverflow="clip"
+          // overflow="clip"
+          // textOverflow="clip"
         >
           <>
             {children}
-            {content}
+            {index === 0 &&
+              content?.length > 150 &&
+              showMore &&
+              content?.substring(0, 150) + "..."}
+            {index === 0 && !showMore && content}
+            {(index !== 0 || content?.length <= 150) && content}
           </>
         </Text>
 
         {/* Show More button at the end of the content */}
-        {linesCount === maxLines && showMore && (
+        {linesCount === maxLines && showMore && content?.length > 150 && (
           <div
             className="absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
             style={{ marginTop: "5px" }}
@@ -135,7 +142,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         {/* Show Less button after expanding the content */}
         {MaxLines > maxLines && (
           <div
-            className="absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
+            className="absolute -bottom-4 right-0 cursor-pointer text-primary capitalize"
             style={{ marginTop: "5px" }}
             onClick={handleShowLess}
           >
