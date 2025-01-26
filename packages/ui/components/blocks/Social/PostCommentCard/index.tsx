@@ -26,6 +26,7 @@ import {
   HStack,
   useCommentOnContent,
   useOutsideClick,
+  Button,
 } from "ui";
 import { FaRegHeart } from "react-icons/fa6";
 import { BsFillReplyFill } from "react-icons/bs";
@@ -68,6 +69,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const { mutate: createComment } = useCommentOnContent();
 
   const [reply, setReply] = React.useState<boolean>(false);
+  const [isFollowing, setIsFollowing] = React.useState<boolean>(false);
 
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -92,6 +94,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
       to: new Date(createdAt),
     }).getSince();
     return `${value} ${timeUnit} `;
+  };
+
+  const handleFollow = (profileId: string) => {
+    /* Backend logic goes here */
+    setIsFollowing(true);
+  };
+
+  const handleUnfollow = (profileId: string) => {
+    /* Backend logic goes here */
+    setIsFollowing(false);
   };
 
   return (
@@ -129,6 +141,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {TimeDiff(comment.commentedAt)} ago
               </p>
             </HStack>
+            {!isFollowing && (
+              <Button outline onClick={() => handleFollow(profile.id)}>
+                Follow
+              </Button>
+            )}
+            {isFollowing && (
+              <Button outline onClick={() => handleUnfollow(profile.id)}>
+                Unfollow
+              </Button>
+            )}
           </div>
           <div className="py-2">
             <EllipsisText
