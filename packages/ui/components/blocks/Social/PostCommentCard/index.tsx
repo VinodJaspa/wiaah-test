@@ -1,36 +1,36 @@
+import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { AiOutlineMessage } from "react-icons/ai";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
 import {
-  Attachment,
-  Comment,
-  CommentsCursorPaginationResponse,
-  ContentHostType,
-  Maybe,
-  Profile,
-} from "../../../features/API";
-import {
-  PostAttachment,
-  Verified,
-  EllipsisText,
-  useLikeContent,
-  useCommentReportModal,
-  useDateDiff,
+  Button,
   CommentInput,
+  EllipsisText,
+  HeartOutlineIcon,
+  HStack,
   Menu,
+  MenuButton,
   MenuItem,
   MenuList,
-  MenuButton,
-  Avatar,
-  HStack,
+  PostAttachment,
+  SaveFlagFIllIcon,
+  SaveFlagOutlineIcon,
+  ShareIcon,
   useCommentOnContent,
+  useCommentReportModal,
+  useDateDiff,
+  useLikeContent,
   useOutsideClick,
-  Button,
+  Verified,
 } from "ui";
-import { FaRegHeart } from "react-icons/fa6";
-import { BsFillReplyFill } from "react-icons/bs";
-import Link from "next/link";
+import {
+  Attachment,
+  Comment,
+  ContentHostType,
+  Profile,
+} from "../../../features/API";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -72,8 +72,13 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 
   const [reply, setReply] = React.useState<boolean>(false);
   const [isFollowing, setIsFollowing] = React.useState<boolean>(false);
+  const [booked, setBooked] = React.useState<boolean>(false);
 
   const ref = React.useRef<HTMLDivElement>(null);
+
+  const toggleBooked = () => {
+    setBooked((prevState) => !prevState);
+  };
 
   useOutsideClick(ref, () => {
     setReply(false);
@@ -177,51 +182,73 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             </div>
           )}
         </div>
-        <div className="flex px-2 w-full items-center justify-between">
-          {/* like,reply, and replies count */}
-          {!main && (
-            <HStack>
-              <p onClick={handleLikeComment} className="text-primary">
-                {t("Like")}
-              </p>
-              <p onClick={() => setReply(true)}>{t("Reply")}</p>
-              <div className="flex whitespace-nowrap gap-1 h-full items-end">
-                <MdOutlineReply className="text-lg fill-primary" />
-                <p className="text-gray-500">
-                  {comment.content} {t("Replies")}
+        {index === 0 && (
+          <div className="flex px-2 w-full items-center justify-between">
+            {/* like,reply, and replies count */}
+            {!main && (
+              <HStack>
+                <p onClick={handleLikeComment} className="text-primary">
+                  {t("Like")}
                 </p>
-              </div>
-            </HStack>
-          )}
-          <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full  ">
-            <div className="flex gap-4 items-center">
-              <button className="text-sm font-extrabold text-[#20ECA7]">
-                Likes
-              </button>
-              <button className="text-sm font-extrabold text-[#999999]">
-                Reply
-              </button>
-            </div>
+                <p onClick={() => setReply(true)}>{t("Reply")}</p>
+                <div className="flex whitespace-nowrap gap-1 h-full items-end">
+                  <MdOutlineReply className="text-lg fill-primary" />
+                  <p className="text-gray-500">
+                    {comment.content} {t("Replies")}
+                  </p>
+                </div>
+              </HStack>
+            )}
+            <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
+              <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
+                <div className="flex gap-2 items-center">
+                  <HeartOutlineIcon className="w-4 h-4" />
+                  <div className="flex gap-1 items-center">
+                    <p>{comment.likes}</p>
+                  </div>
+                </div>
 
-            <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
-              <div className="flex gap-2 items-center">
-                <FaRegHeart className="w-4 h-4" />
-                <div className="flex gap-1 items-center">
-                  <p>{comment.likes}</p>
-                  <p>{t("Likes")}</p>
+                <div className="flex gap-2 items-center">
+                  <AiOutlineMessage className="w-4 h-4" />
+                  <div className="flex gap-1 items-center">
+                    <p>{comment.replies}</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 items-center">
+                  <ShareIcon className="w-4 h-4" />
+                  <div className="flex gap-1 items-center">
+                    <p>5</p>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex gap-2 items-center">
-                <BsFillReplyFill className="w-5 h-5" />
-                <div className="flex gap-1 items-center">
-                  <p>{comment.replies}</p>
-                  <p>{t("Replies")}</p>
-                </div>
+              <div className="flex gap-1 items-center text-[#8E8E8E] font-semibold">
+                {booked ? (
+                  <>
+                    <SaveFlagFIllIcon
+                      className="w-4 h-4"
+                      onClick={toggleBooked}
+                    />
+                    <div className="flex gap-1 items-center">
+                      <p>13</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <SaveFlagOutlineIcon
+                      className="w-4 h-4"
+                      onClick={toggleBooked}
+                    />
+                    <div className="flex gap-1 items-center">
+                      <p>13</p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        )}
         {reply ? (
           <CommentInput
             onCommentSubmit={(v) => {
