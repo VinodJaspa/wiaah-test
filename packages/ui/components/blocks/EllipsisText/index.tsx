@@ -25,7 +25,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   displayShowMore,
   index,
 }) => {
-  content += " #react #typescript #python #tailwindcss #neuralink #pneuma";
+  /* Will remove later */
+  content +=
+    " #react #typescript #python #tailwindcss #neuralink #pneuma #react #typescript #python #tailwindcss #neuralink #pneuma";
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
   const [showMore, setShowMore] = React.useState<boolean>(true);
@@ -110,21 +112,38 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         >
           <>
             {children}
-            {modifiedContent.split(" ").map((word, index, arr) => {
-              if (word.startsWith("#")) {
-                return (
-                  <Link
-                    key={index + word}
-                    href={`/hashtag/${word.slice(1)}`}
-                    className="text-primary"
-                  >
-                    {" "}
-                    {word}{" "}
-                  </Link>
-                );
-              }
-              return word + (index === arr.length - 1 ? "" : " ");
-            })}
+            {/*
+              This code processes the `modifiedContent` string to:
+              1. Split the string into individual words using spaces as the delimiter.
+              2. Identify words that start with a `#` (hashtags).
+              3. Render up to 7 hashtags as clickable links using the `<Link>` component.
+              4. Skip rendering any additional hashtags beyond the limit of 7.
+              5. Render non-hashtag words as plain text, ensuring the original text structure is preserved.
+              6. Non-hashtag words and spaces are handled properly to maintain the formatting of the content.
+            */}
+            {(() => {
+              let hashtagCount = 0;
+
+              return modifiedContent.split(" ").map((word, index, arr) => {
+                if (word.startsWith("#")) {
+                  if (hashtagCount < 7) {
+                    hashtagCount++;
+                    return (
+                      <Link
+                        key={index + word}
+                        href={`/hashtag/${word.slice(1)}`}
+                        className="text-primary"
+                      >
+                        {` ${word} `}
+                      </Link>
+                    );
+                  } else {
+                    return null;
+                  }
+                }
+                return word + (index === arr.length - 1 ? "" : " ");
+              });
+            })()}
             {index === 0 &&
               content?.length > 150 &&
               showMore &&
@@ -146,7 +165,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         </Text>
         {linesCount === maxLines && showMore && content?.length > 150 && (
           <div
-            className="absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
+            className="absolute bottom-0 right-0 cursor-pointer capitalize"
             style={{ marginTop: "5px" }}
             onClick={handleShowMore}
           >
@@ -157,13 +176,11 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         )}
         {MaxLines > maxLines && (
           <div
-            className="absolute -bottom-4 right-0 cursor-pointer text-primary capitalize"
+            className="absolute -bottom-4 right-0 cursor-pointer capitalize"
             style={{ marginTop: "5px" }}
             onClick={handleShowLess}
           >
-            <span className="cursor-pointer text-primary capitalize">
-              {t("show less")}
-            </span>
+            <span className="cursor-pointer capitalize">{t("show less")}</span>
           </div>
         )}
       </div>
