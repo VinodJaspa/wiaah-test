@@ -89,7 +89,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
 
   React.useEffect(() => {
     if (index === 0 && content?.length > 150 && showMore) {
-      setModifiedContent(content?.substring(0, 150) + "...");
+      setModifiedContent(content?.substring(0, 150));
     } else {
       setModifiedContent(content);
     }
@@ -141,6 +141,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
                   </Link>
                 ))
                 .slice(0, 3)}
+            {index === 0 && content?.length > 150 && showMore && " ..."}
           </>
         </Text>
         {linesCount === maxLines && showMore && content?.length > 150 && (
