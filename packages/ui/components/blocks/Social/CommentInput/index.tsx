@@ -4,6 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@chakra-ui/react";
+import { getRandomImage } from "@UI/placeholder";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
@@ -19,6 +20,12 @@ export interface CommentInputProps {
   sendIconClassName?: string;
 }
 
+interface User {
+  id: string;
+  username: string;
+  image: string;
+}
+
 export const CommentInput: React.FC<CommentInputProps> = ({
   onCameraClick,
   onCommentSubmit,
@@ -29,19 +36,19 @@ export const CommentInput: React.FC<CommentInputProps> = ({
 }) => {
   const { t } = useTranslation();
   const [input, setInput] = useState<string>("");
-  const [matchedUsers, setMatchedUsers] = useState<string[]>([]);
+  const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const fetchUsers = async (): Promise<string[]> => {
+  const fetchUsers = async (): Promise<User[]> => {
     return [
-      "john_doe",
-      "jane_smith",
-      "jackson_lee",
-      "jenny123",
-      "james_bond",
-      "sarmin",
-      "sarmin_123",
-      "shohan",
+      { id: "1", username: "john_doe", image: getRandomImage() },
+      { id: "2", username: "jane_smith", image: getRandomImage() },
+      { id: "3", username: "jackson_lee", image: getRandomImage() },
+      { id: "4", username: "jenny123", image: getRandomImage() },
+      { id: "5", username: "james_bond", image: getRandomImage() },
+      { id: "6", username: "sarmin", image: getRandomImage() },
+      { id: "7", username: "sarmin_123", image: getRandomImage() },
+      { id: "8", username: "shohan", image: getRandomImage() },
     ];
   };
 
@@ -52,7 +59,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       fetchUsers().then((users) => {
         const filteredUsers = searchText
           ? users.filter((user) =>
-              user.toLowerCase().includes(searchText.toLowerCase()),
+              user.username.toLowerCase().includes(searchText.toLowerCase()),
             )
           : users;
 
@@ -91,6 +98,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       className={cn("relative h-[74px] border-t-2 border-[#EFEFEF]", className)}
     >
       <Popover
+        matchWidth
         isOpen={matchedUsers.length > 0}
         onClose={() => setMatchedUsers([])}
         closeOnBlur={false}
@@ -109,16 +117,21 @@ export const CommentInput: React.FC<CommentInputProps> = ({
             autoFocus
           />
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent width="100%">
           <PopoverBody>
             <ul>
               {matchedUsers.map((user) => (
                 <li
-                  key={user}
-                  className="cursor-pointer p-2 hover:bg-gray-100"
-                  onClick={() => handleUserSelect(user)}
+                  key={user.id}
+                  className="cursor-pointer p-2 hover:bg-gray-100 flex items-center"
+                  onClick={() => handleUserSelect(user.username)}
                 >
-                  {user}
+                  <img
+                    src={user.image}
+                    alt={user.username}
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  {user.username}
                 </li>
               ))}
             </ul>
