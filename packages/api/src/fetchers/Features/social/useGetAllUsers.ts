@@ -17,7 +17,7 @@ export type GetAllUsersQuery = {
   }[];
 };
 
-const mockUsers = [
+const mockUsers: GetAllUsersQuery["allUsers"] = [
   {
     id: "1",
     username: "john",
@@ -42,16 +42,15 @@ export const useGetAllUsers = (limit = 10, offset = 0) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-    query GetAllUsers($limit: Int, $offset: Int) {
-      allUsers(limit: $limit, offset: $offset) {
-        id
-        username
-        fullName
-        avatar
-      }
-    }
-  `);
-
+query GetAllUsers($limit: Int, $offset: Int) {
+allUsers(limit: $limit, offset: $offset) {
+id
+username
+fullName
+avatar
+}
+}
+`);
   client.setVariables<GetAllUsersQueryVariables>({ limit, offset });
 
   return useQuery(
@@ -61,7 +60,10 @@ export const useGetAllUsers = (limit = 10, offset = 0) => {
         return mockUsers;
       }
 
-      const res = await client.send<GetAllUsersQuery>();
+      const res = await client.send<GetAllUsersQuery>().catch((err) => {
+        console.error("Failed to fetch users:", err);
+        throw new Error("Failed to fetch users");
+      });
       return res.data.allUsers;
     },
     {
