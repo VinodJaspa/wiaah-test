@@ -25,9 +25,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   displayShowMore,
   index,
 }) => {
-  /* Will remove later */
-  content +=
-    " #react #typescript #python #tailwindcss #neuralink #pneuma #react #typescript #python #tailwindcss #neuralink #pneuma";
+  content += " #react #typescript #python";
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
   const [showMore, setShowMore] = React.useState<boolean>(true);
@@ -112,38 +110,31 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         >
           <>
             {children}
-            {/*
-              This code processes the `modifiedContent` string to:
-              1. Split the string into individual words using spaces as the delimiter.
-              2. Identify words that start with a `#` (hashtags).
-              3. Render up to 7 hashtags as clickable links using the `<Link>` component.
-              4. Skip rendering any additional hashtags beyond the limit of 7.
-              5. Render non-hashtag words as plain text, ensuring the original text structure is preserved.
-              6. Non-hashtag words and spaces are handled properly to maintain the formatting of the content.
-            */}
-            {(() => {
-              let hashtagCount = 0;
+            {index !== 0 && content}
+            {index === 0 &&
+              (() => {
+                let hashtagCount = 0;
 
-              return modifiedContent.split(" ").map((word, index, arr) => {
-                if (word.startsWith("#")) {
-                  if (hashtagCount < 7) {
-                    hashtagCount++;
-                    return (
-                      <Link
-                        key={index + word}
-                        href={`/hashtag/${word.slice(1)}`}
-                        className="text-primary"
-                      >
-                        {` ${word} `}
-                      </Link>
-                    );
-                  } else {
-                    return null;
+                return modifiedContent.split(" ").map((word, index, arr) => {
+                  if (word.startsWith("#")) {
+                    if (hashtagCount < 7) {
+                      hashtagCount++;
+                      return (
+                        <Link
+                          key={index + word}
+                          href={`/hashtag/${word.slice(1)}`}
+                          className="text-primary"
+                        >
+                          {` ${word} `}
+                        </Link>
+                      );
+                    } else {
+                      return null;
+                    }
                   }
-                }
-                return word + (index === arr.length - 1 ? "" : " ");
-              });
-            })()}
+                  return word + (index === arr.length - 1 ? "" : " ");
+                });
+              })()}
             {index === 0 &&
               content?.length > 150 &&
               showMore &&

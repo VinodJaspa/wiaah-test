@@ -188,7 +188,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             />
           </div>
 
-          {comment.attachment && (
+          {index === 0 && comment.attachment && (
             <div className="w-1/2">
               <PostAttachment
                 src={comment.attachment.src}
@@ -198,36 +198,35 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             </div>
           )}
         </div>
-        {index === 0 && (
-          <div className="flex px-2 w-full items-center justify-between">
-            {/* like,reply, and replies count */}
-            {!main && (
-              <HStack>
-                <p className="text-primary">{t("Like")}</p>
-                <p onClick={() => setReply(true)}>{t("Reply")}</p>
-                <div className="flex whitespace-nowrap gap-1 h-full items-end">
-                  <MdOutlineReply className="text-lg fill-primary" />
-                  <p className="text-gray-500">
-                    {comment.content} {t("Replies")}
-                  </p>
+        <div className="flex px-2 w-full items-center justify-between">
+          {!main && (
+            <HStack>
+              <p className="text-primary">{t("Like")}</p>
+              <p onClick={() => setReply(true)}>{t("Reply")}</p>
+              <div className="flex whitespace-nowrap gap-1 h-full items-end">
+                <MdOutlineReply className="text-lg fill-primary" />
+                <p className="text-gray-500">
+                  {comment.content} {t("Replies")}
+                </p>
+              </div>
+            </HStack>
+          )}
+          <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
+            <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
+              <div className="flex gap-2 items-center">
+                <button onClick={handleLikeDislike}>
+                  {isLiked ? (
+                    <HeartFillIcon className="w-4 h-4" />
+                  ) : (
+                    <HeartOutlineIcon className="w-4 h-4" />
+                  )}
+                </button>
+                <div className="flex gap-1 items-center">
+                  <p>{likeVal}</p>
                 </div>
-              </HStack>
-            )}
-            <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
-              <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
-                <div className="flex gap-2 items-center">
-                  <button onClick={handleLikeDislike}>
-                    {isLiked ? (
-                      <HeartFillIcon className="w-4 h-4" />
-                    ) : (
-                      <HeartOutlineIcon className="w-4 h-4" />
-                    )}
-                  </button>
-                  <div className="flex gap-1 items-center">
-                    <p>{likeVal}</p>
-                  </div>
-                </div>
+              </div>
 
+              {index === 0 && (
                 <div className="flex gap-2 items-center">
                   <AiOutlineMessage
                     onClick={() => setShouldCommentBoxFocused(true)}
@@ -237,7 +236,18 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                     <p>{comment.replies}</p>
                   </div>
                 </div>
+              )}
 
+              {index !== 0 && (
+                <button
+                  onClick={() => setShouldCommentBoxFocused(true)}
+                  className="cursor-pointer"
+                >
+                  Reply
+                </button>
+              )}
+
+              {index === 0 && (
                 <button
                   onClick={() =>
                     shareLink(
@@ -251,8 +261,10 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                     {NumberShortner(shareVal)}
                   </p>
                 </button>
-              </div>
+              )}
+            </div>
 
+            {index === 0 && (
               <div className="flex gap-1 items-center text-[#8E8E8E] font-semibold">
                 {booked ? (
                   <>
@@ -276,9 +288,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   </>
                 )}
               </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
         {reply ? (
           <CommentInput
             onCommentSubmit={(v) => {
