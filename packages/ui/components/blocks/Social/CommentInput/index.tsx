@@ -18,6 +18,8 @@ export interface CommentInputProps {
   inputClassName?: string;
   cameraIconClassName?: string;
   sendIconClassName?: string;
+  shouldCommentBoxFocused?: boolean;
+  setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
 }
 
 interface User {
@@ -34,6 +36,8 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   inputClassName,
   cameraIconClassName,
   sendIconClassName,
+  shouldCommentBoxFocused,
+  setShouldCommentBoxFocused,
 }) => {
   const { t } = useTranslation();
   const [input, setInput] = useState<string>("");
@@ -80,6 +84,18 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     onCommentSubmit && onCommentSubmit(input);
     setInput("");
   }
+
+  useEffect(() => {
+    if (shouldCommentBoxFocused) {
+      if (inputRef.current) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
+      }
+    }
+
+    setShouldCommentBoxFocused(false);
+  }, [shouldCommentBoxFocused, setShouldCommentBoxFocused]);
 
   return (
     <div

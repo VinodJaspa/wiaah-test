@@ -4,10 +4,12 @@ import { useTranslation } from "react-i18next";
 import { AiOutlineMessage } from "react-icons/ai";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
+import { useRouting } from "routing";
 import {
   Button,
   CommentInput,
   EllipsisText,
+  HeartFillIcon,
   HeartOutlineIcon,
   HStack,
   Menu,
@@ -21,10 +23,11 @@ import {
   useCommentOnContent,
   useCommentReportModal,
   useDateDiff,
-  useLikeContent,
   useOutsideClick,
+  useSocialControls,
   Verified,
 } from "ui";
+import { NumberShortner } from "utils";
 import {
   Attachment,
   Comment,
@@ -58,40 +61,50 @@ export interface PostCommentCardProps {
         "username" | "photo" | "verified" | "id"
       >;
     };
+  shouldCommentBoxFocused?: boolean;
+  setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   comment,
   main,
   index,
+  setShouldCommentBoxFocused,
 }) => {
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
-  const { mutate } = useLikeContent();
+  // const { mutate } = useLikeContent();
   const { mutate: createComment } = useCommentOnContent();
+  const { shareLink, showContentComments } = useSocialControls();
+  const { getUrl } = useRouting();
 
   const [reply, setReply] = React.useState<boolean>(false);
   const [isFollowing, setIsFollowing] = React.useState<boolean>(false);
+  const [isLiked, setIsLiked] = React.useState<boolean>(false);
+  const [likeVal, setLikeVal] = React.useState<number>(comment.likes);
   const [booked, setBooked] = React.useState<boolean>(false);
+  const [bookedVal, setBookedVal] = React.useState<number>(15);
+  const [shareVal, setShareVal] = React.useState<number>(15);
 
   const ref = React.useRef<HTMLDivElement>(null);
 
   const toggleBooked = () => {
     setBooked((prevState) => !prevState);
+    setBookedVal((prev) => (!booked ? prev + 1 : prev - 1));
   };
 
   useOutsideClick(ref, () => {
     setReply(false);
   });
 
-  function handleLikeComment() {
-    mutate({
-      args: {
-        contentId: comment.id,
-        contentType: ContentHostType.Comment,
-      },
-    });
-  }
+  // function handleLikeComment() {
+  //   mutate({
+  //     args: {
+  //       contentId: comment.id,
+  //       contentType: ContentHostType.Comment,
+  //     },
+  //   });
+  // }
 
   const profile = comment.author;
 
@@ -104,13 +117,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   const handleFollow = (profileId: string) => {
-    /* Backend logic goes here */
     setIsFollowing(true);
   };
 
   const handleUnfollow = (profileId: string) => {
-    /* Backend logic goes here */
     setIsFollowing(false);
+  };
+
+  const handleLikeDislike = () => {
+    setIsLiked(!isLiked);
+    setLikeVal((prev) => (!isLiked ? prev + 1 : prev - 1));
   };
 
   return (
@@ -187,9 +203,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             {/* like,reply, and replies count */}
             {!main && (
               <HStack>
-                <p onClick={handleLikeComment} className="text-primary">
-                  {t("Like")}
-                </p>
+                <p className="text-primary">{t("Like")}</p>
                 <p onClick={() => setReply(true)}>{t("Reply")}</p>
                 <div className="flex whitespace-nowrap gap-1 h-full items-end">
                   <MdOutlineReply className="text-lg fill-primary" />
@@ -202,46 +216,62 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
               <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
                 <div className="flex gap-2 items-center">
-                  <HeartOutlineIcon className="w-4 h-4" />
+                  <button onClick={handleLikeDislike}>
+                    {isLiked ? (
+                      <HeartFillIcon className="w-4 h-4" />
+                    ) : (
+                      <HeartOutlineIcon className="w-4 h-4" />
+                    )}
+                  </button>
                   <div className="flex gap-1 items-center">
-                    <p>{comment.likes}</p>
+                    <p>{likeVal}</p>
                   </div>
                 </div>
 
                 <div className="flex gap-2 items-center">
-                  <AiOutlineMessage className="w-4 h-4" />
+                  <AiOutlineMessage
+                    onClick={() => setShouldCommentBoxFocused(true)}
+                    className="w-4 h-4 cursor-pointer"
+                  />
                   <div className="flex gap-1 items-center">
                     <p>{comment.replies}</p>
                   </div>
                 </div>
 
-                <div className="flex gap-2 items-center">
-                  <ShareIcon className="w-4 h-4" />
-                  <div className="flex gap-1 items-center">
-                    <p>5</p>
-                  </div>
-                </div>
+                <button
+                  onClick={() =>
+                    shareLink(
+                      getUrl((routes) => routes.visitSocialPost(comment.id)),
+                    )
+                  }
+                  className="flex gap-2 items-center"
+                >
+                  <ShareIcon />
+                  <p className="text-xs font-medium">
+                    {NumberShortner(shareVal)}
+                  </p>
+                </button>
               </div>
 
               <div className="flex gap-1 items-center text-[#8E8E8E] font-semibold">
                 {booked ? (
                   <>
                     <SaveFlagFIllIcon
-                      className="w-4 h-4"
+                      className="w-4 h-4 cursor-pointer"
                       onClick={toggleBooked}
                     />
                     <div className="flex gap-1 items-center">
-                      <p>13</p>
+                      <p>{bookedVal}</p>
                     </div>
                   </>
                 ) : (
                   <>
                     <SaveFlagOutlineIcon
-                      className="w-4 h-4"
+                      className="w-4 h-4 cursor-pointer"
                       onClick={toggleBooked}
                     />
                     <div className="flex gap-1 items-center">
-                      <p>13</p>
+                      <p>{bookedVal}</p>
                     </div>
                   </>
                 )}

@@ -59,65 +59,65 @@ export const SocialShareCotentModal: React.FC = () => {
     onClick: () => void;
     label: string;
   }[] = [
-      {
-        icon: (
-          <img
-            className="w-[1em] bg-primary rounded-xl px-2 h-[1em] object-contain"
-            src="/logo.svg"
-            alt=""
-          />
-        ),
-        label: t("Wiaah messages"),
-        onClick() { },
+    {
+      icon: (
+        <img
+          className="w-[1em] bg-primary rounded-xl px-2 h-[1em] object-contain"
+          src="/logo.svg"
+          alt=""
+        />
+      ),
+      label: t("Wiaah messages"),
+      onClick() {},
+    },
+    {
+      icon: <FacebookIcon />,
+      label: t("Facebook"),
+      onClick() {
+        if (typeof window !== "undefined") {
+          window.location.href = `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${value}`;
+        }
       },
-      {
-        icon: <FacebookIcon />,
-        label: t("Facebook"),
-        onClick() {
-          if (typeof window !== "undefined") {
-            window.location.href = `https://www.facebook.com/dialog/share?app_id=145634995501895&display=popup&href=${value}`;
-          }
-        },
-      },
-      {
-        icon: <InstagramLogoIcon />,
-        label: t("Instagram"),
-        onClick() { },
-      },
-      {
-        icon: <WhatsappLogoIcon />,
-        label: t("Whatsapp"),
-        onClick() { },
-      },
-      {
-        icon: <TelegramLogoIcon />,
-        label: t("Telegram"),
-        onClick() { },
-      },
-      {
-        icon: <LinkedInLogoIcon />,
-        label: t("Linkedin"),
-        onClick() { },
-      },
-      {
-        icon: <PinterestLogoIcon />,
-        label: t("Pinterest"),
-        onClick() { },
-      },
-      {
-        icon: <TwitterLogoIcon />,
-        label: t("Twitter"),
-        onClick() { },
-      },
-      {
-        icon: <AtEmailIcon />,
-        label: "Email",
-        onClick() { },
-      },
-    ];
+    },
+    {
+      icon: <InstagramLogoIcon />,
+      label: t("Instagram"),
+      onClick() {},
+    },
+    {
+      icon: <WhatsappLogoIcon />,
+      label: t("Whatsapp"),
+      onClick() {},
+    },
+    {
+      icon: <TelegramLogoIcon />,
+      label: t("Telegram"),
+      onClick() {},
+    },
+    {
+      icon: <LinkedInLogoIcon />,
+      label: t("Linkedin"),
+      onClick() {},
+    },
+    {
+      icon: <PinterestLogoIcon />,
+      label: t("Pinterest"),
+      onClick() {},
+    },
+    {
+      icon: <TwitterLogoIcon />,
+      label: t("Twitter"),
+      onClick() {},
+    },
+    {
+      icon: <AtEmailIcon />,
+      label: "Email",
+      onClick() {},
+    },
+  ];
 
   return (
-    <Modal isOpen={!!value} onClose={cancelShareLink} isLazy>
+    <Modal z={10000000} isOpen={!!value} onClose={cancelShareLink} isLazy>
       <ModalOverlay />
       <ModalContent>
         <div className="flex p-4 h-full gap-8 flex-col w-full">

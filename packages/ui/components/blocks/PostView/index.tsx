@@ -8,9 +8,9 @@ import { useActionComments } from "@src/Hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { getRandomImage, PostCardPlaceHolder } from "placeholder";
 import { AttachmentType, ContentHostType } from "@features/API";
 import { Divider } from "@partials";
+import { getRandomImage, PostCardPlaceHolder } from "placeholder";
 
 interface PostViewProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
@@ -34,6 +34,9 @@ export function PostView<TData extends {}>({
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
   const { t } = useTranslation();
+
+  const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
+    React.useState<boolean>(false);
 
   React.useEffect(() => {
     OpenComments();
@@ -74,6 +77,8 @@ export function PostView<TData extends {}>({
                         key={i}
                         comment={comment}
                         index={i}
+                        shouldCommentBoxFocused={shouldCommentBoxFocused}
+                        setShouldCommentBoxFocused={setShouldCommentBoxFocused}
                       />
 
                       <Divider className="my-4" />
@@ -91,6 +96,8 @@ export function PostView<TData extends {}>({
           )}
         </div>
         <CommentInput
+          shouldCommentBoxFocused={shouldCommentBoxFocused}
+          setShouldCommentBoxFocused={setShouldCommentBoxFocused}
           onCommentSubmit={(v) => {
             // mutate({
             //   authorProfileId:

@@ -48,5 +48,5 @@ export const HeartOutlineAltIcon: React.FC<HtmlSvgProps> = (props) => {
 };
 
 export const HeartFillIcon: React.FC<HtmlSvgProps> = (props) => {
-  return <BsHeartFill />;
+  return <BsHeartFill {...props} />;
 };
