@@ -1,13 +1,9 @@
 import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AiOutlineMessage } from "react-icons/ai";
-import { BiMinus } from "react-icons/bi";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { MdOutlineReply } from "react-icons/md";
 import { useRouting } from "routing";
 import {
-  Button,
   EllipsisText,
   HeartFillIcon,
   HeartOutlineIcon,
@@ -16,10 +12,6 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  PostAttachment,
-  SaveFlagFIllIcon,
-  SaveFlagOutlineIcon,
-  ShareIcon,
   useCommentOnContent,
   useCommentReportModal,
   useDateDiff,
@@ -27,9 +19,7 @@ import {
   useSocialControls,
   Verified,
 } from "ui";
-import { NumberShortner } from "utils";
 import { Attachment, Comment, Profile } from "../../../features/API";
-import { PostReplyCard } from "../PostReplyCard";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -61,7 +51,7 @@ export interface PostCommentCardProps {
   setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
 }
 
-export const PostCommentCard: React.FC<PostCommentCardProps> = ({
+export const PostReplyCard: React.FC<PostCommentCardProps> = ({
   comment,
   main,
   index,
@@ -131,7 +121,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   };
 
   return (
-    <div ref={ref} className="flex bg-white w-full gap-2 px-3">
+    <div ref={ref} className="flex w-full gap-2 px-3">
       <Link
         href={`/profile/${profile.id}`}
         className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0"
@@ -143,11 +133,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         />
       </Link>
       <div className="w-full flex flex-col">
-        <div
-          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${
-            main ? "bg-white" : "bg-primary-light"
-          }`}
-        >
+        <div className="w-full flex pb-2 px-2 flex-col rounded-xl">
           <div className="flex items-center mt-2 gap-2 justify-between">
             <HStack>
               <div className="flex items-center gap-1  ">
@@ -165,20 +151,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {TimeDiff(comment.commentedAt)} ago
               </p>
             </HStack>
-            {index === 0 && !isFollowing && (
-              <Button
-                className="w-[89.23px]"
-                outline
-                onClick={() => handleFollow(profile.id)}
-              >
-                Follow
-              </Button>
-            )}
-            {index === 0 && isFollowing && (
-              <Button outline onClick={() => handleUnfollow(profile.id)}>
-                Unfollow
-              </Button>
-            )}
           </div>
           <div className="py-2">
             <EllipsisText
@@ -188,30 +160,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               index={index}
             />
           </div>
-
-          {index === 0 && comment.attachment && (
-            <div className="w-1/2">
-              <PostAttachment
-                src={comment.attachment.src}
-                type={comment.attachment.type}
-                alt={profile?.username}
-              />
-            </div>
-          )}
         </div>
         <div className="flex px-2 w-full items-center justify-between">
-          {!main && (
-            <HStack>
-              <p className="text-primary">{t("Like")}</p>
-              <p onClick={() => setReply(true)}>{t("Reply")}</p>
-              <div className="flex whitespace-nowrap gap-1 h-full items-end">
-                <MdOutlineReply className="text-lg fill-primary" />
-                <p className="text-gray-500">
-                  {comment.content} {t("Replies")}
-                </p>
-              </div>
-            </HStack>
-          )}
           <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
             <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
@@ -226,19 +176,6 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   <p>{likeVal}</p>
                 </div>
               </div>
-
-              {index === 0 && (
-                <div className="flex gap-2 items-center">
-                  <AiOutlineMessage
-                    onClick={() => setShouldCommentBoxFocused(true)}
-                    className="w-4 h-4 cursor-pointer mt-0.5"
-                  />
-                  <div className="flex gap-1 items-center">
-                    <p>{comment.replies}</p>
-                  </div>
-                </div>
-              )}
-
               {index !== 0 && (
                 <button
                   onClick={() => setShouldCommentBoxFocused(true)}
@@ -247,52 +184,10 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   Reply
                 </button>
               )}
-
-              {index === 0 && (
-                <button
-                  onClick={() =>
-                    shareLink(
-                      getUrl((routes) => routes.visitSocialPost(comment.id)),
-                    )
-                  }
-                  className="flex gap-2 items-center"
-                >
-                  <ShareIcon />
-                  <p className="text-xs font-medium">
-                    {NumberShortner(shareVal)}
-                  </p>
-                </button>
-              )}
             </div>
-
-            {index === 0 && (
-              <div className="flex gap-1 items-center text-[#8E8E8E] font-semibold">
-                {booked ? (
-                  <>
-                    <SaveFlagFIllIcon
-                      className="w-4 h-4 cursor-pointer mt-1"
-                      onClick={toggleBooked}
-                    />
-                    <div className="flex gap-1 items-center">
-                      <p>{bookedVal}</p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <SaveFlagOutlineIcon
-                      className="w-4 h-4 cursor-pointer mt-1"
-                      onClick={toggleBooked}
-                    />
-                    <div className="flex gap-1 items-center">
-                      <p>{bookedVal}</p>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
           </div>
         </div>
-        {index !== 0 && shouldCommentRepliesOpen.count > 0 && (
+        {/* {index !== 0 && shouldCommentRepliesOpen.count > 0 && (
           <div className="ml-10 mt-2 relative">
             <button
               onClick={() =>
@@ -315,17 +210,13 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                 {Array.from(
                   { length: shouldCommentRepliesOpen.count },
                   (_, index) => (
-                    <PostReplyCard
-                      key={index + comment.id}
-                      comment={comment}
-                      setShouldCommentBoxFocused={setShouldCommentBoxFocused}
-                    />
+                    <p>Reply</p>
                   ),
                 )}
               </div>
             )}
           </div>
-        )}
+        )} */}
         {/* {reply ? (
           <CommentInput
             onCommentSubmit={(v) => {
