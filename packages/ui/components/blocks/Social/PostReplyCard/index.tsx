@@ -49,6 +49,7 @@ export interface PostCommentCardProps {
     };
   shouldCommentBoxFocused?: boolean;
   setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
+  setPostOwnerUsername?: (username: string) => void;
 }
 
 export const PostReplyCard: React.FC<PostCommentCardProps> = ({
@@ -56,6 +57,7 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
   main,
   index,
   setShouldCommentBoxFocused,
+  setPostOwnerUsername,
 }) => {
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
@@ -99,12 +101,12 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
 
   const profile = comment.author;
 
-  const TimeDiff = (createdAt: string) => {
-    const { timeUnit, value } = useDateDiff({
+  const TimeDiffNarrow = (createdAt: string) => {
+    const { timeUnitNarrow, value } = useDateDiff({
       from: new Date(),
       to: new Date(createdAt),
     }).getSince();
-    return `${value} ${timeUnit} `;
+    return `${value}${timeUnitNarrow} `;
   };
 
   const handleFollow = (profileId: string) => {
@@ -147,9 +149,6 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
                   <Verified className="text-[#0084FF] w-5 h-5" />
                 )}
               </div>
-              <p className="text-[#8E8E8E] text-xs">
-                {TimeDiff(comment.commentedAt)} ago
-              </p>
             </HStack>
           </div>
           <div className="py-2">
@@ -158,6 +157,7 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
               content={comment.content}
               maxLines={3}
               index={index}
+              isReply
             />
           </div>
         </div>
@@ -165,6 +165,9 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
           <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
             <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
+                <p className="text-[#8E8E8E] text-xs">
+                  {TimeDiffNarrow(comment.commentedAt)} ago
+                </p>
                 <button onClick={handleLikeDislike}>
                   {isLiked ? (
                     <HeartFillIcon className="w-4 h-4 mt-1" />
@@ -178,7 +181,10 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
               </div>
               {index !== 0 && (
                 <button
-                  onClick={() => setShouldCommentBoxFocused(true)}
+                  onClick={() => {
+                    setShouldCommentBoxFocused(true);
+                    setPostOwnerUsername(comment.author.username);
+                  }}
                   className="cursor-pointer"
                 >
                   Reply

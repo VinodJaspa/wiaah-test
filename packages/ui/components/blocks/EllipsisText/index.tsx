@@ -13,6 +13,7 @@ export interface EllipsisTextProps {
   displayShowMore?: boolean;
   children?: React.ReactNode;
   index?: number;
+  isReply?: boolean;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
@@ -24,8 +25,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   children,
   displayShowMore,
   index,
+  isReply,
 }) => {
-  content += " #react #typescript #python";
+  content = `@janedoe ${content || ""} #react #typescript #python`;
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
   const [showMore, setShowMore] = React.useState<boolean>(true);
@@ -95,6 +97,51 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
     }
   }, [content, index, showMore]);
 
+  const renderMentions = (text: string) => {
+    return text.split(" ").map((word, index, arr) => {
+      if (word.startsWith("@")) {
+        return (
+          <strong key={`mention-${index}`}>
+            {word}
+            {index !== arr.length - 1 ? " " : ""}
+          </strong>
+        );
+      }
+      return (
+        <React.Fragment key={`text-${index}`}>
+          {word}
+          {index !== arr.length - 1 ? " " : ""}
+        </React.Fragment>
+      );
+    });
+  };
+
+  const renderProcessedContent = () => {
+    let hashtagCount = 0;
+
+    return modifiedContent.split(" ").map((word, index, arr) => {
+      if (word.startsWith("#")) {
+        if (hashtagCount < 7) {
+          hashtagCount++;
+          return (
+            <Link
+              key={`${index}-${word}`}
+              href={`/hashtag/${word.slice(1)}`}
+              className="text-primary"
+            >
+              {` ${word} `}
+            </Link>
+          );
+        } else {
+          return null;
+        }
+      } else if (word.startsWith("@")) {
+        return <strong key={`${index}-${word}`}>{` ${word} `}</strong>;
+      }
+      return word + (index === arr.length - 1 ? "" : " ");
+    });
+  };
+
   return (
     <div className="relative font-base flex flex-col">
       <p
@@ -110,48 +157,28 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         >
           <>
             {children}
-            {index !== 0 && content}
-            {index === 0 &&
-              (() => {
-                let hashtagCount = 0;
-
-                return modifiedContent.split(" ").map((word, index, arr) => {
-                  if (word.startsWith("#")) {
-                    if (hashtagCount < 7) {
-                      hashtagCount++;
-                      return (
-                        <Link
-                          key={index + word}
-                          href={`/hashtag/${word.slice(1)}`}
-                          className="text-primary"
-                        >
-                          {` ${word} `}
-                        </Link>
-                      );
-                    } else {
-                      return null;
-                    }
-                  }
-                  return word + (index === arr.length - 1 ? "" : " ");
-                });
-              })()}
-            {index === 0 &&
-              content?.length > 150 &&
-              showMore &&
-              content
-                .split(" ")
-                .filter((word) => word.startsWith("#"))
-                .map((word, index) => (
-                  <Link
-                    key={index + word}
-                    href={`/hashtag/${word.slice(1)}`}
-                    className="text-primary"
-                  >
-                    {` ${word} `}
-                  </Link>
-                ))
-                .slice(0, 3)}
-            {index === 0 && content?.length > 150 && showMore && " ..."}
+            {index !== 0 && content && renderMentions(content)}
+            {index === 0 && (
+              <>
+                {renderProcessedContent()}
+                {content?.length > 150 &&
+                  showMore &&
+                  content
+                    .split(" ")
+                    .filter((word) => word.startsWith("#"))
+                    .map((word, index) => (
+                      <Link
+                        key={`extra-${index}-${word}`}
+                        href={`/hashtag/${word.slice(1)}`}
+                        className="text-primary"
+                      >
+                        {` ${word} `}
+                      </Link>
+                    ))
+                    .slice(0, 3)}
+                {index === 0 && content?.length > 150 && showMore && " ..."}
+              </>
+            )}
           </>
         </Text>
         {linesCount === maxLines && showMore && content?.length > 150 && (

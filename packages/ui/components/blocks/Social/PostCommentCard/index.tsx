@@ -59,6 +59,7 @@ export interface PostCommentCardProps {
     };
   shouldCommentBoxFocused?: boolean;
   setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
+  setPostOwnerUsername?: (username: string) => void;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -66,6 +67,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   main,
   index,
   setShouldCommentBoxFocused,
+  setPostOwnerUsername,
 }) => {
   const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
@@ -117,6 +119,14 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     return `${value} ${timeUnit} `;
   };
 
+  const TimeDiffNarrow = (createdAt: string) => {
+    const { timeUnitNarrow, value } = useDateDiff({
+      from: new Date(),
+      to: new Date(createdAt),
+    }).getSince();
+    return `${value}${timeUnitNarrow} `;
+  };
+
   const handleFollow = (profileId: string) => {
     setIsFollowing(true);
   };
@@ -161,9 +171,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   <Verified className="text-[#0084FF] w-5 h-5" />
                 )}
               </div>
-              <p className="text-[#8E8E8E] text-xs">
-                {TimeDiff(comment.commentedAt)} ago
-              </p>
+              {index === 0 && (
+                <p className="text-[#8E8E8E] text-xs">
+                  {TimeDiff(comment.commentedAt)} ago
+                </p>
+              )}
             </HStack>
             {index === 0 && !isFollowing && (
               <Button
@@ -215,6 +227,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
             <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
+                {index !== 0 && (
+                  <p className="text-[#8E8E8E] text-xs">
+                    {TimeDiffNarrow(comment.commentedAt)} ago
+                  </p>
+                )}
                 <button onClick={handleLikeDislike}>
                   {isLiked ? (
                     <HeartFillIcon className="w-4 h-4 mt-1" />
@@ -311,7 +328,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               )}
             </button>
             {shouldCommentRepliesOpen.state && (
-              <div>
+              <div className="mt-2">
                 {Array.from(
                   { length: shouldCommentRepliesOpen.count },
                   (_, index) => (
@@ -319,6 +336,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                       key={index + comment.id}
                       comment={comment}
                       setShouldCommentBoxFocused={setShouldCommentBoxFocused}
+                      setPostOwnerUsername={setPostOwnerUsername}
                     />
                   ),
                 )}

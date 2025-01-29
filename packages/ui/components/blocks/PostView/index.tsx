@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { AttachmentType, ContentHostType } from "@features/API";
 import { Divider } from "@partials";
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
+import { FaUser } from "react-icons/fa";
 
 interface PostViewProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
@@ -37,6 +38,9 @@ export function PostView<TData extends {}>({
 
   const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
     React.useState<boolean>(false);
+  const [shouldNameAppearOverImage, setShouldNameAppearOverImage] =
+    React.useState<boolean>(false);
+  const [postOwnerUsername, setPostOwnerUsername] = React.useState<string>("");
 
   React.useEffect(() => {
     OpenComments();
@@ -51,7 +55,22 @@ export function PostView<TData extends {}>({
 
   return (
     <div className="flex justify-center items-center relative w-full h-full ">
-      <div className="flex w-1/2 h-full bg-black">{renderChild(post!)}</div>
+      <div className="flex w-1/2 h-full bg-black relative">
+        {renderChild(post!)}
+        <button
+          onClick={() =>
+            setShouldNameAppearOverImage(!shouldNameAppearOverImage)
+          }
+          className="absolute left-5 bottom-5 w-7 h-7 bg-gray-700 rounded-full flex items-center justify-center"
+        >
+          <FaUser className="text-white" />
+        </button>
+        {shouldNameAppearOverImage && (
+          <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-2 py-1 font-medium">
+            Post Owner
+          </p>
+        )}
+      </div>
       <div
         style={{
           opacity: open ? 1 : 0,
@@ -79,6 +98,7 @@ export function PostView<TData extends {}>({
                         index={i}
                         shouldCommentBoxFocused={shouldCommentBoxFocused}
                         setShouldCommentBoxFocused={setShouldCommentBoxFocused}
+                        setPostOwnerUsername={setPostOwnerUsername}
                       />
 
                       <Divider className="my-4" />
@@ -103,6 +123,7 @@ export function PostView<TData extends {}>({
             //   authorProfileId:
             // })
           }}
+          postOwnerUsername={postOwnerUsername}
         />
       </div>
     </div>

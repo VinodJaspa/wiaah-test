@@ -20,6 +20,7 @@ export interface CommentInputProps {
   sendIconClassName?: string;
   shouldCommentBoxFocused?: boolean;
   setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
+  postOwnerUsername?: string;
 }
 
 interface User {
@@ -38,6 +39,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   sendIconClassName,
   shouldCommentBoxFocused,
   setShouldCommentBoxFocused,
+  postOwnerUsername,
 }) => {
   const { t } = useTranslation();
   const [input, setInput] = useState<string>("");
@@ -45,6 +47,22 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: users = [], isLoading, isError } = useGetAllUsers();
+
+  // Automatically insert postOwnerUsername when input is focused and empty
+  useEffect(() => {
+    if (inputRef.current && postOwnerUsername && input === "") {
+      const handleFocus = () => {
+        setInput(`@${postOwnerUsername} `);
+      };
+
+      const inputElement = inputRef.current;
+      inputElement.addEventListener("focus", handleFocus);
+
+      return () => {
+        inputElement.removeEventListener("focus", handleFocus);
+      };
+    }
+  }, [postOwnerUsername, input]);
 
   useEffect(() => {
     const lastWord = input.split(" ").pop() || "";
