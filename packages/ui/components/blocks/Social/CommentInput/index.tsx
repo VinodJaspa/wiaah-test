@@ -179,13 +179,16 @@ export const CommentInput: React.FC<CommentInputProps> = ({
         </div>
       )}
 
-      <IoSend
+      <button
+        disabled={!input}
         className={cn(
-          "w-7 h-7 absolute text-[#20ECA7] inset-y-0 my-auto right-6",
+          "w-7 h-7 absolute text-[#20ECA7] disabled:text-gray-500 inset-y-0 my-auto right-6",
           sendIconClassName,
         )}
         onClick={handleCommentSubmit}
-      />
+      >
+        <IoSend size={24} />
+      </button>
     </div>
   );
 };
