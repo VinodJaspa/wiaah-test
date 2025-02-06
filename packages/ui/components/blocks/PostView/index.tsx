@@ -37,7 +37,7 @@ export function PostView<TData extends {}>({
   const { t } = useTranslation();
   const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
     React.useState<boolean>(false);
-  const [shouldNameAppearOverImage, setShouldNameAppearOverImage] =
+  const [isUsernameShowing, setIsUsernameShowing] =
     React.useState<boolean>(false);
   const [postOwnerUsername, setPostOwnerUsername] = React.useState<string>("");
 
@@ -58,16 +58,14 @@ export function PostView<TData extends {}>({
       <div className="flex w-1/2 h-full bg-black relative">
         {renderChild(post!)}
         <button
-          onClick={() =>
-            setShouldNameAppearOverImage(!shouldNameAppearOverImage)
-          }
+          onClick={() => setIsUsernameShowing(!isUsernameShowing)}
           className="absolute left-5 bottom-5 w-7 h-7 bg-gray-700 rounded-full flex items-center justify-center"
         >
           <FaUser className="text-white" />
         </button>
-        {shouldNameAppearOverImage && (
+        {isUsernameShowing && (
           <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-2 py-1 font-medium">
-            Post Owner
+            Username
           </p>
         )}
       </div>
