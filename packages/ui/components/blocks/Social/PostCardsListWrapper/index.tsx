@@ -1,18 +1,17 @@
-import { newsfeedPosts } from "placeholder";
-import React from "react";
-import { useModalDisclouser, useResponsive } from "hooks";
-import { AspectRatio } from "@partials";
-import { mapArray } from "utils";
-import { PostCardInfo } from "types";
 import { Carousel } from "@blocks/Carousel";
-import { useRouter } from "next/router";
+import { PostViewPopup } from "@blocks/Popups";
 import {
   GridListOrganiser,
   ListWrapper,
   ListWrapperProps,
 } from "@blocks/Wrappers";
+import { AspectRatio } from "@partials";
+import { useModalDisclouser, useResponsive } from "hooks";
+import { useRouter } from "next/router";
+import React from "react";
+import { PostCardInfo } from "types";
+import { mapArray } from "utils";
 import { PostCard } from "../PostCard/NewsFeedPostCard";
-import { PostViewPopup } from "@blocks/Popups";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
@@ -61,6 +60,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
 
           {popup && (
             <PostViewPopup
+              posts={posts}
               queryName="newFeedPost"
               data={post}
               idParam="newsfeedpostid"
@@ -72,7 +72,10 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                   <Carousel componentsPerView={1} controls={images.length > 1}>
                     {images.map((image, index) => (
                       <div key={index}>
-                        <img src={image} alt={`Attachment ${index + 1}`} />
+                        <img
+                          src={props.postInfo.thumbnail}
+                          alt={`Attachment ${index + 1}`}
+                        />
                       </div>
                     ))}
                   </Carousel>

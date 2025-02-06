@@ -4,13 +4,12 @@ import {
   PostCommentCard,
   PostCommentCardProps,
 } from "@blocks/Social";
-import { useActionComments } from "@src/Hooks";
-import React from "react";
-import { useTranslation } from "react-i18next";
-
 import { AttachmentType, ContentHostType } from "@features/API";
 import { Divider } from "@partials";
+import { useActionComments } from "@src/Hooks";
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
 
 interface PostViewProps<TData> {

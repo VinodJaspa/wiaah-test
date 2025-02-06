@@ -1,29 +1,17 @@
-import React from "react";
-import { useMutation, useQuery } from "react-query";
-import { MdClose } from "react-icons/md";
+import { AttachmentType, ContentHostType } from "@features/API";
+import { useActionComments } from "@src/Hooks";
 import {
   Modal,
   ModalContent,
   ModalOverlay,
-  ArrowUpIcon,
-  ArrowDownIcon,
-  CommentInput,
-  useCommentOnContent,
   PostCommentCardProps,
-  Divider,
   PostView,
-  Carousel,
 } from "@UI";
+import { getRandomImage } from "placeholder";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PostCommentCard, Slider } from "@UI";
-import { getParamFromAsPath } from "utils";
-import { getRandomImage, PostCardPlaceHolder } from "placeholder";
-import { useActionComments } from "@src/Hooks";
+import { MdClose, MdOutlineArrowForwardIos } from "react-icons/md";
 import { useRouting } from "routing";
-import { AttachmentType, ContentHostType } from "@features/API";
-import { GoLink } from "react-icons/go";
-
-import { MdOutlineArrowForwardIos } from "react-icons/md";
 
 export interface PostViewPopupProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
@@ -35,15 +23,8 @@ export interface PostViewPopupProps<TData> {
   handleClose: () => void;
   showLink?: boolean;
   data?: TData;
+  posts?: TData[];
 }
-
-export const goNextPost = async ({ currentId }: { currentId: string }) => {
-  return { id: String(Number(currentId) + 1) };
-};
-
-export const goPrevPost = async ({ currentId }: { currentId: string }) => {
-  return { id: String(Number(currentId) - 1) };
-};
 
 export function PostViewPopup<TData extends {}>({
   renderChild,
@@ -55,83 +36,81 @@ export function PostViewPopup<TData extends {}>({
   handleClose,
   showLink = false,
   data,
+  posts = [],
 }: PostViewPopupProps<TData>) {
   const { visit, getCurrentPath } = useRouting();
-  const { CloseComments, OpenComments, ToggleComments, open } =
-    useActionComments();
+  const { OpenComments } = useActionComments();
   const { t } = useTranslation();
+
+  const [currentPost, setCurrentPost] = useState<any | undefined>(data);
+
+  React.useEffect(() => {
+    setCurrentPost(data ? { ...data } : undefined);
+  }, [data]);
 
   React.useEffect(() => {
     OpenComments();
   }, []);
 
-  const { mutate: mutateNext } = useMutation<
-    { id: string },
-    unknown,
-    { currentId: string }
-  >(goNextPost, {
-    onSuccess: (data) => {
-      visit((routes) => routes.addQuery({ [idParam]: data.id }));
-    },
-  });
-  const { mutate: mutatePrev } = useMutation<
-    { id: string },
-    unknown,
-    { currentId: string }
-  >(goPrevPost, {
-    onSuccess: (data) => {
-      visit((routes) => routes.addQuery({ [idParam]: data.id }));
-    },
-  });
-  const postId = getParamFromAsPath(getCurrentPath(), idParam);
-  const { mutate } = useCommentOnContent();
+  const currentPostIndex = posts.findIndex(
+    (post: any) => post?.postInfo?.id === currentPost?.postInfo?.id,
+  );
 
-  // const {
-  //   data: post,
-  //   isLoading,
-  //   isError,
-  // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
-  const post = data;
+  const handleShowPreviousPost = () => {
+    if (currentPostIndex > 0) {
+      setCurrentPost(posts[currentPostIndex - 1]);
+    }
+  };
 
-  const reloadPath = () => {
-    visit((routes) => routes.addPath(""));
+  const handleShowNextPost = () => {
+    if (currentPostIndex >= 0 && currentPostIndex < posts.length - 1) {
+      setCurrentPost(posts[currentPostIndex + 1]);
+    }
   };
 
   React.useEffect(() => {
-    if (postId && !isOpen) {
+    if (isOpen) {
       handleOpen();
-    } else if (!postId && isOpen) {
-      handlePostViewClose();
+    } else {
+      handleClose();
     }
-  }, [postId]);
-
-  function handlePostViewClose() {
-    handleClose();
-    reloadPath();
-  }
+  }, [isOpen]);
 
   return (
     <>
-      <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
+      <Modal onOpen={() => {}} onClose={handleClose} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent className="w-3/5 h-4/5 p-0 ">
+        <ModalContent className="w-3/5 h-4/5 p-0">
           <div className="w-full h-full">
             <MdClose
               onClick={handleClose}
-              className={`absolute -top-2 -left-16 text-3xl w-9 h-9 cursor-pointer text-white`}
+              className="absolute -top-2 -left-16 text-3xl w-9 h-9 cursor-pointer text-white"
               aria-label="Close Post"
             />
             <PostView
+              key={currentPost?.postInfo?.id}
               postId=""
               queryName="newFeedPost"
-              data={post}
+              data={currentPost}
               idParam="newsfeedpostid"
               renderChild={renderChild}
             />
-
-            <div className="absolute bottom-0 -right-[68px] z-50  cursor-pointer select-none rounded-full  p-3 bg-white text-white ">
-              <MdOutlineArrowForwardIos className="rotate-90 text-[#20ECA7] w-[22px] h-[22px]" />
-            </div>
+            {currentPostIndex > 0 && (
+              <div
+                onClick={handleShowPreviousPost}
+                className="absolute top-0 -right-[68px] z-50 cursor-pointer select-none rounded-full p-3 bg-white text-white"
+              >
+                <MdOutlineArrowForwardIos className="-rotate-90 text-[#20ECA7] w-[22px] h-[22px]" />
+              </div>
+            )}
+            {currentPostIndex < posts.length - 1 && (
+              <div
+                onClick={handleShowNextPost}
+                className="absolute bottom-0 -right-[68px] z-50 cursor-pointer select-none rounded-full p-3 bg-white text-white"
+              >
+                <MdOutlineArrowForwardIos className="rotate-90 text-[#20ECA7] w-[22px] h-[22px]" />
+              </div>
+            )}
           </div>
         </ModalContent>
       </Modal>
