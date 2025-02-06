@@ -35,7 +35,6 @@ export function PostView<TData extends {}>({
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
   const { t } = useTranslation();
-
   const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
     React.useState<boolean>(false);
   const [shouldNameAppearOverImage, setShouldNameAppearOverImage] =
@@ -51,6 +50,7 @@ export function PostView<TData extends {}>({
   //   isLoading,
   //   isError,
   // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
+
   const post = data;
 
   return (
@@ -84,7 +84,7 @@ export function PostView<TData extends {}>({
           showLink={showLink}
           link="https://www.figma.com/design/zou6Q"
         />
-        <div className="hide-scrollbar h-full overflow-y-scroll">
+        <div className="hide-scrollbar h-full overflow-y-scroll overflow-x-hidden">
           {PostCardPlaceHolder.postInfo.comments && (
             <>
               {FAKE_COMMENTS.length > 0 ? (

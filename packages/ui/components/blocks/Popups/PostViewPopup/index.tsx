@@ -112,13 +112,13 @@ export function PostViewPopup<TData extends {}>({
 
   return (
     <>
-      <Modal onOpen={() => { }} onClose={handlePostViewClose} isOpen={isOpen}>
+      <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent className="w-3/5 h-4/5 p-0 ">
           <div className="w-full h-full">
             <MdClose
               onClick={handleClose}
-              className={`absolute -top-2 -right-16 text-3xl w-9 h-9 cursor-pointer text-white`}
+              className={`absolute -top-2 -left-16 text-3xl w-9 h-9 cursor-pointer text-white`}
               aria-label="Close Post"
             />
             <PostView

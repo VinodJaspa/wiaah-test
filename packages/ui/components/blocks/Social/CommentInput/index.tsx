@@ -8,7 +8,6 @@ import { useGetAllUsers } from "api";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { IoSend } from "react-icons/io5";
-import { LuCamera } from "react-icons/lu";
 import { cn } from "utils";
 
 export interface CommentInputProps {
@@ -45,10 +44,8 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   const [input, setInput] = useState<string>("");
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-
   const { data: users = [], isLoading, isError } = useGetAllUsers();
 
-  // Automatically insert postOwnerUsername when input is focused and empty
   useEffect(() => {
     if (inputRef.current && postOwnerUsername && input === "") {
       const handleFocus = () => {
@@ -93,10 +90,6 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     words[words.length - 1] = `@${username}`;
     setInput(words.join(" ") + " ");
   };
-
-  function handleCameraClick() {
-    onCameraClick && onCameraClick();
-  }
 
   function handleCommentSubmit() {
     onCommentSubmit && onCommentSubmit(input);
@@ -164,13 +157,6 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      <LuCamera
-        className={cn(
-          "w-7 h-7 absolute inset-0 my-auto left-4",
-          cameraIconClassName,
-        )}
-        onClick={handleCameraClick}
-      />
       <IoSend
         className={cn(
           "w-7 h-7 absolute text-[#20ECA7] inset-y-0 my-auto right-6",
