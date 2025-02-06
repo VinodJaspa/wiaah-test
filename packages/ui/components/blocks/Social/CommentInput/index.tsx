@@ -5,8 +5,10 @@ import {
   PopoverTrigger,
 } from "@chakra-ui/react";
 import { useGetAllUsers } from "api";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FaRegSmile } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { cn } from "utils";
 
@@ -43,6 +45,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   const { t } = useTranslation();
   const [input, setInput] = useState<string>("");
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: users = [], isLoading, isError } = useGetAllUsers();
 
@@ -108,6 +111,11 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     setShouldCommentBoxFocused(false);
   }, [shouldCommentBoxFocused, setShouldCommentBoxFocused]);
 
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    setInput((prevInput) => prevInput + emojiData.emoji);
+    setIsEmojiPickerOpen(false);
+  };
+
   return (
     <div
       className={cn("relative h-[74px] border-t-2 border-[#EFEFEF]", className)}
@@ -122,7 +130,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           <input
             ref={inputRef}
             className={cn(
-              "w-full hover:ring-0 active:ring-offset-0 pt-1 active:right-0 h-full border-0 border-none px-16 py-0 text-xl placeholder-[#262626]",
+              "w-full hover:ring-0 active:ring-offset-0 pt-1 active:right-0 h-full border-0 border-none pl-5 pr-28 py-0 text-xl placeholder-[#262626]",
               inputClassName,
             )}
             data-testid="CommentInput"
@@ -157,6 +165,20 @@ export const CommentInput: React.FC<CommentInputProps> = ({
           </PopoverBody>
         </PopoverContent>
       </Popover>
+
+      <button
+        className="w-7 h-7 absolute inset-y-0 my-auto right-16 text-gray-500 hover:text-gray-700"
+        onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+      >
+        <FaRegSmile size={18} />
+      </button>
+
+      {isEmojiPickerOpen && (
+        <div className="absolute bottom-16 right-16 z-10">
+          <EmojiPicker onEmojiClick={handleEmojiClick} />
+        </div>
+      )}
+
       <IoSend
         className={cn(
           "w-7 h-7 absolute text-[#20ECA7] inset-y-0 my-auto right-6",
