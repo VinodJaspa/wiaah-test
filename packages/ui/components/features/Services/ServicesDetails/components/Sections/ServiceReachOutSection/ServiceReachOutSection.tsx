@@ -5,7 +5,7 @@ import {
   LocationIcon,
   TelephoneFillIcon,
   EmailIcon,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { runIfFn } from "utils";
 import { Location, ServiceLocation } from "@features/API";
@@ -37,7 +37,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
     {
       label: t("Address"),
       icon: <LocationIcon className="fill-primary" />,
-      value: <LocationAddressDisplay location={location} />,
+      value: <LocationAddress location={location} />,
     },
     {
       label: t("Phone"),

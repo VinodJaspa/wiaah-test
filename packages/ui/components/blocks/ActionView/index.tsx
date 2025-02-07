@@ -1,36 +1,37 @@
+import EllipsisText from "@blocks/EllipsisText";
+import { useSocialControls } from "@blocks/Layout";
 import { ContentHostType } from "@features/API";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
+import { LocationAddress } from "@features/Services/components/DataDisplay/LocationAddress/LocationAddress";
+import { useLikeContent } from "@features/Social";
 import {
   Avatar,
   Button,
   CommentIcon,
+  CommentOutlineIcon2,
   DigitalCamera,
-  EllipsisText,
-  HStack,
   HeartFillIcon,
-  LocationAddressDisplay,
+  HeartOutlineIcon,
+  HStack,
   LocationOutlineIcon,
   LoopIcon,
   MusicNoteFillIcon,
   PersonGroupIcon,
-  SaveFlagOutlineIcon,
   SaveFlagFIllIcon,
+  SaveFlagOutlineIcon,
   ShareIcon,
   ShoppingCartOutlinePlusIcon,
   Slider,
   StarsIcon,
-  VStack,
   Verified,
   VerticalDotsIcon,
   VolumeIcon,
-  useLikeContent,
-  useSocialControls,
-  HeartOutlineIcon,
-} from "ui";
+  VStack,
+} from "@partials";
 import { PersonalizeActions } from "placeholder";
-import { NumberShortner, mapArray } from "utils";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import { mapArray, NumberShortner } from "utils";
 
 export const ActionsView: React.FC = () => {
   const { t } = useTranslation();
@@ -178,6 +179,7 @@ export const ActionsView: React.FC = () => {
               src={v.src}
               className="w-full h-full object-cover"
             />
+
             <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
               <div className="flex flex-col w-full gap-6">
                 <div className="flex justify-between">
@@ -203,6 +205,7 @@ export const ActionsView: React.FC = () => {
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>
+
               <div className="flex flex-col w-full gap-4">
                 <div className="flex flex-col gap-2">
                   <HStack className="flex-wrap gap-2">
@@ -243,7 +246,7 @@ export const ActionsView: React.FC = () => {
                       <HStack>
                         <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
                           <LocationOutlineIcon />
-                          <LocationAddressDisplay location={v.location} />
+                          <LocationAddress location={v.location} />
                         </HStack>
                         <HStack
                           onClick={() =>
@@ -252,7 +255,7 @@ export const ActionsView: React.FC = () => {
                               ContentHostType.Action,
                             )
                           }
-                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2"
+                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0"
                         >
                           <PersonGroupIcon />
                           <p>
@@ -278,15 +281,8 @@ export const ActionsView: React.FC = () => {
                 </Button>
               </div>
             </div>
+
             <div className="  flex flex-col gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-4 -right-12">
-              <VStack onClick={toggleSave} className="cursor-pointer">
-                {/* Toggle between outline and filled icon based on saved state */}
-                {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
-                {/* Update text based on saved state */}
-                <p className="font-medium text-xs">
-                  {isSaved ? t("Saved") : t("Save")}
-                </p>
-              </VStack>
               <button
                 onClick={() =>
                   mutate(
@@ -297,7 +293,7 @@ export const ActionsView: React.FC = () => {
                       },
                     },
                     {
-                      onSuccess(data, variables, context) { },
+                      onSuccess(data, variables, context) {},
                     },
                   )
                 }
@@ -317,7 +313,7 @@ export const ActionsView: React.FC = () => {
                 }
               >
                 <VStack>
-                  <CommentIcon />
+                  <CommentOutlineIcon2 />
                   <p className="font-medium text-xs">
                     {NumberShortner(v.comments)}
                   </p>
@@ -335,6 +331,14 @@ export const ActionsView: React.FC = () => {
                   </p>
                 </VStack>
               </button>
+              <VStack onClick={toggleSave} className="cursor-pointer">
+                {/* Toggle between outline and filled icon based on saved state */}
+                {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
+                {/* Update text based on saved state */}
+                <p className="font-medium text-xs">
+                  {isSaved ? t("Saved") : t("Save")}
+                </p>
+              </VStack>
             </div>
           </div>
         ))}

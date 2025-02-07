@@ -7,7 +7,7 @@ import {
   EditIcon,
   TrashIcon,
   Badge,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { SeperatedStringArray, setTestid } from "utils";
 
@@ -56,7 +56,7 @@ export const BeautyCenterMyServiceCard: React.FC<
           <div className="flex gap-4">
             <p>{SeperatedStringArray(owners, ", ")}</p>
           </div>
-          <LocationAddressDisplay location={location} />
+          <LocationAddress location={location} />
         </div>
       </div>
 

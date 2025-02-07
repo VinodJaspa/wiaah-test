@@ -1,14 +1,14 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
-import { LocationAddressDisplay } from "./LocationAddress";
+import { LocationAddress } from "./LocationAddress";
 
 export default {
   title: storybookOtherServicesDataDisplayTitle + "LocationAddress",
-  component: LocationAddressDisplay,
-} as ComponentMeta<typeof LocationAddressDisplay>;
+  component: LocationAddress,
+} as ComponentMeta<typeof LocationAddress>;
 
-const template: ComponentStory<typeof LocationAddressDisplay> = (args) => (
-  <LocationAddressDisplay {...args} />
+const template: ComponentStory<typeof LocationAddress> = (args) => (
+  <LocationAddress {...args} />
 );
 
 export const Default = template.bind({});

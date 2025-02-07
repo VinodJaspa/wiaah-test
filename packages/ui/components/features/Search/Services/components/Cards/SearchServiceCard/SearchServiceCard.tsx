@@ -8,7 +8,7 @@ import {
   VerifiedIcon,
   PriceDisplay,
   LocationIcon,
-  LocationAddressDisplay,
+  LocationAddress,
   SlimRightArrow,
   Rate,
   UnDiscountedPriceDisplay,
@@ -131,7 +131,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
         <div className="flex gap-1 items-center justify-between">
           <div className="flex gap-1 text-xs text-iconGray">
             <LocationIcon className="text-primary text-base w-6" />
-            <LocationAddressDisplay
+            <LocationAddress
               location={{
                 city: location.city,
                 lat: location.lat,
@@ -158,7 +158,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <div className="flex items-center gap-1">
             <Rate className="text-sm gap-[0.25rem]" rating={rating} />
             <p className="text-[0.5rem] font-semibold text-lightBlack whitespace-nowrap">{`(${reviews} ${t(
-              "Reviews"
+              "Reviews",
             )})`}</p>
           </div>
         </div>

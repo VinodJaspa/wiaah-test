@@ -21,7 +21,7 @@ export interface ButtonProps extends HtmlButtonProps {
   center?: boolean;
 }
 
-export const Button: React.FunctionComponent<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   outline,
   className,
   children,
