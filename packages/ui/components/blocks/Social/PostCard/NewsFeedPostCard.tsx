@@ -24,6 +24,7 @@ import {
   Image,
   LocationIcon,
   PersonFillIcon,
+  SaveFlagFIllIcon,
   ShareIcon,
   StarIcon,
 } from "@partials";
@@ -171,8 +172,8 @@ export const PostCard: React.FC<PostCardProps> = ({
               <p className="font-bold text-base">
                 {NumberShortner(
                   post.postInfo.numberOfComments +
-                  post.postInfo.numberOfLikes +
-                  post.postInfo.numberOfShares,
+                    post.postInfo.numberOfLikes +
+                    post.postInfo.numberOfShares,
                 )}
               </p>
             </div>
@@ -226,7 +227,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
             <div className="flex gap-2 flex-col items-center">
               <span className="w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
-                <StarIcon className="text-primary fill-primary" />
+                <SaveFlagFIllIcon className="text-primary fill-primary" />
               </span>
             </div>
           </div>
