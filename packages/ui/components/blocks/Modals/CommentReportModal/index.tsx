@@ -1,14 +1,14 @@
 import {
-  useCommentReportModal,
+  Button,
+  CloseIcon,
   Modal,
+  ModalCloseButton,
   ModalContent,
+  ModalHeader,
   ModalOverlay,
   Radio,
-  ModalHeader,
-  ModalCloseButton,
-  CloseIcon,
-  Button,
   Textarea,
+  useCommentReportModal,
 } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -58,7 +58,7 @@ const reportReasons: {
   {
     reason: {
       translationKey: "other",
-      fallbackText: "other",
+      fallbackText: "Other",
     },
     reasonId: "6",
   },
@@ -67,10 +67,10 @@ const reportReasons: {
 export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
   const [reasonsValue, setReasonsValue] = React.useState<string>();
   const { commentId, closeModal } = useCommentReportModal();
-
   const { t } = useTranslation();
+
   return (
-    <Modal isOpen={!!commentId} onOpen={() => {}} onClose={closeModal}>
+    <Modal isOpen={!!commentId} onOpen={() => {}} onClose={closeModal} z={999}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader title="">
@@ -88,12 +88,12 @@ export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
             <p>
               {t(
                 "i_want_to_report",
-                "I want to report this link because i think its a"
+                "I want to report this link because i think its a",
               )}
               :
             </p>
             {/* <RadioGroup onChange={setReasonsValue} value={reasonsValue}> */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 my-4">
               {reportReasons.map(({ reason, reasonId }, i) => (
                 <Radio
                   value={reasonId}
@@ -109,7 +109,7 @@ export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
             {/* </RadioGroup> */}
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <Button onClick={closeModal} className="bg-gray-500">
             {t("close", "Close")}
           </Button>

@@ -366,9 +366,21 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
           </MenuButton>
           <MenuList>
             <MenuItem>
+              <p>{t("hide", "Hide")}</p>
+            </MenuItem>
+            <MenuItem>
+              <p>{t("go_to_post", "Go to post")}</p>
+            </MenuItem>
+            <MenuItem>
               <p onClick={() => openModalWithId(profile?.id || "")}>
-                {t("report_user", "Report User")}
+                {t("report_user", "Report user")}
               </p>
+            </MenuItem>
+            <MenuItem>
+              <p>{t("copy_link", "Copy link")}</p>
+            </MenuItem>
+            <MenuItem>
+              <p>{t("cancel", "Cancel")}</p>
             </MenuItem>
           </MenuList>
         </Menu>
