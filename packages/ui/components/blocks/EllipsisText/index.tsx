@@ -14,6 +14,7 @@ export interface EllipsisTextProps {
   children?: React.ReactNode;
   index?: number;
   isReply?: boolean;
+  isActionView?: boolean;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
@@ -26,6 +27,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   displayShowMore,
   index,
   isReply,
+  isActionView,
 }) => {
   content = `@janedoe ${content || ""} #react #typescript #python`;
   const { t } = useTranslation();
@@ -90,12 +92,13 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   }
 
   React.useEffect(() => {
-    if (index === 0 && content?.length > 150 && showMore) {
-      setModifiedContent(content?.substring(0, 150));
+    const characterLimit = isActionView ? 65 : 150;
+    if (index === 0 && content?.length > characterLimit && showMore) {
+      setModifiedContent(content?.substring(0, characterLimit));
     } else {
       setModifiedContent(content);
     }
-  }, [content, index, showMore]);
+  }, [content, index, showMore, isActionView]);
 
   const renderMentions = (text: string) => {
     return text.split(" ").map((word, index, arr) => {
@@ -161,7 +164,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
             {index === 0 && (
               <>
                 {renderProcessedContent()}
-                {content?.length > 150 &&
+                {content?.length > (isActionView ? 65 : 150) &&
                   showMore &&
                   content
                     .split(" ")
@@ -176,22 +179,27 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
                       </Link>
                     ))
                     .slice(0, 3)}
-                {index === 0 && content?.length > 150 && showMore && " ..."}
+                {index === 0 &&
+                  content?.length > (isActionView ? 65 : 150) &&
+                  showMore &&
+                  " ..."}
               </>
             )}
           </>
         </Text>
-        {linesCount === maxLines && showMore && content?.length > 150 && (
-          <div
-            className="absolute bottom-0 right-0 cursor-pointer capitalize"
-            style={{ marginTop: "5px" }}
-            onClick={handleShowMore}
-          >
-            <span className={`cursor-pointer ${showMoreColor || ""}`}>
-              {t("show more")}
-            </span>
-          </div>
-        )}
+        {linesCount === maxLines &&
+          showMore &&
+          content?.length > (isActionView ? 65 : 150) && (
+            <div
+              className="absolute bottom-0 right-0 cursor-pointer capitalize"
+              style={{ marginTop: "5px" }}
+              onClick={handleShowMore}
+            >
+              <span className={`cursor-pointer ${showMoreColor || ""}`}>
+                {t("show more")}
+              </span>
+            </div>
+          )}
         {MaxLines > maxLines && (
           <div
             className="absolute -bottom-4 right-0 cursor-pointer capitalize"

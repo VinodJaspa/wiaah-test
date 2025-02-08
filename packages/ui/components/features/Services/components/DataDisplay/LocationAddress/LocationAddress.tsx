@@ -4,6 +4,11 @@ import React from "react";
 export const LocationAddress: React.FC<{
   location: ServiceLocation;
 }> = ({ location }) => {
+  return <p>{location.address}</p>;
+};
+/* export const LocationAddress: React.FC<{
+  location: ServiceLocation;
+}> = ({ location }) => {
   return (
     <p>
       {location.address} {location.postalCode}, {location.city},{" "}
@@ -11,3 +16,4 @@ export const LocationAddress: React.FC<{
     </p>
   );
 };
+ */

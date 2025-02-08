@@ -6,7 +6,6 @@ import { useLikeContent } from "@features/Social";
 import {
   Avatar,
   Button,
-  CommentIcon,
   CommentOutlineIcon2,
   DigitalCamera,
   HeartFillIcon,
@@ -27,6 +26,7 @@ import {
   VolumeIcon,
   VStack,
 } from "@partials";
+import Link from "next/link";
 import { PersonalizeActions } from "placeholder";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -101,6 +101,7 @@ export const ActionsView: React.FC = () => {
       }
     }
   };
+
   // Effect to handle video end event
   React.useEffect(() => {
     const videoElements = videoRefs.current;
@@ -132,6 +133,7 @@ export const ActionsView: React.FC = () => {
       });
     };
   }, [actions, playingIndex]); // Re-run if actions change
+
   // Scroll event handling to detect up or down scroll and play the corresponding video
   const debouncedScrollHandler = useCallback(() => {
     let lastCallTime = Date.now();
@@ -235,10 +237,20 @@ export const ActionsView: React.FC = () => {
                     ))}
                   </HStack>
                   <HStack>
-                    <Avatar className="w-11" src={v?.profile?.photo} />
+                    <Link href={`/profile/${v.profile.id}`}>
+                      <Avatar
+                        className="flex-shrink-0"
+                        src={v?.profile?.photo}
+                      />
+                    </Link>
                     <div className="flex flex-col">
                       <HStack>
-                        <p className="font-semibold">{v?.profile?.username}</p>
+                        <Link
+                          href={`/profile/${v.profile.id}`}
+                          className="font-semibold"
+                        >
+                          {v?.profile?.username}
+                        </Link>
                         {v?.profile?.verified ? (
                           <Verified className="text-primary text-sm" />
                         ) : null}
@@ -249,26 +261,36 @@ export const ActionsView: React.FC = () => {
                           <LocationAddress location={v.location} />
                         </HStack>
                         <HStack
+                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0"
                           onClick={() =>
                             memoizedShowContentTaggedProfiles(
                               v.id,
                               ContentHostType.Action,
                             )
                           }
-                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0"
                         >
                           <PersonGroupIcon />
                           <p>
                             {v.tags.length} {t("people")}
                           </p>
                         </HStack>
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
+                          <MusicNoteFillIcon />
+                          <p>Carpe Diem</p>
+                        </HStack>
                       </HStack>
                     </div>
                   </HStack>
                   <div className="flex text-sm gap-2 text-white">
-                    <EllipsisText maxLines={2}>
-                      {product.prodTitle.slice(0, 79)}
-                    </EllipsisText>
+                    <EllipsisText
+                      content={
+                        "This ensures that the component behaves differently based on the isActionView prop, truncating the content at 65 characters when isActionView is true and at 150 characters otherwise." +
+                        product.prodTitle
+                      }
+                      maxLines={2}
+                      index={i}
+                      isActionView
+                    />
                   </div>
                 </div>
                 {/* Add the Play/Pause Button */}
