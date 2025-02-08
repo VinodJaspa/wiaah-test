@@ -1,16 +1,12 @@
 import { Carousel } from "@blocks/Carousel";
 import { PostViewPopup } from "@blocks/Popups";
-import {
-  GridListOrganiser,
-  ListWrapper,
-  ListWrapperProps,
-} from "@blocks/Wrappers";
+import { ListWrapper, ListWrapperProps } from "@blocks/Wrappers";
 import { AspectRatio } from "@partials";
 import { useModalDisclouser, useResponsive } from "hooks";
 import { useRouter } from "next/router";
 import React from "react";
 import { PostCardInfo } from "types";
-import { mapArray } from "utils";
+import { cn, mapArray } from "utils";
 import { PostCard } from "../PostCard/NewsFeedPostCard";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
@@ -23,6 +19,48 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   onLocationClick?: (post: PostCardInfo) => any;
 }
 
+const classPatterns: string[] = [
+  "col-span-18 row-span-1 ", // 0
+  "col-span-18 row-span-1 ", // 1
+  "col-span-14 row-span-2 ", // 2
+  "col-span-18 row-span-1 ", // 3
+  "col-span-18 row-span-1 ", // 4
+  "col-span-18 row-span-2 ", // 5
+  "col-span-18 row-span-1 ", // 6
+  "col-span-12 row-span-1 ", // 7
+  "col-span-20 row-span-1 ", // 8
+  "col-span-14 row-span-1  ", // 9
+];
+
+const transformPosts = (
+  posts: React.ReactNode[],
+): { post: React.ReactNode; className: string }[] => {
+  return posts.map((post, index) => ({
+    post,
+    className: classPatterns[index % classPatterns.length],
+  }));
+};
+
+const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
+  const chunks: T[][] = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    chunks.push(array.slice(i, i + chunkSize));
+  }
+  return chunks;
+};
+
+const Grid: React.FC<{
+  posts: { post: React.ReactNode; className: string }[];
+}> = ({ posts }) => (
+  <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4 w-full aspect-[8/3]">
+    {posts.map(({ post, className }, index) => (
+      <div className={cn(className)} key={index}>
+        {post}
+      </div>
+    ))}
+  </div>
+);
+
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   posts,
   cols = 1,
@@ -33,8 +71,8 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   popup = true,
 }) => {
   const router = useRouter();
-
   const { isMobile, isTablet } = useResponsive();
+
   const childPosts =
     posts &&
     posts.map((post, idx) => {
@@ -87,6 +125,9 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
       );
     });
 
+  const transformedPosts = transformPosts(childPosts);
+  const postChunks = splitIntoChunks(transformedPosts, 5);
+
   return (
     <>
       {grid ? (
@@ -99,97 +140,11 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             ))}
           </div>
         ) : (
-          <GridListOrganiser
-            rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
-            presets={[
-              {
-                cols: 5,
-                points: [
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                ],
-              },
-              {
-                cols: 5,
-                points: [
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 2 },
-                  { c: 2, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                ],
-              },
-
-              {
-                cols: 4,
-                points: [
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 2,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 1,
-                    r: 1,
-                  },
-                  {
-                    c: 2,
-                    r: 1,
-                  },
-                ],
-              },
-            ]}
-          >
-            {childPosts}
-          </GridListOrganiser>
+          <div className="space-y-4 flex flex-col w-full">
+            {postChunks.map((chunk, index) => (
+              <Grid key={index} posts={chunk} />
+            ))}
+          </div>
         )
       ) : (
         <ListWrapper gap={!isMobile} cols={cols}>

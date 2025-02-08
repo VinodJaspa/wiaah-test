@@ -1,20 +1,19 @@
-import { mapArray, useBreakpointValue, useForm } from "@UI/../utils/src";
+import { useBreakpointValue, useForm } from "@UI/../utils/src";
+import { newsfeedPosts } from "@UI/placeholder";
 import {
   PostCardsListWrapper,
-  RecentStories,
+  ScrollableStories,
   usePaginationControls,
   useStoryModal,
 } from "@blocks";
-import { useSocialControls } from "ui";
-import React from "react";
-import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
-import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
-import { useResponsive } from "@src/index";
-import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
-import { useRouting } from "routing";
 import { PostType } from "@features/API";
-import { getRandomImage, socialStoriesPlaceholder } from "placeholder";
-import { newsfeedPosts } from "@UI/placeholder";
+import { useResponsive } from "@src/index";
+import { storiesPlaceholder } from "placeholder";
+import React from "react";
+import { useRouting } from "routing";
+import { useSocialControls } from "ui";
+import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
+import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 
 const FAKE_RECENT_STORIES_DATA = [
   {
@@ -83,8 +82,9 @@ const SocialNewsfeedView: React.FC = () => {
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
       <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
-        <div className="min-w-[4.75rem]"></div>
-        <RecentStories stories={socialStoriesPlaceholder} />
+        <div className="min-w-[4.75rem]">
+          <ScrollableStories stories={storiesPlaceholder} />
+        </div>
       </div>
       <div className="w-full">
         {/* Mobile view */}

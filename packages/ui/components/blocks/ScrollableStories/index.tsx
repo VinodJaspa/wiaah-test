@@ -39,7 +39,7 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
     const checkScrollable = () => {
       if (carouselRef.current) {
         setIsScrollable(
-          carouselRef.current.scrollWidth > carouselRef.current.clientWidth
+          carouselRef.current.scrollWidth > carouselRef.current.clientWidth,
         );
       }
     };
@@ -76,8 +76,9 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
         {stories.map((story, index) => (
           <div
             key={index}
-            className={`min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${story.seen ? "p-0" : "p-[0.20rem]"
-              }`}
+            className={`min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${
+              story.seen ? "p-0" : "p-[0.20rem]"
+            }`}
           >
             <div
               className={`w-full h-full overflow-hidden rounded-xl bg-white p-[0.17rem]`}
