@@ -153,6 +153,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
                   className="flex flex-col justify-center"
                 >
                   <Avatar
+                    className="text-icon"
                     showBorder={false}
                     name={user.firstName}
                     src={user.photo || ""}
