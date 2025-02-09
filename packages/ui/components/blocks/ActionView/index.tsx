@@ -182,7 +182,7 @@ export const ActionsView: React.FC = () => {
               className="w-full h-full object-cover"
             />
 
-            <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
+            <div className="absolute z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
               <div className="flex flex-col w-full gap-6">
                 <div className="flex justify-between">
                   <DigitalCamera />
@@ -256,9 +256,9 @@ export const ActionsView: React.FC = () => {
                         ) : null}
                       </HStack>
                       <HStack>
-                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0">
                           <LocationOutlineIcon />
-                          <LocationAddress location={v.location} />
+                          <LocationAddress isAction location={v.location} />
                         </HStack>
                         <HStack
                           className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0"
@@ -271,12 +271,12 @@ export const ActionsView: React.FC = () => {
                         >
                           <PersonGroupIcon />
                           <p>
-                            {v.tags.length} {t("people")}
+                            {v.tags.length} {t("People")}
                           </p>
                         </HStack>
-                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0">
                           <MusicNoteFillIcon />
-                          <p>Carpe Diem</p>
+                          <p>Artist - Music</p>
                         </HStack>
                       </HStack>
                     </div>
@@ -293,14 +293,6 @@ export const ActionsView: React.FC = () => {
                     />
                   </div>
                 </div>
-                {/* Add the Play/Pause Button */}
-                <Button
-                  onClick={() => handlePlayPause(i)} // Call the play/pause function
-                  className="self-end"
-                  colorScheme={playingIndex === i ? "success" : "primary"}
-                >
-                  {playingIndex === i ? "Pause" : "Play"} {/* Toggle label */}
-                </Button>
               </div>
             </div>
 

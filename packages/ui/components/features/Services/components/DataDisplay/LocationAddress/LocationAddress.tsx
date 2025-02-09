@@ -3,17 +3,16 @@ import React from "react";
 
 export const LocationAddress: React.FC<{
   location: ServiceLocation;
-}> = ({ location }) => {
-  return <p>{location.address}</p>;
-};
-/* export const LocationAddress: React.FC<{
-  location: ServiceLocation;
-}> = ({ location }) => {
-  return (
+  isAction?: boolean;
+}> = ({ location, isAction }) => {
+  return !isAction ? (
     <p>
       {location.address} {location.postalCode}, {location.city},{" "}
       {location.country}
     </p>
+  ) : (
+    <p>
+      {location.city}, {location.country.charAt(0)}
+    </p>
   );
 };
- */
