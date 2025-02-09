@@ -13,6 +13,8 @@ import {
   HStack,
   LocationOutlineIcon,
   LoopIcon,
+  Menu,
+  MenuButton,
   MusicNoteFillIcon,
   PersonGroupIcon,
   SaveFlagFIllIcon,
@@ -30,6 +32,7 @@ import Link from "next/link";
 import { PersonalizeActions } from "placeholder";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { useRouting } from "routing";
 import { mapArray, NumberShortner } from "utils";
 
@@ -296,7 +299,7 @@ export const ActionsView: React.FC = () => {
               </div>
             </div>
 
-            <div className="  flex flex-col gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-4 -right-12">
+            <div className="flex flex-col items-center gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-0 -right-12">
               <button
                 onClick={() =>
                   mutate(
@@ -353,6 +356,12 @@ export const ActionsView: React.FC = () => {
                   {isSaved ? t("Saved") : t("Save")}
                 </p>
               </VStack>
+              {/* More options */}
+              <Menu>
+                <MenuButton>
+                  <HiDotsHorizontal className="cursor-pointer fill-black" />
+                </MenuButton>
+              </Menu>
             </div>
           </div>
         ))}
