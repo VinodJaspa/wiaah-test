@@ -1,5 +1,4 @@
 import { Form, Formik } from "formik";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
@@ -201,11 +200,11 @@ export const ServicesSearchView: React.FC = () => {
           component: (
             <div className="flex flex-col gap-2">
               <DateAndTimeInput
-                onDateChange={() => { }}
+                onDateChange={() => {}}
                 dateLabel={t("Pick-up Date")}
               />
               <DateAndTimeInput
-                onDateChange={() => { }}
+                onDateChange={() => {}}
                 dateLabel={t("Return Date")}
               />
             </div>
@@ -233,7 +232,7 @@ export const ServicesSearchView: React.FC = () => {
   };
 
   const getFilters: (service: ServicesType) => ServiceInputData[] = (
-    service
+    service,
   ) => {
     switch (service) {
       case "hotel":
@@ -249,7 +248,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "rooms",
             placeholder: t("Select Number of Rooms"),
             options: ["1 Room"].concat(
-              [...Array(4)].map((_, i) => `${i + 2} ${t("Rooms")}`)
+              [...Array(4)].map((_, i) => `${i + 2} ${t("Rooms")}`),
             ),
           },
           {
@@ -263,7 +262,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "class",
             placeholder: t("Select Hotel Class"),
             options: [`1 ${t("star")}`].concat(
-              [...Array(4)].map((_, i) => `${i + 2} ${t("stars")}`)
+              [...Array(4)].map((_, i) => `${i + 2} ${t("stars")}`),
             ),
           },
         ];
@@ -281,7 +280,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "rooms",
             placeholder: t("Select Number of Rooms"),
             options: ["1 Room"].concat(
-              [...Array(4)].map((_, i) => `${i + 2} ${t("Rooms")}`)
+              [...Array(4)].map((_, i) => `${i + 2} ${t("Rooms")}`),
             ),
           },
           {
@@ -295,7 +294,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "class",
             placeholder: t("Select Hotel Class"),
             options: [`1 ${t("star")}`].concat(
-              [...Array(4)].map((_, i) => `${i + 2} ${t("stars")}`)
+              [...Array(4)].map((_, i) => `${i + 2} ${t("stars")}`),
             ),
           },
         ];
@@ -372,7 +371,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "special_offer",
             placeholder: t("Select Special offer"),
             options: [...Array(6)].map(
-              (_, i) => `${(i + 1) * 10} ${t("on the menu")}`
+              (_, i) => `${(i + 1) * 10} ${t("on the menu")}`,
             ),
           },
           {
@@ -520,7 +519,7 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "special_offer",
             placeholder: t("Select Special offer"),
             options: [...Array(6)].map(
-              (_, i) => `${(i + 1) * 10} ${t("on the menu")}`
+              (_, i) => `${(i + 1) * 10} ${t("on the menu")}`,
             ),
           },
           {
@@ -539,7 +538,7 @@ export const ServicesSearchView: React.FC = () => {
     <div className="flex flex-col gap-10 w-full">
       <Formik
         initialValues={{ serviceType: "hotel" } as any}
-        onSubmit={() => { }}
+        onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
           const filters = getFilters(values["serviceType"]);
@@ -556,7 +555,7 @@ export const ServicesSearchView: React.FC = () => {
 
               console.log(
                 { filtersLen, filtersPerLine: currentCycle, remaining },
-                remaining
+                remaining,
               );
 
               if (
@@ -646,7 +645,7 @@ export const ServicesSearchView: React.FC = () => {
                   name="rating"
                   label={t("Rating")}
                   options={[...Array(5)].map(
-                    (_, i) => `${Math.abs(i - 5)} ${t("Stars")}`
+                    (_, i) => `${Math.abs(i - 5)} ${t("Stars")}`,
                   )}
                   onChange={(v) => setFieldValue("rating", v)}
                   value={values["rating"]}
@@ -889,5 +888,5 @@ const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
       },
     ] as SearchServiceCardProps[];
   },
-  []
+  [],
 );

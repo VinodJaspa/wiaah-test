@@ -15,6 +15,8 @@ import {
   LoopIcon,
   Menu,
   MenuButton,
+  MenuItem,
+  MenuList,
   MusicNoteFillIcon,
   PersonGroupIcon,
   SaveFlagFIllIcon,
@@ -27,6 +29,7 @@ import {
   VolumeIcon,
   VStack,
 } from "@partials";
+import { useCommentReportModal } from "@src/Hooks";
 import Link from "next/link";
 import { PersonalizeActions } from "placeholder";
 import React, { useCallback, useMemo, useRef, useState } from "react";
@@ -42,6 +45,7 @@ export const ActionsView: React.FC = () => {
   const { getUrl } = useRouting();
   const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
     useSocialControls();
+  const { openModalWithId } = useCommentReportModal();
 
   const memoizedCreateRemixAction = useCallback(createRemixAction, []);
   const memoizedShowContentTaggedProfiles = useCallback(
@@ -350,11 +354,32 @@ export const ActionsView: React.FC = () => {
                 </p>
               </VStack>
               {/* More options */}
-              <Menu>
-                <MenuButton>
-                  <HiDotsHorizontal className="cursor-pointer fill-black" />
-                </MenuButton>
-              </Menu>
+              <div className="h-full relative">
+                <Menu>
+                  <MenuButton>
+                    <HiDotsHorizontal className="cursor-pointer fill-black" />
+                  </MenuButton>
+                  <MenuList className="absolute -translate-y-[calc(100%+0.5rem)] -translate-x-9 text-base">
+                    <MenuItem>
+                      <p>{t("hide", "Hide")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("go_to_post", "Go to post")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p onClick={() => openModalWithId(v.profile.id || "")}>
+                        {t("report_user", "Report user")}
+                      </p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("copy_link", "Copy link")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("cancel", "Cancel")}</p>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
             </div>
           </div>
         ))}
