@@ -1,3 +1,8 @@
+import {
+  SearchServiceCard,
+  SearchServiceCardProps,
+} from "@UI/components/features/Search/Services/components/Cards/SearchServiceCard/SearchServiceCard";
+import { ServicesSearchBadgeList } from "@UI/components/features/Services/components/DataDisplay/ServicesSearchBadgeList/index";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -27,10 +32,7 @@ import {
   ResturantReplacableTimeComponent,
   SearchInput,
   SearchInputProps,
-  SearchServiceCard,
-  SearchServiceCardProps,
   ServiceBookingStepper,
-  ServicesSearchBadgeList,
   Stepper,
   StepperContent,
   StepperHeader,

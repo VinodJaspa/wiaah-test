@@ -1,6 +1,5 @@
 import { ServicesSearchView } from "@components";
 import { NextPage } from "next";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { MetaTitle } from "react-seo";
 import { SellerLayout } from "ui";

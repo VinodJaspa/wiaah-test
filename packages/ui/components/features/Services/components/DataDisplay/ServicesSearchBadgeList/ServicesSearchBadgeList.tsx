@@ -1,15 +1,15 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { ServicesType } from "types";
 import {
   Badge,
-  ForkAndSpoonIcon,
-  HealthIcon,
   BeautyCenterIcon,
   CarWheelIcon,
+  ForkAndSpoonIcon,
+  HealthIcon,
   HotelIcon,
   HouseIcon,
 } from "@UI";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ServicesType } from "types";
 import { mapArray, runIfFn } from "utils";
 
 type ServiceBadgeData = {
@@ -17,6 +17,7 @@ type ServiceBadgeData = {
   icon: React.ReactNode;
   key: string;
 };
+
 export interface ServicesSearchBadgeListProps {
   onClick: (serviceType: string) => any;
   additionalLinks?: ServiceBadgeData[];
@@ -60,6 +61,7 @@ export const ServicesSearchBadgeList: React.FC<
       key: "vehicle",
     },
   ]);
+
   return (
     <div className="w-full overflow-x-scroll noScroll gap-4 justify-center flex">
       {mapArray(services, ({ icon, name, key }, i) => (
@@ -71,8 +73,9 @@ export const ServicesSearchBadgeList: React.FC<
         >
           <p className="whitespace-nowrap">{t(name)}</p>
           <span
-            className={`${activeKey === key ? "text-primary" : "text-lightBlack"
-              } text-lg`}
+            className={`${
+              activeKey === key ? "text-primary" : "text-lightBlack"
+            } text-lg`}
           >
             {runIfFn(icon)}
           </span>

@@ -1,18 +1,18 @@
+import { LocationAddress } from "@features/Services/components/DataDisplay/LocationAddress/LocationAddress";
+import {
+  AspectRatio,
+  Avatar,
+  LocationIcon,
+  PriceDisplay,
+  Rate,
+  SlimRightArrow,
+  UnDiscountedPriceDisplay,
+  VerifiedIcon,
+} from "@UI";
 import { Location } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
-import {
-  AspectRatio,
-  Avatar,
-  VerifiedIcon,
-  PriceDisplay,
-  LocationIcon,
-  LocationAddress,
-  SlimRightArrow,
-  Rate,
-  UnDiscountedPriceDisplay,
-} from "@UI";
 
 export interface SearchServiceCardProps {
   onView?: () => {};
