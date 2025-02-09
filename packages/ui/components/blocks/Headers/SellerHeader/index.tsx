@@ -30,7 +30,7 @@ import { getRouting, useRouting } from "@UI/../routing";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiWallet } from "react-icons/bi";
+import { BiLogOut, BiWallet } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
 import { HiOutlineUserCircle } from "react-icons/hi";
@@ -316,7 +316,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         },
         href: "/logout",
       },
-      icon: null,
+      icon: <BiLogOut />,
     },
   ];
   const { user } = useUserData();
@@ -334,7 +334,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
                 onClick={() => visit((r) => r.addPath(link.href))}
               >
                 <HStack>
-                  <span className="text-4xl">{runIfFn(icon, {})}</span>
+                  <span className="text-2xl">{runIfFn(icon, {})}</span>
                   <span className="capitalize">
                     <TranslationText translationObject={link.name} />
                   </span>
