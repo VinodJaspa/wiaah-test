@@ -33,10 +33,10 @@ import { useTranslation } from "react-i18next";
 import { BiWallet } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
-import { FaThList } from "react-icons/fa";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
+import { TiThListOutline } from "react-icons/ti";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn, setTestid } from "utils";
 
@@ -286,7 +286,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         href: getRouting((r) => r.visitServiceManagement()),
         props: setTestid("header_settings_service"),
       },
-      icon: <FaThList />,
+      icon: <TiThListOutline />,
     },
     {
       link: {
