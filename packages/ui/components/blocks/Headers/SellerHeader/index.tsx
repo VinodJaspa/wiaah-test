@@ -1,46 +1,44 @@
-import React, { HTMLProps } from "react";
 import {
   Avatar,
-  SearchInput,
-  WavingHand,
-  ShoppingCart,
-  NotifiactionsMenu,
-  useGeneralSearchModal,
+  BellOutlineIcon,
+  Button,
   GeneralSearchModal,
+  HStack,
+  Image,
+  LocationIconButton,
   Menu,
+  MenuButton,
   MenuItem,
   MenuList,
-  MenuButton,
-  HStack,
-  TranslationText,
-  LocationIconButton,
-  BellOutlineIcon,
   MessageOutlineIcon,
-  SquarePlusOutlineIcon,
-  useUserData,
-  useMasterLocationMapModal,
-  Image,
-  useSocialControls,
-  StarOutlineIcon,
-  ServicesIcon,
-  ShoppingCartOutlineIcon,
+  NotifiactionsMenu,
   SearchIcon,
-  Button,
+  SearchInput,
+  ShoppingCart,
+  ShoppingCartOutlineIcon,
+  SquarePlusOutlineIcon,
+  TranslationText,
+  useGeneralSearchModal,
   useGetMyAccountQuery,
   useGetMyNotificationsQuery,
+  useMasterLocationMapModal,
+  useSocialControls,
+  useUserData,
+  WavingHand,
 } from "@UI";
-import { BsShop } from "react-icons/bs";
-import { HiOutlineUserCircle } from "react-icons/hi";
-import { IoSettingsOutline } from "react-icons/io5";
-import { CgShoppingBag } from "react-icons/cg";
+import { getRouting, useRouting } from "@UI/../routing";
 import { useResponsive } from "hooks";
-import { HtmlDivProps, TranslationTextType } from "types";
-import { runIfFn, setTestid } from "utils";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiWallet } from "react-icons/bi";
-import { getRouting, useRouting } from "@UI/../routing";
-import { IoIosStarOutline } from "react-icons/io";
+import { BsShop } from "react-icons/bs";
+import { CgShoppingBag } from "react-icons/cg";
 import { FaThList } from "react-icons/fa";
+import { HiOutlineUserCircle } from "react-icons/hi";
+import { IoIosStarOutline } from "react-icons/io";
+import { IoSettingsOutline } from "react-icons/io5";
+import { HtmlDivProps, TranslationTextType } from "types";
+import { runIfFn, setTestid } from "utils";
 
 export interface HeaderNavLink {
   link: {
@@ -155,7 +153,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
                   className="flex flex-col justify-center"
                 >
                   <Avatar
-                    className="text-2xl"
                     showBorder={false}
                     name={user.firstName}
                     src={user.photo || ""}
@@ -331,18 +328,18 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       <MenuList {...setTestid("header_settings")} origin="top right">
         {links.length > 0
           ? links.map(({ icon, link }, i) => (
-            <MenuItem
-              {...(link?.props || {})}
-              onClick={() => visit((r) => r.addPath(link.href))}
-            >
-              <HStack>
-                <span className="text-4xl">{runIfFn(icon, {})}</span>
-                <span className="capitalize">
-                  <TranslationText translationObject={link.name} />
-                </span>
-              </HStack>
-            </MenuItem>
-          ))
+              <MenuItem
+                {...(link?.props || {})}
+                onClick={() => visit((r) => r.addPath(link.href))}
+              >
+                <HStack>
+                  <span className="text-4xl">{runIfFn(icon, {})}</span>
+                  <span className="capitalize">
+                    <TranslationText translationObject={link.name} />
+                  </span>
+                </HStack>
+              </MenuItem>
+            ))
           : null}
       </MenuList>
     </Menu>
