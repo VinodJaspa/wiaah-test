@@ -3,12 +3,12 @@ import { SectionHeader } from "@sections/ShoppingManagement";
 import React from "react";
 import { useTranslation } from "react-i18next";
 // import { useGetFilteredShopsQuery } from "../services";
-import { mapArray, useForm } from "@UI/../utils/src";
-import { usePaginationControls } from "@blocks";
-import { useResponsive } from "@src/index";
-import { StoreType } from "@features/API";
-import { startCase } from "lodash";
+import { mapArray } from "@UI/../utils/src";
 import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
+import { usePaginationControls } from "@blocks";
+import { StoreType } from "@features/API";
+import { useResponsive } from "@src/index";
+import { startCase } from "lodash";
 import { getRandomImage } from "placeholder";
 
 const FAKE_SHOPS_DATA = [
@@ -19,7 +19,6 @@ const FAKE_SHOPS_DATA = [
     storeType: StoreType.Service,
     storeCategory: "Home Appliances",
   },
-
   {
     id: "2",
     thumbnail: getRandomImage(),
@@ -70,7 +69,7 @@ export const ShopsSearchView: React.FC<{
   return isMobile ? (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("Shops & Services")}>
-        <button onClick={() => { }}>
+        <button onClick={() => {}}>
           <FilterIcon className="text-2xl" />
         </button>
       </SectionHeader>
@@ -81,8 +80,7 @@ export const ShopsSearchView: React.FC<{
             key={shop.id + i}
             className="relative w-11/12 h-full object-cover"
           >
-            <Image src={shop.thumbnail} className="w-full h-full" />
-
+            <Image src={shop.thumbnail} alt="" className="w-full h-full" />
             <div className="absolute bg-primary top-8 left-0">
               {shop.storeType === StoreType.Service
                 ? `${startCase(shop.type || "")}`
@@ -92,5 +90,7 @@ export const ShopsSearchView: React.FC<{
         ))}
       </Slider>
     </div>
-  ) : null;
+  ) : (
+    <div>Desktop View</div>
+  );
 };
