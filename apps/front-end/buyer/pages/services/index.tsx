@@ -6,7 +6,7 @@ import {
   SocialShopsPostCardPlaceholder,
 } from "ui";
 
-interface BuyerServicesProps { }
+interface BuyerServicesProps {}
 
 const BuyerServices: React.FC<BuyerServicesProps> = () => {
   return (

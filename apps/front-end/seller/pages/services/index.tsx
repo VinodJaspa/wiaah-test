@@ -1,10 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { ServerSideQueryClientProps } from "types";
 import {
-  ScrollPaginationWrapper,
   SellerLayout,
   ServiceCardsListWrapper,
   SocialServicePostCardPlaceholder,
@@ -15,7 +13,7 @@ export const getServerSideProps: GetServerSideProps<
 > = async () => {
   const queryclient = new QueryClient();
 
-  queryclient.prefetchQuery("", () => { });
+  queryclient.prefetchQuery("", () => {});
 
   return {
     props: {

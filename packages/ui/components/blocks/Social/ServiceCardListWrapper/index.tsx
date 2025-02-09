@@ -1,16 +1,16 @@
-import React from "react";
 import {
+  Carousel,
   ListWrapper,
-  SocialShopCardProps,
   ListWrapperProps,
+  PostViewPopup,
   SocialServicesPostCard,
   SocialServicesPostCardProps,
+  SocialShopCardProps,
   useResponsive,
-  PostViewPopup,
-  Carousel,
 } from "@UI";
 import { useModalDisclouser } from "hooks";
 import { useRouter } from "next/router";
+import React from "react";
 
 export interface ServiceCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
