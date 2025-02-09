@@ -24,7 +24,6 @@ import {
   Slider,
   StarsIcon,
   Verified,
-  VerticalDotsIcon,
   VolumeIcon,
   VStack,
 } from "@partials";
@@ -198,10 +197,7 @@ export const ActionsView: React.FC = () => {
                     <MusicNoteFillIcon />
                     <p className="text-xs font-medium">{v?.audio?.name}</p>
                   </div>
-                  <HStack className="gap-4">
-                    <VolumeIcon className="text-lg" />
-                    <VerticalDotsIcon className="text-sm" />
-                  </HStack>
+                  <VolumeIcon className="text-lg" />
                 </div>
                 <Button
                   colorScheme="gray"
@@ -286,10 +282,7 @@ export const ActionsView: React.FC = () => {
                   </HStack>
                   <div className="flex text-sm gap-2 text-white">
                     <EllipsisText
-                      content={
-                        "This ensures that the component behaves differently based on the isActionView prop, truncating the content at 65 characters when isActionView is true and at 150 characters otherwise." +
-                        product.prodTitle
-                      }
+                      content={product.prodTitle}
                       maxLines={2}
                       index={i}
                       isActionView
