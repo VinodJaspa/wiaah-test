@@ -14,18 +14,7 @@ import {
   DateFormInput,
   DateFormInputProps,
   DateInput,
-  FilterSelectInput,
-  FilterSelectInputProps,
   FormikInput,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuList,
-  NumberInput,
-  ProductSearchLocationInput,
-  ProductSearchLocationInputProps,
   ResturantFindTableFilterDateDayComponent,
   ResturantFindTableFilterStepper,
   ResturantFindTableFilterStepperHeader,
@@ -38,7 +27,6 @@ import {
   StepperHeader,
   TimeInput,
 } from "ui";
-import { mapArray } from "utils";
 
 type ServiceInputData = {
   label: string;
@@ -583,95 +571,6 @@ export const ServicesSearchView: React.FC = () => {
                   setFieldValue("serviceType", serviceType);
                 }}
               />
-              {/* <div className="flex gap-8">
-                <Stack divider={<Divider variant="vert" />}>
-                  
-                </Stack>
-                <Button className="flex gap-2 text-white items-center">
-                  <SearchIcon />
-                  <p>{t("Submit")}</p>
-                </Button>
-              </div> */}
-              <div
-                style={{
-                  gridTemplateColumns: `repeat(${filtersPerLine},1fr)`,
-                }}
-                className="grid gap-5"
-              >
-                <FormikInput<ProductSearchLocationInputProps>
-                  as={ProductSearchLocationInput}
-                  name={"ProductSearchLocationInput"}
-                />
-                <Menu className="w-full">
-                  <MenuButton>
-                    <InputGroup
-                      className="border-[0px] rounded-xl"
-                      style={{
-                        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.03",
-                      }}
-                    >
-                      <InputLeftElement>
-                        <CalenderIcon className="text-primary text-xl" />
-                      </InputLeftElement>
-                      <Input
-                        className="h-12"
-                        placeholder={
-                          getCalenderFilter(values["serviceType"])
-                            ?.placeholder ||
-                          t("Select Service to Choose a date")
-                        }
-                        readOnly
-                      />
-                    </InputGroup>
-                  </MenuButton>
-                  <MenuList origin="top left" className="p-4 left-0 ">
-                    {getCalenderFilter("restaurant").component}
-                  </MenuList>
-                </Menu>
-                {mapArray(filters, (filter, i) => {
-                  console.log({ filter });
-                  return (
-                    <FormikInput<FilterSelectInputProps>
-                      key={i}
-                      label={filter.label}
-                      options={filter.options}
-                      placeholder={filter.placeholder}
-                      value={values[filter.valueKey]}
-                      onChange={(v) => setFieldValue(filter.valueKey, v)}
-                      as={FilterSelectInput}
-                      name={filter.valueKey}
-                    />
-                  );
-                })}
-                <FormikInput<FilterSelectInputProps>
-                  name="rating"
-                  label={t("Rating")}
-                  options={[...Array(5)].map(
-                    (_, i) => `${Math.abs(i - 5)} ${t("Stars")}`,
-                  )}
-                  onChange={(v) => setFieldValue("rating", v)}
-                  value={values["rating"]}
-                  as={FilterSelectInput}
-                />
-                <FormikInput
-                  name="price"
-                  label={t("Price")}
-                  as={() => (
-                    <div className="flex gap-1">
-                      <NumberInput
-                        value={values["minPrice"]}
-                        onChange={(v) => setFieldValue("minPrice", v)}
-                        placeholder="Min"
-                      />
-                      <NumberInput
-                        value={values["maxPrice"]}
-                        onChange={(v) => setFieldValue("maxPrice", v)}
-                        placeholder="Max"
-                      />
-                    </div>
-                  )}
-                />
-              </div>
               <div className="grid gap-12 grid-cols-4">
                 {servicesPH
                   .filter((v) => {
