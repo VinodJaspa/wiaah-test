@@ -5,7 +5,7 @@ import { DiscoverView } from "ui";
 import { SellerLayout } from "ui";
 import { useResponsive } from "hooks";
 
-interface DiscoverPageProps { }
+interface DiscoverPageProps {}
 
 const Discover: NextPage<DiscoverPageProps> = () => {
   const { isMobile } = useResponsive();
@@ -14,7 +14,7 @@ const Discover: NextPage<DiscoverPageProps> = () => {
       <Head>
         <title>Wiaah | Discover</title>
       </Head>
-      <SellerLayout header={`${isMobile ? "discover" : "main"}`}>
+      <SellerLayout>
         <DiscoverView />
       </SellerLayout>
     </>
