@@ -1,9 +1,9 @@
 import Head from "next/head";
-import React from "react";
-import { SellerLayout, ShopProductCardsView } from "ui";
 import { shopProductCardsPlaceholder } from "placeholder";
+import React from "react";
+import { SellerLayout, ShopProductCardsView, ShopProductSearchForm } from "ui";
 
-interface SellerShopProps { }
+interface SellerShopProps {}
 
 const SellerShop: React.FC<SellerShopProps> = () => {
   return (
@@ -12,7 +12,13 @@ const SellerShop: React.FC<SellerShopProps> = () => {
         <title>Wiaah | shop</title>
       </Head>
       <SellerLayout>
-        <ShopProductCardsView products={shopProductCardsPlaceholder} />
+        <div className="flex flex-col gap-[54px]">
+          <div className="flex flex-col gap-[28px]">
+            <ShopProductSearchForm />
+            <div>ShopPoductFilterForm</div>
+          </div>
+          <ShopProductCardsView products={shopProductCardsPlaceholder} />
+        </div>
       </SellerLayout>
     </>
   );

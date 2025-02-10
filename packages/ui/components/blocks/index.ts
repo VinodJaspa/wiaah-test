@@ -81,3 +81,4 @@ export * from "./ShopProductCardsView";
 export * from "./LocalisationView/";
 export * from "./NewsFeedGrid/";
 export * from "./ScrollableStories";
+export * from "./ShopProductSearchView";
