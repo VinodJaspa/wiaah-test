@@ -1,6 +1,7 @@
 import React from "react";
 import { HtmlDivProps, HtmlSvgProps, SearchPlaceItem } from "types";
 import { Button, LocationOnPointFillIcon } from "@UI";
+import Link from "next/link";
 export interface LocationButtonProps extends SearchPlaceItem {
   onLocationClick?: (locationName: string) => any;
   props?: HtmlDivProps;
@@ -25,7 +26,9 @@ export const LocationButton: React.FC<LocationButtonProps> = ({
           className={`${iconProps?.className || ""} `}
         />
       </div>
-      <span className="capitalize font-semibold">{name}</span>
+      <Link href={`/places/${name}`} className="capitalize font-semibold">
+        {name}
+      </Link>
     </div>
   );
 };
