@@ -2,6 +2,7 @@ import Head from "next/head";
 import { shopProductCardsPlaceholder } from "placeholder";
 import React from "react";
 import { SellerLayout, ShopProductCardsView, ShopProductSearchForm } from "ui";
+import { ShopProductFilterView } from "ui/components/blocks/ShopProductFilterView";
 
 interface SellerShopProps {}
 
@@ -15,7 +16,7 @@ const SellerShop: React.FC<SellerShopProps> = () => {
         <div className="flex flex-col gap-[54px]">
           <div className="flex flex-col gap-[28px]">
             <ShopProductSearchForm />
-            <div>ShopPoductFilterForm</div>
+            <ShopProductFilterView />
           </div>
           <ShopProductCardsView products={shopProductCardsPlaceholder} />
         </div>
