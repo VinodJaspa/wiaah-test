@@ -11,7 +11,7 @@ import {
   StoryView,
 } from "ui";
 
-interface ExplorePageProps { }
+interface ExplorePageProps {}
 
 export const DiscoverView: React.FC<ExplorePageProps> = () => {
   const { t } = useTranslation();
@@ -53,12 +53,9 @@ export const DiscoverView: React.FC<ExplorePageProps> = () => {
     { name: t("Hashtag"), component: <HashtagView hashtags={FAKE_HASHTAGS} /> },
   ];
   return (
-    <Container className="flex-grow w-9/12 flex justify-center flex-col gap-4">
-      <div className="w-full md:mt-0 mt-20">
-        <h1 className="text-xl md:text-4xl hidden md:flex">Explore</h1>
-        <TabsViewer tabs={tabs} border="bottom" />
-      </div>
-    </Container>
+    <div className="container mx-auto h-full">
+      <TabsViewer tabs={tabs} border="bottom" />
+    </div>
   );
 };
 const AvatarImage =
