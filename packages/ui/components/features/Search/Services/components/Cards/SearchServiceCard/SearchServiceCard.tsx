@@ -79,12 +79,12 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <div className="flex gap-2 items-center">
             <Avatar
               src={sellerInfo.thumbnail}
-              className={"-translate-y-1/4 rounded-full border-2 border-white"}
+              className="rounded-full inset-0 border-2 border-white w-8 h-8"
             />
             <div className="flex items-center gap-1">
               <p className="font-bold text-xs">{sellerInfo.name}</p>
               {sellerInfo.verified ? (
-                <VerifiedIcon className="text-[0.563rem]" />
+                <VerifiedIcon className="text-[0.563rem] inline-block" />
               ) : null}
             </div>
           </div>
