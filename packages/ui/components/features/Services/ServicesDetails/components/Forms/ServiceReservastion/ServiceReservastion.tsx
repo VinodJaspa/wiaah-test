@@ -1,31 +1,34 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
+import { TimeInput } from "@blocks";
+import { RestaurantDishType, Service, ServiceType } from "@features/API";
 import {
-  Divider,
-  CalenderIcon,
-  HStack,
-  Button,
-  BookedServicesCostDetails,
-  ServiceRangeBookingCalander,
-  useBookServiceMutation,
+  GetBookingCostQuery,
   HotelGuestsInput,
-  Stepper,
-  ResturantFindTableFilterStepperHeader,
-  StepperContent,
+  useGetBookingCostQuery,
+  useGetShopDetailsQuery,
+} from "@features/index";
+import {
+  Button,
+  CalenderIcon,
+  ClockIcon,
+  Divider,
+  HStack,
+  Image,
   PersonIcon,
   PriceDisplay,
-  ClockIcon,
-  TimeInput,
-  useGetShopDetailsQuery,
+  Stepper,
+  StepperContent,
+} from "@partials";
+import { WorkingDaysCalender } from "@UI/components/blocks/DataDisplay/Date/WorkingDaysCalander";
+import {
   RestaurantDishsCheckoutList,
   TreatmentsCheckoutList,
-  Image,
-  WorkingDaysCalender,
-  useGetBookingCostQuery,
-  GetBookingCostQuery,
-} from "@UI";
-import { isDate, randomNum, useForm } from "utils";
-import { RestaurantDishType, Service, ServiceType } from "@features/API";
+} from "@UI/components/features/Services/components/Cards/ServicesCheckoutCards/HotelCheckoutCard";
+import { BookedServicesCostDetails } from "@UI/components/features/Services/components/DataDisplay/BookedServicesCostDetails";
+import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
+import { ResturantFindTableFilterStepperHeader } from "@UI/components/features/Services/resturant/components/Headers/ResturantFindTableFilterStepperHeader";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useForm } from "utils";
 
 const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
   total: 500.0,
@@ -83,13 +86,22 @@ const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
   ],
 };
 
+interface BookingFormData {
+  checkin: string;
+  checkout: string;
+  dishsIds: string;
+  extrasIds: string;
+  guests: number;
+  serviceId: string;
+  treatmentsIds: string;
+}
+
 export const ServiceReservastionForm: React.FC<{
   sellerId: string;
   selectedServicesIds?: string[];
 }> = ({ selectedServicesIds, sellerId }) => {
-  const { form, handleChange, inputProps } = useForm<
-    Parameters<typeof mutate>[0]
-  >({
+  // const { mutate } = useBookServiceMutation();
+  const { form, handleChange, inputProps } = useForm<BookingFormData>({
     checkin: "2024-07-01T15:00:00Z",
     checkout: "2024-07-05T11:00:00Z",
     dishsIds: "dish1",
@@ -98,8 +110,6 @@ export const ServiceReservastionForm: React.FC<{
     serviceId: "service123",
     treatmentsIds: "treatment1",
   });
-
-  const { mutate } = useBookServiceMutation();
 
   const { data: shop } = useGetShopDetailsQuery(sellerId);
   const serviceType = shop?.type || ServiceType.Hotel;
@@ -118,12 +128,12 @@ export const ServiceReservastionForm: React.FC<{
     extrasIds: [],
   });
 
-  const { data: _costData } = useGetBookingCostQuery(bookingForm, {
+  /*  const { data: _costData } = useGetBookingCostQuery(bookingForm, {
     enabled:
       selectedServicesIds &&
       selectedServicesIds.length > 0 &&
       isDate(bookingForm.checkinDate),
-  });
+  }); */
 
   const costData = FAKE_BOOKING_COST_DATA;
 
@@ -142,20 +152,23 @@ export const ServiceReservastionForm: React.FC<{
   });
   const { t } = useTranslation();
 
-  const formatedDishs = services?.reduce((acc, curr) => {
-    const menu = acc.find((v) => v.menuName === curr.menuType);
+  const formatedDishs = services?.reduce(
+    (acc, curr) => {
+      const menu = acc.find((v) => v.menuName === curr.menuType);
 
-    if (menu) {
-      menu.dishs.push(curr);
-    } else {
-      acc.push({
-        menuName: curr.menuType || "",
-        dishs: [curr],
-      });
-    }
+      if (menu) {
+        menu.dishs.push(curr);
+      } else {
+        acc.push({
+          menuName: curr.menuType || "",
+          dishs: [curr],
+        });
+      }
 
-    return acc;
-  }, [] as { menuName: string; dishs: typeof services }[]);
+      return acc;
+    },
+    [] as { menuName: string; dishs: typeof services }[],
+  );
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
@@ -221,9 +234,9 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Vehicle,
                       ])
                         ? {
-                          icon: <CalenderIcon />,
-                          name: t("Date"),
-                        }
+                            icon: <CalenderIcon />,
+                            name: t("Date"),
+                          }
                         : undefined,
                       showOn([
                         ServiceType.Restaurant,
@@ -238,9 +251,9 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Restaurant,
                       ])
                         ? {
-                          icon: <PersonIcon />,
-                          name: t("Guests"),
-                        }
+                            icon: <PersonIcon />,
+                            name: t("Guests"),
+                          }
                         : undefined,
                     ].filter((v) => !!v) as any
                   }
@@ -482,8 +495,8 @@ export const ServiceReservastionForm: React.FC<{
                       bookedDates={[new Date()]}
                       date={new Date().toUTCString()}
                       onChange={([from, to], complete) => {
-                        handleChange("checkin", from);
-                        handleChange("checkout", to);
+                        handleChange("checkin", from.toString());
+                        handleChange("checkout", to.toString());
                         if (complete) nextStep();
                       }}
                       value={[form?.checkin, form?.checkout]}
@@ -577,7 +590,7 @@ export const ServiceReservastionForm: React.FC<{
             subTotal={150}
             total={450}
             title="Rooms"
-            vat={10 || 0}
+            vat={10}
             vatAmount={45}
             deposit={0}
           >
@@ -585,7 +598,7 @@ export const ServiceReservastionForm: React.FC<{
               <p>{t("Deposit")}</p>
               <PriceDisplay price={250} />
             </div>
-            <Divider></Divider>
+            <Divider />
             <div className="font-medium text-sm text-black flex justify-between items-center">
               <p>{t("Cleaning fee")}</p>
               <PriceDisplay price={50} />

@@ -1,35 +1,32 @@
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { BeautyCenterTreatmentsList } from "@UI/components/features/Services/beautyCenter/components/lists/BeautyCenterTreatmentsList";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { RestaurantDetailsDescriptionSection } from "@UI/components/features/Services/resturant/components/Sections/RestaurantDetailsDescriptionSection";
+import { SpinnerFallback } from "@blocks/FallbackDisplays";
+import { StaticSideBarWrapper } from "@blocks/Wrappers";
+import { ServicePresentationType } from "@features/API";
+import { Divider } from "@partials";
+import { getRandomImage } from "placeholder";
 import React from "react";
-import {
-  ServicesProviderHeader,
-  SpinnerFallback,
-  Divider,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  useGetBeautyCenterDetailsQuery,
-  BeautyCenterTreatmentsList,
-  RestaurantDetailsDescriptionSection,
-  SellerServiceWorkingHoursSection,
-  ServiceDetailsReviewsSection,
-  ServiceReservastionForm,
-  ServicesProviderDetailsTabs,
-} from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { getRandomImage } from "placeholder";
-import { ServicePresentationType } from "@features/API";
+import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
 
 export const BeautyCenterServiceDetailsView: React.FC = () => {
   const { getParam } = useRouting();
   const id = getParam("id");
   //WARNING: grqphql endpoint query is not ready
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetBeautyCenterDetailsQuery(id);
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetBeautyCenterDetailsQuery(id);
   const res = FAKE_BEAUTY_CENTER_DATA;
   const { t } = useTranslation();
 
@@ -170,10 +167,10 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8 w-11/12">
-      {/*<div className="flex w-full items-center justify-between shadow p-4">
+      {/* <div className="flex w-full items-center justify-between shadow p-4">
         <div className="flex gap-4">
           <Image
-            alt="avetar"
+            alt="avatar"
             className="w-28 h-20 rounded-xl object-cover"
             src={
               res
@@ -199,8 +196,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
           <Button>{t("Follow")}</Button>
           <Button outline>{t("Contact")}</Button>
         </div>
-      </div>
-*/}
+      </div> */}
       <Divider />
       <ServicePresentationCarosuel data={res.presentations} />
       <SpinnerFallback isLoading={false}>
@@ -209,7 +205,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
             rating={res.rating}
             reviewsCount={res.totalReviews}
             serviceTitle={res.serviceMetaInfo.title}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -218,7 +214,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
           <ServiceReservastionForm
             sellerId={"test"}
             selectedServicesIds={[]}
-          // serviceId={""}
+            // serviceId={""}
           />
         }
       >

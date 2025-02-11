@@ -36,7 +36,7 @@ export const BeautyCenterTreatmentCard: React.FC<
             <p
               onClick={() => {
                 visit((r) =>
-                  r.visitServiceDetails(treatment.beautyCenterServiceId)
+                  r.visitServiceDetails(treatment.beautyCenterServiceId),
                 );
               }}
               className="cursor-pointer text-primary"

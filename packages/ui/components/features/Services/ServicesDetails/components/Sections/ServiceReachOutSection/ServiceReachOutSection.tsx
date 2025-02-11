@@ -1,14 +1,9 @@
+import { ServiceLocation } from "@features/API";
+import { LocationAddress } from "@features/Services/components";
+import { EmailIcon, HStack, LocationIcon, TelephoneFillIcon } from "@partials";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import {
-  HStack,
-  LocationIcon,
-  TelephoneFillIcon,
-  EmailIcon,
-  LocationAddress,
-} from "@UI";
 import { runIfFn } from "utils";
-import { Location, ServiceLocation } from "@features/API";
 
 export interface ServiceReachOutSectionProps {
   email: string;

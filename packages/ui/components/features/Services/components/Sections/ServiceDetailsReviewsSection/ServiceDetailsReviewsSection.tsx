@@ -1,13 +1,6 @@
+import { Avatar, Divider, ReviewLevelData, Stack, StarIcon } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ReviewLevel,
-  ReviewLevelData,
-  Avatar,
-  StarIcon,
-  Stack,
-  Divider,
-} from "@UI";
 import { mapArray, setTestid } from "utils";
 
 export interface ServiceDetailsReviewsSectionProps {

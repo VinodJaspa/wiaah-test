@@ -1,9 +1,9 @@
+import { ServiceCancelationPolicy, Treatment } from "@features/API";
+import { BeautyCenterTreatmentCard } from "@UI/components/features/Services/beautyCenter/components/Cards/BeautyCenterTreatmentCard";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import { BeautyCenterTreatmentCard, ServiceCancelationPolicy } from "@UI";
 import { randomNum } from "utils";
-import { Treatment } from "@features/API";
 
 export interface BeautyCenterTreatmentsListProps {
   treatments: Treatment[];
