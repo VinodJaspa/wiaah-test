@@ -1,9 +1,7 @@
-import React from "react";
+import { useResponsive } from "hooks";
 import { NextPage } from "next";
 import Head from "next/head";
-import { DiscoverView } from "ui";
-import { SellerLayout } from "ui";
-import { useResponsive } from "hooks";
+import { DiscoverView, SellerLayout } from "ui";
 
 interface DiscoverPageProps {}
 

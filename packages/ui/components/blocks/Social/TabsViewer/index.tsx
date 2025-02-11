@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
+import { HtmlDivProps, TabType } from "types";
 import {
-  Tabs,
-  TabList,
+  Divider,
   TabItem,
+  TabList,
   TabTitle,
+  Tabs,
   TabsHeader,
   TabsProps,
-  Divider,
 } from "ui";
-import { HtmlDivProps, TabType } from "types";
 import { cn, runIfFn } from "utils";
 
 export interface TabsViewerProps extends Omit<TabsProps, "children"> {
@@ -74,7 +74,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
                         "flex items-center gap-2 font-semibold md:text-xs text-[10px] leading-none",
                         isActive ? "text-black" : "text-[#8E8E8E]",
                         isActive ? borderPositionClass : "border-none",
-                        isActive ? "md:py-[22px] py-[6px]" : "md:py-6 py-2",
+                        isActive ? "md:pb-[22px] pb-[6px]" : "md:pb-6 pb-2",
                       )}
                     >
                       {showIcons && outlineIcon && solidIcon && (

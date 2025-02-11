@@ -68,16 +68,11 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
                   "-translate-y-1/4 rounded-full border-2 border-white"
                 }
               />
-              <div>
+              <div className="flex items-center gap-1">
                 <p className="font-bold text-xs">{sellerInfo.name}</p>
-                <div className="flex items-center gap-1">
-                  <p className="font-normal text-[0.563rem]">
-                    {sellerInfo.profession}
-                  </p>
-                  {sellerInfo.verified ? (
-                    <VerifiedIcon className="text-[0.563rem]" />
-                  ) : null}
-                </div>
+                {sellerInfo.verified ? (
+                  <VerifiedIcon className="text-[0.563rem]" />
+                ) : null}
               </div>
             </div>
 
@@ -102,7 +97,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
             <div className="flex gap-1 items-center">
               <Rate rating={rating} />
               <p className="text-[0.5rem] text-lightBlack font-semibold">{`(${reviewsCount} ${t(
-                "Reviews"
+                "Reviews",
               )})`}</p>
             </div>
           </div>

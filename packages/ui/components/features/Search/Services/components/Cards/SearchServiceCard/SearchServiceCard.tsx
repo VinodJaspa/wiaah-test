@@ -81,16 +81,11 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
               src={sellerInfo.thumbnail}
               className={"-translate-y-1/4 rounded-full border-2 border-white"}
             />
-            <div>
+            <div className="flex items-center gap-1">
               <p className="font-bold text-xs">{sellerInfo.name}</p>
-              <div className="flex items-center gap-1">
-                <p className="font-normal text-[0.563rem]">
-                  {sellerInfo.profession}
-                </p>
-                {sellerInfo.verified ? (
-                  <VerifiedIcon className="text-[0.563rem]" />
-                ) : null}
-              </div>
+              {sellerInfo.verified ? (
+                <VerifiedIcon className="text-[0.563rem]" />
+              ) : null}
             </div>
           </div>
 
