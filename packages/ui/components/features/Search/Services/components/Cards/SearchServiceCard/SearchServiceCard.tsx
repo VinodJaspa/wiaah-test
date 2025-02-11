@@ -4,8 +4,6 @@ import {
   Avatar,
   LocationIcon,
   PriceDisplay,
-  Rate,
-  SlimRightArrow,
   UnDiscountedPriceDisplay,
   VerifiedIcon,
 } from "@UI";
@@ -141,21 +139,6 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <p className="underline whitespace-nowrap text-primary">
             {t("Show on map")}
           </p>
-        </div>
-        <div className="flex justify-between gap-2">
-          <div
-            onClick={() => onView && onView()}
-            className="cursor-pointer flex text-primary gap-2 items-end"
-          >
-            <p className="font-extrabold text-base">{t("View")}</p>
-            <SlimRightArrow className="text-xl" />
-          </div>
-          <div className="flex items-center gap-1">
-            <Rate className="text-sm gap-[0.25rem]" rating={rating} />
-            <p className="text-[0.5rem] font-semibold text-lightBlack whitespace-nowrap">{`(${reviews} ${t(
-              "Reviews",
-            )})`}</p>
-          </div>
         </div>
       </div>
     </div>

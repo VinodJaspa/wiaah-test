@@ -20,12 +20,10 @@ export const LocationButton: React.FC<LocationButtonProps> = ({
       className="flex items-center gap-4"
       {...props}
     >
-      <div className="border-2 p-2 bg-white rounded-full">
-        <LocationOnPointFillIcon
-          {...iconProps}
-          className={`${iconProps?.className || ""} `}
-        />
-      </div>
+      <LocationOnPointFillIcon
+        {...iconProps}
+        className={`border-[1px] border-gray-300 rounded-full p-2 text-5xl ${iconProps?.className || ""}`}
+      />
       <Link href={`/places/${name}`} className="capitalize font-semibold">
         {name}
       </Link>

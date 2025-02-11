@@ -1,32 +1,31 @@
+import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
-  ServicesProviderDetailsTabs,
-  useGetServicesProviderQuery,
-  ServiceReachOutSection,
+  Divider,
+  GetServiceDetailsQuery,
+  HotelServiceRoomsSection,
+  SellerServiceWorkingHoursSection,
+  ServiceDetailsReviewsSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
-  HotelServiceRoomsSection,
-  ServicesProviderDescriptionSection,
   ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  GetServiceDetailsQuery,
-  SpinnerFallback,
-  ServiceDetailsReviewsSection,
-  SellerServiceWorkingHoursSection,
-  ServicesProviderHeader,
-  Divider,
   ServiceRangeBookingCalander,
+  ServiceReachOutSection,
+  ServicesProviderDescriptionSection,
+  ServicesProviderDetailsTabs,
+  ServicesProviderHeader,
+  SpinnerFallback,
+  StaticSideBarWrapper,
 } from "ui";
-import { useTranslation } from "react-i18next";
-import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetServicesProviderQuery("");
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetServicesProviderQuery("");
   const { t } = useTranslation();
   const res = FAKE_DATA;
 
@@ -231,7 +230,7 @@ export const HotelDetailsView: React.FC = () => {
             rating={15}
             reviewsCount={150}
             serviceTitle={"service title"}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -241,7 +240,7 @@ export const HotelDetailsView: React.FC = () => {
             <ServiceRangeBookingCalander
               bookedDates={[]}
               date={new Date()}
-              onChange={() => { }}
+              onChange={() => {}}
               value={[]}
             />
           ) : null

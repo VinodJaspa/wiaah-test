@@ -1,12 +1,6 @@
-import { HotelDetailsView } from "ui";
-import { getHealthCenterDetailsFetcher } from "api";
-import { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
-import React from "react";
-import { dehydrate, QueryClient } from "react-query";
+import { NextPage } from "next";
 import { MetaTitle } from "react-seo";
-import { ServerSideQueryClientProps } from "types";
-import { getHealthCenterDetailsQueryKey, SellerLayout } from "ui";
+import { HotelDetailsView, SellerLayout } from "ui";
 
 const ServiceDetails: NextPage = () => {
   return (

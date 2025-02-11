@@ -33,7 +33,9 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         <Avatar name={user.name} photoSrc={user.photo} />
       ) : (
         <>
-          <Avatar name={user.name} src={user.photo} />
+          <div className="flex-shrink-0">
+            <Avatar name={user.name} src={user.photo} />
+          </div>
           <div className="flex w-full flex-col">
             <div className="flex items-center gap-2">
               <span data-testid="UserName">{user.name}</span>
