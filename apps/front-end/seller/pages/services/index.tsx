@@ -1,9 +1,9 @@
-import { SellerLayout } from "@blocks";
 import { ServicesSearchView } from "@components";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { dehydrate, QueryClient } from "react-query";
 import { ServerSideQueryClientProps } from "types";
+import { SellerLayout } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -23,7 +23,7 @@ const ServicesPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Services</title>
+        <title>Wiaah | Services</title>
       </Head>
       <SellerLayout>
         <ServicesSearchView />

@@ -525,7 +525,7 @@ export const ServicesSearchView: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-10 w-full">
+    <div className="flex flex-col gap-10">
       <Formik
         initialValues={{ serviceType: "hotel" } as any}
         onSubmit={() => {}}

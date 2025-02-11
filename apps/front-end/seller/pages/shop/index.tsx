@@ -8,7 +8,7 @@ const SellerShop: React.FC<SellerShopProps> = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | shop</title>
+        <title>Wiaah | Shop</title>
       </Head>
       <SellerLayout>
         <div className="grid gap-12 grid-cols-4">
