@@ -1,6 +1,9 @@
+import {
+  HotelRoomDetailsCard,
+  HotelRoomDetailsCardProps,
+} from "@UI/components/features/Services/hotels/components/cards/HotelRoomDetailsCard";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useSetBookedServicesState } from "state";
-import { HotelRoomDetailsCard, HotelRoomDetailsCardProps } from "@UI";
 
 export interface HotelServiceRoomsSectionProps {
   rooms: HotelRoomDetailsCardProps["room"][];

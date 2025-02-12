@@ -1,6 +1,7 @@
+import { ServicePropertiesSwticher } from "@UI/components/features/Services/components/Switchers/ServicePropertiesSwticher";
+import { HStack } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HStack, ServicePropertiesSwticher } from "@UI";
 
 export interface PopularAmenitiesSectionProps {
   amenities: string[];

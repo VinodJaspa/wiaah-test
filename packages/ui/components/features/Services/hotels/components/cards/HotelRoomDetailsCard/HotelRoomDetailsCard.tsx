@@ -1,24 +1,20 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
-  PriceDisplay,
   AspectRatio,
   Button,
+  CloseIcon,
+  Divider,
   HStack,
+  Image,
   MathPowerDisplay,
-  UnDiscountedPriceDisplay,
-  ServicePropertiesSwticher,
+  PriceDisplay,
   PropertyDimensionsIcon,
   Stack,
-  Divider,
-  Image,
-  CloseIcon,
+  UnDiscountedPriceDisplay,
 } from "@UI";
+import { ServicePropertiesSwticher } from "@UI/components/features/Services/components/Switchers/ServicePropertiesSwticher";
 import {
-  Discount,
   HotelRoom,
   Maybe,
-  Service,
   ServiceAdaptation,
   ServiceAmenity,
   ServiceCancelationPolicy,
@@ -28,9 +24,12 @@ import {
   ServicePresentation,
   ServicePropertyMeasurements,
 } from "@features/API";
-import { mapArray } from "utils";
 import { startCase } from "lodash";
+import { getRandomImage } from "placeholder";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { ImCheckmark } from "react-icons/im";
+import { mapArray } from "utils";
 
 export interface HotelRoomDetailsCardProps {
   onBook?: (roomId: string) => any;
@@ -89,7 +88,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
           <div className="min-w-[11.25rem] h-fit overflow-hidden rounded-xl">
             <AspectRatio ratio={1}>
               <Image
-                src={room.thumbnail}
+                src={getRandomImage()}
                 className="w-full h-full object-cover"
               />
             </AspectRatio>

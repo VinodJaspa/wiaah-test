@@ -5,7 +5,7 @@ import { BathTubeIcon, BedIcon, PetPawIcon } from "@partials";
 import { runIfFn } from "@UI/../utils/src";
 import { HtmlSvgProps } from "@UI/../types/src";
 import { usePublishRef } from "state";
-import { PopularAmenitiesSection } from "../PopularAmenitiesSection";
+import { PopularAmenitiesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/PopularAmenitiesSection";
 
 export interface ServicesProviderDescriptionSectionProps {
   description: string;

@@ -1,23 +1,21 @@
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { ServicesProviderDescriptionSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicesProviderDescriptionSection";
+import { GetServiceDetailsQuery } from "@UI/components/features/Services/ServicesDetails/services/queries/useGetServicesProviderQuery";
+import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
+import { SpinnerFallback } from "@blocks/FallbackDisplays";
+import { StaticSideBarWrapper } from "@blocks/Wrappers";
 import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
+import { Divider } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Divider,
-  GetServiceDetailsQuery,
-  HotelServiceRoomsSection,
-  SellerServiceWorkingHoursSection,
-  ServiceDetailsReviewsSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  ServiceRangeBookingCalander,
-  ServiceReachOutSection,
-  ServicesProviderDescriptionSection,
-  ServicesProviderDetailsTabs,
-  ServicesProviderHeader,
-  SpinnerFallback,
-  StaticSideBarWrapper,
-} from "ui";
+import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
