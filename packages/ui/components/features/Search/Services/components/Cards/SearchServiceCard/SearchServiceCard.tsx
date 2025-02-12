@@ -8,6 +8,8 @@ import {
   VerifiedIcon,
 } from "@UI";
 import { Location } from "api";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
@@ -27,6 +29,7 @@ export interface SearchServiceCardProps {
     id: string;
   };
   sellerInfo: {
+    id: string;
     name: string;
     profession: string;
     thumbnail: string;
@@ -52,8 +55,13 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
     discount,
     reviews,
   } = serviceData;
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col w-full">
+    <div
+      onClick={() => router.push(`/service/details/${serviceType}/${id}`)}
+      className="flex flex-col w-full cursor-pointer"
+    >
       <AspectRatio className="rounded-2xl overflow-hidden" ratio={1}>
         <div className="bg-primary px-8  text-white absolute top-4 origin-center -left-8 -rotate-45">
           <p>
@@ -74,7 +82,11 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           }}
           className="flex items-center justify-between px-5 absolute bg-black text-white bg-opacity-10 w-full h-[18%] bottom-0 left-0"
         >
-          <div className="flex gap-2 items-center">
+          <Link
+            href={`/profile/${sellerInfo.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="flex gap-2 items-center"
+          >
             <Avatar
               src={sellerInfo.thumbnail}
               className="rounded-full inset-0 border-2 border-white w-8 h-8"
@@ -85,7 +97,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
                 <VerifiedIcon className="text-[0.563rem] inline-block" />
               ) : null}
             </div>
-          </div>
+          </Link>
 
           <div className="flex text-sm font-extrabold gap-1 items-center">
             {typeof price === "number" ? (

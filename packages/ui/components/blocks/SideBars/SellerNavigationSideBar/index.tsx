@@ -76,37 +76,39 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     isMobile
       ? []
       : [
-        {
-          name: "service",
-          icon: <ServicesOutlineIcon />,
-          activeIcon: <ServicesIcon />,
-          url: "services",
-        },
-        {
-          name: "affiliation",
-          icon: <AffiliationIconOutline />,
-          activeIcon: <AffiliationIcon />,
-          url: "affiliation",
-        },
-      ],
+          {
+            name: "service",
+            icon: <ServicesOutlineIcon />,
+            activeIcon: <ServicesIcon />,
+            url: "service",
+          },
+          {
+            name: "affiliation",
+            icon: <AffiliationIconOutline />,
+            activeIcon: <AffiliationIcon />,
+            url: "affiliation",
+          },
+        ],
   );
 
   const { user } = useUserData();
 
   return (
     <div
-      className={`${className} flex z-[36]  fixed ${isMobile
+      className={`${className} flex z-[36]  fixed ${
+        isMobile
           ? "flex-row z-10 left-0 bottom-0 w-full bg-white"
           : "flex-col left-0 w-52 z-[36] h-screen top-0 bg-primary"
-        } items-center flex py-3`}
+      } items-center flex py-3`}
       {...props}
     >
       <div className="overflow-y-scroll noScroll w-full">
         <div
-          className={`w-full flex flex-wrap ${isMobile
+          className={`w-full flex flex-wrap ${
+            isMobile
               ? "justify-around flex-row gap-2 text-3xl bg-white"
               : "flex-col gap-12 bg-primary"
-            }`}
+          }`}
         >
           {!isMobile && (
             <Image
@@ -118,15 +120,17 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             const active = link.url === activeLink;
             return (
               <div
-                className={`flex gap-4 items-center cursor-pointer relative ${isMobile ? "" : "pl-8"
-                  }`}
+                className={`flex gap-4 items-center cursor-pointer relative ${
+                  isMobile ? "" : "pl-8"
+                }`}
                 data-testid="NavigationSideBarLink"
                 onClick={() => handleLinkClick && handleLinkClick(link)}
                 key={i}
               >
                 <span
-                  className={`${isMobile ? "text-black" : "text-white"
-                    } text-icon`}
+                  className={`${
+                    isMobile ? "text-black" : "text-white"
+                  } text-icon`}
                 >
                   {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}
                 </span>
@@ -140,8 +144,9 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
                     </p>
 
                     <span
-                      className={`absolute top-0 right-0 bottom-0 w-2 ${active ? "" : "opacity-0"
-                        } bg-black rounded`}
+                      className={`absolute top-0 right-0 bottom-0 w-2 ${
+                        active ? "" : "opacity-0"
+                      } bg-black rounded`}
                     ></span>
                   </>
                 )}

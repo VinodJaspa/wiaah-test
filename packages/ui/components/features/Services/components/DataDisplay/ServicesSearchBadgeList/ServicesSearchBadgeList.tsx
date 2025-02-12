@@ -38,7 +38,7 @@ export const ServicesSearchBadgeList: React.FC<
     {
       name: "Holiday Rentals",
       icon: <HouseIcon />,
-      key: "holidays_rentals",
+      key: "holiday_rentals",
     },
     {
       name: "Restaurants",
