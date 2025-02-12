@@ -1,16 +1,10 @@
+import { Button, CaruoselLeftArrow, CaruoselRightArrow, Slider } from "@UI";
+import { VehicleSearchCard } from "@UI/components/features/Services/Vehicle/components/cards/VehicleSearchCard";
 import { Vehicle } from "api";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import {
-  Slider,
-  CaruoselLeftArrow,
-  CaruoselRightArrow,
-  VehicleSearchCard,
-  ServiceCancelationPolicyInput,
-  Button,
-} from "@UI";
 
 export const VehiclesSelectableList: React.FC<{
   vehicles: Vehicle[];
@@ -42,7 +36,7 @@ export const VehiclesSelectableList: React.FC<{
                 function handleUnSelect(id: string) {
                   if (selected) {
                     setSelectedVehicles((state) =>
-                      state.filter((vehicleId) => vehicleId !== id)
+                      state.filter((vehicleId) => vehicleId !== id),
                     );
                   }
                 }

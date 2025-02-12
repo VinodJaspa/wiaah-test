@@ -2,11 +2,11 @@ import React from "react";
 import {
   AspectRatio,
   PriceDisplay,
-  VehicleProprtiesList,
   Button,
   ServicesRequestKeys,
   Image,
 } from "@UI";
+import { VehicleProprtiesList } from "@UI/components/features/Services/Vehicle/components/Lists/VehicleProprtiesList";
 import { Vehicle } from "api";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -36,7 +36,7 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
             <Button
               onClick={() =>
                 visit((routes) =>
-                  routes.visitService(props, ServicesRequestKeys.vehicle)
+                  routes.visitService(props, ServicesRequestKeys.vehicle),
                 )
               }
             >

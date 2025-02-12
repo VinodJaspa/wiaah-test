@@ -1,29 +1,23 @@
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
+import { VehicleServiceDescriptionSection } from "@UI/components/features/Services/Vehicle/components/Sections/VehicleServiceDescriptionSection";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
 import React from "react";
-import {
-  ServicesProviderHeader,
-  SpinnerFallback,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  useGetVehicleProviderDetailsQuery,
-  ServicesProviderDetailsTabs,
-  Tabs,
-  TabsHeader,
-  TabList,
-  TabTitle,
-  ServiceDetailsReviewsSection,
-  VehiclesSelectableList,
-  SellerServiceWorkingHoursSection,
-  DateAndTimeInput,
-  VehicleServiceDescriptionSection,
-  ServiceReservastionForm,
-  GetVehicleQuery,
-} from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { VehicleMyServiceDataType } from "api";
+import {
+  GetVehicleQuery,
+  ServicesProviderDetailsTabs,
+  SpinnerFallback,
+  StaticSideBarWrapper,
+} from "ui";
+
 type VehicleServiceDetailsViewProps = {
   vehicleData: GetVehicleQuery["getVehicleServicebyId"];
 };
@@ -34,11 +28,12 @@ export const VehicleServiceDetailsView: React.FC<
   const { getParam } = useRouting();
   const id = getParam("id");
   // WARNING: grqphql endpoint query is not
-  const {
-    data: _res,
-    isError,
-    isLoading,
-  } = useGetVehicleProviderDetailsQuery({ id });
+  // const {
+  //   data: _res,
+  //   isError,
+  //   isLoading,
+  // } = useGetVehicleProviderDetailsQuery({ id });
+
   const res = vehicleData;
   const { t } = useTranslation();
 
