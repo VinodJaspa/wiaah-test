@@ -1,20 +1,15 @@
+import { ServicePaymentMethod, ServicePresentationType } from "@features/API";
 import { GetServerSideProps, NextPage } from "next";
-import React from "react";
+import { useTranslation } from "react-i18next";
+import { dehydrate, QueryClient } from "react-query";
+import { useRouting } from "routing";
+import { ServerSideQueryClientProps } from "types";
 import {
   getRandomImage,
-  getVehicleProviderDetailsQueryKey,
   GetVehicleQuery,
   SellerLayout,
-  useGetVehicleProviderDetailsQuery,
+  VehicleServiceDetailsView,
 } from "ui";
-import { MetaTitle } from "react-seo";
-import { useTranslation } from "react-i18next";
-import { ServerSideQueryClientProps } from "types";
-import { dehydrate, QueryClient } from "react-query";
-import { getVehicleServiceProviderDetailsFetcher } from "api";
-import { useRouting } from "routing";
-import { VehicleServiceDetailsView } from "ui";
-import { ServicePaymentMethod, ServicePresentationType } from "@features/API";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -22,11 +17,11 @@ export const getServerSideProps: GetServerSideProps<
   const id = query["id"];
   const client = new QueryClient();
 
-  if (id) {
-    client.prefetchQuery(getVehicleProviderDetailsQueryKey({ id }), () =>
-      getVehicleServiceProviderDetailsFetcher({ id }),
-    );
-  }
+  // if (id) {
+  //   client.prefetchQuery(getVehicleProviderDetailsQueryKey({ id }), () =>
+  //     getVehicleServiceProviderDetailsFetcher({ id }),
+  //   );
+  // }
 
   return {
     props: {
@@ -168,20 +163,20 @@ const VehicleServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
-  const {
-    data: _res,
-    isLoading,
-    isError,
-  } = useGetVehicleProviderDetailsQuery({
-    id,
-  });
+  // const {
+  //   data: _res,
+  //   isLoading,
+  //   isError,
+  // } = useGetVehicleProviderDetailsQuery({
+  //   id,
+  // });
   const res = FAKE_VEHICLE_DATA;
   return (
     <>
-      <MetaTitle
+      {/* <MetaTitle
         content={`${t("Vehicle Details")} | ${res ? res?.serviceMetaInfo?.title || "" : ""
           }`}
-      />
+      /> */}
 
       <SellerLayout>
         <VehicleServiceDetailsView vehicleData={res} />
