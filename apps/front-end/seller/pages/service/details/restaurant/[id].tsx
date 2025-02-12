@@ -1,17 +1,9 @@
 import { GetServerSideProps, NextPage } from "next";
-import React from "react";
-import {
-  getRestaurantServiceProviderDetailsDataQuerykey,
-  SellerLayout,
-  useGetRestaurantServiceDetailsDataQuery,
-} from "ui";
-import { MetaTitle } from "react-seo";
 import { useTranslation } from "react-i18next";
-import { ServerSideQueryClientProps } from "types";
 import { dehydrate, QueryClient } from "react-query";
-import { getResturantServiceDetialsData } from "api";
 import { useRouting } from "routing";
-import { RestaurantDetailsView } from "ui";
+import { ServerSideQueryClientProps } from "types";
+import { RestaurantDetailsView, SellerLayout } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -19,12 +11,12 @@ export const getServerSideProps: GetServerSideProps<
   const id = query["id"] as string;
   const client = new QueryClient();
 
-  if (id) {
-    client.prefetchQuery(
-      getRestaurantServiceProviderDetailsDataQuerykey(id),
-      () => getResturantServiceDetialsData(id),
-    );
-  }
+  // if (id) {
+  //   client.prefetchQuery(
+  //     getRestaurantServiceProviderDetailsDataQuerykey(id),
+  //     () => getResturantServiceDetialsData(id),
+  //   );
+  // }
 
   return {
     props: {
@@ -37,17 +29,17 @@ const RestaurantServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetRestaurantServiceDetailsDataQuery(id);
+  // const {
+  //   data: res,
+  //   isLoading,
+  //   isError,
+  // } = useGetRestaurantServiceDetailsDataQuery(id);
   return (
     <>
-      <MetaTitle
+      {/* <MetaTitle
         content={`${t("Restaurant Details")} | ${res ? res?.owner?.firstName || "" : ""
           }`}
-      />
+      /> */}
 
       <SellerLayout>
         <RestaurantDetailsView />

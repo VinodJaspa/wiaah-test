@@ -1,39 +1,38 @@
-import React from "react";
-import {
-  SpinnerFallback,
-  ServiceOnMapLocalizationSection,
-  ServiceReachOutSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  ServicesProviderDetailsTabs,
-  ResturantMenuListSection,
-  useGetRestaurantServiceDetailsDataQuery,
-  ServiceDetailsReviewsSection,
-  SellerServiceWorkingHoursSection,
-  RestaurantDetailsDescriptionSection,
-  ServicesProviderHeader,
-  Divider,
-  ServiceReservastionForm,
-  GetRestaurantQuery,
-} from "ui";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
-import { getRandomImage } from "placeholder";
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { RestaurantDetailsDescriptionSection } from "@UI/components/features/Services/resturant/components/Sections/RestaurantDetailsDescriptionSection";
+import { ResturantMenuListSection } from "@UI/components/features/Services/resturant/components/Sections/ResturantMenuListSection";
 import {
   ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
 } from "@features/API";
+import { getRandomImage } from "placeholder";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import {
+  Divider,
+  GetRestaurantQuery,
+  ServicesProviderDetailsTabs,
+  SpinnerFallback,
+  StaticSideBarWrapper,
+} from "ui";
 
 export const RestaurantDetailsView: React.FC = () => {
   const { getParam } = useRouting();
   const id = getParam("id");
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetRestaurantServiceDetailsDataQuery(id);
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetRestaurantServiceDetailsDataQuery(id);
   const { t } = useTranslation();
 
   const res = FAKE_RESTAURANT_DETAILS_DATA;
@@ -213,7 +212,7 @@ export const RestaurantDetailsView: React.FC = () => {
             rating={4.5}
             reviewsCount={15}
             serviceTitle={res.serviceMetaInfo.title}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -222,7 +221,7 @@ export const RestaurantDetailsView: React.FC = () => {
           <ServiceReservastionForm
             sellerId={""}
             selectedServicesIds={[]}
-          // serviceId={""}
+            // serviceId={""}
           />
         }
       >
