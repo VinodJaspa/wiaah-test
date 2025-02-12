@@ -91,7 +91,11 @@ export const AddNewPostModal: React.FC = () => {
   }, [media]);
 
   const cleanUpStates = () => {
-    // Implement state cleanup logic here
+    setMedia(undefined);
+    setMediaType(undefined);
+    setStep(0);
+    setImageIdx(0);
+    setActionVidBlob(undefined);
   };
 
   const renderPhotoContent = () => (
@@ -162,7 +166,7 @@ export const AddNewPostModal: React.FC = () => {
                 ]}
               />
               <ModalFooter className="justify-between absolute bottom-1 w-full ">
-                <Button>{t("Cancel")}</Button>
+                <Button onClick={hideNewPublish}>{t("Cancel")}</Button>
                 <Button onClick={() => nextStep()}>{t("Next")}</Button>
               </ModalFooter>
             </React.Fragment>
@@ -174,6 +178,9 @@ export const AddNewPostModal: React.FC = () => {
 
   const renderDropZone = () => (
     <div
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
       onDrop={(event) => {
         event.preventDefault();
         setMedia(event.dataTransfer.files);
@@ -220,7 +227,9 @@ export const AddNewPostModal: React.FC = () => {
             : renderDropZone()}
         {media && (
           <ModalFooter className="justify-between">
-            {mediaType === "photo" && <Button> {t("Cancel")}</Button>}
+            {mediaType === "photo" && (
+              <Button onClick={hideNewPublish}> {t("Cancel")}</Button>
+            )}
             {mediaType === "photo" && <Button> {t("Share")}</Button>}
           </ModalFooter>
         )}

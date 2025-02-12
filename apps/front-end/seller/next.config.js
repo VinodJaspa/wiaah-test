@@ -49,5 +49,5 @@ module.exports = withTM(
       skipWaiting: true,
     },
     ...nextConfig,
-  })
+  }),
 );

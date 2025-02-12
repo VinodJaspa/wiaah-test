@@ -110,7 +110,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         </div>
       )}
 
-      <div className="flex items-center gap-8 p-2">
+      <div className="flex items-center gap-8 p-2 cursor-pointer">
         {/* {isMobile ? ( */}
         <>
           <SquarePlusOutlineIcon
