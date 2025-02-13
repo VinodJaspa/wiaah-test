@@ -141,7 +141,7 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Product, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
@@ -162,7 +162,7 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Video, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Post, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [

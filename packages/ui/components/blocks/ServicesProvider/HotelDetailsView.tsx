@@ -16,6 +16,7 @@ import { Divider } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
+import { getRandomImage } from "placeholder";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
@@ -175,6 +176,12 @@ export const HotelDetailsView: React.FC = () => {
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       thumbnail: `/profile (${i + 1}).jfif`,
                       date: new Date().toString(),
+                      ratings: +(Math.random() * 5).toFixed(1),
+                      bookedService: {
+                        id: "123",
+                        image: getRandomImage(),
+                        name: "Deluxe Spa Package",
+                      },
                     }))}
                   />
                 </>
