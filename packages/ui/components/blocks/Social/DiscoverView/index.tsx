@@ -1,4 +1,5 @@
-import React from "react";
+import { PersonalizeActions } from "placeholder";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
 import {
@@ -10,23 +11,50 @@ import {
   UserMobileView,
   StoryView,
 } from "ui";
+import { mapArray } from "utils";
 
 interface ExplorePageProps {}
 
 export const DiscoverView: React.FC<ExplorePageProps> = () => {
   const { t } = useTranslation();
+  const [data] = useState(PersonalizeActions);
+  const actions = data;
+
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoContainersRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const normalizedData = [
+    ...actions.map((action) => ({ ...action, type: "video", alt: "" })),
+    ...FAKE_IMAGES.map((image) => ({ ...image, type: "image" })),
+  ];
+
   const tabs: TabType[] = [
     {
       name: t("Discover"),
       component: (
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-0.5">
-          {FAKE_IMAGES.map((image, index) => (
-            <div key={index} className="break-inside-avoid  mb-0.5">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-auto rounded-lg"
-              />
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-0.5 w-full">
+          {normalizedData.map((item, index) => (
+            <div
+              key={index}
+              ref={(el) => (videoContainersRef.current[index] = el)}
+              className="break-inside-avoid mb-0.5 w-full"
+            >
+              {item.type === "video" ? (
+                <video
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src={item.src}
+                  className="w-full h-full object-cover rounded-lg"
+                  autoPlay
+                  muted
+                  loop
+                />
+              ) : (
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              )}
             </div>
           ))}
         </div>
