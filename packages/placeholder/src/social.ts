@@ -81,26 +81,58 @@ export const imagesPlaceholder: string[] = [
   "https://picsum.photos/300/300?random=10",
 ];
 export const storiesPlaceholder = [
-  { image: "https://picsum.photos/300/200?random=1", seen: true },
-  { image: "https://picsum.photos/300/300?random=2", seen: false },
-  { image: "https://picsum.photos/300/400?random=3", seen: true },
-  { image: "https://picsum.photos/300/500?random=4", seen: true },
-  { image: "https://picsum.photos/300/200?random=5", seen: false },
-  { image: "https://picsum.photos/300/300?random=6", seen: true },
-  { image: "https://picsum.photos/300/400?random=7", seen: false },
-  { image: "https://picsum.photos/300/500?random=8", seen: true },
-  { image: "https://picsum.photos/300/200?random=9", seen: false },
-  { image: "https://picsum.photos/300/300?random=10", seen: false },
-  { image: "https://picsum.photos/300/200?random=1", seen: false },
-  { image: "https://picsum.photos/300/300?random=2", seen: true },
-  { image: "https://picsum.photos/300/400?random=3", seen: false },
-  { image: "https://picsum.photos/300/500?random=4", seen: false },
-  { image: "https://picsum.photos/300/200?random=5", seen: true },
-  { image: "https://picsum.photos/300/300?random=6", seen: false },
-  { image: "https://picsum.photos/300/400?random=7", seen: false },
-  { image: "https://picsum.photos/300/500?random=8", seen: true },
-  { image: "https://picsum.photos/300/200?random=9", seen: false },
-  { image: "https://picsum.photos/300/300?random=10", seen: false },
+  { image: "https://picsum.photos/300/200?random=1", seen: true, userId: "1" },
+  { image: "https://picsum.photos/300/300?random=2", seen: false, userId: "2" },
+  { image: "https://picsum.photos/300/400?random=3", seen: true, userId: "3" },
+  { image: "https://picsum.photos/300/500?random=4", seen: true, userId: "4" },
+  { image: "https://picsum.photos/300/200?random=5", seen: false, userId: "5" },
+  { image: "https://picsum.photos/300/300?random=6", seen: true, userId: "6" },
+  { image: "https://picsum.photos/300/400?random=7", seen: false, userId: "7" },
+  { image: "https://picsum.photos/300/500?random=8", seen: true, userId: "8" },
+  { image: "https://picsum.photos/300/200?random=9", seen: false, userId: "9" },
+  {
+    image: "https://picsum.photos/300/300?random=10",
+    seen: false,
+    userId: "10",
+  },
+  {
+    image: "https://picsum.photos/300/200?random=1",
+    seen: false,
+    userId: "11",
+  },
+  { image: "https://picsum.photos/300/300?random=2", seen: true, userId: "12" },
+  {
+    image: "https://picsum.photos/300/400?random=3",
+    seen: false,
+    userId: "13",
+  },
+  {
+    image: "https://picsum.photos/300/500?random=4",
+    seen: false,
+    userId: "14",
+  },
+  { image: "https://picsum.photos/300/200?random=5", seen: true, userId: "15" },
+  {
+    image: "https://picsum.photos/300/300?random=6",
+    seen: false,
+    userId: "16",
+  },
+  {
+    image: "https://picsum.photos/300/400?random=7",
+    seen: false,
+    userId: "17",
+  },
+  { image: "https://picsum.photos/300/500?random=8", seen: true, userId: "18" },
+  {
+    image: "https://picsum.photos/300/200?random=9",
+    seen: false,
+    userId: "19",
+  },
+  {
+    image: "https://picsum.photos/300/300?random=10",
+    seen: false,
+    userId: "20",
+  },
 ];
 export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   {
@@ -327,7 +359,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-  Math.floor(Math.random() * postProfilesPlaceholder.length)
+    Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {

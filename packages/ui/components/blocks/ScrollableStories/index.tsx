@@ -1,3 +1,4 @@
+import { useStoryModal } from "@blocks/Social";
 import React, { useEffect, useRef, useState } from "react";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -9,6 +10,7 @@ interface ScrollableStoriesProps {
 interface StoryType {
   image: string;
   seen: boolean;
+  userId: string;
 }
 
 export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
@@ -16,6 +18,8 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
 }) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
+
+  const { OpenModal } = useStoryModal();
 
   const scrollRight = () => {
     if (carouselRef.current) {
@@ -75,8 +79,9 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
       >
         {stories.map((story, index) => (
           <div
+            onClick={() => OpenModal(story.userId)}
             key={index}
-            className={`min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${
+            className={`cursor-pointer min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${
               story.seen ? "p-0" : "p-[0.20rem]"
             }`}
           >

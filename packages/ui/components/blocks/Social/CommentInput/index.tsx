@@ -108,7 +108,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       }
     }
 
-    setShouldCommentBoxFocused(false);
+    setShouldCommentBoxFocused && setShouldCommentBoxFocused(false);
   }, [shouldCommentBoxFocused, setShouldCommentBoxFocused]);
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
