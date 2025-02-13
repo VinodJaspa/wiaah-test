@@ -52,25 +52,25 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
       name: "Home",
       icon: <HomeOutlineIcon />,
       activeIcon: <HomeIcon />,
-      url: "",
+      url: "/",
     },
     {
       name: "discover",
       icon: <DiscoverOutlineIcon />,
       activeIcon: <DiscoverIcon />,
-      url: "discover",
+      url: "/discover",
     },
     {
       name: "action",
       icon: <VideosOutlinePlayIcon />,
       activeIcon: <VideosPlayIcon />,
-      url: "action",
+      url: "/action",
     },
     {
       name: "shop",
       icon: <ShoppingCartOutlineIcon />,
       activeIcon: <ShoppingCartIcon />,
-      url: "shop",
+      url: "/shop",
     },
   ].concat(
     isMobile
@@ -80,13 +80,13 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             name: "service",
             icon: <ServicesOutlineIcon />,
             activeIcon: <ServicesIcon />,
-            url: "service",
+            url: "/service",
           },
           {
             name: "affiliation",
             icon: <AffiliationIconOutline />,
             activeIcon: <AffiliationIcon />,
-            url: "affiliation",
+            url: "/affiliation",
           },
         ],
   );
