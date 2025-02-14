@@ -1,4 +1,5 @@
 import {
+  AttachmentType,
   NewsfeedPost,
   ProductPost,
   Profile,
@@ -119,7 +120,7 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
     <>
       <Modal onClose={CloseModal} isOpen={!!userId}>
         <ModalOverlay />
-        <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
+        <ModalContent className="bg-[#000] h-[80vh] xl:w-1/4 lg:w-1/3 md:w-1/2 w-full text-white px-0 py-4 overflow-hidden">
           {story ? (
             <SocialStoryViewer
               onClose={CloseModal}
@@ -146,7 +147,12 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Post,
+      type: StoryType.Image,
+      attachements: {
+        src: "https://images.pexels.com/photos/30244799/pexels-photo-30244799/free-photo-of-vibrant-portrait-in-dramatic-red-and-blue-lighting.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        marketingTags: [],
+        type: AttachmentType.Img,
+      },
       newsfeedPost: {
         id: "1",
       },
@@ -169,7 +175,12 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Service,
+      type: StoryType.Video,
+      attachements: {
+        src: "/action.mp4",
+        marketingTags: [],
+        type: AttachmentType.Vid,
+      },
       servicePost: {
         id: "1",
       },

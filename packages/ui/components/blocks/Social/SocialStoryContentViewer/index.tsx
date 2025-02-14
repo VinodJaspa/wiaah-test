@@ -70,7 +70,7 @@ export const SocialStoryContentViewer: React.FC<
         return (
           <div>
             <video
-              className="w-full"
+              className="w-full h-full"
               ref={videoRef}
               style={{ objectFit: "contain" }}
               src={src}
