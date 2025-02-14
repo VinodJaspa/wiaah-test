@@ -1,4 +1,4 @@
-import { PersonalizeActions } from "placeholder";
+import { LocalizationsPH, PersonalizeActions } from "placeholder";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
@@ -10,6 +10,7 @@ import {
   UsersView,
   UserMobileView,
   StoryView,
+  LocalizationSearchItem,
 } from "ui";
 import { mapArray } from "utils";
 
@@ -78,6 +79,16 @@ export const DiscoverView: React.FC<ExplorePageProps> = () => {
       ),
     },
     { name: t("Places"), component: <PlacesList places={FAKE_PLACES} /> },
+    {
+      name: t("Localization"),
+      component: (
+        <div className="flex flex-col gap-2 justify-start w-full">
+          {LocalizationsPH.map((city, i) => (
+            <LocalizationSearchItem key={i} location={city} />
+          ))}
+        </div>
+      ),
+    },
     { name: t("Hashtag"), component: <HashtagView hashtags={FAKE_HASHTAGS} /> },
   ];
   return (
