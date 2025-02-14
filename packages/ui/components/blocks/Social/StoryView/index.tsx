@@ -3,6 +3,7 @@ import { ListWrapper } from "@blocks/Wrappers";
 import { useResponsive } from "hooks";
 import React from "react";
 import { MdVerified } from "react-icons/md";
+import { useStoryModal } from "../SocialStoriesModal";
 
 interface StoryViewProps {
   stories: StoryCardProps[];
@@ -19,6 +20,7 @@ interface StoryCardProps {
 
 export const StoryView: React.FC<StoryViewProps> = ({ stories }) => {
   const { isMobile } = useResponsive();
+
   return (
     <ListWrapper
       listProps={{
@@ -52,8 +54,13 @@ const StoryCard: React.FC<StoryCardProps> = ({
   seen,
   isVerified,
 }) => {
+  const { OpenModal } = useStoryModal();
+
   return (
-    <div className="w-full h-[253px] relative">
+    <div
+      onClick={() => OpenModal(id)}
+      className="w-full h-[253px] relative cursor-pointer"
+    >
       <img src={storyPhoto} className="w-full h-full rounded-xl" />
       <div className="absolute w-[68px] h-[68px]  inset-0 m-auto  z-10">
         <UserProfileDisplay
