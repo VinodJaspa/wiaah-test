@@ -1,9 +1,6 @@
 import React from "react";
-import { SocialStoryData } from "types";
-import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
-import { Slider, Spinner } from "@partials";
-import { Story } from "@features/API";
 import { SocialStoryFields } from "../SocialStoriesModal";
+import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
 
 export interface SocialStoriesCarouselProps {
   story: SocialStoryFields;
@@ -36,6 +33,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
         type={story.type}
         src={story.attachements?.src || ""}
         text={story.content || ""}
+        post={story.newsfeedPost || story.servicePost || story.shopPost}
       />
     </div>
   );

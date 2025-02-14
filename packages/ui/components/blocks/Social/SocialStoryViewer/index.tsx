@@ -1,18 +1,8 @@
+import { StoryProgressBar } from "@partials";
 import React from "react";
+import { SocialStoriesCarousel } from "../SocialStoriesCarousel";
+import { SocialStoryType } from "../SocialStoriesModal";
 import { SocialStoryViewerHeader } from "../SocialStoryViewerHeader";
-import {
-  SocialStoriesCarousel,
-  SocialStoriesCarouselProps,
-} from "../SocialStoriesCarousel";
-import {
-  DisplayPostedSince,
-  HStack,
-  ProgressBars,
-  StoryProgressBar,
-} from "@partials";
-import { SocialStoryType, useStoryModal } from "../SocialStoriesModal";
-import { HiEye } from "react-icons/hi";
-import { NumberShortner } from "@UI/components/helpers";
 
 export interface SocialStoryViewerProps {
   stories: SocialStoryType; // An array of stories, not just a single object
