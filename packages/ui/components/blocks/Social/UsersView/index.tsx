@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { VerifiedIcon } from "ui";
 import { FaUserPlus } from "react-icons/fa";
 
@@ -31,6 +31,8 @@ export const UserCard: React.FC<UserCardProps> = ({
   name,
   isFollowed,
 }) => {
+  const [isFollowing, setIsFollowing] = useState<boolean>(isFollowed);
+
   return (
     <div className=" md:w-1/2 w-full   flex justify-between items-center">
       <div className="flex gap-4 items-center">
@@ -43,13 +45,15 @@ export const UserCard: React.FC<UserCardProps> = ({
       </div>
       <div className="flex gap-1 text-[#656565] text-xs">
         <button
-          className={`${isFollowed
+          onClick={() => setIsFollowing((prev) => !prev)}
+          className={`${
+            isFollowing
               ? "bg-[#3CD399] text-white"
               : "bg-white text-[#3CD399] border border-[#3CD399]"
-            } font-semibold w-[140px] rounded-full h-[50px] flex gap-1 items-center justify-center`}
+          } font-semibold w-[140px] rounded-full h-[50px] flex gap-1 items-center justify-center`}
         >
-          <p>{isFollowed ? "Follow" : "Unfollow"}</p>
-          {isFollowed && <FaUserPlus />}
+          <p>{isFollowing ? "Follow" : "Unfollow"}</p>
+          {isFollowing && <FaUserPlus />}
         </button>
       </div>
     </div>
