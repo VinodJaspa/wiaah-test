@@ -68,11 +68,11 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
         </button>
       )}
 
-      <div
+      {/* <div
         className={`flex items-center justify-center min-w-20 h-20 rounded-xl bg-[#F1F1F1]`}
       >
         <FaPlus className="w-[42px] h-[42px] text-[#3CD399]" />
-      </div>
+      </div> */}
       <div
         className="relative flex gap-6 w-full overflow-x-scroll z-10 noScroll "
         ref={carouselRef}
