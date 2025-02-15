@@ -8,7 +8,11 @@ import {
 } from "@blocks";
 import { PostType } from "@features/API";
 import { useResponsive } from "@src/index";
-import { storiesPlaceholder } from "placeholder";
+import {
+  PersonalizeActions,
+  PostCardPlaceHolder,
+  storiesPlaceholder,
+} from "placeholder";
 import React from "react";
 import { useRouting } from "routing";
 import { useSocialControls } from "ui";
@@ -57,7 +61,13 @@ const FAKE_RECENT_STORIES_DATA = [
   },
 ];
 
-const SocialNewsfeedView: React.FC = () => {
+interface SocialNewsfeedViewProps {
+  isDiscover?: boolean;
+}
+
+const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
+  isDiscover,
+}) => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { OpenModal } = useStoryModal();
@@ -79,13 +89,71 @@ const SocialNewsfeedView: React.FC = () => {
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
   const data = newsfeedPosts;
 
+  const normalizedPersonalizedActions = PersonalizeActions.map((action) => ({
+    profileInfo: {
+      ...PostCardPlaceHolder.profileInfo,
+      name: action.profile.username,
+      photo: action.profile.photo,
+    },
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      id: action.id,
+      thumbnail: action.src,
+      attachments: [
+        {
+          type: "video",
+          src: action.src,
+          postLocation: action.location
+            ? `${action.location.city}, ${action.location.country}`
+            : "",
+        },
+      ],
+      numberOfComments: action.comments,
+      numberOfLikes: action.reactionNum,
+      numberOfShares: action.shares,
+      location: action.location
+        ? {
+            city: action.location.city,
+            country: action.location.country,
+          }
+        : undefined,
+      musicId: action.musicId,
+      effect: action.effect?.name,
+      createdAt: new Date().toISOString(),
+      tags: action.tags.map((tag) => tag.userId),
+    },
+  }));
+
+  const interleaveAtOddIndices = (baseArray: any[], itemsToInsert: any[]) => {
+    let result = [...baseArray];
+    let insertIndex = 2;
+
+    for (const item of itemsToInsert) {
+      if (insertIndex >= result.length) {
+        result.push(item);
+      } else {
+        result.splice(insertIndex, 0, item);
+      }
+      insertIndex += 3;
+    }
+
+    return result;
+  };
+
+  const discoverData = interleaveAtOddIndices(
+    newsfeedPosts,
+    normalizedPersonalizedActions,
+  );
+
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
-      <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
-        <div className="min-w-[4.75rem]">
-          <ScrollableStories stories={storiesPlaceholder} />
+      {!isDiscover && (
+        <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
+          <div className="min-w-[4.75rem]">
+            <ScrollableStories stories={storiesPlaceholder} />
+          </div>
         </div>
-      </div>
+      )}
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">
@@ -117,6 +185,7 @@ const SocialNewsfeedView: React.FC = () => {
         {/* Desktop view */}
         <div className="hidden lg:block">
           <PostCardsListWrapper
+            isDiscover={isDiscover}
             grid={true}
             onPostClick={(post) => {
               // TODO: Handle post click
@@ -126,7 +195,7 @@ const SocialNewsfeedView: React.FC = () => {
               visit((r) => r.visitSocialProfile(username))
             }
             cols={cols}
-            posts={data}
+            posts={isDiscover ? discoverData : data}
           />
         </div>
       </div>

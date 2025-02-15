@@ -79,11 +79,20 @@ export const PostCard: React.FC<PostCardProps> = ({
       {...setTestid("social-newsfeed-post")}
       className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full"
     >
-      <Image
-        className="w-full h-full object-cover"
-        src={post.postInfo?.thumbnail}
-        alt={post.postInfo.content}
-      />
+      {post.postInfo?.attachments[0]?.type === "image" && (
+        <Image
+          className="w-full h-full object-cover"
+          src={post.postInfo?.thumbnail}
+          alt={post.postInfo.content}
+        />
+      )}
+
+      {post.postInfo?.attachments[0]?.type !== "image" && (
+        <video className="w-full h-full object-cover" autoPlay loop muted>
+          <source src={post.postInfo?.attachments[0]?.src} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
 
       <div
         onClick={openPopup}

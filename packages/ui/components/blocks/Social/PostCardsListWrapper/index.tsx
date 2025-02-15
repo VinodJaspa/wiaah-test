@@ -17,6 +17,7 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   onPostClick?: (postId: string) => any;
   onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
+  isDiscover?: boolean;
 }
 
 const classPatterns: string[] = [
@@ -51,8 +52,14 @@ const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
 
 const Grid: React.FC<{
   posts: { post: React.ReactNode; className: string }[];
-}> = ({ posts }) => (
-  <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4 w-full aspect-[8/3]">
+  isDiscover?: boolean;
+}> = ({ posts, isDiscover }) => (
+  <div
+    className={cn(
+      "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full aspect-[8/3]",
+      isDiscover ? "gap-0.5" : "gap-4",
+    )}
+  >
     {posts.map(({ post, className }, index) => (
       <div className={cn(className)} key={index}>
         {post}
@@ -69,6 +76,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   onPostClick,
   onProfileClick,
   popup = true,
+  isDiscover,
 }) => {
   const router = useRouter();
   const { isMobile, isTablet } = useResponsive();
@@ -140,9 +148,14 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             ))}
           </div>
         ) : (
-          <div className="space-y-4 flex flex-col w-full">
+          <div
+            className={cn(
+              "flex flex-col w-full",
+              isDiscover ? "space-y-0.5" : "space-y-4",
+            )}
+          >
             {postChunks.map((chunk, index) => (
-              <Grid key={index} posts={chunk} />
+              <Grid key={index} posts={chunk} isDiscover={isDiscover} />
             ))}
           </div>
         )
