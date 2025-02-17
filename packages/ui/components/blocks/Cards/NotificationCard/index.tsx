@@ -1,19 +1,17 @@
+import {
+  Avatar,
+  Button,
+  CheckmarkCircleFillIcon,
+  HStack,
+  useDateDiff,
+} from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  useDateDiff,
-  Button,
-  Avatar,
-  EllipsisText,
-  ClockIcon,
-  HStack,
-  CheckmarkCircleFillIcon,
-} from "@UI";
 
-import { useRouting } from "routing";
-import { ExclimationOutlineCircleMark } from "@UI/components/partials/icons/ExclimationMark";
 import { isToday, isYesterday } from "@UI/../utils/src";
+import { ExclimationOutlineCircleMark } from "@UI/components/partials/icons/ExclimationMark";
 import { NotificationType } from "@features/API";
+import { useRouting } from "routing";
 
 export interface NotifiactionCardProps {
   type: NotificationType;
@@ -52,8 +50,9 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
       <div className={`flex items-center gap-3`}>
         <HStack>
           <span
-            className={`${seen ? "" : "bg-red-500"
-              } rounded-full w-[0.375rem] h-[0.375rem]`}
+            className={`${
+              seen ? "" : "bg-red-500"
+            } rounded-full w-[0.375rem] h-[0.375rem]`}
           ></span>
           <div className="w-[3.25rem] h-[3.25rem] flex justify-center items-center">
             {showOn([
@@ -166,18 +165,18 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
           <p className="text-xs text-[#7E7E7E]">
             {isToday(new Date(createdAt)) || isYesterday(new Date(createdAt))
               ? new Date(createdAt).toLocaleTimeString("en-us", {
-                hour: "2-digit",
-                hour12: true,
-                minute: "2-digit",
-              })
+                  hour: "2-digit",
+                  hour12: true,
+                  minute: "2-digit",
+                })
               : new Date(createdAt).toLocaleDateString("en-us", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
-              })}
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
           </p>
         </div>
         {showOn([NotificationType.Follow]) ? (

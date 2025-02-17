@@ -1,11 +1,10 @@
 import {
-  useGetNotifications,
-  SpinnerFallback,
-  NotifiactionCard,
   Menu,
+  MenuButton,
   MenuItem,
   MenuList,
-  MenuButton,
+  NotifiactionCard,
+  SpinnerFallback,
   useGetMyNotificationsQuery,
 } from "@UI";
 import { isToday } from "@UI/../utils/src";
@@ -30,7 +29,8 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
         >
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <p className="font-bold text-lg">{t("Today")}</p>
-            {Array.isArray(data) &&
+            {data?.data &&
+              Array.isArray(data.data) &&
               data.data.map((noti, i) => (
                 <MenuItem key={noti.id + i}>
                   <NotifiactionCard
