@@ -1,12 +1,11 @@
-import { FormatedSearchableFilter } from "../../../types/SearchableData";
-import { AsyncReturnType } from "types";
 import {
   CheckValidation,
   InferType,
   ServiceOnMapLocationDataValidationSchema,
   ServicesOnMapLocationsApiResponseValidationSchema,
 } from "validation";
-import { lats, lngs } from "../Services";
+import { FormatedSearchableFilter } from "../../../types/SearchableData";
+import { lats, lons } from "../Services";
 
 const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
   [...Array(12)].reduce((acc, curr) => {
@@ -24,10 +23,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: 350,
@@ -38,6 +35,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "hotel",
         sellerInfo: {
+          id: "seller-1",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (1).jfif",
@@ -56,10 +54,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: 350,
@@ -70,6 +66,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "holidays_rentals",
         sellerInfo: {
+          id: "seller-2",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (1).jfif",
@@ -88,10 +85,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: [50, 2500],
@@ -102,6 +97,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "restaurant",
         sellerInfo: {
+          id: "seller-3",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (2).jfif",
@@ -120,10 +116,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: [50, 5000],
@@ -134,6 +128,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "health_center",
         sellerInfo: {
+          id: "seller-4",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (3).jfif",
@@ -152,10 +147,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: [50, 500],
@@ -166,6 +159,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "beauty_center",
         sellerInfo: {
+          id: "seller-5",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (4).jfif",
@@ -184,10 +178,8 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
             state: "LA",
             address: "Smart Street",
             postalCode: 8,
-            cords: {
-              lat: lats[lats.length],
-              lng: lngs[lngs.length],
-            },
+            lat: lats[0],
+            lon: lons[0],
             city: "LA",
           },
           price: [50, 500],
@@ -198,6 +190,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
         },
         serviceType: "vehicle",
         sellerInfo: {
+          id: "seller-6",
           name: "Seller name",
           profession: "Profession",
           thumbnail: "/profile (4).jfif",
@@ -208,18 +201,25 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
   }, []);
 
 export const getServicesOnMapLocationsFetcher = async (
-  filters: FormatedSearchableFilter | undefined,
-): Promise<
-  InferType<typeof ServicesOnMapLocationsApiResponseValidationSchema>
-> => {
-  const res: AsyncReturnType<typeof getServicesOnMapLocationsFetcher> = {
-    total: 20,
-    hasMore: false,
-    data: servicesPH.filter((v) => v.serviceType === filters!["serviceType"]),
-  };
+  filters?: FormatedSearchableFilter,
+) => {
+  try {
+    const filteredData = servicesPH.filter(
+      (v) => !filters?.serviceType || v.serviceType === filters.serviceType,
+    );
 
-  return CheckValidation(
-    ServicesOnMapLocationsApiResponseValidationSchema,
-    res,
-  );
+    const res = {
+      total: filteredData.length,
+      hasMore: false,
+      data: filteredData,
+    };
+
+    return CheckValidation(
+      ServicesOnMapLocationsApiResponseValidationSchema,
+      res,
+    );
+  } catch (error) {
+    console.error("Validation Error:", error);
+    return { total: 0, hasMore: false, data: [] };
+  }
 };

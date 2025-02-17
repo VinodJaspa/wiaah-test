@@ -29,7 +29,7 @@ export interface SearchServiceCardProps {
     id: string;
   };
   sellerInfo: {
-    id: string;
+    id?: string;
     name: string;
     profession: string;
     thumbnail: string;

@@ -6,6 +6,7 @@ import {
   HStack,
   Image,
   LocationIconButton,
+  MasterLocationMapModal,
   Menu,
   MenuButton,
   MenuItem,
@@ -70,109 +71,115 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { data } = useGetMyNotificationsQuery();
 
   return (
-    <div
-      {...props}
-      className={
-        "flex justify-between items-center bg-white w-full h-[3.75rem]"
-      }
-    >
-      <div className="flex items-center gap-2 h-full">
-        {isMobile ? (
-          <Image src="/wiaah_logo.png" className="w-24 h-10 object-cover" />
-        ) : (
-          <div className="flex items-center gap-4">
-            <WavingHand className="text-[2rem]" />
-            <div className="flex flex-col">
-              <p>
-                {t("Hello")} {user?.firstName || t("Guest")}
-              </p>
-              <p className="font-bold text-lg">{t("Welcome Back")}</p>
+    <>
+      <div
+        {...props}
+        className={
+          "flex justify-between items-center bg-white w-full h-[3.75rem]"
+        }
+      >
+        <div className="flex items-center gap-2 h-full">
+          {isMobile ? (
+            <Image src="/wiaah_logo.png" className="w-24 h-10 object-cover" />
+          ) : (
+            <div className="flex items-center gap-4">
+              <WavingHand className="text-[2rem]" />
+              <div className="flex flex-col">
+                <p>
+                  {t("Hello")} {user?.firstName || t("Guest")}
+                </p>
+                <p className="font-bold text-lg">{t("Welcome Back")}</p>
+              </div>
             </div>
+          )}
+        </div>
+        {isMobile ? (
+          <SearchIcon />
+        ) : (
+          <div className="flex items-center gap-2">
+            <GeneralSearchModal>
+              <SearchInput innerProps={{ onClick: openSearchBox }} />
+            </GeneralSearchModal>
+            <LocationIconButton
+              colorScheme="lightGray"
+              outline
+              iconProps={{
+                className: "fill-transparent",
+              }}
+              onClick={() =>
+                SearchForLocations([{ id: "default", searchType: "service" }])
+              }
+              className="text-icon fill-transparent text-lightBlack"
+            />
           </div>
         )}
-      </div>
-      {isMobile ? (
-        <SearchIcon />
-      ) : (
-        <div className="flex items-center gap-2">
-          <GeneralSearchModal>
-            <SearchInput innerProps={{ onClick: openSearchBox }} />
-          </GeneralSearchModal>
-          <LocationIconButton
-            colorScheme="lightGray"
-            outline
-            iconProps={{
-              className: "fill-transparent",
-            }}
-            onClick={() => SearchForLocations([])}
-            className="text-icon fill-transparent text-lightBlack"
-          />
-        </div>
-      )}
 
-      <div className="flex items-center gap-8 p-2 cursor-pointer">
-        {/* {isMobile ? ( */}
-        <>
-          <SquarePlusOutlineIcon
-            className="text-icon text-lightBlack"
-            onClick={() => showNewPublish()}
-          />
-        </>
-        {/* ) : null} */}
-        {isMobile ? (
-          <BellOutlineIcon
-            onClick={() => openNotifications()}
-            className="cursor-pointer text-icon text-lightBlack"
-          />
-        ) : (
-          <NotifiactionsMenu>
-            <BellOutlineIcon className="text-icon text-lightBlack" />
-          </NotifiactionsMenu>
-        )}
-
-        <div
-          className="relative"
-          onClick={() => visit((r) => r.addPath("/chat"))}
-        >
-          <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
-            {/* TODO:api integration */}4
-          </span>
-          <MessageOutlineIcon className="text-lightBlack text-icon" />
-        </div>
-        <div className="text-lightBlack">
-          <ShoppingCart>
-            <ShoppingCartOutlineIcon className="text-icon text-lightBlack h-6 w-6" />
-          </ShoppingCart>
-        </div>
-        {!isMobile && (
+        <div className="flex items-center gap-8 p-2 cursor-pointer">
+          {/* {isMobile ? ( */}
           <>
-            {user ? (
-              <AccountsProfileOptions>
-                <div
-                  {...setTestid("header_profile_icon")}
-                  className="flex flex-col justify-center"
-                >
-                  <Avatar
-                    className="text-icon"
-                    showBorder={false}
-                    name={user.firstName}
-                    src={user.photo || ""}
-                  />
-                </div>
-              </AccountsProfileOptions>
-            ) : (
-              <Button
-                {...setTestid("sign-in-btn")}
-                className="whitespace-nowrap"
-                onClick={() => visit((r) => r.visitSignin())}
-              >
-                {t("Sign In")}
-              </Button>
-            )}
+            <SquarePlusOutlineIcon
+              className="text-icon text-lightBlack"
+              onClick={() => showNewPublish()}
+            />
           </>
-        )}
+          {/* ) : null} */}
+          {isMobile ? (
+            <BellOutlineIcon
+              onClick={() => openNotifications()}
+              className="cursor-pointer text-icon text-lightBlack"
+            />
+          ) : (
+            <NotifiactionsMenu>
+              <BellOutlineIcon className="text-icon text-lightBlack" />
+            </NotifiactionsMenu>
+          )}
+
+          <div
+            className="relative"
+            onClick={() => visit((r) => r.addPath("/chat"))}
+          >
+            <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
+              {/* TODO:api integration */}4
+            </span>
+            <MessageOutlineIcon className="text-lightBlack text-icon" />
+          </div>
+          <div className="text-lightBlack">
+            <ShoppingCart>
+              <ShoppingCartOutlineIcon className="text-icon text-lightBlack h-6 w-6" />
+            </ShoppingCart>
+          </div>
+          {!isMobile && (
+            <>
+              {user ? (
+                <AccountsProfileOptions>
+                  <div
+                    {...setTestid("header_profile_icon")}
+                    className="flex flex-col justify-center"
+                  >
+                    <Avatar
+                      className="text-icon"
+                      showBorder={false}
+                      name={user.firstName}
+                      src={user.photo || ""}
+                    />
+                  </div>
+                </AccountsProfileOptions>
+              ) : (
+                <Button
+                  {...setTestid("sign-in-btn")}
+                  className="whitespace-nowrap"
+                  onClick={() => visit((r) => r.visitSignin())}
+                >
+                  {t("Sign In")}
+                </Button>
+              )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+
+      <MasterLocationMapModal />
+    </>
   );
 };
 

@@ -11,7 +11,7 @@ export type onMapLocation = {
   title: string;
   price: number;
   lat: number;
-  lng: number;
+  lon: number;
   id: string;
 };
 
