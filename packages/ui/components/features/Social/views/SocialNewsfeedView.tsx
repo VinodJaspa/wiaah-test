@@ -19,6 +19,23 @@ import { useSocialControls } from "ui";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 
+const getHeight = (index: number) => {
+  const heights = {
+    0: 250,
+    1: 750,
+    2: 500,
+    3: 250,
+    4: 500,
+    5: 250,
+    6: 750,
+    7: 500,
+    8: 500,
+    9: 250,
+  };
+
+  return heights[index] || 250;
+};
+
 const FAKE_RECENT_STORIES_DATA = [
   {
     newStory: "Just finished reading an amazing book!",
@@ -126,7 +143,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
 
   const interleaveAtOddIndices = (baseArray: any[], itemsToInsert: any[]) => {
     let result = [...baseArray];
-    let insertIndex = 2;
+    let insertIndex = 1;
 
     for (const item of itemsToInsert) {
       if (insertIndex >= result.length) {
@@ -134,7 +151,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
       } else {
         result.splice(insertIndex, 0, item);
       }
-      insertIndex += 3;
+      insertIndex += 2;
     }
 
     return result;
@@ -196,6 +213,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
             }
             cols={cols}
             posts={isDiscover ? discoverData : data}
+            getItemHeight={getHeight}
           />
         </div>
       </div>

@@ -18,6 +18,7 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
   isDiscover?: boolean;
+  getItemHeight?: (index: number) => number;
 }
 
 const classPatterns: string[] = [
@@ -52,12 +53,10 @@ const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
 
 const Grid: React.FC<{
   posts: { post: React.ReactNode; className: string }[];
-  isDiscover?: boolean;
-}> = ({ posts, isDiscover }) => (
+}> = ({ posts }) => (
   <div
     className={cn(
-      "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full aspect-[8/3]",
-      isDiscover ? "gap-0.5" : "gap-4",
+      "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full aspect-[8/3] gap-4",
     )}
   >
     {posts.map(({ post, className }, index) => (
@@ -68,6 +67,58 @@ const Grid: React.FC<{
   </div>
 );
 
+const MasonryGrid: React.FC<{
+  posts: React.ReactNode[];
+  getItemHeight?: (index: number) => number;
+}> = ({ posts, getItemHeight }) => {
+  const columns = 4;
+  const columnPosts: React.ReactNode[][] = Array.from(
+    { length: columns },
+    () => [],
+  );
+  const columnIndices: number[][] = Array.from({ length: columns }, () => []);
+
+  posts.forEach((post, index) => {
+    const columnIndex = index % columns;
+    columnPosts[columnIndex].push(post);
+    columnIndices[columnIndex].push(index);
+  });
+
+  return (
+    <div className="grid grid-cols-4 gap-0.5">
+      {columnPosts.map((column, columnIndex) => (
+        <div key={columnIndex} className="flex flex-col gap-0.5">
+          {column.map((post, postIndex) => {
+            const originalIndex = columnIndices[columnIndex][postIndex];
+            const height = getItemHeight
+              ? getItemHeight(originalIndex)
+              : "auto";
+
+            return (
+              <div
+                key={postIndex}
+                className={cn(
+                  "w-full overflow-hidden transition-all duration-200",
+                  height !== "auto" && "relative",
+                )}
+                style={
+                  height !== "auto" ? { height: `${height}px` } : undefined
+                }
+              >
+                {height !== "auto" ? (
+                  <div className="absolute inset-0">{post}</div>
+                ) : (
+                  post
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   posts,
   cols = 1,
@@ -76,10 +127,11 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   onPostClick,
   onProfileClick,
   popup = true,
-  isDiscover,
+  isDiscover = false,
+  getItemHeight,
 }) => {
   const router = useRouter();
-  const { isMobile, isTablet } = useResponsive();
+  const { isMobile } = useResponsive();
 
   const childPosts =
     posts &&
@@ -133,6 +185,10 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
       );
     });
 
+  if (isDiscover && !isMobile) {
+    return <MasonryGrid posts={childPosts} getItemHeight={getItemHeight} />;
+  }
+
   const transformedPosts = transformPosts(childPosts);
   const postChunks = splitIntoChunks(transformedPosts, 5);
 
@@ -148,14 +204,9 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             ))}
           </div>
         ) : (
-          <div
-            className={cn(
-              "flex flex-col w-full",
-              isDiscover ? "space-y-0.5" : "space-y-4",
-            )}
-          >
+          <div className="flex flex-col w-full space-y-4">
             {postChunks.map((chunk, index) => (
-              <Grid key={index} posts={chunk} isDiscover={isDiscover} />
+              <Grid key={index} posts={chunk} />
             ))}
           </div>
         )
