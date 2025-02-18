@@ -66,7 +66,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
       onContactClick(profile.id);
     }
   }
-  function handleLocationClick() { }
+  function handleLocationClick() {}
   return (
     <FlexStack fullWidth>
       <FlexStack fullWidth direction="vertical">
@@ -93,9 +93,6 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 >
                   {profile.name}
                 </Prefix>
-              </Clickable>
-              <Clickable onClick={handleContactClick}>
-                <BoldText>{t("Contact Shop")}</BoldText>
               </Clickable>
             </FlexStack>
             <Padding Y={{ value: 0.2 }} />
