@@ -26,16 +26,16 @@ interface ContentDimensions {
 }
 
 const classPatterns: string[] = [
-  "col-span-18 row-span-1 ", // 0
-  "col-span-18 row-span-1 ", // 1
-  "col-span-14 row-span-2 ", // 2
-  "col-span-18 row-span-1 ", // 3
-  "col-span-18 row-span-1 ", // 4
-  "col-span-18 row-span-2 ", // 5
-  "col-span-18 row-span-1 ", // 6
-  "col-span-12 row-span-1 ", // 7
-  "col-span-20 row-span-1 ", // 8
-  "col-span-14 row-span-1  ", // 9
+  "col-span-18 row-span-1",
+  "col-span-18 row-span-1",
+  "col-span-14 row-span-2",
+  "col-span-18 row-span-1",
+  "col-span-18 row-span-1",
+  "col-span-18 row-span-2",
+  "col-span-18 row-span-1",
+  "col-span-12 row-span-1",
+  "col-span-20 row-span-1",
+  "col-span-14 row-span-1",
 ];
 
 const transformPosts = (
@@ -60,7 +60,7 @@ const Grid: React.FC<{
 }> = ({ posts }) => (
   <div
     className={cn(
-      "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full aspect-[8/3] gap-4",
+      "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full gap-4 aspect-[8/3]",
     )}
   >
     {posts.map(({ post, className }, index) => (
@@ -94,7 +94,6 @@ const useContentDimensions = (content: PostCardInfo) => {
                 };
 
           if (naturalWidth && naturalHeight) {
-            // Calculate height maintaining aspect ratio based on container width
             const containerWidth = elementRef.current?.clientWidth || 0;
             const aspectRatio = naturalHeight / naturalWidth;
             const calculatedHeight = containerWidth * aspectRatio;
@@ -120,7 +119,6 @@ const useContentDimensions = (content: PostCardInfo) => {
 
     calculateDimensions();
 
-    // Recalculate on window resize
     window.addEventListener("resize", calculateDimensions);
     return () => window.removeEventListener("resize", calculateDimensions);
   }, [content]);
@@ -153,7 +151,6 @@ const MasonryGrid: React.FC<{
   const columnContent: { post: PostCardInfo; child: React.ReactNode }[][] =
     Array.from({ length: columns }, () => []);
 
-  // Distribute posts across columns
   children.forEach((child, index) => {
     const columnIndex = index % columns;
     columnContent[columnIndex].push({

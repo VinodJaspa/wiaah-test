@@ -77,7 +77,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   return (
     <div
       {...setTestid("social-newsfeed-post")}
-      className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full"
+      className="w-full h-full relative group rounded md:rounded-[1.25rem] overflow-hidden aspect-[8/3]"
     >
       {post.postInfo?.attachments[0]?.type === "image" && (
         <Image
@@ -96,9 +96,9 @@ export const PostCard: React.FC<PostCardProps> = ({
 
       <div
         onClick={openPopup}
-        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between z-10"
+        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full h-full justify-between z-10"
       >
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full h-full">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center ">
               <div className="flex gap-2 items-center">
