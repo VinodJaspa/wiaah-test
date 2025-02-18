@@ -4,7 +4,7 @@ import { ListWrapper, ListWrapperProps } from "@blocks/Wrappers";
 import { AspectRatio } from "@partials";
 import { useModalDisclouser, useResponsive } from "hooks";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PostCardInfo } from "types";
 import { cn, mapArray } from "utils";
 import { PostCard } from "../PostCard/NewsFeedPostCard";
@@ -18,7 +18,11 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
   isDiscover?: boolean;
-  getItemHeight?: (index: number) => number;
+}
+
+interface ContentDimensions {
+  width: number;
+  height: number;
 }
 
 const classPatterns: string[] = [
@@ -67,52 +71,106 @@ const Grid: React.FC<{
   </div>
 );
 
-const MasonryGrid: React.FC<{
-  posts: React.ReactNode[];
-  getItemHeight?: (index: number) => number;
-}> = ({ posts, getItemHeight }) => {
-  const columns = 4;
-  const columnPosts: React.ReactNode[][] = Array.from(
-    { length: columns },
-    () => [],
-  );
-  const columnIndices: number[][] = Array.from({ length: columns }, () => []);
+const useContentDimensions = (content: PostCardInfo) => {
+  const [dimensions, setDimensions] = useState<ContentDimensions | null>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
 
-  posts.forEach((post, index) => {
+  useEffect(() => {
+    const calculateDimensions = () => {
+      if (!elementRef.current) return;
+
+      const media = elementRef.current.querySelector("img, video") as
+        | HTMLImageElement
+        | HTMLVideoElement;
+
+      if (media) {
+        const updateDimensions = () => {
+          const { naturalWidth, naturalHeight } =
+            media instanceof HTMLImageElement
+              ? media
+              : {
+                  naturalWidth: media.videoWidth,
+                  naturalHeight: media.videoHeight,
+                };
+
+          if (naturalWidth && naturalHeight) {
+            // Calculate height maintaining aspect ratio based on container width
+            const containerWidth = elementRef.current?.clientWidth || 0;
+            const aspectRatio = naturalHeight / naturalWidth;
+            const calculatedHeight = containerWidth * aspectRatio;
+
+            setDimensions({
+              width: containerWidth,
+              height: calculatedHeight,
+            });
+          }
+        };
+
+        if (media instanceof HTMLImageElement) {
+          if (media.complete) {
+            updateDimensions();
+          } else {
+            media.onload = updateDimensions;
+          }
+        } else {
+          media.onloadedmetadata = updateDimensions;
+        }
+      }
+    };
+
+    calculateDimensions();
+
+    // Recalculate on window resize
+    window.addEventListener("resize", calculateDimensions);
+    return () => window.removeEventListener("resize", calculateDimensions);
+  }, [content]);
+
+  return { dimensions, elementRef };
+};
+
+const MasonryItem: React.FC<{
+  post: PostCardInfo;
+  children: React.ReactNode;
+}> = ({ post, children }) => {
+  const { dimensions, elementRef } = useContentDimensions(post);
+
+  return (
+    <div
+      ref={elementRef}
+      className="w-full overflow-hidden transition-all duration-200"
+      style={dimensions ? { height: `${dimensions.height}px` } : undefined}
+    >
+      {children}
+    </div>
+  );
+};
+
+const MasonryGrid: React.FC<{
+  posts: PostCardInfo[];
+  children: React.ReactNode[];
+}> = ({ posts, children }) => {
+  const columns = 4;
+  const columnContent: { post: PostCardInfo; child: React.ReactNode }[][] =
+    Array.from({ length: columns }, () => []);
+
+  // Distribute posts across columns
+  children.forEach((child, index) => {
     const columnIndex = index % columns;
-    columnPosts[columnIndex].push(post);
-    columnIndices[columnIndex].push(index);
+    columnContent[columnIndex].push({
+      post: posts[index],
+      child,
+    });
   });
 
   return (
     <div className="grid grid-cols-4 gap-0.5">
-      {columnPosts.map((column, columnIndex) => (
+      {columnContent.map((column, columnIndex) => (
         <div key={columnIndex} className="flex flex-col gap-0.5">
-          {column.map((post, postIndex) => {
-            const originalIndex = columnIndices[columnIndex][postIndex];
-            const height = getItemHeight
-              ? getItemHeight(originalIndex)
-              : "auto";
-
-            return (
-              <div
-                key={postIndex}
-                className={cn(
-                  "w-full overflow-hidden transition-all duration-200",
-                  height !== "auto" && "relative",
-                )}
-                style={
-                  height !== "auto" ? { height: `${height}px` } : undefined
-                }
-              >
-                {height !== "auto" ? (
-                  <div className="absolute inset-0">{post}</div>
-                ) : (
-                  post
-                )}
-              </div>
-            );
-          })}
+          {column.map(({ post, child }, postIndex) => (
+            <MasonryItem key={postIndex} post={post}>
+              {child}
+            </MasonryItem>
+          ))}
         </div>
       ))}
     </div>
@@ -128,7 +186,6 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   onProfileClick,
   popup = true,
   isDiscover = false,
-  getItemHeight,
 }) => {
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -186,7 +243,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     });
 
   if (isDiscover && !isMobile) {
-    return <MasonryGrid posts={childPosts} getItemHeight={getItemHeight} />;
+    return <MasonryGrid posts={posts} children={childPosts} />;
   }
 
   const transformedPosts = transformPosts(childPosts);

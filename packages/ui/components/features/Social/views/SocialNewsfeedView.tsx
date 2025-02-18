@@ -19,23 +19,6 @@ import { useSocialControls } from "ui";
 import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
 import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 
-const getHeight = (index: number) => {
-  const heights = {
-    0: 250,
-    1: 750,
-    2: 500,
-    3: 250,
-    4: 500,
-    5: 250,
-    6: 750,
-    7: 500,
-    8: 500,
-    9: 250,
-  };
-
-  return heights[index] || 250;
-};
-
 const FAKE_RECENT_STORIES_DATA = [
   {
     newStory: "Just finished reading an amazing book!",
@@ -213,7 +196,6 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
             }
             cols={cols}
             posts={isDiscover ? discoverData : data}
-            getItemHeight={getHeight}
           />
         </div>
       </div>
