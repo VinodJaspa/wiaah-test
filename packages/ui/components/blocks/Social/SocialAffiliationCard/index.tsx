@@ -80,6 +80,13 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   const { handleShare } = useHandlePostSharing();
   const { t } = useTranslation();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<{
+    status: boolean;
+    reactions: number;
+  }>({
+    status: false,
+    reactions: post.reactionNum as number,
+  });
 
   const router = useRouter();
 
@@ -118,6 +125,14 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
             post?.affiliation?.product?.presentations ||
             ([] as ProductPresentation[]),
         };
+
+  const handleLikeUnlike = () => {
+    if (isLiked.status) {
+      setIsLiked({ status: false, reactions: isLiked.reactions - 1 });
+    } else {
+      setIsLiked({ status: true, reactions: isLiked.reactions + 1 });
+    }
+  };
 
   return (
     <div
@@ -214,10 +229,8 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                   onShare={(mothed) => handleShare(mothed, post.id)}
                   likes={post.reactionNum}
                   shares={post.shares}
-                  onHeartIConClick={() => {
-                    console.log("heart Icon clicked ");
-                    openModal();
-                  }}
+                  onHeartIConClick={handleLikeUnlike}
+                  isLiked={isLiked}
                 />
               </div>
             )}

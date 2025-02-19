@@ -12,7 +12,13 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { CgPlayButtonR } from "react-icons/cg";
-import { HiHeart, HiOutlineChat, HiShare, HiUserGroup } from "react-icons/hi";
+import {
+  HiHeart,
+  HiOutlineChat,
+  HiShare,
+  HiUserGroup,
+  HiOutlineHeart,
+} from "react-icons/hi";
 import { Interaction, Interactions, ShareMotheds } from "types";
 import { FaFacebook, FaTwitter, FaWhatsapp, FaPinterest } from "react-icons/fa";
 import { NumberShortner } from "@UI/components/helpers";
@@ -25,6 +31,7 @@ export interface PostInteractionsProps {
   onShare?: (shareMothed: ShareMotheds) => any;
   className?: string;
   onHeartIConClick?: () => void;
+  isLiked?: { status: boolean; reactions: number };
 }
 
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
@@ -35,6 +42,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   onShare,
   className,
   onHeartIConClick,
+  isLiked,
 }) => {
   const { t } = useTranslation();
   function handleInteraction(type: Interactions) {
@@ -52,14 +60,23 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
         cursor={"pointer"}
         onClick={() => handleInteraction("like")}
       >
-        <Icon
-          onClick={onHeartIConClick}
-          fontSize={"xx-large"}
-          fill={"primary.main"}
-          as={HiHeart}
-        />
+        {!isLiked.status ? (
+          <Icon
+            onClick={onHeartIConClick}
+            fontSize={"xx-large"}
+            fill={"primary.main"}
+            as={HiOutlineHeart}
+          />
+        ) : (
+          <Icon
+            onClick={onHeartIConClick}
+            fontSize={"xx-large"}
+            fill={"primary.main"}
+            as={HiHeart}
+          />
+        )}
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(likes)}
+          {NumberShortner(isLiked.reactions)}
         </Text>
       </VStack>
       <VStack
