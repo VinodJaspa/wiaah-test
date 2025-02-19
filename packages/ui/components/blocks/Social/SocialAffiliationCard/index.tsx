@@ -213,6 +213,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                   comments={post.comments}
                   onShare={(mothed) => handleShare(mothed, post.id)}
                   likes={post.reactionNum}
+                  shares={post.shares}
                   onHeartIConClick={() => {
                     console.log("heart Icon clicked ");
                     openModal();

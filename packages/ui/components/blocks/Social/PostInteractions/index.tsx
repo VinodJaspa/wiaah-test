@@ -20,6 +20,7 @@ import { NumberShortner } from "@UI/components/helpers";
 export interface PostInteractionsProps {
   likes: number;
   comments: number;
+  shares: number;
   onInteraction?: (intraction: Interaction) => any;
   onShare?: (shareMothed: ShareMotheds) => any;
   className?: string;
@@ -29,6 +30,7 @@ export interface PostInteractionsProps {
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
   comments,
   likes,
+  shares,
   onInteraction,
   onShare,
   className,
@@ -57,7 +59,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           as={HiHeart}
         />
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(likes)} {t("likes", "likes")}
+          {NumberShortner(likes)}
         </Text>
       </VStack>
       <VStack
@@ -71,7 +73,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           as={HiOutlineChat}
         />
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(comments)} {t("comments", "comments")}
+          {NumberShortner(comments)}
         </Text>
       </VStack>
       <Menu isLazy lazyBehavior="unmount" placement="left-start">
@@ -83,7 +85,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           >
             <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
             <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-              {t("shares", "shares")}
+              {NumberShortner(shares)}
             </Text>
           </VStack>
         </MenuButton>
