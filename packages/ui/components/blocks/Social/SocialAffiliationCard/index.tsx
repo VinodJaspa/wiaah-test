@@ -24,6 +24,8 @@ import {
 import { getRandomImage } from "placeholder";
 import { AttachmentType } from "@features/API/gql/generated";
 import { useGetMyUserData } from "@UI/../api";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -79,6 +81,8 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   const { t } = useTranslation();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const { getSince } = useDateDiff({
     from: new Date(post.createdAt),
     to: new Date(),
@@ -131,14 +135,20 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex items-center gap-2">
                 <Avatar
+                  onClick={() =>
+                    router.push(`/profile/${post.user.profile.id}`)
+                  }
                   className="bg-black"
                   src={post?.user?.profile?.photo}
                   name={post?.user?.profile?.username}
                 />
                 <div className="flex flex-col">
-                  <p className="text-lg fong-semibold">
+                  <Link
+                    href={`/profile/${post.user.profile.id}`}
+                    className="text-lg fong-semibold"
+                  >
                     {post?.user?.profile?.username}
-                  </p>
+                  </Link>
                   <p className="text-xs">
                     {since.value} {since.timeUnit}
                   </p>
