@@ -231,6 +231,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                   shares={post.shares}
                   onHeartIConClick={handleLikeUnlike}
                   isLiked={isLiked}
+                  postId={post.id}
                 />
               </div>
             )}

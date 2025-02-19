@@ -1,27 +1,16 @@
-import {
-  Flex,
-  VStack,
-  Icon,
-  Text,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  HStack,
-} from "@chakra-ui/react";
+import { NumberShortner } from "@UI/components/helpers";
+import { useSocialControls } from "@blocks/Layout";
+import { Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CgPlayButtonR } from "react-icons/cg";
 import {
   HiHeart,
   HiOutlineChat,
-  HiShare,
-  HiUserGroup,
   HiOutlineHeart,
+  HiShare,
 } from "react-icons/hi";
+import { useRouting } from "routing";
 import { Interaction, Interactions, ShareMotheds } from "types";
-import { FaFacebook, FaTwitter, FaWhatsapp, FaPinterest } from "react-icons/fa";
-import { NumberShortner } from "@UI/components/helpers";
 
 export interface PostInteractionsProps {
   likes: number;
@@ -32,6 +21,7 @@ export interface PostInteractionsProps {
   className?: string;
   onHeartIConClick?: () => void;
   isLiked?: { status: boolean; reactions: number };
+  postId?: string;
 }
 
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
@@ -43,8 +33,12 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   className,
   onHeartIConClick,
   isLiked,
+  postId,
 }) => {
   const { t } = useTranslation();
+  const { shareLink, showContentComments } = useSocialControls();
+  const { getUrl } = useRouting();
+
   function handleInteraction(type: Interactions) {
     onInteraction && onInteraction({ type });
   }
@@ -93,58 +87,18 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           {NumberShortner(comments)}
         </Text>
       </VStack>
-      <Menu isLazy lazyBehavior="unmount" placement="left-start">
-        <MenuButton>
-          <VStack
-            data-testid="PostInteractionShares"
-            cursor={"pointer"}
-            onClick={() => handleInteraction("share")}
-          >
-            <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
-            <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-              {NumberShortner(shares)}
-            </Text>
-          </VStack>
-        </MenuButton>
-        <MenuList zIndex={10}>
-          <MenuItem onClick={() => handleShare("story")}>
-            <HStack>
-              <Icon as={CgPlayButtonR} />
-              <Text>{t("share_on_story", "Share on story")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("followers")}>
-            <HStack>
-              <Icon as={HiUserGroup} />
-              <Text>{t("share_with_follwers", "Share With Followers")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("facebook")}>
-            <HStack>
-              <Icon as={FaFacebook} />
-              <Text>{t("share_on_facebook", "Share on Facebook")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("twitter")}>
-            <HStack>
-              <Icon as={FaTwitter} />
-              <Text>{t("share_on_twitter", "Share on Twitter")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("whatsapp")}>
-            <HStack>
-              <Icon as={FaWhatsapp} />
-              <Text>{t("share_on_whatsapp", "Share on Whatsapp")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("pinterest")}>
-            <HStack>
-              <Icon as={FaPinterest} />
-              <Text>{t("share_on_pinterest", "Share on Pinterest")}</Text>
-            </HStack>
-          </MenuItem>
-        </MenuList>
-      </Menu>
+      <VStack
+        data-testid="PostInteractionShares"
+        cursor={"pointer"}
+        onClick={() =>
+          shareLink(getUrl((routes) => routes.visitSocialPost(postId)))
+        }
+      >
+        <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
+        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+          {NumberShortner(shares)}
+        </Text>
+      </VStack>
     </Flex>
   );
 };
