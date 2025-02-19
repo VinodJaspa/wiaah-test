@@ -44,7 +44,7 @@ export const DiscoverView: React.FC<ExplorePageProps> = () => {
     {
       name: t("Localization"),
       component: (
-        <div className="flex flex-col gap-2 justify-start w-full">
+        <div className="md:w-1/2 w-full mt-2 flex flex-col justify-between items-center gap-2">
           {LocalizationsPH.map((city, i) => (
             <LocalizationSearchItem key={i} location={city} />
           ))}

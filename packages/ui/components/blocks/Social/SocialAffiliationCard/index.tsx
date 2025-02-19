@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
 import {
   Avatar,
@@ -77,6 +77,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   const detailsDimensions = useDimensions(detailsRef);
   const { handleShare } = useHandlePostSharing();
   const { t } = useTranslation();
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   const { getSince } = useDateDiff({
     from: new Date(post.createdAt),
@@ -97,27 +98,26 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   } =
     post?.affiliation?.itemType === "service"
       ? {
-        name: post.affiliation.service?.name || "",
-        price: post.affiliation.service?.price || 0,
-        presentations:
-          [
+          name: post.affiliation.service?.name || "",
+          price: post.affiliation.service?.price || 0,
+          presentations: [
             {
               src: post.affiliation.product?.thumbnail || "",
               type: ServicePresentationType.Img,
             },
-          ] || ([] as ServicePresentation[]),
-      }
+          ],
+        }
       : {
-        name: post?.affiliation?.product?.title || "",
-        price: post?.affiliation?.product?.price || 0,
-        presentations:
-          post?.affiliation?.product?.presentations ||
-          ([] as ProductPresentation[]),
-      };
+          name: post?.affiliation?.product?.title || "",
+          price: post?.affiliation?.product?.price || 0,
+          presentations:
+            post?.affiliation?.product?.presentations ||
+            ([] as ProductPresentation[]),
+        };
 
   return (
     <div
-      className="text-white w-full gap-4 rounded-lg h-[520px] w-full flex flex-col bg-primary p-4"
+      className="text-white w-full gap-4 rounded-lg h-[520px] flex flex-col bg-primary p-4"
       data-testid="socialAffiliationContainer"
       onClick={() => onCardClick && onCardClick(post.id)}
     >
@@ -125,26 +125,34 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
         <div className="flex text-lg justify-end w-full">
           <HiDotsHorizontal />
         </div>
-        <div className="flex h-full justify-between h-full gap-2 flex-col">
+        <div className="flex justify-between h-full gap-2 flex-col">
           {/* User Info */}
           <div className="flex flex-col gap-3">
-            <div className="flex items-center w-full justify-between ">
+            <div className="flex items-center w-full justify-between">
               <div className="flex items-center gap-2">
                 <Avatar
                   className="bg-black"
                   src={post?.user?.profile?.photo}
                   name={post?.user?.profile?.username}
                 />
-                <div className="flex flex-col ">
+                <div className="flex flex-col">
                   <p className="text-lg fong-semibold">
                     {post?.user?.profile?.username}
                   </p>
-                  <p>
+                  <p className="text-xs">
                     {since.value} {since.timeUnit}
                   </p>
                 </div>
               </div>
-              <Button>{t("folow", "follow")}</Button>
+              {isFollowing ? (
+                <Button onClick={() => setIsFollowing(false)}>
+                  {t("unfollow", "Unfollow")}
+                </Button>
+              ) : (
+                <Button onClick={() => setIsFollowing(true)}>
+                  {t("follow", "Follow")}
+                </Button>
+              )}
             </div>
             <div className="flex gap-1">
               <p>{t("Win")}</p> <p>{post.affiliation?.commision}%</p>
@@ -178,13 +186,13 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 onClick={
                   !user
                     ? () => {
-                      console.log("Input Clicked");
-                      openModal();
-                    }
+                        console.log("Input Clicked");
+                        openModal();
+                      }
                     : undefined
                 }
                 value={affiliationLink}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </div>
 
