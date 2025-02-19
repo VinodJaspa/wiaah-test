@@ -88,8 +88,8 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
             horizontalSpacingInRem={1}
             verticalSpacingInRem={1}
           >
-            <FlexStack fullWidth={min} justify="center">
-              <div className="relative w-full">
+            <FlexStack fullWidth={min} justify="start">
+              <div className="relative w-full md:w-1/2">
                 <div className="w-full overflow-hidden">
                   <Image
                     width={min ? 100 : undefined}
