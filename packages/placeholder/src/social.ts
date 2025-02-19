@@ -502,12 +502,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/29517852/pexels-photo-29517852/free-photo-of-ethereal-outdoor-portrait-of-a-woman-in-black-dress.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/28656090/pexels-photo-28656090/free-photo-of-elegant-antique-vintage-clock-with-roman-numerals.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -559,7 +559,8 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           sizes: [ProductSize.S, ProductSize.M, ProductSize.L],
           status: ProductStatus.Active,
           stock: 100,
-          thumbnail: "https://example.com/product.jpg",
+          thumbnail:
+            "https://images.pexels.com/photos/30380487/pexels-photo-30380487/free-photo-of-frost-covered-tree-in-jonkoping-sweden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           title: "Sample Product",
           todayProductClickId: "click1",
           totalDiscounted: 30,
@@ -586,7 +587,6 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
         },
       },
     },
-
     {
       id: "post-423",
       userId: "user-456",
@@ -690,12 +690,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/29885830/pexels-photo-29885830/free-photo-of-iconic-yellow-taxis-on-the-streets-of-kolkata.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30774367/pexels-photo-30774367/free-photo-of-madonna-del-sasso-with-swiss-alpine-backdrop.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -878,12 +878,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30739877/pexels-photo-30739877/free-photo-of-exciting-car-race-action-in-istanbul-turkiye.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30788646/pexels-photo-30788646/free-photo-of-dynamic-off-road-motorcycle-racing-action-shot.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1066,12 +1066,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30787894/pexels-photo-30787894/free-photo-of-stylish-woman-in-denim-dress-with-red-roses.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30783967/pexels-photo-30783967/free-photo-of-red-wooden-house-in-jonkoping-sweden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1254,12 +1254,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30782673/pexels-photo-30782673/free-photo-of-young-woman-in-soft-light-by-window-shade.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30781214/pexels-photo-30781214/free-photo-of-sleek-red-sports-car-parked-in-front-of-modern-home.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1441,12 +1441,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30777996/pexels-photo-30777996/free-photo-of-woman-admiring-a-sport-motorcycle-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30780899/pexels-photo-30780899/free-photo-of-woman-gazing-at-the-sky-with-moon-in-background.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],

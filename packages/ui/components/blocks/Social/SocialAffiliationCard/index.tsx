@@ -129,7 +129,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
         <div className="flex text-lg justify-end w-full">
           <HiDotsHorizontal />
         </div>
-        <div className="flex justify-between h-full gap-2 flex-col">
+        <div className="w-full flex justify-between h-full gap-2 flex-col">
           {/* User Info */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center w-full justify-between">
@@ -169,7 +169,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <p>{t("of commision by affiliating it")}</p>
             </div>
           </div>
-          <div className="bg-black align-center relative w-full h-[200px] ">
+          <div className="relative w-full h-[200px]">
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
               attachments={

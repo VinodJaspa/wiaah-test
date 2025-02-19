@@ -500,9 +500,9 @@ export type AttachmentMarketingTagInput = {
 };
 
 export enum AttachmentType {
-  Img = "img",
+  Img = "image",
   Text = "text",
-  Vid = "vid",
+  Vid = "video",
 }
 
 export type Audio = {

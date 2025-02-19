@@ -47,7 +47,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
         className={cn(
           `w-full h-full ${cover ? "object-cover" : "object-contain"} ${
             blur ? "absolute" : ""
-          } px-2`,
+          }`,
           className,
         )}
         alt={alt}
@@ -83,7 +83,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
   // Conditional rendering based on attachment type
   switch (type) {
-    case StoryType.Image:
+    case "image":
       return (
         <div
           className="relative flex justify-center items-center w-full h-full overflow-hidden"
@@ -95,7 +95,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
         </div>
       );
 
-    case StoryType.Video:
+    case "video":
       return (
         <div className="relative flex justify-center items-center w-full h-full overflow-hidden">
           <video
