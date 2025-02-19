@@ -74,7 +74,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   function handleLocationClick() {}
 
   return (
-    <FlexStack fullWidth className="p-5">
+    <FlexStack fullWidth className="pr-5">
       <FlexStack fullWidth direction="vertical">
         <FlexStack
           fullWidth
