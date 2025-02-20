@@ -37,7 +37,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         onClick={handleEditClick}
         className="cursor-pointer w-full h-full flex justify-end text-base"
       >
-        {t("change", "Change")}
+        {t("edit", "Edit")}
       </div>
 
       <div className="flex flex-col gap2">
