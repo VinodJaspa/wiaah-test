@@ -1,19 +1,3 @@
-import React, { useState } from "react";
-import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
-import {
-  Avatar,
-  Button,
-  Input,
-  PriceDisplay,
-  ServicePresentation,
-  useDateDiff,
-  useHandlePostSharing,
-} from "ui";
-import { CommentsViewer, PostInteractions, useAuthenticationModal } from "ui";
-import { useTranslation } from "react-i18next";
-import { PostAttachmentsViewer, PostInteractionsProps } from "ui";
-import { HtmlDivProps } from "types";
-import { useDimensions } from "hooks";
 import {
   Affiliation,
   AffiliationPost,
@@ -21,11 +5,33 @@ import {
   Profile,
   ServicePresentationType,
 } from "@features/API";
-import { getRandomImage } from "placeholder";
 import { AttachmentType } from "@features/API/gql/generated";
-import { useGetMyUserData } from "@UI/../api";
+import { useDimensions } from "hooks";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
+import { HtmlDivProps } from "types";
+import {
+  Avatar,
+  Button,
+  CommentsViewer,
+  Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  PostAttachmentsViewer,
+  PostInteractions,
+  PostInteractionsProps,
+  PriceDisplay,
+  ServicePresentation,
+  useAuthenticationModal,
+  useCommentReportModal,
+  useDateDiff,
+  useHandlePostSharing,
+} from "ui";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -72,6 +78,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   showComments = true,
   interactionsProps,
 }) => {
+  const { openModalWithId } = useCommentReportModal();
   const { isOpen, openModal } = useAuthenticationModal();
   // FAKE USER
   const user = undefined;
@@ -87,6 +94,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
     status: false,
     reactions: post.reactionNum as number,
   });
+  const [affiliationLink, setAffiliationLink] = useState<string>("");
 
   const router = useRouter();
 
@@ -96,11 +104,6 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   });
 
   const since = getSince();
-  const affiliationLink = "";
-
-  function handleCopyLink() {
-    navigator.clipboard.writeText(affiliationLink);
-  }
 
   const prod: {
     presentations: ProductPresentation[] | ServicePresentation[];
@@ -134,6 +137,22 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
     }
   };
 
+  const handleGenerateLink = () => {
+    // if (!user) return;
+
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let affiliationId = "";
+    for (let i = 0; i < 8; i++) {
+      affiliationId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    const postId = post.id;
+    const generatedLink = `${process.env.NEXT_PUBLIC_BASE_URL}/affiliation/${postId}?affiliationId=${affiliationId}`;
+
+    setAffiliationLink(generatedLink);
+  };
+
   return (
     <div
       className="text-white w-full gap-4 rounded-lg h-[520px] flex flex-col bg-primary p-4"
@@ -141,8 +160,31 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
       onClick={() => onCardClick && onCardClick(post.id)}
     >
       <div className="w-full h-full pb-4">
-        <div className="flex text-lg justify-end w-full">
-          <HiDotsHorizontal />
+        <div className="flex justify-end w-full">
+          <Menu>
+            <MenuButton>
+              <HiDotsHorizontal className="cursor-pointer" />
+            </MenuButton>
+            <MenuList className="text-black">
+              <MenuItem>
+                <p>{t("hide", "Hide")}</p>
+              </MenuItem>
+              <MenuItem>
+                <p>{t("go_to_post", "Go to post")}</p>
+              </MenuItem>
+              <MenuItem>
+                <p onClick={() => openModalWithId(post.id || "")}>
+                  {t("report_user", "Report user")}
+                </p>
+              </MenuItem>
+              <MenuItem>
+                <p>{t("copy_link", "Copy link")}</p>
+              </MenuItem>
+              <MenuItem>
+                <p>{t("cancel", "Cancel")}</p>
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </div>
         <div className="w-full flex justify-between h-full gap-2 flex-col">
           {/* User Info */}
@@ -204,7 +246,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
             <p className="font-bold">{prod.name}</p>
             <div className="flex border-2 border-primary rounded-xl align-center h-12">
               <div className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500">
-                <HiOutlineLink onClick={handleCopyLink} />
+                <HiOutlineLink onClick={handleGenerateLink} />
               </div>
 
               <Input
@@ -212,7 +254,6 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                   !user
                     ? () => {
                         console.log("Input Clicked");
-                        openModal();
                       }
                     : undefined
                 }
