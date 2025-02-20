@@ -8,12 +8,10 @@ const ServiceCheckout: NextPage = () => {
       <Head>
         <title>Wiaah | Checkout</title>
       </Head>
-      <SellerLayout containerProps={{ className: "bg-[#F3F3F3]" }}>
-        <div className="bg-[#F3F3F3]">
-          <Container>
-            <CheckoutView />
-          </Container>
-        </div>
+      <SellerLayout>
+        <Container>
+          <CheckoutView />
+        </Container>
       </SellerLayout>
     </>
   );

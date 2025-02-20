@@ -1,5 +1,13 @@
+import { ServiceType } from "@features/API";
 import { CheckoutProductsState, VoucherState } from "@src/state";
+import { ServiceCheckoutCardSwitcher } from "@UI/components/features/Services/components/Switchers/ServiceCheckoutCardSwitcher";
+import { ServiceCheckoutDataType } from "api";
+import { useDateDiff } from "hooks";
+import { getRandomImage } from "placeholder";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRouting } from "routing";
 import { AddressCardDetails, AddressDetails } from "types";
 import {
   AddressCard,
@@ -15,7 +23,6 @@ import {
   ModalContent,
   ModalOverlay,
   PaymentGateway,
-  ServiceCheckoutCardSwitcher,
   Spacer,
   SpinnerFallback,
   TotalCost,
@@ -24,79 +31,80 @@ import {
   useUserAddresses,
   VoucherInput,
 } from "ui";
-
-import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
 
-import { ServiceType } from "@features/API";
-import { ServiceCheckoutDataType } from "api";
-import { useDateDiff } from "hooks";
-import { getRandomImage } from "placeholder";
+export interface CheckoutViewProps {}
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
-export interface CheckoutViewProps {}
+
+const FAKE_ADDRESS_DATA: AddressCardDetails[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "Doe",
+    address: "123 Main St",
+    address2: "Apt 4B",
+    city: "New York",
+    zipCode: 10001,
+    country: "USA",
+    contact: "+1 123-456-7890",
+  },
+];
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
-  //WARNING: this graphql query is not created yet
-  const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
+  // const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const res = FAKE_CHECKOUT_DATA;
 
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
-
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
   const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
-
-  const [activeAddress, setActiveAddress] = React.useState<number>();
+  const [activeAddress, setActiveAddress] = React.useState<number>(0);
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    setMounted(true);
     if (addresses.length < 1) {
-      setEditAddress(undefined);
-      setEdit(true);
+      FAKE_ADDRESS_DATA.forEach((address) => AddAddress(address));
     }
-  }, [addresses, edit]);
+  }, [addresses, AddAddress]);
 
-  function handleDelete(id: string) {
+  if (!mounted) {
+    return null;
+  }
+
+  const handleDelete = (id: string) => {
     DeleteAddress(id);
-  }
+  };
 
-  function handleAddress(address?: AddressCardDetails) {
-    if (address) {
-      setEditAddress(address);
-      setEdit(true);
-    } else {
-      setEditAddress(undefined);
-      setEdit(true);
-    }
-  }
-  function handleCancelEdit() {
+  const handleAddress = (address?: AddressCardDetails) => {
+    setEditAddress(address);
+    setEdit(true);
+  };
+
+  const handleCancelEdit = () => {
     setEdit(false);
     setEditAddress(undefined);
-  }
+  };
 
-  function handleSaveAddress(input: AddressDetails) {
-    // call api to save address
+  const handleSaveAddress = (input: AddressDetails) => {
     if (editAddress) {
       UpdateAddress(editAddress.id, input);
-      handleCancelEdit();
     } else {
       AddAddress({
         id: String(Math.random()),
         ...input,
       });
-      handleCancelEdit();
     }
-  }
+    handleCancelEdit();
+  };
 
   async function handleVoucherValidation(code: string) {
-    // call api to check if the voucher is valid
     const voucherName = "50OFF";
     let ok = code === voucherName;
     if (ok) {
@@ -178,16 +186,15 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
-              <SpinnerFallback isError={isError} isLoading={isLoading}>
-                {res
-                  ? res.data.bookedServices.map((service, i) => (
-                      <ServiceCheckoutCardSwitcher key={i} service={service} />
-                    ))
-                  : null}
+              <SpinnerFallback>
+                {res &&
+                  res.data.bookedServices.map((service, i) => (
+                    <ServiceCheckoutCardSwitcher key={i} service={service} />
+                  ))}
               </SpinnerFallback>
             </div>
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+            <SpinnerFallback>
+              {res && (
                 <TotalCost
                   subTotal={res.data.bookedServices.reduce((acc, curr) => {
                     return acc + (curr?.data?.price || 0);
@@ -196,7 +203,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                   saved={res.data.saved}
                   voucherRemoveable
                 />
-              ) : null}
+              )}
             </SpinnerFallback>
           </div>
         </div>
@@ -211,6 +218,7 @@ interface DateRange {
 }
 
 const DatePicker: React.FC = () => {
+  const [mounted, setMounted] = React.useState(false);
   const [edit, setEdit] = React.useState<boolean>(false);
   const [dates, setDates] = React.useState<DateRange>({
     from: new Date(),
@@ -218,6 +226,10 @@ const DatePicker: React.FC = () => {
   });
   const { days } = useDateDiff({ from: dates.from, to: dates.to });
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const datesDisplay = () => {
     if (!dates) return null;
@@ -237,6 +249,10 @@ const DatePicker: React.FC = () => {
   const handleClearDates = () => {
     setDates({ from: new Date(), to: new Date() });
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="flex justify-between">
@@ -370,8 +386,10 @@ const GuestsPicker = () => {
 
 export default GuestsPicker;
 
-const senctence =
+const sentance =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima libero perferendis fugit error unde, adipisci possimus totam mollitia? Inventore odio soluta nisi magnam vitae id voluptatum cum atque maiores nihil";
+
+const FIXED_DATE = "2023-10-10T00:00:00";
 
 const FAKE_CHECKOUT_DATA = {
   data: {
@@ -381,17 +399,17 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "hotel",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum,
+          rate: 5,
           refundingRule: {
             cost: 12,
             duration: 3,
             id: "12",
           },
 
-          reviews: randomNum(153),
+          reviews: 10,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -400,15 +418,15 @@ const FAKE_CHECKOUT_DATA = {
           extras: [
             {
               name: "Breakfast + book now, pay later",
-              price: randomNum(100),
+              price: 15,
             },
           ],
-          guests: randomNum(5),
+          guests: 3,
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 250,
         },
       },
       {
@@ -416,17 +434,17 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "hotel",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 4,
           refundingRule: {
             cost: 12,
             duration: 3,
             id: "12",
           },
 
-          reviews: randomNum(153),
+          reviews: 112,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -435,15 +453,15 @@ const FAKE_CHECKOUT_DATA = {
           extras: [
             {
               name: "Breakfast + book now, pay later",
-              price: randomNum(100),
+              price: 80,
             },
           ],
-          guests: randomNum(5),
+          guests: 2,
           cashback: {
-            amount: randomNum(20),
+            amount: 12,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 365,
         },
       },
       {
@@ -451,17 +469,17 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "restaurant",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: null,
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
 
-          rate: randomNum(5),
+          rate: 3.5,
           refundingRule: {
             cost: 0,
             duration: 0,
             id: "12",
           },
-          reviews: randomNum(153),
+          reviews: 152,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -469,28 +487,28 @@ const FAKE_CHECKOUT_DATA = {
           duration: [30, 60],
           bookedMenus: [
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 85,
+              qty: 7,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 75,
+              qty: 5,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 95,
+              qty: 3,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
           ],
-          guests: randomNum(5),
+          guests: 3,
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
 
-          price: randomNum(500),
+          price: 420,
         },
       },
       {
@@ -498,34 +516,34 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "health_center",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 4,
           refundingRule: {
             cost: 60,
             duration: 0,
             id: "12",
           },
 
-          reviews: randomNum(153),
+          reviews: 122,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
           title: "Citadines Montmartre Paris",
 
           duration: [30, 60],
-          guests: randomNum(5),
+          guests: 4,
           cashback: {
-            amount: randomNum(20),
+            amount: 10,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 422,
           doctor: {
             id: "123",
             name: "Doctor 1",
             specialty: "spine",
-            price: randomNum(50),
+            price: 45,
             photo: getRandomImage(),
           },
         },
@@ -535,35 +553,35 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "beauty_center",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 3,
           refundingRule: {
             cost: 0,
             duration: 4,
             id: "12",
           },
           duration: [30, 60],
-          reviews: randomNum(153),
+          reviews: 45,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
           title: "Citadines Montmartre Paris",
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
           guests: null,
-          price: randomNum(500),
+          price: 350,
           bookedTreatments: [
             {
               id: "123",
               category: "Facial",
               title: "Hydro facial with chemical peel",
               durationInMinutes: [30, 60],
-              price: randomNum(50),
-              discount: randomNum(60),
+              price: 40,
+              discount: 12,
             },
           ],
         },
@@ -667,7 +685,7 @@ const FAKE_CHECKOUT_DATA = {
         },
       },
     ] as ServiceCheckoutDataType[],
-    saved: randomNum(150),
+    saved: 75,
     vat: 7,
   },
 };

@@ -69,9 +69,35 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   menus,
   treatments,
 }) => {
+  const [mounted, setMounted] = React.useState(false);
   const { t } = useTranslation();
 
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="flex font-inter flex-col gap-4 w-full pb-2">
@@ -208,23 +234,10 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
                 ? t("Consultation starts")
                 : null}
             </p>
-            <p className="font-medium">
-              {new Date(checkin).toLocaleDateString("en-us", {
-                weekday: "short",
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </p>
-            <p className="">
+            <p className="font-medium">{formatDate(new Date(checkin))}</p>
+            <p>
               {t("From")}{" "}
-              <span className="font-bold">
-                {new Date(checkin).toLocaleTimeString("en-us", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
-              </span>
+              <span className="font-bold">{formatTime(new Date(checkin))}</span>
             </p>
             {showOn([ServiceType.Hotel]) ? (
               <p className="font-medium">

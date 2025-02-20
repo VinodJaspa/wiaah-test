@@ -74,7 +74,16 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   onItemDelete,
   onMoveToWishlist,
 }) => {
+  const [mounted, setMounted] = React.useState(false);
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   function handleMoveToWishList() {
     if (onMoveToWishlist) {

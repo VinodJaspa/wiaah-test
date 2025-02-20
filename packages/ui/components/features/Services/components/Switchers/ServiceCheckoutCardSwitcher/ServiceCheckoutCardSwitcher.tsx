@@ -1,5 +1,6 @@
 import { ServiceCheckoutDataType } from "api";
-import { ProductCheckoutCard, ServiceCheckoutCard } from "@UI";
+import { ServiceCheckoutCard } from "@UI/components/features/Services/components/Cards/ServicesCheckoutCards/HotelCheckoutCard";
+import { ProductCheckoutCard } from "@UI/components/features/Checkout/components/cards/ProductCheckoutCard";
 import React from "react";
 import { ProductType, ServiceType } from "@features/API";
 
@@ -8,14 +9,24 @@ export interface ServiceCheckoutCardSwitcherProps {
   passingProps?: any;
 }
 
+const STATIC_CHECKIN = new Date("2023-10-10T00:00:00");
+const STATIC_CHECKOUT = new Date("2023-10-15T00:00:00");
+
 export const ServiceCheckoutCardSwitcher: React.FC<
   ServiceCheckoutCardSwitcherProps
 > = ({ service: item, passingProps }) => {
   if (!item) return null;
+
+  const commonDateProps = {
+    checkin: STATIC_CHECKIN,
+    checkout: STATIC_CHECKOUT,
+  };
+
   switch (item.type) {
     case ServiceType.Hotel:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
             { slug: "wifi", label: "Free WIFI" },
@@ -25,8 +36,6 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -42,14 +51,13 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.HolidayRentals:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -144,14 +152,13 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.HealthCenter:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Oasis Wellness Center"
           amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -187,14 +194,13 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.BeautyCenter:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Velvet Beauty Parior"
           amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -230,6 +236,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.Vehicle:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
             { slug: "a/c", label: "A/C" },
@@ -241,8 +248,6 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
