@@ -89,7 +89,7 @@ export function PostViewPopup<TData extends {}>({
             />
             <PostView
               key={currentPost?.postInfo?.id}
-              postId=""
+              postId={currentPost?.postInfo?.id}
               queryName="newFeedPost"
               data={currentPost}
               idParam="newsfeedpostid"

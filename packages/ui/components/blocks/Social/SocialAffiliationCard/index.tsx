@@ -245,8 +245,11 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
           >
             <p className="font-bold">{prod.name}</p>
             <div className="flex border-2 border-primary rounded-xl align-center h-12">
-              <div className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500">
-                <HiOutlineLink onClick={handleGenerateLink} />
+              <div
+                onClick={handleGenerateLink}
+                className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500"
+              >
+                <HiOutlineLink />
               </div>
 
               <Input

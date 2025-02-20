@@ -8,9 +8,11 @@ import { AttachmentType, ContentHostType } from "@features/API";
 import { Divider } from "@partials";
 import { useActionComments } from "@src/Hooks";
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
+import { HiOutlineLink } from "react-icons/hi";
+import { Input } from "ui";
 
 interface PostViewProps<TData> {
   renderChild: (props: TData) => React.ReactElement;
@@ -39,6 +41,9 @@ export function PostView<TData extends {}>({
   const [isUsernameShowing, setIsUsernameShowing] =
     React.useState<boolean>(false);
   const [postOwnerUsername, setPostOwnerUsername] = React.useState<string>("");
+  const [affiliationLink, setAffiliationLink] = useState<string>("");
+
+  const user = undefined;
 
   React.useEffect(() => {
     OpenComments();
@@ -51,6 +56,21 @@ export function PostView<TData extends {}>({
   // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
 
   const post = data;
+
+  const handleGenerateLink = () => {
+    // if (!user) return;
+
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let affiliationId = "";
+    for (let i = 0; i < 8; i++) {
+      affiliationId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    const generatedLink = `${process.env.NEXT_PUBLIC_BASE_URL}/affiliation/${postId}?affiliationId=${affiliationId}`;
+
+    setAffiliationLink(generatedLink);
+  };
 
   return (
     <div className="flex justify-center items-center relative w-full h-full ">
@@ -76,11 +96,32 @@ export function PostView<TData extends {}>({
         }}
         className={`transition-all transform bg-white flex-col p-2 pr-3 gap-2 flex h-full `}
       >
-        {/*Top section (Link)*/}
-        <BookingLinkBanner
-          showLink={showLink}
-          link="https://www.figma.com/design/zou6Q"
-        />
+        <div className="pl-3 flex items-center justify-between gap-5">
+          <div className="w-full flex border-2 border-primary rounded-xl align-center h-12">
+            <div
+              onClick={handleGenerateLink}
+              className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500"
+            >
+              <HiOutlineLink />
+            </div>
+
+            <Input
+              onClick={
+                !user
+                  ? () => {
+                      console.log("Input Clicked");
+                    }
+                  : undefined
+              }
+              value={affiliationLink}
+              onChange={() => {}}
+            />
+          </div>
+          <BookingLinkBanner
+            showLink={showLink}
+            link="https://www.figma.com/design/zou6Q"
+          />
+        </div>
         <div className="hide-scrollbar h-full overflow-y-scroll overflow-x-hidden">
           {PostCardPlaceHolder.postInfo.comments && (
             <>
