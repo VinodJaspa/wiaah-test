@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BoldText,
   Button,
@@ -6,18 +5,19 @@ import {
   FlexStack,
   Grid,
   Input,
-  Prefix,
-  Spacer,
   PhoneNumberInput,
+  Prefix,
+  SearchFilterInput,
+  Spacer,
   useCursorScrollPagination,
 } from "@UI";
-import { AddressDetails, AddressInputsFields } from "types";
-import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { Country } from "country-state-city";
-import { FaSearch } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-import { SearchFilterInput } from "@UI";
 import { Form, Formik } from "formik";
+import React from "react";
+import { FlagIcon, FlagIconCode } from "react-flag-kit";
+import { useTranslation } from "react-i18next";
+import { FaSearch } from "react-icons/fa";
+import { AddressDetails, AddressInputsFields } from "types";
 
 export interface AddressInputsProps {
   initialInputs?: AddressDetails;
@@ -160,20 +160,6 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
-                      <BoldText>{t("Zip Code")}</BoldText>
-                      <Input
-                        id="ZipCodeInput"
-                        onChange={(e) =>
-                          setInputs((state) => ({
-                            ...state,
-                            zipCode: Number(e.target.value),
-                          }))
-                        }
-                        value={input.zipCode}
-                        className=""
-                      />
-                    </FlexStack>
-                    <FlexStack direction="vertical">
                       <BoldText>{t("Contact")}</BoldText>
                       <PhoneNumberInput />
                     </FlexStack>
@@ -221,6 +207,20 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                               }))
                             }
                             value={input.address2}
+                            className=""
+                          />
+                        </FlexStack>
+                        <FlexStack direction="vertical">
+                          <BoldText>{t("Zip Code")}</BoldText>
+                          <Input
+                            id="ZipCodeInput"
+                            onChange={(e) =>
+                              setInputs((state) => ({
+                                ...state,
+                                zipCode: Number(e.target.value),
+                              }))
+                            }
+                            value={input.zipCode}
                             className=""
                           />
                         </FlexStack>

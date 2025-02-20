@@ -1,46 +1,38 @@
+import { CheckoutProductsState, VoucherState } from "@src/state";
 import React from "react";
+import { AddressCardDetails, AddressDetails } from "types";
 import {
-  BoxShadow,
-  FlexStack,
-  Padding,
   AddressCard,
-  Clickable,
-  BoldText,
-  Text,
-  Divider,
-  Spacer,
-  Button,
   AddressInputs,
-  useUserAddresses,
-  VoucherInput,
-  PaymentGateway,
-  TotalCost,
-  ResturantCheckoutCard,
-  HealthCenterCheckoutCard,
-  BeautyCenterCheckoutCard,
+  AspectRatio,
+  BoxShadow,
+  Button,
+  CheckInOutInput,
+  DateInput,
+  Divider,
   GuestsInput,
   Modal,
   ModalContent,
   ModalOverlay,
-  DateInput,
+  PaymentGateway,
+  ServiceCheckoutCardSwitcher,
+  Spacer,
+  SpinnerFallback,
+  TotalCost,
   useGetCheckoutDataQuery,
   useSearchFilters,
-  SpinnerFallback,
-  CheckInOutInput,
-  AspectRatio,
-  ServiceCheckoutCardSwitcher,
+  useUserAddresses,
+  VoucherInput,
 } from "ui";
-import { AddressCardDetails, AddressDetails } from "types";
-import { CheckoutProductsState, VoucherState } from "@src/state";
 
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
 
-import { useDateDiff } from "hooks";
-import { ServiceCheckoutDataType } from "api";
 import { ServiceType } from "@features/API";
+import { ServiceCheckoutDataType } from "api";
+import { useDateDiff } from "hooks";
 import { getRandomImage } from "placeholder";
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
