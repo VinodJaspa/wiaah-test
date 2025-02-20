@@ -265,8 +265,18 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
                 })}
               </p>
             ) : null}
+            {showOn([ServiceType.Vehicle]) ? (
+              <p className="font-medium">
+                {new Date(checkout).toLocaleDateString("en-us", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            ) : null}
 
-            {showOn([ServiceType.Hotel]) ? (
+            {showOn([ServiceType.Vehicle]) ? (
               <p className="">
                 {t("Until")}{" "}
                 <span className="font-bold">

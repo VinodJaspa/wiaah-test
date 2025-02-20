@@ -9,8 +9,8 @@ export interface ServiceCheckoutCardSwitcherProps {
   passingProps?: any;
 }
 
-const STATIC_CHECKIN = new Date("2023-10-10T00:00:00");
-const STATIC_CHECKOUT = new Date("2023-10-15T00:00:00");
+const STATIC_CHECKIN = new Date("2025-10-10T20:00:00");
+const STATIC_CHECKOUT = new Date("2025-10-15T20:00:00");
 
 export const ServiceCheckoutCardSwitcher: React.FC<
   ServiceCheckoutCardSwitcherProps

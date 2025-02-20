@@ -118,7 +118,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full py-2">
+    <div className="flex flex-col md:flex-row gap-4 w-full py-2 border-t">
       <div className="flex flex-col w-full gap-4">
         <BoxShadow>
           <div className="bg-white flex flex-col gap-4 p-4 py-8">
@@ -432,7 +432,7 @@ const FAKE_CHECKOUT_DATA = {
       {
         type: ServiceType.Vehicle,
         data: {
-          serviceType: "hotel",
+          serviceType: "vehicle",
           bookedDates: {
             from: FIXED_DATE,
             to: FIXED_DATE,
