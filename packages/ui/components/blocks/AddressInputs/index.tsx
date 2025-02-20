@@ -42,21 +42,21 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   const [input, setInputs] = React.useState<AddressInputsFields>(
     initialInputs
       ? {
-        ...initialInputs,
-        defaultBillingAddress: false,
-        defaultDeliveryAddress: false,
-      }
+          ...initialInputs,
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
+        }
       : {
-        firstName: "",
-        lastName: "",
-        address2: "",
-        address: "",
-        city: "",
-        country: "",
-        contact: "",
-        defaultBillingAddress: false,
-        defaultDeliveryAddress: false,
-      },
+          firstName: "",
+          lastName: "",
+          address2: "",
+          address: "",
+          city: "",
+          country: "",
+          contact: "",
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
+        },
   );
 
   onChange && onChange(input);
@@ -297,8 +297,13 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   </FlexStack>
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
                     {onSuccess ? (
-                      <Button id="AddAddressButton" onClick={handleSave}>
-                        {edit ? t("SAVE ADDRESS") : t("ADD ADDRESS")}
+                      <Button
+                        className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                        colorScheme="darkbrown"
+                        id="AddAddressButton"
+                        onClick={handleSave}
+                      >
+                        {edit ? t("Save Address") : t("Add Address")}
                       </Button>
                     ) : null}
                     {edit && (

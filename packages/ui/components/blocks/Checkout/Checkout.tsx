@@ -44,7 +44,7 @@ import { ServiceType } from "@features/API";
 import { getRandomImage } from "placeholder";
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
-export interface CheckoutViewProps { }
+export interface CheckoutViewProps {}
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
@@ -125,11 +125,6 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
             <div className="flex w-full justify-center text-3xl">
               <p className="font-bold">{t("Checkout")}</p>
             </div>
-            <div className="flex flex-col gap-6">
-              <p className="font-bold">{t("Trip date")}</p>
-              <DatePicker />
-              <GuestsPicker />
-            </div>
             <p className="text-3xl">{"Address"}</p>
             {edit ? (
               <AddressInputs
@@ -160,8 +155,12 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                 </div>
                 <Spacer />
                 <div className="w-full flex justify-end">
-                  <Button onClick={() => handleAddress()}>
-                    {t("add_new_address", "ADD NEW ADDRESS")}
+                  <Button
+                    className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                    colorScheme="darkbrown"
+                    onClick={() => handleAddress()}
+                  >
+                    {t("add_new_address", "Add New Address")}
                   </Button>
                 </div>
               </>
@@ -169,7 +168,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
           </div>
         </BoxShadow>
         <VoucherInput onSuccess={handleVoucherValidation} />
-        <PaymentGateway onSuccess={() => { }} />
+        <PaymentGateway onSuccess={() => {}} />
       </div>
       <BoxShadow fitHeight fitWidth>
         <div className="bg-white">
@@ -190,8 +189,8 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
               <SpinnerFallback isError={isError} isLoading={isLoading}>
                 {res
                   ? res.data.bookedServices.map((service, i) => (
-                    <ServiceCheckoutCardSwitcher key={i} service={service} />
-                  ))
+                      <ServiceCheckoutCardSwitcher key={i} service={service} />
+                    ))
                   : null}
               </SpinnerFallback>
             </div>
@@ -258,7 +257,7 @@ const DatePicker: React.FC = () => {
         <ModalContent className="w-[min(50rem,100%)] flex flex-col gap-8">
           <div className="flex flex-col gap-2 w-full items-center">
             <CheckInOutInput
-              onDatesChange={() => { }}
+              onDatesChange={() => {}}
               active={false}
               checkin={dates ? dates.from : undefined}
               checkout={dates ? dates.to : undefined}
@@ -275,12 +274,13 @@ const DatePicker: React.FC = () => {
                 dayComponent={({ active, currentMonth, dayNum }) => (
                   <AspectRatio ratio={1}>
                     <div
-                      className={`${active
+                      className={`${
+                        active
                           ? "text-white bg-primary"
                           : currentMonth
                             ? "text-black bg-white"
                             : "text-gray-500"
-                        } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                     >
                       {dayNum}
                     </div>
@@ -301,12 +301,13 @@ const DatePicker: React.FC = () => {
                 dayComponent={({ active, currentMonth, dayNum }) => (
                   <AspectRatio ratio={1}>
                     <div
-                      className={`${active
+                      className={`${
+                        active
                           ? "text-white bg-primary"
                           : currentMonth
                             ? "text-black bg-white"
                             : "text-gray-500"
-                        } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                     >
                       {dayNum}
                     </div>
@@ -361,7 +362,7 @@ const GuestsPicker = () => {
               childrens: 1,
               infants: 1,
             }}
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </ModalContent>
       </Modal>
