@@ -77,7 +77,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   }
 
   return (
-    <div className="text-lg">
+    <div className="text-lg p-4">
       <div className="flex flex-col">
         <div className="flex flex-col gap-8">
           <Formik
@@ -303,7 +303,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         id="AddAddressButton"
                         onClick={handleSave}
                       >
-                        {edit ? t("Save Address") : t("Add Address")}
+                        {edit ? t("Save") : t("Add Address")}
                       </Button>
                     ) : null}
                     {edit && (

@@ -58,6 +58,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   // const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const res = FAKE_CHECKOUT_DATA;
 
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
@@ -84,11 +85,11 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
 
   const handleAddress = (address?: AddressCardDetails) => {
     setEditAddress(address);
-    setEdit(true);
+    setIsEditModalOpen(true);
   };
 
   const handleCancelEdit = () => {
-    setEdit(false);
+    setIsEditModalOpen(false);
     setEditAddress(undefined);
   };
 
@@ -126,45 +127,45 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
               <p className="font-bold">{t("Checkout")}</p>
             </div>
             <p className="text-3xl">{"Address"}</p>
-            {edit ? (
-              <AddressInputs
-                initialInputs={editAddress}
-                onCancel={handleCancelEdit}
-                onSuccess={handleSaveAddress}
-              />
-            ) : (
-              <>
-                <div className="w-full flex flex-col gap-4">
-                  {addresses.length > 0 &&
-                    addresses.map((address, i) => (
-                      <div
-                        className="cursor-pointer"
-                        key={i}
-                        onClick={() => setActiveAddress(i)}
-                      >
-                        <AddressCard
-                          borderColor="#000"
-                          onDelete={(id) => handleDelete(id)}
-                          onEdit={(address) => handleAddress(address)}
-                          addressDetails={address}
-                          active={activeAddress === i}
-                        />
-                        <Divider />
-                      </div>
-                    ))}
-                </div>
-                <Spacer />
-                <div className="w-full flex justify-end">
-                  <Button
-                    className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
-                    colorScheme="darkbrown"
-                    onClick={() => handleAddress()}
+            <div className="w-full flex flex-col gap-4">
+              {addresses.length > 0 &&
+                addresses.map((address, i) => (
+                  <div
+                    className="cursor-pointer"
+                    key={i}
+                    onClick={() => setActiveAddress(i)}
                   >
-                    {t("add_new_address", "Add New Address")}
-                  </Button>
-                </div>
-              </>
-            )}
+                    <AddressCard
+                      borderColor="#000"
+                      onDelete={(id) => handleDelete(id)}
+                      onEdit={(address) => handleAddress(address)}
+                      addressDetails={address}
+                      active={activeAddress === i}
+                    />
+                    <Divider />
+                  </div>
+                ))}
+            </div>
+            <Spacer />
+            <div className="w-full flex justify-end">
+              <Button
+                className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                colorScheme="darkbrown"
+                onClick={() => handleAddress()}
+              >
+                {t("add_new_address", "Add New Address")}
+              </Button>
+            </div>
+            <Modal isOpen={isEditModalOpen} onClose={handleCancelEdit}>
+              <ModalOverlay />
+              <ModalContent className="w-[min(50rem,100%)] p-4">
+                <AddressInputs
+                  initialInputs={editAddress}
+                  onCancel={handleCancelEdit}
+                  onSuccess={handleSaveAddress}
+                />
+              </ModalContent>
+            </Modal>
           </div>
         </BoxShadow>
         <VoucherInput onSuccess={handleVoucherValidation} />
