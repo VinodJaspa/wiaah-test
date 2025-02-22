@@ -192,22 +192,11 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
         <HStack className="justify-end text-[1.75rem] font-bold">
           <PriceDisplay price={total} />
         </HStack>
-        <div className="flex justify-between w-full gap-4 items-center">
+        <div className="flex justify-end w-full gap-4 items-center">
           <Button className="h-[3.25rem]" colorScheme="darkbrown">
             <HStack className="text-lg whitespace-nowrap font-semibold">
               <EditNoteIcon />
               {t("Modify order")}
-            </HStack>
-          </Button>
-          <Button
-            onClick={() => onMoveToWishlist && onMoveToWishlist(id)}
-            className="h-[3.25rem]"
-            colorScheme="darkbrown"
-            outline
-          >
-            <HStack className="font-semibold text-lg">
-              <HeartIcon />
-              {t("Add to wishlist")}
             </HStack>
           </Button>
           <Button

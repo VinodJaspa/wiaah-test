@@ -255,17 +255,17 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         <Spacer />
                       </>
                     )}
-                    <Spacer />
+                  </Grid>
+                  <Spacer />
+                  <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     <FilterInput
+                      className="-pb-3"
                       id="AddAddressManuallySwitcher"
                       onChange={(e) => setManual(e.target.checked)}
                       checked={manual}
                       variant="box"
                       label={`${t("Add address manually")}?`}
                     />
-                  </Grid>
-                  <Spacer />
-                  <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     {askShippingAddress ? (
                       <FilterInput
                         onChange={(e) =>
@@ -298,7 +298,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
                     {onSuccess ? (
                       <Button
-                        className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                        className="self-end text-lg font-semibold px-[1.5rem]"
                         colorScheme="darkbrown"
                         id="AddAddressButton"
                         onClick={handleSave}

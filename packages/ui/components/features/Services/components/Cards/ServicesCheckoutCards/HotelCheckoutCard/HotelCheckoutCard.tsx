@@ -304,18 +304,12 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         <HStack className="justify-end text-[1.75rem] font-bold">
           <PriceDisplay price={total} />
         </HStack>
-        <div className="flex justify-between w-full items-center">
+        <div className="flex justify-end gap-4 w-full items-center">
           <Button className="h-[3.25rem] w-fit" colorScheme="darkbrown">
             <HStack className="text-lg whitespace-nowrap font-semibold">
               <EditNoteIcon />
               {t("Modify Booking")}
             </HStack>
-          </Button>
-          <Button className="h-[3.25rem] " colorScheme="darkbrown" outline>
-            <div className="flex items-center gap-2 flex-nowrap font-semibold text-lg">
-              <HeartIcon />
-              {t("Add to wishlist")}
-            </div>
           </Button>
           <Button
             colorScheme="danger"
