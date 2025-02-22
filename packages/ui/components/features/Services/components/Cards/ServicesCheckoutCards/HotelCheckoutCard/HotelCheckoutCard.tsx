@@ -147,7 +147,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         />
       </div>
 
-      {showOn([ServiceType.Hotel]) ? (
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
         <div className="flex flex-col w-full gap-2">
           <p className="text-[22px] font-semibold">{t("Extras")}:</p>
           {mapArray(extras, (v, i) => (
@@ -161,7 +161,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         </div>
       ) : null}
 
-      {showOn([ServiceType.Hotel]) ? (
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
         <div className="flex flex-col w-full gap-2">
           <p className="text-[22px] font-semibold">{t("Guests")}:</p>
           <HStack className="font-medium">
@@ -177,13 +177,16 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
 
       {showOn([
         ServiceType.Hotel,
+        ServiceType.HolidayRentals,
         ServiceType.BeautyCenter,
         ServiceType.HealthCenter,
         ServiceType.Restaurant,
       ]) ? (
         <div className="flex flex-col w-full gap-2">
           <p className="text-[22px] font-semibold">{t("You are booking")}:</p>
-          {showOn([ServiceType.Hotel]) ? <p>{name}</p> : null}
+          {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+            <p>{name}</p>
+          ) : null}
 
           {showOn([ServiceType.BeautyCenter]) ? (
             <TreatmentsCheckoutList
@@ -224,6 +227,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
             <p className="font-semibold text-[19px] border-b-2 border-black w-fit pb-2">
               {showOn([
                 ServiceType.Hotel,
+                ServiceType.HolidayRentals,
                 ServiceType.BeautyCenter,
                 ServiceType.Restaurant,
               ])
@@ -239,7 +243,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
               {t("From")}{" "}
               <span className="font-bold">{formatTime(new Date(checkin))}</span>
             </p>
-            {showOn([ServiceType.Hotel]) ? (
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
               <p className="font-medium">
                 {t("Guests")}:{" "}
                 <span className="">
@@ -252,10 +256,12 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
           </div>
           <div className="flex flex-col gap-4">
             <p className="font-semibold text-[19px] border-b-2 w-fit border-black pb-2">
-              {showOn([ServiceType.Hotel]) ? t("Check out") : null}
+              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals])
+                ? t("Check out")
+                : null}
               {showOn([ServiceType.Vehicle]) ? t("Rental ends") : null}
             </p>
-            {showOn([ServiceType.Hotel]) ? (
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
               <p className="font-medium">
                 {new Date(checkout).toLocaleDateString("en-us", {
                   weekday: "short",
@@ -289,7 +295,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
               </p>
             ) : null}
 
-            {showOn([ServiceType.Hotel]) ? (
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
               <p className="font-medium">
                 {t("Nights")}:{" "}
                 <span className="font-bold">

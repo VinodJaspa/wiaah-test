@@ -53,6 +53,31 @@ export const ServiceCheckoutCardSwitcher: React.FC<
         <ServiceCheckoutCard
           {...commonDateProps}
           shopName="Padma Resort Legian"
+          amenities={[
+            { slug: "wifi", label: "Free WIFI" },
+            { label: "Free Movies", slug: "movies" },
+          ]}
+          cancelationPolicy={{
+            cost: 50,
+            duration: 15,
+          }}
+          extras={[{ cost: 50, name: "Mini-bar-20" }]}
+          fullAddress="No.1 PO BOX 1107, legian, Indonesia"
+          guests={{
+            adults: 2,
+            childrens: 1,
+          }}
+          name="Standard room"
+          thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
+          total={500}
+          serviceType={ServiceType.HolidayRentals}
+        />
+      );
+    case ServiceType.Restaurant:
+      return (
+        <ServiceCheckoutCard
+          {...commonDateProps}
+          shopName="Padma Resort Legian"
           amenities={[]}
           cancelationPolicy={{
             cost: 50,
@@ -65,7 +90,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             childrens: 1,
           }}
           name="Standard room"
-          thumbnail="https://www.hotel-montana.ch/bilder/hauptbilder/restaurant-bar/_1200xAUTO_crop_center-center_100_none/2210_Scala-4.jpg"
+          thumbnail="https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           total={500}
           serviceType={ServiceType.Restaurant}
           menus={[

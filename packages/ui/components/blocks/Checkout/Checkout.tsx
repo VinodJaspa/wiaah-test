@@ -409,7 +409,40 @@ const FAKE_CHECKOUT_DATA = {
             duration: 3,
             id: "12",
           },
-
+          reviews: 10,
+          thumbnail: getRandomImage(),
+          id: "123",
+          rateReason: "cleanliness",
+          title: "Citadines Montmartre Paris",
+          duration: [30, 60],
+          extras: [
+            {
+              name: "Breakfast + book now, pay later",
+              price: 15,
+            },
+          ],
+          guests: 3,
+          cashback: {
+            amount: 15,
+            type: "percent",
+          },
+          price: 250,
+        },
+      },
+      {
+        type: "holiday_rentals",
+        data: {
+          serviceType: "holiday_rentals",
+          bookedDates: {
+            from: FIXED_DATE,
+            to: FIXED_DATE,
+          },
+          rate: 5,
+          refundingRule: {
+            cost: 12,
+            duration: 3,
+            id: "12",
+          },
           reviews: 10,
           thumbnail: getRandomImage(),
           id: "123",
