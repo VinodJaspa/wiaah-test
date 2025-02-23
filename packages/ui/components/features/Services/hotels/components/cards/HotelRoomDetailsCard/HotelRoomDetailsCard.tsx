@@ -88,7 +88,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
           <div className="min-w-[11.25rem] h-fit overflow-hidden rounded-xl">
             <AspectRatio ratio={1}>
               <Image
-                src={getRandomImage()}
+                src={room.thumbnail}
                 className="w-full h-full object-cover"
               />
             </AspectRatio>
@@ -136,13 +136,13 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
           </div>
         </div>
         <div className="flex flex-col w-full gap-6">
-          {/* <div className="flex gap-x-10 gap-y-2 flex-wrap">
-                {mapArray(room.extras!, (extra, i) => (
-                  <p className="text-lightBlack text-xs font-semibold" key={i}>
-                    {extra.name} - {extra.cost}
-                  </p>
-                ))}
-              </div> */}
+          <div className="flex gap-x-10 gap-y-2 flex-wrap">
+            {mapArray(room.extras!, (extra, i) => (
+              <p className="text-lightBlack text-xs font-semibold" key={i}>
+                {extra.name} - {extra.cost}
+              </p>
+            ))}
+          </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="flex flex-col gap-4">
               <p className="text-base font-bold text-title">

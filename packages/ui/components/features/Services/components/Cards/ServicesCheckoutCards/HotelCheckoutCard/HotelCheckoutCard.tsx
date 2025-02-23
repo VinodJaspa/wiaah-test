@@ -6,6 +6,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ServiceCancelationPolicy, ServiceType } from "@features/API";
+import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 import { ServiceRefundableTypeDescription } from "@features/Services/components/DataDisplay";
 import { ServicePropertiesSwticher } from "@features/Services/components/Switchers";
 import {
@@ -22,6 +24,7 @@ import { ServiceRangeBookingCalander } from "@UI/components/features/Services/co
 import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
 import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
+import { ServicePresentationType } from "api";
 
 export interface ServiceCheckoutCardProps {
   thumbnail: string;
@@ -87,7 +90,13 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   }, []);
 
   const handleModifyBooking = () => {
-    if (showOn([ServiceType.Hotel, ServiceType.HolidayRentals])) {
+    if (
+      showOn([
+        ServiceType.Hotel,
+        ServiceType.HolidayRentals,
+        ServiceType.Vehicle,
+      ])
+    ) {
       onOpen();
     }
   };
@@ -353,87 +362,135 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent maxW="50rem" w="100%">
+        <ModalContent maxW="75rem" w="100%">
           <ModalBody p={4}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="w-full">
-                <HotelServiceRoomsSection
-                  rooms={[
-                    {
-                      cancelationPolicies: [
-                        {
-                          cost: 50,
-                          duration: 60,
+            {serviceType === ServiceType.Vehicle ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="w-full">
+                  <VehiclesSelectableList
+                    vehicles={[
+                      {
+                        __typename: "Vehicle",
+                        brand: "Toyota",
+                        id: "vehicle123",
+                        model: "Camry",
+                        price: 100,
+                        title: "Toyota Camry",
+                        cancelationPolicies: [
+                          {
+                            __typename: "ServiceCancelationPolicy",
+                            cost: 30,
+                            duration: 12,
+                          },
+                        ],
+                        presentations: [
+                          {
+                            __typename: "ServicePresentation",
+                            type: ServicePresentationType.Img,
+                            src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                          },
+                        ],
+                        properties: {
+                          __typename: "VehicleProperties",
+                          airCondition: true,
+                          gpsAvailable: true,
+                          lugaggeCapacity: 3,
+                          maxSpeedInKm: 200,
+                          seats: 5,
+                          windows: 4,
                         },
-                      ],
-                      presentations: [],
-                      reviews: 15,
-                      rating: 4.5,
-                      createdAt: "2023-03-05T00:00:00Z",
-                      dailyPrice: true,
-                      dailyPrices: {
-                        fr: 90,
-                        mo: 100,
-                        sa: 110,
-                        su: 120,
-                        th: 95,
-                        tu: 105,
-                        we: 100,
                       },
-                      description: "Cozy room with a view",
-                      discount: {
-                        units: 3,
-                        value: 10,
-                      },
-                      extras: [
-                        {
-                          cost: 20,
-                          name: "Mini-bar",
-                        },
-                        {
-                          cost: 10,
-                          name: "Late check-out",
-                        },
-                      ],
-                      hotelId: "67890",
-                      id: "54321",
-                      includedAmenities: ["Free Wi-Fi", "Parking"],
-                      includedServices: ["Room cleaning", "Towels"],
-                      measurements: {
-                        inFeet: 15,
-                        inMeter: 20,
-                      },
-                      popularAmenities: [
-                        {
-                          label: "Swimming pool",
-                          value: "yes",
-                        },
-                        {
-                          label: "Gym",
-                          value: "yes",
-                        },
-                      ],
-                      pricePerNight: 90,
-                      title: "Standard Room",
-                      updatedAt: "2023-03-06T00:00:00Z",
-                      bathrooms: 2,
-                      beds: 3,
-                      num_of_rooms: 2,
-                      sellerId: "",
-                      thumbnail: "",
-                    },
-                  ]}
-                />
+                    ]}
+                  />
+                </div>
+                <div className="w-full">
+                  <ServiceReservastionForm
+                    sellerId={""}
+                    selectedServicesIds={[]}
+                  />
+                </div>
               </div>
-              <div className="w-full">
-                <ServiceRangeBookingCalander
-                  bookedDates={[]}
-                  date={new Date()}
-                  onChange={() => {}}
-                  value={[]}
-                />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="w-full">
+                  <HotelServiceRoomsSection
+                    rooms={[
+                      {
+                        cancelationPolicies: [
+                          {
+                            cost: 50,
+                            duration: 60,
+                          },
+                        ],
+                        presentations: [],
+                        reviews: 15,
+                        rating: 4.5,
+                        createdAt: "2023-03-05T00:00:00Z",
+                        dailyPrice: true,
+                        dailyPrices: {
+                          fr: 90,
+                          mo: 100,
+                          sa: 110,
+                          su: 120,
+                          th: 95,
+                          tu: 105,
+                          we: 100,
+                        },
+                        description: "Cozy room with a view",
+                        discount: {
+                          units: 3,
+                          value: 10,
+                        },
+                        extras: [
+                          {
+                            cost: 20,
+                            name: "Mini-bar",
+                          },
+                          {
+                            cost: 10,
+                            name: "Late check-out",
+                          },
+                        ],
+                        hotelId: "67890",
+                        id: "54321",
+                        includedAmenities: ["Free Wi-Fi", "Parking"],
+                        includedServices: ["Room cleaning", "Towels"],
+                        measurements: {
+                          inFeet: 15,
+                          inMeter: 20,
+                        },
+                        popularAmenities: [
+                          {
+                            label: "Swimming pool",
+                            value: "yes",
+                          },
+                          {
+                            label: "Gym",
+                            value: "yes",
+                          },
+                        ],
+                        pricePerNight: 90,
+                        title: "Standard Room",
+                        updatedAt: "2023-03-06T00:00:00Z",
+                        bathrooms: 2,
+                        beds: 3,
+                        num_of_rooms: 2,
+                        sellerId: "",
+                        thumbnail: "",
+                      },
+                    ]}
+                  />
+                </div>
+                <div className="w-full">
+                  <ServiceRangeBookingCalander
+                    bookedDates={[]}
+                    date={new Date()}
+                    onChange={() => {}}
+                    value={[]}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
