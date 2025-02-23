@@ -8,6 +8,7 @@ import {
 import { ServiceCancelationPolicy, ServiceType } from "@features/API";
 import { ServiceRefundableTypeDescription } from "@features/Services/components/DataDisplay";
 import { ServicePropertiesSwticher } from "@features/Services/components/Switchers";
+import { HealthCenterDoctorsList } from "@features/Services/HealthCenter";
 import { ResturantMenuListSection } from "@features/Services/resturant";
 import {
   Button,
@@ -23,7 +24,10 @@ import { ServiceRangeBookingCalander } from "@UI/components/features/Services/co
 import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
 import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
-import { ServicePresentationType } from "api";
+import {
+  HealthCenterDoctorAvailablityStatus,
+  ServicePresentationType,
+} from "api";
 import { getRandomImage } from "placeholder";
 import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
@@ -98,6 +102,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         ServiceType.HolidayRentals,
         ServiceType.Vehicle,
         ServiceType.Restaurant,
+        ServiceType.HealthCenter,
       ])
     ) {
       onOpen();
@@ -369,6 +374,62 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
           <ModalBody p={4}>
             {(() => {
               switch (serviceType) {
+                case ServiceType.HealthCenter:
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="w-full">
+                        <HealthCenterDoctorsList
+                          cancelation={[]}
+                          doctors={[
+                            {
+                              availablityStatus:
+                                HealthCenterDoctorAvailablityStatus.Available,
+                              description:
+                                "Expert in cardiology with 20 years of experience.",
+                              healthCenterId: "hc123",
+                              id: "doc1",
+                              name: "Dr. Heart",
+                              price: 200.0,
+                              rating: 4.8,
+                              specialityId: "spec1",
+                              thumbnail:
+                                "https://example.com/thumbnails/doctor1.jpg",
+                              speciality: {
+                                description: "Cardiology specialty",
+                                id: "spec1",
+                                name: "Cardiology",
+                              },
+                            },
+                            {
+                              availablityStatus:
+                                HealthCenterDoctorAvailablityStatus.Unavailable,
+                              description:
+                                "Renowned neurologist with a focus on brain health.",
+                              healthCenterId: "hc123",
+                              id: "doc2",
+                              name: "Dr. Brain",
+                              price: 250.0,
+                              rating: 4.7,
+                              specialityId: "spec2",
+                              thumbnail:
+                                "https://example.com/thumbnails/doctor2.jpg",
+                              speciality: {
+                                description: "Neurology specialty",
+                                id: "spec2",
+                                name: "Neurology",
+                              },
+                            },
+                          ]}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <ServiceReservastionForm
+                          sellerId={""}
+                          selectedServicesIds={[]}
+                        />
+                      </div>
+                    </div>
+                  );
                 case ServiceType.Restaurant:
                   return (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
