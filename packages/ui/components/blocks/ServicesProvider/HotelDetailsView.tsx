@@ -17,6 +17,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
 import { getRandomImage } from "placeholder";
+import { FaWaveSquare } from "react-icons/fa";
+import { CgGym } from "react-icons/cg";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
@@ -343,8 +345,19 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
     {
       cancelationPolicies: [
         {
+          id: "1",
           cost: 50,
           duration: 60,
+        },
+        {
+          id: "2",
+          cost: 0,
+          duration: 30,
+        },
+        {
+          id: "3",
+          cost: 0,
+          duration: 0,
         },
       ],
       presentations: [],
@@ -378,7 +391,10 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       ],
       hotelId: "67890",
       id: "54321",
-      includedAmenities: ["Free Wi-Fi", "Parking"],
+      includedAmenities: [
+        { label: "Free Wi-Fi", slug: "wifi" },
+        { label: "Parking", slug: "parking" },
+      ],
       includedServices: ["Room cleaning", "Towels"],
       measurements: {
         inFeet: 15,
@@ -388,10 +404,12 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
         {
           label: "Swimming pool",
           value: "yes",
+          icon: FaWaveSquare,
         },
         {
           label: "Gym",
           value: "yes",
+          icon: CgGym,
         },
       ],
       pricePerNight: 90,
@@ -401,7 +419,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       beds: 3,
       num_of_rooms: 2,
       sellerId: "",
-      thumbnail: "",
+      thumbnail: "/place-1.jpg",
     },
   ],
   serviceMetaInfo: {

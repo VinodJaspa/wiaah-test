@@ -1,3 +1,4 @@
+import { IconType } from "react-icons";
 import { ServiceCategoryFilterInput } from "./gql/generated";
 
 export type Maybe<T> = T | null;
@@ -2433,7 +2434,7 @@ export type HotelRoom = {
   hotel?: Maybe<Hotel>;
   hotelId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
-  includedAmenities?: Maybe<Array<Scalars["String"]["input"]>>;
+  includedAmenities?: Maybe<Array<HotelRoomIncludedAmenities>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
   measurements: ServicePropertyMeasurements;
   num_of_rooms: Scalars["Int"]["output"];
@@ -2446,6 +2447,11 @@ export type HotelRoom = {
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   thumbnail: Scalars["String"]["output"];
+};
+
+export type HotelRoomIncludedAmenities = {
+  label: string;
+  slug: string;
 };
 
 export type HotelRoomMetaInfoInput = {
@@ -5804,10 +5810,12 @@ export type ServiceAmenity = {
   __typename?: "ServiceAmenity";
   label: Scalars["String"]["output"];
   value: Scalars["String"]["output"];
+  icon: IconType;
 };
 
 export type ServiceCancelationPolicy = {
   __typename?: "ServiceCancelationPolicy";
+  id: Scalars["String"]["output"];
   cost: Scalars["Int"]["output"];
   duration: Scalars["Int"]["output"];
 };

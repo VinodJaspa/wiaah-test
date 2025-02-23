@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Radio, PriceDisplay, ServiceRefundableTypeDescription } from "@UI";
+import { Radio, PriceDisplay } from "@UI";
+import { ServiceRefundableTypeDescription } from "@UI/components/features/Services/components/DataDisplay/ServiceRefundableTypeDescription";
 import { setTestid } from "utils";
 
 export interface ServiceCancelationPolicyInputProps {

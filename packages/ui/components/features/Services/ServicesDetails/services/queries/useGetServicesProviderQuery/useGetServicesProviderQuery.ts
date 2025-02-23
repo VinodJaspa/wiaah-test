@@ -34,6 +34,8 @@ import {
 import { useQuery } from "react-query";
 import { random } from "lodash";
 import { createGraphqlRequestClient, WeekdaysWorkingHours } from "api";
+import { FaWaveSquare } from "react-icons/fa";
+import { CgGym } from "react-icons/cg";
 
 export type GetServiceDetailsQueryVariables = Exact<{
   id: Scalars["String"]["input"];
@@ -56,220 +58,220 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
       | "type_of_seller"
       | "updatedAt"
     > & {
-      contact: { __typename?: "ServiceContact" } & Pick<
-        ServiceContact,
-        "address" | "city" | "country" | "email" | "phone" | "state"
-      >;
-      doctors?: Maybe<
-        Array<
-          { __typename?: "Doctor" } & Pick<
-            Doctor,
-            | "availablityStatus"
-            | "description"
-            | "healthCenterId"
-            | "id"
-            | "name"
-            | "price"
-            | "rating"
-            | "thumbnail"
-            | "specialityId"
-          > & {
-            speciality?: Maybe<
-              { __typename?: "HealthCenterSpecialty" } & Pick<
-                HealthCenterSpecialty,
-                "description" | "id" | "name"
-              >
-            >;
-          }
-        >
-      >;
-      location: { __typename?: "ServiceLocation" } & Pick<
-        ServiceLocation,
-        | "address"
-        | "city"
-        | "country"
-        | "lat"
-        | "lon"
-        | "postalCode"
-        | "state"
-      >;
-      menus?: Maybe<
-        Array<
-          { __typename?: "RestaurantMenu" } & Pick<
-            RestaurantMenu,
-            "id" | "name"
-          > & {
-            dishs: Array<
-              { __typename?: "Dish" } & Pick<
-                Dish,
-                "id" | "ingredients" | "name" | "price" | "thumbnail"
-              >
-            >;
-          }
-        >
-      >;
-      policies: Array<
-        { __typename?: "ServicePolicy" } & Pick<
-          ServicePolicy,
-          "policyTitle" | "terms"
-        >
-      >;
-      presentations: Array<
-        { __typename?: "ServicePresentation" } & Pick<
-          ServicePresentation,
-          "src" | "type"
-        >
-      >;
-      popularAmenities?: Maybe<
-        Array<
-          { __typename?: "ServiceAmenity" } & Pick<
-            ServiceAmenity,
-            "label" | "value"
+        contact: { __typename?: "ServiceContact" } & Pick<
+          ServiceContact,
+          "address" | "city" | "country" | "email" | "phone" | "state"
+        >;
+        doctors?: Maybe<
+          Array<
+            { __typename?: "Doctor" } & Pick<
+              Doctor,
+              | "availablityStatus"
+              | "description"
+              | "healthCenterId"
+              | "id"
+              | "name"
+              | "price"
+              | "rating"
+              | "thumbnail"
+              | "specialityId"
+            > & {
+                speciality?: Maybe<
+                  { __typename?: "HealthCenterSpecialty" } & Pick<
+                    HealthCenterSpecialty,
+                    "description" | "id" | "name"
+                  >
+                >;
+              }
           >
-        >
-      >;
-      rooms?: Maybe<
-        Array<
-          { __typename?: "HotelRoom" } & Pick<
-            HotelRoom,
-            | "bathrooms"
-            | "beds"
-            | "createdAt"
-            | "dailyPrice"
-            | "description"
-            | "hotelId"
-            | "id"
-            | "includedAmenities"
-            | "includedServices"
-            | "num_of_rooms"
-            | "pricePerNight"
-            | "rating"
-            | "updatedAt"
-            | "title"
-            | "sellerId"
-            | "reviews"
-            | "adaptedFor"
-            | "title"
-            | "pricePerNight"
-            | "thumbnail"
-            | "includedAmenities"
+        >;
+        location: { __typename?: "ServiceLocation" } & Pick<
+          ServiceLocation,
+          | "address"
+          | "city"
+          | "country"
+          | "lat"
+          | "lon"
+          | "postalCode"
+          | "state"
+        >;
+        menus?: Maybe<
+          Array<
+            { __typename?: "RestaurantMenu" } & Pick<
+              RestaurantMenu,
+              "id" | "name"
+            > & {
+                dishs: Array<
+                  { __typename?: "Dish" } & Pick<
+                    Dish,
+                    "id" | "ingredients" | "name" | "price" | "thumbnail"
+                  >
+                >;
+              }
+          >
+        >;
+        policies: Array<
+          { __typename?: "ServicePolicy" } & Pick<
+            ServicePolicy,
+            "policyTitle" | "terms"
+          >
+        >;
+        presentations: Array<
+          { __typename?: "ServicePresentation" } & Pick<
+            ServicePresentation,
+            "src" | "type"
+          >
+        >;
+        popularAmenities?: Maybe<
+          Array<
+            { __typename?: "ServiceAmenity" } & Pick<
+              ServiceAmenity,
+              "label" | "value"
+            >
+          >
+        >;
+        rooms?: Maybe<
+          Array<
+            { __typename?: "HotelRoom" } & Pick<
+              HotelRoom,
+              | "bathrooms"
+              | "beds"
+              | "createdAt"
+              | "dailyPrice"
+              | "description"
+              | "hotelId"
+              | "id"
+              | "includedAmenities"
+              | "includedServices"
+              | "num_of_rooms"
+              | "pricePerNight"
+              | "rating"
+              | "updatedAt"
+              | "title"
+              | "sellerId"
+              | "reviews"
+              | "adaptedFor"
+              | "title"
+              | "pricePerNight"
+              | "thumbnail"
+              | "includedAmenities"
+            > & {
+                cancelationPolicies?: Array<
+                  { __typename?: "ServiceCancelationPolicy" } & Pick<
+                    ServiceCancelationPolicy,
+                    "id" | "cost" | "duration"
+                  >
+                >;
+                discount?: { __typename?: "ServiceDiscount" } & Pick<
+                  ServiceDiscount,
+                  "units" | "value"
+                >;
+                dailyPrices?: Maybe<
+                  { __typename?: "ServiceDailyPrices" } & Pick<
+                    ServiceDailyPrices,
+                    "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we"
+                  >
+                >;
+                extras?: Maybe<
+                  Array<
+                    { __typename?: "ServiceExtra" } & Pick<
+                      ServiceExtra,
+                      "cost" | "name"
+                    >
+                  >
+                >;
+                measurements?: {
+                  __typename?: "ServicePropertyMeasurements";
+                } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
+                popularAmenities?: Maybe<
+                  Array<
+                    { __typename?: "ServiceAmenity" } & Pick<
+                      ServiceAmenity,
+                      "label" | "value" | "icon"
+                    >
+                  >
+                >;
+                presentations: Array<
+                  { __typename?: "ServicePresentation" } & Pick<
+                    ServicePresentation,
+                    "src" | "type"
+                  >
+                >;
+              }
+          >
+        >;
+        serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+          ServiceMetaInfo,
+          | "description"
+          | "hashtags"
+          | "metaTagDescription"
+          | "metaTagKeywords"
+          | "title"
+        >;
+        treatments?: Maybe<
+          Array<
+            { __typename?: "Treatment" } & Pick<
+              Treatment,
+              | "beautyCenterServiceId"
+              | "duration"
+              | "id"
+              | "price"
+              | "thumbnail"
+              | "title"
+              | "treatmentCategoryId"
+            > & {
+                category?: Maybe<
+                  { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
+                    BeautyCenterTreatmentCategory,
+                    "createdAt" | "createdById" | "id" | "title"
+                  >
+                >;
+                discount: { __typename?: "ServiceDiscount" } & Pick<
+                  ServiceDiscount,
+                  "units" | "value"
+                >;
+              }
+          >
+        >;
+        vehicles?: Maybe<
+          Array<
+            { __typename?: "Vehicle" } & Pick<
+              Vehicle,
+              "brand" | "id" | "model" | "price" | "title"
+            > & {
+                cancelationPolicies: Array<
+                  { __typename?: "ServiceCancelationPolicy" } & Pick<
+                    ServiceCancelationPolicy,
+                    "cost" | "duration"
+                  >
+                >;
+                presentations: Array<
+                  { __typename?: "ServicePresentation" } & Pick<
+                    ServicePresentation,
+                    "src" | "type"
+                  >
+                >;
+                properties: { __typename?: "VehicleProperties" } & Pick<
+                  VehicleProperties,
+                  | "airCondition"
+                  | "gpsAvailable"
+                  | "lugaggeCapacity"
+                  | "maxSpeedInKm"
+                  | "seats"
+                  | "windows"
+                >;
+              }
+          >
+        >;
+        workingHours?: Maybe<
+          { __typename?: "WorkingSchedule" } & Pick<
+            ServiceWorkingSchedule,
+            "id"
           > & {
-            cancelationPolicies?: Array<
-              { __typename?: "ServiceCancelationPolicy" } & Pick<
-                ServiceCancelationPolicy,
-                "cost" | "duration"
-              >
-            >;
-            discount?: { __typename?: "ServiceDiscount" } & Pick<
-              ServiceDiscount,
-              "units" | "value"
-            >;
-            dailyPrices?: Maybe<
-              { __typename?: "ServiceDailyPrices" } & Pick<
-                ServiceDailyPrices,
-                "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we"
-              >
-            >;
-            extras?: Maybe<
-              Array<
-                { __typename?: "ServiceExtra" } & Pick<
-                  ServiceExtra,
-                  "cost" | "name"
-                >
-              >
-            >;
-            measurements?: {
-              __typename?: "ServicePropertyMeasurements";
-            } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
-            popularAmenities?: Maybe<
-              Array<
-                { __typename?: "ServiceAmenity" } & Pick<
-                  ServiceAmenity,
-                  "label" | "value"
-                >
-              >
-            >;
-            presentations: Array<
-              { __typename?: "ServicePresentation" } & Pick<
-                ServicePresentation,
-                "src" | "type"
-              >
-            >;
-          }
-        >
-      >;
-      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-        ServiceMetaInfo,
-        | "description"
-        | "hashtags"
-        | "metaTagDescription"
-        | "metaTagKeywords"
-        | "title"
-      >;
-      treatments?: Maybe<
-        Array<
-          { __typename?: "Treatment" } & Pick<
-            Treatment,
-            | "beautyCenterServiceId"
-            | "duration"
-            | "id"
-            | "price"
-            | "thumbnail"
-            | "title"
-            | "treatmentCategoryId"
-          > & {
-            category?: Maybe<
-              { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
-                BeautyCenterTreatmentCategory,
-                "createdAt" | "createdById" | "id" | "title"
-              >
-            >;
-            discount: { __typename?: "ServiceDiscount" } & Pick<
-              ServiceDiscount,
-              "units" | "value"
-            >;
-          }
-        >
-      >;
-      vehicles?: Maybe<
-        Array<
-          { __typename?: "Vehicle" } & Pick<
-            Vehicle,
-            "brand" | "id" | "model" | "price" | "title"
-          > & {
-            cancelationPolicies: Array<
-              { __typename?: "ServiceCancelationPolicy" } & Pick<
-                ServiceCancelationPolicy,
-                "cost" | "duration"
-              >
-            >;
-            presentations: Array<
-              { __typename?: "ServicePresentation" } & Pick<
-                ServicePresentation,
-                "src" | "type"
-              >
-            >;
-            properties: { __typename?: "VehicleProperties" } & Pick<
-              VehicleProperties,
-              | "airCondition"
-              | "gpsAvailable"
-              | "lugaggeCapacity"
-              | "maxSpeedInKm"
-              | "seats"
-              | "windows"
-            >;
-          }
-        >
-      >;
-      workingHours?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<
-          ServiceWorkingSchedule,
-          "id"
-        > & {
-          weekdays: ServiceWeekdaysWorkingHours;
-        }
-      >;
-    }
+              weekdays: ServiceWeekdaysWorkingHours;
+            }
+        >;
+      }
   >;
 };
 
@@ -533,6 +535,7 @@ query GetServiceDetails($id:String!){
         {
           cancelationPolicies: [
             {
+              id: "1",
               cost: 50,
               duration: 60,
             },
@@ -568,7 +571,10 @@ query GetServiceDetails($id:String!){
           ],
           hotelId: "67890",
           id: "54321",
-          includedAmenities: ["Free Wi-Fi", "Parking"],
+          includedAmenities: [
+            { label: "Free Wi-Fi", slug: "wifi" },
+            { label: "Parking", slug: "parking" },
+          ],
           includedServices: ["Room cleaning", "Towels"],
           measurements: {
             inFeet: 15,
@@ -578,10 +584,12 @@ query GetServiceDetails($id:String!){
             {
               label: "Swimming pool",
               value: "yes",
+              icon: FaWaveSquare,
             },
             {
               label: "Gym",
               value: "yes",
+              icon: CgGym,
             },
           ],
           pricePerNight: 90,
