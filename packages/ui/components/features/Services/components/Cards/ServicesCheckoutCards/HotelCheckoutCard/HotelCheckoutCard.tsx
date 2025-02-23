@@ -6,10 +6,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ServiceCancelationPolicy, ServiceType } from "@features/API";
-import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
-import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 import { ServiceRefundableTypeDescription } from "@features/Services/components/DataDisplay";
 import { ServicePropertiesSwticher } from "@features/Services/components/Switchers";
+import { ResturantMenuListSection } from "@features/Services/resturant";
 import {
   Button,
   EditNoteIcon,
@@ -22,9 +21,12 @@ import {
 import { mapArray } from "@UI/../utils/src";
 import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
 import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
+import { ServicePresentationType } from "api";
+import { getRandomImage } from "placeholder";
 import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { ServicePresentationType } from "api";
 
 export interface ServiceCheckoutCardProps {
   thumbnail: string;
@@ -95,6 +97,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         ServiceType.Hotel,
         ServiceType.HolidayRentals,
         ServiceType.Vehicle,
+        ServiceType.Restaurant,
       ])
     ) {
       onOpen();
@@ -364,133 +367,205 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         <ModalOverlay />
         <ModalContent maxW="75rem" w="100%">
           <ModalBody p={4}>
-            {serviceType === ServiceType.Vehicle ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="w-full">
-                  <VehiclesSelectableList
-                    vehicles={[
-                      {
-                        __typename: "Vehicle",
-                        brand: "Toyota",
-                        id: "vehicle123",
-                        model: "Camry",
-                        price: 100,
-                        title: "Toyota Camry",
-                        cancelationPolicies: [
-                          {
-                            __typename: "ServiceCancelationPolicy",
-                            cost: 30,
-                            duration: 12,
-                          },
-                        ],
-                        presentations: [
-                          {
-                            __typename: "ServicePresentation",
-                            type: ServicePresentationType.Img,
-                            src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                          },
-                        ],
-                        properties: {
-                          __typename: "VehicleProperties",
-                          airCondition: true,
-                          gpsAvailable: true,
-                          lugaggeCapacity: 3,
-                          maxSpeedInKm: 200,
-                          seats: 5,
-                          windows: 4,
-                        },
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="w-full">
-                  <ServiceReservastionForm
-                    sellerId={""}
-                    selectedServicesIds={[]}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="w-full">
-                  <HotelServiceRoomsSection
-                    rooms={[
-                      {
-                        cancelationPolicies: [
-                          {
-                            cost: 50,
-                            duration: 60,
-                          },
-                        ],
-                        presentations: [],
-                        reviews: 15,
-                        rating: 4.5,
-                        createdAt: "2023-03-05T00:00:00Z",
-                        dailyPrice: true,
-                        dailyPrices: {
-                          fr: 90,
-                          mo: 100,
-                          sa: 110,
-                          su: 120,
-                          th: 95,
-                          tu: 105,
-                          we: 100,
-                        },
-                        description: "Cozy room with a view",
-                        discount: {
-                          units: 3,
-                          value: 10,
-                        },
-                        extras: [
-                          {
-                            cost: 20,
-                            name: "Mini-bar",
-                          },
-                          {
-                            cost: 10,
-                            name: "Late check-out",
-                          },
-                        ],
-                        hotelId: "67890",
-                        id: "54321",
-                        includedAmenities: ["Free Wi-Fi", "Parking"],
-                        includedServices: ["Room cleaning", "Towels"],
-                        measurements: {
-                          inFeet: 15,
-                          inMeter: 20,
-                        },
-                        popularAmenities: [
-                          {
-                            label: "Swimming pool",
-                            value: "yes",
-                          },
-                          {
-                            label: "Gym",
-                            value: "yes",
-                          },
-                        ],
-                        pricePerNight: 90,
-                        title: "Standard Room",
-                        updatedAt: "2023-03-06T00:00:00Z",
-                        bathrooms: 2,
-                        beds: 3,
-                        num_of_rooms: 2,
-                        sellerId: "",
-                        thumbnail: "",
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="w-full">
-                  <ServiceRangeBookingCalander
-                    bookedDates={[]}
-                    date={new Date()}
-                    onChange={() => {}}
-                    value={[]}
-                  />
-                </div>
-              </div>
-            )}
+            {(() => {
+              switch (serviceType) {
+                case ServiceType.Restaurant:
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="w-full">
+                        <ResturantMenuListSection
+                          menus={[
+                            {
+                              id: "menu1",
+                              name: "Lunch Menu",
+                              dishs: [
+                                {
+                                  id: "dish1",
+                                  ingredients: ["chicken", "rice", "spices"],
+                                  price: 25.0,
+                                  name: "Chicken Rice",
+                                  thumbnail: getRandomImage(),
+                                },
+                                {
+                                  id: "dish2",
+                                  ingredients: [
+                                    "beef",
+                                    "noodles",
+                                    "vegetables",
+                                  ],
+                                  price: 30.0,
+                                  name: "Beef Noodles",
+                                  thumbnail: getRandomImage(),
+                                },
+                              ],
+                            },
+                            {
+                              id: "menu2",
+                              name: "Dinner Menu",
+                              dishs: [
+                                {
+                                  id: "dish3",
+                                  ingredients: ["fish", "potatoes", "herbs"],
+                                  price: 35.0,
+                                  name: "Herb Fish",
+                                  thumbnail: getRandomImage(),
+                                },
+                                {
+                                  id: "dish4",
+                                  ingredients: ["pasta", "tomato", "cheese"],
+                                  price: 28.0,
+                                  name: "Tomato Pasta",
+                                  thumbnail: getRandomImage(),
+                                },
+                              ],
+                            },
+                          ]}
+                          cancelation={[]}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <ServiceReservastionForm
+                          sellerId={""}
+                          selectedServicesIds={[]}
+                        />
+                      </div>
+                    </div>
+                  );
+                case ServiceType.Vehicle:
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="w-full">
+                        <VehiclesSelectableList
+                          vehicles={[
+                            {
+                              __typename: "Vehicle",
+                              brand: "Toyota",
+                              id: "vehicle123",
+                              model: "Camry",
+                              price: 100,
+                              title: "Toyota Camry",
+                              cancelationPolicies: [
+                                {
+                                  __typename: "ServiceCancelationPolicy",
+                                  cost: 30,
+                                  duration: 12,
+                                },
+                              ],
+                              presentations: [
+                                {
+                                  __typename: "ServicePresentation",
+                                  type: ServicePresentationType.Img,
+                                  src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                                },
+                              ],
+                              properties: {
+                                __typename: "VehicleProperties",
+                                airCondition: true,
+                                gpsAvailable: true,
+                                lugaggeCapacity: 3,
+                                maxSpeedInKm: 200,
+                                seats: 5,
+                                windows: 4,
+                              },
+                            },
+                          ]}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <ServiceReservastionForm
+                          sellerId={""}
+                          selectedServicesIds={[]}
+                        />
+                      </div>
+                    </div>
+                  );
+                case ServiceType.Hotel:
+                case ServiceType.HolidayRentals:
+                  return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="w-full">
+                        <HotelServiceRoomsSection
+                          rooms={[
+                            {
+                              cancelationPolicies: [
+                                {
+                                  cost: 50,
+                                  duration: 60,
+                                },
+                              ],
+                              presentations: [],
+                              reviews: 15,
+                              rating: 4.5,
+                              createdAt: "2023-03-05T00:00:00Z",
+                              dailyPrice: true,
+                              dailyPrices: {
+                                fr: 90,
+                                mo: 100,
+                                sa: 110,
+                                su: 120,
+                                th: 95,
+                                tu: 105,
+                                we: 100,
+                              },
+                              description: "Cozy room with a view",
+                              discount: {
+                                units: 3,
+                                value: 10,
+                              },
+                              extras: [
+                                {
+                                  cost: 20,
+                                  name: "Mini-bar",
+                                },
+                                {
+                                  cost: 10,
+                                  name: "Late check-out",
+                                },
+                              ],
+                              hotelId: "67890",
+                              id: "54321",
+                              includedAmenities: ["Free Wi-Fi", "Parking"],
+                              includedServices: ["Room cleaning", "Towels"],
+                              measurements: {
+                                inFeet: 15,
+                                inMeter: 20,
+                              },
+                              popularAmenities: [
+                                {
+                                  label: "Swimming pool",
+                                  value: "yes",
+                                },
+                                {
+                                  label: "Gym",
+                                  value: "yes",
+                                },
+                              ],
+                              pricePerNight: 90,
+                              title: "Standard Room",
+                              updatedAt: "2023-03-06T00:00:00Z",
+                              bathrooms: 2,
+                              beds: 3,
+                              num_of_rooms: 2,
+                              sellerId: "",
+                              thumbnail: "",
+                            },
+                          ]}
+                        />
+                      </div>
+                      <div className="w-full">
+                        <ServiceRangeBookingCalander
+                          bookedDates={[]}
+                          date={new Date()}
+                          onChange={() => {}}
+                          value={[]}
+                        />
+                      </div>
+                    </div>
+                  );
+                default:
+                  return;
+              }
+            })()}
           </ModalBody>
         </ModalContent>
       </Modal>
