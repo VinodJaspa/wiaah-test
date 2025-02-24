@@ -221,35 +221,36 @@ export const ServiceReservastionForm: React.FC<{
           ServiceType.Hotel,
           ServiceType.HolidayRentals,
           ServiceType.Vehicle,
-          ServiceType.HealthCenter,
         ]) ? (
-          <div className="flex gap-2">
-            <Image
-              className="w-20 h-16 rounded-lg"
-              src={
-                "https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?b=1&s=612x612&w=0&k=20&c=vcCQ5L9Tt2ZurwFhtodR6njSUnMsEn_ZqEmsa0hs9lM="
-              }
-              alt={service?.name}
-            />
-            <div className="flex h-full flex-col font-medium gap-1">
-              <p>{service?.name || "Dolce Vita Villa"}</p>
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <HStack>
-                  <p>
-                    {service?.num_of_rooms || 4} {t("Rooms")}
-                  </p>
-                  <p>
-                    {service?.beds || 6} {t("Beds")}
-                  </p>
-                  <p>
-                    {service?.bathrooms || 5} {t("Bathrooms")}
-                  </p>
-                </HStack>
-              ) : null}
+          <>
+            <div className="flex gap-2">
+              <Image
+                className="w-20 h-16 rounded-lg"
+                src={
+                  "https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?b=1&s=612x612&w=0&k=20&c=vcCQ5L9Tt2ZurwFhtodR6njSUnMsEn_ZqEmsa0hs9lM="
+                }
+                alt={service?.name}
+              />
+              <div className="flex h-full flex-col font-medium gap-1">
+                <p>{service?.name || "Dolce Vita Villa"}</p>
+                {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+                  <HStack>
+                    <p>
+                      {service?.num_of_rooms || 4} {t("Rooms")}
+                    </p>
+                    <p>
+                      {service?.beds || 6} {t("Beds")}
+                    </p>
+                    <p>
+                      {service?.bathrooms || 5} {t("Bathrooms")}
+                    </p>
+                  </HStack>
+                ) : null}
+              </div>
             </div>
-          </div>
+            <Divider />
+          </>
         ) : null}
-        <Divider />
 
         <Stepper>
           {({ currentStepIdx, goToStep, nextStep }) => {
@@ -410,6 +411,36 @@ export const ServiceReservastionForm: React.FC<{
           </>
         ) : null}
         <Divider />
+        {showOn([ServiceType.HealthCenter]) && (
+          <>
+            <div className="flex gap-2">
+              <Image
+                className="w-20 h-16 rounded-lg"
+                src={
+                  "https://media.istockphoto.com/id/506903162/photo/luxurious-villa-with-pool.jpg?b=1&s=612x612&w=0&k=20&c=vcCQ5L9Tt2ZurwFhtodR6njSUnMsEn_ZqEmsa0hs9lM="
+                }
+                alt={service?.name}
+              />
+              <div className="flex h-full flex-col font-medium gap-1">
+                <p>{service?.name || "Dolce Vita Villa"}</p>
+                {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+                  <HStack>
+                    <p>
+                      {service?.num_of_rooms || 4} {t("Rooms")}
+                    </p>
+                    <p>
+                      {service?.beds || 6} {t("Beds")}
+                    </p>
+                    <p>
+                      {service?.bathrooms || 5} {t("Bathrooms")}
+                    </p>
+                  </HStack>
+                ) : null}
+              </div>
+            </div>
+            <Divider />
+          </>
+        )}
         <div className="">
           <BookedServicesCostDetails
             subTotal={150}
