@@ -391,10 +391,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       ],
       hotelId: "67890",
       id: "54321",
-      includedAmenities: [
-        { label: "Free Wi-Fi", slug: "wifi" },
-        { label: "Parking", slug: "parking" },
-      ],
+      includedAmenities: ["Free Wi-Fi", "Parking"],
       includedServices: ["Room cleaning", "Towels"],
       measurements: {
         inFeet: 15,
@@ -402,14 +399,19 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       },
       popularAmenities: [
         {
-          label: "Swimming pool",
+          label: "Breakfast",
           value: "yes",
-          icon: FaWaveSquare,
+          slug: "breakfast",
         },
         {
-          label: "Gym",
+          label: "Laundry",
           value: "yes",
-          icon: CgGym,
+          slug: "laundry",
+        },
+        {
+          label: "Balcony",
+          value: "yes",
+          slug: "balcony",
         },
       ],
       pricePerNight: 90,
@@ -420,6 +422,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       num_of_rooms: 2,
       sellerId: "",
       thumbnail: "/place-1.jpg",
+      fees: true,
     },
   ],
   serviceMetaInfo: {

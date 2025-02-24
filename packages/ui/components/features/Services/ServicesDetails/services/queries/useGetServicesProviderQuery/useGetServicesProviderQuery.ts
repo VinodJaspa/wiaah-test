@@ -155,6 +155,7 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
               | "pricePerNight"
               | "thumbnail"
               | "includedAmenities"
+              | "fees"
             > & {
                 cancelationPolicies?: Array<
                   { __typename?: "ServiceCancelationPolicy" } & Pick<
@@ -187,7 +188,7 @@ export type GetServiceDetailsQuery = { __typename?: "Query" } & {
                   Array<
                     { __typename?: "ServiceAmenity" } & Pick<
                       ServiceAmenity,
-                      "label" | "value" | "icon"
+                      "label" | "value" | "slug"
                     >
                   >
                 >;
@@ -571,10 +572,7 @@ query GetServiceDetails($id:String!){
           ],
           hotelId: "67890",
           id: "54321",
-          includedAmenities: [
-            { label: "Free Wi-Fi", slug: "wifi" },
-            { label: "Parking", slug: "parking" },
-          ],
+          includedAmenities: ["Free Wi-Fi", "Parking"],
           includedServices: ["Room cleaning", "Towels"],
           measurements: {
             inFeet: 15,
@@ -582,14 +580,19 @@ query GetServiceDetails($id:String!){
           },
           popularAmenities: [
             {
-              label: "Swimming pool",
+              label: "Breakfast",
               value: "yes",
-              icon: FaWaveSquare,
+              slug: "breakfast",
             },
             {
-              label: "Gym",
+              label: "Laundry",
               value: "yes",
-              icon: CgGym,
+              slug: "laundry",
+            },
+            {
+              label: "balcony",
+              value: "yes",
+              slug: "Balcony",
             },
           ],
           pricePerNight: 90,

@@ -53,6 +53,7 @@ export interface HotelRoomDetailsCardProps {
     | "title"
     | "pricePerNight"
     | "thumbnail"
+    | "fees"
   > & {
     cancelationPolicies?: Array<
       Pick<ServiceCancelationPolicy, "id" | "cost" | "duration">
@@ -70,7 +71,7 @@ export interface HotelRoomDetailsCardProps {
       __typename?: "ServicePropertyMeasurements";
     } & Pick<ServicePropertyMeasurements, "inFeet" | "inMeter">;
     popularAmenities?: Maybe<
-      Array<Pick<ServiceAmenity, "label" | "value" | "icon">>
+      Array<Pick<ServiceAmenity, "label" | "value" | "slug">>
     >;
     presentations?: Array<Pick<ServicePresentation, "src" | "type">>;
   };
@@ -115,12 +116,12 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {mapArray(room.popularAmenities!, (data, i) => (
+                  {mapArray(room.includedAmenities!, (data, i) => (
                     <div
                       key={i}
                       className="bg-primary-100 rounded-full px-2 py-1 text-primary-400"
                     >
-                      {data.label} {t("included")}
+                      {data} {t("included")}
                     </div>
                   ))}
                 </div>
@@ -128,7 +129,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                   style={{ gridTemplateColumns: `repeat(${3},1fr)` }}
                   className={`w-full grid gap-4 text-primary text-xl thinScroll overflow-y-scroll`}
                 >
-                  {mapArray(room.includedAmenities!, (ame, i) => (
+                  {mapArray(room.popularAmenities!, (ame, i) => (
                     <HStack key={i}>
                       <ServicePropertiesSwticher slug={ame.slug} />
                       <p className="font-medium text-darkBrown text-xs">
@@ -141,9 +142,9 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
             </div>
             <div className="flex flex-col w-full gap-6">
               <div className="flex gap-x-10 gap-y-2 flex-wrap">
-                {mapArray(room.extras!, (extra, i) => (
+                {mapArray(room.includedServices!, (serv, i) => (
                   <p className="text-lightBlack text-xs font-semibold" key={i}>
-                    {extra.name}
+                    {serv}
                   </p>
                 ))}
               </div>
@@ -214,6 +215,11 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                     </p>
                   </>
                 ) : null}
+                {room.fees ? (
+                  <p className="text-lightBlack">{t("Include tax & fees")}</p>
+                ) : (
+                  ""
+                )}
               </div>
               <Button className="text-[1.375rem] text-white font-bold">
                 {t("Book Now")}

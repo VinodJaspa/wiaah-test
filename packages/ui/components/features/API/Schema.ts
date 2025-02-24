@@ -2434,7 +2434,7 @@ export type HotelRoom = {
   hotel?: Maybe<Hotel>;
   hotelId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
-  includedAmenities?: Maybe<Array<HotelRoomIncludedAmenities>>;
+  includedAmenities?: Maybe<Array<Scalars["String"]["output"]>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
   measurements: ServicePropertyMeasurements;
   num_of_rooms: Scalars["Int"]["output"];
@@ -2447,11 +2447,7 @@ export type HotelRoom = {
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   thumbnail: Scalars["String"]["output"];
-};
-
-export type HotelRoomIncludedAmenities = {
-  label: string;
-  slug: string;
+  fees?: Boolean;
 };
 
 export type HotelRoomMetaInfoInput = {
@@ -5810,7 +5806,7 @@ export type ServiceAmenity = {
   __typename?: "ServiceAmenity";
   label: Scalars["String"]["output"];
   value: Scalars["String"]["output"];
-  icon: IconType;
+  slug: Scalars["String"]["output"];
 };
 
 export type ServiceCancelationPolicy = {
