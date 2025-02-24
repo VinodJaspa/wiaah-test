@@ -24,7 +24,7 @@ export const BeautyCenterTreatmentCard: React.FC<
   const { visit } = useRouting();
 
   return (
-    <div className="flex w-full justify-between">
+    <div className="w-full grid grid-cols-[auto_100px]">
       <div className="flex gap-2 items-center">
         <Image className="w-32 h-24" src={treatment.thumbnail}></Image>
         <div className="md:text-lg font-semibold flex flex-col gap-1">

@@ -238,14 +238,8 @@ const FAKE_BEAUTY_CENTER_DATA = {
   updatedAt: "2023-06-01T00:00:00Z",
   vat: 0.15,
   cancelationPolicies: [
-    {
-      cost: 20.0,
-      duration: 24,
-    },
-    {
-      cost: 50.0,
-      duration: 12,
-    },
+    { id: "1", cost: 20.0, duration: 24 },
+    { id: "2", cost: 50.0, duration: 12 },
   ],
   location: {
     address: "123 Beauty St",

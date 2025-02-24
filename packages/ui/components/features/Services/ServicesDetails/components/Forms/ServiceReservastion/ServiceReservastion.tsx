@@ -40,7 +40,8 @@ const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
       qty: 2,
       service: {
         id: "service123",
-        thumbnail: "https://example.com/thumbnails/service.jpg",
+        thumbnail:
+          "https://images.pexels.com/photos/27726786/pexels-photo-27726786/free-photo-of-sousse-archaeological-museum.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         type: ServiceType.Restaurant,
         name: "Deluxe Room",
         num_of_rooms: 1,
@@ -66,7 +67,8 @@ const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
       qty: 1,
       service: {
         id: "service124",
-        thumbnail: "https://example.com/thumbnails/service2.jpg",
+        thumbnail:
+          "https://images.pexels.com/photos/27726786/pexels-photo-27726786/free-photo-of-sousse-archaeological-museum.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
         type: ServiceType.Hotel,
         name: "Suite",
         num_of_rooms: 1,
@@ -172,6 +174,40 @@ export const ServiceReservastionForm: React.FC<{
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
+  const createDate = (
+    daysOffset: number,
+    hours: number,
+    minutes = 0,
+  ): string => {
+    const date = new Date();
+    date.setDate(date.getDate() + daysOffset);
+    date.setHours(hours, minutes, 0, 0);
+    return date.toISOString();
+  };
+
+  const mockWorkingDates = Array.from({ length: 7 }).map((_, index) => ({
+    date: createDate(index, 0),
+    workingHoursRanges: [
+      { from: createDate(index, 9), to: createDate(index, 12) },
+      { from: createDate(index, 13), to: createDate(index, 18) },
+    ],
+  }));
+
+  const mockTakenDates = [
+    {
+      date: createDate(0, 0),
+      workingHoursRanges: [{ from: createDate(0, 11), to: createDate(0, 12) }],
+    },
+    {
+      date: createDate(1, 0),
+      workingHoursRanges: [{ from: createDate(1, 14), to: createDate(1, 15) }],
+    },
+    {
+      date: createDate(2, 0),
+      workingHoursRanges: [{ from: createDate(2, 16), to: createDate(2, 17) }],
+    },
+  ];
+
   return (
     <div className="pl-4 flex flex-col max-h-screen overflow-y-scroll thinScroll gap-[1.875rem] h-fit">
       <div
@@ -249,6 +285,7 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Hotel,
                         ServiceType.HolidayRentals,
                         ServiceType.Restaurant,
+                        ServiceType.BeautyCenter,
                       ])
                         ? {
                             icon: <PersonIcon />,
@@ -262,220 +299,8 @@ export const ServiceReservastionForm: React.FC<{
                   {showOn([ServiceType.HealthCenter]) ? (
                     <div className="mx-4">
                       <WorkingDaysCalender
-                        takenDates={[
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                        ]}
-                        workingDates={[
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                          {
-                            date: new Date().toString(),
-                            workingHoursRanges: [
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                              {
-                                from: new Date().toString(),
-                                to: new Date().toString(),
-                              },
-                            ],
-                          },
-                        ]}
+                        workingDates={mockWorkingDates}
+                        takenDates={mockTakenDates}
                       />
                     </div>
                   ) : undefined}

@@ -33,18 +33,17 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
           const formatter = new Intl.DateTimeFormat("en-us", {
             hour: "2-digit",
             minute: "2-digit",
-            timeZone: "UTC",
           });
-          const time = formatter.format(new Date(date.date));
 
           return (
             <button
               onClick={date.available ? () => onClick(date.date) : undefined}
               key={i}
-              className={`${date.available ? "bg-primary-100" : "bg-gray-100"
-                } w-full p-[2px] px-2 h-8  flex justify-center items-center rounded font-bold whitespace-nowrap`}
+              className={`${
+                date.available ? "bg-primary-100" : "bg-gray-100"
+              } w-full p-[2px] px-2 h-8  flex justify-center items-center rounded font-bold whitespace-nowrap`}
             >
-              {time ?? "--"}
+              {formatter.format(new Date(date.date)) ?? "--"}
             </button>
           );
         })}

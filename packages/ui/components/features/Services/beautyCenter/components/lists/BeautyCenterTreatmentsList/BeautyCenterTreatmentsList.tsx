@@ -1,4 +1,5 @@
 import { ServiceCancelationPolicy, Treatment } from "@features/API";
+import { ServiceCancelationPolicyInput } from "@features/Services/components";
 import { BeautyCenterTreatmentCard } from "@UI/components/features/Services/beautyCenter/components/Cards/BeautyCenterTreatmentCard";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -18,7 +19,7 @@ export const BeautyCenterTreatmentsList: React.FC<
   return (
     <div ref={treatmentsRef} className="flex flex-col gap-8">
       <p className="font-bold text-lg md:text-xl">{t("Treatments")}</p>
-      <div className="flex flex-col gap-8 pr-2 ">
+      <div className="flex flex-col gap-8">
         {treatments.map((treatment, i) => (
           <BeautyCenterTreatmentCard
             treatment={treatment}
@@ -29,7 +30,7 @@ export const BeautyCenterTreatmentsList: React.FC<
           />
         ))}
       </div>
-      {/* 
+
       <div className="flex flex-col gap-1">
         <p className="font-bold">{t("Cancelation policy")}</p>
         {cancelation.map((policy, i) => (
@@ -40,7 +41,7 @@ export const BeautyCenterTreatmentsList: React.FC<
             key={`${i}-${policy.cost}`}
           />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
