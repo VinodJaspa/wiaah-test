@@ -22,7 +22,7 @@ export const ServiceCancelationPolicyInput: React.FC<
     <div className="w-full grid grid-cols-[auto_100px]">
       <label
         {...setTestid("InputLabel")}
-        className="flex text-lightBlack items-center"
+        className="flex text-lightBlack items-center gap-2 w-full"
       >
         <Radio
           onChange={(e) =>
@@ -37,7 +37,10 @@ export const ServiceCancelationPolicyInput: React.FC<
           bookedDate={new Date()}
         />
       </label>
-      <span {...setTestid("PriceIndicator")} className="text-primary font-bold">
+      <span
+        {...setTestid("PriceIndicator")}
+        className="text-primary font-bold w-full"
+      >
         {cost > 0 ? (
           <PriceDisplay price={cost} />
         ) : duration > 0 ? (

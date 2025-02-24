@@ -84,6 +84,7 @@ export type ServiceCancelationPolicy = {
   __typename?: "ServiceCancelationPolicy";
   duration: Scalars["Int"];
   cost: Scalars["Int"];
+  id: Scalars["String"];
 };
 
 export type ServiceExtra = {

@@ -244,10 +244,12 @@ const FAKE_HEALTH_CENTER_DATA: GetHealthCenterQuery["getHealthCenter"] = {
   vat: 0.08,
   cancelationPolicies: [
     {
+      id: "1",
       cost: 50.0,
       duration: 24,
     },
     {
+      id: "2",
       cost: 100.0,
       duration: 12,
     },

@@ -1,4 +1,5 @@
-import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
 import { WorkingDayColumn } from "./WorkingDayColumn";
 
 export interface WorkingDaysCalenderProps {
@@ -67,8 +68,21 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
   takenDates,
 }) => {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const workingSlots = splitDatesByDay(workingDates);
   const takenSlots = splitDatesByDay(takenDates);
+
+  const maxSlideIndex = Math.floor((workingSlots.length - 1) / 4);
+  const canGoLeft = currentSlideIndex > 0;
+  const canGoRight = currentSlideIndex < maxSlideIndex;
+
+  const goLeft = () => {
+    setCurrentSlideIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  const goRight = () => {
+    setCurrentSlideIndex((prev) => Math.min(maxSlideIndex, prev + 1));
+  };
 
   const takenMap = new Map<string, boolean>();
   takenSlots.forEach((day) => {
@@ -88,24 +102,44 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   };
 
   return (
-    <div className="flex gap-4 px-2 w-full">
-      {workingSlots.map((date, i) => {
-        const dayTakenSlots = takenSlots.find(
-          (t) => t.day.toDateString() === date.day.toDateString(),
-        );
+    <div className="relative w-full overflow-hidden">
+      <button
+        onClick={goLeft}
+        disabled={!canGoLeft}
+        className="absolute -left-2 top-2 z-10 text-primary disabled:opacity-50"
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        onClick={goRight}
+        disabled={!canGoRight}
+        className="absolute -right-2 top-2 z-10 text-primary disabled:opacity-50"
+      >
+        <ChevronRight />
+      </button>
+      <div
+        className="flex transition-transform duration-300"
+        style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
+      >
+        {workingSlots.map((date, i) => {
+          const dayTakenSlots = takenSlots.find(
+            (t) => t.day.toDateString() === date.day.toDateString(),
+          );
 
-        return (
-          <WorkingDayColumn
-            dates={date.dates.map((d) => ({
-              date: d,
-              available: !isTimeTaken(d, dayTakenSlots?.dates || []),
-            }))}
-            onClick={() => {}}
-            dayDate={date.day}
-            key={i}
-          />
-        );
-      })}
+          return (
+            <div key={i} className="w-1/4 flex-shrink-0 px-2">
+              <WorkingDayColumn
+                dates={date.dates.map((d) => ({
+                  date: d,
+                  available: !isTimeTaken(d, dayTakenSlots?.dates || []),
+                }))}
+                onClick={() => {}}
+                dayDate={date.day}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
