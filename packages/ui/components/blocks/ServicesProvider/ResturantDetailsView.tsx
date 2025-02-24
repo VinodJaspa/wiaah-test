@@ -340,10 +340,12 @@ const FAKE_RESTAURANT_DETAILS_DATA: GetRestaurantQuery["getRestaurant"] = {
   },
   cancelationPolicies: [
     {
+      id: "1",
       cost: 10.0,
       duration: 24,
     },
     {
+      id: "2",
       cost: 20.0,
       duration: 24,
     },

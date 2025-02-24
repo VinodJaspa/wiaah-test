@@ -160,6 +160,7 @@ export type ServiceCancelationPolicy = {
   __typename?: "ServiceCancelationPolicy";
   duration: Scalars["Int"];
   cost: Scalars["Int"];
+  id: Scalars["String"];
 };
 
 export type ServiceExtra = {
@@ -190,7 +191,7 @@ export type GetHotelServiceArgs = {
 };
 
 export const getServicesProviderDataFetcher = async (
-  args: GetHotelServiceArgs
+  args: GetHotelServiceArgs,
 ): Promise<GqlResponse<Hotel, "getHotelService">> => {
   const client = createGraphqlRequestClient();
   client.setQuery(`

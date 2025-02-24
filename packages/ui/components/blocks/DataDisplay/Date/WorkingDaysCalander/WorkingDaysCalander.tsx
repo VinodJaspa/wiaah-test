@@ -101,8 +101,23 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
     });
   };
 
+  const currentVisibleDays = workingSlots.slice(
+    currentSlideIndex * 4,
+    (currentSlideIndex + 1) * 4,
+  );
+
+  const currentMonthYear = currentVisibleDays[0]?.day
+    ? new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(currentVisibleDays[0].day)
+    : "";
+
   return (
     <div className="relative w-full overflow-hidden">
+      <div className="text-center font-bold text-lg mb-4">
+        {currentMonthYear}
+      </div>
       <button
         onClick={goLeft}
         disabled={!canGoLeft}

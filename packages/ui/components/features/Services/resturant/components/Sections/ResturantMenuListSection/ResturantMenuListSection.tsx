@@ -1,10 +1,11 @@
 import { Dish, RestaurantMenu } from "@features/API";
 import { ResturantMenuList } from "@UI";
+import { ServiceCancelationPolicyInput } from "@UI/components/features/Services/components/Inputs/ServiceCancelationPolicyInput";
 import { ServiceCancelationPolicy } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useSetUserInput } from "state";
-import { FilterAndAddToArray } from "utils";
+import { FilterAndAddToArray, mapArray } from "utils";
 
 export interface ResturantMenuListSectionProps {
   cancelation: ServiceCancelationPolicy[];
@@ -60,7 +61,7 @@ export const ResturantMenuListSection: React.FC<
             />
           ))
         : null}
-      {/* <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1">
         <p className="font-bold">{t("Cancelation policy")}</p>
         {mapArray(cancelation, (policy, i) => (
           <ServiceCancelationPolicyInput
@@ -70,7 +71,7 @@ export const ResturantMenuListSection: React.FC<
             key={`${i}-${policy.cost}`}
           />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

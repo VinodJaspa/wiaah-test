@@ -19,6 +19,7 @@ import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
 import { getRandomImage } from "placeholder";
 import { FaWaveSquare } from "react-icons/fa";
 import { CgGym } from "react-icons/cg";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 
 export const HotelDetailsView: React.FC = () => {
   //WARNING: grphql query endpoint is not ready yet
@@ -243,14 +244,11 @@ export const HotelDetailsView: React.FC = () => {
       </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={
-          res ? (
-            <ServiceRangeBookingCalander
-              bookedDates={[]}
-              date={new Date()}
-              onChange={() => {}}
-              value={[]}
-            />
-          ) : null
+          <ServiceReservastionForm
+            sellerId={""}
+            selectedServicesIds={[]}
+            // serviceId={""}
+          />
         }
       >
         <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
