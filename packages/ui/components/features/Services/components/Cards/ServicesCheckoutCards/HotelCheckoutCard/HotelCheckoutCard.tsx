@@ -1,15 +1,6 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
 import { ServiceCancelationPolicy, ServiceType } from "@features/API";
 import { ServiceRefundableTypeDescription } from "@features/Services/components/DataDisplay";
 import { ServicePropertiesSwticher } from "@features/Services/components/Switchers";
-import { HealthCenterDoctorsList } from "@features/Services/HealthCenter";
-import { ResturantMenuListSection } from "@features/Services/resturant";
 import {
   Button,
   EditNoteIcon,
@@ -20,19 +11,12 @@ import {
   TrashIcon,
 } from "@partials";
 import { mapArray } from "@UI/../utils/src";
-import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
-import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
-import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
-import { VehiclesSelectableList } from "@UI/components/features/Services/Vehicle/components/Lists/VehiclesSelectableList";
-import {
-  HealthCenterDoctorAvailablityStatus,
-  ServicePresentationType,
-} from "api";
-import { getRandomImage } from "placeholder";
-import React, { Fragment } from "react";
+import Link from "next/link";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export interface ServiceCheckoutCardProps {
+  id: string;
   thumbnail: string;
   name: string;
   shopName: string;
@@ -70,6 +54,7 @@ export interface ServiceCheckoutCardProps {
 }
 
 export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
+  id,
   amenities,
   cancelationPolicy,
   extras,
@@ -87,27 +72,12 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   treatments,
 }) => {
   const [mounted, setMounted] = React.useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { t } = useTranslation();
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleModifyBooking = () => {
-    if (
-      showOn([
-        ServiceType.Hotel,
-        ServiceType.HolidayRentals,
-        ServiceType.Vehicle,
-        ServiceType.Restaurant,
-        ServiceType.HealthCenter,
-      ])
-    ) {
-      onOpen();
-    }
-  };
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
@@ -133,504 +103,235 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   }
 
   return (
-    <Fragment>
-      <div className="flex font-inter flex-col gap-4 w-full pb-2">
-        <div className="flex gap-3">
-          <Image
-            src={thumbnail}
-            className="rounded-[0.625rem] h-[10.375rem] object-cover w-[13.75rem]"
-          />
-          <div className="flex flex-col gap-2">
-            <p className="font-bold text-2xl">
-              {showOn([
-                ServiceType.Hotel,
-                ServiceType.BeautyCenter,
-                ServiceType.Restaurant,
-                ServiceType.HolidayRentals,
-                ServiceType.HealthCenter,
-              ])
-                ? shopName
-                : null}
-              {showOn([ServiceType.Vehicle]) ? name : null}
-            </p>
-            <HStack className="flex text-xl gap-1">
-              <LocationOnPointIcon />
-              <p className="text-[#525252] text-xs">{fullAddress}</p>
-            </HStack>
-            <div className="flex flex-wrap text-2xl gap-4">
-              {mapArray(amenities, (v, i) => (
-                <HStack className="flex-wrap">
-                  <ServicePropertiesSwticher key={i} slug={v?.slug} />
-                  <p className="text-lg font-medium">{v.label}</p>
-                </HStack>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full gap-2">
-          <p className="text-[1.375rem] font-semibold">
-            {t("Cancelation Policy")}
+    <div className="flex font-inter flex-col gap-4 w-full pb-2">
+      <div className="flex gap-3">
+        <Image
+          src={thumbnail}
+          className="rounded-[0.625rem] h-[10.375rem] object-cover w-[13.75rem]"
+        />
+        <div className="flex flex-col gap-2">
+          <p className="font-bold text-2xl">
+            {showOn([
+              ServiceType.Hotel,
+              ServiceType.BeautyCenter,
+              ServiceType.Restaurant,
+              ServiceType.HolidayRentals,
+              ServiceType.HealthCenter,
+            ])
+              ? shopName
+              : null}
+            {showOn([ServiceType.Vehicle]) ? name : null}
           </p>
-
-          <ServiceRefundableTypeDescription
-            bookedDate={checkin}
-            cost={cancelationPolicy?.cost}
-            duration={cancelationPolicy?.duration}
-            displayCost
-          />
-        </div>
-
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("Extras")}:</p>
-            {mapArray(extras, (v, i) => (
-              <HStack className="justify-between">
-                <p className="font-medium">{v?.name}</p>
-                <span className="font-bold text-xl">
-                  <PriceDisplay price={v?.cost} />
-                </span>
+          <HStack className="flex text-xl gap-1">
+            <LocationOnPointIcon />
+            <p className="text-[#525252] text-xs">{fullAddress}</p>
+          </HStack>
+          <div className="flex flex-wrap text-2xl gap-4">
+            {mapArray(amenities, (v, i) => (
+              <HStack className="flex-wrap">
+                <ServicePropertiesSwticher key={i} slug={v?.slug} />
+                <p className="text-lg font-medium">{v.label}</p>
               </HStack>
             ))}
-          </div>
-        ) : null}
-
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("Guests")}:</p>
-            <HStack className="font-medium">
-              <p>
-                {guests?.adults || 0} {t("Adults")}
-              </p>
-              <p>
-                {guests?.childrens || 0} {t("Childrens")}
-              </p>
-            </HStack>
-          </div>
-        ) : null}
-
-        {showOn([
-          ServiceType.Hotel,
-          ServiceType.HolidayRentals,
-          ServiceType.BeautyCenter,
-          ServiceType.HealthCenter,
-          ServiceType.Restaurant,
-        ]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("You are booking")}:</p>
-            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-              <p>{name}</p>
-            ) : null}
-
-            {showOn([ServiceType.BeautyCenter]) ? (
-              <TreatmentsCheckoutList
-                treatments={treatments || []}
-              ></TreatmentsCheckoutList>
-            ) : null}
-
-            {showOn([ServiceType.HealthCenter]) ? (
-              <div className="flex flex-col gap-2 mt-2">
-                <p className="font-medium">{t("Dcotors")}</p>
-                {mapArray(doctors, (v, i) => (
-                  <div className="flex justify-between gap-8">
-                    <div className="flex gap-4">
-                      <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
-                      <div className="font-semibold text-lg flex flex-col gap-2">
-                        <p>{v.name}</p>
-                        <p>{v.speciality}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center text-xl font-semibold">
-                      <PriceDisplay price={v.price}></PriceDisplay>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : null}
-
-            {showOn([ServiceType.Restaurant]) ? (
-              <RestaurantDishsCheckoutList menus={menus || []} />
-            ) : null}
-          </div>
-        ) : null}
-        <div className="pt-2 flex flex-col w-full gap-4">
-          <p className="text-[22px] font-semibold">{t("Booking details")}:</p>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-4">
-              <p className="font-semibold text-[19px] border-b-2 border-black w-fit pb-2">
-                {showOn([
-                  ServiceType.Hotel,
-                  ServiceType.HolidayRentals,
-                  ServiceType.BeautyCenter,
-                  ServiceType.Restaurant,
-                ])
-                  ? t("Check in")
-                  : null}
-                {showOn([ServiceType.Vehicle]) ? t("Rental starts") : null}
-                {showOn([ServiceType.HealthCenter])
-                  ? t("Consultation starts")
-                  : null}
-              </p>
-              <p className="font-medium">{formatDate(new Date(checkin))}</p>
-              <p>
-                {t("From")}{" "}
-                <span className="font-bold">
-                  {formatTime(new Date(checkin))}
-                </span>
-              </p>
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {t("Guests")}:{" "}
-                  <span className="">
-                    {Object.values(guests).reduce((acc, curr) => {
-                      return acc + curr;
-                    }, 0)}
-                  </span>
-                </p>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-4">
-              <p className="font-semibold text-[19px] border-b-2 w-fit border-black pb-2">
-                {showOn([ServiceType.Hotel, ServiceType.HolidayRentals])
-                  ? t("Check out")
-                  : null}
-                {showOn([ServiceType.Vehicle]) ? t("Rental ends") : null}
-              </p>
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {new Date(checkout).toLocaleDateString("en-us", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-              ) : null}
-              {showOn([ServiceType.Vehicle]) ? (
-                <p className="font-medium">
-                  {new Date(checkout).toLocaleDateString("en-us", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-              ) : null}
-
-              {showOn([ServiceType.Vehicle]) ? (
-                <p className="">
-                  {t("Until")}{" "}
-                  <span className="font-bold">
-                    {new Date(checkout).toLocaleTimeString("en-us", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })}
-                  </span>
-                </p>
-              ) : null}
-
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {t("Nights")}:{" "}
-                  <span className="font-bold">
-                    {new Date(checkout).getDate() - new Date(checkin).getDate()}
-                  </span>
-                </p>
-              ) : null}
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-between w-full">
-          <HStack className="justify-end text-[1.75rem] font-bold">
-            <PriceDisplay price={total} />
-          </HStack>
-          <div className="flex justify-end gap-4 w-full items-center">
-            <Button
-              onClick={handleModifyBooking}
-              className="h-[3.25rem] w-fit"
-              colorScheme="darkbrown"
-            >
-              <HStack className="text-lg whitespace-nowrap font-semibold">
-                <EditNoteIcon />
-                {t("Modify Booking")}
-              </HStack>
-            </Button>
-            <Button
-              colorScheme="danger"
-              center
-              className="px-5 text-2xl py-[0.875rem]"
-            >
-              <TrashIcon />
-            </Button>
           </div>
         </div>
       </div>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent maxW="75rem" w="100%">
-          <ModalBody p={4}>
-            {(() => {
-              switch (serviceType) {
-                case ServiceType.HealthCenter:
-                  return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="w-full">
-                        <HealthCenterDoctorsList
-                          cancelation={[]}
-                          doctors={[
-                            {
-                              availablityStatus:
-                                HealthCenterDoctorAvailablityStatus.Available,
-                              description:
-                                "Expert in cardiology with 20 years of experience.",
-                              healthCenterId: "hc123",
-                              id: "doc1",
-                              name: "Dr. Heart",
-                              price: 200.0,
-                              rating: 4.8,
-                              specialityId: "spec1",
-                              thumbnail:
-                                "https://example.com/thumbnails/doctor1.jpg",
-                              speciality: {
-                                description: "Cardiology specialty",
-                                id: "spec1",
-                                name: "Cardiology",
-                              },
-                            },
-                            {
-                              availablityStatus:
-                                HealthCenterDoctorAvailablityStatus.Unavailable,
-                              description:
-                                "Renowned neurologist with a focus on brain health.",
-                              healthCenterId: "hc123",
-                              id: "doc2",
-                              name: "Dr. Brain",
-                              price: 250.0,
-                              rating: 4.7,
-                              specialityId: "spec2",
-                              thumbnail:
-                                "https://example.com/thumbnails/doctor2.jpg",
-                              speciality: {
-                                description: "Neurology specialty",
-                                id: "spec2",
-                                name: "Neurology",
-                              },
-                            },
-                          ]}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <ServiceReservastionForm
-                          sellerId={""}
-                          selectedServicesIds={[]}
-                        />
-                      </div>
+      <div className="flex flex-col w-full gap-2">
+        <p className="text-[1.375rem] font-semibold">
+          {t("Cancelation Policy")}
+        </p>
+
+        <ServiceRefundableTypeDescription
+          bookedDate={checkin}
+          cost={cancelationPolicy?.cost}
+          duration={cancelationPolicy?.duration}
+          displayCost
+        />
+      </div>
+
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+        <div className="flex flex-col w-full gap-2">
+          <p className="text-[22px] font-semibold">{t("Extras")}:</p>
+          {mapArray(extras, (v, i) => (
+            <HStack className="justify-between">
+              <p className="font-medium">{v?.name}</p>
+              <span className="font-bold text-xl">
+                <PriceDisplay price={v?.cost} />
+              </span>
+            </HStack>
+          ))}
+        </div>
+      ) : null}
+
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+        <div className="flex flex-col w-full gap-2">
+          <p className="text-[22px] font-semibold">{t("Guests")}:</p>
+          <HStack className="font-medium">
+            <p>
+              {guests?.adults || 0} {t("Adults")}
+            </p>
+            <p>
+              {guests?.childrens || 0} {t("Childrens")}
+            </p>
+          </HStack>
+        </div>
+      ) : null}
+
+      {showOn([
+        ServiceType.Hotel,
+        ServiceType.HolidayRentals,
+        ServiceType.BeautyCenter,
+        ServiceType.HealthCenter,
+        ServiceType.Restaurant,
+      ]) ? (
+        <div className="flex flex-col w-full gap-2">
+          <p className="text-[22px] font-semibold">{t("You are booking")}:</p>
+          {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+            <p>{name}</p>
+          ) : null}
+
+          {showOn([ServiceType.BeautyCenter]) ? (
+            <TreatmentsCheckoutList
+              treatments={treatments || []}
+            ></TreatmentsCheckoutList>
+          ) : null}
+
+          {showOn([ServiceType.HealthCenter]) ? (
+            <div className="flex flex-col gap-2 mt-2">
+              <p className="font-medium">{t("Dcotors")}</p>
+              {mapArray(doctors, (v, i) => (
+                <div className="flex justify-between gap-8">
+                  <div className="flex gap-4">
+                    <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
+                    <div className="font-semibold text-lg flex flex-col gap-2">
+                      <p>{v.name}</p>
+                      <p>{v.speciality}</p>
                     </div>
-                  );
-                case ServiceType.Restaurant:
-                  return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="w-full">
-                        <ResturantMenuListSection
-                          menus={[
-                            {
-                              id: "menu1",
-                              name: "Lunch Menu",
-                              dishs: [
-                                {
-                                  id: "dish1",
-                                  ingredients: ["chicken", "rice", "spices"],
-                                  price: 25.0,
-                                  name: "Chicken Rice",
-                                  thumbnail: getRandomImage(),
-                                },
-                                {
-                                  id: "dish2",
-                                  ingredients: [
-                                    "beef",
-                                    "noodles",
-                                    "vegetables",
-                                  ],
-                                  price: 30.0,
-                                  name: "Beef Noodles",
-                                  thumbnail: getRandomImage(),
-                                },
-                              ],
-                            },
-                            {
-                              id: "menu2",
-                              name: "Dinner Menu",
-                              dishs: [
-                                {
-                                  id: "dish3",
-                                  ingredients: ["fish", "potatoes", "herbs"],
-                                  price: 35.0,
-                                  name: "Herb Fish",
-                                  thumbnail: getRandomImage(),
-                                },
-                                {
-                                  id: "dish4",
-                                  ingredients: ["pasta", "tomato", "cheese"],
-                                  price: 28.0,
-                                  name: "Tomato Pasta",
-                                  thumbnail: getRandomImage(),
-                                },
-                              ],
-                            },
-                          ]}
-                          cancelation={[]}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <ServiceReservastionForm
-                          sellerId={""}
-                          selectedServicesIds={[]}
-                        />
-                      </div>
-                    </div>
-                  );
-                case ServiceType.Vehicle:
-                  return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="w-full">
-                        <VehiclesSelectableList
-                          vehicles={[
-                            {
-                              __typename: "Vehicle",
-                              brand: "Toyota",
-                              id: "vehicle123",
-                              model: "Camry",
-                              price: 100,
-                              title: "Toyota Camry",
-                              cancelationPolicies: [
-                                {
-                                  __typename: "ServiceCancelationPolicy",
-                                  cost: 30,
-                                  duration: 12,
-                                },
-                              ],
-                              presentations: [
-                                {
-                                  __typename: "ServicePresentation",
-                                  type: ServicePresentationType.Img,
-                                  src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                                },
-                              ],
-                              properties: {
-                                __typename: "VehicleProperties",
-                                airCondition: true,
-                                gpsAvailable: true,
-                                lugaggeCapacity: 3,
-                                maxSpeedInKm: 200,
-                                seats: 5,
-                                windows: 4,
-                              },
-                            },
-                          ]}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <ServiceReservastionForm
-                          sellerId={""}
-                          selectedServicesIds={[]}
-                        />
-                      </div>
-                    </div>
-                  );
-                case ServiceType.Hotel:
-                case ServiceType.HolidayRentals:
-                  return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      <div className="w-full">
-                        <HotelServiceRoomsSection
-                          rooms={[
-                            {
-                              cancelationPolicies: [
-                                {
-                                  cost: 50,
-                                  duration: 60,
-                                },
-                              ],
-                              presentations: [],
-                              reviews: 15,
-                              rating: 4.5,
-                              createdAt: "2023-03-05T00:00:00Z",
-                              dailyPrice: true,
-                              dailyPrices: {
-                                fr: 90,
-                                mo: 100,
-                                sa: 110,
-                                su: 120,
-                                th: 95,
-                                tu: 105,
-                                we: 100,
-                              },
-                              description: "Cozy room with a view",
-                              discount: {
-                                units: 3,
-                                value: 10,
-                              },
-                              extras: [
-                                {
-                                  cost: 20,
-                                  name: "Mini-bar",
-                                },
-                                {
-                                  cost: 10,
-                                  name: "Late check-out",
-                                },
-                              ],
-                              hotelId: "67890",
-                              id: "54321",
-                              includedAmenities: ["Free Wi-Fi", "Parking"],
-                              includedServices: ["Room cleaning", "Towels"],
-                              measurements: {
-                                inFeet: 15,
-                                inMeter: 20,
-                              },
-                              popularAmenities: [
-                                {
-                                  label: "Swimming pool",
-                                  value: "yes",
-                                },
-                                {
-                                  label: "Gym",
-                                  value: "yes",
-                                },
-                              ],
-                              pricePerNight: 90,
-                              title: "Standard Room",
-                              updatedAt: "2023-03-06T00:00:00Z",
-                              bathrooms: 2,
-                              beds: 3,
-                              num_of_rooms: 2,
-                              sellerId: "",
-                              thumbnail: "",
-                            },
-                          ]}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <ServiceRangeBookingCalander
-                          bookedDates={[]}
-                          date={new Date()}
-                          onChange={() => {}}
-                          value={[]}
-                        />
-                      </div>
-                    </div>
-                  );
-                default:
-                  return;
-              }
-            })()}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Fragment>
+                  </div>
+                  <div className="flex items-center text-xl font-semibold">
+                    <PriceDisplay price={v.price}></PriceDisplay>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {showOn([ServiceType.Restaurant]) ? (
+            <RestaurantDishsCheckoutList menus={menus || []} />
+          ) : null}
+        </div>
+      ) : null}
+      <div className="pt-2 flex flex-col w-full gap-4">
+        <p className="text-[22px] font-semibold">{t("Booking details")}:</p>
+
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-4">
+            <p className="font-semibold text-[19px] border-b-2 border-black w-fit pb-2">
+              {showOn([
+                ServiceType.Hotel,
+                ServiceType.HolidayRentals,
+                ServiceType.BeautyCenter,
+                ServiceType.Restaurant,
+              ])
+                ? t("Check in")
+                : null}
+              {showOn([ServiceType.Vehicle]) ? t("Rental starts") : null}
+              {showOn([ServiceType.HealthCenter])
+                ? t("Consultation starts")
+                : null}
+            </p>
+            <p className="font-medium">{formatDate(new Date(checkin))}</p>
+            <p>
+              {t("From")}{" "}
+              <span className="font-bold">{formatTime(new Date(checkin))}</span>
+            </p>
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+              <p className="font-medium">
+                {t("Guests")}:{" "}
+                <span className="">
+                  {Object.values(guests).reduce((acc, curr) => {
+                    return acc + curr;
+                  }, 0)}
+                </span>
+              </p>
+            ) : null}
+          </div>
+          <div className="flex flex-col gap-4">
+            <p className="font-semibold text-[19px] border-b-2 w-fit border-black pb-2">
+              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals])
+                ? t("Check out")
+                : null}
+              {showOn([ServiceType.Vehicle]) ? t("Rental ends") : null}
+            </p>
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+              <p className="font-medium">
+                {new Date(checkout).toLocaleDateString("en-us", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            ) : null}
+            {showOn([ServiceType.Vehicle]) ? (
+              <p className="font-medium">
+                {new Date(checkout).toLocaleDateString("en-us", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            ) : null}
+
+            {showOn([ServiceType.Vehicle]) ? (
+              <p className="">
+                {t("Until")}{" "}
+                <span className="font-bold">
+                  {new Date(checkout).toLocaleTimeString("en-us", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}
+                </span>
+              </p>
+            ) : null}
+
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+              <p className="font-medium">
+                {t("Nights")}:{" "}
+                <span className="font-bold">
+                  {new Date(checkout).getDate() - new Date(checkin).getDate()}
+                </span>
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col justify-between w-full">
+        <HStack className="justify-end text-[1.75rem] font-bold">
+          <PriceDisplay price={total} />
+        </HStack>
+        <div className="flex justify-end gap-4 w-full items-center">
+          <Button className="h-[3.25rem] w-fit" colorScheme="darkbrown">
+            <Link href={`/service/details/${serviceType}/${id}`}>
+              <HStack className="text-lg whitespace-nowrap font-semibold">
+                <EditNoteIcon />
+                {t("Modify Booking")}
+              </HStack>
+            </Link>
+          </Button>
+          <Button
+            colorScheme="danger"
+            center
+            className="px-5 text-2xl py-[0.875rem]"
+          >
+            <TrashIcon />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

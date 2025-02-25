@@ -33,6 +33,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             { label: "Free Movies", slug: "movies" },
           ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
@@ -46,11 +47,13 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
           total={500}
           serviceType={ServiceType.Hotel}
+          id="123"
         />
       );
     case ServiceType.HolidayRentals:
       return (
         <ServiceCheckoutCard
+          id="123"
           {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
@@ -58,6 +61,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             { label: "Free Movies", slug: "movies" },
           ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
@@ -77,9 +81,11 @@ export const ServiceCheckoutCardSwitcher: React.FC<
       return (
         <ServiceCheckoutCard
           {...commonDateProps}
+          id="123"
           shopName="Padma Resort Legian"
           amenities={[]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
@@ -178,9 +184,11 @@ export const ServiceCheckoutCardSwitcher: React.FC<
       return (
         <ServiceCheckoutCard
           {...commonDateProps}
+          id="123"
           shopName="Oasis Wellness Center"
           amenities={[]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
@@ -220,9 +228,11 @@ export const ServiceCheckoutCardSwitcher: React.FC<
       return (
         <ServiceCheckoutCard
           {...commonDateProps}
+          id="123"
           shopName="Velvet Beauty Parior"
           amenities={[]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
@@ -261,6 +271,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.Vehicle:
       return (
         <ServiceCheckoutCard
+          id="123"
           {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
@@ -270,6 +281,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             { label: "2", slug: "bags" },
           ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
