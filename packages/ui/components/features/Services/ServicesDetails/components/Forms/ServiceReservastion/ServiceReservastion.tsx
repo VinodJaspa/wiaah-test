@@ -482,42 +482,6 @@ export const ServiceReservastionForm: React.FC<{
           </>
         )}
 
-        {/* EXTRAS FOR HOTEL/RENTAL */}
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && (
-          <>
-            <div className="flex flex-col gap-4">
-              {mapArray(service.extras!, (data, i) => (
-                <div className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4">
-                  <Checkbox className="">{data.name}</Checkbox>
-                  {data.cost > 0 ? (
-                    <PriceDisplay
-                      className="text-primary font-bold"
-                      price={data.cost}
-                    />
-                  ) : (
-                    t("FREE")
-                  )}
-                </div>
-              ))}
-            </div>
-            <Divider />
-          </>
-        )}
-
-        {/* REFUND POLICY */}
-        <div className="flex flex-col gap-4">
-          {mapArray(service.cancelationPolicies!, (data, i) => (
-            <ServiceCancelationPolicyInput
-              isCalendarCard
-              onSelected={() => {}}
-              name={"hotelCancelationPolicy"}
-              {...data}
-              key={i}
-            />
-          ))}
-        </div>
-        <Divider />
-
         {/* COST CALCULATIONS */}
         <div>
           <BookedServicesCostDetails
@@ -528,6 +492,22 @@ export const ServiceReservastionForm: React.FC<{
             vatAmount={45}
             deposit={0}
           >
+            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && (
+              <>
+                <div className="font-medium text-sm text-black flex justify-between items-center">
+                  <p>{t("Breakfast (extra)")}</p>
+                  <PriceDisplay price={50} />
+                </div>
+                <Divider />
+              </>
+            )}
+
+            <div className="font-medium text-sm text-black flex justify-between items-center">
+              <p>{t("Cancellation fee")}</p>
+              <PriceDisplay price={100} />
+            </div>
+            <Divider />
+
             {showOn([
               ServiceType.Hotel,
               ServiceType.HolidayRentals,
