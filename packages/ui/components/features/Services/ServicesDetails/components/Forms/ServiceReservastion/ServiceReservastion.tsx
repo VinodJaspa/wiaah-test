@@ -31,6 +31,7 @@ import { ResturantFindTableFilterStepperHeader } from "@UI/components/features/S
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
+import { ServiceCancelationPolicyInput } from "@UI/components/features/Services/components/Inputs/ServiceCancelationPolicyInput";
 
 const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
   total: 500.0,
@@ -63,6 +64,23 @@ const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
             id: "extra2",
           },
         ],
+        cancelationPolicies: [
+          {
+            id: "1",
+            cost: 50,
+            duration: 60,
+          },
+          {
+            id: "2",
+            cost: 0,
+            duration: 30,
+          },
+          {
+            id: "3",
+            cost: 0,
+            duration: 0,
+          },
+        ],
       },
     },
     {
@@ -83,6 +101,23 @@ const FAKE_BOOKING_COST_DATA: GetBookingCostQuery["getBookingCost"] = {
             cost: 30.0,
             name: "Airport Pickup",
             id: "extra3",
+          },
+        ],
+        cancelationPolicies: [
+          {
+            id: "1",
+            cost: 50,
+            duration: 60,
+          },
+          {
+            id: "2",
+            cost: 0,
+            duration: 30,
+          },
+          {
+            id: "3",
+            cost: 0,
+            duration: 0,
           },
         ],
       },
@@ -252,6 +287,7 @@ export const ServiceReservastionForm: React.FC<{
                         ServiceType.Restaurant,
                         ServiceType.BeautyCenter,
                         ServiceType.HealthCenter,
+                        ServiceType.Vehicle,
                       ])
                         ? { icon: <ClockIcon />, name: t("Time") }
                         : undefined,
@@ -450,29 +486,37 @@ export const ServiceReservastionForm: React.FC<{
         {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && (
           <>
             <div className="flex flex-col gap-4">
-              <p className="text-base font-bold text-title">{t("Extras")}</p>
-              <div className="flex flex-col gap-4">
-                {mapArray(service.extras!, (data, i) => (
-                  <div className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4">
-                    <Checkbox className="">{data.name}</Checkbox>
-                    {data.cost > 0 ? (
-                      <PriceDisplay
-                        className="text-primary font-bold"
-                        price={data.cost}
-                      />
-                    ) : (
-                      t("FREE")
-                    )}
-                  </div>
-                ))}
-              </div>
+              {mapArray(service.extras!, (data, i) => (
+                <div className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4">
+                  <Checkbox className="">{data.name}</Checkbox>
+                  {data.cost > 0 ? (
+                    <PriceDisplay
+                      className="text-primary font-bold"
+                      price={data.cost}
+                    />
+                  ) : (
+                    t("FREE")
+                  )}
+                </div>
+              ))}
             </div>
             <Divider />
           </>
         )}
 
         {/* REFUND POLICY */}
-        <div>Refund Policy</div>
+        <div className="flex flex-col gap-4">
+          {mapArray(service.cancelationPolicies!, (data, i) => (
+            <ServiceCancelationPolicyInput
+              isCalendarCard
+              onSelected={() => {}}
+              name={"hotelCancelationPolicy"}
+              {...data}
+              key={i}
+            />
+          ))}
+        </div>
+        <Divider />
 
         {/* COST CALCULATIONS */}
         <div>

@@ -38,82 +38,82 @@ export type GetVehicleQuery = { __typename?: "Query" } & {
     | "updatedAt"
     | "vat"
   > & {
-    cancelationPolicies: Array<
-      { __typename?: "ServiceCancelationPolicy" } & Pick<
-        ServiceCancelationPolicy,
-        "cost" | "duration"
-      >
-    >;
-    location: { __typename?: "ServiceLocation" } & Pick<
-      ServiceLocation,
-      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-    >;
-    contact: { __typename?: "ServiceContact" } & Pick<
-      ServiceContact,
-      "address" | "city" | "country" | "email" | "phone" | "state"
-    >;
+      cancelationPolicies: Array<
+        { __typename?: "ServiceCancelationPolicy" } & Pick<
+          ServiceCancelationPolicy,
+          "cost" | "duration"
+        >
+      >;
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+      >;
+      contact: { __typename?: "ServiceContact" } & Pick<
+        ServiceContact,
+        "address" | "city" | "country" | "email" | "phone" | "state"
+      >;
 
-    workingHours?: Maybe<
-      { __typename?: "WorkingSchedule" } & Pick<
-        ServiceWorkingSchedule,
-        "id"
-      > & {
-        weekdays: ServiceWeekdaysWorkingHours;
-      }
-    >;
-    policies: Array<
-      { __typename?: "ServicePolicy" } & Pick<
-        ServicePolicy,
-        "policyTitle" | "terms"
-      >
-    >;
-    presentations: Array<
-      { __typename?: "ServicePresentation" } & Pick<
-        ServicePresentation,
-        "src" | "type"
-      >
-    >;
-    serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-      ServiceMetaInfo,
-      | "description"
-      | "hashtags"
-      | "metaTagDescription"
-      | "metaTagKeywords"
-      | "title"
-    >;
-    vehicles: Array<
-      { __typename?: "Vehicle" } & Pick<
-        Vehicle,
-        "brand" | "id" | "model" | "price" | "title"
-      > & {
-        cancelationPolicies: Array<
-          { __typename?: "ServiceCancelationPolicy" } & Pick<
-            ServiceCancelationPolicy,
-            "cost" | "duration"
-          >
-        >;
-        presentations: Array<
-          { __typename?: "ServicePresentation" } & Pick<
-            ServicePresentation,
-            "src" | "type"
-          >
-        >;
-        properties: { __typename?: "VehicleProperties" } & Pick<
-          VehicleProperties,
-          | "airCondition"
-          | "gpsAvailable"
-          | "lugaggeCapacity"
-          | "maxSpeedInKm"
-          | "seats"
-          | "windows"
-        >;
-      }
-    >;
-    owner: { __typename?: "Account" } & Pick<
-      Account,
-      "email" | "firstName" | "lastName" | "id" | "photo" | "verified"
-    >;
-  };
+      workingHours?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<
+          ServiceWorkingSchedule,
+          "id"
+        > & {
+            weekdays: ServiceWeekdaysWorkingHours;
+          }
+      >;
+      policies: Array<
+        { __typename?: "ServicePolicy" } & Pick<
+          ServicePolicy,
+          "policyTitle" | "terms"
+        >
+      >;
+      presentations: Array<
+        { __typename?: "ServicePresentation" } & Pick<
+          ServicePresentation,
+          "src" | "type"
+        >
+      >;
+      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+        ServiceMetaInfo,
+        | "description"
+        | "hashtags"
+        | "metaTagDescription"
+        | "metaTagKeywords"
+        | "title"
+      >;
+      vehicles: Array<
+        { __typename?: "Vehicle" } & Pick<
+          Vehicle,
+          "brand" | "id" | "model" | "price" | "title"
+        > & {
+            cancelationPolicies: Array<
+              { __typename?: "ServiceCancelationPolicy" } & Pick<
+                ServiceCancelationPolicy,
+                "cost" | "duration" | "id"
+              >
+            >;
+            presentations: Array<
+              { __typename?: "ServicePresentation" } & Pick<
+                ServicePresentation,
+                "src" | "type"
+              >
+            >;
+            properties: { __typename?: "VehicleProperties" } & Pick<
+              VehicleProperties,
+              | "airCondition"
+              | "gpsAvailable"
+              | "lugaggeCapacity"
+              | "maxSpeedInKm"
+              | "seats"
+              | "windows"
+            >;
+          }
+      >;
+      owner: { __typename?: "Account" } & Pick<
+        Account,
+        "email" | "firstName" | "lastName" | "id" | "photo" | "verified"
+      >;
+    };
 };
 
 export const getVehicleProviderDetailsQueryKey = (
@@ -369,6 +369,7 @@ export const useGetVehicleProviderDetailsQuery = (
             {
               cost: 10,
               duration: 12,
+              id: "1",
             },
           ],
           id: "789",
@@ -400,6 +401,7 @@ export const useGetVehicleProviderDetailsQuery = (
             {
               cost: 15,
               duration: 18,
+              id: "1",
             },
           ],
           id: "ABC",
@@ -427,6 +429,7 @@ export const useGetVehicleProviderDetailsQuery = (
             {
               cost: 10,
               duration: 12,
+              id: "1",
             },
           ],
           id: "789",

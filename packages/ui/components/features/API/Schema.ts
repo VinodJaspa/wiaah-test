@@ -5735,6 +5735,7 @@ export type Service = {
   brand?: Maybe<Scalars["String"]["output"]>;
   cancelable: Scalars["Boolean"]["output"];
   cancelationPolicy: ServiceCancelationType;
+  cancelationPolicies: Maybe<ServiceCancelationPolicy[]>;
   cleaningFee?: Maybe<Scalars["Float"]["output"]>;
   createdAt: Scalars["String"]["output"];
   dailyPrice?: Maybe<Scalars["Boolean"]["output"]>;

@@ -1,4 +1,5 @@
 import { Button, CaruoselLeftArrow, CaruoselRightArrow, Slider } from "@UI";
+import { ServiceCancelationPolicyInput } from "@UI/components/features/Services/components/Inputs/ServiceCancelationPolicyInput";
 import { VehicleSearchCard } from "@UI/components/features/Services/Vehicle/components/cards/VehicleSearchCard";
 import { Vehicle } from "api";
 import { useResponsive } from "hooks";
@@ -44,17 +45,18 @@ export const VehiclesSelectableList: React.FC<{
                 return (
                   <div className="flex flex-col gap-2 mx-4">
                     <VehicleSearchCard showTotal={false} key={i} {...vehicle} />
-                    {/* <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1">
                       <p className="font-bold">{t("Cancelation policy")}</p>
                       {vehicle.cancelationPolicies.map((policy, i) => (
                         <ServiceCancelationPolicyInput
+                          isCalendarCard
                           {...policy}
                           name="cancelationPolicy"
                           onSelected={() => {}}
                           key={`${i}-${JSON.stringify(policy)}`}
                         />
                       ))}
-                    </div> */}
+                    </div>
                     <Button
                       onClick={() =>
                         selected

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Radio, PriceDisplay } from "@UI";
 import { ServiceRefundableTypeDescription } from "@UI/components/features/Services/components/DataDisplay/ServiceRefundableTypeDescription";
-import { setTestid } from "utils";
+import { cn, setTestid } from "utils";
 
 export interface ServiceCancelationPolicyInputProps {
   id: string;
@@ -11,18 +11,25 @@ export interface ServiceCancelationPolicyInputProps {
   cost: number;
   duration: number;
   children?: React.ReactNode;
+  isCalendarCard?: boolean;
 }
 
 export const ServiceCancelationPolicyInput: React.FC<
   ServiceCancelationPolicyInputProps
-> = ({ cost, duration, id, children, name, onSelected }) => {
+> = ({ cost, duration, id, children, name, onSelected, isCalendarCard }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full grid grid-cols-[auto_100px]">
+    <div
+      className={cn(
+        isCalendarCard
+          ? "w-full flex items-center justify-between"
+          : "w-full grid grid-cols-[auto_100px]",
+      )}
+    >
       <label
         {...setTestid("InputLabel")}
-        className="flex text-lightBlack items-center gap-2 w-full"
+        className="flex text-lightBlack items-center gap-2"
       >
         <Radio
           onChange={(e) =>
@@ -37,10 +44,7 @@ export const ServiceCancelationPolicyInput: React.FC<
           bookedDate={new Date()}
         />
       </label>
-      <span
-        {...setTestid("PriceIndicator")}
-        className="text-primary font-bold w-full"
-      >
+      <span {...setTestid("PriceIndicator")} className="text-primary font-bold">
         {cost > 0 ? (
           <PriceDisplay price={cost} />
         ) : duration > 0 ? (

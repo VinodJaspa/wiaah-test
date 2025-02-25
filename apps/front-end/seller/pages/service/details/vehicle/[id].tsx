@@ -129,23 +129,124 @@ const FAKE_VEHICLE_DATA: GetVehicleQuery["getVehicleServicebyId"] = {
   vehicles: [
     {
       __typename: "Vehicle",
-      brand: "Toyota",
+      brand: "Bugatti",
       id: "vehicle123",
-      model: "Camry",
-      price: 100,
-      title: "Toyota Camry",
+      model: "Veyron",
+      price: 500,
+      title: "Bugatti Veyron",
       cancelationPolicies: [
         {
           __typename: "ServiceCancelationPolicy",
           cost: 30,
           duration: 12,
+          id: "1",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 15,
+          duration: 6,
+          id: "2",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 50,
+          duration: 50,
+          id: "3",
         },
       ],
       presentations: [
         {
           __typename: "ServicePresentation",
           type: ServicePresentationType.Img,
-          src: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          src: "https://i.ytimg.com/vi/QVay5oTjVWg/maxresdefault.jpg",
+        },
+      ],
+      properties: {
+        __typename: "VehicleProperties",
+        airCondition: true,
+        gpsAvailable: true,
+        lugaggeCapacity: 3,
+        maxSpeedInKm: 200,
+        seats: 5,
+        windows: 4,
+      },
+    },
+    {
+      __typename: "Vehicle",
+      brand: "Koenigsegg",
+      id: "vehicle1234",
+      model: "Jesko",
+      price: 700,
+      title: "Koenigsegg Jesko",
+      cancelationPolicies: [
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 30,
+          duration: 12,
+          id: "1",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 15,
+          duration: 6,
+          id: "2",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 50,
+          duration: 50,
+          id: "3",
+        },
+      ],
+      presentations: [
+        {
+          __typename: "ServicePresentation",
+          type: ServicePresentationType.Img,
+          src: "https://moderncarcollector.com/wp-content/uploads/2024/06/Screen-Shot-2024-06-10-at-6.04.51-PM-1024x576.png",
+        },
+      ],
+      properties: {
+        __typename: "VehicleProperties",
+        airCondition: true,
+        gpsAvailable: true,
+        lugaggeCapacity: 3,
+        maxSpeedInKm: 200,
+        seats: 5,
+        windows: 4,
+      },
+    },
+    {
+      __typename: "Vehicle",
+      brand: "Lamborghini",
+      id: "vehicle12345",
+      model: "Veneno",
+      price: 450,
+      title: "Lamborghini Veneno",
+      cancelationPolicies: [
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 30,
+          duration: 12,
+          id: "1",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 15,
+          duration: 6,
+          id: "2",
+        },
+        {
+          __typename: "ServiceCancelationPolicy",
+          cost: 50,
+          duration: 50,
+          id: "3",
+        },
+      ],
+      presentations: [
+        {
+          __typename: "ServicePresentation",
+          type: ServicePresentationType.Img,
+          src: "https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/masterpieces/veneno_rds/over/veneno_roadster_over_01_m.jpg",
         },
       ],
       properties: {
