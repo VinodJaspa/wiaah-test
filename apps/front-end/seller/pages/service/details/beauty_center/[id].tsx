@@ -29,6 +29,8 @@ const RestaurantServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
+  const tabIndex = parseInt(getParam("tabIndex")) || 0;
+
   // const { data: res, isLoading, isError } = useGetBeautyCenterDetailsQuery(id);
 
   return (
@@ -38,7 +40,7 @@ const RestaurantServiceDetailsPage: NextPage = () => {
           }`}
       /> */}
       <SellerLayout>
-        <BeautyCenterServiceDetailsView />
+        <BeautyCenterServiceDetailsView selectedTab={tabIndex} />
       </SellerLayout>
     </>
   );

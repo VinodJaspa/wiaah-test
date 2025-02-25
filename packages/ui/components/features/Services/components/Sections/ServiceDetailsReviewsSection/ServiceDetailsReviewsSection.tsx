@@ -92,13 +92,13 @@ export const ServiceDetailsReviewsSection: React.FC<
                   <Link href="/" className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-lg overflow-hidden">
                       <img
-                        src={bookedService.image}
+                        src={bookedService?.image}
                         alt=""
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <p className="underline">
-                      {bookedService.name.substring(0, 20)}...
+                      {bookedService?.name.substring(0, 20)}...
                     </p>
                   </Link>
                 </div>

@@ -28,6 +28,8 @@ const HealthCenterServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
+  const tabIndex = parseInt(getParam("tabIndex")) || 0;
+
   // const { data: res, isLoading, isError } = useGetHealthCenterDetailsQuery(id);
 
   return (
@@ -39,7 +41,7 @@ const HealthCenterServiceDetailsPage: NextPage = () => {
       /> */}
 
       <SellerLayout>
-        <HealthCenterDetailsView />
+        <HealthCenterDetailsView selectedTab={tabIndex} />
       </SellerLayout>
     </>
   );

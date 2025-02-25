@@ -54,7 +54,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
         cursor={"pointer"}
         onClick={() => handleInteraction("like")}
       >
-        {!isLiked.status ? (
+        {!isLiked?.status ? (
           <Icon
             onClick={onHeartIConClick}
             fontSize={"xx-large"}
@@ -70,7 +70,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           />
         )}
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(isLiked.reactions)}
+          {NumberShortner(isLiked?.reactions)}
         </Text>
       </VStack>
       <VStack

@@ -363,6 +363,8 @@ const VehicleServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
+  const tabIndex = parseInt(getParam("tabIndex")) || 0;
+
   // const {
   //   data: _res,
   //   isLoading,
@@ -371,6 +373,7 @@ const VehicleServiceDetailsPage: NextPage = () => {
   //   id,
   // });
   const res = FAKE_VEHICLE_DATA;
+
   return (
     <>
       {/* <MetaTitle
@@ -379,7 +382,7 @@ const VehicleServiceDetailsPage: NextPage = () => {
       /> */}
 
       <SellerLayout>
-        <VehicleServiceDetailsView vehicleData={res} />
+        <VehicleServiceDetailsView vehicleData={res} selectedTab={tabIndex} />
       </SellerLayout>
     </>
   );

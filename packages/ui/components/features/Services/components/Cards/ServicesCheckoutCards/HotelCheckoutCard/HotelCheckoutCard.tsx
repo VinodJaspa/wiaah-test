@@ -315,7 +315,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
         </HStack>
         <div className="flex justify-end gap-4 w-full items-center">
           <Button className="h-[3.25rem] w-fit" colorScheme="darkbrown">
-            <Link href={`/service/details/${serviceType}/${id}`}>
+            <Link href={`/service/details/${serviceType}/${id}?tabIndex=4`}>
               <HStack className="text-lg whitespace-nowrap font-semibold">
                 <EditNoteIcon />
                 {t("Modify Booking")}

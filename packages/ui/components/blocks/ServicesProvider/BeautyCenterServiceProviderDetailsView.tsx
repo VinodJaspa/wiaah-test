@@ -18,7 +18,13 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
 
-export const BeautyCenterServiceDetailsView: React.FC = () => {
+interface BeautyCenterServiceDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const BeautyCenterServiceDetailsView: React.FC<
+  BeautyCenterServiceDetailsViewProps
+> = ({ selectedTab = 0 }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   //WARNING: grqphql endpoint query is not ready
@@ -218,7 +224,11 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );

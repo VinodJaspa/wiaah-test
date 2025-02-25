@@ -29,11 +29,14 @@ const RestaurantServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
+  const tabIndex = parseInt(getParam("tabIndex")) || 0;
+
   // const {
   //   data: res,
   //   isLoading,
   //   isError,
   // } = useGetRestaurantServiceDetailsDataQuery(id);
+
   return (
     <>
       {/* <MetaTitle
@@ -42,7 +45,7 @@ const RestaurantServiceDetailsPage: NextPage = () => {
       /> */}
 
       <SellerLayout>
-        <RestaurantDetailsView />
+        <RestaurantDetailsView selectedTab={tabIndex} />
       </SellerLayout>
     </>
   );

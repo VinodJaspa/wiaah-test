@@ -25,7 +25,13 @@ import {
   StaticSideBarWrapper,
 } from "ui";
 
-export const RestaurantDetailsView: React.FC = () => {
+interface RestaurantDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const RestaurantDetailsView: React.FC<RestaurantDetailsViewProps> = ({
+  selectedTab = 0,
+}) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   // const {
@@ -225,7 +231,11 @@ export const RestaurantDetailsView: React.FC = () => {
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );

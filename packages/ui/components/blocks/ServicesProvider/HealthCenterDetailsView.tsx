@@ -25,7 +25,13 @@ import {
   StaticSideBarWrapper,
 } from "ui";
 
-export const HealthCenterDetailsView: React.FC = () => {
+interface HealthCenterDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const HealthCenterDetailsView: React.FC<
+  HealthCenterDetailsViewProps
+> = ({ selectedTab = 0 }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   // WARNING: grqphql is not ready yet once it's ready remove the placeholder
@@ -228,7 +234,11 @@ export const HealthCenterDetailsView: React.FC = () => {
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );

@@ -21,7 +21,13 @@ import { FaWaveSquare } from "react-icons/fa";
 import { CgGym } from "react-icons/cg";
 import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 
-export const HotelDetailsView: React.FC = () => {
+interface HotelDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const HotelDetailsView: React.FC<HotelDetailsViewProps> = ({
+  selectedTab = 0,
+}) => {
   //WARNING: grphql query endpoint is not ready yet
   // const {
   //   data: _res,
@@ -251,7 +257,11 @@ export const HotelDetailsView: React.FC = () => {
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );

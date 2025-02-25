@@ -8,13 +8,14 @@ type Tab = {
 type ServicesProviderTabsProps = {
   tabs: Tab[];
   t: (key: string) => string;
+  selectedTab?: number;
 };
 
 export const ServicesProviderDetailsTabs: React.FC<
   ServicesProviderTabsProps
-> = ({ tabs, t }) => {
+> = ({ tabs, t, selectedTab = 0 }) => {
   return (
-    <Tabs>
+    <Tabs currentTabIdx={selectedTab}>
       {({ currentTabIdx, setCurrentTabIdx }) => (
         <>
           <TabsHeader className="flex">

@@ -20,11 +20,12 @@ import {
 
 type VehicleServiceDetailsViewProps = {
   vehicleData: GetVehicleQuery["getVehicleServicebyId"];
+  selectedTab?: number;
 };
 
 export const VehicleServiceDetailsView: React.FC<
   VehicleServiceDetailsViewProps
-> = ({ vehicleData }) => {
+> = ({ vehicleData, selectedTab = 0 }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   // WARNING: grqphql endpoint query is not
@@ -188,7 +189,11 @@ export const VehicleServiceDetailsView: React.FC<
           <ServiceReservastionForm sellerId={""} selectedServicesIds={[]} />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );
