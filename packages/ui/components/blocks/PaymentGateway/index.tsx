@@ -76,10 +76,12 @@ type PaymentData = {
 };
 export interface PaymentGatewayProps {
   onSuccess: (data: PaymentData) => any;
+  isSellerOrBuyer?: boolean;
 }
 
 export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
   onSuccess,
+  isSellerOrBuyer,
 }) => {
   const { t } = useTranslation();
   const { inputProps } = useForm<PaymentData>({
@@ -101,40 +103,52 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
               >
                 {t("Payment")}
               </span>
-              <div className="flex h-12 items-center gap-2">
-                <Image src="/visa-logo.png" className="w-6" alt="visa" />
-                <Image src="/mastercard.svg" className="w-6" alt="mastercard" />
-                <Image src="/discover.png" className="w-6" alt="discover" />
-                <Image
-                  src="/american_express.png"
-                  className="w-6"
-                  alt="american_express"
-                />
-              </div>
+              {!isSellerOrBuyer && (
+                <div className="flex h-12 items-center gap-2">
+                  <Image src="/visa-logo.png" className="w-6" alt="visa" />
+                  <Image
+                    src="/mastercard.svg"
+                    className="w-6"
+                    alt="mastercard"
+                  />
+                  <Image src="/discover.png" className="w-6" alt="discover" />
+                  <Image
+                    src="/american_express.png"
+                    className="w-6"
+                    alt="american_express"
+                  />
+                </div>
+              )}
             </div>
             <div className="w-full items-end gap-6 flex flex-col">
-              <div className="w-full flex flex-col gap-2">
-                <span className="text-lg font-medium">{t("Card Number")}</span>
-                <Input
-                  placeholder="1234...14"
-                  id="CardNumberInput"
-                  name="cardNumber"
-                />
-              </div>
-              <div className="w-full grid grid-cols-2 gap-4">
-                <div className="w-full flex flex-col gap-2">
-                  <span className="text-lg font-semibold">
-                    {t("Expiry Date")}
-                  </span>
-                  <Input id="CardExpiryDateInput" placeholder="MM/YY" />
-                </div>
-                <div className="w-full gap-2 flex flex-col">
-                  <span className="uppercase text-lg font-semibold">
-                    {t("cvc/cvv")}
-                  </span>
-                  <Input id="CardCvvInput" placeholder="1234" name="cvv" />
-                </div>
-              </div>
+              {!isSellerOrBuyer && (
+                <>
+                  <div className="w-full flex flex-col gap-2">
+                    <span className="text-lg font-medium">
+                      {t("Card Number")}
+                    </span>
+                    <Input
+                      placeholder="1234...14"
+                      id="CardNumberInput"
+                      name="cardNumber"
+                    />
+                  </div>
+                  <div className="w-full grid grid-cols-2 gap-4">
+                    <div className="w-full flex flex-col gap-2">
+                      <span className="text-lg font-semibold">
+                        {t("Expiry Date")}
+                      </span>
+                      <Input id="CardExpiryDateInput" placeholder="MM/YY" />
+                    </div>
+                    <div className="w-full gap-2 flex flex-col">
+                      <span className="uppercase text-lg font-semibold">
+                        {t("cvc/cvv")}
+                      </span>
+                      <Input id="CardCvvInput" placeholder="1234" name="cvv" />
+                    </div>
+                  </div>
+                </>
+              )}
               <Button
                 colorScheme="darkbrown"
                 id="PayNowButton"

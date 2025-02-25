@@ -10,7 +10,7 @@ const ServiceCheckout: NextPage = () => {
       </Head>
       <SellerLayout>
         <Container>
-          <CheckoutView />
+          <CheckoutView isSellerOrBuyer />
         </Container>
       </SellerLayout>
     </>

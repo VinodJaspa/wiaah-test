@@ -33,7 +33,9 @@ import {
 } from "ui";
 import { DateDetails, runIfFn } from "utils";
 
-export interface CheckoutViewProps {}
+export interface CheckoutViewProps {
+  isSellerOrBuyer?: boolean;
+}
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
 
@@ -51,7 +53,9 @@ const FAKE_ADDRESS_DATA: AddressCardDetails[] = [
   },
 ];
 
-export const CheckoutView: React.FC<CheckoutViewProps> = () => {
+export const CheckoutView: React.FC<CheckoutViewProps> = ({
+  isSellerOrBuyer,
+}) => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
@@ -169,7 +173,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
           </div>
         </BoxShadow>
         <VoucherInput onSuccess={handleVoucherValidation} />
-        <PaymentGateway onSuccess={() => {}} />
+        <PaymentGateway onSuccess={() => {}} isSellerOrBuyer />
       </div>
       <BoxShadow fitHeight fitWidth>
         <div className="bg-white">
