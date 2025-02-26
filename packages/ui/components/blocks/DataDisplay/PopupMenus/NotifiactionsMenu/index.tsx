@@ -61,7 +61,7 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
         <MenuButton>{children}</MenuButton>
         <MenuList
           origin="top right"
-          className="max-h-[40rem] px-4 w-[min(100vw,31.25rem)] thinScroll overflow-x-hidden overflow-y-scroll"
+          className="h-[40rem] px-4 w-[min(100vw,31.25rem)] thinScroll overflow-x-hidden overflow-y-scroll relative"
         >
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <div className="flex flex-col gap-y-4">
@@ -129,11 +129,13 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
                       />
                     ))}
               </div>
-              <Divider />
-              {/* Mark All As Read */}
-              <button className="block border rounded-md p-2 text-center font-medium hover:bg-gray-100">
-                Mark All as Read
-              </button>
+              <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-4">
+                <Divider />
+                {/* Mark All As Read */}
+                <button className="block border rounded-md p-2 text-center font-medium hover:bg-gray-100 w-full">
+                  Mark All as Read
+                </button>
+              </div>
             </div>
           </SpinnerFallback>
         </MenuList>
