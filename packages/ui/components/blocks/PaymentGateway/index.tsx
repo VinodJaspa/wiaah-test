@@ -1,21 +1,18 @@
-import React, { FormEvent } from "react";
+import { EnvVars } from "@const";
+import { useElements, useStripe } from "@stripe/react-stripe-js";
 import {
   BoxShadow,
   Button,
-  FormikInput,
   Image,
   Input,
-  SpinnerFallback,
-  useGetCheckoutPaymentIntentQuery,
+  Modal,
+  ModalContent,
+  ModalOverlay,
 } from "@UI";
+import React, { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { EnvVars } from "@const";
-import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 
 import { PaymentElement } from "@stripe/react-stripe-js";
-import { Formik, Form } from "formik";
-import schema from "yup/lib/schema";
 import { useForm } from "@UI/../utils/src";
 
 const CheckoutForm = () => {
@@ -90,6 +87,7 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
     month: new Date().getMonth(),
     year: parseInt(new Date().toLocaleDateString("en-us", { year: "2-digit" })),
   });
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
 
   return (
     <>
@@ -121,6 +119,33 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
               )}
             </div>
             <div className="w-full items-end gap-6 flex flex-col">
+              {isSellerOrBuyer && (
+                <div className="w-full flex flex-col gap-y-4 text-lg">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold">CREDIT / DEBIT CARD</p>
+                    <button onClick={() => setIsEditModalOpen(true)}>
+                      Edit
+                    </button>
+                  </div>
+                  <div className="flex items-start gap-x-4">
+                    <img
+                      src="/mastercard.png"
+                      alt="Mastercard"
+                      className="w-10"
+                    />
+                    <div className="flex flex-col gap-y-1">
+                      <p>Mastercard (4505)</p>
+                      <p>Exp: 06/23</p>
+                      <p>John Doe</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="font-medium">{t("CVV")}</span>
+                    <Input id="cvv" name="cvv" className="max-w-48" />
+                  </div>
+                </div>
+              )}
+
               {!isSellerOrBuyer && (
                 <>
                   <div className="w-full flex flex-col gap-2">
@@ -161,6 +186,55 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
           </div>
         </div>
       </BoxShadow>
+
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <ModalOverlay />
+        <ModalContent className="w-[min(50rem,100%)] p-6">
+          <div className="flex flex-col gap-4">
+            <div className="w-full flex flex-col gap-2">
+              <span className="text-lg font-medium">{t("Card Number")}</span>
+              <Input
+                placeholder="1234...14"
+                id="CardNumberInput"
+                name="cardNumber"
+              />
+            </div>
+            <div className="w-full grid grid-cols-2 gap-4">
+              <div className="w-full flex flex-col gap-2">
+                <span className="text-lg font-semibold">
+                  {t("Expiry Date")}
+                </span>
+                <Input id="CardExpiryDateInput" placeholder="MM/YY" />
+              </div>
+              <div className="w-full gap-2 flex flex-col">
+                <span className="uppercase text-lg font-semibold">
+                  {t("cvc/cvv")}
+                </span>
+                <Input id="CardCvvInput" placeholder="1234" name="cvc" />
+              </div>
+            </div>
+            <div className="w-full flex flex-col gap-2">
+              <span className="text-lg font-medium">
+                {t("Card Holder Name")}
+              </span>
+              <Input
+                placeholder="John Doe"
+                id="cardHolderName"
+                name="cardHolderName"
+              />
+            </div>
+            <Button
+              colorScheme="darkbrown"
+              className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+              onClick={() => {
+                setIsEditModalOpen(false);
+              }}
+            >
+              {t("Save")}
+            </Button>
+          </div>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
