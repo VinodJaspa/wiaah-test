@@ -1,20 +1,20 @@
-import {
-  Avatar,
-  CloseIcon,
-  HStack,
-  Input,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Radio,
-  Spinner,
-} from "../../../partials";
-import { useNewMessage, useUserData } from "../../../../src/Hooks";
+import { ChatSearchInput } from "@blocks/DataInput";
+import { useSocialControls } from "@blocks/Layout";
+import { Button } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import { ChatNewMessageUserInfo } from "types";
+import { useUserData } from "../../../../src/Hooks";
+import {
+  Avatar,
+  CloseIcon,
+  HStack,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  Spinner,
+} from "../../../partials";
 
 const suggestedUsersPH: ChatNewMessageUserInfo[] = [
   {
@@ -24,7 +24,7 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop.jpeg",
-    username: "username",
+    username: "john_doe",
   },
   {
     id: "2",
@@ -33,7 +33,7 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop-2.jpeg",
-    username: "username",
+    username: "jane_smith",
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop-3.jpeg",
-    username: "username",
+    username: "alex_morgan",
   },
   {
     id: "4",
@@ -51,7 +51,7 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop.jpeg",
-    username: "username",
+    username: "tumpa.rahman",
   },
   {
     id: "5",
@@ -60,7 +60,7 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop-2.jpeg",
-    username: "username",
+    username: "jenny_park",
   },
   {
     id: "6",
@@ -69,7 +69,34 @@ const suggestedUsersPH: ChatNewMessageUserInfo[] = [
       last: "last",
     },
     userPhoto: "/shop-3.jpeg",
-    username: "username",
+    username: "rita_ora",
+  },
+  {
+    id: "7",
+    name: {
+      first: "first",
+      last: "last",
+    },
+    userPhoto: "/shop-3.jpeg",
+    username: "rita_ora",
+  },
+  {
+    id: "8",
+    name: {
+      first: "first",
+      last: "last",
+    },
+    userPhoto: "/shop-3.jpeg",
+    username: "rita_ora",
+  },
+  {
+    id: "9",
+    name: {
+      first: "first",
+      last: "last",
+    },
+    userPhoto: "/shop-3.jpeg",
+    username: "rita_ora",
   },
 ];
 
@@ -81,7 +108,7 @@ async function getSuggestedUsers({
 
 export const NewMessageModal: React.FC = () => {
   const { user } = useUserData();
-  const { closeModal, isOpen } = useNewMessage();
+  const { value: isOpen, cancelMsgNewUser } = useSocialControls("msgNewUser");
   const { t } = useTranslation();
   const [suggestedUserSelect, setSuggestedUserSelect] =
     React.useState<string>("");
@@ -100,63 +127,53 @@ export const NewMessageModal: React.FC = () => {
   if (!user) return null;
 
   return (
-    <Modal onOpen={() => { }} isOpen={isOpen as boolean} onClose={closeModal}>
+    <Modal isOpen={!!isOpen} onClose={cancelMsgNewUser}>
       <ModalOverlay />
-      <ModalContent className="h-full rounded-xl">
-        <ModalHeader title="" className="flex items-center justify-between">
-          <CloseIcon
-            className="text-4xl"
-            aria-label={t("close_new_message_modal", "close new message modal")}
-            onClick={closeModal}
-          />
-          <p className="text-[1.2em] font-bold">
+      <ModalContent className="rounded-xl flex flex-col gap-y-6 p-6 min-w-[500px]">
+        <div className="flex items-center justify-between">
+          <p className="text-2xl font-bold">
             {t("new_message", "New Message")}
           </p>
-          <p className="text-primary">{t("next", "Next")}</p>
-        </ModalHeader>
-        <div className="thinScroll h-full overflow-scroll text-xl">
-          <HStack className="pl-8 h-20 border-[1px] border-gray-400">
-            <p className="font-bold">{t("to", "To")}:</p>
-            <Input
-              className="h-full text-xl border-none"
-              placeholder={`${t("search", "Search")}...`}
-            />
-          </HStack>
-          {/* <RadioGroup
-            onChange={setSuggestedUserSelect}
-            value={suggestedUserSelect}
-          > */}
-          <div className="flex py-2 gap-4 px-8 flex-col">
-            <p className="my-2 font-bold">{t("suggested", "Suggested")}</p>
+          <CloseIcon
+            onClick={() => cancelMsgNewUser()}
+            className="text-xl cursor-pointer"
+            aria-label={t("close_new_message_modal", "close new message modal")}
+          />
+        </div>
+        <ChatSearchInput />
+        <div className="thinScroll h-full overflow-y-scroll max-h-80">
+          <div className="flex gap-4 flex-col">
             <div className="flex gap-4 flex-col">
               {isLoading ? (
                 <Spinner />
               ) : (
                 suggestedUsers &&
                 suggestedUsers.map((user, i) => (
-                  <HStack className="w-full justify-between">
+                  <HStack className="w-full justify-between cursor-pointer">
                     <HStack>
                       <Avatar
                         name={user.username}
                         src={user.userPhoto}
                         key={i}
                       />
-                      <div className="flex flex-col justify-between gap-0 items-start h-full">
-                        <p className="font-bold">{user.username}</p>
+                      <div className="flex flex-col gap-0">
+                        <p className="text-lg font-semibold">{user.username}</p>
+                        <p>message preview</p>
                       </div>
                     </HStack>
-                    <Radio
-                      // type="radio"
-                      value={user.id}
-                      name="suggesetUsers"
-                      onChange={() => setSuggestedUserSelect(user.id)}
-                    />
                   </HStack>
                 ))
               )}
             </div>
           </div>
-          {/* </RadioGroup> */}
+        </div>
+        <div className="flex items-center justify-end gap-x-4">
+          <Button onClick={() => cancelMsgNewUser()} variant="outline">
+            Cancel
+          </Button>
+          <Button bg="gray.800" textColor="white">
+            Start Chat
+          </Button>
         </div>
       </ModalContent>
     </Modal>

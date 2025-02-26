@@ -1,15 +1,20 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HtmlDivProps } from "types";
 import { useRouting } from "routing";
+import { HtmlDivProps } from "types";
 import { isDate, mapArray } from "utils";
-import { ActiveStatus } from "../../../features/API";
-import { useSocialControls } from "../../../blocks/Layout";
 import { useResponsive } from "../../../../src/Hooks";
-import { useUserProfile } from "../../../features/Auth";
+import {
+  ChatUserActiveStatusIndicator,
+  ChatUserCard,
+} from "../../../blocks/DataDisplay";
+import { ChatSearchInput } from "../../../blocks/DataInput";
+import { useSocialControls } from "../../../blocks/Layout";
 import { usePaginationControls } from "../../../blocks/Navigating";
-import { useGetRecentStories } from "../../../features/Social";
+import { ActiveStatus } from "../../../features/API";
+import { useUserProfile } from "../../../features/Auth";
 import { useGetMyChatRoomsQuery } from "../../../features/Chat";
+import { useGetRecentStories } from "../../../features/Social";
 import {
   ArrowLeftAlt1Icon,
   ArrowLeftIcon,
@@ -28,11 +33,6 @@ import {
   ScrollPaginationWrapper,
   SearchIcon,
 } from "../../../partials";
-import {
-  ChatUserActiveStatusIndicator,
-  ChatUserCard,
-} from "../../../blocks/DataDisplay";
-import { ChatSearchInput } from "../../../blocks/DataInput";
 
 export interface ChatMessagesSideBarProps {
   props: HtmlDivProps;
@@ -154,8 +154,9 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                         {member?.profile?.username}
                       </p>
                       <HStack
-                        className={`text-[0.813rem] ${v.unSeenMessages > 0 ? "font-bold" : ""
-                          }`}
+                        className={`text-[0.813rem] ${
+                          v.unSeenMessages > 0 ? "font-bold" : ""
+                        }`}
                       >
                         <p>
                           {v.unSeenMessages > 0
@@ -259,8 +260,9 @@ export const ChatStory: React.FC<{
       className="flex flex-col cursor-pointer w-[3.875rem] justify-center items-center gap-1"
     >
       <div
-        className={`relative w-[3.375rem] h-[3.5rem] rounded-[1.375rem] ${newStory ? "bg-primary" : "bg-[#E7E7E7]"
-          }`}
+        className={`relative w-[3.375rem] h-[3.5rem] rounded-[1.375rem] ${
+          newStory ? "bg-primary" : "bg-[#E7E7E7]"
+        }`}
       >
         <div className="h-[3.25rem] w-[3.175rem] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem]" />
         <Image
