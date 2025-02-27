@@ -24,6 +24,9 @@ export interface PostViewPopupProps<TData> {
   showLink?: boolean;
   data?: TData;
   posts?: TData[];
+  fromAffiliation?: boolean;
+  isHome?: boolean;
+  isDiscover?: boolean;
 }
 
 export function PostViewPopup<TData extends {}>({
@@ -37,6 +40,9 @@ export function PostViewPopup<TData extends {}>({
   showLink = false,
   data,
   posts = [],
+  fromAffiliation,
+  isHome,
+  isDiscover,
 }: PostViewPopupProps<TData>) {
   const { visit, getCurrentPath } = useRouting();
   const { OpenComments } = useActionComments();
@@ -88,6 +94,9 @@ export function PostViewPopup<TData extends {}>({
               aria-label="Close Post"
             />
             <PostView
+              isDiscover={isDiscover}
+              isHome={isHome}
+              fromAffiliation={fromAffiliation}
               key={currentPost?.postInfo?.id}
               postId={currentPost?.postInfo?.id}
               queryName="newFeedPost"

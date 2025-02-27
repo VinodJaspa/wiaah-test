@@ -11,7 +11,7 @@ const Seller: NextPage = () => {
         <title>Wiaah | Seller</title>
       </Head>
       <SellerLayout header="main">
-        <SocialNewsfeedView />
+        <SocialNewsfeedView isHome />
       </SellerLayout>
     </>
   );

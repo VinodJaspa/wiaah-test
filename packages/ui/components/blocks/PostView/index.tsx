@@ -5,7 +5,7 @@ import {
   PostCommentCardProps,
 } from "@blocks/Social";
 import { AttachmentType, ContentHostType } from "@features/API";
-import { Divider } from "@partials";
+import { Button, Divider } from "@partials";
 import { useActionComments } from "@src/Hooks";
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
 import React, { useState } from "react";
@@ -13,8 +13,18 @@ import { useTranslation } from "react-i18next";
 import { FaUser } from "react-icons/fa";
 import { HiOutlineLink } from "react-icons/hi";
 import { Input } from "ui";
+import { cn } from "utils";
 
-interface PostViewProps<TData> {
+interface PostData {
+  affiliation?: {
+    itemType?: string;
+  };
+  postInfo?: {
+    postType?: string;
+  };
+}
+
+interface PostViewProps<TData extends PostData> {
   renderChild: (props: TData) => React.ReactElement;
   idParam?: string;
   queryName: string;
@@ -22,9 +32,12 @@ interface PostViewProps<TData> {
   showLink?: boolean;
   data?: TData;
   postId: string;
+  fromAffiliation?: boolean;
+  isHome?: boolean;
+  isDiscover?: boolean;
 }
 
-export function PostView<TData extends {}>({
+export function PostView<TData extends PostData>({
   renderChild,
   idParam = "postId",
   queryName = "post",
@@ -32,6 +45,9 @@ export function PostView<TData extends {}>({
   showLink = false,
   data,
   postId,
+  fromAffiliation,
+  isHome,
+  isDiscover,
 }: PostViewProps<TData>) {
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
@@ -96,31 +112,58 @@ export function PostView<TData extends {}>({
         }}
         className={`transition-all transform bg-white flex-col p-2 pr-3 gap-2 flex h-full `}
       >
-        <div className="pl-3 flex items-center justify-between gap-5">
-          <div className="w-full flex border-2 border-primary rounded-xl align-center h-12">
-            <div
-              onClick={handleGenerateLink}
-              className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500"
-            >
-              <HiOutlineLink />
-            </div>
+        <div
+          className={cn(
+            "pl-3 flex items-center gap-5",
+            isDiscover ? "justify-end" : "justify-between",
+          )}
+        >
+          {fromAffiliation && (
+            <div className="w-full flex border-2 border-primary rounded-xl align-center h-12">
+              <div
+                onClick={handleGenerateLink}
+                className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500"
+              >
+                <HiOutlineLink />
+              </div>
 
-            <Input
-              onClick={
-                !user
-                  ? () => {
-                      console.log("Input Clicked");
-                    }
-                  : undefined
-              }
-              value={affiliationLink}
-              onChange={() => {}}
-            />
-          </div>
-          <BookingLinkBanner
-            showLink={showLink}
-            link="https://www.figma.com/design/zou6Q"
-          />
+              <Input
+                onClick={
+                  !user
+                    ? () => {
+                        console.log("Input Clicked");
+                      }
+                    : undefined
+                }
+                value={affiliationLink}
+                onChange={() => {}}
+              />
+            </div>
+          )}
+          {!isHome &&
+            !isDiscover &&
+            post?.affiliation?.itemType === "service" && (
+              <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+                Book Now
+              </Button>
+            )}
+          {!isHome &&
+            !isDiscover &&
+            post?.affiliation?.itemType === "product" && (
+              <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+                Add to Cart
+              </Button>
+            )}
+          {isDiscover && post?.postInfo?.postType === "service" && (
+            <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+              Book Now
+            </Button>
+          )}
+          {isDiscover && post?.postInfo?.postType === "product" && (
+            <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+              Add to Cart
+            </Button>
+          )}
         </div>
         <div className="hide-scrollbar h-full overflow-y-scroll overflow-x-hidden">
           {PostCardPlaceHolder.postInfo.comments && (

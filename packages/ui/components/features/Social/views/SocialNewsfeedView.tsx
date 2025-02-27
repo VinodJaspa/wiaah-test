@@ -63,10 +63,12 @@ const FAKE_RECENT_STORIES_DATA = [
 
 interface SocialNewsfeedViewProps {
   isDiscover?: boolean;
+  isHome?: boolean;
 }
 
 const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
   isDiscover,
+  isHome,
 }) => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
@@ -185,6 +187,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
         {/* Desktop view */}
         <div className="hidden lg:block">
           <PostCardsListWrapper
+            isHome={isHome}
             isDiscover={isDiscover}
             grid={true}
             onPostClick={(post) => {

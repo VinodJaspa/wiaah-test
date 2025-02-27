@@ -117,6 +117,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
 
       {post && postId && (
         <PostViewPopup
+          fromAffiliation
           posts={posts}
           queryName="newFeedPost"
           data={post}

@@ -413,7 +413,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
         commision: 10, // Percentage
         createdAt: "2024-06-07T15:30:00Z",
         itemId: "item-001",
-        itemType: "product", // Or "service"
+        itemType: "service", // Or "service"
         product: {
           __typename: "Product",
           id: "product1",

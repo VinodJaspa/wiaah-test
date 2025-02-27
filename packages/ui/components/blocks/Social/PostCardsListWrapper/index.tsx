@@ -18,6 +18,7 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   onProfileClick?: (username: string) => any;
   onLocationClick?: (post: PostCardInfo) => any;
   isDiscover?: boolean;
+  isHome?: boolean;
 }
 
 interface ContentDimensions {
@@ -183,6 +184,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   onProfileClick,
   popup = true,
   isDiscover = false,
+  isHome,
 }) => {
   const router = useRouter();
   const { isMobile } = useResponsive();
@@ -212,6 +214,8 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
 
           {popup && (
             <PostViewPopup
+              isDiscover={isDiscover}
+              isHome={isHome}
               posts={posts}
               queryName="newFeedPost"
               data={post}

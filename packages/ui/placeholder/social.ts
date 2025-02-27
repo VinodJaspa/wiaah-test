@@ -234,6 +234,7 @@ export const PostCommentPlaceholder: PostComment = {
 };
 export const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
+    postType: "service", // or, "product"
     views: 56300,
     numberOfShares: 13,
     id: "1",
