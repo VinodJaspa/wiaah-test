@@ -1,11 +1,11 @@
-import { useBreakpointValue, Flex, Button, Text } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useQuery } from "react-query";
 import React from "react";
-import { PostCardInfo } from "types";
-import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
-import { PostCardsListWrapper, GeneralPostView, Carousel } from "ui";
+import { useQuery } from "react-query";
+import { PostCardInfo } from "types";
+import { GeneralPostView, PostCardsListWrapper } from "ui";
+import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 
 export interface NewsFeedPostViewProps {
   postId: string;

@@ -1,7 +1,4 @@
-import { SocialPostView } from "@UI";
 import { NewsFeedPostView, SellerLayout } from "@blocks";
-import { NextPage } from "next";
-import React from "react";
 import { useRouter } from "next/router";
 
 export default function PostDetailsView() {
