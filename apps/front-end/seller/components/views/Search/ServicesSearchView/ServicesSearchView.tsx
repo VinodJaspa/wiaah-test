@@ -26,7 +26,7 @@ export const ServicesSearchView: React.FC = () => {
                   setFieldValue("serviceType", serviceType);
                 }}
               />
-              <div className="grid gap-12 grid-cols-4">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                 {servicesPH
                   .filter((v) => {
                     const currentService = values[
