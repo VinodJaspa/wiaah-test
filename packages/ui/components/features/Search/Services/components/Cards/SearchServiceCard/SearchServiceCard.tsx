@@ -113,24 +113,17 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
                 </div>
               </div>
             ) : Array.isArray(price) ? (
-              <div className="flex flex-col items-end">
-                <div className="flex items-center">
-                  <div className="flex gap-1 items-center font-semibold">
-                    <PriceDisplay price={price[0]} /> -{" "}
-                    <PriceDisplay price={price[1]} />
-                  </div>
-                  {serviceType === "vehicle" && <span>/day</span>}
-                </div>
-                <div className="flex gap-1 text-xs items-center text-red-500">
+              <div className="flex flex-col">
+                {serviceType === "vehicle" && (
+                  <p className="text-xs">Price by Day</p>
+                )}
+                <div className="flex items-center gap-1">
                   <UnDiscountedPriceDisplay
+                    className="text-xs text-red-500"
                     amount={price[0]}
                     discount={discount}
-                  />{" "}
-                  -{" "}
-                  <UnDiscountedPriceDisplay
-                    amount={price[1]}
-                    discount={discount}
                   />
+                  <PriceDisplay price={price[0]} className="font-semibold" />
                 </div>
               </div>
             ) : null}
