@@ -85,7 +85,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <Link
             href={`/profile/${sellerInfo.id}`}
             onClick={(e) => e.stopPropagation()}
-            className="flex gap-2 items-center"
+            className="flex gap-2 items-center flex-shrink-0"
           >
             <Avatar
               src={sellerInfo.thumbnail}
@@ -102,7 +102,10 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <div className="flex text-sm font-extrabold gap-1 items-center">
             {typeof price === "number" ? (
               <div className="flex flex-col items-end">
-                <PriceDisplay price={price} />
+                <div className="flex items-center">
+                  <PriceDisplay price={price} />
+                  <span>/day</span>
+                </div>
                 <UnDiscountedPriceDisplay
                   className="text-xs"
                   amount={price}
@@ -111,9 +114,12 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
               </div>
             ) : Array.isArray(price) ? (
               <div className="flex flex-col items-end">
-                <div className="flex gap-1 items-center">
-                  <PriceDisplay price={price[0]} /> -{" "}
-                  <PriceDisplay price={price[1]} />
+                <div className="flex items-center">
+                  <div className="flex gap-1 items-center">
+                    <PriceDisplay price={price[0]} /> -{" "}
+                    <PriceDisplay price={price[1]} />
+                  </div>
+                  {serviceType === "vehicle" && <span>/day</span>}
                 </div>
                 <div className="flex gap-1 text-xs items-center">
                   <UnDiscountedPriceDisplay

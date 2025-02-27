@@ -221,7 +221,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 </Button>
               )}
             </div>
-            <div className="flex gap-1">
+            <div className="flex gap-1 truncate">
               <p>{t("Win")}</p> <p>{post.affiliation?.commision}%</p>
               <p>{t("of commision by affiliating it")}</p>
             </div>
