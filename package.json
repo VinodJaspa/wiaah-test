@@ -206,7 +206,7 @@
     "jsonwebtoken": "^9.0.0",
     "kafkajs": "^2.2.3",
     "lucide-react": "^0.474.0",
-    "mongoose": "^7.3.4",
+    "mongoose": "^7.8.6",
     "mqtt": "^5.8.0",
     "nestjs-seeder": "^0.3.2",
     "next": "13.1.1",
