@@ -132,7 +132,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@apollo/gateway": "^2.8.3",
+    "@apollo/gateway": "^2.10.1",
     "@apollo/server": "^4.10.4",
     "@apollo/subgraph": "2.2.3",
     "@chakra-ui/icons": "^2.1.0",
