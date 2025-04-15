@@ -1,10 +1,8 @@
 import React from "react";
-import { Collapse } from "antd";
 import { useProductDescTabs } from "../../../src/Hooks";
 import { useTranslation } from "react-i18next";
 import { BuyerComment } from "../../blocks/BuyerComment";
 
-const { Panel } = Collapse;
 
 export interface ProductDescriptionProps {
   /**
@@ -30,11 +28,46 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
 }) => {
   const { tab, ChangeTab } = useProductDescTabs();
   const { t } = useTranslation();
+  const Accordion = ({ title, children, initiallyOpen = false }: { title: string, children: React.ReactNode, initiallyOpen?: boolean }) => {
+    const [isOpen, setIsOpen] = React.useState(initiallyOpen);
+  
+    return (
+      <div className="border-t border-gray-300">
+        <div
+          className="flex justify-between items-center p-4 cursor-pointer bg-gray-100"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <span className="text-lg font-semibold">{title}</span>
+          <span className={`transition-transform transform ${isOpen ? 'rotate-180' : ''}`}>
+            ▼
+          </span>
+        </div>
+        {isOpen && <div className="p-4">{children}</div>}
+      </div>
+    );
+  };
+
   return (
     <>
       <div id="reviews" className="">
         <div className="mb-10 block md:hidden">
-          <Collapse ghost>
+        <Accordion title="Description">
+          <div>{description}</div>
+        </Accordion>
+  
+        <Accordion title={`Reviews (${comments.length})`}>
+          {comments.map((item, index) => (
+            <div key={index} className="mt-3">
+              <BuyerComment
+                name={item.name}
+                date={new Date(item.date)}
+                rating={item.rating}
+                comment={item.comment}
+              />
+            </div>
+          ))}
+        </Accordion>
+          {/* <Collapse ghost>
             <Panel
               header={
                 <span className="uppercase">
@@ -68,7 +101,8 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
                 })}
               </p>
             </Panel>
-          </Collapse>
+          </Collapse> */}
+
         </div>
         <div className="hidden w-full md:inline-block">
           <div className="product-tab-titles">

@@ -3,6 +3,7 @@ import { AuthorizationDecodedUser } from "./types";
 import { ObjectId } from "mongodb";
 import { parseCookies } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
+//@ts-ignore
 import { parse } from "cookie";
 
 export function getUserFromRequest<T = AuthorizationDecodedUser>(
@@ -14,7 +15,7 @@ export function getUserFromRequest<T = AuthorizationDecodedUser>(
 
   if (mock && !user)
     return _mockedUser
-      ? _mockedUser
+      ? (_mockedUser as T)
       : ({ ...mockedUser, id: new ObjectId().toHexString() } as any);
   return user;
 }

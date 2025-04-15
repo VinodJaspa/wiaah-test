@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Rate } from "antd";
-import { Select } from "antd";
+import ReactStars from "react-rating-stars-component";
+import Select from "react-select";
 import {
   Button,
   DropdownPanel,
@@ -29,7 +29,7 @@ export interface ShopProductFilterProps {
   open?: boolean;
 }
 
-const { Option } = Select;
+
 let countriesOptions = Array();
 const countries = Country.getAllCountries();
 countries.forEach((element) => {
@@ -77,6 +77,16 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
       return <FilterInput variant="box" label={name} />;
     }
   }
+  const cityOptions = React.useMemo(() => {
+    return cities?.map((item: any) => ({
+      value: item.name,
+      label: item.name,
+    }));
+  }, [cities]); 
+  const countryOptions = React.useMemo(() => {
+      return countries.map((item: any) => item.name);
+    }, [countries]);
+  
 
   return (
     <div className="flex flex-col gap-2 bg-white">
@@ -122,7 +132,14 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
           {[...Array(5)].map((_, i) => (
             <HStack key={i}>
               <FilterInput variant="box" />
-              <Rate className="text-sm" disabled value={5 - i} />
+              <ReactStars
+                count={5} 
+                value={5 - i} 
+                edit={false} 
+                size={24} 
+                activeColor="#ffd700" 
+                className="text-sm" 
+              />
             </HStack>
           ))}
           <Spacer />
@@ -172,31 +189,32 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
       {countryFilter && (
         <div className="country-selector">
           <div className=" w-full">
-            <Select
-              showSearch
-              size="large"
-              id="countryselect"
-              className="react-select-container w-full"
-              placeholder={t("Countries", "Countries")}
-              onChange={(value) => {
-                handleCountryChange(value);
-              }}
-            >
-              {countries.map((item, key: number) => {
-                return (
-                  <Option key={key} value={item.isoCode}>
-                    {item.name}
-                  </Option>
-                );
-              })}
-            </Select>
+          <Select
+            id="countryselect"
+            className="react-select-container w-full"
+            placeholder={t("Countries", "Countries")}
+            onChange={handleCountryChange}
+            value={countryCode}
+            options={countryOptions?.map((name) => name)}
+            classNamePrefix="react-select"
+          />
+  
+            
           </div>
         </div>
       )}
       {cityFilter && (
         <div className="city-selector">
           <div className="mb-2 w-full">
-            <Select
+          <Select
+        id="cityselect"
+        className="react-select-container w-full"
+        placeholder={t("Cities", "Cities")}
+        options={cityOptions}
+        isSearchable 
+        classNamePrefix="react-select"
+      />
+            {/* <Select
               showSearch
               size="large"
               id="cityselect"
@@ -210,7 +228,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
                   </Option>
                 );
               })}
-            </Select>
+            </Select> */}
           </div>
         </div>
       )}

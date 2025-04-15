@@ -1,5 +1,6 @@
 import { Box, useTheme } from "@chakra-ui/react";
-import { Progress } from "antd";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Container } from "ui";
@@ -84,20 +85,31 @@ const Formcomponent: React.ForwardRefRenderFunction<
     newStepsData[i] = data;
     setStepsData(newStepsData);
   }
-
+  const percentage = ((formStep + 1) / steps.length) * 100;
   return (
     <>
       <div className="fixed top-0 left-0 z-10 w-full">
         <Container className="">
           <div className="flex items-center justify-between bg-white p-4 lg:hidden">
-            <Progress
-              type="circle"
-              strokeColor={primaryColor}
-              percent={((formStep + 1) / steps.length) * 100}
-              width={90}
-              strokeWidth={9}
-              format={() => formStep + 1 + " of " + steps.length}
-            />
+          <CircularProgressbar
+        value={percentage}
+        text={`${formStep + 1} of ${steps.length}`}
+        styles={{
+          path: {
+            stroke: primaryColor,
+            strokeLinecap: "round",
+            transition: "stroke-dashoffset 0.5s ease 0s",
+          },
+          trail: {
+            stroke: "#e5e7eb", // Tailwind's gray-200
+          },
+          text: {
+            fill: "#000", // Or choose text color
+            fontSize: "16px",
+            fontWeight: "bold",
+          },
+        }}
+      />
             <div className="flex flex-col items-end">
               <div className="mb-2 text-lg font-bold">
                 {steps[formStep].stepName.toString()}

@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import React from "react";
 import "../styles/globals.css";
 import "ui/languages/i18n";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";

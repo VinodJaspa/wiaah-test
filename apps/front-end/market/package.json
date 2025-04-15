@@ -27,7 +27,7 @@
       "@ffmpeg/ffmpeg",
       "@googlemaps/react-wrapper",
       "@tailwindcss/forms",
-      "antd",
+      "@shadcn/ui",
       "autoprefixer",
       "eslint-config-next",
       "next",

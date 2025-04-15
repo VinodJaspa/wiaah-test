@@ -33,7 +33,7 @@
       "@tailwindcss/forms",
       "@types/react-image-gallery",
       "@types/react-window",
-      "antd",
+      "@shadcn/ui",
       "autoprefixer",
       "eslint-config-next",
       "next",

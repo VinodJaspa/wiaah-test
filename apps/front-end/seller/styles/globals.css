@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @import "~react-image-gallery/styles/css/image-gallery.css";
-@import "~antd/dist/antd.css";
+
 
 @font-face {
   font-family: "SF Pro Display";

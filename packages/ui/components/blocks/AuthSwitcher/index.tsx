@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { LoginType } from "types";
-import { Tabs } from "antd";
+import * as Tabs from "@radix-ui/react-tabs";
 import { useRouter } from "next/router";
 import {
   LoginView,
@@ -12,6 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { BiKey } from "react-icons/bi";
+
 export interface AuthSwitcherProps {
   loginType: LoginType;
   onViewChange?: (view: LoginType) => void;
@@ -19,7 +20,6 @@ export interface AuthSwitcherProps {
   onSubmit?: (data: any, type: LoginType) => any;
 }
 
-const { TabPane } = Tabs;
 export const AuthSwitcher: FC<AuthSwitcherProps> = ({
   loginType,
   onViewChange,
@@ -34,72 +34,77 @@ export const AuthSwitcher: FC<AuthSwitcherProps> = ({
     if (onViewChange) {
       onViewChange(view);
     }
-    if (link) {
-      // it will redirect dont change view state
-    } else {
+    if (!link) {
       // it wont redirect change view state
       setView(view);
     }
   };
 
   function handleActivateTabChange(activeKey: string) {
-    if (activeKey == "1") {
+    if (activeKey === "login") {
       router.push("/login");
-    } else if (activeKey == "2") {
+    } else if (activeKey === "buyer-signup") {
       router.push("/buyer-signup");
+    } else if (activeKey === "seller-signup") {
+      router.push("/seller-signup");
     }
   }
 
   switch (view) {
     case "login":
       return (
-        <Tabs
-          onChange={handleActivateTabChange}
-          centered
-          items={[
-            {
-              key: "login",
-              label: (
-                <span className="px-5 text-xl font-light text-gray-800">
-                  {t("Login!", "Login!")}
-                </span>
-              ),
-              children: (
-                <LoginView
-                  onSubmit={(data) => {
-                    onSubmit && onSubmit(data, "login");
-                  }}
-                  setAuthView={(view) => handleChangeView(view)}
-                />
-              ),
-            },
-          ]}
-        ></Tabs>
+        <Tabs.Root
+          value="login"
+          onValueChange={handleActivateTabChange}
+          className="w-full max-w-md mx-auto"
+        >
+          <Tabs.List className="flex justify-center border-b border-gray-200 mb-4">
+            <Tabs.Trigger
+              value="login"
+              className="px-5 py-2 text-xl font-light text-black border-b-2 border-black"
+            >
+              {t("Login!", "Login!")}
+            </Tabs.Trigger>
+          </Tabs.List>
+
+          <Tabs.Content value="login">
+            <LoginView
+              onSubmit={(data) => onSubmit?.(data, "login")}
+              setAuthView={handleChangeView}
+            />
+          </Tabs.Content>
+        </Tabs.Root>
       );
+
     case "buyer-signup":
       return (
-        <Tabs
-          onChange={handleActivateTabChange}
-          centered
-          items={[
-            {
-              key: "buyer-signup",
-              label: (
-                <span className="px-5 text-xl font-light capitalize text-gray-800">
-                  {t("buyer_signup", "Buyer Signup")}
-                </span>
-              ),
-              children: <BuyerSignupView />,
-            },
-          ]}
-        ></Tabs>
+        <Tabs.Root
+          value="buyer-signup"
+          onValueChange={handleActivateTabChange}
+          className="w-full max-w-md mx-auto"
+        >
+          <Tabs.List className="flex justify-center border-b border-gray-200 mb-4">
+            <Tabs.Trigger
+              value="buyer-signup"
+              className="px-5 py-2 text-xl font-light text-black border-b-2 border-black"
+            >
+              {t("buyer_signup", "Buyer Signup")}
+            </Tabs.Trigger>
+          </Tabs.List>
+
+          <Tabs.Content value="buyer-signup">
+            <BuyerSignupView />
+          </Tabs.Content>
+        </Tabs.Root>
       );
+
     case "seller-signup":
       return (
         <SellerSignupView
           onSubmit={(data) => onSubmit && onSubmit(data, "seller-signup")}
         />
       );
+
     case "email-verify":
       return (
         <div className="flex flex-col gap-4" id="SellerSignupView">
@@ -121,7 +126,7 @@ export const AuthSwitcher: FC<AuthSwitcherProps> = ({
                   />
 
                   <Button className="mt-5 h-12 w-full rounded-sm  px-8 py-2 text-lg uppercase text-white">
-                    {t("sign_up", "sign up")}
+                    {t("verify_email", "Verify Email")}
                   </Button>
                 </Form>
               );
@@ -129,5 +134,8 @@ export const AuthSwitcher: FC<AuthSwitcherProps> = ({
           </Formik>
         </div>
       );
+
+    default:
+      return null;
   }
 };

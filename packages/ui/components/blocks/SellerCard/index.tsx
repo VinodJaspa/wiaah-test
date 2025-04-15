@@ -1,6 +1,7 @@
 import React from "react";
 import { IoMdMail } from "react-icons/io";
-import { Rate } from "antd";
+import ReactStars from "react-rating-stars-component";
+
 import { useLoginPopup } from "../../../src/Hooks";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +39,14 @@ export const SellerCard: React.FC<SellerProps> = ({
 
           <div className="my-2 flex justify-center">{name}</div>
           <a href={`/wiaah/${id}#reviews`} className="flex justify-center">
-            <Rate disabled allowHalf value={rating} />
+          <ReactStars
+            fractions={2} 
+            initialRating={rating}
+            readonly 
+            emptySymbol="fa fa-star-o"  
+            fullSymbol="fa fa-star"   
+            className="text-sm"      
+          />
           </a>
           <div className="my-2 flex justify-center font-light">
             {reviews + " " + t("Reviews", "Reviews")}

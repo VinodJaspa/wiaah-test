@@ -17,7 +17,6 @@ import React from "react";
 import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { Upload } from "antd";
 import { BiCloudUpload } from "react-icons/bi";
 
 const AddPartner = () => {
