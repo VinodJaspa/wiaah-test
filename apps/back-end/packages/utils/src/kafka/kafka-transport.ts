@@ -19,7 +19,7 @@ export class KafkaCustomTransport
     const consumerSubscribeOptions = this.options?.subscribe || {};
     const subscribeToPattern = async (pattern: string | RegExp) => {
       await consumer.subscribe({
-        topic: pattern,
+        topics: [pattern],
         ...consumerSubscribeOptions,
       });
     };

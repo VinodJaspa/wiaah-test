@@ -51,7 +51,7 @@ const Dashboard: NextPage = () => {
   const { data: _analyticsData } = useGetAdminDashboardData();
   const analyticsData = FAKE_ANALYTICS;
 
-  const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
+  // const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
   const recentSales = FAKE_RECENT_SALES;
   const { data: _latestOrders } = useAdminGetLatestOrdersQuery(10);
   const latestOrders = placeholderData;
