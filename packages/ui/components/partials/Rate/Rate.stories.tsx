@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { Rate, RateProps } from "./";
 import { StorybookImplemntationLayout } from "utils";
@@ -6,53 +6,59 @@ import { StorybookImplemntationLayout } from "utils";
 export default {
   title: "UI / partials / Rate",
   component: Rate,
-} as ComponentMeta<typeof Rate>;
+} as Meta<typeof Rate>;
 
-export const Default: React.FC<RateProps> = (props) => {
-  return (
-    <>
-      <StorybookImplemntationLayout
-        implmentation={`
-      import {Rate} from "@UI"
-      
-      
-      <Rate rating={4} />
-      `}
-      >
+export const Default: React.FC<RateProps> = {
+  render: (props) => {
+    return (
+      <>
+        <StorybookImplemntationLayout
+          implmentation={`
+        import {Rate} from "@UI"
+        
+        
         <Rate rating={4} />
-      </StorybookImplemntationLayout>
-    </>
-  );
+        `}
+        >
+          <Rate rating={4} />
+        </StorybookImplemntationLayout>
+      </>
+    );
+  },
 };
-export const WithOutOf: React.FC<RateProps> = (props) => {
-  return (
-    <>
-      <StorybookImplemntationLayout
-        implmentation={`
-      import {Rate} from "@UI"
-      
-      
-      <Rate rating={4} outOf={10} />
-      `}
-      >
+export const WithOutOf: React.FC<RateProps> = {
+  render: (props) => {
+    return (
+      <>
+        <StorybookImplemntationLayout
+          implmentation={`
+        import {Rate} from "@UI"
+        
+        
         <Rate rating={4} outOf={10} />
-      </StorybookImplemntationLayout>
-    </>
-  );
+        `}
+        >
+          <Rate rating={4} outOf={10} />
+        </StorybookImplemntationLayout>
+      </>
+    );
+  },
 };
-export const WithHalf: React.FC<RateProps> = (props) => {
-  return (
-    <>
-      <StorybookImplemntationLayout
-        implmentation={`
-import {Rate} from "@UI"
+export const WithHalf: React.FC<RateProps> = {
+  render: (props) => {
+    return (
+      <>
+        <StorybookImplemntationLayout
+          implmentation={`
+  import {Rate} from "@UI"
 
 
-<Rate allowHalf rating={7.7} outOf={10} />
-      `}
-      >
-        <Rate allowHalf rating={7.7} outOf={10} />
-      </StorybookImplemntationLayout>
-    </>
-  );
+  <Rate allowHalf rating={7.7} outOf={10} />
+        `}
+        >
+          <Rate allowHalf rating={7.7} outOf={10} />
+        </StorybookImplemntationLayout>
+      </>
+    );
+  },
 };

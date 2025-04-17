@@ -36,7 +36,7 @@ export * from "./CreditCardIcon";
 export * from "./CupIcon";
 export * from "./DashboardIcon";
 export * from "./DeskIcon";
-export * from "./DigitalCamera";
+export * from "./digitalCamera";
 export * from "./DiningBellIcon";
 export * from "./DiscountTicketIcon";
 export * from "./DiscoverCreditCardIcon";

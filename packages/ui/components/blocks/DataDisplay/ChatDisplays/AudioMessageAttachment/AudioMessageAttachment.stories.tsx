@@ -1,9 +1,9 @@
 import { storybookChatDisplay, AudioMessageAttachment } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookChatDisplay + "AudioMessageAttachment",
+  title: "UI / blocks / Chat Display /AudioMessageAttachment",
   component: AudioMessageAttachment,
-} as ComponentMeta<typeof AudioMessageAttachment>;
+} as Meta<typeof AudioMessageAttachment>;
 
 export const Default = () => <AudioMessageAttachment src="/video.mp4" />;

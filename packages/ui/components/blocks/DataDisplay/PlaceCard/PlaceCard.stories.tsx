@@ -3,11 +3,11 @@ import {
   storybookDataDisplayBlocksTitle,
   PlaceCard,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "PlaceCard",
+  title: "UI / blocks / Data Display /PlaceCard",
   component: PlaceCard,
-} as ComponentMeta<typeof PlaceCard>;
+} as Meta<typeof PlaceCard>;
 
 export const Default = () => <PlaceCard {...placeCardPlaceholder} />;

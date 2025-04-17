@@ -1,15 +1,17 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookPartailsTitle } from "utils";
 import { AddBadgeButton } from "./AddBadgeButton";
 
 export default {
-  title: storybookPartailsTitle + "AddBadgeButton",
+  title: "UI / partials / AddBadgeButton",
   component: AddBadgeButton,
-} as ComponentMeta<typeof AddBadgeButton>;
+} as Meta<typeof AddBadgeButton>;
 
-const template: ComponentStory<typeof AddBadgeButton> = (args) => (
+const template: StoryFn<typeof AddBadgeButton> = (args) => (
   <AddBadgeButton {...args}>Add Badge Button</AddBadgeButton>
 );
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

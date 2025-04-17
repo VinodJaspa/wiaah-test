@@ -1,17 +1,20 @@
 import { storybookPartailsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ImageSlider } from "./ImageSlider";
 
 export default {
-  title: storybookPartailsTitle + "ImageSlider",
+  title: "UI / partials / ImageSlider",
   component: ImageSlider,
-} as ComponentMeta<typeof ImageSlider>;
+} as Meta<typeof ImageSlider>;
 
-const template: ComponentStory<typeof ImageSlider> = (args) => {
+const template: StoryFn<typeof ImageSlider> = (args) => {
   return <ImageSlider {...args} />;
 };
 
-export const Default = template.bind({});
-Default.args = {
-  images: ["/shop.jpeg", "/shop-2.jpeg", "/shop-3.jpeg"],
+export const Default = {
+  render: template,
+
+  args: {
+    images: ["/shop.jpeg", "/shop-2.jpeg", "/shop-3.jpeg"],
+  },
 };

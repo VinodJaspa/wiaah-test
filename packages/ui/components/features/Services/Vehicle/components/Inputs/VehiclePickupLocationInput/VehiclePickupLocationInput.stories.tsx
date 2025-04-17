@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookVehicleInputsTitle } from "utils";
 import { VehiclePickupLocationInput } from "./VehiclePickupLocationInput";
 
 export default {
-  title: storybookVehicleInputsTitle + "VehiclePickupLocationInput",
+  title: "UI / Features /Vehicle /Inputs /VehiclePickupLocationInput",
   component: VehiclePickupLocationInput,
-} as ComponentMeta<typeof VehiclePickupLocationInput>;
+} as Meta<typeof VehiclePickupLocationInput>;
 
-const template: ComponentStory<typeof VehiclePickupLocationInput> = (args) => (
-  <VehiclePickupLocationInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

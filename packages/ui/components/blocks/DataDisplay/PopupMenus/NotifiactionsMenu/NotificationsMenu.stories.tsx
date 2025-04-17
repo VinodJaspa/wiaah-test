@@ -1,10 +1,10 @@
 import { storybookMenusTitle, NotifiactionsMenu, Button } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookMenusTitle + "NotifiactionsMenu",
+  title: "UI / blocks / menus /NotifiactionsMenu",
   component: NotifiactionsMenu,
-} as ComponentMeta<typeof NotifiactionsMenu>;
+} as Meta<typeof NotifiactionsMenu>;
 
 export const Default = () => (
   <NotifiactionsMenu>

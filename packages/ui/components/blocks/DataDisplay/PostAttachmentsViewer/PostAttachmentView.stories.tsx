@@ -1,11 +1,11 @@
 import { storybookBlocksTitle, PostAttachmentsViewer } from "@UI";
 import { PostCardPlaceHolder } from "placeholder";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "PostAttachmentViewer",
+  title: "UI / blocks / PostAttachmentViewer",
   component: PostAttachmentsViewer,
-} as ComponentMeta<typeof PostAttachmentsViewer>;
+} as Meta<typeof PostAttachmentsViewer>;
 
 export const Default = () => (
   <PostAttachmentsViewer

@@ -1,14 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ServiceExtrasInputList } from "./ServiceExtrasInputList";
 import { storybookOtherServicesInputTitle } from "utils";
 import React from "react";
 
 export default {
-  title: storybookOtherServicesInputTitle + "ServiceExtrasInputList",
+  title: "UI / Features /Services /Inputs /ServiceExtrasInputList",
   component: ServiceExtrasInputList,
-} as ComponentMeta<typeof ServiceExtrasInputList>;
+} as Meta<typeof ServiceExtrasInputList>;
 
-const template: ComponentStory<typeof ServiceExtrasInputList> = (args) => {
+const template: StoryFn<typeof ServiceExtrasInputList> = (args) => {
   const [state, setState] = React.useState<any[]>([]);
 
   return (
@@ -20,5 +20,7 @@ const template: ComponentStory<typeof ServiceExtrasInputList> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

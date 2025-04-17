@@ -1,11 +1,11 @@
 import { storybookFallbackDisplayTitle } from "utils";
 import { SpinnerFallback } from "./index";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookFallbackDisplayTitle + "SpinnerFallbackDisplay",
+  title: "UI / Blocks / Fallback display /SpinnerFallbackDisplay",
   component: SpinnerFallback,
-} as ComponentMeta<typeof SpinnerFallback>;
+} as Meta<typeof SpinnerFallback>;
 
 export const loading = () => <SpinnerFallback isLoading />;
 export const error = () => <SpinnerFallback isError />;

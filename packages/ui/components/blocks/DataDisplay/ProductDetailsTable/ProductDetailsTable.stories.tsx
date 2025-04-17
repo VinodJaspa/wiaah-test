@@ -1,11 +1,11 @@
 import { storybookBlocksTitle, ProductDetailsTable } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ProductStatus } from "@features/API";
 
 export default {
-  title: storybookBlocksTitle + "ProductDetailsTable",
+  title: "UI / blocks / ProductDetailsTable",
   component: ProductDetailsTable,
-} as ComponentMeta<typeof ProductDetailsTable>;
+} as Meta<typeof ProductDetailsTable>;
 
 export const Default = () => (
   <ProductDetailsTable

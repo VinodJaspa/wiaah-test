@@ -1,15 +1,15 @@
 import { storybookPartailsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 import { InputSearch } from "./InputSearch";
 import React from "react";
 
 export default {
-  title: storybookPartailsTitle + "InputSearch",
+  title: "UI / partials / InputSearch",
   component: InputSearch,
-} as ComponentMeta<typeof InputSearch>;
+} as Meta<typeof InputSearch>;
 
-const template: ComponentStory<typeof InputSearch> = ({
+const template: StoryFn<typeof InputSearch> = ({
   onOptionSelect,
   options,
   value,
@@ -34,4 +34,6 @@ const template: ComponentStory<typeof InputSearch> = ({
   );
 };
 
-export const Default = template.bind({});
+export const Default = {
+  render: template,
+};

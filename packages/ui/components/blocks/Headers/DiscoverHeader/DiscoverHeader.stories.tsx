@@ -1,11 +1,11 @@
 import { storybookHeadersTitle } from "utils";
 import { DiscoverHeader } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookHeadersTitle + "DiscoverHeader",
+  title: "UI / Blocks / Headers /DiscoverHeader",
   component: DiscoverHeader,
-} as ComponentMeta<typeof DiscoverHeader>;
+} as Meta<typeof DiscoverHeader>;
 
 export const Default = () => {
   return <DiscoverHeader />;

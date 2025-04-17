@@ -4,12 +4,12 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { Collaboration, Container } from "ui";
-import nookies from "cookies-next";
+import nookies, { getCookie } from "cookies-next";
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get cookies from the request using nookies
-    const token = nookies.getCookie('auth_token', context) || null; 
+    const token = getCookie('auth_token', context) || null; 
 
 
   return {

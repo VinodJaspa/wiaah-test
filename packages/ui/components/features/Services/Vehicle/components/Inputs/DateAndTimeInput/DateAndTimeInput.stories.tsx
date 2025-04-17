@@ -1,17 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookDataInputBlocksTitle } from "utils";
 import { DateAndTimeInput } from "./DateAndTimeInput";
 
 export default {
-  title: storybookDataInputBlocksTitle + "DateAndTimeInput",
+  title: "UI / blocks / Data Input /DateAndTimeInput",
   component: DateAndTimeInput,
-} as ComponentMeta<typeof DateAndTimeInput>;
+} as Meta<typeof DateAndTimeInput>;
 
-const template: ComponentStory<typeof DateAndTimeInput> = (args) => (
-  <DateAndTimeInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  dateLabel: "pick-up date",
+export const Default = {
+  args: {
+    dateLabel: "pick-up date",
+  },
 };

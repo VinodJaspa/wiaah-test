@@ -1,15 +1,11 @@
 import React from "react";
 import { SellerLayout } from "@UI";
 import { storybookLayoutTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: storybookLayoutTitle + "SellerLayout",
+  title: "UI / blocks / layout /SellerLayout",
   component: SellerLayout,
-} as ComponentMeta<typeof SellerLayout>;
+} as Meta<typeof SellerLayout>;
 
-const Templete: ComponentStory<typeof SellerLayout> = (args) => (
-  <SellerLayout {...args} />
-);
-
-export const Default = Templete.bind({});
+export const Default = {};

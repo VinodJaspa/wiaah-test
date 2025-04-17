@@ -1,9 +1,9 @@
 import { ChatMessagesPH, storybookChatDisplay, ChatRoomContent } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookChatDisplay + "ChatRoomContent",
+  title: "UI / blocks / Chat Display /ChatRoomContent",
   component: ChatRoomContent,
-} as ComponentMeta<typeof ChatRoomContent>;
+} as Meta<typeof ChatRoomContent>;
 
 export const Default = () => <ChatRoomContent messages={ChatMessagesPH} />;

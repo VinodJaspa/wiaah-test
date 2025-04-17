@@ -1,13 +1,13 @@
 import { DateInput } from "@UI";
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { DateRange } from "@UI/../types/src";
 
 export default {
-  title: storybookDataInputBlocksTitle + "DateInput",
+  title: "UI / blocks / Data Input /DateInput",
   component: DateInput,
-} as ComponentMeta<typeof DateInput>;
+} as Meta<typeof DateInput>;
 
 export const Default = () => {
   const [date, setDate] = React.useState<string>("");

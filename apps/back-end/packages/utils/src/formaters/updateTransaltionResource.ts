@@ -8,7 +8,7 @@ type UpdateTranslationResourceOptions<T> = {
   updateOnly?: boolean;
 };
 
-export function updateTranslationResource<TResource>({
+export function updateTranslationResource<TResource extends Record<string, any>>({
   originalObj,
   update,
 }: UpdateTranslationResourceOptions<TResource>):

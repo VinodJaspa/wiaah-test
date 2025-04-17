@@ -1,12 +1,12 @@
 import { storybookBlocksTitle, AuthPopup, Button, useLoginPopup } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { useTranslation } from "react-i18next";
 // import { useLoginPopup } from "@hooks";
 
 export default {
-  title: storybookBlocksTitle + "AuthPopup",
+  title: "UI / blocks / AuthPopup",
   component: AuthPopup,
-} as ComponentMeta<typeof AuthPopup>;
+} as Meta<typeof AuthPopup>;
 
 export const Default = () => {
   const { t } = useTranslation();

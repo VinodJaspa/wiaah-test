@@ -1,15 +1,12 @@
 import { storybookSectionsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { AddNewDigitalProductSection } from "./AddNewDigitalProductSection";
 
 export default {
-  title: storybookSectionsTitle + "AddNewDigitialProductSection",
+  title: "UI / sections / AddNewDigitialProductSection",
   component: AddNewDigitalProductSection,
-} as ComponentMeta<typeof AddNewDigitalProductSection>;
+} as Meta<typeof AddNewDigitalProductSection>;
 
-const template: ComponentStory<typeof AddNewDigitalProductSection> = (
-  props
-) => <AddNewDigitalProductSection {...props} />;
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

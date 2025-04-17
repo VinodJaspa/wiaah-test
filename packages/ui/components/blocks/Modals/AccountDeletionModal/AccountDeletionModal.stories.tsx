@@ -5,12 +5,12 @@ import {
   Button,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "AccountDeletionModal",
+  title: "UI / Blocks / Modals /AccountDeletionModal",
   component: AccountDeletionModal,
-} as ComponentMeta<typeof AccountDeletionModal>;
+} as Meta<typeof AccountDeletionModal>;
 
 export const Default = () => {
   return (
@@ -18,7 +18,7 @@ export const Default = () => {
       <ModalButton>
         <Button>open</Button>
       </ModalButton>
-      <AccountDeletionModal onSubmit={() => { }} />
+      <AccountDeletionModal onSubmit={() => {}} />
     </ModalExtendedWrapper>
   );
 };

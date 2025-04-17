@@ -1,10 +1,10 @@
 import { storybookBlocksTitle, LocationButton } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "LocationButton",
+  title: "UI / blocks / LocationButton",
   component: LocationButton,
-} as ComponentMeta<typeof LocationButton>;
+} as Meta<typeof LocationButton>;
 
 export const Default = () => {
   return <LocationButton name="location" />;

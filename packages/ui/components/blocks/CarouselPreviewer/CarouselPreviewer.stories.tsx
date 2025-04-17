@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { CarouselPreviewer } from "@UI";
 
 const images = [
@@ -75,24 +75,22 @@ const ImagesVideos = [
 export default {
   title: "UI/blocks/CarouselPreviewer",
   component: CarouselPreviewer,
-} as ComponentMeta<typeof CarouselPreviewer>;
+} as Meta<typeof CarouselPreviewer>;
 
-const Templete: ComponentStory<typeof CarouselPreviewer> = (args) => (
-  <CarouselPreviewer {...args} />
-);
+export const Default = {
+  args: {
+    components: images.map((img, i) => {
+      return {
+        Component: <img src={img.itemSrc} />,
+      };
+    }),
+  },
 
-export const Default = Templete.bind({});
-Default.args = {
-  components: images.map((img, i) => {
-    return {
-      Component: <img src={img.itemSrc} />,
-    };
-  }),
+  decorators: [
+    (Story, { args }) => (
+      <div className="h-[26rem] bg-gray-300 p-4">
+        <Story {...args} />
+      </div>
+    ),
+  ],
 };
-Default.decorators = [
-  (Story, { args }) => (
-    <div className="h-[26rem] bg-gray-300 p-4">
-      <Story {...args} />
-    </div>
-  ),
-];

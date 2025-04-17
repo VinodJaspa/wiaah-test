@@ -1,17 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { randomNum, storybookOtherServicesDataDisplayTitle } from "utils";
 import { RestaurantPriceSidebar } from "./RestaurantPriceSidebar";
 
 export default {
-  title: storybookOtherServicesDataDisplayTitle + "RestaurantPriceSidebar",
+  title: "UI / Features /Services /Data Display /RestaurantPriceSidebar",
   component: RestaurantPriceSidebar,
-} as ComponentMeta<typeof RestaurantPriceSidebar>;
+} as Meta<typeof RestaurantPriceSidebar>;
 
-const template: ComponentStory<typeof RestaurantPriceSidebar> = (args) => (
-  <RestaurantPriceSidebar {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  vatPercent: randomNum(15),
+export const Default = {
+  args: {
+    vatPercent: randomNum(15),
+  },
 };

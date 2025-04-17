@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
 import {
@@ -12,9 +12,9 @@ import {
 } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "Tabs",
+  title: "UI / partials / Tabs",
   component: Tabs,
-} as ComponentMeta<typeof Tabs>;
+} as Meta<typeof Tabs>;
 
 export const Default: React.FC<TabsProps> = () => {
   return (
@@ -165,8 +165,9 @@ return (
                   console.log("current", currentTabIdx);
                   return (
                     <span
-                      className={`${currentTabIdx === i ? "text-black" : "text-gray-600"
-                        }`}
+                      className={`${
+                        currentTabIdx === i ? "text-black" : "text-gray-600"
+                      }`}
                     >
                       {title.planTitle} {currentTabIdx}
                     </span>
@@ -183,7 +184,7 @@ return (
                     "unlimited downloads",
                     "ios support",
                   ]}
-                  onUpgradeRequest={() => { }}
+                  onUpgradeRequest={() => {}}
                 />
               </TabItem>
             </>

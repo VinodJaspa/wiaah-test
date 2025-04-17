@@ -1,18 +1,15 @@
 import { randomNum, storybookOtherServicesDataDisplayTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { BookedServicesCostDetails } from "./BookedServicesCostDetails";
 
 export default {
-  title: storybookOtherServicesDataDisplayTitle + "BookedServicesCostDetails",
+  title: "UI / Features /Services /Data Display /BookedServicesCostDetails",
   component: BookedServicesCostDetails,
-} as ComponentMeta<typeof BookedServicesCostDetails>;
+} as Meta<typeof BookedServicesCostDetails>;
 
-const template: ComponentStory<typeof BookedServicesCostDetails> = (args) => (
-  <BookedServicesCostDetails {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  title: "rooms",
-  vat: randomNum(15),
+export const Default = {
+  args: {
+    title: "rooms",
+    vat: randomNum(15),
+  },
 };

@@ -1,15 +1,12 @@
 import { HealthCenterAddDoctorForm } from "./HealthCenterAddDoctorForm";
 import { storybookHealthCenterInputsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: storybookHealthCenterInputsTitle + "HealthCenterAddDoctorForm",
+  title: "UI / Features /Health Center /Inputs /HealthCenterAddDoctorForm",
   component: HealthCenterAddDoctorForm,
-} as ComponentMeta<typeof HealthCenterAddDoctorForm>;
+} as Meta<typeof HealthCenterAddDoctorForm>;
 
-const template: ComponentStory<typeof HealthCenterAddDoctorForm> = (args) => (
-  <HealthCenterAddDoctorForm {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

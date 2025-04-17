@@ -1,15 +1,12 @@
 import { RestaurantAddMenuForm } from "./RestaruantAddMenuForm";
 import { storybookRestaurantInputTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: storybookRestaurantInputTitle + "RestaurantAddMenuForm",
+  title: "UI / Features /Restaurant /Inputs /RestaurantAddMenuForm",
   component: RestaurantAddMenuForm,
-} as ComponentMeta<typeof RestaurantAddMenuForm>;
+} as Meta<typeof RestaurantAddMenuForm>;
 
-const template: ComponentStory<typeof RestaurantAddMenuForm> = (args) => (
-  <RestaurantAddMenuForm {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

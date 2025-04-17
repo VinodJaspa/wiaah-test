@@ -1,18 +1,15 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookVehicleCardsTitle } from "utils";
 import { PickupLocationSuggistionCard } from "./PickupLocationSuggistionCard";
 
 export default {
-  title: storybookVehicleCardsTitle + "PickupLocationSuggistionCard",
+  title: "UI / Features /Vehicle /Cards /PickupLocationSuggistionCard",
   component: PickupLocationSuggistionCard,
-} as ComponentMeta<typeof PickupLocationSuggistionCard>;
+} as Meta<typeof PickupLocationSuggistionCard>;
 
-const template: ComponentStory<typeof PickupLocationSuggistionCard> = (
-  args
-) => <PickupLocationSuggistionCard {...args} />;
-
-export const Default = template.bind({});
-Default.args = {
-  address: "address",
-  city: "paris",
+export const Default = {
+  args: {
+    address: "address",
+    city: "paris",
+  },
 };

@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "~react-image-gallery/styles/css/image-gallery.css";
 
+@import "~react-image-gallery/styles/css/image-gallery.css";
 
 
 * {
@@ -148,7 +148,7 @@ button.image-gallery-icon {
   position: initial !important;
 }
 .login-view-container {
-  background-image: url("/bg-img.jpg");
+  background-image: url("../public/bg-img.jpg");
   background-repeat: no-repeat;
 }
 .login-form {

@@ -1,9 +1,9 @@
 import { Collaboration, storybookBlocksTitle } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "Collaboration",
+  title: "UI / blocks / Collaboration",
   component: Collaboration,
-} as ComponentMeta<typeof Collaboration>;
+} as Meta<typeof Collaboration>;
 
 export const Default = () => <Collaboration />;

@@ -1,9 +1,9 @@
 import { storybookBlocksTitle, AuthFooter } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "AuthFooter",
+  title: "UI / blocks / AuthFooter",
   component: AuthFooter,
-} as ComponentMeta<typeof AuthFooter>;
+} as Meta<typeof AuthFooter>;
 
 export const Default = () => <AuthFooter />;

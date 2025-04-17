@@ -1,11 +1,11 @@
 import { storybookLayoutTitle } from "utils";
 import { SectionsLayout } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 export default {
-  title: storybookLayoutTitle + "SectionLayout",
+  title: "UI / blocks / layout /SectionLayout",
   component: SectionsLayout,
-} as ComponentMeta<typeof SectionsLayout>;
+} as Meta<typeof SectionsLayout>;
 
 export const Default = () => {
   const [section, setSection] = React.useState<string>("");

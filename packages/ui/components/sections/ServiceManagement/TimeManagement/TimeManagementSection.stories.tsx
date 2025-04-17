@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { TimeManagementSection } from "./index";
 import { storybookServiceManagementSectionsTitle } from "utils";
 
 export default {
-  title: storybookServiceManagementSectionsTitle + "TimeManagementSection",
+  title: "UI / Features /Service Management /Sections /TimeManagementSection",
   component: TimeManagementSection,
-} as ComponentMeta<typeof TimeManagementSection>;
+} as Meta<typeof TimeManagementSection>;
 
-const template: ComponentStory<typeof TimeManagementSection> = (args) => (
-  <TimeManagementSection {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

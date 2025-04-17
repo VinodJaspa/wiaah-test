@@ -1,10 +1,10 @@
 import { storybookPartailsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { MathPowerDisplay } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "MathPowerDisplay",
+  title: "UI / partials / MathPowerDisplay",
   component: MathPowerDisplay,
-} as ComponentMeta<typeof MathPowerDisplay>;
+} as Meta<typeof MathPowerDisplay>;
 
 export const Default = () => <MathPowerDisplay power={2}>M</MathPowerDisplay>;

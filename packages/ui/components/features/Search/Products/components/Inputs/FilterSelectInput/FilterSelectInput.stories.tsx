@@ -1,17 +1,14 @@
 import { FilterSelectInput } from "./FilterSelectInput";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSearchInputsTitle } from "utils";
 
 export default {
-  title: storybookSearchInputsTitle + "FilterSelectInput",
+  title: "UI / Features /Search /Inputs /FilterSelectInput",
   component: FilterSelectInput,
-} as ComponentMeta<typeof FilterSelectInput>;
+} as Meta<typeof FilterSelectInput>;
 
-const template: ComponentStory<typeof FilterSelectInput> = (args) => (
-  <FilterSelectInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  options: ["Available", "Out of Stock"],
+export const Default = {
+  args: {
+    options: ["Available", "Out of Stock"],
+  },
 };

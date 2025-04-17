@@ -5,12 +5,12 @@ import {
   ModalButton,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "AskForReturnModal",
+  title: "UI / Blocks / Modals /AskForReturnModal",
   component: AskForReturnModal,
-} as ComponentMeta<typeof AskForReturnModal>;
+} as Meta<typeof AskForReturnModal>;
 
 export const Default = () => {
   return (

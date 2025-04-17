@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ProductAttributeDisplay } from "./ProductAttributeDisplay";
 import {
   getRandomContrastingColor,
@@ -11,8 +11,8 @@ import {
 import { useState } from "react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "ProductAttributeDisplay",
-} as ComponentMeta<typeof ProductAttributeDisplay>;
+  title: "UI / blocks / Data Display /ProductAttributeDisplay",
+} as Meta<typeof ProductAttributeDisplay>;
 
 export const SingleTextDisplay = () => {
   const [state, setState] = useState();

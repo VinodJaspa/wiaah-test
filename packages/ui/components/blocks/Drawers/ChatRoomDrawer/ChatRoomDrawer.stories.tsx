@@ -1,12 +1,12 @@
 import { storybookDrawersTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ChatRoomDrawer, Button } from "@UI";
 import { useModalDisclouser } from "hooks";
 
 export default {
-  title: storybookDrawersTitle + "ChatRoomDrawer",
+  title: "UI / Blocks / drawers /ChatRoomDrawer",
   component: ChatRoomDrawer,
-} as ComponentMeta<typeof ChatRoomDrawer>;
+} as Meta<typeof ChatRoomDrawer>;
 
 export const Default = () => {
   const { handleClose, handleOpen, isOpen } = useModalDisclouser();

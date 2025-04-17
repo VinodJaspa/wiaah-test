@@ -1,10 +1,10 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ChatSearchInput } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataInputBlocksTitle + "ChatSearchInput",
+  title: "UI / blocks / Data Input /ChatSearchInput",
   component: ChatSearchInput,
-} as ComponentMeta<typeof ChatSearchInput>;
+} as Meta<typeof ChatSearchInput>;
 
 export const Default = () => <ChatSearchInput />;

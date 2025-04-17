@@ -1,9 +1,9 @@
 import { storybookSectionsTitle, AddNewShippingMothed } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AddNewShippingMothedSection",
+  title: "UI / sections / AddNewShippingMothedSection",
   component: AddNewShippingMothed,
-} as ComponentMeta<typeof AddNewShippingMothed>;
+} as Meta<typeof AddNewShippingMothed>;
 
 export const Default = () => <AddNewShippingMothed />;

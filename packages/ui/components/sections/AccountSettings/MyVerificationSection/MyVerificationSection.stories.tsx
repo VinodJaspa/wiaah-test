@@ -1,15 +1,12 @@
 import { MyVerificationSection } from "./MyVerificationSection";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSectionsTitle } from "utils";
 
 export default {
-  title: storybookSectionsTitle + "MyVerificationSection",
+  title: "UI / sections / MyVerificationSection",
   component: MyVerificationSection,
-} as ComponentMeta<typeof MyVerificationSection>;
+} as Meta<typeof MyVerificationSection>;
 
-const template: ComponentStory<typeof MyVerificationSection> = (args) => (
-  <MyVerificationSection {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

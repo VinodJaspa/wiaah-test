@@ -1,12 +1,10 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { SavedPostsSection } from "./SavedPostsSection";
 import { storybookSectionsTitle } from "utils";
 
 export default {
-  title: storybookSectionsTitle + "SavedPostsSection",
+  title: "UI / sections / SavedPostsSection",
   component: SavedPostsSection,
-} as ComponentMeta<typeof SavedPostsSection>;
-
-// jest.mock("@UI", () => ({ ...jest.requireActual("@UI") }));
+} as Meta<typeof SavedPostsSection>;
 
 export const Default = () => <SavedPostsSection />;

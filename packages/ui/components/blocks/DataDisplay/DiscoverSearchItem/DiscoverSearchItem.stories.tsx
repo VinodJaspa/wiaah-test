@@ -1,9 +1,9 @@
 import { storybookDataDisplayBlocksTitle, DiscoverItem } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "DiscoverItem",
+  title: "UI / blocks / Data Display /DiscoverItem",
   component: DiscoverItem,
-} as ComponentMeta<typeof DiscoverItem>;
+} as Meta<typeof DiscoverItem>;
 
 export const Default = () => <DiscoverItem thumbnail="/shop.jpeg" />;

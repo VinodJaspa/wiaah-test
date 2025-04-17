@@ -1,19 +1,16 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { AspectRatioImage } from "./AspectRatioImage";
 import { storybookPartailsTitle } from "utils";
 
 export default {
-  title: storybookPartailsTitle + "AspectRatioImage",
+  title: "UI / partials / AspectRatioImage",
   component: AspectRatioImage,
-} as ComponentMeta<typeof AspectRatioImage>;
+} as Meta<typeof AspectRatioImage>;
 
-const template: ComponentStory<typeof AspectRatioImage> = (args) => (
-  <AspectRatioImage {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  ratio: 3 / 4,
-  src: "/shop-2.jpeg",
-  alt: "aspect ratio image",
+export const Default = {
+  args: {
+    ratio: 3 / 4,
+    src: "/shop-2.jpeg",
+    alt: "aspect ratio image",
+  },
 };

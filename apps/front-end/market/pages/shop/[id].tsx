@@ -17,14 +17,14 @@ import { Collaboration } from "ui/components/blocks/Collaboration";
 import { BusinessType, ServiceType, StoreType } from "@features/API";
 import { useRouting } from "routing";
 import { QueryClient, dehydrate } from "react-query";
-import nookies from "cookies-next";
+import nookies, { getCookie } from "cookies-next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Extract the ID from the URL params
   const id = context?.params?.["id"] as string | undefined;
 
   // Extract cookies using nookies
-     const token = nookies.getCookie('auth_token', context) || null; 
+     const token = getCookie('auth_token', context) || null; 
  
   return {
     props: {

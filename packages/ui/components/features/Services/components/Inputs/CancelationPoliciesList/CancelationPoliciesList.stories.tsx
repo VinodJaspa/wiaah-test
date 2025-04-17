@@ -1,16 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { CancelationPoliciesListInput } from "./CancelationPoliciesList";
 import { storybookOtherServicesInputTitle } from "utils";
 import React from "react";
 
 export default {
-  title: storybookOtherServicesInputTitle + "CancelationPoliciesListInput",
+  title: "UI / Features /Services /Inputs /CancelationPoliciesListInput",
   component: CancelationPoliciesListInput,
-} as ComponentMeta<typeof CancelationPoliciesListInput>;
+} as Meta<typeof CancelationPoliciesListInput>;
 
-const template: ComponentStory<typeof CancelationPoliciesListInput> = (
-  args
-) => {
+const template: StoryFn<typeof CancelationPoliciesListInput> = (args) => {
   const [state, setState] = React.useState<any[]>([]);
   return (
     <CancelationPoliciesListInput
@@ -21,4 +19,6 @@ const template: ComponentStory<typeof CancelationPoliciesListInput> = (
   );
 };
 
-export const Default = template.bind({});
+export const Default = {
+  render: template,
+};

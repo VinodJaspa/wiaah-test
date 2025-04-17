@@ -1,25 +1,25 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { Spacer } from "../index";
 import { Button } from "../index";
 
 export default {
   title: "UI/partials/Spacer",
   component: Spacer,
-} as ComponentMeta<typeof Spacer>;
+} as Meta<typeof Spacer>;
 
-const Template: ComponentStory<typeof Spacer> = (args) => <Spacer {...args} />;
+export const Default = {
+  args: {
+    spaceInRem: 5,
+  },
 
-export const Default = Template.bind({});
-Default.args = {
-  spaceInRem: 5,
+  decorators: [
+    (Story, { args }) => (
+      <div>
+        <Button children="Element" />
+        <Story args={args} />
+        <Button>test</Button>
+      </div>
+    ),
+  ],
 };
-Default.decorators = [
-  (Story, { args }) => (
-    <div>
-      <Button children="Element" />
-      <Story args={args} />
-      <Button>test</Button>
-    </div>
-  ),
-];

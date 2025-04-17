@@ -1,10 +1,10 @@
 import { storybookDataDisplayBlocksTitle, CommentAlt } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "CommentAlt",
+  title: "UI / blocks / Data Display /CommentAlt",
   component: CommentAlt,
-} as ComponentMeta<typeof CommentAlt>;
+} as Meta<typeof CommentAlt>;
 
 export const Default = () => (
   <CommentAlt

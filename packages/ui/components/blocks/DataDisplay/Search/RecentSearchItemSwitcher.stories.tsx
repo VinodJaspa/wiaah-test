@@ -3,12 +3,12 @@ import {
   storybookBlocksTitle,
   RecentSearchItemSwticher,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "RecentSearchItemSwitcher",
+  title: "UI / blocks / RecentSearchItemSwitcher",
   component: RecentSearchItemSwticher,
-} as ComponentMeta<typeof RecentSearchItemSwticher>;
+} as Meta<typeof RecentSearchItemSwticher>;
 
 export const UserSearch = () => (
   <RecentSearchItemSwticher itemData={RecentSearchItemsPH[0]} />

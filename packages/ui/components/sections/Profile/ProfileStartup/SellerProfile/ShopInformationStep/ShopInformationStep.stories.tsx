@@ -1,10 +1,10 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { storybookSectionsTitle } from "utils";
 import { ShopInformationStep } from "./index";
 
 export default {
-  title: storybookSectionsTitle + "ShopInformationSection",
+  title: "UI / sections / ShopInformationSection",
   component: ShopInformationStep,
-} as ComponentMeta<typeof ShopInformationStep>;
+} as Meta<typeof ShopInformationStep>;
 
-export const Default = () => <ShopInformationStep onSuccess={() => { }} />;
+export const Default = () => <ShopInformationStep onSuccess={() => {}} />;

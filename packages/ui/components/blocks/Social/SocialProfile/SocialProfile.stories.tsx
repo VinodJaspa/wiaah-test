@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { SocialProfile } from "@UI";
 import { SocialProfileInfo } from "@UI/placeholder/social";
 import { PostCardPlaceHolder } from "placeholder";
@@ -10,9 +10,9 @@ import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialProfile",
   component: SocialProfile,
-} as ComponentMeta<typeof SocialProfile>;
+} as Meta<typeof SocialProfile>;
 
-const Template: ComponentStory<typeof SocialProfile> = (args) => {
+const Template: StoryFn<typeof SocialProfile> = (args) => {
   const [storyData, setStoryData] = useRecoilState(SocialStoryState);
 
   React.useEffect(() =>
@@ -42,17 +42,23 @@ const Template: ComponentStory<typeof SocialProfile> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  shopInfo: SocialProfileInfo,
+export const Default = {
+  render: Template,
+
+  args: {
+    shopInfo: SocialProfileInfo,
+  },
 };
 
-export const withHighNumbers = Template.bind({});
-withHighNumbers.args = {
-  shopInfo: {
-    ...SocialProfileInfo,
-    publications: 1500,
-    subscribers: 205600,
-    subscriptions: 1300000,
+export const withHighNumbers = {
+  render: Template,
+
+  args: {
+    shopInfo: {
+      ...SocialProfileInfo,
+      publications: 1500,
+      subscribers: 205600,
+      subscriptions: 1300000,
+    },
   },
 };

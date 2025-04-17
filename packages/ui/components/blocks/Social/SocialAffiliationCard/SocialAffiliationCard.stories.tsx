@@ -1,39 +1,42 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { SocialAffiliationCard } from "@UI";
 import { socialAffiliationCardPlaceholder } from "placeholder";
 export default {
   title: "UI/blocks/Social/SocialAffiliationCard",
   component: SocialAffiliationCard,
-} as ComponentMeta<typeof SocialAffiliationCard>;
+} as Meta<typeof SocialAffiliationCard>;
 
-const Template: ComponentStory<typeof SocialAffiliationCard> = (args) => (
-  <SocialAffiliationCard {...args} />
-);
-
-export const WithImage = Template.bind({});
-WithImage.args = {
-  ...socialAffiliationCardPlaceholder,
-  attachment: { src: "/shop.jpeg", type: "image" },
-};
-export const WithVerticalImage = Template.bind({});
-WithVerticalImage.args = {
-  ...socialAffiliationCardPlaceholder,
-  attachment: { src: "/verticalImage.jpg", type: "image" },
-};
-export const WithVideo = Template.bind({});
-WithVideo.args = {
-  ...socialAffiliationCardPlaceholder,
-  attachment: {
-    src: "/video.mp4",
-    type: "video",
+export const WithImage = {
+  args: {
+    ...socialAffiliationCardPlaceholder,
+    attachment: { src: "/shop.jpeg", type: "image" },
   },
 };
-export const WithVerticalVideo = Template.bind({});
-WithVerticalVideo.args = {
-  ...socialAffiliationCardPlaceholder,
-  attachment: {
-    src: "/verticalVideo.mp4",
-    type: "video",
+
+export const WithVerticalImage = {
+  args: {
+    ...socialAffiliationCardPlaceholder,
+    attachment: { src: "/verticalImage.jpg", type: "image" },
+  },
+};
+
+export const WithVideo = {
+  args: {
+    ...socialAffiliationCardPlaceholder,
+    attachment: {
+      src: "/video.mp4",
+      type: "video",
+    },
+  },
+};
+
+export const WithVerticalVideo = {
+  args: {
+    ...socialAffiliationCardPlaceholder,
+    attachment: {
+      src: "/verticalVideo.mp4",
+      type: "video",
+    },
   },
 };

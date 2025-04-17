@@ -1,52 +1,49 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { RecentStories, storybookDataDisplayBlocksTitle } from "@UI";
 export default {
-  title: storybookDataDisplayBlocksTitle + "RecentStories",
+  title: "UI / blocks / Data Display /RecentStories",
   component: RecentStories,
-} as ComponentMeta<typeof RecentStories>;
+} as Meta<typeof RecentStories>;
 
-const Template: ComponentStory<typeof RecentStories> = (args) => (
-  <RecentStories {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  stories: [
-    {
-      storyUserData: {
-        name: "Wiaah",
-        userPhotoSrc: "/shop-3.jpeg",
+export const Default = {
+  args: {
+    stories: [
+      {
+        storyUserData: {
+          name: "Wiaah",
+          userPhotoSrc: "/shop-3.jpeg",
+        },
+        seen: true,
       },
-      seen: true,
-    },
-    {
-      storyUserData: {
-        name: "Jack",
-        userPhotoSrc: "/shop.jpeg",
+      {
+        storyUserData: {
+          name: "Jack",
+          userPhotoSrc: "/shop.jpeg",
+        },
+        seen: false,
       },
-      seen: false,
-    },
-    {
-      storyUserData: {
-        name: "sam",
-        userPhotoSrc: "/shop-2.jpeg",
+      {
+        storyUserData: {
+          name: "sam",
+          userPhotoSrc: "/shop-2.jpeg",
+        },
+        seen: true,
       },
-      seen: true,
-    },
-    {
-      storyUserData: {
-        name: "Wiaah",
-        userPhotoSrc: "/shop-3.jpeg",
+      {
+        storyUserData: {
+          name: "Wiaah",
+          userPhotoSrc: "/shop-3.jpeg",
+        },
+        seen: true,
       },
-      seen: true,
-    },
-    {
-      storyUserData: {
-        name: "Jack",
-        userPhotoSrc: "/shop.jpeg",
+      {
+        storyUserData: {
+          name: "Jack",
+          userPhotoSrc: "/shop.jpeg",
+        },
+        seen: false,
       },
-      seen: false,
-    },
-  ],
+    ],
+  },
 };

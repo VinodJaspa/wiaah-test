@@ -1,8 +1,8 @@
 import { storybookSectionsTitle, FindYourFriendsStep } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "FindYourFriendsStep",
-} as ComponentMeta<typeof FindYourFriendsStep>;
+  title: "UI / sections / FindYourFriendsStep",
+} as Meta<typeof FindYourFriendsStep>;
 
-export const Default = () => <FindYourFriendsStep onSuccess={() => { }} />;
+export const Default = () => <FindYourFriendsStep onSuccess={() => {}} />;

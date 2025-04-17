@@ -1,11 +1,11 @@
 import { GridContainerPager } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { storybookBlocksTitle } from "utils";
 
 export default {
-  title: storybookBlocksTitle + "GridContainerPager",
+  title: "UI / blocks / GridContainerPager",
   component: GridContainerPager,
-} as ComponentMeta<typeof GridContainerPager>;
+} as Meta<typeof GridContainerPager>;
 
 export const Default = () => {
   return (

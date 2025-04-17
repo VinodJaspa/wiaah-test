@@ -1,16 +1,18 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { useUserData } from "@UI";
 import { SellerPostInput } from "./index";
 import { storybookDataInputBlocksTitle } from "utils";
 export default {
-  title: storybookDataInputBlocksTitle + "SellerPostInput",
+  title: "UI / blocks / Data Input /SellerPostInput",
   component: SellerPostInput,
-} as ComponentMeta<typeof SellerPostInput>;
+} as Meta<typeof SellerPostInput>;
 
-const Template: ComponentStory<typeof SellerPostInput> = (args) => {
+const Template: StoryFn<typeof SellerPostInput> = (args) => {
   return <SellerPostInput {...args} />;
 };
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  render: Template,
+  args: {},
+};

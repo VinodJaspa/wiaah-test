@@ -1,18 +1,15 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { UnDiscountedPriceDisplay } from "./UnDiscountedPriceDisplay";
 import { storybookPartailsTitle } from "utils";
 
 export default {
-  title: storybookPartailsTitle + "UnDiscountedPriceDisplay",
+  title: "UI / partials / UnDiscountedPriceDisplay",
   component: UnDiscountedPriceDisplay,
-} as ComponentMeta<typeof UnDiscountedPriceDisplay>;
+} as Meta<typeof UnDiscountedPriceDisplay>;
 
-const template: ComponentStory<typeof UnDiscountedPriceDisplay> = (args) => (
-  <UnDiscountedPriceDisplay {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  amount: 51,
-  discount: 15,
+export const Default = {
+  args: {
+    amount: 51,
+    discount: 15,
+  },
 };

@@ -1,21 +1,17 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ServicesRequestKeys } from "@UI";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
 import { ServiceCardPresentation } from "./ServiceSearchCardPresentation";
 
 export default {
-  title:
-    storybookOtherServicesDataDisplayTitle + "ServiceSearchCardPresentation",
+  title: "UI / Features /Services /Data Display /ServiceSearchCardPresentation",
   component: ServiceCardPresentation,
-} as ComponentMeta<typeof ServiceCardPresentation>;
+} as Meta<typeof ServiceCardPresentation>;
 
-const template: ComponentStory<typeof ServiceCardPresentation> = (args) => (
-  <ServiceCardPresentation {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  src: "/place-2.jpg",
-  data: { id: "123" },
-  serviceKey: ServicesRequestKeys.hotels,
+export const Default = {
+  args: {
+    src: "/place-2.jpg",
+    data: { id: "123" },
+    serviceKey: ServicesRequestKeys.hotels,
+  },
 };

@@ -1,28 +1,26 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { randomNum, storybookHealthCenterCardsTitle } from "utils";
 import { SearchHealthSpecialtyCard } from "./SearchSpecialtiesCard";
 
 export default {
-  title: storybookHealthCenterCardsTitle + "SearchHealthSpecialtyCard",
+  title: "UI / Features /Health Center /Cards /SearchHealthSpecialtyCard",
   component: SearchHealthSpecialtyCard,
-} as ComponentMeta<typeof SearchHealthSpecialtyCard>;
+} as Meta<typeof SearchHealthSpecialtyCard>;
 
-const template: ComponentStory<typeof SearchHealthSpecialtyCard> = (args) => (
-  <SearchHealthSpecialtyCard {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  specialty: {
-    title: "spine",
+export const Default = {
+  args: {
+    specialty: {
+      title: "spine",
+    },
+    searchQuery: "",
   },
-  searchQuery: "",
 };
 
-export const searchHighlighted = template.bind({});
-searchHighlighted.args = {
-  specialty: {
-    title: "spine",
+export const searchHighlighted = {
+  args: {
+    specialty: {
+      title: "spine",
+    },
+    searchQuery: "in",
   },
-  searchQuery: "in",
 };

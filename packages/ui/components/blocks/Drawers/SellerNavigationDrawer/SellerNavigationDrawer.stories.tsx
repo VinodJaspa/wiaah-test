@@ -1,7 +1,7 @@
 import React from "react";
 import { SellerNavigationDrawer } from ".";
 import { Box, Text } from "@chakra-ui/react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
@@ -21,7 +21,7 @@ import { NavigationLinkType } from "@UI/../types/src";
 export default {
   title: "UI/blocks/drawers/SellerNavigationDrawer",
   component: SellerNavigationDrawer,
-} as ComponentMeta<typeof SellerNavigationDrawer>;
+} as Meta<typeof SellerNavigationDrawer>;
 
 const NavigationLinks: NavigationLinkType[] = [
   {
@@ -119,7 +119,7 @@ const usersProfilesPlaceHolder = [
   },
 ];
 
-const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
+const Templete: StoryFn<typeof SellerNavigationDrawer> = ({
   activeLink,
   onLinkClick,
   ...args
@@ -137,7 +137,7 @@ const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
     </>
   );
 };
-const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
+const TempleteWithChildren: StoryFn<typeof SellerNavigationDrawer> = ({
   activeLink,
   onLinkClick,
   ...args
@@ -167,14 +167,23 @@ const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
     </>
   );
 };
-export const Default = Templete.bind({});
-Default.args = {
-  links: NavigationLinks,
+
+export const Default = {
+  render: Templete,
+
+  args: {
+    links: NavigationLinks,
+  },
 };
-export const WithChildren = TempleteWithChildren.bind({});
-WithChildren.args = {
-  links: NavigationLinks,
+
+export const WithChildren = {
+  render: TempleteWithChildren,
+
+  args: {
+    links: NavigationLinks,
+  },
 };
+
 // Placeholder data
 const placeholderUsers = [
   {

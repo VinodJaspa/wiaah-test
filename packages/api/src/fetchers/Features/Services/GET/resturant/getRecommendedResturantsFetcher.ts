@@ -1,5 +1,5 @@
 import { randomNum } from "utils";
-import { lats, lngs } from "api";
+import { lats, lons as lngs } from "api";
 import {
   CheckValidation,
   InferType,

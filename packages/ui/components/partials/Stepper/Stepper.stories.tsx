@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout } from "utils";
 import {
@@ -13,7 +13,7 @@ import { Button } from "@UI";
 export default {
   title: "UI / partials / Stepper",
   component: Stepper,
-} as ComponentMeta<typeof Stepper>;
+} as Meta<typeof Stepper>;
 
 export const Default: React.FC<StepperProps> = () => {
   return (

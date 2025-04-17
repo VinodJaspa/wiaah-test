@@ -1,11 +1,11 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { AnalyticsCard } from "./AnalyticsCard";
 import { storybookCardsTitle } from "utils";
 
 export default {
-  title: storybookCardsTitle + "AnalyticsCard",
+  title: "UI / blocks / cards /AnalyticsCard",
   component: AnalyticsCard,
-} as ComponentMeta<typeof AnalyticsCard>;
+} as Meta<typeof AnalyticsCard>;
 
 export const Default = () => (
   <AnalyticsCard

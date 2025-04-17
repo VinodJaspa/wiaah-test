@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import {
   SocialPostSettingsPopup,
   useSocialPostSettingsPopup,
@@ -6,11 +6,11 @@ import {
 import { storybookSocialModalsTitle } from "utils";
 
 export default {
-  title: storybookSocialModalsTitle + "SocialPostSettingsPopup",
+  title: "UI / Features /Social /Modals /SocialPostSettingsPopup",
   component: SocialPostSettingsPopup,
-} as ComponentMeta<typeof SocialPostSettingsPopup>;
+} as Meta<typeof SocialPostSettingsPopup>;
 
-const template: ComponentStory<typeof SocialPostSettingsPopup> = (args) => {
+const template: StoryFn<typeof SocialPostSettingsPopup> = (args) => {
   const { OpenModal } = useSocialPostSettingsPopup();
 
   return (
@@ -24,5 +24,7 @@ const template: ComponentStory<typeof SocialPostSettingsPopup> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

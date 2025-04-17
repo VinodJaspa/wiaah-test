@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { CashbackBadge } from "./CashbackBadge";
 import { storybookPartailsTitle } from "utils";
 
 export default {
-  title: storybookPartailsTitle + "CashbackBadge",
+  title: "UI / partials / CashbackBadge",
   component: CashbackBadge,
-} as ComponentMeta<typeof CashbackBadge>;
+} as Meta<typeof CashbackBadge>;
 
-const template: ComponentStory<typeof CashbackBadge> = (args) => (
-  <CashbackBadge {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

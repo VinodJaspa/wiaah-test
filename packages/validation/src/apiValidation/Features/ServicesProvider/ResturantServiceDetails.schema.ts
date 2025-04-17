@@ -1,9 +1,10 @@
 import { createApiResponseValidationSchema } from "../../SharedSchema";
-import { ServiceCancelationPolicies } from "../../";
+
 import { array, number, object } from "yup";
 import {
   CommonServiceDataSchema,
   ResturantMenuListValidationSchema,
+  ServiceCancelationPolicies,
 } from "../";
 
 export const ResturantServiceDetailsValidationSchema =

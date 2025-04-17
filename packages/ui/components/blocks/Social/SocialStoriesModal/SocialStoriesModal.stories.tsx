@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { SocialStoryModal } from "@UI";
 import { useStory, useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
@@ -9,9 +9,9 @@ import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",
   component: SocialStoryModal,
-} as ComponentMeta<typeof SocialStoryModal>;
+} as Meta<typeof SocialStoryModal>;
 
-const Template: ComponentStory<typeof SocialStoryModal> = (args) => {
+const Template: StoryFn<typeof SocialStoryModal> = (args) => {
   const { OpenStories } = useStory();
   const setStory = useSetRecoilState(SocialStoryState);
   const { setStorySeenBy } = useStorySeenBy();
@@ -52,5 +52,7 @@ const Template: ComponentStory<typeof SocialStoryModal> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  render: Template,
+  args: {},
+};

@@ -1,9 +1,9 @@
 import { storybookSectionsTitle, AffiliationManagementSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AffiliationManagementSection",
+  title: "UI / sections / AffiliationManagementSection",
   component: AffiliationManagementSection,
-} as ComponentMeta<typeof AffiliationManagementSection>;
+} as Meta<typeof AffiliationManagementSection>;
 
 export const Default = () => <AffiliationManagementSection />;

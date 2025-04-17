@@ -1,21 +1,19 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookDataInputBlocksTitle } from "utils";
 import { CountInput } from "./CountInput";
 
 export default {
-  title: storybookDataInputBlocksTitle + "CountInput",
+  title: "UI / blocks / Data Input /CountInput",
   component: CountInput,
-} as ComponentMeta<typeof CountInput>;
+} as Meta<typeof CountInput>;
 
-const template: ComponentStory<typeof CountInput> = (args) => (
-  <CountInput {...args} />
-);
+export const Default = {
+  args: {},
+};
 
-export const Default = template.bind({});
-Default.args = {};
-
-export const Bounded = template.bind({});
-Bounded.args = {
-  min: 0,
-  max: 5,
+export const Bounded = {
+  args: {
+    min: 0,
+    max: 5,
+  },
 };

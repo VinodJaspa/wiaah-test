@@ -1,32 +1,34 @@
 import { randomNum, storybookRestaurantSectionsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ResturantMenuListSection } from "./ResturantMenuListSection";
 
 export default {
-  title: storybookRestaurantSectionsTitle + "RestaurantMenuListSection",
+  title: "UI / Features /Restaurant /Sections /RestaurantMenuListSection",
   component: ResturantMenuListSection,
-} as ComponentMeta<typeof ResturantMenuListSection>;
+} as Meta<typeof ResturantMenuListSection>;
 
-const template: ComponentStory<typeof ResturantMenuListSection> = (args) => {
+const template: StoryFn<typeof ResturantMenuListSection> = (args) => {
   return <ResturantMenuListSection {...args} />;
 };
 
-export const Default = template.bind({});
+export const Default = {
+  render: template,
 
-Default.args = {
-  menus: [...Array(4)].map((_, i) => ({
-    listTitle: "list-" + i,
-    menuItems: [...Array(10)].map(() => ({
-      id: "1",
-      price: randomNum(153),
-      title: "menu item",
+  args: {
+    menus: [...Array(4)].map((_, i) => ({
+      listTitle: "list-" + i,
+      menuItems: [...Array(10)].map(() => ({
+        id: "1",
+        price: randomNum(153),
+        title: "menu item",
+      })),
     })),
-  })),
-  cancelation: [
-    {
-      cost: 0,
-      duration: 0,
-      id: "123",
-    },
-  ],
+    cancelation: [
+      {
+        cost: 0,
+        duration: 0,
+        id: "123",
+      },
+    ],
+  },
 };

@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { BookingsCalenderSection } from "./BookingsCalender";
 import { storybookSectionsTitle } from "utils";
 
 export default {
-  title: storybookSectionsTitle + "BookingsCalender",
+  title: "UI / sections / BookingsCalender",
   component: BookingsCalenderSection,
-} as ComponentMeta<typeof BookingsCalenderSection>;
+} as Meta<typeof BookingsCalenderSection>;
 
-const template: ComponentStory<typeof BookingsCalenderSection> = (args) => (
-  <BookingsCalenderSection {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

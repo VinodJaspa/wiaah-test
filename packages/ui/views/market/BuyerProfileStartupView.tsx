@@ -20,7 +20,7 @@ import {
 } from "../../components";
 import { AccountSignup } from "@features/Auth/views";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css"; // Import the default styles
+import "react-circular-progressbar/dist/styles.css"; 
 import { runIfFn } from "@UI/../utils/src";
 
 export const BuyerProfileStartUpView: React.FC = ({}) => {

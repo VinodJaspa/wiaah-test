@@ -3,11 +3,11 @@ import {
   CountryLanguageCurrencySwitch,
   storybookBlocksTitle,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "CountryLanguageCurrencySwitch",
+  title: "UI / blocks / CountryLanguageCurrencySwitch",
   component: CountryLanguageCurrencySwitch,
-} as ComponentMeta<typeof CountryLanguageCurrencySwitch>;
+} as Meta<typeof CountryLanguageCurrencySwitch>;
 
 export const Default = () => <CountryLanguageCurrencySwitch />;

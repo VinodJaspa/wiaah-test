@@ -1,12 +1,12 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { ScrollableContainer, storybookBlocksTitle } from "@UI";
 export default {
-  title: storybookBlocksTitle + "ScrollableContainer",
+  title: "UI / blocks / ScrollableContainer",
   component: ScrollableContainer,
-} as ComponentMeta<typeof ScrollableContainer>;
+} as Meta<typeof ScrollableContainer>;
 
-const Template: ComponentStory<typeof ScrollableContainer> = (args) => (
+const Template: StoryFn<typeof ScrollableContainer> = (args) => (
   <ScrollableContainer {...args}>
     {[...Array(20)].map(() => (
       <div className="h-16 w-16 bg-slate-800"></div>
@@ -14,13 +14,15 @@ const Template: ComponentStory<typeof ScrollableContainer> = (args) => (
   </ScrollableContainer>
 );
 
-export const Default = Template.bind({});
-Default.args = {};
-
-export const WithMaxInitialItems = Template.bind({});
-WithMaxInitialItems.args = {
-  maxInitialItems: 5,
+export const Default = {
+  render: Template,
+  args: {},
 };
 
-// export const With = Template.bind({});
-// Default.args = {};
+export const WithMaxInitialItems = {
+  render: Template,
+
+  args: {
+    maxInitialItems: 5,
+  },
+};

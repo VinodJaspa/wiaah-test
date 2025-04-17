@@ -1,10 +1,10 @@
 import { storybookPartailsTitle } from "utils";
 import { Radio } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookPartailsTitle + "Radio",
+  title: "UI / partials / Radio",
   component: Radio,
-} as ComponentMeta<typeof Radio>;
+} as Meta<typeof Radio>;
 
 export const Default = () => <Radio />;

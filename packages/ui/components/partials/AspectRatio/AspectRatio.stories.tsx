@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookPartailsTitle } from "utils";
 import { AspectRatio } from "./AspectRatio";
 
 export default {
-  title: storybookPartailsTitle + "AspectRatio",
+  title: "UI / partials / AspectRatio",
   component: AspectRatio,
-} as ComponentMeta<typeof AspectRatio>;
+} as Meta<typeof AspectRatio>;
 
-const Template: ComponentStory<typeof AspectRatio> = (args) => {
+const Template: StoryFn<typeof AspectRatio> = (args) => {
   return (
     <div className="w-48">
       <AspectRatio {...args}>
@@ -17,12 +17,18 @@ const Template: ComponentStory<typeof AspectRatio> = (args) => {
   );
 };
 
-export const landscape = Template.bind({});
-landscape.args = {
-  ratio: 9 / 16,
+export const landscape = {
+  render: Template,
+
+  args: {
+    ratio: 9 / 16,
+  },
 };
 
-export const protrait = Template.bind({});
-protrait.args = {
-  ratio: 16 / 9,
+export const protrait = {
+  render: Template,
+
+  args: {
+    ratio: 16 / 9,
+  },
 };

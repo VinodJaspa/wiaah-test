@@ -1,9 +1,9 @@
 import { storybookBlocksTitle, AddressInputs } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "AddressInputs",
+  title: "UI / blocks / AddressInputs",
   component: AddressInputs,
-} as ComponentMeta<typeof AddressInputs>;
+} as Meta<typeof AddressInputs>;
 
 export const Default = () => <AddressInputs />;

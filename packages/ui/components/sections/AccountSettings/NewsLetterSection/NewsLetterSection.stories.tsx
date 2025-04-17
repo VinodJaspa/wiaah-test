@@ -1,10 +1,10 @@
 import { storybookSectionsTitle, AccountNewsLetterSettingsSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "NewsLetterSection",
+  title: "UI / sections / NewsLetterSection",
   component: AccountNewsLetterSettingsSection,
-} as ComponentMeta<typeof AccountNewsLetterSettingsSection>;
+} as Meta<typeof AccountNewsLetterSettingsSection>;
 
 export const Default = () => (
   <AccountNewsLetterSettingsSection userId="fake-3" />

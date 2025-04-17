@@ -3,11 +3,11 @@ import {
   UserProfile,
   usersProfilesPlaceHolder,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "UserProfile",
+  title: "UI / blocks / Data Display /UserProfile",
   component: UserProfile,
-} as ComponentMeta<typeof UserProfile>;
+} as Meta<typeof UserProfile>;
 
 export const Default = () => <UserProfile user={usersProfilesPlaceHolder[0]} />;

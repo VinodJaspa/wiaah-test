@@ -1,15 +1,12 @@
 import { RateFeedBackModal } from "./RateFeedBackModal";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookFeedBackModalsTitle } from "utils";
 
 export default {
-  title: storybookFeedBackModalsTitle + "RateFeedBackModal",
+  title: "UI / Features /feedback /Modals /RateFeedBackModal",
   component: RateFeedBackModal,
-} as ComponentMeta<typeof RateFeedBackModal>;
+} as Meta<typeof RateFeedBackModal>;
 
-const template: ComponentStory<typeof RateFeedBackModal> = (args) => (
-  <RateFeedBackModal {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

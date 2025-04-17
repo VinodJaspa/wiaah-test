@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { ProductDetailsDrawer } from "./ProductDetailsDrawer";
 import { storybookProductDrawersTitle } from "utils";
 import { useSocialControls } from "@blocks";
@@ -6,11 +6,11 @@ import { Button } from "@partials";
 import { RecoilStorybookDecorator } from "@UI/SBDecorators/RecoilSBDecorator";
 
 export default {
-  title: storybookProductDrawersTitle + "ProductDetailsDrawer",
+  title: "UI / Features /product /Drawers /ProductDetailsDrawer",
   component: ProductDetailsDrawer,
-} as ComponentMeta<typeof ProductDetailsDrawer>;
+} as Meta<typeof ProductDetailsDrawer>;
 
-export const Default: ComponentStoryObj<typeof ProductDetailsDrawer> = {
+export const Default: StoryObj<typeof ProductDetailsDrawer> = {
   play: async () => {},
   decorators: [RecoilStorybookDecorator],
   render: () => {

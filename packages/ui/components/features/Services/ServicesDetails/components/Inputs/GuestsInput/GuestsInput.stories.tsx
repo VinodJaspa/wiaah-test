@@ -1,15 +1,12 @@
 import { storybookOtherServicesInputTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { GuestsInput } from "./GuestsInput";
 
 export default {
-  title: storybookOtherServicesInputTitle + "GuestsInput",
+  title: "UI / Features /Services /Inputs /GuestsInput",
   component: GuestsInput,
-} as ComponentMeta<typeof GuestsInput>;
+} as Meta<typeof GuestsInput>;
 
-const template: ComponentStory<typeof GuestsInput> = (args) => (
-  <GuestsInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

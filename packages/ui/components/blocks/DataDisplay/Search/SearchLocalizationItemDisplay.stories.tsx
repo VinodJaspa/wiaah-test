@@ -3,12 +3,12 @@ import {
   LocalizationSearchItem,
   LocalizationsPH,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "LocalizationSearchItem",
+  title: "UI / blocks / LocalizationSearchItem",
   component: LocalizationSearchItem,
-} as ComponentMeta<typeof LocalizationSearchItem>;
+} as Meta<typeof LocalizationSearchItem>;
 
 export const UserSearch = () => (
   <LocalizationSearchItem location={LocalizationsPH[0]} />

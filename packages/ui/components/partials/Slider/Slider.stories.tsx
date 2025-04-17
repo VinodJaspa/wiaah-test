@@ -1,14 +1,14 @@
 import { storybookPartailsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Slider } from "./Slider";
 import React from "react";
 
 export default {
-  title: storybookPartailsTitle + "Slider",
+  title: "UI / partials / Slider",
   component: Slider,
-} as ComponentMeta<typeof Slider>;
+} as Meta<typeof Slider>;
 
-const template: ComponentStory<typeof Slider> = ({ children, ...args }) => (
+const template: StoryFn<typeof Slider> = ({ children, ...args }) => (
   <div className="w-full h-96 border border-blue-400">
     <Slider {...args}>
       {[...Array(10)].map((child, i) => (
@@ -20,29 +20,43 @@ const template: ComponentStory<typeof Slider> = ({ children, ...args }) => (
   </div>
 );
 
-export const Default = template.bind({});
-Default.args = {
-  // itemsCount: 2,
-  leftArrowComponent: <div> {"<"} </div>,
-  rightArrowComponent: <div> {">"} </div>,
+export const Default = {
+  render: template,
+
+  args: {
+    // itemsCount: 2,
+    leftArrowComponent: <div> {"<"} </div>,
+    rightArrowComponent: <div> {">"} </div>,
+  },
 };
 
-export const vertical = template.bind({});
-vertical.args = {
-  // itemsCount: 1,
-  variant: "vertical",
-  upArrowComponent: <div> {"<"} </div>,
-  downArrowComponent: <div> {">"} </div>,
+export const vertical = {
+  render: template,
+
+  args: {
+    // itemsCount: 1,
+    variant: "vertical",
+    upArrowComponent: <div> {"<"} </div>,
+    downArrowComponent: <div> {">"} </div>,
+  },
 };
-export const withGap = template.bind({});
-withGap.args = {
-  gap: 64,
-  leftArrowComponent: <div> {"<"} </div>,
-  rightArrowComponent: <div> {">"} </div>,
+
+export const withGap = {
+  render: template,
+
+  args: {
+    gap: 64,
+    leftArrowComponent: <div> {"<"} </div>,
+    rightArrowComponent: <div> {">"} </div>,
+  },
 };
-export const multiplyItems = template.bind({});
-multiplyItems.args = {
-  itemsCount: 3,
-  leftArrowComponent: <div> {"<"} </div>,
-  rightArrowComponent: <div> {">"} </div>,
+
+export const multiplyItems = {
+  render: template,
+
+  args: {
+    itemsCount: 3,
+    leftArrowComponent: <div> {"<"} </div>,
+    rightArrowComponent: <div> {">"} </div>,
+  },
 };

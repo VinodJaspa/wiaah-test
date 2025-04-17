@@ -1,12 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
 import { Checkbox } from "./";
 
 export default {
-  title: storybookPartailsTitle + "Checkbox",
+  title: "UI / partials / Checkbox",
   component: Checkbox,
-} as ComponentMeta<typeof Checkbox>;
+} as Meta<typeof Checkbox>;
 
 export const Default = () => {
   const [checked, setChecked] = React.useState<boolean>(false);

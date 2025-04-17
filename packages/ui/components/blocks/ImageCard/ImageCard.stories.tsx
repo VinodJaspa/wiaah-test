@@ -1,11 +1,11 @@
 import { storybookBlocksTitle } from "utils";
 import { ImageCard } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "ImageCard",
+  title: "UI / blocks / ImageCard",
   component: ImageCard,
-} as ComponentMeta<typeof ImageCard>;
+} as Meta<typeof ImageCard>;
 
 export const Default = () => {
   return <ImageCard />;

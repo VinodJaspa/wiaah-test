@@ -1,11 +1,11 @@
 import { DateFormInput } from "@UI";
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 
 export default {
-  title: storybookDataInputBlocksTitle + "DateFormInput",
+  title: "UI / blocks / Data Input /DateFormInput",
   component: DateFormInput,
-} as ComponentMeta<typeof DateFormInput>;
+} as Meta<typeof DateFormInput>;
 
 export const Default = () => <DateFormInput />;

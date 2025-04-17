@@ -1,10 +1,10 @@
 import { storybookSectionsTitle, SelectPackageStep } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "SelectPackageStep",
-} as ComponentMeta<typeof SelectPackageStep>;
+  title: "UI / sections / SelectPackageStep",
+} as Meta<typeof SelectPackageStep>;
 
 export const Default = () => (
-  <SelectPackageStep shopType={""} onChange={() => { }} value="" />
+  <SelectPackageStep shopType={""} onChange={() => {}} value="" />
 );

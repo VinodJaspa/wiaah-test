@@ -4,12 +4,12 @@ import {
   useAffiliationPostViewPopup,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "AffiliationPostViewModal",
+  title: "UI / Blocks / Modals /AffiliationPostViewModal",
   component: AffiliationPostViewModal,
-} as ComponentMeta<typeof AffiliationPostViewModal>;
+} as Meta<typeof AffiliationPostViewModal>;
 
 export const Default = () => {
   const { setCurrentPost } = useAffiliationPostViewPopup();
