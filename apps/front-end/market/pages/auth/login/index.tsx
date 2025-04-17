@@ -4,12 +4,12 @@ import Head from "next/head";
 import { MasterLayout } from "@components";
 import { AuthSwitcher, FormContainer } from "@blocks";
 import { t } from "i18next";
-import nookies from "nookies";
+import nookies from "cookies-next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get cookies from the request using nookies
-  const cookies = nookies.get(context);
-  const token = cookies.auth_token || null; // Assuming 'token' is the cookie name you're looking for
+    const token = nookies.getCookie('auth_token', context) || null; 
+  
 
   return {
     props: {

@@ -23,7 +23,7 @@ import {
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid, useBreakpointValue } from "utils";
-import * as nookies from "nookies";
+import { deleteCookie } from "cookies-next";
 import { ServiceType } from "@features/API";
 
 export interface HeaderProps {
@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const onLogOut = () => {
     console.log("destroy cookies");
-    nookies.destroyCookie(null, "auth_token", { path: "auth/login" });
+    deleteCookie("auth_token", { path: "/auth/login" });
     setSignedIn(false);
   };
 
