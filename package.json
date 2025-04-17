@@ -261,10 +261,10 @@
   "resolutions": {
     "webpack": "5.99.5",
     "@nestjs/config": "4.0.2",
-    "babel-helper-builder-binary-assignment-operator-visitor": "^7.0.0",
-    "babel-helper-call-delegate": "^7.0.0",
-    "babel-traverse": "^7.0.0",
-    "babel-plugin-transform-exponentiation-operator": "^7.0.0",
+    "babel-helper-builder-binary-assignment-operator-visitor": "7.0.0",
+    "babel-helper-call-delegate": "7.0.0",
+    "babel-traverse": "7.23.2",
+    "babel-plugin-transform-exponentiation-operator": "7.0.0",
     "lodash": "4.17.21"
   }
 }
