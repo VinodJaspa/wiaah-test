@@ -1,10 +1,9 @@
 import { mockedUser } from "./test";
 import { AuthorizationDecodedUser } from "./types";
 import { ObjectId } from "mongodb";
-import { parseCookies } from "./CookiesParser";
+import {  parseCookiesToRecord } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
-//@ts-ignore
-import { parse } from "cookie";
+
 
 export function getUserFromRequest<T = AuthorizationDecodedUser>(
   req: any,
@@ -26,7 +25,7 @@ export function VerifyAndGetUserFromContext(
   if (typeof ctx["req"] !== "undefined") {
     if (ctx?.req?.headers && ctx?.req?.headers["cookie"]) {
       const rawCookies = ctx.req.headers["cookie"];
-      const parsedCookies = parse(rawCookies);
+      const parsedCookies = parseCookiesToRecord(rawCookies ?? "");
       const cookiesKey = process.env.COOKIES_KEY || "jwt";
       const jwtSecret = process.env.JWT_SERCERT || "secret";
       if (typeof cookiesKey === "string") {

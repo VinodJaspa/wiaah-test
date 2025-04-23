@@ -34,9 +34,7 @@ const config: StorybookConfig = {
   "addons": [
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath("@chromatic-com/storybook"),
-    "storybook-addon-remix-react-router",
     "@storybook/addon-docs",
-
     // Css overide
     getAbsolutePath("@storybook/addon-webpack5-compiler-swc"),
     ({

@@ -49,26 +49,27 @@ module.exports = {
         lightBlue: "#729FE5",
         secondaryRed: "#F67171",
         transparentBlue: "rgba(40,119,197,0.7)",
+        // lightGray: "#F6F6F6",
         darkerGray: "#E8E8E8",
       },
       fontSize: {
         icon: "1.375rem",
       },
+      },
     },
-  },
-  plugins: [
-    require("@tailwindcss/forms"),
-    function({ addUtilities }) {
-      addUtilities({
-        ".hide-scrollbar": {
-          "-ms-overflow-style": "none",
-          "scrollbar-width": "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
+    plugins: [
+      require("@tailwindcss/forms"),
+      function({ addUtilities }) {
+        addUtilities({
+          ".hide-scrollbar": {
+            "-ms-overflow-style": "none" /* Internet Explorer 10+ */,
+            "scrollbar-width": "none" /* Firefox */,
+            "&::-webkit-scrollbar": {
+              display: "none" /* Safari and Chrome */,
+            },
+            overflow: "hidden" /* This ensures the scrollbar is hidden */,
           },
-          overflow: "hidden",
-        },
-      });
-    },
-  ],
-};
+        });
+      },
+    ],
+  };

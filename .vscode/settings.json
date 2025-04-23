@@ -12,5 +12,8 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "localhost-9000",
     "projectKey": "wiaah"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   }
 }

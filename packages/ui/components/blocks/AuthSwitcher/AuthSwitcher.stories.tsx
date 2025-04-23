@@ -1,12 +1,10 @@
 import { storybookBlocksTitle, AuthSwitcher } from "@UI";
 import { Meta, StoryFn } from "@storybook/react";
-import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
-
 
 export default {
   title: "UI / blocks / AuthSwitcher",
   component: AuthSwitcher,
-  decorators: [withRouter],
+
   parameters: {
     nextjs: {
       router: {
