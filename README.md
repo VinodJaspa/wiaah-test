@@ -79,5 +79,6 @@ Learn more about the power of Turborepo:
 - [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
 # Reset node_modules and Reinstall Dependencies (with logs)
    rm -rf node_modules package-lock.json
+   npm cache clean --force
    npm install --verbose
    npm install
