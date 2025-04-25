@@ -174,7 +174,7 @@ const TopCategoriesHomePageSlider: React.FC<{
         <div
           ref={ref}
           {...setTestid("productCategoriesContainer")}
-          className="flex items-center w-full overflow-x-scroll noScroll gap-4 mb-4"
+          className="flex items-center w-full overflow-x-scroll noScroll gap-4 m-2"
         >
           {mapArray(data?.pages, (page, i) => (
             <React.Fragment key={i}>
