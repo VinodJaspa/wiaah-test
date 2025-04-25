@@ -1,68 +1,33 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  Flex,
-  Text,
-  Icon,
-  ModalBody,
-} from "@chakra-ui/react";
+
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { SubscribersUsersPlaceholder } from "../../../../placeholder/social";
-import { SubscribersList } from "ui";
+import { ShadcnDialog, SubscribersList } from "ui";
 
 export interface SubscribersPopupProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
 }
-
 export const SubscribersPopup: React.FC<SubscribersPopupProps> = ({
   isOpen,
   onClose,
   title,
 }) => {
   return (
-    <>
-      <Modal
-        isCentered
-        onClose={onClose}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        blockScrollOnMount={false}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            {""}
-            <Flex align={"center"} w="100%" justify={"space-between"}>
-              <Text visibility={"hidden"}>.</Text>
-              <Text
-                fontWeight={"semibold"}
-                fontSize="xl"
-                textTransform={"capitalize"}
-              >
-                {title}
-              </Text>
-              <Icon
-                onClick={onClose}
-                cursor={"pointer"}
-                fontSize={"1.5rem"}
-                as={MdClose}
-              />
-            </Flex>
-          </ModalHeader>
-          {/* <ModalCloseButton />  */}
-          <ModalBody maxH={"40rem"} p="0.25rem">
-            <SubscribersList
-              onClose={onClose}
-              users={SubscribersUsersPlaceholder}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+    <ShadcnDialog open={isOpen} onOpenChange={onClose}>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md">
+          <div className="flex justify-between items-center">
+            <span className="invisible">.</span>
+            <span className="font-semibold text-xl capitalize">{title}</span>
+            <MdClose className="cursor-pointer text-2xl" onClick={onClose} />
+          </div>
+          <div className="max-h-[40rem] p-1 overflow-auto">
+            <SubscribersList onClose={onClose} users={SubscribersUsersPlaceholder} />
+          </div>
+        </div>
+      </div>
+    </ShadcnDialog>
   );
 };

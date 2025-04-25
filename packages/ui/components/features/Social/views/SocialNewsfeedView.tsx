@@ -1,4 +1,4 @@
-import { useBreakpointValue, useForm } from "@UI/../utils/src";
+import { useForm } from "@UI/../utils/src";
 import { newsfeedPosts } from "@UI/placeholder";
 import {
   PostCardsListWrapper,
@@ -71,7 +71,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
   isHome,
 }) => {
   const { isMobile } = useResponsive();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  // const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { OpenModal } = useStoryModal();
   const { visit } = useRouting();
 
@@ -156,6 +156,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
           </div>
         </div>
       )}
+      
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">
@@ -197,7 +198,6 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
             onProfileClick={(username) =>
               visit((r) => r.visitSocialProfile(username))
             }
-            cols={cols}
             posts={isDiscover ? discoverData : data}
           />
         </div>

@@ -11,7 +11,7 @@ import {
   GridListOrganiser,
   useResponsive,
 } from "ui";
-import { Text } from "@chakra-ui/react";
+
 import { AttachmentType } from "../../../features/API";
 import { getRandomImage } from "placeholder";
 

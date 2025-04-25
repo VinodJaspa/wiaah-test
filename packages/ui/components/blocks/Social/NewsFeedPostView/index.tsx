@@ -1,8 +1,9 @@
-import { useBreakpointValue } from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
+import { useMediaQuery } from "react-responsive";
 import { PostCardInfo } from "types";
 import { GeneralPostView, PostCardsListWrapper } from "ui";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
@@ -14,7 +15,11 @@ export interface NewsFeedPostViewProps {
 export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
   postId,
 }) => {
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const isBase = useMediaQuery({ maxWidth: 767 }); 
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 }); 
+  
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
   const { t } = useTranslation();
   const router = useRouter();
 

@@ -1,23 +1,24 @@
-import { Box, Flex, FlexProps } from "@chakra-ui/react";
+
 import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
-import React from "react";
+import React, { ReactNode } from "react";
 const transitionProps = {
   stiffness: 400,
   type: "spring",
   damping: 60,
   mass: 3,
 };
-export interface VerticalCarouselProps extends FlexProps {
+export interface VerticalCarouselProps {
   gap?: number;
   explicitActiveItem?: number;
-  onCurrentActiveChange?: (index: number) => any;
-  itemProps?: FlexProps;
+  onCurrentActiveChange?: (index: number) => void;
+  itemProps?: { className?: string };
   arrows?: boolean;
-  onPassMaxLimit?: () => any;
-  onPassMinLimit?: () => any;
+  onPassMaxLimit?: () => void;
+  onPassMinLimit?: () => void;
+  children?: ReactNode;
 }
 
-const MotionFlex = motion<FlexProps>(Flex as any);
+const MotionFlex = motion.div;
 
 export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   children,
@@ -120,13 +121,8 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   };
 
   return (
-    <Flex
-      data-testid="CarouselSlider"
-      ref={containerRef}
-      w="100%"
-      position={"relative"}
-    >
-      <Box w="100%" ref={TrackContainerRef}>
+    <div ref={containerRef} data-testid="CarouselSlider" className="relative w-full flex">
+      <div ref={TrackContainerRef} className="w-full">
         <MotionFlex
           dragConstraints={TrackContainerRef}
           direction={"column"}
@@ -145,22 +141,16 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
         >
           {/* {children && */}
           {React.Children.toArray(children).map((child, i) => (
-            <Flex
-              mt={`${gap}px`}
-              align="center"
-              justify={"center"}
+            <div
               key={i}
               data-testid="Item"
-              w={"auto"}
-              h={`calc((100% / ${positions.length}) + ${gap}px )`}
-              overflow="hidden"
+              className={`mt-[${gap}px] flex items-center justify-center w-auto h-[calc((100% / ${positions.length}) + ${gap}px)] overflow-hidden`}
             >
-              {/*@ts-ignore*/}
-              {child as unknown as React.ReactNode}
-            </Flex>
+              {child as React.ReactNode}
+            </div>
           ))}
         </MotionFlex>
-      </Box>
-    </Flex>
+      </div>
+    </div>
   );
 };

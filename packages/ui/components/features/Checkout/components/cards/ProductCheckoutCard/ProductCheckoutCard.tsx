@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+
 import { ProductType } from "@features/API";
 import {
   Button,
@@ -8,9 +8,11 @@ import {
   Image,
   PriceDisplay,
   Radio,
+  ShadcnBox,
   TrashIcon,
   Verified,
 } from "@UI";
+import { cn } from "@UI/components/shadcn-components/lib/utils";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { GiCheckMark } from "react-icons/gi";
@@ -284,20 +286,18 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
               }
             >
               {quantityOptions.map((qt) => (
-                <Box
+                <ShadcnBox
                   key={qt}
-                  p={3}
-                  cursor="pointer"
-                  bg={qt === quantity ? "blue.100" : "transparent"}
-                  _hover={{ bg: "gray.100" }}
+                  className={cn(
+                    "p-3 cursor-pointer text-center border-b border-gray-200",
+                    qt === quantity ? "bg-blue-100" : "bg-transparent",
+                    "hover:bg-gray-100 last:border-none"
+                  )}
                   onClick={() => handleQtyChange(qt)}
-                  textAlign="center"
-                  borderBottom="1px solid"
-                  borderColor="gray.200"
-                  _last={{ borderBottom: "none" }}
                 >
                   {qt}
-                </Box>
+                </ShadcnBox>
+
               ))}
             </CustomPopover>
 

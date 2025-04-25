@@ -1,11 +1,11 @@
 import React from "react";
 import { SellerNavigationDrawer } from ".";
-import { Box, Text } from "@chakra-ui/react";
+
 import { Meta, StoryFn } from "@storybook/react";
-import { Button } from "@chakra-ui/react";
+
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
-import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "@UI";
+import { AffiliationIcon, AffiliationIconOutline, ShadcnBox, ShadCnButton, ShadcnText, UsersProfiles } from "@UI";
 import {
   HiUserGroup,
   HiOutlineUserGroup,
@@ -128,7 +128,7 @@ const Templete: StoryFn<typeof SellerNavigationDrawer> = ({
   const [active, setActive] = React.useState<string>();
   return (
     <>
-      <Button onClick={() => setOpen(true)}>open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>open</ShadCnButton>
       <SellerNavigationDrawer
         activeLink={active}
         onLinkClick={(v) => setActive(v.url)}
@@ -146,23 +146,25 @@ const TempleteWithChildren: StoryFn<typeof SellerNavigationDrawer> = ({
   const [active, setActive] = React.useState<string>();
   return (
     <>
-      <Button onClick={() => setOpen(true)}>open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>open</ShadCnButton>
       <SellerNavigationDrawer
         activeLink={active}
         onLinkClick={(v) => setActive(v.url)}
         {...args}
       >
-        <Box textTransform={"capitalize"} px="2rem">
-          <Text py="1rem" fontWeight={"bold"} textTransform={"capitalize"}>
-            {t("suggestions").toString()}
-          </Text>
+       <ShadcnBox className="capitalize px-8">
+  <ShadcnText className="py-4 font-bold capitalize">
+    {t("suggestions").toString()}
+  </ShadcnText>
+
+
           <UsersProfiles
             maxShowMoreItems={8}
             maxLongItems={5}
             variant="long"
             users={placeholderUsers}
           />
-        </Box>
+       </ShadcnBox>
       </SellerNavigationDrawer>
     </>
   );

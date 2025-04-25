@@ -1,4 +1,4 @@
-import { Divider } from "@chakra-ui/react";
+
 import {
   Menu,
   MenuButton,
@@ -130,7 +130,8 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
                     ))}
               </div>
               <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-4">
-                <Divider />
+              <div className="h-px bg-muted my-4" />
+
                 {/* Mark All As Read */}
                 <button className="block border rounded-md p-2 text-center font-medium hover:bg-gray-100 w-full">
                   Mark All as Read

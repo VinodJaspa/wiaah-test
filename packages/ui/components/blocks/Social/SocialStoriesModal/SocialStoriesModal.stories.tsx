@@ -1,8 +1,7 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { SocialStoryModal } from "@UI";
+import { ShadCnButton, SocialStoryModal } from "@UI";
 import { useStory, useStorySeenBy } from "@src/Hooks";
-import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { PostCardPlaceHolder } from "placeholder";
 import { SocialStoryState } from "@src/state";
@@ -46,7 +45,10 @@ const Template: StoryFn<typeof SocialStoryModal> = (args) => {
 
   return (
     <>
-      <Button onClick={OpenStories}>open</Button>
+<ShadCnButton onClick={OpenStories} className="bg-primary text-white hover:bg-primary/80 rounded-md transition-colors duration-200">
+  open
+</ShadCnButton>
+
       <SocialStoryModal {...args} />
     </>
   );

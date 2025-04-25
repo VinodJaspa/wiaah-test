@@ -4,7 +4,7 @@ import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+
 import { AuthLayout, DataInitializationWrapper, ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-          <ChakraProvider>
+        
             <CookiesProvider>
               <AuthLayout>
                 <ReactPubsubProvider
@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 </ReactPubsubProvider>
               </AuthLayout>
             </CookiesProvider>
-          </ChakraProvider>
+         
         </RoutingProvider>
       </Hydrate>
     </QueryClientProvider>

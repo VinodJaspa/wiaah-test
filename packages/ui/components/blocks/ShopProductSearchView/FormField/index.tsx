@@ -1,10 +1,6 @@
-import {
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  InputGroup,
-  InputLeftElement,
-} from "@chakra-ui/react";
+
+import { ShadcnLabel } from "@UI/components/shadcn-components";
+import { cn } from "@UI/components/shadcn-components/lib/utils";
 import type { ReactNode } from "react";
 import { Controller, type Control } from "react-hook-form";
 
@@ -28,18 +24,18 @@ export function FormField({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <FormControl isInvalid={!!error}>
-          {label && <FormLabel>{label}</FormLabel>}
-          <InputGroup>
+        <div className={cn("space-y-2", error && "text-red-500")}>
+          {label && <ShadcnLabel htmlFor={label} className="text-sm">{label}</ShadcnLabel>}
+          <div className="relative">
             {leftElement && (
-              <InputLeftElement pointerEvents="none" color="gray.400">
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400">
                 {leftElement}
-              </InputLeftElement>
+              </div>
             )}
             {children}
-          </InputGroup>
-          <FormErrorMessage>{error?.message}</FormErrorMessage>
-        </FormControl>
+          </div>
+          {error?.message && <p className="text-xs">{error.message}</p>}
+        </div>
       )}
     />
   );

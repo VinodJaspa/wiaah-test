@@ -53,7 +53,15 @@
       "recharts",
       "recoil",
       "swiper",
-      "tailwind-merge"
+      "tailwind-merge",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-separator",
+      "@radix-ui/react-slot",
+      "@radix-ui/react-switch",
+      "class-variance-authority",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-menubar",
+      "@radix-ui/react-popover"
     ]
   }
 }

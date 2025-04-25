@@ -1,12 +1,4 @@
-import {
-  Flex,
-  Avatar,
-  HStack,
-  Icon,
-  Box,
-  Text,
-  Divider,
-} from "@chakra-ui/react";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
@@ -43,52 +35,36 @@ export const CommentAlt: React.FC<CommentAltProps> = ({
   function handleMoreCommentOptions() { }
 
   return (
-    <Flex w="100%" gap={"1rem"}>
-      <Avatar bgColor="black" src={user.thumbnail} name={user.name} />
-      <Flex w="100%" direction={"column"}>
-        <Flex
-          w="100%"
-          // px="0.5rem"
-          rounded={"xl"}
-          bg={main ? "white" : "primary.light"}
-          p="0.5rem"
-          pb="0.5rem"
-          direction={"column"}
-        >
-          <HStack justify={"space-between"}>
-            <HStack>
-              <Text fontSize={"lg"} fontWeight={"bold"}>
-                {user.name}
-              </Text>
-              {user.verifed && <Icon as={Verified} />}
-            </HStack>
-            <Icon
-              cursor={"pointer"}
-              onClick={handleMoreCommentOptions}
-              fontSize={"x-large"}
-              fill={"primary.main"}
-              as={HiDotsHorizontal}
-            />
-          </HStack>
-          <Box py="0.5rem">
-            <EllipsisText
-              showMoreColor={main ? "white" : undefined}
-              content={content}
-              maxLines={4}
-            />
-          </Box>
-
-          {hashTags && (
-            <HashTags
-              props={{ className: "mb-2 text-[primary.main] " }}
-              tags={hashTags}
-            />
-          )}
-        </Flex>
-        <Text>
-          {since.value} {since.timeUnit} {t("ago", "ago")}
-        </Text>
-      </Flex>
-    </Flex>
+    <div className="flex w-full gap-4">
+    <div className="w-12 h-12 rounded-full bg-black overflow-hidden flex-shrink-0">
+      <img src={user.thumbnail} alt={user.name} className="w-full h-full object-cover" />
+    </div>
+  
+    <div className="w-full flex flex-col">
+      <div className={`w-full p-2 pb-2 rounded-xl ${main ? "bg-white" : "bg-primary-light"} flex flex-col`}>
+        <div className="flex justify-between">
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-bold">{user.name}</p>
+            {user.verifed && <Verified className="w-5 h-5 text-primary-main" />}
+          </div>
+          <HiDotsHorizontal
+            onClick={handleMoreCommentOptions}
+            className="cursor-pointer text-primary-main text-xl"
+          />
+        </div>
+  
+        <div className="py-2">
+          <EllipsisText showMoreColor={main ? "white" : undefined} content={content} maxLines={4} />
+        </div>
+  
+        {hashTags && (
+          <HashTags props={{ className: "mb-2 text-primary-main" }} tags={hashTags} />
+        )}
+      </div>
+  
+      <p>{since.value} {since.timeUnit} {t("ago", "ago")}</p>
+    </div>
+  </div>
+  
   );
 };

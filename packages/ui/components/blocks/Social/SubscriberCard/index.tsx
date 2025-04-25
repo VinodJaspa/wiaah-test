@@ -1,7 +1,7 @@
-import { Flex, Button, Text } from "@chakra-ui/react";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "ui";
+import { Avatar, ShadCnButton, ShadcnFlex, ShadcnText } from "ui";
 import { SubscribersUserInfo } from "types";
 
 export interface SubscriberCardProps extends SubscribersUserInfo {
@@ -20,28 +20,27 @@ export const SubscriberCard: React.FC<SubscriberCardProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Flex gap="1rem" w="100%" justify={"space-between"}>
-      <Flex
+    <ShadcnFlex justify="between" align="center" gap={4} className="p-6 bg-gray-200">
+
+
+      <ShadcnFlex
         data-testid="UserInfo"
         onClick={() => onProfileClick && onProfileClick(profileUrl)}
-        gap="0.5rem"
+        gap={2} // Equivalent to "0.5rem" (Tailwind `gap-2`)
       >
         <Avatar data-testid="UserPhoto" name={name} photoSrc={avatar} />
-        <Text data-testid="Username" fontWeight={"semibold"}>
+        <ShadcnText data-testid="Username" className="text-lg font-semibold">
           {name}
-        </Text>
-      </Flex>
-      <Button
+        </ShadcnText>
+      </ShadcnFlex>
+      <ShadCnButton
         data-testid="FollowBtn"
-        rounded={"full"}
-        color={"white"}
+        className="w-full md:w-fit rounded-full bg-primary text-white hover:bg-primary/80 focus:ring-0 transition-colors duration-200"
         onClick={() => onFollow && onFollow()}
-        _hover={{ backgroundColor: "primary.hover" }}
-        _focus={{ ring: "0" }}
-        backgroundColor={"primary.main"}
       >
         {t("follow", "Follow")}
-      </Button>
-    </Flex>
+      </ShadCnButton>
+
+    </ShadcnFlex>
   );
 };

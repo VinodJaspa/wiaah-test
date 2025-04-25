@@ -1,8 +1,8 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { StorySeenByPopup } from "@UI";
+import { ShadCnButton, StorySeenByPopup } from "@UI";
 import { useStorySeenBy } from "@src/Hooks";
-import { Button } from "@chakra-ui/react";
+
 
 export default {
   title: "UI/blocks/Social/StorySeenByPopup",
@@ -33,7 +33,9 @@ const Template: StoryFn<typeof StorySeenByPopup> = (args) => {
   }, []);
   return (
     <>
-      <Button onClick={OpenStorySeenBy}>open</Button>
+    <ShadCnButton variant="default"onClick={OpenStorySeenBy}>open</ShadCnButton>
+
+  
       <StorySeenByPopup {...args} />
     </>
   );

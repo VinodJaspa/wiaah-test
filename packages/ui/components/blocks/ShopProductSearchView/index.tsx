@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@partials";
 import { Search } from "lucide-react";
@@ -8,6 +8,7 @@ import { IoMdColorPalette } from "react-icons/io";
 import { PiNavigationArrowFill } from "react-icons/pi";
 import * as z from "zod";
 import { FormField } from "./FormField";
+import { ShadcnFlex } from "@UI/components/shadcn-components";
 
 const formSchema = z.object({
   location: z.string().min(2, {
@@ -44,8 +45,8 @@ export function ShopProductSearchForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="bg-gray-50 py-[15px] px-[30px] rounded-[12px]"
     >
-      <Flex gap={4} flexWrap="wrap">
-        <Box flex="1" minW="200px">
+    <ShadcnFlex className="flex flex-wrap gap-4">
+    <div className="flex-1 min-w-[200px]">
           <FormField
             name="location"
             control={control}
@@ -62,11 +63,11 @@ export function ShopProductSearchForm() {
               className="bg-gray-50 w-full pl-[50px] placeholder:text-[14px] placeholder:text-gray-500 border-none focus-within:ring-0"
             />
           </FormField>
-        </Box>
+        </div>
 
         <span className="bg-gray-200 h-[38px] w-px"></span>
 
-        <Box flex="1" minW="200px">
+        <div className="flex-1 min-w-[200px]">
           <FormField
             name="color"
             control={control}
@@ -86,11 +87,11 @@ export function ShopProductSearchForm() {
               <option value="yellow">Yellow</option>
             </select>
           </FormField>
-        </Box>
+        </div>
 
         <span className="bg-gray-200 h-[38px] w-px"></span>
 
-        <Box flex="1" minW="200px">
+        <div className="flex-1 min-w-[200px]">
           <FormField
             name="category"
             control={control}
@@ -108,7 +109,7 @@ export function ShopProductSearchForm() {
               <option value="home">Home & Garden</option>
             </select>
           </FormField>
-        </Box>
+        </div>
 
         <Button
           type="submit"
@@ -116,7 +117,7 @@ export function ShopProductSearchForm() {
         >
           <Search size={20} /> Search
         </Button>
-      </Flex>
+      </ShadcnFlex>
     </form>
   );
 }

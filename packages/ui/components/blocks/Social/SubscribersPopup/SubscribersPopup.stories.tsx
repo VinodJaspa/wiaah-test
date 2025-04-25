@@ -1,7 +1,7 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { SubscribersPopup } from "@UI";
-import { Button } from "@chakra-ui/react";
+import { ShadCnButton, SubscribersPopup } from "@UI";
+
 import { t } from "i18next";
 export default {
   title: "UI/blocks/Social/SubscribersPopup",
@@ -17,7 +17,7 @@ const Template: StoryFn<typeof SubscribersPopup> = ({
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>Open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>Open</ShadCnButton>
       <SubscribersPopup
         isOpen={open}
         onClose={() => setOpen(false)}

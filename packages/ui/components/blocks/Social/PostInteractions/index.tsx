@@ -1,8 +1,8 @@
 import { NumberShortner } from "@UI/components/helpers";
+import { ShadcnFlex, ShadcnIcon, ShadcnStack, ShadcnText } from "@UI/components/shadcn-components";
 import { Carousel } from "@blocks/Carousel";
 import { useSocialControls } from "@blocks/Layout";
 import { PostViewPopup } from "@blocks/Popups";
-import { Flex, Icon, Text, VStack } from "@chakra-ui/react";
 import { useModalDisclouser } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -62,58 +62,57 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
 
   return (
     <>
-      <Flex py="0.5rem" justify={"space-around"} className={className}>
-        <VStack
+      <ShadcnFlex className={`py-2 justify-around ${className}`}>
+        <ShadcnStack
           data-testid="PostInteractionLikes"
-          cursor={"pointer"}
+          className="cursor-pointer flex flex-col"
           onClick={() => handleInteraction("like")}
         >
           {!isLiked?.status ? (
-            <Icon
+            <ShadcnIcon
               onClick={onHeartIConClick}
-              fontSize={"xx-large"}
-              fill={"primary.main"}
               as={HiOutlineHeart}
+              className="text-4xl text-primary"
             />
+
           ) : (
-            <Icon
+            <ShadcnIcon
               onClick={onHeartIConClick}
-              fontSize={"xx-large"}
-              fill={"primary.main"}
               as={HiHeart}
+              className="text-4xl text-primary"
             />
+
           )}
-          <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+          <ShadcnText className="font-semibold capitalize">
             {NumberShortner(isLiked?.reactions)}
-          </Text>
-        </VStack>
-        <VStack
+          </ShadcnText>
+
+        </ShadcnStack>
+        <ShadcnStack
           data-testid="PostInteractionComments"
-          cursor={"pointer"}
+          className="cursor-pointer flex flex-col items-center"
           onClick={() => handleInteraction("comment")}
         >
-          <Icon
-            fontSize={"xx-large"}
-            stroke={"primary.main"}
-            as={HiOutlineChat}
-          />
-          <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+          <ShadcnIcon as={HiOutlineChat} className="text-4xl text-primary" />
+          <ShadcnText className="font-semibold capitalize">
             {NumberShortner(comments)}
-          </Text>
-        </VStack>
-        <VStack
+          </ShadcnText>
+        </ShadcnStack>
+
+        <ShadcnStack
           data-testid="PostInteractionShares"
-          cursor={"pointer"}
+          className="cursor-pointer flex flex-col items-center"
           onClick={() =>
             shareLink(getUrl((routes) => routes.visitSocialPost(postId)))
           }
         >
-          <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
-          <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+          <ShadcnIcon as={HiShare} className="text-4xl text-primary" />
+          <ShadcnText className="font-semibold capitalize">
             {NumberShortner(shares)}
-          </Text>
-        </VStack>
-      </Flex>
+          </ShadcnText>
+        </ShadcnStack>
+
+      </ShadcnFlex>
 
       {post && postId && (
         <PostViewPopup

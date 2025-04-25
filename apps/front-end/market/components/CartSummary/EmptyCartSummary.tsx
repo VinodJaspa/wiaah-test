@@ -1,4 +1,4 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+
 import React from "react";
 import { colorPalette } from "ui/components/helpers/colorPalette";
 import { useRouter } from "next/router";

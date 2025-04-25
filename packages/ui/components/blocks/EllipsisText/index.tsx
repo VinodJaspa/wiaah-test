@@ -1,4 +1,5 @@
-import { Text } from "@chakra-ui/react";
+
+import { ShadcnText } from "@UI/components/shadcn-components";
 import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -152,11 +153,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         ref={helperTextRef}
       ></p>
       <div className="relative">
-        <Text
-          wordBreak={wordBreak ? "break-all" : "break-word"}
+        <ShadcnText
+          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines}`}
           ref={postTextRef}
-          noOfLines={MaxLines}
-          textAlign={"start"}
         >
           <>
             {children}
@@ -186,7 +185,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
               </>
             )}
           </>
-        </Text>
+        </ShadcnText>
         {linesCount === maxLines &&
           showMore &&
           content?.length > (isActionView ? 65 : 150) && (

@@ -1,17 +1,16 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { SocialStoryViewerHeader } from "@UI";
+import { ShadcnBox, SocialStoryViewerHeader } from "@UI";
 import { PostCardPlaceHolder } from "../../../../placeholder";
-import { Box } from "@chakra-ui/react";
 export default {
   title: "UI/blocks/Social/SocialStoryViewerHeader",
   component: SocialStoryViewerHeader,
 } as Meta<typeof SocialStoryViewerHeader>;
 
 const Template: StoryFn<typeof SocialStoryViewerHeader> = (args) => (
-  <Box w="20rem">
-    <SocialStoryViewerHeader {...args} />
-  </Box>
+<ShadcnBox className="w-[20rem]">
+  <SocialStoryViewerHeader {...args} />
+</ShadcnBox>
 );
 
 export const Default = {

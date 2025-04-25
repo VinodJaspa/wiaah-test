@@ -1,4 +1,4 @@
-import { ChakraProvider } from "@chakra-ui/react";
+
 import { SocialStoryContentData } from "@UI/../types/src";
 import { GetUserSocialStoryPlaceHolder } from "@UI/placeholder";
 import { mount, ReactWrapper, shallow } from "enzyme";
@@ -18,9 +18,9 @@ describe("SocialStoriesCarousel render tests", () => {
   beforeEach(() => {
     wrapper = mount(
       <RecoilRoot>
-        <ChakraProvider>
+       
           <SocialStoriesCarousel story={GetUserSocialStoryPlaceHolder} />
-        </ChakraProvider>
+       
       </RecoilRoot>,
     );
     stories = wrapper.find(selectors.story);

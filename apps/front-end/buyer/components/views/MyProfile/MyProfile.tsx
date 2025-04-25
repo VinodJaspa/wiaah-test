@@ -1,18 +1,4 @@
-import {
-  Avatar,
-  AvatarGroup,
-  Box,
-  Button,
-  Center,
-  Flex,
-  HStack,
-  Icon,
-  Input,
-  Link,
-  Text,
-  Textarea,
-  useDisclosure,
-} from "@chakra-ui/react";
+
 import React from "react";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
@@ -26,6 +12,16 @@ import {
   Avatar as CustomAvatar,
   AvatarProps,
   SpinnerFallback,
+  ShadcnFlex,
+  ShadcnText,
+  ShadcnStack,
+  ShadcnAvatarGroup,
+  ShadcnAvatar,
+  ShadCnButton,
+  ShadcnBox,
+  ShadcnIcon,
+  ShadcnLink,
+  ShadcnProfileOverlay,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";
 import { useRouter } from "next/router";
@@ -56,29 +52,22 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
     isLoading: _isLoadign,
     isError,
   } = useGetMyProfileData();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const profileData = FAKE_USER_DATA;
-  const {
-    isOpen: subscriptionsIsOpen,
-    onOpen: subscriptionsOnOpen,
-    onClose: subscriptionsOnClose,
-  } = useDisclosure();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const onOpen = () => setIsOpen(true);
+const onClose = () => setIsOpen(false);
+
+const profileData = FAKE_USER_DATA;
+
+const [subscriptionsIsOpen, setSubscriptionsIsOpen] = React.useState(false);
+const subscriptionsOnOpen = () => setSubscriptionsIsOpen(true);
+const subscriptionsOnClose = () => setSubscriptionsIsOpen(false);
 
   function handleRouteToModifyProfile() {
     router.replace(AccountSettingsRoute);
   }
 
   return (
-    <Flex
-      align={"center"}
-      bg={{ md: "primary.main" }}
-      px="1rem"
-      py="0.5rem"
-      color={"white"}
-      fontSize="1.5rem"
-      justify={"space-between"}
-      direction={"column"}
-    >
+    <ShadcnFlex className="flex items-center justify-between w-full">
       <SpinnerFallback isLoading={false} isError={isError}>
         <SubscribersPopup
           title={t("subscribers", "subscribers")}
@@ -90,7 +79,7 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
           isOpen={subscriptionsIsOpen}
           onClose={subscriptionsOnClose}
         />
-        <Flex w="100%" justify={"space-between"}>
+        <ShadcnFlex className="w-full justify-between">
           <div />
           <CustomAvatar
             className="bg-black w-8 h-8 "
@@ -98,94 +87,65 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
             photoSrc={profileData.thumbnail}
           />
           <div />
-        </Flex>
-        <Flex
-          className="flex flex-col"
-          bgColor={{ base: "primary.main", md: "transparent" }}
-          align={"center"}
-          mb="0.5rem"
-          px="0.25rem"
-          rounded={"lg"}
-          gap="0.5rem"
-        >
+        </ShadcnFlex>
+        <ShadcnFlex className="flex flex-col items-center mb-2 px-1 rounded-lg gap-2 bg-primary md:bg-transparent">
           <h4>{profileData.name}</h4>
-          {profileData.verifed && <Icon fontSize={"x-large"} as={MdVerified} />}
-        </Flex>
-        <Flex lineHeight={"1.8rem"} gap="1rem">
-          <Flex
-            direction={"row"}
-            align={"center"}
-            cursor={"pointer"}
-            gap="0.5em"
-          >
-            <Text fontWeight={"bold"}>
+          {profileData.verifed && <ShadcnIcon as={MdVerified} className="text-3xl"/>}
+        </ShadcnFlex>
+        <ShadcnFlex className="leading-7 gap-4">
+          <ShadcnFlex className="flex flex-row items-center cursor-pointer gap-2">
+            <ShadcnText className="font-bold">
               {NumberShortner(profileData.publications)}
-            </Text>
-            <Text fontSize={"md"} textTransform={"capitalize"}>
+            </ShadcnText>
+            <ShadcnText className="text-md capitalize">
               {t("publications", "publications")}
-            </Text>
-          </Flex>
-          <Flex align="center" onClick={subscriptionsOnOpen} cursor={"pointer"}>
-            <HStack mx="0.5rem">
-              <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
+            </ShadcnText>
+          </ShadcnFlex>
+          <ShadcnFlex className="flex items-center cursor-pointer" onClick={subscriptionsOnOpen}>
+            <ShadcnStack className="flex items-center gap-2 mx-2">
+              <ShadcnAvatarGroup className="flex -space-x-4">
                 {[...Array(3)].map((_, i) => (
-                  <Avatar
-                    borderWidth={"1px"}
-                    borderColor="white"
-                    rounded={"lg"}
-                    size={"xs"}
-                    h="2em"
-                    w="2em"
+                  <ShadcnAvatar
+                    className="w-8 h-8 border border-white rounded-lg bg-black"
                     key={i}
-                    bgColor={"black"}
                     src={getRandomImage()}
-                    name="test"
+                    alt="Profile"
                   />
                 ))}
-              </AvatarGroup>
-              <Text fontWeight={"bold"}>
+              </ShadcnAvatarGroup>
+              <ShadcnText className="font-bold">
                 {NumberShortner(profileData.subscriptions)}
-              </Text>
-            </HStack>
-            <Text fontSize={"md"} textTransform={"capitalize"}>
+              </ShadcnText>
+            </ShadcnStack>
+
+            <ShadcnText className="text-md capitalize">
               {t("subscriptions", "subscriptions")}
-            </Text>
-          </Flex>
-          <Flex align="center" onClick={onOpen} cursor={"pointer"}>
-            <HStack mx="0.5rem">
-              <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
+            </ShadcnText>
+          </ShadcnFlex>
+          <ShadcnFlex className="flex items-center cursor-pointer" onClick={onOpen}>
+            <ShadcnStack className="flex items-center gap-2 mx-2">
+              <ShadcnAvatarGroup className="flex -space-x-4">
                 {[...Array(3)].map((_, i) => (
-                  <Avatar
-                    borderWidth={"1px"}
-                    borderColor="white"
-                    rounded={"md"}
-                    size={"xs"}
-                    h="2em"
-                    w="2em"
+                  <ShadcnAvatar
+                    className="w-8 h-8 border border-white rounded-md bg-black"
                     key={i}
-                    bgColor={"black"}
                     src="/shop-2.jpeg"
-                    name="test"
+                    alt="test"
                   />
                 ))}
-              </AvatarGroup>
-              <Text fontWeight={"bold"}>
+              </ShadcnAvatarGroup>
+              <ShadcnText className="font-bold">
                 {NumberShortner(profileData.subscribers)}
-              </Text>
-            </HStack>
+              </ShadcnText>
+            </ShadcnStack>
 
-            <Text fontSize={"md"} textTransform={"capitalize"}>
+
+            <ShadcnText className="text-md capitalize">
               {t("subscribers", "Subscribers")}
-            </Text>
-          </Flex>
-        </Flex>
-        <Flex
-          gap="0.5rem"
-          direction={"column"}
-          py="1rem"
-          fontSize={"md"}
-          w="100%"
-        >
+            </ShadcnText>
+          </ShadcnFlex>
+        </ShadcnFlex>
+        <ShadcnFlex className="flex flex-col gap-2 py-4 text-md w-full">
           {profileData.bio && (
             <EllipsisText
               showMoreColor="primary.main"
@@ -194,46 +154,39 @@ export const MyProfile: React.FC<MyProfileProps> = () => {
             />
           )}
           {profileData.links && (
-            <Flex direction={"column"}>
+            <ShadcnFlex className="flex flex-col">
               {profileData.links.map((link, i) => (
-                <HStack key={i}>
-                  <Icon color={"white"} fontSize="xl" as={BiLink} />
-                  <Link color="blue" href={link}>
+                <ShadcnStack key={i} className="flex items-center gap-2">
+                  <ShadcnIcon as={BiLink} className="text-white text-xl" />
+                  <ShadcnLink href={link} className="text-blue-500 hover:underline">
                     {link}
-                  </Link>
-                </HStack>
-              ))}
-            </Flex>
-          )}
-        </Flex>
+                  </ShadcnLink>
+                </ShadcnStack>
 
-        <HStack w="100%" spacing={"1rem"}>
-          <Button
+              ))}
+            </ShadcnFlex>
+          )}
+        </ShadcnFlex>
+
+        <ShadcnStack className="w-full gap-4">
+          <ShadCnButton
             onClick={handleRouteToModifyProfile}
-            borderWidth={"2px"}
-            w="100%"
-            borderColor="white"
+            className="w-full border-2 border-white"
           >
             {t("modify_profile", "Modify profile")}
-          </Button>
-        </HStack>
-        <Flex
-          bg={{ base: "whiteAlpha.200", md: "transparent" }}
-          gap="0.5rem"
-          w="100%"
-          align={"center"}
-          justify={"end"}
-          pt="0.75rem"
-        >
-          <Text fontSize={"lg"}>
+          </ShadCnButton>
+        </ShadcnStack>
+        <ShadcnFlex className="w-full items-center justify-end gap-2 pt-3 bg-white/20 md:bg-transparent">
+
+          <ShadcnText className="text-lg">
             <FlagIcon code={profileData.countryCode} />
-          </Text>
-          <Text color={"white"} fontSize={"md"}>
+          </ShadcnText>
+          <ShadcnText className="text-md text-white">
             {profileData.location}
-          </Text>
-        </Flex>
+          </ShadcnText>
+        </ShadcnFlex>
       </SpinnerFallback>
-    </Flex>
+    </ShadcnFlex>
   );
 };
 
@@ -251,11 +204,10 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
 }) => {
   const [profileHover, setProfileHover] = React.useState<boolean>(false);
   return (
-    <Box
-      rounded={"full"}
+    <ShadcnBox
+      className="rounded-full relative"
       onMouseOver={() => setProfileHover(true)}
       onMouseLeave={() => setProfileHover(false)}
-      position={"relative"}
       {...props}
     >
       <CustomAvatar
@@ -264,24 +216,11 @@ export const EditingProfile: React.FC<EditingProfileProps> = ({
         name={name}
       />
       {editable && (
-        <Center
-          opacity={profileHover ? "100%" : "0%"}
-          pointerEvents={profileHover ? "all" : "none"}
-          rounded={"full"}
-          position={"absolute"}
-          top="0px"
-          left="0px"
-          bgColor={"blackAlpha.500"}
-          w="100%"
-          h="100%"
-          cursor={"pointer"}
-          zIndex={5}
-          onClick={() => onChangeClick && onChangeClick()}
-        >
-          <Icon fontSize={"xx-large"} as={BiCamera} />
-        </Center>
+      <ShadcnProfileOverlay isVisible={profileHover} onClick={() => onChangeClick && onChangeClick()}>
+      <ShadcnIcon as={BiCamera} className="text-4xl" />
+    </ShadcnProfileOverlay>
       )}
-    </Box>
+    </ShadcnBox>
   );
 };
 {

@@ -1,5 +1,5 @@
-import { IconType } from "react-icons";
-import { IconProps } from "@chakra-ui/react";
+import { IconBaseProps, IconType } from "react-icons";
+
 export type NavigationLinkType = {
   name: string;
   icon: React.ReactNode;
@@ -7,5 +7,5 @@ export type NavigationLinkType = {
   url: string;
   mobileOnly?: boolean;
 
-  size?: Pick<IconProps, "w" | "h">;
+  size?: Pick<IconBaseProps, "width" | "height">;
 };

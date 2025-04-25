@@ -1,25 +1,22 @@
-import {
-  useBreakpointValue,
-  Icon,
-  Center,
-  Spinner,
-  Divider,
-  Image,
-} from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdPlace } from "react-icons/md";
 import { useQuery } from "react-query";
 import { placesPH } from "ui/placeholder";
-import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
+import { PlaceCardProps, ListWrapper, PlaceCard, ShadcnIcon } from "ui";
+import { useMediaQuery } from "react-responsive";
+import Image from "next/image";
 export interface LocailisationsViewProps { }
 
 export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
   const { t } = useTranslation();
-  const isMobile = useBreakpointValue({ base: true, sm: false });
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 });
+  // Determine column count based on breakpoints
+  const cols = isMobile ? 1 : isMd ? 2 : isLg ? 3 : 1;
   const router = useRouter();
   const tag = router.query.tag as string;
   const formatCityName = (city: string): string => {
@@ -44,14 +41,14 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
         <div className="flex gap-1 items-center">
           <Image
             alt="thumbnail"
-            rounded="xl"
-            h="5rem"
-            w="auto"
-            objectFit="cover"
+            className="rounded-xl object-cover"
+            height={80} 
+            width={80} 
             src="/place-1.jpg"
           />
           <div className="flex justify-center items-center gap-2 font-bold text-lg">
-            <Icon fontSize={"1.5em"} as={MdPlace} />
+            <ShadcnIcon as={MdPlace} className="text-xl" />
+
             <div className="flex items-center gap-1">
               <p className="text-black font-semibold">
                 {formattedCity ? formattedCity : tag}
@@ -64,11 +61,11 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
           {t("follow", "follow")}
         </button>
       </div>
-      <Divider borderColor={"#E4E4E4"} my="1rem" />
+      <div className="h-px bg-gray-300 my-4" />
       {isLoading ? (
-        <Center>
-          <Spinner colorScheme={"primary"} />
-        </Center>
+        <div className="flex justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
+      </div>
       ) : (
         <ListWrapper
           itemProps={{ className: "flex flex-col items-center" }}

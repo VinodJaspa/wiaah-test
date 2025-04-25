@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,6 +8,7 @@ import {
   SocialServicesPostCardProps,
   Carousel,
   ServiceCardsListWrapper,
+  ShadcnText,
 } from "ui";
 
 export const ServicePostView: React.FC<{ postId: string }> = ({ postId }) => {
@@ -55,15 +56,10 @@ export const ServicePostView: React.FC<{ postId: string }> = ({ postId }) => {
         </div>
       )}
 
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
-        {t("other_posts", "other posts")}
-      </Text>
+<ShadcnText className="text-4xl font-bold w-full text-center capitalize">
+  {t("other_posts", "other posts")}
+</ShadcnText>
+
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">
           <ServiceCardsListWrapper

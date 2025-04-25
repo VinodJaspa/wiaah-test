@@ -1,4 +1,4 @@
-import { useBreakpointValue, Flex, Text } from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ import {
   ServiceCardsListWrapper,
   ServicesIcon,
   ServicesOutlineIcon,
+  ShadcnText,
   ShopCardsListWrapper,
   ShoppingCartIcon,
   ShoppingCartOutlineIcon,
@@ -27,9 +28,12 @@ import {
 import { AffiliationCardsListWrapper } from "@blocks/Social/AffiliationPostListWrapper";
 import { ActionsCardListWrapper } from "@blocks/Social/ActionsCardsListWrapper";
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
+import { useMediaQuery } from "react-responsive";
 
 export const HashtagPageView: React.FC = () => {
-  const cols = useBreakpointValue({ base: 3 });
+  const isBase = useMediaQuery({ maxWidth: 767 });
+
+  const cols = isBase ? 3 : 3;
   const { t } = useTranslation();
   const router = useRouter();
   const tag = router.query.tag as string;
@@ -89,9 +93,9 @@ export const HashtagPageView: React.FC = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center ">
       <div className="flex  md:w-5/12 w-10/12 mt-4 md:mt-0 justify-center md:justify-between items-center mb-6 ">
-        <Text fontWeight={"bold"} fontSize="2em">
+        <ShadcnText className="font-bold text-2xl">
           #{tag}
-        </Text>
+        </ShadcnText>
         <button className="hidden md:flex justify-center items-center bg-[#3CD399] text-white font-semibold rounded-full w-[140px] h-[50px]">
           Follow
         </button>

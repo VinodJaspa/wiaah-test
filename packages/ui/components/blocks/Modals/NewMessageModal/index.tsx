@@ -1,6 +1,6 @@
 import { ChatSearchInput } from "@blocks/DataInput";
 import { useSocialControls } from "@blocks/Layout";
-import { Button } from "@chakra-ui/react";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Spinner,
 } from "../../../partials";
+import { ShadCnButton } from "@UI/components/shadcn-components";
 
 const suggestedUsersPH: ChatNewMessageUserInfo[] = [
   {
@@ -168,12 +169,13 @@ export const NewMessageModal: React.FC = () => {
           </div>
         </div>
         <div className="flex items-center justify-end gap-x-4">
-          <Button onClick={() => cancelMsgNewUser()} variant="outline">
+          <ShadCnButton onClick={() => cancelMsgNewUser()} variant="outline">
             Cancel
-          </Button>
-          <Button bg="gray.800" textColor="white">
+          </ShadCnButton>
+          <ShadCnButton className="bg-grey-800 text-white border-0 hover:bg-gray-700 focus:ring-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800" >
+    
             Start Chat
-          </Button>
+          </ShadCnButton>
         </div>
       </ModalContent>
     </Modal>

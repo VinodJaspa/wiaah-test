@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 
 export type BreadCrumbLink = { text: string; url: string };
 
@@ -15,19 +14,19 @@ export const BreadCrumb: React.FC<BreadCrumbProps> = ({
   onLinkClick,
 }) => {
   return (
-    <Breadcrumb separator={<FaChevronRight />}>
-      {links &&
-        links.length > 0 &&
-        links.map((link, i) => (
-          <BreadcrumbItem isLastChild={i + 1 == links.length}>
-            <BreadcrumbLink
-              sx={{ pl: "4" }}
-              onClick={() => onLinkClick && onLinkClick(link)}
-            >
-              {link.text}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        ))}
-    </Breadcrumb>
+    <nav className="flex items-center space-x-2 text-sm">
+    {links.map((link, i) => (
+      <React.Fragment key={i}>
+        <Link
+          href={link.url}
+          onClick={() => onLinkClick?.(link)}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          {link.text}
+        </Link>
+        {i + 1 !== links.length && <FaChevronRight className="text-gray-400" />}
+      </React.Fragment>
+    ))}
+  </nav>
   );
 };

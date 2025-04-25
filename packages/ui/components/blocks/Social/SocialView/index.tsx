@@ -1,4 +1,4 @@
-import { useBreakpointValue } from "@chakra-ui/react";
+import { useMediaQuery } from "react-responsive";
 import React from "react";
 import {
   Container,
@@ -66,8 +66,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   } = useGetSocialProfile(profileId || "");
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
-  const cols = useBreakpointValue({ base: 3 });
-  const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  const isXL = useMediaQuery({ minWidth: 1280 });
+  const cols = isXL ? 5 : 3;
+ 
   const image = React.useMemo(() => getRandomImage(), []);
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);

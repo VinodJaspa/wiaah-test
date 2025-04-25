@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Spacer, Carousel, ImageCard, ChakraCarousel } from "@UI";
+import { Spacer,  ImageCard, Carousel } from "@UI";
 
 export const HorizontalCollaboration: React.FC = () => {
   const { t } = useTranslation();
@@ -12,13 +12,13 @@ export const HorizontalCollaboration: React.FC = () => {
         </p>
       </div>
       <Spacer />
-      <ChakraCarousel setActiveItem={() => { }} swipe>
+      <Carousel setActiveItem={() => { }} swipe>
         {[...Array(4)].map((_, i: number) => (
           <div className="pointer-events-none" key={i}>
             <ImageCard key={i} name="Item Name" imgUrl="/shop-2.jpeg" />
           </div>
         ))}
-      </ChakraCarousel>
+      </Carousel>
       <Spacer />
     </div>
   );

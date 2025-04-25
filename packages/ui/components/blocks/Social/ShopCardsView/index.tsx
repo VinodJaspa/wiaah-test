@@ -1,17 +1,22 @@
-import { Text, useBreakpointValue } from "@chakra-ui/react";
+
 import React from "react";
 import {
   ShopCardsListWrapper,
   PostView,
   Carousel,
   SocialShopPostcardProps,
+  ShadcnText,
 } from "ui";
 import { SocialShopsPostCardPlaceholder } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 
 export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
   const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const isMd = useMediaQuery({ minWidth: 768 });
+  const isLg = useMediaQuery({ minWidth: 1024 });
+
+  const cols = isLg ? 3 : isMd ? 2 : 1;
 
   const post = SocialShopsPostCardPlaceholder.filter(
     (shop) => shop.postInfo.id === postId
@@ -50,15 +55,10 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
         </div>
       )}
 
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+      <ShadcnText className="text-4xl font-bold w-full text-center capitalize">
         {t("other_posts", "other posts")}
-      </Text>
+      </ShadcnText>
+
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">
           <ShopCardsListWrapper

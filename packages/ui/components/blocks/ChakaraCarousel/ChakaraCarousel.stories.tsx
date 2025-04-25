@@ -1,18 +1,18 @@
 import React from "react";
 import { StoryFn, Meta } from "@storybook/react";
-import { ChakraCarousel } from "./index";
+import { Carousel } from "./index";
 export default {
   title: "UI/blocks/ChakaraCarousel",
-  component: ChakraCarousel,
-} as Meta<typeof ChakraCarousel>;
+  component: Carousel,
+} as Meta<typeof Carousel>;
 
-const Template: StoryFn<typeof ChakraCarousel> = (args) => (
+const Template: StoryFn<typeof Carousel> = (args) => (
   <div className="h-96 w-[20rem]">
-    <ChakraCarousel {...args}>
+    <Carousel {...args}>
       {[...Array(10)].map((_, i) => (
         <div className="h-48  bg-green-400">test {i}</div>
       ))}
-    </ChakraCarousel>
+    </Carousel>
   </div>
 );
 

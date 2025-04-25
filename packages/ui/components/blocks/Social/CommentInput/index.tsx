@@ -1,9 +1,5 @@
-import {
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-} from "@chakra-ui/react";
+
+import { Popover, PopoverContent, PopoverTrigger } from "@UI/components/shadcn-components";
 import { useGetAllUsers } from "api";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -70,8 +66,8 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       const searchText = lastWord.slice(1);
       const filteredUsers = searchText
         ? users.filter((user) =>
-            user.username.toLowerCase().includes(searchText.toLowerCase()),
-          )
+          user.username.toLowerCase().includes(searchText.toLowerCase()),
+        )
         : users;
 
       setMatchedUsers(filteredUsers);
@@ -120,52 +116,47 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     <div
       className={cn("relative h-[74px] border-t-2 border-[#EFEFEF]", className)}
     >
-      <Popover
-        matchWidth
-        isOpen={matchedUsers.length > 0}
-        onClose={() => setMatchedUsers([])}
-        closeOnBlur={false}
-      >
-        <PopoverTrigger>
+
+      <Popover>
+        <PopoverTrigger className="h-full w-full"> {/* Optional but helps */}
           <input
             ref={inputRef}
             className={cn(
-              "w-full hover:ring-0 active:ring-offset-0 pt-1 active:right-0 h-full border-0 border-none pl-5 pr-28 py-0 text-xl placeholder-[#262626]",
-              inputClassName,
-            )}
-            data-testid="CommentInput"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t("Add a comment...")}
-            autoFocus
-          />
+      "w-full h-full min-h-full max-h-full hover:ring-0 active:ring-offset-0 active:ring-0 pt-1 border-0 pl-5 pr-28 py-0 text-xl placeholder-[#262626] focus:outline-none",
+          inputClassName
+    )}
+          data-testid="CommentInput"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder={t("Add a comment...")}
+          autoFocus
+  />
         </PopoverTrigger>
-        <PopoverContent width="100%">
-          <PopoverBody>
-            {isLoading && <p>Loading...</p>}
-            {isError && <p>Error loading users</p>}
-            {!isLoading && !isError && (
-              <ul>
-                {matchedUsers.map((user) => (
-                  <li
-                    key={user.id}
-                    className="cursor-pointer p-2 hover:bg-gray-100 flex items-center"
-                    onClick={() => handleUserSelect(user.username)}
-                  >
-                    <img
-                      src={user.avatar}
-                      alt={user.username}
-                      className="w-8 h-8 rounded-full mr-2"
-                    />
-                    {user.username}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </PopoverBody>
+
+
+        <PopoverContent className="w-full">
+          {isLoading && <p>Loading...</p>}
+          {isError && <p>Error loading users</p>}
+          {!isLoading && !isError && (
+            <ul>
+              {matchedUsers.map((user) => (
+                <li
+                  key={user.id}
+                  className="cursor-pointer p-2 hover:bg-gray-100 flex items-center"
+                  onClick={() => handleUserSelect(user.username)}
+                >
+                  <img
+                    src={user.avatar}
+                    alt={user.username}
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  {user.username}
+                </li>
+              ))}
+            </ul>
+          )}
         </PopoverContent>
       </Popover>
-
       <button
         className="w-7 h-7 absolute inset-y-0 my-auto right-16 text-gray-500 hover:text-gray-700"
         onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}

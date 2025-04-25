@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+
 import React from "react";
 import { SocialActionData } from "types";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,8 @@ import { useRouter } from "next/router";
 export const ActionsView: React.FC = () => {
   const router = useRouter();
   return (
+    <ShadcbnFlex
+    
     <Flex
       bgColor={"white"}
       w="100%"

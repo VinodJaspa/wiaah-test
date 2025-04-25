@@ -179,11 +179,15 @@ export const ActionsView: React.FC = () => {
         {mapArray(actions, (v, i) => (
           <div
             key={i}
-            ref={(el) => (videoContainersRef.current[i] = el)} // Assign video container ref
+            ref={(el) => {
+              videoContainersRef.current[i] = el; // Assign video container ref
+            }} // Assign video container ref
             className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative "
           >
             <video
-              ref={(el) => (videoRefs.current[i] = el)} // Assign video ref
+              ref={(el) => {
+                videoRefs.current[i] = el; // Assign video ref
+              }} // Assign video ref
               src={v.src}
               className="w-full h-full object-cover"
             />

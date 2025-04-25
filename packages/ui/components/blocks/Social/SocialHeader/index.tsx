@@ -1,73 +1,45 @@
+import { ShadcnBox, ShadCnButton, ShadcnFlex, ShadcnText } from "@UI/components/shadcn-components";
 import React from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Image,
-  Input,
-  Text,
-} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
+
 
 export const SocialHeader: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <Flex
-      align={"center"}
-      py="0.5rem"
-      px="4rem"
-      boxShadow={"main"}
-      bg={{ base: "white", md: "black" }}
-      justify={{ base: "center", md: "space-between" }}
+    <ShadcnFlex
+      className="items-center py-2 px-16 shadow-md bg-white md:bg-black justify-center md:justify-between"
     >
-      <Box h="5rem">
-        <Image h="100%" src="/wiaah_logo.png" />
-      </Box>
-      <Flex
-        display={{ base: "none", md: "flex" }}
-        align={"center"}
-        direction={{ base: "column", lg: "row" }}
-        color="white"
-        gap="1rem"
-      >
-        <Flex gap="0.5rem" direction={"column"}>
-          <Text>{t("email_or_phone", "Email or Phone")}</Text>
-          <Input
-            color="black"
-            w="17rem"
-            bg="white"
-            type={"email"}
-            placeholder={t("email_or_phone", "email or phone")}
+      <ShadcnBox className="h-20">
+        <img className="h-full" src="/wiaah_logo.png" alt="Wiaah Logo" />
+      </ShadcnBox>
+
+      <ShadcnFlex className="hidden md:flex items-center flex-col lg:flex-row text-white gap-4">
+        <ShadcnFlex className="flex-col gap-2">
+          <ShadcnText>{t("email_or_phone", "Email or Phone")}</ShadcnText>
+          <input 
+            className="text-black w-[17rem] bg-white p-2 border rounded-md" 
+            type="email"
+            placeholder={t("email_or_phone", "email or phone")} 
           />
-          <Text
-            textTransform={"capitalize"}
-            cursor={"pointer"}
-            color="primary.main"
-          >
+          <p className="text-primary cursor-pointer capitalize">
             {t("forgot_password", "forgot password")}
-          </Text>
-        </Flex>
-        <Flex direction={"column"}>
-          <Text textTransform={"capitalize"}>{t("password", "password")}</Text>
-          <Input
-            color="black"
-            bg="white"
-            w="17rem"
+          </p>
+        </ShadcnFlex>
+
+        <ShadcnFlex className="flex-col gap-2">
+          <p className="capitalize">{t("password", "password")}</p>
+          <input 
+            className="text-black w-[17rem] bg-white p-2 border rounded-md" 
             type="password"
-            placeholder={t("password", "password")}
+            placeholder={t("password", "password")} 
           />
-          <Text visibility={"hidden"}>.</Text>
-        </Flex>
-        <Button
-          textTransform={"capitalize"}
-          _focus={{ ring: "0" }}
-          colorScheme="primary"
-          bgColor={"primary.main"}
-        >
+          <p className="invisible">.</p>
+        </ShadcnFlex>
+
+        <ShadCnButton className="capitalize bg-primary text-white focus:ring-0 px-4 py-2 rounded-md hover:bg-primary/80">
           {t("login", "login")}
-        </Button>
-      </Flex>
-    </Flex>
+        </ShadCnButton>
+      </ShadcnFlex>
+    </ShadcnFlex>
   );
 };
