@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,10 +21,19 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-client": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"],
-      "@wishlist": ["src/wishlist"],
-      "@wishersList": ["src/wisherslist"]
-    }
+      "@prisma-client": [
+        "prisma/generated/client"
+      ],
+      "prismaService": [
+        "src/prisma.service"
+      ],
+      "@wishlist": [
+        "src/wishlist"
+      ],
+      "@wishersList": [
+        "src/wisherslist"
+      ]
+    },
+    "strict": true
   }
 }

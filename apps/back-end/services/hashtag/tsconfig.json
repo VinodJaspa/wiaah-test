@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,8 +21,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-client": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
-    }
+      "@prisma-client": [
+        "prisma/generated/client"
+      ],
+      "prismaService": [
+        "src/prisma.service"
+      ]
+    },
+    "strict": true
   }
 }

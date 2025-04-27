@@ -1,7 +1,13 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ],
   "compilerOptions": {
     "experimentalDecorators": true,
     "downlevelIteration": true,
@@ -10,24 +16,54 @@
     "module": "CommonJS",
     "target": "ES5",
     "jsx": "react-jsx",
-    "strict": false,
+    "strict": true,
     "baseUrl": ".",
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "paths": {
-      "@partials": ["components/partials"],
-      "@blocks": ["components/blocks"],
-      "@blocks/*": ["components/blocks/*"],
-      "@sections/*": ["components/sections/*"],
-      "@features/*": ["./components/features/*"],
-      "@sections": ["components/sections"],
-      "@features": ["components/features"],
-      "@libs": ["libs"],
-      "@const": ["constants"],
-      "@src/*": ["src/*"],
-      "@UI": ["."],
-      "@UI/*": ["./*"],
-      "placeholder": ["../placeholder"],
-      "utils": ["../utils/"]
+      "@partials": [
+        "components/partials"
+      ],
+      "@blocks": [
+        "components/blocks"
+      ],
+      "@blocks/*": [
+        "components/blocks/*"
+      ],
+      "@sections/*": [
+        "components/sections/*"
+      ],
+      "@features/*": [
+        "./components/features/*"
+      ],
+      "@sections": [
+        "components/sections"
+      ],
+      "@features": [
+        "components/features"
+      ],
+      "@libs": [
+        "libs"
+      ],
+      "@const": [
+        "constants"
+      ],
+      "@src/*": [
+        "src/*"
+      ],
+      "@UI": [
+        "."
+      ],
+      "@UI/*": [
+        "./*"
+      ],
+      "placeholder": [
+        "../placeholder"
+      ],
+      "utils": [
+        "../utils/"
+      ]
     }
   }
 }

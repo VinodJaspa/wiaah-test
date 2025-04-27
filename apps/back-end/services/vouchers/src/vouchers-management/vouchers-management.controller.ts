@@ -55,7 +55,7 @@ export class VouchersManagementController implements OnModuleInit {
       return new GetShopVouchersMessageReply({
         success: false,
         data: null,
-        error: new Error(error.message),
+        error: new Error(error instanceof Error ? error.message : 'Unknown error'),
       });
     }
   }
@@ -99,7 +99,7 @@ export class VouchersManagementController implements OnModuleInit {
     } catch (err) {
       return new ApplyableVoucherMessageReply({
         success: false,
-        error: new Error(err.message),
+        error: new Error(err instanceof Error ? err.message : 'Unknown error'),
         data: null,
       });
     }

@@ -1,13 +1,25 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ],
   "compilerOptions": {
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "target": "ES5",
     "outDir": "./dist",
-    "types": ["jest"],
-    "lib": ["es2017", "dom"]
+    "types": [
+      "jest"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "strict": true
   }
 }

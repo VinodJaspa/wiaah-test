@@ -1,19 +1,31 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ],
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "rootDir": "./",
     "outDir": "./dist",
-    "strict": false,
+    "strict": true,
     "module": "CommonJS",
     "baseUrl": ".",
     "paths": {
-      "@entity": ["entity"],
-      "@this": ["src"]
+      "@entity": [
+        "entity"
+      ],
+      "@this": [
+        "src"
+      ]
     }
   }
 }

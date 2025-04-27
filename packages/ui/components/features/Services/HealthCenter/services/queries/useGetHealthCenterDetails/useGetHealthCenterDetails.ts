@@ -576,12 +576,15 @@ workingHours {
 
     return data;
 
-    const res = await client
+    const res:any = await client
       .setVariables<GetHealthCenterQueryVariables>({
         id,
       })
       .send<GetHealthCenterQuery>();
 
-    res.data.getHealthCenter;
-  });
+    if (res && res.data) {
+      return res.data.getHealthCenter;
+    }
+    throw new Error("Failed to fetch health center details");
+  })
 };

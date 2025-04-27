@@ -90,7 +90,7 @@ export class WishlistService {
       await this.wishersService.addWisherListItem(itemId, sellerId, userId);
       return true;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error instanceof Error ? error.message : String(error));
     }
   }
 

@@ -18,7 +18,10 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@nestjs-module": ["src/nestjs"]
-    }
+      "@nestjs-module": [
+        "src/nestjs"
+      ]
+    },
+    "strict": true
   }
 }
