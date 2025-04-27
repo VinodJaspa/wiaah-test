@@ -1,0 +1,18 @@
+{
+    "projects": {
+      "apps/backend": {
+        "architect": {
+          "build": {
+            "builder": "none"  
+          },
+          "lint": {
+            "builder": "none"  
+          },
+          "check-types": {
+            "builder": "none" 
+          }
+        }
+      }
+    }
+  }
+  
