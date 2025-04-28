@@ -42,6 +42,9 @@ export const Map: React.FC<MapProps> = ({
           // set the map prop on the child component
           return React.cloneElement(child, { map } as MapChildProps);
         }
+        else{
+          return null;
+        }
       })}
     </>
   );

@@ -20,7 +20,7 @@ export interface BookConfirmationViewProps {
 export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
   id,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const {
     data: res,
     isLoading,

@@ -9,6 +9,7 @@ export default {
 } as Meta<typeof Rate>;
 
 export const Default: React.FC<RateProps> = {
+    // @ts-ignore
   render: (props) => {
     return (
       <>
@@ -27,6 +28,7 @@ export const Default: React.FC<RateProps> = {
   },
 };
 export const WithOutOf: React.FC<RateProps> = {
+  // @ts-ignore
   render: (props) => {
     return (
       <>
@@ -45,6 +47,7 @@ export const WithOutOf: React.FC<RateProps> = {
   },
 };
 export const WithHalf: React.FC<RateProps> = {
+    // @ts-ignore
   render: (props) => {
     return (
       <>

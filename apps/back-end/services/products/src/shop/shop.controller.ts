@@ -57,7 +57,7 @@ export class ShopController {
         },
         error: null,
       });
-    } catch (error) {
+    } catch (error: any) {
       return new GetUserShopMetaDataMessageReply({
         success: false,
         data: null,
@@ -95,7 +95,7 @@ export class ShopController {
         data: true,
         error: null,
       });
-    } catch (error) {
+    } catch (error: any) {
       return new IsOwnerOfShopMessageReply({
         success: false,
         data: null,
@@ -137,7 +137,8 @@ export class ShopController {
 
     const products = await getProducts;
 
-    const mergedProdsAndShops = products.reduce((acc, curr) => {
+    const mergedProdsAndShops: (GetHeighstDiscountProductInShopQueryRes &
+      Shop)[] = products.reduce((acc, curr) => {
       if (!curr) return acc;
 
       const shop = shops.find((s) => s.id === curr.shopId);
@@ -146,13 +147,13 @@ export class ShopController {
       const mergeCurr = { ...curr, ...shop };
 
       return [...acc, mergeCurr];
-    }, [] as (GetHeighstDiscountProductInShopQueryRes & Shop)[]);
+    }, []);
 
     this.eventClient.emit(
       KAFKA_EVENTS.PROMOTION_EVENTS.nearUserShopsPromotionsResloved(),
       new ShopNearPromotionsResolvedEvent({
         userId,
-        shops: mergedProdsAndShops.map((v) => ({
+        shops: mergedProdsAndShops.map((v: any) => ({
           id: v.id,
           promotions: {
             top: {

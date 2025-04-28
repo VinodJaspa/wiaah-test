@@ -45,7 +45,7 @@ const FAKE_USER_DATA = {
 export interface MyProfileProps { }
 
 export const MyProfile: React.FC<MyProfileProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
   const {
     data: _profileData,

@@ -22,7 +22,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   // const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
   // const arrival = travelPeriod ? DateDetails(travelPeriod.arrival) : null;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div
       style={{

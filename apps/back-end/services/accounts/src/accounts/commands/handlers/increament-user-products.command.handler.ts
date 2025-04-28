@@ -7,7 +7,7 @@ import { IncreamentUserProductsCount } from '../impl/increment-user-products-cou
 export class IncreamentUserProductsCountHandler
   implements ICommandHandler<IncreamentUserProductsCount>
 {
-  constructor(private readonly repo: AccountRepository) { }
+  constructor(private readonly repo: AccountRepository) {}
 
   async execute({
     products,

@@ -23,28 +23,28 @@ import {
   GetFilteredProductsAdminInput,
 } from '@products/dto';
 
-let mockSellerUser: AuthorizationDecodedUser = {
+const mockSellerUser: AuthorizationDecodedUser = {
   ...mockedUser,
   accountType: accountType.SELLER,
 };
-let mockBuyerUser: AuthorizationDecodedUser = {
+const mockBuyerUser: AuthorizationDecodedUser = {
   ...secendMockedUser,
   accountType: accountType.BUYER,
 };
 
-let mockAdminUser: AuthorizationDecodedUser = {
+const mockAdminUser: AuthorizationDecodedUser = {
   ...secendMockedUser,
   accountType: accountType.ADMIN,
 };
 
 describe('products e2e', () => {
   let app: INestApplication;
-  let kafkaMock = new NestKafkaClientMock();
-  let kafka = new Kafka({
+  const kafkaMock = new NestKafkaClientMock();
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
   });
-  let prisma = new PrismaClient();
-  let producer = kafka.producer();
+  const prisma = new PrismaClient();
+  const producer = kafka.producer();
 
   beforeAll(async () => {
     await producer.connect();
@@ -424,7 +424,7 @@ describe('products e2e', () => {
       }
   `;
 
-    let input: GetFilteredProductsAdminInput = {
+    const input: GetFilteredProductsAdminInput = {
       pagination: {
         page: 1,
         take: 10,
@@ -443,7 +443,7 @@ describe('products e2e', () => {
 
     expect(products).toHaveLength(4);
 
-    let updateAdminInput: UpdateProductInput = {
+    const updateAdminInput: UpdateProductInput = {
       ...updateInput,
       id: products[0].id,
       title: 'admin title',

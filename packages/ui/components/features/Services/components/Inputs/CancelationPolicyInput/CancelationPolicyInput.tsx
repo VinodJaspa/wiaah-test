@@ -15,7 +15,7 @@ export interface CancelationPolicyInputProps {
 export const CancelationPolicyInput: React.FC<CancelationPolicyInputProps> = ({
   onAdd,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [values, setValues] = React.useState<CancelationPolicyType>({
     cost: 0,
     duration: 0,

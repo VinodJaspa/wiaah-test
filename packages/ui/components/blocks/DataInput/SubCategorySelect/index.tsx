@@ -21,7 +21,7 @@ export const SubCategorySelect: React.FC<SubCategorySelectProps> = ({
     onCateSelection && onCateSelection(selectedCategories);
   }, [selectedCategories]);
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   function handleAddCategory(cate: Category, position: number) {
     setSelectedCategories((state) => {
@@ -84,7 +84,7 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
   ...props
 }) => {
   const [value, setValue] = React.useState<string>("");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <Select
       placeholder={placeholder}

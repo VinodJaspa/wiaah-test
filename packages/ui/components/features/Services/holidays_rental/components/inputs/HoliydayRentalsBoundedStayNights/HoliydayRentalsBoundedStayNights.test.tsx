@@ -15,7 +15,7 @@ const selectors = {
 describe("HolidayRentalsBoundedStayNight", () => {
   let wrapper: ShallowWrapper;
   let mockOnChange: jest.Mock;
-  let props: HoliydayRentalsBoundedStayNightsInputProps = {
+  const props: HoliydayRentalsBoundedStayNightsInputProps = {
     onChange(data) {},
     value: {
       min: 4,

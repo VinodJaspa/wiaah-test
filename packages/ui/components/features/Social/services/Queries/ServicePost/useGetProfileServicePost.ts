@@ -4,7 +4,8 @@ import { GetUserServicesPostsInput, Profile, ServicePost } from "@features/API";
 import { Service } from "@features/API";
 import { useQuery } from "react-query";
 import { isDev } from "@UI/../utils/src";
-import { getRandomImage } from "@UI/placeholder";
+import { getRandomImage } from "placeholder";
+
 
 export type GetProfileServicePostsQueryVariables = Exact<{
   args: GetUserServicesPostsInput;

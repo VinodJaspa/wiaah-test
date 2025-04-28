@@ -26,7 +26,7 @@ import {
   InputGroup,
   InputLeftElement,
   Divider,
-} from "@UI";
+} from "@UI"; // Update this path to the correct relative path of the UI module
 import { mapArray, useForm } from "utils";
 import {
   useCreateVoucherMutation,
@@ -35,7 +35,7 @@ import {
 import { VoucherStatus } from "@features/API/gql/generated";
 
 export const VouchersSection: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const {
     changeTotalItems,
@@ -164,7 +164,7 @@ export const VouchersSection: React.FC = () => {
               <FormikInput
                 flushed
                 name="amount"
-                placeholder={t("enter_amount", "Enter Amount")}
+                placeholder={t("enter_amount", "Enter Amount") as string}
               />
               <FormikInput<SelectProps>
                 as={Select}
@@ -172,7 +172,7 @@ export const VouchersSection: React.FC = () => {
                 name="currency"
                 onOptionSelect={(opt) => setFieldValue("currency", opt)}
                 value={values.currency}
-                placeholder={t("select_currency", "Select Currency")}
+                placeholder={t("select_currency", "Select Currency") as string}
               >
                 {currencys.map((currency, i) => (
                   <SelectOption key={i} value={currency}>
@@ -206,7 +206,7 @@ export const VouchersSection: React.FC = () => {
             </Tr>
           </THead>
           <TBody>
-            {mapArray(data, (voucher, i) => (
+            {mapArray(data, (voucher:any, i) => (
               <Tr key={i}>
                 <Td>{voucher.code}</Td>
                 <Td>{new Date(voucher.createdAt).toDateString()}</Td>

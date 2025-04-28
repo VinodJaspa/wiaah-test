@@ -48,7 +48,7 @@ const placesPH = [].concat(
 export interface PlaceViewProps {}
 
 export const PlacesView: React.FC<PlaceViewProps> = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
 
   const router = useRouter();

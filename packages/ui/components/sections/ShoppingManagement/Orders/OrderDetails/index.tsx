@@ -46,7 +46,7 @@ import { OrderStatusEnum } from "@features/API";
 const randomNum = (max: number) => Math.floor(Math.random() * max);
 export const OrderDetailsSection = ({ order }: { order: any }) => {
   const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const OrderStatusArray: string[] = Object.values(OrderStatusEnum);
 
@@ -255,7 +255,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
   const { mutate, isLoading } = useUpdateProductStatus({
     onSuccess: handleClose,
   });
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
       <ModalOverlay />

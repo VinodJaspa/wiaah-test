@@ -43,7 +43,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
   serviceType,
   onView,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const {
     id,
     location,

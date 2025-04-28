@@ -17,6 +17,7 @@ import { ObjectId } from 'mongodb';
 import { GetAdminProductAttributesPaginationInput } from './dto/get-admin-product-attributes.input';
 import { ProductAttributesPaginationResponse } from './entities';
 
+
 @Resolver(() => ProductAttribute)
 export class ProductAttributeResolver {
   constructor(
@@ -112,7 +113,13 @@ export class ProductAttributeResolver {
       .filter((v) => !!v);
 
     await this.prisma.productAttribute.update({
-      data: { ...args, values: [...unChangedValues, ...changedValues] },
+      data: { 
+        ...args, 
+        values: [...unChangedValues, ...changedValues] as any[], 
+        name: args.name.map((n) => ({
+          value: n.value,
+        })) as any[], // Ensure proper mapping for the 'name' field
+      },
       where: {
         id: args.id,
       },
@@ -128,9 +135,14 @@ export class ProductAttributeResolver {
       data: {
         ...args,
         values: args.values.map((v) => ({
-          ...v,
           id: new ObjectId().toHexString(),
-        })),
+          name: v.name,
+          value: v.value,
+        })) as any[],
+        name: args.name.map((n) => ({
+          value: n.value,
+           
+        })) as any[],
       },
     });
 

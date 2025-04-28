@@ -24,7 +24,7 @@ import * as yup from "yup";
 export const AccountDeletionModal: React.FC<{
   onSubmit: (data: any) => any;
 }> = ({ onSubmit }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 

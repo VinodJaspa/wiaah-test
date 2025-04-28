@@ -68,7 +68,7 @@ describe('country banning', () => {
 
   it('Should ban buyer city', async () => {
     let cities = await prisma.bannedCity.findMany();
-    let input: BanCitiesInput = {
+    const input: BanCitiesInput = {
       citiesIds: [new ObjectId().toHexString(), new ObjectId().toHexString()],
     };
     expect(cities).toHaveLength(0);
@@ -100,7 +100,7 @@ describe('country banning', () => {
   });
   it('Should ban seller city', async () => {
     let cities = await prisma.bannedCity.findMany();
-    let input: BanCitiesInput = {
+    const input: BanCitiesInput = {
       citiesIds: [new ObjectId().toHexString(), new ObjectId().toHexString()],
     };
     expect(cities).toHaveLength(0);

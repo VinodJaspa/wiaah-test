@@ -32,7 +32,7 @@ export class NewsletterResolver {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly prisma: PrismaService,
-  ) { }
+  ) {}
 
   @Query(() => NewsletterSettings)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))

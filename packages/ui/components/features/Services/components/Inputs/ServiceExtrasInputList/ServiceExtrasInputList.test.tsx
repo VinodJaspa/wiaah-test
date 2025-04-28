@@ -13,7 +13,7 @@ const selectors = {
 
 describe("ServiceExtraInputList", () => {
   let wrapper: ShallowWrapper;
-  let props: ServiceExtrasInputListProps = {
+  const props: ServiceExtrasInputListProps = {
     onChange(list) {},
     value: [
       {

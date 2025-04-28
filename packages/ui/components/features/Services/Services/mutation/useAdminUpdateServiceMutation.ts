@@ -67,9 +67,10 @@ export function useAdminUpdateServiceMutation<
             )
         }
         `);
+        break;
 
       default:
-        break;
+        return null;
     }
 
     return client.setVariables(data as any).send();

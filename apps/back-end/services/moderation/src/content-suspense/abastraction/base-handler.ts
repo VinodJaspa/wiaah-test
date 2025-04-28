@@ -9,7 +9,7 @@ export class ContentSuspenseBaseHandler {
   eventbus: EventBus;
   eventClient: ClientKafka;
   constructor(
-    @Inject(SERVICES.ACCOUNTS_SERVICE) eventClient: ClientKafka,
+    @Inject('ACCOUNTS_SERVICE') eventClient: ClientKafka,
     querybus: QueryBus,
     commandbus: CommandBus,
     eventbus: EventBus,

@@ -26,7 +26,8 @@ const data: Profit[] = [...Array(5)].map((_, i) => ({
 }));
 
 const Profit = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination, controls } = usePaginationControls();
 
   return (

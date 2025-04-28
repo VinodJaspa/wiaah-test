@@ -39,7 +39,8 @@ export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
   };
   const handleFocusService = (serviceData: onMapLocation) => {
     try {
-      const { lat, lng } = serviceData;
+      const { lat, lon } = serviceData;
+      const lng = lon;
       setCenter({ lat, lng });
       setZoom(12);
       setLocations([serviceData]);
@@ -172,7 +173,7 @@ export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
                   strokeOpacity: 0,
                 }}
                 key={i}
-                position={{ lat: service.lat, lng: service.lng }}
+                position={{ lat: service.lat, lng: service.lon }}
               />
             ))
           : null}

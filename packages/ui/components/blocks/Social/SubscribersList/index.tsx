@@ -14,7 +14,7 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
   onClose,
   title,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [searchValue, setSearchValue] = React.useState<string>();
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchValue(e.target.value);

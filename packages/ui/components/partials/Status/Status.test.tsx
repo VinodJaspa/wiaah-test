@@ -3,7 +3,7 @@ import { StatusProps, StatusEnum, Status } from "./index";
 
 describe("Status", () => {
   let wrapper: ShallowWrapper;
-  let status: StatusEnum[] = ["completed", "failed", "pending"];
+  const status: StatusEnum[] = ["completed", "failed", "pending"];
 
   beforeEach(() => {
     wrapper = shallow(<Status status="completed" />);

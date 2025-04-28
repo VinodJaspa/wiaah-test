@@ -36,7 +36,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   askBillingAddress = true,
   askShippingAddress = true,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { controls } = useCursorScrollPagination();
   const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
   const [input, setInputs] = React.useState<AddressInputsFields>(

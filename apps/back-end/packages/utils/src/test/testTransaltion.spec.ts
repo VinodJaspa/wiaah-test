@@ -6,7 +6,7 @@ export async function testTranslation<TService, TValue>(
   input: TranslationResource[],
   getLangMethodName: string = "getLang"
 ) {
-  let testingLang: string[] = input.map((v) => v.langId);
+  const testingLang: string[] = input.map((v) => v.langId);
 
   if (typeof jest !== "undefined") {
     for (const lang of testingLang) {

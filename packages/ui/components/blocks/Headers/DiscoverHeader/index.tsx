@@ -12,7 +12,7 @@ export interface DiscoverHeaderProps {
 export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
   containerProps,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const [searchFilter, setSearchFilter] = React.useState<string>("");
 

@@ -20,7 +20,8 @@ import { ProfessionStatus } from "@features/API";
 import Head from "next/head";
 
 const AddProfession: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back, getParam } = useRouting();
 
   const [lang, setLang] = useState<WiaahLangId>(WiaahLangId.EN);

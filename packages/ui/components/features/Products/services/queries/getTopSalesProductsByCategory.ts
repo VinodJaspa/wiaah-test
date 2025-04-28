@@ -78,6 +78,9 @@ query getTopSalesProductsQuery(
     .send<GetTopSalesProductsQueryQuery>();
 
   // isExternalShopping
+  if (!res?.data.getTopSalesProducts) {
+    throw new Error("Failed to fetch top sales products by category");
+  }
   return res.data.getTopSalesProducts;
 };
 

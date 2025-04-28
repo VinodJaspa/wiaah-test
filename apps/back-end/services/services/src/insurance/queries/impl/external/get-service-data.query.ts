@@ -1,5 +1,8 @@
 export class GetServiceDataQuery {
-  constructor(public readonly id: string, public readonly type: string) {}
+  constructor(
+    public readonly id: string,
+    public readonly type: string,
+  ) {}
 }
 
 export type GetServiceDataQueryRes = {

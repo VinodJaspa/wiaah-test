@@ -5,7 +5,7 @@ import { CreateInputGqlTranslationInputField } from 'nest-utils';
 @InputType()
 export class ServiceExtraNameTranslationInput extends CreateInputGqlTranslationInputField(
   String,
-) { }
+) {}
 
 @InputType()
 export class ServiceExtraInput {

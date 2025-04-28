@@ -21,7 +21,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   telephone,
   showContact,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const contactRef = usePublishRef((keys) => keys.contact);
 
   const contacts: {

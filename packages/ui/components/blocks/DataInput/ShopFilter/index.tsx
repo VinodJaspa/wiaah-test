@@ -11,7 +11,7 @@ export interface ShopFilterProps {
 export const ShopFilter: React.FC<ShopFilterProps> = ({
   onlyMobile = true,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [isGrid, setGrid] = React.useState(false);
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] =
     React.useState(false);

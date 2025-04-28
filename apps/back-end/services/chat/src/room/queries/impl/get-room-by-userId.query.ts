@@ -1,3 +1,6 @@
 export class GetRoomByUserIdQuery {
-  constructor(public senderId: string, public reciverId: string) {}
+  constructor(
+    public senderId: string,
+    public reciverId: string,
+  ) {}
 }

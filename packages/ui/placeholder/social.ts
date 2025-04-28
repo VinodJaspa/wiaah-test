@@ -26,6 +26,8 @@ import {
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
   AttachmentType,
+  StoreType,
+  Story,
 } from "@features/API";
 
 import { products } from "./products";
@@ -135,7 +137,7 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   },
 ];
 
-import { StoreType, Story } from "@features/API/";
+
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",

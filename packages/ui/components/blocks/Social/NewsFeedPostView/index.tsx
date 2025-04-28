@@ -15,12 +15,15 @@ export interface NewsFeedPostViewProps {
 export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = ({
   postId,
 }) => {
+
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const isBase = useMediaQuery({ maxWidth: 767 }); 
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isLg = useMediaQuery({ minWidth: 1024 }); 
-  
   const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
-  const { t } = useTranslation();
+  
+
+
   const router = useRouter();
 
   const { data: _post, isLoading: PostIsLoading } = useQuery<PostCardInfo>([

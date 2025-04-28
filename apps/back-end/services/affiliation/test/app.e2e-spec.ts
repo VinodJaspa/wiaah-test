@@ -22,10 +22,10 @@ describe('app (e2e)', () => {
     clientId: SERVICES.AFFILIATION_SERVICE.clientId,
   });
 
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
-  let producer = kafka.producer();
-  let consumer = kafka.consumer({
+  const producer = kafka.producer();
+  const consumer = kafka.consumer({
     groupId: SERVICES.AFFILIATION_SERVICE.groupId,
   });
 

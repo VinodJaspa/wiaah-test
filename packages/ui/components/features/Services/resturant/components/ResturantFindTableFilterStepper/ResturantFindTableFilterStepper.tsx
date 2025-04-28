@@ -20,7 +20,7 @@ export interface ResturantFindTableFilterStepper { }
 export const ResturantFindTableFilterStepper: React.FC<
   ResturantFindTableFilterStepper
 > = ({ }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [filters, setFilters] = React.useState<FormatedSearchableFilter[]>([]);
 
   return (
@@ -76,7 +76,7 @@ export const ResturantFindTableFilterStepper: React.FC<
                   from: { hour: 8, minutes: 0 },
                   to: { hour: 17, minutes: 30 },
                 }}
-                timeComponent={ResturantReplacableTimeComponent}
+                timeComponent={ResturantReplacableTimeComponent as React.FC}
                 onTimeSelect={(time) => {
                   setFilters((state) => {
                     const filteredState = FilterAndAddToArray(

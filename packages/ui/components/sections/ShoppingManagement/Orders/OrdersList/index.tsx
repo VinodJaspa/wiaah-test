@@ -62,7 +62,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
     status: filter,
     pagination,
   });
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const [refundOrderId, setRefundOrderId] = React.useState<string>();
   const { mutate, isLoading: RefundLoading } = useAskForRefundMutation();
@@ -75,7 +75,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           <SearchIcon />
         </InputLeftElement>
         <Input
-          placeholder={t("Search for order id, customer, order status")}
+          placeholder={t("Search for order id, customer, order status") as string}
         ></Input>
       </InputGroup>
       <Stack
@@ -156,10 +156,10 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           <SearchIcon />
         </InputLeftElement>
         <Input
-          placeholder={`${t("Search for order ID")}, ${t(
+          placeholder={`${t("Search for order ID") as string}, ${t(
             "customer",
             "customer"
-          )}, ${t("Order Status")}, ${t("Or")} ${t("something")}`}
+          ) as string}, ${t("Order Status") as string}, ${t("Or")} ${t("something") as string}`}
         />
       </InputGroup>
       <div className="flex gap-2 items-center">

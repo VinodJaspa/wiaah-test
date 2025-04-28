@@ -21,7 +21,7 @@ export class AccountsService {
     private prisma: PrismaService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
-  ) { }
+  ) {}
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {

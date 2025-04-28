@@ -12,7 +12,7 @@ export interface ServiceOnMapLocalizationSectionProps {
 export const ServiceOnMapLocalizationSection: React.FC<
   ServiceOnMapLocalizationSectionProps
 > = ({ location }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const mapRef = usePublishRef((keys) => keys.map);
   const localizationRef = usePublishRef((keys) => keys.localization);
   return (

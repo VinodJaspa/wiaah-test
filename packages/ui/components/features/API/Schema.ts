@@ -2447,7 +2447,7 @@ export type HotelRoom = {
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   thumbnail: Scalars["String"]["output"];
-  fees?: Boolean;
+  fees?: boolean;
 };
 
 export type HotelRoomMetaInfoInput = {

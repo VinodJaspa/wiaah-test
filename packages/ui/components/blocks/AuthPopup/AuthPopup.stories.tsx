@@ -9,7 +9,7 @@ export default {
 } as Meta<typeof AuthPopup>;
 
 export const Default = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { OpenLoginPopup } = useLoginPopup();
   return (
     <>

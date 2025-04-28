@@ -8,7 +8,7 @@ import { RecoilRoot } from "recoil";
 import { useSetBookedServicesState, BookedService } from "state";
 import { CalculateVat, getTestId, randomNum } from "utils";
 
-let mockVisitServiceCheckout: jest.Mock = jest.fn();
+const mockVisitServiceCheckout: jest.Mock = jest.fn();
 
 jest.mock("routing", () => ({
   useRouting: () => ({
@@ -26,14 +26,14 @@ const testids = {
   checkoutBtn: "CheckoutBtn",
 };
 
-let mockServices: BookedService[] = [...Array(10)].map((_, i) => ({
+const mockServices: BookedService[] = [...Array(10)].map((_, i) => ({
   id: `${i}`,
   name: `service ${i}`,
   price: randomNum(15),
   qty: i,
 }));
 
-let mockSubtotal = mockServices.reduce((acc, curr) => {
+const mockSubtotal = mockServices.reduce((acc, curr) => {
   return acc + curr.price * curr.qty;
 }, 0);
 

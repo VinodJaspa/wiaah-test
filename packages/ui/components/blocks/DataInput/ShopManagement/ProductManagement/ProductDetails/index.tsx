@@ -44,7 +44,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { data: categories } = useGetProductCategories();
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

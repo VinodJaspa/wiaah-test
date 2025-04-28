@@ -20,7 +20,7 @@ import { useRouting } from "@UI/../routing";
 import { ServiceTypeOfSeller } from "@features/API";
 
 export const VatSection: React.FC<{ accountId: string }> = ({ accountId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { form, inputProps } = useForm<UpdateMyShopMutationVariables["args"]>(
     { userId: accountId },
     { userId: accountId }

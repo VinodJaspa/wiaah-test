@@ -24,7 +24,8 @@ import { useRouting } from "routing";
 import Head from "next/head";
 
 const LanguagesList: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
 
   const { pagination, controls } = usePaginationControls();

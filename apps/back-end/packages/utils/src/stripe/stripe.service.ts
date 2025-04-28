@@ -267,7 +267,7 @@ export class StripeService implements OnModuleInit {
     currency: string = "usd",
     name?: string
   ): Promise<Stripe.Price> {
-    let _tiers = tiers;
+    const _tiers = tiers;
 
     _tiers.splice(tiers.length - 1, 1, {
       limit: "inf",

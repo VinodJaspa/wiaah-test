@@ -7,7 +7,7 @@ import { RegisterAccountType } from './dto';
 
 @Controller()
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   async handleAccountCreated(

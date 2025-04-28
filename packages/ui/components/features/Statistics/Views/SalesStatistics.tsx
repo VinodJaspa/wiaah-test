@@ -111,7 +111,7 @@ const customerStats: {
 export const SalesStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const ref = React.useRef<HTMLDivElement>(null);
   const [salesChartDims, setChartDims] = React.useState<{
     w: number;
@@ -614,7 +614,7 @@ export const SalesStatisticsCard: React.FC<{
   lastCycleLabel,
   reverse = false,
 }) => {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const [percent, isPositive] = calculateAmountPercentChange(
       amount,
       lastCycleAmount

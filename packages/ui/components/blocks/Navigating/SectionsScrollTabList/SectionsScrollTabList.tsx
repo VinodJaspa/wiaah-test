@@ -17,7 +17,7 @@ export const SectionsScrollTabList: React.FC<SectionsScrollTabListProps> = ({
   tabs,
   visible = true,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { ScrollTo } = useScrollTo();
 
   if (!visible) return null;

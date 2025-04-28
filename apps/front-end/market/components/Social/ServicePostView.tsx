@@ -17,10 +17,10 @@ import {
 const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export const ServicePostView: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { filters } = useSearchFilters();
   const {
-    data: res,
+    data: res ,
     isLoading,
     isError,
   } = useGetServicePostDetailsQuery(filters);
@@ -31,8 +31,8 @@ export const ServicePostView: React.FC = () => {
           <SpinnerFallback isError={isError} isLoading={isLoading}>
             {res ? (
               <SocialPostHeader
-                name={res.data.profileInfo.name}
-                thumbnail={res.data.profileInfo.thumbnail}
+                name={res?.data.profileInfo.name}
+                thumbnail={res?.data.profileInfo.thumbnail}
               />
             ) : null}
           </SpinnerFallback>
@@ -62,9 +62,9 @@ export const ServicePostView: React.FC = () => {
       </div>
       <p className="text-3xl font-bold w-full text-center">
         <SpinnerFallback isError={isError} isLoading={isLoading}>
-          {res ? (
+          {(res ? res : null) ? (
             <>
-              {t("view", "view")} {res.data.profileInfo.name}{" "}
+              {t("view", "view")} {(res ? res : null).data.profileInfo.name}{" "}
               {t("other_posts", "other posts")}
             </>
           ) : null}

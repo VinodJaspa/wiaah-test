@@ -23,9 +23,9 @@ const testIds = {
 describe("MyWishListSection", () => {
   let wrapper: ShallowWrapper;
 
-  let mockGetWishlist = useGetMyWishlistQuery as jest.Mock;
-  let mockRemoveWishlist = useRemoveItemFromWishlistMutation as jest.Mock;
-  let mockMutateRemove = jest.fn();
+  const mockGetWishlist = useGetMyWishlistQuery as jest.Mock;
+  const mockRemoveWishlist = useRemoveItemFromWishlistMutation as jest.Mock;
+  const mockMutateRemove = jest.fn();
 
   // Ensure the structure matches your GraphQL schema
   const mockWishlistItems = [

@@ -68,7 +68,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
 
   const { isMobile } = useResponsive();
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className="w-full flex flex-col gap-4">

@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const SidebarProvider: React.FC<Props> = ({ children }) => {
-  let [visible, setVisible] = useState<boolean>(defaultState.visible);
+  const [visible, setVisible] = useState<boolean>(defaultState.visible);
   const toggleVisibility = () => {
     setVisible(!visible);
   };

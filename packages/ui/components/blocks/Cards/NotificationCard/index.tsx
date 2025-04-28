@@ -35,7 +35,7 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
   seen,
 }) => {
   try {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const { getSince } = useDateDiff({
       from: new Date(createdAt),
       to: new Date(Date.now()),
@@ -116,17 +116,17 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
                     </span>
                   </p>
                 );
-              case NotificationType.OrderDelivered:
-                return (
-                  <p>
-                    <span className="font-semibold">
-                      {t("Your order has been delivered")}{" "}
-                    </span>
-                    <span>
-                      {t("Order ID")}:#{orderId}
-                    </span>
-                  </p>
-                );
+              // case NotificationType.OrderDelivered:
+              //   return (
+              //     <p>
+              //       <span className="font-semibold">
+              //         {t("Your order has been delivered")}{" "}
+              //       </span>
+              //       <span>
+              //         {t("Order ID")}:#{orderId}
+              //       </span>
+              //     </p>
+              //   );
               case NotificationType.PostReacted:
                 return (
                   <p>
@@ -158,8 +158,8 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
                   </p>
                 );
 
-              default:
-                break;
+                default:
+                  throw new Error("Invalid status"); 
             }
           })()}
           <p className="text-xs text-[#7E7E7E]">

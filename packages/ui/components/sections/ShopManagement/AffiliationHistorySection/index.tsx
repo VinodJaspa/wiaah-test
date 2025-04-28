@@ -46,7 +46,7 @@ export const AffiliationHistorySection: React.FC<
     pagination,
   });
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   React.useEffect(() => {
     changeTotalItems(AffiliationHistoryCards.length);
   }, []);
@@ -57,9 +57,9 @@ export const AffiliationHistorySection: React.FC<
       >
         {isMobile ? null : (
           // {/* TODO: donwload affiliation history list as a pdf  */}
-          <Button className="flex py-1 items-center gap-2">
+          (<Button className="flex py-1 items-center gap-2">
             <BsFilePdfFill /> {t("pdf")}
-          </Button>
+          </Button>)
         )}
       </SectionHeader>
       {isMobile ? (

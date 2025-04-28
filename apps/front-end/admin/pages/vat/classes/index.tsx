@@ -18,7 +18,8 @@ const classes = [
 ];
 
 const TaxClasses: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
     <React.Fragment>
@@ -70,8 +71,8 @@ const TaxClasses: NextPage = () => {
             value: t("Action"),
           },
         ]}
-        onAdd={() => { }}
-        onDelete={() => { }}
+        onAdd={() => {}}
+        onDelete={() => {}}
         title={t("Tax Class List")}
       />
     </React.Fragment>

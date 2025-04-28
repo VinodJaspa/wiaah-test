@@ -18,7 +18,7 @@ type Menu = {
 export const RestaurantIncludedServicesSection: React.FC<{
   onChange?: (props: Record<string, any>) => any;
 }> = ({ onChange }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <Formik<{
       starter: Menu;

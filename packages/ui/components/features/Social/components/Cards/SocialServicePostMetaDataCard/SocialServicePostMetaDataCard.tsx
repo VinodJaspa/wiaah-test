@@ -53,7 +53,7 @@ export interface SocialServicePostMetaDataCardProps {
 export const SocialServicePostMetaDataCard: React.FC<
   SocialServicePostMetaDataCardProps
 > = ({ post, onClick }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   if (!post) return null;
   return (
     <div className="flex flex-col w-full">

@@ -33,9 +33,8 @@ export class ContentShareService {
     );
     if (!content) throw new ContentNotFoundException();
 
-    const SharedByProfileId = await this.profileService.getProfileIdByUserId(
-      userId,
-    );
+    const SharedByProfileId =
+      await this.profileService.getProfileIdByUserId(userId);
 
     try {
       const share = await this.prisma.contentShare.create({

@@ -56,7 +56,8 @@ import Head from "next/head";
 const EditCategory = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { mutate } = useUpdateServiceCategory();
   const [lang, setLang] = React.useState<string>("en");
   const { data } = useGetServiceCategory(CategoryId);
@@ -306,8 +307,9 @@ const EditCategory = () => {
                   <SimpleTabHead>
                     {mapArray(tabs, ({ name }, i) => (
                       <div
-                        className={`${i === 3 ? "border-b-white" : ""
-                          } border px-8 py-2`}
+                        className={`${
+                          i === 3 ? "border-b-white" : ""
+                        } border px-8 py-2`}
                       >
                         {name}
                       </div>
@@ -344,7 +346,8 @@ const ServiceCategoryFilterView: React.FC<{
   value: ServiceCategoryFilterInput[];
   onChange: (updated: ServiceCategoryFilterInput[]) => any;
 }> = ({ onChange, value }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath, back } = useRouting();
 
   const [filterGroupAsc, setFilterGroupAsc] = React.useState<boolean>(false);
@@ -355,7 +358,7 @@ const ServiceCategoryFilterView: React.FC<{
   const filter = value.find((v) => (v.filteringKey = filterId));
   const edit = typeof EditId === "string";
 
-  function handleChange() { }
+  function handleChange() {}
 
   function handleEdit(id: string) {
     setEditId(id);
@@ -451,7 +454,7 @@ const ServiceCategoryFilterView: React.FC<{
                 initialValues={{
                   filterValues: [],
                 }}
-                onSubmit={() => { }}
+                onSubmit={() => {}}
               >
                 {({ values, setFieldValue, handleChange }) => {
                   return (

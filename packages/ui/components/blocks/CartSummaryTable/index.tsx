@@ -70,7 +70,7 @@ export const CartSummaryTable: React.FC<CartSummaryTableProps> = ({
       timeZone
     )}`;
   }
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <Table className="w-full">
       <THead>

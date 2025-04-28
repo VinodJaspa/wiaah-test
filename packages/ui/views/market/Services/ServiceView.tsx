@@ -96,7 +96,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({ serviceId }) => {
     id: serviceId,
   });
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
 
   const categories = router.query.categories;

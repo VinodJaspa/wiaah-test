@@ -23,7 +23,7 @@ export class HotelService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly eventBus: EventBus,
-  ) { }
+  ) {}
 
   async getHotels() {
     const services = await this.prisma.hotelService.findMany({
@@ -44,13 +44,24 @@ export class HotelService {
         policies: input.policies,
         presentations: input.presentations,
         serviceMetaInfo: input.serviceMetaInfo,
+        // @ts-ignore
         rooms:
           input.rooms.length > 0
             ? {
-              createMany: {
-                data: input.rooms.map((v) => ({ ...v, sellerId: userId })),
-              },
-            }
+                createMany: {
+                  data: input.rooms.map((v) => ({
+                    ...v,
+                    sellerId: userId,
+                    includedServices: v.includedServices
+                      ? {
+                          create: v.includedServices.map((service) => ({
+                            value: service.value,
+                          })),
+                        }
+                      : undefined,
+                  })),
+                },
+              }
             : undefined,
       },
       include: {
@@ -64,7 +75,7 @@ export class HotelService {
     //   );
     // });
 
-    return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, langId);
+    return this.formatHotelData(hotel as PrismaHotelService & { rooms: HotelRoom[] }, langId);
   }
 
   async getHotelWithRoomsById(
@@ -104,51 +115,51 @@ export class HotelService {
     }
   }
 
-  async checkViewHotelPremissions(hotelId: string, userId: string) { }
+  async checkViewHotelPremissions(hotelId: string, userId: string) {}
 
   getSelectionFields(
     fields: GqlHotelSelectedFields,
   ): Prisma.HotelServiceSelect {
     return fields
       ? {
-        ...fields,
-        serviceMetaInfo: {
-          select: {
-            langId: true,
-            value: fields.serviceMetaInfo,
-          },
-        },
-        rooms: fields.rooms
-          ? {
+          ...fields,
+          serviceMetaInfo: {
             select: {
-              ...ExcludeFieldsFromObject(fields.rooms.select, [
-                'description',
-                'title',
-              ]),
-              roomMetaInfo:
-                fields.rooms.select.description || fields.rooms.select.title
-                  ? {
-                    select: {
-                      langId: true,
-                      value: {
-                        select: {
-                          description: fields.rooms.select?.description,
-                          title: fields.rooms.select?.title,
-                        },
-                      },
-                    },
-                  }
-                  : false,
+              langId: true,
+              value: fields.serviceMetaInfo,
             },
-          }
-          : false,
-        policies: {
-          select: {
-            langId: true,
-            value: fields.policies,
           },
-        },
-      }
+          rooms: fields.rooms
+            ? {
+                select: {
+                  ...ExcludeFieldsFromObject(fields.rooms.select, [
+                    'description',
+                    'title',
+                  ]),
+                  roomMetaInfo:
+                    fields.rooms.select.description || fields.rooms.select.title
+                      ? {
+                          select: {
+                            langId: true,
+                            value: {
+                              select: {
+                                description: fields.rooms.select?.description,
+                                title: fields.rooms.select?.title,
+                              },
+                            },
+                          },
+                        }
+                      : false,
+                },
+              }
+            : false,
+          policies: {
+            select: {
+              langId: true,
+              value: fields.policies,
+            },
+          },
+        }
       : undefined;
   }
 

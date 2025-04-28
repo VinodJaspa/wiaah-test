@@ -55,7 +55,7 @@ const reportOptions = [
 
 export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
   const { commentId, closeModal } = useCommentReportModal();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [previousSelections, setPreviousSelections] = useState<string[]>([]);
   const [currentLayer, setCurrentLayer] = useState(1);

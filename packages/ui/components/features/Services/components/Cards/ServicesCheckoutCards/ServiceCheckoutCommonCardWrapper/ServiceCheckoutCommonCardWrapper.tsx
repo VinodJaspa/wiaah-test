@@ -35,7 +35,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
   guests,
   horizontal,
 }) => {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const fromDate = DateDetails(bookedDates.from);
     const toDate = DateDetails(bookedDates.to || "");
     const { days } = useDateDiff({

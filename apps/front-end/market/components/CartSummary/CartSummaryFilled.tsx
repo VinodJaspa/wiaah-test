@@ -15,7 +15,7 @@ export interface CartSummaryFilledProps { }
 const CartSummaryFilled: React.FC<CartSummaryFilledProps> = () => {
   const { data: res, isLoading, isError } = useGetMyCartSummaryDataQuery();
   const items = res ? res.data : [];
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   function handleContactClick(shopId: string) { }
 
   function handleMoveToWishlist(productId: string) { }

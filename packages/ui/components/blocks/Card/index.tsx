@@ -18,7 +18,7 @@ export const RecommendedShopCard: React.FC<RecommendedShopCardProps> = ({
   label,
   type,
 }) => {
-  let [shadeColor, setShadeColor] = useState<string | undefined>();
+  const [shadeColor, setShadeColor] = useState<string | undefined>();
 
   useEffect(() => {
     setShadeColor(colorShades[Math.floor(Math.random() * 5)]);

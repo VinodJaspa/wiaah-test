@@ -20,7 +20,7 @@ export interface BeautyCenterMyServiceCardProps
 export const BeautyCenterMyServiceCard: React.FC<
   BeautyCenterMyServiceCardProps
 > = ({ onEdit, onRemove, ...props }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { id, name, owners, rate, reviews, thumbnail } = props;
   const location = {

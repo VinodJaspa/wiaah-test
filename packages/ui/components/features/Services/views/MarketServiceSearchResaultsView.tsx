@@ -65,7 +65,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isTablet, isMobile } = useResponsive();
   const { showServiceSearchResultsFilter } = useSocialControls();
   const { controls, pagination } = usePaginationControls();
@@ -175,7 +175,7 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
     serviceType as ServiceType,
   );
@@ -274,7 +274,7 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
                 </HStack>
               ) : (
                 // TODO: add range input
-                <></>
+                (<></>)
               )}
             </div>
           ))}
@@ -332,27 +332,51 @@ export const MobileServicesCardsSwitcherView: React.FC<
     <div className="grid grid-cols-2 gap-2">
       {mapArray(
         dataToRender?.data,
-        ({
-          title,
-          name,
-          price,
-          rating,
-          shop,
-          thumbnail,
-          description,
-          reviews,
-          speciality,
-          availableAppointments,
-          healthCenterBookedAppointments,
-          airCondition,
-          gpsAvailable,
-          lugaggeCapacity,
-          seats,
-          windows,
-          id,
-          treatmentCategory,
-          saved,
+        (service: {
+          title?: string;
+          name: string;
+          price: number;
+          rating: number;
+          shop: {
+            location: { city: string; country: string };
+            sellerProfile: { username: string; photo: string; verified: boolean };
+          };
+          thumbnail: string;
+          description: string;
+          reviews: number;
+          speciality?: string;
+          availableAppointments?: any[];
+          healthCenterBookedAppointments?: any[];
+          airCondition?: boolean;
+          gpsAvailable?: boolean;
+          lugaggeCapacity?: number;
+          seats?: number;
+          windows?: number;
+          id: string;
+          treatmentCategory?: string;
+          saved?: boolean;
         }) => {
+          const {
+            title,
+            name,
+            price,
+            rating,
+            shop,
+            thumbnail,
+            description,
+            reviews,
+            speciality,
+            availableAppointments,
+            healthCenterBookedAppointments,
+            airCondition,
+            gpsAvailable,
+            lugaggeCapacity,
+            seats,
+            windows,
+            id,
+            treatmentCategory,
+            saved,
+          } = service;
           switch (serviceType) {
             case ServiceType.Hotel:
               return (
@@ -371,7 +395,13 @@ export const MobileServicesCardsSwitcherView: React.FC<
                 <MarketRestaurantServiceSearchCardAlt
                   id={id}
                   reviews={reviews}
-                  location={shop.location}
+                  location={{
+                    ...shop.location,
+                    address: "Unknown Address",
+                    lat: 0,
+                    long: 0,
+                    state: "Unknown State",
+                  }}
                   name={name}
                   price={price}
                   rating={rating}
@@ -438,7 +468,7 @@ export const MobileServicesCardsSwitcherView: React.FC<
               );
 
             default:
-              break;
+              return null;
           }
         },
       )}
@@ -458,7 +488,7 @@ export const ServicesCardsSwitcherView: React.FC<
 > = ({ services, serviceType, showOn, searchQuery }) => {
   const { isTablet, isMobile } = useResponsive();
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col w-full gap-4 ">
       {serviceType === ServiceType.Hotel ? (
@@ -590,6 +620,7 @@ export const ServicesCardsSwitcherView: React.FC<
                 cancelationPolicies: [
                   {
                     __typename: "ServiceCancelationPolicy",
+                    id: "policy-1",
                     duration: 24,
                     cost: 10,
                   },

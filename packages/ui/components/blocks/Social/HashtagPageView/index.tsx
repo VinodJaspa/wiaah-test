@@ -31,13 +31,15 @@ import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 export const HashtagPageView: React.FC = () => {
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 });
+
   const isBase = useMediaQuery({ maxWidth: 767 });
 
-  const cols = isBase ? 3 : 3;
-  const { t } = useTranslation();
   const router = useRouter();
   const tag = router.query.tag as string;
-
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
   const tabs: TabType[] = [
     {
       name: t("news_feed", "NEWSFEED"),

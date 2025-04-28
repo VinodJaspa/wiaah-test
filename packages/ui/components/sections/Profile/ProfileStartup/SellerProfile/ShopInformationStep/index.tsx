@@ -31,7 +31,7 @@ import {
 } from "@features/API";
 import { cities, useForm } from "utils";
 
-let countriesArray = Country.getAllCountries().map((element) => ({
+const countriesArray = Country.getAllCountries().map((element) => ({
   value: element.isoCode,
   label: element.name,
 }));
@@ -42,7 +42,7 @@ export interface ShopInformationStepProps {
 
 export const ShopInformationStep = React.forwardRef(
   ({ onSuccess }: ShopInformationStepProps, ref) => {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const { emit } = useTypedReactPubsub(
       (events) => events.openFileUploadModal,
     );

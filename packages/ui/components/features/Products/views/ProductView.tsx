@@ -46,7 +46,7 @@ export const ProductView: React.FC<{ productId: string }> = ({ productId }) => {
   });
 
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return isMobile ? (
     <div className="flex flex-col gap-6">

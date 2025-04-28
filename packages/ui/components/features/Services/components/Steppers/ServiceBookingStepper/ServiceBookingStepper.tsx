@@ -59,7 +59,7 @@ export const ServiceBookingStepper: React.FC<ServiceBookingStepper> = ({
                   from: { hour: 8, minutes: 0 },
                   to: { hour: 17, minutes: 30 },
                 }}
-                timeComponent={ResturantReplacableTimeComponent}
+                timeComponent={ResturantReplacableTimeComponent as React.FC}
                 onTimeSelect={(time) => {
                   setFilters((state) => {
                     const filteredState = FilterAndAddToArray(

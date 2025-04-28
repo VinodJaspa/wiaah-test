@@ -15,7 +15,8 @@ import { useTranslation } from "react-i18next";
 
 export const AdminHeader: React.FC<{ title: string }> = ({ title = "" }) => {
   const { user } = useUserData();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <div className="w-full">
       <div className="h-24 flex items-center justify-between">

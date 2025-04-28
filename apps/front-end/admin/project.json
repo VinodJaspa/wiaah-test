@@ -1,0 +1,16 @@
+{
+  "name": "admin",
+  "root": "apps/front-end/admin",
+  "sourceRoot": "apps/front-end/admin/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/next:server",
+      "options": {
+        "buildTarget": "admin:build",
+        "dev": true,
+        "port": 2999
+      }
+    }
+  }
+}

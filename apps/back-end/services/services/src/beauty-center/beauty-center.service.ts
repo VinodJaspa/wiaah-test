@@ -216,7 +216,9 @@ export class BeautyCenterService {
     userId: string,
     selectedFields?: GqlBeautyCenterSelectedFields,
   ): Promise<PrismaBeautyCenterService> {
-    let notFoundErr = this.errorService.getError((v) => v.serviceIdNotFoundErr);
+    const notFoundErr = this.errorService.getError(
+      (v) => v.serviceIdNotFoundErr,
+    );
     const service = await this.prisma.beautyCenterService.findUnique({
       where: {
         id: serviceId,
@@ -234,9 +236,8 @@ export class BeautyCenterService {
   }
 
   private async checkCreatePremissions(userId: string) {
-    const hasService = await this.serviceOwnership.getServiceOwnershipByUserId(
-      userId,
-    );
+    const hasService =
+      await this.serviceOwnership.getServiceOwnershipByUserId(userId);
     if (hasService)
       throw new ForbiddenException(
         this.errorService.getError((v) => v.serviceDuplicationErr),

@@ -137,7 +137,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
     const paths = (obj = {}, head = ''): string[] => {
       return Object.entries(obj).reduce(
         (acc: string[], [key, value]: [string, any]) => {
-          let fullPath = this.addDelimiter(head, key);
+          const fullPath = this.addDelimiter(head, key);
           return this.isObject(value)
             ? acc.concat(key, paths(value, fullPath))
             : acc.concat(fullPath);
@@ -152,7 +152,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
     const paths = (obj = {}, head = ''): [string, any][] => {
       return Object.entries(obj).reduce(
         (acc: [string, any][], [key, value]: [string, any]) => {
-          let fullPath = this.addDelimiter(head, key);
+          const fullPath = this.addDelimiter(head, key);
           if (
             this.isFieldObject(value) &&
             Object.keys(value.fieldsByTypeName).length === 0
@@ -185,7 +185,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
               pathParts.splice(i - 1, 2);
             }
           });
-          let keptOptions = {
+          const keptOptions = {
             ...(name !== alias && { alias }),
             ...(Object.keys(args).length && { args }),
           };

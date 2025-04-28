@@ -17,7 +17,7 @@ const selectors = {
 };
 
 describe("AccountDeletionSection render tests", () => {
-  let mockDeleteMut = useDeleteMyAccountMutation as jest.Mock;
+  const mockDeleteMut = useDeleteMyAccountMutation as jest.Mock;
 
   it("should call suspend mutation on suspend btn", async () => {
     const wrapper = mount(
@@ -25,7 +25,7 @@ describe("AccountDeletionSection render tests", () => {
         <AccountDeletionSection />
       </QueryClientProvider>
     );
-    let suspendBtn = getMountedComponent(
+    const suspendBtn = getMountedComponent(
       wrapper,
       getTestId(selectors.suspendBtn)
     );

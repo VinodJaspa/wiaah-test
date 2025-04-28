@@ -74,7 +74,7 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
 }) => {
   const [mounted, setMounted] = React.useState(false);
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   React.useEffect(() => {
     setMounted(true);
@@ -352,7 +352,7 @@ export const TreatmentsCheckoutList: React.FC<{
     qty: number;
   }[];
 }> = ({ treatments }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col gap-2 mt-2">
       <p className="font-medium">{t("Treatments")}</p>

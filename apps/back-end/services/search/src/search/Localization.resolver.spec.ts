@@ -97,10 +97,15 @@ describe('Localization Tests', () => {
     mockElasticGetPropertiesIdsAndTypesByLocationQuery.mockReturnValue(
       mockSearchData,
     );
-    const mockfilteredData = mockSearchData.reduce((acc, curr) => {
-      const typeAcc = Array.isArray(acc[curr.type]) ? [...acc[curr.type]] : [];
-      return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
-    }, {} as Record<string, string[]>);
+    const mockfilteredData = mockSearchData.reduce(
+      (acc, curr) => {
+        const typeAcc = Array.isArray(acc[curr.type])
+          ? [...acc[curr.type]]
+          : [];
+        return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
+      },
+      {} as Record<string, string[]>,
+    );
 
     mockKafkaSend.mockImplementation(
       (
@@ -298,10 +303,15 @@ describe('Localization Tests', () => {
 
     mockElasticGetPropertiesIdsByTypeQuery.mockReturnValue(mockSearchData);
 
-    const mockfilteredData = mockSearchData.reduce((acc, curr) => {
-      const typeAcc = Array.isArray(acc[curr.type]) ? [...acc[curr.type]] : [];
-      return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
-    }, {} as Record<string, string[]>);
+    const mockfilteredData = mockSearchData.reduce(
+      (acc, curr) => {
+        const typeAcc = Array.isArray(acc[curr.type])
+          ? [...acc[curr.type]]
+          : [];
+        return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
+      },
+      {} as Record<string, string[]>,
+    );
 
     mockKafkaSend.mockImplementation(
       (

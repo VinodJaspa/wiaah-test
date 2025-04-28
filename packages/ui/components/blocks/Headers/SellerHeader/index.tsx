@@ -67,7 +67,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { data } = useGetMyNotificationsQuery();
 
   return (

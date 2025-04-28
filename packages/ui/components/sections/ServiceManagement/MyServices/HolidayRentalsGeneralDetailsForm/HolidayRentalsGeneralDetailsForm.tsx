@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+
 import { FileRes } from "utils";
 import React from "react";
 import {
@@ -36,6 +36,7 @@ import { Form, Formik } from "formik";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { NewServiceSchemas } from "validation";
 import { useReactPubsub } from "react-pubsub";
+import { useTranslation } from "react-i18next";
 
 export interface HolidayRantalsDetailsProps {
   onChange?: (data: Record<string, any>) => any;
@@ -46,7 +47,7 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const HolidayRentalsGeneralDetailsForm: React.FC<
   HolidayRantalsDetailsProps
 > = ({ onChange }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { data: res } = useGetHotelAmenitesQuery();
 
   const amenitiesNames = React.useMemo(

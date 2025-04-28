@@ -7,7 +7,7 @@ export const SearchHealthSpecialtiesCardsList: React.FC<{
   specialites: HealthCenterSpecialty[];
   searchQuery: string;
 }> = ({ specialites, searchQuery }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col w-full">
       <p className="font-bold text-lg p-2">{t("HEALTH CENTER")}</p>

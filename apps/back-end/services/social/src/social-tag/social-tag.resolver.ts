@@ -16,7 +16,7 @@ export class SocialTagResolver {
   ): Promise<SocialTag | null> {
     switch (args.contentType) {
       case ContentHostType.post_newsfeed:
-        let post = await this.prisma.newsfeedPost.findUnique({
+        const post = await this.prisma.newsfeedPost.findUnique({
           where: {
             id: args.contentId,
           },

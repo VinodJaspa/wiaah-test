@@ -28,7 +28,7 @@ export const AdminGetPostCommentsModal: React.FC<{
   contentType: string;
   onClose: () => any;
 }> = ({ onClose, postId, contentType }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { controls, pagination } = usePaginationControls();
 
   const { data } = useAdminGetContentCommentsQuery({

@@ -72,7 +72,7 @@ export const TransactionsHistorySection: React.FC<
 
   const { data: balance } = useGetMyBalanceQuery();
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return isMobile ? (
     <div className="flex flex-col gap-4 p-2">
       <HStack className="justify-center relative p-4">

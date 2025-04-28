@@ -74,8 +74,8 @@ export class SiteInformationsResolver {
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async updateSocialLinks(@Args('args') input: UpdateSiteSocialInput) {
     const settings = await this.getSiteSettings();
-    let updateLinks: SocialLink[] = [];
-    let createLinks: SocialLink[] = [];
+    const updateLinks: SocialLink[] = [];
+    const createLinks: SocialLink[] = [];
 
     input.socialLinks.forEach(({ label, link, placements }) => {
       if (settings.socialLinks.some((v) => v.label === label)) {

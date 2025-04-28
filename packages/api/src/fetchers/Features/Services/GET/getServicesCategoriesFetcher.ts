@@ -7,7 +7,7 @@ export const getServicesCategoriesFetcher = (
   pagination: QueryPaginationInputs
 ): ServiceCategoryType[] => {
   return [
-    { name: "holidays rentals", slug: "holidays_rentals" },
+    { name: "holidays rentals", slug: "holiday_rentals" },
     { name: "hotels", slug: "hotel" },
     { name: "resturants", slug: "restaurant" },
     {

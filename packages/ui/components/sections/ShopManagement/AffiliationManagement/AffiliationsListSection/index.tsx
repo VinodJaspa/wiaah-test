@@ -39,7 +39,7 @@ export const AffiliationListSection: React.FC<
   const { getUrl } = useRouting();
   const { copy } = useClipboard();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { data: affiliations } = useGetUserAffiliationQuery({ pagination });
 

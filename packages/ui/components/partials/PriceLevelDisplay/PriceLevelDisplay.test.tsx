@@ -13,7 +13,7 @@ export const WrappedPriceLevelDisplay: React.FC<PriceLevelDisplayProps> = (
 
 describe("PriceLevelDisplay tests", () => {
   let wrapper: ReactWrapper;
-  let levels = [80, 150, 250, 450];
+  const levels = [80, 150, 250, 450];
   it("should render properly with the right number of symbols", () => {
     wrapper = mount(<WrappedPriceLevelDisplay amount={20} levels={levels} />);
     expect(wrapper.text()).toBe("$");

@@ -46,7 +46,7 @@ export class AccountsResolver {
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
     private readonly stripe: StripeService,
-  ) { }
+  ) {}
 
   @Mutation(() => String)
   async register(

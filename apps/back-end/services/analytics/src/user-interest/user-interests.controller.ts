@@ -23,7 +23,7 @@ export class UserInterestsController {
   constructor(
     private readonly prisma: PrismaService,
     private readonly querybus: QueryBus,
-  ) { }
+  ) {}
 
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('post'))
   async handleSocialContentReaction(

@@ -37,7 +37,7 @@ export class ServiceCategory {
   id: string;
 
   @Field(() => String)
-  name: String;
+  name: string;
 
   @Field(() => Int)
   sortOrder: number;

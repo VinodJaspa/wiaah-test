@@ -32,7 +32,7 @@ const randomNum = (max: number) => Math.floor(Math.random() * max);
 export interface CheckoutViewProps { }
 
 export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { visit } = useRouting();
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
@@ -87,7 +87,7 @@ export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
   async function handleVoucherValidation(code: string) {
     // call api to check if the voucher is valid
     const voucherName = "50OFF";
-    let ok = code === voucherName;
+    const ok = code === voucherName;
     if (ok) {
       setVoucher({
         voucherName,

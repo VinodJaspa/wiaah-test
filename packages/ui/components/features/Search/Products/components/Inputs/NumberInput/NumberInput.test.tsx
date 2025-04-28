@@ -11,7 +11,7 @@ const selectors = {
 describe("NumberInput", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: NumberInputProps = {
+  const props: NumberInputProps = {
     onChange(value) {},
     value: 15,
   };

@@ -37,14 +37,14 @@ import { ProductAttributeModule } from './product-attribute/product-attribute.mo
   ],
   exports: [ElasticsearchModule],
 })
-export class ElasticGlobalModule { }
+export class ElasticGlobalModule {}
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class PrismaGlobalModule { }
+export class PrismaGlobalModule {}
 
 @Module({
   imports: [
@@ -79,4 +79,4 @@ export class PrismaGlobalModule { }
   ],
   controllers: [],
 })
-export class AppModule { }
+export class AppModule {}

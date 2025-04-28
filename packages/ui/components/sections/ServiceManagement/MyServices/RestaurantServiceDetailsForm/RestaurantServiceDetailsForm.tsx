@@ -29,7 +29,7 @@ export interface RestaurantServiceDetailsFormProps {
 export const RestaurantServiceDetailsForm: React.FC<
   RestaurantServiceDetailsFormProps
 > = ({ onChange }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

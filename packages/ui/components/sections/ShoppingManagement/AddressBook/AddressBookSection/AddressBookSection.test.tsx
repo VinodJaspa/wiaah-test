@@ -13,7 +13,7 @@ const testids = {
   addressCard: "address-card",
 };
 
-let mockData = {
+const mockData = {
   isLoading: false,
   data: [
     {
@@ -46,7 +46,7 @@ let mockData = {
 describe("addressBookSection tests", () => {
   let wrapper: ShallowWrapper;
 
-  let mockGetQuery = useGetMyShippingAddressesQuery as jest.Mock;
+  const mockGetQuery = useGetMyShippingAddressesQuery as jest.Mock;
 
   beforeAll(() => {
     mockGetQuery.mockReturnValue(mockData);

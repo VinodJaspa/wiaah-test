@@ -51,7 +51,7 @@ import { ProfileReachedGender } from "@features/API";
 export const ProfileStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [overviewDims, setOverviewDims] = React.useState<{
     h: number;
     w: number;

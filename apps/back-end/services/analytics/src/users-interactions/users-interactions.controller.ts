@@ -35,7 +35,7 @@ export class UsersInteractionsController {
   constructor(
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
-  ) { }
+  ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecrementUsersInteractionScore() {

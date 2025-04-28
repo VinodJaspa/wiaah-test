@@ -15,7 +15,8 @@ import { ProductUsageStatus } from "types";
 import Head from "next/head";
 
 const Profession: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   const { controls, pagination } = usePaginationControls();
 

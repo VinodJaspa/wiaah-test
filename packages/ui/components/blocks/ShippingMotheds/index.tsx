@@ -1,5 +1,5 @@
 
-import { Table, TableBody, TableCell, TableRow } from "@UI/components/shadcn-components";
+import { ShadcnTable, TableBody, TableCell, TableRow } from "@UI/components/shadcn-components";
 import { BoxShadow, FilterInput, Padding } from "../../partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
   motheds,
   onSelection,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [shippingMothedId, setShippingMothedId] = React.useState<string>();
   React.useEffect(() => {
     if (onSelection && shippingMothedId) {
@@ -28,7 +28,7 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
             <span id="ShippingMothedTitle" className="px-2 text-3xl font-bold">
               {t("shipping_mothed", "Shipping Mothed")}
             </span>
-            <Table className="w-full">
+            <ShadcnTable className="w-full">
               <TableBody id="ShippingMothedsContainer" className="w-1/4 text-2xl">
                 {motheds.map((mothed) => (
                   <TableRow
@@ -68,7 +68,7 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+            </ShadcnTable>
           </div>
         </Padding>
       </BoxShadow>

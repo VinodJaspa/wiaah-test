@@ -24,7 +24,8 @@ import {
 import { useForm } from "utils";
 
 const AffiliationHistory: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getUrl } = useRouting();
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps, handleChange } = useForm<
@@ -121,7 +122,9 @@ const AffiliationHistory: NextPage = () => {
                     {(product?.title || service?.title) && (
                       <Td>
                         <p>
-                          {(product?.title || service?.title).slice(0, 15)}...
+                          {(product?.title || service?.title)?.slice(0, 15) ||
+                            "N/A"}
+                          ...
                         </p>
                       </Td>
                     )}
@@ -169,8 +172,8 @@ const AffiliationHistory: NextPage = () => {
                     <Td>
                       {itemType === "service"
                         ? getUrl((r) =>
-                          r.visitService({ id: itemId }, itemType),
-                        )
+                            r.visitService({ id: itemId }, itemType),
+                          )
                         : getUrl((r) => r.visitProduct(itemId))}
                     </Td>
                     <Td>
@@ -192,7 +195,34 @@ const AffiliationHistory: NextPage = () => {
 
 export default AffiliationHistory;
 
-const FAKE_HISTORY_DATA = [
+interface Product {
+  title: string;
+  thumbnail: string;
+  price: number;
+}
+
+interface Service {
+  title: string;
+  thumbnail: string;
+  price: number;
+}
+
+const FAKE_HISTORY_DATA: Array<{
+  id: string;
+  itemId: string;
+  itemType: "product" | "service";
+  paidCommissionAmount: number;
+  paidCommissionPercent: number;
+  affiliatorId: string;
+  purchaserId: string;
+  sellerId: string;
+  product: Product | null;
+  service: Service | null;
+  seller: { profile: { username: string } };
+  purchaser: { profile: { username: string } };
+  affiliation: { id: string };
+  affiliator: { profile: { username: string; photo: string } };
+}> = [
   {
     id: "1",
     itemId: "item-1",

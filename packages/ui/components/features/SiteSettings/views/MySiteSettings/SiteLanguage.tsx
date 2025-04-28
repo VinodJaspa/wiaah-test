@@ -11,7 +11,7 @@ import { Select } from "@partials";
 export const SiteLanguage: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { data } = useGetMyAccountQuery();
 
   const { selectProps, form } = useForm<Parameters<typeof mutate>[0]>({

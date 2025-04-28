@@ -75,7 +75,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   const cancelUpload = controls ? controls.cancelUpload : _cancelUpload;
   const uploadType = controls ? controls.uploadType : _uploadType;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [takePicture, setTakePicture] = React.useState<boolean>(false);
   const [recordVideo, setRecordVideo] = React.useState<boolean>(false);
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);

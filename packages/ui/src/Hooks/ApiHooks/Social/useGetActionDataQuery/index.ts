@@ -5,7 +5,7 @@ export const useGetActionDataQuery = (id: string | null) => {
   return useQuery(
     ["ActionData", { id }],
     () => {
-      if (!id) return;
+      if (!id) return undefined
       return getActionData(id);
     },
     {

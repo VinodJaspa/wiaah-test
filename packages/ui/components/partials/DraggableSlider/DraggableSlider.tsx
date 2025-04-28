@@ -320,6 +320,7 @@ export const DraggableSlider = React.forwardRef(
                 </div>
               );
             }
+            return null;
           })}
         </div>
       </div>

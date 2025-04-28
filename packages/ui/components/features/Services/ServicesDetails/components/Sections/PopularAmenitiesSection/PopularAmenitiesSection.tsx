@@ -11,7 +11,7 @@ export interface PopularAmenitiesSectionProps {
 export const PopularAmenitiesSection: React.FC<
   PopularAmenitiesSectionProps
 > = ({ amenities, cols = 1 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <section className="flex flex-col w-full gap-7">
       <p className="text-lg text-darkBrown md:text2xl font-bold leading-none">

@@ -10,7 +10,10 @@ export class RejectRequestedRefundCommandHandler
   extends RefundCommandHandlersBase
   implements ICommandHandler<RejectRequestedRefundCommand>
 {
-  constructor(private readonly repo: RefundRepository, querybus: QueryBus) {
+  constructor(
+    private readonly repo: RefundRepository,
+    querybus: QueryBus,
+  ) {
     super(querybus);
   }
 

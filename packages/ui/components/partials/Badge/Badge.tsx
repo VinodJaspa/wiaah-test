@@ -64,6 +64,7 @@ export function Badge<T extends string | number>({
         return styleCases.off;
     }
     if (variant) return styleCases[variant];
+    return null;
   };
 
   return (

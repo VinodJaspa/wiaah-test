@@ -28,7 +28,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
   const [focused, setFocused] = React.useState<boolean>(false);
   const [search, setSearch] = React.useState<string>("");
   const [locations, setLocations] = React.useState<Location[]>();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { filters } = useSearchFilters();
   const { take, page } = usePagination();
   const ref = React.useRef<HTMLDivElement>(null);

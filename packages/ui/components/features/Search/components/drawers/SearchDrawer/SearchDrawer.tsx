@@ -20,7 +20,7 @@ import { mapArray, useForm } from "utils";
 
 export const SearchDrawer: React.FC = () => {
   const { value, hideGeneralSearch } = useSocialControls("showGeneralSearch");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const isOpen = value === true;
 
   const { form, inputProps, reset } = useForm<

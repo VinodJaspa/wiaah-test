@@ -17,6 +17,7 @@ describe("HotelCheckoutCard tests", () => {
   let props: ServiceCheckoutCardProps;
   beforeEach(() => {
     props = {
+      id:"1",
       thumbnail: "https://example.com/images/service-thumbnail.jpg", // Service thumbnail URL
       name: "Luxury Health Retreat", // Name of the service
       shopName: "Wellness Center", // Shop/Service provider name
@@ -27,6 +28,7 @@ describe("HotelCheckoutCard tests", () => {
         { slug: "gym", label: "Fitness Center" },
       ], // List of amenities available
       cancelationPolicy: {
+        id: "policy-123", // Unique identifier for the cancellation policy
         duration: 24, // Duration in hours for cancellation
         cost: 15.0, // Cost for cancelling the service
       },

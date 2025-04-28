@@ -24,7 +24,7 @@ export interface ResturantMenuListSectionProps {
 export const ResturantMenuListSection: React.FC<
   ResturantMenuListSectionProps
 > = ({ menus, cancelation }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [orders, setOrders] = React.useState<
     { itemId: string; qty: number; price: number }[]
   >([]);

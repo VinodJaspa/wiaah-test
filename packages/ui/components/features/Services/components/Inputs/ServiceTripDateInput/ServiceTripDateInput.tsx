@@ -16,7 +16,7 @@ import {
 export interface ServiceTripDateInputProps {}
 
 export const ServiceTripDateInput: React.FC<ServiceTripDateInputProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className="flex flex-col gap-6">

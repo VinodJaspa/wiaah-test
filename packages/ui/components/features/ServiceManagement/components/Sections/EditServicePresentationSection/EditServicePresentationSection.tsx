@@ -37,7 +37,7 @@ export interface EditServicePresentationSectionProps {}
 export const EditServicePresentationSection: React.FC<
   EditServicePresentationSectionProps
 > = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { mutate } = useUpdateMyShopMutation();

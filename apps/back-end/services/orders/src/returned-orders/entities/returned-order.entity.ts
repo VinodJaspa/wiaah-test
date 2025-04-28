@@ -27,6 +27,6 @@ export class ReturnedOrder {
   @Field(() => String, { nullable: true })
   rejectReason?: string;
 
-  @Field(()=> String)
-  createdAt:string
+  @Field(() => String)
+  createdAt: string;
 }

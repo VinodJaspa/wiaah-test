@@ -92,7 +92,7 @@ describe('filter fnctionality testing', () => {
       mockedUser,
     );
 
-    let filters = await getFilters();
+    const filters = await getFilters();
 
     expect(filters.find((f) => f.id === updated.id)).toEqual(
       expect.objectContaining(updateValues),

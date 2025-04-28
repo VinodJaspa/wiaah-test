@@ -43,7 +43,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
   props: { className, ...rest },
   onCardClick,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { visit, back } = useRouting();
   const { chatWith, msgNewUser, viewUserStory, createAction } =
     useSocialControls();
@@ -123,7 +123,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
               const date: string =
                 v.unSeenMessages > 0
                   ? lastMsg?.createdAt
-                  : !!memberSeen
+                  : memberSeen
                     ? memberSeen.seenAt
                     : lastMsg?.createdAt || "";
 
@@ -161,7 +161,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                         <p>
                           {v.unSeenMessages > 0
                             ? `${v.unSeenMessages} ${t("Unread messages")}`
-                            : !!memberSeen
+                            : memberSeen
                               ? `${t("Message seen")}`
                               : lastMsg?.userId === profile?.ownerId
                                 ? t("Message sent")
@@ -182,7 +182,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
                       </HStack>
                     </div>
                   </HStack>
-                  {!!memberSeen ? (
+                  {memberSeen ? (
                     <Avatar
                       className="min-w-[0.875rem]"
                       src={member?.profile?.photo}
@@ -253,7 +253,7 @@ export const ChatStory: React.FC<{
   onClick: () => any;
 }> = ({ name, newStory, photo, isLive, userId, onClick }) => {
   const { data } = useUserProfile();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div
       onClick={() => onClick && onClick()}

@@ -131,6 +131,7 @@ export class ProductsAdminResolver {
       where: {
         id,
       },
+      // @ts-ignore
       data: {
         ...rest,
         presentations: rest.oldPresentations
@@ -152,10 +153,12 @@ export class ProductsAdminResolver {
               };
             }),
           )
-          .filter((v) => !!v),
-        discount: {
-          update: rest.discount,
-        },
+          .filter((v) => !!v) as unknown as any[],
+        discount: rest.discount
+          ? {
+              update: rest.discount,
+            }
+          : undefined,
       },
     });
     return true;

@@ -7,7 +7,7 @@ import { AnalyticsEvents } from './const';
 
 @Controller()
 export class EventsController {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated(accountType.SELLER))
   async handleSellerCreated(

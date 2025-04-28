@@ -87,7 +87,7 @@ describe('BeautyCenterResolver', () => {
     type_of_seller: 'individual',
     vat: 15,
   };
-  let treatmentCategoryInput = {
+  const treatmentCategoryInput = {
     title: [
       {
         langId: 'en',
@@ -211,7 +211,7 @@ describe('BeautyCenterResolver', () => {
       );
     }
 
-    let services = await prisma.beautyCenterService.findMany();
+    const services = await prisma.beautyCenterService.findMany();
     expect(services.length).toBe(1);
 
     expect(services[0]).toMatchObject({ ...input });
@@ -326,7 +326,7 @@ describe('BeautyCenterResolver', () => {
   it('should delete beauty center only by its owner', async () => {
     jest
       .spyOn(service as any, 'validateCreateInput')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
     const center = await createBeautyCenter();
     expect(
       await prisma.beautyCenterService.findUnique({

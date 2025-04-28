@@ -10,17 +10,15 @@ import {
 } from "ui";
 
 import { SocialShopOtherPostsState, SocialShopPostState } from "@src/state";
-import { useBreakpointValue } from "utils";
+
 import { useTranslation } from "react-i18next";
 
 export interface ShopProductViewProps {}
 
 export const ShopProductView: React.FC<ShopProductViewProps> = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const product = useRecoilValue(SocialShopPostState);
   const otherProducts = useRecoilValue(SocialShopOtherPostsState);
-
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   return (
     <div className="flex py-16 gap-8 flex-col px-2">
       <div className="flex flex-col gap-8 md:flex-row mb-24 items-start">

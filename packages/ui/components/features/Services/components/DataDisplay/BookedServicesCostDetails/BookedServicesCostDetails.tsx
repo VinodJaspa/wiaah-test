@@ -18,7 +18,7 @@ export interface BookedServicesCostDetailsProps {
 export const BookedServicesCostDetails: React.FC<
   BookedServicesCostDetailsProps
 > = ({ vat, children, title, deposit, subTotal, total, vatAmount }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <Stack col>

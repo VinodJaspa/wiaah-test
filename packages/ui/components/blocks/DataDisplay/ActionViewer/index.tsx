@@ -32,7 +32,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
   interactionPos = "out",
 }) => {
   const { ToggleComments } = useActionComments();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="relative h-full w-[min(35rem,100%)] mx-auto">
       {action && (

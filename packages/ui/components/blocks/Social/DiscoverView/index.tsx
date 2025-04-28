@@ -16,7 +16,7 @@ import {
 interface ExplorePageProps {}
 
 export const DiscoverView: React.FC<ExplorePageProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const tabs: TabType[] = [
     {

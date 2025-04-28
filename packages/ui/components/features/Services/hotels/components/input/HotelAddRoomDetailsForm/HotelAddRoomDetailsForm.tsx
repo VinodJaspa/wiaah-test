@@ -31,7 +31,7 @@ export const HotelAddRoomDetailsForm: React.FC<
   HotelAddRoomDetailsFormProps
 > = () => {
   const { data: res } = useGetHotelAmenitesQuery();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { emit } = useTypedReactPubsub((events) => events.openFileUploadModal);
   const [images, setImages] = React.useState<FileRes[]>([]);

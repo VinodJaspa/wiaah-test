@@ -19,7 +19,7 @@ export const ShopMapSearchCard: React.FC<ShopMapSearchCardProps> = ({
   price,
 }) => {
   const { address, city, country, postalCode, state } = location;
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex gap-3 justify-between p-2 h-fit border border-2 broder-gray-500 rounded-xl w-full">
       <img src={thumbnail} className="w-36 h-36 rounded-md" alt={name} />

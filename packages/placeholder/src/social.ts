@@ -315,6 +315,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
   user: { ...PostCardPlaceHolder.profileInfo },
   likes: 5,
   noOfComments: 2,
+  shares: 10, // Added the missing 'shares' property
   type: "service",
   price: 800,
   oldPrice: 1000,
@@ -1778,6 +1779,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     user: { ...PostCardPlaceHolder.profileInfo },
     likes: 5,
     noOfComments: 2,
+    shares: 10, // Added the missing 'shares' property
     type: "service",
     price: 800,
     oldPrice: 1000,

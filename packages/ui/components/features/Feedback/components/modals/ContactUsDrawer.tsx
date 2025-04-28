@@ -14,7 +14,7 @@ export const ContactUsDrawer: React.FC = () => {
     message: "",
     name: "",
   });
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const isOpen = value === true;
 
   return (

@@ -41,7 +41,8 @@ const collabs: Collaboration[] = [...Array(5)].map((_, i) => ({
 }));
 
 const Collab: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
     <section>
@@ -98,7 +99,7 @@ const Collab: NextPage = () => {
                                 v
                                   .addPath(getCurrentPath())
                                   .addPath("form")
-                                  .addQuery({ id })
+                                  .addQuery({ id }),
                               )
                             }
                           />

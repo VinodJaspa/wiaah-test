@@ -13,7 +13,7 @@ class input {
   buyer: string;
 
   @Field(() => String)
-  seller: String;
+  seller: string;
 
   @Field(() => String)
   review: string;

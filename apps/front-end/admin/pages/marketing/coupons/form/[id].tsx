@@ -64,7 +64,8 @@ const couponHistory: CouponHistory[] = [...Array(5)].map((_, i) => ({
 }));
 
 const Couponform: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam, back } = useRouting();
   const id = getParam("id");
 
@@ -140,7 +141,7 @@ const Couponform: NextPage = () => {
                       <Td>
                         <Input
                           description={t(
-                            "The total amount that must be reached before coupon is valid"
+                            "The total amount that must be reached before coupon is valid",
                           )}
                           type="type"
                         />
@@ -168,7 +169,7 @@ const Couponform: NextPage = () => {
                         />
                         <p className="text-xs text-gray">
                           {t(
-                            "Choose specific products the coupon will apply to. Select no products to apply coupon to entire cart."
+                            "Choose specific products the coupon will apply to. Select no products to apply coupon to entire cart.",
                           )}
                         </p>
                       </Td>
@@ -264,7 +265,7 @@ const Couponform: NextPage = () => {
                             <Td>{category}</Td>
                             <Td>{new Date(dateAdded).toDateString()}</Td>
                           </Tr>
-                        )
+                        ),
                       )}
                     </TBody>
                   </Table>

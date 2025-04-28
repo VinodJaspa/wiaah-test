@@ -16,7 +16,7 @@ export const TranslationText: React.FC<TranslationTextProps> = ({
   translationObject,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <p {...props} className={`${props.className}`}>
       {typeof translationObject === "object"

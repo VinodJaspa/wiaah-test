@@ -9,7 +9,7 @@ describe('HotelService', () => {
   let service: HotelService;
   let prisma: PrismaService;
 
-  let createHotelInput: CreateHotelInput = {
+  const createHotelInput: CreateHotelInput = {
     location: {
       address: 'address',
       city: 'city',
@@ -126,8 +126,8 @@ describe('HotelService', () => {
         'fr',
       );
 
-      let langTested: boolean[] = [];
-      let langs = ['en', 'es', 'fr'];
+      const langTested: boolean[] = [];
+      const langs = ['en', 'es', 'fr'];
 
       for (const lang of langs) {
         const hotel = await service.getHotelWithRoomsById(

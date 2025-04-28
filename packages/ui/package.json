@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "tsc "
+    "build": "tsc ",
+    "lint": "eslint . --ext .ts,.tsx --fix --no-cache"
   },
   "dependencies": {
     "api": "*",

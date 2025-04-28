@@ -46,7 +46,7 @@ export class DesignResolver {
   @Query(() => [Design])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async adminGetDesigns(@Args('args') args: AdminGetDesignsInput) {
-    let filters: Prisma.DesignWhereInput[] = [];
+    const filters: Prisma.DesignWhereInput[] = [];
 
     const { take, skip } = ExtractPagination(args.pagination);
 

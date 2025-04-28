@@ -10,7 +10,7 @@ export const ServiceRulesDisplay: React.FC<ServiceRulesDisplayProps> = ({
   payment,
   refundable,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex items-center gap-4 flex-wrap">
       {refundable === false ? (

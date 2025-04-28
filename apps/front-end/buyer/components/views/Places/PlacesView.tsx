@@ -9,14 +9,14 @@ import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
-  const isMobile = useMediaQuery({ maxWidth: 640 });
-  const { t } = useTranslation();
+  const isBase = useMediaQuery({ maxWidth: 767 });
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 })
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+ 
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
-  const cols = useMediaQuery({ maxWidth: 767 })
-    ? 1
-    : useMediaQuery({ maxWidth: 1023 })
-      ? 2
-      : 3;
 
   const router = useRouter();
   const { tag } = router.query;

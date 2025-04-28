@@ -40,7 +40,8 @@ import {
 import { mapArray, NumberShortner, useForm } from "utils";
 
 const Sellers: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();
@@ -95,7 +96,7 @@ const Sellers: NextPage = () => {
                 />
               </Td>
               <Td>
-                <Select value={form.status} onOptionSelect={(v) => { }}>
+                <Select value={form.status} onOptionSelect={(v) => {}}>
                   <SelectOption value={true}>{t("Verified")}</SelectOption>
                   <SelectOption value={false}>{t("unVerified")}</SelectOption>
                 </Select>

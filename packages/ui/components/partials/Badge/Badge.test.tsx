@@ -8,8 +8,8 @@ type BadgeVariant = "fail" | "info" | "off" | "success" | "warning";
 
 describe("Badge", () => {
   let wrapper: ShallowWrapper;
-  let props: BadgeProps<BadgeVariant> = {}; // Provide a type argument for BadgeProps
-  let variants: BadgeVariant[] = ["fail", "info", "off", "success", "warning"];
+  const props: BadgeProps<BadgeVariant> = {}; // Provide a type argument for BadgeProps
+  const variants: BadgeVariant[] = ["fail", "info", "off", "success", "warning"];
 
   beforeEach(() => {
     wrapper = shallow(

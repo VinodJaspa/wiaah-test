@@ -37,7 +37,7 @@ export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   const res = FAKE_BEAUTY_CENTER_DETAILS;
   const isLoading = false;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
@@ -90,7 +90,14 @@ export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
             />
             <Divider />
             <BeautyCenterTreatmentsList
-              cancelation={res.cancelationPolicies || []}
+              cancelation={
+                res.cancelationPolicies
+                  ? res.cancelationPolicies.map((policy, index) => ({
+                      ...policy,
+                      id: `default-id-${index}`,
+                    }))
+                  : []
+              }
               treatments={res.treatments}
             />
             <ServiceReachOutSection

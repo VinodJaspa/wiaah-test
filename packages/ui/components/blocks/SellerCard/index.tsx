@@ -6,7 +6,7 @@ import { useLoginPopup } from "../../../src/Hooks";
 import { useTranslation } from "react-i18next";
 
 export interface SellerProps {
-  id: String;
+  id: string;
   name: string;
   reviews?: number;
   rating?: number;
@@ -18,7 +18,7 @@ export const SellerCard: React.FC<SellerProps> = ({
   reviews = 0,
   rating = 0,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { OpenLoginPopup } = useLoginPopup();
   return (
     <>

@@ -15,7 +15,7 @@ export const SpinnerFallback: React.FC<SpinnerFallbackProps> = ({
   children,
   isError,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   if (isError)
     return (

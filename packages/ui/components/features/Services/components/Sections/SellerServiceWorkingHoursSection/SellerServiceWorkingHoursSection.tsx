@@ -35,7 +35,7 @@ const getTodayKey = () => {
 export const SellerServiceWorkingHoursSection: React.FC<
   SellerServiceWorkingHoursSectionProps
 > = ({ workingDays }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const todayKey = getTodayKey();
 
   return (

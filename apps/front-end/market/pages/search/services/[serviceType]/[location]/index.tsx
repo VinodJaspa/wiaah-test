@@ -13,7 +13,7 @@ import { ServiceType } from "@features/API";
 import { useRouting } from "routing";
 
 const Filtered: NextPage = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { getParam, getCurrentPath } = useRouting();
   const serviceType = getParam("serviceType");
   const searchLocation = getParam("location");

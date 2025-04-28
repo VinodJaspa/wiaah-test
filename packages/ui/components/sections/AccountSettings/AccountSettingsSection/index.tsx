@@ -82,7 +82,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   );
   const { mutate } = useUpdateAccountSettingsMutation();
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { uploadImage } = useFileUploadModal();
 
@@ -382,6 +382,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
                           return <FlagIcon code={country.isoCode} />;
                         }
                       }
+                      return <FlagIcon code="US" />;
                     }}
                     name="country"
                     components={countries.map((country, i) => ({

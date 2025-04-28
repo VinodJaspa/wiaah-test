@@ -32,6 +32,9 @@ export const MenuList: React.FC<MenuListProps> = ({
       const timeout = setTimeout(() => setShowChild(false), 200);
       return () => clearTimeout(timeout);
     }
+    return () => {
+      setShowChild(false);
+    };
   }, [isOpen, isLazy]);
 
   useEffect(() => {

@@ -14,7 +14,7 @@ import {
 
 describe('products admin', () => {
   let app: INestApplication;
-  let prisma: PrismaClient = new PrismaClient();
+  const prisma: PrismaClient = new PrismaClient();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({

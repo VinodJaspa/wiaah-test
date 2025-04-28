@@ -50,7 +50,7 @@ interface SocialNewsfeedPostMobileCardProps {
 export const SocialNewsfeedPostMobileCard: React.FC<
   SocialNewsfeedPostMobileCardProps
 > = ({ post }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [activeImage, setActiveImage] = React.useState<number>(0);
   const { mutate: like } = useLikeContent();
   const { shareLink } = useSocialControls();

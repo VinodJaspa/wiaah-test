@@ -27,7 +27,8 @@ import { useRouting } from "routing";
 import Head from "next/head";
 
 const EditVatRate: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back, getParam } = useRouting();
 
   const id = getParam("id");

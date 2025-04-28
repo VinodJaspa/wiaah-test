@@ -7,7 +7,7 @@ import {
 describe("ProductColorSelectInput", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: ProductColorSelectInputProps = {
+  const props: ProductColorSelectInputProps = {
     onChange(value) {},
     colors: [
       {

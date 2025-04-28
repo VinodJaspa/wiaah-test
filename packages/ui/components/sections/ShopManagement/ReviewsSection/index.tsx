@@ -20,7 +20,7 @@ export type ReviewData = {
 export interface ReviewsSectionProps {}
 
 export const ReviewsSection: React.FC<ReviewsSectionProps> = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { controls, pagination, changeTotalItems } = usePaginationControls();
   const { data, isLoading, isError } = useGetMyReviewsQuery({

@@ -37,7 +37,7 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
     onEdit,
     onRemove,
   } = props;
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const amenitiesNames = amenites.map((amenity) => amenity.name);
 

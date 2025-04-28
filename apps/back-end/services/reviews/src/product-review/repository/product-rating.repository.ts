@@ -4,7 +4,7 @@ import { PrismaService } from 'src/Prisma.service';
 
 @Injectable()
 export class ProductRatingRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(productId: string) {
     return this.prisma.productRating.create({

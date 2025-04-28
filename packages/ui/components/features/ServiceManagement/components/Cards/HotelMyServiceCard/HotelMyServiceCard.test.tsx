@@ -15,7 +15,7 @@ describe("HolidayRentalsMyServiceCard", () => {
   let wrapper: ShallowWrapper;
   let onRemoveMock: jest.Mock;
   let onEditMock: jest.Mock;
-  let props: Omit<HotelMyServiceCardProps, "onEdit" | "onRemove"> = {
+  const props: Omit<HotelMyServiceCardProps, "onEdit" | "onRemove"> = {
     amenites: [
       {
         name: "Pool",

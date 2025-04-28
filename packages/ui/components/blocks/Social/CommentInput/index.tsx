@@ -38,7 +38,7 @@ export const CommentInput: React.FC<CommentInputProps> = ({
   setShouldCommentBoxFocused,
   postOwnerUsername,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [input, setInput] = useState<string>("");
   const [matchedUsers, setMatchedUsers] = useState<User[]>([]);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState<boolean>(false);
@@ -57,6 +57,11 @@ export const CommentInput: React.FC<CommentInputProps> = ({
       return () => {
         inputElement.removeEventListener("focus", handleFocus);
       };
+    }
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener("focus", () => {});
+      }
     }
   }, [postOwnerUsername, input]);
 

@@ -16,7 +16,7 @@ export const CategoriesSelectInput: React.FC<CategoriesSelectInputProps> = ({
   value,
   placeholder,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const ph = placeholder || `${t("Categories")}`;
   return (
     <div className="flex w-full items-center gap-2">

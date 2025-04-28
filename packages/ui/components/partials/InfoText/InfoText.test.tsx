@@ -3,8 +3,8 @@ import { InfoTextProps, InfoText, InfoTextCases } from "./InfoText";
 
 describe("InfoText", () => {
   let wrapper: ShallowWrapper;
-  let props: InfoTextProps = {};
-  let variants: (keyof InfoTextCases)[] = [
+  const props: InfoTextProps = {};
+  const variants: (keyof InfoTextCases)[] = [
     "fail",
     "info",
     "success",

@@ -19,4 +19,4 @@ import { KafkaModule } from './kafka.module';
   ],
   controllers: [UserInterestsController],
 })
-export class AppModule { }
+export class AppModule {}

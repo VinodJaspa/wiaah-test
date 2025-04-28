@@ -23,7 +23,8 @@ const Slideshow = () => {
   const { visit, getCurrentPath, getParam, back } = useRouting();
   const type = getParam("type") as DesignType;
 
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const validType = Object.values(DesignType).includes(type);
   const { pagination, controls } = usePaginationControls();
@@ -112,7 +113,7 @@ const Slideshow = () => {
               >
                 <EditIcon />
               </Button>,
-              <Button key={v.id} onClick={() => { }} center className="p-2">
+              <Button key={v.id} onClick={() => {}} center className="p-2">
                 <CloseIcon />
               </Button>,
             ],

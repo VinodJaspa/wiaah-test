@@ -85,7 +85,7 @@ export class ServicePostResolver {
     @Args('args') args: GetUserServicesPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    let visibility: PostVisibility[] = ['public'];
+    const visibility: PostVisibility[] = ['public'];
 
     const isFollower = await this.prisma.follow.findUnique({
       where: {

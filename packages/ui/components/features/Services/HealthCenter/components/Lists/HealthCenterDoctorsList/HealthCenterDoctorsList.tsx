@@ -16,7 +16,7 @@ export interface HealthCenterDoctorsListProps {
 export const HealthCenterDoctorsList: React.FC<
   HealthCenterDoctorsListProps
 > = ({ doctors, cancelation }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const ref = usePublishRef((keys) => keys.doctors);
   return (
     <div ref={ref} className="w-full flex flex-col gap-y-4 py-4">

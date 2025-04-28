@@ -150,7 +150,7 @@ describe("FilterInput range variant action tests", () => {
       <FilterInput min={500} max={2000} variant="range" />
     );
     let minInput = component.find("[data-test='minRangeInput']");
-    let maxInput = component.find("[data-test='maxRangeInput']");
+    const maxInput = component.find("[data-test='maxRangeInput']");
 
     minInput.simulate("change", { target: { value: 750 } });
     maxInput.simulate("change", { target: { value: 1000 } });
@@ -164,7 +164,7 @@ describe("FilterInput range variant action tests", () => {
     const component = shallow(
       <FilterInput min={500} max={2000} variant="range" />
     );
-    let minInput = component.find("[data-test='minRangeInput']");
+    const minInput = component.find("[data-test='minRangeInput']");
     let maxInput = component.find("[data-test='maxRangeInput']");
 
     minInput.simulate("change", { target: { value: 750 } });

@@ -26,7 +26,7 @@ export const MarketHealthCenterServiceCardAlt: React.FC<
   bookedAppointments,
 }) => {
     const router = useRouter();
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     return (
       <div className="flex flex-col gap-2 p-1">
         {/* Render the thumbnail image with a specific aspect ratio */}

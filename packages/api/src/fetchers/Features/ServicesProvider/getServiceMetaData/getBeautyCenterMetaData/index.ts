@@ -58,9 +58,11 @@ export const getBeautyCenterServiceMetadataQuery = async (
     if (response && response.data) {
       return response.data as GetBeautyCenterServiceMetaDataQuery;
     } else {
+      return undefined;
       console.error("Failed to fetch data: response is null");
     }
   } catch (error) {
+    return error as GetBeautyCenterServiceMetaDataQuery;
     console.error("Error fetching beauty center service details:", error);
   }
 };

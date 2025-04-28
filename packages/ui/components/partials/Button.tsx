@@ -112,7 +112,7 @@ export const AddToCartProductButton: React.FC<
     productId: string;
   }
 > = ({ productId, ...props }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   // TODO: switch if product is external
   return (
     <Button {...setTestid("product-add-to-cart-btn")} {...props}>

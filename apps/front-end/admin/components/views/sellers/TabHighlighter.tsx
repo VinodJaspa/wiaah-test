@@ -19,8 +19,9 @@ export const TabHighlighter: React.FC<TabHighlighterProps> = ({
         <div
           key={index}
           onClick={() => handleClick(tab)}
-          className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${selectedTab === tab ? "border-t border-l border-r font-bold" : ""
-            }`}
+          className={`border-darkerGray border-b border-b-transparent hover:border-b-darkerGray px-6 py-2 ${
+            selectedTab === tab ? "border-t border-l border-r font-bold" : ""
+          }`}
         >
           {tab}
         </div>

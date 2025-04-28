@@ -16,7 +16,7 @@ const selectors = {
 describe("AddBedInput", () => {
   let wrapper: ReactWrapper;
   let mockOnAdd: jest.Mock;
-  let props: AddBedInputProps = {
+  const props: AddBedInputProps = {
     onAdd(bed) {},
   };
   beforeEach(() => {

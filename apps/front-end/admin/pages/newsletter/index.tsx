@@ -47,7 +47,8 @@ const Newsletter: NextPage = () => {
   const subs = FAKE_SUBS;
   const { mutate } = useAdminRemoveNewsletterSubscriber();
 
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <section>
       <div className="p-4 flex flex-col gap-8">

@@ -22,9 +22,10 @@ import {
 } from "@UI";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
-import { setTestid, useBreakpointValue } from "utils";
+import { setTestid } from "utils";
 import nookies, { deleteCookie } from "cookies-next";
 import { ServiceType } from "@features/API";
+import { useMediaQuery } from "react-responsive";
 
 export interface HeaderProps {
   token?: string;
@@ -34,9 +35,9 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
 
   const items = useRecoilValue(ShoppingCartItemsState);
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isopen, setIsopen] = React.useState(false);
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
 

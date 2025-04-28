@@ -26,7 +26,7 @@ export const AuthSwitcher: FC<AuthSwitcherProps> = ({
   link,
   onSubmit,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [view, setView] = React.useState<LoginType>(loginType);
   const router = useRouter();
 

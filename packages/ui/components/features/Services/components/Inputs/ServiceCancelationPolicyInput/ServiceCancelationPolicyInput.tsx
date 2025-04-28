@@ -17,7 +17,7 @@ export interface ServiceCancelationPolicyInputProps {
 export const ServiceCancelationPolicyInput: React.FC<
   ServiceCancelationPolicyInputProps
 > = ({ cost, duration, id, children, name, onSelected, isCalendarCard }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div

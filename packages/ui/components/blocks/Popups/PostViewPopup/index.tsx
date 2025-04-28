@@ -46,7 +46,7 @@ export function PostViewPopup<TData extends {}>({
 }: PostViewPopupProps<TData>) {
   const { visit, getCurrentPath } = useRouting();
   const { OpenComments } = useActionComments();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const [currentPost, setCurrentPost] = useState<any | undefined>(data);
 

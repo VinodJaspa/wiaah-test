@@ -3,7 +3,7 @@ import { BrandSelectInputProps, BrandSelectInput } from "./BrandSelectInput";
 
 describe("BrandSelectInpit", () => {
   let wrapper: ShallowWrapper;
-  let props: BrandSelectInputProps = {
+  const props: BrandSelectInputProps = {
     options: ["Nike", "addidas"],
     value: "test",
     onChange(value) {},

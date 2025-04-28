@@ -25,8 +25,8 @@ const goPrevPost = async ({ currentId }: { currentId: string }) => {
   return { id: String(Number(currentId) - 1) };
 };
 
-export const ActionViewModal: React.FC<ActionViewPopupProps> = ({ }) => {
-  const { t } = useTranslation();
+export const ActionViewModal: React.FC<ActionViewPopupProps> = ({}) => {
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { actionId, setCurrentActionId, removeCurrentAction } =
     useActionViewPopup();
 

@@ -71,7 +71,6 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
   isHome,
 }) => {
   const { isMobile } = useResponsive();
-  // const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { OpenModal } = useStoryModal();
   const { visit } = useRouting();
 
@@ -127,7 +126,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
   }));
 
   const interleaveAtOddIndices = (baseArray: any[], itemsToInsert: any[]) => {
-    let result = [...baseArray];
+    const result = [...baseArray];
     let insertIndex = 1;
 
     for (const item of itemsToInsert) {

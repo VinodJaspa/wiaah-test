@@ -28,7 +28,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const ProductDetailsDrawer = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const [idx, setIdx] = React.useState<number>(0);
 

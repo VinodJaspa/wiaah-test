@@ -34,7 +34,8 @@ import { mapArray, useForm } from "utils";
 
 const Services: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination } = usePaginationControls();
 
   const filters = [{ id: "432", value: ["id"] }];

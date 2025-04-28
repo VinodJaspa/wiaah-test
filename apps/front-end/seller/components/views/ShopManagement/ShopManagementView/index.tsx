@@ -35,7 +35,7 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({ }) => {
   const { section } = router.query;
   const route = Array.isArray(section) ? section.join("/") : section;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);

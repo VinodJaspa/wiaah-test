@@ -251,7 +251,7 @@ const CamerafilterDisplay: React.FC<{
 export const StoryBottomControls: React.FC = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const tabs: { key: typeof settings.mediaType; label: string }[] = [
     {
@@ -363,9 +363,9 @@ const ActionIcon: React.FC<HtmlDivProps> = ({
 
 const CameraActionSettings: React.FC<{}> = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [active, setActive] = React.useState<number>();
-  const [open, setOpen] = React.useState<Boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const Durations: {
     duration: number;
@@ -609,7 +609,7 @@ const CameraActionListMenu: React.FC<{
   children?: React.ReactNode;
 }> = ({ children, btn, onClose, onOpen }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [open, setOpen] = React.useState<Boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
 
   useOutsideClick(ref, () => {
     setOpen(false);
@@ -682,7 +682,7 @@ const CameraCountDown = React.forwardRef(
 );
 
 // const VideoEffectList: React.FC = () => {
-//   const { t } = useTranslation();
+// const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 //   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 //   const [full, setFull] = React.useState<boolean>(true);
 //   const [filter, setFilter] = React.useState<string>();
@@ -799,7 +799,7 @@ const CameraCountDown = React.forwardRef(
 // };
 
 const StoryMediaCapture: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
   const [supported, setSupported] = React.useState(false);
   const [streaming, setStreaming] = React.useState<boolean>(false);
@@ -931,7 +931,7 @@ const StoryMediaCapture: React.FC = () => {
 export const StoryUpperControls: React.FC<{ onClose: () => any }> = ({
   onClose,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 
   const showOn = (types: (typeof settings.mediaType)[]) =>

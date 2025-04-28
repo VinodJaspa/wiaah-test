@@ -27,27 +27,27 @@ import { PrismaClient, RefundRequest } from '@prisma-client';
 import { Order, OrderStatus } from '@orders/entities';
 import { ObjectId } from 'mongodb';
 
-let mockSellerUser: AuthorizationDecodedUser = {
+const mockSellerUser: AuthorizationDecodedUser = {
   ...mockedUser,
   accountType: 'seller',
 };
-let mockBuyerUser: AuthorizationDecodedUser = {
+const mockBuyerUser: AuthorizationDecodedUser = {
   ...secendMockedUser,
   accountType: 'seller',
 };
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let mockKafka = new NestKafkaClientMock();
-  let kafka = new Kafka({
+  const mockKafka = new NestKafkaClientMock();
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.ORDERS_SERVICE.clientId,
   });
 
-  let prisma: PrismaClient = new PrismaClient();
+  const prisma: PrismaClient = new PrismaClient();
 
-  let producer = kafka.producer();
-  let consumer = kafka.consumer({
+  const producer = kafka.producer();
+  const consumer = kafka.consumer({
     groupId: SERVICES.ORDERS_SERVICE.groupId,
   });
 
@@ -190,7 +190,7 @@ describe('AppController (e2e)', () => {
     let order: Order;
 
     beforeEach(async () => {
-      let getOrdersRes = await reqGql(
+      const getOrdersRes = await reqGql(
         getMyOrdersQuery,
         { status: 'compeleted' } as GetMyOrdersInput,
         mockBuyerUser,

@@ -33,7 +33,7 @@ export interface TimeManagementSectionProps {}
 export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
 > = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const [tab, setTab] = React.useState(0);
 
@@ -212,12 +212,12 @@ const TimeInput: React.FC<{
 };
 
 function formatAMPM(date: Date) {
-  var hours = date.getHours();
-  var minutes: string | number = date.getMinutes();
-  var ampm = hours >= 12 ? "pm" : "am";
+  let hours = date.getHours();
+  let minutes: string | number = date.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   minutes = minutes < 10 ? "0" + minutes : minutes;
-  var strTime = (hours < 10 ? "0" + hours : hours) + ":" + minutes;
+  const strTime = (hours < 10 ? "0" + hours : hours) + ":" + minutes;
   return strTime;
 }

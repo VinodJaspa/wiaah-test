@@ -31,7 +31,8 @@ import {
 import { mapArray, useForm } from "utils";
 
 const ProductReturns = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getCurrentPath, visit } = useRouting();
 
   const { pagination, controls } = usePaginationControls();

@@ -50,7 +50,7 @@ export const useShareWithModal = () => {
 export const ShareWithModal: React.FC = () => {
   const { Listen } = useShareWithModal();
   const [postId, setPostId] = React.useState<string | undefined>();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [messageValue, setMessageValue] = React.useState("");
   const [search, setSearch] = React.useState("");
 

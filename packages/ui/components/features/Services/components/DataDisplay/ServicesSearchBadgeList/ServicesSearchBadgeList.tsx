@@ -27,7 +27,7 @@ export interface ServicesSearchBadgeListProps {
 export const ServicesSearchBadgeList: React.FC<
   ServicesSearchBadgeListProps
 > = ({ onClick, additionalLinks = [], activeKey }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const services: ServiceBadgeData[] = additionalLinks.concat([
     {

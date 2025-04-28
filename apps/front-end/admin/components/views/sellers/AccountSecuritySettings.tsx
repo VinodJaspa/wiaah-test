@@ -12,14 +12,15 @@ import { useForm } from "utils";
 export const AccountSecuritySettings: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { mutate } = useAdminUpdateAccountMutation();
   const { form, inputProps, handleChange } = useForm<
     Parameters<typeof mutate>[0]
   >(
     { id: accountId },
     { id: accountId },
-    { addLabel: true, addPlaceholder: true }
+    { addLabel: true, addPlaceholder: true },
   );
   const { data: account } = useAdminGetAccount(accountId, {
     onSuccess(data) {

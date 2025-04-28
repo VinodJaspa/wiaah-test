@@ -59,7 +59,7 @@ mutation addShoppingCartItem($args: AddShoppingCartItemInput!) {
         .setVariables<AddShoppingCartItemMutationVariables>({ args })
         .send<AddShoppingCartItemMutation>();
 
-      return res.data.addProductToCart;
+      return res?.data?.addProductToCart;
     },
     {
       onSuccess: () => {

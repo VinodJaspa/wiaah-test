@@ -25,7 +25,7 @@ export const SocialPostsCommentsDrawer: React.FC<
   SocialPostsCommentsDrawerProps
 > = () => {
   const [loadingMock, setLoadingMock] = React.useState(true);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { user } = useUserData();
   const { postId, removePostComments } = usePostsCommentsDrawer();
   const { isMobile } = useResponsive();

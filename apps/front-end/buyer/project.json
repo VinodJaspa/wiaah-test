@@ -1,0 +1,17 @@
+{
+    "name": "buyer",
+    "root": "apps/front-end/buyer",
+    "sourceRoot": "apps/front-end/buyer/src",
+    "projectType": "application",
+    "targets": {
+      "serve": {
+        "executor": "@nx/next:server",
+        "options": {
+          "buildTarget": "buyer:build",
+          "dev": true,
+          "port": 3001
+        }
+      }
+    }
+  }
+  

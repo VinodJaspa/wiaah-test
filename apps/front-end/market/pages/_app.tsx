@@ -9,7 +9,7 @@ import { AuthLayout, DataInitializationWrapper, ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
-import NextHead from "next/head";
+import Head from "next/head";
 import { RoutingProvider } from "routing";
 import { NextRouter, useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
@@ -34,6 +34,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   //     handleAutoRedirect("login", router);
   //   },
   // );
+  const NextHead: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+    return <Head>{children}</Head>;
+  };
+  
+
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -30,7 +30,7 @@ import { ServiceCheckoutDataType } from "api";
 export interface CheckoutViewProps { }
 
 export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
 

@@ -50,7 +50,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
   const { open: openPostMentions } = useSocialPostMentionsModal();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { mutate } = useLikeContent();
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
   const { OpenModal: OpenShareWithModal } = useShareWithModal();

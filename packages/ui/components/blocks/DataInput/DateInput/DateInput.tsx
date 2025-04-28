@@ -216,7 +216,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   }
 
   const getDividedWeeks: () => void = React.useCallback(() => {
-    let array: FormatedDays[][] = [];
+    const array: FormatedDays[][] = [];
     let currentPhase = 0;
     while (currentPhase * 7 < allDays.length) {
       const sliced = [

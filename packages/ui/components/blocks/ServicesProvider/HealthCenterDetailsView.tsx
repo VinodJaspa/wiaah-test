@@ -42,7 +42,7 @@ export const HealthCenterDetailsView: React.FC<
   // } = useGetHealthCenterDetailsQuery(id);
   const res = FAKE_HEALTH_CENTER_DATA;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
@@ -166,9 +166,15 @@ export const HealthCenterDetailsView: React.FC<
                     reviews={[...Array(6)].map((_, i) => ({
                       name: "John Doberman",
                       content:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        "Lorem ipsum dolor sit amet, cclearonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       thumbnail: `/profile (${i + 1}).jfif`,
                       date: new Date().toString(),
+                      ratings: 4.5,
+                      bookedService: {
+                        id: `service${i + 1}`,
+                        image: `/service-image (${i + 1}).jfif`,
+                        name: `Service ${i + 1}`,
+                      },
                     }))}
                   />
                 </>

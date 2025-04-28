@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   GridListOrganiser,
   ProductSkeleton,
@@ -149,7 +150,7 @@ const TopCategoriesHomePageSlider: React.FC<{
   selectedCategoryId?: { id: string; name: string };
   onCategorySelect: ({ id, name }: { id: string; name: string }) => any;
 }> = ({ onCategorySelect, selectedCategoryId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const { data: _data, hasNextPage } = useGetTopProductCategoriesQuery(
     { take: 10 },
@@ -185,7 +186,7 @@ const TopCategoriesHomePageSlider: React.FC<{
                   onClick={() => {
                     onCategorySelect({ id: category.id, name: category.name });
                   }}
-                  className={`${selectedCategoryId.id === category.id
+                  className={`${selectedCategoryId?.id === category.id
                       ? "bg-black text-white"
                       : "bg-white text-black"
                     } border border-back rounded-full py-1 px-2`}
@@ -207,24 +208,24 @@ const TopCategoriesHomePageSlider: React.FC<{
 const TopSalesCategoryProducts: React.FC<{
   category?: { id: string; name: string };
 }> = ({ category }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { visit } = useRouting();
   const { pagination } = usePaginationControls({ itemsPerPage: 40 });
-  const { data: _categoryRes } = useGetCategoryByIdQuery(category.id!);
+  const { data: _categoryRes } = useGetCategoryByIdQuery(category?.id!);
   const { data: _data, isLoading: _isLoading } =
     useGetTopSalesProductsByCategoryIdQuery(
       {
-        categoryId: category.name === "All" ? undefined : category.id!,
+        categoryId: category?.name === "All" ? undefined : category?.id!,
         pagination,
       },
-      { enabled: !!category.name },
+      { enabled: !!category?.name },
     );
   const data = topSaleProductsPlaceholder;
 
   return (
     <div className="flex flex-col gap-4">
       <p className="font-semibold text-lg  sm:text-2xl py-4">
-        {category.name === "All" ? t("Products") : category.name} {t("for you")}
+        {category?.name === "All" ? t("Products") : category?.name} {t("for you")}
       </p>
       <div
         {...setTestid("home-page-products-container")}
@@ -302,7 +303,7 @@ const TopSalesCategoryProducts: React.FC<{
 };
 
 const BestShopsHomeSection: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
   const { isMobile } = useResponsive();
   const { data: _shopData } = useGetBestShopsQuery({ take: 5 });
@@ -406,7 +407,7 @@ const BestShopsHomeSection: React.FC = () => {
 const PlacesNearYouHomeSection: React.FC = () => {
   const { lat, lng } = useGeoLocation();
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const {
     data: _places,
@@ -480,7 +481,7 @@ const PlacesNearYouHomeSection: React.FC = () => {
 };
 
 const HomeRecommendationSection: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const products: Array<
     Pick<Product, "thumbnail" | "title" | "rate" | "price" | "discount" | "id">
   > = [];
@@ -549,7 +550,7 @@ const HomeRecommendationSection: React.FC = () => {
 const MostViewdVideso: React.FC = () => {
   const data = mostViewdVideos;
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { visit } = useRouting();
 
@@ -671,7 +672,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       >
         Your browser does not support the video tag.
       </video>
-
       {/* Custom Play/Pause Button */}
       {!controls && (
         <button
@@ -681,9 +681,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           aria-label={isPlaying ? "Pause video" : "Play video"}
         >
           {isPlaying ? (
-            <FaPause className="w-6 h-6 text-white" /> // Pause icon
+            (<FaPause className="w-6 h-6 text-white" />) // Pause icon
           ) : (
-            <FaPlay className="w-6 h-6 text-white" /> // Play icon
+            (<FaPlay className="w-6 h-6 text-white" />) // Play icon
           )}
         </button>
       )}

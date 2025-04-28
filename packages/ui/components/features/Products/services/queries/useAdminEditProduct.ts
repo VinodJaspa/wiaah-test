@@ -33,7 +33,7 @@ export const useAdminEditProductMutation = () => {
       });
       const res = await client.send<AdminUpdateProductMutation>();
 
-      return res.data.updateProductAdmin;
+      return res?.data.updateProductAdmin ?? false;
     },
   );
 };

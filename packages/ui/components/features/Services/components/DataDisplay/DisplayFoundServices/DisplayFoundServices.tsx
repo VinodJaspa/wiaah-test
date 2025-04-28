@@ -4,7 +4,7 @@ export const DisplayFoundServices: React.FC<{
   location: string;
   servicesNum: number;
 }> = ({ location, servicesNum }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <>
       {typeof location === "string" ? (

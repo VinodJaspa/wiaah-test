@@ -121,6 +121,7 @@ export interface ShopCardInfo {
   comments: PostComment[];
   url: string;
   createdAt: string;
+  shares?: number;
 }
 
 export interface AffiliationOfferCardInfo {

@@ -16,7 +16,7 @@ export interface ProductColorSelectInputProps {
 export const ProductColorSelectInput: React.FC<
   ProductColorSelectInputProps
 > = ({ colors, onChange, value, placeholder }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const ph = placeholder || `${t("Color")}...`;
   return (
     <div className="flex w-full items-center gap-2">

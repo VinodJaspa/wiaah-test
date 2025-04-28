@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "../lib/utils"
 
-const Table = React.forwardRef<
+const ShadcnTable = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
@@ -14,7 +14,7 @@ const Table = React.forwardRef<
     />
   </div>
 ))
-Table.displayName = "Table"
+ShadcnTable.displayName = "Table"
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
@@ -109,7 +109,7 @@ const TableCaption = React.forwardRef<
 TableCaption.displayName = "TableCaption"
 
 export {
-  Table,
+  ShadcnTable,
   TableHeader,
   TableBody,
   TableFooter,

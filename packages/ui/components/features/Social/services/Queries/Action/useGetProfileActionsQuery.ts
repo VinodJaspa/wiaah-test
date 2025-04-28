@@ -82,9 +82,10 @@ export const useGetProfileActionsQuery = (
 ) =>
   useInfiniteQuery(
     getProfileActionsQueryKey(args),
-    ({ meta, queryKey, pageParam, signal }) => {
+    async ({ meta, queryKey, pageParam, signal }): Promise<GetActionsCursorResponse> => {
       console.log({ meta, queryKey, pageParam, signal });
-      return getProfileActionsQueryFetcher(args);
+      return await getProfileActionsQueryFetcher(args) as GetActionsCursorResponse;
     },
-    options
+    
   );
+  

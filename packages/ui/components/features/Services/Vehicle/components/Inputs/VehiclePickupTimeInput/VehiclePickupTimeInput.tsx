@@ -19,7 +19,7 @@ export const VehiclePickupTimeInput: React.FC<VehiclePickupTimeInputProps> = ({
   ...props
 }) => {
   const [time, setTime] = React.useState<TimeType>();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div

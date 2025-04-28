@@ -39,7 +39,8 @@ const taxRates: TaxRate[] = [
 ];
 
 const Classesform: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back } = useRouting();
   return (
     <React.Fragment>

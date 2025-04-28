@@ -5,13 +5,14 @@ import {
 import { useGetProfileAffiliationPosts } from "@features/Social/services";
 import { AspectRatio, Image, ScrollPaginationWrapper } from "@partials";
 import { useResponsive } from "hooks";
-import { mapArray, useBreakpointValue } from "utils";
+import { mapArray } from "utils";
 import React from "react";
 import {
   AffiliationPostPlaceholder,
   AffiliationPostListPlaceholder,
   getRandomImage,
 } from "ui/placeholder";
+import { useMediaQuery } from "react-responsive";
 
 export const SocialProfileAffiliationPostsList: React.FC<{
   userId: string;
@@ -23,7 +24,13 @@ export const SocialProfileAffiliationPostsList: React.FC<{
   // userId, pagination;
   // });
   const { isMobile } = useResponsive();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const cols = useMediaQuery({ maxWidth: 767 })
+    ? 1
+    : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
+    ? 2
+    : useMediaQuery({ minWidth: 1024 })
+    ? 3
+    : 1;
 
   return (
     <ScrollPaginationWrapper controls={controls}>

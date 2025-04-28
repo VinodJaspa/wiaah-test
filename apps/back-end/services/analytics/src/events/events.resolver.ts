@@ -9,7 +9,7 @@ import { Order } from './entities/order.entity.extends';
 
 @Resolver(() => Event)
 export class EventsResolver {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   @Query(() => [Event])
   async adminGetEvents(@Args('args') args: AdminGetEventsInput) {
@@ -27,9 +27,9 @@ export class EventsResolver {
   causedBy(@Parent() parent: Event) {
     return parent.causedById
       ? {
-        __typename: 'Account',
-        id: parent.causedById,
-      }
+          __typename: 'Account',
+          id: parent.causedById,
+        }
       : null;
   }
 

@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 export const WithdrawalDrawer: React.FC = () => {
   const { closeWithdraw, value } = useSocialControls("showWithdraw");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { selectProps, inputProps, form } = useForm<{
     currency: string;

@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 
 export const SocialMusicSearchDrawer: React.FC = () => {
   const { closeMusicSearch, value } = useSocialControls("showMusicSearch");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <Drawer position="bottom" full isOpen={!!value} onClose={closeMusicSearch}>

@@ -12,7 +12,7 @@ export const VehicleDropOffDateInput: React.FC<
 > = ({ children, className, ...props }) => {
   const [date, setDate] = React.useState<string>();
   const [FormatedDate, setFormatedDate] = React.useState<string>("");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   React.useEffect(() => {
     if (date) {

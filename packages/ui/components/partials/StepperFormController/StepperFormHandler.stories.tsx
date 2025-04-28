@@ -22,7 +22,7 @@ const test3Schema = yup.object().shape({
 });
 
 export const Default = () => {
-  const [data, setData] = React.useState<Object>();
+  const [data, setData] = React.useState<object>();
   return (
     <StorybookImplemntationLayout
       implmentation={`
@@ -249,7 +249,7 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
   );
 };
 
-const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm1: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (
@@ -269,7 +269,7 @@ const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
     </Formik>
   );
 };
-const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm2: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (
@@ -289,7 +289,7 @@ const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
     </Formik>
   );
 };
-const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm3: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (

@@ -41,9 +41,12 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
         {components.map((comp, i) => {
           if (i < componentsLimit) {
             return (
-              //@ts-ignore
+
               <div key={i}>{comp}</div>
             );
+          }
+          else{
+            return null;
           }
         })}
       </div>

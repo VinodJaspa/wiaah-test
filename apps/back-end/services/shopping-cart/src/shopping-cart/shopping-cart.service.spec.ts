@@ -252,7 +252,7 @@ describe('ShoppingCartService', () => {
   });
 
   it('should add item of type service to shopping cart', async () => {
-    let mockServiceKafkaResponseData = {
+    const mockServiceKafkaResponseData = {
       name: 'service name',
       price: 354,
       thumbnail: 'test thumb',
@@ -290,7 +290,7 @@ describe('ShoppingCartService', () => {
       }),
     );
 
-    let cart = await service.getShoppingCartByOwnerId(mockedUser.id);
+    const cart = await service.getShoppingCartByOwnerId(mockedUser.id);
 
     expect(cart.cartItems.length).toBe(1);
     expect(cart.cartItems.at(0)).toStrictEqual(servciceItem);

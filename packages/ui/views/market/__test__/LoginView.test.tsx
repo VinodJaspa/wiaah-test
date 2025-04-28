@@ -34,9 +34,9 @@ describe("loginView inputs functionality", () => {
     const component = mount(
       <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
     );
-    let emailInput = component.find(email.selector);
-    let passwordInput = component.find(password.selector);
-    let rememberMeCheckbox = component.find(remember_me.selector);
+    const emailInput = component.find(email.selector);
+    const passwordInput = component.find(password.selector);
+    const rememberMeCheckbox = component.find(remember_me.selector);
 
     expect(rememberMeCheckbox.length).toBe(1);
     expect(emailInput.length).toBe(1);
@@ -136,9 +136,9 @@ describe("login functaionalty", () => {
     const component = mount(
       <LoginView setAuthView={() => { }} onSubmit={() => { }} />,
     );
-    let emailInput = component.find(email.selector);
-    let passwordInput = component.find(password.selector);
-    let RememberMeCheckbox = component.find(remember_me.selector);
+    const emailInput = component.find(email.selector);
+    const passwordInput = component.find(password.selector);
+    const RememberMeCheckbox = component.find(remember_me.selector);
     const loginBtn = component.find(login.selector);
 
     // simulate user input

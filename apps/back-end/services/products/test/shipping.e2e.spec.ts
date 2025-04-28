@@ -19,17 +19,17 @@ import { AppModule } from '../src/app.module';
 
 describe('shipping e2e', () => {
   let app: INestApplication;
-  let kafka = new Kafka({
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.SHIPPING_SERVICE.clientId,
   });
 
-  let producer = kafka.producer();
-  let consumer = kafka.consumer({
+  const producer = kafka.producer();
+  const consumer = kafka.consumer({
     groupId: SERVICES.SHIPPING_SERVICE.groupId,
   });
 
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -192,7 +192,7 @@ describe('shipping e2e', () => {
 
     expect(rule).toMatchObject(createInput);
 
-    let updateInput: UpdateShippingRuleInput = {
+    const updateInput: UpdateShippingRuleInput = {
       id: rule.id,
       cost: 35,
       countries: [

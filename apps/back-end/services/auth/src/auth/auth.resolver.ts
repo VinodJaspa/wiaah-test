@@ -53,7 +53,7 @@ export class AuthResolver implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
     private readonly commandBus: CommandBus,
-  ) { }
+  ) {}
   cookiesKey = this.config.get('COOKIES_KEY');
 
   @Mutation(() => Boolean)
@@ -90,11 +90,11 @@ export class AuthResolver implements OnModuleInit {
         code: ResponseCodes.TokenInjected,
         accessToken: data.accessToken as string,
       };
-    } catch (error) {
+    } catch (error: any) {
       return {
         success: false,
         code: ResponseCodes.InternalServiceError,
-        message: error.message || 'An error occurred during login',
+        message: error?.message || 'An error occurred during login',
       };
     }
   }
@@ -160,7 +160,7 @@ export class AuthResolver implements OnModuleInit {
     try {
       await this.authService.requestPasswordChange(inputs);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -172,7 +172,7 @@ export class AuthResolver implements OnModuleInit {
     try {
       await this.authService.confirmPasswordChange(inputs);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }

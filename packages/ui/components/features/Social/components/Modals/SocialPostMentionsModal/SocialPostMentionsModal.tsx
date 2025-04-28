@@ -25,7 +25,7 @@ export const useSocialPostMentionsModal = (sub?: boolean) =>
 export const SocialPostMentionsModal: React.FC = () => {
   const { close, isOpen, value } = useSocialPostMentionsModal(true);
   const { pagination } = usePaginationControls();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { data, isLoading, isError } = useGetPostMentionsQuery(
     value as { postId: string; postType: string },

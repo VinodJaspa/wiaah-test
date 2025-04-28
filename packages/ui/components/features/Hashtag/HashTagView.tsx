@@ -46,7 +46,6 @@ import {
   mapArray,
   NumberShortner,
   randomNum,
-  useBreakpointValue,
   useForm,
 } from "utils";
 import { PostType, StoreType } from "@features/API";
@@ -54,13 +53,20 @@ import { startCase } from "lodash";
 import { useGetTopHashtagProductPosts } from "@features/Social/services/Queries/ShopPost/useGetTopHashtagProductPosts";
 import { useGetTopHashtagActionsQuery } from "@features/Social/services/Queries/Action/useGetTopHashtagActions";
 import { ScrollCursorPaginationWrapper, GridListOrganiser } from "ui";
+import { useMediaQuery } from "react-responsive";
 
 export interface HashTagViewProps {
   tag: string;
 }
 
 export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const cols =useMediaQuery({ maxWidth: 767 })
+    ? 1
+    : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
+    ? 2
+    : useMediaQuery({ minWidth: 1024 })
+    ? 3
+    : 1;
   const { isMobile } = useResponsive();
   const [idx, setIdx] = React.useState(0);
 
@@ -70,7 +76,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   });
   function handleFollowHashtag() { }
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const tabs: TabType[] = [
     {
@@ -199,7 +205,7 @@ export const HashtagPostsView: React.FC<{
   postType: PostType | "action";
   tag: string;
 }> = ({ postType, tag }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const { form } = useForm<Parameters<typeof useGetTrendingHashtagPosts>[0]>({
     hashtag: tag,
@@ -219,7 +225,7 @@ export const HashtagPostsView: React.FC<{
   const { data: topServices } = useGetTopHashtagServicePost({ tag });
   const { data: topActions } = useGetTopHashtagActionsQuery({ tag });
 
-  const TopPosts: Object =
+  const TopPosts: object =
     postType === PostType.NewsfeedPost
       ? topNewsfeed
       : postType === PostType.ShopPost
@@ -314,7 +320,7 @@ export const HashtagSearchProdcutCard: React.FC<{
   location,
   storeType,
 }) => {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
     return (
       <div className="flex flex-col gap-2 w-full">

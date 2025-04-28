@@ -25,7 +25,7 @@ const Formcomponent: React.ForwardRefRenderFunction<
   MultiStepFromHandle,
   MultiStepFromProps
 > = ({ steps }, ref) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   React.useImperativeHandle(ref, () => ({
     handleNextStep,

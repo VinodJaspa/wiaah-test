@@ -58,7 +58,8 @@ const _data: AccountVerificationRequest[] = [...Array(10)].map((_, i) => ({
 }));
 
 const AccountVerifications: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const [refuseId, setRefuseId] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();
   const { data: _data } = useAdminGetAccountVerifciationRequestsQuery({
@@ -198,7 +199,7 @@ const AccountVerifications: NextPage = () => {
                 reason: "",
                 otherReason: "",
               }}
-              onSubmit={() => { }}
+              onSubmit={() => {}}
             >
               {({ setFieldValue, values }) => (
                 <Form>

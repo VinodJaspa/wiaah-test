@@ -17,7 +17,7 @@ import { getRandomImage } from "placeholder";
 export const SocialProfileActionList: React.FC<{
   userId: string;
 }> = ({ userId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { controls, getHasMore, getNextCursor, props } =
     useCursorScrollPagination();
   const { form } = useForm<Parameters<typeof useGetProfileActionsQuery>[0]>(

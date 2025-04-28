@@ -30,6 +30,7 @@ import {
   VStack,
 } from "@partials";
 import { useCommentReportModal } from "@src/Hooks";
+import e from "express";
 import Link from "next/link";
 import { PersonalizeActions } from "placeholder";
 import React, { useCallback, useMemo, useRef, useState } from "react";
@@ -39,7 +40,7 @@ import { useRouting } from "routing";
 import { mapArray, NumberShortner } from "utils";
 
 export const ActionsView: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { shareLink, showContentComments } = useSocialControls();
   const { mutate } = useLikeContent();
   const { getUrl } = useRouting();
@@ -128,6 +129,9 @@ export const ActionsView: React.FC = () => {
           videoElement.removeEventListener("ended", onEnded);
         };
       }
+      else {
+        return () => { }; // No cleanup needed if videoElement is null
+      }
     });
 
     // Clean up effect
@@ -181,7 +185,7 @@ export const ActionsView: React.FC = () => {
             key={i}
             ref={(el) => {
               videoContainersRef.current[i] = el; // Assign video container ref
-            }} // Assign video container ref
+            }}
             className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative "
           >
             <video

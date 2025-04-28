@@ -32,7 +32,7 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
   className,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className={`${className || ""} w-full flex gap-1 flex-col`} {...props}>

@@ -6,9 +6,9 @@ import {
 } from "./BeautyCenterRecommendedSearchCard";
 import { ServicesRequestKeys } from "@UI";
 
-let mockVisit: jest.Mock = jest.fn();
-let mockVisitService: jest.Mock = jest.fn();
-let mockVisitServiceOnMap: jest.Mock = jest.fn();
+const mockVisit: jest.Mock = jest.fn();
+const mockVisitService: jest.Mock = jest.fn();
+const mockVisitServiceOnMap: jest.Mock = jest.fn();
 jest.mock("routing", () => ({
   useRouting: () => ({
     visit: mockVisit.mockImplementation((routes: (routes: any) => string) => {

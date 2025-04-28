@@ -13,7 +13,7 @@ describe('RestaurantResolver', () => {
   let service: RestaurantService;
   let prisma: PrismaService;
 
-  let input: CreateRestaurantInput = {
+  const input: CreateRestaurantInput = {
     vat: 15,
     cuisinesTypeId: new ObjectId().toHexString(),
     establishmentTypeId: new ObjectId().toHexString(),
@@ -125,7 +125,7 @@ describe('RestaurantResolver', () => {
   it('should update restaurant', async () => {
     const created = await resolver.createRestaurant(input, mockedUser, 'en');
 
-    let updatedInput: UpdateRestaurantInput = {
+    const updatedInput: UpdateRestaurantInput = {
       id: created.id,
       menus: [],
       michelin_guide_stars: 4,

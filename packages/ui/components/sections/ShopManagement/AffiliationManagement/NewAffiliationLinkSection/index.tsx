@@ -51,7 +51,7 @@ export function AffiliationForm({
 
   const { data: prods } = useGetMyProducts({ pagination });
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { cancelNew } = React.useContext(AffiliationManagementContext);
 

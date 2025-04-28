@@ -29,6 +29,7 @@ const transitionProps = {
 
 export interface CarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string; 
   children: React.ReactElement[];
   gap?: number;
   activeItem?: number;
@@ -42,7 +43,7 @@ export interface CarouselProps
   swipe?: boolean;
   navigateOnClick?: boolean;
   movementDirection?: "vertical" | "horizontal";
-  trackStyle?: StackProps;
+  trackStyle?: any;
   onPassMaxLimit?: () => any;
   onPassMinLimit?: () => any;
 }
@@ -146,7 +147,7 @@ export const Carousel: React.FC<CarouselProps> = ({
     itemWidth,
     positions,
     trackBgColor,
-    style: trackStyle,
+    // style?: React.CSSProperties,
     onPassMaxLimit,
     onPassMinLimit,
     swipe,
@@ -236,6 +237,12 @@ const Slider: React.FC<SliderProps> = ({
         window.removeEventListener("resize", adjustWidth);
         window.removeEventListener("scroll", adjustWidth);
       };
+    }
+    else{
+      initSliderWidth(0);
+    }
+    return () => {
+      initSliderWidth(0);
     }
   }, [sliderRef, initSliderWidth, activeItem]);
 

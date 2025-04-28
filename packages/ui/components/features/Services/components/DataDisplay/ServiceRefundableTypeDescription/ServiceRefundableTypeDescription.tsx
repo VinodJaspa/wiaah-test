@@ -13,7 +13,7 @@ export interface ServiceRefundableTypeDescriptionProps {
 export const ServiceRefundableTypeDescription: React.FC<
   ServiceRefundableTypeDescriptionProps
 > = ({ cost, duration, bookedDate, displayCost }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { addDays } = useDateManipulation(new Date(bookedDate).toString());
   const maxDate = addDays(duration);
 

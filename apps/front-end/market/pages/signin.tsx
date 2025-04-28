@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const Signin = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { mutate } = useSigninMutation();
 
   return (

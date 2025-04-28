@@ -20,7 +20,7 @@ describe("useAddProductTrackingLink hook test", () => {
   beforeEach(() => {
     addlinkMock = jest.fn();
     jest.mock("api", () => {
-      AddProductTrackingLinkFetcher: jest.fn();
+      jest.fn();
     });
     wrapper = mount(
       (() => {

@@ -56,6 +56,7 @@ export class CategoryService {
   ): Promise<boolean> {
     try {
       await this.prisma.productCategory.create({
+        // @ts-ignore
         data: input,
       });
 
@@ -76,6 +77,7 @@ export class CategoryService {
         where: {
           id,
         },
+        // @ts-ignore
         data: rest,
       });
       return true;

@@ -27,7 +27,8 @@ import { ShippingType } from "@features/API";
 import Head from "next/head";
 
 const GeoZones: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getCurrentPath, visit } = useRouting();
 
   const { controls, pagination } = usePaginationControls();

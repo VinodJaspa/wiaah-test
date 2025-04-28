@@ -20,7 +20,8 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
 const EditCollab = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back, getParam } = useRouting();
 
   const id = getParam("id");

@@ -24,7 +24,7 @@ export const ServiceTransportDisplay: React.FC<
   type,
   typeOfDevice,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex items-center gap-4 flex-wrap font-bold">
       {typeof guests === "number" ? (

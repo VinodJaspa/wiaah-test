@@ -4,7 +4,7 @@ import { PrismaService } from 'prismaService';
 
 @Injectable()
 export class AccountRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async updateAccount(id: string, input: Prisma.AccountUpdateInput) {
     return this.prisma.account.update({

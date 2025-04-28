@@ -15,38 +15,36 @@ const template: StoryFn<typeof VehicleSearchCard> = (args) => (
   </div>
 );
 
-export const Default: { args: VehicleSearchCardProps } = {
-  render: template,
-
-  args: {
-    __typename: "Vehicle",
-    id: "vehicle-1",
-    title: "Sedan 2024",
-    presentations: [
-      {
-        __typename: "ServicePresentation",
-        type: ServicePresentationType.Img, // Replace with a valid ServicePresentationType value
-        src: "https://example.com/image.jpg", // Replace with a valid image URL
-      },
-    ],
-    brand: "Toyota",
-    model: "Camry",
-    price: 30000,
-    cancelationPolicies: [
-      {
-        __typename: "ServiceCancelationPolicy",
-        duration: 14, // Duration in days
-        cost: 100, // Cost of cancellation
-      },
-    ],
-    properties: {
-      __typename: "VehicleProperties",
-      seats: 5,
-      windows: 6,
-      maxSpeedInKm: 240,
-      lugaggeCapacity: 450,
-      gpsAvailable: true,
-      airCondition: true,
+export const Default: StoryFn<typeof VehicleSearchCard> = template.bind({});
+Default.args = {
+  __typename: "Vehicle",
+  id: "vehicle-1",
+  title: "Sedan 2024",
+  presentations: [
+    {
+      __typename: "ServicePresentation",
+      type: ServicePresentationType.Img, // Replace with a valid ServicePresentationType value
+      src: "https://example.com/image.jpg", // Replace with a valid image URL
     },
+  ],
+  brand: "Toyota",
+  model: "Camry",
+  price: 30000,
+  cancelationPolicies: [
+    {
+      __typename: "ServiceCancelationPolicy",
+      id: "policy-1", // Unique identifier for the policy
+      duration: 14, // Duration in days
+      cost: 100, // Cost of cancellation
+    },
+  ],
+  properties: {
+    __typename: "VehicleProperties",
+    seats: 5,
+    windows: 6,
+    maxSpeedInKm: 240,
+    lugaggeCapacity: 450,
+    gpsAvailable: true,
+    airCondition: true,
   },
 };

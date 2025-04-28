@@ -20,7 +20,8 @@ import { AccountType, WithdrawalStatus } from "@features/API";
 import Head from "next/head";
 
 const Withdrawal: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination, controls } = usePaginationControls();
   const { form, selectProps, inputProps, dateInputProps } = useForm<
@@ -106,16 +107,16 @@ const Withdrawal: NextPage = () => {
                   actionBtns:
                     status === "pending"
                       ? [
-                        <Button
-                          key={id}
-                          {...setTestid("withdrawal-accept-btn")}
-                          onClick={() => mutate(id)}
-                          center
-                          className="w-8 h-8"
-                        >
-                          <ImCheckmark />
-                        </Button>,
-                      ]
+                          <Button
+                            key={id}
+                            {...setTestid("withdrawal-accept-btn")}
+                            onClick={() => mutate(id)}
+                            center
+                            className="w-8 h-8"
+                          >
+                            <ImCheckmark />
+                          </Button>,
+                        ]
                       : [],
                   value: amount.toString(),
                 },

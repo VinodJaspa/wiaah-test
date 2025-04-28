@@ -32,7 +32,7 @@ export interface AddressBookSectionProps {
 export const AddressBookSection: React.FC<AddressBookSectionProps> = ({
   accountId,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const [addressSelected, setAddressSelected] = React.useState<number>();
   const [addNewAddress, setAddNewAddress] = React.useState<boolean>(false);
@@ -188,7 +188,7 @@ export const AddressBookCard: React.FC<AddressBookCardProps> = ({
   onRemove,
   innerProps,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div
       {...innerProps}

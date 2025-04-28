@@ -92,7 +92,8 @@ const FAKE_CITEIES = [
 
 const EditBannedCountry = () => {
   const { getParam, back } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const id = getParam("id");
 
   const isNew = id === "new";
@@ -100,7 +101,10 @@ const EditBannedCountry = () => {
   const { mutate: ban } = useAdminBanSellersCitites();
   const { mutate: unban } = useAdminBanBuyersCitites();
   // get Banned Countries
-  const { data: _bannedContry } = useAdminGetBannedCountryQuery(id, !isNew);
+  const { data: _bannedContry } = useAdminGetBannedCountryQuery(
+    id || "",
+    !isNew,
+  );
 
   const { form: countriesSearch } =
     useForm<Parameters<typeof useGetCountriesQuery>[0]>("");

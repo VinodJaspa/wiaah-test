@@ -31,7 +31,8 @@ import { AttachmentType, ReportStatus, ReportType } from "@features/API";
 import Head from "next/head";
 
 const SocialReports: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps } = useForm<

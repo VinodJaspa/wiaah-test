@@ -6,7 +6,7 @@ import {
 
 describe("CategoriesSelectIput", () => {
   let wrapper: ShallowWrapper;
-  let props: CategoriesSelectInputProps = {
+  const props: CategoriesSelectInputProps = {
     categories: ["fashion", "sports"],
     value: "test",
     onChange(value) {},

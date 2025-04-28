@@ -27,7 +27,7 @@ import { randomNum } from "../../../../helpers";
 export interface WithdrawalSectionProps {}
 
 export const WithdrawalSection: React.FC<WithdrawalSectionProps> = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const stripeSignedin = false;
   const setOpen = useSetRecoilState(NewWithdrawalOpenState);
   return (
@@ -64,7 +64,7 @@ export const WithdrawalSection: React.FC<WithdrawalSectionProps> = ({}) => {
 };
 
 export const StripeWithdrawalSigninSection: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("withdrawal", "Withdrawal")} />
@@ -86,7 +86,7 @@ export const StripeWithdrawalSigninSection: React.FC = () => {
 
 export const NewWithdrawalModal: React.FC = () => {
   const { isOpen, onClose, onOpen } = useNewWithdrawalModal();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   function handleOpen() {
     onOpen();
   }

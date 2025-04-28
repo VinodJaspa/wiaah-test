@@ -11,7 +11,7 @@ import { SERVICESTYPE_INDEXKEY } from "ui";
 import { ServiceType } from "@features/API";
 
 const ServiceCategory: NextPage = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
   const serviceType = ExtractServiceTypeFromQuery(router.query);

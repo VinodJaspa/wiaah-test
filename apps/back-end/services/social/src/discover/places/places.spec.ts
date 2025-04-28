@@ -27,8 +27,8 @@ jest.mock('nest-utils', () => ({
 describe('places tests', () => {
   let app: INestApplication;
 
-  let mockKafka = new NestKafkaClientMock();
-  let mockKafkaMessageHandler = KafkaMessageHandler as jest.Mock;
+  const mockKafka = new NestKafkaClientMock();
+  const mockKafkaMessageHandler = KafkaMessageHandler as jest.Mock;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -192,7 +192,7 @@ describe('places tests', () => {
       }),
     );
 
-    let res = await reqGql(getPlacesQuery, {}, mockedUser);
+    const res = await reqGql(getPlacesQuery, {}, mockedUser);
 
     expect(res.body.errors).not.toBeDefined();
     expect(res.body.data.getPlaceSuggestions.places).toHaveLength(3);

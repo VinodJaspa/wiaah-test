@@ -38,7 +38,8 @@ import {
 import { mapArray, NumberShortner, useForm } from "utils";
 
 const SocialPosts = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { visit } = useRouting();
 

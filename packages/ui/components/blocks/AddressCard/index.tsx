@@ -16,7 +16,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   onEdit,
   active,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   function handleDeleteClick() {
     if (onDelete) {

@@ -9,7 +9,7 @@ function createServiceRequestKeys<T extends { [name: string]: ServicesType }>(
 export const ServicesRequestKeys = createServiceRequestKeys({
   hotels: "hotel",
   restaurant: "restaurant",
-  holidaysRentals: "holidays_rentals",
+  holidaysRentals: "holiday_rentals",
   healthCenter: "health_center",
   general: "general",
   vehicle: "vehicle",

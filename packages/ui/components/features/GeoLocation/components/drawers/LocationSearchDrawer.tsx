@@ -25,7 +25,7 @@ import { startCase } from "lodash";
 
 export const LocationSearchDrawer: React.FC = () => {
   const { value, closeSearchMap } = useSocialControls("searchMap");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [details, setDetails] = React.useState(true);
   const [filter, setfilter] = React.useState<string>();
 

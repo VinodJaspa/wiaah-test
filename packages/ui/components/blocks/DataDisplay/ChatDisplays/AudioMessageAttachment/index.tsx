@@ -15,7 +15,7 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
   const [play, setPlay] = React.useState<boolean>(false);
   const [currentAudioTick, setCurrentAudioTick] = React.useState<number>(0);
   const audioRef = React.useRef<HTMLAudioElement>(null);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const audioTicks = React.useMemo(() => {
     return [...Array(30)].map(() => `${Math.random() * (2 - 0.3) + 0.3}em`);

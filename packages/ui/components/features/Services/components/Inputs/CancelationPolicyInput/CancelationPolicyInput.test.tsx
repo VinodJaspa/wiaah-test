@@ -13,7 +13,7 @@ const selectors = {
 
 describe("CancelationPolicyInput", () => {
   let wrapper: ShallowWrapper;
-  let props: CancelationPolicyInputProps = {
+  const props: CancelationPolicyInputProps = {
     onAdd(data) {},
   };
   let mockOnAdd: jest.Mock;

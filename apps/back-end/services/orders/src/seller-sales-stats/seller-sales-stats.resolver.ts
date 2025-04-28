@@ -43,10 +43,10 @@ export class SellerSalesStatsResolver {
         period === StatsRetrivePeriod.year
           ? 365
           : StatsRetrivePeriod.month
-          ? 30
-          : period === StatsRetrivePeriod.week
-          ? 7
-          : 1,
+            ? 30
+            : period === StatsRetrivePeriod.week
+              ? 7
+              : 1,
     });
 
     const currentStats = await this.prisma.sellerSalesStatistics.findMany({
@@ -162,16 +162,16 @@ export class SellerSalesStatsResolver {
             currentDate.getDate(),
           )
         : period === StatsRetrivePeriod.week
-        ? new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate() - currentDate.getDay(),
-          )
-        : period === StatsRetrivePeriod.month
-        ? new Date(currentDate.getFullYear(), currentDate.getMonth())
-        : period === StatsRetrivePeriod.year
-        ? new Date(currentDate.getFullYear())
-        : new Date();
+          ? new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate() - currentDate.getDay(),
+            )
+          : period === StatsRetrivePeriod.month
+            ? new Date(currentDate.getFullYear(), currentDate.getMonth())
+            : period === StatsRetrivePeriod.year
+              ? new Date(currentDate.getFullYear())
+              : new Date();
 
     return searchPeriod;
   }

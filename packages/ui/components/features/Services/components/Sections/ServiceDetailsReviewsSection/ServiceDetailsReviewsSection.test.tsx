@@ -12,7 +12,7 @@ const selectors = {
 
 describe("ServiceDetailsReviewsSection", () => {
   let wrapper: ShallowWrapper;
-  let props: ServiceDetailsReviewsSectionProps = {
+  const props: ServiceDetailsReviewsSectionProps = {
     overAllRating: 4.5,
     ratingLevels: [
       {

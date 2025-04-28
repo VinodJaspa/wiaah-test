@@ -36,7 +36,7 @@ import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css"; // Import default styles
 export const SellerProfileStartupView: React.FC = ({}) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const [currentStep, setCurrentStep] = React.useState<number>(0);
 
@@ -64,7 +64,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
   const steps: StepperStepType[] = React.useMemo(
     () => [
       {
-        stepName: t("Signup"),
+        stepName: t("Signup") as string,
         key: 0,
         stepComponent: (
           <AccountSignup
@@ -78,7 +78,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         ),
       },
       {
-        stepName: t("Email Verification"),
+        stepName: t("Email Verification") as string,
         key: 1,
         stepComponent: (
           <AccountSignEmailVerificationStep
@@ -258,7 +258,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             {currentStepComp?.stepName.toString()}
           </p>
           <p className="text-xs text-primary">
-            {t("Next")} : {nextStep?.stepName.toString()}
+            {t("Next") as string} : {nextStep?.stepName.toString()}
           </p>
         </div>
       </HStack>
@@ -453,7 +453,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     },
     ref
   ) => {
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
       code: "",
     });

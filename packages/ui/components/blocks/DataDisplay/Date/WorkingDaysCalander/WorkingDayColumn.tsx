@@ -16,7 +16,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
   onClick,
 }) => {
   const date = new Date(dayDate);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center w-full flex-col">

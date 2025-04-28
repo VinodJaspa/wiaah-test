@@ -46,7 +46,8 @@ const Dashboard: NextPage = () => {
   useResponsive();
   const chartRef = React.useRef<HTMLDivElement>(null);
   const radialChartRef = React.useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { data: _analyticsData } = useGetAdminDashboardData();
   const analyticsData = FAKE_ANALYTICS;

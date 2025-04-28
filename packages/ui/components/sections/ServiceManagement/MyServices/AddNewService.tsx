@@ -68,7 +68,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { CancelAddingNewService, ServiceIdFormState } =
     useContext(MyServicesCtx);
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [lang, setLang] = React.useState<WiaahLangId>(WiaahLangId.EN);
 
   const { mutate } = useCreateServiceMutation();
@@ -161,7 +161,7 @@ export const NewServiceStepper = React.forwardRef(
     ref
   ) => {
     const { isMobile } = useResponsive();
-    const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
     const uploadImagesRef = useRef<HTMLInputElement>(null);
 
     const { data: shop } = useGetUserShopType({ userId: sellerId });
@@ -277,24 +277,24 @@ export const NewServiceStepper = React.forwardRef(
                     label={(() => {
                       switch (serviceType) {
                         case ServiceType.Hotel:
-                          return t("Room Name");
+                          return t("Room Name") as string;
 
                         case ServiceType.HolidayRentals:
-                          return t("Rental Name");
+                          return t("Rental Name") as string;
 
                         case ServiceType.BeautyCenter:
-                          return t("Treatment Name");
+                          return t("Treatment Name") as string;
 
                         case ServiceType.HealthCenter:
-                          return t("Doctor Name");
+                          return t("Doctor Name") as string;
 
                         case ServiceType.Restaurant:
-                          return t("Dish Name");
+                          return t("Dish Name") as string;
 
                         case ServiceType.Vehicle:
-                          return t("Vehicle Name");
+                          return t("Vehicle Name") as string;
                         default:
-                          return t("Service Name");
+                          return t("Service Name") as string;
                       }
                     })()}
                   />
@@ -385,7 +385,7 @@ export const NewServiceStepper = React.forwardRef(
                       type={"number"}
                       min={1}
                       {...inputProps("units")}
-                      label={t("Number of rooms")}
+                      label={t("Number of rooms") as string}
                     />
                   ) : null}
 
@@ -401,7 +401,7 @@ export const NewServiceStepper = React.forwardRef(
                             inMeter: form.measurements?.inMeter || 0,
                           })
                         }
-                        label={t("Measurements (in feet)")}
+                        label={t("Measurements (in feet)") as string}
                       />
 
                       <Input
@@ -414,7 +414,7 @@ export const NewServiceStepper = React.forwardRef(
                             inFeet: form.measurements?.inMeter || 0,
                           })
                         }
-                        label={t("Measurements (in meter)")}
+                        label={t("Measurements (in meter)") as string}
                       />
 
                       <div>
@@ -471,7 +471,7 @@ export const NewServiceStepper = React.forwardRef(
                     <div className="flex flex-col gap-2">
                       <Select
                         {...selectProps("treatmentCategoryId")}
-                        label={t("Treatment Category")}
+                        label={t("Treatment Category") as string}
                       >
                         <SelectOption value={undefined}>
                           {t("Select Treatment Category")}
@@ -509,7 +509,7 @@ export const NewServiceStepper = React.forwardRef(
                     <div className="flex flex-col gap-2">
                       <Select
                         {...selectProps("specialityId")}
-                        label={t("Speciality")}
+                        label={t("Speciality") as string}
                       >
                         <SelectOption value={undefined}>
                           {t("Select Speciality")}
@@ -603,19 +603,19 @@ export const NewServiceStepper = React.forwardRef(
                   ) : null}
 
                   <ChooseWithInput
-                    title={t("Cleaning fees")}
+                    title={t("Cleaning fees") as string}
                     name="cancelFees"
                     onOptionChange={(opt) => {
                       // add cleaning fee
                     }}
                     options={[
                       {
-                        title: t("Free"),
+                        title: t("Free") as string,
                         key: "free",
                         input: null,
                       },
                       {
-                        title: t("Paid"),
+                        title: t("Paid") as string,
                         key: "paid",
                         input: { placeholder: "$" },
                       },
@@ -638,8 +638,8 @@ export const NewServiceStepper = React.forwardRef(
                         type="number"
                         min={1}
                         {...inputProps("lugaggeCapacity")}
-                        label={t("bags")}
-                        placeholder={t("bags")}
+                        label={t("bags") as string}
+                        placeholder={t("bags") as string}
                       />
                       <HStack className="justify-between font-semibold">
                         <p>{t("gps available")}</p>
@@ -982,7 +982,7 @@ export const NewServiceStepper = React.forwardRef(
                     <p>{t("Policy Terns")}</p>
                     <Textarea
                       name="policy_terms"
-                      placeholder={t("Policy Terms")}
+                      placeholder={t("Policy Terms") as string}
                     />
                   </div>
 
@@ -992,8 +992,8 @@ export const NewServiceStepper = React.forwardRef(
                         <p>{t("When can guests check in?")}</p>
                         <HStack className="flex flex-col sm:flex-row">
                           <Select
-                            placeholder={t("Select a time")}
-                            label={t("From")}
+                            placeholder={t("Select a time") as string}
+                            label={t("From") as string || "From"}
                           >
                             {mapArray([...Array(10)], (_, i) => (
                               <SelectOption value={i}>
@@ -1010,8 +1010,8 @@ export const NewServiceStepper = React.forwardRef(
                             ))}
                           </Select>
                           <Select
-                            placeholder={t("Select a time")}
-                            label={t("To")}
+                            placeholder={t("Select a time") as string}
+                            label={t("To") || "To"}
                           >
                             {mapArray([...Array(10)], (_, i) => (
                               <SelectOption value={i}>

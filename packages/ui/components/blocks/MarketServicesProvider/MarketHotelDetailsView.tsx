@@ -78,7 +78,7 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(id);
   const data = FAKE_DATA;
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       {res ? (

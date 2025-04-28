@@ -96,28 +96,29 @@ const customerStats: {
   color: string;
   total: number;
 }[] = [
-    {
-      name: "New Customer",
-      color: "#118AB2",
-      value: 200,
-      total: 1000,
-    },
-    {
-      name: "Current Customer",
-      color: "#FFD166",
-      value: 400,
-      total: 1000,
-    },
-    {
-      name: "Retargeted Cystiner (Coming soon)",
-      color: "#00E1E1",
-      value: 400,
-      total: 1000,
-    },
-  ];
+  {
+    name: "New Customer",
+    color: "#118AB2",
+    value: 200,
+    total: 1000,
+  },
+  {
+    name: "Current Customer",
+    color: "#FFD166",
+    value: 400,
+    total: 1000,
+  },
+  {
+    name: "Retargeted Cystiner (Coming soon)",
+    color: "#00E1E1",
+    value: 400,
+    total: 1000,
+  },
+];
 
 const Profit = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const ref = React.useRef<HTMLDivElement>(null);
   const [salesChartDims, setChartDims] = React.useState<{
     w: number;
@@ -192,8 +193,9 @@ const Profit = () => {
           textAnchor={"middle"}
           dominantBaseline="central"
           fontWeight={"700"}
-          fontSize={`${space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
-            }rem`}
+          fontSize={`${
+            space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
+          }rem`}
         >
           {`${(percent * 100).toFixed(0)}%`}
         </text>
@@ -203,8 +205,9 @@ const Profit = () => {
           fill="white"
           textAnchor={space < 0.9 ? "middle" : "end"}
           // fontWeight={""}
-          fontSize={`${space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
-            }rem`}
+          fontSize={`${
+            space > 0.7 ? 0.8 : space > 0.5 ? 1.2 : space > 0.2 ? 1.5 : 1.5
+          }rem`}
           dominantBaseline="central"
         >
           {name}
@@ -356,61 +359,61 @@ const Profit = () => {
             <div className="px-4 w-full gap-4 font-medium grid grid-cols-8 h-full overflow-y-scroll pr-2 thinScroll">
               {!isPayPerClick
                 ? mapArray(services, (v, i) => (
-                  <React.Fragment key={i}>
-                    <p className="text-xl col-span-2 font-semibold">
-                      {v.name}
-                    </p>
-                    <p className="items-center flex justify-center">
-                      {startCase(v.type)}
-                    </p>
-                    <div className="flex flex-col items-center justify-center">
-                      <HStack className="gap-0">
-                        <PriceDisplay
-                          className="flex items-center justify-center"
-                          price={v.price}
-                          compact
-                          decimel
-                        />
-                        /
+                    <React.Fragment key={i}>
+                      <p className="text-xl col-span-2 font-semibold">
+                        {v.name}
+                      </p>
+                      <p className="items-center flex justify-center">
+                        {startCase(v.type)}
+                      </p>
+                      <div className="flex flex-col items-center justify-center">
+                        <HStack className="gap-0">
+                          <PriceDisplay
+                            className="flex items-center justify-center"
+                            price={v.price}
+                            compact
+                            decimel
+                          />
+                          /
+                        </HStack>
+                        <p className="text-[#8A8A8A] text-xs">{t("Night")}</p>
+                      </div>
+                      <PriceDisplay
+                        className="flex items-center justify-center"
+                        price={v.discount}
+                        compact
+                        decimel
+                      />
+                      <PriceDisplay
+                        className="flex items-center justify-center"
+                        price={v.earning}
+                        compact
+                        decimel
+                      />
+                      <HStack className="text-center">
+                        <EyeIcon />
+                        <p>{NumberShortner(v.views)}</p>
                       </HStack>
-                      <p className="text-[#8A8A8A] text-xs">{t("Night")}</p>
-                    </div>
-                    <PriceDisplay
-                      className="flex items-center justify-center"
-                      price={v.discount}
-                      compact
-                      decimel
-                    />
-                    <PriceDisplay
-                      className="flex items-center justify-center"
-                      price={v.earning}
-                      compact
-                      decimel
-                    />
-                    <HStack className="text-center">
-                      <EyeIcon />
-                      <p>{NumberShortner(v.views)}</p>
-                    </HStack>
-                    <p
-                      style={{
-                        color: v.status === "compeleted" ? "red" : "green",
-                      }}
-                      className="flex text-xs items-center justify-center"
-                    >
-                      {startCase(v.status)}
-                    </p>
-                  </React.Fragment>
-                ))
+                      <p
+                        style={{
+                          color: v.status === "compeleted" ? "red" : "green",
+                        }}
+                        className="flex text-xs items-center justify-center"
+                      >
+                        {startCase(v.status)}
+                      </p>
+                    </React.Fragment>
+                  ))
                 : mapArray([], () => (
-                  <React.Fragment>
-                    <Image />
-                    <p>0</p>
-                    <p>product name</p>
-                    <PriceDisplay price={0} />
-                    <p>link</p>
-                    <PriceDisplay price={0} />
-                  </React.Fragment>
-                ))}
+                    <React.Fragment>
+                      <Image />
+                      <p>0</p>
+                      <p>product name</p>
+                      <PriceDisplay price={0} />
+                      <p>link</p>
+                      <PriceDisplay price={0} />
+                    </React.Fragment>
+                  ))}
             </div>
           </div>
         </div>

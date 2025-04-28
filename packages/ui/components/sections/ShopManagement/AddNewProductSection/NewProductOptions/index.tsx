@@ -43,7 +43,7 @@ export const ProductOptions: React.FC<ProductOptionsProps> = ({
   onValid,
   validationSchema,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const initialValues: ProductOptionsFormValues = {
     colors: [],

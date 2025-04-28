@@ -3,7 +3,7 @@ import { FilterSelectInput, FilterSelectInputProps } from "./FilterSelectInput";
 
 describe("FilterSelectInput", () => {
   let wrapper: ShallowWrapper;
-  let props: FilterSelectInputProps = {
+  const props: FilterSelectInputProps = {
     options: ["fashion", "sports"],
     value: "test value",
     onChange(value) {},

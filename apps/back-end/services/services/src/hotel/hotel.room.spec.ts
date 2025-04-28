@@ -28,7 +28,7 @@ describe('Hotel resolver tests', () => {
   let resolver: HotelResolver;
   let roomResolver: HotelRoomResolver;
 
-  let createHotelInput: CreateHotelInput = {
+  const createHotelInput: CreateHotelInput = {
     location: {
       address: 'address',
       city: 'city',
@@ -144,7 +144,7 @@ describe('Hotel resolver tests', () => {
     resolver = moduleRef.get(HotelResolver);
     roomResolver = moduleRef.get(HotelRoomResolver);
 
-    let locations: ServiceLocation[] = [
+    const locations: ServiceLocation[] = [
       {
         address: '4951 Eden Drive',
         city: 'Thousand Oaks',

@@ -75,7 +75,7 @@ export class ProductAttributeValueInput {
 @InputType()
 export class StringTranslationField extends CreateInputGqlTranslationInputField(
   String,
-) { }
+) {}
 
 @InputType()
 export class CreateProductInput {

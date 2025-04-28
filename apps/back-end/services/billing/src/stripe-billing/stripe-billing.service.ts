@@ -288,7 +288,7 @@ export class StripeBillingService {
               id: v.id,
               qty: v.qty,
               type: v.type,
-            } as CheckoutMetadataProduct),
+            }) as CheckoutMetadataProduct,
         ),
       })),
     };

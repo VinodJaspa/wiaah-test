@@ -45,7 +45,7 @@ describe('Category Testing', () => {
   it('should create product category', async () => {
     const created = await createCategory();
 
-    let cates = await getCates();
+    const cates = await getCates();
 
     expect(cates.length).toBe(1);
 
@@ -57,7 +57,7 @@ describe('Category Testing', () => {
 
     const sub = await createCategory(created.id);
 
-    let cates = await getCates();
+    const cates = await getCates();
 
     expect(cates.length).toBe(2);
     expect(cates.find((c) => c.id === sub.id).parantId).toBe(created.id);

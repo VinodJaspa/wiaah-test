@@ -55,7 +55,9 @@ export class VouchersManagementController implements OnModuleInit {
       return new GetShopVouchersMessageReply({
         success: false,
         data: null,
-        error: new Error(error instanceof Error ? error.message : 'Unknown error'),
+        error: new Error(
+          error instanceof Error ? error.message : 'Unknown error',
+        ),
       });
     }
   }

@@ -43,7 +43,7 @@ export interface GeneralSearchModalProps {
 export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   children,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { closeModal, isOpen } = useGeneralSearchModal();
 
   const tabs: TabType[] = [

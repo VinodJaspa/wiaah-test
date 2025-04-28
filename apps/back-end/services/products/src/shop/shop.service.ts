@@ -51,13 +51,15 @@ export class ShopService {
               createShopInput.location.lat,
             ],
           },
+          name: { set: createShopInput.name.map((text) => ({ ...text, value: String(text.value) })) },
+          description: { set: createShopInput.description.map((text) => ({ ...text, value: String(text.value) })) },
         },
       });
       this.eventBus.publish<ShopCreatedEvent>(
         new ShopCreatedEvent(user.id, createdShop),
       );
       return this.formatShopData(createdShop);
-    } catch (error) {
+    } catch (error: any) {
       this.eventBus.publish<ShopCreationFailedEvent>(
         new ShopCreationFailedEvent(error),
       );
@@ -93,7 +95,7 @@ export class ShopService {
       const shops = await this.prisma.shop.findMany();
 
       return shops;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -112,7 +114,7 @@ export class ShopService {
     try {
       await this.prisma.shop.deleteMany();
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -148,7 +150,11 @@ export class ShopService {
         where: {
           ownerId: userId,
         },
-        data: input,
+        data: {
+          ...input,
+          name: input.name?.map((text) => ({ ...text, value: String(text.value) })),
+          description: input.description?.map((text) => ({ ...text, value: String(text.value) })),
+        },
       });
 
       return this.formatShopData(shop, langId);

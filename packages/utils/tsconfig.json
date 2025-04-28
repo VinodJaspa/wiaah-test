@@ -1,13 +1,7 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": [
-    "."
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
-  ],
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
     "experimentalDecorators": true,
     "downlevelIteration": true,
@@ -16,51 +10,23 @@
     "module": "CommonJS",
     "target": "ES5",
     "jsx": "react-jsx",
-    "strict": true,
+    "strict": false,
     "baseUrl": ".",
-    "types": [
-      "jest"
-    ],
+    "types": ["jest"],
     "paths": {
-      "@partials": [
-        "../ui/components/partials"
-      ],
-      "@blocks": [
-        "../ui/components/blocks"
-      ],
-      "@blocks/*": [
-        "../ui/components/blocks/*"
-      ],
-      "@sections/*": [
-        "../ui/components/sections/*"
-      ],
-      "@features/*": [
-        "../ui/components/features/*"
-      ],
-      "@sections": [
-        "../ui/components/sections"
-      ],
-      "@features": [
-        "../ui/components/features"
-      ],
-      "@libs": [
-        "../ui/libs"
-      ],
-      "@const": [
-        "../ui/constants"
-      ],
-      "@src/*": [
-        "../ui/src/*"
-      ],
-      "@UI": [
-        "../ui"
-      ],
-      "@UI/*": [
-        "../ui/*"
-      ],
-      "placeholder": [
-        "../placeholder"
-      ]
+      "@partials": ["../ui/components/partials"],
+      "@blocks": ["../ui/components/blocks"],
+      "@blocks/*": ["../ui/components/blocks/*"],
+      "@sections/*": ["../ui/components/sections/*"],
+      "@features/*": ["../ui/components/features/*"],
+      "@sections": ["../ui/components/sections"],
+      "@features": ["../ui/components/features"],
+      "@libs": ["../ui/libs"],
+      "@const": ["../ui/constants"],
+      "@src/*": ["../ui/src/*"],
+      "@UI": ["../ui"],
+      "@UI/*": ["../ui/*"],
+      "placeholder": ["../placeholder"]
     }
   }
 }

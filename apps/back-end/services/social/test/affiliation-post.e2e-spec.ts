@@ -18,13 +18,13 @@ import { AppModule } from '../src/app.module';
 
 describe('affiliation-post e2e tests', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
-  let kafka = new Kafka({
+  const prisma = new PrismaClient();
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.SOCIAL_SERVICE.clientId,
   });
 
-  let producer = kafka.producer();
+  const producer = kafka.producer();
 
   beforeAll(async () => {
     await producer.connect();
@@ -103,9 +103,9 @@ describe('affiliation-post e2e tests', () => {
   };
 
   it('should create affiliation post on affiliation created event', async () => {
-    let affiliationId = new ObjectId().toHexString();
-    let itemId = new ObjectId().toHexString();
-    let itemOwnerId = new ObjectId().toHexString();
+    const affiliationId = new ObjectId().toHexString();
+    const itemId = new ObjectId().toHexString();
+    const itemOwnerId = new ObjectId().toHexString();
 
     await publishAffiliation(affiliationId, 'service', itemId, itemOwnerId);
 
@@ -121,9 +121,9 @@ describe('affiliation-post e2e tests', () => {
   });
 
   it('should work with pagination', async () => {
-    let affiliationId = new ObjectId().toHexString();
-    let itemId = new ObjectId().toHexString();
-    let itemOwnerId = new ObjectId().toHexString();
+    const affiliationId = new ObjectId().toHexString();
+    const itemId = new ObjectId().toHexString();
+    const itemOwnerId = new ObjectId().toHexString();
     const arr = [...Array(20)];
     for (const e of arr) {
       await publishAffiliation(affiliationId, 'product', itemId, itemOwnerId);

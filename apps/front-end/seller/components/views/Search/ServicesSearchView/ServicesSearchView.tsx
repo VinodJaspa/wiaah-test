@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
 
 export const ServicesSearchView: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className="flex flex-col gap-10">

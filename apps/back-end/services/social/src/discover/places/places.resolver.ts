@@ -114,7 +114,7 @@ export class PlacesResolver {
       }),
     );
 
-    let weightedServices: {
+    const weightedServices: {
       id: string;
       userId: string;
       score: number;

@@ -30,7 +30,8 @@ import { WiaahLangId, WiaahLanguageCountries, mapArray, useForm } from "utils";
 import Head from "next/head";
 
 const ProductShopAttributeForm = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back, getQuery } = useRouting();
   const { id } = getQuery();
   const [lang, setLang] = useState<WiaahLangId>(WiaahLangId.EN);
@@ -156,7 +157,7 @@ const ProductShopAttributeForm = () => {
                         </Td>
                         <Td>
                           {form?.displayType ===
-                            ProductAttributeDisplayType.Color ? (
+                          ProductAttributeDisplayType.Color ? (
                             <input
                               className="w-full h-12 rounded-3xl"
                               type="color"

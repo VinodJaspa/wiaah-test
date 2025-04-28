@@ -30,7 +30,7 @@ export interface ShopProductFilterProps {
 }
 
 
-let countriesOptions = Array();
+const countriesOptions = [];
 const countries = Country.getAllCountries();
 countries.forEach((element) => {
   countriesOptions.push({
@@ -53,7 +53,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   brands,
   open,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [countryCode, setCountryCode] = useState("");
   const [cities, setCities] = useState<any | []>();
   function handleCountryChange(value: any) {

@@ -32,7 +32,7 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
   const { visit } = useRouting();
   const [open, setOpen] = React.useState<boolean>(false);
   const { isTablet } = useResponsive();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const handleOnMapClick = () => {
     if (onShowOnMap) {

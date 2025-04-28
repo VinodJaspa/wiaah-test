@@ -29,7 +29,7 @@ const Hook = () => {
 
 describe("useBuyerSignupMutation", () => {
   let wrapper: ReactWrapper;
-  let mockGraphqlClient = createGraphqlRequestClient as jest.Mock;
+  const mockGraphqlClient = createGraphqlRequestClient as jest.Mock;
   beforeAll(() => {
     wrapper = mount(
       <Provider>

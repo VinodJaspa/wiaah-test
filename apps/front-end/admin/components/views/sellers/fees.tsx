@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 export const AccountFeesTab: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <p className="font-semibold text-3xl">{t("Selling fees")}</p>

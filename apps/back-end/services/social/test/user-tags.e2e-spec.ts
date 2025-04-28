@@ -23,7 +23,7 @@ import { AppModule } from '../src/app.module';
 
 describe('user tags e2e tests', () => {
   let app: INestApplication;
-  let mockKafka = new NestKafkaClientMock();
+  const mockKafka = new NestKafkaClientMock();
   beforeAll(async () => {
     const modulefixture = await Test.createTestingModule({
       imports: [AppModule],
@@ -68,7 +68,7 @@ describe('user tags e2e tests', () => {
         username: 'test',
       },
     });
-    let query = `
+    const query = `
     mutation post(
       $title:String!
       $content:String!
@@ -91,7 +91,7 @@ describe('user tags e2e tests', () => {
     }
     `;
 
-    let input: CreatePostInput = {
+    const input: CreatePostInput = {
       title: 'test',
       attachments: [{ src: 'test src', type: 'img' }],
       content: 'content',
@@ -99,7 +99,7 @@ describe('user tags e2e tests', () => {
       tags: [{ userId: 'test userId' }],
     };
 
-    let res = await reqGql(query, input, mockedUser);
+    const res = await reqGql(query, input, mockedUser);
 
     expect(res.body.errors).not.toBeDefined();
 

@@ -11,8 +11,8 @@ const testids = {
   serviceInfo: "ServiceInfo",
 };
 
-let mockVisitService = jest.fn();
-let serviceKey = "health_center";
+const mockVisitService = jest.fn();
+const serviceKey = "health_center";
 jest.mock("routing", () => ({
   useRouting: () => ({
     visit(fn: (routes: any) => any) {
@@ -52,6 +52,7 @@ describe("HealthCenterCard tests", () => {
           payment_methods: [ServicePaymentMethods.Cash],
           cancelationPolicies: [
             {
+              id: "policy-1", // Unique identifier for the policy
               duration: 24, // Duration in hours
               cost: 50, // Cost associated with cancellation
             },

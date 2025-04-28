@@ -85,7 +85,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   const detailsRef = React.useRef(null);
   const detailsDimensions = useDimensions(detailsRef);
   const { handleShare } = useHandlePostSharing();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<{
     status: boolean;

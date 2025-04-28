@@ -32,6 +32,6 @@ export const useDeclinePendingAppointmentMutation = () => {
       })
       .send<DeclinePendingAppointmentMutation>();
 
-    return res.data.declineAppointment;
+    return res?.data.declineAppointment ?? false;
   });
 };

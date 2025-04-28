@@ -17,7 +17,7 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
 }) => {
   const { mutate: SignUp } = useSignupMutation();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const handleSignUpSubmit = (data: any) => {
     SignUp(
       { ...data },
@@ -54,19 +54,19 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
             <Form className="flex flex-col gap-4">
               <FormikInput
                 name="firstName"
-                placeholder={t("First Name")}
+                placeholder={t("First Name") as string}
                 type="text"
                 icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
               />
               <FormikInput
                 name="lastName"
-                placeholder={t("Last Name")}
+                placeholder={t("Last Name") as string}
                 type="text"
                 icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
               />
               <FormikInput
                 name="email"
-                placeholder={t("Email", "Email")}
+                placeholder={t("Email", "Email") as string}
                 type="email"
                 icon={<IoMdMail className="mr-2 text-xl text-gray-400" />}
               />{" "}
@@ -82,13 +82,13 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
               <FormikInput
                 name="password"
                 type="password"
-                placeholder={t("Password", "Password")}
+                placeholder={t("Password", "Password") as string}
                 iocn={<IoMdKey className="mr-2 text-xl text-gray-400" />}
               />
               <FormikInput
                 name="confirmPassword"
                 type="password"
-                placeholder={t("confirm_Password", "confirm Password")}
+                placeholder={t("confirm_Password", "confirm Password") as string}
                 icon={<IoMdKey className="mr-2 text-xl text-gray-400" />}
               />
               <div className="mt-4 flex items-center justify-between font-light">

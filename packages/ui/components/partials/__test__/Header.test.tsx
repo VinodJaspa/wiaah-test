@@ -11,13 +11,16 @@ describe("Header component render as expected", () => {
 });
 it("show sidebar when context visibility is true", () => {
   const wrapper = mount(<Header />, {
-    wrappingComponent: SidebarContext.Provider,
-    wrappingComponentProps: {
-      value: {
-        visible: true,
-        toggleVisibility: () => {},
-      },
-    },
+    wrappingComponent: ({ children }) => (
+      <SidebarContext.Provider
+        value={{
+          visible: true,
+          toggleVisibility: () => {},
+        }}
+      >
+        {children}
+      </SidebarContext.Provider>
+    ),
   });
   wrapper.find("#burger-menu-toggle").simulate("click");
   expect(wrapper.find("Sidebar aside.flex").length).toEqual(1);

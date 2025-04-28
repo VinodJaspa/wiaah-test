@@ -27,7 +27,7 @@ import {
   SocialProfileShopPostsList,
 } from "ui";
 import { ProfilePlaceholder as profile } from "ui/placeholder";
-import { useBreakpointValue } from "utils";
+
 import { SocialActionsView } from "../SocialActionsView";
 import { MyProfile } from "./MyProfile";
 
@@ -38,7 +38,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
 
   const dims = useDimensions(boxRef);
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const client = useQueryClient();
 

@@ -21,7 +21,8 @@ import { getRandomImage } from "placeholder";
 import Head from "next/head";
 
 const EditProfile: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <React.Fragment>
       <Head>

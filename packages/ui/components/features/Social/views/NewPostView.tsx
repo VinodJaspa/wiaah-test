@@ -40,7 +40,7 @@ const MAX_UPLOAD_LIMIT = 5;
 const MAX_ACTION_SIZE = 2 * 1024 * 1024 * 1024;
 
 export const NewPostView: React.FC = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { value, hideNewPublish } = useSocialControls("newPublish");
 
   const isOpen = !!value;
@@ -416,7 +416,7 @@ export const ProductMultiSelect: React.FC<{
   onChange: (value: string[]) => any;
   placeholder?: string;
 }> = ({ onChange, value, placeholder }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [searchValue, setValue] = React.useState<string>("");
 
   const { pagination } = usePaginationControls();

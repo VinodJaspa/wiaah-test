@@ -15,8 +15,8 @@ jest.mock("ui", () => ({
 describe("should display top posts", () => {
   let wrapper: ShallowWrapper;
 
-  let mockUseGetTopHashtagPostsQuery = useGetTopHashtagPostsQuery as jest.Mock;
-  let mockUseGetTopHashtagServicePostsQuery =
+  const mockUseGetTopHashtagPostsQuery = useGetTopHashtagPostsQuery as jest.Mock;
+  const mockUseGetTopHashtagServicePostsQuery =
     useGetTopHashtagServicePost as jest.Mock;
 
   beforeAll(() => {

@@ -12,11 +12,11 @@ import {
 import { PrismaClient } from 'prismaClient';
 import { AppModule } from '../src/app.module';
 
-let mockSeller = { ...mockedUser, accountType: accountType.SELLER };
+const mockSeller = { ...mockedUser, accountType: accountType.SELLER };
 
 describe('MyService service management menu tests', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({

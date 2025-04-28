@@ -20,7 +20,7 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   containerProps,
   
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [items, setItems] = React.useState<React.ReactElement[]>(
     Array.isArray(children) ? children.slice(0, maxInitialItems) : []
   );

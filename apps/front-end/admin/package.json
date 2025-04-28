@@ -61,7 +61,8 @@
       "next-transpile-modules",
       "postcss",
       "tailwindcss",
-      "typescript"
+      "typescript",
+      "@nrwl/next"
     ]
   }
 }

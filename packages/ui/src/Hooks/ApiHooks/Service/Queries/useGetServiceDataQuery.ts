@@ -104,7 +104,7 @@ query getServiceMetaData($id:String!){
     .setVariables<GetServiceMetaDataQueryVariables>(args)
     .send<GetServiceMetaDataQuery>();
 
-  return res.data.getServiceDetails;
+  return res?.data?.getServiceDetails;
 };
 
 export const useGetServiceMetadataQuery = (args: args) => {

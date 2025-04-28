@@ -28,7 +28,7 @@ export class ShippingTypeRuleResolver {
   getShippingGeoZoneRules(
     @Args('args') args: AdminGetShippingGeoZoneRulesInput,
   ) {
-    let filters: Prisma.ShippingTypeRuleWhereInput[] = [];
+    const filters: Prisma.ShippingTypeRuleWhereInput[] = [];
 
     if (args.name) {
       filters.push({

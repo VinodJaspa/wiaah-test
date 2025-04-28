@@ -16,7 +16,7 @@ export type GetRestaurantServiceMetaDataQuery = GqlResponse<
 // Function to fetch restaurant service details
 export const getRestaurantServiceMetadataQuery = async (
   id: string,
-): Promise<GetRestaurantServiceMetaDataQuery> => {
+): Promise<GetRestaurantServiceMetaDataQuery | undefined> => {
   // Initialize the GraphQL request client
   const client = createGraphqlRequestClient();
 
@@ -55,9 +55,12 @@ export const getRestaurantServiceMetadataQuery = async (
     if (response && response.data) {
       return response.data as GetRestaurantServiceMetaDataQuery;
     } else {
+      return undefined;
       console.error("Failed to fetch data: response is null");
     }
+
   } catch (error) {
     console.error("Error fetching restaurant service details:", error);
+    return error as GetRestaurantServiceMetaDataQuery;
   }
 };

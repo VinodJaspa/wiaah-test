@@ -32,7 +32,7 @@ export class UserActivityStatsController {
     private readonly prisma: PrismaService,
     private readonly commandbus: CommandBus,
     private readonly querybus: QueryBus,
-  ) { }
+  ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecreaseActivity() {

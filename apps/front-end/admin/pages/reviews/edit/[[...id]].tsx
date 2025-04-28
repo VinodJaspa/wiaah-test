@@ -20,7 +20,8 @@ import { useForm } from "utils";
 import * as yup from "yup";
 
 const EditReview = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam, back } = useRouting();
   const id = getParam("id");
 

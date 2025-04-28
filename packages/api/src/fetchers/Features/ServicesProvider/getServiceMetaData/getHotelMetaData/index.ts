@@ -55,9 +55,11 @@ export const getHotelServiceMetadataQuery = async (
     if (response && response.data) {
       return response.data as GetHotelServiceMetaDataQuery;
     } else {
+      return undefined;
       console.error("Failed to fetch data: response is null");
     }
   } catch (error) {
+    return error as GetHotelServiceMetaDataQuery;
     console.error("Error fetching hotel service details:", error);
   }
 };

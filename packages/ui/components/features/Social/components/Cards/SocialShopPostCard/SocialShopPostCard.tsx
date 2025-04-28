@@ -51,7 +51,7 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
   handleOpen,
 }) => {
   const { OpenModal } = useSocialPostSettingsPopup();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(postInfo.createdAt),
     to: new Date(),

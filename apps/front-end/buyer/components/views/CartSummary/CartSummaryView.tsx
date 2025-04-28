@@ -21,7 +21,7 @@ import { EmptyCartSummary } from "./EmptyCartSummary";
 export interface CartSummaryViewProps {}
 
 export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { cartSummaryItems } = useCartSummary();

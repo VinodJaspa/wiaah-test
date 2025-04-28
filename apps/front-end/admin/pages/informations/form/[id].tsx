@@ -25,7 +25,8 @@ import { mapArray, runIfFn, WiaahLanguageCountriesIsoCodes } from "utils";
 const EditInfo = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const tabs: { name: string; comp: React.ReactNode }[] = [
     {
@@ -110,7 +111,7 @@ const EditInfo = () => {
             <p className="inline">
               <ExclamationCircleIcon className="inline mx-2" />
               {t(
-                "Do not use spaces, instead replace spaces with - and make sur the SEO URL is globally unique."
+                "Do not use spaces, instead replace spaces with - and make sur the SEO URL is globally unique.",
               )}
             </p>
           </div>

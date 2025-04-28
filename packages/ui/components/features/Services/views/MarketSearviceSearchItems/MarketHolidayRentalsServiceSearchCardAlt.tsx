@@ -41,7 +41,7 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   date,
 }) => {
     const router = useRouter();
-    const { t } = useTranslation(); // Translation hook for localization
+  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation(); // Translation hook for localization
 
     // State to manage whether the rental is saved
     const [isSaved, setIsSaved] = React.useState(saved);

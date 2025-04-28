@@ -23,6 +23,7 @@ describe("PostIntercation component render tests", () => {
     onInteractionMock = jest.fn();
     wrapper = shallow(
       <PostInteractions
+      shares={0}
         onInteraction={onInteractionMock}
         {...PostInteractionsPlaceholder}
       />
@@ -53,6 +54,7 @@ describe("PostIntercation component functionality tests", () => {
     onInteractionMock = jest.fn();
     wrapper = shallow(
       <PostInteractions
+      shares={1}
         onInteraction={onInteractionMock}
         {...PostInteractionsPlaceholder}
       />
@@ -78,7 +80,7 @@ describe("PostIntercation component functionality tests", () => {
 describe("PostInteractions Snapshot tests", () => {
   it("should match snapshot", () => {
     expect(
-      shallow(<PostInteractions {...PostInteractionsPlaceholder} />)
+      shallow(<PostInteractions shares={0}{...PostInteractionsPlaceholder} />)
     ).toMatchSnapshot();
   });
 });

@@ -7,7 +7,7 @@ import {
 describe("NumberInput", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: ProductSearchLocationInputProps = {
+  const props: ProductSearchLocationInputProps = {
     onChange(value) {},
     value: 15,
   };

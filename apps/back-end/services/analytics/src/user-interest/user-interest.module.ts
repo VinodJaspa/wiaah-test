@@ -7,4 +7,4 @@ import { KafkaModule } from 'src/kafka.module';
   imports: [KafkaModule],
   providers: [UserInterestResolver, ...UserInterestsQueryHandlers],
 })
-export class UserInterestModule { }
+export class UserInterestModule {}

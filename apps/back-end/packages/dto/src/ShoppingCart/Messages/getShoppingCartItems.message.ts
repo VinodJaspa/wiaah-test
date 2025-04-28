@@ -11,5 +11,5 @@ export class GetShoppingCartItemsMessageReply extends KafkaMessageReply<{
     qty: number;
     discountId?: string;
   }[];
-  voucherId?: String;
+  voucherId?: string;
 }> {}

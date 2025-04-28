@@ -5,16 +5,14 @@
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
     "config": "*",
     "tsconfig": "*"
   },
   "shadow": {
-    "devDependencies": [
-      "typescript"
-    ],
     "devDependencies": []
   }
 }

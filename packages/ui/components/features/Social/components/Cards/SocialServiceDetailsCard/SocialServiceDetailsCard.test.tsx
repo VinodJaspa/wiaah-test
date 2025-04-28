@@ -9,7 +9,7 @@ import {
   SocialServiceDetailsCard,
   SocialServiceDetailsCardProps,
 } from "./SocialServiceDetailsCard";
-let mockReactPubsubEmit: jest.Mock = jest.fn();
+const mockReactPubsubEmit: jest.Mock = jest.fn();
 jest.mock("react-pubsub", () => ({
   useReactPubsub: () => ({
     emit: mockReactPubsubEmit,

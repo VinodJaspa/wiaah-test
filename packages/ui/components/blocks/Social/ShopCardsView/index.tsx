@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
 export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+
   const isMd = useMediaQuery({ minWidth: 768 });
   const isLg = useMediaQuery({ minWidth: 1024 });
 
@@ -30,10 +31,13 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
             <PostView
               postId={postId}
               queryName="shopPost"
-              data={post[0]}
+              data={{
+                postType: "shop",
+                ...post[0],
+              }}
               idParam="shopPostId"
-              renderChild={(props: SocialShopPostcardProps) => {
-                const images = post[0].postInfo.product.presentations;
+              renderChild={(props: any) => {
+                const images = props.postInfo.product.presentations;
                 return (
                   <Carousel componentsPerView={1} controls={images.length > 1}>
                     {images.map((image, index) => (

@@ -29,7 +29,8 @@ import { mapArray, randomNum } from "utils";
 const ServiceBook = () => {
   const { getParam, back } = useRouting();
   const orderId = getParam("id");
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   return (
     <React.Fragment>

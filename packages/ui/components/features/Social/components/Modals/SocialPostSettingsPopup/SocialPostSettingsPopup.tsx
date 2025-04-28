@@ -37,7 +37,7 @@ export const SocialPostSettingsPopup: React.FC = () => {
   const { Listen, removeListner } = useSocialPostSettingsPopup();
   const { OpenModal } = useSocialReportModal();
   const [id, setId] = React.useState<string>();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   function handleHide() {
     if (id) {

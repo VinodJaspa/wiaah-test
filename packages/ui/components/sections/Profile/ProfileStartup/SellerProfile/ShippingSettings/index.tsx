@@ -28,9 +28,9 @@ export type ShippingSettingsRefProps = {
 
 export const NewShippingSettings = React.forwardRef<
   ShippingSettingsRefProps,
-  any
->(({ onSuccess, id }: ShippingSettingsProps, ref) => {
-  const { t } = useTranslation();
+  ShippingSettingsProps
+>(({ onSuccess, id }, ref) => {
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const isEdit = typeof id === "string";
 

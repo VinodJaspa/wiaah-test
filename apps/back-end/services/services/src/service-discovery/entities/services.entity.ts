@@ -40,7 +40,7 @@ export class ServiceShopRaw {
   type: ServiceType;
 
   @Field(() => ID)
-  ownerId: String;
+  ownerId: string;
 
   @Field(() => String)
   createdAt: string;

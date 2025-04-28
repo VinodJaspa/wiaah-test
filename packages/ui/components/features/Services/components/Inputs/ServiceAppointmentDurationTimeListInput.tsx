@@ -69,7 +69,7 @@ export const ServiceAppointmentDurationTimeListInput: React.FC<
   React.useEffect(() => {
     const allDates = AllDates.filter((v) => {
       const isDisabled = !!allowedPeriods.some((e) => {
-        if (!isDateInstance(e[0]) || !isDateInstance(e[1])) return;
+        if (!isDateInstance(e[0]) || !isDateInstance(e[1])) return null;
 
         const first = !isDateWithin(v, e[0], e[1]);
         const second = !isDateWithin(
@@ -93,7 +93,7 @@ export const ServiceAppointmentDurationTimeListInput: React.FC<
         const selected = value.find((e) => isSameMinute(e, v));
         const isSelected = !!selected;
         const isDisabled = !!allowedPeriods.some((e) => {
-          if (!isDateInstance(e[0]) || !isDateInstance(e[1])) return;
+          if (!isDateInstance(e[0]) || !isDateInstance(e[1])) return null;
 
           const first = !isDateWithin(v, e[0], e[1]);
           const second = !isDateWithin(

@@ -11,12 +11,10 @@ import Image from "next/image";
 export interface LocailisationsViewProps { }
 
 export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
-  const { t } = useTranslation();
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const isLg = useMediaQuery({ minWidth: 1024 });
-  // Determine column count based on breakpoints
-  const cols = isMobile ? 1 : isMd ? 2 : isLg ? 3 : 1;
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  
+  const cols = useMediaQuery({ maxWidth: 767 }) ? 1 : useMediaQuery({ minWidth: 768, maxWidth: 1023 }) ? 2 : useMediaQuery({ minWidth: 1024 }) ? 3 : 1;
+
   const router = useRouter();
   const tag = router.query.tag as string;
   const formatCityName = (city: string): string => {

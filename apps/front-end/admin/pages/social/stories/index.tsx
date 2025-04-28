@@ -39,7 +39,8 @@ const stories = [...Array(10)].map(() => ({
 }));
 
 const SocialStories: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <React.Fragment>
       <Head>

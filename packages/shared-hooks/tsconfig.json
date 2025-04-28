@@ -10,7 +10,7 @@
     "sourceMap": true /* Generate sourcemaps for debugging. */,
     "outDir": "dist" /* Output directory for compiled files. */,
     "strict": true /* Enable all strict type-checking options. */,
-    "jsx": "react" /* Enable JSX support for React. */,
+    "jsx": "react-jsx" /* Enable JSX support for React. */,
     "esModuleInterop": true /* Enable compatibility between ES Modules and CommonJS. */,
     "skipLibCheck": true /* Skip checking of library declaration files for faster compilation. */,
     "forceConsistentCasingInFileNames": true,
@@ -18,7 +18,11 @@
       "test-package": ["../test-package/src"]
     }
   },
-  "include": ["src/**/*"] /* Include all TypeScript files in the src folder. */,
+  "include": [
+    "src/**/*",
+    "index.ts",
+    "./**/*.ts"
+  ] /* Include all TypeScript files in the src folder, the root index.ts file, and any TypeScript files in the project. */,
   "exclude": [
     "node_modules",
     "dist"

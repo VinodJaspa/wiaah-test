@@ -23,7 +23,8 @@ import { mapArray, randomNum } from "utils";
 
 const ServiceShopFilter = () => {
   const [filterGroupAsc, setFilterGroupAsc] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
 
   const filterGroups: {

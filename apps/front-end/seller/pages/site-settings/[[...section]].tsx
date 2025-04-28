@@ -6,7 +6,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const SiteSettings = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <>

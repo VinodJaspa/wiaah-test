@@ -22,7 +22,8 @@ import {
 import { mapArray, useForm } from "utils";
 
 const Informations = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
 

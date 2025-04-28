@@ -23,7 +23,7 @@ export const GeneralPostView: React.FC<GeneralPostViewProps> = ({
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isLg = useMediaQuery({ minWidth: 1024 });
   const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const router = useRouter();
 
   const { data: _post, isLoading: PostIsLoading } = useQuery<PostCardInfo>([

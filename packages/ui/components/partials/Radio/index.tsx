@@ -20,7 +20,7 @@ export const Radio: React.FC<RadioProps> = ({
       case "black":
         return `checked:bg-black border-black  focus:ring-0 checked:focus:bg-black checked:active:bg-black checked:hover:bg-black`;
       default:
-        break;
+        return null;
     }
   };
 

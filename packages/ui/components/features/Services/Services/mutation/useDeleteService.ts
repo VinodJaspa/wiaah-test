@@ -28,7 +28,7 @@ mutation deleteService($id:String!){
         .setVariables<DeleteServiceMutationVariables>(args)
         .send<DeleteServiceMutation>();
 
-      return res.data.deleteService;
+      return res?.data.deleteService ?? false;
     },
   );
 };

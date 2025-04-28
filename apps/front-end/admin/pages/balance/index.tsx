@@ -16,7 +16,8 @@ import { TransactionStatus } from "@features/API";
 import Head from "next/head";
 
 const Balance: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof useAdminGetFilteredTransactionsQuery>[0]

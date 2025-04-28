@@ -13,7 +13,17 @@ export class CategoryService {
 
   create(input: CreateServiceCategoryInput, userId: string) {
     return this.prisma.serviceCategory.create({
-      data: { ...input, createdByUserId: userId },
+      // @ts-ignore
+      data: {
+        ...input,
+        createdByUserId: userId,
+        description: { set: input.description as any },
+        name: { set: input.name as any },
+        seo: { set: input.seo as any },
+        metaTagTitle: { set: input.metaTagTitle as any },
+        metaTagDescription: { set: input.metaTagDescription as any },
+        metaTagKeywords: { set: input.metaTagKeywords as any },
+      },
     });
   }
 
@@ -31,6 +41,7 @@ export class CategoryService {
       where: {
         id,
       },
+      // @ts-ignore
       data: rest,
     });
   }

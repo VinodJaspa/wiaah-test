@@ -35,6 +35,7 @@ import { ProductStatus, PRODUCT_SERVICE_KEY } from '@products/const';
 import { UpdateProductStatusCommand } from '@products/command';
 import { Product } from '@products/entities';
 import { PrismaService } from 'prismaService';
+import e from 'express';
 
 @Controller()
 export class ProductsController {
@@ -63,11 +64,11 @@ export class ProductsController {
         data: isReviewable,
         error: null,
       });
-    } catch (error) {
+    } catch (error: any) {
       return new IsProductReviewableMessageReply({
         success: false,
         error: {
-          ...error,
+          name: error?.name || 'Error',
           message: formatCaughtError(error),
         },
         data: null,
@@ -98,12 +99,12 @@ export class ProductsController {
         },
         error: null,
       });
-    } catch (error) {
+    } catch (error: any) {
       return new GetProductMetaDataMessageReply({
         data: null,
         success: false,
         error: {
-          ...error,
+          name: error?.name || 'Error',
           message: formatCaughtError(error),
         },
       });
@@ -116,9 +117,8 @@ export class ProductsController {
   ): Promise<GetProductsMetaDataMessageReply> {
     try {
       const { productsIds } = payload.value.input;
-      const products = await this.productsService.getPublicProductsByIds(
-        productsIds,
-      );
+      const products =
+        await this.productsService.getPublicProductsByIds(productsIds);
       return new GetProductsMetaDataMessageReply({
         success: true,
         error: null,
@@ -132,11 +132,11 @@ export class ProductsController {
           title: prod.title,
         })),
       });
-    } catch (error) {
+    } catch (error: any) {
       return new GetProductsMetaDataMessageReply({
         success: false,
         error: {
-          ...error,
+          name: error?.name || 'Error',
           message: formatCaughtError(error),
         },
         data: null,

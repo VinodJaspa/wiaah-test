@@ -1,3 +1,6 @@
 export class StripeCustomerCreatedEvent {
-  constructor(public userId: string, public stripeCustomerId: string) {}
+  constructor(
+    public userId: string,
+    public stripeCustomerId: string,
+  ) {}
 }

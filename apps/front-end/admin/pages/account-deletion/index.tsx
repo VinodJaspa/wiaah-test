@@ -35,7 +35,8 @@ import {
 import { mapArray, useForm } from "utils";
 
 const AccountDeletion: React.FC = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps } = useForm<

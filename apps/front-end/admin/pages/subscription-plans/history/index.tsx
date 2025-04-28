@@ -25,7 +25,8 @@ import {
 import Head from "next/head";
 
 const History: React.FC = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps } = useForm<

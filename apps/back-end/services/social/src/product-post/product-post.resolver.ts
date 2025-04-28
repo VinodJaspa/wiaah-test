@@ -180,60 +180,63 @@ export class ProductPostResolver {
         },
       });
 
-      const weightedProducts = products.reduce((acc, curr) => {
-        let score = 0;
-        const productDetails = filteredProducts.results.data.products.find(
-          (v) => v.productId === curr.productId,
-        );
-
-        if (productDetails?.rate)
-          score += productDetails.rate * this.rateWeight;
-
-        if (productDetails?.sales)
-          score += productDetails.sales * this.salesWeight;
-
-        if (productDetails?.distence)
-          score += productDetails.distence * this.distanceWeight;
-
-        if (productDetails.keywords) {
-          const metKeywords = keywordData.keywords.filter((v) =>
-            productDetails.keywords.includes(v.value),
-          );
-          const metKeywordsScore = metKeywords.reduce(
-            (acc, curr) => acc + curr.score,
-            0,
-          );
-
-          score += metKeywordsScore * this.keywordsWeight;
-        }
-
-        if (myPaidProductsData.products) {
-          const product = myPaidProductsData.products.find(
+      const weightedProducts = products.reduce(
+        (acc, curr) => {
+          let score = 0;
+          const productDetails = filteredProducts.results.data.products.find(
             (v) => v.productId === curr.productId,
           );
-          if (product) score += this.hadPurchasedWeight * 1;
-        }
 
-        if (friendsPaidProductsData?.users) {
-          const friend = friendsPaidProductsData.users.find((v) =>
-            v.products.some((c) => c.productId === curr.productId),
-          );
-          const friendInteration = friend
-            ? data.users.find((v) => v.id === friend.id)
-            : null;
+          if (productDetails?.rate)
+            score += productDetails.rate * this.rateWeight;
 
-          if (friend && friendInteration)
-            score += this.friendsPurchasedWeight * friendInteration.score;
-        }
+          if (productDetails?.sales)
+            score += productDetails.sales * this.salesWeight;
 
-        if (curr.reactionNum) score += curr.reactionNum * this.likeWeight;
+          if (productDetails?.distence)
+            score += productDetails.distence * this.distanceWeight;
 
-        if (curr.comments) score += curr.comments * this.commentWeight;
+          if (productDetails.keywords) {
+            const metKeywords = keywordData.keywords.filter((v) =>
+              productDetails.keywords.includes(v.value),
+            );
+            const metKeywordsScore = metKeywords.reduce(
+              (acc, curr) => acc + curr.score,
+              0,
+            );
 
-        if (curr.shares) score += curr.shares * this.sharesWeight;
+            score += metKeywordsScore * this.keywordsWeight;
+          }
 
-        return [...acc, { ...curr, score }];
-      }, [] as (ProductPost & { score: number })[]);
+          if (myPaidProductsData.products) {
+            const product = myPaidProductsData.products.find(
+              (v) => v.productId === curr.productId,
+            );
+            if (product) score += this.hadPurchasedWeight * 1;
+          }
+
+          if (friendsPaidProductsData?.users) {
+            const friend = friendsPaidProductsData.users.find((v) =>
+              v.products.some((c) => c.productId === curr.productId),
+            );
+            const friendInteration = friend
+              ? data.users.find((v) => v.id === friend.id)
+              : null;
+
+            if (friend && friendInteration)
+              score += this.friendsPurchasedWeight * friendInteration.score;
+          }
+
+          if (curr.reactionNum) score += curr.reactionNum * this.likeWeight;
+
+          if (curr.comments) score += curr.comments * this.commentWeight;
+
+          if (curr.shares) score += curr.shares * this.sharesWeight;
+
+          return [...acc, { ...curr, score }];
+        },
+        [] as (ProductPost & { score: number })[],
+      );
 
       const sortedProducts: ProductPost[] = weightedProducts.sort(
         (first, next) => next.score - first.score,

@@ -19,7 +19,7 @@ export const HashTagInput: React.FC<HashTagInputProps> = ({
   value = [],
   className,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [searchValue, setValue] = React.useState<string>("");
   const { controls, getHasMore, getNextCursor, props } =
     useCursorScrollPagination({ take: 10 });

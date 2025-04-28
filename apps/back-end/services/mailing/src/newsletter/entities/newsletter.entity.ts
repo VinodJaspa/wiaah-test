@@ -18,10 +18,10 @@ export class NewsletterSettings {
 @ObjectType()
 export class NewsletterSubscriber {
   @Field(() => ID)
-  id: String;
+  id: string;
 
   @Field(() => ID)
-  ownerId: String;
+  ownerId: string;
 
   @Field(() => NewsletterSettings)
   emailSettings: NewsletterSettings;

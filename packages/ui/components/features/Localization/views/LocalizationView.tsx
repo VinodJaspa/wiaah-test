@@ -45,7 +45,7 @@ const FAKEDATA = [
 export const LocalizationView: React.FC<{ locationSlug: string }> = ({
   locationSlug,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
 
   // // WARNING: This graphql endpoint query is not ready yet so I replaced it with placeholder once it's ready replace it back
@@ -139,7 +139,7 @@ export const LocalizationShopCard: React.FC<{
   location,
   storeType,
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const validOpenTime = isDate(openFromDate) && isDate(openToDate);
   return (
     <div className="flex flex-col gap-2 w-full">

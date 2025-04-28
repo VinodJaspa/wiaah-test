@@ -34,7 +34,7 @@ import { Product, RefundStatusType, ReturnedOrder } from "@features/API";
 export interface MyReturnsSectionProps {}
 
 export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
 
   const { pagination, controls } = usePaginationControls();
@@ -154,7 +154,7 @@ export const ProductReturnsList: React.FC<{
     product: Pick<Product, "title" | "thumbnail">;
   })[];
 }> = ({ items }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <TableContainer>

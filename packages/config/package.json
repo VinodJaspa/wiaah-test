@@ -12,5 +12,7 @@
       "eslint-config-prettier"
     ],
     "devDependencies": []
+  },
+  "scripts": {
   }
 }

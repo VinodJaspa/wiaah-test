@@ -11,13 +11,16 @@ export class ServiceLanguagesValidationClass
   implements ValidatorConstraintInterface
 {
   validate(arry: { langId: string; value: any }[], args: ValidationArguments) {
-    const valid: Boolean[] = [];
+    const valid: boolean[] = [];
 
     if (arry.length < 1) valid.push(false);
 
-    const formated = arry.reduce((acc, curr) => {
-      return { ...acc, [curr.langId]: (acc[curr.langId] || 0) + 1 };
-    }, {} as Record<string, number>);
+    const formated = arry.reduce(
+      (acc, curr) => {
+        return { ...acc, [curr.langId]: (acc[curr.langId] || 0) + 1 };
+      },
+      {} as Record<string, number>,
+    );
 
     const duplicationValid: boolean = Object.entries(formated)
       .map(([_, v]) => v)
@@ -35,7 +38,7 @@ export class ServiceLanguagesValidationClass
 }
 
 export function TranslationsInput(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

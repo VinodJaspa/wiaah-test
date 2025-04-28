@@ -18,7 +18,7 @@ export const MarketBeautyCenterSearchCardAlt: React.FC<
   MarketBeautyCenterSearchCardAltProps
 > = ({ category, id, rate, reviews, thumbnail, title, name }) => {
   const router = useRouter();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div className="flex flex-col gap-1 p-1 shadow-md">

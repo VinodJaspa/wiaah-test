@@ -46,7 +46,7 @@ export class MembershipResolver {
   async createMembership(
     @Args('args') args: CreateMembershipInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const res = await this.commandBus.execute<
       CreateMembershipCommand,
       Membership
@@ -72,7 +72,7 @@ export class MembershipResolver {
     @Args('args') args: AdminGetMembershipsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    let filters: Prisma.MembershipWhereInput[] = [];
+    const filters: Prisma.MembershipWhereInput[] = [];
 
     if (args.name) {
       filters.push({

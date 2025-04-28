@@ -1,6 +1,6 @@
 import { ServiceCancelationPolicy } from '@entities';
 import { InputType, Field, Float, ID, Int } from '@nestjs/graphql';
-import { } from '@restaurant/entities';
+import {} from '@restaurant/entities';
 import {
   ServiceStatus,
   ServicePresentationType,

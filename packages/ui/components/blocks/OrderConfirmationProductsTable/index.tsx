@@ -13,7 +13,7 @@ import {
   Text,
   TableContainer,
 } from "../../partials";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@UI/components/shadcn-components";
+import { ShadcnTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@UI/components/shadcn-components";
 
 export interface OrderConfirmationProductsTableProps {
   products?: CartSummaryItemData[];
@@ -26,11 +26,11 @@ export const OrderConfirmationProductsTable: React.FC<
   function handleRemoveProduct(productId: string) {
     onRemove && onRemove(productId);
   }
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <TableContainer>
-      <Table className="w-full">
+      <ShadcnTable className="w-full">
         <TableHeader id="ProductsTableHead" className="w-full text-gray-600">
           <TableRow className="w-full">
             <TableHead className="capitalize">{t("item", "item")}</TableHead>
@@ -93,9 +93,12 @@ export const OrderConfirmationProductsTable: React.FC<
                 </TableRow>
               );
             }
+            else{
+              return null;
+            }
           })}
         </TableBody>
-      </Table>
+      </ShadcnTable>
     </TableContainer>
   );
 };

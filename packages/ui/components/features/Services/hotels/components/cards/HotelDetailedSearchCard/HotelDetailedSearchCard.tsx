@@ -55,7 +55,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
     sellerName,
     taxesAndFeesIncluded,
   } = props;
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   return (
     <div

@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "outputs": ["{projectRoot}/dist/**", "{projectRoot}/.next/**"],
+      "cache": true
+    },
+    "lint": { "cache": true },
+    "dev": { "cache": false }
+  },
+  "projects": {
+    "admin": {
+      "root": "apps/front-end/admin"
+    },
+    "seller": {
+      "root": "apps/front-end/seller"
+    },
+    "buyer": {
+      "root": "apps/front-end/buyer"
+    },
+    "market": {
+      "root": "apps/front-end/market"
+    }
+  },
+
+    "plugins": [
+      {
+        "plugin": "@nx/eslint/plugin",
+        "options": {
+          "targetName": "eslint:lint"
+        }
+      },
+      {
+        "plugin": "@nx/next/plugin",
+        "options": {
+          "buildTargetName": "next:build",
+          "devTargetName": "dev",
+          "startTargetName": "start"
+        }
+      }
+    ]
+  
+}

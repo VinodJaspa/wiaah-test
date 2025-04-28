@@ -43,7 +43,7 @@ export interface MyProfileView { }
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
   const dims = useDimensions(boxRef);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const client = useQueryClient();
   const { uploadImage, cancelUpload } = useFileUploadModal();
   const { data: _data, isLoading, isError } = useGetMyProfileData();

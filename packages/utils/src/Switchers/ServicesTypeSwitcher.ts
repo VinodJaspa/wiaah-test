@@ -93,7 +93,7 @@ export const ServicesTypeSwitcher: React.FC<{
       searchHorizontalList: ResturantHorizontalList,
     },
     {
-      slug: "holidays_rentals",
+      slug: "holiday_rentals",
       search: HolidaysRentalSearchView,
       searchResults: HolidaysRentalSearchResultsView,
       searchList: HolidaysRentalSearchList,
@@ -127,7 +127,9 @@ export const ServicesTypeSwitcher: React.FC<{
       search: VehicleSearchView,
       searchResults: VehicleSearchResultsView,
       searchList: VehicleSearchList,
-      details: VehicleServiceDetailsView,
+      details: VehicleServiceDetailsView as React.FC<
+        Partial<HotelDetailsViewProps>
+      >,
       searchHorizontalList: null,
     },
     {

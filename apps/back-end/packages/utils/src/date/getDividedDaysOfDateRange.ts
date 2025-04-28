@@ -1,7 +1,7 @@
 export function getDatesInRangeDays(start: Date, end: Date): Date[] {
   const dates = [];
   const _end = new Date(end.setHours(0));
-  let currentDate = new Date(start.setHours(0));
+  const currentDate = new Date(start.setHours(0));
 
   // Iterate through each hour between the two dates
 

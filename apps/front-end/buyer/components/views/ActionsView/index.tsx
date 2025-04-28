@@ -1,8 +1,7 @@
-
 import React from "react";
 import { SocialActionData } from "types";
 import { useTranslation } from "react-i18next";
-import { actionsPlaceholders, ActionViewer, PostViewPopup } from "ui";
+import { actionsPlaceholders, ActionViewer, PostViewPopup, ShadcnFlex } from "ui";
 
 import { VerticalCarousel } from "ui";
 import { useResponsive } from "ui";
@@ -22,24 +21,21 @@ import { useRouter } from "next/router";
 export const ActionsView: React.FC = () => {
   const router = useRouter();
   return (
-    <ShadcbnFlex
+    <ShadcnFlex
+   className="bg:white w-full h-full overflow-hidden column center"
+
+  >
+
+
+   
     
-    <Flex
-      bgColor={"white"}
-      w="100%"
-      h="100vh"
-      overflow={"hidden"}
-      direction="column"
-      align="center"
-    >
       {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
         {t("action", "action")}
       </Text> */}
 
-      <Flex
-        h="100%"
-        // w={{ base: "100%", sm: "container.sm", md: "25rem" }}
-        overflow="hidden"
+      <div
+      className="h-full overflow-hidden"
+      
       >
         {/* actions View */}
         <VerticalCarousel>
@@ -57,8 +53,8 @@ export const ActionsView: React.FC = () => {
             />
           ))}
         </VerticalCarousel>
-      </Flex>
+      </div>
       {/* </FloatingContainer> */}
-    </Flex>
+      </ShadcnFlex>
   );
 };

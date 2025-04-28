@@ -22,9 +22,9 @@ import { client } from './main';
           const userId = _user?.id;
           const user = userId
             ? await client
-              .db()
-              .collection('Account')
-              .findOne({ _id: new ObjectId(userId) })
+                .db()
+                .collection('Account')
+                .findOne({ _id: new ObjectId(userId) })
             : {};
 
           console.log('context', { user, userId });
@@ -91,4 +91,4 @@ import { client } from './main';
     }),
   ],
 })
-export class AppModule { }
+export class AppModule {}

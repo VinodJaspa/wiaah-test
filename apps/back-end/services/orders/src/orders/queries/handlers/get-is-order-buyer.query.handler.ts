@@ -17,7 +17,7 @@ export class GetIsOrderBuyerQueryHandler
     userId,
     getOrder,
   }: GetIsOrderBuyerQuery): Promise<[boolean, Order] | [boolean]> {
-    let res = await this.repo.getOrderById(orderId);
+    const res = await this.repo.getOrderById(orderId);
     if (!res) throw new OrderNotFoundException();
     const isBuyer = res.buyerId === userId;
     return getOrder

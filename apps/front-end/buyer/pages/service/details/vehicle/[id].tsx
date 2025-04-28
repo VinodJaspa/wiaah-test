@@ -126,6 +126,7 @@ const FAKE_VEHICLE_DATA: GetVehicleQuery["getVehicleServicebyId"] = {
       cancelationPolicies: [
         {
           __typename: "ServiceCancelationPolicy",
+          id: "policy123",
           cost: 30,
           duration: 12,
         },
@@ -160,7 +161,7 @@ const FAKE_VEHICLE_DATA: GetVehicleQuery["getVehicleServicebyId"] = {
 };
 
 const VehicleServiceDetailsPage: NextPage = () => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
   // const {

@@ -44,4 +44,4 @@ import { PrismaService } from 'src/Prisma.service';
   ],
   controllers: [ProductReviewController],
 })
-export class ProductReviewModule { }
+export class ProductReviewModule {}

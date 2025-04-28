@@ -12,7 +12,7 @@ import {
 } from "ui";
 
 export const ServicePostView: React.FC<{ postId: string }> = ({ postId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   // WARNING: graphql query is not ready yet
   const {
     data: _data,
@@ -31,9 +31,9 @@ export const ServicePostView: React.FC<{ postId: string }> = ({ postId }) => {
             <PostView
               postId="4"
               queryName="newFeedPost"
-              data={post[0]}
+           
               idParam="newsfeedpostid"
-              renderChild={(props: SocialServicesPostCardProps) => {
+              renderChild={(props: any) => {
                 const images = [post[0].postInfo.service.thumbnail];
                 return (
                   <Carousel componentsPerView={1} controls={images.length > 1}>

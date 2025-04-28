@@ -37,15 +37,14 @@ const GeoZoneForm: NextPage = () => {
   const isEdit = !isNew;
 
   // NOTE: graphql is not ready
-  const { data: _data } = useAdminGetShippingTypeRule(id);
+  const { data: _data } = useAdminGetShippingTypeRule(id ?? "");
   const data = FAKE_SHIPPING_TYPE;
 
   const { form, inputProps } = useForm<Parameters<typeof update>[0]>(
     {
-      id,
       ...data,
     },
-    { id, ...data },
+    { ...data },
   );
   const { mutate: update } = useAdminUpdateShippingRuleTypeMutation();
 
@@ -114,25 +113,34 @@ const GeoZoneForm: NextPage = () => {
                 </Tr>
               </THead>
               <TBody>
-                {mapArray(form.zones, ({ country, zone, id }) => (
-                  <Tr key={id}>
-                    <Td>
-                      <Select value={country}>
-                        <SelectOption value={country}>{country}</SelectOption>
-                      </Select>
-                    </Td>
-                    <Td>
-                      <Select value={zone}>
-                        <SelectOption value={zone}>{zone}</SelectOption>
-                      </Select>
-                    </Td>
-                    <Td align="right">
-                      <Button colorScheme="danger" center className="w-8 h-8">
-                        <MinusIcon />
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))}
+                {form?.zones && form?.zones.length > 0
+                  ? mapArray(form.zones, ({ country, zone, id }) => (
+                      <Tr key={id}>
+                        <Td>
+                          <Select value={country ?? ""}>
+                            <SelectOption value={country}>
+                              {country}
+                            </SelectOption>
+                          </Select>
+                        </Td>
+                        <Td>
+                          <Select value={zone ?? ""}>
+                            <SelectOption value={zone}>{zone}</SelectOption>
+                          </Select>
+                        </Td>
+                        <Td align="right">
+                          <Button
+                            colorScheme="danger"
+                            center
+                            className="w-8 h-8"
+                          >
+                            <MinusIcon />
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ))
+                  : null}
+
                 <Tr>
                   <Td></Td>
                   <Td></Td>

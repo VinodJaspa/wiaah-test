@@ -3,7 +3,7 @@ import React from "react";
 
 import { OrderDetailsModal } from "./OrderDetailsModal";
 
-let mockUseGetOrderDetailsQuery = jest.fn();
+const mockUseGetOrderDetailsQuery = jest.fn();
 jest.mock("ui", () => ({
   ...jest.requireActual("ui"),
   useGetOrderDetailsQuery: (...props: any) => {

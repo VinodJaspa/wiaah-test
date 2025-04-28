@@ -17,7 +17,7 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
   value: plan,
 }) => {
   const isProductsShop = shopType === "products";
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const { data } = useGetMembershipsQuery();
 

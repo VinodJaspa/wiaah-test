@@ -22,7 +22,7 @@ export interface NewsLetterSectionProps {
 export const AccountNewsLetterSettingsSection: React.FC<
   NewsLetterSectionProps
 > = ({ userId }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { isMobile } = useResponsive();
   const { data } = useGetUserNewsletterSettingsQuery({ userId });
   const { switchInputProps, form } = useForm<

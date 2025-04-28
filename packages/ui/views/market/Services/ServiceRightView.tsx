@@ -35,7 +35,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
   });
   const { data: category } = useGetServiceCategory(data?.id || "");
 
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const { AddNewItem } = useCartSummary();
   const [event, setEvent] = React.useState<Event>();
 

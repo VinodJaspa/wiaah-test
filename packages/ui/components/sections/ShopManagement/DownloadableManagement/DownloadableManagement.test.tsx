@@ -24,7 +24,7 @@ const testids = {
 describe("downloadable management tests", () => {
   let wrapper: ShallowWrapper;
 
-  let mockGetMyProducts = useGetMyProducts as jest.Mock;
+  const mockGetMyProducts = useGetMyProducts as jest.Mock;
 
   const mockMyProducts = {
     data: [

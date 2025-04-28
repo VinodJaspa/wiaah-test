@@ -6,20 +6,26 @@ import {
   useGetAffiliationPostsSuggestions,
   usePaginationControls,
 } from "ui";
-import { useBreakpointValue } from "utils";
+
 import { SocialProfileInfo } from "placeholder";
 import { AffiliationStatus } from "@features/API";
 import { SocialAffiliationCardProps } from "ui";
+import { useMediaQuery } from "react-responsive";
 
 export const AffiliationView: React.FC = () => {
   const router = useRouter();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { pagination, controls } = usePaginationControls();
   // use this graphql endpoint if the server is ready if not use placholder data
   // const { data } = useGetAffiliationPostsSuggestions({
   //   pagination,
   // });
-
+  const cols =useMediaQuery({ maxWidth: 767 })
+    ? 1
+    : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
+    ? 2
+    : useMediaQuery({ minWidth: 1024 })
+    ? 3
+    : 1;
   const data = useState();
 
   return (

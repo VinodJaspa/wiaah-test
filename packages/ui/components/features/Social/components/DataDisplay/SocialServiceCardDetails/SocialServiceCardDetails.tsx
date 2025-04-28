@@ -22,7 +22,7 @@ export interface SocialServiceCardDetailsProps {
 export const SocialServiceCardDetails: React.FC<
   SocialServiceCardDetailsProps
 > = ({ price, rating, title, user, views, onFollow }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   function handleFollowClick() {
     onFollow && onFollow();
   }

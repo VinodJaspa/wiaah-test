@@ -57,7 +57,7 @@ const BuyerSignupSchema = Yup.object().shape({
 
 export const BuyerSignupView: FC<{}> = () => {
   const { mutate: SignUp } = useSignupMutation();
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const handleSignUpSubmit = (data: any) => {
     SignUp(
       { ...data },

@@ -18,14 +18,14 @@ const testids = {
 describe("passwordSection tests", () => {
   let wrapper: ShallowWrapper;
 
-  let mockHook = useChangePasswordMutation as jest.Mock;
+  const mockHook = useChangePasswordMutation as jest.Mock;
 
   beforeAll(() => {
     wrapper = shallow(<PasswordSection />);
   });
 
   it("should call the useChangePassword", async () => {
-    let mockMutate = jest.fn();
+    const mockMutate = jest.fn();
     mockHook.mockImplementation(() => ({ mutate: mockMutate }));
 
     expect(mockHook).toBeCalledTimes(1);

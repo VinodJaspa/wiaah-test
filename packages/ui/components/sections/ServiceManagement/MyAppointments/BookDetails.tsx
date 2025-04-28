@@ -30,7 +30,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
   onGoBack,
 }) => {
   const { data: service } = useGetAppointmentDetailsQuery(bookId);
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col overflow-hidden 2xl:flex-row gap-10">

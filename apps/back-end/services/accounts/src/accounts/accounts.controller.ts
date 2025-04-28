@@ -58,7 +58,7 @@ export class AccountsController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
     private readonly prisma: PrismaService,
-  ) { }
+  ) {}
   @EventPattern('find.account')
   async handleFindAccount(@Payload() data: { email: string }) {
     // Perform a search for the account in the database
@@ -106,7 +106,7 @@ export class AccountsController implements OnModuleInit {
         success: true,
         data: { hasAccount: typeof account.stripeId === 'string' },
       });
-    } catch (error) { }
+    } catch (error) {}
   }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists)

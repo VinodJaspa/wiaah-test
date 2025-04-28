@@ -42,7 +42,7 @@ describe("HashTagCard render tests", () => {
     expect(cardTitle.text()).toBe("test title");
   });
   it("should have img tag with the right src if the provided type is 'image'", () => {
-    let attachment: PostAttachment = { src: "/shop.jpeg", type: "image" };
+    const attachment: PostAttachment = { src: "/shop.jpeg", type: "image" };
     wrapper = mount(
       <HashTagCard
         onViewPost={onViewPostMock}
@@ -56,7 +56,7 @@ describe("HashTagCard render tests", () => {
     expect(img.props().src).toBe(attachment.src);
   });
   it("should have video tag with the right src if the provided type is 'video'", () => {
-    let attachment: PostAttachment = { src: "/video.mp4", type: "video" };
+    const attachment: PostAttachment = { src: "/video.mp4", type: "video" };
     wrapper = mount(
       <HashTagCard
         onViewPost={onViewPostMock}

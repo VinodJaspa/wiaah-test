@@ -34,7 +34,7 @@ export const HotelDetailsView: React.FC<HotelDetailsViewProps> = ({
   //   isError: _isError,
   //   isLoading: _isLoading,
   // } = useGetServicesProviderQuery("");
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const res = FAKE_DATA;
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =

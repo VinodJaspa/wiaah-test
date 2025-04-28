@@ -18,7 +18,8 @@ import Head from "next/head";
 const AttributesList: NextPage = () => {
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetAttributesQuery>[0]
   >(
@@ -101,20 +102,20 @@ const AttributesList: NextPage = () => {
 export default AttributesList;
 
 const FAKE_PRODUCTS_ATTR: GetAdminProductAttributesQuery["adminGetAttributes"] =
-{
-  __typename: "ProductAttributesPaginationResponse",
-  hasMore: true,
-  total: 2,
-  data: [
-    {
-      __typename: "ProductAttribute",
-      id: "attribute1",
-      name: "Size",
-    },
-    {
-      __typename: "ProductAttribute",
-      id: "attribute2",
-      name: "Color",
-    },
-  ],
-};
+  {
+    __typename: "ProductAttributesPaginationResponse",
+    hasMore: true,
+    total: 2,
+    data: [
+      {
+        __typename: "ProductAttribute",
+        id: "attribute1",
+        name: "Size",
+      },
+      {
+        __typename: "ProductAttribute",
+        id: "attribute2",
+        name: "Color",
+      },
+    ],
+  };

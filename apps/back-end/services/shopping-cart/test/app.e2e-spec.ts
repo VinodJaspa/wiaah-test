@@ -14,18 +14,18 @@ import { GetBookingsHistoryInput } from '@book-service/dto';
 import { BookedService } from '@book-service/entities';
 import { bookedServiceStatus } from '@book-service/const';
 
-let mockSeller: AuthorizationDecodedUser = {
+const mockSeller: AuthorizationDecodedUser = {
   ...mockedUser,
   accountType: accountType.SELLER,
 };
-let mockBuyer: AuthorizationDecodedUser = {
+const mockBuyer: AuthorizationDecodedUser = {
   ...secendMockedUser,
   accountType: accountType.BUYER,
 };
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -85,12 +85,12 @@ describe('AppController (e2e)', () => {
         }
     `;
 
-    let lastMonthServiceDate = new Date(2022, 9, 5);
-    let currMonthServiceDate = new Date(2022, 10, 5);
-    let nextMonthServiceDate = new Date(2022, 11, 5);
-    let currDayServiceDate = new Date(2022, 10, 15);
-    let currWeekServiceDate = new Date(2022, 10, 17);
-    let currMonthSearchDate = new Date(2022, 10, 15);
+    const lastMonthServiceDate = new Date(2022, 9, 5);
+    const currMonthServiceDate = new Date(2022, 10, 5);
+    const nextMonthServiceDate = new Date(2022, 11, 5);
+    const currDayServiceDate = new Date(2022, 10, 15);
+    const currWeekServiceDate = new Date(2022, 10, 17);
+    const currMonthSearchDate = new Date(2022, 10, 15);
 
     beforeEach(async () => {
       await prisma.bookedService.create({

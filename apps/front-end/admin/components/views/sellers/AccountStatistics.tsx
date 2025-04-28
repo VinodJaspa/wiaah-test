@@ -39,7 +39,8 @@ import { getRandomImage } from "placeholder";
 export const AccountStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const [overviewDims, setOverviewDims] = React.useState<{
     h: number;
     w: number;
@@ -190,42 +191,42 @@ export const AccountStatistics: React.FC<{
     color: string;
     visits: number;
   }[] = [
-      {
-        name: "France",
-        color: "#87B2D2",
-        visits: randomNum(500000),
-      },
-      {
-        name: "United States",
-        color: "#70AB51",
-        visits: randomNum(500000),
-      },
-      {
-        name: "Saudi Arabia",
-        color: "#DB5E31",
-        visits: randomNum(500000),
-      },
-      {
-        name: "New Zeeland",
-        color: "#6BC5E1",
-        visits: randomNum(500000),
-      },
-      {
-        name: "Belgium",
-        color: "#82E37B",
-        visits: randomNum(500000),
-      },
-      {
-        name: "Italy",
-        color: "#E89D64",
-        visits: randomNum(500000),
-      },
-      {
-        name: "Germeny",
-        color: "#F8F679",
-        visits: randomNum(500000),
-      },
-    ];
+    {
+      name: "France",
+      color: "#87B2D2",
+      visits: randomNum(500000),
+    },
+    {
+      name: "United States",
+      color: "#70AB51",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Saudi Arabia",
+      color: "#DB5E31",
+      visits: randomNum(500000),
+    },
+    {
+      name: "New Zeeland",
+      color: "#6BC5E1",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Belgium",
+      color: "#82E37B",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Italy",
+      color: "#E89D64",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Germeny",
+      color: "#F8F679",
+      visits: randomNum(500000),
+    },
+  ];
 
   const totalVisits = countries.reduce((acc, curr) => acc + curr.visits, 0);
 
@@ -484,7 +485,7 @@ export const AccountStatistics: React.FC<{
             {weekDays.map((v, i) => (
               <Button key={i} className="text-xs " colorScheme="white">
                 {new Date(
-                  new Date().setDate(new Date().getDate())
+                  new Date().setDate(new Date().getDate()),
                 ).toLocaleDateString("en-us", {
                   weekday: "long",
                 })}
@@ -773,10 +774,11 @@ export const StatisticsCard: React.FC<{
         <p className="font-bold text-sm">{title}</p>
         <div className="w-full items-center flex justify-between">
           <div
-            className={`${positive
+            className={`${
+              positive
                 ? "text-primary bg-primary-100"
                 : "text-secondaryRed bg-red-100"
-              } flex items-center px-1 rounded`}
+            } flex items-center px-1 rounded`}
           >
             {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
             {Math.floor(change)}%

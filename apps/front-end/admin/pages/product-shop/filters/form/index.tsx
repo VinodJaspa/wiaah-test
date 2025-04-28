@@ -43,7 +43,8 @@ const FilterValuesValidationSchema = object({
 }).required();
 
 const ProductShopFiltersForm = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam } = useRouting();
 
   const filterId = getParam("filter_id");
@@ -128,7 +129,7 @@ const ProductShopFiltersForm = () => {
                     name: [],
                     lang: "en",
                   }}
-                  onSubmit={() => { }}
+                  onSubmit={() => {}}
                 >
                   {({ values, setFieldValue, handleChange }) => {
                     return (

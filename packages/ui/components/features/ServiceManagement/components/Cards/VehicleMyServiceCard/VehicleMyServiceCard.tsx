@@ -26,7 +26,7 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
   onRemove,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const {
     cancelationPolicies,

@@ -19,7 +19,7 @@ export const AddToCartButton: React.FC<
   return (
     <Button
       onClick={() => {
-        !!data?.id
+        data?.id
           ? addShoppingCartItem({
             itemId,
             type: itemType,

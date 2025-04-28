@@ -37,7 +37,8 @@ import {
 import { mapArray, NumberShortner, useForm } from "utils";
 
 const Buyers: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();

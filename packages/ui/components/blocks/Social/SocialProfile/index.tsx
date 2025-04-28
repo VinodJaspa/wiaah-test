@@ -89,7 +89,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 }) => {
   const router = useRouter();
   const myprofile = router.route === "/myprofile";
-  const { t } = useTranslation();
+const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
   const { visit } = useRouting();
 
@@ -164,7 +164,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         </SocialProfileOptionsDropdown>
       </div>
 */}
-
       {storyProfileId && <SocialStoryModal profileId={storyProfileId} />}
       <SubscribersPopup
         title={t("subscribers")}
@@ -177,7 +176,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         onClose={subscriptionsOnClose}
       />
       {/*<div className="items-center w-full flex-wrap md:flex-nowrap bg-white border0 border-white bottom-0 left-0 md:h-36 px-2 md:pl-14 py-6 flex flex-col gap-4"> */}
-
       <div className="flex h-full">
         <Avatar
           onClick={() => setStoryProfileId(profileInfo.id)}
@@ -185,7 +183,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           src={profileInfo.photo}
         ></Avatar>
       </div>
-
       <div className="flex flex-col gap-4">
         <div className="gap-2 md:order-none order-1 justify-center items-center flex md:hidden">
           <p className="text-[22px] font-bold ">{profileInfo.username}</p>
@@ -216,7 +213,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             {/* BUTTONS */}
             {myprofile ? (
               // Edit Button
-              <div className=" gap-3 md:flex md:justify-end  w-full grid grid-cols-2 ">
+              (<div className=" gap-3 md:flex md:justify-end  w-full grid grid-cols-2 ">
                 <Button
                   colorScheme="gray"
                   disabled={isPrivateForUser}
@@ -225,7 +222,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 >
                   {t("Edit Profile")}
                 </Button>
-
                 <Button
                   colorScheme="gray"
                   disabled={isPrivateForUser}
@@ -233,10 +229,10 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 >
                   {t("Share Profile")}
                 </Button>
-              </div>
+              </div>)
             ) : (
               // Follow Buttons
-              <div className="gap-3 md:flex w-full grid grid-cols-2 ">
+              (<div className="gap-3 md:flex w-full grid grid-cols-2 ">
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
@@ -248,7 +244,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                       ? t("Follow")
                       : t("Ask To Follow")}
                 </Button>
-
                 <Button
                   colorScheme="gray"
                   disabled={isPrivateForUser}
@@ -257,7 +252,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 >
                   {t("Message")}
                 </Button>
-
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
@@ -267,7 +261,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                   <p className="inline  md:hidden">Booking</p>
                 </Button>
                 <MoreOptionsPopup className="md:flex hidden text-3xl " />
-              </div>
+              </div>)
             )}
           </div>
         </div>
@@ -354,7 +348,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           </div>
         </div>
       </div>
-
       <Container className="flex-grow gap-4 flex-col">
         {profileInfo && profileInfo.visibility === ProfileVisibility.Public ? (
           <>

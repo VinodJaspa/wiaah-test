@@ -39,7 +39,8 @@ const partners: Partner[] = [...Array(5)].map((_, i) => ({
 }));
 
 const Partner: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
     <section>
