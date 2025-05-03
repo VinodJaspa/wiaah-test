@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const RestaurantServiceDetailsPage: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
   // const {

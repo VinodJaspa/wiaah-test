@@ -53,7 +53,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   brands,
   open,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [countryCode, setCountryCode] = useState("");
   const [cities, setCities] = useState<any | []>();
   function handleCountryChange(value: any) {

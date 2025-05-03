@@ -16,7 +16,7 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useForm } from "@UI/../utils/src";
 
 const CheckoutForm = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -80,7 +80,7 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
   onSuccess,
   isSellerOrBuyer,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { inputProps } = useForm<PaymentData>({
     cardNumber: "",
     cvc: "",

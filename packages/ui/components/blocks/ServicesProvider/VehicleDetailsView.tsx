@@ -36,7 +36,7 @@ export const VehicleServiceDetailsView: React.FC<
   // } = useGetVehicleProviderDetailsQuery({ id });
 
   const res = vehicleData;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(

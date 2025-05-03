@@ -13,10 +13,19 @@
     "tsconfig": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@types/lodash": "^4.17.16"
   },
   "dependencies": {
+    "country-state-city": "^3.0.1",
     "types": "workspace:*",
-    "country-state-city": "^3.0.1"
+    "utils": "workspace:*",
+    "validation": "workspace:*",
+    "react-pubsub": "workspace:*",
+    "routing": "workspace:*",
+    "nest-utils": "workspace:*",
+    "ui":"workspace:*",
+    "lodash": "4.17.21"
+
   }
 }

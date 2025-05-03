@@ -14,7 +14,7 @@ export interface ResturantCheckoutCardProps
 export const ResturantCheckoutCard: React.FC<ResturantCheckoutCardProps> = (
   props
 ) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { bookedMenus, ...rest } = props;
 
   return (

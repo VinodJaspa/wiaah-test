@@ -18,7 +18,7 @@ export const NewsletterDrawer: React.FC = () => {
     "showNewsletterRegisteration"
   );
   const isOpen = value === true;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Drawer

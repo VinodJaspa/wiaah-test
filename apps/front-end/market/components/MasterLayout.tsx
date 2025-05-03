@@ -34,7 +34,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
   token,
 }) => {
   let voucher;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const setVoucher = useSetRecoilState(VoucherState);
   useEffect(() => {

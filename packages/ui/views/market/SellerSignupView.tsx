@@ -17,7 +17,7 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
 }) => {
   const { mutate: SignUp } = useSignupMutation();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const handleSignUpSubmit = (data: any) => {
     SignUp(
       { ...data },

@@ -16,7 +16,7 @@ export interface PractitionerSearchResultsCardProps {
 export const PractitionerSearchResultsCard: React.FC<
   PractitionerSearchResultsCardProps
 > = ({ practitioner }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">

@@ -43,7 +43,7 @@ const contrastColors = ["#00BCD4"];
 export const BookingsCalenderSection: React.FC<
   BookingCalenderSectionProps
 > = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [now] = React.useState(new Date());
   const [activeWeek, setActiveWeek] = React.useState(0);
@@ -387,7 +387,7 @@ export const CalenderBookingsList: React.FC<{
   children: React.ReactNode;
   length: number;
 }> = ({ children, length }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [open, setOpen] = React.useState<boolean>(false);
 
   const showMore = !open && length > 1;
@@ -427,7 +427,7 @@ export const NotificationCalender: React.FC<{
   notificationDates: string[];
   monthDate: string;
 }> = ({ onChange, value, notificationDates, monthDate }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { allDates, weekdays } = getMonthCalenderDays(new Date(monthDate));
 
   return (

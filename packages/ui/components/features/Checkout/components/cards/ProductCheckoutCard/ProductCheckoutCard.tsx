@@ -129,7 +129,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   const [quantity, setQuantity] = React.useState<number>(qty || 0);
   const [isOpen, setIsOpen] = React.useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const onToggle = () => setIsOpen(!isOpen);
   const onClose = () => setIsOpen(false);

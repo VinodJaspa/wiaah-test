@@ -41,7 +41,7 @@ export const SocialPostAuthorHeader: React.FC<{ userId: string }> = ({
   userId,
 }) => {
   const { visit } = useRouting();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   // WARNING: this graphql is not ready yet
   const { data: _data, isLoading } = useGetSocialProfileQuery(userId);
   const data = FAKE_GET_SOCIAL_PROFILE_DATA;

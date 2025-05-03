@@ -10,13 +10,18 @@
   },
   "devDependencies": {
     "config": "workspace:*",
+    "uris":"workspace:*",
     "tsconfig": "workspace:*",
+    "ui":"workspace:*",
     "types": "workspace:*",
     "@types/react": "^18.2.0",
+      "@types/lodash": "^4.17.16",
     "@types/react-dom": "^18.2.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "utils": "workspace:*"
+    "utils": "workspace:*",
+    "lodash": "4.17.21"
+  
   }
 }

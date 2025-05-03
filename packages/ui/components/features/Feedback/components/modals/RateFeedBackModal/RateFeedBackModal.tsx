@@ -11,7 +11,7 @@ export interface RateFeedBackModalProps {
 export const RateFeedBackModal: React.FC<RateFeedBackModalProps> = ({
   variant,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const [rating, setRating] = useState(0); 
   const allowHalf = true; 

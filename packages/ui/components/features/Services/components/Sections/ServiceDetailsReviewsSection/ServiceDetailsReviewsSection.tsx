@@ -25,7 +25,7 @@ export interface ServiceDetailsReviewsSectionProps {
 export const ServiceDetailsReviewsSection: React.FC<
   ServiceDetailsReviewsSectionProps
 > = ({ overAllRating, ratingLevels, reviews }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-5 w-full">
       <div className="flex items-center gap-2">

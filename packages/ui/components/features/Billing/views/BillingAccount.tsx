@@ -54,7 +54,7 @@ export const BillingAccount = React.forwardRef(
     },
     ref
   ) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
 
     const { data: account } = useGetMyPayoutAccountQuery();
 
@@ -347,7 +347,7 @@ const CompanyMemberRow: React.FC<{
   onChange: (member: CreateCompanyPersonInput) => any;
   onDelete: () => any;
 }> = ({ member, onChange, onDelete }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { form: dob, handleChange: dobChange } =
     useForm<BillingAccountDateOfBirthInput>(member.dob);
 

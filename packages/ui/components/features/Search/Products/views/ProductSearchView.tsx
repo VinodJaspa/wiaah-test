@@ -48,7 +48,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
     q: string;
   }>({ q: "" });
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const products: {
     name: string;

@@ -37,7 +37,7 @@ export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   const res = FAKE_BEAUTY_CENTER_DETAILS;
   const isLoading = false;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">

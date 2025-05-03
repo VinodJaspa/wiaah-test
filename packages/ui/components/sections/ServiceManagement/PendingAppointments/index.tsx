@@ -38,7 +38,7 @@ export const PendingAppointmentsSection: React.FC<
   PendingAppointmentsSectionProps
 > = () => {
   const { isMobile } = useResponsive();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
@@ -183,7 +183,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 export const PendingAppointmentCard: React.FC<{
   appointmentRequestData: PendingAppointmentData;
 }> = ({ appointmentRequestData }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { mutate: acceptAppointment, isLoading: acceptIsLoading } =
     useAcceptPendingAppointmentMutation();
   const { mutate: declineAppointment, isLoading: declineIsLoading } =

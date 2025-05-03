@@ -12,7 +12,7 @@ export const HotelServiceRoomsSection: React.FC<
   HotelServiceRoomsSectionProps
 > = ({ rooms }) => {
   const { addService } = useSetBookedServicesState();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const roomsRef = usePublishRef((refs) => refs.rooms);
 
   function handleBook(id: string) {}

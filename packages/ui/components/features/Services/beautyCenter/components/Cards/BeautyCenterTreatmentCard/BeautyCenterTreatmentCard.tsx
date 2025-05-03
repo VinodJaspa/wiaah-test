@@ -20,7 +20,7 @@ export interface BeautyCenterTreatmentCardProps {
 export const BeautyCenterTreatmentCard: React.FC<
   BeautyCenterTreatmentCardProps
 > = ({ treatment, selected, onSelect, onUnSelect }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
 
   return (

@@ -19,7 +19,7 @@ export interface VoucherInputProps {
   onSuccess?: (code: string) => Promise<boolean>;
 }
 export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [value, setValue] = React.useState<{ code: string }>();
   const [errMsg, setErrorMsg] = React.useState<{
     error: boolean;

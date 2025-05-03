@@ -28,7 +28,7 @@ export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
   value = [],
 }) => {
   const [add, setAdd] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const beds = Array.isArray(value)
     ? value.reduce((acc, curr) => {
         return acc + curr.amount;

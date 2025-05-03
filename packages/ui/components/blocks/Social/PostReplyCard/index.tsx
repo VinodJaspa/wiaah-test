@@ -60,7 +60,7 @@ export const PostReplyCard: React.FC<PostCommentCardProps> = ({
   setPostOwnerUsername,
 }) => {
   const { openModalWithId } = useCommentReportModal();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   // const { mutate } = useLikeContent();
   const { mutate: createComment } = useCommentOnContent();
   const { shareLink, showContentComments } = useSocialControls();

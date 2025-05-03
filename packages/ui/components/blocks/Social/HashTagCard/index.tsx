@@ -15,7 +15,7 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
   profile,
   onViewPost,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   function handleViewPostClick() {
     onViewPost && onViewPost();
   }

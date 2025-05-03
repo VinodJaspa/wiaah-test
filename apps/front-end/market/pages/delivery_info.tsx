@@ -6,7 +6,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const Delivery_info: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <Head>

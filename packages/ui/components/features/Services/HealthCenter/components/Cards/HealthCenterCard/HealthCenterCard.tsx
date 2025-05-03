@@ -45,7 +45,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
 }) => {
   const { visit } = useRouting();
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   // this function converts the WrokingDate type to get passed to WorkingDaysCalender
   const convertedWrokingDates = convertWorkingDates(workingDates);
 

@@ -17,7 +17,7 @@ import {
 const randomNum = (max: number) => Math.floor(Math.random() * max);
 
 export const ServicePostView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { filters } = useSearchFilters();
   const {
     data: res ,

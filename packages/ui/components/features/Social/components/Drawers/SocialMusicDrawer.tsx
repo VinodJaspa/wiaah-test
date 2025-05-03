@@ -21,7 +21,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const SocialMusicDrawer: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { value, closeMusicDetails } = useSocialControls("showMusicId");
   const isOpen = typeof value === "string";
 
@@ -103,7 +103,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
 const MusicController: React.FC<{ src: string }> = ({ src }) => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [progress, setProgress] = React.useState<number>(0);
   const [playing, setPlaying] = React.useState<boolean>(false);
   const [duration, setDuration] = React.useState<number>(100);

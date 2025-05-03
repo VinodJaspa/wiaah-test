@@ -16,7 +16,7 @@ export function MultiChooseInput({
   suggestions = [],
   placeholder,
 }: MultiChooseInputProps) {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [inputValue, setInputInputValue] = React.useState<string>("");
 
   function resetSearch() {

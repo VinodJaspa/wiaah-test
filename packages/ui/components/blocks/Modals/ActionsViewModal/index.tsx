@@ -32,7 +32,7 @@ export const ActionsViewModal: React.FC<ActionsViewPopupProps> = ({
   queryName = "post",
   fetcher,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const [isOpen, setIsOpen] = React.useState(false);
 

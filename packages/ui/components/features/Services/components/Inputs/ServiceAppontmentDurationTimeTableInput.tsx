@@ -35,7 +35,7 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
     //   ? { sessionDurationMin: value.sessionDuration }
     //   : undefined
   );
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const defaultSessionDuration: {
     label: string;

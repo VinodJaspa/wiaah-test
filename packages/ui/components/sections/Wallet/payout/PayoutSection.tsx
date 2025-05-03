@@ -8,7 +8,7 @@ import { usePaginationControls } from "@blocks";
 import React from "react";
 
 export const PayoutSection = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const { controls, pagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetMyWithdrawalsQuery>[0]>({

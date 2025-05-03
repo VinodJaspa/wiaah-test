@@ -287,7 +287,7 @@ const PhotoPreview: React.FC<{
 );
 
 const PostDetailsForm: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="h-full justify-center items-center w-full justify-self-center flex gap-6">
       <div className="w-full flex flex-col gap-2">
@@ -372,7 +372,7 @@ const VideoDetailsStep: React.FC<{
   coversRef: React.MutableRefObject<Record<number, HTMLVideoElement>>;
   setCoversRef: (idx: number, node: HTMLVideoElement) => void;
 }> = ({ form, coversRef, setCoversRef }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
       <div className="w-96 mx-auto">

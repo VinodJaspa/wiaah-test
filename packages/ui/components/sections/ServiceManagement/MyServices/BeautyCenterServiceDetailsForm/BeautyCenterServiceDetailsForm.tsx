@@ -27,7 +27,7 @@ export interface BeautyCenterServiceDetailsFormProps {
 export const BeautyCenterServiceDetailsForm: React.FC<
   BeautyCenterServiceDetailsFormProps
 > = ({ onChange }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

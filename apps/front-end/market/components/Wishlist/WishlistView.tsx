@@ -21,7 +21,7 @@ export const WishlistView: React.FC = () => {
   const { DeleteItem, savedItems: _savedItems } = useSavedItems();
   const savedItems = SAVED_ITEMS;
   const { AddNewItem } = useCartSummary();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const shop: ShopContactDetails = {
     name: "awsome shop",
     id: "44",

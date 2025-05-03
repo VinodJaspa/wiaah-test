@@ -35,7 +35,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   src,
   type,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="max-w-full h-full  relative bg-black" {...innerProps}>
       <PostAttachment

@@ -29,7 +29,7 @@ export const AccountSignup = forwardRef(
     },
     ref
   ) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { inputProps, dateInputProps, form, handleChange } = useForm<
       Parameters<typeof Signup>[0]
     >(

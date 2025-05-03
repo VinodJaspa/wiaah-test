@@ -26,7 +26,7 @@ import {
 import { product } from "@blocks/Modals/ProductViewModal/ProductViewModal.stories";
 
 export const SearchView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [isGrid, setGrid] = useState(false);
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();

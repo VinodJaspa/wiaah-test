@@ -61,7 +61,7 @@ export const ChatRoomInput: React.FC<ChatRoomInputProps> = ({ roomId }) => {
   const { form, inputProps, handleChange } = useForm<{}>({});
 
   const [msg, setMsg] = React.useState<string>("");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <HStack className="text-xl gap-4 text-primary">

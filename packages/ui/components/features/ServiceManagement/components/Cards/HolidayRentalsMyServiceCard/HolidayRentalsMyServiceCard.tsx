@@ -38,7 +38,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
     onEdit,
     onRemove,
   } = props;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const amanitiesNames = amenites.map((amenity) => amenity.name);
 

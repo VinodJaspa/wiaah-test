@@ -11,7 +11,7 @@ export interface PushSwitch
   > {}
 
 export const PushSwitch: React.FC = ({ ...props }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2">
       {/* @ts-ignore */}

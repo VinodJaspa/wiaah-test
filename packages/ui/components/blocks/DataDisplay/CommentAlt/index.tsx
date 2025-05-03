@@ -25,7 +25,7 @@ export const CommentAlt: React.FC<CommentAltProps> = ({
   description,
   main,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(createdAt),
     to: new Date(Date.now()),

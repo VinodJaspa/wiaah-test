@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const HealthCenterServiceDetailsPage: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
   const tabIndex = parseInt(getParam("tabIndex")) || 0;

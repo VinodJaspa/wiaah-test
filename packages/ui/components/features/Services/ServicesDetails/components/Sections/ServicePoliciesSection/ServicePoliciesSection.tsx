@@ -12,7 +12,7 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   // deposit,
   title,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const policiesRef = usePublishRef((keys) => keys.policies);
 
   return (

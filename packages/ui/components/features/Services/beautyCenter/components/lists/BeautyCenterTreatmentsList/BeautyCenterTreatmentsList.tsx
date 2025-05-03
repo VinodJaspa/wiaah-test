@@ -15,7 +15,7 @@ export const BeautyCenterTreatmentsList: React.FC<
   BeautyCenterTreatmentsListProps
 > = ({ treatments, cancelation }) => {
   const treatmentsRef = usePublishRef((keys) => keys.treatments);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div ref={treatmentsRef} className="flex flex-col gap-8">
       <p className="font-bold text-lg md:text-xl">{t("Treatments")}</p>

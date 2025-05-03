@@ -150,7 +150,7 @@ const TopCategoriesHomePageSlider: React.FC<{
   selectedCategoryId?: { id: string; name: string };
   onCategorySelect: ({ id, name }: { id: string; name: string }) => any;
 }> = ({ onCategorySelect, selectedCategoryId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const { data: _data, hasNextPage } = useGetTopProductCategoriesQuery(
     { take: 10 },
@@ -208,7 +208,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 const TopSalesCategoryProducts: React.FC<{
   category?: { id: string; name: string };
 }> = ({ category }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
   const { pagination } = usePaginationControls({ itemsPerPage: 40 });
   const { data: _categoryRes } = useGetCategoryByIdQuery(category?.id!);
@@ -303,7 +303,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 };
 
 const BestShopsHomeSection: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const { isMobile } = useResponsive();
   const { data: _shopData } = useGetBestShopsQuery({ take: 5 });
@@ -407,7 +407,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 const PlacesNearYouHomeSection: React.FC = () => {
   const { lat, lng } = useGeoLocation();
   const { isMobile } = useResponsive();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const {
     data: _places,
@@ -481,7 +481,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 };
 
 const HomeRecommendationSection: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const products: Array<
     Pick<Product, "thumbnail" | "title" | "rate" | "price" | "discount" | "id">
   > = [];
@@ -550,7 +550,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 const MostViewdVideso: React.FC = () => {
   const data = mostViewdVideos;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const { visit } = useRouting();
 

@@ -36,7 +36,7 @@ export interface ServiceGeneralDetailsProps {
 export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
   onChange,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { data: res } = useGetHotelAmenitesQuery();
 
   const amenitiesNames = React.useMemo(

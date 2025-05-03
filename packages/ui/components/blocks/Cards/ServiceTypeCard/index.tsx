@@ -19,7 +19,7 @@ export const ServiceTypeCard: React.FC<ServiceTypeCardProps> = ({
   serviceInfo,
   onServiceChoosen,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex w-48 min-h-[15rem] justify-between flex-col items-center gap-4">
       <div className="text-8xl text-primary fill-primary">

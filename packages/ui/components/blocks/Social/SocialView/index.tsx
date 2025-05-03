@@ -58,7 +58,7 @@ export interface SocialViewProps {
 }
 
 export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const {
     data: _res,
     isLoading,

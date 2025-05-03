@@ -36,7 +36,7 @@ export const PaymentMethodsSection: React.FC = () => {
 export const AccountPaymentMethodsSection: React.FC<{ accountId: string }> = ({
   accountId,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [addNew, setAddNew] = React.useState<boolean>(true);
   const { isMobile } = useResponsive();
 
@@ -139,7 +139,7 @@ interface PaymentCardProps {
 }
 
 const PaymentCard: React.FC<PaymentCardProps> = ({ cardInfo, onEdit }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const paymentMethods: { icon: ReactElement }[] = [
     {
@@ -195,7 +195,7 @@ const CardNumber = ({ lastNumbers }: { lastNumbers: number }) => {
 
 export const PaymentMethodForm = React.forwardRef(
   (props: { onSuccess: () => any }, ref) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
 
     React.useImperativeHandle(ref, () => ({
       submit: () => { },
@@ -281,7 +281,7 @@ export const ColouredPaymentCard: React.FC<{
   expiryMonth: number;
   expiryYear: number;
 }> = ({ expiryMonth, expiryYear, last4 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex rounded-2xl flex-col w-full gap-10">
       <HStack className="justify-between">

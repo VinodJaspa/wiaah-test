@@ -88,7 +88,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const { shopping } = React.useContext(bookingsHistoryCtx);
   const { isMobile } = useResponsive();
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { back } = useRouting();
   const [date, setDate] = React.useState<Date>(new Date());
   const months = getAllMonthsOfYear(date.getFullYear());
@@ -614,7 +614,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 };
 
 const BookingViewModal: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const id = useRecoilValue(
     selector({
       key: "bookingViewIdState",
@@ -714,7 +714,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 };
 
 const BookingPayBackModal: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const payback = useRecoilValue(
     selector({
       key: "bookingPaybackIdState",
@@ -762,7 +762,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 };
 
 const BookingCancelationModal: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const id = useRecoilValue(
     selector({
       key: "bookingCancelationIdState",

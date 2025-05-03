@@ -307,7 +307,7 @@ export const ServiceDetailsView: React.FC<{
   const isError = false;
   const isLoading = false;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const shop = FAKE_USER_SHOP_DATA;
 
   const serviceType = shop?.type || ServiceType.Hotel;
@@ -1568,7 +1568,7 @@ const ServiceDetailsTabHead: React.FC<{
 export const ServiceDetailsFacilities: React.FC<{
   service: Partial<Service>;
 }> = ({ service: v }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const showOn = (types: ServiceType[]) =>
     types.includes(v.type || ServiceType.Hotel);
 
@@ -1626,7 +1626,7 @@ export const ServiceDetailsCancelationSwitcher: React.FC<{
   policy: ServiceCancelationType;
   serviceType: ServiceType;
 }> = ({ policy, serviceType }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       {(() => {

@@ -360,7 +360,7 @@ const FAKE_VEHICLE_DATA: GetVehicleQuery["getVehicleServicebyId"] = {
 };
 
 const VehicleServiceDetailsPage: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
   const tabIndex = parseInt(getParam("tabIndex")) || 0;

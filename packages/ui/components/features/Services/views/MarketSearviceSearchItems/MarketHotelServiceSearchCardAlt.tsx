@@ -15,7 +15,7 @@ export const MarketHotelServiceSearchCardAlt: React.FC<{
   price: number;
   location: string;
 }> = ({ description, location, name, price, rating, thumbnail }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-1 p-1">
       <AspectRatioImage

@@ -48,7 +48,7 @@ export const PostHead: React.FC<PostHeadProps> = ({
   onViewPostClick,
 }) => {
   // const { OpenStories } = useStory();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 const primaryColor = "bg-primary";
   function handleOpenStories() {
     if (functional) {

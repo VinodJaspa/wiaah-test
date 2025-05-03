@@ -82,7 +82,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   );
   const { mutate } = useUpdateAccountSettingsMutation();
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const { uploadImage } = useFileUploadModal();
 

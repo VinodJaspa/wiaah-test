@@ -38,7 +38,7 @@ export const useSocialReportModal = () => {
 };
 
 export const SocialReportModal: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { Listen, removeListner } = useSocialReportModal();
   const [id, setId] = React.useState<string>();
 

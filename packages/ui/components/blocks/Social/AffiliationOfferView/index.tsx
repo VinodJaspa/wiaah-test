@@ -10,7 +10,7 @@ import { useMediaQuery } from "react-responsive";
 export const AffiliationOfferView: React.FC<{ offerId: string }> = ({
   offerId,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const isBase = useMediaQuery({ maxWidth: 767 }); 
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); 
   const isLg = useMediaQuery({ minWidth: 1024 }); 

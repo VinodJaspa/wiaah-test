@@ -18,7 +18,7 @@ export const SellerCard: React.FC<SellerProps> = ({
   reviews = 0,
   rating = 0,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { OpenLoginPopup } = useLoginPopup();
   return (
     <>

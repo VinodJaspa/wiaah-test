@@ -15,7 +15,7 @@ import { useRouting } from "routing";
 export interface ShareYourWiaahQrProps {}
 
 export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({}) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { open } = useShareModal();
   const { getUrl } = useRouting();
   const { data: user } = useGetMyProfileQuery();

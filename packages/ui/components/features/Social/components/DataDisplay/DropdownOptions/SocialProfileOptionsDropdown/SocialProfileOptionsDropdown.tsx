@@ -17,7 +17,7 @@ export const SocialProfileOptionsDropdown: React.FC<
   SocialProfileOptionsDropdownProps
 > = ({ profileId, children }) => {
   const { OpenModal } = useSocialReportModal();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <Menu>
       <MenuButton>{children}</MenuButton>

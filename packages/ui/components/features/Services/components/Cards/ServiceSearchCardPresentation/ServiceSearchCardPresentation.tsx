@@ -14,7 +14,7 @@ export const ServiceCardPresentation: React.FC<
   ServiceSearchCardPresentationProps
 > = ({ alt, src, data, serviceKey }) => {
   const { visit } = useRouting();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <AspectRatioImage src={src} alt={alt} className="group" ratio={3 / 4}>
       <div

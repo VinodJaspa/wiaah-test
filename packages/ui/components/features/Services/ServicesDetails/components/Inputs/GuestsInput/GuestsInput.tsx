@@ -26,7 +26,7 @@ export const GuestsInput: React.FC<GuestsInputProps> = ({
   children,
   value: guests,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Menu>

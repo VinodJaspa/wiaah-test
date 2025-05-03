@@ -32,7 +32,7 @@ export const LoginView: FC<{
 }> = ({ setAuthView, onSubmit }) => {
   const router = useRouter();
   const { CloseLoginPopup } = useLoginPopup();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const [formInput, setFormInput] = useState<LoginInputsType>({
     email: "",

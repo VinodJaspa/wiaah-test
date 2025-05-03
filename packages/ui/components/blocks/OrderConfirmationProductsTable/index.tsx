@@ -26,7 +26,7 @@ export const OrderConfirmationProductsTable: React.FC<
   function handleRemoveProduct(productId: string) {
     onRemove && onRemove(productId);
   }
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <TableContainer>

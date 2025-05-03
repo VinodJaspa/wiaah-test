@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isopen, setIsopen] = React.useState(false);
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
 

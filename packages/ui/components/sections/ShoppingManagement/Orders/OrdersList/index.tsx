@@ -62,7 +62,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
     status: filter,
     pagination,
   });
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const [refundOrderId, setRefundOrderId] = React.useState<string>();
   const { mutate, isLoading: RefundLoading } = useAskForRefundMutation();

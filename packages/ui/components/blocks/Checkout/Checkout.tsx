@@ -56,7 +56,7 @@ const FAKE_ADDRESS_DATA: AddressCardDetails[] = [
 export const CheckoutView: React.FC<CheckoutViewProps> = ({
   isSellerOrBuyer,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
   // const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
@@ -230,7 +230,7 @@ const DatePicker: React.FC = () => {
     to: new Date(),
   });
   const { days } = useDateDiff({ from: dates.from, to: dates.to });
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   React.useEffect(() => {
     setMounted(true);
@@ -358,7 +358,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
 const GuestsPicker = () => {
   const [edit, setEdit] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex justify-between">

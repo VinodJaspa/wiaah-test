@@ -47,7 +47,7 @@ export const ChatRoomHeader: React.FC<ChatRoomHeaderProps> = ({
   data,
   onCloseRoom,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   const { getSince } = useDateDiff({
@@ -102,7 +102,7 @@ export const ChatUserActiveStatusIndicator: React.FC<{
   status: ActiveStatus;
   showText?: boolean;
 }> = ({ status, showText }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const _status: {
     className: string;

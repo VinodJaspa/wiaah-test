@@ -11,7 +11,7 @@ import Image from "next/image";
 export interface LocailisationsViewProps { }
 
 export const LocalisationsView: React.FC<LocailisationsViewProps> = ({ }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   
   const cols = useMediaQuery({ maxWidth: 767 }) ? 1 : useMediaQuery({ minWidth: 768, maxWidth: 1023 }) ? 2 : useMediaQuery({ minWidth: 1024 }) ? 3 : 1;
 

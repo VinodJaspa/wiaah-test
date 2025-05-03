@@ -81,7 +81,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
   room,
   onBook,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <Formik initialValues={{}} onSubmit={() => {}}>
       {({ values, setFieldValue }) => (

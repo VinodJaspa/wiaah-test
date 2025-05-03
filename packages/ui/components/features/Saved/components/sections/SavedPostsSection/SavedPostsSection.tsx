@@ -18,7 +18,7 @@ import { getRandomImage } from "@UI/../placeholder";
 // Placeholder data
 
 export const SavedPostsSection: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   // WARNING: this GraphQL query is not working right now so it has been replaced with placeholder
   // const { data: _account } = useGetMyAccountQuery();

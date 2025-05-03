@@ -37,7 +37,7 @@ export const HealthCenterSearchResultsView: React.FC = () => {
     isLoading: healthIsLoading,
     isError: healthIsError,
   } = useGetFilteredHealthCenters({ pagination });
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <HealthCenterSearchBox />

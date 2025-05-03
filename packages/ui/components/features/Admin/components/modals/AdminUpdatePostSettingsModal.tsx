@@ -21,7 +21,7 @@ export const AdminUpdatePostSettingsModal: React.FC<{
   postId: string;
   onClose: () => any;
 }> = ({ postId, onClose }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { data } = useAdminGetPost(postId);
 
   const { mutate } = useAdminUpdatePostMutation();

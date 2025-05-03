@@ -29,7 +29,7 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = (props) => {
     price,
   } = props;
   const { visit } = useRouting();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="relative group overflow-hidden">

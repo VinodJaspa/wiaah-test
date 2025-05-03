@@ -18,7 +18,7 @@ export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
 }) => {
   const [checkin, SetCheckin] = React.useState<string>("");
   const [checkout, SetCheckout] = React.useState<string>("");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   React.useEffect(() => {
     if (!isNaN(Date.parse(new Date(Checkin || "").toString()))) {

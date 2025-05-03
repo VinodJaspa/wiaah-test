@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const ServicePostOnMapPage: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const id = router.query["id"];
   const profileName = router.query["profileName"];

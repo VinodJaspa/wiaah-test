@@ -37,7 +37,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
   const { cashback, discount, rating, reviewsCount, title, colors, thumbnail } =
     productInfo;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
       <AspectRatio ratio={1}>

@@ -189,7 +189,7 @@ export const ServiceReservastionForm: React.FC<{
     childrens: 0,
     infants: 0,
   });
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const formatedDishs = services?.reduce(
     (acc, curr) => {

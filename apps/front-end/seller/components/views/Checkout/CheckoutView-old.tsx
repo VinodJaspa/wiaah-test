@@ -32,7 +32,7 @@ const randomNum = (max: number) => Math.floor(Math.random() * max);
 export interface CheckoutViewProps { }
 
 export const OldCheckoutView: React.FC<CheckoutViewProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);

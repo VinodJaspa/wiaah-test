@@ -36,7 +36,7 @@ import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css"; // Import default styles
 export const SellerProfileStartupView: React.FC = ({}) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [currentStep, setCurrentStep] = React.useState<number>(0);
 
@@ -453,7 +453,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     },
     ref
   ) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
       code: "",
     });

@@ -73,7 +73,7 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
   onClose,
   ...rest
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [currentStep, setCurrentStep] = React.useState<Step>();
   const router = useRouter();
   const [path, setPath] = useState<Step[]>([]);

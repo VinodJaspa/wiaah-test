@@ -13,7 +13,7 @@ export interface ServicePoliciesInputSectionProps {
 export const ServicePoliciesInputSection: React.FC<
   ServicePoliciesInputSectionProps
 > = ({ onChange, value = {} }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

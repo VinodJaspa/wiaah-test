@@ -34,7 +34,7 @@ countries.forEach((element) => {
 export const PersonalInformationStep: React.FC<
   PersonalInformationStepProps
 > = ({ isValid }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const [countryCode, setCountryCode] = React.useState("");
   const [stateCode, setStateCode] = React.useState("");

@@ -12,7 +12,7 @@ export const SocialAuthFooter: React.FC<AuthFooterProps> = ({
   onLoginClick,
   onSignupClick,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <VStack className="p-8 gap-2 bg-primary">
       <p className="text-xl font-bold capitalize">

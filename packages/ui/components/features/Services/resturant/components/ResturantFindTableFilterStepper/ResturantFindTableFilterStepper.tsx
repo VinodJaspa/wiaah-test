@@ -20,7 +20,7 @@ export interface ResturantFindTableFilterStepper { }
 export const ResturantFindTableFilterStepper: React.FC<
   ResturantFindTableFilterStepper
 > = ({ }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [filters, setFilters] = React.useState<FormatedSearchableFilter[]>([]);
 
   return (

@@ -19,7 +19,7 @@ import {
 export const ChatView: React.FC = () => {
   const { visit, getParam, getCurrentPath, getQuery } = useRouting();
   const roomId = getParam("roomId");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   function handleRouteChatRoom(roomId: string) {

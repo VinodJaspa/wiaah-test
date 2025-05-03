@@ -6,7 +6,7 @@ import { ServiceManagementView } from "@components";
 import { useTranslation } from "react-i18next";
 
 const ServiceManagement: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   return (
     <>

@@ -116,7 +116,7 @@ const checkoutValidationSchema = yup.object().shape({
 export const BookingServiceDateRangeStepper: React.FC<
   BookingServiceDateRangeStepperProps
 > = ({ onSuccess }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <StepperFormController<DateRange>
       stepsNum={2}

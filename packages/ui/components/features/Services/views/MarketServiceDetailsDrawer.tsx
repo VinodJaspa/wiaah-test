@@ -36,7 +36,7 @@ export const MarketServiceDetailsDrawer: React.FC = () => {
   const { shareLink } = useSocialControls();
   const { getUrl, visit } = useRouting();
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { mutate: follow } = useFollowProfileMutation();
   const { value } = useSocialControls("marketShowServiceDetails");
 

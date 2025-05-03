@@ -15,7 +15,7 @@ export interface ExtraServiceInputProps {
 export const ExtraServiceInput: React.FC<ExtraServiceInputProps> = ({
   onAdd,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [values, setValues] = React.useState<ExtraServiceData>({
     cost: 0,
     name: "",

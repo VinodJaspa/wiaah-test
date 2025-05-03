@@ -90,7 +90,7 @@ export interface SocialViewProps {
 }
 
 export const SocialView: React.FC<SocialViewProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getParam } = useRouting();
   const profileId = "32";
   const cols = useMediaQuery({ minWidth: 768 }) ? 3 : 1;  

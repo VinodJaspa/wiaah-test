@@ -27,7 +27,7 @@ export interface ChatRoomContentProps {
 export const ChatRoomContent: React.FC<ChatRoomContentProps> = ({
   messages,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const { user } = useUserData();
 

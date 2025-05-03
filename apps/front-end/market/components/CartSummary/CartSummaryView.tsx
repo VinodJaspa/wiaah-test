@@ -16,7 +16,7 @@ import CartSummaryFilled from "./CartSummaryFilled";
 import EmptyCartSummary from "./EmptyCartSummary";
 
 export const CartSummaryView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { data: res, isLoading, isError } = useGetMyCartSummaryDataQuery();

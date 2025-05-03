@@ -17,7 +17,7 @@ export const AddNewDigitalProductSection: React.FC<
   AddNewDigitalProductSectionProps
 > = ({ onChange }) => {
   const { controls, uploadImage, uploadVideo } = useMediaUploadControls();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-4 py-8">

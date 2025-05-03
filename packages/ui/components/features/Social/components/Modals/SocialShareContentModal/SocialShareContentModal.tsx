@@ -52,7 +52,7 @@ export const useShareModal = (subscribe: boolean = false) => {
 
 export const SocialShareCotentModal: React.FC = () => {
   const { value, cancelShareLink } = useSocialControls("shareLink");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const sharablePlatforms: {
     icon: React.ReactNode;

@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const AccountSettings: NextPage<AccountSettingsPageProps> = ({ }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <>

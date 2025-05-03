@@ -55,7 +55,7 @@ const reportOptions = [
 
 export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
   const { commentId, closeModal } = useCommentReportModal();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [previousSelections, setPreviousSelections] = useState<string[]>([]);
   const [currentLayer, setCurrentLayer] = useState(1);
@@ -74,7 +74,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
   const handleOptionClick = (option: any) => {
     if (option.nestedOptions) {
-      setPreviousSelections((prev) => [
+      setPreviousSelections((prev:any) => [
         ...prev,
         t(option.titleKey, option.fallbackTitle),
       ]);
@@ -82,7 +82,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
       setSelectedOption(option);
       setCurrentLayer(2);
     } else {
-      setPreviousSelections((prev) => [
+      setPreviousSelections((prev:any) => [
         ...prev,
         t(option.titleKey, option.fallbackTitle),
       ]);
@@ -121,7 +121,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 
     if (selectedOption) {
       selectedReasons.push(
-        t(selectedOption.titleKey, selectedOption.fallbackTitle),
+        t(selectedOption.titleKey, selectedOption.fallbackTitle) as string,
       );
     }
 
@@ -190,7 +190,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
               >
                 <div>
                   <p className="font-medium">
-                    {t(subOption.titleKey, subOption.fallbackTitle)}
+                    {t(subOption.titleKey, subOption.fallbackTitle)as string}
                   </p>
                 </div>
                 <ChevronRight className="text-lg text-gray-500" />

@@ -28,7 +28,7 @@ export const SpecialSchedule: React.FC<SpecialScheduleProps> = ({}) => {
   const { year, NextYear, PreviousYear } = useYearController();
   const { modifiDays } = useSpecialDaysOpenTimeModal();
   const months = getAllMonthsOfYear(year);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   React.useEffect(() => {
     if (multiSelect) {
     } else {

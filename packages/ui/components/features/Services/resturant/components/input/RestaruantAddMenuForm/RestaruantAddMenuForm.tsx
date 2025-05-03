@@ -12,7 +12,7 @@ export const RestaurantAddMenuForm: React.FC<RestaurantAddMenuFormProps> = ({
   onSubmit,
 }) => {
   const [add, setAdd] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return add ? (
     <Formik
       validationSchema={object({ title: string().required() })}

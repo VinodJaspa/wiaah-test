@@ -76,7 +76,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   });
   function handleFollowHashtag() { }
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const tabs: TabType[] = [
     {
@@ -205,7 +205,7 @@ export const HashtagPostsView: React.FC<{
   postType: PostType | "action";
   tag: string;
 }> = ({ postType, tag }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { form } = useForm<Parameters<typeof useGetTrendingHashtagPosts>[0]>({
     hashtag: tag,
@@ -320,7 +320,7 @@ export const HashtagSearchProdcutCard: React.FC<{
   location,
   storeType,
 }) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
 
     return (
       <div className="flex flex-col gap-2 w-full">

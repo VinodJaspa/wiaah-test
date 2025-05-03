@@ -27,7 +27,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
   description = "Product Description here!",
 }) => {
   const { tab, ChangeTab } = useProductDescTabs();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const Accordion = ({ title, children, initiallyOpen = false }: { title: string, children: React.ReactNode, initiallyOpen?: boolean }) => {
     const [isOpen, setIsOpen] = React.useState(initiallyOpen);
   

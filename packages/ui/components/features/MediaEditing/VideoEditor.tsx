@@ -28,7 +28,7 @@ export const VideoEditor: React.FC<{
   onFinish: (data: Blob) => any;
   video: File;
 }> = ({ maxDuration, onFinish, video }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [proccessing, setProccessing] = React.useState<boolean>(false);
   const [update, setUpdate] = React.useState(false);
   const ref = React.useRef<HTMLVideoElement>(null);
@@ -89,7 +89,7 @@ export const VideoEditorControls: React.FC<{
   onSubmit: (start: number, end: number) => any;
   videoRef: React.RefObject<HTMLVideoElement>;
 }> = ({ videoRef: ref, onSubmit, maxDuration, maxDurationExccedError }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [trackWidth, setTrackWidth] = React.useState(100);
   const [playing, setPlaying] = React.useState(false);
   const handlersContainerRef = React.useRef<HTMLDivElement>(null);

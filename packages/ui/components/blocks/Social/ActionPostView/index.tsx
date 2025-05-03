@@ -7,7 +7,7 @@ import { ActionsCardListWrapper } from "../ActionsCardsListWrapper";
 import { NumberShortner } from "@UI/../utils/src";
 
 export const ActionPostView: React.FC<{ videoId: string }> = ({ videoId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const video = SocialActionsCardPlaceholder.filter(
     (video) => video.id === videoId

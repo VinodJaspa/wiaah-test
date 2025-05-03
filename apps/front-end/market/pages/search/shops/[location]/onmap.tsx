@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const ShopsOnmapSearch: NextPage<{ location: string }> = ({ location }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <Head>

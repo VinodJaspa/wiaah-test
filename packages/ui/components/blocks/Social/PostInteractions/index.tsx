@@ -40,7 +40,7 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
   postId,
   post,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { shareLink, showContentComments } = useSocialControls();
   const { getUrl } = useRouting();
 

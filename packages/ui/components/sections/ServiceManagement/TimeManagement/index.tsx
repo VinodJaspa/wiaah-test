@@ -33,7 +33,7 @@ export interface TimeManagementSectionProps {}
 export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
 > = ({}) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [tab, setTab] = React.useState(0);
 

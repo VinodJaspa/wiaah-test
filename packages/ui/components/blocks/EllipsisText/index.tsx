@@ -31,7 +31,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   isActionView,
 }) => {
   content = `@janedoe ${content || ""} #react #typescript #python`;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
   const [showMore, setShowMore] = React.useState<boolean>(true);
   const [modifiedContent, setModifiedContent] = React.useState<string>(

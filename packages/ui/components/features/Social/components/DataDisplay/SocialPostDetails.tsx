@@ -46,7 +46,7 @@ export const SocialPostDetails: React.FC<{
     product: { thumbnail: getRandomImage() },
   };
   const { shareLink } = useSocialControls();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(data?.createdAt || new Date()),
     to: new Date(Date.now()),

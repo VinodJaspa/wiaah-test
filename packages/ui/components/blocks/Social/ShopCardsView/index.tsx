@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useMediaQuery } from "react-responsive";
 
 export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const isMd = useMediaQuery({ minWidth: 768 });
   const isLg = useMediaQuery({ minWidth: 1024 });

@@ -65,7 +65,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isTablet, isMobile } = useResponsive();
   const { showServiceSearchResultsFilter } = useSocialControls();
   const { controls, pagination } = usePaginationControls();
@@ -175,7 +175,7 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
     serviceType as ServiceType,
   );
@@ -488,7 +488,7 @@ export const ServicesCardsSwitcherView: React.FC<
 > = ({ services, serviceType, showOn, searchQuery }) => {
   const { isTablet, isMobile } = useResponsive();
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full gap-4 ">
       {serviceType === ServiceType.Hotel ? (

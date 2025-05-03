@@ -18,7 +18,7 @@ export const SubscriberCard: React.FC<SubscriberCardProps> = ({
   onFollow,
   onProfileClick,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <ShadcnFlex justify="between" align="center" gap={4} className="p-6 bg-gray-200">
 

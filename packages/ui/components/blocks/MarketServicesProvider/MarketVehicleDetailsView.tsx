@@ -37,7 +37,7 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
   const isError = false;
   const isLoading = false;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const VehiclesRef = usePublishRef("vehicles");
 

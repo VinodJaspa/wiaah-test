@@ -37,7 +37,7 @@ interface MarketRestaurantServiceSearchCardAltProps {
 export const MarketRestaurantServiceSearchCardAlt: React.FC<
   MarketRestaurantServiceSearchCardAltProps
 > = ({ name, id, images, rating, reviews, location, price }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 const handdleChagne =()=>{
 
 }

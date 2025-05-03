@@ -18,7 +18,7 @@ const DISCOUNT_INCREMENTAL = 5;
 export const NewProductDiscountOptions: React.FC<
   NewProductDiscountOptionsProps
 > = ({ onChange, validationSchema }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4 pb-24">
       <h1 className="text-xl font-bold">

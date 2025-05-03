@@ -16,7 +16,7 @@ export const ServicePresentationCarosuel: React.FC<{
   const { isMobile, isTablet } = useResponsive();
   const { ScrollTo } = useScrollTo();
   const ref = usePublishRef("presentation");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div ref={ref} className="w-full relative">
       {Array.isArray(data) ? (

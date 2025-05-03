@@ -40,7 +40,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   onContactClick,
   onProfileClick,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { min } = useScreenWidth({ minWidth: 900 });
 
   function handleItemQtyChange(qty: number, id: string) {

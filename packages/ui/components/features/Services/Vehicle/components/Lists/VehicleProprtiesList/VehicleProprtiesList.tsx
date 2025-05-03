@@ -37,7 +37,7 @@ export const VehicleProprtiesSwticher: React.FC<{
   vehicleProp: keyof VehicleProperties;
   value: VehicleProperties[keyof VehicleProperties];
 }> = ({ vehicleProp, value }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   switch (vehicleProp) {
     case "airCondition":
       return (

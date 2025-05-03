@@ -9,7 +9,7 @@ export const SocialAuthorSimillarPosts: React.FC<{
   postId: string;
   data: GetSocialPostQuery["getSocialPostById"];
 }> = ({ postId, data }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   //WARNING: This grqphql is not ready yet so  I replaced it with placeholder
   const { data: _data } = useGetSocialPostQuery({ id: postId });

@@ -47,7 +47,7 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const HolidayRentalsGeneralDetailsForm: React.FC<
   HolidayRantalsDetailsProps
 > = ({ onChange }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { data: res } = useGetHotelAmenitesQuery();
 
   const amenitiesNames = React.useMemo(

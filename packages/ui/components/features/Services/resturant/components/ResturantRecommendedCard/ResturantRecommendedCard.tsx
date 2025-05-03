@@ -34,7 +34,7 @@ export const ResturantRecommendedCard: React.FC<
   const isGoodDeal = true;
 
   const { visit } = useRouting();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2 w-full">
       <AspectRatio className="w-full group" ratio={3 / 4}>

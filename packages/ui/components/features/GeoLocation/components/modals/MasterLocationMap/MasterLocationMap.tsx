@@ -66,7 +66,7 @@ export const MasterLocationMapModal: React.FC = () => {
   const { locations, CloseMap } = useMasterLocationMapModal({
     subToChanges: true,
   });
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [filters, setFilters] = React.useState<FormatedSearchableFilter>({
     serviceType: "hotel",
     location: "",

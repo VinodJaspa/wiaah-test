@@ -18,7 +18,7 @@ export interface SocialStoryViewerHeaderProps {
 export const SocialStoryViewerHeader: React.FC<
   SocialStoryViewerHeaderProps
 > = ({ user, newStory, onClose }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { open } = useStorySeenByPopup();
   return (
     <div className="flex text-xl gap-3 w-full flex-col px-2">

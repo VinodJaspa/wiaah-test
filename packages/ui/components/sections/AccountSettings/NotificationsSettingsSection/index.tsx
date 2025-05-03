@@ -24,7 +24,7 @@ export interface NotificationsSettingsSectionProps {
 export const NotificationsSettingsSection: React.FC<
   NotificationsSettingsSectionProps
 > = ({ accountId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   // use this graphql endpoint if the server is ready if not use Placeholder data

@@ -24,7 +24,7 @@ import { ServiceSearchFilter } from "../../../blocks/SideBars";
 
 export const HotelsSearchResultsView: React.FC = () => {
   const { addFilter, setFilters, filtersKeys } = useMutateSearchFilters();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const type: ServiceType = ServiceType.HolidayRentals;
   const { isTablet } = useResponsive();

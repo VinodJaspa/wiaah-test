@@ -13,7 +13,7 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
   onViewProfile,
   thumbnail,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { OpenStories, newStory } = useStory();
   return (
     <VStack className="rounded-lg text-white bg-primary px-12 py-6 gap-2 w-full md:w-fit">

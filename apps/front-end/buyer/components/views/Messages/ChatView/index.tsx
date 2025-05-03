@@ -16,7 +16,7 @@ import { useResponsive } from "ui";
 export const ChatView: React.FC = () => {
   const router = useRouter();
   const roomId = getParamFromAsPath(router.asPath, "roomId");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   function handleRouteChatRoom(roomId: string) {

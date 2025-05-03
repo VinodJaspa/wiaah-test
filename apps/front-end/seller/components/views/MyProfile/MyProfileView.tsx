@@ -38,7 +38,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
 
   const dims = useDimensions(boxRef);
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const client = useQueryClient();
 

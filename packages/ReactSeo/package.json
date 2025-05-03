@@ -29,7 +29,7 @@
     "utils": "workspace:*",
     "validation": "workspace:*",
     "react": "^18.2.0",
-    
+    "types":"workspace:*",
     "react-dom": "^18.2.0"
   }
 }

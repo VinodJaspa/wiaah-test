@@ -15,7 +15,7 @@ export const PlacesView: React.FC = () => {
   const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
   const isMobile = useMediaQuery({ maxWidth: 767 });
  
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
 
   const router = useRouter();

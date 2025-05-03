@@ -17,7 +17,7 @@ export interface VehicleSearchCardProps extends Vehicle {
 export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
   const { price, properties, presentations, showTotal = false, title } = props;
   const { visit } = useRouting();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const thumbnail = presentations?.find(({ type }) => type === "img")?.src;
   return (
     <div className="flex flex-col gap-4 w-full">

@@ -42,7 +42,7 @@ export const HealthCenterDetailsView: React.FC<
   // } = useGetHealthCenterDetailsQuery(id);
   const res = FAKE_HEALTH_CENTER_DATA;
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(

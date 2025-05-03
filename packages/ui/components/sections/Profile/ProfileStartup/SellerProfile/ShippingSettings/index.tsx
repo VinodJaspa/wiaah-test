@@ -30,7 +30,7 @@ export const NewShippingSettings = React.forwardRef<
   ShippingSettingsRefProps,
   ShippingSettingsProps
 >(({ onSuccess, id }, ref) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const isEdit = typeof id === "string";
 

@@ -35,7 +35,7 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
   seen,
 }) => {
   try {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { getSince } = useDateDiff({
       from: new Date(createdAt),
       to: new Date(Date.now()),

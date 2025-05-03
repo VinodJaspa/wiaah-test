@@ -7,7 +7,7 @@ import { ShadCnButton, ShadcnFlex, ShadcnText } from "@UI";
 
 export const EmptyCartSummary: React.FC = () => {
   const router = useRouter();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <ShadcnFlex
       className="flex flex-col justify-between items-end h-full"

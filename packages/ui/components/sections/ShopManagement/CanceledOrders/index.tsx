@@ -50,7 +50,7 @@ type CanceledOrderData = {
 export interface CanceledOrdersSectionProps {}
 
 export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { mutate: declineRequest, isLoading: declineIsLoading } =
     useRejectRefundRequest();
   const { mutate: acceptRequest, isLoading: acceptIsloading } =

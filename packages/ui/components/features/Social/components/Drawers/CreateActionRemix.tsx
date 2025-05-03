@@ -18,7 +18,7 @@ export const ChooseActionRemix: React.FC<{
   onCancel?: () => any;
 }> = ({ actionId, onCancel }) => {
   const isOpen = typeof actionId === "string" && actionId.length > 0;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { data } = useGetActionQuery(actionId!, { enabled: isOpen });
 
   const placements: ChooseRemixPlacement[] = [

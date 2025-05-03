@@ -15,7 +15,7 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
   onLinkClick,
   copyRightYear,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const [cookie, setCookie] = useCookies(["country", "currency"]);
   const { i18n } = useTranslation();

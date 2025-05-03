@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
 export const SocialContentProductsListingModal: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { hideSocialContentProductsListing, value } = useSocialControls(
     "showSocialContentProductsListing"
   );

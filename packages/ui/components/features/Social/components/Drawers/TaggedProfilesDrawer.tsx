@@ -19,7 +19,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const TaggedProfilesDrawer: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { hideContentTaggedProfiles, value } =
     useSocialControls("showTaggedProfiles");
 

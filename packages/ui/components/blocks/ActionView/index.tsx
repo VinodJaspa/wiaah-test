@@ -39,8 +39,9 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { useRouting } from "routing";
 import { mapArray, NumberShortner } from "utils";
 
-export const ActionsView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+export
+ const ActionsView: React.FC = () => {
+const { t } = useTranslation();
   const { shareLink, showContentComments } = useSocialControls();
   const { mutate } = useLikeContent();
   const { getUrl } = useRouting();

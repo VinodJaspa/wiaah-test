@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
 export const MarketMapSearchDrawer: React.FC<{}> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
   const { value, hideMarketMapSearch } = useSocialControls(

@@ -5,7 +5,7 @@ import { Input, Button } from "@UI";
 export interface PaymentPortalProps {}
 
 export const PaymentPortal: React.FC<PaymentPortalProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div>

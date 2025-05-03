@@ -19,7 +19,7 @@ import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
   const { isMobile } = useResponsive();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   
 
   const { getParam } = useRouting();

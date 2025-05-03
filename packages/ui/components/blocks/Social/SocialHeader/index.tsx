@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 
 export const SocialHeader: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <ShadcnFlex
       className="items-center py-2 px-16 shadow-md bg-white md:bg-black justify-center md:justify-between"

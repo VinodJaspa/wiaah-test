@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 
 export const SocialStoryDrawer: React.FC = () => {
   const { closeStory, value } = useSocialControls("userStory");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const userId = typeof value === "string" ? value : null;
   const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>(
     {
@@ -158,7 +158,7 @@ export const StoryViewer: React.FC<SocialViewerProps> = ({
   currentStory,
   totalStoryCount,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { reportContent } = useSocialControls();
   if (!story) return null;
   const { getSince } = useDateDiff({

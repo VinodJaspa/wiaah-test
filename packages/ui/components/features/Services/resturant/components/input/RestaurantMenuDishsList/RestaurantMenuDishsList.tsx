@@ -15,7 +15,7 @@ export interface RestaurantMenuDishsListProps {
 export const RestaurantMenuDishsList: React.FC<
   RestaurantMenuDishsListProps
 > = ({ onChange, value }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">

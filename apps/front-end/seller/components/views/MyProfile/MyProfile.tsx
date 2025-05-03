@@ -30,7 +30,7 @@ export interface MyProfileProps {
 }
 
 export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isOpen, handleClose, handleOpen } = useDisclouser();
 
   const {

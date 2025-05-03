@@ -34,7 +34,7 @@ const MAIL_SERVICES: { name: string; image: string }[] = [
 
 export const FindYourFriendsStep = React.forwardRef(
   ({}: { onSuccess: () => any }, ref) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { isMobile } = useResponsive();
     const [mailService, setMailService] = React.useState(0);
 

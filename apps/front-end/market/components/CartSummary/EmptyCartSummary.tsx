@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const EmptyCartSummary: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation(); // Destructure the translate function (t)
+const { t } = useTranslation(); // Destructure the translate function (t)
   const router = useRouter();
   return (
     <div className="flex flex-col items-end h-full justyf-between ">

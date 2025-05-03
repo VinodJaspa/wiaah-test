@@ -30,7 +30,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(shopId);
   const res = resMock;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const isError = false;
 

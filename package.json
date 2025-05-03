@@ -274,6 +274,25 @@
       "lodash": "4.17.21",
       "@hapi/joi": "npm:joi",
       "express": "^4.17.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@apollo/protobufjs",
+      "@nestjs/core",
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "@swc/core",
+      "bcrypt",
+      "core-js",
+      "core-js-pure",
+      "cypress",
+      "esbuild",
+      "mongodb-memory-server",
+      "nx",
+      "prisma",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }

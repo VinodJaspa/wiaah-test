@@ -22,7 +22,7 @@ export const PostView: React.FC = () => {
   });
   const { data: comments } = useGetContentCommentsQuery({ id: "" });
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="p-2 md:py-16 gap-8 flex flex-col">
       <div className="flex items-center flex-col gap-8 mb-24 md:flex-row">

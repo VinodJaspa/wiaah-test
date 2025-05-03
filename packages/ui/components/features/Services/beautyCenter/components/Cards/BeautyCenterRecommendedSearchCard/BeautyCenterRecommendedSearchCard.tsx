@@ -29,7 +29,7 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
 > = ({ treatment }) => {
   const { visit } = useRouting();
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   if (!treatment) return null;
 

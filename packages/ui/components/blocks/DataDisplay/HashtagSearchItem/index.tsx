@@ -13,7 +13,7 @@ export const HashTagSearchItem: React.FC<HashTagSearchProps> = ({
   hashtagViews,
   props,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex gap-2 items-cneter w-full justify-between" {...props}>
       <div className="flex items-center gap-4">

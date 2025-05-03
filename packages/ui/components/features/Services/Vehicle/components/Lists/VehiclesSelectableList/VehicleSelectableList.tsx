@@ -11,7 +11,7 @@ import { usePublishRef } from "state";
 export const VehiclesSelectableList: React.FC<{
   vehicles: Vehicle[];
 }> = ({ vehicles }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile, isTablet } = useResponsive();
   const VehiclesRef = usePublishRef((keys) => keys.vehicle);
   const [selectedVehicles, setSelectedVehicles] = React.useState<string[]>([]);

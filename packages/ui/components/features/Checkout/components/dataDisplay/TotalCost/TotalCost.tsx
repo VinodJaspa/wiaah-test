@@ -18,7 +18,7 @@ export const TotalCost: React.FC<TotalCostProps> = ({
   vat = 0,
   saved = 0,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const totalPrice = subTotal;
 

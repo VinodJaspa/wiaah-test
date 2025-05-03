@@ -46,7 +46,7 @@ export const AffiliationHistorySection: React.FC<
     pagination,
   });
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   React.useEffect(() => {
     changeTotalItems(AffiliationHistoryCards.length);
   }, []);

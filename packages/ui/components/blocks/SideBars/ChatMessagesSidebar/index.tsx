@@ -43,7 +43,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
   props: { className, ...rest },
   onCardClick,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { visit, back } = useRouting();
   const { chatWith, msgNewUser, viewUserStory, createAction } =
     useSocialControls();
@@ -253,7 +253,7 @@ export const ChatStory: React.FC<{
   onClick: () => any;
 }> = ({ name, newStory, photo, isLive, userId, onClick }) => {
   const { data } = useUserProfile();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div
       onClick={() => onClick && onClick()}

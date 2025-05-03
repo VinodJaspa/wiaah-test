@@ -18,7 +18,7 @@ const AddBedValidationSchema = object({
 });
 
 export const AddBedInput: React.FC<AddBedInputProps> = ({ onAdd }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <Formik<InferType<typeof AddBedValidationSchema>>
       onSubmit={(data, { resetForm }) => {

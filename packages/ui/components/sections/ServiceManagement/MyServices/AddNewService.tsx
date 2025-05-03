@@ -68,7 +68,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { CancelAddingNewService, ServiceIdFormState } =
     useContext(MyServicesCtx);
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [lang, setLang] = React.useState<WiaahLangId>(WiaahLangId.EN);
 
   const { mutate } = useCreateServiceMutation();
@@ -161,7 +161,7 @@ export const NewServiceStepper = React.forwardRef(
     ref
   ) => {
     const { isMobile } = useResponsive();
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const uploadImagesRef = useRef<HTMLInputElement>(null);
 
     const { data: shop } = useGetUserShopType({ userId: sellerId });

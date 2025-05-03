@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Spacer,  ImageCard, Carousel } from "@UI";
 
 export const HorizontalCollaboration: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="h-full w-full">
       <div className="flex w-full justify-center">

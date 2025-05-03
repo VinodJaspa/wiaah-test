@@ -119,7 +119,7 @@ const ActionVideoEditor: React.FC<{
 
 const AudioEditor = () => {
   const audioRef = React.useRef<HTMLAudioElement>(null);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [progress, setProgress] = useState<number>(0);
   const [playing, setPlaying] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);

@@ -89,7 +89,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 }) => {
   const router = useRouter();
   const myprofile = router.route === "/myprofile";
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
   const { visit } = useRouting();
 

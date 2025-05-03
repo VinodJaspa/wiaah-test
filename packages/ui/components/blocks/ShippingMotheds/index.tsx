@@ -13,7 +13,7 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
   motheds,
   onSelection,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [shippingMothedId, setShippingMothedId] = React.useState<string>();
   React.useEffect(() => {
     if (onSelection && shippingMothedId) {

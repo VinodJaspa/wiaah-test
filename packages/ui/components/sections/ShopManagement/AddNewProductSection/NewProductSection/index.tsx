@@ -104,7 +104,7 @@ const addProductLanguagesSection = [
 
 export const AddNewProductSection: React.FC<AddNewProductSectionProps> =
   React.memo(() => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { cancel } = useEditProductData();
     const { mutate } = useCreateNewProductMutation();
     const [lang, setLang] = React.useState("en");
@@ -188,7 +188,7 @@ const MemoizedTabTitle: React.FC<{
 export const NewProductInputsSection: React.FC<{
   onSubmit: (data: any) => any;
 }> = React.memo(({ onSubmit }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">

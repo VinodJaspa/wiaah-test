@@ -12,7 +12,7 @@ import {
 } from "ui";
 
 export const ServicePostView: React.FC<{ postId: string }> = ({ postId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   // WARNING: graphql query is not ready yet
   const {
     data: _data,

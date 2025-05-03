@@ -5,7 +5,7 @@ import { Slider, AspectRatio } from "ui";
 import { SocialProfileInfo } from "placeholder";
 import { ActionViewer, PostViewPopup } from "ui";
 export const SocialActionsView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="bg-white w-full h-[40rem] overflow-hidden flex-col flex items-center justyf-center">
       {/* actions View */}

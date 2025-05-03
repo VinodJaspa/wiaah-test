@@ -31,7 +31,7 @@ import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 export const HashtagPageView: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isLg = useMediaQuery({ minWidth: 1024 });
 

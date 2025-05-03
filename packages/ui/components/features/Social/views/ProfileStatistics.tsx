@@ -46,7 +46,7 @@ import { twMerge } from "tailwind-merge";
 export const ProfileStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [overviewDims, setOverviewDims] = React.useState<{
     h: number;
     w: number;

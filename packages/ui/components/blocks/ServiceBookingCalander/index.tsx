@@ -50,7 +50,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
   const [allDays, setAllDays] = React.useState<FormatedDays[]>(getDays());
   const [activeEvent, setActiveEvent] = React.useState<Event>();
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   React.useEffect(() => {
     getDividedWeeks();

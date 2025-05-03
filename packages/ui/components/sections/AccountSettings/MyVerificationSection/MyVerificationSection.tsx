@@ -25,7 +25,7 @@ export interface MyVerificationSectionProps {}
 export const MyVerificationSection: React.FC<
   MyVerificationSectionProps
 > = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { mutate: verify } = useVerifyVerificationCode();
   const { mutate: request } = useRequestAccountVerification();
 
@@ -104,7 +104,7 @@ export const AccountVerifciationForm = React.forwardRef(
         value
       );
 
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { controls: idFrontControls, uploadImage: idFrontUpload } =
       useMediaUploadControls();
     const { controls: idBackControls, uploadImage: idBackUpload } =

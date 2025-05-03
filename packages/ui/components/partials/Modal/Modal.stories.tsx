@@ -23,7 +23,7 @@ export default {
 
 export const Default = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout
@@ -74,7 +74,7 @@ return (
 
 export const WithLazy = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout
@@ -130,7 +130,7 @@ return (
 
 export const extended = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout

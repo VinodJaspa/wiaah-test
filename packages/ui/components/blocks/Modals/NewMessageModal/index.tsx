@@ -110,7 +110,7 @@ async function getSuggestedUsers({
 export const NewMessageModal: React.FC = () => {
   const { user } = useUserData();
   const { value: isOpen, cancelMsgNewUser } = useSocialControls("msgNewUser");
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [suggestedUserSelect, setSuggestedUserSelect] =
     React.useState<string>("");
   const {

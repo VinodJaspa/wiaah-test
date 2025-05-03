@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const Saved: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <>

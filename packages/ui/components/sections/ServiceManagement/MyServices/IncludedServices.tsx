@@ -12,7 +12,7 @@ export interface IncludedServicesProps {
 export const IncludedServices: React.FC<IncludedServicesProps> = ({
   onChange,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [services, setServices] = React.useState<string[]>([]);
   const [cost, setCost] = React.useState<IncludedServicesCost>("free");
 

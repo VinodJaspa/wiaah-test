@@ -34,7 +34,7 @@ export const BeautyCenterServiceDetailsView: React.FC<
   //   isLoading: _isLoading,
   // } = useGetBeautyCenterDetailsQuery(id);
   const res = FAKE_BEAUTY_CENTER_DATA;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(

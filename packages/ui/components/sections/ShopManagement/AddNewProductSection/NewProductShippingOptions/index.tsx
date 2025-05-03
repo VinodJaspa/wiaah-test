@@ -14,7 +14,7 @@ export const NewProductShippingOptions: React.FC<NewProductShippingOptions> = ({
   onValid,
   validationSchema,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Formik

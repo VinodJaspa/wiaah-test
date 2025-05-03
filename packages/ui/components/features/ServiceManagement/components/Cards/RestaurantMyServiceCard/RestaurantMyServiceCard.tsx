@@ -25,7 +25,7 @@ export interface RestaurantMyServiceCardProps
 export const RestaurantMyServiceCard: React.FC<
   RestaurantMyServiceCardProps
 > = ({ onEdit, onRemove, ...props }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const {
     averagePrice,
     discount,

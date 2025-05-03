@@ -51,7 +51,7 @@ export function PostView<TData extends PostData>({
 }: PostViewProps<TData>) {
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
     React.useState<boolean>(false);
   const [isUsernameShowing, setIsUsernameShowing] =

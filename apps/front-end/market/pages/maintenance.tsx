@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 const Maintenance: NextPage = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <section className=" w-screen h-screen bg-white flex justify-center items-center">
       <div className="w-[min(30rem,100%)]">

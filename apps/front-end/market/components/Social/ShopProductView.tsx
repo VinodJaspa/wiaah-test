@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 export interface ShopProductViewProps {}
 
 export const ShopProductView: React.FC<ShopProductViewProps> = ({}) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const product = useRecoilValue(SocialShopPostState);
   const otherProducts = useRecoilValue(SocialShopOtherPostsState);
   return (

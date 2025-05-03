@@ -13,7 +13,7 @@ export const SocialPostOptionsDropdown: React.FC<{
   const { copy } = useClipboard();
   const { getUrl } = useRouting();
   const { reportContent } = useSocialControls();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Menu>

@@ -18,7 +18,7 @@ import { AccountVerificationRequestScheme } from "validation";
 export interface AccountVerificationProps {}
 
 export const AccountVerification: React.FC<AccountVerificationProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { uploadImage } = useFileUploadModal();
 
   return (

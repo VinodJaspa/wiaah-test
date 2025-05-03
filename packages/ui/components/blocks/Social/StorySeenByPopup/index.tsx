@@ -40,7 +40,7 @@ export const useStorySeenByPopup = () => {
 
 export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = () => {
   const { close, listen } = useStorySeenByPopup();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [storyId, setStoryId] = React.useState<string>();
   const [search, setSearch] = React.useState<string>();
   const { controls, pagination } = usePaginationControls();

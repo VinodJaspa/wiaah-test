@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "config": "workspace:*",
+    "routing":"workspace:*",
     "tsconfig": "workspace:*",
     "types": "workspace:*",
     "@types/google.maps": "^3.49.2",

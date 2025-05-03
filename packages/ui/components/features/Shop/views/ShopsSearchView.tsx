@@ -52,7 +52,7 @@ const FAKE_SHOPS_DATA = [
 export const ShopsSearchView: React.FC<{
   slug: string;
 }> = ({ slug }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { isMobile } = useResponsive();
   // WARNING: this grqphql endpoint is not ready yet

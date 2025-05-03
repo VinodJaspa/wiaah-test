@@ -79,7 +79,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
 }) => {
   const { changeItemsPerPage, itemsPerPage, next, page, previous, totalItems } =
     controls;
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   function handleItemsPerPageChange(value: string) {
     changeItemsPerPage(parseInt(value));

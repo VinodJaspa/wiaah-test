@@ -251,7 +251,7 @@ const CamerafilterDisplay: React.FC<{
 export const StoryBottomControls: React.FC = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const tabs: { key: typeof settings.mediaType; label: string }[] = [
     {
@@ -363,7 +363,7 @@ const ActionIcon: React.FC<HtmlDivProps> = ({
 
 const CameraActionSettings: React.FC<{}> = () => {
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [active, setActive] = React.useState<number>();
   const [open, setOpen] = React.useState<boolean>(false);
 
@@ -682,7 +682,7 @@ const CameraCountDown = React.forwardRef(
 );
 
 // const VideoEffectList: React.FC = () => {
-// const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+// const { t } = useTranslation();
 //   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 //   const [full, setFull] = React.useState<boolean>(true);
 //   const [filter, setFilter] = React.useState<string>();
@@ -799,7 +799,7 @@ const CameraCountDown = React.forwardRef(
 // };
 
 const StoryMediaCapture: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
   const [supported, setSupported] = React.useState(false);
   const [streaming, setStreaming] = React.useState<boolean>(false);
@@ -931,7 +931,7 @@ const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
 export const StoryUpperControls: React.FC<{ onClose: () => any }> = ({
   onClose,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [settings, setSettings] = useRecoilState(StorySettingsAtom);
 
   const showOn = (types: (typeof settings.mediaType)[]) =>

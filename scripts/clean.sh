@@ -10,4 +10,6 @@ find . -type d -name ".next" -exec rm -rf {} +
 find . -type d -name ".nx" -exec rm -rf {}+
 
 echo "Cleanup completed."
+pnpm store prune
+pnpm cache clean --force
 exit 0

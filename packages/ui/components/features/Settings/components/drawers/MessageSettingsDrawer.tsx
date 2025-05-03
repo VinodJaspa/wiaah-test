@@ -36,7 +36,7 @@ export const MessageSettingsDrawer: React.FC = () => {
       },
     }
   );
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const isOpen = value === true;
 
   const options: {

@@ -24,7 +24,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ children }) => {
   const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart } =
     useShoppingCart();
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const DropdownStyles: React.CSSProperties = {};
   const { RemoveItem } = useCartSummary();

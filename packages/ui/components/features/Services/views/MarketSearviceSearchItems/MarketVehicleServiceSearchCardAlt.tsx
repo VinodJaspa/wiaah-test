@@ -40,7 +40,7 @@ export const MarketVehicleServiceSearchCardAlt: React.FC<
   windows = 0, // Default: no windows
 }) => {
     const router = useRouter();
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation(); // Localization hook
+  const { t } = useTranslation(); // Localization hook
 
     return (
       <div className="flex flex-col gap-2 p-1">

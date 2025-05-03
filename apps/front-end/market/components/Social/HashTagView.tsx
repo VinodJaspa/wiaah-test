@@ -45,7 +45,7 @@ export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
     tag,
   });
 
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   function handleFollowHashtag() { }
 

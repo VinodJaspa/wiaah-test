@@ -11,7 +11,7 @@ export interface AddShippingMothedProps {}
 
 export const AddNewShippingMothed: React.FC<AddShippingMothedProps> = ({}) => {
   const { cancelAddNew, editId } = useContext(ShippingSettingsContext);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const ref = useRef<ShippingSettingsRefProps>(null);
 

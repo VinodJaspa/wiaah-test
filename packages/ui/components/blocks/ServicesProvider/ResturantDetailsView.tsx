@@ -39,7 +39,7 @@ export const RestaurantDetailsView: React.FC<RestaurantDetailsViewProps> = ({
   //   isError: _isError,
   //   isLoading: _isLoading,
   // } = useGetRestaurantServiceDetailsDataQuery(id);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const res = FAKE_RESTAURANT_DETAILS_DATA;
 

@@ -20,7 +20,7 @@ const placeholderWeekdaysWorkingHours: WeekdaysWorkingHours = {
   su: placeholderServiceDayWorkingHours,
 };
 export const WeekdaysSchedule: React.FC = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="w-full">
       <p className="text-lg font-semibold text-primary-500 px-4 py-2 bg-primary-50">

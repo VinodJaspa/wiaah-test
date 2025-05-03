@@ -19,7 +19,7 @@ import { PrivacySettings } from "@features/API";
 export interface PrivacySectionProps {}
 
 export const PrivacySection: React.FC<PrivacySectionProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const { data: settings } = useGetMySocialPrivacySettings();
   const { switchInputProps } = useForm<Parameters<typeof updateSettings>[0]>({

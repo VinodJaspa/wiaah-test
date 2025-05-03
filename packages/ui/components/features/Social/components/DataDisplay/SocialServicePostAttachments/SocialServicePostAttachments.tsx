@@ -45,7 +45,7 @@ export const SocialServicePostAttachment: React.FC<
   id,
 }) => {
   const { emit } = useTypedReactPubsub((keys) => keys.serviceModal);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
       <Image

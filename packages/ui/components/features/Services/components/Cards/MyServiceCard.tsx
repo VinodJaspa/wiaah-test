@@ -75,7 +75,7 @@ export const MyServiceResponsiveCard: React.FC<
   menus,
   treatments,
 }) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
 
     const showOn = (types: ServiceType[]) => types.includes(serviceType);
     return (

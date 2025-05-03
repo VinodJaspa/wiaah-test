@@ -10,13 +10,19 @@
   },
   "devDependencies": {
     "config": "workspace:*",
-    "dto": "workspace:*",
-    "tsconfig": "workspace:*",
+    "tsconfig":"workspace:*",
     "@types/react": "^18.2.0",
     "typescript": "^5.8.3",
     "@types/react-dom": "^18.2.0"
   },
   "dependencies": {
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "api": "workspace:*",
+    "types": "workspace:*",
+    "utils": "workspace:*",
+    "ui": "workspace:*",
+    "uris": "workspace:*",
+    "dto":"workspace:*",
+    "nest-utils": "workspace:*"
   }
 }

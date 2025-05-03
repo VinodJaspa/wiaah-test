@@ -53,7 +53,7 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
 }) => {
   const [selectedTab, setSelectedTab] = useState<number>(1);
   const { data, isLoading, isError } = useGetMyNotificationsQuery();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="relative">

@@ -42,7 +42,7 @@ export interface ShopInformationStepProps {
 
 export const ShopInformationStep = React.forwardRef(
   ({ onSuccess }: ShopInformationStepProps, ref) => {
-  const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+  const { t } = useTranslation();
     const { emit } = useTypedReactPubsub(
       (events) => events.openFileUploadModal,
     );

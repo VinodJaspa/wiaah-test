@@ -40,7 +40,7 @@ export const DailyPriceInput: React.FC<DailyPriceInputProps> = ({
   },
   onChange,
 }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const formatedDays = value
     ? Object.entries(value).map((v, i) => ({
         name: weekDaysList[parseInt(v[0])] || null,

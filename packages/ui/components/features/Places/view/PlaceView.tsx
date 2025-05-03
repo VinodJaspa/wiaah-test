@@ -109,7 +109,7 @@ const FAKEDATA = [
 export const PlaceView: React.FC<{
   slug: string;
 }> = ({ slug }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { controls } = useCursorScrollPagination();
 

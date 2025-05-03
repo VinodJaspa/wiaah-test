@@ -41,7 +41,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   ...props
 }) => {
   const { openMyProfileNav } = useSocialControls();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick && onLinkClick(link);
   }

@@ -26,7 +26,7 @@ export const ServicesProviderDescriptionSection: React.FC<
   ServicesProviderDescriptionSectionProps
 > = ({ description, amenities, bedRooms, bathRooms, petAllowed }) => {
   const descriptionRef = usePublishRef((keys) => keys.description);
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const items = [
     bedRooms && {

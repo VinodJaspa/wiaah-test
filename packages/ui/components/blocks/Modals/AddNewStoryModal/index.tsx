@@ -32,7 +32,7 @@ const colors: string[] = [
 ];
 
 export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
   const [SelectedColor, setSelectedColor] = React.useState<string>("");
   const { isOpen, closeNewStoryModal } = useNewStoryModal();
   const { setUploadType, cancelUpload } = useFileUploadModal();

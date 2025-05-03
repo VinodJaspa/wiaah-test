@@ -4194,6 +4194,12 @@ importers:
       jwt-decode:
         specifier: ^3.1.2
         version: 3.1.2
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
+      nest-utils:
+        specifier: workspace:*
+        version: link:../../back-end/packages/utils
       next:
         specifier: 14.2.26
         version: 14.2.26(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.87.0)
@@ -4236,6 +4242,9 @@ importers:
       recoil:
         specifier: ^0.7.7
         version: 0.7.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      routing:
+        specifier: workspace:*
+        version: link:../../../packages/routing
       state:
         specifier: workspace:*
         version: link:../../../packages/state
@@ -4264,6 +4273,9 @@ importers:
       '@types/draft-js':
         specifier: ^0.11.18
         version: 0.11.18
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.20
@@ -4503,6 +4515,9 @@ importers:
       next-transpile-modules:
         specifier: ^10.0.1
         version: 10.0.1
+      routing:
+        specifier: workspace:*
+        version: link:../../../packages/routing
       tsconfig:
         specifier: workspace:*
         version: link:../../../packages/tsconfig
@@ -4755,6 +4770,9 @@ importers:
       state:
         specifier: workspace:*
         version: link:../state
+      types:
+        specifier: workspace:*
+        version: link:../types
       ui:
         specifier: workspace:*
         version: link:../ui
@@ -4869,6 +4887,9 @@ importers:
       config:
         specifier: workspace:*
         version: link:../config
+      next:
+        specifier: 15.3.1
+        version: 15.3.1(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.87.0)
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -4878,6 +4899,9 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      uris:
+        specifier: workspace:*
+        version: link:../uris
 
   packages/lib:
     dependencies:
@@ -4942,10 +4966,16 @@ importers:
 
   packages/placeholder:
     dependencies:
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
       utils:
         specifier: workspace:*
         version: link:../utils
     devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.20
@@ -4964,6 +4994,12 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+      ui:
+        specifier: workspace:*
+        version: link:../ui
+      uris:
+        specifier: workspace:*
+        version: link:../uris
 
   packages/routing:
     dependencies:
@@ -5028,9 +5064,6 @@ importers:
       state:
         specifier: workspace:*
         version: 'link:'
-      types:
-        specifier: '*'
-        version: 0.1.1
       ui:
         specifier: workspace:*
         version: link:../ui
@@ -5050,6 +5083,9 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
+      types:
+        specifier: workspace:*
+        version: link:../types
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -5122,6 +5158,9 @@ importers:
       country-flag-icons:
         specifier: ^1.5.7
         version: 1.5.19
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       dto:
         specifier: workspace:*
         version: link:../Dto
@@ -5134,6 +5173,15 @@ importers:
       lib:
         specifier: workspace:*
         version: link:../lib
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
+      nest-utils:
+        specifier: workspace:*
+        version: link:../../apps/back-end/packages/utils
+      next:
+        specifier: ^15
+        version: 15.3.1(@babel/core@7.27.1)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.87.0)
       placeholder:
         specifier: workspace:*
         version: link:../placeholder
@@ -5146,6 +5194,9 @@ importers:
       react-google-recaptcha:
         specifier: ^3.1.0
         version: 3.1.0(react@18.3.1)
+      react-i18next:
+        specifier: ^12.3.1
+        version: 12.3.1(i18next@24.2.3(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-icons:
         specifier: ^4.3.1
         version: 4.12.0(react@18.3.1)
@@ -5179,6 +5230,12 @@ importers:
       types:
         specifier: workspace:*
         version: link:../types
+      ui:
+        specifier: workspace:*
+        version: 'link:'
+      uris:
+        specifier: workspace:*
+        version: link:../uris
       utils:
         specifier: workspace:*
         version: link:../utils
@@ -5192,6 +5249,9 @@ importers:
       '@types/google.maps':
         specifier: ^3.49.2
         version: 3.58.1
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.20
@@ -5271,10 +5331,34 @@ importers:
       country-state-city:
         specifier: ^3.0.1
         version: 3.2.1
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
+      nest-utils:
+        specifier: workspace:*
+        version: link:../../apps/back-end/packages/utils
+      react-pubsub:
+        specifier: workspace:*
+        version: link:../ReactPubsub
+      routing:
+        specifier: workspace:*
+        version: link:../routing
       types:
         specifier: workspace:*
         version: link:../types
+      ui:
+        specifier: workspace:*
+        version: link:../ui
+      utils:
+        specifier: workspace:*
+        version: 'link:'
+      validation:
+        specifier: workspace:*
+        version: link:../validation
     devDependencies:
+      '@types/lodash':
+        specifier: ^4.17.16
+        version: 4.17.16
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.20
@@ -5293,6 +5377,27 @@ importers:
 
   packages/validation:
     dependencies:
+      api:
+        specifier: workspace:*
+        version: link:../api
+      dto:
+        specifier: workspace:*
+        version: link:../Dto
+      nest-utils:
+        specifier: workspace:*
+        version: link:../../apps/back-end/packages/utils
+      types:
+        specifier: workspace:*
+        version: link:../types
+      ui:
+        specifier: workspace:*
+        version: link:../ui
+      uris:
+        specifier: workspace:*
+        version: link:../uris
+      utils:
+        specifier: workspace:*
+        version: link:../utils
       yup:
         specifier: ^0.32.11
         version: 0.32.11
@@ -5306,9 +5411,6 @@ importers:
       config:
         specifier: workspace:*
         version: link:../config
-      dto:
-        specifier: workspace:*
-        version: link:../Dto
       tsconfig:
         specifier: workspace:*
         version: link:../tsconfig
@@ -17586,10 +17688,6 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  types@0.1.1:
-    resolution: {integrity: sha512-JuntZtJj4MKLE9x/XBs7IjsznYhzETwr34pw3XJTKvgYtAMdeMG+o8x8U85E5Lm6eCPa1DdOdGVsHMwq4ZnZAg==}
-    engines: {node: '>= 0.6.0'}
-
   typescript@5.7.3:
     resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
     engines: {node: '>=14.17'}
@@ -27149,7 +27247,7 @@ snapshots:
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.0.0-canary-7118f5dd7-20230705(eslint@8.57.1)
@@ -27207,7 +27305,7 @@ snapshots:
       tinyglobby: 0.2.13
       unrs-resolver: 1.7.2
     optionalDependencies:
-      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
+      eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -27248,7 +27346,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1):
+  eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.31.1(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.8
@@ -31750,6 +31848,15 @@ snapshots:
     optionalDependencies:
       react-dom: 18.3.1(react@18.3.1)
 
+  react-i18next@12.3.1(i18next@24.2.3(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.27.1
+      html-parse-stringify: 3.0.1
+      i18next: 24.2.3(typescript@5.8.3)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+
   react-icons@4.12.0(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -33652,8 +33759,6 @@ snapshots:
   typed-assert@1.0.9: {}
 
   typedarray@0.0.6: {}
-
-  types@0.1.1: {}
 
   typescript@5.7.3: {}
 

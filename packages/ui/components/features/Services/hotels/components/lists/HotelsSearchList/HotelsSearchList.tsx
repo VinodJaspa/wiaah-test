@@ -18,7 +18,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({ }) => {
 
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   const filters = {};
   const getLocationFilterQuery = "";

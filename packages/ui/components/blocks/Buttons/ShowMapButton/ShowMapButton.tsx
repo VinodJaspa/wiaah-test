@@ -7,7 +7,7 @@ export interface ShowMapButtonProps {
 }
 
 export const ShowMapButton: React.FC<ShowMapButtonProps> = ({ onClick }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="relative w-full">

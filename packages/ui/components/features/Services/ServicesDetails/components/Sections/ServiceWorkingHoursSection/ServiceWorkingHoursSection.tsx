@@ -17,7 +17,7 @@ export interface ServiceWorkingHoursSectionProps {
 export const ServiceWorkingHoursSection: React.FC<
   ServiceWorkingHoursSectionProps
 > = ({ workingHours }) => {
-const { t }: { t: (key: string, ...args: any[]) => string } = useTranslation();
+const { t } = useTranslation();
 
   // Parse working hours from "HH:mm-HH:mm" format
   const parsePeriod = (period: string) => {
