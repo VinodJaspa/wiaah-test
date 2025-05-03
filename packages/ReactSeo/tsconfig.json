@@ -8,8 +8,10 @@
     "downlevelIteration": true,
     "outDir": "./dist",
     "strict": true,
-    "module": "CommonJS",
-    "target": "ES5",
+    "module": "ESNext",
+    "declaration": true,
+    "baseUrl": "./",
+    "target": "ES6",
     "jsx": "react-jsx",
     "paths": {
       "@partials": ["../ui/components/partials"],

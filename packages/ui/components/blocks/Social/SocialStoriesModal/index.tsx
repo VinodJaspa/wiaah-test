@@ -11,7 +11,7 @@ import {
 } from "@features/API";
 import { useTypedReactPubsub } from "@libs";
 import { Modal, ModalContent, ModalOverlay } from "@partials";
-import { Maybe } from "graphql/jsutils/Maybe";
+export type Maybe<T> = T | null | undefined;
 import React from "react";
 import { SocialStoryViewer } from "../SocialStoryViewer";
 

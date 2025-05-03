@@ -9,20 +9,14 @@
     "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "types": "*"
-  },
-  "shadow": {
-    "devDependencies": [
-      "@types/react",
-      "@types/react-dom",
-      "typescript"
-    ],
-    "dependencies": [
-      "country-state-city"
-    ]
+    "types": "workspace:*",
+    "country-state-city": "^3.0.1"
   }
 }

@@ -1,7 +1,9 @@
+
+// @ts-nocheck
 import { render, RenderResult, fireEvent } from "@testing-library/react"; // Added fireEvent import
 import React from "react";
 import { SellerHeader } from ".";
-import "@testing-library/jest-dom"; // Ensure this import is present
+import "@testing-library/jest-dom"; 
 
 const selectors = {
   searchInput: "SearchInput",
@@ -89,6 +91,7 @@ describe("SellerHeader tests", () => {
 
   it("should open notifications popover on notifications button click", () => {
     fireEvent.click(notifiactionsBtn);
+    // @ts-ignore
     expect(notificationsPopover).toBeInTheDocument();
   });
 });

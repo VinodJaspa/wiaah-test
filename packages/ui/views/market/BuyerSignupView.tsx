@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useSignupMutation } from "@features/Auth";
-import { gql, useMutation } from "@apollo/client";
 import { RegisterAccountType } from "@features/API";
 
 export interface BuyerSignupInputType { }

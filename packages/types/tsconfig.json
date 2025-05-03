@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@entity": ["entity"],
-      "@this": ["src"]
+       "@this/*": ["*"]   
     }
   }
 }

@@ -6,20 +6,23 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "../../../node_modules"
+    "node_modules"
   ],
   "compilerOptions": {
     "strict": true,
+    "incremental": true,
     "typeRoots": [
       "node_modules/@types",
       "jest"
     ],
     "esModuleInterop": true,
-    "target": "ES2017",
+    "module": "ESNext",
+    "target": "ES6",
     "jsx": "preserve",
     "baseUrl": ".",
     "experimentalDecorators": true,
     "downlevelIteration": true,
+  
     "paths": {
       "@components": [
         "components"
@@ -59,7 +62,8 @@
       ],
       "@UI/*": [
         "../../../packages/ui/*"
-      ]
+      ],
+      "react-pubsub": ["../../../packages/ReactPubsub/dist"],
     }
   }
 }

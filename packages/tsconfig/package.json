@@ -10,5 +10,7 @@
   ],
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx --fix"
-  }
+  },
+  "dependencies": {},
+  "devDependencies": {}
 }

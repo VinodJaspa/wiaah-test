@@ -1,5 +1,7 @@
-import { storybookBlocksTitle, AuthSwitcher } from "@UI";
+
 import { Meta, StoryFn } from "@storybook/react";
+import React from "react";
+import { AuthSwitcher } from ".";
 
 export default {
   title: "UI / blocks / AuthSwitcher",

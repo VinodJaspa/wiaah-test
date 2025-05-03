@@ -9,20 +9,14 @@
     "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*",
-    "types": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "types": "workspace:*",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "utils": "*",
-    "state": "*"
-  },
-  "shadow": {
-    "dependencies": [
-      "recoil"
-    ],
-    "devDependencies": [
-      "typescript"
-    ]
+    "utils": "workspace:*",
+    "state": "workspace:*",
+    "recoil": "^0.7.7"
   }
 }

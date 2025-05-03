@@ -9,15 +9,26 @@
     "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*",
-    "types": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "types": "workspace:*",
+    "nest-utils": "workspace:*",
+    "typescript": "^5.8.3"
   },
-  "dependencies": {},
-  "shadow": {
-    "devDependencies": [
-      "typescript"
-    ],
-    "dependencies": []
-  }
+"dependencies": {
+  "lodash": "^4.17.21",
+  "dto": "workspace:*",
+  "react-pubsub": "workspace:*",
+  "react-seo": "workspace:*",
+  "api": "workspace:*",
+  "hooks": "workspace:*",
+  "lib": "workspace:*",
+  "placeholder": "workspace:*",
+  "routing": "workspace:*",
+  "state": "workspace:*",
+  "ui": "workspace:*",
+  "uris": "workspace:*",
+  "utils": "workspace:*",
+  "validation": "workspace:*"
+}
 }

@@ -5,11 +5,13 @@ module.exports = {
     "./packages/ui/**/*.{js,ts,jsx,tsx}",
     "./apps/front-end/market/pages/**/*.{js,ts,jsx,tsx}",
     "./apps/front-end/market/components/**/*.{js,ts,jsx,tsx}",
+    // Exclude node_modules explicitly by adding a negative pattern
+    "!**/node_modules/**", 
   ],
   theme: {
     extend: {
       gridTemplateColumns: {
-        '100': 'repeat(100, minmax(0, 1fr))',
+        100: "repeat(100, minmax(0, 1fr))",
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
@@ -55,21 +57,21 @@ module.exports = {
       fontSize: {
         icon: "1.375rem",
       },
-      },
     },
-    plugins: [
-      require("@tailwindcss/forms"),
-      function({ addUtilities }) {
-        addUtilities({
-          ".hide-scrollbar": {
-            "-ms-overflow-style": "none" /* Internet Explorer 10+ */,
-            "scrollbar-width": "none" /* Firefox */,
-            "&::-webkit-scrollbar": {
-              display: "none" /* Safari and Chrome */,
-            },
-            overflow: "hidden" /* This ensures the scrollbar is hidden */,
+  },
+  plugins: [
+    require("@tailwindcss/forms"),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".hide-scrollbar": {
+          "-ms-overflow-style": "none" /* Internet Explorer 10+ */,
+          "scrollbar-width": "none" /* Firefox */,
+          "&::-webkit-scrollbar": {
+            display: "none" /* Safari and Chrome */,
           },
-        });
-      },
-    ],
-  };
+          overflow: "hidden" /* This ensures the scrollbar is hidden */,
+        },
+      });
+    },
+  ],
+};

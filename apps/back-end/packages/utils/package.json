@@ -8,38 +8,35 @@
     "test": "jest",
     "build": "tsc"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "tsconfig": "*",
-    "types": "*",
-    "config": "*"
+  "dependencies": {
+    "@nestjs/cache-manager": "^3.0.1",
+    "@nestjs/common": "^11.0.16",
+    "@nestjs/core": "^11.0.17",
+    "@nestjs/graphql": "13.1.0",
+    "@nestjs/microservices": "^11.0.17",
+    "cache-manager": "^6.1.4",
+    "class-transformer": "^0.5.1",
+    "class-validator": "0.14.1",
+    "cookie": "^1.0.2",
+    "cookie-parser": "^1.4.6",
+    "fs": "^0.0.1-security",
+    "graphql": "^16.9.0",
+    "graphql-kafkajs-subscriptions": "^3.0.0",
+    "kafkajs": "^2.2.3"
   },
-  "shadow": {
-    "devDependencies": [
-      "@nestjs/testing",
-      "@types/cookie-parser",
-      "@types/jest",
-      "jest",
-      "ts-jest",
-      "ts-loader",
-      "ts-node",
-      "typescript"
-    ],
-    "dependencies": [
-      "@nestjs/core",
-      "@nestjs/common",
-      "@nestjs/graphql",
-      "@nestjs/microservices",
-      "@nestjs/cache-manager",
-      "fs",
-      "cache-manager",
-      "class-transformer",
-      "class-validator",
-      "cookie",
-      "cookie-parser",
-      "graphql",
-      "graphql-kafkajs-subscriptions",
-      "kafkajs"
-    ]
+  "devDependencies": {
+    "@nestjs/testing": "^11.0.16",
+    "@types/cookie-parser": "^1.4.3",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.9",
+    "config": "workspace:*",
+    "i": "^0.3.7",
+    "jest": "^29.7.0",
+    "npm": "^11.3.0",
+    "ts-jest": "^29.2.2",
+    "ts-node": "^10.0.0",
+    "tsconfig": "workspace:*",
+    "types": "workspace:*",
+    "typescript": "^5.8.3"
   }
 }

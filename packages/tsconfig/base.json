@@ -7,9 +7,10 @@
     "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -26,7 +27,6 @@
   "exclude": [
     "**/*.stories.tsx",
     "**/*.test.tsx",
-     "node_modules"
+    "node_modules"
   ]
- 
 }

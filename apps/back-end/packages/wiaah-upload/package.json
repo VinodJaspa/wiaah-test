@@ -9,11 +9,9 @@
   },
   "author": "",
   "license": "ISC",
-  "shadow": {
-    "dependencies": [
-      "@nestjs/axios",
-      "@nestjs/common",
-      "@nestjs/config"
-    ]
+  "dependencies": {
+    "@nestjs/axios": "4.0.0",
+    "@nestjs/common": "^11.0.16",
+    "@nestjs/config": "4.0.2"
   }
 }

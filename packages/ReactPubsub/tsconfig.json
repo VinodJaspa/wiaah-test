@@ -14,9 +14,12 @@
     ],
     "experimentalDecorators": true,
     "downlevelIteration": true,
+    "module": "esnext",
+    "target": "es2017",
     "outDir": "./dist",
     "strict": true,
-    "module": "CommonJS",
+    "baseUrl": "./",
+    "declaration": true,
     "paths": {
       "@partials": [
         "../ui/components/partials"
@@ -56,7 +59,10 @@
       ],
       "placeholder": [
         "../placeholder"
-      ]
+      ],
+      "react-pubsub": [
+        "dist"
+      ],
     }
   }
 }

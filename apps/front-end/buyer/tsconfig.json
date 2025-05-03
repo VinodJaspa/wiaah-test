@@ -58,7 +58,8 @@
       ],
       "@UI/*": [
         "../../../packages/ui/*"
-      ]
+      ],
+      "react-pubsub": ["../../../packages/ReactPubsub/dist"],
     }
   }
 }

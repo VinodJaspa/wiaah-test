@@ -6,13 +6,9 @@
   "files": [
     "eslint-preset.js"
   ],
-  "shadow": {
-    "dependencies": [
-      "eslint-config-next",
-      "eslint-config-prettier"
-    ],
-    "devDependencies": []
-  },
-  "scripts": {
+  "scripts": {},
+  "dependencies": {
+    "eslint-config-next": "^14.2.5",
+    "eslint-config-prettier": "^10.1.2"
   }
 }

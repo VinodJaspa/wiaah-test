@@ -109,7 +109,7 @@ const HomeViewDesignsDisplay: React.FC = () => {
         currentItemIdx={idx}
         draggingActive={true}
       >
-        {mapArray(designs, (design, i) => (
+        {mapArray(designs, (design: { name: string; src: string; text?: string }, i) => (
           <div
             key={i}
             className={`relative w-full h-full ${idx === i ? "block" : "hidden"
@@ -125,7 +125,7 @@ const HomeViewDesignsDisplay: React.FC = () => {
             {idx === i && (
               <div className="absolute flex flex-col gap-4 left-8 top-1/2 -translate-y-1/2">
                 <h1 className="text-4xl text-white font-semibold">
-                  {design.text}
+                  {design.text || "Default Text"}
                 </h1>
               </div>
             )}
