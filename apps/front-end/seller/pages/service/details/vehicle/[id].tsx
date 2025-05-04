@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
 import { useRouting } from "routing";
 import { ServerSideQueryClientProps } from "types";
+import React from "react";
 import {
   getRandomImage,
   GetVehicleQuery,

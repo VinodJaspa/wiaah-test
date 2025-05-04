@@ -1,6 +1,6 @@
 
 import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Container } from "ui";

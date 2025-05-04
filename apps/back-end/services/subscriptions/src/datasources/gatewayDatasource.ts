@@ -11,7 +11,7 @@ import { DocumentNode } from 'graphql';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
 import fetch from 'node-fetch';
-const merge = require('lodash/merge');
+import { GraphQLResolveInfo } from 'graphql';
 
 export function addGatewayDataSourceToSubscriptionContext<
   TDatasource extends GatewayDataSource,
@@ -45,7 +45,8 @@ export class GatewayDataSource<TContext = any> extends DataSource {
     return from([
       this.onErrorLink(),
       this.onRequestLink(),
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       createHttpLink({ fetch, uri, credentials: 'same-origin', headers }),
     ]);
   }
@@ -100,5 +101,27 @@ export class GatewayDataSource<TContext = any> extends DataSource {
         console.log(`[Network Error]: ${networkError}`);
       }
     });
+  }
+  buildNonPayloadSelections(payload: any, info: GraphQLResolveInfo): string {
+    const fieldNodes = info.fieldNodes[0];
+    const selectionSet = fieldNodes.selectionSet?.selections ?? [];
+    const payloadKey = Object.keys(payload)[0];
+
+    const nonPayloadSelections = selectionSet
+      .filter(
+        (selection: any) =>
+          selection.kind === 'Field' && selection.name?.value !== payloadKey,
+      )
+      .map((selection: any) => selection.name?.value)
+      .filter(Boolean)
+      .join('\n'); // GraphQL expects line breaks for fields
+
+    return nonPayloadSelections;
+  }
+  mergeFieldData(payloadData: any, fetchedData: any): any {
+    return {
+      ...payloadData,
+      ...fetchedData,
+    };
   }
 }

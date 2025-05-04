@@ -2,7 +2,7 @@ import { SellerLayout } from "@blocks";
 import SocialNewsfeedView from "@features/Social/views/SocialNewsfeedView";
 import { NextPage } from "next";
 import Head from "next/head";
-
+import React from "react";
 const NewsFeed: NextPage = () => {
   return (
     <>

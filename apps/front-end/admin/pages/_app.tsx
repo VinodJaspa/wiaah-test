@@ -46,28 +46,26 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-         
-            <CookiesProvider>
-              <ReactPubsubProvider
-                keys={ReactPubsubKeys}
-                client={new ReactPubsubClient()}
-              >
-                <ReactSeoProvider TagWrapper={NextHead}>
-                  <RecoilRoot>
-                    <DataInitializationWrapper accountType={AccountType.Admin}>
-                      {showlayout ? (
-                        <AdminLayout>
-                          <Component {...pageProps} />
-                        </AdminLayout>
-                      ) : (
+          <CookiesProvider>
+            <ReactPubsubProvider
+              keys={ReactPubsubKeys}
+              client={new ReactPubsubClient()}
+            >
+              <ReactSeoProvider TagWrapper={NextHead}>
+                <RecoilRoot>
+                  <DataInitializationWrapper accountType={AccountType.Admin}>
+                    {showlayout ? (
+                      <AdminLayout>
                         <Component {...pageProps} />
-                      )}
-                    </DataInitializationWrapper>
-                  </RecoilRoot>
-                </ReactSeoProvider>
-              </ReactPubsubProvider>
-            </CookiesProvider>
-       
+                      </AdminLayout>
+                    ) : (
+                      <Component {...pageProps} />
+                    )}
+                  </DataInitializationWrapper>
+                </RecoilRoot>
+              </ReactSeoProvider>
+            </ReactPubsubProvider>
+          </CookiesProvider>
         </RoutingProvider>
       </Hydrate>
     </QueryClientProvider>

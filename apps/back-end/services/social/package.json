@@ -23,6 +23,7 @@
   "dependencies": {
     "nest-dto": "workspace:*",
     "nest-utils": "workspace:*",
+    "@wiaah/upload":"workspace:*",
     "@apollo/subgraph": "^2.9.3",
     "@ffmpeg/ffmpeg": "^0.9.3",
     "@nestjs/apollo": "13.1.0",
@@ -53,7 +54,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "jest": "^29.7.0",

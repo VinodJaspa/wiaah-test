@@ -1,6 +1,8 @@
 import { NextPage } from "next";
 import { MetaTitle } from "react-seo";
 import { HotelDetailsView, SellerLayout } from "ui";
+import React from 'react';
+
 
 const ServiceDetails: NextPage = () => {
   return (

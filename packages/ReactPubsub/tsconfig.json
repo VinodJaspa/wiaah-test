@@ -17,6 +17,8 @@
     "module": "esnext",
     "target": "es2017",
     "outDir": "./dist",
+    "rootDir": "./src",
+    "declarationDir": "./dist",
     "strict": true,
     "baseUrl": "./",
     "declaration": true,

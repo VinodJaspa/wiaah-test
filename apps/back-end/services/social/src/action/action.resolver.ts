@@ -40,8 +40,6 @@ import { EffectService } from 'src/effect/effect.service';
 import { Audio } from 'src/audio/entities/audio.entity';
 import { ClientKafka } from '@nestjs/microservices';
 import {
-  GetBulkUserMostInteractionersMessage,
-  GetBulkUserMostInteractionersMessageReply,
   GetUserMostInteractionersMessage,
   GetUserMostInteractionersMessageReply,
 } from 'nest-dto';
@@ -328,6 +326,7 @@ export class ActionResolver {
 
   @Query(() => Action)
   async getMyRecommendedAction(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Action> {
     return {} as Action;
@@ -471,6 +470,7 @@ export class ActionResolver {
     );
 
     const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       results: { data, error, success },
     } = await KafkaMessageHandler<
       string,

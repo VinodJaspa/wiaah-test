@@ -34,7 +34,6 @@ import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css"; // Import default styles
 export const SellerProfileStartupView: React.FC = ({}) => {
 const { t } = useTranslation();
   const { isMobile } = useResponsive();

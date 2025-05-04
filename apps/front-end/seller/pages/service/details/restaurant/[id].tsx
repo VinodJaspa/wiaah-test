@@ -4,7 +4,7 @@ import { dehydrate, QueryClient } from "react-query";
 import { useRouting } from "routing";
 import { ServerSideQueryClientProps } from "types";
 import { RestaurantDetailsView, SellerLayout } from "ui";
-
+import React from"react";
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
 > = async ({ query }) => {

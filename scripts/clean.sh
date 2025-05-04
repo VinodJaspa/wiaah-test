@@ -8,8 +8,5 @@ find . -type d -name "node_modules" -print0 | xargs -0 rm -rf
 find . -type d -name "dist" -exec rm -rf {} +
 find . -type d -name ".next" -exec rm -rf {} +
 find . -type d -name ".nx" -exec rm -rf {}+
-
 echo "Cleanup completed."
-pnpm store prune
-pnpm cache clean --force
 exit 0

@@ -1,3 +1,4 @@
+
 const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
@@ -5,8 +6,6 @@ module.exports = {
     "./packages/ui/**/*.{js,ts,jsx,tsx}",
     "./apps/front-end/market/pages/**/*.{js,ts,jsx,tsx}",
     "./apps/front-end/market/components/**/*.{js,ts,jsx,tsx}",
-    // Exclude node_modules explicitly by adding a negative pattern
-    "!**/node_modules/**", 
   ],
   theme: {
     extend: {
