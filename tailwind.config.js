@@ -1,6 +1,8 @@
 
+// eslint-disable-next-line no-undef
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+// eslint-disable-next-line no-undef
 module.exports = {
   content: [
     "./packages/ui/**/*.{js,ts,jsx,tsx}",
@@ -59,6 +61,7 @@ module.exports = {
     },
   },
   plugins: [
+    // eslint-disable-next-line no-undef
     require("@tailwindcss/forms"),
     function ({ addUtilities }) {
       addUtilities({

@@ -2,7 +2,7 @@ import { useResponsive } from "hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { DiscoverView, SellerLayout } from "ui";
-
+import React from "react";
 interface DiscoverPageProps {}
 
 const Discover: NextPage<DiscoverPageProps> = () => {
