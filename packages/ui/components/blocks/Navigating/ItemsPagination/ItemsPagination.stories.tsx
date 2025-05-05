@@ -1,18 +1,14 @@
 import { ItemsPagination, usePaginationControls } from "./index";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookNavigationTitle } from "utils";
 import React from "react";
 
 export default {
-  title: storybookNavigationTitle + "ItemsPagination",
+  title: "UI / Blocks /Navigation /ItemsPagination",
   component: ItemsPagination,
-} as ComponentMeta<typeof ItemsPagination>;
+} as Meta<typeof ItemsPagination>;
 
-const template: ComponentStory<typeof ItemsPagination> = (args) => (
-  <ItemsPagination {...args} />
-);
-
-const controlledTemplated: ComponentStory<typeof ItemsPagination> = (args) => {
+const controlledTemplated: StoryFn<typeof ItemsPagination> = (args) => {
   const {
     changeTotalItems,
     controls,
@@ -38,7 +34,10 @@ const controlledTemplated: ComponentStory<typeof ItemsPagination> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};
 
-export const controlled = controlledTemplated.bind({});
+export const controlled = {
+  render: controlledTemplated,
+};

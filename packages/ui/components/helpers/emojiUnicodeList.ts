@@ -6,8 +6,8 @@ export function convertEmojiToHtml(text: string): string {
         return match; // For non-surrogate pairs like basic emoji
       } else {
         // For surrogate pairs
-        let codePoint = match.codePointAt(0)!;
-        let nextCodeUnit = match.codePointAt(1)!;
+        const codePoint = match.codePointAt(0)!;
+        const nextCodeUnit = match.codePointAt(1)!;
         return `&#x${(
           (codePoint - 0xd800) * 0x400 +
           (nextCodeUnit - 0xdc00) +

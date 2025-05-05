@@ -4,15 +4,27 @@ import {
   PostCommentCard,
   PostCommentCardProps,
 } from "@blocks/Social";
-import { useActionComments } from "@src/Hooks";
-import React from "react";
-import { useTranslation } from "react-i18next";
-
-import { getRandomImage, PostCardPlaceHolder } from "placeholder";
 import { AttachmentType, ContentHostType } from "@features/API";
-import { Divider } from "@partials";
+import { Button, Divider } from "@partials";
+import { useActionComments } from "@src/Hooks";
+import { getRandomImage, PostCardPlaceHolder } from "placeholder";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FaUser } from "react-icons/fa";
+import { HiOutlineLink } from "react-icons/hi";
+import { Input } from "ui";
+import { cn } from "utils";
 
-interface PostViewProps<TData> {
+interface PostData {
+  affiliation?: {
+    itemType?: string;
+  };
+  postInfo?: {
+    postType?: string;
+  };
+}
+
+interface PostViewProps<TData extends PostData> {
   renderChild: (props: TData) => React.ReactElement;
   idParam?: string;
   queryName: string;
@@ -20,9 +32,12 @@ interface PostViewProps<TData> {
   showLink?: boolean;
   data?: TData;
   postId: string;
+  fromAffiliation?: boolean;
+  isHome?: boolean;
+  isDiscover?: boolean;
 }
 
-export function PostView<TData extends {}>({
+export function PostView<TData extends PostData>({
   renderChild,
   idParam = "postId",
   queryName = "post",
@@ -30,10 +45,21 @@ export function PostView<TData extends {}>({
   showLink = false,
   data,
   postId,
+  fromAffiliation,
+  isHome,
+  isDiscover,
 }: PostViewProps<TData>) {
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
-  const { t } = useTranslation();
+const { t } = useTranslation();
+  const [shouldCommentBoxFocused, setShouldCommentBoxFocused] =
+    React.useState<boolean>(false);
+  const [isUsernameShowing, setIsUsernameShowing] =
+    React.useState<boolean>(false);
+  const [postOwnerUsername, setPostOwnerUsername] = React.useState<string>("");
+  const [affiliationLink, setAffiliationLink] = useState<string>("");
+
+  const user = undefined;
 
   React.useEffect(() => {
     OpenComments();
@@ -44,11 +70,40 @@ export function PostView<TData extends {}>({
   //   isLoading,
   //   isError,
   // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
+
   const post = data;
+
+  const handleGenerateLink = () => {
+    // if (!user) return;
+
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let affiliationId = "";
+    for (let i = 0; i < 8; i++) {
+      affiliationId += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    const generatedLink = `${process.env.NEXT_PUBLIC_BASE_URL}/affiliation/${postId}?affiliationId=${affiliationId}`;
+
+    setAffiliationLink(generatedLink);
+  };
 
   return (
     <div className="flex justify-center items-center relative w-full h-full ">
-      <div className="flex w-1/2 h-full bg-black">{renderChild(post!)}</div>
+      <div className="flex w-1/2 h-full bg-black relative">
+        {renderChild(post!)}
+        <button
+          onClick={() => setIsUsernameShowing(!isUsernameShowing)}
+          className="absolute left-5 bottom-5 w-7 h-7 bg-gray-700 rounded-full flex items-center justify-center"
+        >
+          <FaUser className="text-white" />
+        </button>
+        {isUsernameShowing && (
+          <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-2 py-1 font-medium">
+            Username
+          </p>
+        )}
+      </div>
       <div
         style={{
           opacity: open ? 1 : 0,
@@ -57,19 +112,75 @@ export function PostView<TData extends {}>({
         }}
         className={`transition-all transform bg-white flex-col p-2 pr-3 gap-2 flex h-full `}
       >
-        {/*Top section (Link)*/}
-        <BookingLinkBanner
-          showLink={showLink}
-          link="https://www.figma.com/design/zou6Q"
-        />
-        <div className="hide-scrollbar h-full overflow-y-scroll">
+        <div
+          className={cn(
+            "pl-3 flex items-center gap-5",
+            isDiscover ? "justify-end" : "justify-between",
+          )}
+        >
+          {fromAffiliation && (
+            <div className="w-full flex border-2 border-primary rounded-xl align-center h-12">
+              <div
+                onClick={handleGenerateLink}
+                className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500"
+              >
+                <HiOutlineLink />
+              </div>
+
+              <Input
+                onClick={
+                  !user
+                    ? () => {
+                        console.log("Input Clicked");
+                      }
+                    : undefined
+                }
+                value={affiliationLink}
+                onChange={() => {}}
+              />
+            </div>
+          )}
+          {!isHome &&
+            !isDiscover &&
+            post?.affiliation?.itemType === "service" && (
+              <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+                Book Now
+              </Button>
+            )}
+          {!isHome &&
+            !isDiscover &&
+            post?.affiliation?.itemType === "product" && (
+              <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+                Add to Cart
+              </Button>
+            )}
+          {isDiscover && post?.postInfo?.postType === "service" && (
+            <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+              Book Now
+            </Button>
+          )}
+          {isDiscover && post?.postInfo?.postType === "product" && (
+            <Button className="text-primary flex-shrink-0 whitespace-nowrap font-medium">
+              Add to Cart
+            </Button>
+          )}
+        </div>
+        <div className="hide-scrollbar h-full overflow-y-scroll overflow-x-hidden">
           {PostCardPlaceHolder.postInfo.comments && (
             <>
               {FAKE_COMMENTS.length > 0 ? (
                 FAKE_COMMENTS.map(
                   (comment: PostCommentCardProps["comment"], i: any) => (
                     <>
-                      <PostCommentCard main={true} key={i} comment={comment} />
+                      <PostCommentCard
+                        main={true}
+                        key={i}
+                        comment={comment}
+                        index={i}
+                        shouldCommentBoxFocused={shouldCommentBoxFocused}
+                        setShouldCommentBoxFocused={setShouldCommentBoxFocused}
+                        setPostOwnerUsername={setPostOwnerUsername}
+                      />
 
                       <Divider className="my-4" />
                     </>
@@ -86,11 +197,14 @@ export function PostView<TData extends {}>({
           )}
         </div>
         <CommentInput
+          shouldCommentBoxFocused={shouldCommentBoxFocused}
+          setShouldCommentBoxFocused={setShouldCommentBoxFocused}
           onCommentSubmit={(v) => {
             // mutate({
             //   authorProfileId:
             // })
           }}
+          postOwnerUsername={postOwnerUsername}
         />
       </div>
     </div>

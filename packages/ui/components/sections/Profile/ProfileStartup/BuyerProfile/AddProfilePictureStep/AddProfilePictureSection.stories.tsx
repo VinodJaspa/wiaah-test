@@ -1,8 +1,8 @@
 import { storybookSectionsTitle, AddProfilePictureStep } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AddProfilePictureStep",
-} as ComponentMeta<typeof AddProfilePictureStep>;
+  title: "UI / sections / AddProfilePictureStep",
+} as Meta<typeof AddProfilePictureStep>;
 
 export const Default = () => <AddProfilePictureStep />;

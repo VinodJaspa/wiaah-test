@@ -17,7 +17,7 @@ describe('Treatment Category tests', () => {
   let service: TreatmentCategoryService;
   let prisma: PrismaService;
 
-  let createInput: CreateBeautyCenterTreatmentCategoryInput = {
+  const createInput: CreateBeautyCenterTreatmentCategoryInput = {
     title: [
       {
         langId: 'en',
@@ -129,9 +129,8 @@ describe('Treatment Category tests', () => {
 
     expect(ids.length).toBe(10);
 
-    const services = await resolver.getBeautyCenterTreatmentCategories(
-      undefined,
-    );
+    const services =
+      await resolver.getBeautyCenterTreatmentCategories(undefined);
 
     expect(services.every((v) => ids.includes(v.id))).toBe(true);
   });

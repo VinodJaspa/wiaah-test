@@ -1,5 +1,8 @@
 export class GetServiceMetadataQuery {
-  constructor(public serviceId: string, public userId: string) {}
+  constructor(
+    public serviceId: string,
+    public userId: string,
+  ) {}
 }
 
 export type GetServiceMetadataQueryRes = {

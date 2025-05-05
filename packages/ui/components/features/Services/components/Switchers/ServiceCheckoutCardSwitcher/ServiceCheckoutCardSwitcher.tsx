@@ -1,5 +1,6 @@
 import { ServiceCheckoutDataType } from "api";
-import { ProductCheckoutCard, ServiceCheckoutCard } from "@UI";
+import { ServiceCheckoutCard } from "@UI/components/features/Services/components/Cards/ServicesCheckoutCards/HotelCheckoutCard";
+import { ProductCheckoutCard } from "@UI/components/features/Checkout/components/cards/ProductCheckoutCard";
 import React from "react";
 import { ProductType, ServiceType } from "@features/API";
 
@@ -8,25 +9,34 @@ export interface ServiceCheckoutCardSwitcherProps {
   passingProps?: any;
 }
 
+const STATIC_CHECKIN = new Date("2025-10-10T20:00:00");
+const STATIC_CHECKOUT = new Date("2025-10-15T20:00:00");
+
 export const ServiceCheckoutCardSwitcher: React.FC<
   ServiceCheckoutCardSwitcherProps
 > = ({ service: item, passingProps }) => {
   if (!item) return null;
+
+  const commonDateProps = {
+    checkin: STATIC_CHECKIN,
+    checkout: STATIC_CHECKOUT,
+  };
+
   switch (item.type) {
     case ServiceType.Hotel:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
             { slug: "wifi", label: "Free WIFI" },
             { label: "Free Movies", slug: "movies" },
           ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -37,19 +47,24 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
           total={500}
           serviceType={ServiceType.Hotel}
+          id="123"
         />
       );
     case ServiceType.HolidayRentals:
       return (
         <ServiceCheckoutCard
+          id="123"
+          {...commonDateProps}
           shopName="Padma Resort Legian"
-          amenities={[]}
+          amenities={[
+            { slug: "wifi", label: "Free WIFI" },
+            { label: "Free Movies", slug: "movies" },
+          ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -57,7 +72,31 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             childrens: 1,
           }}
           name="Standard room"
-          thumbnail="https://www.hotel-montana.ch/bilder/hauptbilder/restaurant-bar/_1200xAUTO_crop_center-center_100_none/2210_Scala-4.jpg"
+          thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
+          total={500}
+          serviceType={ServiceType.HolidayRentals}
+        />
+      );
+    case ServiceType.Restaurant:
+      return (
+        <ServiceCheckoutCard
+          {...commonDateProps}
+          id="123"
+          shopName="Padma Resort Legian"
+          amenities={[]}
+          cancelationPolicy={{
+            id: "1",
+            cost: 50,
+            duration: 15,
+          }}
+          extras={[{ cost: 50, name: "Mini-bar-20" }]}
+          fullAddress="No.1 PO BOX 1107, legian, Indonesia"
+          guests={{
+            adults: 2,
+            childrens: 1,
+          }}
+          name="Standard room"
+          thumbnail="https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           total={500}
           serviceType={ServiceType.Restaurant}
           menus={[
@@ -144,14 +183,15 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.HealthCenter:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
+          id="123"
           shopName="Oasis Wellness Center"
           amenities={[]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -187,14 +227,15 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.BeautyCenter:
       return (
         <ServiceCheckoutCard
+          {...commonDateProps}
+          id="123"
           shopName="Velvet Beauty Parior"
           amenities={[]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{
@@ -230,6 +271,8 @@ export const ServiceCheckoutCardSwitcher: React.FC<
     case ServiceType.Vehicle:
       return (
         <ServiceCheckoutCard
+          id="123"
+          {...commonDateProps}
           shopName="Padma Resort Legian"
           amenities={[
             { slug: "a/c", label: "A/C" },
@@ -238,11 +281,10 @@ export const ServiceCheckoutCardSwitcher: React.FC<
             { label: "2", slug: "bags" },
           ]}
           cancelationPolicy={{
+            id: "1",
             cost: 50,
             duration: 15,
           }}
-          checkin={new Date()}
-          checkout={new Date(new Date().setDate(new Date().getDate() + 5))}
           extras={[{ cost: 50, name: "Mini-bar-20" }]}
           fullAddress="No.1 PO BOX 1107, legian, Indonesia"
           guests={{

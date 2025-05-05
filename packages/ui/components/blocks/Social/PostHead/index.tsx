@@ -1,19 +1,8 @@
-import {
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-  useTheme,
-} from "@chakra-ui/react";
+
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useStory } from "@src/Hooks";
-import { DisplayPostedSince, Avatar } from "ui";
+import { DisplayPostedSince, Avatar, ShadcnText, ShadcnFlex, ShadcnStack, Menubar, MenubarTrigger, MenubarContent, MenubarItem } from "ui";
 import { useTranslation } from "react-i18next";
 import { TranslationTextType } from "types";
 export interface PostHeadProps {
@@ -59,9 +48,8 @@ export const PostHead: React.FC<PostHeadProps> = ({
   onViewPostClick,
 }) => {
   // const { OpenStories } = useStory();
-  const { t } = useTranslation();
-  const { __cssVars } = useTheme();
-  const primaryColor = __cssVars["--chakra-colors-primary-main"];
+const { t } = useTranslation();
+const primaryColor = "bg-primary";
   function handleOpenStories() {
     if (functional) {
       // OpenStories();
@@ -70,21 +58,21 @@ export const PostHead: React.FC<PostHeadProps> = ({
   }
 
   return (
-    <Flex w="100%" align={"center"} justify={"space-between"}>
-      <HStack>
+    <ShadcnFlex className="w-full flex items-center justify-between">
+      <ShadcnStack className="flex items-center gap-3">
         <Avatar
           onClick={handleOpenStories}
           name={creatorName}
           photoSrc={creatorPhoto}
           newStory={newStory && functional}
         />
-        <Text data-testid="PostCreatorName" fontWeight={"bold"}>
+        <ShadcnText data-testid="PostCreatorName" className="font-bold">
           {creatorName}
-        </Text>
-      </HStack>
-      <Flex direction={"column"} align="end" pt="1.1rem">
-        <Menu placement="bottom-end">
-          <MenuButton>
+        </ShadcnText>
+      </ShadcnStack>
+      <ShadcnFlex className="flex flex-col items-end pt-4">
+      <Menubar className="absolute bottom-0 right-0">
+          <MenubarTrigger>
             <HiDotsHorizontal
               viewBox="0 5 20 10"
               fontSize="xx-large"
@@ -92,19 +80,20 @@ export const PostHead: React.FC<PostHeadProps> = ({
               cursor={"pointer"}
               style={{ height: "0.5em" }}
             />
-          </MenuButton>
-          <MenuList>
+          </MenubarTrigger>
+          <MenubarContent align="end">
             {postOptions.map((text, i) => (
-              <MenuItem>
-                <Text>
+           <MenubarItem key={i}>
+                <ShadcnText>
                   {t(typeof text === "string" ? text : text.fallbackText || "")}
-                </Text>
-              </MenuItem>
+                </ShadcnText>
+
+              </MenubarItem>
             ))}
-          </MenuList>
-        </Menu>
+           </MenubarContent>
+           </Menubar>
         <DisplayPostedSince since={createdAt} />
-      </Flex>
-    </Flex>
+      </ShadcnFlex>
+    </ShadcnFlex>
   );
 };

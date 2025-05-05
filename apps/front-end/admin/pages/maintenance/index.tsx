@@ -15,7 +15,8 @@ import {
 } from "ui";
 
 const Maintenance: React.FC = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const socialLinks: { link: string; label: string }[] = [
     { label: "facebook", link: "https://www.facebook.com" },
@@ -58,7 +59,7 @@ const Maintenance: React.FC = () => {
                   return { ...acc, [curr.label]: curr.link };
                 }, {}),
               }}
-              onSubmit={() => { }}
+              onSubmit={() => {}}
             >
               {({ values, handleChange }) => (
                 <Form>
@@ -75,7 +76,7 @@ const Maintenance: React.FC = () => {
                 </Form>
               )}
             </Formik>
-            <Formik initialValues={{}} onSubmit={() => { }}>
+            <Formik initialValues={{}} onSubmit={() => {}}>
               <div className="flex flex-col gap-4">
                 <div className="flex items-start gap-2">
                   <Switch />

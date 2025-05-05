@@ -56,7 +56,6 @@ export const SocialProfileShopPostsList: React.FC<{
           </div>
         </div>
         <FilterModal /> */}
-
       <GridListOrganiser
         rowSize={isMobile ? "5rem" : isTablet ? "10rem" : "14.5rem"}
         gap={0.1}
@@ -234,10 +233,10 @@ export const SocialProfileShopPostsList: React.FC<{
       >
         {items?.map((prod, i) => (
           // <AspectRatio className="bg-gray-200" ratio={1}>
-          <Image
+          (<Image
             className="w-full h-full object-cover"
             src={prod?.product?.thumbnail || ""}
-          />
+          />)
           // </AspectRatio>
         )) || null}
       </GridListOrganiser>

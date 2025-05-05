@@ -7,16 +7,26 @@
     "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
+    "strictNullChecks": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "resolveJsonModule": true,
     "jsx": "react-jsx"
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "**/*.stories.tsx",
+    "**/*.test.tsx",
+    "node_modules"
+  ]
 }

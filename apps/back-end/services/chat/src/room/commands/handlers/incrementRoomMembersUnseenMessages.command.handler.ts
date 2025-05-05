@@ -17,9 +17,8 @@ export class IncrementRoomMembersUnSeenMessagesCommandHandler
   async execute({
     roomId,
   }: IncrementRoomMembersUnSeenMessagesCommand): Promise<boolean> {
-    const [ids, room] = await this.roomRepo.incrementRoomMembersUnSeenMessages(
-      roomId,
-    );
+    const [ids, room] =
+      await this.roomRepo.incrementRoomMembersUnSeenMessages(roomId);
     ids.forEach((id) =>
       this.pubsub.publish(
         KAFKA_EVENTS.SUBSCRIPTIONS.roomDataUpdated(id),

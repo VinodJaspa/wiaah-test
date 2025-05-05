@@ -1,14 +1,14 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import {
   AspectRatio,
+  Avatar,
   HeartIcon,
   PriceDisplay,
-  VerifiedIcon,
-  UnDiscountedPriceDisplay,
-  Avatar,
   Rate,
+  UnDiscountedPriceDisplay,
+  VerifiedIcon,
 } from "@UI";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
 
 export interface ProductSearchCardProps {
@@ -37,7 +37,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
   const { cashback, discount, rating, reviewsCount, title, colors, thumbnail } =
     productInfo;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
       <AspectRatio ratio={1}>
@@ -64,20 +64,13 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
             <div className="flex gap-2 items-center">
               <Avatar
                 src={sellerInfo.thumbnail}
-                className={
-                  "-translate-y-1/4 rounded-full border-2 border-white"
-                }
+                className="rounded-full inset-0 border-2 border-white w-8 h-8"
               />
-              <div>
+              <div className="flex items-center gap-1">
                 <p className="font-bold text-xs">{sellerInfo.name}</p>
-                <div className="flex items-center gap-1">
-                  <p className="font-normal text-[0.563rem]">
-                    {sellerInfo.profession}
-                  </p>
-                  {sellerInfo.verified ? (
-                    <VerifiedIcon className="text-[0.563rem]" />
-                  ) : null}
-                </div>
+                {sellerInfo.verified ? (
+                  <VerifiedIcon className="text-[0.563rem] inline-block" />
+                ) : null}
               </div>
             </div>
 
@@ -102,7 +95,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
             <div className="flex gap-1 items-center">
               <Rate rating={rating} />
               <p className="text-[0.5rem] text-lightBlack font-semibold">{`(${reviewsCount} ${t(
-                "Reviews"
+                "Reviews",
               )})`}</p>
             </div>
           </div>

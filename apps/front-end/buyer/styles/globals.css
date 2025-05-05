@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @import "~react-image-gallery/styles/css/image-gallery.css";
-@import "../../../../node_modules/antd/dist/antd.css";
 
 @layer components {
   .hstack {

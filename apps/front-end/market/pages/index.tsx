@@ -3,13 +3,12 @@ import type { GetServerSideProps, NextPage } from "next";
 import { Container, CookiesInfoBanner } from "ui";
 import { HomeView } from "ui/views";
 import { MasterLayout } from "@components";
-import nookies from "nookies";
+import nookies, { getCookie } from "cookies-next";
 import Head from "next/head";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get cookies from the request using nookies
-  const cookies = nookies.get(context);
-  const token = cookies.auth_token || null; // Assuming 'token' is the cookie name you're looking for
+  const token = getCookie('auth_token', context) || null; 
 
   return {
     props: {

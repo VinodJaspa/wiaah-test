@@ -1,31 +1,29 @@
+import {
+  CloseIcon,
+  LocationSearchInput,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  RenderMap,
+  SearchServiceCard,
+  servicesOnMapState,
+  StoreIcon,
+  useGetServicesOnMapLocationQuery,
+} from "@UI";
+import { ServicesSearchBadgeList } from "@UI/components/features/Services/components/DataDisplay/ServicesSearchBadgeList";
 import { FormatedSearchableFilter } from "api";
 import { Form, Formik } from "formik";
-import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
 import { useSetRecoilState } from "recoil";
 import { ServicesType } from "types";
-import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  RenderMap,
-  ModalCloseButton,
-  CloseIcon,
-  LocationSearchInput,
-  ServicesSearchBadgeList,
-  useGetServicesOnMapLocationQuery,
-  SearchServiceCard,
-  ResturantsDataState,
-  servicesOnMapState,
-  StoreIcon,
-} from "@UI";
 import { mapArray } from "utils";
 
 export type MasterLocationData = {
   id: string;
-  searchType: "prodcut" | "service" | "place";
+  searchType: "product" | "service" | "place";
   additionalFilters?: Record<string, any>;
 };
 
@@ -35,7 +33,7 @@ export const useMasterLocationMapModal = (props?: {
   const subToChanges = props?.subToChanges;
   const [locations, setLocation] = React.useState<MasterLocationData[]>();
   const { Listen, emit, removeListner } = useReactPubsub(
-    () => "MasterLocationMapSearch"
+    () => "MasterLocationMapSearch",
   );
 
   function SearchForLocation(data: MasterLocationData) {
@@ -68,20 +66,21 @@ export const MasterLocationMapModal: React.FC = () => {
   const { locations, CloseMap } = useMasterLocationMapModal({
     subToChanges: true,
   });
-  const { t } = useTranslation();
-  const [filters, setFilters] = React.useState<FormatedSearchableFilter>();
+const { t } = useTranslation();
+  const [filters, setFilters] = React.useState<FormatedSearchableFilter>({
+    serviceType: "hotel",
+    location: "",
+  });
   const { data: res } = useGetServicesOnMapLocationQuery(filters);
   const setLocations = useSetRecoilState(servicesOnMapState);
   setLocations(
-    res
-      ? res.data.map((ser) => ({
-        id: ser.serviceData.id,
-        price: ser.serviceData.price,
-        title: ser.serviceData.title,
-        lat: ser.serviceData.location.lat,
-        lng: ser.serviceData.location.lon,
-      }))
-      : []
+    res?.data?.map((ser) => ({
+      id: ser.serviceData.id,
+      price: ser.serviceData.price,
+      title: ser.serviceData.title,
+      lat: ser.serviceData.location.lat,
+      lon: ser.serviceData.location.lon,
+    })) || [],
   );
 
   return (
@@ -92,7 +91,7 @@ export const MasterLocationMapModal: React.FC = () => {
           <RenderMap />
           <Formik
             initialValues={{ serviceType: "hotel", location: "" }}
-            onSubmit={() => { }}
+            onSubmit={() => {}}
           >
             {({ values, setFieldValue }) => {
               setFilters(values);
@@ -103,8 +102,8 @@ export const MasterLocationMapModal: React.FC = () => {
                       <div className="grid grid-cols-2 gap-4 px-2 h-full overflow-y-scroll thinScroll">
                         {res
                           ? mapArray(res.data, (data, i) => (
-                            <SearchServiceCard key={i} {...data} />
-                          ))
+                              <SearchServiceCard key={i} {...data} />
+                            ))
                           : null}
                       </div>
                     </div>
@@ -125,7 +124,7 @@ export const MasterLocationMapModal: React.FC = () => {
                         />
                       </div>
                       <div className="absolute pointer-events-auto bg-white w-[min(70rem,95%)] top-4 left-1/2 -translate-x-1/2">
-                        <LocationSearchInput onLocationSelect={() => { }} />
+                        <LocationSearchInput onLocationSelect={() => {}} />
                       </div>
                     </div>
                   </div>

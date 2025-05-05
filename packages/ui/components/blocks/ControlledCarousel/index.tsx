@@ -1,8 +1,9 @@
 import React from "react";
-import { ChakraCarousel, ChakaraCarouselProps } from "@UI";
+import { Carousel } from "@UI";
+import { CarouselProps } from '../ChakaraCarousel/index';
 
-export interface ControlledCarouselProps
-  extends Omit<ChakaraCarouselProps, "activeItem" | "setActiveItem"> { }
+export interface ControlledCarouselProps extends CarouselProps {}
+
 
 export const ControlledCarousel: React.FC<ControlledCarouselProps> = ({
   children,
@@ -13,7 +14,7 @@ export const ControlledCarousel: React.FC<ControlledCarouselProps> = ({
     setActive(0);
   }, [children]);
   return (
-    <ChakraCarousel
+    <Carousel
       {...props}
       className="bg-black"
       trackStyle={{ h: "100%" }}

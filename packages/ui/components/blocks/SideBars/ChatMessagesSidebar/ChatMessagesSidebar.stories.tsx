@@ -1,16 +1,13 @@
 import { ChatMessagesSideBar } from "./index";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSidebarsTitle } from "utils";
 import { ChatMessage } from "../../DataDisplay";
 
 export default {
-  title: storybookSidebarsTitle + "ChatMessageSideBar",
+  title: "UI / Blocks / SideBars /ChatMessageSideBar",
   component: ChatMessagesSideBar,
-} as ComponentMeta<typeof ChatMessage>;
+} as Meta<typeof ChatMessage>;
 
-const template: ComponentStory<typeof ChatMessagesSideBar> = (args) => (
-  <ChatMessagesSideBar {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

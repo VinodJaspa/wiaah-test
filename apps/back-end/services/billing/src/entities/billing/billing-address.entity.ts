@@ -4,7 +4,7 @@ import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 @Directive('@key(fields: "id")')
 export class BillingAddress {
   @Field((type) => ID)
-  userId: String;
+  userId: string;
 
   @Field((type) => ID)
   id: string;

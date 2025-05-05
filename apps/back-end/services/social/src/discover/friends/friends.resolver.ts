@@ -32,7 +32,7 @@ export class FriendsResolver implements OnModuleInit {
     @Args('args') args: GetMyFriendSuggestionsInput,
     @GqlCurrentUser() account: AuthorizationDecodedUser,
   ): Promise<FriendSuggestion> {
-    let users: Account[] = [];
+    const users: Account[] = [];
 
     const {
       results: { data, success },
@@ -72,15 +72,18 @@ export class FriendsResolver implements OnModuleInit {
       );
 
       if (success) {
-        const users = bulkUsers.users.reduce((acc, { users, id }) => {
-          const userScore = data?.users?.find((u) => u.id === id)?.score || 0;
-          const formatedUsers = users.map(({ id, score }) => ({
-            id,
-            finaleScore: userScore + score,
-          }));
+        const users = bulkUsers.users.reduce(
+          (acc, { users, id }) => {
+            const userScore = data?.users?.find((u) => u.id === id)?.score || 0;
+            const formatedUsers = users.map(({ id, score }) => ({
+              id,
+              finaleScore: userScore + score,
+            }));
 
-          return [...acc, ...formatedUsers];
-        }, [] as { id: string; finaleScore: number }[]);
+            return [...acc, ...formatedUsers];
+          },
+          [] as { id: string; finaleScore: number }[],
+        );
 
         const sorted = users.sort(
           (first, second) => second.finaleScore - first.finaleScore,

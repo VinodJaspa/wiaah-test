@@ -11,7 +11,7 @@ import {
 export const RestaurantPriceSidebar: React.FC<{ vatPercent: number }> = ({
   vatPercent: vat,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { input } = useGetUserInput();
   const orders = input["orders"];
 

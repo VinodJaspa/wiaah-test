@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { WeekdaysSchedule } from "./WeekdaysSchedule";
 import { storybookServiceManagementSectionsTitle } from "utils";
 
 export default {
-  title: storybookServiceManagementSectionsTitle + "WeekDaysSchedule",
+  title: "UI / Features /Service Management /Sections /WeekDaysSchedule",
   component: WeekdaysSchedule,
-} as ComponentMeta<typeof WeekdaysSchedule>;
+} as Meta<typeof WeekdaysSchedule>;
 
-const template: ComponentStory<typeof WeekdaysSchedule> = (args) => (
-  <WeekdaysSchedule {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

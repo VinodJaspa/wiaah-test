@@ -14,7 +14,7 @@ export interface ServicePropertyDetailsDisplayProps
 export const ServicePropertyDetailsDisplay: React.FC<
   ServicePropertyDetailsDisplayProps
 > = ({ residentsCapacity, size }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex items-center gap-4 flex-wrap">
       {typeof residentsCapacity === "object" ? (

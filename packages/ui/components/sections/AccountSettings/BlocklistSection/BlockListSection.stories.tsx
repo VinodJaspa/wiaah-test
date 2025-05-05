@@ -1,9 +1,9 @@
 import { BlocklistSection, storybookSectionsTitle } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "BlockListSection",
+  title: "UI / sections / BlockListSection",
   component: BlocklistSection,
-} as ComponentMeta<typeof BlocklistSection>;
+} as Meta<typeof BlocklistSection>;
 
 export const Default = () => <BlocklistSection />;

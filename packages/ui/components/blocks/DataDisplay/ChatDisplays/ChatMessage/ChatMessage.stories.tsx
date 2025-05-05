@@ -4,13 +4,13 @@ import {
   storybookChatDisplay,
   ChatMessage,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 
 export default {
-  title: storybookChatDisplay + "ChatMessage",
+  title: "UI / blocks / Chat Display /ChatMessage",
   component: ChatMessage,
-} as ComponentMeta<typeof ChatMessage>;
+} as Meta<typeof ChatMessage>;
 
 export const TextMessage = () => (
   <ChatMessage messageData={ChatMessagesPH[0]} />

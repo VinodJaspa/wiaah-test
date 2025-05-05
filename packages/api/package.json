@@ -5,30 +5,34 @@
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "dto": "*",
-    "placeholder": "*",
-    "tsconfig": "*"
+    "config": "workspace:*",
+    "dto": "workspace:*",
+    "placeholder": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "utils": "*",
-    "validation": "*"
-  },
-  "shadow": {
-    "dependencies": [
-      "axios",
-      "graphql-request",
-      "graphql-ws",
-      "react-query",
-      "ws"
-    ],
-    "devDependencies": [
-      "babel-preset-env",
-      "babel-preset-es2015",
-      "typescript"
-    ]
+    "dto": "workspace:*",
+    "react-pubsub": "workspace:*",
+    "nest-utils": "workspace:*",
+    "react-seo": "workspace:*",
+    "api": "workspace:*",
+    "hooks": "workspace:*",
+    "lib": "workspace:*",
+    "placeholder": "workspace:*",
+    "routing": "workspace:*",
+    "state": "workspace:*",
+    "ui": "workspace:*",
+    "uris": "workspace:*",
+    "utils": "workspace:*",
+    "validation": "workspace:*",
+    "types": "workspace:*",
+    "graphql-request": "*",
+    "graphql-ws": "*",
+    "react-query": "*"
   }
 }

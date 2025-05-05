@@ -1,15 +1,12 @@
-import {
-  StorybookImplemntationLayout,
-  storybookSectionsTitle,
-} from "utils";
+import { StorybookImplemntationLayout, storybookSectionsTitle } from "utils";
 import React from "react";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { PasswordSection } from "@UI";
 
 export default {
-  title: storybookSectionsTitle + "PasswordSection",
+  title: "UI / sections / PasswordSection",
   component: PasswordSection,
-} as ComponentMeta<typeof PasswordSection>;
+} as Meta<typeof PasswordSection>;
 
 export const Default = () => {
   return <PasswordSection />;

@@ -1,3 +1,4 @@
+import { IconType } from "react-icons";
 import { ServiceCategoryFilterInput } from "./gql/generated";
 
 export type Maybe<T> = T | null;
@@ -13,13 +14,13 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T
-  > = { [_ in K]?: never };
+  K extends keyof T,
+> = { [_ in K]?: never };
 export type Incremental<T> =
   | T
   | {
-    [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
-  };
+      [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string | number; output: string };
@@ -500,9 +501,9 @@ export type AttachmentMarketingTagInput = {
 };
 
 export enum AttachmentType {
-  Img = "img",
+  Img = "image",
   Text = "text",
-  Vid = "vid",
+  Vid = "video",
 }
 
 export type Audio = {
@@ -2433,7 +2434,7 @@ export type HotelRoom = {
   hotel?: Maybe<Hotel>;
   hotelId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
-  includedAmenities?: Maybe<Array<Scalars["String"]["input"]>>;
+  includedAmenities?: Maybe<Array<Scalars["String"]["output"]>>;
   includedServices?: Maybe<Array<Scalars["String"]["output"]>>;
   measurements: ServicePropertyMeasurements;
   num_of_rooms: Scalars["Int"]["output"];
@@ -2446,6 +2447,7 @@ export type HotelRoom = {
   title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
   thumbnail: Scalars["String"]["output"];
+  fees?: boolean;
 };
 
 export type HotelRoomMetaInfoInput = {
@@ -3853,6 +3855,8 @@ export enum PostType {
   NewsfeedPost = "newsfeed_post",
   ServicePost = "service_post",
   ShopPost = "shop_post",
+  Video = "Video",
+  Image = "Image",
 }
 
 export enum PostVisibility {
@@ -5731,6 +5735,7 @@ export type Service = {
   brand?: Maybe<Scalars["String"]["output"]>;
   cancelable: Scalars["Boolean"]["output"];
   cancelationPolicy: ServiceCancelationType;
+  cancelationPolicies: Maybe<ServiceCancelationPolicy[]>;
   cleaningFee?: Maybe<Scalars["Float"]["output"]>;
   createdAt: Scalars["String"]["output"];
   dailyPrice?: Maybe<Scalars["Boolean"]["output"]>;
@@ -5802,10 +5807,12 @@ export type ServiceAmenity = {
   __typename?: "ServiceAmenity";
   label: Scalars["String"]["output"];
   value: Scalars["String"]["output"];
+  slug: Scalars["String"]["output"];
 };
 
 export type ServiceCancelationPolicy = {
   __typename?: "ServiceCancelationPolicy";
+  id: Scalars["String"]["output"];
   cost: Scalars["Int"]["output"];
   duration: Scalars["Int"]["output"];
 };

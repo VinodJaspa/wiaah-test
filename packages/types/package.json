@@ -5,16 +5,19 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.3"
   },
-  "shadow": {
-    "devDependencies": [
-      "typescript"
-    ],
-    "dependencies": []
+  "dependencies": {
+    "types":"workspace:*",
+    "react-icons": "^4.3.1"
+
+
   }
+
 }

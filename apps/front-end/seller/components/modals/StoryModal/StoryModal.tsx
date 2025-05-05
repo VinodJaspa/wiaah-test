@@ -1,5 +1,5 @@
 import React from "react";
-import { useStoryModal, SocialStoryModal, StorySeenByPopup } from "ui";
+import { SocialStoryModal, StorySeenByPopup, useStoryModal } from "ui";
 
 export const StoryModal = () => {
   const [userId, setUserId] = React.useState<string>();

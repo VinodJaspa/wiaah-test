@@ -14,7 +14,7 @@ export const SidebarContext = createContext<SidebarProps | null>(null);
 export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  let [visible, setVisible] = useState<boolean>(defaultState.visible);
+  const [visible, setVisible] = useState<boolean>(defaultState.visible);
   const toggleVisibility = () => {
     setVisible(!visible);
   };

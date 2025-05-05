@@ -60,7 +60,8 @@ const sellers: PendingSellerAccount[] = [...Array(15)].map((_, i) => ({
 }));
 
 const PendingProducts = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getCurrentPath, visit } = useRouting();
   const [rejectId, setRejectId] = React.useState<string>();
 

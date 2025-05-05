@@ -43,7 +43,8 @@ const coupons: Coupon[] = [...Array(5)].map((_, i) => ({
 }));
 
 const Coupons: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   return (
     <React.Fragment>

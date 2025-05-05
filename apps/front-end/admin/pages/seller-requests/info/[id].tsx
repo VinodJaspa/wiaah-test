@@ -41,7 +41,8 @@ interface PendingSellerAccount {
 }
 
 const SellerInfo = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam, back } = useRouting();
   const id = getParam("id");
 
@@ -58,7 +59,7 @@ const SellerInfo = () => {
   const productComp = !isService ? (
     <ProductDetailsTable
       products={products}
-      onDelete={(id: string) => { }}
+      onDelete={(id: string) => {}}
       filters={"title"}
     />
   ) : (

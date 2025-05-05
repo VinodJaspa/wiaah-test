@@ -1,33 +1,46 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
+
+  "exclude": [
+    "dist",
+    "build",
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "node_modules"
+  ],
   "compilerOptions": {
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
     "outDir": "./dist",
     "module": "CommonJS",
-    "target": "ES5",
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "jsx": "react-jsx",
     "strict": false,
     "baseUrl": ".",
     "types": ["jest"],
     "paths": {
-      "@partials": ["components/partials"],
-      "@blocks": ["components/blocks"],
-      "@blocks/*": ["components/blocks/*"],
-      "@sections/*": ["components/sections/*"],
+      "@partials": ["./components/partials"],
+      "@blocks": ["./components/blocks"],
+      "@blocks/*": ["./components/blocks/*"],
+      "@sections/*": ["./components/sections/*"],
       "@features/*": ["./components/features/*"],
-      "@sections": ["components/sections"],
-      "@features": ["components/features"],
-      "@libs": ["libs"],
-      "@const": ["constants"],
-      "@src/*": ["src/*"],
+      "@sections": ["./components/sections"],
+      "@features": ["./components/features"],
+      "@libs": ["./libs"],
+      "@const": ["./constants"],
+      "@src/*": ["./src/*"],
       "@UI": ["."],
       "@UI/*": ["./*"],
-      "placeholder": ["../placeholder"],
-      "utils": ["../utils/"]
+      "placeholder": ["../placeholder/*"],
+      "utils": ["../utils"]
     }
   }
 }

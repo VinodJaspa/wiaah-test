@@ -67,7 +67,8 @@ const countries: ICountry[] = [
 
 const EditBannedCountry = () => {
   const { getParam, back } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const id = getParam("id");
 
   return (
@@ -81,11 +82,11 @@ const EditBannedCountry = () => {
           headers={[]}
           edit
           onBack={() => back()}
-          onSave={() => { }}
+          onSave={() => {}}
           title={t("Edit Buyers Banned Country")}
         >
           <Formik
-            onSubmit={() => { }}
+            onSubmit={() => {}}
             initialValues={{ countryCode: "", cities: [] }}
           >
             {({ values, setFieldValue }) => (

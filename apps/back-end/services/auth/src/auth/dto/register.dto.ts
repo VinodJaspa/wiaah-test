@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 
 export function OlderThan(date: Date, validationOptions?: ValidationOptions) {
-  return function(object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'MaxWords',
       target: object.constructor,

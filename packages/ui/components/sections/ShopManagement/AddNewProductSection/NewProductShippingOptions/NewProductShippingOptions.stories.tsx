@@ -1,5 +1,5 @@
 import { storybookSectionsTitle, NewProductShippingOptions } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import * as Yup from "yup";
 
 const shippingValidationSchema = Yup.object().shape({
@@ -7,13 +7,13 @@ const shippingValidationSchema = Yup.object().shape({
 });
 
 export default {
-  title: storybookSectionsTitle + "NewProductShippingOption",
+  title: "UI / sections / NewProductShippingOption",
   component: NewProductShippingOptions,
-} as ComponentMeta<typeof NewProductShippingOptions>;
+} as Meta<typeof NewProductShippingOptions>;
 
 export const Default = () => (
   <NewProductShippingOptions
-    onValid={() => { }}
+    onValid={() => {}}
     validationSchema={shippingValidationSchema}
   />
 );

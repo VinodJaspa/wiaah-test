@@ -30,7 +30,7 @@ const testids = {
   currency: "item-currency",
 };
 
-let mockData = {
+const mockData = {
   isLoading: false,
   data: [
     {
@@ -57,7 +57,7 @@ let mockData = {
   ],
 } as Partial<ReturnType<typeof useGetMyTransactionHistoryQuery>>;
 
-let mockBalanceData = {
+const mockBalanceData = {
   isLoading: false,
   data: {
     allTimeEarnings: 156,
@@ -69,7 +69,7 @@ let mockBalanceData = {
   },
 } as ReturnType<typeof useGetMyBalanceQuery>;
 
-let mockUseUserData = {
+const mockUseUserData = {
   user: {
     accountType: "buyer",
     email: "test",
@@ -79,7 +79,7 @@ let mockUseUserData = {
   },
 } as ReturnType<typeof useUserData>;
 
-let mockGetWithdrawCurrenciesData = {
+const mockGetWithdrawCurrenciesData = {
   data: [
     {
       code: "usd",
@@ -104,7 +104,7 @@ let mockGetWithdrawCurrenciesData = {
   ],
 } as ReturnType<typeof useGetWithdrawCurrneicesQuery>;
 
-let mockGetMyFinancialAccountsData = {
+const mockGetMyFinancialAccountsData = {
   data: [
     {
       id: "tst",
@@ -118,11 +118,11 @@ let mockGetMyFinancialAccountsData = {
 describe("addressBookSection tests", () => {
   let wrapper: ShallowWrapper;
 
-  let mockGetQuery = useGetMyTransactionHistoryQuery as jest.Mock;
-  let mockGetBalance = useGetMyBalanceQuery as jest.Mock;
-  let mockUseUser = useUserData as jest.Mock;
-  let mockGetwithdrawCurrencies = useGetWithdrawCurrneicesQuery as jest.Mock;
-  let mockGetFinancialAccounts = useGetMyFinancialAccountsQuery as jest.Mock;
+  const mockGetQuery = useGetMyTransactionHistoryQuery as jest.Mock;
+  const mockGetBalance = useGetMyBalanceQuery as jest.Mock;
+  const mockUseUser = useUserData as jest.Mock;
+  const mockGetwithdrawCurrencies = useGetWithdrawCurrneicesQuery as jest.Mock;
+  const mockGetFinancialAccounts = useGetMyFinancialAccountsQuery as jest.Mock;
 
   beforeAll(() => {
     mockGetQuery.mockReturnValue(mockData);

@@ -3,7 +3,7 @@ import {
   StorybookImplemntationLayout,
   Counter,
 } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,13 +17,13 @@ import {
 } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "Modal",
+  title: "UI / partials / Modal",
   component: Modal,
-} as ComponentMeta<typeof Modal>;
+} as Meta<typeof Modal>;
 
 export const Default = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout
@@ -74,7 +74,7 @@ return (
 
 export const WithLazy = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout
@@ -130,7 +130,7 @@ return (
 
 export const extended = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <StorybookImplemntationLayout

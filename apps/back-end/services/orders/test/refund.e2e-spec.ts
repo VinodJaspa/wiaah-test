@@ -22,7 +22,7 @@ import { OrderRefundStatusEnum } from '@refund/const';
 
 describe('refund e2e tests', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
@@ -109,7 +109,7 @@ describe('refund e2e tests', () => {
     });
 
     it('should throw not found error if order not found', async () => {
-      let res = await reqGql(
+      const res = await reqGql(
         askForRefundMutation,
         { ...input, id: new ObjectId().toHexString() },
         buyer,
@@ -120,7 +120,7 @@ describe('refund e2e tests', () => {
     });
 
     it('should throw unauthorized error if the user is not the owner of the order', async () => {
-      let res = await reqGql(askForRefundMutation, input, {
+      const res = await reqGql(askForRefundMutation, input, {
         ...buyer,
         id: new ObjectId().toHexString(),
       });
@@ -130,7 +130,7 @@ describe('refund e2e tests', () => {
     });
 
     it('should create the request when valid user and order id', async () => {
-      let res = await reqGql(askForRefundMutation, input, {
+      const res = await reqGql(askForRefundMutation, input, {
         ...buyer,
       });
 
@@ -147,7 +147,7 @@ describe('refund e2e tests', () => {
     });
 
     describe('should reject/accept refund request', () => {
-      let acceptRefundMut = `
+      const acceptRefundMut = `
     mutation accept(
         $id:ID!
     ){
@@ -157,7 +157,7 @@ describe('refund e2e tests', () => {
     }
     `;
 
-      let rejectRefundMut = `
+      const rejectRefundMut = `
     mutation reject(
         $id:ID!
         $reason:String

@@ -81,26 +81,58 @@ export const imagesPlaceholder: string[] = [
   "https://picsum.photos/300/300?random=10",
 ];
 export const storiesPlaceholder = [
-  { image: "https://picsum.photos/300/200?random=1", seen: true },
-  { image: "https://picsum.photos/300/300?random=2", seen: false },
-  { image: "https://picsum.photos/300/400?random=3", seen: true },
-  { image: "https://picsum.photos/300/500?random=4", seen: true },
-  { image: "https://picsum.photos/300/200?random=5", seen: false },
-  { image: "https://picsum.photos/300/300?random=6", seen: true },
-  { image: "https://picsum.photos/300/400?random=7", seen: false },
-  { image: "https://picsum.photos/300/500?random=8", seen: true },
-  { image: "https://picsum.photos/300/200?random=9", seen: false },
-  { image: "https://picsum.photos/300/300?random=10", seen: false },
-  { image: "https://picsum.photos/300/200?random=1", seen: false },
-  { image: "https://picsum.photos/300/300?random=2", seen: true },
-  { image: "https://picsum.photos/300/400?random=3", seen: false },
-  { image: "https://picsum.photos/300/500?random=4", seen: false },
-  { image: "https://picsum.photos/300/200?random=5", seen: true },
-  { image: "https://picsum.photos/300/300?random=6", seen: false },
-  { image: "https://picsum.photos/300/400?random=7", seen: false },
-  { image: "https://picsum.photos/300/500?random=8", seen: true },
-  { image: "https://picsum.photos/300/200?random=9", seen: false },
-  { image: "https://picsum.photos/300/300?random=10", seen: false },
+  { image: "https://picsum.photos/300/200?random=1", seen: true, userId: "1" },
+  { image: "https://picsum.photos/300/300?random=2", seen: false, userId: "2" },
+  { image: "https://picsum.photos/300/400?random=3", seen: true, userId: "3" },
+  { image: "https://picsum.photos/300/500?random=4", seen: true, userId: "4" },
+  { image: "https://picsum.photos/300/200?random=5", seen: false, userId: "5" },
+  { image: "https://picsum.photos/300/300?random=6", seen: true, userId: "6" },
+  { image: "https://picsum.photos/300/400?random=7", seen: false, userId: "7" },
+  { image: "https://picsum.photos/300/500?random=8", seen: true, userId: "8" },
+  { image: "https://picsum.photos/300/200?random=9", seen: false, userId: "9" },
+  {
+    image: "https://picsum.photos/300/300?random=10",
+    seen: false,
+    userId: "10",
+  },
+  {
+    image: "https://picsum.photos/300/200?random=1",
+    seen: false,
+    userId: "11",
+  },
+  { image: "https://picsum.photos/300/300?random=2", seen: true, userId: "12" },
+  {
+    image: "https://picsum.photos/300/400?random=3",
+    seen: false,
+    userId: "13",
+  },
+  {
+    image: "https://picsum.photos/300/500?random=4",
+    seen: false,
+    userId: "14",
+  },
+  { image: "https://picsum.photos/300/200?random=5", seen: true, userId: "15" },
+  {
+    image: "https://picsum.photos/300/300?random=6",
+    seen: false,
+    userId: "16",
+  },
+  {
+    image: "https://picsum.photos/300/400?random=7",
+    seen: false,
+    userId: "17",
+  },
+  { image: "https://picsum.photos/300/500?random=8", seen: true, userId: "18" },
+  {
+    image: "https://picsum.photos/300/200?random=9",
+    seen: false,
+    userId: "19",
+  },
+  {
+    image: "https://picsum.photos/300/300?random=10",
+    seen: false,
+    userId: "20",
+  },
 ];
 export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   {
@@ -283,6 +315,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
   user: { ...PostCardPlaceHolder.profileInfo },
   likes: 5,
   noOfComments: 2,
+  shares: 10, // Added the missing 'shares' property
   type: "service",
   price: 800,
   oldPrice: 1000,
@@ -327,7 +360,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-  Math.floor(Math.random() * postProfilesPlaceholder.length)
+    Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -381,7 +414,7 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
         commision: 10, // Percentage
         createdAt: "2024-06-07T15:30:00Z",
         itemId: "item-001",
-        itemType: "product", // Or "service"
+        itemType: "service", // Or "service"
         product: {
           __typename: "Product",
           id: "product1",
@@ -470,12 +503,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/29517852/pexels-photo-29517852/free-photo-of-ethereal-outdoor-portrait-of-a-woman-in-black-dress.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/28656090/pexels-photo-28656090/free-photo-of-elegant-antique-vintage-clock-with-roman-numerals.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -527,7 +560,8 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           sizes: [ProductSize.S, ProductSize.M, ProductSize.L],
           status: ProductStatus.Active,
           stock: 100,
-          thumbnail: "https://example.com/product.jpg",
+          thumbnail:
+            "https://images.pexels.com/photos/30380487/pexels-photo-30380487/free-photo-of-frost-covered-tree-in-jonkoping-sweden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
           title: "Sample Product",
           todayProductClickId: "click1",
           totalDiscounted: 30,
@@ -554,7 +588,6 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
         },
       },
     },
-
     {
       id: "post-423",
       userId: "user-456",
@@ -658,12 +691,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/29885830/pexels-photo-29885830/free-photo-of-iconic-yellow-taxis-on-the-streets-of-kolkata.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30774367/pexels-photo-30774367/free-photo-of-madonna-del-sasso-with-swiss-alpine-backdrop.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -846,12 +879,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30739877/pexels-photo-30739877/free-photo-of-exciting-car-race-action-in-istanbul-turkiye.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30788646/pexels-photo-30788646/free-photo-of-dynamic-off-road-motorcycle-racing-action-shot.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1034,12 +1067,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30787894/pexels-photo-30787894/free-photo-of-stylish-woman-in-denim-dress-with-red-roses.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30783967/pexels-photo-30783967/free-photo-of-red-wooden-house-in-jonkoping-sweden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1222,12 +1255,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30782673/pexels-photo-30782673/free-photo-of-young-woman-in-soft-light-by-window-shade.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30781214/pexels-photo-30781214/free-photo-of-sleek-red-sports-car-parked-in-front-of-modern-home.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1409,12 +1442,12 @@ export const socialAffiliationCardPlaceholders: SocialAffiliationCardProps["post
           presentations: [
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image1.jpg",
+              src: "https://images.pexels.com/photos/30777996/pexels-photo-30777996/free-photo-of-woman-admiring-a-sport-motorcycle-outdoors.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
             {
               __typename: "ProductPresentation",
-              src: "https://example.com/image2.jpg",
+              src: "https://images.pexels.com/photos/30780899/pexels-photo-30780899/free-photo-of-woman-gazing-at-the-sky-with-moon-in-background.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
               type: PresentationType.Image,
             },
           ],
@@ -1746,6 +1779,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     user: { ...PostCardPlaceHolder.profileInfo },
     likes: 5,
     noOfComments: 2,
+    shares: 10, // Added the missing 'shares' property
     type: "service",
     price: 800,
     oldPrice: 1000,
@@ -2186,62 +2220,62 @@ export const PersonalizeActions: GetSuggestedActionsQuery["getMyRecommendedActio
         lon: 42.654321,
       },
     },
-    {
-      comments: 25,
-      reactionNum: 200,
-      shares: 60,
-      src: "/action.mp4",
-      id: "Teasdasd456",
-      musicId: "Kafir - Nile",
-      tags: [{ userId: "user4" }, { userId: "user5" }, { userId: "user6" }],
-      effect: {
-        name: "Gingham",
-      },
-      profile: {
-        id: "profile456",
-        ownerId: "owner456",
-        photo: getRandomImage(),
-        username: "fakeUserName2",
-        verified: false,
-      },
-      location: {
-        postalCode: 643254,
-        city: "Another City",
-        country: "Another Country",
-        address: "456 Another Ave",
-        state: "Another State",
-        lat: 54.654321,
-        lon: 42.123456,
-      },
-    },
-    {
-      comments: 5,
-      reactionNum: 75,
-      shares: 20,
-      src: "/action.mp4",
-      id: "Teasdasd789",
-      musicId: "Kafir - Nile",
-      tags: [{ userId: "user7" }, { userId: "user8" }, { userId: "user9" }],
-      effect: {
-        name: "Lark",
-      },
-      profile: {
-        id: "profile789",
-        ownerId: "owner789",
-        photo: getRandomImage(),
-        username: "fakeUserName3",
-        verified: true,
-      },
-      location: {
-        postalCode: 643255,
-        city: "Yet Another City",
-        country: "Yet Another Country",
-        address: "789 Yet Another St",
-        state: "Yet Another State",
-        lat: 54.789012,
-        lon: 42.987654,
-      },
-    },
+    // {
+    //   comments: 25,
+    //   reactionNum: 200,
+    //   shares: 60,
+    //   src: "/action.mp4",
+    //   id: "Teasdasd456",
+    //   musicId: "Kafir - Nile",
+    //   tags: [{ userId: "user4" }, { userId: "user5" }, { userId: "user6" }],
+    //   effect: {
+    //     name: "Gingham",
+    //   },
+    //   profile: {
+    //     id: "profile456",
+    //     ownerId: "owner456",
+    //     photo: getRandomImage(),
+    //     username: "fakeUserName2",
+    //     verified: false,
+    //   },
+    //   location: {
+    //     postalCode: 643254,
+    //     city: "Another City",
+    //     country: "Another Country",
+    //     address: "456 Another Ave",
+    //     state: "Another State",
+    //     lat: 54.654321,
+    //     lon: 42.123456,
+    //   },
+    // },
+    // {
+    //   comments: 5,
+    //   reactionNum: 75,
+    //   shares: 20,
+    //   src: "/action.mp4",
+    //   id: "Teasdasd789",
+    //   musicId: "Kafir - Nile",
+    //   tags: [{ userId: "user7" }, { userId: "user8" }, { userId: "user9" }],
+    //   effect: {
+    //     name: "Lark",
+    //   },
+    //   profile: {
+    //     id: "profile789",
+    //     ownerId: "owner789",
+    //     photo: getRandomImage(),
+    //     username: "fakeUserName3",
+    //     verified: true,
+    //   },
+    //   location: {
+    //     postalCode: 643255,
+    //     city: "Yet Another City",
+    //     country: "Yet Another Country",
+    //     address: "789 Yet Another St",
+    //     state: "Yet Another State",
+    //     lat: 54.789012,
+    //     lon: 42.987654,
+    //   },
+    // },
   ];
 
 export const socialStoriesPlaceholder: SocialStoryType[] = [

@@ -22,7 +22,8 @@ import { MailUserType } from "@features/API";
 import Head from "next/head";
 
 const Mailing: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof sendMail>[0]

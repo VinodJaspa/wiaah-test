@@ -1,32 +1,38 @@
 import React from "react";
 import { UserProfileDisplay, storybookStoriesTitle } from "@UI";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
-  title: storybookStoriesTitle + "StoryDisplay",
+  title: "UI / blocks / stories /StoryDisplay",
   component: UserProfileDisplay,
-} as ComponentMeta<typeof UserProfileDisplay>;
+} as Meta<typeof UserProfileDisplay>;
 
-const Templete: ComponentStory<typeof UserProfileDisplay> = (args) => (
+const Templete: StoryFn<typeof UserProfileDisplay> = (args) => (
   <div className="w-32">
     <UserProfileDisplay {...args} />
   </div>
 );
 
-export const unSeen = Templete.bind({});
-unSeen.args = {
-  storyUserData: {
-    name: "Olivia",
-    userPhotoSrc: "/shop.jpeg",
+export const unSeen = {
+  render: Templete,
+
+  args: {
+    storyUserData: {
+      name: "Olivia",
+      userPhotoSrc: "/shop.jpeg",
+    },
+    seen: false,
   },
-  seen: false,
 };
 
-export const seen = Templete.bind({});
-seen.args = {
-  storyUserData: {
-    name: "Olivia",
-    userPhotoSrc: "/shop.jpeg",
+export const seen = {
+  render: Templete,
+
+  args: {
+    storyUserData: {
+      name: "Olivia",
+      userPhotoSrc: "/shop.jpeg",
+    },
+    seen: true,
   },
-  seen: true,
 };

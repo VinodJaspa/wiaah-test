@@ -4,9 +4,9 @@ export const useTimeDuration = (timeInSec: number) => {
     hour = minute * 60,
     day = hour * 24;
 
-  let hours = Math.floor(timeInSec / hour);
-  let minutes = Math.floor(timeInSec / minute);
-  let seconds = Math.floor(timeInSec % minute);
+  const hours = Math.floor(timeInSec / hour);
+  const minutes = Math.floor(timeInSec / minute);
+  const seconds = Math.floor(timeInSec % minute);
 
   return {
     hours,

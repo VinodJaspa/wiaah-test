@@ -1,4 +1,5 @@
-import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
 import { WorkingDayColumn } from "./WorkingDayColumn";
 
 export interface WorkingDaysCalenderProps {
@@ -26,61 +27,39 @@ type WorkingHourRange = { from: string; to: string };
 type InputData = { date: string; workingHoursRanges: WorkingHourRange[] };
 
 function splitDatesByDay(data: InputData[]): SplitDay[] {
-  const daysMap: { [key: string]: number } = {
-    mo: 1,
-    tu: 2,
-    we: 3,
-    th: 4,
-    fr: 5,
-    sa: 6,
-    su: 0,
-  };
-
   const dates: Date[] = [];
 
-  for (const item of data) {
-    const weekday = daysMap[item.date.toLowerCase()]; // Map to day index
-    if (weekday === undefined) continue; // Skip invalid days
+  data.forEach((item) => {
+    const baseDate = new Date(item.date);
+    if (isNaN(baseDate.getTime())) return;
 
-    for (const range of item.workingHoursRanges) {
-      // Parse time ranges into `Date` objects
-      const today = new Date();
-      const start = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate(),
-        parseInt(range.from.split(":")[0]),
-        parseInt(range.from.split(":")[1]),
-      );
+    item.workingHoursRanges.forEach((range) => {
+      const fromDate = new Date(range.from);
+      const toDate = new Date(range.to);
+      if (!isNaN(fromDate.getTime())) dates.push(fromDate);
+      if (!isNaN(toDate.getTime())) dates.push(toDate);
+    });
+  });
 
-      // Adjust `start` date to align with the specified weekday
-      start.setDate(start.getDate() - start.getDay() + weekday);
-
-      dates.push(start);
-    }
-  }
-
-  // Use the original function logic to split the processed dates
   dates.sort((a, b) => a.getTime() - b.getTime());
 
   const splitDays: SplitDay[] = [];
   let currentDay: Date | null = null;
-  let currentDayIndex = -1;
 
-  for (const date of dates) {
-    const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  dates.forEach((date) => {
+    const dayStart = new Date(date);
+    dayStart.setHours(0, 0, 0, 0);
 
-    if (currentDay === null || day.getTime() !== currentDay.getTime()) {
-      currentDay = day;
-      currentDayIndex++;
-      splitDays[currentDayIndex] = {
-        day: new Date(day),
-        dates: [],
-      };
+    if (!currentDay || dayStart.getTime() !== currentDay.getTime()) {
+      currentDay = dayStart;
+      splitDays.push({
+        day: new Date(dayStart),
+        dates: [date],
+      });
+    } else {
+      splitDays[splitDays.length - 1].dates.push(date);
     }
-
-    splitDays[currentDayIndex].dates.push(new Date(date));
-  }
+  });
 
   return splitDays;
 }
@@ -89,24 +68,93 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
   takenDates,
 }) => {
-  const dates = splitDatesByDay(workingDates);
-  console.log("DATES ==> " + JSON.stringify(workingDates[0]));
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const workingSlots = splitDatesByDay(workingDates);
+  const takenSlots = splitDatesByDay(takenDates);
+
+  const maxSlideIndex = Math.floor((workingSlots.length - 1) / 4);
+  const canGoLeft = currentSlideIndex > 0;
+  const canGoRight = currentSlideIndex < maxSlideIndex;
+
+  const goLeft = () => {
+    setCurrentSlideIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  const goRight = () => {
+    setCurrentSlideIndex((prev) => Math.min(maxSlideIndex, prev + 1));
+  };
+
+  const takenMap = new Map<string, boolean>();
+  takenSlots.forEach((day) => {
+    day.dates.forEach((date) => {
+      const key = date.toISOString();
+      takenMap.set(key, true);
+    });
+  });
+
+  const isTimeTaken = (date: Date, takenDates: Date[]): boolean => {
+    return takenDates.some((taken) => {
+      const time = date.getTime();
+      const takenStart = taken.getTime();
+      const takenEnd = new Date(taken).setHours(23, 59, 59, 999);
+      return time >= takenStart && time <= takenEnd;
+    });
+  };
+
+  const currentVisibleDays = workingSlots.slice(
+    currentSlideIndex * 4,
+    (currentSlideIndex + 1) * 4,
+  );
+
+  const currentMonthYear = currentVisibleDays[0]?.day
+    ? new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        year: "numeric",
+      }).format(currentVisibleDays[0].day)
+    : "";
 
   return (
-    <div className="flex gap-4 px-2 w-full">
-      {Array.isArray(dates)
-        ? dates.map((date, i) => (
-          <WorkingDayColumn
-            dates={date.dates.map((date) => ({
-              date,
-              available: true,
-            }))}
-            onClick={() => { }}
-            dayDate={date.day}
-            key={i}
-          />
-        ))
-        : null}
+    <div className="relative w-full overflow-hidden">
+      <div className="text-center font-bold text-lg mb-4">
+        {currentMonthYear}
+      </div>
+      <button
+        onClick={goLeft}
+        disabled={!canGoLeft}
+        className="absolute -left-2 top-2 z-10 text-primary disabled:opacity-50"
+      >
+        <ChevronLeft />
+      </button>
+      <button
+        onClick={goRight}
+        disabled={!canGoRight}
+        className="absolute -right-2 top-2 z-10 text-primary disabled:opacity-50"
+      >
+        <ChevronRight />
+      </button>
+      <div
+        className="flex transition-transform duration-300"
+        style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
+      >
+        {workingSlots.map((date, i) => {
+          const dayTakenSlots = takenSlots.find(
+            (t) => t.day.toDateString() === date.day.toDateString(),
+          );
+
+          return (
+            <div key={i} className="w-1/4 flex-shrink-0 px-2">
+              <WorkingDayColumn
+                dates={date.dates.map((d) => ({
+                  date: d,
+                  available: !isTimeTaken(d, dayTakenSlots?.dates || []),
+                }))}
+                onClick={() => {}}
+                dayDate={date.day}
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

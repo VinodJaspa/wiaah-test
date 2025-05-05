@@ -144,7 +144,7 @@ export const ShoppingStats: React.FC<{
 }> = ({ accountId }) => {
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const ref = React.useRef<HTMLDivElement>(null);
   const [salesChartDims, setChartDims] = React.useState<{
     w: number;

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   ServiceCardPresentation,
   ServicesRequestKeys,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { setTestid } from "utils";
 
@@ -16,7 +16,7 @@ export interface PractitionerSearchResultsCardProps {
 export const PractitionerSearchResultsCard: React.FC<
   PractitionerSearchResultsCardProps
 > = ({ practitioner }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">
@@ -32,7 +32,7 @@ export const PractitionerSearchResultsCard: React.FC<
           <span>{practitioner.specialty}</span>
         </div>
         <div className="flex font-semibold flex-col gap-1">
-          <LocationAddressDisplay
+          <LocationAddress
             location={{
               state: practitioner.location.state!,
               country: practitioner.location.country,

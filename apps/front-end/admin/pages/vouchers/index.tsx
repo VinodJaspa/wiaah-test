@@ -22,7 +22,8 @@ import {
 import { mapArray, setTestid, useForm } from "utils";
 
 const Voucher = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination, controls } = usePaginationControls();
 

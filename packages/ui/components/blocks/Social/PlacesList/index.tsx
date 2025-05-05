@@ -1,4 +1,5 @@
 import { NumberShortner } from "@UI/../utils/src";
+import Link from "next/link";
 import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
 
@@ -33,10 +34,10 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, location, type }) => {
         <div className="rounded-lg border border-gray-100 p-2">
           <FaLocationDot className="w-4 h-4 text-[#20ECA7]" />
         </div>
-        <div className="flex flex-col gap-1">
+        <Link href={`/places/${title}`} className="flex flex-col gap-1">
           <p className=" font-medium">{title}</p>
           <p className=" font-medium text-xs text-[#656565]">{location}</p>
-        </div>
+        </Link>
       </div>
       <div className="">
         <p className="  text-xs font-semibold text-[#20ECA7]">{type}</p>

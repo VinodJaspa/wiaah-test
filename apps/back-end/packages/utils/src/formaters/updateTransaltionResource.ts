@@ -8,7 +8,7 @@ type UpdateTranslationResourceOptions<T> = {
   updateOnly?: boolean;
 };
 
-export function updateTranslationResource<TResource>({
+export function updateTranslationResource<TResource extends Record<string, any>>({
   originalObj,
   update,
 }: UpdateTranslationResourceOptions<TResource>):
@@ -17,7 +17,7 @@ export function updateTranslationResource<TResource>({
   if (!Array.isArray(originalObj) || !Array.isArray(update)) return undefined;
   if (originalObj.length < 1 || update.length < 1) return originalObj;
 
-  let updatedTranslations: TranslationResource<TResource>[] = [];
+  const updatedTranslations: TranslationResource<TResource>[] = [];
 
   const updates = update.filter(
     (v) => originalObj.findIndex((iV) => iV.langId === v.langId) > -1

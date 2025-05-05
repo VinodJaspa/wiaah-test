@@ -1,12 +1,12 @@
 import { storybookModalsTitle } from "utils";
 import { FilterModal, Button } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { useDisclouser } from "hooks";
 
 export default {
-  title: storybookModalsTitle + "FilterModal",
+  title: "UI / Blocks / Modals /FilterModal",
   component: FilterModal,
-} as ComponentMeta<typeof FilterModal>;
+} as Meta<typeof FilterModal>;
 
 export const Default = () => {
   const { isOpen, handleClose, handleOpen } = useDisclouser();

@@ -12,7 +12,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "utils";
 const FoodAdminMenu = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof useGetAdminFoodQuery>[0]

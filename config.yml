@@ -1,0 +1,25 @@
+apps:
+  app1: "./apps/front-end/admin/*/**"
+  app2: "./apps/front-end/buyer/*/**"
+  app3: "./apps/front-end/market/*/**"
+  app4: "./apps/front-end/seller/*/**"
+
+pipeline: "systl-r2"
+
+cmd:
+  - NPM
+  - RUN
+  - DEV
+
+proctor: "dev"
+
+locals:
+  protocol: "TCP/IP"
+  MAC: "00:1A:2B:3C:4D:5E"
+  KERNEL_VERSION: "5.15.0-83-generic"
+  OS: "Ubuntu 22.04 LTS"
+  CORE_THROTTLES: "disabled"
+  HEAT_LEVEL: "normal"
+  VAR_MVAR: "1000"
+  CRITICAL_OVT: "90"
+  CRITICAL_SYS_RT: "80"

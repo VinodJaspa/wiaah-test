@@ -18,7 +18,8 @@ import { mapArray, useForm } from "utils";
 export const SellerAccountSales: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps, selectProps, dateInputProps } = useForm<
     Parameters<typeof useAdminGetSalesByPeriod>[0]
@@ -94,7 +95,7 @@ export const SellerAccountSales: React.FC<{
               },
               { value: new Date(createdAt).toDateString() },
             ],
-          })
+          }),
         )}
         headers={[
           {

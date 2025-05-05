@@ -10,17 +10,17 @@ export function getCoordinatesAfterDistance(
      d being the distance travelled, R the earth’s radius*
      **/
 
-  var radius = 6371e3, //meters
+  const radius = 6371e3, //meters
     δ = Number(distance) / radius, // angular distance in radians
     θ = toRad(Number(bearing)),
     φ1 = toRad(coord[1]),
     λ1 = toRad(coord[0]);
 
-  var φ2 = Math.asin(
+  const φ2 = Math.asin(
     Math.sin(φ1) * Math.cos(δ) + Math.cos(φ1) * Math.sin(δ) * Math.cos(θ)
   );
 
-  var λ2 =
+  let λ2 =
     λ1 +
     Math.atan2(
       Math.sin(θ) * Math.sin(δ) * Math.cos(φ1),

@@ -6,7 +6,7 @@ import {
 
 describe("CancelationPoliciesList", () => {
   let wrapper: ShallowWrapper;
-  let props: CancelationPoliciesListInputProps = {
+  const props: CancelationPoliciesListInputProps = {
     onChange(policies) {},
     value: [
       { cost: 4, duration: 4 },

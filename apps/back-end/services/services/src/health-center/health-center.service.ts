@@ -61,7 +61,15 @@ export class HealthCenterService {
         ownerId: userId,
         doctors: {
           createMany: {
-            data: doctors,
+            data: doctors.map((doctor) => ({
+              ...doctor,
+              description: {
+                set: doctor.description.map((desc) => ({
+                  langId: desc.langId,
+                  value: String(desc.value),
+                })),
+              },
+            })),
           },
         },
       },
@@ -71,7 +79,7 @@ export class HealthCenterService {
             speciality: true,
           },
         },
-        workingHours: true,
+        workingHours: true, // Ensure workingHours is included
       },
     });
 
@@ -91,7 +99,21 @@ export class HealthCenterService {
   ): Promise<HealthCenterSpecialty> {
     try {
       const spec = await this.prisma.healthCenterSpecialty.create({
-        data: input,
+        data: {
+          ...input,
+          name: {
+            set: input.name.map((item) => ({
+              langId: item.langId,
+              value: String(item.value),
+            })),
+          },
+          description: {
+            set: input.description.map((desc) => ({
+              langId: desc.langId,
+              value: String(desc.value),
+            })),
+          },
+        },
       });
 
       return this.formatHealthCenterDoctorSpeciality(spec);
@@ -104,7 +126,7 @@ export class HealthCenterService {
     }
   }
 
-  async validateInput(input: CreateHealthCenterInput): Promise<Boolean> {
+  async validateInput(input: CreateHealthCenterInput): Promise<boolean> {
     const specialities = input.doctors.map((v) => v.specialityId);
     const validSpecialities = [];
     for (const id of specialities) {

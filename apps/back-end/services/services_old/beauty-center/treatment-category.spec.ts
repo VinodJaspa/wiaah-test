@@ -17,7 +17,7 @@ describe('Treatment Category tests', () => {
   let service: TreatmentCategoryService;
   let prisma: PrismaService;
 
-  let createInput: CreateBeautyCenterTreatmentCategoryInput = {
+  const createInput: CreateBeautyCenterTreatmentCategoryInput = {
     title: [
       {
         langId: 'en',

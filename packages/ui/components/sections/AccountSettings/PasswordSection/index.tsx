@@ -24,7 +24,7 @@ export interface PasswordSectionDTO {
 }
 
 export const PasswordSection: React.FC<PasswordSectionProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { mutate, isLoading } = useChangePasswordMutation();

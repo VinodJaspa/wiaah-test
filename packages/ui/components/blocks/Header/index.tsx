@@ -22,9 +22,10 @@ import {
 } from "@UI";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
-import { setTestid, useBreakpointValue } from "utils";
-import * as nookies from "nookies";
+import { setTestid } from "utils";
+import nookies, { deleteCookie } from "cookies-next";
 import { ServiceType } from "@features/API";
+import { useMediaQuery } from "react-responsive";
 
 export interface HeaderProps {
   token?: string;
@@ -34,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
 
   const items = useRecoilValue(ShoppingCartItemsState);
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
@@ -42,7 +43,12 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
   const onLogOut = () => {
     console.log("destroy cookies");
-    nookies.destroyCookie(null, "auth_token", { path: "auth/login" });
+    deleteCookie("jwt");
+    deleteCookie("user");
+    deleteCookie("userId");
+    deleteCookie("userType");
+    deleteCookie("userName");
+    deleteCookie("userEmail");
     setSignedIn(false);
   };
 

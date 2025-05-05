@@ -18,8 +18,9 @@ export const LanguageSelector = ({
         <div
           key={i}
           onClick={() => handleClick(v)}
-          className={`px-8 py-2 ${selectedLang === v ? "border-2 border-gray-300 border-b-white" : ""
-            }`}
+          className={`px-8 py-2 ${
+            selectedLang === v ? "border-2 border-gray-300 border-b-white" : ""
+          }`}
         >
           <FlagIcon code={v} />
         </div>

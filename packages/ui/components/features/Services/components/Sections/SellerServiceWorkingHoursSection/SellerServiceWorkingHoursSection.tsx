@@ -1,10 +1,10 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { TimeClockDisplay } from "@UI";
 import {
   ServiceDayWorkingHours,
   ServiceWeekdaysWorkingHours,
 } from "@features/API";
+import { TimeClockDisplay } from "@partials";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 export interface SellerServiceWorkingHoursSectionProps {
   workingDays: ServiceWeekdaysWorkingHours;
@@ -35,7 +35,7 @@ const getTodayKey = () => {
 export const SellerServiceWorkingHoursSection: React.FC<
   SellerServiceWorkingHoursSectionProps
 > = ({ workingDays }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const todayKey = getTodayKey();
 
   return (
@@ -62,8 +62,9 @@ export const SellerServiceWorkingHoursSection: React.FC<
                 {today ? t("Today") : ""}
               </p>
               <div
-                className={`${today ? "border-2 border-primary rounded-xl" : ""
-                  } pt-[0.625rem] pb-6 text-lg px-4 flex flex-col items-center gap-8`}
+                className={`${
+                  today ? "border-2 border-primary rounded-xl" : ""
+                } pt-[0.625rem] pb-6 text-lg px-4 flex flex-col items-center gap-8`}
               >
                 <p className="text-sm text-center text-lightBlack font-semibold">
                   {t(days[dayKey])}
@@ -76,15 +77,16 @@ export const SellerServiceWorkingHoursSection: React.FC<
                   />
                 </div>
                 <div
-                  className={`whitespace-nowrap text-center ${isDayOff ? "text-grayText" : "text-primary"
-                    } font-semibold text-sm`}
+                  className={`whitespace-nowrap text-center ${
+                    isDayOff ? "text-grayText" : "text-primary"
+                  } font-semibold text-sm`}
                 >
                   {isDayOff
                     ? t("Day Off")
                     : `${fromDate?.getHours()}:${fromDate
-                      ?.getMinutes()
-                      .toString()
-                      .padStart(2, "0")} - ${toDate?.getHours()}:${toDate
+                        ?.getMinutes()
+                        .toString()
+                        .padStart(2, "0")} - ${toDate?.getHours()}:${toDate
                         ?.getMinutes()
                         .toString()
                         .padStart(2, "0")}`}

@@ -33,7 +33,7 @@ import { ProductRating } from '@product-review/entities';
 import { CreateProductReviewInput } from '@product-review/dto';
 import { ReviewProductType } from '@product-review/const';
 
-let mockKafkaGetIsUserPurchasedProductMessagehandler = jest.fn();
+const mockKafkaGetIsUserPurchasedProductMessagehandler = jest.fn();
 
 @Controller()
 class TestController {
@@ -49,18 +49,18 @@ class TestController {
 describe('reviews e2e', () => {
   let app: INestApplication;
   let mockListner: INestApplication;
-  let kafka = new Kafka({
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.PRODUCTS_SERVICE.clientId,
   });
 
-  let producer: Producer = kafka.producer();
+  const producer: Producer = kafka.producer();
 
-  let consumer: Consumer = kafka.consumer({
+  const consumer: Consumer = kafka.consumer({
     groupId: SERVICES.PRODUCTS_SERVICE.groupId,
   });
 
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -125,7 +125,7 @@ describe('reviews e2e', () => {
     requestGraphql(app, q, v).set({ user: JSON.stringify(u) });
 
   describe('product reviews', () => {
-    let productId = thirdMockedUser.shopId;
+    const productId = thirdMockedUser.shopId;
     const reviewProduct = `
       mutation review(
         $productId:ID!
@@ -156,7 +156,7 @@ describe('reviews e2e', () => {
       }
     `;
 
-    let reviewProductInput: CreateProductReviewInput = {
+    const reviewProductInput: CreateProductReviewInput = {
       message: 'test review message',
       rate: 3,
       productId: productId,
@@ -200,7 +200,7 @@ describe('reviews e2e', () => {
         }),
       );
 
-      let res = await reqGql(reviewProduct, reviewProductInput, mockedUser);
+      const res = await reqGql(reviewProduct, reviewProductInput, mockedUser);
 
       expect(res.body.errors).toBeDefined();
 
@@ -334,7 +334,7 @@ describe('reviews e2e', () => {
         ).toBeNull();
 
         await waitFor(async () => {
-          let rating = await prisma.productRating.findUnique({
+          const rating = await prisma.productRating.findUnique({
             where: {
               id: productId,
             },

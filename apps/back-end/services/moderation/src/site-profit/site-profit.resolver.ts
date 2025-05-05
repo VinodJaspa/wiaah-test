@@ -46,10 +46,10 @@ export class SiteProfitResolver {
         args.period === StatsRetrivePeriod.year
           ? 365
           : StatsRetrivePeriod.month
-          ? 30
-          : args.period === StatsRetrivePeriod.week
-          ? 7
-          : 1,
+            ? 30
+            : args.period === StatsRetrivePeriod.week
+              ? 7
+              : 1,
     });
 
     const currentStats = await this.prisma.salesStats.findMany({
@@ -81,6 +81,10 @@ export class SiteProfitResolver {
           salesAmount: acc.salesAmount + curr.salesAmount,
           purchases: acc.purchases + curr.purchases,
           purchasesAmount: acc.purchasesAmount + curr.purchasesAmount,
+          lastSalesAmount: acc.lastSalesAmount || 0,
+          lastPurchasesAmount: acc.lastPurchasesAmount || 0,
+          lastRefundsAmount: acc.lastRefundsAmount || 0,
+          lastAffiliationsAmount: acc.lastAffiliationsAmount || 0,
         };
       },
       {
@@ -92,22 +96,28 @@ export class SiteProfitResolver {
         refundsAmount: 0,
         sales: 0,
         salesAmount: 0,
+        lastSalesAmount: 0,
+        lastPurchasesAmount: 0,
+        lastRefundsAmount: 0,
+        lastAffiliationsAmount: 0,
       } as SiteProfit,
-    );
+    ) as SiteProfit;
 
-    const totalPreviousStats = lastPeriodStats.reduce(
-      (acc, curr) => {
-        return {
-          affiliations: acc.affiliations + curr.affiliations,
-          affiliationsAmount: acc.affiliationsAmount + curr.affiliationsAmount,
-          refunds: acc.refunds + curr.refunds,
-          refundsAmount: acc.refundsAmount + curr.refundsAmount,
-          sales: acc.sales + curr.sales,
-          salesAmount: acc.salesAmount + curr.salesAmount,
-          purchases: acc.purchases + curr.purchases,
-          purchasesAmount: acc.purchasesAmount + curr.purchasesAmount,
-        };
-      },
+    const totalPreviousStats = lastPeriodStats.reduce<SiteProfit>(
+      (acc, curr) => ({
+        affiliations: acc.affiliations + curr.affiliations,
+        affiliationsAmount: acc.affiliationsAmount + curr.affiliationsAmount,
+        refunds: acc.refunds + curr.refunds,
+        refundsAmount: acc.refundsAmount + curr.refundsAmount,
+        sales: acc.sales + curr.sales,
+        salesAmount: acc.salesAmount + curr.salesAmount,
+        purchases: acc.purchases + curr.purchases,
+        purchasesAmount: acc.purchasesAmount + curr.purchasesAmount,
+        lastSalesAmount: acc.lastSalesAmount ?? 0, // Ensure missing properties exist
+        lastPurchasesAmount: acc.lastPurchasesAmount ?? 0,
+        lastRefundsAmount: acc.lastRefundsAmount ?? 0,
+        lastAffiliationsAmount: acc.lastAffiliationsAmount ?? 0,
+      }),
       {
         affiliations: 0,
         affiliationsAmount: 0,
@@ -117,7 +127,11 @@ export class SiteProfitResolver {
         refundsAmount: 0,
         sales: 0,
         salesAmount: 0,
-      } as SiteProfit,
+        lastSalesAmount: 0, // Add missing properties
+        lastPurchasesAmount: 0,
+        lastRefundsAmount: 0,
+        lastAffiliationsAmount: 0,
+      },
     );
 
     return {
@@ -147,16 +161,16 @@ export class SiteProfitResolver {
             currentDate.getDate(),
           )
         : period === StatsRetrivePeriod.week
-        ? new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate() - currentDate.getDay(),
-          )
-        : period === StatsRetrivePeriod.month
-        ? new Date(currentDate.getFullYear(), currentDate.getMonth())
-        : period === StatsRetrivePeriod.year
-        ? new Date(currentDate.getFullYear())
-        : new Date();
+          ? new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate() - currentDate.getDay(),
+            )
+          : period === StatsRetrivePeriod.month
+            ? new Date(currentDate.getFullYear(), currentDate.getMonth())
+            : period === StatsRetrivePeriod.year
+              ? new Date(currentDate.getFullYear())
+              : new Date();
 
     return searchPeriod;
   }

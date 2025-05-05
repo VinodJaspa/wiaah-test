@@ -36,7 +36,7 @@ const links: {
 
 export const ManagementView: React.FC = () => {
   const { visit } = useRouting();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex gap-8 h-full items-center">
       {links.map((v, i) => (

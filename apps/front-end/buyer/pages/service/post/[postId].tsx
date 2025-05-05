@@ -7,7 +7,7 @@ import { SellerLayout } from "ui";
 import { useRouter } from "next/router";
 
 const ServicePost = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const postId = router.query.postId as string;
   return (

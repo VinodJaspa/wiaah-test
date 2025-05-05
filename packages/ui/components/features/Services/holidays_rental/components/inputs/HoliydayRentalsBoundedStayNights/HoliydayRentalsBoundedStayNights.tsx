@@ -12,7 +12,7 @@ export interface HoliydayRentalsBoundedStayNightsInputProps {
 export const HoliydayRentalsBoundedStayNightsInput: React.FC<
   HoliydayRentalsBoundedStayNightsInputProps
 > = ({ onChange, value = { min: 0, max: 0 } }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="whitespace-nowrap flex flex-col sm:flex-row gap-4 items-center">
       <div className="border px-2 py-4 w-full rounded gap-4 flex justify-between">

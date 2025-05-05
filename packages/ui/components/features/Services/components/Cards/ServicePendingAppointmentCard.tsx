@@ -82,7 +82,7 @@ export const ServicePendingAppointmentCard: React.FC<
   treatments,
   variant,
 }) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
     const showOn = (types: ServiceType[]) => types.includes(serviceType);
     return (

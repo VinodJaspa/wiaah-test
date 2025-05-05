@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { FlexStack } from "../index";
 
 export default {
@@ -8,12 +8,9 @@ export default {
   argTypes: {
     childs: { type: "number", defaultValue: 4 },
   },
-} as ComponentMeta<typeof FlexStack>;
+} as Meta<typeof FlexStack>;
 
-const Template: ComponentStory<typeof FlexStack> = ({
-  childs,
-  ...args
-}: any) => (
+const Template: StoryFn<typeof FlexStack> = ({ childs, ...args }: any) => (
   <FlexStack {...args}>
     {[...Array(childs)].map((_, i) => (
       <div
@@ -33,51 +30,72 @@ const Template: ComponentStory<typeof FlexStack> = ({
   </FlexStack>
 );
 
-export const Default = Template.bind({});
-Default.args = {};
-
-export const Vertical = Template.bind({});
-Vertical.args = {
-  direction: "vertical",
+export const Default = {
+  render: Template,
+  args: {},
 };
 
-export const WithVerticalSpacing = Template.bind({});
-WithVerticalSpacing.args = {
-  verticalSpacingInRem: 1,
-  direction: "vertical",
+export const Vertical = {
+  render: Template,
+
+  args: {
+    direction: "vertical",
+  },
 };
 
-export const WithHorizontelSpacing = Template.bind({});
-WithHorizontelSpacing.args = {
-  horizontalSpacingInRem: 1,
+export const WithVerticalSpacing = {
+  render: Template,
+
+  args: {
+    verticalSpacingInRem: 1,
+    direction: "vertical",
+  },
 };
 
-export const WithWrap = Template.bind({});
-WithWrap.args = {
-  childs: 30,
-  wrap: true,
+export const WithHorizontelSpacing = {
+  render: Template,
+
+  args: {
+    horizontalSpacingInRem: 1,
+  },
 };
 
-export const WithJustifyCenter = Template.bind({});
-WithJustifyCenter.args = {
-  fullWidth: true,
-  justify: "center",
+export const WithWrap = {
+  render: Template,
+
+  args: {
+    childs: 30,
+    wrap: true,
+  },
 };
 
-export const WithJustifyBetween = Template.bind({});
-WithJustifyBetween.args = {
-  fullWidth: true,
-  justify: "between",
+export const WithJustifyCenter = {
+  render: Template,
+
+  args: {
+    fullWidth: true,
+    justify: "around",
+  },
 };
 
-export const WithJustifyAround = Template.bind({});
-WithJustifyCenter.args = {
-  fullWidth: true,
-  justify: "around",
+export const WithJustifyBetween = {
+  render: Template,
+
+  args: {
+    fullWidth: true,
+    justify: "between",
+  },
 };
 
-export const WithJustifyEnd = Template.bind({});
-WithJustifyEnd.args = {
-  fullWidth: true,
-  justify: "end",
+export const WithJustifyAround = {
+  render: Template,
+};
+
+export const WithJustifyEnd = {
+  render: Template,
+
+  args: {
+    fullWidth: true,
+    justify: "end",
+  },
 };

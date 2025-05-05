@@ -1,74 +1,78 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { Select, SelectOption } from "./";
 
 export default {
   title: "UI / partials / Select",
   component: Select,
-} as ComponentMeta<typeof Select>;
+} as Meta<typeof Select>;
 
-export const Default = ({ ...args }) => {
-  return (
-    <section className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-slate-200">
-      <div className="flex flex-col w-full justify-between px-4">
-        <div className="vstack">
-          <span className="font-bold text-xl">implementaion</span>
-          <pre>
-            {`
-import {Select,SelectOption} from "@UI"
+export const Default = {
+  render: ({ ...args }) => {
+    return (
+      <section className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-slate-200">
+        <div className="flex flex-col w-full justify-between px-4">
+          <div className="vstack">
+            <span className="font-bold text-xl">implementaion</span>
+            <pre>
+              {`
+  import {Select,SelectOption} from "@UI"
 
 
-<Select onOptionSelect={(value)=> {}}>
-  <SelectOption value={"1"}>  option  </SelectOption>
-  <SelectOption value={"2"}>  option  </SelectOption>
-  <SelectOption value={"3"}>  option  </SelectOption>
-  <SelectOption value={"4"}>  option  </SelectOption>
-</Select>
-        `}
-          </pre>
+  <Select onOptionSelect={(value)=> {}}>
+    <SelectOption value={"1"}>  option  </SelectOption>
+    <SelectOption value={"2"}>  option  </SelectOption>
+    <SelectOption value={"3"}>  option  </SelectOption>
+    <SelectOption value={"4"}>  option  </SelectOption>
+  </Select>
+          `}
+            </pre>
+          </div>
+          <Select onOptionSelect={(value) => {}} {...args}>
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+          </Select>
         </div>
-        <Select onOptionSelect={(value) => {}} {...args}>
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-        </Select>
-      </div>
-    </section>
-  );
+      </section>
+    );
+  },
 };
 
-export const WithPlaceholder = ({ ...args }) => {
-  return (
-    <section className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-slate-200">
-      <div className="flex flex-col w-full justify-between px-4">
-        <div className="vstack">
-          <span className="font-bold text-xl">implementaion</span>
-          <pre>
-            {`
-import {Select,SelectOption} from "@UI"
+export const WithPlaceholder = {
+  render: ({ ...args }) => {
+    return (
+      <section className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-slate-200">
+        <div className="flex flex-col w-full justify-between px-4">
+          <div className="vstack">
+            <span className="font-bold text-xl">implementaion</span>
+            <pre>
+              {`
+  import {Select,SelectOption} from "@UI"
 
 
-<Select placeholder={"test placeholder"} onOptionSelect={(value)=> {}}>
-  <SelectOption value={"1"}>  option  </SelectOption>
-  <SelectOption value={"2"}>  option  </SelectOption>
-  <SelectOption value={"3"}>  option  </SelectOption>
-  <SelectOption value={"4"}>  option  </SelectOption>
-</Select>
-        `}
-          </pre>
+  <Select placeholder={"test placeholder"} onOptionSelect={(value)=> {}}>
+    <SelectOption value={"1"}>  option  </SelectOption>
+    <SelectOption value={"2"}>  option  </SelectOption>
+    <SelectOption value={"3"}>  option  </SelectOption>
+    <SelectOption value={"4"}>  option  </SelectOption>
+  </Select>
+          `}
+            </pre>
+          </div>
+          <Select
+            placeholder="test placeholder"
+            onOptionSelect={(value) => {}}
+            {...args}
+          >
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+            <SelectOption value={""}>option</SelectOption>
+          </Select>
         </div>
-        <Select
-          placeholder="test placeholder"
-          onOptionSelect={(value) => {}}
-          {...args}
-        >
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-          <SelectOption value={""}>option</SelectOption>
-        </Select>
-      </div>
-    </section>
-  );
+      </section>
+    );
+  },
 };

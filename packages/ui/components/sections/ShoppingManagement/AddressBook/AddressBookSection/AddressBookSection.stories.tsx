@@ -1,9 +1,9 @@
 import { storybookSectionsTitle, AddressBookSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AddressBookSection",
+  title: "UI / sections / AddressBookSection",
   component: AddressBookSection,
-} as ComponentMeta<typeof AddressBookSection>;
+} as Meta<typeof AddressBookSection>;
 
 export const Default = () => <AddressBookSection accountId="fake-1" />;

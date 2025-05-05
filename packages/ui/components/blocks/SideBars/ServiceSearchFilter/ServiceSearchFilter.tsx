@@ -20,7 +20,7 @@ export const ServiceSearchFilter: React.FC<ServiceSidebarFilterProps> = ({
   onChange,
   serviceType,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const {
     data: filters,
     isLoading,

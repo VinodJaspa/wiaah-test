@@ -1,10 +1,10 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ChatRoomInput } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataInputBlocksTitle + "ChatRoomInput",
+  title: "UI / blocks / Data Input /ChatRoomInput",
   component: ChatRoomInput,
-} as ComponentMeta<typeof ChatRoomInput>;
+} as Meta<typeof ChatRoomInput>;
 
 export const Default = () => <ChatRoomInput roomId="2" />;

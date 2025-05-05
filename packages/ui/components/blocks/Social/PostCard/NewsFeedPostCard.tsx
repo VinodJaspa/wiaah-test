@@ -24,6 +24,7 @@ import {
   Image,
   LocationIcon,
   PersonFillIcon,
+  SaveFlagFIllIcon,
   ShareIcon,
   StarIcon,
 } from "@partials";
@@ -49,7 +50,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
   const { open: openPostMentions } = useSocialPostMentionsModal();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { mutate } = useLikeContent();
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
   const { OpenModal: OpenShareWithModal } = useShareWithModal();
@@ -76,19 +77,28 @@ export const PostCard: React.FC<PostCardProps> = ({
   return (
     <div
       {...setTestid("social-newsfeed-post")}
-      className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full"
+      className="w-full h-full relative group rounded md:rounded-[1.25rem] overflow-hidden aspect-[8/3]"
     >
-      <Image
-        className="w-full h-full object-cover"
-        src={post.postInfo?.thumbnail}
-        alt={post.postInfo.content}
-      />
+      {post.postInfo?.attachments[0]?.type === "image" && (
+        <Image
+          className="w-full h-full object-cover"
+          src={post.postInfo?.thumbnail}
+          alt={post.postInfo.content}
+        />
+      )}
+
+      {post.postInfo?.attachments[0]?.type !== "image" && (
+        <video className="w-full h-full object-cover" autoPlay loop muted>
+          <source src={post.postInfo?.attachments[0]?.src} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
 
       <div
         onClick={openPopup}
-        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between z-10"
+        className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full h-full justify-between z-10"
       >
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full h-full">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between items-center ">
               <div className="flex gap-2 items-center">
@@ -171,8 +181,8 @@ export const PostCard: React.FC<PostCardProps> = ({
               <p className="font-bold text-base">
                 {NumberShortner(
                   post.postInfo.numberOfComments +
-                  post.postInfo.numberOfLikes +
-                  post.postInfo.numberOfShares,
+                    post.postInfo.numberOfLikes +
+                    post.postInfo.numberOfShares,
                 )}
               </p>
             </div>
@@ -226,7 +236,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
             <div className="flex gap-2 flex-col items-center">
               <span className="w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
-                <StarIcon className="text-primary fill-primary" />
+                <SaveFlagFIllIcon className="text-primary fill-primary" />
               </span>
             </div>
           </div>

@@ -39,7 +39,7 @@ export class AccountsAdminResolver {
     private prisma: PrismaService,
     private eventBus: EventBus,
     private readonly accountsService: AccountsService,
-  ) { }
+  ) {}
   @Query(() => [Account])
   getFilteredSellers(
     @Args('getSellersInput') args: GetFilteredSellersAccountsInput,
@@ -78,7 +78,7 @@ export class AccountsAdminResolver {
   @Query(() => [Account])
   async getPendingSellers(@Args('args') args: GetAdminPendingSellersInput) {
     const { skip, take } = ExtractPagination(args.pagination);
-    let filters: Prisma.AccountWhereInput[] = [];
+    const filters: Prisma.AccountWhereInput[] = [];
 
     if (args.name) {
       filters.push({

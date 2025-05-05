@@ -1,21 +1,21 @@
 import { storybookVehicleCardsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { VehicleSearchCard, VehicleSearchCardProps } from "./VehicleSearchCard";
 import React from "react";
 import { ServicePresentationType } from "@features/API/gql/generated";
 
 export default {
-  title: storybookVehicleCardsTitle + "VehicleSearchCard",
+  title: "UI / Features /Vehicle /Cards /VehicleSearchCard",
   component: VehicleSearchCard,
-} as ComponentMeta<typeof VehicleSearchCard>;
+} as Meta<typeof VehicleSearchCard>;
 
-const template: ComponentStory<typeof VehicleSearchCard> = (args) => (
+const template: StoryFn<typeof VehicleSearchCard> = (args) => (
   <div className="w-96">
     <VehicleSearchCard {...args} />
   </div>
 );
 
-export const Default: { args: VehicleSearchCardProps } = template.bind({});
+export const Default: StoryFn<typeof VehicleSearchCard> = template.bind({});
 Default.args = {
   __typename: "Vehicle",
   id: "vehicle-1",
@@ -33,6 +33,7 @@ Default.args = {
   cancelationPolicies: [
     {
       __typename: "ServiceCancelationPolicy",
+      id: "policy-1", // Unique identifier for the policy
       duration: 14, // Duration in days
       cost: 100, // Cost of cancellation
     },

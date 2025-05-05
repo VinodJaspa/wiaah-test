@@ -23,7 +23,8 @@ import {
   SocialShopCardsInfoPlaceholder,
 } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { useBreakpointValue } from "utils";
+import { useMediaQuery } from "react-responsive";
+
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
 
@@ -32,14 +33,19 @@ export interface HashTagViewProps {
 }
 
 export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
+  const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const isMediumScreen = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLargeScreen = useMediaQuery({ minWidth: 1024 });
+  
+  const cols = isSmallScreen ? 1 : isMediumScreen ? 2 : isLargeScreen ? 3 : 1;
+  
   const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery(tag);
   const { data: servicePostHashtagPosts } = useGetTopHashtagServicePost({
     tag,
   });
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   function handleFollowHashtag() { }
 

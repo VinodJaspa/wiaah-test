@@ -13,7 +13,7 @@ import {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let mockKafka = new NestKafkaClientMock();
+  const mockKafka = new NestKafkaClientMock();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({

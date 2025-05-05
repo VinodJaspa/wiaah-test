@@ -32,12 +32,15 @@ export class ContentDiscoveryService {
   async getManyPosts(
     contents: { type: PostType; contentId: string }[],
   ): Promise<NewsfeedPost[]> {
-    const organisedContentData = contents.reduce((acc, curr) => {
-      return {
-        ...acc,
-        [curr.type]: [...(acc[curr.type] || []), curr.contentId],
-      };
-    }, {} as Record<PostType, string[]>);
+    const organisedContentData = contents.reduce(
+      (acc, curr) => {
+        return {
+          ...acc,
+          [curr.type]: [...(acc[curr.type] || []), curr.contentId],
+        };
+      },
+      {} as Record<PostType, string[]>,
+    );
 
     const postsData: NewsfeedPost[] = [];
 

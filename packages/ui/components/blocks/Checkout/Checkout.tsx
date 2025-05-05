@@ -1,112 +1,117 @@
+import { ServiceType } from "@features/API";
+import { CheckoutProductsState, VoucherState } from "@src/state";
+import { ServiceCheckoutCardSwitcher } from "@UI/components/features/Services/components/Switchers/ServiceCheckoutCardSwitcher";
+import { ServiceCheckoutDataType } from "api";
+import { useDateDiff } from "hooks";
+import { getRandomImage } from "placeholder";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRouting } from "routing";
+import { AddressCardDetails, AddressDetails } from "types";
 import {
-  BoxShadow,
-  FlexStack,
-  Padding,
   AddressCard,
-  Clickable,
-  BoldText,
-  Text,
-  Divider,
-  Spacer,
-  Button,
   AddressInputs,
-  useUserAddresses,
-  VoucherInput,
-  PaymentGateway,
-  TotalCost,
-  ResturantCheckoutCard,
-  HealthCenterCheckoutCard,
-  BeautyCenterCheckoutCard,
+  AspectRatio,
+  BoxShadow,
+  Button,
+  CheckInOutInput,
+  DateInput,
+  Divider,
   GuestsInput,
   Modal,
   ModalContent,
   ModalOverlay,
-  DateInput,
+  PaymentGateway,
+  Spacer,
+  SpinnerFallback,
+  TotalCost,
   useGetCheckoutDataQuery,
   useSearchFilters,
-  SpinnerFallback,
-  CheckInOutInput,
-  AspectRatio,
-  ServiceCheckoutCardSwitcher,
+  useUserAddresses,
+  VoucherInput,
 } from "ui";
-import { AddressCardDetails, AddressDetails } from "types";
-import { CheckoutProductsState, VoucherState } from "@src/state";
-
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
 
-import { useDateDiff } from "hooks";
-import { ServiceCheckoutDataType } from "api";
-import { ServiceType } from "@features/API";
-import { getRandomImage } from "placeholder";
+export interface CheckoutViewProps {
+  isSellerOrBuyer?: boolean;
+}
 
 const randomNum = (max: number) => Math.floor(Math.random() * max);
-export interface CheckoutViewProps { }
 
-export const CheckoutView: React.FC<CheckoutViewProps> = () => {
-  const { t } = useTranslation();
+const FAKE_ADDRESS_DATA: AddressCardDetails[] = [
+  {
+    id: "1",
+    firstName: "John",
+    lastName: "Doe",
+    address: "123 Main St",
+    address2: "Apt 4B",
+    city: "New York",
+    zipCode: 10001,
+    country: "USA",
+    contact: "+1 123-456-7890",
+  },
+];
+
+export const CheckoutView: React.FC<CheckoutViewProps> = ({
+  isSellerOrBuyer,
+}) => {
+const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
-  //WARNING: this graphql query is not created yet
-  const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
+  // const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const res = FAKE_CHECKOUT_DATA;
 
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
-
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
   const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
-
-  const [activeAddress, setActiveAddress] = React.useState<number>();
+  const [activeAddress, setActiveAddress] = React.useState<number>(0);
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    setMounted(true);
     if (addresses.length < 1) {
-      setEditAddress(undefined);
-      setEdit(true);
+      FAKE_ADDRESS_DATA.forEach((address) => AddAddress(address));
     }
-  }, [addresses, edit]);
+  }, [addresses, AddAddress]);
 
-  function handleDelete(id: string) {
+  if (!mounted) {
+    return null;
+  }
+
+  const handleDelete = (id: string) => {
     DeleteAddress(id);
-  }
+  };
 
-  function handleAddress(address?: AddressCardDetails) {
-    if (address) {
-      setEditAddress(address);
-      setEdit(true);
-    } else {
-      setEditAddress(undefined);
-      setEdit(true);
-    }
-  }
-  function handleCancelEdit() {
-    setEdit(false);
+  const handleAddress = (address?: AddressCardDetails) => {
+    setEditAddress(address);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditModalOpen(false);
     setEditAddress(undefined);
-  }
+  };
 
-  function handleSaveAddress(input: AddressDetails) {
-    // call api to save address
+  const handleSaveAddress = (input: AddressDetails) => {
     if (editAddress) {
       UpdateAddress(editAddress.id, input);
-      handleCancelEdit();
     } else {
       AddAddress({
         id: String(Math.random()),
         ...input,
       });
-      handleCancelEdit();
     }
-  }
+    handleCancelEdit();
+  };
 
   async function handleVoucherValidation(code: string) {
-    // call api to check if the voucher is valid
     const voucherName = "50OFF";
-    let ok = code === voucherName;
+    const ok = code === voucherName;
     if (ok) {
       setVoucher({
         voucherName,
@@ -118,58 +123,57 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full py-2">
+    <div className="flex flex-col md:flex-row gap-4 w-full py-2 border-t">
       <div className="flex flex-col w-full gap-4">
         <BoxShadow>
           <div className="bg-white flex flex-col gap-4 p-4 py-8">
             <div className="flex w-full justify-center text-3xl">
               <p className="font-bold">{t("Checkout")}</p>
             </div>
-            <div className="flex flex-col gap-6">
-              <p className="font-bold">{t("Trip date")}</p>
-              <DatePicker />
-              <GuestsPicker />
-            </div>
             <p className="text-3xl">{"Address"}</p>
-            {edit ? (
-              <AddressInputs
-                initialInputs={editAddress}
-                onCancel={handleCancelEdit}
-                onSuccess={handleSaveAddress}
-              />
-            ) : (
-              <>
-                <div className="w-full flex flex-col gap-4">
-                  {addresses.length > 0 &&
-                    addresses.map((address, i) => (
-                      <div
-                        className="cursor-pointer"
-                        key={i}
-                        onClick={() => setActiveAddress(i)}
-                      >
-                        <AddressCard
-                          borderColor="#000"
-                          onDelete={(id) => handleDelete(id)}
-                          onEdit={(address) => handleAddress(address)}
-                          addressDetails={address}
-                          active={activeAddress === i}
-                        />
-                        <Divider />
-                      </div>
-                    ))}
-                </div>
-                <Spacer />
-                <div className="w-full flex justify-end">
-                  <Button onClick={() => handleAddress()}>
-                    {t("add_new_address", "ADD NEW ADDRESS")}
-                  </Button>
-                </div>
-              </>
-            )}
+            <div className="w-full flex flex-col gap-4">
+              {addresses.length > 0 &&
+                addresses.map((address, i) => (
+                  <div
+                    className="cursor-pointer"
+                    key={i}
+                    onClick={() => setActiveAddress(i)}
+                  >
+                    <AddressCard
+                      borderColor="#000"
+                      onDelete={(id) => handleDelete(id)}
+                      onEdit={(address) => handleAddress(address)}
+                      addressDetails={address}
+                      active={activeAddress === i}
+                    />
+                    <Divider />
+                  </div>
+                ))}
+            </div>
+            <Spacer />
+            <div className="w-full flex justify-end">
+              <Button
+                className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                colorScheme="darkbrown"
+                onClick={() => handleAddress()}
+              >
+                {t("add_new_address", "Add New Address")}
+              </Button>
+            </div>
+            <Modal isOpen={isEditModalOpen} onClose={handleCancelEdit}>
+              <ModalOverlay />
+              <ModalContent className="w-[min(50rem,100%)] p-4">
+                <AddressInputs
+                  initialInputs={editAddress}
+                  onCancel={handleCancelEdit}
+                  onSuccess={handleSaveAddress}
+                />
+              </ModalContent>
+            </Modal>
           </div>
         </BoxShadow>
         <VoucherInput onSuccess={handleVoucherValidation} />
-        <PaymentGateway onSuccess={() => { }} />
+        <PaymentGateway onSuccess={() => {}} isSellerOrBuyer />
       </div>
       <BoxShadow fitHeight fitWidth>
         <div className="bg-white">
@@ -187,16 +191,15 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
             </div>
             <Divider />
             <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
-              <SpinnerFallback isError={isError} isLoading={isLoading}>
-                {res
-                  ? res.data.bookedServices.map((service, i) => (
+              <SpinnerFallback>
+                {res &&
+                  res.data.bookedServices.map((service, i) => (
                     <ServiceCheckoutCardSwitcher key={i} service={service} />
-                  ))
-                  : null}
+                  ))}
               </SpinnerFallback>
             </div>
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+            <SpinnerFallback>
+              {res && (
                 <TotalCost
                   subTotal={res.data.bookedServices.reduce((acc, curr) => {
                     return acc + (curr?.data?.price || 0);
@@ -205,7 +208,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                   saved={res.data.saved}
                   voucherRemoveable
                 />
-              ) : null}
+              )}
             </SpinnerFallback>
           </div>
         </div>
@@ -220,13 +223,18 @@ interface DateRange {
 }
 
 const DatePicker: React.FC = () => {
+  const [mounted, setMounted] = React.useState(false);
   const [edit, setEdit] = React.useState<boolean>(false);
   const [dates, setDates] = React.useState<DateRange>({
     from: new Date(),
     to: new Date(),
   });
   const { days } = useDateDiff({ from: dates.from, to: dates.to });
-  const { t } = useTranslation();
+const { t } = useTranslation();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const datesDisplay = () => {
     if (!dates) return null;
@@ -247,6 +255,10 @@ const DatePicker: React.FC = () => {
     setDates({ from: new Date(), to: new Date() });
   };
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div className="flex justify-between">
       <div className="flex flex-col gap-1">
@@ -258,7 +270,7 @@ const DatePicker: React.FC = () => {
         <ModalContent className="w-[min(50rem,100%)] flex flex-col gap-8">
           <div className="flex flex-col gap-2 w-full items-center">
             <CheckInOutInput
-              onDatesChange={() => { }}
+              onDatesChange={() => {}}
               active={false}
               checkin={dates ? dates.from : undefined}
               checkout={dates ? dates.to : undefined}
@@ -275,12 +287,13 @@ const DatePicker: React.FC = () => {
                 dayComponent={({ active, currentMonth, dayNum }) => (
                   <AspectRatio ratio={1}>
                     <div
-                      className={`${active
+                      className={`${
+                        active
                           ? "text-white bg-primary"
                           : currentMonth
                             ? "text-black bg-white"
                             : "text-gray-500"
-                        } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                     >
                       {dayNum}
                     </div>
@@ -301,12 +314,13 @@ const DatePicker: React.FC = () => {
                 dayComponent={({ active, currentMonth, dayNum }) => (
                   <AspectRatio ratio={1}>
                     <div
-                      className={`${active
+                      className={`${
+                        active
                           ? "text-white bg-primary"
                           : currentMonth
                             ? "text-black bg-white"
                             : "text-gray-500"
-                        } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
                     >
                       {dayNum}
                     </div>
@@ -344,7 +358,7 @@ const DatePicker: React.FC = () => {
 
 const GuestsPicker = () => {
   const [edit, setEdit] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex justify-between">
@@ -361,7 +375,7 @@ const GuestsPicker = () => {
               childrens: 1,
               infants: 1,
             }}
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </ModalContent>
       </Modal>
@@ -377,8 +391,10 @@ const GuestsPicker = () => {
 
 export default GuestsPicker;
 
-const senctence =
+const sentance =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima libero perferendis fugit error unde, adipisci possimus totam mollitia? Inventore odio soluta nisi magnam vitae id voluptatum cum atque maiores nihil";
+
+const FIXED_DATE = "2023-10-10T00:00:00";
 
 const FAKE_CHECKOUT_DATA = {
   data: {
@@ -388,17 +404,16 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "hotel",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum,
+          rate: 5,
           refundingRule: {
             cost: 12,
             duration: 3,
             id: "12",
           },
-
-          reviews: randomNum(153),
+          reviews: 10,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -407,33 +422,67 @@ const FAKE_CHECKOUT_DATA = {
           extras: [
             {
               name: "Breakfast + book now, pay later",
-              price: randomNum(100),
+              price: 15,
             },
           ],
-          guests: randomNum(5),
+          guests: 3,
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 250,
+        },
+      },
+      {
+        type: "holiday_rentals",
+        data: {
+          serviceType: "holiday_rentals",
+          bookedDates: {
+            from: FIXED_DATE,
+            to: FIXED_DATE,
+          },
+          rate: 5,
+          refundingRule: {
+            cost: 12,
+            duration: 3,
+            id: "12",
+          },
+          reviews: 10,
+          thumbnail: getRandomImage(),
+          id: "123",
+          rateReason: "cleanliness",
+          title: "Citadines Montmartre Paris",
+          duration: [30, 60],
+          extras: [
+            {
+              name: "Breakfast + book now, pay later",
+              price: 15,
+            },
+          ],
+          guests: 3,
+          cashback: {
+            amount: 15,
+            type: "percent",
+          },
+          price: 250,
         },
       },
       {
         type: ServiceType.Vehicle,
         data: {
-          serviceType: "hotel",
+          serviceType: "vehicle",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 4,
           refundingRule: {
             cost: 12,
             duration: 3,
             id: "12",
           },
 
-          reviews: randomNum(153),
+          reviews: 112,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -442,15 +491,15 @@ const FAKE_CHECKOUT_DATA = {
           extras: [
             {
               name: "Breakfast + book now, pay later",
-              price: randomNum(100),
+              price: 80,
             },
           ],
-          guests: randomNum(5),
+          guests: 2,
           cashback: {
-            amount: randomNum(20),
+            amount: 12,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 365,
         },
       },
       {
@@ -458,17 +507,17 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "restaurant",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: null,
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
 
-          rate: randomNum(5),
+          rate: 3.5,
           refundingRule: {
             cost: 0,
             duration: 0,
             id: "12",
           },
-          reviews: randomNum(153),
+          reviews: 152,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
@@ -476,28 +525,28 @@ const FAKE_CHECKOUT_DATA = {
           duration: [30, 60],
           bookedMenus: [
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 85,
+              qty: 7,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 75,
+              qty: 5,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
             {
-              price: randomNum(100),
-              qty: randomNum(10),
-              title: senctence.slice(0, randomNum(senctence.length)),
+              price: 95,
+              qty: 3,
+              title: sentance.slice(0, randomNum(sentance.length)),
             },
           ],
-          guests: randomNum(5),
+          guests: 3,
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
 
-          price: randomNum(500),
+          price: 420,
         },
       },
       {
@@ -505,34 +554,34 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "health_center",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 4,
           refundingRule: {
             cost: 60,
             duration: 0,
             id: "12",
           },
 
-          reviews: randomNum(153),
+          reviews: 122,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
           title: "Citadines Montmartre Paris",
 
           duration: [30, 60],
-          guests: randomNum(5),
+          guests: 4,
           cashback: {
-            amount: randomNum(20),
+            amount: 10,
             type: "percent",
           },
-          price: randomNum(500),
+          price: 422,
           doctor: {
             id: "123",
             name: "Doctor 1",
             specialty: "spine",
-            price: randomNum(50),
+            price: 45,
             photo: getRandomImage(),
           },
         },
@@ -542,35 +591,35 @@ const FAKE_CHECKOUT_DATA = {
         data: {
           serviceType: "beauty_center",
           bookedDates: {
-            from: new Date(Date.now()).toString(),
-            to: new Date(Date.now()).toString(),
+            from: FIXED_DATE,
+            to: FIXED_DATE,
           },
-          rate: randomNum(5),
+          rate: 3,
           refundingRule: {
             cost: 0,
             duration: 4,
             id: "12",
           },
           duration: [30, 60],
-          reviews: randomNum(153),
+          reviews: 45,
           thumbnail: getRandomImage(),
           id: "123",
           rateReason: "cleanliness",
           title: "Citadines Montmartre Paris",
           cashback: {
-            amount: randomNum(20),
+            amount: 15,
             type: "percent",
           },
           guests: null,
-          price: randomNum(500),
+          price: 350,
           bookedTreatments: [
             {
               id: "123",
               category: "Facial",
               title: "Hydro facial with chemical peel",
               durationInMinutes: [30, 60],
-              price: randomNum(50),
-              discount: randomNum(60),
+              price: 40,
+              discount: 12,
             },
           ],
         },
@@ -674,7 +723,7 @@ const FAKE_CHECKOUT_DATA = {
         },
       },
     ] as ServiceCheckoutDataType[],
-    saved: randomNum(150),
+    saved: 75,
     vat: 7,
   },
 };

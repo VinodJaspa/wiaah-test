@@ -16,7 +16,7 @@ export type GetVehicleServiceMetaDataQuery = GqlResponse<
 // Function to fetch vehicle service details
 export const getVehicleServiceMetadataQuery = async (
   id: string,
-): Promise<GetVehicleServiceMetaDataQuery> => {
+): Promise<GetVehicleServiceMetaDataQuery | undefined> => {
   // Initialize the GraphQL request client
   const client = createGraphqlRequestClient();
 
@@ -55,9 +55,11 @@ export const getVehicleServiceMetadataQuery = async (
     if (response && response.data) {
       return response.data as GetVehicleServiceMetaDataQuery;
     } else {
+      return undefined;
       console.error("Failed to fetch data: response is null");
     }
   } catch (error) {
+    return error as GetVehicleServiceMetaDataQuery;
     console.error("Error fetching vehicle service details:", error);
   }
 };

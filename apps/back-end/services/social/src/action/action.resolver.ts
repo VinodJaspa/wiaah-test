@@ -40,8 +40,6 @@ import { EffectService } from 'src/effect/effect.service';
 import { Audio } from 'src/audio/entities/audio.entity';
 import { ClientKafka } from '@nestjs/microservices';
 import {
-  GetBulkUserMostInteractionersMessage,
-  GetBulkUserMostInteractionersMessageReply,
   GetUserMostInteractionersMessage,
   GetUserMostInteractionersMessageReply,
 } from 'nest-dto';
@@ -56,7 +54,7 @@ export class ActionResolver {
     private readonly effectService: EffectService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
-  ) { }
+  ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -328,6 +326,7 @@ export class ActionResolver {
 
   @Query(() => Action)
   async getMyRecommendedAction(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Action> {
     return {} as Action;
@@ -360,8 +359,8 @@ export class ActionResolver {
         },
         cursor: args.cursor
           ? {
-            id: args.cursor,
-          }
+              id: args.cursor,
+            }
           : undefined,
         take: args.take + 1,
         orderBy: {
@@ -396,8 +395,8 @@ export class ActionResolver {
         },
         cursor: args.cursor
           ? {
-            id: args.cursor,
-          }
+              id: args.cursor,
+            }
           : undefined,
         take: args.take + 1,
         orderBy: {
@@ -471,6 +470,7 @@ export class ActionResolver {
     );
 
     const {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       results: { data, error, success },
     } = await KafkaMessageHandler<
       string,

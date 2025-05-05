@@ -19,7 +19,7 @@ export interface PersonalInformationStepProps {
   isValid?: (data: null | Record<string, any>) => any;
 }
 
-let countriesArray: {
+const countriesArray: {
   value: string;
   label: string;
 }[] = [];
@@ -34,14 +34,14 @@ countries.forEach((element) => {
 export const PersonalInformationStep: React.FC<
   PersonalInformationStepProps
 > = ({ isValid }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
-  let [countryCode, setCountryCode] = React.useState("");
-  let [stateCode, setStateCode] = React.useState("");
-  let [states, setState] = React.useState([
+  const [countryCode, setCountryCode] = React.useState("");
+  const [stateCode, setStateCode] = React.useState("");
+  const [states, setState] = React.useState([
     { value: "", label: t("Select_country_first!", "Select country first!") },
   ]);
-  let [cities, setCities] = React.useState([
+  const [cities, setCities] = React.useState([
     { value: "", label: t("Select_state_first!", "Select state first!") },
   ]);
 

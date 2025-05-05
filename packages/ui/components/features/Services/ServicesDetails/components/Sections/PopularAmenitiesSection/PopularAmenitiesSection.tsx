@@ -1,6 +1,7 @@
+import { ServicePropertiesSwticher } from "@UI/components/features/Services/components/Switchers/ServicePropertiesSwticher";
+import { HStack } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HStack, ServicePropertiesSwticher } from "@UI";
 
 export interface PopularAmenitiesSectionProps {
   amenities: string[];
@@ -10,7 +11,7 @@ export interface PopularAmenitiesSectionProps {
 export const PopularAmenitiesSection: React.FC<
   PopularAmenitiesSectionProps
 > = ({ amenities, cols = 1 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <section className="flex flex-col w-full gap-7">
       <p className="text-lg text-darkBrown md:text2xl font-bold leading-none">

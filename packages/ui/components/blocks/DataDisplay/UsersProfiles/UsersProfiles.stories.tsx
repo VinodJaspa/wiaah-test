@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import {
   UsersProfiles,
   storybookDataDisplayBlocksTitle,
@@ -15,8 +15,8 @@ function convertUserProfiles(users) {
 }
 const convertedUserProfiles = convertUserProfiles(usersProfilesPlaceHolder);
 export default {
-  title: storybookDataDisplayBlocksTitle + "UsersProfiles",
+  title: "UI / blocks / Data Display /UsersProfiles",
   component: UsersProfiles,
-} as ComponentMeta<typeof UsersProfiles>;
+} as Meta<typeof UsersProfiles>;
 
 export const Default = () => <UsersProfiles users={convertedUserProfiles} />;

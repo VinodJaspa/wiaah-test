@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,10 +21,19 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@const": ["src/const"],
-      "prismaClient": ["prisma/generated/client"],
-      "prismService": ["src/prisma.service"],
-      "@mailing/*": ["src/mailing/*"]
-    }
+      "@const": [
+        "src/const"
+      ],
+      "prismaClient": [
+        "prisma/generated/client"
+      ],
+      "prismService": [
+        "src/prisma.service"
+      ],
+      "@mailing/*": [
+        "src/mailing/*"
+      ]
+    },
+    "strict": true
   }
 }

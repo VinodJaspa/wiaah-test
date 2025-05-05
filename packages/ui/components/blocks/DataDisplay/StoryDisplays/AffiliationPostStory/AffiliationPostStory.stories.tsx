@@ -1,9 +1,9 @@
 import { storybookStoriesTitle, AffiliationPostStory } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookStoriesTitle + "AffiliationPostStory",
+  title: "UI / blocks / stories /AffiliationPostStory",
   component: AffiliationPostStory,
-} as ComponentMeta<typeof AffiliationPostStory>;
+} as Meta<typeof AffiliationPostStory>;
 
 export const Default = () => <AffiliationPostStory postId="12" />;

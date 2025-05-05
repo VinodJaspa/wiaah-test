@@ -14,7 +14,7 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
   type = "cash",
   props,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <span
       {...props}

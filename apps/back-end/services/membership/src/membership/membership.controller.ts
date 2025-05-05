@@ -92,7 +92,7 @@ export class MembershipController {
       return new GetUserMembershipPriceIdMessageReply({
         success: true,
         data: null,
-        error,
+        error: error instanceof Error ? error : new Error(String(error)),
       });
     }
   }
@@ -154,7 +154,7 @@ export class MembershipController {
     } catch (error) {
       return new GetIsExternalSellerReply({
         data: null,
-        error,
+        error: error instanceof Error ? error : new Error(String(error)),
         success: false,
       });
     }

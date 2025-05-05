@@ -14,7 +14,7 @@ export class ProductPostController {
   async handleNewProduct(
     @Payload() { value }: { value: NewProductCreatedEvent },
   ) {
-    let input: CreateProductPostInput = {
+    const input: CreateProductPostInput = {
       productId: value.input.id,
     };
     await this.commandbus.execute<CreateProductPostCommand>(

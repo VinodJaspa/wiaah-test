@@ -1,44 +1,53 @@
+import EllipsisText from "@blocks/EllipsisText";
+import { useSocialControls } from "@blocks/Layout";
 import { ContentHostType } from "@features/API";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
+import { LocationAddress } from "@features/Services/components/DataDisplay/LocationAddress/LocationAddress";
+import { useLikeContent } from "@features/Social";
 import {
   Avatar,
   Button,
-  CommentIcon,
+  CommentOutlineIcon2,
   DigitalCamera,
-  EllipsisText,
-  HStack,
   HeartFillIcon,
-  LocationAddressDisplay,
+  HeartOutlineIcon,
+  HStack,
   LocationOutlineIcon,
   LoopIcon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   MusicNoteFillIcon,
   PersonGroupIcon,
-  SaveFlagOutlineIcon,
   SaveFlagFIllIcon,
+  SaveFlagOutlineIcon,
   ShareIcon,
   ShoppingCartOutlinePlusIcon,
   Slider,
   StarsIcon,
-  VStack,
   Verified,
-  VerticalDotsIcon,
   VolumeIcon,
-  useLikeContent,
-  useSocialControls,
-  HeartOutlineIcon,
-} from "ui";
+  VStack,
+} from "@partials";
+import { useCommentReportModal } from "@src/Hooks";
+import e from "express";
+import Link from "next/link";
 import { PersonalizeActions } from "placeholder";
-import { NumberShortner, mapArray } from "utils";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { HiDotsHorizontal } from "react-icons/hi";
+import { useRouting } from "routing";
+import { mapArray, NumberShortner } from "utils";
 
-export const ActionsView: React.FC = () => {
-  const { t } = useTranslation();
+export
+ const ActionsView: React.FC = () => {
+const { t } = useTranslation();
   const { shareLink, showContentComments } = useSocialControls();
   const { mutate } = useLikeContent();
   const { getUrl } = useRouting();
   const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
     useSocialControls();
+  const { openModalWithId } = useCommentReportModal();
 
   const memoizedCreateRemixAction = useCallback(createRemixAction, []);
   const memoizedShowContentTaggedProfiles = useCallback(
@@ -100,6 +109,7 @@ export const ActionsView: React.FC = () => {
       }
     }
   };
+
   // Effect to handle video end event
   React.useEffect(() => {
     const videoElements = videoRefs.current;
@@ -120,6 +130,9 @@ export const ActionsView: React.FC = () => {
           videoElement.removeEventListener("ended", onEnded);
         };
       }
+      else {
+        return () => { }; // No cleanup needed if videoElement is null
+      }
     });
 
     // Clean up effect
@@ -131,6 +144,7 @@ export const ActionsView: React.FC = () => {
       });
     };
   }, [actions, playingIndex]); // Re-run if actions change
+
   // Scroll event handling to detect up or down scroll and play the corresponding video
   const debouncedScrollHandler = useCallback(() => {
     let lastCallTime = Date.now();
@@ -170,15 +184,20 @@ export const ActionsView: React.FC = () => {
         {mapArray(actions, (v, i) => (
           <div
             key={i}
-            ref={(el) => (videoContainersRef.current[i] = el)} // Assign video container ref
+            ref={(el) => {
+              videoContainersRef.current[i] = el; // Assign video container ref
+            }}
             className="sm:w-[min(26rem,100%)] w-full mx-auto h-full md:h-5/6 relative "
           >
             <video
-              ref={(el) => (videoRefs.current[i] = el)} // Assign video ref
+              ref={(el) => {
+                videoRefs.current[i] = el; // Assign video ref
+              }} // Assign video ref
               src={v.src}
               className="w-full h-full object-cover"
             />
-            <div className="absolute pb-14 z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
+
+            <div className="absolute z-10 px-4 py-6 text-white text-xl top-0 left-0 overflow-hidden w-full h-full flex flex-col justify-between">
               <div className="flex flex-col w-full gap-6">
                 <div className="flex justify-between">
                   <DigitalCamera />
@@ -191,10 +210,7 @@ export const ActionsView: React.FC = () => {
                     <MusicNoteFillIcon />
                     <p className="text-xs font-medium">{v?.audio?.name}</p>
                   </div>
-                  <HStack className="gap-4">
-                    <VolumeIcon className="text-lg" />
-                    <VerticalDotsIcon className="text-sm" />
-                  </HStack>
+                  <VolumeIcon className="text-lg" />
                 </div>
                 <Button
                   colorScheme="gray"
@@ -203,6 +219,7 @@ export const ActionsView: React.FC = () => {
                   <ShoppingCartOutlinePlusIcon className="text-2xl text-white" />
                 </Button>
               </div>
+
               <div className="flex flex-col w-full gap-4">
                 <div className="flex flex-col gap-2">
                   <HStack className="flex-wrap gap-2">
@@ -232,61 +249,63 @@ export const ActionsView: React.FC = () => {
                     ))}
                   </HStack>
                   <HStack>
-                    <Avatar className="w-11" src={v?.profile?.photo} />
+                    <Link href={`/profile/${v.profile.id}`}>
+                      <Avatar
+                        className="flex-shrink-0"
+                        src={v?.profile?.photo}
+                      />
+                    </Link>
                     <div className="flex flex-col">
                       <HStack>
-                        <p className="font-semibold">{v?.profile?.username}</p>
+                        <Link
+                          href={`/profile/${v.profile.id}`}
+                          className="font-semibold"
+                        >
+                          {v?.profile?.username}
+                        </Link>
                         {v?.profile?.verified ? (
                           <Verified className="text-primary text-sm" />
                         ) : null}
                       </HStack>
                       <HStack>
-                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2">
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0">
                           <LocationOutlineIcon />
-                          <LocationAddressDisplay location={v.location} />
+                          <LocationAddress isAction location={v.location} />
                         </HStack>
                         <HStack
+                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0"
                           onClick={() =>
                             memoizedShowContentTaggedProfiles(
                               v.id,
                               ContentHostType.Action,
                             )
                           }
-                          className="cursor-pointer bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2"
                         >
                           <PersonGroupIcon />
                           <p>
-                            {v.tags.length} {t("people")}
+                            {v.tags.length} {t("People")}
                           </p>
+                        </HStack>
+                        <HStack className="bg-black text-xs rounded-full text-white bg-opacity-40 py-1 px-2 flex-shrink-0">
+                          <MusicNoteFillIcon />
+                          <p>Artist - Music</p>
                         </HStack>
                       </HStack>
                     </div>
                   </HStack>
                   <div className="flex text-sm gap-2 text-white">
-                    <EllipsisText maxLines={2}>
-                      {product.prodTitle.slice(0, 79)}
-                    </EllipsisText>
+                    <EllipsisText
+                      content={product.prodTitle}
+                      maxLines={2}
+                      index={i}
+                      isActionView
+                    />
                   </div>
                 </div>
-                {/* Add the Play/Pause Button */}
-                <Button
-                  onClick={() => handlePlayPause(i)} // Call the play/pause function
-                  className="self-end"
-                  colorScheme={playingIndex === i ? "success" : "primary"}
-                >
-                  {playingIndex === i ? "Pause" : "Play"} {/* Toggle label */}
-                </Button>
               </div>
             </div>
-            <div className="  flex flex-col gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-4 -right-12">
-              <VStack onClick={toggleSave} className="cursor-pointer">
-                {/* Toggle between outline and filled icon based on saved state */}
-                {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
-                {/* Update text based on saved state */}
-                <p className="font-medium text-xs">
-                  {isSaved ? t("Saved") : t("Save")}
-                </p>
-              </VStack>
+
+            <div className="flex flex-col items-center gap-4 w-[34px] text-3xl self-end absolute z-10 bottom-0 -right-12">
               <button
                 onClick={() =>
                   mutate(
@@ -297,7 +316,7 @@ export const ActionsView: React.FC = () => {
                       },
                     },
                     {
-                      onSuccess(data, variables, context) { },
+                      onSuccess(data, variables, context) {},
                     },
                   )
                 }
@@ -317,7 +336,7 @@ export const ActionsView: React.FC = () => {
                 }
               >
                 <VStack>
-                  <CommentIcon />
+                  <CommentOutlineIcon2 />
                   <p className="font-medium text-xs">
                     {NumberShortner(v.comments)}
                   </p>
@@ -335,6 +354,41 @@ export const ActionsView: React.FC = () => {
                   </p>
                 </VStack>
               </button>
+              <VStack onClick={toggleSave} className="cursor-pointer">
+                {/* Toggle between outline and filled icon based on saved state */}
+                {isSaved ? <SaveFlagFIllIcon /> : <SaveFlagOutlineIcon />}
+                {/* Update text based on saved state */}
+                <p className="font-medium text-xs">
+                  {isSaved ? t("Saved") : t("Save")}
+                </p>
+              </VStack>
+              {/* More options */}
+              <div className="h-full relative">
+                <Menu>
+                  <MenuButton>
+                    <HiDotsHorizontal className="cursor-pointer fill-black" />
+                  </MenuButton>
+                  <MenuList className="absolute -translate-y-[calc(100%+0.5rem)] -translate-x-9 text-base">
+                    <MenuItem>
+                      <p>{t("hide", "Hide")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("go_to_post", "Go to post")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p onClick={() => openModalWithId(v.profile.id || "")}>
+                        {t("report_user", "Report user")}
+                      </p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("copy_link", "Copy link")}</p>
+                    </MenuItem>
+                    <MenuItem>
+                      <p>{t("cancel", "Cancel")}</p>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
             </div>
           </div>
         ))}

@@ -1,28 +1,22 @@
-import {
-  useBreakpointValue,
-  Flex,
-  HStack,
-  Icon,
-  Center,
-  Spinner,
-  Button,
-  Divider,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiOutlineShop } from "react-icons/ai";
 import { useQuery } from "react-query";
+import { useMediaQuery } from "react-responsive";
 import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
-  const isMobile = useBreakpointValue({ base: true, sm: false });
-  const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const isBase = useMediaQuery({ maxWidth: 767 });
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 })
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+ 
+const { t } = useTranslation();
+
 
   const router = useRouter();
   const { tag } = router.query;
@@ -35,50 +29,43 @@ export const PlacesView: React.FC = () => {
   );
 
   return (
-    <Flex direction={"column"} my="2rem">
-      <HStack px="1rem" justify={"space-between"} w="100%">
+    <div className="flex flex-col my-8 w-full">
+      <div className="flex px-4 justify-between w-full">
         {!isMobile && (
-          <Button visibility={"hidden"} textTransform={"capitalize"}>
+          <button className="invisible capitalize">
             {t("follow", "follow")}
-          </Button>
+          </button>
         )}
-        <HStack>
-          <Image
+        <div className="flex items-center gap-4">
+          <img
             alt="thumbnail"
-            rounded="xl"
-            h="3rem"
-            w="auto"
-            objectFit="cover"
             src="/place-1.jpg"
+            className="h-12 w-auto rounded-xl object-cover"
           />
-          <Icon fontSize={"xx-large"} as={AiOutlineShop} />
-          <Flex direction={"column"} align="center">
-            <Text fontWeight={"bold"} fontSize="x-large">
-              {tag}
-            </Text>
-            <Text fontWeight={"bold"} fontSize="lg">
-              5.5m
-            </Text>
-          </Flex>
-        </HStack>
-        <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
-      </HStack>
-      <Divider borderColor={"black"} my="1rem" />
+          <AiOutlineShop className="text-3xl" />
+          <div className="flex flex-col items-center">
+            <p className="font-bold text-xl">{tag}</p>
+            <p className="font-bold text-lg">5.5m</p>
+          </div>
+        </div>
+        <button className="capitalize">{t("follow", "follow")}</button>
+      </div>
+
+      <div className="border-t border-black my-4"></div>
+
       {isLoading ? (
-        <Center>
-          <Spinner colorScheme={"primary"} />
-        </Center>
+        <div className="flex justify-center items-center">
+          <div className="animate-spin border-4 border-primary rounded-full w-8 h-8"></div>
+        </div>
       ) : (
-        <ListWrapper
-          cols={cols}
-          itemProps={{ className: "flex flex-col items-center" }}
-        >
+        <div className={`grid grid-cols-${cols} gap-4`}>
           {placesPH &&
             placesPH.map((place, i) => (
               <PlaceCard fixedHeight="17rem" key={i} {...place} />
             ))}
-        </ListWrapper>
+        </div>
       )}
-    </Flex>
+    </div>
+
   );
 };

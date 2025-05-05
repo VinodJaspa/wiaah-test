@@ -1,7 +1,7 @@
 export type ServicesType =
   | "hotel"
   | "restaurant"
-  | "holidays_rentals"
+  | "holiday_rentals"
   | "health_center"
   | "general"
   | "vehicle"

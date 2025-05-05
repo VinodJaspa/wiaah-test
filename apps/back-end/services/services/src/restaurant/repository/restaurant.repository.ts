@@ -192,6 +192,10 @@ export class RestaurantRepository {
               : [],
           }))
         : [],
+      presentations: input.presentations.map((presentation: any) => ({
+        ...presentation,
+        // Transform the presentation object to match the expected type
+      })),
     };
   }
 }

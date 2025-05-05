@@ -50,7 +50,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
   const [allDays, setAllDays] = React.useState<FormatedDays[]>(getDays());
   const [activeEvent, setActiveEvent] = React.useState<Event>();
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   React.useEffect(() => {
     getDividedWeeks();
@@ -97,7 +97,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
   }
 
   const getDividedWeeks: () => void = React.useCallback(() => {
-    let array: FormatedDays[][] = [];
+    const array: FormatedDays[][] = [];
     let currentPhase = 0;
     while (currentPhase * 7 < allDays.length) {
       const sliced = [

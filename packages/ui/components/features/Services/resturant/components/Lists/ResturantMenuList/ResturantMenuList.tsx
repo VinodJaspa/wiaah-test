@@ -18,8 +18,8 @@ export const ResturantMenuList: React.FC<ResturantMenuListProps> = ({
     <div className="flex flex-col gap-4">
       <p className="font-bold">{menu.name}</p>
       {mapArray(menu.dishs, (item, i) => (
-        <div className="font-semibold justify-between flex items-center pr-2">
-          <div className="flex gap-3 items-center">
+        <div className="font-semibold w-full grid grid-cols-[auto_100px]">
+          <div className="flex gap-3 items-center mt-2">
             <div className="min-w-[5rem] rounded-xl overflow-hidden">
               <AspectRatioImage
                 ratio={3 / 4}

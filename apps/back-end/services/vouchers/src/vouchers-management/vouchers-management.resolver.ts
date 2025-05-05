@@ -75,7 +75,7 @@ export class VouchersManagementResolver {
   @Query(() => [Voucher])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getFilteredVouchers(@Args('args') args: GetFilteredVouchers) {
-    let filters: Prisma.VoucherWhereInput[] = [];
+    const filters: Prisma.VoucherWhereInput[] = [];
 
     if (args.currency) {
       filters.push({

@@ -24,7 +24,7 @@ describe('comments e2e tests', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    let moduleFixture = await Test.createTestingModule({
+    const moduleFixture = await Test.createTestingModule({
       imports: [
         ProfileModule,
         PrismaModule,
@@ -52,7 +52,7 @@ describe('comments e2e tests', () => {
   afterAll(async () => {
     if (app) await app.close();
   });
-  let client = new PrismaClient();
+  const client = new PrismaClient();
 
   const createUsersGroup = async (name: string, count: number = 5) => {
     for (const idx of [...Array(count)].map((_, i) => i + 1)) {

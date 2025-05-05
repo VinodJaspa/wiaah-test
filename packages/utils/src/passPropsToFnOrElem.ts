@@ -1,5 +1,5 @@
 import React from "react";
-import { PassPropsToChild } from "utils";
+import { PassPropsToChild } from './PassPropsToChilds';
 
 type ValueOrFn<Props> = React.ReactNode | ((props: Props) => React.ReactNode);
 

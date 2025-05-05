@@ -2,11 +2,11 @@ import React from "react";
 import {
   AspectRatio,
   PriceDisplay,
-  VehicleProprtiesList,
   Button,
   ServicesRequestKeys,
   Image,
 } from "@UI";
+import { VehicleProprtiesList } from "@UI/components/features/Services/Vehicle/components/Lists/VehicleProprtiesList";
 import { Vehicle } from "api";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -17,7 +17,7 @@ export interface VehicleSearchCardProps extends Vehicle {
 export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
   const { price, properties, presentations, showTotal = false, title } = props;
   const { visit } = useRouting();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const thumbnail = presentations?.find(({ type }) => type === "img")?.src;
   return (
     <div className="flex flex-col gap-4 w-full">
@@ -36,7 +36,7 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
             <Button
               onClick={() =>
                 visit((routes) =>
-                  routes.visitService(props, ServicesRequestKeys.vehicle)
+                  routes.visitService(props, ServicesRequestKeys.vehicle),
                 )
               }
             >

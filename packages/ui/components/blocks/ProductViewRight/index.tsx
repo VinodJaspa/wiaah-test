@@ -45,7 +45,7 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   imgUrl,
   id,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { OpenShoppingCart } = useMutateShoppingCart();
   const { AddNewItem } = useCartSummary();
   const { ChangeTab } = useProductDescTabs();

@@ -1,29 +1,25 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
-  ArrowLeftIcon,
   Button,
   ChatMessagesSideBar,
   ChatRoom,
   Drawer,
   DrawerContent,
-  DrawerHeader,
   DrawerOverlay,
-  HStack,
   NewMessageModal,
   Text,
   VStack,
   useGetChatRoomQuery,
-  useUserData,
   useResponsive,
-  useSocialControls,
+  useUserData,
 } from "ui";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 
 export const ChatView: React.FC = () => {
   const { visit, getParam, getCurrentPath, getQuery } = useRouting();
   const roomId = getParam("roomId");
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   function handleRouteChatRoom(roomId: string) {
@@ -70,7 +66,7 @@ export const ChatView: React.FC = () => {
             <Text className="text-center text-lg">
               {t(
                 "default_chat_subHeader",
-                "Dont miss a minute to talk to your contacts"
+                "Dont miss a minute to talk to your contacts",
               )}
             </Text>
             <Button>{t("Send Message")}</Button>

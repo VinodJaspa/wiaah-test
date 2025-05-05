@@ -1,10 +1,10 @@
 import { storybookDataDisplayBlocksTitle, HashTagSearchItem } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "HashTagSearchItem",
+  title: "UI / blocks / Data Display /HashTagSearchItem",
   component: HashTagSearchItem,
-} as ComponentMeta<typeof HashTagSearchItem>;
+} as Meta<typeof HashTagSearchItem>;
 
 export const Default = () => (
   <HashTagSearchItem hashtagName="test" hashtagViews={153} />

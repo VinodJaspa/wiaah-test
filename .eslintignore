@@ -1,0 +1,6 @@
+dist/
+node_modules/
+nx/
+prisma/
+back_end/
+turbo

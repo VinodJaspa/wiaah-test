@@ -1,12 +1,12 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
 import { AccordionButton, AccordionItem, AccordionPanel, Accordion } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "Accordion",
+  title: "UI / partials / Accordion",
   component: Accordion,
-} as ComponentMeta<typeof Accordion>;
+} as Meta<typeof Accordion>;
 
 export const unControlled: React.FC = () => {
   return (

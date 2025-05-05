@@ -13,14 +13,14 @@ import { PrismaClient } from 'prismaClient';
 
 import { AppModule } from '../src/app.module';
 
-let mockSeller = { ...mockedUser, accountType: accountType.SELLER };
-let mockBuyer = { ...secendMockedUser, accountType: accountType.BUYER };
+const mockSeller = { ...mockedUser, accountType: accountType.SELLER };
+const mockBuyer = { ...secendMockedUser, accountType: accountType.BUYER };
 
 // jest.useFakeTimers().setSystemTime(new Date(2022, 8, 15, 13));
 
 describe('first', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({

@@ -91,7 +91,11 @@ export const AddNewPostModal: React.FC = () => {
   }, [media]);
 
   const cleanUpStates = () => {
-    // Implement state cleanup logic here
+    setMedia(undefined);
+    setMediaType(undefined);
+    setStep(0);
+    setImageIdx(0);
+    setActionVidBlob(undefined);
   };
 
   const renderPhotoContent = () => (
@@ -141,7 +145,7 @@ export const AddNewPostModal: React.FC = () => {
                         <VideoEditorStep
                           media={media}
                           setActionVidBlob={setActionVidBlob}
-                          handleChange={handleChange}
+                          handleChange={()=> handleChange("srcUploadId", URL.createObjectURL(actionVidBlob!))}
                         />
                       </StepperFormHandler>
                     ),
@@ -162,7 +166,7 @@ export const AddNewPostModal: React.FC = () => {
                 ]}
               />
               <ModalFooter className="justify-between absolute bottom-1 w-full ">
-                <Button>{t("Cancel")}</Button>
+                <Button onClick={hideNewPublish}>{t("Cancel")}</Button>
                 <Button onClick={() => nextStep()}>{t("Next")}</Button>
               </ModalFooter>
             </React.Fragment>
@@ -174,6 +178,9 @@ export const AddNewPostModal: React.FC = () => {
 
   const renderDropZone = () => (
     <div
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
       onDrop={(event) => {
         event.preventDefault();
         setMedia(event.dataTransfer.files);
@@ -220,7 +227,9 @@ export const AddNewPostModal: React.FC = () => {
             : renderDropZone()}
         {media && (
           <ModalFooter className="justify-between">
-            {mediaType === "photo" && <Button> {t("Cancel")}</Button>}
+            {mediaType === "photo" && (
+              <Button onClick={hideNewPublish}> {t("Cancel")}</Button>
+            )}
             {mediaType === "photo" && <Button> {t("Share")}</Button>}
           </ModalFooter>
         )}
@@ -278,7 +287,7 @@ const PhotoPreview: React.FC<{
 );
 
 const PostDetailsForm: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="h-full justify-center items-center w-full justify-self-center flex gap-6">
       <div className="w-full flex flex-col gap-2">
@@ -343,7 +352,7 @@ const FormField: React.FC<{ label: string; component: React.ReactNode }> = ({
 const VideoEditorStep: React.FC<{
   media: FileList | undefined;
   setActionVidBlob: (blob: Blob) => void;
-  handleChange: (key: string, value: string) => void;
+  handleChange: (key: string, value: any) => void;
 }> = ({ media, setActionVidBlob, handleChange }) => (
   <div className="mx-auto w-[20.5rem]">
     <VideoEditor
@@ -363,7 +372,7 @@ const VideoDetailsStep: React.FC<{
   coversRef: React.MutableRefObject<Record<number, HTMLVideoElement>>;
   setCoversRef: (idx: number, node: HTMLVideoElement) => void;
 }> = ({ form, coversRef, setCoversRef }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
       <div className="w-96 mx-auto">

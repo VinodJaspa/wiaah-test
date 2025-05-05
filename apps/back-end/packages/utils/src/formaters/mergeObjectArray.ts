@@ -12,7 +12,7 @@ export function mergeObjectArray<
   compareKey,
 }: {
   originalData: TOriginal[];
-  updateData: TUpdate[];
+  updateData: any [];
   compareKey: TCompareKey;
 }) {
   const __existingObjects: {

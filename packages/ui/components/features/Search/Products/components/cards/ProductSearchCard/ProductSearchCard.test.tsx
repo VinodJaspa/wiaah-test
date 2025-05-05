@@ -3,7 +3,7 @@ import { ProductSearchCard, ProductSearchCardProps } from "./ProductSearchCard";
 
 describe("ProductSearcCard", () => {
   let wrapper: ShallowWrapper;
-  let props: ProductSearchCardProps = {
+  const props: ProductSearchCardProps = {
     productInfo: {
       cashback: 5,
       colors: ["red", "green"],

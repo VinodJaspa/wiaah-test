@@ -1,12 +1,12 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { storybookPartailsTitle } from "utils";
 import { OrderStatusDisplay } from "@UI";
 import { OrderStatusEnum } from "@features/API/gql/generated";
 
 export default {
-  title: storybookPartailsTitle + "OrderStatusDisplay",
+  title: "UI / partials / OrderStatusDisplay",
   component: OrderStatusDisplay,
-} as ComponentMeta<typeof OrderStatusDisplay>;
+} as Meta<typeof OrderStatusDisplay>;
 
 export const canceled = () => {
   return <OrderStatusDisplay status={OrderStatusEnum.RejectedBySeller} />;

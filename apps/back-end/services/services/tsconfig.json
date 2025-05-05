@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,31 +21,82 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@dto": ["src/dto"],
-      "@category": ["src/category"],
-      "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"],
-      "@entities": ["src/entities"],
-      "@const": ["src/constents"],
-      "@decorators": ["src/decorators"],
-      "@restaurant": ["src/restaurant"],
-      "@restaurant/*": ["src/restaurant/*"],
-      "@service-ownership": ["src/service-ownership"],
-      "@health-center": ["src/health-center"],
-      "@utils": ["src/utils"],
-      "@beauty-center": ["src/beauty-center"],
-      "@beauty-center/*": ["src/beauty-center/*"],
-      "@vehicle-service": ["src/vehicle"],
-      "@vehicle-service/*": ["src/vehicle/*"],
-      "@models": ["src/models"],
-      "@working-schedule/*": ["src/working-schedule/*"],
-      "@health-center/*": ["src/health-center/*"],
-      "@hotel/*": ["src/hotel/*"],
-      "@service/*": ["src/service/*"],
-      "@insurance/*": ["src/insurance/*"],
-      "@service-discovery/*": ["src/service-discovery/*"],
-      "@kafka-module": ["src/kafka.module"],
-      "@book-service/*": ["src/book-service/*"]
-    }
+      "@dto": [
+        "src/dto"
+      ],
+      "@category": [
+        "src/category"
+      ],
+      "prismaClient": [
+        "prisma/generated/client"
+      ],
+      "prismaService": [
+        "src/prisma.service"
+      ],
+      "@entities": [
+        "src/entities"
+      ],
+      "@const": [
+        "src/constents"
+      ],
+      "@decorators": [
+        "src/decorators"
+      ],
+      "@restaurant": [
+        "src/restaurant"
+      ],
+      "@restaurant/*": [
+        "src/restaurant/*"
+      ],
+      "@service-ownership": [
+        "src/service-ownership"
+      ],
+      "@health-center": [
+        "src/health-center"
+      ],
+      "@utils": [
+        "src/utils"
+      ],
+      "@beauty-center": [
+        "src/beauty-center"
+      ],
+      "@beauty-center/*": [
+        "src/beauty-center/*"
+      ],
+      "@vehicle-service": [
+        "src/vehicle"
+      ],
+      "@vehicle-service/*": [
+        "src/vehicle/*"
+      ],
+      "@models": [
+        "src/models"
+      ],
+      "@working-schedule/*": [
+        "src/working-schedule/*"
+      ],
+      "@health-center/*": [
+        "src/health-center/*"
+      ],
+      "@hotel/*": [
+        "src/hotel/*"
+      ],
+      "@service/*": [
+        "src/service/*"
+      ],
+      "@insurance/*": [
+        "src/insurance/*"
+      ],
+      "@service-discovery/*": [
+        "src/service-discovery/*"
+      ],
+      "@kafka-module": [
+        "src/kafka.module"
+      ],
+      "@book-service/*": [
+        "src/book-service/*"
+      ]
+    },
+    "strict": true
   }
 }

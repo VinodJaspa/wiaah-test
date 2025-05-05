@@ -12,7 +12,7 @@ import {
   DotIcon,
   ServiceRefundableTypeDescription,
   PopularAmenitiesSection,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { mapArray, setTestid } from "utils";
 
@@ -38,7 +38,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
     onEdit,
     onRemove,
   } = props;
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const amanitiesNames = amenites.map((amenity) => amenity.name);
 
@@ -56,7 +56,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
         </span>
         <EllipsisText maxLines={3}>{description}</EllipsisText>
 
-        <LocationAddressDisplay
+        <LocationAddress
           location={{
             city: location.city,
             country: location.country!,

@@ -11,7 +11,7 @@ export const AddBadgeButton: React.FC<AddBadgeButtonProps> = ({
   onClick,
   children,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <Badge
       variant="success"

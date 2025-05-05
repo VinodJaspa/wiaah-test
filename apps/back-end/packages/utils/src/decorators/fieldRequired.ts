@@ -11,7 +11,7 @@ export function FieldRequired(
   value: Primitives | Primitives[],
   validationOptions?: ValidationOptions
 ) {
-  return function(object: Object, propertyName: string) {
+  return function(object: object, propertyName: string) {
     registerDecorator({
       name: "FieldRequired",
       target: object.constructor,

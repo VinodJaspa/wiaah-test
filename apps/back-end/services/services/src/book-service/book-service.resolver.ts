@@ -226,7 +226,7 @@ export class BookServiceResolver {
 
   @Query(() => [BookedService])
   adminGetBookings(@Args('args') args: AdminGetBookingsInput) {
-    let filters: Prisma.BookedServiceWhereInput[] = [];
+    const filters: Prisma.BookedServiceWhereInput[] = [];
 
     if (args.id) {
       filters.push({

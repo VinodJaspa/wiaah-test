@@ -49,7 +49,8 @@ import Head from "next/head";
 
 const Edit = () => {
   const { getParam } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const id = getParam("id");
 
   // NOTE: graphql is not ready yet

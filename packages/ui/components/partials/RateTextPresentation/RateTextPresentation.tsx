@@ -8,7 +8,7 @@ export interface RateTextPresentationProps {
 export const RateTextPresentation: React.FC<RateTextPresentationProps> = ({
   rate,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <span className="font-bold ">
       {rate < 2

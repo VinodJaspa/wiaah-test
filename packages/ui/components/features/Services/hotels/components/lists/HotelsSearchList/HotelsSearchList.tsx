@@ -18,10 +18,10 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({ }) => {
 
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
-  let filters = {};
-  let getLocationFilterQuery = "";
+  const filters = {};
+  const getLocationFilterQuery = "";
   const condition = (room: HotelRoom) => { };
   const { isTablet } = useResponsive();
   // TODO: create hotels table

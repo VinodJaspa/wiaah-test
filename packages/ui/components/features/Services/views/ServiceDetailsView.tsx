@@ -307,7 +307,7 @@ export const ServiceDetailsView: React.FC<{
   const isError = false;
   const isLoading = false;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const shop = FAKE_USER_SHOP_DATA;
 
   const serviceType = shop?.type || ServiceType.Hotel;
@@ -918,6 +918,12 @@ export const ServiceDetailsView: React.FC<{
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
           thumbnail: `/profile (${i + 1}).jfif`,
           date: new Date().toString(),
+          ratings: 5,
+          bookedService: {
+            id: `service-${i + 1}`,
+            image: `/service-image-${i + 1}.jpg`,
+            name: `Service ${i + 1}`,
+          },
         }))}
       />
       {/* <Stack col divider={<Divider variant="vert" />}>
@@ -1526,6 +1532,12 @@ export const ServiceDetailsView: React.FC<{
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                   thumbnail: `/profile (${i + 1}).jfif`,
                   date: new Date().toString(),
+                  ratings: 5,
+                  bookedService: {
+                    id: `service-${i + 1}`,
+                    image: `/service-image-${i + 1}.jpg`,
+                    name: `Service ${i + 1}`,
+                  },
                 }))}
               />
             </SpinnerFallback>
@@ -1556,7 +1568,7 @@ const ServiceDetailsTabHead: React.FC<{
 export const ServiceDetailsFacilities: React.FC<{
   service: Partial<Service>;
 }> = ({ service: v }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const showOn = (types: ServiceType[]) =>
     types.includes(v.type || ServiceType.Hotel);
 
@@ -1614,7 +1626,7 @@ export const ServiceDetailsCancelationSwitcher: React.FC<{
   policy: ServiceCancelationType;
   serviceType: ServiceType;
 }> = ({ policy, serviceType }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       {(() => {

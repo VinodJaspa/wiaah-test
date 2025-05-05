@@ -39,8 +39,9 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
         <SocialStoryModal storyData={story} profileId="4" />
       )}
       <div
-        className={`${seen ? "p-[0rem]" : "p-[0.20rem]"
-          } rounded-full bg-gradient-to-b from-primary to-blue-400`}
+        className={`${
+          seen ? "p-[0rem]" : "p-[0.20rem]"
+        } rounded-full bg-gradient-to-b from-primary to-blue-400`}
       >
         <div className="w-full h-full overflow-hidden rounded-full bg-white p-[0.125rem]">
           <AspectRatio

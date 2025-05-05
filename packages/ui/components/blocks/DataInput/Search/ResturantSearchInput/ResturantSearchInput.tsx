@@ -24,7 +24,7 @@ export const ResturantSearchInput: React.FC<ResturantSearchInputProps> = ({
   whatInputProps,
   whereInputProps,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex gap-2 items-center">
       <InputGroup className="relative rounded-lg border-gray-400 w-full">

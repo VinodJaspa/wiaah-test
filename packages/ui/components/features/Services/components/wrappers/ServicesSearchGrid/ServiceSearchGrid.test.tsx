@@ -12,7 +12,7 @@ const MockChildComp: React.FC<{ id: number }> = ({ id }) => {
 };
 
 describe("ServiceSearchWrapper render tests", () => {
-  let childsCount = 15;
+  const childsCount = 15;
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {

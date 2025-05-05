@@ -30,7 +30,7 @@ import { CartItem, ServiceType, ShoppingCartItemType } from "@features/API";
 export interface CartSummaryViewProps { }
 
 export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { cartSummaryItems } = useCartSummary();
@@ -50,7 +50,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
       <div className="flex flex-col gap-4">
         {mapArray(cartItems, (item) => (
           // TODO: bind props
-          <ShoppingCartMobileItem
+          (<ShoppingCartMobileItem
             thumbnail={item.product?.thumbnail || ""}
             title={item.product?.title || ""}
             checkin={new Date(item.checkin!)}
@@ -59,7 +59,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
             checkout={new Date(item.checkout!)}
             duration={item.service?.duration || 0}
             guests={item.guests || 0}
-          />
+          />)
         ))}
       </div>
     </div>

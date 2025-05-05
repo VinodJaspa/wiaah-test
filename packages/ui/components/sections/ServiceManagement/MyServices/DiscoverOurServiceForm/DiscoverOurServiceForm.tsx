@@ -23,7 +23,7 @@ export const DiscoverOurServiceForm: React.FC<DiscoverOurServiceFormProps> = ({
   serviceLabel,
   onChange,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
   const { emit } = useTypedReactPubsub((keys) => keys.openLoginPopup);

@@ -1,4 +1,5 @@
 import { NumberShortner } from "@UI/../utils/src";
+import Link from "next/link";
 import React from "react";
 import { HiOutlineHashtag } from "react-icons/hi";
 
@@ -28,7 +29,9 @@ export const HashtagCard: React.FC<HashtagCardProps> = ({ title, num }) => {
         <div className="rounded-full border border-gray-300 p-2">
           <HiOutlineHashtag className="w-4 h-4 text-[#20ECA7]" />
         </div>
-        <p className=" font-medium">{title}</p>
+        <Link href={`/hashtag/${title}`} className=" font-medium">
+          {title}
+        </Link>
       </div>
       <div className="flex gap-1 text-[#656565] text-xs">
         <p>{NumberShortner(num)}</p>

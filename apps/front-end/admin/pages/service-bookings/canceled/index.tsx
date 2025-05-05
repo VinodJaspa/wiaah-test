@@ -52,7 +52,8 @@ const orders: CanceledOrder[] = [...Array(10)].map((_, i) => ({
 }));
 
 const CanceledOrders: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   return (
     <React.Fragment>

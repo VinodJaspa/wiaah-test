@@ -1,9 +1,9 @@
 import React from "react";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ShopOpenPeriod, storybookDataFormatingTitle } from "@UI";
 export default {
-  title: storybookDataFormatingTitle + "ShopOpenPeriod",
+  title: "UI / blocks / Data Formating /ShopOpenPeriod",
   component: ShopOpenPeriod,
-} as ComponentMeta<typeof ShopOpenPeriod>;
+} as Meta<typeof ShopOpenPeriod>;
 
 export const Default = () => <ShopOpenPeriod openFrom={10} openTo={16} />;

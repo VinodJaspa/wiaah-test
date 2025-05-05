@@ -1,11 +1,11 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+
 import React from "react";
 import { colorPalette } from "ui/components/helpers/colorPalette";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 const EmptyCartSummary: React.FC = () => {
-  const { t } = useTranslation(); // Destructure the translate function (t)
+const { t } = useTranslation(); // Destructure the translate function (t)
   const router = useRouter();
   return (
     <div className="flex flex-col items-end h-full justyf-between ">

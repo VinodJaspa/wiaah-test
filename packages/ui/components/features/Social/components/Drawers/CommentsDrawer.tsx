@@ -28,7 +28,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const CommentsDrawer: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { value, hideContentComments } = useSocialControls(
     "showSocialContentComments",
   );
@@ -167,7 +167,7 @@ export const CommentCard: React.FC<{
     hostUserId: string;
   };
 }> = ({ comment }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex gap-1">
       <Avatar

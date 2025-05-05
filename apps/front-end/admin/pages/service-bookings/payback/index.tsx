@@ -33,7 +33,8 @@ interface Payback {
 }
 
 const Payback: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const paybackHistory: Payback[] = [...Array(10)].map((_, i) => ({
     id: randomNum(99999999).toString(),

@@ -1,4 +1,4 @@
-import { Text, TextProps } from "@chakra-ui/react";
+
 import React, { HtmlHTMLAttributes } from "react";
 import { DetailedHTMLProps } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ export const TranslationText: React.FC<TranslationTextProps> = ({
   translationObject,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <p {...props} className={`${props.className}`}>
       {typeof translationObject === "object"

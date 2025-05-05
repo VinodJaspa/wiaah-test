@@ -1,16 +1,13 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSidebarsTitle } from "utils";
 
 import { ServiceSearchFilter } from "./ServiceSearchFilter";
 
 export default {
-  title: storybookSidebarsTitle + "ServiceSearchFilter",
+  title: "UI / Blocks / SideBars /ServiceSearchFilter",
   component: ServiceSearchFilter,
-} as ComponentMeta<typeof ServiceSearchFilter>;
+} as Meta<typeof ServiceSearchFilter>;
 
-const template: ComponentStory<typeof ServiceSearchFilter> = (args) => (
-  <ServiceSearchFilter {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,10 +21,19 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-client": ["prisma/generated/client"],
-      "@dto": ["src/dto"],
-      "@entities": ["src/entities"],
-      "prismaService": ["src/prisma.service"]
-    }
+      "@prisma-client": [
+        "prisma/generated/client"
+      ],
+      "@dto": [
+        "src/dto"
+      ],
+      "@entities": [
+        "src/entities"
+      ],
+      "prismaService": [
+        "src/prisma.service"
+      ]
+    },
+    "strict": true
   }
 }

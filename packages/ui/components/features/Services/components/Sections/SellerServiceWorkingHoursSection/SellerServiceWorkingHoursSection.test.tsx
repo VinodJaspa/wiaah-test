@@ -6,7 +6,7 @@ import {
 
 describe("SellerServiceWorkingHoursSection", () => {
   let wrapper: ShallowWrapper;
-  let props: SellerServiceWorkingHoursSectionProps = {
+  const props: SellerServiceWorkingHoursSectionProps = {
     workingDays: {
       __typename: "ServiceWeekdaysWorkingHours",
       mo: {

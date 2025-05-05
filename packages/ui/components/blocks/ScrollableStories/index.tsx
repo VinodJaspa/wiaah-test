@@ -1,3 +1,4 @@
+import { useStoryModal } from "@blocks/Social";
 import React, { useEffect, useRef, useState } from "react";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -9,6 +10,7 @@ interface ScrollableStoriesProps {
 interface StoryType {
   image: string;
   seen: boolean;
+  userId: string;
 }
 
 export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
@@ -16,6 +18,8 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
 }) => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isScrollable, setIsScrollable] = useState(false);
+
+  const { OpenModal } = useStoryModal();
 
   const scrollRight = () => {
     if (carouselRef.current) {
@@ -39,7 +43,7 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
     const checkScrollable = () => {
       if (carouselRef.current) {
         setIsScrollable(
-          carouselRef.current.scrollWidth > carouselRef.current.clientWidth
+          carouselRef.current.scrollWidth > carouselRef.current.clientWidth,
         );
       }
     };
@@ -64,20 +68,22 @@ export const ScrollableStories: React.FC<ScrollableStoriesProps> = ({
         </button>
       )}
 
-      <div
+      {/* <div
         className={`flex items-center justify-center min-w-20 h-20 rounded-xl bg-[#F1F1F1]`}
       >
         <FaPlus className="w-[42px] h-[42px] text-[#3CD399]" />
-      </div>
+      </div> */}
       <div
         className="relative flex gap-6 w-full overflow-x-scroll z-10 noScroll "
         ref={carouselRef}
       >
         {stories.map((story, index) => (
           <div
+            onClick={() => OpenModal(story.userId)}
             key={index}
-            className={`min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${story.seen ? "p-0" : "p-[0.20rem]"
-              }`}
+            className={`cursor-pointer min-w-20 max-h-20 aspect-square rounded-xl bg-primary ${
+              story.seen ? "p-0" : "p-[0.20rem]"
+            }`}
           >
             <div
               className={`w-full h-full overflow-hidden rounded-xl bg-white p-[0.17rem]`}

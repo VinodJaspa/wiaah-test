@@ -3,6 +3,6 @@ import { EffectService } from './effect.service';
 import { EffectResolver } from './effect.resolver';
 
 @Module({
-  providers: [EffectResolver, EffectService]
+  providers: [EffectResolver, EffectService],
 })
 export class EffectModule {}

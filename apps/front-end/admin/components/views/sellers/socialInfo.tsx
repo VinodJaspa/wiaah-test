@@ -33,7 +33,8 @@ import { mapArray, NumberShortner, useForm } from "utils";
 export const AccountSocialInfo: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { data: posts } = useGetProfilePosts({
     userId: accountId,

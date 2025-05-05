@@ -433,9 +433,8 @@ export class ProfileService {
     profileId: string,
     userId: string,
   ): Promise<{ followed: boolean; userProfileId: string | null }> {
-    const { has, profileId: userProfileId } = await this.hasProfileByUserId(
-      userId,
-    );
+    const { has, profileId: userProfileId } =
+      await this.hasProfileByUserId(userId);
     const profile = await this.getProfileByProfileId(profileId);
     if (!has) throw new ProfileNotfoundException();
     const follow = await this.prisma.follow.findFirst({

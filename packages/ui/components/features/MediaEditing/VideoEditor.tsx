@@ -28,7 +28,7 @@ export const VideoEditor: React.FC<{
   onFinish: (data: Blob) => any;
   video: File;
 }> = ({ maxDuration, onFinish, video }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [proccessing, setProccessing] = React.useState<boolean>(false);
   const [update, setUpdate] = React.useState(false);
   const ref = React.useRef<HTMLVideoElement>(null);
@@ -89,7 +89,7 @@ export const VideoEditorControls: React.FC<{
   onSubmit: (start: number, end: number) => any;
   videoRef: React.RefObject<HTMLVideoElement>;
 }> = ({ videoRef: ref, onSubmit, maxDuration, maxDurationExccedError }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [trackWidth, setTrackWidth] = React.useState(100);
   const [playing, setPlaying] = React.useState(false);
   const handlersContainerRef = React.useRef<HTMLDivElement>(null);
@@ -424,22 +424,23 @@ const VideoEditorTrack: React.FC<{
   });
 
   function captureVideoImage(time: number) {
-    if (time > duration || time < 0) return;
+    if (time > duration || time < 0) return null;
 
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
 
-      if (!context) return;
+      if (!context) return null;
       videoRef.current.currentTime = time;
 
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
       const url = canvas.toDataURL("image/jpeg");
 
-      if (typeof url !== "string") return;
+      if (typeof url !== "string") return null;
       return url;
     }
+    return null;
   }
 
   return (

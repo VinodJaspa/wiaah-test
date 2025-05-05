@@ -6,7 +6,7 @@ import { ChatRoom } from '../entities';
 
 @Injectable()
 export class ChatRoomRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async CreatePrivateChatRoom(membersIds: string[]): Promise<ChatRoom> {
     const res = await this.prisma.room.create({
@@ -94,7 +94,7 @@ export class ChatRoomRepository {
     }
   }
 
-  async setRoomMemberOnline(userId: string, roomId: string): Promise<Boolean> {
+  async setRoomMemberOnline(userId: string, roomId: string): Promise<boolean> {
     try {
       await this.prisma.room.update({
         where: {
@@ -121,7 +121,7 @@ export class ChatRoomRepository {
     }
   }
 
-  async setRoomMemberOffline(userId: string, roomId: string): Promise<Boolean> {
+  async setRoomMemberOffline(userId: string, roomId: string): Promise<boolean> {
     try {
       await this.prisma.room.update({
         where: {

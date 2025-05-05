@@ -24,7 +24,7 @@ import { setTestid } from "utils";
 import { useRouting } from "@UI/../routing";
 
 export const AccountDeletionSection: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { mutate, data } = useSuspendAccountMutation();
@@ -129,7 +129,7 @@ export const DeleteAccountConfirmationModal: React.FC<
     showAccountDeletionConfirmation,
     hideAccountDeletionConfirmation,
   } = useSocialControls("showAccountDeletionConfirmation");
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <Modal
       isOpen={!!value}
@@ -153,7 +153,7 @@ export const DeleteAccountConfirmationModal: React.FC<
 export const DeleteAccountConfirmation: React.FC<{ onDelete: () => any }> = ({
   onDelete,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col text-xl gap-8 p-4">
       <span className="text-3xl text-primary-500">

@@ -34,9 +34,9 @@ const MAIL_SERVICES: { name: string; image: string }[] = [
 
 export const FindYourFriendsStep = React.forwardRef(
   ({}: { onSuccess: () => any }, ref) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
     const { isMobile } = useResponsive();
-    let [mailService, setMailService] = React.useState(0);
+    const [mailService, setMailService] = React.useState(0);
 
     React.useImperativeHandle(ref, () => ({
       onSubmit: () => {},

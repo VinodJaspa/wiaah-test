@@ -1,10 +1,7 @@
-import { HotelDetailsView } from "ui";
 import { NextPage } from "next";
-import Head from "next/head";
-import React from "react";
 import { MetaTitle } from "react-seo";
-import { SellerLayout } from "ui";
-
+import { HotelDetailsView, SellerLayout } from "ui";
+import React from 'react';
 const HolidayRentalsDetails: NextPage = () => {
   return (
     <>

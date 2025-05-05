@@ -133,6 +133,5 @@ export const useGetSocialPostQuery = (
   return useQuery(
     getSocialPostQueryKey(args),
     () => getSocialPostQueryFetcher(args),
-    options
   );
 };

@@ -25,7 +25,7 @@ export interface HealthCenterServiceDetailsFormProps {
 export const HealthCenterServiceDetailsForm: React.FC<
   HealthCenterServiceDetailsFormProps
 > = ({ onChange, lang = "en" }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

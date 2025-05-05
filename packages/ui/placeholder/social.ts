@@ -26,6 +26,8 @@ import {
   ProductAttributeDisplayType,
   ProductAttributeSelectionType,
   AttachmentType,
+  StoreType,
+  Story,
 } from "@features/API";
 
 import { products } from "./products";
@@ -135,7 +137,7 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
   },
 ];
 
-import { StoreType, Story } from "@features/API/";
+
 const images: string[] = [
   // "https://imgd.aeplcdn.com/1056x594/n/cw/ec/44686/activa-6g-right-front-three-quarter.jpeg?q=75",
   "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
@@ -185,7 +187,7 @@ export const rentalsPh = [
 
 export const getRandomServiceImage = (
   type: ServiceType,
-  menuType?: RestaurantDishType
+  menuType?: RestaurantDishType,
 ) => {
   const getRandom = (imgs: string[]) => imgs[randomNum(imgs.length)];
   switch (type) {
@@ -234,6 +236,7 @@ export const PostCommentPlaceholder: PostComment = {
 };
 export const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
+    postType: "service", // or, "product"
     views: 56300,
     numberOfShares: 13,
     id: "1",
@@ -370,7 +373,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
-  Math.floor(Math.random() * postProfilesPlaceholder.length)
+    Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
 const comments: PostComment[] = [
   {
@@ -878,7 +881,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       id: "1",
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30781075/pexels-photo-30781075/free-photo-of-sunlit-historical-building-facade-at-dusk.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       attachments: [
         {
           type: "image",
@@ -942,7 +946,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
       id: "2",
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30117400/pexels-photo-30117400/free-photo-of-silhouette-of-surfer-at-sunset-in-taghazout.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       attachments: [
         {
           src: getRandomImage(),
@@ -966,7 +971,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30491755/pexels-photo-30491755/free-photo-of-majestic-green-mountain-ridge-in-martinique.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "3",
       attachments: [
         {
@@ -983,7 +989,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30157461/pexels-photo-30157461/free-photo-of-elegant-interior-of-markgrafliches-opernhaus.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "4",
       attachments: [
         {
@@ -1000,7 +1007,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30349922/pexels-photo-30349922/free-photo-of-woman-in-white-dress-near-cliffside-lighthouse.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "5",
       attachments: [
         {
@@ -1048,12 +1056,12 @@ export const newsfeedPosts: PostCardInfo[] = [
       ],
     },
   },
-
   {
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/29749800/pexels-photo-29749800/free-photo-of-tropical-leaves-on-velvet-background-with-dew.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "6",
       attachments: [
         {
@@ -1070,7 +1078,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/30652897/pexels-photo-30652897/free-photo-of-woman-holding-yellow-chrysanthemum-in-soft-light.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "7",
       attachments: [
         {
@@ -1087,7 +1096,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/29847092/pexels-photo-29847092/free-photo-of-icelandic-landscape-at-sunset-with-jimny.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "8",
       attachments: [
         {
@@ -1104,7 +1114,8 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
-      thumbnail: getRandomImage(),
+      thumbnail:
+        "https://images.pexels.com/photos/15661147/pexels-photo-15661147/free-photo-of-a-scooter-parked-in-front-of-a-store-with-purple-flowers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
       id: "9",
       attachments: [
         {
@@ -1117,7 +1128,62 @@ export const newsfeedPosts: PostCardInfo[] = [
       comments: [],
     },
   },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      thumbnail:
+        "https://images.pexels.com/photos/1083807/pexels-photo-1083807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      id: "10",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      thumbnail:
+        "https://images.pexels.com/photos/2825033/pexels-photo-2825033.jpeg?auto=compress&cs=tinysrgb&w=600",
+      id: "11",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      thumbnail:
+        "https://images.pexels.com/photos/27081007/pexels-photo-27081007/free-photo-of-close-up-of-a-woman-wearing-brown-leather-shoes.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+      id: "12",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
 ];
+
 export const ProfilePlaceholder: Profile = {
   __typename: "Profile",
   activeStatus: ActiveStatus.Active,

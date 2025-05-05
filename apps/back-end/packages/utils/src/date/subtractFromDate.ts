@@ -9,7 +9,7 @@ export function SubtractFromDate(date: Date, opt: MathDateOptions): Date {
   if (isNaN(Date.parse(new Date(date).toString())))
     throw new Error("bad date object");
 
-  let newDate = new Date(date);
+  const newDate = new Date(date);
 
   if (opt.days) {
     newDate.setDate(newDate.getDate() - opt.days);
@@ -28,7 +28,7 @@ export function AddToDate(date: Date, opt: MathDateOptions): Date {
   if (isNaN(Date.parse(new Date(date).toString())))
     throw new Error("bad date object");
 
-  let newDate = new Date(date);
+  const newDate = new Date(date);
 
   if (opt.days) {
     newDate.setDate(newDate.getDate() + opt.days);

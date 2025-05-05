@@ -15,7 +15,8 @@ import Head from "next/head";
 
 const View: NextPage = () => {
   const { getParam, back } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const id = getParam("id");
 
@@ -73,11 +74,11 @@ const View: NextPage = () => {
 export default View;
 
 const FAKE_REQUEST: GetAdminProfileVerificationRequestQuery["adminGetProfileVerificationRequest"] =
-{
-  __typename: "AccountVerification",
-  id: "verif1",
-  fullName: "John Doe",
-  idPhoto: getRandomImage(),
-  status: AccountVerificationStatus.Pending,
-  username: "johndoe123",
-};
+  {
+    __typename: "AccountVerification",
+    id: "verif1",
+    fullName: "John Doe",
+    idPhoto: getRandomImage(),
+    status: AccountVerificationStatus.Pending,
+    username: "johndoe123",
+  };

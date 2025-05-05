@@ -173,7 +173,7 @@ const ServiceSearchBar = ({
   serviceType: ServiceType;
 }) => {
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
 
   const renderMobileSearchBar = () => {

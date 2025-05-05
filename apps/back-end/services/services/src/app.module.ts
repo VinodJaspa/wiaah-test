@@ -39,14 +39,14 @@ import { RestaurantModule } from '@restaurant';
   exports: [ElasticsearchModule],
   providers: [],
 })
-class GlobalElasticsearchModule { }
+class GlobalElasticsearchModule {}
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class GlobalPrismaService { }
+export class GlobalPrismaService {}
 
 @Module({
   imports: [
@@ -74,4 +74,4 @@ export class GlobalPrismaService { }
     RestaurantModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

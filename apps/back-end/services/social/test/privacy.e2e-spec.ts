@@ -28,7 +28,7 @@ const producer = kafka.producer();
 describe('privacy e2e', () => {
   let app: INestApplication;
   let prisma: PrismaService;
-  let mockKafka = new NestKafkaClientMock();
+  const mockKafka = new NestKafkaClientMock();
 
   beforeAll(async () => {
     await producer.connect();

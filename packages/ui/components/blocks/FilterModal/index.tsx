@@ -22,7 +22,7 @@ interface Events {
 }
 
 export const FilterModal: React.FC<FilterModalProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { handleClose, handleOpen, isOpen } = useModalDisclouser();
 
   const { Listen } = useReactPubsub<Events>(

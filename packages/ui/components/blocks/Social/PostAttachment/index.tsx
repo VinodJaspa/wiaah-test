@@ -1,7 +1,7 @@
+import { AttachmentType, StoryType } from "@features/API";
 import React from "react";
 import { HtmlDivProps } from "types";
 import { Image } from "ui";
-import { AttachmentType, StoryType } from "@features/API";
 import { cn } from "utils";
 
 export interface PostAttachmentProps {
@@ -22,7 +22,7 @@ export interface PostAttachmentProps {
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
-  type = AttachmentType.Img,
+  type = StoryType.Image,
   src,
   alt = "",
   footer,
@@ -45,8 +45,9 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
       )}
       <Image
         className={cn(
-          `w-full h-full ${cover ? "object-cover" : "object-contain"} ${blur ? "absolute" : ""
-          } px-2`,
+          `w-full h-full ${cover ? "object-cover" : "object-contain"} ${
+            blur ? "absolute" : ""
+          }`,
           className,
         )}
         alt={alt}
@@ -82,7 +83,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
   // Conditional rendering based on attachment type
   switch (type) {
-    case AttachmentType.Img:
+    case "image":
       return (
         <div
           className="relative flex justify-center items-center w-full h-full overflow-hidden"
@@ -94,7 +95,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
         </div>
       );
 
-    case AttachmentType.Vid:
+    case "video":
       return (
         <div className="relative flex justify-center items-center w-full h-full overflow-hidden">
           <video

@@ -16,4 +16,4 @@ export class ServicePolicy {
 @ObjectType()
 export class ServiceTranslationPolicy extends CreateGqlObjectTranslationInputFields(
   ServicePolicy,
-) { }
+) {}

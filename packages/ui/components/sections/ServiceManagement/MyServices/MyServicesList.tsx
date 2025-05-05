@@ -45,7 +45,7 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
     },
   });
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const { data } = useGetMyShopType();
   const serviceType = data?.type || ServiceType.Hotel;

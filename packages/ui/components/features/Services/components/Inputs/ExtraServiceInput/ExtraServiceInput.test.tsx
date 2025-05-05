@@ -10,7 +10,7 @@ const selectors = {
 
 describe("ExtraServiceInput", () => {
   let wrapper: ShallowWrapper;
-  let props: ExtraServiceInputProps = {
+  const props: ExtraServiceInputProps = {
     onAdd(data) {},
   };
   let mockOnAdd: jest.Mock;

@@ -1,10 +1,10 @@
 import { AccountVerification, storybookSectionsTitle } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AccountVerification",
+  title: "UI / sections / AccountVerification",
   component: AccountVerification,
-} as ComponentMeta<typeof AccountVerification>;
+} as Meta<typeof AccountVerification>;
 
 export const Default = () => {
   return <AccountVerification />;

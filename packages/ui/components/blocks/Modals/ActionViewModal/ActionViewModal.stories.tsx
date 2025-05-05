@@ -6,12 +6,12 @@ import {
   useActionViewPopup,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "ActionViewModal",
+  title: "UI / Blocks / Modals /ActionViewModal",
   component: ActionViewModal,
-} as ComponentMeta<typeof ActionViewModal>;
+} as Meta<typeof ActionViewModal>;
 
 export const Default = () => {
   const { setCurrentActionId } = useActionViewPopup();

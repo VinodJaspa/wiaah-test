@@ -19,7 +19,8 @@ import { useForm } from "utils";
 
 const ProductReturnsEdit: NextPage = () => {
   const { getParam, back } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const id = getParam("id");
 
   const { data: _data } = useGetAdminReturnedOrder(id);
@@ -58,7 +59,7 @@ const ProductReturnsEdit: NextPage = () => {
             <div className="flex col-span-3 w-full justify-start">
               <DateFormInput
                 dateValue={new Date(
-                  data?.orderItem?.order?.createdAt || new Date()
+                  data?.orderItem?.order?.createdAt || new Date(),
                 ).toString()}
               />
             </div>

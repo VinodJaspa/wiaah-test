@@ -23,11 +23,11 @@ export const TabsContext = React.createContext<TabsContextValue>({
   currentTabIdx: 0,
   tabsComponents: [],
   tabsTitles: [],
-  setCurrentTabIdx: () => { },
-  setTabsComponents: () => { },
-  setTabsTitlesComponents: () => { },
-  addTab: () => { },
-  addTitle: () => { },
+  setCurrentTabIdx: () => {},
+  setTabsComponents: () => {},
+  setTabsTitlesComponents: () => {},
+  addTab: () => {},
+  addTitle: () => {},
 });
 
 export interface TabsProps {
@@ -45,9 +45,7 @@ export const Tabs: React.FC<TabsProps> = React.memo(
     >([]);
 
     React.useEffect(() => {
-      if (currentTab !== currentTabIdx) {
-        setCurrentTab(currentTabIdx);
-      }
+      setCurrentTab(currentTabIdx);
     }, [currentTabIdx]);
 
     React.useEffect(() => {
@@ -121,7 +119,7 @@ export const Tabs: React.FC<TabsProps> = React.memo(
   },
 );
 
-export interface TabsHeaderProps extends HtmlDivProps { }
+export interface TabsHeaderProps extends HtmlDivProps {}
 
 export const TabsHeader: React.FC<TabsHeaderProps> = ({
   className,
@@ -185,7 +183,7 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
   return null;
 };
 
-export interface TabListProps extends HtmlDivProps { }
+export interface TabListProps extends HtmlDivProps {}
 
 export const TabList: React.FC<TabListProps> = ({
   children,
@@ -198,13 +196,13 @@ export const TabList: React.FC<TabListProps> = ({
     <div {...props} className={`${className || ""}`}>
       {tabsComponents[currentTabIdx]
         ? PassPropsToFnOrElem<TabsContextValue>(
-          tabsComponents[currentTabIdx].component,
-          {
-            currentTabIdx,
-            tabsComponents,
-            ...rest,
-          },
-        )
+            tabsComponents[currentTabIdx].component,
+            {
+              currentTabIdx,
+              tabsComponents,
+              ...rest,
+            },
+          )
         : null}
       {children}
     </div>

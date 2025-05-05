@@ -1,11 +1,11 @@
 import React from "react";
 import { SellerNavigationDrawer } from ".";
-import { Box, Text } from "@chakra-ui/react";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Button } from "@chakra-ui/react";
+
+import { Meta, StoryFn } from "@storybook/react";
+
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
-import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "@UI";
+import { AffiliationIcon, AffiliationIconOutline, ShadcnBox, ShadCnButton, ShadcnText, UsersProfiles } from "@UI";
 import {
   HiUserGroup,
   HiOutlineUserGroup,
@@ -21,7 +21,7 @@ import { NavigationLinkType } from "@UI/../types/src";
 export default {
   title: "UI/blocks/drawers/SellerNavigationDrawer",
   component: SellerNavigationDrawer,
-} as ComponentMeta<typeof SellerNavigationDrawer>;
+} as Meta<typeof SellerNavigationDrawer>;
 
 const NavigationLinks: NavigationLinkType[] = [
   {
@@ -119,7 +119,7 @@ const usersProfilesPlaceHolder = [
   },
 ];
 
-const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
+const Templete: StoryFn<typeof SellerNavigationDrawer> = ({
   activeLink,
   onLinkClick,
   ...args
@@ -128,7 +128,7 @@ const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
   const [active, setActive] = React.useState<string>();
   return (
     <>
-      <Button onClick={() => setOpen(true)}>open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>open</ShadCnButton>
       <SellerNavigationDrawer
         activeLink={active}
         onLinkClick={(v) => setActive(v.url)}
@@ -137,7 +137,7 @@ const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
     </>
   );
 };
-const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
+const TempleteWithChildren: StoryFn<typeof SellerNavigationDrawer> = ({
   activeLink,
   onLinkClick,
   ...args
@@ -146,35 +146,46 @@ const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
   const [active, setActive] = React.useState<string>();
   return (
     <>
-      <Button onClick={() => setOpen(true)}>open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>open</ShadCnButton>
       <SellerNavigationDrawer
         activeLink={active}
         onLinkClick={(v) => setActive(v.url)}
         {...args}
       >
-        <Box textTransform={"capitalize"} px="2rem">
-          <Text py="1rem" fontWeight={"bold"} textTransform={"capitalize"}>
-            {t("suggestions").toString()}
-          </Text>
+       <ShadcnBox className="capitalize px-8">
+  <ShadcnText className="py-4 font-bold capitalize">
+    {t("suggestions").toString()}
+  </ShadcnText>
+
+
           <UsersProfiles
             maxShowMoreItems={8}
             maxLongItems={5}
             variant="long"
             users={placeholderUsers}
           />
-        </Box>
+       </ShadcnBox>
       </SellerNavigationDrawer>
     </>
   );
 };
-export const Default = Templete.bind({});
-Default.args = {
-  links: NavigationLinks,
+
+export const Default = {
+  render: Templete,
+
+  args: {
+    links: NavigationLinks,
+  },
 };
-export const WithChildren = TempleteWithChildren.bind({});
-WithChildren.args = {
-  links: NavigationLinks,
+
+export const WithChildren = {
+  render: TempleteWithChildren,
+
+  args: {
+    links: NavigationLinks,
+  },
 };
+
 // Placeholder data
 const placeholderUsers = [
   {

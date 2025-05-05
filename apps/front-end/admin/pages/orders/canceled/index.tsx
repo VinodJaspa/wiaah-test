@@ -25,7 +25,8 @@ import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
 const CanceledOrders: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination, controls } = usePaginationControls();
   const { form, handleChange, inputProps } = useForm<
@@ -114,7 +115,7 @@ const CanceledOrders: NextPage = () => {
                     <Td>{"visa"}</Td>
                     <Td>
                       <Button colorScheme="danger">
-                        <TrashIcon onClick={() => { }} />
+                        <TrashIcon onClick={() => {}} />
                       </Button>
                     </Td>
                   </Tr>

@@ -73,7 +73,7 @@ const mockedTreatments: BeautyCenterTreatmentsListProps["treatments"] = [
   },
 ];
 
-let mockedCancilation = [
+const mockedCancilation = [
   {
     duration: 6,
     cost: 0,

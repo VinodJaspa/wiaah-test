@@ -17,7 +17,7 @@ export const VideoFlattenFrames: React.FC<{
   React.useEffect(() => {
     if (!duration) return;
     const load = async () => {
-      let vids: (Blob | undefined)[] = [];
+      const vids: (Blob | undefined)[] = [];
       for (let i = 0; i < Math.floor(duration); i++) {
         const data = await cropVideo(videoSrc, i, i + 1);
         vids.push(data);

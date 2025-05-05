@@ -1,10 +1,10 @@
 import React from "react";
-import { Avatar, EllipsisText, HashTags, Button } from "@UI";
+import { Avatar, EllipsisText, HashTags, Button, ShadcnIcon } from "@UI";
 import { useTranslation } from "react-i18next";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiUser } from "react-icons/hi";
 import { HtmlDivProps } from "types";
-import { Icon } from "@chakra-ui/react";
+
 import { MdPlace } from "react-icons/md";
 
 export interface ActionHeaderProps extends HtmlDivProps {
@@ -32,7 +32,7 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
   className,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className={`${className || ""} w-full flex gap-1 flex-col`} {...props}>
@@ -68,7 +68,8 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
             className="cursor-pointer flex items-center gap-2"
             onClick={() => onLocationClick && onLocationClick(actionLocation)}
           >
-            <Icon fontSize={"1em"} as={MdPlace} />
+        <ShadcnIcon as={MdPlace} className="text-base" />
+
             <span className="text-lg">{actionLocation}</span>
           </div>
         )}

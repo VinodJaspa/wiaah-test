@@ -32,7 +32,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let eventClient: ClientKafka;
-  let mockKafka = new NestKafkaClientMock();
+  const mockKafka = new NestKafkaClientMock();
 
   beforeEach(async () => {
     mockKafka.reset();

@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "antd";
 import { AspectRatioImage, HStack, Rate } from "@partials";
 import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
 import { useRouter } from "next/router";
@@ -19,7 +18,7 @@ export const MarketBeautyCenterSearchCardAlt: React.FC<
   MarketBeautyCenterSearchCardAltProps
 > = ({ category, id, rate, reviews, thumbnail, title, name }) => {
   const router = useRouter();
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-1 p-1 shadow-md">

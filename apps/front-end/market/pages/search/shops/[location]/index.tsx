@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Container, SearchView } from "ui";
 
 const ShopsLocationSearch: NextPage = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <Head>

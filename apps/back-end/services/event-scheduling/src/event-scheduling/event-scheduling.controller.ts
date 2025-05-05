@@ -26,7 +26,7 @@ export class EventSchedulingController {
     private readonly prisma: PrismaService,
     @Inject(SERVICES.EVENT_SCHEDULING.token)
     private readonly eventClient: ClientKafka,
-  ) { }
+  ) {}
 
   logger = new Logger('EventSchedulingController');
 
@@ -75,7 +75,7 @@ export class EventSchedulingController {
           triggerId: value.input.triggerId,
         },
       });
-    } catch { }
+    } catch {}
   }
 
   @EventPattern(KAFKA_EVENTS.EVENT_SCHEDULING.removeEvent)
@@ -88,7 +88,7 @@ export class EventSchedulingController {
           triggerId: value.input.triggerId,
         },
       });
-    } catch { }
+    } catch {}
   }
 
   @Cron(CronExpression.EVERY_12_HOURS)

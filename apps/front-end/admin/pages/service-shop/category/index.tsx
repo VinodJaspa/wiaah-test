@@ -26,7 +26,8 @@ import {
 import { mapArray } from "utils";
 
 const ServiceShopCategory = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
   const [lang, setLang] = React.useState("en");

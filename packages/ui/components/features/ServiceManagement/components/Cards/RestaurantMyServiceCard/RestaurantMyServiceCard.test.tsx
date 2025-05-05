@@ -16,7 +16,7 @@ describe("HolidayRentalsMyServiceCard", () => {
   let wrapper: ReactWrapper;
   let onRemoveMock: jest.Mock;
   let onEditMock: jest.Mock;
-  let props: Omit<RestaurantMyServiceCardProps, "onEdit" | "onRemove"> = {
+  const props: Omit<RestaurantMyServiceCardProps, "onEdit" | "onRemove"> = {
     location: {
       address: "street name",
       city: "Geneve",

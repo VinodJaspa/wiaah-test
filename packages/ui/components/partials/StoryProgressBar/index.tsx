@@ -29,6 +29,9 @@ export const StoryProgressBar: React.FC<StoryProgressBarProps> = ({
       onClose(); // Close modal when all stories are finished
       setCurrentStory(0);
     }
+    return () => {
+      setCurrentStory(0); // Reset current story when component unmounts
+    }
   }, [currentStory, stories.length, onClose]);
 
   return (

@@ -28,12 +28,13 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
   renderOne,
 }) => {
   const [active, setActive] = React.useState<number>();
+
   return (
-    <div className="h-full overflow-hidden">
+    <div className="w-full h-full overflow-hidden">
       {attachments && !renderOne && attachments.length > 1 ? (
         <Slider
           leftArrowComponent={() => (
-            <ArrowLeftIcon className=" cursor-pointer text-primary text-4xl text-center bg-gray-200 bg-opacity-50 rounded-full" />
+            <ArrowLeftIcon className="cursor-pointer text-primary text-4xl text-center bg-gray-200 bg-opacity-50 rounded-full" />
           )}
           rightArrowComponent={() => (
             <ArrowRightIcon className="cursor-pointer text-primary text-4xl text-center bg-gray-200 bg-opacity-50  rounded-full" />
@@ -41,61 +42,66 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
           data-testid="test"
         >
           {attachments.map((attachment, i) => (
-            <PostAttachment
-              cover={true}
-              key={attachment.src + i}
-              type={AttachmentType.Img}
-              src={randomImage}
-              alt={attachment.postLocation}
-              footer={
-                showFooter ? (
-                  <div className="flex items-center gap-2 text-white text-2xl">
-                    {attachment.postLocation && (
-                      <div className="flex items-center gap-2">
-                        <HiLocationMarker />
-                        <span className="text-lg">
-                          {attachment.postLocation}
-                        </span>
-                      </div>
-                    )}
-                    {profileInfo && profileInfo.name && (
-                      <div className="flex items-center gap-2">
-                        <HiUser />
-                        <span className="text-lg">{profileInfo.name}</span>
-                      </div>
-                    )}
-                  </div>
-                ) : undefined
-              }
-            />
+            <div className="w-full h-full" key={attachment.src + i}>
+              <PostAttachment
+                cover={true}
+                type={AttachmentType.Img}
+                src={attachment.src}
+                alt={attachment.postLocation}
+                footer={
+                  showFooter ? (
+                    <div className="flex items-center gap-2 text-white text-2xl">
+                      {attachment.postLocation && (
+                        <div className="flex items-center gap-2">
+                          <HiLocationMarker />
+                          <span className="text-lg">
+                            {attachment.postLocation}
+                          </span>
+                        </div>
+                      )}
+                      {profileInfo && profileInfo.name && (
+                        <div className="flex items-center gap-2">
+                          <HiUser />
+                          <span className="text-lg">{profileInfo.name}</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : undefined
+                }
+              />
+            </div>
           ))}
         </Slider>
       ) : (
-        <PostAttachment
-          {...attachments[0]}
-          cover={true}
-          alt={"thumbnail"}
-          src={randomImage}
-          type={AttachmentType.Img}
-          footer={
-            <div className="flex items center gap-2 p-2 text-white font-4xl">
-              {attachments[0].postLocation && (
-                <div className="flex items-center gap-2">
-                  <HiLocationMarker />
-                  <span className="text-lg">{attachments[0].postLocation}</span>
-                </div>
-              )}
-              {profileInfo && profileInfo.name && (
-                <div className="flex items-center gap-2">
-                  <HiUser />
-                  <span className="text-lg">
-                    {profileInfo && profileInfo.name}
-                  </span>
-                </div>
-              )}
-            </div>
-          }
-        />
+        <div className="w-full h-full">
+          <PostAttachment
+            {...attachments[0]}
+            cover={true}
+            alt={"thumbnail"}
+            src={randomImage}
+            type={AttachmentType.Img}
+            footer={
+              <div className="flex items center gap-2 text-white font-4xl">
+                {attachments[0].postLocation && (
+                  <div className="flex items-center gap-2">
+                    <HiLocationMarker />
+                    <span className="text-lg">
+                      {attachments[0].postLocation}
+                    </span>
+                  </div>
+                )}
+                {profileInfo && profileInfo.name && (
+                  <div className="flex items-center gap-2">
+                    <HiUser />
+                    <span className="text-lg">
+                      {profileInfo && profileInfo.name}
+                    </span>
+                  </div>
+                )}
+              </div>
+            }
+          />
+        </div>
       )}
     </div>
   );

@@ -1,25 +1,22 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { ShippingMotheds } from "../";
 import { shippingMotheds } from "../../../placeholder";
 export default {
   title: "UI/blocks/ShippingMotheds",
   component: ShippingMotheds,
-} as ComponentMeta<typeof ShippingMotheds>;
+} as Meta<typeof ShippingMotheds>;
 
-const Template: ComponentStory<typeof ShippingMotheds> = (args) => (
-  <ShippingMotheds {...args} />
-);
+export const Default = {
+  args: {
+    motheds: shippingMotheds,
+  },
 
-export const Default = Template.bind({});
-Default.args = {
-  motheds: shippingMotheds,
+  decorators: [
+    (Story, { args }) => (
+      <section className="flex h-screen w-full flex-col items-center justify-center bg-slate-200">
+        <Story args={args} />
+      </section>
+    ),
+  ],
 };
-
-Default.decorators = [
-  (Story, { args }) => (
-    <section className="flex h-screen w-full flex-col items-center justify-center bg-slate-200">
-      <Story args={args} />
-    </section>
-  ),
-];

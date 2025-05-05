@@ -1,11 +1,11 @@
 import { storybookHeadersTitle } from "utils";
 import { MinimalHeader } from "./index";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookHeadersTitle + "Minimal Header",
+  title: "UI / Blocks / Headers /Minimal Header",
   component: MinimalHeader,
-} as ComponentMeta<typeof MinimalHeader>;
+} as Meta<typeof MinimalHeader>;
 
 export const Default = () => {
   return <MinimalHeader />;

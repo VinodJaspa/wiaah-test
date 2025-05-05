@@ -1,42 +1,36 @@
-import React from "react";
-import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
-import { IoSettingsOutline } from "react-icons/io5";
-import { CgShoppingBag } from "react-icons/cg";
-import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
-import { NavigationLinkType } from "types";
-import { getRandomImage } from "@UI";
 import {
-  MinimalHeader,
-  DiscoverHeader,
-  HeaderNavLink,
-  SellerNavigationSideBar,
-  SellerHeader,
-  Root,
   Container,
-  UsersProfiles,
-  ServicesIcon,
+  DiscoverHeader,
+  Divider,
   HStack,
   HashtagIcon,
+  HeaderNavLink,
   LocationButton,
-  Divider,
+  MinimalHeader,
+  Root,
   ScrollableContainer,
-  usePaginationControls,
-  useGetRecentStories,
-  useGetDiscoverHashtags,
+  SellerHeader,
+  SellerNavigationSideBar,
   SocialLayout,
-  StarOutlineIcon,
+  UsersProfiles,
+  useGetDiscoverHashtags,
+  useGetRecentStories,
+  usePaginationControls,
 } from "@UI";
-import { useResponsive, useAccountType } from "hooks";
-import { HtmlDivProps } from "types";
-import { getRouting, useRouting } from "routing";
-import { BsShop } from "react-icons/bs";
+import { useAccountType, useResponsive } from "hooks";
+import { useRouter } from "next/router";
+import React from "react";
 import { BiWallet } from "react-icons/bi";
-import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
-import { GetRecentStoriesInput } from "@features/API";
-import { IoIosStarOutline } from "react-icons/io";
+import { BsShop } from "react-icons/bs";
+import { CgShoppingBag } from "react-icons/cg";
 import { FaThList } from "react-icons/fa";
+import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
+import { IoIosStarOutline } from "react-icons/io";
+import { IoSettingsOutline } from "react-icons/io5";
+import { useSetRecoilState } from "recoil";
+import { getRouting, useRouting } from "routing";
+import { HtmlDivProps, NavigationLinkType } from "types";
 
 export const usersProfilesPlaceHolder = [
   {
@@ -255,13 +249,15 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         )}
         <Container
           noContainer={true}
-          className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
-            } h-full w-full`}
+          className={`${
+            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
+          } h-full w-full`}
         >
           {header && header !== null && (showMobileHeader || showHeader) ? (
             <div
-              className={`bg-white fixed z-[35] w-full top-0 left-0 ${isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-                }`}
+              className={`bg-white fixed z-[35] w-full top-0 left-0 ${
+                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+              }`}
               ref={headerRef}
             >
               <HeaderSwitcher
@@ -277,8 +273,9 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                   ? `calc(${headerHeight || 0}px + 2rem)`
                   : undefined,
               }}
-              className={`${containerProps?.className || ""
-                } overflow-hidden h-[max(fit,100%)] flex justify-center `}
+              className={`${
+                containerProps?.className || ""
+              } overflow-hidden h-[max(fit,100%)] flex justify-center `}
               {...containerProps}
             >
               {children}

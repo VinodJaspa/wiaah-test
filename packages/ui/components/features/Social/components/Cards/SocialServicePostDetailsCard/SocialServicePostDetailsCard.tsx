@@ -49,7 +49,7 @@ export const SocialServicePostDetailsCard: React.FC<
             : null}
         </Slider>
       </AspectRatio>
-      <PostInteractions likes={post.reactionNum} comments={post.comments} />
+      <PostInteractions likes={post.reactionNum} comments={post.comments} shares={0} />
       <CommentInput />
       <PostCommentsList postId={post.id} />
     </div>

@@ -13,7 +13,7 @@ export interface ServiceRefundableTypeDescriptionProps {
 export const ServiceRefundableTypeDescription: React.FC<
   ServiceRefundableTypeDescriptionProps
 > = ({ cost, duration, bookedDate, displayCost }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { addDays } = useDateManipulation(new Date(bookedDate).toString());
   const maxDate = addDays(duration);
 
@@ -21,7 +21,7 @@ export const ServiceRefundableTypeDescription: React.FC<
   return (
     <div className="flex items-center gap-4 justify-between">
       {duration > 0 ? (
-        <p className="text-[#FF0000] font-medium">
+        <p className="font-medium">
           {t("Fully refundable before")} {date?.month_short} {date?.day}
         </p>
       ) : cost > 0 ? (

@@ -44,66 +44,66 @@ export type GetRestaurantQuery = { __typename?: "Query" } & {
     | "status"
     | "vat"
   > & {
-    location: { __typename?: "ServiceLocation" } & Pick<
-      ServiceLocation,
-      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-    >;
-    menus: Array<
-      { __typename?: "RestaurantMenu" } & Pick<
-        RestaurantMenu,
-        "id" | "name"
-      > & {
-        dishs: Array<
-          { __typename?: "Dish" } & Pick<
-            Dish,
-            "id" | "ingredients" | "price" | "name" | "thumbnail"
-          >
-        >;
-      }
-    >;
-    policies: Array<
-      { __typename?: "ServicePolicy" } & Pick<
-        ServicePolicy,
-        "policyTitle" | "terms"
-      >
-    >;
-    presentations: Array<
-      { __typename?: "ServicePresentation" } & Pick<
-        ServicePresentation,
-        "src" | "type"
-      >
-    >;
-    serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
-      ServiceMetaInfo,
-      | "description"
-      | "hashtags"
-      | "metaTagDescription"
-      | "title"
-      | "metaTagKeywords"
-    >;
-    contact: { __typename?: "ServiceContact" } & Pick<
-      ServiceContact,
-      "address" | "city" | "country" | "email" | "phone" | "state"
-    >;
-    cancelationPolicies: Array<
-      { __typename?: "ServiceCancelationPolicy" } & Pick<
-        ServiceCancelationPolicy,
-        "cost" | "duration"
-      >
-    >;
-    owner: { __typename?: "Account" } & Pick<
-      Account,
-      "firstName" | "lastName" | "id" | "photo" | "verified"
-    >;
-    workingHours?: Maybe<
-      { __typename?: "WorkingSchedule" } & Pick<
-        WorkingSchedule,
-        "id" | "weekdays"
-      > & {
-        weekdays: ServiceWeekdaysWorkingHours;
-      }
-    >;
-  };
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+      >;
+      menus: Array<
+        { __typename?: "RestaurantMenu" } & Pick<
+          RestaurantMenu,
+          "id" | "name"
+        > & {
+            dishs: Array<
+              { __typename?: "Dish" } & Pick<
+                Dish,
+                "id" | "ingredients" | "price" | "name" | "thumbnail"
+              >
+            >;
+          }
+      >;
+      policies: Array<
+        { __typename?: "ServicePolicy" } & Pick<
+          ServicePolicy,
+          "policyTitle" | "terms"
+        >
+      >;
+      presentations: Array<
+        { __typename?: "ServicePresentation" } & Pick<
+          ServicePresentation,
+          "src" | "type"
+        >
+      >;
+      serviceMetaInfo: { __typename?: "ServiceMetaInfo" } & Pick<
+        ServiceMetaInfo,
+        | "description"
+        | "hashtags"
+        | "metaTagDescription"
+        | "title"
+        | "metaTagKeywords"
+      >;
+      contact: { __typename?: "ServiceContact" } & Pick<
+        ServiceContact,
+        "address" | "city" | "country" | "email" | "phone" | "state"
+      >;
+      cancelationPolicies: Array<
+        { __typename?: "ServiceCancelationPolicy" } & Pick<
+          ServiceCancelationPolicy,
+          "cost" | "duration" | "id"
+        >
+      >;
+      owner: { __typename?: "Account" } & Pick<
+        Account,
+        "firstName" | "lastName" | "id" | "photo" | "verified"
+      >;
+      workingHours?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<
+          WorkingSchedule,
+          "id" | "weekdays"
+        > & {
+            weekdays: ServiceWeekdaysWorkingHours;
+          }
+      >;
+    };
 };
 
 export const getRestaurantServiceProviderDetailsDataQuerykey = (id: string) => [
@@ -216,14 +216,17 @@ query getRestaurant($args:GetRestaurantInput!){
         const data: GetRestaurantQuery["getRestaurant"] = {
           cancelationPolicies: [
             {
+              id: "1",
               cost: 5,
               duration: 4,
             },
             {
+              id: "2",
               cost: 0,
               duration: 2,
             },
             {
+              id: "3",
               cost: 10,
               duration: 6,
             },

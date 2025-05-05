@@ -37,7 +37,7 @@ export const HealthCenterSearchResultsView: React.FC = () => {
     isLoading: healthIsLoading,
     isError: healthIsError,
   } = useGetFilteredHealthCenters({ pagination });
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <HealthCenterSearchBox />
@@ -84,7 +84,8 @@ export const HealthCenterSearchResultsView: React.FC = () => {
                               from: { hour: 0, minutes: 0 },
                               to: { hour: 24, minutes: 0 },
                             }}
-                            timeComponent={ResturantReplacableTimeComponent}
+                            
+                            timeComponent={ResturantReplacableTimeComponent as React.FC}
                           />
                         </StepperContent>
                       </>

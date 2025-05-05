@@ -1,4 +1,4 @@
-import { PaginationData } from "nest-utils";
+
 import { AsyncReturnType } from "types";
 import {
   PaginationFetchedData,

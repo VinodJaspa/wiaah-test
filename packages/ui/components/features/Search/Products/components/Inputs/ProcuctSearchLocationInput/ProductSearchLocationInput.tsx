@@ -8,7 +8,7 @@ export interface ProductSearchLocationInputProps extends HtmlInputProps {}
 export const ProductSearchLocationInput: React.FC<
   ProductSearchLocationInputProps
 > = (props) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const ph = `${t("Location")}...`;
   return (
     <InputGroup

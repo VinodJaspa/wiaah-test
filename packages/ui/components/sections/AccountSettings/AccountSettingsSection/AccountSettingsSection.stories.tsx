@@ -1,12 +1,12 @@
 import React from "react";
 import { StorybookImplemntationLayout, storybookSectionsTitle } from "utils";
 import { AccountSettingsSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "AccountSettingsSection",
+  title: "UI / sections / AccountSettingsSection",
   component: AccountSettingsSection,
-} as ComponentMeta<typeof AccountSettingsSection>;
+} as Meta<typeof AccountSettingsSection>;
 
 export const Default = () => {
   return <AccountSettingsSection accountId="5" />;

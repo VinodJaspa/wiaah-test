@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-
+// At the top of /pages/_app.tsx or any JSX file
+import React from 'react';
 class MyDocument extends Document {
   render() {
     return (

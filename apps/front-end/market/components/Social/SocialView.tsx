@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import {
   Container,
   PostCardsListWrapper,
@@ -39,8 +39,9 @@ import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { useBreakpointValue } from "utils";
+
 import { useTypedReactPubsub } from "@libs";
+import { useMediaQuery } from "react-responsive";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -89,15 +90,13 @@ export interface SocialViewProps {
 }
 
 export const SocialView: React.FC<SocialViewProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { getParam } = useRouting();
   const profileId = "32";
-  const cols = useBreakpointValue({ base: 3 });
+  const cols = useMediaQuery({ minWidth: 768 }) ? 3 : 1;  
   const { pagination } = usePaginationControls();
   const { data: posts } = useGetMyNewsfeedPostsQuery({ pagination });
   console.log("Posts  " + JSON.stringify(posts));
-
-  const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );

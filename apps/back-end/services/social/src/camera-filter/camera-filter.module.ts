@@ -3,6 +3,6 @@ import { CameraFilterService } from './camera-filter.service';
 import { CameraFilterResolver } from './camera-filter.resolver';
 
 @Module({
-  providers: [CameraFilterResolver, CameraFilterService]
+  providers: [CameraFilterResolver, CameraFilterService],
 })
 export class CameraFilterModule {}

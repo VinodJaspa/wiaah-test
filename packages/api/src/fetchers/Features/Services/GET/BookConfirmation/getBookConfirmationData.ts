@@ -51,7 +51,7 @@ const bookedServices: ServiceCheckoutDataType[] = [
     },
   },
   {
-    type: "resturant",
+    type: "restaurant",
     data: {
       serviceType: "restaurant",
       bookedDates: {

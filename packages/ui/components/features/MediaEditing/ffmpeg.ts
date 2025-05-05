@@ -24,7 +24,7 @@ export const useFFmpeg = () => {
     endTime: number
   ) => {
     // Load ffmpeg
-    if (!ffmpeg) return;
+    if (!ffmpeg) return null;
     // Create input stream from file input
     const inputFilePath =
       typeof inputFile === "string"
@@ -49,7 +49,7 @@ export const useFFmpeg = () => {
     const outputFilePath = "output.mp4";
     await ffmpeg.run(...args, outputFilePath);
     const data = ffmpeg.FS("readFile", outputFilePath);
-    const blob = new Blob([data.buffer], { type: "video/mp4" });
+    const blob = new Blob([new Uint8Array(data.buffer)], { type: "video/mp4" }); 
 
     // Return the blob
     return blob;

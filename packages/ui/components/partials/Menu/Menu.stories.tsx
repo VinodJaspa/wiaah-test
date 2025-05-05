@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { Menu, MenuButton, MenuList, MenuItem, MenuProps } from "@UI";
 import {
   storybookPartailsTitle,
@@ -8,9 +8,9 @@ import {
 import React from "react";
 
 export default {
-  title: storybookPartailsTitle + "Menu",
+  title: "UI / partials / Menu",
   component: Menu,
-} as ComponentMeta<typeof Menu>;
+} as Meta<typeof Menu>;
 
 export const Default: React.FC<MenuProps> = () => {
   return (

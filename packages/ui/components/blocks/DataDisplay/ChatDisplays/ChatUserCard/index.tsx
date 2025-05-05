@@ -28,7 +28,7 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   onClick,
 }) => {
   const { locale } = useLocale();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div
       onClick={onClick}

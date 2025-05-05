@@ -21,15 +21,15 @@ export const NewsFeedPostStory: React.FC<NewsFeedPostStoryProps> = ({
   } = useGetNewsfeedPostStory(postId, storyId);
   const data = PostCardPlaceHolder;
   const { CloseStories } = useStory();
-  function handleRoute() {
-    CloseStories();
-    if (data) {
-      router.push(data.profileInfo.id);
-    }
-  }
+  // function handleRoute() {
+  //   CloseStories();
+  //   if (data) {
+  //     router.push(data.profileInfo.id);
+  //   }
+  // }
 
   return (
-    <div className="cursor-pointer" onClick={handleRoute}>
+    <div>
       <div className="pointer-events-none">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {data && <PostCard post={data} />}

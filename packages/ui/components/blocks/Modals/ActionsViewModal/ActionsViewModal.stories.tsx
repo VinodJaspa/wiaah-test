@@ -6,7 +6,7 @@ import {
   Button,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 // Mock fetcher function for demonstration
 const mockFetcher = async (queryFn: any) => {
@@ -19,11 +19,10 @@ const mockFetcher = async (queryFn: any) => {
 
 // Define the story metadata
 export default {
-  title: storybookModalsTitle + "ActionsViewModal",
+  title: "UI / Blocks / Modals /ActionsViewModal",
   component: ActionsViewModal,
-} as ComponentMeta<typeof ActionsViewModal>;
+} as Meta<typeof ActionsViewModal>;
 
-// Define the story itself
 export const Default = () => {
   // Mock render child function
   const renderChild = (props: any) => {

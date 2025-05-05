@@ -10,7 +10,7 @@ jest.mock("@UI", () => ({
 describe("SavedPostsSection", () => {
   let wrapper: ShallowWrapper;
 
-  let mockHook = useGetMySavedPostsQuery as jest.Mock;
+  const mockHook = useGetMySavedPostsQuery as jest.Mock;
 
   beforeAll(() => {
     wrapper = shallow(<SavedPostsSection></SavedPostsSection>);

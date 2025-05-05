@@ -1,5 +1,5 @@
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import {
   Drawer,
   DrawerContent,
@@ -10,9 +10,9 @@ import {
 import React from "react";
 
 export default {
-  title: storybookPartailsTitle + "Drawer",
+  title: "UI / partials / Drawer",
   component: Drawer,
-} as ComponentMeta<typeof Drawer>;
+} as Meta<typeof Drawer>;
 
 export const Default = () => {
   const [isOpen, setOpen] = React.useState<boolean>(false);

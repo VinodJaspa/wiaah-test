@@ -16,7 +16,7 @@ export const SubscriptionPlanCard: React.FC<SubscriptionPlanCardProps> = ({
   price,
   trialDays,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="relative text-white items-center flex flex-col gap-4 justify-between py-16 w-[min(100%,20rem)] min-h-[30rem] bg-gradient-to-tl from-blue-600 to-primary rounded-lg shadow-md shadow-blue-600">
       <p className="text-4xl flex gap-1">

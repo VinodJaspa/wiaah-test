@@ -7,7 +7,7 @@ export function generateFiltersOfArgs<TArgs>(
   filters: ArgFilter<TArgs>[]
 ): Filter<TArgs>[] {
   if (typeof args !== "object") return [];
-  let filtersList: Filter<TArgs>[] = [];
+  const filtersList: Filter<TArgs>[] = [];
   filters.forEach((filter) => {
     if (filter in args) filtersList.push([filter, args[filter]]);
   });

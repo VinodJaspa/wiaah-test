@@ -1,6 +1,9 @@
+import {
+  HotelRoomDetailsCard,
+  HotelRoomDetailsCardProps,
+} from "@UI/components/features/Services/hotels/components/cards/HotelRoomDetailsCard";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useSetBookedServicesState } from "state";
-import { HotelRoomDetailsCard, HotelRoomDetailsCardProps } from "@UI";
 
 export interface HotelServiceRoomsSectionProps {
   rooms: HotelRoomDetailsCardProps["room"][];
@@ -9,7 +12,7 @@ export const HotelServiceRoomsSection: React.FC<
   HotelServiceRoomsSectionProps
 > = ({ rooms }) => {
   const { addService } = useSetBookedServicesState();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const roomsRef = usePublishRef((refs) => refs.rooms);
 
   function handleBook(id: string) {}

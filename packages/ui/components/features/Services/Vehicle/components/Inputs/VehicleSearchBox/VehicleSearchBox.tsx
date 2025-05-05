@@ -17,7 +17,7 @@ export interface VehicleSearchBoxProps {
 }
 
 export const VehicleSearchBox: React.FC<VehicleSearchBoxProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
   return (
     <div className="flex flex-col gap-2 rounded p-2 text-black bg-primary-200">

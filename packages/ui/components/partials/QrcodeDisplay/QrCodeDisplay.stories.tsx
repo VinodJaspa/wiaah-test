@@ -1,10 +1,10 @@
 import { storybookPartailsTitle } from "utils";
 import { QrcodeDisplay } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookPartailsTitle + "QrCodeDisplay",
+  title: "UI / partials / QrCodeDisplay",
   component: QrcodeDisplay,
-} as ComponentMeta<typeof QrcodeDisplay>;
+} as Meta<typeof QrcodeDisplay>;
 
 export const Default = () => <QrcodeDisplay value="198441.3215454642" />;

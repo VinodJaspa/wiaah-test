@@ -1,41 +1,56 @@
-import {
-  Flex,
-  VStack,
-  Icon,
-  Text,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  HStack,
-} from "@chakra-ui/react";
+import { NumberShortner } from "@UI/components/helpers";
+import { ShadcnFlex, ShadcnIcon, ShadcnStack, ShadcnText } from "@UI/components/shadcn-components";
+import { Carousel } from "@blocks/Carousel";
+import { useSocialControls } from "@blocks/Layout";
+import { PostViewPopup } from "@blocks/Popups";
+import { useModalDisclouser } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CgPlayButtonR } from "react-icons/cg";
-import { HiHeart, HiOutlineChat, HiShare, HiUserGroup } from "react-icons/hi";
+import {
+  HiHeart,
+  HiOutlineChat,
+  HiOutlineHeart,
+  HiShare,
+} from "react-icons/hi";
+import { useRouting } from "routing";
 import { Interaction, Interactions, ShareMotheds } from "types";
-import { FaFacebook, FaTwitter, FaWhatsapp, FaPinterest } from "react-icons/fa";
-import { NumberShortner } from "@UI/components/helpers";
 
 export interface PostInteractionsProps {
   likes: number;
   comments: number;
+  shares: number;
   onInteraction?: (intraction: Interaction) => any;
   onShare?: (shareMothed: ShareMotheds) => any;
   className?: string;
   onHeartIConClick?: () => void;
+  isLiked?: { status: boolean; reactions: number };
+  postId?: string;
+  post?: any;
 }
 
 export const PostInteractions: React.FC<PostInteractionsProps> = ({
   comments,
   likes,
+  shares,
   onInteraction,
   onShare,
   className,
   onHeartIConClick,
+  isLiked,
+  postId,
+  post,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
+  const { shareLink, showContentComments } = useSocialControls();
+  const { getUrl } = useRouting();
+
+  const { isOpen, handleOpen, handleClose } = useModalDisclouser();
+
   function handleInteraction(type: Interactions) {
+    if (type === "comment") {
+      handleOpen();
+    }
+
     onInteraction && onInteraction({ type });
   }
 
@@ -43,89 +58,95 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
     onShare && onShare(mothed);
   }
 
+  const posts = post ? [post] : [];
+
   return (
-    <Flex py="0.5rem" justify={"space-around"} className={className}>
-      <VStack
-        data-testid="PostInteractionLikes"
-        cursor={"pointer"}
-        onClick={() => handleInteraction("like")}
-      >
-        <Icon
-          onClick={onHeartIConClick}
-          fontSize={"xx-large"}
-          fill={"primary.main"}
-          as={HiHeart}
+    <>
+      <ShadcnFlex className={`py-2 justify-around ${className}`}>
+        <ShadcnStack
+          data-testid="PostInteractionLikes"
+          className="cursor-pointer flex flex-col"
+          onClick={() => handleInteraction("like")}
+        >
+          {!isLiked?.status ? (
+            <ShadcnIcon
+              onClick={onHeartIConClick}
+              as={HiOutlineHeart}
+              className="text-4xl text-primary"
+            />
+
+          ) : (
+            <ShadcnIcon
+              onClick={onHeartIConClick}
+              as={HiHeart}
+              className="text-4xl text-primary"
+            />
+
+          )}
+          <ShadcnText className="font-semibold capitalize">
+            {NumberShortner(isLiked?.reactions)}
+          </ShadcnText>
+
+        </ShadcnStack>
+        <ShadcnStack
+          data-testid="PostInteractionComments"
+          className="cursor-pointer flex flex-col items-center"
+          onClick={() => handleInteraction("comment")}
+        >
+          <ShadcnIcon as={HiOutlineChat} className="text-4xl text-primary" />
+          <ShadcnText className="font-semibold capitalize">
+            {NumberShortner(comments)}
+          </ShadcnText>
+        </ShadcnStack>
+
+        <ShadcnStack
+          data-testid="PostInteractionShares"
+          className="cursor-pointer flex flex-col items-center"
+          onClick={() =>
+            shareLink(getUrl((routes) => routes.visitSocialPost(postId)))
+          }
+        >
+          <ShadcnIcon as={HiShare} className="text-4xl text-primary" />
+          <ShadcnText className="font-semibold capitalize">
+            {NumberShortner(shares)}
+          </ShadcnText>
+        </ShadcnStack>
+
+      </ShadcnFlex>
+
+      {post && postId && (
+        <PostViewPopup
+          fromAffiliation
+          posts={posts}
+          queryName="newFeedPost"
+          data={post}
+          idParam="newsfeedpostid"
+          isOpen={isOpen}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          renderChild={(postData: any) => {
+            const images = postData.affiliation?.product?.presentations?.map(
+              (att: any) => att.src,
+            ) || [postData.affiliation?.product?.presentations[0]?.src];
+
+            return (
+              <Carousel componentsPerView={1} controls={images.length > 1}>
+                {images.map((image: string, index: number) => (
+                  <div key={index}>
+                    <img
+                      src={
+                        image ||
+                        postData.affiliation?.product?.presentations[0]?.src
+                      }
+                      alt={`Attachment ${index + 1}`}
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            );
+          }}
         />
-        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(likes)} {t("likes", "likes")}
-        </Text>
-      </VStack>
-      <VStack
-        data-testid="PostInteractionComments"
-        cursor={"pointer"}
-        onClick={() => handleInteraction("comment")}
-      >
-        <Icon
-          fontSize={"xx-large"}
-          stroke={"primary.main"}
-          as={HiOutlineChat}
-        />
-        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {NumberShortner(comments)} {t("comments", "comments")}
-        </Text>
-      </VStack>
-      <Menu isLazy lazyBehavior="unmount" placement="left-start">
-        <MenuButton>
-          <VStack
-            data-testid="PostInteractionShares"
-            cursor={"pointer"}
-            onClick={() => handleInteraction("share")}
-          >
-            <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
-            <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-              {t("shares", "shares")}
-            </Text>
-          </VStack>
-        </MenuButton>
-        <MenuList zIndex={10}>
-          <MenuItem onClick={() => handleShare("story")}>
-            <HStack>
-              <Icon as={CgPlayButtonR} />
-              <Text>{t("share_on_story", "Share on story")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("followers")}>
-            <HStack>
-              <Icon as={HiUserGroup} />
-              <Text>{t("share_with_follwers", "Share With Followers")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("facebook")}>
-            <HStack>
-              <Icon as={FaFacebook} />
-              <Text>{t("share_on_facebook", "Share on Facebook")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("twitter")}>
-            <HStack>
-              <Icon as={FaTwitter} />
-              <Text>{t("share_on_twitter", "Share on Twitter")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("whatsapp")}>
-            <HStack>
-              <Icon as={FaWhatsapp} />
-              <Text>{t("share_on_whatsapp", "Share on Whatsapp")}</Text>
-            </HStack>
-          </MenuItem>
-          <MenuItem onClick={() => handleShare("pinterest")}>
-            <HStack>
-              <Icon as={FaPinterest} />
-              <Text>{t("share_on_pinterest", "Share on Pinterest")}</Text>
-            </HStack>
-          </MenuItem>
-        </MenuList>
-      </Menu>
-    </Flex>
+      )}
+    </>
   );
 };

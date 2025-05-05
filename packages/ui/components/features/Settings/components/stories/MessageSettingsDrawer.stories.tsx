@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { MessageSettingsDrawer } from "../drawers";
 import { storybookDrawersTitle } from "utils";
 import { Button } from "@partials";
@@ -6,7 +6,7 @@ import { useSocialControls } from "@blocks";
 import { RecoilRoot } from "recoil";
 
 export default {
-  title: storybookDrawersTitle + "MessageSettingsDrawer",
+  title: "UI / Blocks / drawers /MessageSettingsDrawer",
   decorators: [
     (Story) => (
       <RecoilRoot>
@@ -14,7 +14,7 @@ export default {
       </RecoilRoot>
     ),
   ],
-} as ComponentMeta<typeof MessageSettingsDrawer>;
+} as Meta<typeof MessageSettingsDrawer>;
 
 export const Default = () => {
   const { showMessageSettings } = useSocialControls();

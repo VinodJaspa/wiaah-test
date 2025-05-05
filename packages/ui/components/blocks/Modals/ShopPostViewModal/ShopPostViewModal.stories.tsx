@@ -1,11 +1,11 @@
 import { ShopPostViewModal, Button, useShopPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "ShopPostViewModal",
+  title: "UI / Blocks / Modals /ShopPostViewModal",
   component: ShopPostViewModal,
-} as ComponentMeta<typeof ShopPostViewModal>;
+} as Meta<typeof ShopPostViewModal>;
 
 export const Default = () => {
   const { setCurrentPostId } = useShopPostPopup();

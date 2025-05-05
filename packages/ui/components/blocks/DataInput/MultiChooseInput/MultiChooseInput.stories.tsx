@@ -1,14 +1,14 @@
 import { MultiChooseInput } from "./MultiChooseInput";
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import React from "react";
 
 export default {
-  title: storybookDataInputBlocksTitle + "MultiChooseInput",
+  title: "UI / blocks / Data Input /MultiChooseInput",
   component: MultiChooseInput,
-} as ComponentMeta<typeof MultiChooseInput>;
+} as Meta<typeof MultiChooseInput>;
 
-const template: ComponentStory<typeof MultiChooseInput> = (args) => {
+const template: StoryFn<typeof MultiChooseInput> = (args) => {
   const [selected, setSelected] = React.useState<string[]>([]);
   return (
     <MultiChooseInput
@@ -18,5 +18,7 @@ const template: ComponentStory<typeof MultiChooseInput> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

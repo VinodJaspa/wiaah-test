@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import Recaptcha from "react-google-recaptcha";
 
 export const SellerSigninView: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { getUrl } = useRouting();
 
   const { mutate: signin } = useSigninMutation();

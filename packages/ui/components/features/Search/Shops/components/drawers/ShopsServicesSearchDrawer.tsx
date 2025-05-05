@@ -23,7 +23,7 @@ import { StoreType } from "@features/API";
 import { useGetFilteredShopsInfiniteQuery } from "@features/Shop";
 
 export const ShopsSearchDrawer: React.FC<{}> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { viewShop } = useSocialControls();
   const { cancelSearchMixedShopsServices, value } = useSocialControls(
     "searchMixShopAndService",

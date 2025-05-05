@@ -92,7 +92,7 @@ export interface ProductViewProps {
 }
 
 export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <>

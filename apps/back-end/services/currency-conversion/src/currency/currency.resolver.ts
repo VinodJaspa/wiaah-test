@@ -33,7 +33,7 @@ export class CurrencyResolver {
 
   @Query((type) => [Currency])
   adminGetCurrencies(@Args('args') args: AdminGetCurrenciesInput) {
-    let filters: Prisma.CurrencyWhereInput[] = [];
+    const filters: Prisma.CurrencyWhereInput[] = [];
 
     if (args.title) {
       filters.push({

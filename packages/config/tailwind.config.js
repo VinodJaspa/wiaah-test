@@ -1,10 +1,13 @@
+// eslint-disable-next-line no-undef
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+// eslint-disable-next-line no-undef
 module.exports = {
   content: [
-    "../../../packages/ui/**/*.{js,ts,jsx,tsx}",
+   "../../../packages/ui/components/**/*.{js,ts,jsx,tsx}",
+   "../../../packages/ui/src/**/*.{js,ts,jsx,tsx}" ,
     "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}"  
   ],
   theme: {
     extend: {
@@ -23,7 +26,6 @@ module.exports = {
         "span-19": "span 19 / span 19",
         "span-26": "span 26 / span 26",
         "span-10": "span 10 / span 10",
-        "span-24": "span 24 / span 24",
       },
       transitionProperty: {
         height: "height",
@@ -60,7 +62,7 @@ module.exports = {
         lightBlue: "#729FE5",
         secondaryRed: "#F67171",
         transparentBlue: "rgba(40,119,197,0.7)",
-        lightGray: "#F6F6F6",
+
         darkerGray: "#E8E8E8",
       },
       fontSize: {
@@ -68,5 +70,6 @@ module.exports = {
       },
     },
   },
+  // eslint-disable-next-line no-undef
   plugins: [require("@tailwindcss/forms")],
 };

@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { SpecialSchedule } from "./SpecialSchedule";
 import { storybookServiceManagementSectionsTitle } from "utils";
 
 export default {
-  title: storybookServiceManagementSectionsTitle + "SpecialSchedule",
+  title: "UI / Features /Service Management /Sections /SpecialSchedule",
   component: SpecialSchedule,
-} as ComponentMeta<typeof SpecialSchedule>;
+} as Meta<typeof SpecialSchedule>;
 
-const template: ComponentStory<typeof SpecialSchedule> = (args) => (
-  <SpecialSchedule {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

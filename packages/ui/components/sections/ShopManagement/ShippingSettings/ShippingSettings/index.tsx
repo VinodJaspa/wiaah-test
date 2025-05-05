@@ -25,7 +25,7 @@ import { ShippingSettingsContext } from "../ShippingSettingsSection";
 export const ShippingSettings: React.FC = () => {
   const { addNew, edit } = React.useContext(ShippingSettingsContext);
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const { controls, pagination } = usePaginationControls();
 

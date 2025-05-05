@@ -11,7 +11,7 @@ export const ChatSearchInput: React.FC<ChatSearchInputProps> = ({
   ...props
 }) => {
   const [searchValue, setSearchValue] = React.useState<string>("");
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <div className={`${className || ""}`} {...props}>

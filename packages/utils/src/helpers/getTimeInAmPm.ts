@@ -1,5 +1,5 @@
 export function getTimeInAmPm(d: Date, timeZone?: string) {
-  let date = timeZone
+  const date = timeZone
     ? d.toLocaleTimeString("Default", {
         timeZone,
         hour: "2-digit",

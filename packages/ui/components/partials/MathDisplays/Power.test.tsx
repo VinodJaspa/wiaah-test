@@ -3,7 +3,7 @@ import { MathPowerDisplay, MathPowerDisplayProps } from "./Power";
 
 describe("Power", () => {
   let wrapper: ShallowWrapper;
-  let props: MathPowerDisplayProps = {
+  const props: MathPowerDisplayProps = {
     power: 45,
   };
   beforeEach(() => {

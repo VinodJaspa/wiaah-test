@@ -2,20 +2,21 @@ import type { AppProps } from "next/app";
 import React from "react";
 import "../styles/globals.css";
 import "ui/languages/i18n";
-import "react-quill/dist/quill.snow.css";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider } from "@chakra-ui/react";
 import { DataInitializationWrapper, ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
-import NextHead from "next/head";
+import Head from "next/head";
 import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
 import { AdminLayout } from "@components";
 import { AccountType } from "types";
+const NextHead: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  return <Head>{children}</Head>;
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -45,28 +46,26 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-          <ChakraProvider>
-            <CookiesProvider>
-              <ReactPubsubProvider
-                keys={ReactPubsubKeys}
-                client={new ReactPubsubClient()}
-              >
-                <ReactSeoProvider TagWrapper={NextHead}>
-                  <RecoilRoot>
-                    <DataInitializationWrapper accountType={AccountType.Admin}>
-                      {showlayout ? (
-                        <AdminLayout>
-                          <Component {...pageProps} />
-                        </AdminLayout>
-                      ) : (
+          <CookiesProvider>
+            <ReactPubsubProvider
+              keys={ReactPubsubKeys}
+              client={new ReactPubsubClient()}
+            >
+              <ReactSeoProvider TagWrapper={NextHead}>
+                <RecoilRoot>
+                  <DataInitializationWrapper accountType={AccountType.Admin}>
+                    {showlayout ? (
+                      <AdminLayout>
                         <Component {...pageProps} />
-                      )}
-                    </DataInitializationWrapper>
-                  </RecoilRoot>
-                </ReactSeoProvider>
-              </ReactPubsubProvider>
-            </CookiesProvider>
-          </ChakraProvider>
+                      </AdminLayout>
+                    ) : (
+                      <Component {...pageProps} />
+                    )}
+                  </DataInitializationWrapper>
+                </RecoilRoot>
+              </ReactSeoProvider>
+            </ReactPubsubProvider>
+          </CookiesProvider>
         </RoutingProvider>
       </Hydrate>
     </QueryClientProvider>

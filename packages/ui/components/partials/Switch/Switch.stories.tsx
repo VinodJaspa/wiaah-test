@@ -1,12 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
 import { Switch, SwitchProps } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "Switch",
+  title: "UI / partials / Switch",
   component: Switch,
-} as ComponentMeta<typeof Switch>;
+} as Meta<typeof Switch>;
 
 export const Default: React.FC<SwitchProps> = () => {
   const [checked, setChecked] = React.useState(false);

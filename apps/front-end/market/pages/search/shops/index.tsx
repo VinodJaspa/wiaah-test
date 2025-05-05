@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Container } from "ui";
 
 const ShopsSearch: NextPage = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <Head>

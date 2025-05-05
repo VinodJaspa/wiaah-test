@@ -24,6 +24,7 @@ function getDimensionObject(node: any) {
       bottom: rect.bottom,
     };
   }
+  return null;
 }
 
 export function useBoundingRect(limit?: number) {
@@ -52,6 +53,11 @@ export function useBoundingRect(limit?: number) {
         window.removeEventListener("scroll", listener);
       };
     }
+    return () => {
+      if (node) {
+        setNode(null);
+      }
+    };
   }, [node, limit]);
 
   return [ref, dimensions, node];

@@ -1,15 +1,17 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookDataInputBlocksTitle } from "utils";
 import { LocationSearchInput } from "./LocationSearchInput";
 
 export default {
-  title: storybookDataInputBlocksTitle + "LocationSearchInput",
+  title: "UI / blocks / Data Input /LocationSearchInput",
   component: LocationSearchInput,
-} as ComponentMeta<typeof LocationSearchInput>;
+} as Meta<typeof LocationSearchInput>;
 
-const template: ComponentStory<typeof LocationSearchInput> = () => {
-  return <LocationSearchInput onLocationSelect={() => { }} />;
+const template: StoryFn<typeof LocationSearchInput> = () => {
+  return <LocationSearchInput onLocationSelect={() => {}} />;
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

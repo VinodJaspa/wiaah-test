@@ -243,6 +243,7 @@ export const FAKE_RESTAURNAT_DETAILS: GetRestaurantQuery["getRestaurant"] = {
   cancelationPolicies: [
     {
       __typename: "ServiceCancelationPolicy",
+      id: "policy_1",
       cost: 20,
       duration: 24,
     },

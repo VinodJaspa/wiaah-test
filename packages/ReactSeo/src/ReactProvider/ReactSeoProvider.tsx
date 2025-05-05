@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 
 // Define the interface for the SEO context
 interface ReactSeoContext {
@@ -10,12 +10,11 @@ export const ReactSeoContext = React.createContext<ReactSeoContext>({
   TagWrapper: ({ children }) => <>{children}</>, // Default TagWrapper component
 });
 
-// Define the props interface for the SEO provider
+
 interface ReactSeoProviderProps {
-  TagWrapper: React.FC; // Accepts a functional component for TagWrapper
+  TagWrapper: React.FC<PropsWithChildren<{}>>; // ✅ Allows children
   children: ReactNode;
 }
-
 // Create the SEO provider component
 export const ReactSeoProvider: React.FC<ReactSeoProviderProps> = ({
   TagWrapper,

@@ -1,7 +1,7 @@
 import React from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { Progress } from "antd";
+
 import {
   ShopInformationStep,
   SelectPackageStep,
@@ -33,9 +33,9 @@ import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
-
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 export const SellerProfileStartupView: React.FC = ({}) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [currentStep, setCurrentStep] = React.useState<number>(0);
 
@@ -63,7 +63,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
   const steps: StepperStepType[] = React.useMemo(
     () => [
       {
-        stepName: t("Signup"),
+        stepName: t("Signup") as string,
         key: 0,
         stepComponent: (
           <AccountSignup
@@ -77,7 +77,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         ),
       },
       {
-        stepName: t("Email Verification"),
+        stepName: t("Email Verification") as string,
         key: 1,
         stepComponent: (
           <AccountSignEmailVerificationStep
@@ -208,7 +208,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
 
   const currentStepComp = steps.at(currentStep) || null;
   const nextStep = steps.at(currentStep + 1) || null;
-
+  const percentage = ((currentStep + 1) / steps.length) * 100;
   return isMobile ? (
     <div className="flex flex-col gap-2 w-full h-full p-2">
       <HStack className="p-2">
@@ -257,7 +257,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             {currentStepComp?.stepName.toString()}
           </p>
           <p className="text-xs text-primary">
-            {t("Next")} : {nextStep?.stepName.toString()}
+            {t("Next") as string} : {nextStep?.stepName.toString()}
           </p>
         </div>
       </HStack>
@@ -293,14 +293,17 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         <div className="fixed top-0 left-0 z-10 w-full">
           <Container className="">
             <div className="flex items-center justify-between bg-white p-4 lg:hidden">
-              <Progress
-                type="circle"
-                className="stroke-primary"
-                percent={((currentStep + 1) / steps.length) * 100}
-                width={90}
-                strokeWidth={9}
-                format={() => currentStep + 1 + " of " + steps.length}
-              />
+            <CircularProgressbar
+          value={percentage}
+          text={`${currentStep + 1} of ${steps.length}`}
+          styles={buildStyles({
+            pathColor: "#4CAF50", 
+            textColor: "#000", 
+            trailColor: "#e5e7eb", 
+            textSize: "14px", 
+         
+          })}
+        />
               <div className="flex flex-col items-end">
                 <div className="mb-2 text-lg font-bold">
                   {steps[currentStep].stepName.toString()}
@@ -449,7 +452,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     },
     ref
   ) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
       code: "",
     });

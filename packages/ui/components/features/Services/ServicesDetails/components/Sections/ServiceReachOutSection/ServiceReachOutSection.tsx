@@ -1,14 +1,9 @@
+import { ServiceLocation } from "@features/API";
+import { LocationAddress } from "@features/Services/components";
+import { EmailIcon, HStack, LocationIcon, TelephoneFillIcon } from "@partials";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import {
-  HStack,
-  LocationIcon,
-  TelephoneFillIcon,
-  EmailIcon,
-  LocationAddressDisplay,
-} from "@UI";
 import { runIfFn } from "utils";
-import { Location, ServiceLocation } from "@features/API";
 
 export interface ServiceReachOutSectionProps {
   email: string;
@@ -26,7 +21,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   telephone,
   showContact,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const contactRef = usePublishRef((keys) => keys.contact);
 
   const contacts: {
@@ -37,7 +32,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
     {
       label: t("Address"),
       icon: <LocationIcon className="fill-primary" />,
-      value: <LocationAddressDisplay location={location} />,
+      value: <LocationAddress location={location} />,
     },
     {
       label: t("Phone"),

@@ -111,7 +111,8 @@ const items: DownloadedRecord[] = [
 ];
 
 const Downloadables: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
   const { controls } = usePaginationControls();
   return (

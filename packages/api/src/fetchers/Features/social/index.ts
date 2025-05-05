@@ -9,3 +9,4 @@ export * from "./socialProfile";
 export * from "./Posts";
 export * from "./Comments";
 export * from "./mentions";
+export * from "./useGetAllUsers";

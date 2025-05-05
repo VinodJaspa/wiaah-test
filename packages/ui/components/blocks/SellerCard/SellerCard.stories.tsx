@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { SellerCard } from "../index";
 export default {
   title: "UI/blocks/SellerCard",
@@ -9,11 +9,8 @@ export default {
     reviews: { control: "number" },
     rating: { control: "number" },
   },
-} as ComponentMeta<typeof SellerCard>;
+} as Meta<typeof SellerCard>;
 
-const Template: ComponentStory<typeof SellerCard> = (args) => (
-  <SellerCard {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

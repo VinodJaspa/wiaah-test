@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import { ShopsAndServicesRecommendationsList } from "./ShopsAndServicesRecommendationsList";
-let mockquery = jest.fn();
+const mockquery = jest.fn();
 jest.mock("ui", () => ({
   ...jest.requireActual("ui"),
   useGetRecommendedShopsQuery: (...props: any) => {

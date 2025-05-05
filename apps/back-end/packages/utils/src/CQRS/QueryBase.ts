@@ -9,7 +9,7 @@ type QueryBaseArgs<TInput, TFields> = TInput & {
 
 // Define the QueryBase class with generic types
 export class QueryBase<
-  TInput extends Object,
+  TInput extends object,
   TFields extends GqlSelectedFields<any, any>
 > {
   constructor(public readonly args: QueryBaseArgs<TInput, TFields>) { }

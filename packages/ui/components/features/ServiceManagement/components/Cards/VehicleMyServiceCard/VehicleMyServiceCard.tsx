@@ -10,7 +10,7 @@ import {
   AspectRatioImage,
   ServiceRefundableTypeDescription,
   DotIcon,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { setTestid } from "utils";
 import { VehicleProperties } from "@features/API/gql/generated";
@@ -26,7 +26,7 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
   onRemove,
   ...props
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const {
     cancelationPolicies,
@@ -92,7 +92,7 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
           <span className="text-lg">
             <VehicleProprtiesList VehicleProps={adjustedvehicleProps} />
           </span>
-          <LocationAddressDisplay
+          <LocationAddress
             location={{
               city: location.city,
               country: location.country!,

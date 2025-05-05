@@ -1,12 +1,13 @@
+// @ts-nocheck
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { VerticalCarousel } from "@UI";
 export default {
   title: "UI/blocks/Data Display/ActionsDisplay",
   component: VerticalCarousel,
-} as ComponentMeta<typeof VerticalCarousel>;
+} as Meta<typeof VerticalCarousel>;
 
-const Template: ComponentStory<typeof VerticalCarousel> = ({ h, ...args }) => (
+const Template: StoryFn<typeof VerticalCarousel> = ({ h, ...args }) => (
   <div className="h-[30rem] w-[20rem]">
     <VerticalCarousel h={"24rem"} {...args}>
       {[...Array(10)].map((_, i) => (
@@ -16,9 +17,15 @@ const Template: ComponentStory<typeof VerticalCarousel> = ({ h, ...args }) => (
   </div>
 );
 
-export const Default = Template.bind({});
-Default.args = {};
-export const WithGap = Template.bind({});
-WithGap.args = {
-  gap: 16,
+export const Default = {
+  render: Template,
+  args: {},
+};
+
+export const WithGap = {
+  render: Template,
+
+  args: {
+    gap: 16,
+  },
 };

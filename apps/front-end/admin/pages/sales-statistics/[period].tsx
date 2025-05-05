@@ -28,7 +28,8 @@ import {
 import { mapArray, useForm } from "utils";
 
 const SalesStatistics: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam } = useRouting();
 
   const period = getParam("period");
@@ -72,7 +73,7 @@ const SalesStatistics: NextPage = () => {
                   <BiFolder />
                   <p>{t("Export to")}</p>
                   <SearchFilterInput
-                    controls={{ hasMore: true, next: () => { } }}
+                    controls={{ hasMore: true, next: () => {} }}
                     value=""
                     flushed
                   />

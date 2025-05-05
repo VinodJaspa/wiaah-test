@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Radio, PriceDisplay, ServiceRefundableTypeDescription } from "@UI";
-import { setTestid } from "utils";
+import { Radio, PriceDisplay } from "@UI";
+import { ServiceRefundableTypeDescription } from "@UI/components/features/Services/components/DataDisplay/ServiceRefundableTypeDescription";
+import { cn, setTestid } from "utils";
 
 export interface ServiceCancelationPolicyInputProps {
   id: string;
@@ -10,18 +11,25 @@ export interface ServiceCancelationPolicyInputProps {
   cost: number;
   duration: number;
   children?: React.ReactNode;
+  isCalendarCard?: boolean;
 }
 
 export const ServiceCancelationPolicyInput: React.FC<
   ServiceCancelationPolicyInputProps
-> = ({ cost, duration, id, children, name, onSelected }) => {
-  const { t } = useTranslation();
+> = ({ cost, duration, id, children, name, onSelected, isCalendarCard }) => {
+const { t } = useTranslation();
 
   return (
-    <div className="flex items-center w-full gap-2 justify-between">
+    <div
+      className={cn(
+        isCalendarCard
+          ? "w-full flex items-center justify-between"
+          : "w-full grid grid-cols-[auto_100px]",
+      )}
+    >
       <label
         {...setTestid("InputLabel")}
-        className="flex gap-2 text-lightBlack items-center"
+        className="flex text-lightBlack items-center gap-2"
       >
         <Radio
           onChange={(e) =>

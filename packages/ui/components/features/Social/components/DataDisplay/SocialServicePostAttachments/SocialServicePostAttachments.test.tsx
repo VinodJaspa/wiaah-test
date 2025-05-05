@@ -12,8 +12,8 @@ const testids = {
   openServiceDetailsModalBtn: "openServiceDetailsModalBtn",
 };
 
-let mockUseReactPubsub: jest.Mock = jest.fn();
-let mockReactPubsubEmit: jest.Mock = jest.fn();
+const mockUseReactPubsub: jest.Mock = jest.fn();
+const mockReactPubsubEmit: jest.Mock = jest.fn();
 
 jest.mock("react-pubsub", () => ({
   ...jest.requireActual("react-pubsub"),

@@ -199,7 +199,7 @@ const services: MyServiceData[] = [
 
 describe("MyServicesCardSwticher", () => {
   let wrapper: ShallowWrapper;
-  let props: MyServicesCardSwitcherProps = {
+  const props: MyServicesCardSwitcherProps = {
     onEdit() { },
     onRemove() { },
     //@ts-ignore

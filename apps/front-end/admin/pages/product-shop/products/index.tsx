@@ -32,7 +32,8 @@ import { useForm } from "utils";
 
 const Products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps, selectProps, dateInputProps } = useForm<
     Parameters<typeof useGetAdminProductsQuery>[0]

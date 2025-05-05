@@ -33,7 +33,7 @@ import { startCase } from "lodash";
 
 export const ServiceBookingDrawer: React.FC = () => {
   const { value, closeServiceDetails } = useSocialControls("serviceBooking");
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const isOpen =
     typeof value?.sellerId === "string" &&
     Array.isArray(value.servicesIds) &&

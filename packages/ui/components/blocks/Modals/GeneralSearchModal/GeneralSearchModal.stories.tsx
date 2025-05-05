@@ -5,12 +5,12 @@ import {
   ModalButton,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "GeneralSearchModal",
+  title: "UI / Blocks / Modals /GeneralSearchModal",
   component: GeneralSearchModal,
-} as ComponentMeta<typeof GeneralSearchModal>;
+} as Meta<typeof GeneralSearchModal>;
 
 export const Default = () => {
   return (

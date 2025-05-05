@@ -1,11 +1,11 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ShopsAndServicesRecommendationsList } from "./ShopsAndServicesRecommendationsList";
 import { storybookListWrappersTitle } from "utils";
 
 export default {
-  title: storybookListWrappersTitle + "ShopsAndServicesRecommendationsList",
+  title: "UI / Blocks /ListWrappers /ShopsAndServicesRecommendationsList",
   component: ShopsAndServicesRecommendationsList,
-} as ComponentMeta<typeof ShopsAndServicesRecommendationsList>;
+} as Meta<typeof ShopsAndServicesRecommendationsList>;
 
 export const Default = () => (
   <ShopsAndServicesRecommendationsList

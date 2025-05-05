@@ -33,7 +33,7 @@ export interface ChatMessageProps {
 export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
   const { locale } = useLocale();
   const { user } = useUserData();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   if (!messageData) return null;
   const { isMobile } = useResponsive();
 

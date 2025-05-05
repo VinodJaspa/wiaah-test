@@ -27,4 +27,3 @@ export class ServiceMetaInfo {
 export class ServiceMetaInfoTranslation extends CreateObjectGqlTranslationInputField(
   ServiceMetaInfo,
 ) {}
-

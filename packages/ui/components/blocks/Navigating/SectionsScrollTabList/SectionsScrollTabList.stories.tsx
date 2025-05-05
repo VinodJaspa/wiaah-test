@@ -1,14 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { SectionsScrollTabList } from "./SectionsScrollTabList";
 import { storybookNavigationTitle } from "utils";
 import { usePublishRef } from "state";
 
 export default {
-  title: storybookNavigationTitle + "SectionsScrollTabList",
+  title: "UI / Blocks /Navigation /SectionsScrollTabList",
   component: SectionsScrollTabList,
-} as ComponentMeta<typeof SectionsScrollTabList>;
+} as Meta<typeof SectionsScrollTabList>;
 
-const template: ComponentStory<typeof SectionsScrollTabList> = () => {
+const template: StoryFn<typeof SectionsScrollTabList> = () => {
   const sections: { name: string; slug: string }[] = [
     { name: "section one", slug: "1" },
     { name: "section two", slug: "2" },
@@ -34,4 +34,6 @@ const template: ComponentStory<typeof SectionsScrollTabList> = () => {
   );
 };
 
-export const Default = template.bind({});
+export const Default = {
+  render: template,
+};

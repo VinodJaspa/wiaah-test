@@ -166,10 +166,11 @@ type ServiceCancelationPolicy = {
   __typename?: "ServiceCancelationPolicy";
   duration: Scalars["Int"];
   cost: Scalars["Int"];
+  id: Scalars["String"];
 };
 
 export const getVehicleServiceProviderDetailsFetcher = async (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<GqlResponse<VehicleService, "getVehicleService">> => {
   const client = createGraphqlRequestClient();
 

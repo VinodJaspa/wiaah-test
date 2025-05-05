@@ -4,10 +4,10 @@ import {
   Account,
   Exact,
   Maybe,
-  NotificationType,
-  Profile,
   Notification,
   NotificationPaginationResponse,
+  NotificationType,
+  Profile,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";

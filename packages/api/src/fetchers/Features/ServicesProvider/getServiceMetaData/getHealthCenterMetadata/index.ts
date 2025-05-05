@@ -59,8 +59,10 @@ export const getHealthCenterServiceMetadataQuery = async (
       return response.data as GetHealthCenterServiceMetaDataQuery;
     } else {
       console.error("Failed to fetch data: response is null");
+      return undefined;
     }
   } catch (error) {
+    return error as GetHealthCenterServiceMetaDataQuery;
     console.error("Error fetching health center service details:", error);
   }
 };

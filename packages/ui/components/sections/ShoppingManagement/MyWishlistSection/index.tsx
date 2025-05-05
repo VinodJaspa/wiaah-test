@@ -62,7 +62,7 @@ interface WishlistTableProps {
 }
 
 export const MyWishListSection: React.FC<MyWishListSectionProps> = ({ }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { isMobile } = useResponsive();
 
@@ -237,7 +237,7 @@ export const WishlistTable: React.FC<WishlistTableProps> = ({
   onAdd,
   DeletingId,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <TableContainer>

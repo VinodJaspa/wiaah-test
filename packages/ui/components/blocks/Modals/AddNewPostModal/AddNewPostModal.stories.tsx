@@ -1,11 +1,11 @@
 import { AddNewPostModal, Button, useNewPost } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "AddNewPostModal",
+  title: "UI / Blocks / Modals /AddNewPostModal",
   component: AddNewPostModal,
-} as ComponentMeta<typeof AddNewPostModal>;
+} as Meta<typeof AddNewPostModal>;
 
 export const Default = () => {
   const { OpenModal } = useNewPost();

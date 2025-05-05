@@ -16,7 +16,7 @@ const shopTypes: ServicesType[] = [
   "restaurant",
   "health_center",
   "vehicle",
-  "holidays_rentals",
+  "holiday_rentals",
   "beauty_center",
 ];
 

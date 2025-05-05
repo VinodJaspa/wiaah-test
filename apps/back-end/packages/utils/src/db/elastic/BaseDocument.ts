@@ -4,6 +4,6 @@ export function BaseElasticDoucment<TBase extends ClassType>(
   superClass: TBase
 ) {
   return class extends superClass {
-    dbId: string;
+    dbId: string = ''; 
   };
 }

@@ -1,29 +1,69 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["../../../node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
-    "typeRoots": ["node_modules/@types", "jest"],
+    "strict": true,
+    "incremental": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "jest"
+    ],
     "esModuleInterop": true,
-    "target": "ES2017",
+    "module": "ESNext",
+    "target": "ES6",
     "jsx": "preserve",
     "baseUrl": ".",
     "experimentalDecorators": true,
     "downlevelIteration": true,
+  
     "paths": {
-      "@components": ["components"],
-      "@partials": ["../../../packages/ui/components/partials"],
-      "@blocks": ["../../../packages/ui/components/blocks"],
-      "@libs": ["../../../packages/ui/libs"],
-      "@const": ["../../../packages/ui/constants"],
-      "@blocks/*": ["../../../packages/ui/components/blocks/*"],
-      "@src/*": ["../../../packages/ui/src/*"],
-      "@sections/*": ["../../../packages/ui/components/sections/*"],
-      "@sections": ["../../../packages/ui/components/sections"],
-      "@features/*": ["../../../packages/ui/components/features/*"],
-      "@features": ["../../../packages/ui/components/features"],
-      "@UI": ["../../../packages/ui"],
-      "@UI/*": ["../../../packages/ui/*"]
+      "@components": [
+        "components"
+      ],
+      "@partials": [
+        "../../../packages/ui/components/partials"
+      ],
+      "@blocks": [
+        "../../../packages/ui/components/blocks"
+      ],
+      "@libs": [
+        "../../../packages/ui/libs"
+      ],
+      "@const": [
+        "../../../packages/ui/constants"
+      ],
+      "@blocks/*": [
+        "../../../packages/ui/components/blocks/*"
+      ],
+      "@src/*": [
+        "../../../packages/ui/src/*"
+      ],
+      "@sections/*": [
+        "../../../packages/ui/components/sections/*"
+      ],
+      "@sections": [
+        "../../../packages/ui/components/sections"
+      ],
+      "@features/*": [
+        "../../../packages/ui/components/features/*"
+      ],
+      "@features": [
+        "../../../packages/ui/components/features"
+      ],
+      "@UI": [
+        "../../../packages/ui"
+      ],
+      "@UI/*": [
+        "../../../packages/ui/*"
+      ],
+      "react-pubsub": ["../../../packages/ReactPubsub/dist"],
     }
   }
 }

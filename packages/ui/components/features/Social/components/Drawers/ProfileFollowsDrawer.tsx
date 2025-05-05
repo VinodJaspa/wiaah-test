@@ -36,7 +36,7 @@ export const ProfileFollowsDrawer: React.FC = () => {
   });
   const { data: profile } = useGetSocialProfile(value!);
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Drawer isOpen onClose={hideProfileFollowers}>
@@ -53,7 +53,7 @@ export const ProfileFollowsDrawer: React.FC = () => {
 };
 
 const ProfileFollowersList: React.FC<{ userId: string }> = ({ userId }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { data, hasNextPage, fetchNextPage } =
     useGetSocialProfileFollowersInfiniteQuery(
       {

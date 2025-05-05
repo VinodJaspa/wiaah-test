@@ -3,11 +3,11 @@ import {
   ActionViewer,
   actionsPlaceholders,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "ActionViewer",
+  title: "UI / blocks / Data Display /ActionViewer",
   component: ActionViewer,
-} as ComponentMeta<typeof ActionViewer>;
+} as Meta<typeof ActionViewer>;
 
 export const Default = () => <ActionViewer action={actionsPlaceholders[0]} />;

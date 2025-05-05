@@ -12,7 +12,7 @@ export class HashtagAdminResolver {
   @Query(() => [Hashtag])
   adminGetHashtag(@Args('args') args: GetFilteredHashtagsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
-    let filters: Prisma.HashtagWhereInput[] = [];
+    const filters: Prisma.HashtagWhereInput[] = [];
 
     if (args.tag) {
       filters.push({

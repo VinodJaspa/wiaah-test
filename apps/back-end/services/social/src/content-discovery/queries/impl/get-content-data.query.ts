@@ -1,3 +1,6 @@
 export class GetContentDataQuery {
-  constructor(public id: string, public type: string) {}
+  constructor(
+    public id: string,
+    public type: string,
+  ) {}
 }

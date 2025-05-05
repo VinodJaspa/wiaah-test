@@ -28,4 +28,4 @@ import { EventSchedulingController } from './event-scheduling.controller';
   providers: [PrismaService],
   controllers: [EventSchedulingController],
 })
-export class EventSchedulingModule { }
+export class EventSchedulingModule {}

@@ -1,7 +1,5 @@
+import { Divider, FlexStack, HStack, PriceDisplay } from "@partials";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { VoucherState } from "@src/state";
-import { FlexStack, BoldText, Text, PriceDisplay, Divider, HStack } from "@UI";
 import { useTranslation } from "react-i18next";
 import { CalculateVat } from "utils";
 
@@ -20,7 +18,7 @@ export const TotalCost: React.FC<TotalCostProps> = ({
   vat = 0,
   saved = 0,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const totalPrice = subTotal;
 

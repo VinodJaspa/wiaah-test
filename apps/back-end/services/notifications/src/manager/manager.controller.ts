@@ -75,17 +75,17 @@ export class ManagerController extends NotifciationBaseController {
 
     Array.isArray(mentionedIds)
       ? await Promise.all(
-        mentionedIds.map((id) =>
-          this.service.createNotification({
-            content: '',
-            type: 'commentMention',
-            authorId: mentionedByUserId,
-            authorProfileId: mentionedByProfileId,
-            contentOwnerUserId: id.userId,
-            contentId: mainHostId,
-          }),
-        ),
-      )
+          mentionedIds.map((id) =>
+            this.service.createNotification({
+              content: '',
+              type: 'commentMention',
+              authorId: mentionedByUserId,
+              authorProfileId: mentionedByProfileId,
+              contentOwnerUserId: id.userId,
+              contentId: mainHostId,
+            }),
+          ),
+        )
       : null;
   }
 
@@ -343,8 +343,9 @@ export class ManagerController extends NotifciationBaseController {
         type: NotificationTypes.info,
         content: {
           lang: 'en',
-          value: `Congrats, you have won ${res.symbol || '$'}${res.amount || affilaition.amount
-            } for affiliating ${product.title}`,
+          value: `Congrats, you have won ${res.symbol || '$'}${
+            res.amount || affilaition.amount
+          } for affiliating ${product.title}`,
         },
       });
     }

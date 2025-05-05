@@ -4,6 +4,7 @@ import { MdClose } from "react-icons/md";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import { useStorySeenByPopup } from "../StorySeenByPopup";
+import { Play, Volume2 } from "lucide-react";
 
 export interface SocialStoryViewerHeaderProps {
   user: {
@@ -17,7 +18,7 @@ export interface SocialStoryViewerHeaderProps {
 export const SocialStoryViewerHeader: React.FC<
   SocialStoryViewerHeaderProps
 > = ({ user, newStory, onClose }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { open } = useStorySeenByPopup();
   return (
     <div className="flex text-xl gap-3 w-full flex-col px-2">
@@ -32,15 +33,23 @@ export const SocialStoryViewerHeader: React.FC<
           />
           <p>{user.name}</p>
         </div>
-        <Menu>
-          <MenuButton>
-            <HiDotsHorizontal />
-          </MenuButton>
-          <MenuList className="text-black">
-            <MenuItem>{t("share")}</MenuItem>
-            <MenuItem>{t("copy url")}</MenuItem>
-          </MenuList>
-        </Menu>
+        <div className="flex items-center gap-2">
+          <button>
+            <Volume2 size={16} />
+          </button>
+          <button>
+            <Play size={16} />
+          </button>
+          <Menu>
+            <MenuButton>
+              <HiDotsHorizontal />
+            </MenuButton>
+            <MenuList className="text-black">
+              <MenuItem>{t("share")}</MenuItem>
+              <MenuItem>{t("copy url")}</MenuItem>
+            </MenuList>
+          </Menu>
+        </div>
       </div>
     </div>
   );

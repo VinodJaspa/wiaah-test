@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlSvgProps } from "types";
 
-export const DigitalCamera = () => {
+export const DigitalCamera: React.FC<HtmlSvgProps> = () => {
   return (
     <svg
       width="1em"

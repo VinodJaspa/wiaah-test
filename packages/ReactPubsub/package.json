@@ -5,22 +5,18 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "ui": "workspace:*",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "utils": "*"
-  },
-  "shadow": {
-    "dependencies": [
-      "react",
-      "react-dom"
-    ],
-    "devDependencies": [
-      "typescript"
-    ]
+    "utils": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

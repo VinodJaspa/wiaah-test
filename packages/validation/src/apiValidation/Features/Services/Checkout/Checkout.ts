@@ -13,7 +13,7 @@ const services: ServicesType[] = [
   "beauty_center",
   "general",
   "health_center",
-  "holidays_rentals",
+  "holiday_rentals",
   "hotel",
   "restaurant",
   "vehicle",
@@ -29,7 +29,7 @@ type ServicesCheckoutData =
       data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
     }
   | {
-      type: "resturant";
+      type: "restaurant";
       data: InferType<typeof RestaurantServiceCheckoutDataValidationSchema>;
     }
   | {
@@ -213,7 +213,10 @@ export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
         case "hotel":
           HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
           break;
-        case "resturant":
+        case "holiday_rentals":
+          HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
+          break;
+        case "restaurant":
           RestaurantServiceCheckoutDataValidationSchema.validateSync(
             value.data,
           );

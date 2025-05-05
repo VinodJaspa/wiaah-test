@@ -22,7 +22,7 @@ import { STRIPE_INJECT_TOKEN } from '../constants';
 
 describe('StripeBilling integration tests', () => {
   let resolver: StripeBillingResolver;
-  let mockStripe = {
+  const mockStripe = {
     accounts: {
       create: jest.fn(),
       list: jest.fn(),

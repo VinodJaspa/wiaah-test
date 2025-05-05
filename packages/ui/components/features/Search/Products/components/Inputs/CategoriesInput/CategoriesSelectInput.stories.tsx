@@ -1,17 +1,14 @@
 import { CategoriesSelectInput } from "./CategoriesSelectInput";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSearchInputsTitle } from "utils";
 
 export default {
-  title: storybookSearchInputsTitle + "CategoriesSelectInput",
+  title: "UI / Features /Search /Inputs /CategoriesSelectInput",
   component: CategoriesSelectInput,
-} as ComponentMeta<typeof CategoriesSelectInput>;
+} as Meta<typeof CategoriesSelectInput>;
 
-const template: ComponentStory<typeof CategoriesSelectInput> = (args) => (
-  <CategoriesSelectInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  categories: [...Array(15)].map((_, i) => `category-${i}`),
+export const Default = {
+  args: {
+    categories: [...Array(15)].map((_, i) => `category-${i}`),
+  },
 };

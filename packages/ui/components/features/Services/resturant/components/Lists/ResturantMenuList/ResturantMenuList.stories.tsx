@@ -1,22 +1,19 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { randomNum, storybookRestaurantListsTitle } from "utils";
 import { ResturantMenuList } from "./ResturantMenuList";
 
 export default {
-  title: storybookRestaurantListsTitle + "RestaurantMenuList",
+  title: "UI / Features /Restaurant /Lists /RestaurantMenuList1",
   component: ResturantMenuList,
-} as ComponentMeta<typeof ResturantMenuList>;
+} as Meta<typeof ResturantMenuList>;
 
-const template: ComponentStory<typeof ResturantMenuList> = (args) => (
-  <ResturantMenuList {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  listTitle: "menu list",
-  menuItems: [...Array(10)].map(() => ({
-    id: "1",
-    price: randomNum(153),
-    title: "menu item",
-  })),
+export const Default = {
+  args: {
+    listTitle: "menu list",
+    menuItems: [...Array(10)].map(() => ({
+      id: "1",
+      price: randomNum(153),
+      title: "menu item",
+    })),
+  },
 };

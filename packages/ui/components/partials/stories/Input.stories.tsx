@@ -1,63 +1,73 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { Input } from "../";
 export default {
-  title: "UI/partials/Input",
+  title: "UI/partials/Input2",
   component: Input,
-} as ComponentMeta<typeof Input>;
+} as Meta<typeof Input>;
 
-const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />;
-export const Default = Template.bind({});
-Default.args = {};
-Default.decorators = [
-  (Story, { args }) => (
-    <section className="flex h-screen w-full items-center justify-center bg-gray-200">
-      <Story args={args}></Story>
-    </section>
-  ),
-];
-export const WithError = Template.bind({});
-WithError.args = {
-  message: {
-    error: true,
-    msg: "invalid input, try again",
-  },
+export const Default = {
+  args: {},
+
+  decorators: [
+    (Story, { args }) => (
+      <section className="flex h-screen w-full items-center justify-center bg-gray-200">
+        <Story args={args}></Story>
+      </section>
+    ),
+  ],
 };
-WithError.decorators = [
-  (Story, { args }) => (
-    <section className="flex h-screen w-full items-center justify-center bg-gray-200">
-      <Story args={args}></Story>
-    </section>
-  ),
-];
-export const LongError = Template.bind({});
-LongError.args = {
-  explictWidth: {
-    value: 20,
+
+export const WithError = {
+  args: {
+    message: {
+      error: true,
+      msg: "invalid input, try again",
+    },
   },
-  message: {
-    error: true,
-    msg: "invalid input, try again invalid input, try again invalid input, try again",
-  },
+
+  decorators: [
+    (Story, { args }) => (
+      <section className="flex h-screen w-full items-center justify-center bg-gray-200">
+        <Story args={args}></Story>
+      </section>
+    ),
+  ],
 };
-LongError.decorators = [
-  (Story, { args }) => (
-    <section className="flex h-screen w-full items-center justify-center bg-gray-200">
-      <Story args={args}></Story>
-    </section>
-  ),
-];
-export const WithSuccessMsg = Template.bind({});
-WithSuccessMsg.args = {
-  message: {
-    error: false,
-    msg: "successfully added voucher code",
+
+export const LongError = {
+  args: {
+    explictWidth: {
+      value: 20,
+    },
+    message: {
+      error: true,
+      msg: "invalid input, try again invalid input, try again invalid input, try again",
+    },
   },
+
+  decorators: [
+    (Story, { args }) => (
+      <section className="flex h-screen w-full items-center justify-center bg-gray-200">
+        <Story args={args}></Story>
+      </section>
+    ),
+  ],
 };
-WithSuccessMsg.decorators = [
-  (Story, { args }) => (
-    <section className="flex h-screen w-full items-center justify-center bg-gray-200">
-      <Story args={args}></Story>
-    </section>
-  ),
-];
+
+export const WithSuccessMsg = {
+  args: {
+    message: {
+      error: false,
+      msg: "successfully added voucher code",
+    },
+  },
+
+  decorators: [
+    (Story, { args }) => (
+      <section className="flex h-screen w-full items-center justify-center bg-gray-200">
+        <Story args={args}></Story>
+      </section>
+    ),
+  ],
+};

@@ -1,12 +1,12 @@
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { HashTagInput } from "@UI";
 import React from "react";
 
 export default {
-  title: storybookDataInputBlocksTitle + "HashTagInput",
+  title: "UI / blocks / Data Input /HashTagInput",
   component: HashTagInput,
-} as ComponentMeta<typeof HashTagInput>;
+} as Meta<typeof HashTagInput>;
 
 export const Default = () => {
   const [tags, setTags] = React.useState<string[]>([]);

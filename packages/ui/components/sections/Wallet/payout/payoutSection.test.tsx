@@ -12,9 +12,9 @@ jest.mock("ui", () => ({
 describe("payout section tests", () => {
   let wrapper: ShallowWrapper;
 
-  let mockUseGetWithdrawals = useGetMyWithdrawalsQuery as jest.Mock;
+  const mockUseGetWithdrawals = useGetMyWithdrawalsQuery as jest.Mock;
 
-  let mockData: ReturnType<typeof useGetMyWithdrawalsQuery>["data"] = [
+  const mockData: ReturnType<typeof useGetMyWithdrawalsQuery>["data"] = [
     {
       id: "1",
       amount: 15,

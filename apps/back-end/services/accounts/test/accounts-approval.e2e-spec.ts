@@ -24,14 +24,14 @@ import { AppModule } from '../src/app.module';
 
 describe('Accounts approval e2e', () => {
   let app: INestApplication;
-  let kafka = new Kafka({
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
   });
 
-  let producer = kafka.producer();
+  const producer = kafka.producer();
 
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     await producer.connect();

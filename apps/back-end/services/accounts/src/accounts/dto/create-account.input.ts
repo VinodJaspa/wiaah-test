@@ -85,4 +85,4 @@ export class AdminUpdateAdminAccountInput extends PartialType(
 }
 
 @InputType()
-export class CreateSellerAccountInput extends CreateAccountInput { }
+export class CreateSellerAccountInput extends CreateAccountInput {}

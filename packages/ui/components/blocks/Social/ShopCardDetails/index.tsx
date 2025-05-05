@@ -33,7 +33,7 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
   onAddToCart,
   onBook,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   function handleFollowClick() {
     onFollow && onFollow();
   }

@@ -1,17 +1,23 @@
-import { Text, useBreakpointValue } from "@chakra-ui/react";
+
 import React from "react";
 import {
   ShopCardsListWrapper,
   PostView,
   Carousel,
   SocialShopPostcardProps,
+  ShadcnText,
 } from "ui";
 import { SocialShopsPostCardPlaceholder } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
+import { useMediaQuery } from "react-responsive";
 
 export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
-  const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+const { t } = useTranslation();
+
+  const isMd = useMediaQuery({ minWidth: 768 });
+  const isLg = useMediaQuery({ minWidth: 1024 });
+
+  const cols = isLg ? 3 : isMd ? 2 : 1;
 
   const post = SocialShopsPostCardPlaceholder.filter(
     (shop) => shop.postInfo.id === postId
@@ -25,10 +31,13 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
             <PostView
               postId={postId}
               queryName="shopPost"
-              data={post[0]}
+              data={{
+                postType: "shop",
+                ...post[0],
+              }}
               idParam="shopPostId"
-              renderChild={(props: SocialShopPostcardProps) => {
-                const images = post[0].postInfo.product.presentations;
+              renderChild={(props: any) => {
+                const images = props.postInfo.product.presentations;
                 return (
                   <Carousel componentsPerView={1} controls={images.length > 1}>
                     {images.map((image, index) => (
@@ -50,15 +59,10 @@ export const ShopCardsView: React.FC<{ postId: string }> = ({ postId }) => {
         </div>
       )}
 
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+      <ShadcnText className="text-4xl font-bold w-full text-center capitalize">
         {t("other_posts", "other posts")}
-      </Text>
+      </ShadcnText>
+
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">
           <ShopCardsListWrapper

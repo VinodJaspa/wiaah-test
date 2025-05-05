@@ -1,11 +1,11 @@
 import { storybookChatDisplay, ChatMessageAttachment } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { MessageAttachmentType } from "@features/API";
 
 export default {
-  title: storybookChatDisplay + "ChatMessageAttachment",
+  title: "UI / blocks / Chat Display /ChatMessageAttachment",
   component: ChatMessageAttachment,
-} as ComponentMeta<typeof ChatMessageAttachment>;
+} as Meta<typeof ChatMessageAttachment>;
 
 export const image = () => (
   <ChatMessageAttachment

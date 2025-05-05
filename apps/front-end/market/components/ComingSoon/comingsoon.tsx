@@ -65,7 +65,7 @@ const socialData: SocialItem[] = [
 
 export const CoomingSoon: React.FC = () => {
   const [videoOpen, setVideoOpen] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
   function handleVideoClose() {
     setVideoOpen(false);
   }

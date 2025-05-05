@@ -1,14 +1,11 @@
-import {
-  storybookPartailsTitle,
-  StorybookImplemntationLayout,
-} from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
+import { Meta } from "@storybook/react";
 import React from "react";
 import { PriceDisplay } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "PriceDisplay",
-} as ComponentMeta<typeof PriceDisplay>;
+  title: "UI / partials / PriceDisplay",
+} as Meta<typeof PriceDisplay>;
 
 export const Default = () => {
   return (

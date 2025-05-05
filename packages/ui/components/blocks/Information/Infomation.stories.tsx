@@ -1,11 +1,11 @@
 import { storybookBlocksTitle } from "utils";
 import { Information } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "Information",
+  title: "UI / blocks / Information",
   component: Information,
-} as ComponentMeta<typeof Information>;
+} as Meta<typeof Information>;
 
 export const Default = () => {
   return <Information />;

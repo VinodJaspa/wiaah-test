@@ -33,12 +33,12 @@ describe('users interactions e2e tests', () => {
 
   let repo: UsersInteractionsRepository;
 
-  let kafka = new Kafka({
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: 'test clientId',
   });
 
-  let producer = kafka.producer();
+  const producer = kafka.producer();
 
   beforeAll(async () => {
     producer.connect();
@@ -73,8 +73,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle reactions', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     for (const type in ContentTypeEnum) {
       await producer.send({
@@ -116,8 +116,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle comments', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('comment'),
@@ -160,8 +160,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle shares', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.SHARES_EVENTS.contentShared('post', false),
@@ -200,8 +200,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle messages', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.CHAT.privateMessageSent,
@@ -237,8 +237,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle mentions', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.SOCIAL_EVENTS.userMention('', false),
@@ -275,8 +275,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle profile visits', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.PROFILE_EVENTS.profileVisited('', false),
@@ -313,8 +313,8 @@ describe('users interactions e2e tests', () => {
   });
 
   it('should handle saved posts', async () => {
-    let userId = mockedUser.id;
-    let contentAuthorId = secendMockedUser.id;
+    const userId = mockedUser.id;
+    const contentAuthorId = secendMockedUser.id;
 
     await producer.send({
       topic: KAFKA_EVENTS.SOCIAL_EVENTS.postSaved('', false),

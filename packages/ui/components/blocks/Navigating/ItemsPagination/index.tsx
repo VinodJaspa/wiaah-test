@@ -1,7 +1,8 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+
 import { SelectOption } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 export interface ItemsPaginationProps {
   controls: usePaginationControls;
 }
@@ -78,7 +79,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
 }) => {
   const { changeItemsPerPage, itemsPerPage, next, page, previous, totalItems } =
     controls;
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   function handleItemsPerPageChange(value: string) {
     changeItemsPerPage(parseInt(value));
@@ -103,19 +104,27 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
         {totalItems > 0 ? Math.ceil(totalItems / itemsPerPage) : "Unkown"}
       </p>
       <div className="flex gap-2 items-center">
-        <ChevronLeftIcon
+ 
+
+        <button
           onClick={() => {
             previous && previous();
           }}
-          className="text-gray-500 bg-white cursor-pointer"
-        />
+          className="text-gray-500 bg-white cursor-pointer p-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <MdChevronLeft className="w-5 h-5" />
+        </button>
+
         {page}
-        <ChevronRightIcon
+
+        <button
           onClick={() => {
             next && next();
           }}
-          className="text-gray-500 bg-white cursor-pointer"
-        />
+          className="text-gray-500 bg-white cursor-pointer p-2 rounded-md hover:bg-gray-100 transition"
+        >
+          <MdChevronRight className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );

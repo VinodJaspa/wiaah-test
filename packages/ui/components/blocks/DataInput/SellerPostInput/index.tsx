@@ -29,7 +29,7 @@ export const SellerPostInput: React.FC<SellerPostInputProps> = ({
 }) => {
   const { OpenModal } = useNewPost();
   const { user } = useUserData();
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const handleSubmit = () => {
     OpenModal();

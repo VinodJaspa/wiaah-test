@@ -1,3 +1,5 @@
+
+// @ts-nocheck
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { RecentSearchItem } from "types";

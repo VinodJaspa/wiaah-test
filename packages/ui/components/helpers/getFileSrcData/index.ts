@@ -7,7 +7,7 @@ export const getFileSrcData = (
   let res: FileRes = null;
 
   if (FileReader && file) {
-    var fr = new FileReader();
+    const fr = new FileReader();
     fr.onload = function () {
       onFinish && onFinish(fr.result);
       res = fr.result;

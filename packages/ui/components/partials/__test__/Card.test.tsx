@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Card } from "@chakra-ui/react";
+import { Card, CardHeader, CardTitle, CardContent } from "../../shadcn-components";
 
 it("renders as expected without parameters", () => {
   const wrapper = shallow(<Card />);
@@ -8,7 +8,17 @@ it("renders as expected without parameters", () => {
 });
 
 it("renders as expected with parameters", () => {
-  const wrapper = shallow(<Card />);
+  const wrapper = shallow(
+    <Card>
+      <CardHeader>
+        <CardTitle>Card Name</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <img src="/no_image.jpg" alt="Card Image" />
+      </CardContent>
+    </Card>
+  );
+
   expect(wrapper.find("img").props().src).toEqual("/no_image.jpg");
-  expect(wrapper.find("p").first().text()).toEqual("Card Name");
+  expect(wrapper.find(CardTitle).text()).toEqual("Card Name");
 });

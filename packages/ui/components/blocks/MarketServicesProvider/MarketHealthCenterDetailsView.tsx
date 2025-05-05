@@ -90,10 +90,22 @@ export const MarketHealthCenterDetailsView: React.FC<{ id: string }> = ({
           <div className="w-full h-full mt-4 ">
             <WorkingDaysCalender
               takenDates={convertMapScheduleToDates(
-                res?.takenSchedule?.weekdays,
+                res?.takenSchedule?.weekdays
+                  ? Object.fromEntries(
+                      Object.entries(res.takenSchedule.weekdays).map(
+                        ([key, value]) => [key, value && typeof value === "object" ? { ...value, __typename: undefined } : {}]
+                      )
+                    )
+                  : undefined,
               )}
               workingDates={convertMapScheduleToDates(
-                res?.workingSchedule?.weekdays,
+                res?.workingSchedule?.weekdays
+                  ? Object.fromEntries(
+                      Object.entries(res.workingSchedule.weekdays).map(
+                        ([key, value]) => [key, value && typeof value === "object" ? { ...value, __typename: undefined } : {}]
+                      )
+                    )
+                  : undefined,
               )}
             />
           </div>
@@ -161,14 +173,17 @@ const FAKE_HEALTH_CENTER_DETAILS: GetHealthCenterQuery["getHealthCenter"] = {
   // createdAt: "2023-03-06T00:00:00Z",
   cancelationPolicies: [
     {
+      id: "policy-1",
       cost: 5,
       duration: 4,
     },
     {
+      id: "policy-2",
       cost: 0,
       duration: 2,
     },
     {
+      id: "policy-3",
       cost: 10,
       duration: 6,
     },

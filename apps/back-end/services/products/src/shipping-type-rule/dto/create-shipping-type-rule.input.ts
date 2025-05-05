@@ -10,8 +10,6 @@ export class CreateShippingRuleGeoZoneInput {
   zone: string;
 }
 
-
-
 @InputType()
 export class CreateShippingTypeRuleInput {
   @Field(() => String)

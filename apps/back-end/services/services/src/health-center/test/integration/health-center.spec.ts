@@ -54,7 +54,7 @@ describe('HealthCenterResolver', () => {
 
   // speciality system testing
   describe('Health Center Speciality system', () => {
-    let input: CreateHealthCenterSpecialityInput = {
+    const input: CreateHealthCenterSpecialityInput = {
       description: [
         {
           langId: 'en',

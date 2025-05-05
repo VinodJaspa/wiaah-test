@@ -45,7 +45,7 @@ export type GetHealthCenterQuery = { __typename?: "Query" } & {
       cancelationPolicies: Array<
         { __typename?: "ServiceCancelationPolicy" } & Pick<
           ServiceCancelationPolicy,
-          "cost" | "duration"
+          "cost" | "duration" | "id"
         >
       >;
       contact: { __typename?: "ServiceContact" } & Pick<
@@ -104,7 +104,10 @@ export type GetHealthCenterQuery = { __typename?: "Query" } & {
         | "title"
       >;
       workingSchedule?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+        { __typename?: "WorkingSchedule" } & Pick<
+          ServiceWorkingSchedule,
+          "id"
+        > & {
             weekdays: { __typename?: "WeekdaysWorkingHours" } & {
               fr?: Maybe<
                 { __typename?: "ServiceDayWorkingHours" } & Pick<
@@ -152,7 +155,10 @@ export type GetHealthCenterQuery = { __typename?: "Query" } & {
           }
       >;
       takenSchedule?: Maybe<
-        { __typename?: "WorkingSchedule" } & Pick<ServiceWorkingSchedule, "id"> & {
+        { __typename?: "WorkingSchedule" } & Pick<
+          ServiceWorkingSchedule,
+          "id"
+        > & {
             weekdays: { __typename?: "WeekdaysWorkingHours" } & {
               fr?: Maybe<
                 { __typename?: "ServiceDayWorkingHours" } & Pick<
@@ -199,7 +205,6 @@ export type GetHealthCenterQuery = { __typename?: "Query" } & {
             };
           }
       >;
-
     };
 };
 
@@ -312,21 +317,24 @@ workingHours {
             }
     }   }
 }
-    `
+    `,
     );
 
     const data: GetHealthCenterQuery["getHealthCenter"] = {
       // createdAt: "2023-03-06T00:00:00Z",
       cancelationPolicies: [
         {
+          id: "1",
           cost: 5,
           duration: 4,
         },
         {
+          id: "1",
           cost: 0,
           duration: 2,
         },
         {
+          id: "1",
           cost: 10,
           duration: 6,
         },
@@ -449,7 +457,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -457,7 +465,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -465,7 +473,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -473,7 +481,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -481,7 +489,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -489,7 +497,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -497,7 +505,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -510,7 +518,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -518,7 +526,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -526,7 +534,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -534,7 +542,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -542,7 +550,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -550,7 +558,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -558,7 +566,7 @@ workingHours {
             periods: [
               new Date().toString(),
               new Date(
-                new Date().setHours(new Date().getHours() + random(5, 11))
+                new Date().setHours(new Date().getHours() + random(5, 11)),
               ).toString(),
             ],
           },
@@ -568,12 +576,15 @@ workingHours {
 
     return data;
 
-    const res = await client
+    const res:any = await client
       .setVariables<GetHealthCenterQueryVariables>({
         id,
       })
       .send<GetHealthCenterQuery>();
 
-    res.data.getHealthCenter;
-  });
+    if (res && res.data) {
+      return res.data.getHealthCenter;
+    }
+    throw new Error("Failed to fetch health center details");
+  })
 };

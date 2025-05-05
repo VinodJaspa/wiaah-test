@@ -1,5 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import {
+
   Exact,
   GetPostsByHashtagInput,
   NewsfeedPost,
@@ -10,6 +11,7 @@ import {
   useInfiniteQuery,
   useQuery,
 } from "react-query";
+
 
 export type GetTrendingPostsByHashtagQueryVariables = Exact<{
   args: GetPostsByHashtagInput;

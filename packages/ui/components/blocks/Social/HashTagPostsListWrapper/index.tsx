@@ -1,7 +1,8 @@
 import { ListWrapper } from "../../../blocks/Wrappers";
 import React from "react";
-import { useBreakpointValue } from "utils";
+
 import { HashTagCard, HashTagCardProps } from "../HashTagCard";
+import { useMediaQuery } from "react-responsive";
 
 export interface HashTagPostsListWrapperProps {
   hashtags: (HashTagCardProps["post"] & {
@@ -14,7 +15,13 @@ export interface HashTagPostsListWrapperProps {
 export const HashTagPostsListWrapper: React.FC<
   HashTagPostsListWrapperProps
 > = ({ hashtags, cols }) => {
-  const Cols = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4 });
+  const Cols = useMediaQuery({ maxWidth: 767 })
+    ? 1
+    : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
+    ? 2
+    : useMediaQuery({ minWidth: 1024 })
+    ? 3
+    : 1;  
 
   return (
     <ListWrapper data-testid="HashTagCardsContainer" cols={cols || Cols}>

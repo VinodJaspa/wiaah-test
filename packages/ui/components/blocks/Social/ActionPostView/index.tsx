@@ -1,13 +1,13 @@
-import { Text, useBreakpointValue } from "@chakra-ui/react";
+
 import React from "react";
-import { PostView, Carousel, VideoThumbnail } from "ui";
+import { PostView, Carousel, VideoThumbnail, ShadcnText } from "ui";
 import { SocialActionsCardPlaceholder } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
 import { ActionsCardListWrapper } from "../ActionsCardsListWrapper";
 import { NumberShortner } from "@UI/../utils/src";
 
 export const ActionPostView: React.FC<{ videoId: string }> = ({ videoId }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const video = SocialActionsCardPlaceholder.filter(
     (video) => video.id === videoId
@@ -20,7 +20,6 @@ export const ActionPostView: React.FC<{ videoId: string }> = ({ videoId }) => {
             <PostView
               postId="4"
               queryName="newFeedPost"
-              data={video[0]}
               idParam="newsfeedpostid"
               renderChild={() => {
                 return (
@@ -50,15 +49,9 @@ export const ActionPostView: React.FC<{ videoId: string }> = ({ videoId }) => {
         </div>
       )}
 
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+      <ShadcnText className="text-4xl font-bold w-full text-center capitalize">
         {t("other_posts", "other posts")}
-      </Text>
+      </ShadcnText>
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">
           <ActionsCardListWrapper

@@ -1,18 +1,18 @@
-import { Location } from "api";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { ServicesType } from "types";
+import { LocationAddress } from "@features/Services/components/DataDisplay/LocationAddress/LocationAddress";
 import {
   AspectRatio,
   Avatar,
-  VerifiedIcon,
-  PriceDisplay,
   LocationIcon,
-  LocationAddressDisplay,
-  SlimRightArrow,
-  Rate,
+  PriceDisplay,
   UnDiscountedPriceDisplay,
+  VerifiedIcon,
 } from "@UI";
+import { Location } from "api";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ServicesType } from "types";
 
 export interface SearchServiceCardProps {
   onView?: () => {};
@@ -29,6 +29,7 @@ export interface SearchServiceCardProps {
     id: string;
   };
   sellerInfo: {
+    id?: string;
     name: string;
     profession: string;
     thumbnail: string;
@@ -42,7 +43,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
   serviceType,
   onView,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const {
     id,
     location,
@@ -54,8 +55,13 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
     discount,
     reviews,
   } = serviceData;
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col w-full">
+    <div
+      onClick={() => router.push(`/service/details/${serviceType}/${id}`)}
+      className="flex flex-col w-full cursor-pointer"
+    >
       <AspectRatio className="rounded-2xl overflow-hidden" ratio={1}>
         <div className="bg-primary px-8  text-white absolute top-4 origin-center -left-8 -rotate-45">
           <p>
@@ -74,52 +80,50 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           style={{
             backdropFilter: "blur(5px)",
           }}
-          className="flex items-center justify-between px-5 absolute bg-black text-white bg-opacity-10 w-full h-[18%] bottom-0 left-0"
+          className="flex items-center justify-between px-2 absolute bg-black text-white bg-opacity-10 w-full h-[18%] bottom-0 left-0"
         >
-          <div className="flex gap-2 items-center">
+          <Link
+            href={`/profile/${sellerInfo.id}`}
+            onClick={(e) => e.stopPropagation()}
+            className="flex gap-2 items-center flex-shrink-0"
+          >
             <Avatar
               src={sellerInfo.thumbnail}
-              className={"-translate-y-1/4 rounded-full border-2 border-white"}
+              className="rounded-full inset-0 border-2 border-white w-8 h-8"
             />
-            <div>
+            <div className="flex items-center gap-1">
               <p className="font-bold text-xs">{sellerInfo.name}</p>
-              <div className="flex items-center gap-1">
-                <p className="font-normal text-[0.563rem]">
-                  {sellerInfo.profession}
-                </p>
-                {sellerInfo.verified ? (
-                  <VerifiedIcon className="text-[0.563rem]" />
-                ) : null}
-              </div>
+              {sellerInfo.verified ? (
+                <VerifiedIcon className="text-[0.563rem] inline-block" />
+              ) : null}
             </div>
-          </div>
+          </Link>
 
-          <div className="flex text-sm font-extrabold gap-1 items-center">
+          <div className="flex text-sm gap-1 items-center">
             {typeof price === "number" ? (
-              <div className="flex flex-col items-end">
-                <PriceDisplay price={price} />
-                <UnDiscountedPriceDisplay
-                  className="text-xs"
-                  amount={price}
-                  discount={discount}
-                />
-              </div>
-            ) : Array.isArray(price) ? (
-              <div className="flex flex-col items-end">
-                <div className="flex gap-1 items-center">
-                  <PriceDisplay price={price[0]} /> -{" "}
-                  <PriceDisplay price={price[1]} />
-                </div>
-                <div className="flex gap-1 text-xs items-center">
+              <div className="flex flex-col">
+                <p className="text-xs">Price by Night</p>
+                <div className="flex items-center gap-1">
                   <UnDiscountedPriceDisplay
-                    amount={price[0]}
-                    discount={discount}
-                  />{" "}
-                  -{" "}
-                  <UnDiscountedPriceDisplay
-                    amount={price[1]}
+                    className="text-xs text-red-500"
+                    amount={price}
                     discount={discount}
                   />
+                  <PriceDisplay price={price} className="font-semibold" />
+                </div>
+              </div>
+            ) : Array.isArray(price) ? (
+              <div className="flex flex-col">
+                {serviceType === "vehicle" && (
+                  <p className="text-xs">Price by Day</p>
+                )}
+                <div className="flex items-center gap-1">
+                  <UnDiscountedPriceDisplay
+                    className="text-xs text-red-500"
+                    amount={price[0]}
+                    discount={discount}
+                  />
+                  <PriceDisplay price={price[0]} className="font-semibold" />
                 </div>
               </div>
             ) : null}
@@ -131,7 +135,7 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
         <div className="flex gap-1 items-center justify-between">
           <div className="flex gap-1 text-xs text-iconGray">
             <LocationIcon className="text-primary text-base w-6" />
-            <LocationAddressDisplay
+            <LocationAddress
               location={{
                 city: location.city,
                 lat: location.lat,
@@ -146,21 +150,6 @@ export const SearchServiceCard: React.FC<SearchServiceCardProps> = ({
           <p className="underline whitespace-nowrap text-primary">
             {t("Show on map")}
           </p>
-        </div>
-        <div className="flex justify-between gap-2">
-          <div
-            onClick={() => onView && onView()}
-            className="cursor-pointer flex text-primary gap-2 items-end"
-          >
-            <p className="font-extrabold text-base">{t("View")}</p>
-            <SlimRightArrow className="text-xl" />
-          </div>
-          <div className="flex items-center gap-1">
-            <Rate className="text-sm gap-[0.25rem]" rating={rating} />
-            <p className="text-[0.5rem] font-semibold text-lightBlack whitespace-nowrap">{`(${reviews} ${t(
-              "Reviews"
-            )})`}</p>
-          </div>
         </div>
       </div>
     </div>

@@ -23,7 +23,7 @@ export class LanguageResolver {
   @Query(() => [Language])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   adminGetLanguages(@Args('args') args: AdminGetLanguagesInput) {
-    let filters: Prisma.LanguageWhereInput[] = [];
+    const filters: Prisma.LanguageWhereInput[] = [];
 
     if (args.name) {
       filters.push({

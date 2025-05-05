@@ -120,7 +120,7 @@ export class StoryResolver {
     @Args('args') args: GetAdminFilteredStoriesInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    let filters: Prisma.StoryWhereInput[] = [];
+    const filters: Prisma.StoryWhereInput[] = [];
     if (args.id) {
       filters.push({
         id: {

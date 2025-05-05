@@ -5,22 +5,31 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*"
+    "config": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "utils": "*"
-  },
-  "shadow": {
-    "dependencies": [
-      "react",
-      "react-dom"
-    ],
-    "devDependencies": [
-      "typescript"
-    ]
+    "dto": "workspace:*",
+    "react-pubsub": "workspace:*",
+    "react-seo": "workspace:*",
+    "api": "workspace:*",
+    "hooks": "workspace:*",
+    "lib": "workspace:*",
+    "placeholder": "workspace:*",
+    "nest-utils":"workspace:*",
+    "routing": "workspace:*",
+    "state": "workspace:*",
+    "ui": "workspace:*",
+    "uris": "workspace:*",
+    "utils": "workspace:*",
+    "validation": "workspace:*",
+    "react": "^18.2.0",
+    "types":"workspace:*",
+    "react-dom": "^18.2.0"
   }
 }

@@ -37,7 +37,7 @@ export const MarketVehicleServiceDetailsView: React.FC = () => {
   const isError = false;
   const isLoading = false;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const VehiclesRef = usePublishRef("vehicles");
 
@@ -234,6 +234,7 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
       brand: "Toyota",
       cancelationPolicies: [
         {
+          id: "policy_1",
           cost: 10,
           duration: 12,
         },
@@ -265,6 +266,7 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
       brand: "Honda",
       cancelationPolicies: [
         {
+          id: "policy_2",
           cost: 15,
           duration: 18,
         },
@@ -292,6 +294,7 @@ const FAKE_VEHICLE_DETAILS: GetVehicleQuery["getVehicleServicebyId"] = {
       brand: "Toyota",
       cancelationPolicies: [
         {
+          id: "policy_3",
           cost: 10,
           duration: 12,
         },

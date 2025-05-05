@@ -12,7 +12,7 @@ import {
   InfoText,
   PriceLevelDisplay,
   PriceConverter,
-  LocationAddressDisplay,
+  LocationAddress,
 } from "@UI";
 import { setTestid } from "utils";
 
@@ -25,7 +25,7 @@ export interface RestaurantMyServiceCardProps
 export const RestaurantMyServiceCard: React.FC<
   RestaurantMyServiceCardProps
 > = ({ onEdit, onRemove, ...props }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const {
     averagePrice,
     discount,
@@ -60,7 +60,7 @@ export const RestaurantMyServiceCard: React.FC<
                 <p className="text-xl font-bold">{name}</p>
                 <p className="text-3xl font-bold">{rate}</p>
               </div>
-              <LocationAddressDisplay
+              <LocationAddress
                 location={{
                   city: location.city,
                   country: location.country!,

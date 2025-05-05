@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "strict": true,
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,7 +22,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@lib": ["lib"]
+      "@lib": [
+        "lib"
+      ]
     }
   }
 }

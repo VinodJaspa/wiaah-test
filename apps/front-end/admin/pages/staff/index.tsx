@@ -20,7 +20,8 @@ import { AccountStatus, AccountType, StaffAccountType } from "@features/API";
 import Head from "next/head";
 
 const Staff: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
 
@@ -64,21 +65,21 @@ const Staff: NextPage = () => {
             },
             {
               type: AdminTableCellTypeEnum.avatar,
-              value: t("Photo"),
+              value: t("Photo") as string,
             },
             {
               type: AdminTableCellTypeEnum.text,
-              value: t("Name"),
+              value: t("Name") as string,
               inputProps: inputProps("name"),
             },
             {
               type: AdminTableCellTypeEnum.text,
-              value: t("Email"),
+              value: t("Email") as string,
               inputProps: inputProps("email"),
             },
             {
               type: AdminTableCellTypeEnum.custom,
-              value: t("Role"),
+              value: t("Role") as string,
               custom: (
                 <Select {...selectProps("role")}>
                   <SelectOption value={StaffAccountType.Admin}>
@@ -92,7 +93,7 @@ const Staff: NextPage = () => {
             },
             {
               type: AdminTableCellTypeEnum.custom,
-              value: t("Status"),
+              value: t("Status") as string,
               custom: (
                 <Select {...selectProps("status")}>
                   {Object.values(AccountStatus).map((v, i) => (
@@ -105,7 +106,7 @@ const Staff: NextPage = () => {
             },
             {
               type: AdminTableCellTypeEnum.date,
-              value: t("Last Activity"),
+              value: t("Last Activity") as string,
               inputProps: dateInputProps("lastActivity"),
             },
           ]}

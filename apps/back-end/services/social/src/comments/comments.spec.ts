@@ -88,7 +88,7 @@ describe('comments testing', () => {
   });
 
   it('should create and delete comment on post', async () => {
-    let firstProfile = await prisma.profile.create({
+    const firstProfile = await prisma.profile.create({
       data: {
         ...createProfileMockInput,
         lastActive: new Date(),
@@ -96,7 +96,7 @@ describe('comments testing', () => {
       },
     });
 
-    let secendProfile = await prisma.profile.create({
+    const secendProfile = await prisma.profile.create({
       data: {
         ...createProfileMockInput,
         lastActive: new Date(),
@@ -188,7 +188,7 @@ describe('comments testing', () => {
   });
 
   it('should comment on other comments', async () => {
-    let firstProfile = await prisma.profile.create({
+    const firstProfile = await prisma.profile.create({
       data: {
         ...createProfileMockInput,
         lastActive: new Date(),
@@ -196,7 +196,7 @@ describe('comments testing', () => {
       },
     });
 
-    let secendProfile = await prisma.profile.create({
+    const secendProfile = await prisma.profile.create({
       data: {
         ...createProfileMockInput,
         lastActive: new Date(),

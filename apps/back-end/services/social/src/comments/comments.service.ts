@@ -61,9 +61,8 @@ export class CommentsService {
   ): Promise<Comment> {
     const { content, contentId, contentType, mentions, attachment } =
       createCommentInput;
-    const authorProfileId = await this.profileSerivce.getProfileIdByUserId(
-      userId,
-    );
+    const authorProfileId =
+      await this.profileSerivce.getProfileIdByUserId(userId);
 
     const canComment = await this.canCommentOnContentByUserId(
       contentType,

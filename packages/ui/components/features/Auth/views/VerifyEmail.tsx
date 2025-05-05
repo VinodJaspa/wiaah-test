@@ -17,7 +17,7 @@ export const VerifyAccountEmail = forwardRef(
     },
     ref
   ) => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
     const { inputProps, dateInputProps, form, handleChange } = useForm<
       Parameters<typeof verify>[0]
     >(

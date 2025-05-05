@@ -1,15 +1,15 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { StorySeenByPopup } from "@UI";
+import { StoryFn, Meta } from "@storybook/react";
+import { ShadCnButton, StorySeenByPopup } from "@UI";
 import { useStorySeenBy } from "@src/Hooks";
-import { Button } from "@chakra-ui/react";
+
 
 export default {
   title: "UI/blocks/Social/StorySeenByPopup",
   component: StorySeenByPopup,
-} as ComponentMeta<typeof StorySeenByPopup>;
+} as Meta<typeof StorySeenByPopup>;
 
-const Template: ComponentStory<typeof StorySeenByPopup> = (args) => {
+const Template: StoryFn<typeof StorySeenByPopup> = (args) => {
   const { OpenStorySeenBy, setStorySeenBy } = useStorySeenBy();
   React.useEffect(() => {
     setStorySeenBy([
@@ -33,11 +33,15 @@ const Template: ComponentStory<typeof StorySeenByPopup> = (args) => {
   }, []);
   return (
     <>
-      <Button onClick={OpenStorySeenBy}>open</Button>
+    <ShadCnButton variant="default"onClick={OpenStorySeenBy}>open</ShadCnButton>
+
+  
       <StorySeenByPopup {...args} />
     </>
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  render: Template,
+  args: {},
+};

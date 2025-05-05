@@ -1,9 +1,9 @@
 import { storybookDataDisplayBlocksTitle, DurationDisplay } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookDataDisplayBlocksTitle + "DurationDisplay",
+  title: "UI / blocks / Data Display /DurationDisplay",
   component: DurationDisplay,
-} as ComponentMeta<typeof DurationDisplay>;
+} as Meta<typeof DurationDisplay>;
 
 export const Default = () => <DurationDisplay duration={215} />;

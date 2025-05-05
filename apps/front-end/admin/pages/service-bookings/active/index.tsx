@@ -48,7 +48,8 @@ const books: Book[] = [...Array(10)].map((_, i) => ({
 }));
 
 const Bookings = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getCurrentPath, visit } = useRouting();
 
   return (

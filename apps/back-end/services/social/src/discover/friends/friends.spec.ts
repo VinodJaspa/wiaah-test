@@ -24,7 +24,7 @@ jest.mock('nest-utils', () => ({
 
 describe('friends tests', () => {
   let app: INestApplication;
-  let kafkaMock = new NestKafkaClientMock();
+  const kafkaMock = new NestKafkaClientMock();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({

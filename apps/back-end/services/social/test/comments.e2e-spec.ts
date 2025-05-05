@@ -23,8 +23,8 @@ import {
 } from 'nest-utils';
 import { PrismaClient } from 'prismaClient';
 
-let mockGetUsersInteractonsByUserId = jest.fn();
-let mockGetUsersActivityScoresById = jest.fn();
+const mockGetUsersInteractonsByUserId = jest.fn();
+const mockGetUsersActivityScoresById = jest.fn();
 
 @Controller()
 class TestCommentsReplier {
@@ -51,7 +51,7 @@ describe('comments e2e tests', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    let moduleFixture = await Test.createTestingModule({
+    const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
       controllers: [TestCommentsReplier],
     }).compile();
@@ -77,11 +77,11 @@ describe('comments e2e tests', () => {
     requestGraphql(app, q, v).set({ user: JSON.stringify(u) });
 
   it('should get sorted comments based on friendship score and activity score', async () => {
-    let prisma = new PrismaClient();
-    let hostId = new ObjectId().toHexString();
-    let mockUserId = mockedUser.id;
+    const prisma = new PrismaClient();
+    const hostId = new ObjectId().toHexString();
+    const mockUserId = mockedUser.id;
 
-    let friendsComments = await Promise.all(
+    const friendsComments = await Promise.all(
       [...Array(5)].map(() =>
         prisma.comment.create({
           data: {
@@ -95,7 +95,7 @@ describe('comments e2e tests', () => {
       ),
     );
 
-    let activeUsersComments = await Promise.all(
+    const activeUsersComments = await Promise.all(
       [...Array(5)].map(() =>
         prisma.comment.create({
           data: {
@@ -109,7 +109,7 @@ describe('comments e2e tests', () => {
       ),
     );
 
-    let otherComments = await Promise.all(
+    const otherComments = await Promise.all(
       [...Array(5)].map(() =>
         prisma.comment.create({
           data: {
@@ -152,14 +152,14 @@ describe('comments e2e tests', () => {
 
     expect(comments.length).toBe(13);
 
-    let top5Comments = comments.slice(0, 5);
+    const top5Comments = comments.slice(0, 5);
     expect(
       top5Comments.every(
         (v) => !!friendsComments.find((f) => f.userId === v.id),
       ),
     ).toBe(true);
 
-    let topSecond5Comments = comments.slice(5, 10);
+    const topSecond5Comments = comments.slice(5, 10);
     expect(
       topSecond5Comments.every(
         (v) => !!activeUsersComments.find((f) => f.userId === v.id),

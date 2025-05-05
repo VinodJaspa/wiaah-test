@@ -10,7 +10,7 @@ describe('Shop service unit testing', () => {
   let dbSerivce: PrismaService;
   let mockKafkaEmit: jest.Mock;
 
-  let createShopInput: CreateShopInput = {
+  const createShopInput: CreateShopInput = {
     name: 'test shop name',
     location: {
       address: 'test address',
@@ -91,8 +91,8 @@ describe('Shop service unit testing', () => {
   });
 
   describe('get nearby shops algorithm, should get near shops with max distance of', () => {
-    let lat = 32;
-    let lon = 20;
+    const lat = 32;
+    const lon = 20;
     let nearShops: Shop[];
 
     beforeEach(async () => {

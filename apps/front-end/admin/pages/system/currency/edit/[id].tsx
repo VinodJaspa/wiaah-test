@@ -21,7 +21,8 @@ import { useRouting } from "routing";
 import Head from "next/head";
 
 const EditCurrency: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { getParam, back } = useRouting();
 

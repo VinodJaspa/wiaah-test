@@ -3,7 +3,7 @@ import { ReviewLevel, ReviewLevelProps } from "./ReviewLevel";
 
 describe("ReviewLevel", () => {
   let wrapper: ShallowWrapper;
-  let props: ReviewLevelProps = {
+  const props: ReviewLevelProps = {
     name: "review 1",
     rate: 8.9,
     rateOf: 10,

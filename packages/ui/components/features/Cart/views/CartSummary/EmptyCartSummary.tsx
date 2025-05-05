@@ -1,30 +1,23 @@
-import { Flex, Text, Button } from "@chakra-ui/react";
+
 import React from "react";
 import { colorPalette } from "ui/components/helpers/colorPalette";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import { ShadCnButton, ShadcnFlex, ShadcnText } from "@UI/components/shadcn-components";
 
 export const EmptyCartSummary: React.FC = () => {
   const router = useRouter();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
-    <Flex
-      justifyContent={"space-between"}
-      direction={"column"}
-      alignItems={"end"}
-      h="100%"
-    >
-      <Text w="100%">There are no items in this cart!</Text>
-      <Button
-        rounded={"none"}
-        _hover={{ bgColor: colorPalette.PrimaryGreen }}
-        color={colorPalette.whiteText}
-        w="fit-content"
-        bgColor={colorPalette.PrimaryGreen}
+    <ShadcnFlex className="flex flex-col justify-between items-end h-full">
+      <ShadcnText className="w-full">There are no items in this cart!</ShadcnText>
+      <ShadCnButton
+        className={`w-fit bg-[${colorPalette.PrimaryGreen}] hover:bg-[${colorPalette.PrimaryGreen}] text-[${colorPalette.whiteText}]`}
         onClick={() => router.push("/")}
       >
         {t("continue_shopping", "Continue Shopping")}
-      </Button>
-    </Flex>
+     </ShadCnButton>
+    </ShadcnFlex>
+    
   );
 };

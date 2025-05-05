@@ -24,7 +24,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   function handleSearchInputChange(value: string) {
     onValueChange && onValueChange(value);
   }
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <InputGroup
       {...innerProps}

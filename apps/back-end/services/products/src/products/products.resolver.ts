@@ -79,7 +79,7 @@ export class ProductsResolver {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
     private readonly productAttributeService: ProductAttributeService,
-  ) { }
+  ) {}
 
   logger = new Logger('ProductResolver');
 
@@ -476,8 +476,8 @@ export class ProductsResolver {
       take: args.take + 1,
       cursor: args.idCursor
         ? {
-          id: args.idCursor,
-        }
+            id: args.idCursor,
+          }
         : undefined,
     });
 

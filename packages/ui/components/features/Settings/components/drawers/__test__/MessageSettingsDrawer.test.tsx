@@ -23,9 +23,9 @@ jest.mock("@features/Social", () => ({
 
 describe("MessageSettingsDrawer", () => {
   let wrapper: RenderResult;
-  let getSettingsMock = useGetMySocialPrivacySettings as jest.Mock;
-  let updateSettingsMock = useUpdateMyPrivacySettings as jest.Mock;
-  let mutateSettingsMock = jest.fn();
+  const getSettingsMock = useGetMySocialPrivacySettings as jest.Mock;
+  const updateSettingsMock = useUpdateMyPrivacySettings as jest.Mock;
+  const mutateSettingsMock = jest.fn();
 
   beforeEach(() => {
     getSettingsMock.mockClear();

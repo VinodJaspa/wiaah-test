@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "types": ["jest"],
+    "types": [
+      "jest"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -19,19 +21,46 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-client": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"],
-      "@products": ["src/products"],
-      "@category": ["src/category"],
-      "@filter": ["src/filter"],
-      "@shop": ["src/shop"],
-      "@shop/*": ["src/shop/*"],
-      "@shipping-details": ["src/shipping-details"],
-      "@shipping-rules/*": ["src/shipping-rules/*"],
-      "@shipping-rules": ["src/shipping-rules"],
-      "@shipping-settings": ["src/shipping-settings"],
-      "@products/*": ["src/products/*"],
-      "@working-schedule/*": ["src/working-schedule/*"]
-    }
+      "@prisma-client": [
+        "prisma/generated/client"
+      ],
+      "prismaService": [
+        "src/prisma.service"
+      ],
+      "@products": [
+        "src/products"
+      ],
+      "@category": [
+        "src/category"
+      ],
+      "@filter": [
+        "src/filter"
+      ],
+      "@shop": [
+        "src/shop"
+      ],
+      "@shop/*": [
+        "src/shop/*"
+      ],
+      "@shipping-details": [
+        "src/shipping-details"
+      ],
+      "@shipping-rules/*": [
+        "src/shipping-rules/*"
+      ],
+      "@shipping-rules": [
+        "src/shipping-rules"
+      ],
+      "@shipping-settings": [
+        "src/shipping-settings"
+      ],
+      "@products/*": [
+        "src/products/*"
+      ],
+      "@working-schedule/*": [
+        "src/working-schedule/*"
+      ]
+    },
+    "strict": true
   }
 }

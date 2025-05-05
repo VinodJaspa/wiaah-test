@@ -16,7 +16,7 @@ import { AppModule } from '../src/app.module';
 
 describe('Social admin tests', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({

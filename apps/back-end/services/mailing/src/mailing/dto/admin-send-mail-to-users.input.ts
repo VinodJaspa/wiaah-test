@@ -19,5 +19,5 @@ export class AdminSendMailToUsersInput {
   subject: string;
 
   @Field(() => String)
-  message: String;
+  message: string;
 }

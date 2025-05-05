@@ -44,7 +44,7 @@ export class RestaurantResolver {
   constructor(
     private readonly restaurantService: RestaurantService,
     private readonly queryBus: QueryBus,
-  ) { }
+  ) {}
 
   @Query(() => [Restaurant])
   getRestaurants() {
@@ -59,13 +59,13 @@ export class RestaurantResolver {
     return this.restaurantService.getRestaurantById(input, lang);
   }
 
-  @Mutation(() => RestaurantService)
+  @Mutation(() => Restaurant)
   // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createRestaurantService(
     @Args('createRestaurantArgs') args: CreateRestaurantInput,
     // @GqlCurrentUser() user: AuthorizationDecodedUser,
     // @GetLang() lang: UserPreferedLang,
-  ): Promise<RestaurantService> {
+  ): Promise<Restaurant> {
     return this.restaurantService.createRestaurant(args);
   }
 

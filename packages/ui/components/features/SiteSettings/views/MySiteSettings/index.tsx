@@ -12,7 +12,7 @@ import { SettingsSectionType } from "types";
 import { MySiteLanguage } from "./SiteLanguage";
 
 export const MySiteSettingsView: React.FC<{}> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const sections: SettingsSectionType[] = [
     {

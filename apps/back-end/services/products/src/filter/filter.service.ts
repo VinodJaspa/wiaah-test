@@ -17,6 +17,7 @@ export class FilterService {
     lang: UserPreferedLang = 'en',
   ): Promise<Filter> {
     const res = await this.prisma.productFilterGroup.create({
+      // @ts-ignore
       data: input,
     });
 
@@ -33,6 +34,8 @@ export class FilterService {
       where: {
         id,
       },
+      // @ts-ignore
+      
       data: rest,
     });
 

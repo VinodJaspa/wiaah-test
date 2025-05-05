@@ -6,7 +6,13 @@ import {
 } from "react-icons/md";
 
 export interface CarouselProps {
-  children: React.ReactNode[];
+  className?: string; 
+  swipe?: boolean;
+  trackStyle?: Record<string, any>;
+  activeItem?: number;
+  setActiveItem?: React.Dispatch<React.SetStateAction<number>>;
+  onCurrentActiveChange?: React.Dispatch<React.SetStateAction<number>>;
+  children?: React.ReactNode[];
   componentsPerView?: number;
   getCurrentComponent?: (component: number) => void;
   auto?: {

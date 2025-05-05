@@ -21,7 +21,7 @@ export class ProfessionResolver {
   @Query(() => [Profession])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   adminGetProfessions(@Args('args') args: AdminGetProfessionInput) {
-    let filters: Prisma.ProfessionWhereInput[] = [];
+    const filters: Prisma.ProfessionWhereInput[] = [];
 
     if (args.name) {
       filters.push({

@@ -1,4 +1,4 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { SocialContentProductsListingModal } from "./SocialContentProductsListingModal";
 import { storybookModalsTitle } from "utils";
 import { RecoilRoot } from "recoil";
@@ -6,7 +6,7 @@ import { useSocialControls } from "@blocks";
 import { Button } from "@partials";
 
 export default {
-  title: storybookModalsTitle + "SocialContentProductsListingModal",
+  title: "UI / Blocks / Modals /SocialContentProductsListingModal",
   decorators: [
     (S) => (
       <RecoilRoot>
@@ -14,7 +14,7 @@ export default {
       </RecoilRoot>
     ),
   ],
-} as ComponentMeta<typeof SocialContentProductsListingModal>;
+} as Meta<typeof SocialContentProductsListingModal>;
 
 export const Default = () => {
   const { showSocialContentProductsListing } = useSocialControls();

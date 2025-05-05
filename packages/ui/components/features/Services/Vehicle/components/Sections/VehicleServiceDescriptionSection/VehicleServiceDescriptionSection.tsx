@@ -22,7 +22,7 @@ export const VehicleServiceDescriptionSection: React.FC<
   VehicleServiceDescriptionSectionProps
 > = ({ GPS, airCondition, description, maxSpeed, seats }) => {
   const descriptionRef = usePublishRef((keys) => keys.description);
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const items: {
     text: string;
     icon: React.ReactNode;

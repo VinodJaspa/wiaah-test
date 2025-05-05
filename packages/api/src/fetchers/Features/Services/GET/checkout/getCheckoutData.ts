@@ -53,7 +53,7 @@ export type ProductCheckoutData = InferType<
 >;
 
 export const getCheckoutDataFetcher = async (
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<ServiceCheckoutApiResponse> => {
   const res: AsyncReturnType<typeof getCheckoutDataFetcher> = {
     data: {
@@ -129,7 +129,7 @@ export const getCheckoutDataFetcher = async (
           },
         },
         {
-          type: "resturant",
+          type: "restaurant",
           data: {
             serviceType: "restaurant",
             bookedDates: {

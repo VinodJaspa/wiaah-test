@@ -17,11 +17,11 @@ import React from "react";
 import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { Upload } from "antd";
 import { BiCloudUpload } from "react-icons/bi";
 
 const AddPartner = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { back } = useRouting();
   const { controls, uploadImage, uploadVideo } = useMediaUploadControls();
   return (

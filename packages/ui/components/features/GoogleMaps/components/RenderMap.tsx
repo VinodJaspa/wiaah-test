@@ -35,11 +35,12 @@ export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
       location,
       process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,
     );
-    setCenter({ lat: result.lat, lng: result.lng });
+    setCenter({ lat: result?.lat, lng: result?.lng });
   };
   const handleFocusService = (serviceData: onMapLocation) => {
     try {
-      const { lat, lng } = serviceData;
+      const { lat, lon } = serviceData;
+      const lng = lon;
       setCenter({ lat, lng });
       setZoom(12);
       setLocations([serviceData]);
@@ -92,8 +93,9 @@ export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
             fontWeight: "bolder",
           };
           const ExistsSpan = marker.querySelectorAll("span");
-          const spanText = `${currency.currencySymbol}${currency.currencyRateToUsd * services[i].price
-            }`;
+          const spanText = `${currency.currencySymbol}${
+            currency.currencyRateToUsd * services[i].price
+          }`;
           let span: HTMLElement;
           if (ExistsSpan.length > 0) {
             span = ExistsSpan[0];
@@ -161,19 +163,19 @@ export const RenderMap: React.FC<RenderMapProps> = ({ location }) => {
       >
         {Array.isArray(services)
           ? services.map((service, i) => (
-            <Marker
-              title={`${service.title}`}
-              icon={{
-                path: "M88.289,181.749c-9.013,0-17.557,7.539-23.078,14.664c-8.295,10.71-15.8,18.384-56.441,21.163 c-8.991,0.615-11.172-4.716-6.065-12.14c9.181-13.347,10.345-31.198,10.345-61.554v-33.053c0-9.013,0.517-23.682,3.106-32.308 c5.2-17.361,18.944-42.648,54.88-42.648H174.59c9.013,0,23.682-0.359,32.564,1.164c18.531,3.187,46.286,14.479,46.286,53.548 v22.023c0,0,3.024,69.152-63.409,69.152C146.084,181.749,108.62,181.749,88.289,181.749z",
-                fillColor: "#fff",
-                fillOpacity: 0,
-                scale: 0.5,
-                strokeOpacity: 0,
-              }}
-              key={i}
-              position={{ lat: service.lat, lng: service.lng }}
-            />
-          ))
+              <Marker
+                title={`${service.title}`}
+                icon={{
+                  path: "M88.289,181.749c-9.013,0-17.557,7.539-23.078,14.664c-8.295,10.71-15.8,18.384-56.441,21.163 c-8.991,0.615-11.172-4.716-6.065-12.14c9.181-13.347,10.345-31.198,10.345-61.554v-33.053c0-9.013,0.517-23.682,3.106-32.308 c5.2-17.361,18.944-42.648,54.88-42.648H174.59c9.013,0,23.682-0.359,32.564,1.164c18.531,3.187,46.286,14.479,46.286,53.548 v22.023c0,0,3.024,69.152-63.409,69.152C146.084,181.749,108.62,181.749,88.289,181.749z",
+                  fillColor: "#fff",
+                  fillOpacity: 0,
+                  scale: 0.5,
+                  strokeOpacity: 0,
+                }}
+                key={i}
+                position={{ lat: service.lat, lng: service.lon }}
+              />
+            ))
           : null}
       </Map>
     </Wrapper>

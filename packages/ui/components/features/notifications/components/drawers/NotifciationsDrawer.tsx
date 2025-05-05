@@ -11,7 +11,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const NotifciationsDrawer: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { closeNotifications, value } = useSocialControls("viewNotifications");
   const { data, isLoading, isError } = useGetMyNotificationsQuery();
 

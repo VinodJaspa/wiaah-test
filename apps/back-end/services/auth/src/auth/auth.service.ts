@@ -86,7 +86,7 @@ export class AuthService {
           // Add other relevant user fields
         },
       };
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.message);
     }
   }
@@ -117,7 +117,7 @@ export class AuthService {
       );
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }

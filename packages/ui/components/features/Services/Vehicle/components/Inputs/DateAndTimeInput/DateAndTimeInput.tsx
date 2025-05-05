@@ -21,7 +21,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = ({
   dateLabel,
   onDateChange,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [dayDateUtc, setDayDateUtc] = React.useState<string>();
   const [time, setTime] = React.useState<TimeType>({ hour: 10, minutes: 0 });
   const dayDate = new Date(dayDateUtc || Date.now());

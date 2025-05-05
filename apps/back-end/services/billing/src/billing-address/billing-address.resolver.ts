@@ -81,9 +81,8 @@ export class BillingAddressResolver {
   }
 
   async validateRequest(user: AuthorizationDecodedUser, addressId: string) {
-    const address = await this.billingAddressService.getBillingAddressById(
-      addressId,
-    );
+    const address =
+      await this.billingAddressService.getBillingAddressById(addressId);
 
     if (address.userId !== user.id && user.accountType !== accountType.ADMIN)
       throw new UnauthorizedException();

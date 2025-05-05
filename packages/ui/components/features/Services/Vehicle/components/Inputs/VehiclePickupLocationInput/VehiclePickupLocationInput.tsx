@@ -19,7 +19,7 @@ export interface VehiclePickupLocationInputProps {}
 export const VehiclePickupLocationInput: React.FC<
   VehiclePickupLocationInputProps
 > = ({}) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { filters } = useSearchFilters();
   const { take, page } = usePagination();
   const [locationSuggsions, setLocationSuggistions] = React.useState<

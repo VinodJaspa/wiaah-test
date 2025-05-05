@@ -1,12 +1,12 @@
 import { mapTimeRange, storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { TimeSlider } from "@UI";
 import React from "react";
 import { TimeData } from ".";
 export default {
-  title: storybookDataInputBlocksTitle + "TimeSlider",
+  title: "UI / blocks / Data Input /TimeSlider",
   component: TimeSlider,
-} as ComponentMeta<typeof TimeSlider>;
+} as Meta<typeof TimeSlider>;
 
 const times = [
   "8am",

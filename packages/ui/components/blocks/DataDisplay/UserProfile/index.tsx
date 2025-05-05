@@ -1,6 +1,6 @@
+import { Avatar, Verified } from "@UI";
+import { useRouter } from "next/router";
 import React from "react";
-import { Verified, Avatar } from "@UI";
-import { Profile } from "@features/API";
 import { HtmlDivProps, UsersProfilesVariant } from "types";
 
 export interface UserProfileProps extends HtmlDivProps {
@@ -20,17 +20,22 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   variant,
   ...props
 }) => {
+  const router = useRouter();
+
   return (
     <div
+      onClick={() => router.push(`/profile/${user.id}`)}
       {...props}
       data-testid="UserProfile"
-      className="flex gap-4 items-center"
+      className="flex gap-4 items-center cursor-pointer"
     >
       {variant === "narrow" ? (
         <Avatar name={user.name} photoSrc={user.photo} />
       ) : (
         <>
-          <Avatar name={user.name} src={user.photo} />
+          <div className="flex-shrink-0">
+            <Avatar name={user.name} src={user.photo} />
+          </div>
           <div className="flex w-full flex-col">
             <div className="flex items-center gap-2">
               <span data-testid="UserName">{user.name}</span>

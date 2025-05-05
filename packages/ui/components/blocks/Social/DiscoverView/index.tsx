@@ -1,36 +1,27 @@
+import SocialNewsfeedView from "@features/Social/views/SocialNewsfeedView";
+import { LocalizationsPH } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
 import {
-  Container,
   HashtagView,
-  TabsViewer,
+  LocalizationSearchItem,
   PlacesList,
-  UsersView,
-  UserMobileView,
   StoryView,
+  TabsViewer,
+  UserMobileView,
+  UsersView,
 } from "ui";
 
-interface ExplorePageProps { }
+interface ExplorePageProps {}
 
 export const DiscoverView: React.FC<ExplorePageProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
+
   const tabs: TabType[] = [
     {
       name: t("Discover"),
-      component: (
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-0.5">
-          {FAKE_IMAGES.map((image, index) => (
-            <div key={index} className="break-inside-avoid  mb-0.5">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-auto rounded-lg"
-              />
-            </div>
-          ))}
-        </div>
-      ),
+      component: <SocialNewsfeedView isDiscover />,
     },
     {
       name: t("Stories"),
@@ -50,15 +41,22 @@ export const DiscoverView: React.FC<ExplorePageProps> = () => {
       ),
     },
     { name: t("Places"), component: <PlacesList places={FAKE_PLACES} /> },
+    {
+      name: t("Localization"),
+      component: (
+        <div className="md:w-1/2 w-full mt-2 flex flex-col justify-between items-center gap-2">
+          {LocalizationsPH.map((city, i) => (
+            <LocalizationSearchItem key={i} location={city} />
+          ))}
+        </div>
+      ),
+    },
     { name: t("Hashtag"), component: <HashtagView hashtags={FAKE_HASHTAGS} /> },
   ];
   return (
-    <Container className="flex-grow w-9/12 flex justify-center flex-col gap-4">
-      <div className="w-full md:mt-0 mt-20">
-        <h1 className="text-xl md:text-4xl hidden md:flex">Explore</h1>
-        <TabsViewer tabs={tabs} border="bottom" />
-      </div>
-    </Container>
+    <div className="container mx-auto h-full">
+      <TabsViewer tabs={tabs} border="bottom" />
+    </div>
   );
 };
 const AvatarImage =

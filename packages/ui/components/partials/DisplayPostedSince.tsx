@@ -11,7 +11,7 @@ export const DisplayPostedSince: React.FC<DisplayPostedSinceProps> = ({
   since,
   ago,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(since),
     to: new Date(Date.now()),

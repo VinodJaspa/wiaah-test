@@ -16,7 +16,7 @@ import {
 import { randomNum } from "utils";
 
 export const VehicleSearchResultsView: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const filter: ServiceType = ServiceType.Vehicle;
   const { isLoading, isError, data } = useGetServiceSearchFiltersQuery(filter);
   const { getLocationFilterQuery } = useSearchFilters();

@@ -6,7 +6,7 @@ export class CreateCookiesSettingInput {
   title: string;
 
   @Field(() => String)
-  description: String;
+  description: string;
 
   @Field(() => Boolean)
   required: boolean;

@@ -1,5 +1,5 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { ProductViewRight } from "../index";
 export default {
   title: "UI/blocks/ProductViewRight",
@@ -12,11 +12,8 @@ export default {
     oldPrice: { control: "number" },
     off: { control: "number" },
   },
-} as ComponentMeta<typeof ProductViewRight>;
+} as Meta<typeof ProductViewRight>;
 
-const Template: ComponentStory<typeof ProductViewRight> = (args) => (
-  <ProductViewRight {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

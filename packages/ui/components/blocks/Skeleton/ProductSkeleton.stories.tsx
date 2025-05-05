@@ -1,11 +1,11 @@
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { storybookBlocksTitle } from "utils";
 
 export default {
-  title: storybookBlocksTitle + "ProductSkeleton",
+  title: "UI / blocks / ProductSkeleton",
   component: ProductSkeleton,
-} as ComponentMeta<typeof ProductSkeleton>;
+} as Meta<typeof ProductSkeleton>;
 
 export const Default = () => (
   <div className="w-[50vw] h-[50vh]">

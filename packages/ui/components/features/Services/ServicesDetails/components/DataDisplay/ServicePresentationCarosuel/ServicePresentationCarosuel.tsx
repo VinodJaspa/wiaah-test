@@ -1,24 +1,22 @@
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  AspectRatio,
+  Image,
+  ServicePresentation,
+  Slider,
+} from "@UI";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useScrollTo } from "state";
-import {
-  AspectRatio,
-  Slider,
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  Button,
-  AspectRatioImage,
-  ServicePresentation,
-  Image,
-} from "@UI";
 export const ServicePresentationCarosuel: React.FC<{
   data: ServicePresentation[];
 }> = ({ data }) => {
   const { isMobile, isTablet } = useResponsive();
   const { ScrollTo } = useScrollTo();
   const ref = usePublishRef("presentation");
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div ref={ref} className="w-full relative">
       {Array.isArray(data) ? (

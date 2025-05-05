@@ -4,12 +4,12 @@ import {
   useSpecialDaysOpenTimeModal,
 } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "SpecialDaysOpenTimeModal",
+  title: "UI / Blocks / Modals /SpecialDaysOpenTimeModal",
   component: SpecialDaysOpenTimeModal,
-} as ComponentMeta<typeof SpecialDaysOpenTimeModal>;
+} as Meta<typeof SpecialDaysOpenTimeModal>;
 
 export const Default = () => {
   const { modifiDays } = useSpecialDaysOpenTimeModal();

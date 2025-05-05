@@ -26,9 +26,9 @@ import {
 import { product } from "@blocks/Modals/ProductViewModal/ProductViewModal.stories";
 
 export const SearchView: React.FC = () => {
-  const { t } = useTranslation();
-  let [isGrid, setGrid] = useState(false);
-  let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
+const { t } = useTranslation();
+  const [isGrid, setGrid] = useState(false);
+  const [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();
   const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
     [
@@ -562,10 +562,14 @@ const FAKE_PRODUCTS: ProductOutput[] = [
       },
     ],
     brand: "Brand C",
-    cashback: null,
+    cashback: {
+      amount: 0,
+      type: "fixed",
+      units: "USD",
+    },
     categoryId: "category-003",
     description: "Affordable and durable product with bright color options.",
-    discount: null,
+    discount: { amount: 0, units: "USD" },
     id: "product-003",
     presentations: [
       {

@@ -8,23 +8,17 @@ import React, {
   Dispatch,
   SetStateAction,
   ReactElement,
+  ReactNode,
 } from "react";
 
-import {
-  useMediaQuery,
-  useTheme,
-  VStack,
-  Button,
-  Flex,
-  Box,
-  FlexProps,
-  StackProps,
-} from "@chakra-ui/react";
+
 
 import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
 import { DoubleChevronLeftIcon, DoubleChevronRightIcon } from "@partials";
+import { useMediaQuery } from "react-responsive";
+import { ShadcnFlex } from "@UI/components/shadcn-components";
 
-const MotionFlex = motion<FlexProps>(Flex as any);
+const MotionFlex = motion.div;
 
 const transitionProps = {
   stiffness: 400,
@@ -33,8 +27,9 @@ const transitionProps = {
   mass: 3,
 };
 
-export interface ChakaraCarouselProps
+export interface CarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string; 
   children: React.ReactElement[];
   gap?: number;
   activeItem?: number;
@@ -48,12 +43,12 @@ export interface ChakaraCarouselProps
   swipe?: boolean;
   navigateOnClick?: boolean;
   movementDirection?: "vertical" | "horizontal";
-  trackStyle?: StackProps;
+  trackStyle?: any;
   onPassMaxLimit?: () => any;
   onPassMinLimit?: () => any;
 }
 
-export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
+export const Carousel: React.FC<CarouselProps> = ({
   children,
   onCurrentActiveChange,
   gap = 0,
@@ -100,17 +95,11 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     onCurrentActiveChange && onCurrentActiveChange(activeItem);
   }, [activeItem]);
 
-  const { breakpoints } = useTheme();
 
-  const [isBetweenBaseAndMd] = useMediaQuery(
-    `(min-width: ${breakpoints.base}) and (max-width: ${breakpoints.md})`
-  );
 
-  const [isBetweenMdAndXl] = useMediaQuery(
-    `(min-width: ${breakpoints.md}) and (max-width: ${breakpoints.xl})`
-  );
-
-  const [isGreaterThanXL] = useMediaQuery(`(min-width: ${breakpoints.xl})`);
+  const isBetweenBaseAndMd = useMediaQuery({ minWidth: 320, maxWidth: 768 });
+  const isBetweenMdAndXl = useMediaQuery({ minWidth: 768, maxWidth: 1280 });
+  const isGreaterThanXL = useMediaQuery({ minWidth: 1280 });
 
   useEffect(() => {
     setItemWidth(sliderWidth);
@@ -158,7 +147,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     itemWidth,
     positions,
     trackBgColor,
-    style: trackStyle,
+    // style?: React.CSSProperties,
     onPassMaxLimit,
     onPassMinLimit,
     swipe,
@@ -249,6 +238,12 @@ const Slider: React.FC<SliderProps> = ({
         window.removeEventListener("scroll", adjustWidth);
       };
     }
+    else{
+      initSliderWidth(0);
+    }
+    return () => {
+      initSliderWidth(0);
+    }
   }, [sliderRef, initSliderWidth, activeItem]);
 
   const handleFocus = () => setTrackIsActive(true);
@@ -289,83 +284,42 @@ const Slider: React.FC<SliderProps> = ({
   }
 
   return (
-    <Flex
-      position={"relative"}
-      // {...props}
-      align={"center"}
-      direction={"row"}
-      ref={sliderRef}
-    >
-      <Box
+    <div ref={sliderRef} className="relative flex items-center flex-row">
+      <div
         onClick={handleSliderClick}
-        w="100%"
-        h="100%"
-        transition="all"
-        transitionDuration={"500ms"}
-        position={"relative"}
-        overflow="hidden"
-        _before={{
-          bgGradient: "linear(to-r, base.d400, transparent)",
-          position: "absolute",
-          w: `${gap / 2}px`,
-          content: "''",
-          zIndex: 1,
-          h: "100%",
-          left: 0,
-          top: 0,
-        }}
-        _after={{
-          bgGradient: "linear(to-l, base.d400, transparent)",
-          position: "absolute",
-          w: `${gap / 2}px`,
-          content: "''",
-          zIndex: 1,
-          h: "100%",
-          right: 0,
-          top: 0,
-        }}
+        className="w-full h-full relative overflow-hidden transition-all duration-500"
       >
-        {/*@ts-ignore*/}
+        <div
+          className="absolute inset-y-0 left-0 w-[calc(${gap} / 2)] bg-gradient-to-r from-base-d400 to-transparent z-10"
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-[calc(${gap} / 2)] bg-gradient-to-l from-base-d400 to-transparent z-10"
+        />
         {children}
-      </Box>
+      </div>
+
+
       {arrows && (
         <>
-          <Button
+          <button
             onClick={handleDecrementClick}
             onFocus={handleFocus}
-            position={"absolute"}
-            top="50%"
-            left="1rem"
-            translateY={"-50%"}
-            bgColor="whiteAlpha.600"
-            rounded={"full"}
-            transform="auto"
-            colorScheme={"primary"}
-            variant="link"
-            minW={0}
+            className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/60 rounded-full min-w-0 p-2 hover:bg-white/80 transition"
           >
             <DoubleChevronLeftIcon className="w-[9px] h-[9px]" />
-          </Button>
-          <Button
+          </button>
+
+          <button
             onClick={handleIncrementClick}
             onFocus={handleFocus}
-            colorScheme={"primary"}
-            variant="link"
-            position={"absolute"}
-            top="50%"
-            right="1rem"
-            rounded={"full"}
-            transform={"auto"}
-            translateY={"-50%"}
-            zIndex={2}
-            bgColor="whiteAlpha.600"
-            minW={0}
+            className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/60 rounded-full min-w-0 p-2 hover:bg-white/80 transition"
           >
             <DoubleChevronRightIcon className="w-[9px] h-[9px]" />
-          </Button>
+          </button>
+
         </>
       )}
-    </Flex>
+    </div>
   );
 };
 
@@ -379,10 +333,10 @@ interface TrackProps {
   itemWidth: number;
   positions: number[];
   trackBgColor?: string;
-  children?: ReactElement[];
+  children?: ReactNode[]; 
   swipe?: boolean;
   movementDirection?: "vertical" | "horizontal";
-  style?: StackProps;
+  className?: string; // Instead of style, using Tailwind-compatible className
   gap: number;
   onPassMaxLimit?: () => any;
   onPassMinLimit?: () => any;
@@ -401,7 +355,6 @@ const Track: React.FC<TrackProps> = ({
   trackBgColor,
   swipe,
   movementDirection,
-  style,
   gap,
   onPassMaxLimit,
   onPassMinLimit,
@@ -525,13 +478,7 @@ const Track: React.FC<TrackProps> = ({
   return (
     <>
       {/* {itemWidth && ( */}
-      <VStack
-        // {...style}
-        bg={trackBgColor}
-        ref={node}
-        spacing={5}
-        alignItems="stretch"
-      >
+      <div ref={node} className="flex flex-col bg-[trackBgColor] space-y-5 items-stretch">
         <MotionFlex
           dragConstraints={node}
           onDragStart={handleDragStart}
@@ -551,7 +498,7 @@ const Track: React.FC<TrackProps> = ({
           {/*@ts-ignore*/}
           {children}
         </MotionFlex>
-      </VStack>
+      </div>
       {/* )} */}
     </>
   );
@@ -593,23 +540,16 @@ const Item: React.FC<ItemProps> = ({
     event.key === "Tab" && setUserDidTab(true);
 
   return (
-    <Flex
+    <ShadcnFlex
       onFocus={handleFocus}
       onBlur={handleBlur}
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
       data-testid="CarouselItem"
-      w={`calc((100% / ${positions.length}) + ${gap}px )`}
-      h="100%"
-      justify="center"
-      align={"center"}
-      _notLast={{
-        mr: `${gap}px`,
-      }}
-      py="4px"
+      className={`w-[calc((100% / ${positions.length}) + ${gap}px)] h-full justify-center items-center py-1 ${gap ? "mr-[${gap}px]" : ""
+        }`}
     >
-      {/*@ts-ignore*/}
       {children}
-    </Flex>
-  );
+    </ShadcnFlex>
+  )
 };

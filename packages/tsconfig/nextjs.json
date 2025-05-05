@@ -3,7 +3,7 @@
   "display": "Next.js",
   "extends": "./base.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -15,6 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
+    
   },
   "include": ["src", "next-env.d.ts"],
   "exclude": ["node_modules"]

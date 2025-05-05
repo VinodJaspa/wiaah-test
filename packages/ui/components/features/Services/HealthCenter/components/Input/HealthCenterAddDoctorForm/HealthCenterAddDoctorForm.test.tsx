@@ -6,9 +6,9 @@ import {
   HealthCenterAddDoctorFormProps,
 } from "./HealthCenterAddDoctorForm";
 
-let mockUploadImage: jest.Mock = jest.fn();
-let mockCancelUpload: jest.Mock = jest.fn();
-let mockUploadVideo: jest.Mock = jest.fn();
+const mockUploadImage: jest.Mock = jest.fn();
+const mockCancelUpload: jest.Mock = jest.fn();
+const mockUploadVideo: jest.Mock = jest.fn();
 
 jest.mock("ui", () => ({
   ...jest.requireActual("ui"),
@@ -36,7 +36,7 @@ describe("HealthCenterAddDoctorForm", () => {
   let wrapper: ShallowWrapper;
   let mockOnAdd: jest.Mock;
   let _wrapper: ShallowWrapper;
-  let props: HealthCenterAddDoctorFormProps = {
+  const props: HealthCenterAddDoctorFormProps = {
     onAdd(data) {},
   };
 

@@ -1,18 +1,14 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSteppersHeadersTitle } from "utils";
 import { ResturantFindTableFilterStepperHeader } from "./ResturantFindTableFilterStepperHeader";
 
 export default {
-  title:
-    storybookSteppersHeadersTitle + "ResturantFindTableFilterStepperHeader",
+  title: "UI / Blocks / SteppersHeaders /ResturantFindTableFilterStepperHeader",
   component: ResturantFindTableFilterStepperHeader,
-} as ComponentMeta<typeof ResturantFindTableFilterStepperHeader>;
+} as Meta<typeof ResturantFindTableFilterStepperHeader>;
 
-const template: ComponentStory<typeof ResturantFindTableFilterStepperHeader> = (
-  args
-) => <ResturantFindTableFilterStepperHeader {...args} />;
-
-export const Default = template.bind({});
-Default.args = {
-  currentStepIdx: 0,
+export const Default = {
+  args: {
+    currentStepIdx: 0,
+  },
 };

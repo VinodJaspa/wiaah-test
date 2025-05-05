@@ -9,7 +9,7 @@ import * as yup from "yup";
 export interface SubscribeFormProps { }
 
 export const SubscribeForm: FC<SubscribeFormProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { form, inputProps, isValid } = useForm<Parameters<typeof mutate>[0]>(
     {
       email: "",

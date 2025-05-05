@@ -5,12 +5,12 @@ import {
   ModalExtendedWrapper,
   ModalButton,
 } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "BookingEventPopup",
+  title: "UI / blocks / BookingEventPopup",
   component: BookingEventPopup,
-} as ComponentMeta<typeof BookingEventPopup>;
+} as Meta<typeof BookingEventPopup>;
 
 export const EventVariant = () => {
   return (

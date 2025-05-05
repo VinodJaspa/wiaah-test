@@ -56,7 +56,7 @@ export const HealthCenterSearchBox: React.FC<
       } catch {}
   }, [res]);
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <InputGroup className="w-full">
       <InputLeftElement>

@@ -32,7 +32,7 @@ export interface AskForReturnModalProps { }
 
 export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({ }) => {
   const { isOpen, handleClose, handleOpen } = useModalDisclouser();
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
   const { data, isLoading } = useGetMyOrdersQuery({

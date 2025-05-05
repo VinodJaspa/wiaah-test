@@ -1,4 +1,5 @@
-import { Switch } from "@chakra-ui/react";
+
+import { ShadcnSwitch } from "@UI/components/shadcn-components";
 import React, { HtmlHTMLAttributes } from "react";
 import { DetailedHTMLProps } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,11 +11,11 @@ export interface PushSwitch
   > {}
 
 export const PushSwitch: React.FC = ({ ...props }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex items-center gap-2">
       {/* @ts-ignore */}
-      <Switch {...props} />
+      <ShadcnSwitch {...props} />
       <p>{t("push", "Push")}</p>
     </div>
   );

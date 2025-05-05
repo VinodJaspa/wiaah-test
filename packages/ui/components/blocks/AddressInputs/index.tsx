@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BoldText,
   Button,
@@ -6,18 +5,19 @@ import {
   FlexStack,
   Grid,
   Input,
-  Prefix,
-  Spacer,
   PhoneNumberInput,
+  Prefix,
+  SearchFilterInput,
+  Spacer,
   useCursorScrollPagination,
 } from "@UI";
-import { AddressDetails, AddressInputsFields } from "types";
-import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { Country } from "country-state-city";
-import { FaSearch } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-import { SearchFilterInput } from "@UI";
 import { Form, Formik } from "formik";
+import React from "react";
+import { FlagIcon, FlagIconCode } from "react-flag-kit";
+import { useTranslation } from "react-i18next";
+import { FaSearch } from "react-icons/fa";
+import { AddressDetails, AddressInputsFields } from "types";
 
 export interface AddressInputsProps {
   initialInputs?: AddressDetails;
@@ -36,27 +36,27 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   askBillingAddress = true,
   askShippingAddress = true,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { controls } = useCursorScrollPagination();
   const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
   const [input, setInputs] = React.useState<AddressInputsFields>(
     initialInputs
       ? {
-        ...initialInputs,
-        defaultBillingAddress: false,
-        defaultDeliveryAddress: false,
-      }
+          ...initialInputs,
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
+        }
       : {
-        firstName: "",
-        lastName: "",
-        address2: "",
-        address: "",
-        city: "",
-        country: "",
-        contact: "",
-        defaultBillingAddress: false,
-        defaultDeliveryAddress: false,
-      },
+          firstName: "",
+          lastName: "",
+          address2: "",
+          address: "",
+          city: "",
+          country: "",
+          contact: "",
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
+        },
   );
 
   onChange && onChange(input);
@@ -77,7 +77,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   }
 
   return (
-    <div className="text-lg">
+    <div className="text-lg p-4">
       <div className="flex flex-col">
         <div className="flex flex-col gap-8">
           <Formik
@@ -160,20 +160,6 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
-                      <BoldText>{t("Zip Code")}</BoldText>
-                      <Input
-                        id="ZipCodeInput"
-                        onChange={(e) =>
-                          setInputs((state) => ({
-                            ...state,
-                            zipCode: Number(e.target.value),
-                          }))
-                        }
-                        value={input.zipCode}
-                        className=""
-                      />
-                    </FlexStack>
-                    <FlexStack direction="vertical">
                       <BoldText>{t("Contact")}</BoldText>
                       <PhoneNumberInput />
                     </FlexStack>
@@ -225,6 +211,20 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
+                          <BoldText>{t("Zip Code")}</BoldText>
+                          <Input
+                            id="ZipCodeInput"
+                            onChange={(e) =>
+                              setInputs((state) => ({
+                                ...state,
+                                zipCode: Number(e.target.value),
+                              }))
+                            }
+                            value={input.zipCode}
+                            className=""
+                          />
+                        </FlexStack>
+                        <FlexStack direction="vertical">
                           <BoldText>{t("city", "City")}</BoldText>
                           <Input
                             id="CityInput"
@@ -255,17 +255,17 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         <Spacer />
                       </>
                     )}
-                    <Spacer />
+                  </Grid>
+                  <Spacer />
+                  <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     <FilterInput
+                      className="-pb-3"
                       id="AddAddressManuallySwitcher"
                       onChange={(e) => setManual(e.target.checked)}
                       checked={manual}
                       variant="box"
                       label={`${t("Add address manually")}?`}
                     />
-                  </Grid>
-                  <Spacer />
-                  <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     {askShippingAddress ? (
                       <FilterInput
                         onChange={(e) =>
@@ -297,8 +297,13 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   </FlexStack>
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
                     {onSuccess ? (
-                      <Button id="AddAddressButton" onClick={handleSave}>
-                        {edit ? t("SAVE ADDRESS") : t("ADD ADDRESS")}
+                      <Button
+                        className="self-end text-lg font-semibold px-[1.5rem]"
+                        colorScheme="darkbrown"
+                        id="AddAddressButton"
+                        onClick={handleSave}
+                      >
+                        {edit ? t("Save") : t("Add Address")}
                       </Button>
                     ) : null}
                     {edit && (

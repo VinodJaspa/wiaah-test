@@ -1,18 +1,15 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookPartailsTitle } from "utils";
 import { PriceLevelDisplay } from "./PriceLevelDisplay";
 
 export default {
-  title: storybookPartailsTitle + "PriceLevelDisplay",
+  title: "UI / partials / PriceLevelDisplay",
   component: PriceLevelDisplay,
-} as ComponentMeta<typeof PriceLevelDisplay>;
+} as Meta<typeof PriceLevelDisplay>;
 
-const template: ComponentStory<typeof PriceLevelDisplay> = (args) => (
-  <PriceLevelDisplay {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  amount: 155,
-  levels: [50, 100],
+export const Default = {
+  args: {
+    amount: 155,
+    levels: [50, 100],
+  },
 };

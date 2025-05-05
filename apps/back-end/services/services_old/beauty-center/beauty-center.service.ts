@@ -216,7 +216,7 @@ export class BeautyCenterService {
     userId: string,
     selectedFields?: GqlBeautyCenterSelectedFields,
   ): Promise<PrismaBeautyCenterService> {
-    let notFoundErr = this.errorService.getError((v) => v.serviceIdNotFoundErr);
+    const notFoundErr = this.errorService.getError((v) => v.serviceIdNotFoundErr);
     const service = await this.prisma.beautyCenterService.findUnique({
       where: {
         id: serviceId,

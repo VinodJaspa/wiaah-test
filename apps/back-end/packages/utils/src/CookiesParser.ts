@@ -16,104 +16,89 @@ type ParsedCookie = {
 
 function hasExpiresField(cookie: string): boolean {
   return cookie
+    .toLowerCase()
     .split(";")
-    .map((part) => {
-      if (part.split("=").length > 1) {
-        return part.split("=")[0].trim().toLowerCase() === "expires";
-      }
-
-      return false;
-    })
-    .some((bool) => bool);
+    .some((part) => part.trim().startsWith("expires="));
 }
 
 export function parseCookies(rawCookies: string): ParsedCookie[] {
-  // Make this check more effective
-  if (!rawCookies?.includes("=")) {
-    throw new Error(
-      "Invalid raw cookies, look at the format of a set-cookie header string and provide something similar."
-    );
+  if (!rawCookies || !rawCookies.includes("=")) {
+    throw new Error("Invalid raw cookies format.");
   }
 
-  /*
-    Cookie format: "name=value; Path=/; HttpOnly; Secure"
-    Multiple cookies format: "name=value; Path=/; HttpOnly; Secure, name2=value2"
-  */
-  const arraifyedRawCookies = rawCookies.split(",");
-  const validRawCookies = arraifyedRawCookies
-    .map((rawCookie, index, ref) => {
-      if (hasExpiresField(rawCookie)) {
-        return `${rawCookie}${ref[index + 1]}`;
-      }
+  const cookieParts = rawCookies.split(",");
+  const mergedCookies: string[] = [];
 
-      if (index > 0 && hasExpiresField(ref[index - 1])) return "invalid";
+  for (let i = 0; i < cookieParts.length; i++) {
+    const part = cookieParts[i];
+    if (hasExpiresField(part)) {
+      mergedCookies.push(`${part},${cookieParts[++i] ?? ""}`);
+    } else if (i === 0 || !hasExpiresField(cookieParts[i - 1])) {
+      mergedCookies.push(part);
+    }
+  }
 
-      return rawCookie;
-    })
-    .filter((rawCookie) => rawCookie !== "invalid");
+  return mergedCookies.map((rawCookie) => {
+    const [nameValue, ...attributes] = rawCookie.split(";");
+    const [rawName, ...valueParts] = nameValue.split("=");
+    const rawValue = valueParts.join("=").trim();
 
-  const parsedCookies = validRawCookies.map((rawCookie) => {
-    const [cookieNameAndValue, ...cookieProperties] = rawCookie.split(";");
-    const [cookieName, cookieValue] = cookieNameAndValue.split("=");
-
-    const sanitizedCookieProperties = cookieProperties.map((cookieProperty) => {
-      const [propertyName, propertyValue] = cookieProperty.split("=");
-      const sanitizedPropertyName = propertyName
-        .replace("-", "")
-        .toLowerCase()
-        .trim();
-
-      if (sanitizedPropertyName === "maxage") {
-        return `maxAge=${propertyValue}`;
-      } else if (sanitizedPropertyName === "httponly") {
-        return "httpOnly=true";
-      } else if (sanitizedPropertyName === "samesite") {
-        return `sameSite=${propertyValue.toLowerCase()}`;
-      }
-
-      if (!propertyValue) {
-        return `${sanitizedPropertyName}=true`;
-      }
-
-      return `${sanitizedPropertyName}=${propertyValue}`;
-    });
-
-    const objectifyedCookieProperties = sanitizedCookieProperties.map(
-      (sanitizedCookieProperty) => {
-        const [propertyName, propertyValue] =
-          sanitizedCookieProperty.split("=");
-
-        return {
-          [propertyName]: propertyValue === "true" ? true : propertyValue,
-        };
-      }
-    );
+    const cookieName = rawName.trim();
+    const cookieValue = rawValue.startsWith('"') && rawValue.endsWith('"')
+      ? rawValue.slice(1, -1)
+      : rawValue;
 
     const options: CookieOptions = {};
 
-    objectifyedCookieProperties.forEach((objectifyedCookieProperty) => {
-      Object.entries(objectifyedCookieProperty).forEach(([key, value]) => {
-        if (key === "expires") {
-          options[key] = new Date(value as string);
-          return;
-        }
+    for (const attr of attributes) {
+      const [rawKey, rawVal] = attr.split("=");
+      const key = rawKey.trim().toLowerCase();
+      const val = rawVal?.trim();
 
-        if (key === "maxAge") {
-          options[key] = Number(value as string);
-          return;
-        }
-
-        // @ts-ignore
-        options[key] = value;
-      });
-    });
+      switch (key) {
+        case "max-age":
+        case "maxage":
+          options.maxAge = Number(val);
+          break;
+        case "expires":
+          options.expires = new Date(val ?? "");
+          break;
+        case "path":
+          options.path = val;
+          break;
+        case "domain":
+          options.domain = val;
+          break;
+        case "secure":
+          options.secure = true;
+          break;
+        case "httponly":
+          options.httpOnly = true;
+          break;
+        case "samesite":
+          if (val) {
+            const v = val.toLowerCase();
+            options.sameSite = ["lax", "strict", "none"].includes(v)
+              ? (v as "lax" | "strict" | "none")
+              : true;
+          }
+          break;
+        default:
+          break;
+      }
+    }
 
     return {
-      cookieName: cookieName?.trim(),
-      cookieValue: cookieValue?.trim(),
-      options,
+      cookieName,
+      cookieValue,
+      options: Object.keys(options).length ? options : undefined,
     };
   });
-
-  return parsedCookies;
+}
+export function parseCookiesToRecord(rawCookies: string): Record<string, string> {
+  const parsed = parseCookies(rawCookies); // Reuse your existing parser
+  return parsed.reduce((acc, { cookieName, cookieValue }) => {
+    acc[cookieName] = cookieValue;
+    return acc;
+  }, {} as Record<string, string>);
 }

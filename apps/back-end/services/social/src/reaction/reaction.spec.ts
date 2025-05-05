@@ -88,7 +88,7 @@ describe('Reaction tests', () => {
       secendMockedUser,
     );
 
-    let post = await newsfeedResolver.createNewsfeedPost(
+    const post = await newsfeedResolver.createNewsfeedPost(
       createNewsfeedMockInput,
       mockedUser,
     );
@@ -133,11 +133,11 @@ describe('Reaction tests', () => {
       createProfileMockInput,
       secendMockedUser,
     );
-    let post = await newsfeedResolver.createNewsfeedPost(
+    const post = await newsfeedResolver.createNewsfeedPost(
       createNewsfeedMockInput,
       mockedUser,
     );
-    let comment = await commentsResolver.createComment(
+    const comment = await commentsResolver.createComment(
       {
         attachments: [],
         authorProfileId: profile.id,

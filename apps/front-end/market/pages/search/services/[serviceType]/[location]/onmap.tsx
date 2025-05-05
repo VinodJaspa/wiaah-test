@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Onmap: NextPage<{ location: string }> = ({ location }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
   const { getParam, getCurrentPath } = useRouting();

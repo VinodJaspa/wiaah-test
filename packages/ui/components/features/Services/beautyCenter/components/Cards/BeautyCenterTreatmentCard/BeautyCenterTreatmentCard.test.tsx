@@ -75,7 +75,7 @@ describe("BeautyCenterTreatmentCard tests ", () => {
     expect(onSelectMock).toBeCalledWith(props.treatment.id);
   });
   it("should have button with the text 'Selected' if the card have been selected and clicking it should trigger onUnSelect prop function", () => {
-    let newprops: BeautyCenterTreatmentCardProps = { ...props, selected: true };
+    const newprops: BeautyCenterTreatmentCardProps = { ...props, selected: true };
     wrapper = mount(
       <RecoilRoot>
         <BeautyCenterTreatmentCard {...newprops} />

@@ -20,11 +20,11 @@ export interface BeautyCenterTreatmentCardProps {
 export const BeautyCenterTreatmentCard: React.FC<
   BeautyCenterTreatmentCardProps
 > = ({ treatment, selected, onSelect, onUnSelect }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { visit } = useRouting();
 
   return (
-    <div className="flex w-full justify-between">
+    <div className="w-full grid grid-cols-[auto_100px]">
       <div className="flex gap-2 items-center">
         <Image className="w-32 h-24" src={treatment.thumbnail}></Image>
         <div className="md:text-lg font-semibold flex flex-col gap-1">
@@ -36,7 +36,7 @@ export const BeautyCenterTreatmentCard: React.FC<
             <p
               onClick={() => {
                 visit((r) =>
-                  r.visitServiceDetails(treatment.beautyCenterServiceId)
+                  r.visitServiceDetails(treatment.beautyCenterServiceId),
                 );
               }}
               className="cursor-pointer text-primary"

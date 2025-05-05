@@ -1,10 +1,10 @@
 import { storybookBlocksTitle, RecommendedShopCard } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "Card",
+  title: "UI / blocks / Card",
   component: RecommendedShopCard,
-} as ComponentMeta<typeof RecommendedShopCard>;
+} as Meta<typeof RecommendedShopCard>;
 
 export const Default = () => {
   return (

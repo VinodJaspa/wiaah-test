@@ -1,10 +1,10 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import { AddNewDigitalProductSection } from "./AddNewDigitalProductSection";
 
-let mockUploadImage = jest.fn();
-let mockUploadVideo = jest.fn();
+const mockUploadImage = jest.fn();
+const mockUploadVideo = jest.fn();
 
-let mockUseMediaUploadControls = jest.fn().mockImplementation(() => ({
+const mockUseMediaUploadControls = jest.fn().mockImplementation(() => ({
   uploadImage: mockUploadImage,
   uploadVideo: mockUploadVideo,
   controls: {},

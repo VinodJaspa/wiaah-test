@@ -94,4 +94,4 @@ interface GraphQLContext {
     PinnedContentModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

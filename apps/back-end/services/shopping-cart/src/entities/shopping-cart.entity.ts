@@ -85,5 +85,5 @@ export class ShoppingCart {
   cartProduct?: CartItem[];
 
   @Field(() => ID, { nullable: true })
-  appliedVoucherId?: String;
+  appliedVoucherId?: string;
 }

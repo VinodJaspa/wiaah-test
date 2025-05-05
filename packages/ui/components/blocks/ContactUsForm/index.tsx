@@ -5,7 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
 export const ContactUsForm: FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <div className="flex w-[40rem] gap-4">

@@ -1,12 +1,12 @@
 import { TakePictureModal, Button, useSpecialDaysOpenTimeModal } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { useDisclouser } from "hooks";
 
 export default {
-  title: storybookModalsTitle + "TakePictureModal",
+  title: "UI / Blocks / Modals /TakePictureModal",
   component: TakePictureModal,
-} as ComponentMeta<typeof TakePictureModal>;
+} as Meta<typeof TakePictureModal>;
 
 export const Default = () => {
   const { handleClose, handleOpen, isOpen } = useDisclouser();

@@ -1,29 +1,27 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { HashTagCard } from "@UI";
 export default {
   title: "UI/blocks/Social/HashTagCard",
   component: HashTagCard,
-} as ComponentMeta<typeof HashTagCard>;
+} as Meta<typeof HashTagCard>;
 
-const Template: ComponentStory<typeof HashTagCard> = (args) => (
-  <HashTagCard {...args} />
-);
-
-export const imagePost = Template.bind({});
-imagePost.args = {
-  attachment: {
-    src: "/shop.jpeg",
-    type: "image",
+export const imagePost = {
+  args: {
+    attachment: {
+      src: "/shop.jpeg",
+      type: "image",
+    },
+    title: "most viewed post",
   },
-  title: "most viewed post",
 };
 
-export const videoPost = Template.bind({});
-videoPost.args = {
-  attachment: {
-    src: "video.mp4",
-    type: "video",
+export const videoPost = {
+  args: {
+    attachment: {
+      src: "video.mp4",
+      type: "video",
+    },
+    title: "most viewed video",
   },
-  title: "most viewed video",
 };

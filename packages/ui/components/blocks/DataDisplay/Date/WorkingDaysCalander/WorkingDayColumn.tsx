@@ -16,7 +16,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
   onClick,
 }) => {
   const date = new Date(dayDate);
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center w-full flex-col">
@@ -24,8 +24,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
           {date.toLocaleDateString("en-us", { weekday: "long" })}
         </p>
         <p className="whitespace-nowrap text-gray-500 font-medium ">
-          {date.getDate()}{" "}
-          {date.toLocaleDateString("en-us", { month: "short" })}
+          {date.getDate()}
         </p>
       </div>
       <div className="flex flex-col gap-2 w-full">
@@ -33,18 +32,17 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
           const formatter = new Intl.DateTimeFormat("en-us", {
             hour: "2-digit",
             minute: "2-digit",
-            timeZone: "UTC",
           });
-          const time = formatter.format(new Date(date.date));
 
           return (
             <button
               onClick={date.available ? () => onClick(date.date) : undefined}
               key={i}
-              className={`${date.available ? "bg-primary-100" : "bg-gray-100"
-                } w-full p-[2px] px-2 h-8  flex justify-center items-center rounded font-bold whitespace-nowrap`}
+              className={`${
+                date.available ? "bg-primary-100" : "bg-gray-100"
+              } w-full p-[2px] px-2 h-8  flex justify-center items-center rounded font-bold whitespace-nowrap`}
             >
-              {time ?? "--"}
+              {formatter.format(new Date(date.date)) ?? "--"}
             </button>
           );
         })}

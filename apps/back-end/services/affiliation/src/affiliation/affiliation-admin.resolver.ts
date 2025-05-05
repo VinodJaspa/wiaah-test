@@ -17,7 +17,10 @@ import {
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class AffiliationAdminResolver {
-  constructor(private commandbus: CommandBus, private querybus: QueryBus) {}
+  constructor(
+    private commandbus: CommandBus,
+    private querybus: QueryBus,
+  ) {}
 
   @Query(() => [Affiliation])
   getUserAffiliations(@Args('args') args: GetUserAffiliationsInput) {

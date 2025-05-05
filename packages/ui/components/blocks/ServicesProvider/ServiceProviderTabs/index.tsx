@@ -1,5 +1,4 @@
-import { Tabs, TabsHeader, TabTitle, TabList } from "@partials";
-import React from "react";
+import { TabList, Tabs, TabsHeader, TabTitle } from "@partials";
 
 type Tab = {
   name: string;
@@ -8,14 +7,15 @@ type Tab = {
 
 type ServicesProviderTabsProps = {
   tabs: Tab[];
-  t: (key: string) => string; // Translation function
+  t: (key: string) => string;
+  selectedTab?: number;
 };
 
 export const ServicesProviderDetailsTabs: React.FC<
   ServicesProviderTabsProps
-> = ({ tabs, t }) => {
+> = ({ tabs, t, selectedTab = 0 }) => {
   return (
-    <Tabs>
+    <Tabs currentTabIdx={selectedTab}>
       {({ currentTabIdx, setCurrentTabIdx }) => (
         <>
           <TabsHeader className="flex">
@@ -23,8 +23,9 @@ export const ServicesProviderDetailsTabs: React.FC<
               <TabTitle key={index} TabKey={index}>
                 <p
                   onClick={() => setCurrentTabIdx(index)}
-                  className={`${currentTabIdx === index ? "text-primary" : "text-lightBlack"
-                    } font-bold text-sm`}
+                  className={`${
+                    currentTabIdx === index ? "text-primary" : "text-lightBlack"
+                  } font-bold text-sm`}
                 >
                   {t(tab.name)}
                 </p>

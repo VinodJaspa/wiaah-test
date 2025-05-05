@@ -1,14 +1,14 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { storybookRestaurantListsTitle } from "utils";
 import { RestaurantMenuDishsList } from "./RestaurantMenuDishsList";
 import React from "react";
 
 export default {
-  title: storybookRestaurantListsTitle + "RestaurantMenuDishsList",
+  title: "UI / Features /Restaurant /Lists /RestaurantMenuDishsList",
   component: RestaurantMenuDishsList,
-} as ComponentMeta<typeof RestaurantMenuDishsList>;
+} as Meta<typeof RestaurantMenuDishsList>;
 
-const template: ComponentStory<typeof RestaurantMenuDishsList> = (args) => {
+const template: StoryFn<typeof RestaurantMenuDishsList> = (args) => {
   const [state, setState] = React.useState<any[]>([]);
 
   return (
@@ -20,5 +20,7 @@ const template: ComponentStory<typeof RestaurantMenuDishsList> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

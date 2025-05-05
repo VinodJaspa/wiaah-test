@@ -16,7 +16,7 @@ import { Order } from "@features/API";
 export const RequestRefundDrawer: React.FC = () => {
   const { cancelRequestRefund, value } = useSocialControls("requestRefundId");
   const isOpen = typeof value === "string";
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const order = {} as Order;
 
   // TODO: get order and create refund request integration

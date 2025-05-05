@@ -7,6 +7,7 @@ import { HtmlSvgProps } from "types";
 export const LocationIcon: React.FC<IconBaseProps> = (props) => {
   return <HiLocationMarker className="text-white" {...props} />;
 };
+
 export const LocationOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg

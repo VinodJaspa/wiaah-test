@@ -1,30 +1,39 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ChakraCarousel } from "./index";
+import { StoryFn, Meta } from "@storybook/react";
+import { Carousel } from "./index";
 export default {
   title: "UI/blocks/ChakaraCarousel",
-  component: ChakraCarousel,
-} as ComponentMeta<typeof ChakraCarousel>;
+  component: Carousel,
+} as Meta<typeof Carousel>;
 
-const Template: ComponentStory<typeof ChakraCarousel> = (args) => (
+const Template: StoryFn<typeof Carousel> = (args) => (
   <div className="h-96 w-[20rem]">
-    <ChakraCarousel {...args}>
+    <Carousel {...args}>
       {[...Array(10)].map((_, i) => (
         <div className="h-48  bg-green-400">test {i}</div>
       ))}
-    </ChakraCarousel>
+    </Carousel>
   </div>
 );
 
-export const Default = Template.bind({});
-Default.args = {};
-export const WithGap = Template.bind({});
-WithGap.args = {
-  gap: 16,
+export const Default = {
+  render: Template,
+  args: {},
 };
 
-export const WithArrows = Template.bind({});
-WithArrows.args = {
-  arrows: true,
-  h: "100%",
+export const WithGap = {
+  render: Template,
+
+  args: {
+    gap: 16,
+  },
+};
+
+export const WithArrows = {
+  render: Template,
+
+  args: {
+    arrows: true,
+    h: "100%",
+  },
 };

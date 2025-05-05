@@ -40,7 +40,8 @@ const FilterValuesValidationSchema = object({
 }).required();
 
 const ServiceShopFilterForm = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { getParam } = useRouting();
   const filterId = getParam("filter_id");
 
@@ -116,7 +117,7 @@ const ServiceShopFilterForm = () => {
                   initialValues={{
                     filterValues: [],
                   }}
-                  onSubmit={() => { }}
+                  onSubmit={() => {}}
                 >
                   {({ values, setFieldValue, handleChange }) => {
                     return (

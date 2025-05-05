@@ -1,18 +1,8 @@
+import { StoryProgressBar } from "@partials";
 import React from "react";
+import { SocialStoriesCarousel } from "../SocialStoriesCarousel";
+import { SocialStoryType } from "../SocialStoriesModal";
 import { SocialStoryViewerHeader } from "../SocialStoryViewerHeader";
-import {
-  SocialStoriesCarousel,
-  SocialStoriesCarouselProps,
-} from "../SocialStoriesCarousel";
-import {
-  DisplayPostedSince,
-  HStack,
-  ProgressBars,
-  StoryProgressBar,
-} from "@partials";
-import { SocialStoryType, useStoryModal } from "../SocialStoriesModal";
-import { HiEye } from "react-icons/hi";
-import { NumberShortner } from "@UI/components/helpers";
 
 export interface SocialStoryViewerProps {
   stories: SocialStoryType; // An array of stories, not just a single object
@@ -41,7 +31,7 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2 max-h-[100%] max-w-[100%]">
+    <div className="flex flex-col gap-2 w-full h-full">
       {/* Header Section */}
       <SocialStoryViewerHeader user={user} onClose={() => onClose()} />
       {/* Story Progress Bar Section */}

@@ -1,11 +1,11 @@
 import { ShareWithModal, Button, useShareWithModal } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "ShareWithModal",
+  title: "UI / Blocks / Modals /ShareWithModal",
   component: ShareWithModal,
-} as ComponentMeta<typeof ShareWithModal>;
+} as Meta<typeof ShareWithModal>;
 
 export const Default = () => {
   const { OpenModal } = useShareWithModal();

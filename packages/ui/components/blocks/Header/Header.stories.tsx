@@ -1,72 +1,71 @@
 import React from "react";
 import { Header } from ".";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 
 export default {
   title: "UI/blocks/Header",
   component: Header,
-} as ComponentMeta<typeof Header>;
+} as Meta<typeof Header>;
 
-const Templete: ComponentStory<typeof Header> = (args) => <Header {...args} />;
-
-export const Default = Templete.bind({});
-Default.args = {
-  categories: [
-    {
-      name: {
-        translationKey: "shoes",
-        fallbackText: "shoes",
+export const Default = {
+  args: {
+    categories: [
+      {
+        name: {
+          translationKey: "shoes",
+          fallbackText: "shoes",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "jewelry",
-        fallbackText: "jewelry",
+      {
+        name: {
+          translationKey: "jewelry",
+          fallbackText: "jewelry",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "clothing",
-        fallbackText: "clothing",
+      {
+        name: {
+          translationKey: "clothing",
+          fallbackText: "clothing",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "accessories",
-        fallbackText: "accessories",
+      {
+        name: {
+          translationKey: "accessories",
+          fallbackText: "accessories",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "shoes",
-        fallbackText: "shoes",
+      {
+        name: {
+          translationKey: "shoes",
+          fallbackText: "shoes",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "jewelry",
-        fallbackText: "jewelry",
+      {
+        name: {
+          translationKey: "jewelry",
+          fallbackText: "jewelry",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "clothing",
-        fallbackText: "clothing",
+      {
+        name: {
+          translationKey: "clothing",
+          fallbackText: "clothing",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-    {
-      name: {
-        translationKey: "accessories",
-        fallbackText: "accessories",
+      {
+        name: {
+          translationKey: "accessories",
+          fallbackText: "accessories",
+        },
+        destination: "/",
       },
-      destination: "/",
-    },
-  ],
+    ],
+  },
 };

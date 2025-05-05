@@ -15,7 +15,7 @@ export const ServicesSearchCard: React.FC<ServicesSearchCardProps> = ({
   vertical = false,
 }) => {
   const { visit } = useRouting();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { description, isNew, location, name, services, thumbnail } =
     serviceData;
   return (

@@ -19,7 +19,7 @@ export interface ExtraServiceOptionsProps {
 export const ExtraServiceOptions: React.FC<ExtraServiceOptionsProps> = ({
   onChange,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
       <p className="">{t("Extra Bed Options")}</p>

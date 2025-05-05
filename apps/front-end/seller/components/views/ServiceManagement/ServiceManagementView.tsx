@@ -25,7 +25,7 @@ export const ServiceManagementView = () => {
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);

@@ -25,7 +25,7 @@ export const SpecialDaysOpenTimeModal: React.FC<
   const [workingRange, setWorkingRange] = React.useState<TimeData[]>([]);
   const { days, clear } = useSpecialDaysOpenTimeModal();
   const isOpen = days.length > 0;
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
     <Modal isOpen={isOpen} onOpen={() => { }} onClose={clear}>

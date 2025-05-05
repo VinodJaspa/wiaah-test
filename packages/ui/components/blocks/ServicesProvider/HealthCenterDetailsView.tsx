@@ -1,47 +1,48 @@
-import React from "react";
-import {
-  SpinnerFallback,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  useGetHealthCenterDetailsQuery,
-  SellerServiceWorkingHoursSection,
-  HealthCenterDoctorsList,
-  RestaurantDetailsDescriptionSection,
-  ServiceDetailsReviewsSection,
-  ServicesProviderDetailsTabs,
-  ServicesProviderHeader,
-  Image,
-  LocationOnPointFillIcon,
-  Button,
-  Divider,
-  ServiceReservastionForm,
-  GetHealthCenterQuery,
-} from "ui";
-import { getRandomImage } from "placeholder";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
-import { HealthCenterDoctorAvailablityStatus } from "api";
 import {
   ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
 } from "@features/API";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { RestaurantDetailsDescriptionSection } from "@UI/components/features/Services/resturant/components/Sections/RestaurantDetailsDescriptionSection";
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { HealthCenterDoctorAvailablityStatus } from "api";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import {
+  Divider,
+  GetHealthCenterQuery,
+  HealthCenterDoctorsList,
+  ServicesProviderDetailsTabs,
+  SpinnerFallback,
+  StaticSideBarWrapper,
+} from "ui";
 
-export const HealthCenterDetailsView: React.FC = () => {
+interface HealthCenterDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const HealthCenterDetailsView: React.FC<
+  HealthCenterDetailsViewProps
+> = ({ selectedTab = 0 }) => {
   const { getParam } = useRouting();
   const id = getParam("id");
   // WARNING: grqphql is not ready yet once it's ready remove the placeholder
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetHealthCenterDetailsQuery(id);
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetHealthCenterDetailsQuery(id);
   const res = FAKE_HEALTH_CENTER_DATA;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
@@ -165,9 +166,15 @@ export const HealthCenterDetailsView: React.FC = () => {
                     reviews={[...Array(6)].map((_, i) => ({
                       name: "John Doberman",
                       content:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        "Lorem ipsum dolor sit amet, cclearonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       thumbnail: `/profile (${i + 1}).jfif`,
                       date: new Date().toString(),
+                      ratings: 4.5,
+                      bookedService: {
+                        id: `service${i + 1}`,
+                        image: `/service-image (${i + 1}).jfif`,
+                        name: `Service ${i + 1}`,
+                      },
                     }))}
                   />
                 </>
@@ -220,7 +227,7 @@ export const HealthCenterDetailsView: React.FC = () => {
             rating={res.rating}
             reviewsCount={156}
             serviceTitle={res.serviceMetaInfo.title}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -229,11 +236,15 @@ export const HealthCenterDetailsView: React.FC = () => {
           <ServiceReservastionForm
             sellerId={""}
             selectedServicesIds={[]}
-          // serviceId={""}
+            // serviceId={""}
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );
@@ -249,10 +260,12 @@ const FAKE_HEALTH_CENTER_DATA: GetHealthCenterQuery["getHealthCenter"] = {
   vat: 0.08,
   cancelationPolicies: [
     {
+      id: "1",
       cost: 50.0,
       duration: 24,
     },
     {
+      id: "2",
       cost: 100.0,
       duration: 12,
     },

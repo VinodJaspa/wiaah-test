@@ -10,7 +10,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const DownloadableManagement: React.FC<{}> = ({}) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const { controls, pagination } = usePaginationControls();
   const { data } = useGetMyProducts({

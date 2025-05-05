@@ -5,23 +5,32 @@
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*",
-    "types": "*"
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.3",
+    "@types/jest": "*",
+    "types":"workspace:*"
   },
-  "shadow": {
-    "dependencies": [
-      "recoil",
-      "react",
-      "react-dom"
-    ],
-    "devDependencies": [
-      "@types/react",
-      "@types/react-dom",
-      "typescript"
-    ]
+  "dependencies": {
+    "dto": "workspace:*",
+    "react-pubsub": "workspace:*",
+    "react-seo": "workspace:*",
+    "api": "workspace:*",
+    "hooks": "workspace:*",
+    "lib": "workspace:*",
+    "placeholder": "workspace:*",
+    "nest-utils":"workspace:*",
+    "routing": "workspace:*",
+    "state": "workspace:*",
+    "ui": "workspace:*",
+    "uris": "workspace:*",
+    "utils": "workspace:*",
+    "validation": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  
   }
 }

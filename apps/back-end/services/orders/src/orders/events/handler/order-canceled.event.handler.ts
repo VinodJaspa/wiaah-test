@@ -16,9 +16,9 @@ export class OrderCanceledEventHandler
   ) {}
 
   handle({ order }: OrderCanceledEvent) {
-    const orderTotal = order.items.reduce((acc,v)=> {
-      return acc 
-    },0)
+    const orderTotal = order.items.reduce((acc, v) => {
+      return acc;
+    }, 0);
 
     // this.eventClient.emit(
     //   KAFKA_EVENTS.ORDERS_EVENTS.orderCanceled(),

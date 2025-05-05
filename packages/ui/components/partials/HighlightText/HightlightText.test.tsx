@@ -10,7 +10,7 @@ const text = "some random text to test";
 
 describe("HighlightText", () => {
   let wrapper: ShallowWrapper;
-  let props: HighlightTextProps = {
+  const props: HighlightTextProps = {
     toHighlight: "dom te",
   };
 

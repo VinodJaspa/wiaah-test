@@ -84,7 +84,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
     setLang(value);
   }
 
-  let saveInternationalSettings = () => {
+  const saveInternationalSettings = () => {
     setLocale(langCode);
     setCookie("country", countryCode, { path: "/" });
     setCookie("currency", currency, { path: "/" });

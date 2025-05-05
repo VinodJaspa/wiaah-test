@@ -69,8 +69,7 @@ export const useGetResturantsQuery = (args: SearchFilteredRestaurantInput) => {
   });
 
   return useQuery(["search-filtered-resturants", args], async () => {
-    return (
-      await client.send<GqlResponse<Restaurant[], "searchFilteredRestaurant">>()
-    ).data.data.searchFilteredRestaurant;
+    const response = await client.send<GqlResponse<Restaurant[], "searchFilteredRestaurant">>();
+    return response?.data?.data?.searchFilteredRestaurant || [];
   });
 };

@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { MasterLayout } from "@components";
 
 const ServicePost = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const postId = router.query.postId as string;
   return (

@@ -95,7 +95,8 @@ const Activity: NextPage = () => {
 
   const { controls } = usePaginationControls();
 
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   return (
     <React.Fragment>
       <Head>
@@ -184,7 +185,8 @@ const GetActivityMessage: React.FC<{
   from: React.ReactNode;
   to?: React.ReactNode;
 }> = ({ event, from, to }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   switch (event) {
     case "buyer-banned":
       return (

@@ -1,11 +1,11 @@
 import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { NotificationType } from "@features/API";
 
 export default {
-  title: storybookCardsTitle + "NotificationCard",
+  title: "UI / blocks / cards /NotificationCard",
   component: NotifiactionCard,
-} as ComponentMeta<typeof NotifiactionCard>;
+} as Meta<typeof NotifiactionCard>;
 
 const NotificationPlaceholder = {
   username: "john_doe",

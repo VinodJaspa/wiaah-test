@@ -1,5 +1,6 @@
 import { CollaboratorCategory, CollaboratorShop } from "types";
-import { products } from "ui/placeholder/products";
+import { products } from "./products";
+
 
 const cates = ["Dress", "Home", "Jewelry", "Clothing"];
 

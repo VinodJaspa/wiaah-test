@@ -16,7 +16,8 @@ import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
 const Hashtags: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps } = useForm<
@@ -74,7 +75,7 @@ const Hashtags: NextPage = () => {
                   <NotAllowedIcon />
                 </Button>,
                 <Button key={v.id} center className="p-2">
-                  <TrashIcon onClick={() => { }} />
+                  <TrashIcon onClick={() => {}} />
                 </Button>,
               ],
             },

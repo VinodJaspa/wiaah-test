@@ -71,7 +71,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
   const deliveryCost = res ? res.order.shipping.cost : 0;
   const tax = res ? res.order.orderItem.products[0].vat : 0;
   const total = subtotal - discountCost + deliveryCost + tax;
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const { min } = useScreenWidth({ minWidth: 900 });
 

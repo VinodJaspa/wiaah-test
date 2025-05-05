@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { ClassType } from "../../";
 
-type IsStringTranslation<T> = T extends String ? string : T;
+type IsStringTranslation<T> = T extends string ? string : T;
 
 export interface TranslationInputFields<T> {
   langId: string;

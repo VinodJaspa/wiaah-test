@@ -1,20 +1,23 @@
-import { mapArray, useBreakpointValue, useForm } from "@UI/../utils/src";
+import { useForm } from "@UI/../utils/src";
+import { newsfeedPosts } from "@UI/placeholder";
 import {
   PostCardsListWrapper,
-  RecentStories,
+  ScrollableStories,
   usePaginationControls,
   useStoryModal,
 } from "@blocks";
-import { useSocialControls } from "ui";
-import React from "react";
-import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
-import { AspectRatio, SquarePlusOutlineIcon } from "@partials";
-import { useResponsive } from "@src/index";
-import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
-import { useRouting } from "routing";
 import { PostType } from "@features/API";
-import { getRandomImage, socialStoriesPlaceholder } from "placeholder";
-import { newsfeedPosts } from "@UI/placeholder";
+import { useResponsive } from "@src/index";
+import {
+  PersonalizeActions,
+  PostCardPlaceHolder,
+  storiesPlaceholder,
+} from "placeholder";
+import React from "react";
+import { useRouting } from "routing";
+import { useSocialControls } from "ui";
+import { SocialNewsfeedPostMobileCard } from "../components/Cards/SocialNewsfeedPostMobileCard";
+import { useGetMyNewsfeedPostsQuery, useGetRecentStories } from "../services";
 
 const FAKE_RECENT_STORIES_DATA = [
   {
@@ -58,9 +61,16 @@ const FAKE_RECENT_STORIES_DATA = [
   },
 ];
 
-const SocialNewsfeedView: React.FC = () => {
+interface SocialNewsfeedViewProps {
+  isDiscover?: boolean;
+  isHome?: boolean;
+}
+
+const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
+  isDiscover,
+  isHome,
+}) => {
   const { isMobile } = useResponsive();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { OpenModal } = useStoryModal();
   const { visit } = useRouting();
 
@@ -80,12 +90,72 @@ const SocialNewsfeedView: React.FC = () => {
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
   const data = newsfeedPosts;
 
+  const normalizedPersonalizedActions = PersonalizeActions.map((action) => ({
+    profileInfo: {
+      ...PostCardPlaceHolder.profileInfo,
+      name: action.profile.username,
+      photo: action.profile.photo,
+    },
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      id: action.id,
+      thumbnail: action.src,
+      attachments: [
+        {
+          type: "video",
+          src: action.src,
+          postLocation: action.location
+            ? `${action.location.city}, ${action.location.country}`
+            : "",
+        },
+      ],
+      numberOfComments: action.comments,
+      numberOfLikes: action.reactionNum,
+      numberOfShares: action.shares,
+      location: action.location
+        ? {
+            city: action.location.city,
+            country: action.location.country,
+          }
+        : undefined,
+      musicId: action.musicId,
+      effect: action.effect?.name,
+      createdAt: new Date().toISOString(),
+      tags: action.tags.map((tag) => tag.userId),
+    },
+  }));
+
+  const interleaveAtOddIndices = (baseArray: any[], itemsToInsert: any[]) => {
+    const result = [...baseArray];
+    let insertIndex = 1;
+
+    for (const item of itemsToInsert) {
+      if (insertIndex >= result.length) {
+        result.push(item);
+      } else {
+        result.splice(insertIndex, 0, item);
+      }
+      insertIndex += 2;
+    }
+
+    return result;
+  };
+
+  const discoverData = interleaveAtOddIndices(
+    newsfeedPosts,
+    normalizedPersonalizedActions,
+  );
+
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
-      <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
-        <div className="min-w-[4.75rem]"></div>
-        <RecentStories stories={socialStoriesPlaceholder} />
-      </div>
+      {!isDiscover && (
+        <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
+          <div className="min-w-[4.75rem]">
+            <ScrollableStories stories={storiesPlaceholder} />
+          </div>
+        </div>
+      )}
+      
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">
@@ -117,6 +187,8 @@ const SocialNewsfeedView: React.FC = () => {
         {/* Desktop view */}
         <div className="hidden lg:block">
           <PostCardsListWrapper
+            isHome={isHome}
+            isDiscover={isDiscover}
             grid={true}
             onPostClick={(post) => {
               // TODO: Handle post click
@@ -125,8 +197,7 @@ const SocialNewsfeedView: React.FC = () => {
             onProfileClick={(username) =>
               visit((r) => r.visitSocialProfile(username))
             }
-            cols={cols}
-            posts={data}
+            posts={isDiscover ? discoverData : data}
           />
         </div>
       </div>

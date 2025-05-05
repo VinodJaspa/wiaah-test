@@ -15,13 +15,13 @@ import { PrismaClient } from 'prismaClient';
 
 describe('action e2e', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
-  let kafka = new Kafka({
+  const prisma = new PrismaClient();
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.SOCIAL_SERVICE.clientId,
   });
 
-  let producer = kafka.producer();
+  const producer = kafka.producer();
 
   beforeAll(async () => {
     await producer.connect();

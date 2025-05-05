@@ -38,7 +38,7 @@ export const PendingAppointmentsSection: React.FC<
   PendingAppointmentsSectionProps
 > = () => {
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
@@ -89,6 +89,7 @@ export const PendingAppointmentsSection: React.FC<
               { label: "Free Movies", slug: "movies" },
             ]}
             cancelationPolicy={{
+              id: "policy1",
               cost: 50,
               duration: 15,
             }}
@@ -182,7 +183,7 @@ export const PendingAppointmentsSection: React.FC<
 export const PendingAppointmentCard: React.FC<{
   appointmentRequestData: PendingAppointmentData;
 }> = ({ appointmentRequestData }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { mutate: acceptAppointment, isLoading: acceptIsLoading } =
     useAcceptPendingAppointmentMutation();
   const { mutate: declineAppointment, isLoading: declineIsLoading } =
@@ -191,7 +192,12 @@ export const PendingAppointmentCard: React.FC<{
   return (
     <div className="flex justify-between gap-2">
       <div className="w-[min(100%,20rem)]">
-        <ServiceCheckoutCardSwitcher service={appointmentRequestData} />
+        <ServiceCheckoutCardSwitcher
+          service={{
+            type: appointmentRequestData.type === "resturant" ? "restaurant" : (appointmentRequestData.type as "holiday_rentals" | "hotel" | "health_center" | "beauty_center" | "restaurant"),
+            data: appointmentRequestData.data as any, // Adjust this cast if you have a more specific type
+          }}
+        />
       </div>
       <div className="flex gap-2 items-start">
         <ModalExtendedWrapper>

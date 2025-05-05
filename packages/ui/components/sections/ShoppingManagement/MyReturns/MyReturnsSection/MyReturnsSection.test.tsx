@@ -23,7 +23,7 @@ const testIds = {
 describe("MyWishListSection", () => {
   let wrapper: ShallowWrapper;
 
-  let mockGetItems = useGetMyReturnedProductsQuery as jest.Mock;
+  const mockGetItems = useGetMyReturnedProductsQuery as jest.Mock;
 
   const mockReturnedItems = [
     {

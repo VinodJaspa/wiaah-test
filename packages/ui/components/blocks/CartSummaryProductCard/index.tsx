@@ -1,7 +1,3 @@
-import React from "react";
-import { BsTrash } from "react-icons/bs";
-import { IoHeartOutline } from "react-icons/io5";
-import { CartSummaryItem, ShopContactDetails } from "types";
 import { useScreenWidth } from "@src/Hooks";
 import {
   Absolute,
@@ -12,13 +8,16 @@ import {
   Image,
   Padding,
   Prefix,
-  Releative,
   Rounded,
-  Text,
   Select,
   SelectOption,
+  Text,
 } from "@UI";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { BsTrash } from "react-icons/bs";
+import { IoHeartOutline } from "react-icons/io5";
+import { CartSummaryItem, ShopContactDetails } from "types";
 
 export interface CartSummaryProdcutCardProps {
   profile?: ShopContactDetails;
@@ -41,66 +40,42 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   onContactClick,
   onProfileClick,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { min } = useScreenWidth({ minWidth: 900 });
+
   function handleItemQtyChange(qty: number, id: string) {
     if (onQtyChange) onQtyChange(id, qty);
   }
+
   function handleMoveToWishList() {
     if (onMoveToWishList) {
       onMoveToWishList(product.id);
     }
   }
+
   function handleItemDeletion() {
     if (onRemove) {
       onRemove(product.id);
     }
   }
+
   function handleProfileClick() {
     if (onProfileClick && profile) {
       onProfileClick(profile.id);
     }
   }
+
   function handleContactClick() {
     if (onContactClick && profile) {
       onContactClick(profile.id);
     }
   }
-  function handleLocationClick() { }
+
+  function handleLocationClick() {}
+
   return (
-    <FlexStack fullWidth>
+    <FlexStack fullWidth className="pr-5">
       <FlexStack fullWidth direction="vertical">
-        {profile && !minimal && (
-          <>
-            <FlexStack alignItems="center" justify="between">
-              {/* shop info */}
-              <Clickable onClick={handleProfileClick}>
-                <Prefix
-                  Prefix={
-                    profile.imageUrl ? (
-                      <Rounded radius="sm">
-                        <BoxShadow>
-                          <Image
-                            id="ProductImage"
-                            height={2}
-                            width={2}
-                            src={profile.imageUrl}
-                          />
-                        </BoxShadow>
-                      </Rounded>
-                    ) : null
-                  }
-                >
-                  {profile.name}
-                </Prefix>
-              </Clickable>
-              <Clickable onClick={handleContactClick}>
-                <BoldText>{t("Contact Shop")}</BoldText>
-              </Clickable>
-            </FlexStack>
-            <Padding Y={{ value: 0.2 }} />
-          </>
-        )}
         <FlexStack
           fullWidth
           direction={min ? "vertical" : "horizontal"}
@@ -113,17 +88,19 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
             horizontalSpacingInRem={1}
             verticalSpacingInRem={1}
           >
-            <FlexStack fullWidth={min} justify="center">
-              <Releative fullWidth>
-                <Image
-                  width={min ? 100 : undefined}
-                  height={min ? 16 : undefined}
-                  style={{
-                    objectFit: "cover",
-                    transform: min ? "rotate(0deg)" : "rotate(90deg)",
-                  }}
-                  src={product.imageUrl}
-                />
+            <FlexStack fullWidth={min} justify="start">
+              <div className="relative w-full md:w-1/2">
+                <div className="w-full overflow-hidden">
+                  <Image
+                    width={min ? 100 : undefined}
+                    height={min ? 16 : undefined}
+                    style={{
+                      objectFit: "cover",
+                      transform: min ? "rotate(90deg)" : "rotate(0deg)",
+                    }}
+                    src={product.imageUrl}
+                  />
+                </div>
                 {product.cashback && !minimal && (
                   <Absolute
                     position={{ top: { value: 0 }, left: { value: 0 } }}
@@ -134,19 +111,44 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                           {product.cashback.unit === "$" && "$"}
                           {product.cashback.value}
                           {product.cashback.unit === "%" && "%"}
-                          {t("cashback", "Cashback")}
+                          {t("cashback", " Cashback")}
                         </p>
                       </Padding>
                     </div>
                   </Absolute>
                 )}
-              </Releative>
+              </div>
             </FlexStack>
             <FlexStack direction="vertical" fullHeight justify="between">
               <FlexStack
                 verticalSpacingInRem={minimal ? 0 : 0.5}
                 direction="vertical"
               >
+                {profile && !minimal && (
+                  <>
+                    <FlexStack alignItems="center" justify="between">
+                      {/* shop info */}
+                      <Clickable onClick={handleProfileClick}>
+                        <Prefix
+                          Prefix={
+                            profile.imageUrl ? (
+                              <div className="w-7 h-7 rounded-full overflow-hidden">
+                                <Image
+                                  src={profile.imageUrl}
+                                  alt="Profile photo"
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+                            ) : null
+                          }
+                        >
+                          {profile.name}
+                        </Prefix>
+                      </Clickable>
+                    </FlexStack>
+                    <Padding Y={{ value: 0.2 }} />
+                  </>
+                )}
                 <span id="ProductName" className="font-bold">
                   {product.name}
                 </span>

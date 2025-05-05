@@ -1,14 +1,14 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SubscribersPopup } from "@UI";
-import { Button } from "@chakra-ui/react";
+import { StoryFn, Meta } from "@storybook/react";
+import { ShadCnButton, SubscribersPopup } from "@UI";
+
 import { t } from "i18next";
 export default {
   title: "UI/blocks/Social/SubscribersPopup",
   component: SubscribersPopup,
-} as ComponentMeta<typeof SubscribersPopup>;
+} as Meta<typeof SubscribersPopup>;
 
-const Template: ComponentStory<typeof SubscribersPopup> = ({
+const Template: StoryFn<typeof SubscribersPopup> = ({
   isOpen,
   onClose,
   ...args
@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof SubscribersPopup> = ({
 
   return (
     <div>
-      <Button onClick={() => setOpen(true)}>Open</Button>
+      <ShadCnButton onClick={() => setOpen(true)}>Open</ShadCnButton>
       <SubscribersPopup
         isOpen={open}
         onClose={() => setOpen(false)}
@@ -27,7 +27,10 @@ const Template: ComponentStory<typeof SubscribersPopup> = ({
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  title: "subscribers",
+export const Default = {
+  render: Template,
+
+  args: {
+    title: "subscribers",
+  },
 };

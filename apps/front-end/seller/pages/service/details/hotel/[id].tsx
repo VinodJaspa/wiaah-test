@@ -1,19 +1,17 @@
-import { HotelDetailsView } from "ui";
-import { getHealthCenterDetailsFetcher } from "api";
-import { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
-import React from "react";
-import { dehydrate, QueryClient } from "react-query";
+import { NextPage } from "next";
 import { MetaTitle } from "react-seo";
-import { ServerSideQueryClientProps } from "types";
-import { getHealthCenterDetailsQueryKey, SellerLayout } from "ui";
-
+import { useRouting } from "routing";
+import { HotelDetailsView, SellerLayout } from "ui";
+import React from "react";
 const ServiceDetails: NextPage = () => {
+  const { getParam } = useRouting();
+  const tabIndex = parseInt(getParam("tabIndex")) || 0;
+
   return (
     <>
       <MetaTitle content="service details" />
       <SellerLayout>
-        <HotelDetailsView />
+        <HotelDetailsView selectedTab={tabIndex} />
       </SellerLayout>
     </>
   );

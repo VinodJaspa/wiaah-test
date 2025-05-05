@@ -1,17 +1,14 @@
 import { StatusSelectInput } from "./StatusSelectInput";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSearchInputsTitle } from "utils";
 
 export default {
-  title: storybookSearchInputsTitle + "StatusSelectInput",
+  title: "UI / Features /Search /Inputs /StatusSelectInput",
   component: StatusSelectInput,
-} as ComponentMeta<typeof StatusSelectInput>;
+} as Meta<typeof StatusSelectInput>;
 
-const template: ComponentStory<typeof StatusSelectInput> = (args) => (
-  <StatusSelectInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  options: ["Available", "Out of Stock"],
+export const Default = {
+  args: {
+    options: ["Available", "Out of Stock"],
+  },
 };

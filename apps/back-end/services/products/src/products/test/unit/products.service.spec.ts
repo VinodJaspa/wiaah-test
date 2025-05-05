@@ -14,7 +14,7 @@ describe('products services unit tests', () => {
   let service: ProductsService;
   let mockKafkaEmit: jest.Mock;
 
-  let createProductInput: CreateProductInput = {
+  const createProductInput: CreateProductInput = {
     attributes: [{ name: 'colors', values: ['red', 'yellow'] }],
     brand: 'nike',
     cashback: {

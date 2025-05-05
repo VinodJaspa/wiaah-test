@@ -88,7 +88,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const { shopping } = React.useContext(bookingsHistoryCtx);
   const { isMobile } = useResponsive();
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { back } = useRouting();
   const [date, setDate] = React.useState<Date>(new Date());
   const months = getAllMonthsOfYear(date.getFullYear());
@@ -290,6 +290,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
                 { label: "Free Movies", slug: "movies" },
               ]}
               cancelationPolicy={{
+                id: "unique-id", // Replace "unique-id" with the actual ID value
                 cost: 50,
                 duration: 15,
               }}
@@ -613,7 +614,7 @@ export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
 };
 
 const BookingViewModal: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const id = useRecoilValue(
     selector({
       key: "bookingViewIdState",
@@ -713,7 +714,7 @@ const BookingViewModal: React.FC = () => {
 };
 
 const BookingPayBackModal: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const payback = useRecoilValue(
     selector({
       key: "bookingPaybackIdState",
@@ -761,7 +762,7 @@ const BookingPayBackModal: React.FC = () => {
 };
 
 const BookingCancelationModal: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const id = useRecoilValue(
     selector({
       key: "bookingCancelationIdState",

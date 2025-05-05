@@ -17,7 +17,7 @@ export const MarketServicesProviderHeader: React.FC<
   const departure = travelPeriod ? DateDetails(travelPeriod[0]) : null;
   const arrival = travelPeriod ? DateDetails(travelPeriod[1]) : null;
 
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex w-full justify-between gap-4">
       <div className="flex flex-col sm:flex-row items-center sm:w-auto sm:items-start w-full gap-4">

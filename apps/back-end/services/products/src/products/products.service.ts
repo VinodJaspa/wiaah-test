@@ -50,7 +50,7 @@ export class ProductsService {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
     private readonly uploadService: UploadService,
-  ) { }
+  ) {}
 
   private readonly maxRate: number = 5;
 
@@ -105,10 +105,22 @@ export class ProductsService {
     const createdProduct = await this.prisma.product.create({
       data: {
         ...createProductInput,
+        title: Array.isArray(createProductInput.title)
+          ? createProductInput.title.map((translation) => ({
+              langId: translation.langId as never, // Ensure compatibility with expected type
+              value: translation.value,
+            }))
+          : [],
         discount: {
           create: createProductInput.discount,
         },
         sellerId: user.id,
+        description: Array.isArray(createProductInput.description)
+          ? createProductInput.description.map((translation) => ({
+              langId: translation.langId as never, // Ensure compatibility with expected type
+              value: translation.value,
+            }))
+          : [],
         presentations: res.map((v) => {
           const type = this.uploadService.getFileTypeFromMimetype(v.mimetype);
 
@@ -188,6 +200,18 @@ export class ProductsService {
         },
         data: {
           ...rest,
+          title: {
+            set: Array.isArray(rest.title) ? rest.title.map((translation) => ({
+              langId: translation.langId,
+              value: translation.value,
+            })) : [],
+          },
+          description: {
+            set: Array.isArray(rest.description) ? rest.description.map((translation) => ({
+              langId: translation.langId,
+              value: translation.value,
+            })) : [],
+          },
           presentations: rest.oldPresentations
             .concat(
               res.map((v) => {
@@ -195,7 +219,7 @@ export class ProductsService {
                   v.mimetype,
                 );
 
-                if (type !== FileTypeEnum.image && type === FileTypeEnum.video)
+                if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
                   return null;
 
                 return {
@@ -215,7 +239,7 @@ export class ProductsService {
       });
 
       return this.formatProduct(prod, lang);
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -322,7 +346,7 @@ export class ProductsService {
     try {
       await this.prisma.product.deleteMany();
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -346,7 +370,7 @@ export class ProductsService {
         data: [],
       });
       return true;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error);
     }
   }
@@ -428,7 +452,7 @@ export class ProductsService {
         total: totalSearched,
         hasMore: products.length >= take,
       };
-    } catch (error) { }
+    } catch (error) {}
   }
 
   async isProductReviewable(productId: string, reviewerId: string) {

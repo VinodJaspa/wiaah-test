@@ -30,9 +30,9 @@ jest.mock('nest-utils', () => ({
 
 describe('product-post tests', () => {
   let app: INestApplication;
-  let mockMessageHandler = KafkaMessageHandler as jest.Mock;
+  const mockMessageHandler = KafkaMessageHandler as jest.Mock;
 
-  let prisma = new PrismaClient();
+  const prisma = new PrismaClient();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -79,14 +79,14 @@ describe('product-post tests', () => {
     `;
 
   it('should get product post suggestion correctly', async () => {
-    let interactioner1 = new ObjectId().toHexString();
-    let interactioner2 = new ObjectId().toHexString();
-    let interactioner3 = new ObjectId().toHexString();
-    let interactioner4 = new ObjectId().toHexString();
-    let service1 = new ObjectId().toHexString();
-    let service2 = new ObjectId().toHexString();
-    let service3 = new ObjectId().toHexString();
-    let service4 = new ObjectId().toHexString();
+    const interactioner1 = new ObjectId().toHexString();
+    const interactioner2 = new ObjectId().toHexString();
+    const interactioner3 = new ObjectId().toHexString();
+    const interactioner4 = new ObjectId().toHexString();
+    const service1 = new ObjectId().toHexString();
+    const service2 = new ObjectId().toHexString();
+    const service3 = new ObjectId().toHexString();
+    const service4 = new ObjectId().toHexString();
 
     await prisma.servicePost.create({
       data: {
@@ -229,7 +229,7 @@ describe('product-post tests', () => {
       }),
     );
 
-    let res = await reqGql(
+    const res = await reqGql(
       getServicesPostsSuggestionsQuery,
       {
         page: 1,

@@ -78,7 +78,7 @@ enum weekdaysNum {
 @ObjectType()
 class ServicesCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
   Service,
-) { }
+) {}
 
 @InputType()
 export class TestUploadFile {
@@ -100,7 +100,7 @@ export class ServiceResolver {
     private readonly serviceService: ServiceService,
 
     private readonly eventBus: EventBus,
-  ) { }
+  ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -156,8 +156,8 @@ export class ServiceResolver {
       data:
         res.length > pagination.take
           ? res
-            .slice(0, res.length - 2)
-            .map((v) => this.formatService(v, userLang))
+              .slice(0, res.length - 2)
+              .map((v) => this.formatService(v, userLang))
           : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
       nextCursor: res.at(res.length - 1).id,
@@ -179,12 +179,12 @@ export class ServiceResolver {
           success: true,
         };
       }
-    } catch (error) {
+    } catch (error: any) {
       // Handle the error appropriately
       return {
         code: 4,
         success: false,
-        message: error,
+        message: typeof error === 'string' ? error : JSON.stringify(error),
       };
     }
   }
@@ -216,7 +216,7 @@ export class ServiceResolver {
   @Query(() => Service, { nullable: true })
   async getServiceDetails(
     @Args('id') id: string,
-    @Args('isClick') isClick: Boolean,
+    @Args('isClick') isClick: boolean,
     @GetLang() lang: UserPreferedLang,
   ): Promise<Service> {
     const service = await this.prisma.service.findUnique({
@@ -541,14 +541,14 @@ export class ServiceResolver {
 
     const services = multipleServices
       ? await this.prisma.service.findMany({
-        where: {
-          id: {
-            in: servicesIds,
+          where: {
+            id: {
+              in: servicesIds,
+            },
+            sellerId: firstService.sellerId,
+            type: serviceType,
           },
-          sellerId: firstService.sellerId,
-          type: serviceType,
-        },
-      })
+        })
       : [firstService];
 
     const validServices = multipleServices

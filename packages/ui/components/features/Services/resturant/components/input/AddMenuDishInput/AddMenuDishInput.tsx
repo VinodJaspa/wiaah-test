@@ -27,7 +27,7 @@ export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
   onAdd,
 }) => {
   const [add, setAdd] = React.useState<boolean>(false);
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return add ? (
     <Formik<InferType<typeof formValidSchema>>
       validationSchema={formValidSchema}

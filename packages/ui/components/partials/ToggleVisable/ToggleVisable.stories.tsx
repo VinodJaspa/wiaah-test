@@ -1,11 +1,11 @@
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ToggleVisable, ToggleVisableItem, Button } from "@UI";
 
 export default {
-  title: storybookPartailsTitle + "ToggleVisable",
+  title: "UI / partials / ToggleVisable",
   component: ToggleVisable,
-} as ComponentMeta<typeof ToggleVisable>;
+} as Meta<typeof ToggleVisable>;
 
 export const Default = () => {
   return (

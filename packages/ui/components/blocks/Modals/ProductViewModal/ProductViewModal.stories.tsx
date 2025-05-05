@@ -1,11 +1,11 @@
 import { ProductViewModal, Button, useProductViewModal } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "ProductViewModal",
+  title: "UI / Blocks / Modals /ProductViewModal",
   component: ProductViewModal,
-} as ComponentMeta<typeof ProductViewModal>;
+} as Meta<typeof ProductViewModal>;
 
 export const product = () => {
   const { showProduct } = useProductViewModal();

@@ -1,22 +1,19 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { BeautyCenterMyServiceCard } from "./BeautyCenterMyServiceCard";
 import { storybookServiceManagementCardsTitle } from "utils";
 
 export default {
-  title: storybookServiceManagementCardsTitle + "BeautyCenterMyServiceCard",
+  title: "UI / Features /Service Management /Cards /BeautyCenterMyServiceCard",
   component: BeautyCenterMyServiceCard,
-} as ComponentMeta<typeof BeautyCenterMyServiceCard>;
+} as Meta<typeof BeautyCenterMyServiceCard>;
 
-const template: ComponentStory<typeof BeautyCenterMyServiceCard> = (args) => (
-  <BeautyCenterMyServiceCard {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  id: "13",
-  description: "Beauty Center Description",
-  provider: "wiaah",
-  thumbnail: "/place-2.jpg",
-  title: "Wiaah Beauty",
-  type: "beauty_center",
+export const Default = {
+  args: {
+    id: "13",
+    description: "Beauty Center Description",
+    provider: "wiaah",
+    thumbnail: "/place-2.jpg",
+    title: "Wiaah Beauty",
+    type: "beauty_center",
+  },
 };

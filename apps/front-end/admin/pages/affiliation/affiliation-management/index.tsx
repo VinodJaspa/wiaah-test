@@ -29,7 +29,8 @@ import { mapArray, randomNum, useForm } from "utils";
 
 const AffiliationManagement: NextPage = () => {
   const { getCurrentPath, visit, getUrl } = useRouting();
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { pagination } = usePaginationControls();
   const { form, inputProps } = useForm<
@@ -123,8 +124,8 @@ const AffiliationManagement: NextPage = () => {
                       {itemType === "product"
                         ? getUrl((r) => r.visitProduct(itemId))
                         : getUrl((r) =>
-                          r.visitService({ id: itemId }, itemType),
-                        )}
+                            r.visitService({ id: itemId }, itemType),
+                          )}
                     </Td>
                     <Td>{new Date(createdAt).toDateString()}</Td>
                     <Td>

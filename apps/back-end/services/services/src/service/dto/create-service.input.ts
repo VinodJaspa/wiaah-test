@@ -49,7 +49,7 @@ class ServiceHotelRoomMetaInfoInput {
 @InputType()
 class ServiceHotelRoomTranslationMetaInfoInput extends CreateInputGqlTranslationInputField<ServiceHotelRoomMetaInfoInput>(
   ServiceHotelRoomMetaInfoInput,
-) { }
+) {}
 
 @InputType()
 class ServiceHotelRoomInput {

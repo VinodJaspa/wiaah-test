@@ -67,6 +67,7 @@ export interface PostInfo {
   numberOfShares: number;
   comments?: PostComment[];
   thumbnail?: string;
+  postType?: string;
 }
 
 export enum AccountType {
@@ -120,6 +121,7 @@ export interface ShopCardInfo {
   comments: PostComment[];
   url: string;
   createdAt: string;
+  shares?: number;
 }
 
 export interface AffiliationOfferCardInfo {

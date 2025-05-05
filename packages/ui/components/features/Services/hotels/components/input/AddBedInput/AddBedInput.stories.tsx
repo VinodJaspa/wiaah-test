@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { AddBedInput } from "./AddBedInput";
 import { storybookHotelInputTitle } from "utils";
 
 export default {
-  title: storybookHotelInputTitle + "AddBedInput",
+  title: "UI / Features /Hotel /Inputs /AddBedInput",
   component: AddBedInput,
-} as ComponentMeta<typeof AddBedInput>;
+} as Meta<typeof AddBedInput>;
 
-const template: ComponentStory<typeof AddBedInput> = (args) => (
-  <AddBedInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

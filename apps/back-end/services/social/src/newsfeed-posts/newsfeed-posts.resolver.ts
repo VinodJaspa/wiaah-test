@@ -240,12 +240,12 @@ export class NewsfeedPostsResolver {
             post.type === PostType.newsfeed_post
               ? ContentHostType.post_newsfeed
               : post.type === PostType.shop_post
-              ? ContentHostType.post_shop
-              : post.type === PostType.service_post
-              ? ContentHostType.post_service
-              : post.type === PostType.affiliation_post
-              ? ContentHostType.post_affiliation
-              : undefined,
+                ? ContentHostType.post_shop
+                : post.type === PostType.service_post
+                  ? ContentHostType.post_service
+                  : post.type === PostType.affiliation_post
+                    ? ContentHostType.post_affiliation
+                    : undefined,
           reactedByUserId: user.id,
         },
       },

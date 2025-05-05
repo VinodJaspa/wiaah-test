@@ -208,7 +208,7 @@ export const SearchFilter: React.FC<
               check
             );
           default:
-            break;
+            return null;
         }
       })}
     </SpinnerFallback>

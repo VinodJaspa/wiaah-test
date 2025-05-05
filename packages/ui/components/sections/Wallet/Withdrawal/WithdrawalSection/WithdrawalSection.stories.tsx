@@ -1,9 +1,9 @@
 import { storybookSectionsTitle, WithdrawalSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "WithdrawalSection",
+  title: "UI / sections / WithdrawalSection",
   component: WithdrawalSection,
-} as ComponentMeta<typeof WithdrawalSection>;
+} as Meta<typeof WithdrawalSection>;
 
 export const Default = () => <WithdrawalSection />;

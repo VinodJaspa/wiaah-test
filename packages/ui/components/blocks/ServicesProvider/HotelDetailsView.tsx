@@ -1,33 +1,40 @@
-import React from "react";
-import {
-  ServicesProviderDetailsTabs,
-  useGetServicesProviderQuery,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  HotelServiceRoomsSection,
-  ServicesProviderDescriptionSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  GetServiceDetailsQuery,
-  SpinnerFallback,
-  ServiceDetailsReviewsSection,
-  SellerServiceWorkingHoursSection,
-  ServicesProviderHeader,
-  Divider,
-  ServiceRangeBookingCalander,
-} from "ui";
-import { useTranslation } from "react-i18next";
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { ServicesProviderDescriptionSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicesProviderDescriptionSection";
+import { GetServiceDetailsQuery } from "@UI/components/features/Services/ServicesDetails/services/queries/useGetServicesProviderQuery";
+import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { HotelServiceRoomsSection } from "@UI/components/features/Services/hotels/components/section/HotelServiceRoomsSection";
+import { SpinnerFallback } from "@blocks/FallbackDisplays";
+import { StaticSideBarWrapper } from "@blocks/Wrappers";
 import { ServicePresentationType, ServiceTypeOfSeller } from "@features/API";
+import { Divider } from "@partials";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ServicesProviderDetailsTabs } from "./ServiceProviderTabs";
+import { getRandomImage } from "placeholder";
+import { FaWaveSquare } from "react-icons/fa";
+import { CgGym } from "react-icons/cg";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
 
-export const HotelDetailsView: React.FC = () => {
+interface HotelDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const HotelDetailsView: React.FC<HotelDetailsViewProps> = ({
+  selectedTab = 0,
+}) => {
   //WARNING: grphql query endpoint is not ready yet
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetServicesProviderQuery("");
-  const { t } = useTranslation();
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetServicesProviderQuery("");
+const { t } = useTranslation();
   const res = FAKE_DATA;
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
@@ -178,6 +185,12 @@ export const HotelDetailsView: React.FC = () => {
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       thumbnail: `/profile (${i + 1}).jfif`,
                       date: new Date().toString(),
+                      ratings: +(Math.random() * 5).toFixed(1),
+                      bookedService: {
+                        id: "123",
+                        image: getRandomImage(),
+                        name: "Deluxe Spa Package",
+                      },
                     }))}
                   />
                 </>
@@ -231,23 +244,24 @@ export const HotelDetailsView: React.FC = () => {
             rating={15}
             reviewsCount={150}
             serviceTitle={"service title"}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={
-          res ? (
-            <ServiceRangeBookingCalander
-              bookedDates={[]}
-              date={new Date()}
-              onChange={() => { }}
-              value={[]}
-            />
-          ) : null
+          <ServiceReservastionForm
+            sellerId={""}
+            selectedServicesIds={[]}
+            // serviceId={""}
+          />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );
@@ -339,8 +353,19 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
     {
       cancelationPolicies: [
         {
+          id: "1",
           cost: 50,
           duration: 60,
+        },
+        {
+          id: "2",
+          cost: 0,
+          duration: 30,
+        },
+        {
+          id: "3",
+          cost: 0,
+          duration: 0,
         },
       ],
       presentations: [],
@@ -382,12 +407,19 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       },
       popularAmenities: [
         {
-          label: "Swimming pool",
+          label: "Breakfast",
           value: "yes",
+          slug: "breakfast",
         },
         {
-          label: "Gym",
+          label: "Laundry",
           value: "yes",
+          slug: "laundry",
+        },
+        {
+          label: "Balcony",
+          value: "yes",
+          slug: "balcony",
         },
       ],
       pricePerNight: 90,
@@ -397,7 +429,8 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
       beds: 3,
       num_of_rooms: 2,
       sellerId: "",
-      thumbnail: "",
+      thumbnail: "/place-1.jpg",
+      fees: true,
     },
   ],
   serviceMetaInfo: {

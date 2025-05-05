@@ -1,16 +1,13 @@
 import { storybookVehicleInputsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { VehicleSearchBox } from "./VehicleSearchBox";
 import React from "react";
 
 export default {
-  title: storybookVehicleInputsTitle + "VehicleSearchBox",
+  title: "UI / Features /Vehicle /Inputs /VehicleSearchBox",
   component: VehicleSearchBox,
-} as ComponentMeta<typeof VehicleSearchBox>;
+} as Meta<typeof VehicleSearchBox>;
 
-const template: ComponentStory<typeof VehicleSearchBox> = (args) => (
-  <VehicleSearchBox {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

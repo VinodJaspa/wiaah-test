@@ -72,7 +72,7 @@ export const getMyCartSummaryDataFetcher = (): Promise<
           type: "shop",
         },
         itemData: {
-          type: "resturant",
+          type: "restaurant",
           data: {
             serviceType: "restaurant",
             bookedDates: {

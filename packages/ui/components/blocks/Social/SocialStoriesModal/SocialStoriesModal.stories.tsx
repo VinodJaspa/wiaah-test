@@ -1,17 +1,16 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialStoryModal } from "@UI";
+import { StoryFn, Meta } from "@storybook/react";
+import { ShadCnButton, SocialStoryModal } from "@UI";
 import { useStory, useStorySeenBy } from "@src/Hooks";
-import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { PostCardPlaceHolder } from "placeholder";
 import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",
   component: SocialStoryModal,
-} as ComponentMeta<typeof SocialStoryModal>;
+} as Meta<typeof SocialStoryModal>;
 
-const Template: ComponentStory<typeof SocialStoryModal> = (args) => {
+const Template: StoryFn<typeof SocialStoryModal> = (args) => {
   const { OpenStories } = useStory();
   const setStory = useSetRecoilState(SocialStoryState);
   const { setStorySeenBy } = useStorySeenBy();
@@ -46,11 +45,16 @@ const Template: ComponentStory<typeof SocialStoryModal> = (args) => {
 
   return (
     <>
-      <Button onClick={OpenStories}>open</Button>
+<ShadCnButton onClick={OpenStories} className="bg-primary text-white hover:bg-primary/80 rounded-md transition-colors duration-200">
+  open
+</ShadCnButton>
+
       <SocialStoryModal {...args} />
     </>
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = {
+  render: Template,
+  args: {},
+};

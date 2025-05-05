@@ -1,9 +1,9 @@
 import { CustomerService, storybookBlocksTitle } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookBlocksTitle + "CustomerService",
+  title: "UI / blocks / CustomerService",
   component: CustomerService,
-} as ComponentMeta<typeof CustomerService>;
+} as Meta<typeof CustomerService>;
 
 export const Default = () => <CustomerService />;

@@ -1,18 +1,15 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { HighlightText } from "./HightlightText";
 import { storybookPartailsTitle } from "utils";
 
 export default {
-  title: storybookPartailsTitle + "HighlightText",
+  title: "UI / partials / HighlightText",
   component: HighlightText,
-} as ComponentMeta<typeof HighlightText>;
+} as Meta<typeof HighlightText>;
 
-const template: ComponentStory<typeof HighlightText> = (args) => (
-  <HighlightText {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  text: "this is some random text",
-  toHighlight: "and",
+export const Default = {
+  args: {
+    text: "this is some random text",
+    toHighlight: "and",
+  },
 };

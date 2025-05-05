@@ -142,6 +142,6 @@ query getProduct(
 
   return useQuery(["get-admin-product", { id }], async () => {
     const res = await client.send<GetProductQuery>();
-    return res.data.adminGetProduct;
+    return res?.data.adminGetProduct;
   });
 };

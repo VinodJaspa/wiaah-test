@@ -8,21 +8,22 @@ describe("Sidebar work as expected", () => {
     expect(wrapper).toMatchSnapshot();
   });
   const context = { visible: true };
-  let visible = false;
+  const visible = false;
   it("visible when context visibility is true", () => {
-    const wrapper = mount(<SidebarProvider />, {
-      wrappingComponent: SidebarContext.Provider,
-      wrappingComponentProps: {
-        value: {
+    const wrapper = mount(
+      <SidebarContext.Provider
+        value={{
           visible: true,
-          toggleVisibility: () => { },
-        },
-      },
-    });
+          toggleVisibility: () => {},
+        }}
+      >
+        <SidebarProvider />
+      </SidebarContext.Provider>
+    );
     expect(wrapper.find("aside.flex").length).toEqual(1);
   });
   it("has the right nasted menu", () => {
-    let menu = [
+    const menu = [
       {
         label: "Clothing",
         url: "",

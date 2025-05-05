@@ -29,7 +29,7 @@ export interface HealthCenterAddDoctorFormProps {
 export const HealthCenterAddDoctorForm: React.FC<
   HealthCenterAddDoctorFormProps
 > = ({ onAdd }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { uploadImage } = useFileUploadModal();
   const [add, setAdd] = React.useState<boolean>(false);
   return add ? (

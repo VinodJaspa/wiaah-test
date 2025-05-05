@@ -1,17 +1,19 @@
-import React from "react";
-import { SocialStoryViewer } from "../SocialStoryViewer";
-import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
-import { useTypedReactPubsub } from "@libs";
-import { useGetPrevStory, useGetUserStory } from "@features/Social";
 import {
   AttachmentType,
+  NewsfeedPost,
+  ProductPost,
   Profile,
   ProfileReachedGender,
   ProfileVisibility,
+  ServicePost,
   Story,
   StoryType,
 } from "@features/API";
-import { Maybe } from "graphql/jsutils/Maybe";
+import { useTypedReactPubsub } from "@libs";
+import { Modal, ModalContent, ModalOverlay } from "@partials";
+export type Maybe<T> = T | null | undefined;
+import React from "react";
+import { SocialStoryViewer } from "../SocialStoryViewer";
 
 export const useStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
@@ -63,7 +65,11 @@ export type SocialStoryFields = Pick<
   | "viewsCount"
   | "views"
   | "attachements"
->;
+> & {
+  newsfeedPost?: Pick<NewsfeedPost, "id">;
+  servicePost?: Pick<ServicePost, "id">;
+  shopPost?: Pick<ProductPost, "id">;
+};
 
 // Define a type for Profile fields
 export type SocialStoryPublisher = Maybe<
@@ -108,13 +114,13 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
   //   refetch();
   // }
 
-  function handlePrev() { }
+  function handlePrev() {}
 
   return (
     <>
       <Modal onClose={CloseModal} isOpen={!!userId}>
         <ModalOverlay />
-        <ModalContent className="bg-[#000] min-h-[80vh] h-fit xl:w-1/4 lg:w-1/3 md:w-1/2 w-full  text-white px-0 py-4">
+        <ModalContent className="bg-[#000] h-[80vh] xl:w-1/4 lg:w-1/3 md:w-1/2 w-full text-white px-0 py-4 overflow-hidden">
           {story ? (
             <SocialStoryViewer
               onClose={CloseModal}
@@ -141,46 +147,84 @@ const FAKE_STORY: SocialStoryType = {
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Post, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Image,
+      attachements: {
+        src: "https://images.pexels.com/photos/30244799/pexels-photo-30244799/free-photo-of-vibrant-portrait-in-dramatic-red-and-blue-lighting.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
+        marketingTags: [],
+        type: AttachmentType.Img,
+      },
+      newsfeedPost: {
+        id: "1",
+      },
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
         {
           __typename: "StoryView",
-          createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
-          gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+          createdAt: new Date().toISOString(),
+          gender: ProfileReachedGender.Male,
           id: "storyView123",
           storyId: "story456",
           viewerId: "viewer789",
         },
-      ], // Adjust structure if needed
+      ],
     },
-
     {
-      id: "story124",
-      content: "This is a sample story .",
+      id: "story123",
+      content: "This is a sample story content.",
       createdAt: new Date().toISOString(),
       publisherId: "publisher456",
       reactionsNum: 42,
-      type: StoryType.Service, // assuming `type` is a string representing the type of story, e.g., "text", "image", etc.
+      type: StoryType.Video,
+      attachements: {
+        src: "/action.mp4",
+        marketingTags: [],
+        type: AttachmentType.Vid,
+      },
+      servicePost: {
+        id: "1",
+      },
       updatedAt: new Date().toISOString(),
       viewsCount: 123,
       views: [
         {
           __typename: "StoryView",
-          createdAt: new Date().toISOString(), // Replace with appropriate Date format if necessary
-          gender: ProfileReachedGender.Male, // Assuming `ProfileReachedGender` is an enum with values like "male", "female", etc.
+          createdAt: new Date().toISOString(),
+          gender: ProfileReachedGender.Male,
           id: "storyView123",
           storyId: "story456",
           viewerId: "viewer789",
         },
-      ], // Adjust structure if needed
+      ],
+    },
+    {
+      id: "story124",
+      content: "This is a sample story.",
+      createdAt: new Date().toISOString(),
+      publisherId: "publisher456",
+      reactionsNum: 42,
+      type: StoryType.Product,
+      shopPost: {
+        id: "1",
+      },
+      updatedAt: new Date().toISOString(),
+      viewsCount: 123,
+      views: [
+        {
+          __typename: "StoryView",
+          createdAt: new Date().toISOString(),
+          gender: ProfileReachedGender.Male,
+          id: "storyView123",
+          storyId: "story456",
+          viewerId: "viewer789",
+        },
+      ],
     },
   ],
   publisher: {
     photo: "/shop-2.jpeg",
     username: "sampleUser",
-    visibility: ProfileVisibility.Public, // assuming "public" or similar values for visibility
+    visibility: ProfileVisibility.Public,
     id: "profile123",
   },
 };

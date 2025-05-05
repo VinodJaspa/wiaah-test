@@ -18,7 +18,7 @@ import {
 export const BookConfirmationDataDisplayModal: React.FC = () => {
   const { Listen } = useReactPubsub((e) => "OpenSocail");
   const [id, setId] = React.useState<string>();
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const {
     data: res,
     isLoading,

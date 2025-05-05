@@ -5,23 +5,20 @@
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "devDependencies": {
-    "config": "*",
-    "tsconfig": "*",
-    "types": "*"
+    "config": "workspace:*",
+    "uris":"workspace:*",
+    "tsconfig": "workspace:*",
+    "types": "workspace:*",
+    "typescript": "^5.8.3",
+    "next":"15.3.1"
   },
   "dependencies": {
-    "utils": "*",
-    "state": "*"
-  },
-  "shadow": {
-    "dependencies": [
-      "recoil"
-    ],
-    "devDependencies": [
-      "typescript"
-    ]
+    "utils": "workspace:*",
+    "state": "workspace:*",
+    "recoil": "^0.7.7"
   }
 }

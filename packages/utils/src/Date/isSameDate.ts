@@ -11,6 +11,7 @@ export function isSameDay(date1: Date, date2: Date) {
 
     return y1 === y2 && m1 === m2 && d1 === d2;
   }
+  return null;
 }
 
 export function isSameMinute(date1: Date, date2: Date) {
@@ -29,6 +30,7 @@ export function isSameMinute(date1: Date, date2: Date) {
 
     return y1 === y2 && m1 === m2 && d1 === d2 && h1 === h2 && mi1 === mi2;
   }
+  return null;
 }
 
 export function isDateWithin(

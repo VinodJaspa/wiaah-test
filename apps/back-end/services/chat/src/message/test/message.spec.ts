@@ -9,7 +9,7 @@ import { ObjectId } from 'mongodb';
 import { ChatMessage } from '../entities';
 import { PrismaService } from 'prismaService';
 
-let mockGetRoomByUserIdQueryExcute = jest.fn();
+const mockGetRoomByUserIdQueryExcute = jest.fn();
 
 @QueryHandler(GetRoomByUserIdQuery)
 export class MockGetRoomByUserIdQuery

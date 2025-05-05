@@ -51,7 +51,8 @@ const FAKE_SLIDES: Slideshowitem[] = [
 ];
 
 const EditSlideShowPage: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   return (
     <section>

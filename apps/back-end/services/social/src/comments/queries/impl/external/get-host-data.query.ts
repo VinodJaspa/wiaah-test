@@ -1,5 +1,8 @@
 export class GetCommentHostDataQuery {
-  constructor(public id: string, public type: string) {}
+  constructor(
+    public id: string,
+    public type: string,
+  ) {}
 }
 
 export type GetCommentHostDataQueryRes = {

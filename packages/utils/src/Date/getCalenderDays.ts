@@ -35,7 +35,7 @@ export interface FormatedDays {
 }
 
 export const getDividedWeeks = (days: FormatedDays[]) => {
-  let array: FormatedDays[][] = [];
+  const array: FormatedDays[][] = [];
   let currentPhase = 0;
   while (currentPhase * 7 < days.length) {
     const sliced = [...days.slice(currentPhase * 7, (currentPhase + 1) * 7)];
@@ -64,8 +64,8 @@ export function getMonthDays(monthIdx: number, year: number): FormatedDays[] {
     (day) => day === CurrentMonthFirstDay
   );
 
-  let lastMonthLastDays: FormatedDays[] = [];
-  let currentMonthFormatedDays: FormatedDays[] = [];
+  const lastMonthLastDays: FormatedDays[] = [];
+  const currentMonthFormatedDays: FormatedDays[] = [];
 
   for (let i = 1; i <= currentMonthDays; i++) {
     currentMonthFormatedDays.push({
@@ -82,7 +82,7 @@ export function getMonthDays(monthIdx: number, year: number): FormatedDays[] {
   }
 
   const lastAndCurrentDays = lastMonthLastDays.concat(currentMonthFormatedDays);
-  let reminingFormatedDays: FormatedDays[] = [];
+  const reminingFormatedDays: FormatedDays[] = [];
   const reminingDays = (lastAndCurrentDays.length % 7) - 7;
 
   for (let i = 1; i <= Math.abs(reminingDays); i++) {

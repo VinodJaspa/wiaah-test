@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
 export const MarketMapSearchDrawer: React.FC<{}> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [showFilters, setShowFilters] = useState<boolean>(false);
 
   const { value, hideMarketMapSearch } = useSocialControls(
@@ -149,7 +149,6 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
           </div>
         </DrawerContent>
       </Drawer>
-
       <Drawer
         position="bottom"
         draggable
@@ -280,7 +279,7 @@ export const MarketMapSearchDrawer: React.FC<{}> = () => {
                       </HStack>
                     ) : (
                       // TODO: add range input
-                      <></>
+                      (<></>)
                     )}
                   </div>
                 ))}

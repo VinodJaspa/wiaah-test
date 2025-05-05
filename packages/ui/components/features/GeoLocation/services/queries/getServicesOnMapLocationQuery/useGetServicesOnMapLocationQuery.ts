@@ -17,11 +17,11 @@ export const useGetServicesOnMapLocationQuery = (
     any,
     AsyncReturnType<typeof getServicesOnMapLocationsFetcher>,
     any
-  >
+  >,
 ) => {
   return useQuery(
     getServicesOnMapLocationQueryKey({ filters }),
     () => getServicesOnMapLocationsFetcher(filters),
-    options
+    options,
   );
 };

@@ -7,7 +7,7 @@ import {
 describe("ProductColorSelectInput", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: WeekdaysOpenTimeInputProps = {
+  const props: WeekdaysOpenTimeInputProps = {
     onChange(data) { },
     value: {
       mo: {

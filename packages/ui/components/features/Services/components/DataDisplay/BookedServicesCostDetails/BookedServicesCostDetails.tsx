@@ -18,10 +18,10 @@ export interface BookedServicesCostDetailsProps {
 export const BookedServicesCostDetails: React.FC<
   BookedServicesCostDetailsProps
 > = ({ vat, children, title, deposit, subTotal, total, vatAmount }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   return (
-    <Stack col divider={<Divider />}>
+    <Stack col>
       <>{children}</>
 
       <div
@@ -34,6 +34,7 @@ export const BookedServicesCostDetails: React.FC<
           price={subTotal}
         />
       </div>
+      <Divider />
       <div
         {...setTestid("Vat")}
         className="font-medium text-black text-sm flex justify-between items-center"
@@ -44,6 +45,7 @@ export const BookedServicesCostDetails: React.FC<
           price={vatAmount}
         />
       </div>
+      <Divider />
       <div
         {...setTestid("Total")}
         className="font-medium text-sm flex justify-between items-center"

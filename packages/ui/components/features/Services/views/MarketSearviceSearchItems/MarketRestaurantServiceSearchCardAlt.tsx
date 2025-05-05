@@ -13,6 +13,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { LuMessageSquare } from "react-icons/lu";
 import { MarketServiceSearchHoverOverlay } from "../MarketServiceSearchCardHoverOverlay";
 import { useRouter } from "next/router";
+import { DefaultCarousel } from "@blocks";
 
 export interface Location {
   address: string;
@@ -36,10 +37,13 @@ interface MarketRestaurantServiceSearchCardAltProps {
 export const MarketRestaurantServiceSearchCardAlt: React.FC<
   MarketRestaurantServiceSearchCardAltProps
 > = ({ name, id, images, rating, reviews, location, price }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
+const handdleChagne =()=>{
+
+}
   return (
     <div className="flex flex-col gap-1 p-1">
-      <Carousel slides={images} id={id} />
+      <CustomCarousel slides={images} id={id}activeItem={0} setActiveItem={handdleChagne}/>
       <div className="flex flex-col gap-2 p-1">
         <HStack>
           <p className="font-semibold">{location.country}</p>
@@ -77,9 +81,14 @@ export const MarketRestaurantServiceSearchCardAlt: React.FC<
 interface CarouselProps {
   slides: string[];
   id: string;
+  className?: string;
+  trackStyle?: Record<string, any>;
+  activeItem: number;
+  setActiveItem: React.Dispatch<React.SetStateAction<number>>;
+  onCurrentActiveChange?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ slides, id }) => {
+const CustomCarousel: React.FC<CarouselProps> = ({ slides, id }) => {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -147,4 +156,4 @@ const Carousel: React.FC<CarouselProps> = ({ slides, id }) => {
   );
 };
 
-export default Carousel;
+export default CustomCarousel;

@@ -1,40 +1,45 @@
-import React from "react";
-import {
-  SpinnerFallback,
-  ServiceOnMapLocalizationSection,
-  ServiceReachOutSection,
-  ServicePoliciesSection,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  ServicesProviderDetailsTabs,
-  ResturantMenuListSection,
-  useGetRestaurantServiceDetailsDataQuery,
-  ServiceDetailsReviewsSection,
-  SellerServiceWorkingHoursSection,
-  RestaurantDetailsDescriptionSection,
-  ServicesProviderHeader,
-  Divider,
-  ServiceReservastionForm,
-  GetRestaurantQuery,
-} from "ui";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
-import { getRandomImage } from "placeholder";
+import { ServicePresentationCarosuel } from "@UI/components/features/Services/ServicesDetails/components/DataDisplay/ServicePresentationCarosuel";
+import { ServiceReservastionForm } from "@UI/components/features/Services/ServicesDetails/components/Forms/ServiceReservastion";
+import { ServicesProviderHeader } from "@UI/components/features/Services/ServicesDetails/components/Headers/ServicesProviderHeader";
+import { ServiceOnMapLocalizationSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceLocatlizationSection";
+import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
+import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
+import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
+import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";
+import { RestaurantDetailsDescriptionSection } from "@UI/components/features/Services/resturant/components/Sections/RestaurantDetailsDescriptionSection";
+import { ResturantMenuListSection } from "@UI/components/features/Services/resturant/components/Sections/ResturantMenuListSection";
 import {
   ServicePaymentMethod,
   ServicePresentationType,
   ServiceStatus,
 } from "@features/API";
+import { getRandomImage } from "placeholder";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import {
+  Divider,
+  GetRestaurantQuery,
+  ServicesProviderDetailsTabs,
+  SpinnerFallback,
+  StaticSideBarWrapper,
+} from "ui";
 
-export const RestaurantDetailsView: React.FC = () => {
+interface RestaurantDetailsViewProps {
+  selectedTab?: number;
+}
+
+export const RestaurantDetailsView: React.FC<RestaurantDetailsViewProps> = ({
+  selectedTab = 0,
+}) => {
   const { getParam } = useRouting();
   const id = getParam("id");
-  const {
-    data: _res,
-    isError: _isError,
-    isLoading: _isLoading,
-  } = useGetRestaurantServiceDetailsDataQuery(id);
-  const { t } = useTranslation();
+  // const {
+  //   data: _res,
+  //   isError: _isError,
+  //   isLoading: _isLoading,
+  // } = useGetRestaurantServiceDetailsDataQuery(id);
+const { t } = useTranslation();
 
   const res = FAKE_RESTAURANT_DETAILS_DATA;
 
@@ -161,6 +166,12 @@ export const RestaurantDetailsView: React.FC = () => {
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                       thumbnail: `/profile (${i + 1}).jfif`,
                       date: new Date().toString(),
+                      ratings: 4.5,
+                      bookedService: {
+                        id: `service${i + 1}`,
+                        image: `/service-image (${i + 1}).jfif`,
+                        name: `Service ${i + 1}`,
+                      },
                     }))}
                   />
                 </>
@@ -213,7 +224,7 @@ export const RestaurantDetailsView: React.FC = () => {
             rating={4.5}
             reviewsCount={15}
             serviceTitle={res.serviceMetaInfo.title}
-          // travelPeriod={{ arrival: new Date(), departure: new Date() }}
+            // travelPeriod={{ arrival: new Date(), departure: new Date() }}
           />
         ) : null}
       </SpinnerFallback>
@@ -222,11 +233,15 @@ export const RestaurantDetailsView: React.FC = () => {
           <ServiceReservastionForm
             sellerId={""}
             selectedServicesIds={[]}
-          // serviceId={""}
+            // serviceId={""}
           />
         }
       >
-        <ServicesProviderDetailsTabs tabs={ServicesProviderTabs} t={t} />
+        <ServicesProviderDetailsTabs
+          tabs={ServicesProviderTabs}
+          t={t}
+          selectedTab={selectedTab}
+        />
       </StaticSideBarWrapper>
     </div>
   );
@@ -341,10 +356,12 @@ const FAKE_RESTAURANT_DETAILS_DATA: GetRestaurantQuery["getRestaurant"] = {
   },
   cancelationPolicies: [
     {
+      id: "1",
       cost: 10.0,
       duration: 24,
     },
     {
+      id: "2",
       cost: 20.0,
       duration: 24,
     },

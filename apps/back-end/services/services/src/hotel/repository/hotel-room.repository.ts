@@ -56,9 +56,8 @@ export class HotelRoomRepository {
     langId: UserPreferedLang,
   ): Promise<HotelRoom[]> {
     const hasQuery = query?.length > 0;
-    const ids = await this.hotelRoomElasticRepo.getRoomsIdByLocationQuery(
-      query,
-    );
+    const ids =
+      await this.hotelRoomElasticRepo.getRoomsIdByLocationQuery(query);
 
     const filters: Prisma.HotelRoomWhereInput[] = [];
 

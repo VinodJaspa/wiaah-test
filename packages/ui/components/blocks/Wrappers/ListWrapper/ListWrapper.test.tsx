@@ -6,7 +6,7 @@ const selectors = {
   item: "[data-testid='ListWrapperItem']",
 };
 
-let cols = 3;
+const cols = 3;
 
 describe("ListWrapper component render tests", () => {
   let wrapper: ShallowWrapper;

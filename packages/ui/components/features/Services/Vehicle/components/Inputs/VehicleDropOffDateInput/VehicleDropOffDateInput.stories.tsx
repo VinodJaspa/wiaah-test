@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookVehicleInputsTitle } from "utils";
 import { VehicleDropOffDateInput } from "./VehicleDropOffDateInput";
 
 export default {
-  title: storybookVehicleInputsTitle + "VehicleDropOffDateInput",
+  title: "UI / Features /Vehicle /Inputs /VehicleDropOffDateInput",
   component: VehicleDropOffDateInput,
-} as ComponentMeta<typeof VehicleDropOffDateInput>;
+} as Meta<typeof VehicleDropOffDateInput>;
 
-const template: ComponentStory<typeof VehicleDropOffDateInput> = (args) => (
-  <VehicleDropOffDateInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

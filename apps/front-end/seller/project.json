@@ -1,0 +1,17 @@
+{
+    "name": "seller",
+    "root": "apps/front-end/seller",
+    "sourceRoot": "apps/front-end/seller/src",
+    "projectType": "application",
+    "targets": {
+      "serve": {
+        "executor": "@nx/next:server",
+        "options": {
+          "buildTarget": "seller:build",
+          "dev": true,
+          "port": 3000
+        }
+      }
+    }
+  }
+  

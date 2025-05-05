@@ -6,10 +6,15 @@ import { UpdateRequiredActionInput } from './dto/update-required-action.input';
 
 @Resolver(() => RequiredAction)
 export class RequiredActionsResolver {
-  constructor(private readonly requiredActionsService: RequiredActionsService) {}
+  constructor(
+    private readonly requiredActionsService: RequiredActionsService,
+  ) {}
 
   @Mutation(() => RequiredAction)
-  createRequiredAction(@Args('createRequiredActionInput') createRequiredActionInput: CreateRequiredActionInput) {
+  createRequiredAction(
+    @Args('createRequiredActionInput')
+    createRequiredActionInput: CreateRequiredActionInput,
+  ) {
     return this.requiredActionsService.create(createRequiredActionInput);
   }
 
@@ -24,8 +29,14 @@ export class RequiredActionsResolver {
   }
 
   @Mutation(() => RequiredAction)
-  updateRequiredAction(@Args('updateRequiredActionInput') updateRequiredActionInput: UpdateRequiredActionInput) {
-    return this.requiredActionsService.update(updateRequiredActionInput.id, updateRequiredActionInput);
+  updateRequiredAction(
+    @Args('updateRequiredActionInput')
+    updateRequiredActionInput: UpdateRequiredActionInput,
+  ) {
+    return this.requiredActionsService.update(
+      updateRequiredActionInput.id,
+      updateRequiredActionInput,
+    );
   }
 
   @Mutation(() => RequiredAction)

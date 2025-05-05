@@ -1,4 +1,5 @@
-import { Table, Tbody, Td, Tr } from "@chakra-ui/react";
+
+import { ShadcnTable, TableBody, TableCell, TableRow } from "@UI/components/shadcn-components";
 import { BoxShadow, FilterInput, Padding } from "../../partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,7 +13,7 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
   motheds,
   onSelection,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const [shippingMothedId, setShippingMothedId] = React.useState<string>();
   React.useEffect(() => {
     if (onSelection && shippingMothedId) {
@@ -27,42 +28,33 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
             <span id="ShippingMothedTitle" className="px-2 text-3xl font-bold">
               {t("shipping_mothed", "Shipping Mothed")}
             </span>
-            <Table className="w-full">
-              <Tbody id="ShippingMothedsContainer" className="w-1/4 text-2xl">
-                {motheds.map((mothed, i) => (
-                  <Tr
+            <ShadcnTable className="w-full">
+              <TableBody id="ShippingMothedsContainer" className="w-1/4 text-2xl">
+                {motheds.map((mothed) => (
+                  <TableRow
                     key={mothed.id}
                     data-testMothedId={mothed.id}
                     data-testId="ShippingMothed"
                     className="cursor-pointer py-4"
                     onClick={() => setShippingMothedId(mothed.id)}
                   >
-                    <Td paddingX={"0.5rem"} className="px-2 align-top">
-                      <span
-                        data-testId="ShippingMothedCost"
-                        className="font-bold"
-                      >
+                    <TableCell className="px-2 align-top">
+                      <span data-testId="ShippingMothedCost" className="font-bold">
                         {mothed.cost > 0 ? `$${mothed.cost}` : "FREE"}
                       </span>
-                    </Td>
-                    <Td className="flex w-[45rem] flex-col gap-4 px-4 font-semibold">
-                      <div
-                        data-testId="ShippingMothedName"
-                        className="whitespace-nowrap"
-                      >
+                    </TableCell>
+                    <TableCell className="flex w-[45rem] flex-col gap-4 px-4 font-semibold">
+                      <div data-testId="ShippingMothedName" className="whitespace-nowrap">
                         {mothed.name}
                       </div>
 
                       {mothed.description && (
-                        <div
-                          data-testId="ShippingMothedDescription"
-                          className="text-lg font-normal"
-                        >
+                        <div data-testId="ShippingMothedDescription" className="text-lg font-normal">
                           {mothed.description}
                         </div>
                       )}
-                    </Td>
-                    <Td className="">
+                    </TableCell>
+                    <TableCell>
                       <FilterInput
                         data-testId="ShippingMothedInput"
                         className="scale-150 text-black ring-0 focus:ring-0"
@@ -72,11 +64,11 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
                         variant="radio"
                         name="shippingMothed"
                       />
-                    </Td>
-                  </Tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </Tbody>
-            </Table>
+              </TableBody>
+            </ShadcnTable>
           </div>
         </Padding>
       </BoxShadow>

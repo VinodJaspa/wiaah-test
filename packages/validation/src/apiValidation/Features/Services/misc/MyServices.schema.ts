@@ -15,7 +15,7 @@ export const ServicesTypeValidationSchema = mixed<ServicesType>().oneOf([
   "beauty_center",
   "general",
   "health_center",
-  "holidays_rentals",
+  "holiday_rentals",
   "hotel",
   "restaurant",
   "vehicle",

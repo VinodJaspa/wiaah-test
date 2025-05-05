@@ -45,7 +45,7 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
   const ref = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<boolean>();
   useOutsideClick(ref, () => setActive(false));
-  let min = 0,
+  const min = 0,
     max = 100;
 
   const timeRange = getDateRanges(value[0], value[1]);
@@ -217,7 +217,7 @@ export const TimeSliderController: React.FC<TimeSliderControllerProps> = ({
   const [mappedTime, setMappedTime] = React.useState<TimeMappedType[]>([]);
 
   React.useEffect(() => {
-    let boundings: Boundings[] = [];
+    const boundings: Boundings[] = [];
     openRanges.map((range, i) => {
       const fromRangeIdx = timeRange.findIndex((time) => time === range.from);
       const toRangeIdx = timeRange.findIndex((time) => time === range.to);

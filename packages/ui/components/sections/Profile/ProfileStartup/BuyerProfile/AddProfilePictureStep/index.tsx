@@ -16,12 +16,12 @@ const webCamVideoConstraints = {
 const NO_PROFIL_PIC_URL = "/person-icon.png";
 
 export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   const webcamRef = React.useRef<any>();
 
-  let [webCamOn, setWebcamOn] = React.useState(false);
-  let [profilePicSrc, setProfilePicSrc] = React.useState(NO_PROFIL_PIC_URL);
+  const [webCamOn, setWebcamOn] = React.useState(false);
+  const [profilePicSrc, setProfilePicSrc] = React.useState(NO_PROFIL_PIC_URL);
 
   const imageFileRef = React.useRef<any>();
   function handleProfilImageChange(files: any) {

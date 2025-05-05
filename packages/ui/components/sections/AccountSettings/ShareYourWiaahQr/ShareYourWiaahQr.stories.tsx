@@ -1,15 +1,12 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ShareYourWiaahQr } from "./ShareYourWiaahQr";
 import { storybookSectionsTitle } from "utils";
 
 export default {
-  title: storybookSectionsTitle + "ShareYourWiaahQr",
+  title: "UI / sections / ShareYourWiaahQr",
   component: ShareYourWiaahQr,
-} as ComponentMeta<typeof ShareYourWiaahQr>;
+} as Meta<typeof ShareYourWiaahQr>;
 
-const template: ComponentStory<typeof ShareYourWiaahQr> = (args) => (
-  <ShareYourWiaahQr {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  args: {},
+};

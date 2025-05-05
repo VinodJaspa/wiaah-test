@@ -43,7 +43,8 @@ import {
 const EditCategory = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { form, inputProps, selectProps, translationInputProps } = useForm<
     Partial<Parameters<typeof createCate>[0]>
@@ -122,7 +123,7 @@ const EditCategory = () => {
       comp: (
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-8 gap-16">
-            <Formik initialValues={{}} onSubmit={() => { }}>
+            <Formik initialValues={{}} onSubmit={() => {}}>
               {({ values, setFieldValue }) => (
                 <>
                   <p className="font-bold">{t("Parant")}</p>
@@ -264,8 +265,9 @@ const EditCategory = () => {
                   <SimpleTabHead>
                     {mapArray(tabs, ({ name }, i) => (
                       <div
-                        className={`${i === 3 ? "border-b-white" : ""
-                          } border px-8 py-2`}
+                        className={`${
+                          i === 3 ? "border-b-white" : ""
+                        } border px-8 py-2`}
                       >
                         {name}
                       </div>

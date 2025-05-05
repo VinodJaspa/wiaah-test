@@ -1,11 +1,11 @@
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { FileInput } from "@UI";
 
 export default {
-  title: storybookDataInputBlocksTitle + "FileInput",
+  title: "UI / blocks / Data Input /FileInput",
   component: FileInput,
-} as ComponentMeta<typeof FileInput>;
+} as Meta<typeof FileInput>;
 
 export const Default = () => (
   <FileInput id="test">

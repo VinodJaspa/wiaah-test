@@ -27,7 +27,8 @@ import {
 import { mapArray, SeperatedStringArray, useForm } from "utils";
 
 const ProductShopCategory = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { controls, pagination } = usePaginationControls();
   const { form, inputProps } = useForm<
     Parameters<typeof useGetAdminProductCategoriesQuery>[0]

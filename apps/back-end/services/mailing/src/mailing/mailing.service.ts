@@ -5,7 +5,7 @@ import { MailingService as NestMailingService } from 'nestjs-mailing';
 @Injectable()
 export class MailingService {
   private logger = new Logger(MailingService.name);
-  constructor(private readonly mailingservice: NestMailingService) { }
+  constructor(private readonly mailingservice: NestMailingService) {}
 
   async sendVerificationMail(
     email: string,

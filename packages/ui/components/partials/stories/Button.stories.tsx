@@ -1,12 +1,12 @@
 import React from "react";
 import { storybookBlocksTitle, StorybookImplemntationLayout } from "utils";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { Button } from "@UI";
 
 export default {
   title: "UI/partials/Button",
   component: Button,
-} as ComponentMeta<typeof Button>;
+} as Meta<typeof Button>;
 
 export const Default = () => {
   return (

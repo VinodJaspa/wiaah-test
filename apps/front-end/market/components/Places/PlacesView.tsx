@@ -1,14 +1,4 @@
-import {
-  Flex,
-  HStack,
-  Button,
-  Text,
-  useBreakpointValue,
-  Spinner,
-  Center,
-  Divider,
-  Icon,
-} from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -58,8 +48,8 @@ const placesPH = [].concat(
 export interface PlaceViewProps {}
 
 export const PlacesView: React.FC<PlaceViewProps> = ({}) => {
-  const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+const { t } = useTranslation();
+
 
   const router = useRouter();
   const { tag } = router.query;

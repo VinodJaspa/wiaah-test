@@ -17,7 +17,8 @@ import { useForm } from "utils";
 import * as yup from "yup";
 
 export const LoginView: React.FC = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { push } = useRouting();
 
   const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>(
@@ -32,7 +33,7 @@ export const LoginView: React.FC = () => {
         email: yup.string().email().required(),
         password: yup.string().min(6).required(),
       }),
-    }
+    },
   );
   const { mutate } = useAdminLoginMutation();
 

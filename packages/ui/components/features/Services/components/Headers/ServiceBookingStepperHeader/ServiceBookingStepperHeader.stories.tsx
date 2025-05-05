@@ -1,32 +1,29 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
 import { ServiceBookingStepperHeader } from "./ServiceBookingStepperHeader";
 import { CalenderIcon, ClockIcon, PersonIcon } from "@UI";
 
 export default {
-  title: storybookOtherServicesDataDisplayTitle + "ServiceBookingStepperHeader",
+  title: "UI / Features /Services /Data Display /ServiceBookingStepperHeader",
   component: ServiceBookingStepperHeader,
-} as ComponentMeta<typeof ServiceBookingStepperHeader>;
+} as Meta<typeof ServiceBookingStepperHeader>;
 
-const template: ComponentStory<typeof ServiceBookingStepperHeader> = (args) => (
-  <ServiceBookingStepperHeader {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  currentStepIdx: 0,
-  steps: [
-    {
-      icon: CalenderIcon,
-      name: "date",
-    },
-    {
-      icon: ClockIcon,
-      name: "time",
-    },
-    {
-      icon: PersonIcon,
-      name: "guests",
-    },
-  ],
+export const Default = {
+  args: {
+    currentStepIdx: 0,
+    steps: [
+      {
+        icon: CalenderIcon,
+        name: "date",
+      },
+      {
+        icon: ClockIcon,
+        name: "time",
+      },
+      {
+        icon: PersonIcon,
+        name: "guests",
+      },
+    ],
+  },
 };

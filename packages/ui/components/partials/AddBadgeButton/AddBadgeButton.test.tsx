@@ -5,7 +5,7 @@ import { AddBadgeButtonProps,AddBadgeButton } from "./AddBadgeButton"
 describe('AddBadgeButton', () => {
     let wrapper:ShallowWrapper
     let mockOnClick:jest.Mock
-    let props:AddBadgeButtonProps = {
+    const props:AddBadgeButtonProps = {
         onClick() {
             
         },

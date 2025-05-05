@@ -1,24 +1,22 @@
 import { ReviewLevel } from "./ReviewLevel";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
 
 export default {
-  title: storybookOtherServicesDataDisplayTitle + "ReviewLevel",
+  title: "UI / Features /Services /Data Display /ReviewLevel",
   component: ReviewLevel,
-} as ComponentMeta<typeof ReviewLevel>;
+} as Meta<typeof ReviewLevel>;
 
-const template: ComponentStory<typeof ReviewLevel> = (args) => (
-  <ReviewLevel {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  name: "Amenites",
-  rate: 5,
+export const Default = {
+  args: {
+    name: "Amenites",
+    rate: 5,
+  },
 };
 
-export const decimel = template.bind({});
-decimel.args = {
-  name: "Amenites",
-  rate: 3.8,
+export const decimel = {
+  args: {
+    name: "Amenites",
+    rate: 3.8,
+  },
 };

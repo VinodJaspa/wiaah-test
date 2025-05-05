@@ -41,7 +41,11 @@ export class TreatmentCategoryService {
   ): Promise<BeautyCenterTreatmentCategory> {
     try {
       const cate = await this.prisma.beautyCenterTreatmentCategory.create({
-        data: { ...input, createdById: userId },
+        data: { 
+          ...input, 
+          createdById: userId, 
+          title: input.title as any,
+        },
         select: this.getBeautyCenterTreatmentCategorySelection(selectedFields),
       });
 
@@ -112,7 +116,7 @@ export class TreatmentCategoryService {
         },
       });
       return true;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error);
       throw new DBErrorException(
         this.errorService.getError((v) => v.DBError, error),
@@ -132,11 +136,16 @@ export class TreatmentCategoryService {
             in: ids,
           },
         },
-        data: rest,
+        data: {
+          ...rest,
+          title: rest.title
+            ? { set: rest.title.map((t) => ({ ...t, value: t.value as string })) }
+            : undefined,
+        },
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(error);
       throw new DBErrorException(
         this.errorService.getError((v) => v.DBError, error),

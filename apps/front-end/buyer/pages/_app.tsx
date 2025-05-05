@@ -4,7 +4,6 @@ import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider } from "@chakra-ui/react";
 import { DataInitializationWrapper } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { AccountType } from "types";
@@ -24,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <ChakraProvider>
+
           <CookiesProvider>
             <RecoilRoot>
               <DataInitializationWrapper accountType={AccountType.Buyer}>
@@ -32,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </DataInitializationWrapper>
             </RecoilRoot>
           </CookiesProvider>
-        </ChakraProvider>
+
       </Hydrate>
     </QueryClientProvider>
   );

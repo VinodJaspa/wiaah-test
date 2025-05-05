@@ -8,7 +8,7 @@ import {
 describe("EditServicePresentationSection", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: EditServicePresentationSectionProps = {};
+  const props: EditServicePresentationSectionProps = {};
 
   beforeEach(() => {
     onChangeMock = jest.fn();

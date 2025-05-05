@@ -1,12 +1,12 @@
 import { RecordVideoModal, Button, useNewsFeedPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { useDisclouser } from "hooks";
 
 export default {
-  title: storybookModalsTitle + "RecordVideoModal",
+  title: "UI / Blocks / Modals /RecordVideoModal",
   component: RecordVideoModal,
-} as ComponentMeta<typeof RecordVideoModal>;
+} as Meta<typeof RecordVideoModal>;
 
 export const Default = () => {
   const { handleClose, handleOpen, isOpen } = useDisclouser();

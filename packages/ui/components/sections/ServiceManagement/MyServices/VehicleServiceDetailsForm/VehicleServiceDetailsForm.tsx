@@ -31,7 +31,7 @@ export interface VehicleServiceDetailsFormProps {
 export const VehicleServiceDetailsForm: React.FC<
   VehicleServiceDetailsFormProps
 > = ({ onChange }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik

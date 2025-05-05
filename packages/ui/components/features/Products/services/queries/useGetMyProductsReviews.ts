@@ -131,8 +131,8 @@ export const useGetMyReviewsQuery = (input: GetMyReviewsInput) => {
     const res = await client.send<GetMyReviewsQuery>();
 
     return {
-      reviews: res.data.getMyProductReviews,
-      sellerProductsRating: res.data.getMySellerProductsRating,
+      reviews: res?.data.getMyProductReviews,
+      sellerProductsRating: res?.data.getMySellerProductsRating,
     };
   });
 };

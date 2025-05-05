@@ -52,7 +52,7 @@ type FormatedMembershipExpense = {
 };
 
 export const MembershipSection: React.FC<MembershipSectionProps> = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { data } = useGetMembershipsQuery();
@@ -121,11 +121,11 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
           <Th>{t("End Date")}</Th>
           <Th>{t("Price")}</Th>
         </Tr>
-        {mapArray(formatedExpenses, (v, i) => (
+        {mapArray(formatedExpenses, (v:any, i) => (
           <Tr>
             <Td className="text-primary">{v.name}</Td>
             <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
-            <Td>{v.price}</Td>
+            <Td>{v?.price}</Td>
           </Tr>
         ))}
       </Table>
@@ -155,12 +155,12 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
               <Th>{t("Price")}</Th>
               <Th>{t("End Date")}</Th>
             </Tr>
-            {mapArray(formatedExpenses, (v, i) => (
+            {mapArray(formatedExpenses, (v:any, i) => (
               <Tr>
-                <Td>{v.name}</Td>
-                <Td>{v.usage}</Td>
-                <Td>{v.usageType}</Td>
-                <Td>{v.price}</Td>
+                <Td>{v?.name}</Td>
+                <Td>{v?.usage}</Td>
+                <Td>{v?.usageType}</Td>
+                <Td>{v?.price}</Td>
                 <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
               </Tr>
             ))}

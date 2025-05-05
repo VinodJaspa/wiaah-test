@@ -14,7 +14,7 @@ import {
 export const SeoWrapper: React.FC<{ children?: ReactNode }> = ({
   children,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <>
       <RequiredSocialMediaTags />

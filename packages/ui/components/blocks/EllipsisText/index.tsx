@@ -1,7 +1,7 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { maxLength } from "class-validator";
-import React from "react";
 
+import { ShadcnText } from "@UI/components/shadcn-components";
+import Link from "next/link";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 export interface EllipsisTextProps {
@@ -13,6 +13,9 @@ export interface EllipsisTextProps {
   showMoreTextColor?: string;
   displayShowMore?: boolean;
   children?: React.ReactNode;
+  index?: number;
+  isReply?: boolean;
+  isActionView?: boolean;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
@@ -23,13 +26,20 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   showMoreColor,
   children,
   displayShowMore,
+  index,
+  isReply,
+  isActionView,
 }) => {
-  const { t } = useTranslation();
+  content = `@janedoe ${content || ""} #react #typescript #python`;
+const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
-  const [showMore, setShowMore] = React.useState<boolean>(false);
+  const [showMore, setShowMore] = React.useState<boolean>(true);
+  const [modifiedContent, setModifiedContent] = React.useState<string>(
+    content || "",
+  );
+
   const postTextRef = React.useRef<HTMLParagraphElement>(null);
   const helperTextRef = React.useRef<HTMLParagraphElement>(null);
-  const EllipsisRef = React.useRef<HTMLParagraphElement>(null);
 
   const useLinesCount = (ref: React.RefObject<HTMLElement>): number => {
     const [lines, setLines] = React.useState<number>(0);
@@ -40,8 +50,6 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         const computedStyle = window.getComputedStyle(element);
         const lineHeight = parseFloat(computedStyle.lineHeight);
         const height = element.getBoundingClientRect().height;
-
-        // Calculate the number of lines
         const numberOfLines = Math.ceil(height / lineHeight);
         setLines(numberOfLines);
       }
@@ -49,58 +57,94 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
 
     return lines;
   };
+
   function getLineHeight(
     element: React.RefObject<HTMLElement>,
     text: string,
     maxLines: number,
-    helperTextRef: React.RefObject<HTMLElement>
   ) {
     if (!element || !helperTextRef.current) return false;
 
-    // Create a temporary container to measure line height
     const tempContainer = document.createElement("div");
     tempContainer.style.visibility = "hidden";
     tempContainer.style.position = "absolute";
-    tempContainer.style.whiteSpace = "nowrap"; // Ensure single-line text measurement
-    tempContainer.textContent = "a"; // A single character for line height measurement
-
-    // Append temporary container to the body for measurement
+    tempContainer.style.whiteSpace = "nowrap";
+    tempContainer.textContent = "a";
     document.body.appendChild(tempContainer);
     const lineHeight = tempContainer.offsetHeight;
-
-    // Remove temporary container
     document.body.removeChild(tempContainer);
-
-    // Set the text content to helper text and measure its height
     helperTextRef.current.textContent = text;
     const textHeight = helperTextRef.current.offsetHeight;
 
-    // Compare text height to the maximum allowed height
     return textHeight > lineHeight * maxLines;
   }
 
   const linesCount = useLinesCount(postTextRef);
-
-  const textEllipsising = getLineHeight(
-    postTextRef,
-    content || "",
-    maxLines,
-    helperTextRef
-  );
+  const textEllipsising = getLineHeight(postTextRef, content, maxLines);
 
   function handleShowMore() {
     setMaxLines(10000);
+    setShowMore(false);
   }
+
   function handleShowLess() {
     setMaxLines(maxLines);
+    setShowMore(true);
   }
+
   React.useEffect(() => {
-    if (MaxLines > maxLines) {
-      setShowMore(false);
+    const characterLimit = isActionView ? 65 : 150;
+    if (index === 0 && content?.length > characterLimit && showMore) {
+      setModifiedContent(content?.substring(0, characterLimit));
     } else {
-      setShowMore(true);
+      setModifiedContent(content);
     }
-  }, [MaxLines]);
+  }, [content, index, showMore, isActionView]);
+
+  const renderMentions = (text: string) => {
+    return text.split(" ").map((word, index, arr) => {
+      if (word.startsWith("@")) {
+        return (
+          <strong key={`mention-${index}`}>
+            {word}
+            {index !== arr.length - 1 ? " " : ""}
+          </strong>
+        );
+      }
+      return (
+        <React.Fragment key={`text-${index}`}>
+          {word}
+          {index !== arr.length - 1 ? " " : ""}
+        </React.Fragment>
+      );
+    });
+  };
+
+  const renderProcessedContent = () => {
+    let hashtagCount = 0;
+
+    return modifiedContent.split(" ").map((word, index, arr) => {
+      if (word.startsWith("#")) {
+        if (hashtagCount < 7) {
+          hashtagCount++;
+          return (
+            <Link
+              key={`${index}-${word}`}
+              href={`/hashtag/${word.slice(1)}`}
+              className="text-primary"
+            >
+              {` ${word} `}
+            </Link>
+          );
+        } else {
+          return null;
+        }
+      } else if (word.startsWith("@")) {
+        return <strong key={`${index}-${word}`}>{` ${word} `}</strong>;
+      }
+      return word + (index === arr.length - 1 ? "" : " ");
+    });
+  };
 
   return (
     <div className="relative font-base flex flex-col">
@@ -108,40 +152,63 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         className="absolute w-full text-[#262626] font-[15px] pointer-events-none hidden"
         ref={helperTextRef}
       ></p>
-      <Text
-        wordBreak={wordBreak ? "break-all" : "break-word"}
-        ref={postTextRef}
-        noOfLines={MaxLines}
-        textAlign={"start"}
-        overflow="clip"
-        textOverflow="clip"
-      >
-        <>
-          {children}
-          {content}
-        </>
-      </Text>
-      {linesCount === maxLines && (
-        <div>
-          {textEllipsising && displayShowMore ? null : showMore === true ? (
-            <span
-              className={` cursor-pointer justify-end flex w-full text-primary capitalize transform-cpu ${showMoreColor ? showMoreColor : ""
-                } flex gap-1`}
+      <div className="relative">
+        <ShadcnText
+          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines}`}
+          ref={postTextRef}
+        >
+          <>
+            {children}
+            {index !== 0 && content && renderMentions(content)}
+            {index === 0 && (
+              <>
+                {renderProcessedContent()}
+                {content?.length > (isActionView ? 65 : 150) &&
+                  showMore &&
+                  content
+                    .split(" ")
+                    .filter((word) => word.startsWith("#"))
+                    .map((word, index) => (
+                      <Link
+                        key={`extra-${index}-${word}`}
+                        href={`/hashtag/${word.slice(1)}`}
+                        className="text-primary"
+                      >
+                        {` ${word} `}
+                      </Link>
+                    ))
+                    .slice(0, 3)}
+                {index === 0 &&
+                  content?.length > (isActionView ? 65 : 150) &&
+                  showMore &&
+                  " ..."}
+              </>
+            )}
+          </>
+        </ShadcnText>
+        {linesCount === maxLines &&
+          showMore &&
+          content?.length > (isActionView ? 65 : 150) && (
+            <div
+              className="absolute bottom-0 right-0 cursor-pointer capitalize"
+              style={{ marginTop: "5px" }}
               onClick={handleShowMore}
             >
-              {t("show more")}
-            </span>
-          ) : (
-            <span
-              className="
-        flex justify-end absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
-              onClick={handleShowLess}
-            >
-              {t("show less")}
-            </span>
+              <span className={`cursor-pointer ${showMoreColor || ""}`}>
+                {t("show more")}
+              </span>
+            </div>
           )}
-        </div>
-      )}
+        {MaxLines > maxLines && (
+          <div
+            className="absolute -bottom-4 right-0 cursor-pointer capitalize"
+            style={{ marginTop: "5px" }}
+            onClick={handleShowLess}
+          >
+            <span className="cursor-pointer capitalize">{t("show less")}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

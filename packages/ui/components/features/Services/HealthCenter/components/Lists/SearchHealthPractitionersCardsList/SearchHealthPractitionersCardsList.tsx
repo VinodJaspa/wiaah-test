@@ -11,7 +11,7 @@ export interface SearchHealthPractitionersCardsListProps {
 export const SearchHealthPractitionersCardsList: React.FC<
   SearchHealthPractitionersCardsListProps
 > = ({ practitioners, searchQuery }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
       <p className="font-bold text-lg p-2">{t("PRACTITONERS")}</p>

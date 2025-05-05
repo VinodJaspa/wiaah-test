@@ -12,8 +12,8 @@ jest.mock("@UI", () => ({
 
 describe("Vat Section testing", () => {
   let wrapper: ShallowWrapper;
-  let mockUseUpdateMyShop = useUpdateMyShopMutation as jest.Mock;
-  let mockUpdateShop = jest.fn();
+  const mockUseUpdateMyShop = useUpdateMyShopMutation as jest.Mock;
+  const mockUpdateShop = jest.fn();
 
   beforeAll(() => {
     wrapper = shallow(<VatSection accountId="fake-3" />);

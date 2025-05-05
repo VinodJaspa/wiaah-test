@@ -1,5 +1,5 @@
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { StepperFormHandler, StepperFormController } from "./index";
 import { CheckMarkStepper, FormikInput, Button } from "@UI";
 import { Form, Formik } from "formik";
@@ -7,9 +7,9 @@ import React from "react";
 import * as yup from "yup";
 
 export default {
-  title: storybookPartailsTitle + "StepperFormHandler",
+  title: "UI / partials / StepperFormHandler",
   component: StepperFormHandler,
-} as ComponentMeta<typeof StepperFormHandler>;
+} as Meta<typeof StepperFormHandler>;
 
 const test1Schema = yup.object().shape({
   first: yup.string().required().min(5),
@@ -22,7 +22,7 @@ const test3Schema = yup.object().shape({
 });
 
 export const Default = () => {
-  const [data, setData] = React.useState<Object>();
+  const [data, setData] = React.useState<object>();
   return (
     <StorybookImplemntationLayout
       implmentation={`
@@ -249,14 +249,14 @@ const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
   );
 };
 
-const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm1: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (
     <Formik
       validationSchema={test1Schema}
       initialValues={{}}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
     >
       {({ values }) => {
         onValid(values);
@@ -269,14 +269,14 @@ const TextForm1: React.FC<{ onValid: (values: Object) => any }> = ({
     </Formik>
   );
 };
-const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm2: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (
     <Formik
       validationSchema={test2Schema}
       initialValues={{}}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
     >
       {({ values }) => {
         onValid(values);
@@ -289,14 +289,14 @@ const TextForm2: React.FC<{ onValid: (values: Object) => any }> = ({
     </Formik>
   );
 };
-const TextForm3: React.FC<{ onValid: (values: Object) => any }> = ({
+const TextForm3: React.FC<{ onValid: (values: object) => any }> = ({
   onValid,
 }) => {
   return (
     <Formik
       validationSchema={test3Schema}
       initialValues={{}}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
     >
       {({ values }) => {
         onValid(values);

@@ -1,8 +1,8 @@
 import { ChatUserCard, storybookChatDisplay } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { ChatUserStatus } from "@UI/../types/src";
 export const placeholderUser = {
-  onClick: () => { },
+  onClick: () => {},
   id: "user123",
   name: "Jane Doe",
   profilePhoto: "https://example.com/profile-photo.jpg",
@@ -14,8 +14,8 @@ export const placeholderUser = {
 };
 
 export default {
-  title: storybookChatDisplay + "ChatUserCard",
+  title: "UI / blocks / Chat Display /ChatUserCard",
   component: ChatUserCard,
-} as ComponentMeta<typeof ChatUserCard>;
+} as Meta<typeof ChatUserCard>;
 
 export const Default = () => <ChatUserCard {...placeholderUser} />;

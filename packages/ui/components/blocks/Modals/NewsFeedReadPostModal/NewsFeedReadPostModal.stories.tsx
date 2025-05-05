@@ -1,11 +1,11 @@
 import { NewsfeedPostDetailsPopup, Button, useNewsFeedPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "NewsFeedPostDetailsModal",
+  title: "UI / Blocks / Modals /NewsFeedPostDetailsModal",
   component: NewsfeedPostDetailsPopup,
-} as ComponentMeta<typeof NewsfeedPostDetailsPopup>;
+} as Meta<typeof NewsfeedPostDetailsPopup>;
 
 export const Default = () => {
   const { setCurrentPost } = useNewsFeedPostPopup();

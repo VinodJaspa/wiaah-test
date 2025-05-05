@@ -18,13 +18,13 @@ import { PrismaClient } from 'prismaClient';
 
 describe('product-post e2e tests', () => {
   let app: INestApplication;
-  let prisma = new PrismaClient();
-  let kafka = new Kafka({
+  const prisma = new PrismaClient();
+  const kafka = new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: SERVICES.SOCIAL_SERVICE.clientId,
   });
 
-  let producer = kafka.producer();
+  const producer = kafka.producer();
 
   beforeAll(async () => {
     await producer.connect();
@@ -97,9 +97,9 @@ describe('product-post e2e tests', () => {
   };
 
   it('should create product shop post on product creation event', async () => {
-    let productId = new ObjectId().toHexString();
-    let productOwnerId = mockedUser.id;
-    let productShopId = mockedUser.shopId;
+    const productId = new ObjectId().toHexString();
+    const productOwnerId = mockedUser.id;
+    const productShopId = mockedUser.shopId;
 
     await publishProductCreated(productId, productOwnerId, productShopId);
 

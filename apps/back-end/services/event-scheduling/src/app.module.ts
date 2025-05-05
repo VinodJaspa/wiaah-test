@@ -4,4 +4,4 @@ import { EventSchedulingModule } from './event-scheduling/event-scheduling.modul
 @Module({
   imports: [EventSchedulingModule],
 })
-export class AppModule { }
+export class AppModule {}

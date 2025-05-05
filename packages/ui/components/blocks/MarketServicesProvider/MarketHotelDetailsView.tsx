@@ -78,7 +78,7 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(id);
   const data = FAKE_DATA;
-  const { t } = useTranslation();
+const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       {res ? (
@@ -132,8 +132,8 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
                 location={res.location}
                 telephone={res.phone}
               />
-              <HotelServiceRoomsSection rooms={data.rooms} />
-              {res.workingSchedule.weekdays ? (
+              <HotelServiceRoomsSection rooms={data?.rooms ?? []} />
+              {res?.workingSchedule?.weekdays ? (
                 <ServiceWorkingHoursSection
                   workingHours={res.workingSchedule}
                 />
@@ -202,6 +202,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
     {
       cancelationPolicies: [
         {
+          id: "policy-1",
           cost: 50,
           duration: 60,
         },
@@ -247,10 +248,12 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
         {
           label: "Swimming pool",
           value: "yes",
+          slug: "swimming-pool",
         },
         {
           label: "Gym",
           value: "yes",
+          slug: "gym",
         },
       ],
       pricePerNight: 90,

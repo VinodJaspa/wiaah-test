@@ -1,14 +1,14 @@
 import { FlagIcon } from "./FlagIcon";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookPartailsTitle } from "utils";
 import React from "react";
 
 export default {
-  title: storybookPartailsTitle + "FlagIcon",
+  title: "UI / partials / FlagIcon",
   component: FlagIcon,
-} as ComponentMeta<typeof FlagIcon>;
+} as Meta<typeof FlagIcon>;
 
-const template: ComponentStory<typeof FlagIcon> = (args) => {
+const template: StoryFn<typeof FlagIcon> = (args) => {
   const [code, setCode] = React.useState<string>("CH");
   return (
     <div className="flex flex-col items-center gap-4">
@@ -23,5 +23,7 @@ const template: ComponentStory<typeof FlagIcon> = (args) => {
   );
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

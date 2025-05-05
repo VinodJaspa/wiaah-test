@@ -104,7 +104,7 @@ export class HealthCenterService {
     }
   }
 
-  async validateInput(input: CreateHealthCenterInput): Promise<Boolean> {
+  async validateInput(input: CreateHealthCenterInput): Promise<boolean> {
     const specialities = input.doctors.map((v) => v.specialityId);
     const validSpecialities = [];
     for (const id of specialities) {

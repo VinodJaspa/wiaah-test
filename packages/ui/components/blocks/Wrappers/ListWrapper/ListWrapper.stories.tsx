@@ -1,23 +1,20 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { StoryFn, Meta } from "@storybook/react";
 import { ListWrapper } from "@UI";
 import { randomNum } from "../../../helpers/randomNumber";
 export default {
   title: "UI/blocks/Social/ListWrapper",
   component: ListWrapper,
-} as ComponentMeta<typeof ListWrapper>;
+} as Meta<typeof ListWrapper>;
 
-const Template: ComponentStory<typeof ListWrapper> = (args) => (
-  <ListWrapper {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  cols: 3,
-  children: [...Array(6)].map(() => (
-    <div
-      style={{ paddingTop: `${randomNum(50)}px` }}
-      className={`bg-purple-500 px-8`}
-    ></div>
-  )),
+export const Default = {
+  args: {
+    cols: 3,
+    children: [...Array(6)].map(() => (
+      <div
+        style={{ paddingTop: `${randomNum(50)}px` }}
+        className={`bg-purple-500 px-8`}
+      ></div>
+    )),
+  },
 };

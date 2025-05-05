@@ -1,17 +1,14 @@
 import { BrandSelectInput } from "./BrandSelectInput";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { storybookSearchInputsTitle } from "utils";
 
 export default {
-  title: storybookSearchInputsTitle + "BrandSelectInput",
+  title: "UI / Features /Search /Inputs /BrandSelectInput",
   component: BrandSelectInput,
-} as ComponentMeta<typeof BrandSelectInput>;
+} as Meta<typeof BrandSelectInput>;
 
-const template: ComponentStory<typeof BrandSelectInput> = (args) => (
-  <BrandSelectInput {...args} />
-);
-
-export const Default = template.bind({});
-Default.args = {
-  options: ["Nike"],
+export const Default = {
+  args: {
+    options: ["Nike"],
+  },
 };

@@ -78,7 +78,7 @@ export class ProductAttribute {
   id: string;
 
   @Field(() => String)
-  name: String;
+  name: string;
 
   @Field(() => [ProductAttributeValue])
   values: ProductAttributeValue[];

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
 
 export const SocialContentProductsDrawer: React.FC = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { value, showSocialContentProducts, hideSocialContentProducts } =
     useSocialControls("showSocialContentProductsListing");
   const isOpen =

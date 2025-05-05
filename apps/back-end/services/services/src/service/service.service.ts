@@ -8,7 +8,7 @@ import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class ServiceService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async createService(service: CreateServiceInput) {
     console.log('CreateServcie');
@@ -18,8 +18,8 @@ export class ServiceService {
         data: {
           sellerId: service.sellerId,
           type: ServiceType.hotel,
-          name: service.name,
-          description: service.description,
+          name: { set: service.name.map((n) => ({ ...n, value: n.value.toString() })) },
+          description: { set: service.description.map((d) => ({ ...d, value: d.value.toString() })) },
           price: service.price,
           reviews: service.reviews,
           cancelable: service.cancelable,
@@ -29,10 +29,34 @@ export class ServiceService {
           status: service.status,
           vat: service.vat,
           isExternal: service.isExternal,
-          includedServices: service.includedServices,
-          popularAmenities: service.popularAmenities,
-          extras: service.extras,
-          includedAmenities: service.includedAmenities,
+          includedServices: {
+            set: service.includedServices.map((s) => ({
+              ...s,
+              value: Array.isArray(s.value) ? s.value : [s.value.toString()],
+            })),
+          },
+          popularAmenities: {
+            set: service.popularAmenities.map((amenity) => ({
+              ...amenity,
+              value: Array.isArray(amenity.value) ? amenity.value : [amenity.value.toString()],
+            })),
+          },
+          extras: {
+            set: service.extras.map((extra:any) => ({
+              ...extra,
+              value: Array.isArray(extra.value) ? extra.value.map(String) : [String(extra.value)],
+              name: extra.name.map((name) => ({
+                ...name,
+                value: String(name.value),
+              })),
+            })),
+          },
+          includedAmenities: {
+            set: service.includedAmenities.map((amenity) => ({
+              ...amenity,
+              value: Array.isArray(amenity.value) ? amenity.value : [String(amenity.value)],
+            })),
+          },
           measurements: service.measurements,
           thumbnail: service.thumbnail,
           dailyPrices: service.dailyPrices,
@@ -53,14 +77,11 @@ export class ServiceService {
       });
 
       return true;
-    } catch (error) {
+    } catch (error: any) {
       // Log the full error object for debugging
       console.error('Detailed Error:', error);
 
-      // Optionally, include error stack trace
-      console.error('Error Stack:', error.stack);
-
-      throw new Error('Service Creation Failed: ' + error.message);
+      throw new Error('Service Creation Failed: ' + error?.message);
     }
   }
 

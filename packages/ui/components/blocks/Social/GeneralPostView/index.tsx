@@ -1,11 +1,12 @@
-import { useBreakpointValue, Flex, Button, Text } from "@chakra-ui/react";
+
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import React from "react";
 import { PostCardInfo } from "types";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
-import { PostCardsListWrapper, PostView, Carousel } from "ui";
+import { PostCardsListWrapper, PostView, Carousel, ShadcnText, ShadCnButton, ShadcnFlex } from "ui";
+import { useMediaQuery } from "react-responsive";
 
 export interface GeneralPostViewProps {
   postId: string;
@@ -18,8 +19,11 @@ export const GeneralPostView: React.FC<GeneralPostViewProps> = ({
   children,
   allPostsData,
 }) => {
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const { t } = useTranslation();
+  const isBase = useMediaQuery({ maxWidth: 767 });
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
+  const isLg = useMediaQuery({ minWidth: 1024 });
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
+const { t } = useTranslation();
   const router = useRouter();
 
   const { data: _post, isLoading: PostIsLoading } = useQuery<PostCardInfo>([
@@ -44,7 +48,7 @@ export const GeneralPostView: React.FC<GeneralPostViewProps> = ({
   const post = allPostsData.filter((post) => post.postInfo.id === postId);
 
   return (
-    <Flex pb={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
+    <ShadcnFlex className="flex flex-col gap-8 pb-2 md:pb-16">
       <div className="flex items-start justify-center h-screen mx-28">
         <div className="w-full h-5/6 ">
           {post[0] ? (
@@ -75,31 +79,19 @@ export const GeneralPostView: React.FC<GeneralPostViewProps> = ({
           )}
         </div>
       </div>
-      <Text
-        fontSize="xx-large"
-        fontWeight="bold"
-        w="100%"
-        textAlign="center"
-        textTransform="capitalize"
-      >
+      <ShadcnText className="text-4xl font-bold w-full text-center capitalize">
         {t("other_posts", "other posts")}
-      </Text>
+      </ShadcnText>
+
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">{children}</div>
       </div>
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
+      <ShadCnButton
+        className="focus:ring-primary bg-white border-4 border-gray mt-8 text-xl text-black py-2 capitalize"
       >
         {t("view_more", "view more")}
-      </Button>
-    </Flex>
+      </ShadCnButton>
+
+    </ShadcnFlex>
   );
 };

@@ -1,11 +1,11 @@
 import { storybookFootersTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { Footer } from "./index";
 
 export default {
-  title: storybookFootersTitle + "Footer",
+  title: "UI / Blocks / Footers /Footer",
   component: Footer,
-} as ComponentMeta<typeof Footer>;
+} as Meta<typeof Footer>;
 
 export const Default = () => {
   return <Footer />;

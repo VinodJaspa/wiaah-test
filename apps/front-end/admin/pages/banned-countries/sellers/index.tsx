@@ -25,7 +25,8 @@ const BannedCountries: BannedCountry[] = [
 ];
 
 const BannedBuyers: NextPage = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { visit, getCurrentPath } = useRouting();
 
   const { pagination, controls } = usePaginationControls();

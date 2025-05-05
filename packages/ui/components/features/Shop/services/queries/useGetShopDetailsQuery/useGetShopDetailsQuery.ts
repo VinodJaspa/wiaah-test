@@ -45,67 +45,67 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
     | "storeType"
     | "verified"
   > & {
-    sellerProfile: { __typename?: "Profile" } & Pick<
-      Profile,
-      "photo" | "username" | "ownerId" | "id"
-    >;
-    location: { __typename?: "ServiceLocation" } & Pick<
-      ServiceLocation,
-      "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
-    > & { countryCode: string };
+      sellerProfile: { __typename?: "Profile" } & Pick<
+        Profile,
+        "photo" | "username" | "ownerId" | "id"
+      >;
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        "address" | "city" | "country" | "lat" | "lon" | "postalCode" | "state"
+      > & { countryCode: string };
 
-    workingSchedule?: Maybe<
-      { __typename?: "WorkingSchedule" } & Pick<
-        ServiceWorkingSchedule,
-        "id"
-      > & {
-        weekdays: { __typename?: "WeekdaysWorkingHours" } & {
-          fr?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          mo?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          sa?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          su?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          th?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          tu?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-          we?: Maybe<
-            { __typename?: "ServiceDayWorkingHours" } & Pick<
-              ServiceDayWorkingHours,
-              "periods"
-            >
-          >;
-        };
-      }
-    >;
-  };
+      workingSchedule?: Maybe<
+        { __typename?: "WorkingSchedule" } & Pick<
+          ServiceWorkingSchedule,
+          "id"
+        > & {
+            weekdays: { __typename?: "WeekdaysWorkingHours" } & {
+              fr?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              mo?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              sa?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              su?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              th?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              tu?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+              we?: Maybe<
+                { __typename?: "ServiceDayWorkingHours" } & Pick<
+                  ServiceDayWorkingHours,
+                  "periods"
+                >
+              >;
+            };
+          }
+      >;
+    };
 };
 
 export const getShopDetailsQueryKey = (userId: string) => [
@@ -117,7 +117,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
   if (isDev) {
     const resMock: GetShopDetailsQuery["getUserShop"] = {
       storeType: StoreType.Service,
-      type: ServiceType.BeautyCenter,
+      type: ServiceType.Vehicle,
       ownerId: "",
       banner: "",
       businessType: BusinessType.Individual,

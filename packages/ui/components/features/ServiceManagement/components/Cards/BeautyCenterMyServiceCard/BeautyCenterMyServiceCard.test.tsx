@@ -15,7 +15,7 @@ describe("BeautyCenterMyServiceCard", () => {
   let wrapper: ShallowWrapper;
   let onRemoveMock: jest.Mock;
   let onEditMock: jest.Mock;
-  let props: Omit<BeautyCenterMyServiceCardProps, "onEdit" | "onRemove"> = {
+  const props: Omit<BeautyCenterMyServiceCardProps, "onEdit" | "onRemove"> = {
     id: "4",
     title: "beauty center service",
     description: "beauty center service description",

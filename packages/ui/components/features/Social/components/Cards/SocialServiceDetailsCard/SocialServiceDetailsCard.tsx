@@ -100,6 +100,7 @@ export const SocialServiceDetailsCard: React.FC<
             comments={postInteraction.comments}
             onShare={(method) => handleShare({ method, id })}
             likes={postInteraction.likes}
+            shares={0}
             {...interactionsProps}
           />
         )}

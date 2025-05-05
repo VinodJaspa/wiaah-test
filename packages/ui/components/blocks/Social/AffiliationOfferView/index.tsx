@@ -1,16 +1,21 @@
-import { Text, useBreakpointValue } from "@chakra-ui/react";
+
 import React from "react";
-import { PostView, Carousel } from "ui";
+import { PostView, Carousel, ShadcnText } from "ui";
 import { newsfeedPosts } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
 import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
 import { PostCardInfo } from "types";
+import { useMediaQuery } from "react-responsive";
 
 export const AffiliationOfferView: React.FC<{ offerId: string }> = ({
   offerId,
 }) => {
-  const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+const { t } = useTranslation();
+  const isBase = useMediaQuery({ maxWidth: 767 }); 
+  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 }); 
+  const isLg = useMediaQuery({ minWidth: 1024 }); 
+  
+  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
 
   const affiliationPost = newsfeedPosts.filter(
     (affiliation) => affiliation.postInfo.id === offerId
@@ -49,15 +54,9 @@ export const AffiliationOfferView: React.FC<{ offerId: string }> = ({
         </div>
       )}
 
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+<ShadcnText className="text-4xl font-bold w-full text-center capitalize">
         {t("other_posts", "other affiliation posts")}
-      </Text>
+      </ShadcnText>
       <div className="flex justify-center w-full h-fit">
         <div className="md:w-8/12 w-11/12">
           <AffiliationCardsListWrapper

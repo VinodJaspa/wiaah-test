@@ -16,7 +16,8 @@ import {
   MetaUrl,
   RequiredSocialMediaTags,
 } from "react-seo";
-import { useBreakpointValue } from "utils";
+import { useMediaQuery } from "react-responsive";
+
 
 interface ServicePostPageProps {
   data: AsyncReturnType<typeof getServicePostDataFetcher>;
@@ -44,10 +45,10 @@ export const getServerSideProps: GetServerSideProps<
 };
 
 const ServicePostPage: NextPage<ServicePostPageProps> = ({ data }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { getCurrentPath } = useRouting();
   const firstPostAttachement = data?.data?.attachements[0];
-  const cols = useBreakpointValue({ base: 3 });
+
   return (
     <>
       <MetaTitle

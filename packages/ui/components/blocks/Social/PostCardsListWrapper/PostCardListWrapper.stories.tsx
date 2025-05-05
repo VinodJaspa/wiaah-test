@@ -1,10 +1,10 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { newsfeedPosts } from "@UI";
 import { storybookListWrappersTitle } from "utils";
 import { PostCardsListWrapper } from "./index";
 
-const meta: ComponentMeta<typeof PostCardsListWrapper> = {
-  title: storybookListWrappersTitle + "PostCardListWrapper",
+const meta: Meta<typeof PostCardsListWrapper> = {
+  title: "UI / Blocks /ListWrappers /PostCardListWrapper",
   component: PostCardsListWrapper,
 };
 

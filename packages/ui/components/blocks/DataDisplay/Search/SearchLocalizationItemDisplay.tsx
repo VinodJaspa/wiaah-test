@@ -1,4 +1,5 @@
-import { HStack, Image, Text } from "@chakra-ui/react";
+
+import Link from "next/link";
 import { SearchLocalizationItem } from "types";
 import { NumberShortner } from "../../../helpers";
 
@@ -9,12 +10,18 @@ export const LocalizationSearchItem: React.FC<LocalizationSearchItemProps> = ({
   location,
 }) => {
   return (
-    <HStack w="100%" justify={"space-between"}>
-      <HStack gap="0.5rem" h="2rem">
-        <Image h="100%" src={location.image} />
-        <Text>{location.name}</Text>
-      </HStack>
-      <Text>{NumberShortner(location.views)}</Text>
-    </HStack>
+    <div className="flex w-full justify-between items-center">
+      <div className="flex items-center gap-4">
+        <div className="w-[48px] h-[48px] overflow-hidden rounded-full flex-shrink-0">
+          <img
+            src={location.image}
+            alt=""
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <Link href={`/localisation/${location.name}`}>{location.name}</Link>
+      </div>
+      <p className="text-lg font-medium">{NumberShortner(location.views)}</p>
+    </div>
   );
 };

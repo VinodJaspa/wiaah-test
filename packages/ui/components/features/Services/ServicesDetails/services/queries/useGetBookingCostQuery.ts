@@ -7,6 +7,7 @@ import {
   Maybe,
   RestaurantDishType,
   Service,
+  ServiceCancelationPolicy,
   ServiceExtra,
   ServiceType,
 } from "@features/API";
@@ -47,6 +48,12 @@ export type GetBookingCostQuery = { __typename?: "Query" } & {
                         ServiceExtra,
                         "cost" | "name" | "id"
                       >
+                    >
+                  >;
+                  cancelationPolicies?: Array<
+                    { __typename?: "ServiceCancelationPolicy" } & Pick<
+                      ServiceCancelationPolicy,
+                      "id" | "cost" | "duration"
                     >
                   >;
                 };
@@ -124,7 +131,7 @@ query getBookingCost($args:GetBookingCostInput!) {
     }
   }
 }
-    `
+    `,
     )
     .setVariables<GetBookingCostQueryVariables>({
       args,
@@ -141,10 +148,10 @@ export const useGetBookingCostQuery = (
     any,
     GetBookingCostQuery["getBookingCost"],
     any
-  >
+  >,
 ) =>
   useQuery(
     getBookingCostQueryKey(args),
     () => getBookingCostQueryFetcher(args),
-    options
+    options,
   );

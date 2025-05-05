@@ -1,7 +1,7 @@
+import { HStack, Spinner } from "@partials";
 import React from "react";
-import { HStack, Spinner } from "@UI";
-import { MdError } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { MdError } from "react-icons/md";
 
 export interface SpinnerFallbackProps {
   isLoading?: boolean;
@@ -15,7 +15,7 @@ export const SpinnerFallback: React.FC<SpinnerFallbackProps> = ({
   children,
   isError,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
 
   if (isError)
     return (

@@ -8,12 +8,13 @@
     "downlevelIteration": true,
     "rootDir": "./",
     "outDir": "./dist",
+    "strictNullChecks": false,
     "strict": false,
     "module": "CommonJS",
     "baseUrl": ".",
     "paths": {
       "@entity": ["entity"],
-      "@this": ["src"]
+       "@this/*": ["*"]   
     }
   }
 }

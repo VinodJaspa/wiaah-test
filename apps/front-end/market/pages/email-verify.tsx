@@ -7,7 +7,7 @@ import { useVerifyEmailMutation } from "ui";
 import { useTranslation } from "react-i18next";
 
 const BuyerSignup: NextPage = () => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { mutate } = useVerifyEmailMutation();
   return (
     <>

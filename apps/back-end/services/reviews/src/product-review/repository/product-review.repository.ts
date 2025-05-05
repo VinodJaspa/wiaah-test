@@ -5,7 +5,7 @@ import { PrismaService } from 'src/Prisma.service';
 
 @Injectable()
 export class ProductReviewRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(
     input: CreateProductReviewInput & { sellerId: string },

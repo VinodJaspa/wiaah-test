@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  IconButton,
-  Image,
-  Text,
-  useBreakpointValue,
-  Divider,
-} from "@chakra-ui/react";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCamera } from "react-icons/bi";
@@ -14,6 +6,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { TabType } from "types";
+import Image from "next/image";
 import {
   AffiliationOffersCardListWrapper,
   Container,
@@ -35,18 +28,22 @@ import {
   newsfeedPosts,
   SocialShopsPostCardPlaceholder,
   SocialProfileActionList,
+  ShadcnFlex,
+  ShadCnButton,
+  ShadcnText,
 } from "ui";
 import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
 import { MyProfileCustomed } from "./MyProfileCustomed";
 import { ProfilePlaceholder as profile } from "ui/placeholder";
 import { useDimensions } from "hooks";
+import { useMediaQuery } from "react-responsive";
 
 export interface MyProfileView { }
 
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
   const dims = useDimensions(boxRef);
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const client = useQueryClient();
   const { uploadImage, cancelUpload } = useFileUploadModal();
   const { data: _data, isLoading, isError } = useGetMyProfileData();
@@ -60,8 +57,13 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   const profileInfo = useRecoilValue(SocialProfileInfoState);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
-  const cols = useBreakpointValue({ base: 3 });
-  const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  // Define breakpoints
+  const isBase = useMediaQuery({ maxWidth: 767 });
+  const isXl = useMediaQuery({ minWidth: 1280 });
+
+  // Determine column count based on breakpoints
+  const cols = isBase ? 3 : 3; // Keeps the value as 3 for all breakpoints
+  const ActionsCols = isBase ? 3 : isXl ? 5 : 3;
   const image = React.useMemo(() => getRandomImage(), []);
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
@@ -79,7 +81,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     {
       name: t("shop", "shop"),
       component: (
-        <Flex gap="1rem" direction={"column"}>
+        <ShadcnFlex gap={4} direction="column">
           <div className="flex justify-end">
             <div
               onClick={() => {
@@ -97,7 +99,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
             cols={cols}
             items={SocialShopsPostCardPlaceholder}
           />
-        </Flex>
+        </ShadcnFlex>
       ),
     },
     {
@@ -123,16 +125,14 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   ];
 
   return (
-    <Flex direction={"column"}>
-      <Flex position={{ base: "relative", md: "initial" }}>
-        <Box h={"fit-content"} ref={boxRef}>
+    <ShadcnFlex direction="column">
+      <ShadcnFlex className="relative md:static">
+
+
+        <div className="h-fit" ref={boxRef}>
           <MyProfileCustomed shopInfo={profile} />
-        </Box>
-        <Box
-          position={{ base: "absolute", md: "relative" }}
-          w="100%"
-          h={{ base: dims ? dims.height : "unset" }}
-        >
+        </div>
+        <div className={`absolute md:relative w-full ${dims ? `h-[${dims.height}px]` : "h-auto"}`}>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <>
               <MediaUploadModal
@@ -145,32 +145,22 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
               />
               <Image
                 alt="thumbnail"
-                position={{ base: "absolute", md: "unset" }}
-                top="0px"
-                left="0px"
-                w="100%"
-                h="100%"
-                overflow={"hidden"}
-                bgColor={"blackAlpha.200"}
-                zIndex={-1}
+                className="absolute md:static w-full h-full overflow-hidden bg-black/20 -z-1 object-cover"
                 src={image}
-                objectFit={"cover"}
+                layout="fill"
               />
-              <IconButton
-                variant={"icon"}
-                fontSize="xx-large"
-                position={"absolute"}
-                bgColor="whiteAlpha.800"
-                top="1rem"
-                right="1rem"
+              <ShadCnButton
+                className="absolute top-4 right-4 bg-white/80 text-xl p-2 rounded-full"
                 aria-label={t("change_cover_photo", "Change Cover Photo")}
-                as={BiCamera}
                 onClick={uploadImage}
-              />
+              >
+                <BiCamera />
+              </ShadCnButton>
+
             </>
           </SpinnerFallback>
-        </Box>
-      </Flex>
+        </div>
+      </ShadcnFlex>
       <Container className="flex-grow flex-col">
         {SocialProfileInfo && SocialProfileInfo.public ? (
           <>
@@ -181,27 +171,20 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
                   : buyerTabs
               }
             />
-            <Divider my="1rem" />
+            <div className="h-px bg-muted my-4" />
+
           </>
         ) : (
           <>
-            <Flex
-              h="100%"
-              flexGrow={"inherit"}
-              align="center"
-              justify={"center"}
-            >
-              <Text
-                fontWeight={"bold"}
-                textTransform={"capitalize"}
-                fontSize={"xx-large"}
-              >
+            <ShadcnFlex className="h-full flex-grow items-center justify-center">
+              <ShadcnText className="font-bold capitalize text-4xl">
                 {t("this_profile_is_private", "this profile is private")}
-              </Text>
-            </Flex>
+              </ShadcnText>
+            </ShadcnFlex>
+
           </>
         )}
       </Container>
-    </Flex>
+    </ShadcnFlex>
   );
 };

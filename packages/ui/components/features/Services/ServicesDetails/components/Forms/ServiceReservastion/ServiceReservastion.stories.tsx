@@ -1,15 +1,17 @@
 import { randomNum, storybookRestaurantSectionsTitle } from "utils";
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { ServiceReservastionForm } from "./ServiceReservastion";
 
 export default {
-  title: storybookRestaurantSectionsTitle + "ServiceReservation",
+  title: "UI / Features /Restaurant /Sections /ServiceReservation",
   component: ServiceReservastionForm,
-} as ComponentMeta<typeof ServiceReservastionForm>;
+} as Meta<typeof ServiceReservastionForm>;
 
-const template: ComponentStory<typeof ServiceReservastionForm> = (args) => {
+const template: StoryFn<typeof ServiceReservastionForm> = (args) => {
   return <ServiceReservastionForm {...args} />;
 };
 
-export const Default = template.bind({});
-Default.args = {};
+export const Default = {
+  render: template,
+  args: {},
+};

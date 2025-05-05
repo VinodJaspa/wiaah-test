@@ -15,7 +15,7 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
   onLinkClick,
   copyRightYear,
 }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const router = useRouter();
   const [cookie, setCookie] = useCookies(["country", "currency"]);
   const { i18n } = useTranslation();
@@ -109,7 +109,7 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     setLang(value);
   }
 
-  let saveInternationalSettings = () => {
+  const saveInternationalSettings = () => {
     setLocale(langCode);
     setCookie("country", countryCode, { path: "/" });
     setCookie("currency", currency, { path: "/" });

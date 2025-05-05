@@ -18,8 +18,24 @@ export const ServicePostOnMapView: React.FC<ServicePostOnMapViewProps> = ({
   id,
 }) => {
   const { isTablet } = useResponsive();
+
   const { data: _posts } = useGetServicePostDetails(id);
-  const posts = placeholderGetServicePostQuery;
+
+  // Make sure to use the correct type for the posts
+  const posts = (_posts || placeholderGetServicePostQuery).map((post) => ({
+    ...post,
+    user: {
+      ...post.user,
+      profile: post.user.profile ?? {
+        id: "",
+        username: "",
+        photo: "/default-photo.jpeg", 
+        profession: "",
+        verified: false,
+        followers: 0,
+      },
+    },
+  }));
   return (
     <div className="flex p-4 flex-col gap-2">
       <span className="w-full md:w-1/2">
@@ -43,7 +59,6 @@ export const ServicePostOnMapView: React.FC<ServicePostOnMapViewProps> = ({
 
 const placeholderGetServicePostQuery: GetServicePostQuery["getServicePost"] = [
   {
-    __typename: "ServicePost",
     id: "post1",
     reactionNum: 100,
     shares: 25,
@@ -51,7 +66,7 @@ const placeholderGetServicePostQuery: GetServicePostQuery["getServicePost"] = [
     createdAt: new Date().toISOString(),
     userId: "user1",
     serviceId: "service1",
-    serviceType: TypeOfService.HotelRoom,
+    serviceType: TypeOfService.HotelRoom,  // Ensure this matches the expected type
     views: 300,
     location: {
       __typename: "PostLocation",

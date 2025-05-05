@@ -32,14 +32,14 @@ export const lats = [
   45.464664, 45.45, 45.433334, 45.449998, 45.416669, 45.499999, 45.466667,
   45.583334, 45.400001, 45.586668, 45.318611,
 ];
-export const lngs = [
+export const lons = [
   9.18854, 9.166667, 9.133333, 9.166667, 9.166667, 9.15, 9.1, 9.183333, 9.1,
   9.1775, 9.130556,
 ];
 
 export const getFilteredHotelsMetaData = async (
   pagination: QueryPaginationInputs,
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
 ): Promise<PaginationFetchedData<FilteredHotelsMetaDataType[]>> => {
   const data: PaginationFetchedData<FilteredHotelsMetaDataType[]> = {
     hasMore: false,
@@ -69,7 +69,7 @@ export const getFilteredHotelsMetaData = async (
         countryCode: "CHF",
         state: "Geneve",
         postalCode: 1234,
-        lon: lngs[randomNum(lngs.length)],
+        lon: lons[randomNum(lons.length)],
         lat: lats[randomNum(lats.length)],
       },
     })),

@@ -21,7 +21,7 @@ export interface ButtonProps extends HtmlButtonProps {
   center?: boolean;
 }
 
-export const Button: React.FunctionComponent<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   outline,
   className,
   children,
@@ -96,9 +96,11 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
       onClick={(e) => {
         loading || !!props?.disabled ? undefined : onClick && onClick(e);
       }}
-      className={` ${className ? className : ""} ${outline ? colors(colorScheme).outline : colors(colorScheme).solid
-        } ${center ? "flex justify-center items-center" : "px-4 py-2"
-        } transition-colors rounded-md bg-`}
+      className={` ${className ? className : ""} ${
+        outline ? colors(colorScheme).outline : colors(colorScheme).solid
+      } ${
+        center ? "flex justify-center items-center" : "px-4 py-2"
+      } transition-colors rounded-md bg-`}
     >
       {loading ? <CgSpinner className="animate-spin" /> : children}
     </button>
@@ -110,7 +112,7 @@ export const AddToCartProductButton: React.FC<
     productId: string;
   }
 > = ({ productId, ...props }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   // TODO: switch if product is external
   return (
     <Button {...setTestid("product-add-to-cart-btn")} {...props}>

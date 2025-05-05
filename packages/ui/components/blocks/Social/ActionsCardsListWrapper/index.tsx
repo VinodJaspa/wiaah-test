@@ -6,9 +6,10 @@ import {
 } from "../../../blocks/VideoThumbnail";
 import { ListWrapper } from "../../../blocks/Wrappers";
 import { useModalDisclouser } from "hooks";
-import { NumberShortner, useBreakpointValue } from "utils";
+import { NumberShortner } from "utils";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 type ActionsCardListWrapperProps = {
   videos: VideoThumbnailProps[];
@@ -21,7 +22,13 @@ export const ActionsCardListWrapper: React.FC<ActionsCardListWrapperProps> = ({
 }) => {
   const router = useRouter();
 
-  const cols = useBreakpointValue({ base: 3 });
+  const cols = useMediaQuery({ maxWidth: 767 })
+    ? 1
+    : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
+    ? 2
+    : useMediaQuery({ minWidth: 1024 })
+    ? 3
+    : 1;
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
   const handleClick = (id: string) => {

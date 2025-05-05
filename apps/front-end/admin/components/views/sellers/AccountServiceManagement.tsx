@@ -33,7 +33,8 @@ export const AccountServiceManagement: React.FC<{
 const AdminAccountRestaurantDishs: React.FC<{
   serviceId: string;
 }> = ({ serviceId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof useGetAdminFoodQuery>[0]
@@ -142,7 +143,8 @@ const AdminAccountRestaurantDishs: React.FC<{
 const AdminAccountHealthCenterDoctors: React.FC<{
   serviceId: string;
 }> = ({ serviceId }) => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
   const { pagination, controls } = usePaginationControls();
   const { form, inputProps, selectProps } = useForm<
     Parameters<typeof useGetAdminFoodQuery>[0]

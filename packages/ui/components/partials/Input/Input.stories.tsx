@@ -1,16 +1,13 @@
-import { ComponentMeta } from "@storybook/react";
-import {
-  storybookPartailsTitle,
-  StorybookImplemntationLayout,
-} from "utils";
+import { Meta } from "@storybook/react";
+import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
 import { Input, InputGroup, InputLeftElement, InputRightElement } from "@UI";
 import React from "react";
 import { HiOutlineSearch, HiOutlineSortAscending } from "react-icons/hi";
 
 export default {
-  title: storybookPartailsTitle + "Input",
+  title: "UI / partials / Input",
   component: Input,
-} as ComponentMeta<typeof Input>;
+} as Meta<typeof Input>;
 
 export const Default: React.FC = () => {
   return (

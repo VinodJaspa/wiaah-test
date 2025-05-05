@@ -22,7 +22,7 @@ export interface HealthCenterMyServiceCardProps
 export const HealthCenterMyServiceCard: React.FC<
   HealthCenterMyServiceCardProps
 > = ({ onRemove, onEdit, ...props }) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { workingDates, ...centerData } = props;
 
   return (

@@ -157,6 +157,7 @@ export class VehicleServiceRepository {
         ownerId: userId,
         vehicles: {
           createMany: {
+            // @ts-ignore
             data: input.vehicles.map((v) => ({
               insurance: v.insurance,
               id: uuid(),
@@ -267,9 +268,15 @@ export class VehicleServiceRepository {
         ...og,
         ...update,
         title: updateTranslationResource({
-          originalObj: og.title,
-          update: update.title,
-        }),
+          originalObj: og.title as any,
+          update: update.title as any,
+        }).map((resource) => ({
+          ...resource,
+          value:
+            typeof resource.value === 'string'
+              ? resource.value
+              : JSON.stringify(resource.value),
+        })),
       }),
     );
 
@@ -325,9 +332,8 @@ export class VehicleServiceRepository {
   }
 
   async checkCreatePremissions(userId: string, langId?: UserPreferedLang) {
-    const hasService = await this.serviceOwnership.getServiceOwnershipByUserId(
-      userId,
-    );
+    const hasService =
+      await this.serviceOwnership.getServiceOwnershipByUserId(userId);
     if (hasService)
       throw new ForbiddenException(
         this.errorHandlingService.getError(

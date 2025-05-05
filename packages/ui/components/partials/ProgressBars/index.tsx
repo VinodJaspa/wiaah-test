@@ -1,5 +1,6 @@
-import { Progress } from "@chakra-ui/react";
+
 import { useTypedReactPubsub } from "@libs";
+import { ShadcnProgress } from "@UI/components/shadcn-components";
 import React from "react";
 import { ProgressBar } from "types";
 
@@ -41,14 +42,12 @@ export const ProgressBars: React.FC<ProgressBarsProps> = ({ srcKey }) => {
     <div className="flex gap-2 w-full">
       {progressBarsData
         ? progressBarsData.map(({ progress }, i) => (
-            <Progress
-              key={i}
-              size={"xs"}
-              w="100%"
-              colorScheme={"primary"}
-              value={progress}
-            />
-          ))
+          <ShadcnProgress
+            key={i}
+            className="w-full h-1 bg-primary/20 [&>[data-state=fill]]:bg-primary"
+            value={progress}
+          />
+        ))
         : null}
     </div>
   );

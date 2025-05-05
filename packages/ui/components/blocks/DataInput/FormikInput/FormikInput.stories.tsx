@@ -1,13 +1,13 @@
 import { storybookDataInputBlocksTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 import { FormikInput, Select, SelectOption, SelectProps } from "@UI";
 import React from "react";
 import { Form, Formik } from "formik";
 
 export default {
-  title: storybookDataInputBlocksTitle + "FormikInput",
+  title: "UI / blocks / Data Input /FormikInput",
   component: FormikInput,
-} as ComponentMeta<typeof FormikInput>;
+} as Meta<typeof FormikInput>;
 
 export const Default = () => (
   <Formik initialValues={{}} onSubmit={() => {}}>

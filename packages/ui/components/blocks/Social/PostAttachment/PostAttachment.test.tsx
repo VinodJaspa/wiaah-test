@@ -25,7 +25,9 @@ describe("PostAttachment render tests", () => {
   let img: ShallowWrapper;
   let video: ShallowWrapper;
   beforeEach(() => {
+    // @ts-ignore
     wrapperWithImg = shallow(<PostAttachment {...ImagePlaceholder} />);
+     // @ts-ignore
     wrapperWithVideo = shallow(<PostAttachment {...VideoPlaceholder} />);
     img = wrapperWithImg.find(selectors.image);
     video = wrapperWithVideo.find(selectors.video);
@@ -45,7 +47,9 @@ describe("PostAttachment snapshot tests", () => {
   let wrapperWithImg: ShallowWrapper;
   let wrapperWithVideo: ShallowWrapper;
   beforeEach(() => {
+     // @ts-ignore
     wrapperWithImg = shallow(<PostAttachment {...ImagePlaceholder} />);
+     // @ts-ignore
     wrapperWithVideo = shallow(<PostAttachment {...VideoPlaceholder} />);
   });
   it("should match snapshot with img type", () => {

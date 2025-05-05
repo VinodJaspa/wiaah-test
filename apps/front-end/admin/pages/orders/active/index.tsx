@@ -28,7 +28,8 @@ import {
 import { AddToDate, mapArray, useForm } from "utils";
 
 const Order = () => {
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { getCurrentPath, visit } = useRouting();
 
@@ -97,13 +98,13 @@ const Order = () => {
                       onDateChange={(e) => {
                         handleChange(
                           "date_from",
-                          new Date(new Date(e).setHours(0)).toString()
+                          new Date(new Date(e).setHours(0)).toString(),
                         );
                         handleChange(
                           "date_to",
                           AddToDate(new Date(new Date(e).setHours(0)), {
                             days: 1,
-                          }).toString()
+                          }).toString(),
                         );
                       }}
                       dateValue={form.date_from}
@@ -133,7 +134,7 @@ const Order = () => {
                             r
                               .addPath(getCurrentPath())
                               .addPath("edit")
-                              .addPath(order.id)
+                              .addPath(order.id),
                           );
                         }}
                         className="rounded cursor-pointer fill-white text-white hover:bg-cyan-600 w-8 h-8 p-2 bg-cyan-500"

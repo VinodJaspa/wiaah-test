@@ -4,7 +4,7 @@ import { StatusSelectInput, StatusSelectInputProps } from "./StatusSelectInput";
 describe("StatusSelectInput", () => {
   let wrapper: ShallowWrapper;
   let onChangeMock: jest.Mock;
-  let props: StatusSelectInputProps = {
+  const props: StatusSelectInputProps = {
     onChange(value) {},
     options: ["instock", "outofstock"],
 

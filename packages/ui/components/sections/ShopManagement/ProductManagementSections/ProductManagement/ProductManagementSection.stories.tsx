@@ -1,9 +1,9 @@
 import { storybookSectionsTitle, ProductManagementSection } from "@UI";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookSectionsTitle + "ProductManagementSection",
+  title: "UI / sections / ProductManagementSection",
   component: ProductManagementSection,
-} as ComponentMeta<typeof ProductManagementSection>;
+} as Meta<typeof ProductManagementSection>;
 
 export const Default = () => <ProductManagementSection />;

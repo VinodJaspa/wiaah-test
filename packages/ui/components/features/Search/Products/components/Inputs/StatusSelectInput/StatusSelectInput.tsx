@@ -23,8 +23,8 @@ export const StatusSelectInput: React.FC<StatusSelectInputProps> = ({
   value,
   placeholder,
 }) => {
-  const { t } = useTranslation();
-  const ph = placeholder || t("Select Status");
+const { t } = useTranslation();
+  const ph = placeholder || (t("Select Status") as string) || "Select Status";
   return (
     <InputGroup
       style={{

@@ -38,10 +38,17 @@ export const ServiceRangeBookingCalander: React.FC<
     <div className="select-none w-full">
       <HStack className="text-3xl justify-between mx-[0.5em]">
         <ArrowLeftIcon onClick={() => prevMonth()} />
-        <p className="font-bold text-lg text-center">
-          {currentDate.toLocaleDateString("en-us", {
-            month: "short",
-          })}
+        <p className="font-bold text-lg text-center flex items-center gap-2">
+          <span>
+            {currentDate.toLocaleDateString("en-us", {
+              month: "short",
+            })}
+          </span>
+          <span>
+            {currentDate.toLocaleDateString("en-us", {
+              year: "numeric",
+            })}
+          </span>
         </p>
         <ArrowRightIcon onClick={() => nextMonth()} />
       </HStack>
@@ -92,7 +99,7 @@ const DayComp: React.FC<
       date.getDate(),
       0,
       0,
-      0
+      0,
     );
 
     const endDate = new Date(
@@ -101,7 +108,7 @@ const DayComp: React.FC<
       date.getDate() + 1,
       0,
       0,
-      0
+      0,
     );
 
     const targetDate = new Date(currentDate);
@@ -111,7 +118,7 @@ const DayComp: React.FC<
   const nextDate = value[0]
     ? getNextNearestDate(
         bookedDates.map((v) => new Date(v)),
-        new Date(value[0])
+        new Date(value[0]),
       )
     : null;
 
@@ -123,13 +130,13 @@ const DayComp: React.FC<
     const baseDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate()
+      date.getDate(),
     );
 
     const endDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate() + 1
+      date.getDate() + 1,
     );
 
     const targetDate = new Date(currentDate);
@@ -143,8 +150,8 @@ const DayComp: React.FC<
       typeof props[1] === "boolean"
         ? props[1]
         : isDate(props[0][0]) && isDate(props[0][1])
-        ? true
-        : false
+          ? true
+          : false,
     );
   };
 
@@ -190,10 +197,10 @@ const DayComp: React.FC<
           isBooked || (notAllowed && currentMonth)
             ? "text-gray-400 cursor-not-allowed line-through"
             : isSelected
-            ? "bg-black text-white cursor-pointer"
-            : !currentMonth
-            ? "cursor-not-allowed text-gray-400"
-            : "text-black cursor-pointer"
+              ? "bg-black text-white cursor-pointer"
+              : !currentMonth
+                ? "cursor-not-allowed text-gray-400"
+                : "text-black cursor-pointer"
         } w-full h-full flex justify-center items-center rounded-full font-bold text-center`}
       >
         {currentMonth ? (

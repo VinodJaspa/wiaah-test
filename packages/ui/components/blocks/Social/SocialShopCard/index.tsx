@@ -38,9 +38,11 @@ const ShopCardAttachments: React.FC<{
   onActiveChange,
 }) => {
     if (!attachments || attachments.length === 0) return null;
-
+const handleChange =()=>{
+  
+}
     return attachments.length > 1 ? (
-      <ControlledCarousel onCurrentActiveChange={onActiveChange}>
+      <ControlledCarousel onCurrentActiveChange={onActiveChange} setActiveItem={handleChange}>
         {attachments.map((attachment, index) => (
           <ShopCardAttachment
             key={index}
@@ -118,6 +120,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
             comments={shopCardInfo.noOfComments}
             onShare={(method) => handleShare(method, shopCardInfo.id)}
             likes={shopCardInfo.likes}
+            shares={shopCardInfo?.shares ?? 0}
             {...interactionsProps}
           />
         )}

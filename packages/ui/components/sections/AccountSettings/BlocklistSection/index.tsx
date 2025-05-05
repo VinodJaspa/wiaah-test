@@ -14,7 +14,7 @@ import { useUnBlockUserMutation } from "@features/Social/services/Mutations/Bloc
 export interface BlocklistSectionProps {}
 
 export const BlocklistSection: React.FC<BlocklistSectionProps> = ({}) => {
-  const { t } = useTranslation();
+const { t } = useTranslation();
   const { mutate: unblockUser } = useUnBlockUserMutation();
   const [unblockedUsersIds, setUnBlockedUsersIds] = React.useState<string[]>(
     []

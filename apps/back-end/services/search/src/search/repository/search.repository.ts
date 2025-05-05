@@ -60,14 +60,18 @@ export class SearchRepository {
     langId: string,
   ): Promise<Localization[]> {
     console.log('places repo');
-    const ids = await this.elasticRepo.getPropertiesIdsAndTypesByLocationQuery(
-      query,
-    );
+    const ids =
+      await this.elasticRepo.getPropertiesIdsAndTypesByLocationQuery(query);
 
-    const filteredIds = ids.reduce((acc, curr) => {
-      const typeAcc = Array.isArray(acc[curr.type]) ? [...acc[curr.type]] : [];
-      return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
-    }, {} as Record<string, string[]>);
+    const filteredIds = ids.reduce(
+      (acc, curr) => {
+        const typeAcc = Array.isArray(acc[curr.type])
+          ? [...acc[curr.type]]
+          : [];
+        return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };
+      },
+      {} as Record<string, string[]>,
+    );
 
     const validData: Localization[] = [];
 
@@ -157,9 +161,8 @@ export class SearchRepository {
     query: string,
     langId: string,
   ): Promise<Localization[]> {
-    const { ids, type } = await this.elasticRepo.getPropertiesIdsByTypeQuery(
-      query,
-    );
+    const { ids, type } =
+      await this.elasticRepo.getPropertiesIdsByTypeQuery(query);
 
     const validData: Localization[] = [];
 

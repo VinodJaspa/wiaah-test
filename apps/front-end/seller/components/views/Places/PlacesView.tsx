@@ -1,4 +1,4 @@
-import { useBreakpointValue, Icon, Text } from "@chakra-ui/react";
+
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,13 +13,14 @@ import {
   Image,
   Button,
   Divider,
+  ShadcnIcon,
 } from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+const { t } = useTranslation();
+  
 
   const { getParam } = useRouting();
 
@@ -47,7 +48,8 @@ export const PlacesView: React.FC = () => {
             src="/place-1.jpg"
             alt="place"
           />
-          <Icon fontSize={"xx-large"} as={AiOutlineShop} />
+<ShadcnIcon as={AiOutlineShop} className="text-4xl" />
+
           <div className="flex flex-col items-center">
             <p className="font-bold text-xl">{place}</p>
             <p className="text-lg font-bold">5.5m</p>

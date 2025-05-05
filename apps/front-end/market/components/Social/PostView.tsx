@@ -12,7 +12,7 @@ import {
   SocialProfileNewsfeedPosts,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { useBreakpointValue } from "utils";
+
 import { PostCommentPlaceholder, PostCardPlaceHolder } from "placeholder";
 
 export const PostView: React.FC = () => {
@@ -21,8 +21,8 @@ export const PostView: React.FC = () => {
     pagination: { page: 1, take: 2 },
   });
   const { data: comments } = useGetContentCommentsQuery({ id: "" });
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const { t } = useTranslation();
+
+const { t } = useTranslation();
   return (
     <div className="p-2 md:py-16 gap-8 flex flex-col">
       <div className="flex items-center flex-col gap-8 mb-24 md:flex-row">

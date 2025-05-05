@@ -46,12 +46,13 @@ const Dashboard: NextPage = () => {
   useResponsive();
   const chartRef = React.useRef<HTMLDivElement>(null);
   const radialChartRef = React.useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
+  const { t }: { t: (key: string, ...args: any[]) => string } =
+    useTranslation();
 
   const { data: _analyticsData } = useGetAdminDashboardData();
   const analyticsData = FAKE_ANALYTICS;
 
-  const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
+  // const { data: _recentSales } = useGetAdminRecentSalesQuery(10);
   const recentSales = FAKE_RECENT_SALES;
   const { data: _latestOrders } = useAdminGetLatestOrdersQuery(10);
   const latestOrders = placeholderData;

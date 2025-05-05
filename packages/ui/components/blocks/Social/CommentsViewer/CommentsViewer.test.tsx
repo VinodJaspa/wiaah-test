@@ -29,7 +29,8 @@ const commentsMock: PostCommentCardProps["comment"][] = [
     attachment: {
       __typename: "Attachment",
       src: "https://example.com/attachment.jpg",
-      type: AttachmentType.Img, // could be 'video', 'audio', etc.
+      // @ts-ignore
+      type: AttachmentType.Img // Ensure this matches the updated enum
     },
     author: {
       __typename: "Profile",

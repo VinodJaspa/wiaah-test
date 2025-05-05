@@ -1,11 +1,11 @@
 import { MediaUploadModal, Button, useFileUploadModal } from "@UI";
 import { storybookModalsTitle } from "utils";
-import { ComponentMeta } from "@storybook/react";
+import { Meta } from "@storybook/react";
 
 export default {
-  title: storybookModalsTitle + "MediaUploadModal",
+  title: "UI / Blocks / Modals /MediaUploadModal",
   component: MediaUploadModal,
-} as ComponentMeta<typeof MediaUploadModal>;
+} as Meta<typeof MediaUploadModal>;
 
 export const uploadImage = () => {
   const { uploadImage } = useFileUploadModal();
