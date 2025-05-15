@@ -78,9 +78,8 @@ export class AuthResolver implements OnModuleInit {
 
       // Set the JWT in an HttpOnly, Secure cookie
       ctx.res.cookie('auth_token', data.accessToken, {
-        secure: false, // Only secure in production
-        httpOnly: true, // Prevent client-side JavaScript from accessing the token
-        sameSite: 'None', // Adjust based on cross-origin requirements
+        secure: false,        
+        httpOnly: true,
         path: '/',
       });
 
@@ -91,6 +90,8 @@ export class AuthResolver implements OnModuleInit {
         accessToken: data.accessToken as string,
       };
     } catch (error: any) {
+      console.log(error ,"error");
+      
       return {
         success: false,
         code: ResponseCodes.InternalServiceError,

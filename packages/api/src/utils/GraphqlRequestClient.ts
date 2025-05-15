@@ -63,22 +63,30 @@ export class GraphqlRequestClient {
     return this;
   }
 
-  async send<TResponse>(): Promise<{ data: TResponse } | null> {
+  async send<TResponse>(): Promise<{
+    data?: TResponse;
+    errors?: GraphQLError[];
+  }> {
+    if (!this.query) {
+      throw new Error("No query set");
+    }
+  
     try {
-      if (!this.query) {
-        throw new Error("No query set");
-      }
-
       const response = await this.client.rawRequest<TResponse>(
         this.query,
         this.variables,
       );
-      return response;
+      return {
+        data: response.data,
+        errors: response.errors,
+      };
     } catch (error: unknown) {
       this.handleError(error);
-      return null;
+      throw error;
     }
   }
+  
+  
 
   async request<T = any, V extends Variables = Variables>(
     document: string,

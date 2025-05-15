@@ -88,7 +88,10 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
     { pagination: postsPagination },
   );
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
+
+  
   const data = newsfeedPosts;
+  // console.log(data,"data___");
 
   const normalizedPersonalizedActions = PersonalizeActions.map((action) => ({
     profileInfo: {
@@ -159,7 +162,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">
-          {data.map((v, i) => (
+          {data?.map((v, i) => (
             <SocialNewsfeedPostMobileCard
               key={i}
               post={{

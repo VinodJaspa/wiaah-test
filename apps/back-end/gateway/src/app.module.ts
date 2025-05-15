@@ -18,7 +18,8 @@ import { client } from './main';
       driver: ApolloGatewayDriver,
       server: {
         context: async (ctx) => {
-          const _user = VerifyAndGetUserFromContext(ctx);
+          const _user:any = VerifyAndGetUserFromContext(ctx);
+          console.log('Request headers', ctx.req?.headers);
           const userId = _user?.id;
           const user = userId
             ? await client
@@ -41,29 +42,43 @@ import { client } from './main';
         buildService({ url }) {
           return new RemoteGraphQLDataSource({
             url,
+           
             willSendRequest({ context, request }) {
-              try {
-                const contentType = (context as any)?.req?.headers[
-                  'content-type'
-                ];
-                if (
-                  contentType &&
-                  contentType.startsWith('multipart/form-data')
-                ) {
-                  request.http.headers.set('content-type', contentType);
-                }
-              } catch (error) {
-                console.error('will send request error', { error });
+              const user = context?.user;
+              console.log('[Gateway] Forwarding user:', context.user);
+              if (user && user.id) {
+                const safeUser = {
+                  id: user._id?.toString?.() ?? user.id,
+                  email: user.email,
+                  role: user.role,
+                };
+                request.http.headers.set('user', JSON.stringify(safeUser));
               }
-              const user = context['user'];
-
-              request.http.headers.set(
-                'user',
-                typeof user === 'object'
-                  ? JSON.stringify(context['user'])
-                  : null,
-              );
             },
+            
+            
+            //   try {
+            //     const contentType = (context as any)?.req?.headers[
+            //       'content-type'
+            //     ];
+            //     if (
+            //       contentType &&
+            //       contentType.startsWith('multipart/form-data')
+            //     ) {
+            //       request.http.headers.set('content-type', contentType);
+            //     }
+            //   } catch (error) {
+            //     console.error('will send request error', { error });
+            //   }
+            //   const user = context['user'];
+
+            //   request.http.headers.set(
+            //     'user',
+            //     typeof user === 'object'
+            //       ? JSON.stringify(context['user'])
+            //       : null,
+            //   );
+            // },
             didReceiveResponse({ context, response }) {
               if (response.http.headers.get('set-cookie')) {
                 const rawCookies = response.http.headers.get('set-cookie');

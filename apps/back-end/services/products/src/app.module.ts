@@ -52,7 +52,9 @@ export class PrismaGlobalModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
-      buildSchemaOptions: {},
+      buildSchemaOptions: {
+        orphanedTypes: [Service],
+      },
       context({ req, res }) {
         const user = getUserFromRequest(req);
         const userIp =

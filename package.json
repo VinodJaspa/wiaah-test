@@ -6,6 +6,7 @@
   "scripts": {
     "build": "nx run-many --target=build",
     "dev": "nx run-many --target=dev --parallel=4 --exclude=nest-dto",
+    "start:all": "concurrently \"pnpm --filter auth start:dev\" \"pnpm --filter accounts start:dev\" \"pnpm --filter products start:dev\" \"pnpm --filter reviews start:dev\" \"pnpm --filter search start:dev\" \"pnpm --filter services start:dev\" \"pnpm --filter chat start:dev\" \"pnpm --filter mailing start:dev\" \"pnpm --filter moderation start:dev\" \"pnpm --filter membership start:dev\" \"pnpm --filter billing start:dev\" \"pnpm --filter shopping-cart start:dev\" \"pnpm --filter affiliation start:dev\" \"pnpm --filter social start:dev\" \"pnpm --filter orders start:dev\" \"pnpm --filter hashtag start:dev\" \"pnpm --filter currency-conversion start:dev\"",
     "admin:build": "nx run admin:build",
     "admin:dev": "nx run admin:serve",
     "seller:build": "nx run seller:build",
@@ -90,6 +91,7 @@
     "axios": "^1.8.4",
     "babel-jest": "29.7.0",
     "bcrypt": "^5.1.1",
+    "concurrently": "^9.1.2",
     "css-loader": "^7.1.2",
     "cypress": "^14.3.0",
     "enzyme": "^3.11.0",
@@ -142,9 +144,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
-    "@apollo/gateway": "^2.10.1",
     "@apollo/server": "^4.10.4",
-    "@apollo/subgraph": "^2.9.3",
+    "@apollo/subgraph": "2.2.3",
     "@elastic/elasticsearch": "^8.4.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -160,12 +161,12 @@
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.0.16",
     "@nestjs/config": "4.0.2",
-    "@nestjs/core": "^11.0.17",
+    "@nestjs/core": "^11.1.0",
     "@nestjs/cqrs": "^11.0.3",
     "@nestjs/elasticsearch": "11.0.0",
     "@nestjs/graphql": "13.1.0",
     "@nestjs/jwt": "11.0.0",
-    "@nestjs/microservices": "^11.0.17",
+    "@nestjs/microservices": "^11.1.0",
     "@nestjs/mongoose": "^11.0.3",
     "@nestjs/platform-express": "^11.0.16",
     "@nestjs/platform-socket.io": "^11.0.16",
@@ -252,6 +253,7 @@
     "react-select": "^5.10.1",
     "react-simple-image-slider": "^2.3.0",
     "react-test-renderer": "18.3.1",
+    "react-toastify": "^11.0.5",
     "react-webcam": "^6.0.1",
     "react-window": "^1.8.10",
     "react-windowed-select": "5.2.0",
@@ -278,8 +280,7 @@
     "overrides": {
       "@nestjs/config": "4.0.2",
       "lodash": "4.17.21",
-      "@hapi/joi": "npm:joi",
-      "express": "^4.17.1"
+      "@hapi/joi": "npm:joi"
     },
     "onlyBuiltDependencies": [
       "@apollo/protobufjs",

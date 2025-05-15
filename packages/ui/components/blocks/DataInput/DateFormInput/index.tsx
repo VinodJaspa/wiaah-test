@@ -43,12 +43,13 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
 }) => {
   return (
     <div className="w-full">
-      {label ? <p className="font-semibold pb-1">{label}</p> : null}
+      {label ? <p className="font-sm pb-2 pt-2">{label}</p> : null}
       <InputGroup {...props}>
-        <Input
+        <input
           placeholder={placeholder}
           value={dateValue ? new Date(dateValue).toDateString() : ""}
-          className="w-full"
+          className="w-full border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
+
           readOnly
         />
         <InputRightElement className="px-2">
@@ -61,14 +62,17 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
             ) : null}
             <Menu {...menuProps?.menuProps}>
               <MenuButton {...menuProps?.menuButtonProps}>
-                <BiCalendarEdit className="text-xl" />
+                <BiCalendarEdit className="text-sm" />
               </MenuButton>
               <MenuList {...menuProps?.menuListProps}>
                 <DateInput
                   value={dateValue ? [new Date(dateValue).toString()] : []}
                   onDaySelect={(date) => {
                     if (isEqual(date, dateValue)) return;
-                    onDateChange && onDateChange(date);
+                    if (onDateChange) {
+                      onDateChange(date);
+
+                    }
                   }}
                 />
               </MenuList>
@@ -76,9 +80,13 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
           </HStack>
         </InputRightElement>
       </InputGroup>
-      {error ? (
-        <p className="font-semibold text-red-500 text-lg pt-1">{error}</p>
-      ) : null}
+      <p
+        className={`font-sm text-sm pt-0 min-h-[20px] transition-all ${error ? "text-red-500 visible" : "invisible"
+          }`}
+      >
+        {error || "‎" /* invisible empty char to reserve height */}
+      </p>
+
     </div>
   );
 };

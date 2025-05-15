@@ -6,36 +6,40 @@ export type SigninMutationVariables = Exact<{
   args: LoginDto;
 }>;
 
-type SigninMutation = { __typename?: "Mutation" } & Pick<Mutation, "login">;
+type SigninMutation = {
+  __typename?: "Mutation";
+  login: {
+    code: string;
+    message: string;
+    success: boolean;
+    accessToken: string;
+  };
+};
 
 const client = createGraphqlRequestClient();
 
+const LOGIN_MUTATION = `
+  mutation Login($args: LoginDto!) {
+    login(LoginInput: $args) {
+      code
+      message
+      success
+      accessToken
+    }
+  }
+`;
+
 export const useSigninMutation = () => {
-  client.setQuery(
-    `
-    mutation Login($args: LoginDto!) {
-      login(LoginInput: $args) {
-        code
-        message
-        success
-        accessToken
-      }
-    }
-    `
-  );
-
-  return useMutation<any | null, unknown, SigninMutationVariables["args"]>(
-    "user-signin",
-    async (args) => {
-      const res = await client
-        .setVariables<SigninMutationVariables>({
-          args: {
-            ...args,
-          },
-        })
+  return useMutation({
+    mutationKey: ['user-signin'],
+    mutationFn: async (args: LoginDto) => {
+      console.log("Login args:", args);
+      const res:any = await client
+        .setQuery(LOGIN_MUTATION)
+        .setVariables<SigninMutationVariables>({ args })
         .send<SigninMutation>();
-
-      return res.data.login;
-    }
-  );
+       
+      return res.data?.login;
+    },
+  });
 };

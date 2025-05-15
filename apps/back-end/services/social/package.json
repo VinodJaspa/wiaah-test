@@ -24,7 +24,7 @@
     "nest-dto": "workspace:*",
     "nest-utils": "workspace:*",
     "@wiaah/upload":"workspace:*",
-    "@apollo/subgraph": "^2.9.3",
+   "@apollo/subgraph": "2.2.3",
     "@ffmpeg/ffmpeg": "^0.9.3",
     "@nestjs/apollo": "13.1.0",
     "@nestjs/common": "^11.0.16",

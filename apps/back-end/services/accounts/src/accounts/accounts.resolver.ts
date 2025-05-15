@@ -59,6 +59,9 @@ export class AccountsResolver {
       password,
       birthDate,
       confirmPassword,
+      gender,
+      phone
+
     }: CreateAccountInput,
   ) {
     // Check if the email already exists in the system
@@ -86,7 +89,8 @@ export class AccountsResolver {
       Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
       Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
     } catch (error) {
-      throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
+       console.error("Stripe error:", error);
+      // throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
     }
 
     // Create the account record in the database
@@ -97,10 +101,10 @@ export class AccountsResolver {
       password: hashedPassword,
       birthDate: new Date(birthDate),
       accountType,
-      // gender,
-      // phone,
-      // stripeCustomerId: Cacc.id,
-      // stripeId: Sacc.id,
+      gender,
+      phone,
+      stripeCustomerId: Cacc.id,
+      stripeId: Sacc.id,
     });
 
     if (!createdAccount) {

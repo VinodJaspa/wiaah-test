@@ -18,13 +18,15 @@ import * as path from 'path';
 
 // Assuming 'src' is the root directory of your application
 const absoluteSchemaPath = path.join(__dirname, '..', 'src', 'schema.graphql');
-
+console.log(process.env.STRIPE_API_SECRET_KEY ,"env");
+``
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
   imports: [RequiredActionsModule, UserContactsModule],
 })
+
 export class PrismaModule {}
 
 @Module({
@@ -38,7 +40,8 @@ export class PrismaModule {}
       autoSchemaFile: absoluteSchemaPath, // Specify absolute path here
       context({ req, res }) {
         const user = getUserFromRequest(req);
-        console.log({ user });
+        const userHeader = req?.headers?.user;
+  console.log('>>> received user header:', userHeader);
         return { req, res, user };
       },
     }),

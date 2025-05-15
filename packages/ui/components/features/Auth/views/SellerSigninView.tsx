@@ -1,3 +1,4 @@
+'use client';
 import { useRouting } from "@UI/../routing";
 import { setTestid, useForm } from "@UI/../utils/src";
 import {
@@ -13,12 +14,17 @@ import { useSigninMutation } from "../services";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import Recaptcha from "react-google-recaptcha";
-
-export const SellerSigninView: React.FC = () => {
-const { t } = useTranslation();
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+type SellerSigninViewProps = {
+  onNavigate: () => void;
+};
+export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }) => {
+  const { t } = useTranslation();
   const { getUrl } = useRouting();
+  const router = useRouter();
+  const { mutate: signin, isLoading } = useSigninMutation();
 
-  const { mutate: signin } = useSigninMutation();
   const { form, inputProps } = useForm<Parameters<typeof signin>[0]>(
     {
       email: "",
@@ -70,23 +76,52 @@ const { t } = useTranslation();
           </Link>
         </HStack>
       </div>
-      <Recaptcha sitekey={"6Le6C70nAAAAAJTH4JRbMgmYx1LMRvbFMrxbkpxg"} />
+      <Recaptcha sitekey={"6LfEeDQrAAAAAIfYlrUyUSyxdbrRNTEcSDuz18Yg"} />
       <Button
         {...setTestid("login-form-submit-btn")}
-        onClick={() => signin(form)}
-        className="font-medium w-full"
+        onClick={() =>
+          signin(form, {
+            onSuccess: (res: any) => {
+              if (res.success) {
+                const token = res?.accessToken;
+                if (token) {
+                  toast.success(res?.message || "Sign in successful!");
+                  // router.push("/"); 
+                } else {
+                  toast.error("Login succeeded but no token received.");
+                }
+              } else {
+                toast.error(res?.message || "Sign in successful!");
+
+              }
+
+            },
+            onError: (err: any) => {
+              const message =
+                err?.response?.data?.message ||
+                err?.message ||
+                "Sign in failed. Please try again.";
+              toast.error(message);
+            },
+          })
+        }
+        disabled={isLoading}
+        className={`font-medium w-full ${isLoading ? "opacity-60 cursor-not-allowed" : ""
+          }`}
         colorScheme="darkbrown"
       >
-        {t("Sign in")}
+        {isLoading ? t("Signing in...") : t("Sign in")}
       </Button>
+
 
       <p>
         {t("Don't have an account?")}
         <span>
-          <Link href={getUrl((r) => r.visitRegister())}>
-            <button className="text-primary">{t("Register")}</button>
-          </Link>
+          <button className="text-primary" onClick={onNavigate}>
+            {t("Register")}
+          </button>
         </span>
+
       </p>
     </div>
   );

@@ -30,6 +30,7 @@ export type MainRouterInterface = {
   visitRegister: () => RoutesType;
   visitLogout: () => RoutesType;
   visitSignin: () => RoutesType;
+  visitSignup:() =>RoutesType;
   visitMarketSavedItems: () => RoutesType;
   visitContactUs: () => RoutesType;
   visitHelpAndFaqs: () => RoutesType;
@@ -116,6 +117,9 @@ export const MainRoutes: MainRouterInterface = {
   },
   visitSignin() {
     return this.addPath("auth").addPath("login");
+  },
+  visitSignup() {
+    return this.addPath("auth").addPath("register");
   },
   visitMarketSavedItems() {
     // TODO

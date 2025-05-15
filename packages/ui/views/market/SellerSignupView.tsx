@@ -12,106 +12,129 @@ import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { useSignupMutation } from "@features/Auth";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
-
+import { useRouter } from 'next/router';
+import { toast } from "react-toastify";
 export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
 }) => {
-  const { mutate: SignUp } = useSignupMutation();
-const { t } = useTranslation();
+  const { mutate: SignUp, isLoading } = useSignupMutation();
+  const { t } = useTranslation();
+  const router = useRouter();
   const handleSignUpSubmit = (data: any) => {
     SignUp(
       { ...data },
       {
-        onSuccess: (response) => {
+        onSuccess: (response: any) => {
+          const message =
+            response?.message || "Signup successful!";
+          toast.success(message);
           console.log("Signup successful:", response);
+          router.push('/auth/login');
         },
-        onError: (err) => {
+        onError: (err: any) => {
+          const message =
+            err?.response?.data?.message ||
+            err?.message ||
+            "Signup failed. Please try again.";
+          toast.error(message);
           console.error("Signup error:", err);
         },
       }
     );
   };
+
   return (
-    <div className="flex flex-col gap-4" id="SellerSignupView">
-      <h2 className="text-3xl capitalize">
-        {t("create_an_account", "create an account")}
-      </h2>
-      <Formik<any>
-        initialValues={{
-          firstName: "",
-          lastName: "",
-          email: "",
-          birthDate: null,
-          password: "",
-          confirmPassword: "",
-          gender: AccountGenderEnum.Male,
-          accountType: RegisterAccountType.Seller,
-        }}
-        onSubmit={(data) => handleSignUpSubmit(data)}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form className="flex flex-col gap-4">
-              <FormikInput
-                name="firstName"
-                placeholder={t("First Name") as string}
-                type="text"
-                icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
-              />
-              <FormikInput
-                name="lastName"
-                placeholder={t("Last Name") as string}
-                type="text"
-                icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
-              />
-              <FormikInput
-                name="email"
-                placeholder={t("Email", "Email") as string}
-                type="email"
-                icon={<IoMdMail className="mr-2 text-xl text-gray-400" />}
-              />{" "}
-              <FormikInput<any>
-                id="BirthDate"
-                name="birthDate"
-                placeholder="BirthDate"
-                as={DateFormInput}
-                dateValue={values?.birthDate}
-                onDateChange={(e: any) => setFieldValue("birthDate", e)}
-                icon={<CalenderIcon />}
-              />
-              <FormikInput
-                name="password"
-                type="password"
-                placeholder={t("Password", "Password") as string}
-                iocn={<IoMdKey className="mr-2 text-xl text-gray-400" />}
-              />
-              <FormikInput
-                name="confirmPassword"
-                type="password"
-                placeholder={t("confirm_Password", "confirm Password") as string}
-                icon={<IoMdKey className="mr-2 text-xl text-gray-400" />}
-              />
-              <div className="mt-4 flex items-center justify-between font-light">
-                <div className="flex items-center justify-between">
-                  <Checkbox name="termsConditionAggrement" className="pl-1" />
-                  <p className="ml-2">
-                    I read and accept
-                    <Link href="/terms-conditions">
-                      <span className="text-blue-400">
-                        {" "}
-                        terms and conditions.
-                      </span>
-                    </Link>
-                  </p>
+    <div
+      className="w-1/2 min-h-screen flex items-center justify-center mx-auto"
+      id="SellerSignupView"
+    >
+      <div className="w-full flex flex-col gap-4">
+        <h2 className="text-3xl capitalize">
+          {t("create_an_account", "create an account")}
+        </h2>
+        <Formik<any>
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            birthDate: null,
+            password: "",
+            confirmPassword: "",
+            gender: AccountGenderEnum.Male,
+            accountType: RegisterAccountType.Seller,
+          }}
+          onSubmit={(data) => handleSignUpSubmit(data)}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form className="flex flex-col gap-4">
+                <FormikInput
+                  name="firstName"
+                  placeholder={t("First Name") as string}
+                  type="text"
+                  icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
+                />
+                <FormikInput
+                  name="lastName"
+                  placeholder={t("Last Name") as string}
+                  type="text"
+                  icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
+                />
+                <FormikInput
+                  name="email"
+                  placeholder={t("Email", "Email") as string}
+                  type="email"
+                  icon={<IoMdMail className="mr-2 text-xl text-gray-400" />}
+                />{" "}
+                <FormikInput<any>
+                  id="BirthDate"
+                  name="birthDate"
+                  placeholder="BirthDate"
+                  as={DateFormInput}
+                  dateValue={values?.birthDate}
+                  onDateChange={(e: any) => setFieldValue("birthDate", e)}
+                  icon={<CalenderIcon />}
+                />
+                <FormikInput
+                  name="password"
+                  type="password"
+                  placeholder={t("Password", "Password") as string}
+                  iocn={<IoMdKey className="mr-2 text-xl text-gray-400" />}
+                />
+                <FormikInput
+                  name="confirmPassword"
+                  type="password"
+                  placeholder={t("confirm_Password", "confirm Password") as string}
+                  icon={<IoMdKey className="mr-2 text-xl text-gray-400" />}
+                />
+                <div className="mt-4 flex items-center justify-between font-light">
+                  <div className="flex items-center justify-between">
+                    <Checkbox name="termsConditionAggrement" className="pl-1" />
+                    <p className="ml-2">
+                      I read and accept
+                      <Link href="/terms-conditions">
+                        <span className="text-blue-400">
+                          {" "}
+                          terms and conditions.
+                        </span>
+                      </Link>
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <Button className="green-background mt-5 h-12 w-full rounded-sm bg-white  px-8 py-2 text-lg uppercase text-white">
-                {t("sign_up", "sign up")}
-              </Button>
-            </Form>
-          );
-        }}
-      </Formik>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`green-background mt-5 h-12 w-full rounded-sm px-8 py-2 text-lg uppercase text-white ${isLoading ? 'opacity-60 cursor-not-allowed' : ''
+                    }`}
+                >
+                  {isLoading ? t("Signing up...", "Signing up...") : t("sign_up", "sign up")}
+                </Button>
+
+              </Form>
+            );
+          }}
+        </Formik>
+      </div>
     </div>
   );
 };

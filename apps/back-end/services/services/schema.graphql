@@ -112,6 +112,11 @@ type ServiceLocation {
   postalCode: Int!
 }
 
+type ServiceCashback {
+  value: Float!
+  units: Int!
+}
+
 type HotelRoom {
   id: ID!
   hotel: Hotel
@@ -699,7 +704,6 @@ type Query {
   getHotelService(getHotelServiceArgs: GetHotelServiceArgs!): Hotel!
   searchHotelRooms(searchHotelRoomsArgs: SearchHotelRoomLocationInput!): [HotelRoom!]!
   getRestaurants: [Restaurant!]!
-  getRestaurant(getRestaurantArgs: GetRestaurantInput!): Restaurant!
   searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
 }
 
@@ -828,10 +832,6 @@ input SearchHotelRoomLocationInput {
   rating: Int
   minPrice: Float
   maxPrice: Float
-}
-
-input GetRestaurantInput {
-  id: ID!
 }
 
 input SearchFilteredRestaurantInput {
@@ -1313,18 +1313,26 @@ input HotelRoomInput {
 }
 
 input CreateRestaurantInput {
-  contact: ServiceContactInput!
-  vat: Int!
-  status: ServiceStatus
-  location: ServiceLocationInput!
-  presentations: [ServicePresentationInput!]!
+  id: ID!
+  ownerId: String!
+  vat: Int! = 0
+  status: ServiceStatus = inActive
+  presentations: [ServicePresentationType!]!
   policies: [ServicePolicyTranslatedInput!]!
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
+  payment_methods: [ServicePaymentMethod!]!
+  cancelationPolicies: [ServiceCancelationPolicyInput!]!
+  contact: [ServiceContactInput!]!
+  location: ServiceLocationInput!
+  lowest_price: Float! = 0
+  highest_price: Float! = 0
   menus: [RestaurantMenuInput!]!
   establishmentTypeId: ID!
   cuisinesTypeId: ID!
   setting_and_ambianceId: ID!
   michelin_guide_stars: Int!
+  rating: Float! = 0
+  reviews: Int! = 0
 }
 
 input RestaurantMenuInput {

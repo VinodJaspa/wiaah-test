@@ -1181,8 +1181,67 @@ export const newsfeedPosts: PostCardInfo[] = [
       content: "",
       comments: [],
     },
-  },
+  }
+
 ];
+const morePosts = generateMockPosts(100);
+newsfeedPosts.push(...morePosts);
+function generateMockPosts(count: number): PostCardInfo[] {
+  const locations = ["New York", "Paris", "Tokyo", "Barcelona", "Rome", "Berlin", "Sydney"];
+  const contents = [
+    "Just another day in paradise.",
+    "Loving this view!",
+    "Nature at its best.",
+    "Exploring new cities!",
+    "Sunset moments.",
+    "Captured the vibes perfectly.",
+    "Weekend getaway vibes.",
+  ];
+
+  const generatedPosts: PostCardInfo[] = [];
+
+  for (let i = 1; i <= count; i++) {
+    const postId = `${100 + i}`; // Ensure new IDs
+    const postLocation = locations[Math.floor(Math.random() * locations.length)];
+    const content = contents[Math.floor(Math.random() * contents.length)];
+
+    const attachments = Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => ({
+      src: getRandomImage(),
+      type: "image",
+      postLocation,
+    }));
+
+    const comments = Array.from({ length: Math.floor(Math.random() * 4) }, () => ({
+      ...PostCommentPlaceholder,
+      user: getRandomUser(),
+      content: "Nice shot!",
+      attachment: Math.random() > 0.5
+        ? {
+            src: getRandomImage(),
+            type: "image",
+          }
+        : null,
+    }));
+
+    const post: PostCardInfo = {
+      profileInfo: PostCardPlaceHolder.profileInfo,
+      postInfo: {
+        ...PostCardPlaceHolder.postInfo,
+        id: postId,
+        thumbnail: getRandomImage(),
+        attachments,
+        content,
+        comments,
+        tags: [],
+      },
+    };
+
+    generatedPosts.push(post);
+  }
+
+  return generatedPosts;
+}
+
 
 export const ProfilePlaceholder: Profile = {
   __typename: "Profile",

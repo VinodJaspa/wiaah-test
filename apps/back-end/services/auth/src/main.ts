@@ -1,3 +1,4 @@
+// import '../patch-express-adapter';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
@@ -7,20 +8,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: '*', // Specify the client's origin
-    credentials: true, // Allow credentials such as cookies
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'Access-Control-Allow-Origin',
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://localhost:2999',
     ],
-    exposedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'Access-Control-Allow-Origin',
-    ],
+    credentials: true, // Required for cookies
   });
+  
   app.connectMicroservice<MicroserviceOptions>({
     strategy: new KafkaCustomTransport({
       client: {

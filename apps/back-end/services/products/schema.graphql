@@ -200,6 +200,11 @@ type ShopWorkingSchedule {
   openTo: String!
 }
 
+type Service {
+  sellerId: ID!
+  shop: Shop!
+}
+
 type ShippingDeliveryTimeRange {
   from: Int!
   to: Int!

@@ -7,6 +7,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
+import { ProductRating } from '@product-review/entities';
 
 @Global()
 @Module({
@@ -22,7 +23,10 @@ export class PrismaGlobalModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.graphql',
+      buildSchemaOptions: {
+        orphanedTypes: [ProductRating],
+      },
     }),
   ],
   controllers: [],

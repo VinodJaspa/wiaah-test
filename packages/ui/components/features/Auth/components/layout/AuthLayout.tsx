@@ -9,9 +9,9 @@ export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { push, getCurrentPath, getQuery, getParam } = useRouting();
   const path = getCurrentPath();
-  const { data, isLoading, isError } = useGetMyAccountQuery();
+  // const { data, isLoading, isError } = useGetMyAccountQuery();
 
-  //TODO
+  // // TODO
   //   React.useEffect(() => {
   //     console.log({ data });
   //     if (!isError && typeof data?.id === "string") {

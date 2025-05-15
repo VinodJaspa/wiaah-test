@@ -15,6 +15,7 @@ import {
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
+  AccountType,
 } from 'nest-utils';
 import { LoginDto, RegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -47,12 +48,72 @@ export class AuthService {
   ) {
     this.registerationVerificationTokenValidDurationInMin = 30;
   }
+  // Register function
+  async register(input: RegisterDto) {
+    const { email, password, firstName, lastName, accountType } = input;
+  
+    // Check if email already exists
+    const emailExists = await this.emailExists(email);
+    if (emailExists) {
+      throw new BadRequestException('Email already registered');
+    }
+  
+    // Hash the password
+    const hashedPassword = await this.hashPassword(password);
+  
+    // Set a default accountType if it's not provided
+    const finalAccountType = accountType || 'seller';  // Default to 'user' if not provided
+  
+    // Create registration record
+    const newRegisteration = await this.prisma.registeration.create({
+      data: {
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        accountType: finalAccountType,  // Pass the accountType here
+        verificationCode: generateVerificationToken(),
+        expiresAt: AddToDate(new Date(), {
+          minutes: this.registerationVerificationTokenValidDurationInMin,
+        }),
+      },
+    });
+  
+    // Emit the AccountRegisteredEvent
+    this.eventsClient.emit<AccountRegisteredEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
+      new AccountRegisteredEvent({
+        email,
+        firstName,
+        lastName,
+        verificationCode:newRegisteration.verificationCode,
+        accountType: finalAccountType,  // Include accountType in the event
+      }),
+    );
+  
+    return { message: 'Registration successful. Please check your email for verification.' };
+  }
+  
+  // Account Registered Event
+  async emitAccountRegisteredEvent(email: string, firstName: string, lastName: string , accountType:any ,verificationCode:string) {
+    this.eventsClient.emit<AccountRegisteredEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
+      new AccountRegisteredEvent({
+        email,
+        firstName,
+        lastName,
+        accountType,
+        verificationCode,
+      }),
+    );
+  }
 
   async simpleLogin(input: { email: string; password: string }) {
     try {
       const { email, password } = input;
 
       // Find the user by email
+     
       const invokedAccount: any = await new Promise((resolve, reject) => {
         this.eventsClient
           .send('get.account.by.email', {
@@ -63,6 +124,10 @@ export class AuthService {
             error: (err) => reject(err),
           });
       });
+      console.log("invokedAccount:", JSON.stringify(invokedAccount, null, 2));
+      if (!invokedAccount.results?.data?.password) {
+        throw new BadRequestException('User not found or invalid response');
+      }
       const isPasswordValid = await bcrypt.compare(
         password,
         invokedAccount.results.data.password,
@@ -76,7 +141,6 @@ export class AuthService {
         ...invokedAccount,
       };
       const token = this.JWTService.sign(payload);
-
       // Return the token and user data
       return {
         accessToken: token,
@@ -99,6 +163,7 @@ export class AuthService {
         where: {
           email,
         },
+        // @ts-ignore
         rejectOnNotFound(error) {
           throw new BadRequestException('invalid email');
         },
@@ -237,6 +302,7 @@ export class AuthService {
       where: {
         email,
       },
+       // @ts-ignore
       rejectOnNotFound(error) {
         throw new NotFoundException(
           'there is no password change request for this email, consider asking for a password change first',

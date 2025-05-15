@@ -24,6 +24,10 @@ import {
   useRequestAccountVerification,
   AccountVerificationFormData,
   useResendRegisterationCodeMutation,
+  Stepper,
+  StepperContent,
+  StepperFormController,
+  StepperFormHandler,
 } from "@UI";
 
 import { StepperStepType } from "types";
@@ -34,31 +38,38 @@ import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-export const SellerProfileStartupView: React.FC = ({}) => {
-const { t } = useTranslation();
+import StepperForm from "./stepper";
+interface StepperProps {
+
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+
+export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep }) => {
+  console.log(currentStep, "step");
+
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
 
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
-
   const handleNextStep = () => setCurrentStep((v) => v + 1);
-
   const requestSkipStep = () => setCurrentStep((v) => v + 1);
-
   const addSubmitRequest = (key: string | number, fn: () => any) =>
     setSubmitRequests((v) => ({ ...v, [key]: fn }));
 
   const requestNextStep = () => {
     const submitFn = submitRequests[currentStep];
-
     if (typeof submitFn === "function") {
       submitFn();
     }
   };
 
-  const requestPrevStep = () => {};
+  const requestPrevStep = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
 
   const steps: StepperStepType[] = React.useMemo(
     () => [
@@ -205,7 +216,6 @@ const { t } = useTranslation();
     ],
     []
   );
-
   const currentStepComp = steps.at(currentStep) || null;
   const nextStep = steps.at(currentStep + 1) || null;
   const percentage = ((currentStep + 1) / steps.length) * 100;
@@ -289,89 +299,58 @@ const { t } = useTranslation();
     </div>
   ) : (
     <>
-      <div className="py-28 lg:py-20 h-full">
-        <div className="fixed top-0 left-0 z-10 w-full">
-          <Container className="">
-            <div className="flex items-center justify-between bg-white p-4 lg:hidden">
-            <CircularProgressbar
-          value={percentage}
-          text={`${currentStep + 1} of ${steps.length}`}
-          styles={buildStyles({
-            pathColor: "#4CAF50", 
-            textColor: "#000", 
-            trailColor: "#e5e7eb", 
-            textSize: "14px", 
-         
-          })}
-        />
-              <div className="flex flex-col items-end">
-                <div className="mb-2 text-lg font-bold">
-                  {steps[currentStep].stepName.toString()}
-                </div>
-                <div className="text-xs text-gray-400">
-                  {steps[currentStep + 1]
-                    ? t("Next") + ": " + steps[currentStep + 1].stepName
-                    : t("Finalisation")}
-                </div>
-              </div>
-            </div>
-            <div className="hidden items-stretch justify-start bg-gray-200 lg:flex">
-              {steps.map((item, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`${
-                      currentStep == key ? "bg-primary text-white" : ""
-                    } flex w-4/12 flex-col justify-center px-6 py-4`}
-                  >
-                    <div className="text-lg font-bold">
-                      {t("Step")} {key + 1}
-                    </div>
-                    <div>{item.stepName.toString()}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </Container>
-        </div>
-        <div className="overflow-scroll thinScroll h-full p-4 py-4 md:pl-8 md:py-8">
-          {runIfFn(currentStepComp?.stepComponent)}
-        </div>
+      <div>
+        <div className="mt-8 p-1">
+          <div>
+            {runIfFn(currentStepComp?.stepComponent)}
+          </div>
+          {/* Navigation Buttons */}
+          <div className="flex p-2 mt-4">
 
-        <div className="fixed bottom-0 left-0 z-10 flex w-full justify-between bg-white p-4 pt-10 lg:px-8">
-          <Container className="flex w-full justify-between">
-            <button
-              className="flex items-center rounded-md py-2 pl-0 pr-8"
-              onClick={() => {
-                requestPrevStep();
-              }}
-            >
-              <MdArrowBackIosNew className="mr-1 inline" />
-              {t("Back")}
-            </button>
-            <div>
+            <Container className="flex w-full justify-between">
+
               <button
-                className="rounded-md py-2 px-4"
+                className="flex items-center rounded-md py-2 pl-0 pr-8"
+                disabled={currentStep === 0}
                 onClick={() => {
-                  requestSkipStep();
+                  requestPrevStep();
                 }}
               >
-                {t("Skip")}
+                <MdArrowBackIosNew className="mr-1 inline" />
+                {t("Back")}
               </button>
-              <Button
-                onClick={() => {
-                  requestNextStep();
-                }}
-              >
-                {t("Next")}
-              </Button>
-            </div>
-          </Container>
+
+              <div>
+
+                <button
+                  className="rounded-md py-2 px-4"
+                  disabled={currentStep === 0 || currentStep == 1}
+                  onClick={() => {
+                    requestSkipStep();
+                  }}
+                >
+                  {t("Skip")}
+                </button>
+                <Button
+                  onClick={() => {
+                    requestNextStep();
+                  }}
+                >
+                  {t("Next")}
+                </Button>
+              </div>
+            </Container>
+
+          </div>
         </div>
       </div>
     </>
   );
 };
+
+
+
+
 
 const SellerListingForm = React.forwardRef(
   (
@@ -452,7 +431,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     },
     ref
   ) => {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
       code: "",
     });
@@ -481,11 +460,10 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
           <div className="flex items-center gap-4">
             {[...Array(6)].map((v, i) => (
               <div
-                className={`w-12 h-12 rounded-lg ${
-                  typeof form.code.at(i) === "string"
-                    ? "bg-primary border-primary text-white"
-                    : "bg-white border-black text-black"
-                } text-3xl border flex justify-center items-center`}
+                className={`w-12 h-12 rounded-lg ${typeof form.code.at(i) === "string"
+                  ? "bg-primary border-primary text-white"
+                  : "bg-white border-black text-black"
+                  } text-3xl border flex justify-center items-center`}
               >
                 <p>{form.code.at(i)}</p>
               </div>

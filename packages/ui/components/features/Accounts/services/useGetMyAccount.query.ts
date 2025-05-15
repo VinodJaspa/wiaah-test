@@ -40,6 +40,7 @@ export const getMyAccountQueryFetcher = async () => {
     return mockres;
   }
 
+ 
   const client = createGraphqlRequestClient();
 
   const res = await client

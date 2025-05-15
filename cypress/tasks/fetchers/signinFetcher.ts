@@ -41,7 +41,7 @@ export async function login(email: string, password: string) {
   }
 }
 
-function extractJwtTokenFromSetCookie(setCookieHeader) {
+function extractJwtTokenFromSetCookie(setCookieHeader: string | string[] | undefined) {
   if (Array.isArray(setCookieHeader)) {
     setCookieHeader = setCookieHeader.join("; ");
   }

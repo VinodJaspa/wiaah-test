@@ -1,5 +1,5 @@
-import { useForm } from "utils";
-import React, { forwardRef, useImperativeHandle } from "react";
+import { signUpValidationSchema, useForm } from "utils";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useSigninMutation, useSignupMutation } from "../services";
 import { AccountGenderEnum, RegisterAccountType } from "@features/API";
 import {
@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import { useResponsive } from "@src/index";
 
 import * as yup from "yup";
+import PhotoUploader from "./PhotoUpload";
+import { toast } from "react-toastify";
 
 const NO_PROFIL_PIC_URL = "/person-icon.png";
 export const AccountSignup = forwardRef(
@@ -29,8 +31,9 @@ export const AccountSignup = forwardRef(
     },
     ref
   ) => {
-  const { t } = useTranslation();
-    const { inputProps, dateInputProps, form, handleChange } = useForm<
+    const [imageSrc, setImageSrc] = useState<string | null>(null);
+    const { t } = useTranslation();
+    const { inputProps, dateInputProps, form, handleChange, formErrors, triggerValidation } = useForm<
       Parameters<typeof Signup>[0]
     >(
       {
@@ -47,45 +50,31 @@ export const AccountSignup = forwardRef(
       {
         addLabel: true,
         addPlaceholder: true,
-        yupSchema: yup.object({
-          email: yup.string().email().required(),
-          firstName: yup.string().min(3).max(20),
-          lastName: yup.string().min(3).max(20),
-          password: yup.string().min(6).max(30),
-          gender: yup
-            .string()
-            .oneOf([AccountGenderEnum.Female, AccountGenderEnum.Male])
-            .required(),
-          confirmPassword: yup
-            .string()
-            .oneOf(
-              [yup.ref("password"), null],
-              "confirm password and password does'nt match!"
-            )
-            .required("Required"),
-        }),
+        yupSchema: signUpValidationSchema
       }
     );
 
     const { isMobile } = useResponsive();
     const [error, setError] = React.useState("");
-
-    const { mutate: Signup } = useSignupMutation();
+    const { mutate: Signup, isLoading: isSignupLoading } = useSignupMutation();
     const { mutate: SignIn } = useSigninMutation();
 
     const submit = () => {
-      Signup(form, {
-        onSuccess(data, variables, context) {
-          SignIn(
-            { email: variables.email, password: variables.password },
-            { onSuccess }
-          );
-        },
+      if (!triggerValidation()) return;
 
-        onError: (err) => {
-          const _err = err as Error;
-          setError(_err.message);
+      Signup(form, {
+        onSuccess(data) {
+          console.log(data, "Signup response");
+          toast.success("Signup successful!");
+          
+          onSuccess()
         },
+        onError(err: any) {
+          console.log(err ,"errr");
+          
+          toast.error((err as Error).message || "Something went wrong");
+        }
+
       });
     };
 
@@ -93,114 +82,109 @@ export const AccountSignup = forwardRef(
       submit,
     }));
 
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3">
-          <p className="border-b border-primary text-lg w-fit font-semibold">
-            {t("Profile Image")}
-          </p>
 
-          <div className="bg-darkerGray self-center w-40 h-40 rounded-full flex justify-center items-center">
-            <ImageOutlineIcon className="text-9xl text-iconGray" />
-          </div>
-          <div className="flex flex-col gap-4">
-            <Button colorScheme="darkbrown">
-              <HStack className="text-white justify-center">
-                <ImageOutlineIcon className="text-2xl" />
-                <p className="text-sm">{t("Upload from gallery")}</p>
-              </HStack>
-            </Button>
-            <Button outline colorScheme="darkbrown">
-              <HStack className="text-black justify-center">
-                <CameraOutlineIcon className="text-2xl" />
-                <p className="text-sm">{t("Capture with camera")}</p>
-              </HStack>
-            </Button>
-          </div>
-        </div>
-        <p className="lg:text-2xl text-lg font-semibold border-b border-primary">
+
+
+    return (
+      <div className="flex flex-col gap-4 mx-auto">
+        <p className="lg:text-md text-lg font-semibold border-b border-primary pb-4">
           {t("Basic Informations")}
         </p>
-        <HStack>
-          <Input {...inputProps("firstName")} />
-          <Input {...inputProps("lastName")} />
-        </HStack>
-        <DateFormInput {...dateInputProps("birthDate")} />
-        <div>
-          <p className="font-semibold text-lg">{t("Gender")}</p>
+
+        <div className="mt-10">
           <HStack>
-            {Object.values(AccountGenderEnum)
-              .reverse()
-              .map((v, i) => (
-                <Radio
-                  name={"gender"}
-                  checked={form.gender === v}
-                  onChange={(e) =>
-                    e.target.checked ? handleChange("gender", v) : null
-                  }
-                  key={v + i}
-                >
-                  {v}
-                </Radio>
-              ))}
+            <Input
+              {...inputProps("firstName")}
+              error={formErrors.firstName}
+            />
+            <Input
+              {...inputProps("lastName")}
+              error={formErrors.lastName}
+            />
+          </HStack>
+
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="w-full md:w-1/2">
+              <DateFormInput
+                className="w-full"
+                {...dateInputProps("birthDate")}
+                error={formErrors.birthDate}
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <p className="text-sm text-gray-600 mb-2 pt-4 pb-2">{t("Gender")}</p>
+              <div className="flex flex-row gap-4 flex-wrap">
+                {Object.values(AccountGenderEnum)
+                  .reverse()
+                  .map((v, i) => (
+                    <Radio
+                      name="gender"
+                      checked={form.gender === v}
+                      onChange={(e) =>
+                        e.target.checked ? handleChange("gender", v) : null
+                      }
+                      key={v + i}
+                    >
+                      {v}
+                    </Radio>
+                  ))}
+              </div>
+              {formErrors.gender && (
+                <p className="text-sm text-red-500">{formErrors.gender}</p>
+              )}
+            </div>
+          </div>
+
+          <HStack>
+            <Input
+              {...inputProps("email")}
+              error={formErrors.email}
+            />
+            <Input
+              {...inputProps("phone")}
+              error={formErrors.phone}
+            />
+          </HStack>
+
+          <HStack>
+            <Input
+              {...inputProps("password")}
+              error={formErrors.password}
+            />
+            <Input
+              {...inputProps("confirmPassword")}
+              error={formErrors.confirmPassword}
+            />
           </HStack>
         </div>
-        <Input {...inputProps("email")} />
-        <Input {...inputProps("phone")} />
-        <Input {...inputProps("password")} />
-        <Input {...inputProps("confirmPassword")} />
-        {showSubmit ? (
+
+        {showSubmit && (
           <HStack className="justify-end">
             <Button onClick={submit}>{t("Submit")}</Button>
           </HStack>
-        ) : null}
+        )}
+
         {isMobile ? null : (
           <>
-            <p className="font-semibold text-xl">{t("Profile Picture")}</p>
-            <div className="flex  flex-col items-center justify-center md:p-0 lg:flex-row lg:p-12">
+            <p className="font-md text-xl">{t("Profile Picture")}</p>
+            <div className="flex flex-col items-center justify-center md:p-0 lg:flex-row lg:p-12">
               <div className="mb-4 justify-center lg:w-4/12">
                 <div className="relative h-80 w-80 overflow-hidden rounded-xl lg:h-96 lg:w-96">
-                  <>
-                    <img
-                      className="h-full w-full object-cover"
-                      src={NO_PROFIL_PIC_URL}
-                      alt=""
-                    />
-                  </>
+                  <img
+                    className="h-full w-full object-cover"
+                    src={NO_PROFIL_PIC_URL}
+                    alt=""
+                  />
                 </div>
               </div>
               <Input
                 type="file"
                 hidden
-                onChange={(e: any) => { }}
+                onChange={() => { }}
                 name="photo"
                 accept="image/png, image/jpeg"
               />
-              <div className="w-full justify-center px-4 lg:w-full">
-                <div className="flex flex-col items-center cursor-pointer justify-center">
-                  <Button
-                    className={`w-[min(100%,15rem)] rounded-full`}
-                    onClick={() => { }}
-                  >
-                    {t("Upload_a_photo", "Upload a photo")}
-                  </Button>
-                  <div className="hidden text-center text-gray-500 lg:block">
-                    {t("From_your_computer", "From your computer")}
-                  </div>
-                </div>
-                <Divider className="my-4" />
-                <div className="w-full flex flex-col items-center cursor-pointer justify-center">
-                  <Button
-                    className={`w-[min(100%,15rem)] rounded-full`}
-                    onClick={() => { }}
-                  >
-                    {t("Take_a_Photo", "Take a Photo")}
-                  </Button>
-                  <div className="hidden text-center text-gray-500 lg:block">
-                    {t("with your webcam")}
-                  </div>
-                </div>
-              </div>
+              <PhotoUploader setImageSrc={setImageSrc} imageSrc={imageSrc} />
             </div>
           </>
         )}
