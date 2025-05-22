@@ -38,16 +38,17 @@ import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import StepperForm from "./stepper";
+import 'react-circular-progressbar/dist/styles.css';
 interface StepperProps {
-
+  setFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  isFormSubmitting: boolean;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
 
-export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep }) => {
-  console.log(currentStep, "step");
+export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep, isFormSubmitting, setFormSubmitting }) => {
+
 
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
@@ -60,10 +61,16 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
   const addSubmitRequest = (key: string | number, fn: () => any) =>
     setSubmitRequests((v) => ({ ...v, [key]: fn }));
 
-  const requestNextStep = () => {
+
+  const requestNextStep = async () => {
     const submitFn = submitRequests[currentStep];
     if (typeof submitFn === "function") {
-      submitFn();
+      setFormSubmitting(true);
+      try {
+        await submitFn(); // assume it's a Promise
+      } finally {
+        setFormSubmitting(false);
+      }
     }
   };
 
@@ -266,7 +273,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
           <p className="text-lg font-semibold">
             {currentStepComp?.stepName.toString()}
           </p>
-          <p className="text-xs text-primary">
+          <p className="text-xs text-primary bg-primary">
             {t("Next") as string} : {nextStep?.stepName.toString()}
           </p>
         </div>
@@ -286,12 +293,12 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
         </Button>
 
         <Button
-          className="m-4 text-sm font-normal"
+          className="m-4 text-sm font-normal bg-primary"
           onClick={() => requestNextStep()}
-          colorScheme="darkbrown"
+
         >
           <HStack>
-            <p>{t("Next")}</p>
+            <p >{t("Next")}</p>
             <ArrowRightAltIcon />
           </HStack>
         </Button>
@@ -306,9 +313,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
           </div>
           {/* Navigation Buttons */}
           <div className="flex p-2 mt-4">
-
             <Container className="flex w-full justify-between">
-
               <button
                 className="flex items-center rounded-md py-2 pl-0 pr-8"
                 disabled={currentStep === 0}
@@ -438,6 +443,22 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     const { mutate } = useVerifyEmailMutation();
     const { mutate: resendCode } = useResendRegisterationCodeMutation();
     const { data: user } = useGetMyAccountQuery();
+    const [cooldown, setCooldown] = React.useState(0);
+
+    React.useEffect(() => {
+      if (cooldown > 0) {
+        const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+        return () => clearTimeout(timer);
+      }
+
+      // Always return something (even if it's just undefined)
+      return undefined;
+    }, [cooldown]);
+
+    const handleResend = () => {
+      resendCode();
+      setCooldown(8);
+    }
     React.useImperativeHandle(ref, () => ({
       submit: () => {
         mutate(form, { onSuccess });
@@ -447,7 +468,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
 
     return isMobile ? (
       <div className="h-full w-full flex flex-col justify-center items-center gap-10">
-        <p className="text-xl font-semibold text-center">
+        <p className="text-xl font-sm text-center">
           {t("An verification code has been sent to your email")}. (
           {user?.email})
         </p>
@@ -463,7 +484,7 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
                 className={`w-12 h-12 rounded-lg ${typeof form.code.at(i) === "string"
                   ? "bg-primary border-primary text-white"
                   : "bg-white border-black text-black"
-                  } text-3xl border flex justify-center items-center`}
+                  } text-sm border flex justify-center items-center`}
               >
                 <p>{form.code.at(i)}</p>
               </div>
@@ -474,20 +495,20 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
         <div className="flex flex-col gap-2">
           <p>{t("Didn’t receive code?")}</p>
           <button
-            onClick={() => resendCode()}
-            className="text-primary font-semibold"
+            onClick={() => handleResend()}
+            className="text-primary font-sm"
           >
             {t("RESEND")}
           </button>
         </div>
 
-        <Button colorScheme="darkbrown" className="w-full">
+        <Button className="w-full bg-primary">
           {t("Verify")}
         </Button>
       </div>
     ) : (
       <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
-        <p className="text-xl font-semibold">
+        <p className="text-xl font-sm">
           {t("An verification code has been sent to your email")}. (
           {user?.email})
         </p>
@@ -499,7 +520,18 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
           placeholder="123456"
           label="Verification code"
         />
+
+        <div className="flex flex-col gap-2">
+          <p>{t("Didn’t receive code?")}</p>
+          <button
+            onClick={() => handleResend()}
+            className="text-primary font-sm"
+          >
+            {t("RESEND")}
+          </button>
+        </div>
       </div>
+
     );
   }
 );

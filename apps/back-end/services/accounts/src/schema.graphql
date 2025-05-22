@@ -310,6 +310,7 @@ input UpdateSellerAccountAdminInput {
   birthDate: String
   gender: AccountGenderEnum
   phone: String
+  photo: Upload
   id: ID!
 }
 
@@ -322,6 +323,9 @@ enum AccountGenderEnum {
   male
   female
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input DeclineSellerAccountRequest {
   id: ID!
@@ -368,6 +372,7 @@ input CreateAccountInput {
   birthDate: String!
   gender: AccountGenderEnum!
   phone: String
+  photo: Upload
 }
 
 input DeleteAccountRequestInput {
@@ -382,6 +387,7 @@ input UpdateAccountInput {
   birthDate: String
   gender: AccountGenderEnum
   phone: String
+  photo: Upload
   id: ID!
   lang: String
   currency: String

@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 
-const PhotoUploader = ({imageSrc , setImageSrc}) => {
+const PhotoUploader = ({imageSrc , setImageSrc,handleChange}) => {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   // Handle file selection
@@ -14,6 +14,10 @@ const PhotoUploader = ({imageSrc , setImageSrc}) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Pass the file object directly, not the base64 string
+      handleChange("photo", file);
+      
+      // Optionally, show a preview with base64
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageSrc(reader.result as string);
@@ -21,7 +25,8 @@ const PhotoUploader = ({imageSrc , setImageSrc}) => {
       reader.readAsDataURL(file);
     }
   };
-
+  
+  
   // Handle webcam capture
   const handleTakePhoto = async () => {
     try {
@@ -75,12 +80,7 @@ const PhotoUploader = ({imageSrc , setImageSrc}) => {
           {t("with your webcam", "with your webcam")}
         </div>
       </div>
-      {/* Show preview */}
-      {imageSrc && (
-        <div className="mt-6 flex justify-center">
-          <img src={imageSrc} alt="Preview" className="max-w-xs rounded-lg shadow-md" />
-        </div>
-      )}
+    
     </div>
   );
 };

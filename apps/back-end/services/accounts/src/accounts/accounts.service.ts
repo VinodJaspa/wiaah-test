@@ -14,6 +14,7 @@ import * as bcrypt from 'bcrypt';
 import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
+import { UploadService } from '@wiaah/upload';
 
 @Injectable()
 export class AccountsService {
@@ -21,6 +22,7 @@ export class AccountsService {
     private prisma: PrismaService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly uploadService: UploadService,
   ) {}
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
@@ -206,23 +208,61 @@ export class AccountsService {
     return this.update(input, userId);
   }
 
-  async update(
-    input: UpdateAccountInput,
-    userId: string,
-  ): Promise<Partial<Account>> {
-    try {
-      const { password, ...res } = await this.prisma.account.update({
-        where: {
-          id: userId,
-        },
-        data: input,
-      });
 
+
+  async update(input: UpdateAccountInput, userId: string): Promise<Partial<Account>> {
+    try {
+      let photoUrl: string | undefined;
+  
+      // 1. Handle file upload if photo is provided
+      if (input.photo) {
+        const upload = await input.photo; // Await the Promise<FileUpload>
+        const { createReadStream, filename, mimetype } = upload;
+  
+        const uploadResult = await this.uploadService.uploadFiles([
+          {
+            file: {
+              stream: createReadStream(),
+              meta: {
+                name: filename,
+                mimetype,
+              },
+            },
+            options: {
+              allowedMimtypes: this.uploadService.mimetypes.image.all,
+              maxSizeKb: 1024,
+            },
+          },
+        ]);
+  
+        if (!uploadResult[0]) {
+          throw new Error('Photo upload failed');
+        }
+  
+        photoUrl = uploadResult[0].src;
+      }
+  
+      // 2. Build the Prisma update object excluding `photo` field if not needed
+      const { photo, ...rest } = input;
+      const updateData = {
+        ...rest,
+        ...(photoUrl ? { photo: photoUrl } : {}),
+      };
+  
+      // 3. Call Prisma update
+      const { password, ...res } = await this.prisma.account.update({
+        where: { id: userId },
+        data: updateData,
+      });
+  
       return res;
+  
     } catch (err) {
-      throw new BadRequestException('account was not found');
+      console.error(err);
+      throw new BadRequestException('account was not found or update failed');
     }
   }
+  
 
   async updatePassword(password: string, userId: string) {
     await this.prisma.account.update({

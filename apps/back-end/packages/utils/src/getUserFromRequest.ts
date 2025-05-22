@@ -3,56 +3,53 @@ import { AuthorizationDecodedUser } from "./types";
 import { ObjectId } from "mongodb";
 import {  parseCookiesToRecord } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
-import cookie from 'cookie'; 
+import * as cookie from 'cookie';
+
 
 export function getUserFromRequest<T = AuthorizationDecodedUser>(
   req: any,
   mock: boolean = false,
   _mockedUser?: AuthorizationDecodedUser
-): T {
-  const user = req?.headers?.user ? JSON.parse(req.headers.user) : null;
+): T | null {
+  let user: T | null = null;
 
-  if (mock && !user)
-    return _mockedUser
-      ? (_mockedUser as T)
-      : ({ ...mockedUser, id: new ObjectId().toHexString() } as any);
+  try {
+    const userHeader = req?.headers?.user;
+
+    if (typeof userHeader === 'string') {
+      user = JSON.parse(userHeader);
+    } else if (typeof userHeader === 'object' && userHeader !== null) {
+      // Already parsed by some middleware or proxy (like in dev mode)
+      user = userHeader as T;
+    }
+  } catch (err) {
+    console.error('Failed to parse user header:', err);
+  }
+
+  if (mock && !user) {
+    return (_mockedUser as T) || ({ ...mockedUser, id: new ObjectId().toHexString() } as T);
+  }
+
   return user;
 }
 
-export const VerifyAndGetUserFromContext = async ({ req }: { req: any }) => {
-  let token: string | undefined;
 
-  // 1. Try to get token from Authorization header
-  const authHeader = req.headers?.authorization;
-  if (authHeader?.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1];
+export async function VerifyAndGetUserFromContext(ctx: any) {
+  const cookies = ctx.req?.headers?.cookie || '';
+  const match = cookies.match(/auth_token=([^;]+)/);
+  const token = match?.[1];
+
+  if (!token) return { user: null };
+
+  try {
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET); // Ensure this secret matches your signer
+    const user = decoded?.results?.data;
+    return { user };
+  } catch (err) {
+    console.error('JWT verification failed:', err);
+    return { user: null };
   }
-console.log(req.headers.cookie ,"cokie");
+}
 
-  if (!token && req.headers?.cookie) {
-    try {
-      const cookies = cookie.parse(req.headers.cookie);
-      console.log(cookies,"cookies")
-      token = cookies.auth_token;
-    } catch (err:any) {
-      console.warn('[Gateway] Error parsing cookies:', err.message);
-    }
-  }
-
-  // 3. Decode the token
-  if (token) {
-    try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-      const user = decoded?.results?.data;
-      console.log('[Gateway] User from token:', user);
-      return { user };
-    } catch (err:any) {
-      console.warn('[Gateway] Invalid token:', err.message);
-    }
-  }
-
-  console.warn('[Gateway] No valid token found');
-  return { user: null };
-};
 
 

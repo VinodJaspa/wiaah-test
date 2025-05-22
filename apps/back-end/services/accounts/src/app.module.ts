@@ -15,11 +15,11 @@ import { RequiredActionsModule } from './required-actions/required-actions.modul
 import { UserContactsModule } from './user-contacts/user-contacts.module';
 
 import * as path from 'path';
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 
 // Assuming 'src' is the root directory of your application
 const absoluteSchemaPath = path.join(__dirname, '..', 'src', 'schema.graphql');
-console.log(process.env.STRIPE_API_SECRET_KEY ,"env");
-``
+
 @Global()
 @Module({
   providers: [PrismaService],
@@ -35,13 +35,12 @@ export class PrismaModule {}
     AccountVerificationModule,
     CookiesSettingsModule,
     UserLocationModule,
+   
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: absoluteSchemaPath, // Specify absolute path here
       context({ req, res }) {
         const user = getUserFromRequest(req);
-        const userHeader = req?.headers?.user;
-  console.log('>>> received user header:', userHeader);
         return { req, res, user };
       },
     }),

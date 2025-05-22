@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { BadGatewayException, Inject, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   ResolveReference,
@@ -8,6 +8,7 @@ import {
   Parent,
   Query,
 } from '@nestjs/graphql';
+
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -19,6 +20,7 @@ import {
   SERVICES,
   StripeService,
   accountType,
+
 } from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
@@ -36,7 +38,8 @@ import {
 } from './exceptions';
 import { AccountCreationFailedException } from './exceptions/accountCreationFailed.exception';
 import { StripeAccountCreationException } from './exceptions/stripeAccountCreation.exception';
-
+import { FileTypeEnum, UploadService } from '@wiaah/upload';
+import { Readable } from 'stream';
 @Resolver(() => Account)
 export class AccountsResolver {
   constructor(
@@ -45,8 +48,9 @@ export class AccountsResolver {
     private readonly eventsClient: ClientKafka,
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
+    private readonly uploadService: UploadService,
     private readonly stripe: StripeService,
-  ) {}
+  ) { }
 
   @Mutation(() => String)
   async register(
@@ -60,10 +64,41 @@ export class AccountsResolver {
       birthDate,
       confirmPassword,
       gender,
-      phone
+      phone,
+      photo
 
     }: CreateAccountInput,
   ) {
+    let photoUrl: string | undefined;
+
+  if (photo) {
+    const { createReadStream, filename, mimetype } = await photo;
+    const stream = createReadStream();
+
+    const uploadResult = await this.uploadService.uploadFiles([
+      {
+        file: {
+          stream,
+          meta: {
+            name: filename,
+            mimetype,
+          },
+        },
+        options: {
+          allowedMimtypes: this.uploadService.mimetypes.image.all,
+          maxSizeKb: 1024,
+        },
+      },
+    ]);
+
+    if (!uploadResult[0]) {
+      throw new Error('Photo upload failed');
+    }
+
+    photoUrl = uploadResult[0].src;
+    console.log(photoUrl ,"url");
+    
+  }
     // Check if the email already exists in the system
     const emailExists = await this.prisma.account.findUnique({
       where: {
@@ -89,9 +124,13 @@ export class AccountsResolver {
       Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
       Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
     } catch (error) {
-       console.error("Stripe error:", error);
+      console.error("Stripe error:", error);
       // throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
     }
+    // 5. Upload photo if present
+
+  
+
 
     // Create the account record in the database
     const createdAccount = await this.accountsService.createAccountRecord({
@@ -103,8 +142,9 @@ export class AccountsResolver {
       accountType,
       gender,
       phone,
-      stripeCustomerId: Cacc.id,
-      stripeId: Sacc.id,
+      stripeCustomerId: Cacc?.id,
+      stripeId: Sacc?.id,
+      photo:photoUrl
     });
 
     if (!createdAccount) {

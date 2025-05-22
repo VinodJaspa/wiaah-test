@@ -156,36 +156,39 @@ export class AuthService {
   }
 
   async verifyEmail(input: { code: string; email: string }) {
+    const { email, code } = input;
+  
+    let registeration;
     try {
-      const { email, code } = input;
-
-      const registeration = await this.prisma.registeration.findUnique({
-        where: {
-          email,
-        },
-        // @ts-ignore
-        rejectOnNotFound(error) {
-          throw new BadRequestException('invalid email');
-        },
+      registeration = await this.prisma.registeration.findUnique({
+        where: { email },
       });
-
-      if (registeration.verificationCode !== code)
-        throw new BadRequestException('invalid verification code');
-      if (registeration.expiresAt < new Date())
-        throw new GoneException('token expired');
-
-      await this.removeRegisterationsByEmail(email);
-
-      this.eventsClient.emit<any, AccountVerifiedEvent>(
-        KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
-        new AccountVerifiedEvent({ email }),
-      );
-
-      return true;
-    } catch (error: any) {
-      throw new Error(error);
+      if (!registeration) {
+        throw new BadRequestException('invalid email');
+      }
+      
+    } catch {
+      throw new BadRequestException('invalid email');
     }
+  
+    if (registeration.verificationCode !== code) {
+      throw new BadRequestException('invalid verification code');
+    }
+  
+    if (registeration.expiresAt < new Date()) {
+      throw new GoneException('token expired');
+    }
+  
+    await this.removeRegisterationsByEmail(email);
+  
+    this.eventsClient.emit<any, AccountVerifiedEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
+      new AccountVerifiedEvent({ email }),
+    );
+  
+    return true;
   }
+  
 
   async resendRegisterationToken(email: string) {
     const verificationCode = `${generateVerificationToken()}`;
