@@ -23,7 +23,7 @@ export class UpdateAccountInput extends PartialType(
   @Field(() => String, { nullable: true })
   country?: string;
   @Field(() => GraphQLUpload, { nullable: true }) 
-    photo?: Promise<FileUpload>;
+    photo?:string;
 }
 
 @InputType()

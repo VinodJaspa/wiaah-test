@@ -30,6 +30,7 @@ import {
 import { NumberShortner } from "utils";
 import { Attachment, Comment, Profile } from "../../../features/API";
 import { PostReplyCard } from "../PostReplyCard";
+import { toast } from "react-toastify";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -48,15 +49,15 @@ export interface PostCommentCardProps {
     | "updatedAt"
     | "replies"
   > & {
-      attachment?: { __typename?: "Attachment" } & Pick<
-        Attachment,
-        "src" | "type"
-      >;
-      author?: { __typename?: "Profile" } & Pick<
-        Profile,
-        "username" | "photo" | "verified" | "id"
-      >;
-    };
+    attachment?: { __typename?: "Attachment" } & Pick<
+      Attachment,
+      "src" | "type"
+    >;
+    author?: { __typename?: "Profile" } & Pick<
+      Profile,
+      "username" | "photo" | "verified" | "id"
+    >;
+  };
   shouldCommentBoxFocused?: boolean;
   setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
   setPostOwnerUsername?: (username: string) => void;
@@ -70,7 +71,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   setPostOwnerUsername,
 }) => {
   const { openModalWithId } = useCommentReportModal();
-const { t } = useTranslation();
+  const { t } = useTranslation();
   // const { mutate } = useLikeContent();
   const { mutate: createComment } = useCommentOnContent();
   const { shareLink, showContentComments } = useSocialControls();
@@ -140,10 +141,12 @@ const { t } = useTranslation();
     setLikeVal((prev) => (!isLiked ? prev + 1 : prev - 1));
   };
 
+  console.log(profile, "profile");
+
   return (
     <div ref={ref} className="flex bg-white w-full gap-2 px-3">
       <Link
-        href={`/profile/${profile.id}`}
+        href={`/profile/${profile.username}`}
         className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0"
       >
         <img
@@ -154,15 +157,14 @@ const { t } = useTranslation();
       </Link>
       <div className="w-full flex flex-col">
         <div
-          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${
-            main ? "bg-white" : "bg-primary-light"
-          }`}
+          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${main ? "bg-white" : "bg-primary-light"
+            }`}
         >
           <div className="flex items-center mt-2 gap-2 justify-between">
             <HStack>
               <div className="flex items-center gap-1  ">
                 <Link
-                  href={`/profile/${profile.id}`}
+                  href={`/profile/${profile.username}`}
                   className="text-xl font-semibold"
                 >
                   {profile?.username}
@@ -171,11 +173,11 @@ const { t } = useTranslation();
                   <Verified className="text-[#0084FF] w-5 h-5" />
                 )}
               </div>
-              {index === 0 && (
-                <p className="text-[#8E8E8E] text-xs">
-                  {TimeDiff(comment.commentedAt)} ago
-                </p>
-              )}
+
+              <p className="text-[#8E8E8E] text-xs">
+                {TimeDiff(comment.commentedAt)} ago
+              </p>
+
             </HStack>
             {index === 0 && !isFollowing && (
               <Button
@@ -222,16 +224,13 @@ const { t } = useTranslation();
                   {comment.content} {t("Replies")}
                 </p>
               </div>
+
             </HStack>
           )}
           <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
             <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
-                {index !== 0 && (
-                  <p className="text-[#8E8E8E] text-xs">
-                    {TimeDiffNarrow(comment.commentedAt)} ago
-                  </p>
-                )}
+
                 <button onClick={handleLikeDislike}>
                   {isLiked ? (
                     <HeartFillIcon className="w-4 h-4 mt-1" />
@@ -320,7 +319,7 @@ const { t } = useTranslation();
               }
               className="text-gray-500 font-medium flex gap-1 items-center"
             >
-              <BiMinus className="mt-1" />
+              {/* <BiMinus className="mt-1" /> */}
               {!shouldCommentRepliesOpen.state ? (
                 <span>View {shouldCommentRepliesOpen.count} replies</span>
               ) : (
@@ -366,9 +365,13 @@ const { t } = useTranslation();
           </MenuButton>
           <MenuList>
             <MenuItem>
-              <p>{t("hide", "Hide")}</p>
+              {/* <p>{t("hide", "Hide")}</p> */}
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => {
+              const postUrl = `${window.location.origin}/profle/${v?.profile?.username}`
+              navigator.clipboard.writeText(postUrl);
+              toast.success("Link copied to clipboard!");
+            }}>
               <p>{t("go_to_post", "Go to post")}</p>
             </MenuItem>
             <MenuItem>
@@ -380,7 +383,7 @@ const { t } = useTranslation();
               <p>{t("copy_link", "Copy link")}</p>
             </MenuItem>
             <MenuItem>
-              <p>{t("cancel", "Cancel")}</p>
+              {/* <p>{t("cancel", "Cancel")}</p> */}
             </MenuItem>
           </MenuList>
         </Menu>

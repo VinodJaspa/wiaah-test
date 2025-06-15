@@ -36,6 +36,7 @@ import { PersonalizeActions } from "placeholder";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { toast } from "react-toastify";
 import { useRouting } from "routing";
 import { mapArray, NumberShortner } from "utils";
 
@@ -68,7 +69,7 @@ const { t } = useTranslation();
 
   const [data] = useState(PersonalizeActions);
   const actions = data;
-
+console.log(data,"data_______")
   const hasProduct = true;
   const product = useMemo(() => {
     if (hasProduct) {
@@ -370,7 +371,7 @@ const { t } = useTranslation();
                   </MenuButton>
                   <MenuList className="absolute -translate-y-[calc(100%+0.5rem)] -translate-x-9 text-base">
                     <MenuItem>
-                      <p>{t("hide", "Hide")}</p>
+                      {/* <p>{t("hide", "Hide")}</p>  */}
                     </MenuItem>
                     <MenuItem>
                       <p>{t("go_to_post", "Go to post")}</p>
@@ -380,11 +381,16 @@ const { t } = useTranslation();
                         {t("report_user", "Report user")}
                       </p>
                     </MenuItem>
-                    <MenuItem>
+                  
+                    <MenuItem onClick={() => {
+                      const postUrl = `${window.location.origin}/profle/${v?.profile?.username}`
+                      navigator.clipboard.writeText(postUrl);
+                      toast.success("Link copied to clipboard!");
+                    }}>
                       <p>{t("copy_link", "Copy link")}</p>
                     </MenuItem>
                     <MenuItem>
-                      <p>{t("cancel", "Cancel")}</p>
+                      {/* <p>{t("cancel", "Cancel")}</p> */}
                     </MenuItem>
                   </MenuList>
                 </Menu>

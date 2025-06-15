@@ -111,6 +111,7 @@ export function useForm<TForm>(
     inputProps,
     dateInputProps,
     isValid: () => validate()[0],
+    
     setValue: (v: TForm) => setData({ ...v, ...constents }),
     reset: () => setData(initial),
     setInitialData,

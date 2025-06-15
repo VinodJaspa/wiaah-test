@@ -7,6 +7,7 @@ import {
 import { AttachmentType, ContentHostType } from "@features/API";
 import { Button, Divider } from "@partials";
 import { useActionComments } from "@src/Hooks";
+import { useRouter } from "next/router";
 import { getRandomImage, PostCardPlaceHolder } from "placeholder";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,7 @@ import { Input } from "ui";
 import { cn } from "utils";
 
 interface PostData {
+  profileInfo(profileInfo: any, arg1: string): unknown;
   affiliation?: {
     itemType?: string;
   };
@@ -72,9 +74,12 @@ const { t } = useTranslation();
   // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
 
   const post = data;
-
+  console.log(data.profileInfo
+    ,"data----");
+  
+  const router = useRouter();
   const handleGenerateLink = () => {
-    // if (!user) return;
+    if (!user) return;
 
     const chars =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -93,13 +98,19 @@ const { t } = useTranslation();
       <div className="flex w-1/2 h-full bg-black relative">
         {renderChild(post!)}
         <button
-          onClick={() => setIsUsernameShowing(!isUsernameShowing)}
+          onClick={() => {
+             router.push(`/profile/${data?.profileInfo.name}`);
+            setIsUsernameShowing(!isUsernameShowing)}
+
+          }
           className="absolute left-5 bottom-5 w-7 h-7 bg-gray-700 rounded-full flex items-center justify-center"
         >
           <FaUser className="text-white" />
         </button>
         {isUsernameShowing && (
-          <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-2 py-1 font-medium">
+          <p 
+          onClick={()=>router.push(`/profile/${data?.profileInfo.name}`)}
+           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white px-2 py-1 font-medium">
             Username
           </p>
         )}

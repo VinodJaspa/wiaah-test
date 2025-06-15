@@ -155,7 +155,7 @@ const { t } = useTranslation();
                 profileInfo={FAKE_PROFILE_INFO}
               />
               <SocialPostsCommentsDrawer />
-              <ShareWithModal />
+              <ShareWithModal />``
             </div>
             {profileInfo && (
               <>

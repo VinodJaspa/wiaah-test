@@ -34,6 +34,7 @@ import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
       secretKey: 'secret',
       serviceKey: 'servicekey',
       provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: undefined
     }),
   ],
   providers: [

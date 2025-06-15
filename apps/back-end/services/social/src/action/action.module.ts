@@ -18,6 +18,7 @@ import { EffectService } from 'src/effect/effect.service';
       secretKey: 'secret',
       serviceKey: 'servicekey',
       provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: undefined
     }),
   ],
   providers: [

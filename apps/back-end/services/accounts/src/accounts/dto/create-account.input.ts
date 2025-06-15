@@ -47,7 +47,7 @@ export class CreateAccountInput {
   phone?: string;
   
   @Field(() => GraphQLUpload, { nullable: true }) 
-  photo?: Promise<FileUpload>;
+  photo?: string ;
 }
 
 @InputType()

@@ -24,4 +24,4 @@ export * from "./mocks";
 export * from "./cn";
 export * from "./yupValidation";
 
-export const isDev = false;
+export const isDev = true;

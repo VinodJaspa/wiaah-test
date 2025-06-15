@@ -3,20 +3,18 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 
-const PhotoUploader = ({imageSrc , setImageSrc,handleChange}) => {
+const PhotoUploader = ({ imageSrc, setImageSrc, handleChange }) => {
   const { t } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
   // Handle file selection
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
     fileInputRef.current?.click();
+
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Pass the file object directly, not the base64 string
-      handleChange("photo", file);
-      
       // Optionally, show a preview with base64
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -24,9 +22,32 @@ const PhotoUploader = ({imageSrc , setImageSrc,handleChange}) => {
       };
       reader.readAsDataURL(file);
     }
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default1");
+    const cloudName = "dvhitbmqt"; // Replace with your Cloudinary cloud name
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = await response.json();
+      handleChange("photo",data.secure_url)
+      console.log("Upload successful", data);
+    } catch (err) {
+      console.error("Cloudinary upload error:", err);
+      throw err;
+    }
+
   };
-  
-  
+
+
   // Handle webcam capture
   const handleTakePhoto = async () => {
     try {
@@ -80,7 +101,7 @@ const PhotoUploader = ({imageSrc , setImageSrc,handleChange}) => {
           {t("with your webcam", "with your webcam")}
         </div>
       </div>
-    
+
     </div>
   );
 };

@@ -75,13 +75,17 @@ export const AccountSignup = forwardRef(
             },
             onError(err: any) {
               console.log(err, "Signin error");
-              toast.error((err as Error).message || "Oops! somethhing went wrong!");
+              // toast.error(err.message || "Oops! somethhing went wrong!");
             }
           });
         },
         onError(err: any) {
-          console.log(err, "Signup error");
-          toast.error((err as Error).message || "Signup failed");
+          console.log("Signup error:", err);
+
+          // Use `err.message` directly — NOT `err.response.errors[0]`
+          const message = err?.message || "Signup failed";
+        
+          toast.error(message);
         }
       });
     };

@@ -111,7 +111,9 @@ const { t } = useTranslation();
                       id: post.profileInfo?.id || "",
                     }}
                     onProfileClick={(e) => {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                       e.stopPropagation;
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                       onProfileClick && onProfileClick();
                     }}
                   />
@@ -139,6 +141,7 @@ const { t } = useTranslation();
               <div
                 onClick={(e) => {
                   e.stopPropagation();
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   onLocationClick && onLocationClick();
                 }}
                 className="cursor-pointer flex gap-1 items-center"

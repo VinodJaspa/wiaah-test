@@ -149,6 +149,9 @@ const { t } = useTranslation();
                   <Verified className="text-[#0084FF] w-5 h-5" />
                 )}
               </div>
+              <p className="text-[#8E8E8E] text-xs">
+                  {TimeDiffNarrow(comment.commentedAt)} ago
+                </p>
             </HStack>
           </div>
           <div className="py-2">
@@ -165,9 +168,7 @@ const { t } = useTranslation();
           <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
             <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
               <div className="flex gap-2 items-center">
-                <p className="text-[#8E8E8E] text-xs">
-                  {TimeDiffNarrow(comment.commentedAt)} ago
-                </p>
+              
                 <button onClick={handleLikeDislike}>
                   {isLiked ? (
                     <HeartFillIcon className="w-4 h-4 mt-1" />

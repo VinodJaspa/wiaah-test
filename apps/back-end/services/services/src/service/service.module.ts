@@ -18,6 +18,7 @@ import { ServiceSeederService } from './service.seeder';
       secretKey: 'secret',
       serviceKey: 'servicekey',
       provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: UploadServiceProviders.CLOUDINARY
     }),
     ClientsModule.register([
       {

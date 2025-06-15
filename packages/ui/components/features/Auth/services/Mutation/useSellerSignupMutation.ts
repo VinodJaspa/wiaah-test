@@ -1,15 +1,16 @@
 import { CreateAccountInput, Exact, Mutation } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
+import { toast } from "react-toastify";
 
 export type SellerSignupMutationVariables = Exact<{
   args: CreateAccountInput;
 }>;
 
-type SellerSignupMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "register"
->;
+type SellerSignupMutation = {
+  __typename?: "Mutation";
+  register: string;
+};
 
 export const useSignupMutation = () => {
   const client = createGraphqlRequestClient();
@@ -20,33 +21,37 @@ export const useSignupMutation = () => {
     }
   `);
 
-  return useMutation<string, unknown, SellerSignupMutationVariables["args"]>(
-    "seller-signup",
-    async (args) => {
+  return useMutation<string, unknown, SellerSignupMutationVariables["args"]>({
+    mutationKey: "seller-signup",
+    mutationFn: async (args) => {
       try {
-        const res :any= await client
-          .setVariables<SellerSignupMutationVariables>({
-            args: { ...args },
-          })
+        const res = await client
+          .setVariables<SellerSignupMutationVariables>({ args })
           .send<SellerSignupMutation>();
-          console.log("GraphQL response errors:", res);
-        // If GraphQL returned errors, throw them
-        if (res?.errors && res.errors.length > 0) {
-          throw new Error(res.errors[0].message || "Signup failed");
-        }
-        const result = res?.data?.register;
-        if (!result) {
-          throw new Error("No data returned from server.");
-        }
-        return result;
-      } catch (error: any) {
-        // Print the full error for debugging
-        console.error("GraphQL error caught:", error);
 
-        const gqlMessage = error?.response?.errors?.[0]?.message;
-        throw new Error(gqlMessage || error.message || "Signup failed.");
+        if (res.errors?.length) {
+          const graphQLError:any = res.errors[0];
+          const code = graphQLError?.extensions?.errorCode;
+          const message = graphQLError?.message || "Signup failed";
+
+          // You could map known error codes here if needed
+          throw new Error(`${code ? `(${code}) ` : ""}${message}`);
+        }
+
+        if (!res.data?.register) {
+          throw new Error("Signup failed: No response data.");
+        }
+
+        return res.data.register;
+      } catch (err: any) {
+        console.error("Signup Error:", err);
+        throw err;
       }
-    }
-  );
+    },
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+      
+      }
+    },
+  });
 };
-

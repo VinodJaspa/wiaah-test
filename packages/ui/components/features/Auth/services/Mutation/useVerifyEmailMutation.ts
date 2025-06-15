@@ -18,6 +18,9 @@ export const useVerifyEmailMutation = () => {
     `
     mutation verify(
         $code:String!
+    $email: String!
+        
+        
     ){
         verifyEmail(
             EmailVerificationInput:{

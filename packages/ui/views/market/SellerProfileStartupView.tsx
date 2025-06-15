@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
@@ -37,8 +37,9 @@ import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+
 import 'react-circular-progressbar/dist/styles.css';
+import { toast } from "react-toastify";
 interface StepperProps {
   setFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   isFormSubmitting: boolean;
@@ -67,12 +68,16 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
     if (typeof submitFn === "function") {
       setFormSubmitting(true);
       try {
-        await submitFn(); // assume it's a Promise
+        await submitFn();
       } finally {
         setFormSubmitting(false);
       }
     }
   };
+  React.useEffect(() => {
+    console.log(isFormSubmitting, "isFormSubmitting")
+  }, [isFormSubmitting])
+
 
   const requestPrevStep = () => {
     setCurrentStep((prev) => prev - 1);
@@ -226,8 +231,18 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
   const currentStepComp = steps.at(currentStep) || null;
   const nextStep = steps.at(currentStep + 1) || null;
   const percentage = ((currentStep + 1) / steps.length) * 100;
+  if (isFormSubmitting) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="rounded-full h-20 w-20 bg-violet-800 animate-ping"></div>
+      </div>
+    );
+  }
+  
+
   return isMobile ? (
     <div className="flex flex-col gap-2 w-full h-full p-2">
+
       <HStack className="p-2">
         <div className="relative flex justify-center items-center">
           <svg
@@ -437,12 +452,14 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
     ref
   ) => {
     const { t } = useTranslation();
+    const { data: user } = useGetMyAccountQuery();
+
     const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
       code: "",
+
     });
     const { mutate } = useVerifyEmailMutation();
     const { mutate: resendCode } = useResendRegisterationCodeMutation();
-    const { data: user } = useGetMyAccountQuery();
     const [cooldown, setCooldown] = React.useState(0);
 
     React.useEffect(() => {
@@ -502,9 +519,23 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
           </button>
         </div>
 
-        <Button className="w-full bg-primary">
+        <Button className="w-full bg-primary" onClick={() => {
+          if (!form.code || form.code.length < 6) {
+            toast.error("Please enter the 6-digit code.");
+            return;
+          }
+
+          mutate(form, {
+            onSuccess,
+            onError: (err) => {
+              console.error("OTP verification failed", err);
+              toast.error("Invalid or expired code. Please try again.");
+            }
+          });
+        }}>
           {t("Verify")}
         </Button>
+
       </div>
     ) : (
       <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
@@ -529,6 +560,22 @@ export const AccountSignEmailVerificationStep = React.forwardRef(
           >
             {t("RESEND")}
           </button>
+          <Button className="w-full bg-primary" onClick={() => {
+            if (!form.code || form.code.length < 6) {
+              toast.error("Please enter the 6-digit code.");
+              return;
+            }
+
+            mutate(form, {
+              onSuccess,
+              onError: (err) => {
+                console.error("OTP verification failed", err);
+                toast.error("Invalid or expired code. Please try again.");
+              }
+            });
+          }}>
+            {t("Verify")}
+          </Button>
         </div>
       </div>
 

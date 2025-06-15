@@ -23,7 +23,7 @@ export class AccountsService {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly uploadService: UploadService,
-  ) {}
+  ) { }
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {
@@ -212,57 +212,27 @@ export class AccountsService {
 
   async update(input: UpdateAccountInput, userId: string): Promise<Partial<Account>> {
     try {
-      let photoUrl: string | undefined;
-  
-      // 1. Handle file upload if photo is provided
-      if (input.photo) {
-        const upload = await input.photo; // Await the Promise<FileUpload>
-        const { createReadStream, filename, mimetype } = upload;
-  
-        const uploadResult = await this.uploadService.uploadFiles([
-          {
-            file: {
-              stream: createReadStream(),
-              meta: {
-                name: filename,
-                mimetype,
-              },
-            },
-            options: {
-              allowedMimtypes: this.uploadService.mimetypes.image.all,
-              maxSizeKb: 1024,
-            },
-          },
-        ]);
-  
-        if (!uploadResult[0]) {
-          throw new Error('Photo upload failed');
-        }
-  
-        photoUrl = uploadResult[0].src;
-      }
-  
       // 2. Build the Prisma update object excluding `photo` field if not needed
       const { photo, ...rest } = input;
       const updateData = {
         ...rest,
-        ...(photoUrl ? { photo: photoUrl } : {}),
+
       };
-  
-      // 3. Call Prisma update
+
+      // 3. Call Prisma updatez
       const { password, ...res } = await this.prisma.account.update({
         where: { id: userId },
         data: updateData,
       });
-  
+
       return res;
-  
+
     } catch (err) {
       console.error(err);
       throw new BadRequestException('account was not found or update failed');
     }
   }
-  
+
 
   async updatePassword(password: string, userId: string) {
     await this.prisma.account.update({

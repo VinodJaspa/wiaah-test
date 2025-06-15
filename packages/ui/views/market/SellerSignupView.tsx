@@ -36,7 +36,7 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
             err?.response?.data?.message ||
             err?.message ||
             "Signup failed. Please try again.";
-          toast.error(message);
+          // toast.error(message);
           console.error("Signup error:", err);
         },
       }

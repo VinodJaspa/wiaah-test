@@ -69,36 +69,6 @@ export class AccountsResolver {
 
     }: CreateAccountInput,
   ) {
-    let photoUrl: string | undefined;
-
-  if (photo) {
-    const { createReadStream, filename, mimetype } = await photo;
-    const stream = createReadStream();
-
-    const uploadResult = await this.uploadService.uploadFiles([
-      {
-        file: {
-          stream,
-          meta: {
-            name: filename,
-            mimetype,
-          },
-        },
-        options: {
-          allowedMimtypes: this.uploadService.mimetypes.image.all,
-          maxSizeKb: 1024,
-        },
-      },
-    ]);
-
-    if (!uploadResult[0]) {
-      throw new Error('Photo upload failed');
-    }
-
-    photoUrl = uploadResult[0].src;
-    console.log(photoUrl ,"url");
-    
-  }
     // Check if the email already exists in the system
     const emailExists = await this.prisma.account.findUnique({
       where: {
@@ -107,6 +77,8 @@ export class AccountsResolver {
     });
 
     if (emailExists) {
+      console.log("is it ikkkk`");
+      
       throw new EmailAlreadyExistsException(); // Custom exception
     }
 
@@ -127,11 +99,6 @@ export class AccountsResolver {
       console.error("Stripe error:", error);
       // throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
     }
-    // 5. Upload photo if present
-
-  
-
-
     // Create the account record in the database
     const createdAccount = await this.accountsService.createAccountRecord({
       email,
@@ -144,16 +111,16 @@ export class AccountsResolver {
       phone,
       stripeCustomerId: Cacc?.id,
       stripeId: Sacc?.id,
-      photo:photoUrl
+      photo
     });
+    
 
     if (!createdAccount) {
       throw new AccountCreationFailedException(); // Handle possible failure during account creation
     }
 
-    // Optionally emit an event for account creation
-    // The event should not carry sensitive data like password or confirmPassword
-    // (This is already handled in createAccountRecord)
+ 
+    
 
     return true;
   }

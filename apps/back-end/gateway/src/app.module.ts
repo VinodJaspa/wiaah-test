@@ -25,27 +25,38 @@ import { client } from './main';
           };
         },
 
-        formatError(error) {
-          const exception: any = error?.extensions?.exception;
+        formatError(error:any) {
+          console.log(error ,"rrrrrr");
+          
+      
           const isSchemaValidationError =
             error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ||
             error.extensions.code === 'BAD_USER_INPUT';
-
+        
           const errorCodesValues = Object.values(PublicErrorCodes);
           const knownCodes = errorCodesValues.slice(
             errorCodesValues.length / 2,
             errorCodesValues.length
           );
-          const isKnownError = knownCodes.includes(exception?.code);
+          const isKnownError = knownCodes.includes(error?.extensions?.errorCode);
 
+        
           console.log({ isSchemaValidationError, isKnownError }, error);
-
+        
           if (isKnownError || isSchemaValidationError) {
-            return error;
-          } else {
-            return new UnknownError();
+            return {
+              message: error.message,
+              
+            };
           }
-        },
+        
+          // Fallback for unknown errors
+          return {
+            message: 'Something went wrong.',
+           
+          };
+        }
+        
       },
       gateway: {
         buildService({ url }) {

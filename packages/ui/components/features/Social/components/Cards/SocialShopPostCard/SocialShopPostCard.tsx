@@ -77,7 +77,7 @@ const { t } = useTranslation();
         alt={postInfo.product.title}
       />
 
-      {discount ? (
+      {/* {discount ? (
         <div className="absolute text-xs sm:text-sm md:text-base -rotate-45 group-hover:opacity-0 transition-opacity bg-red-500 rounded z-10 text-white w-32 py-1 flex justify-center items-center origin-center -left-8 top-4">
           {discount.amount}% {t("OFF")}
         </div>
@@ -86,7 +86,7 @@ const { t } = useTranslation();
         <div className="absolute text-xs sm:text-sm md:text-base -rotate-45 group-hover:opacity-0 transition-opacity gap-1 bg-red-500 rounded z-10 text-white w-52 py-1 flex justify-center items-center origin-center -left-12 top-12">
           <PriceDisplay price={cashback.amount} /> {t("Cash Back")}
         </div>
-      ) : null}
+      ) : null} */}
       <div
         onClick={handleOpen}
         className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"
