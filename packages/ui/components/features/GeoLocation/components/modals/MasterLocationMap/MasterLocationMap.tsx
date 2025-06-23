@@ -44,6 +44,7 @@ export const useMasterLocationMapModal = (props?: {
   }
   function CloseMap() {
     emit();
+    localStorage.setItem("navigation","true");
   }
 
   if (subToChanges) {
@@ -138,7 +139,7 @@ const { t } = useTranslation();
             onClick={() => CloseMap()}
             className="cursor-pointer absolute bg-black text-white text-2xl bg-opacity-25 rounded-xl p-2 top-4 right-4"
           >
-            <CloseIcon />
+            <CloseIcon  />
           </div>
         </ModalCloseButton>
       </ModalContent>

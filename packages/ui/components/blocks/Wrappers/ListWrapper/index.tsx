@@ -32,7 +32,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
 
     return newItems;
   }
-
+console.log("cols",cols)
   return (
     <div
       className={`flex justify-between w-full ${gap ? "gap-4" : "gap-1"}`}

@@ -1,3 +1,4 @@
+'use client';
 import { SellerDrawerOpenState } from "@src/state";
 import {
   Container,
@@ -154,10 +155,12 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   children,
   header = "main",
   containerProps,
-  sideBar = true,
+  sideBar,
   showMobileHeader = false,
   noContainer = false,
 }) => {
+  console.log(sideBar, "sideBar", typeof window);
+
   const { isMobile } = useResponsive();
   const { getCurrentPath } = useRouting();
   const { accountType } = useAccountType();
@@ -176,14 +179,33 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     setDrawerOpen(false);
   };
 
+
+  const [isSidebar, setSidebar] = React.useState(true);
   const { pagination: storiesPagination } = usePaginationControls();
 
   // Graphql is not ready yet
   const { data: _stories } = useGetRecentStories({
     pagination: storiesPagination,
   });
+  let storedNav = true;
+  if (typeof window !== "undefined") {
+     storedNav = JSON.parse(localStorage.getItem("navigation") || "true");
+   
+  }
 
+  React.useEffect(() => {
+    console.log(storedNav, "navvv");
+
+    if (storedNav === true) {
+      setSidebar(true);
+    } else {
+      setSidebar(false);
+    }
+  }, [storedNav]);
   const stories = FAKE_STORIES;
+
+
+
 
   const { pagination: hashtagPagi } = usePaginationControls();
   const { data: hashtags } = useGetDiscoverHashtags({
@@ -191,11 +213,12 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   });
 
   const showHeader = !isMobile || getCurrentPath() === "/";
+  //Todo -:
 
   return (
     <Root>
       <SocialLayout>
-        {sideBar && (
+        {isSidebar && (
           <SellerNavigationSideBar
             headerElement={
               <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
@@ -249,15 +272,13 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         )}
         <Container
           noContainer={true}
-          className={`${
-            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
-          } h-full w-full`}
+          className={`${isMobile ? "" : isSidebar ? "pl-56 pr-4" : "px-8"
+            } h-full w-full`}
         >
           {header && header !== null && (showMobileHeader || showHeader) ? (
             <div
-              className={`bg-white fixed z-[35] w-full top-0 left-0 ${
-                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-              }`}
+              className={`bg-white fixed z-[35] w-full top-0 left-0 ${isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+                }`}
               ref={headerRef}
             >
               <HeaderSwitcher
@@ -273,9 +294,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                   ? `calc(${headerHeight || 0}px + 2rem)`
                   : undefined,
               }}
-              className={`${
-                containerProps?.className || ""
-              } overflow-hidden h-[max(fit,100%)] flex justify-center `}
+              className={`${containerProps?.className || ""
+                } overflow-hidden h-[max(fit,100%)] flex justify-center `}
               {...containerProps}
             >
               {children}

@@ -31,7 +31,7 @@ import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 
 export const HashtagPageView: React.FC = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   const isLg = useMediaQuery({ minWidth: 1024 });
 
@@ -107,14 +107,18 @@ const { t } = useTranslation();
           border="bottom"
           tabs={tabs}
           tabListProps={{
-            className: "w-full md:w-9/12 flex justify-center mx-auto",
+            className: "w-full m-4 pl-3 flex justify-center mx-auto",
           }}
         >
-          <div className="w-full md:h-[400px] h[220px] no-scrollbar flex gap-4 mb-8 overflow-x-scroll  ">
+          <div className="w-full overflow-x-auto no-scrollbar flex gap-x-4 scroll-snap-x snap-mandatory px-4 mb-2">
             {MostLikedPostData.map((post, i) => (
-              <MostLikedPost image={post.postInfo.thumbnail || ""} key={i} />
+              <div key={i} className="snap-start shrink-0">
+                <MostLikedPost image={post.postInfo.thumbnail || ""} />
+              </div>
             ))}
           </div>
+
+
         </TabsViewer>
       </div>
     </div>

@@ -92,7 +92,7 @@ const { t } = useTranslation();
       },
       {
         label: t("Copy link"),
-        onClick: () => { },
+        onClick: () => {alert("okkk") },
       },
       {
         label: t("Disable notification"),

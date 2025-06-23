@@ -6,7 +6,7 @@ const ActionsPage: NextPage = () => {
   return (
     <>
       <Head>Wiaah | Seller actions</Head>
-      <SellerLayout>
+      <SellerLayout sideBar={false}>
         <ActionsView />
       </SellerLayout>
     </>

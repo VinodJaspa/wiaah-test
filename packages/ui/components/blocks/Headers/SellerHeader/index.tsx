@@ -106,8 +106,12 @@ const { t } = useTranslation();
               iconProps={{
                 className: "fill-transparent",
               }}
-              onClick={() =>
+              onClick={() =>{
+                localStorage.setItem("navigation", "false");
+
                 SearchForLocations([{ id: "default", searchType: "service" }])
+              }
+               
               }
               className="text-icon fill-transparent text-lightBlack"
             />

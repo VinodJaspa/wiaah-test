@@ -382,11 +382,7 @@ console.log(data,"data_______")
                       </p>
                     </MenuItem>
                   
-                    <MenuItem onClick={() => {
-                      const postUrl = `${window.location.origin}/profle/${v?.profile?.username}`
-                      navigator.clipboard.writeText(postUrl);
-                      toast.success("Link copied to clipboard!");
-                    }}>
+                    <MenuItem >
                       <p>{t("copy_link", "Copy link")}</p>
                     </MenuItem>
                     <MenuItem>

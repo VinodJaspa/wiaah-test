@@ -22,6 +22,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   placeholder,
 }) => {
   function handleSearchInputChange(value: string) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onValueChange && onValueChange(value);
   }
 const { t } = useTranslation();

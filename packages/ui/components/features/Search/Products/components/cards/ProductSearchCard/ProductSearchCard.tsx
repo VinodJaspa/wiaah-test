@@ -37,7 +37,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
   const { cashback, discount, rating, reviewsCount, title, colors, thumbnail } =
     productInfo;
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
       <AspectRatio ratio={1}>
@@ -47,7 +47,7 @@ const { t } = useTranslation();
             src={thumbnail}
             alt={title}
           />
-          <div className="px-4 text-primary bg-white rounded-lg absolute top-3 left-4 py-2 flex gap-1 text-xs font-bold">
+          <div className="bg-[rgba(76,75,82,0.75)] px-4 text-primary rounded-lg absolute top-3 left-4 py-2 flex gap-1 text-xs font-bold">
             <PriceDisplay price={cashback} />
             <p>{t("Cashback")}</p>
           </div>
@@ -99,9 +99,10 @@ const { t } = useTranslation();
               )})`}</p>
             </div>
           </div>
-          <p className="font-semibold text-xs px-5 py-[0.625rem] h-fit w-fit bg-primary-50 rounded-full">
+          <p className="font-semibold text-xs px-2 py-[0.2rem] h-fit w-fit bg-primary-50 rounded-full whitespace-nowrap">
             {discount}% {t("off")}
           </p>
+
         </div>
         <div className="flex gap-[0.875rem] flex-wrap">
           {mapArray(colors, (color, i) => (

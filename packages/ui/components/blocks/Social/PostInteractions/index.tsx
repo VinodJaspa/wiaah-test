@@ -51,10 +51,12 @@ const { t } = useTranslation();
       handleOpen();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onInteraction && onInteraction({ type });
   }
 
   function handleShare(mothed: ShareMotheds) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onShare && onShare(mothed);
   }
 
@@ -62,57 +64,55 @@ const { t } = useTranslation();
 
   return (
     <>
-      <ShadcnFlex className={`py-2 justify-around ${className}`}>
-        <ShadcnStack
-          data-testid="PostInteractionLikes"
-          className="cursor-pointer flex flex-col"
-          onClick={() => handleInteraction("like")}
-        >
-          {!isLiked?.status ? (
-            <ShadcnIcon
-              onClick={onHeartIConClick}
-              as={HiOutlineHeart}
-              className="text-4xl text-primary"
-            />
+   <ShadcnFlex className={`py-2 justify-around ${className}`}>
+  <ShadcnStack
+    data-testid="PostInteractionLikes"
+    className="cursor-pointer flex flex-col items-center space-y-1"
+    onClick={() => handleInteraction("like")}
+  >
+    {!isLiked?.status ? (
+      <ShadcnIcon
+        onClick={onHeartIConClick}
+        as={HiOutlineHeart}
+        className="text-4xl text-primary"
+      />
+    ) : (
+      <ShadcnIcon
+        onClick={onHeartIConClick}
+        as={HiHeart}
+        className="text-4xl text-primary"
+      />
+    )}
+    <ShadcnText className="font-semibold capitalize text-center">
+      {NumberShortner(isLiked?.reactions)}
+    </ShadcnText>
+  </ShadcnStack>
 
-          ) : (
-            <ShadcnIcon
-              onClick={onHeartIConClick}
-              as={HiHeart}
-              className="text-4xl text-primary"
-            />
+  <ShadcnStack
+    data-testid="PostInteractionComments"
+    className="cursor-pointer flex flex-col items-center space-y-1"
+    onClick={() => handleInteraction("comment")}
+  >
+    <ShadcnIcon as={HiOutlineChat} className="text-4xl text-primary" />
+    <ShadcnText className="font-semibold capitalize text-center">
+      {NumberShortner(comments)}
+    </ShadcnText>
+  </ShadcnStack>
 
-          )}
-          <ShadcnText className="font-semibold capitalize">
-            {NumberShortner(isLiked?.reactions)}
-          </ShadcnText>
+  <ShadcnStack
+    data-testid="PostInteractionShares"
+    className="cursor-pointer flex flex-col items-center space-y-1"
+    onClick={() =>
+      shareLink(getUrl((routes) => routes.visitSocialPost(postId)))
+    }
+  >
+    <ShadcnIcon as={HiShare} className="text-4xl text-primary" />
+    <ShadcnText className="font-semibold capitalize text-center">
+      {NumberShortner(shares)}
+    </ShadcnText>
+  </ShadcnStack>
+</ShadcnFlex>
 
-        </ShadcnStack>
-        <ShadcnStack
-          data-testid="PostInteractionComments"
-          className="cursor-pointer flex flex-col items-center"
-          onClick={() => handleInteraction("comment")}
-        >
-          <ShadcnIcon as={HiOutlineChat} className="text-4xl text-primary" />
-          <ShadcnText className="font-semibold capitalize">
-            {NumberShortner(comments)}
-          </ShadcnText>
-        </ShadcnStack>
-
-        <ShadcnStack
-          data-testid="PostInteractionShares"
-          className="cursor-pointer flex flex-col items-center"
-          onClick={() =>
-            shareLink(getUrl((routes) => routes.visitSocialPost(postId)))
-          }
-        >
-          <ShadcnIcon as={HiShare} className="text-4xl text-primary" />
-          <ShadcnText className="font-semibold capitalize">
-            {NumberShortner(shares)}
-          </ShadcnText>
-        </ShadcnStack>
-
-      </ShadcnFlex>
 
       {post && postId && (
         <PostViewPopup

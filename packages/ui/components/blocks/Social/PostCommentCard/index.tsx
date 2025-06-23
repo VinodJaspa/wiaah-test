@@ -31,6 +31,7 @@ import { NumberShortner } from "utils";
 import { Attachment, Comment, Profile } from "../../../features/API";
 import { PostReplyCard } from "../PostReplyCard";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export interface PostCommentCardProps {
   onReply?: (message: string) => void;
@@ -76,6 +77,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const { mutate: createComment } = useCommentOnContent();
   const { shareLink, showContentComments } = useSocialControls();
   const { getUrl } = useRouting();
+  const router = useRouter();
 
   const [reply, setReply] = React.useState<boolean>(false);
   const [isFollowing, setIsFollowing] = React.useState<boolean>(false);
@@ -84,6 +86,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const [booked, setBooked] = React.useState<boolean>(false);
   const [bookedVal, setBookedVal] = React.useState<number>(15);
   const [shareVal, setShareVal] = React.useState<number>(15);
+
   const [shouldCommentRepliesOpen, setShouldCommentRepliesOpen] =
     React.useState<{ state: boolean; count: number }>({
       state: false,
@@ -141,7 +144,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     setLikeVal((prev) => (!isLiked ? prev + 1 : prev - 1));
   };
 
-  console.log(profile, "profile");
+  console.log(comment, "comment");
 
   return (
     <div ref={ref} className="flex bg-white w-full gap-2 px-3">
@@ -367,11 +370,14 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             <MenuItem>
               {/* <p>{t("hide", "Hide")}</p> */}
             </MenuItem>
-            <MenuItem onClick={() => {
-              const postUrl = `${window.location.origin}/profle/${v?.profile?.username}`
-              navigator.clipboard.writeText(postUrl);
-              toast.success("Link copied to clipboard!");
-            }}>
+            <MenuItem
+            onClick={() => {
+              if (profile?.username) {
+                router.push(`/profile/${profile.username}`);
+              }
+            }}
+            >
+              
               <p>{t("go_to_post", "Go to post")}</p>
             </MenuItem>
             <MenuItem>
@@ -380,7 +386,11 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               </p>
             </MenuItem>
             <MenuItem>
-              <p>{t("copy_link", "Copy link")}</p>
+              <p onClick={() => {
+                const postUrl = `${window.location.origin}/profle/${profile?.username}`
+                navigator.clipboard.writeText(postUrl);
+                toast.success("Link copied to clipboard!");
+              }}>{t("copy_link", "Copy link")}</p>
             </MenuItem>
             <MenuItem>
               {/* <p>{t("cancel", "Cancel")}</p> */}

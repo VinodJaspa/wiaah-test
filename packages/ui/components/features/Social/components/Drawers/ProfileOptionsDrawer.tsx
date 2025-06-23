@@ -171,18 +171,18 @@ export const ProfileOptionsDrawer = () => {
       <DrawerOverlay />
       <DrawerContent style={{ overflow: "visible" }} className="p-4">
         <Stack col divider={<Divider className="my-4" />}>
-          {mapArray(links, ({ icon, link }) => (
-            <HStack
-              onClick={() => {
-                visit((r) => r.addPath(link.href), false);
-                closeMyProfileNav();
-              }}
-              className="font-medium cursor-pointer"
-            >
-              {runIfFn(icon)}
-              <TranslationText translationObject={link.name} />
-            </HStack>
-          ))}
+          {/* {mapArray(links, ({ icon, link }) => (
+            // <HStack
+            //   onClick={() => {
+            //     visit((r) => r.addPath(link.href), false);
+            //     // closeMyProfileNav`();
+            //   }}
+            //   className="font-medium cursor-pointer"
+            // >
+            //   {runIfFn(icon)}
+            //   <TranslationText translationObject={link.name} />
+            // </HStack>
+          ))} */}
         </Stack>
       </DrawerContent>
     </Drawer>
