@@ -92,6 +92,7 @@ const { t } = useTranslation();
   };
 
   function HandleReturn() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     handleRetrun && handleRetrun();
   }
 
@@ -141,7 +142,7 @@ const { t } = useTranslation();
         </div>
         <div
           style={{
-            width: `calc(100% - ${isMobile ? 0 : opened ? 320 : 96}px)`,
+            width: `calc(100% - ${isMobile ? 0 : opened ? 300 : 96}px)`,
             paddingRight: isMobile ? undefined : minGap,
             paddingLeft: isMobile ? undefined : minGap,
           }}

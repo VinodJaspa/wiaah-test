@@ -69,6 +69,7 @@ export const SettingsSectionsSidebar: React.FC<
                           setOpen((v) => !v);
                         }
                       } else {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                         onPanelClick && onPanelClick(panelUrl, panelName);
                       }
                     }}
@@ -147,6 +148,7 @@ export const SettingsSectionsSidebar: React.FC<
                           setOpen((v) => !v);
                         }
                       } else {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                         onPanelClick && onPanelClick(panelUrl, panelName);
                       }
                     }}
@@ -160,7 +162,7 @@ export const SettingsSectionsSidebar: React.FC<
                       {iconOnly ? null : (
                         <div className="flex flex-col">
                           <TranslationText
-                            className="font-bold"
+                           className="font-bold text-sm md:text-sm lg:text-md"
                             translationObject={panelName}
                           />
                         </div>

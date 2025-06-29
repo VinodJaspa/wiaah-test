@@ -35,6 +35,7 @@ import {
 } from "ui";
 import { ImBlocked, ImProfile } from "react-icons/im";
 import { useResponsive } from "hooks";
+import VerifyIdentityStart from "components/verify-IdentitySteps/VerifyIdentity";
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "management/account-settings";
@@ -141,7 +142,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: <Verified />,
     panelUrl: "/my-verification",
 
-    panelComponent: <MyVerificationSection />,
+    panelComponent: <VerifyIdentityStart />,
   },
   {
     panelName: "Notification",
