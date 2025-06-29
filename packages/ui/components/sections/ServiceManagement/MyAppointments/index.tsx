@@ -1,17 +1,9 @@
 import React from "react";
-import { BookDetailsSection } from "./BookDetails";
-import { BookingsCalenderSection } from "./BookingsCalender";
-interface BookingsSectionCtxValues {
-  bookId: string | null;
-  setBookId: (id: string | null) => any;
-}
 
-export const BookingsSectionCtx = React.createContext<BookingsSectionCtxValues>(
-  {
-    bookId: null,
-    setBookId: () => {},
-  }
-);
+
+import { BookingsSectionCtx } from "./BookingsSectionCtx";
+import { BookingsCalenderSection } from "./BookingsCalender";
+
 
 export const BookingsSection: React.FC = () => {
   const [bookId, setBookId] = React.useState<string | null>(null);

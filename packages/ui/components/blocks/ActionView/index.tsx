@@ -170,6 +170,7 @@ export
         handlePlayPause(nextIndex);
       };
     }, [actions.length, handlePlayPause, playingIndex]);
+console.log(actions ,"actions");
 
     React.useEffect(() => {
       const handleScroll = debouncedScrollHandler();

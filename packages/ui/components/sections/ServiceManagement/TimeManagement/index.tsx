@@ -8,8 +8,7 @@ import {
   TabTitle,
   SectionWrapper,
   SectionHeader,
-  useGetMyWorkingHoursQuery,
-  useUpdateWeekWorkingHoursMutation,
+
   useResponsive,
   HStack,
   ArrowLeftAlt1Icon,
@@ -28,12 +27,13 @@ import { Calender, SpecialSchedule } from "./SpecialSchedule";
 import { WeekdaysSchedule } from "./WeekdaysSchedule";
 import { getAllMonthsOfYear, mapArray, weekDayLong } from "@UI/../utils/src";
 import { useRouting } from "@UI/../routing";
-export interface TimeManagementSectionProps {}
-
+export interface TimeManagementSectionProps { }
+import { useGetMyWorkingHoursQuery } from "ui/components/features/Services/Services/queries"
+import { useUpdateWeekWorkingHoursMutation } from "ui/components/features/Services/Services/mutation";
 export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
-> = ({}) => {
-const { t } = useTranslation();
+> = ({ }) => {
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [tab, setTab] = React.useState(0);
 
@@ -44,7 +44,13 @@ const { t } = useTranslation();
   const { data } = useGetMyWorkingHoursQuery();
 
   const { mutate } = useUpdateWeekWorkingHoursMutation();
+  const createdYear = new Date(profile?.createdAt || "").getFullYear();
+  const currentYear = new Date().getFullYear();
 
+  const yearOptions =
+    !isNaN(createdYear) && createdYear <= currentYear
+      ? [...Array(currentYear - createdYear + 1)].map((_, i) => createdYear + i)
+      : [];
   return isMobile ? (
     <div className="flex flex-col gap-2 w-full p-2">
       <HStack className="justify-center relative">
@@ -83,13 +89,13 @@ const { t } = useTranslation();
                     <TimeInput
                       label={t("Open")}
                       date={new Date()}
-                      onChange={() => {}}
+                      onChange={() => { }}
                     />
                     <ArrowRefreshIcon className="text-xl mb-4" />
                     <TimeInput
                       label={t("Close")}
                       date={new Date()}
-                      onChange={() => {}}
+                      onChange={() => { }}
                     />
                   </div>
                   <Divider className="my-0" />
@@ -99,9 +105,9 @@ const { t } = useTranslation();
                     </p>
                   </div>
                   <div className="text-base flex items-center self-center gap-6">
-                    <TimeInput date={new Date()} onChange={() => {}} p="p-2" />
+                    <TimeInput date={new Date()} onChange={() => { }} p="p-2" />
                     <p className="text-lg font-medium">{t("to")}</p>
-                    <TimeInput date={new Date()} onChange={() => {}} p="p-2" />
+                    <TimeInput date={new Date()} onChange={() => { }} p="p-2" />
                   </div>
                 </div>
               </div>
@@ -109,7 +115,7 @@ const { t } = useTranslation();
           </div>
 
           <div className="flex flex-col w-full gap-2">
-            <Select className="">
+            {/* <Select className="">
               {[
                 ...Array(
                   new Date().getFullYear() -
@@ -126,7 +132,15 @@ const { t } = useTranslation();
                   </SelectOption>
                 );
               })}
+            </Select> */}
+            <Select className="">
+              {yearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
             </Select>
+
 
             <div className="flex flex-col gap-4">
               {months.map((month, i) => (
@@ -156,9 +170,8 @@ const { t } = useTranslation();
           <TabTitle TabKey="0">
             {({ currentTabIdx }) => (
               <p
-                className={`${
-                  currentTabIdx === 0 ? "border-b-2" : ""
-                }  border-b-primary pb-2`}
+                className={`${currentTabIdx === 0 ? "border-b-2" : ""
+                  }  border-b-primary pb-2`}
               >
                 {t("Schedule for the week")}
               </p>
@@ -167,9 +180,8 @@ const { t } = useTranslation();
           <TabTitle TabKey={"1"}>
             {({ currentTabIdx }) => (
               <p
-                className={`${
-                  currentTabIdx === 1 ? "border-b-2" : ""
-                }  border-b-primary pb-2`}
+                className={`${currentTabIdx === 1 ? "border-b-2" : ""
+                  }  border-b-primary pb-2`}
               >
                 {t("Special days schedule")}
               </p>

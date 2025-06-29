@@ -17,7 +17,7 @@ import {
   ImageIcon,
   EditServicePresentationSection,
   ServicesIcon,
-} from "ui";
+} from "@UI/components";
 
 export const ServiceManagementView = () => {
   const baseRoute = getRouting((r) => r.visitServiceManagement());
