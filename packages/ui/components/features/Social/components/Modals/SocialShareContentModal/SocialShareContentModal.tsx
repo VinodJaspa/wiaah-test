@@ -63,7 +63,7 @@ const { t } = useTranslation();
       icon: (
         <img
           className="w-[1em] bg-primary rounded-xl px-2 h-[1em] object-contain"
-          src="/logo.svg"
+          src="/wiaah_logo.png"
           alt=""
         />
       ),

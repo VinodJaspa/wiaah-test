@@ -43,6 +43,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   const { openMyProfileNav } = useSocialControls();
 const { t } = useTranslation();
   function handleLinkClick(link: NavigationLinkType) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onLinkClick && onLinkClick(link);
   }
   const { isMobile } = useResponsive();

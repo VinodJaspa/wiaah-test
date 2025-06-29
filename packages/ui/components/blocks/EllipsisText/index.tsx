@@ -154,7 +154,7 @@ const { t } = useTranslation();
       ></p>
       <div className="relative">
         <ShadcnText
-          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines}`}
+          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines} text-white`}
           ref={postTextRef}
         >
           <>

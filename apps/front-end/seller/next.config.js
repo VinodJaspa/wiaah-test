@@ -2,11 +2,12 @@ const path = require("path");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
-const withPWA = require("next-pwa")({
+const withPWA = process.env.NODE_ENV === "production" ? require("next-pwa")({
   dest: "public",
   register: true,
   skipWaiting: true,
-});
+}) : (config) => config;
+
 const WebpackBar = require("webpackbar");
 const withTM = require("next-transpile-modules")(
   [
@@ -31,7 +32,8 @@ const withTM = require("next-transpile-modules")(
 // Compose plugins: withTM → withPWA → withBundleAnalyzer
 const nextConfig = {
   swcMinify: true,
-  reactStrictMode: true,
+  reactStrictMode: false,
+
   i18n: {
     locales: ["en", "fr", "es", "de"],
     defaultLocale: "en",

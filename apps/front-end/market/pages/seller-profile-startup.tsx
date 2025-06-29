@@ -4,6 +4,9 @@ import Head from "next/head";
 import { SellerProfileStartupView, Container } from "ui";
 
 const SignUpFinalisation: NextPage = () => {
+  const [currentStep, setCurrentStep] = React.useState(0);
+  const [isFormSubmitting, setFormSubmitting] = React.useState(false);
+
   return (
     <>
       <Head>
@@ -11,7 +14,12 @@ const SignUpFinalisation: NextPage = () => {
       </Head>
       <main className="block w-full grow h-screen">
         <Container>
-          <SellerProfileStartupView />
+          <SellerProfileStartupView
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            isFormSubmitting={isFormSubmitting}
+            setFormSubmitting={setFormSubmitting}
+          />
         </Container>
       </main>
     </>

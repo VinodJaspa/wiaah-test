@@ -1,3 +1,4 @@
+"use client";
 import { PostsViewModalsHeader } from "../../../blocks/Headers";
 import { Input, ModalContent, ModalOverlay, Modal } from "../../../partials";
 import { useFileUploadModal } from "../../../../src/Hooks";
@@ -127,6 +128,7 @@ const { t } = useTranslation();
     if (!vidSrc) return;
 
     const raw = videoFiles ? videoFiles[idx] : null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onVidUpload &&
       onVidUpload(vidSrc, raw ? raw : (undefined as any), () =>
         raw ? new Blob([raw], { type: raw.type }) : undefined,
@@ -138,6 +140,7 @@ const { t } = useTranslation();
   function SendImage(img: FileRes, idx: number) {
     if (!img) return;
     const raw = imageFiles[idx];
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onImgUpload &&
       onImgUpload(img, raw, () => new Blob([raw], { type: raw.type }));
   }
@@ -170,6 +173,7 @@ const { t } = useTranslation();
                 onClose={() => setTakePicture(false)}
                 onImgCapture={(src, raw) => {
                   setTakePicture(false);
+                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   onImgUpload && onImgUpload(src, raw);
                 }}
               />

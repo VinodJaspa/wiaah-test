@@ -52,10 +52,12 @@ export const MainRoutes: MainRouterInterface = {
   route: "",
   query: {},
   dataKeys: {},
-  addPath(path: string) {
-    this.route = `${this.route}/${path}`;
-    return this;
-  },
+ addPath(path: string) {
+  const cleanCurrent = this.route.replace(/\/$/, ""); // remove trailing slash
+  const cleanNext = path.replace(/^\/+/, ""); // remove leading slashes
+  this.route = `${cleanCurrent}/${cleanNext}`;
+  return this;
+},
   id(id: string) {
     this.addPath(id);
     return this;

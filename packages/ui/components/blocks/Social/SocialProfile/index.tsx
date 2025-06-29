@@ -134,7 +134,7 @@ const { t } = useTranslation();
 
   return (
     <div
-      className={`flex flex-col md:w-fit w-9/12 md:flex-row items-center md:gap-14 gap-3 md:my-6 mt-16 `}
+      className={`flex flex-col md:w-fit w-9/12 md:flex-row items-center md:gap-14 gap-3 md:my-6 mt-0 `}
     >
       {/*<div className="flex text-white justify-between px-4 items-center absolute top-0 left-0 z-10 w-full">
         <ArrowLeftIcon className="text-xl w-10" />

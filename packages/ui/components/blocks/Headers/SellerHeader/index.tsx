@@ -1,3 +1,4 @@
+"use client"
 import {
   Avatar,
   BellOutlineIcon,
@@ -29,6 +30,8 @@ import {
 } from "@UI";
 import { getRouting, useRouting } from "@UI/../routing";
 import { useResponsive } from "hooks";
+import link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiLogOut, BiWallet } from "react-icons/bi";
@@ -40,6 +43,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { TiThListOutline } from "react-icons/ti";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn, setTestid } from "utils";
+
 
 export interface HeaderNavLink {
   link: {
@@ -67,7 +71,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const { visit } = useRouting();
   const { isMobile } = useResponsive();
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { data } = useGetMyNotificationsQuery();
 
   return (
@@ -106,12 +110,12 @@ const { t } = useTranslation();
               iconProps={{
                 className: "fill-transparent",
               }}
-              onClick={() =>{
+              onClick={() => {
                 localStorage.setItem("navigation", "false");
 
                 SearchForLocations([{ id: "default", searchType: "service" }])
               }
-               
+
               }
               className="text-icon fill-transparent text-lightBlack"
             />
@@ -264,7 +268,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
           translationKey: "account_settings",
           fallbackText: "Account Settings",
         },
-        href: getRouting((r) => r.visitAccountSettings()),
+        href: "/management/account-settings/account",
       },
       icon: <IoSettingsOutline />,
     },
@@ -284,7 +288,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
           translationKey: "shop_management",
           fallbackText: "Shop Management",
         },
-        href: getRouting((r) => r.visitShopManagement()),
+        href: "/management/shop-management/product-management",
       },
       icon: <BsShop />,
     },
@@ -294,7 +298,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
           translationKey: "service_management",
           fallbackText: "Service Management",
         },
-        href: getRouting((r) => r.visitServiceManagement()),
+        href: "/management/service-management/my-rendez-vous",
         props: setTestid("header_settings_service"),
       },
       icon: <TiThListOutline />,
@@ -305,7 +309,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
           translationKey: "shopping_management",
           fallbackText: "Shopping Management",
         },
-        href: getRouting((r) => r.visitShoppingManagement()),
+        href: "/management/shopping-management/my-wishlist",
       },
       icon: <CgShoppingBag />,
     },
@@ -331,27 +335,43 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
     },
   ];
   const { user } = useUserData();
+  const router = useRouter();
+  const [accountType, setAccountType] = React.useState<string>("");
 
-  const links = user?.accountType === "buyer" ? BuyerNavLinks : SellerNavLinks;
-
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedType = localStorage.getItem("header") || "seller"; // fallback
+      setAccountType(storedType);
+      console.log(typeof window, "typeof-window", storedType);
+    }
+  }, []);
+  let links = accountType === "buyer" ? BuyerNavLinks : SellerNavLinks;
+const handleNavigate =(path:any)=>{
+  window.location = path;
+}
+  
   return (
     <Menu>
       <MenuButton>{children}</MenuButton>
       <MenuList {...setTestid("header_settings")} origin="top right">
         {links.length > 0
           ? links.map(({ icon, link }, i) => (
-              <MenuItem
-                {...(link?.props || {})}
-                onClick={() => visit((r) => r.addPath(link.href))}
-              >
-                <HStack>
-                  <span className="text-2xl">{runIfFn(icon, {})}</span>
-                  <span className="capitalize">
-                    <TranslationText translationObject={link.name} />
-                  </span>
-                </HStack>
-              </MenuItem>
-            ))
+            <MenuItem
+              {...(link?.props || {})}
+              onClick={() => {
+                console.log(link.href, "linkkk");
+                handleNavigate(link.href);
+
+              }}
+            >
+              <HStack>
+                <span className="text-2xl">{runIfFn(icon, {})}</span>
+                <span className="capitalize">
+                  <TranslationText translationObject={link.name} />
+                </span>
+              </HStack>
+            </MenuItem>
+          ))
           : null}
       </MenuList>
     </Menu>

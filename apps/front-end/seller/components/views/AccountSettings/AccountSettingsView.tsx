@@ -44,10 +44,14 @@ export const AccountSettingsView: React.FC = () => {
   const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
-    if (!route && !isMobile) {
-      router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    if (!route && !isMobile && sections.length > 0) {
+      const targetUrl = `/${baseRoute}/${sections[0].panelUrl}`;
+      console.log("Redirecting to", targetUrl);
+      router.push(targetUrl);
     }
-  }, [router, route]);
+  }, [router, route, isMobile, baseRoute, sections]);
+  
+
 
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);

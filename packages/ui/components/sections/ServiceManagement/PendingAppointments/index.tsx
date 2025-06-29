@@ -10,7 +10,6 @@ import {
   ModalFooter,
   Textarea,
   ServiceCheckoutCardSwitcher,
-  useGetMyBookingsHistoryQuery,
   usePaginationControls,
   ScrollPaginationWrapper,
   useAcceptPendingAppointmentMutation,
@@ -31,7 +30,7 @@ import {
   ServicePendingAppointmentCard,
 } from "@features/Services/components/Cards/ServicePendingAppointmentCard";
 import { useRouting } from "@UI/../routing";
-
+import {useGetMyBookingHistoryQuery} from "../../../features/Services";
 export interface PendingAppointmentsSectionProps {}
 
 export const PendingAppointmentsSection: React.FC<
@@ -42,7 +41,7 @@ const { t } = useTranslation();
   const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
-  const { data } = useGetMyBookingsHistoryQuery({
+  const { data } = useGetMyBookingHistoryQuery({
     status: BookedServiceStatus.Pending,
     pagination,
     q: "",

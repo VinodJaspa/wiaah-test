@@ -42,17 +42,20 @@ export const subgraphs = [
           subscriptions: {
             'graphql-ws': true,
             'subscriptions-transport-ws': {
+          
               onConnect: async (headers, ctx) => {
                 console.log({ headers });
-                const user = VerifyAndGetUserFromContext({ headers });
+              
+                const { user } = await VerifyAndGetUserFromContext({ headers });
                 const dataSource = GenerateDataSources(ctx);
-
+              
                 return {
-                  token: user ? user.token : null,
+                  token: user?.token ?? null, // ✅ Now it's safe
                   user,
                   ...dataSource,
-                } as any;
+                };  
               },
+              
             },
           },
           installSubscriptionHandlers: true,

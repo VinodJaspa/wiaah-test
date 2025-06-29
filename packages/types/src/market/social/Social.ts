@@ -75,6 +75,8 @@ export enum AccountType {
   Buyer = "buyer",
   Mod = "mod",
   Seller = "seller",
+  Guest = "guest",
+ 
 }
 
 export type PostCardInfo = {

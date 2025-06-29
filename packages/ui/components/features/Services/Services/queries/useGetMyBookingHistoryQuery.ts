@@ -72,7 +72,7 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
   >;
 };
 
-export const useGetMyBookingsHistoryQuery = (
+export const useGetMyBookingHistoryQuery = (
   args: GetMyBookingsQueryVariables["args"]
 ) => {
   const client = createGraphqlRequestClient();

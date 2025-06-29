@@ -1,4 +1,4 @@
-import { CreateAccountInput, Exact, Mutation } from "@features/API";
+import { CreateAccountInput, Exact } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
@@ -10,6 +10,14 @@ export type SellerSignupMutationVariables = Exact<{
 type SellerSignupMutation = {
   __typename?: "Mutation";
   register: string;
+};
+
+type GraphQLResponse<T> = {
+  data?: T;
+  errors?: readonly {
+    message: string;
+    extensions?: { [key: string]: any };
+  }[];
 };
 
 export const useSignupMutation = () => {
@@ -25,17 +33,13 @@ export const useSignupMutation = () => {
     mutationKey: "seller-signup",
     mutationFn: async (args) => {
       try {
-        const res = await client
+        const res:any = await client
           .setVariables<SellerSignupMutationVariables>({ args })
           .send<SellerSignupMutation>();
 
         if (res.errors?.length) {
-          const graphQLError:any = res.errors[0];
-          const code = graphQLError?.extensions?.errorCode;
-          const message = graphQLError?.message || "Signup failed";
-
-          // You could map known error codes here if needed
-          throw new Error(`${code ? `(${code}) ` : ""}${message}`);
+          const graphQLError = res.errors[0];
+          throw new Error(graphQLError.message || "Signup failed");
         }
 
         if (!res.data?.register) {
@@ -50,7 +54,9 @@ export const useSignupMutation = () => {
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
-      
+        toast.error(error.message || "Something went wrong.");
+      } else {
+        toast.error("Unknown error occurred.");
       }
     },
   });

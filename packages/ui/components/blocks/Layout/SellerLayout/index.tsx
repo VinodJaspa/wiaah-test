@@ -148,6 +148,7 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
+  accountType?:String;
   showMobileHeader?: boolean;
 }
 
@@ -157,13 +158,14 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   containerProps,
   sideBar,
   showMobileHeader = false,
+  accountType ,
   noContainer = false,
 }) => {
   console.log(sideBar, "sideBar", typeof window);
 
   const { isMobile } = useResponsive();
   const { getCurrentPath } = useRouting();
-  const { accountType } = useAccountType();
+  // const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
@@ -172,13 +174,25 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     router && typeof router.pathname === "string"
       ? router.pathname.split("/")[1]
       : "";
+      const handleLinkClick = (link: NavigationLinkType) => {
+        const path = link.url;
+      
 
-  const handleLinkClick = (link: NavigationLinkType) => {
-    const Link = link.url.length < 1 ? "/" : link.url;
-    router.replace(Link);
-    setDrawerOpen(false);
-  };
+          // Full reload if absolutely needed (usually not recommended in SPA)
+          window.location.href = path;
+       
+        setDrawerOpen(false);
+      };
+      
 
+console.log(accountType ,"typeeeee");
+//Set the header type
+  //Set header
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && accountType) {
+      localStorage.setItem("header", accountType.toString());
+    }
+  }, [accountType]);
 
   const [isSidebar, setSidebar] = React.useState(true);
   const { pagination: storiesPagination } = usePaginationControls();
@@ -316,6 +330,8 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
   links = [],
 }) => {
+  console.log(links,"links");
+  
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;

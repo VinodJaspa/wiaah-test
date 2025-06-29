@@ -15,106 +15,217 @@ export function useForm<TForm>(
   }
 ) {
   const [data, setData] = React.useState<TForm>(initial);
+
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [haveSetInitial, setHaveSetInitial] = React.useState(false);
-  const [hasSubmitted, setHasSubmitted] = React.useState(false);
+
+  const [haveSetInitial, setHaveSetInitial] = React.useState<boolean>(false);
+
   const schema = options?.yupSchema;
 
-  function validate(currentData = data): [boolean, Record<string, string>] {
+  function validate(): [boolean, Record<string, string>] {
     try {
-      if (schema) {
-        schema.validateSync(currentData, { abortEarly: false });
+      const validationSchema = options?.yupSchema;
+
+      if (validationSchema) {
+        validationSchema.validateSync(data, {
+          abortEarly: false,
+        });
       }
       return [true, {} as ValidationFormErrors<TForm>];
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const errors = error.inner.reduce((acc, curr) => {
-          if (curr instanceof yup.ValidationError && curr.path) {
-            return { ...acc, [curr.path]: curr.message };
-          }
-          return acc;
+          if (curr instanceof yup.ValidationError) {
+            return { ...acc, [curr.path!]: curr.message };
+          } else return acc;
         }, {}) as ValidationFormErrors<TForm>;
 
         return [false, errors];
       } else {
-        return [false, { unknown: "Unknown error" } as ValidationFormErrors<TForm>];
+        //@ts-ignore
+        return [false, { unknown: "unknown" } as ValidationFormErrors<TForm>];
       }
     }
   }
-
-  function triggerValidation() {
-    setHasSubmitted(true);
-    const [valid, errs] = validate();
-    setErrors(errs);
-    return valid;
+  function triggerValidation(): boolean {
+    const [isValid, validationErrors] = validate();
+    setErrors(validationErrors);
+    return isValid;
   }
-
+  
   function handleChange<Tkey extends keyof TForm, Tvalue extends TForm[Tkey]>(
     key: Tkey,
     v: Tvalue
   ) {
     setData((old) => {
       const newV = { ...old, [key]: v, ...constents };
-      if (options?.onChange) options.onChange(newV);
+      if (schema) {
+        // TODO: get errors and setErrros with the key:error pair
+        const [valid, errors] = validate();
+        setErrors(errors);
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      options?.onChange && options.onChange(newV);
       return newV;
     });
-
-    // Only re-validate if user already submitted
-    if (hasSubmitted && schema) {
-      const [_, errs] = validate({ ...data, [key]: v });
-      setErrors(errs);
-    }
   }
-
   function inputProps<Tkey extends keyof TForm>(
     key: Tkey,
-    valueKey = "value",
-    onChangeKey = "onChange",
+    valueKey: string = "value",
+    onChangeKey: string = "onChange",
     mapOnChange: (value: any) => any = (e) => e.target.value
   ) {
+    if (!data) return {};
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
-      label: options?.addLabel ? startCase(String(key)) : undefined,
-      placeholder: options?.addPlaceholder ? startCase(String(key)) : undefined,
-      errormessage: hasSubmitted ? errors[key as string] : undefined,
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+
+      placeholder:
+        options?.addPlaceholder && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
+    };
+  }
+
+  function translationInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    lang: string,
+    valueKey: string = "value",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) => e.target.value
+  ) {
+    if (!data) return {};
+    //@ts-ignore
+    const stateTrans = (data[key] as { langId: string; value: any }[]) || [];
+    const value = stateTrans.find((v) => v.langId === lang)?.value || "";
+
+    const onChange = (e: any) => {
+      const value = mapOnChange(e);
+
+      //@ts-ignore
+      handleChange(key, [
+        ...stateTrans.filter((v) => v.langId !== lang),
+        { langId: lang, value },
+      ]);
+    };
+
+    return {
+      [valueKey]: value,
+      [onChangeKey]: onChange,
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+
+      placeholder:
+        options?.addPlaceholder && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
+    };
+  }
+
+  function selectProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "value",
+    onChangeKey: string = "onOptionSelect",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
     };
   }
 
   function dateInputProps<Tkey extends keyof TForm>(
     key: Tkey,
-    valueKey = "dateValue",
-    onChangeKey = "onDateChange",
+    valueKey: string = "dateValue",
+    onChangeKey: string = "onDateChange",
     mapOnChange: (value: any) => any = (e) => e
   ) {
+    if (!data) return {};
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
-      label: options?.addLabel ? startCase(String(key)) : undefined,
-      errormessage: hasSubmitted ? errors[key as string] : undefined,
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
     };
   }
 
-  // Add similar hasSubmitted checks to other props functions...
+  function switchInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "checked",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
+    };
+  }
 
-  function setInitialData(d: TForm) {
+  function radioInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    value: TForm[Tkey],
+    valueKey: string = "checked",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) =>
+      e.target.checked === true ? e.target.value : undefined
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] === value,
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+      errormessage: errors[key as string],
+    };
+  }
+
+  function setInitialData(data: TForm) {
     if (!haveSetInitial) {
-      setData({ ...d, ...constents });
+      setData({ ...data, ...constents });
       setHaveSetInitial(true);
     }
   }
 
   return {
     form: data,
-    formErrors: errors,
     handleChange,
+    formErrors: errors,
     inputProps,
+    selectProps,
     dateInputProps,
+    switchInputProps,
+    setValue: (v: TForm) => setData({ ...v, constents }),
+    translationInputProps,
     isValid: () => validate()[0],
-    
-    setValue: (v: TForm) => setData({ ...v, ...constents }),
+    radioInputProps,
     reset: () => setData(initial),
+    triggerValidation,
     setInitialData,
-    triggerValidation, // <--- Call this from submit or "Next"
   };
 }

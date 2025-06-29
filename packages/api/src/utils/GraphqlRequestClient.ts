@@ -63,41 +63,22 @@ export class GraphqlRequestClient {
     return this;
   }
 
-  async send<TResponse>(): Promise<{
-    data?: TResponse;
-    errors?: GraphQLError[];
-  }> {
-    if (!this.query) {
-      throw new Error("No query set");
-    }
-  
+  async send<TResponse>(): Promise<{ data: TResponse } | null> {
     try {
+      if (!this.query) {
+        throw new Error("No query set");
+      }
+
       const response = await this.client.rawRequest<TResponse>(
         this.query,
-        this.variables
+        this.variables,
       );
-  
-      if (response.errors && response.errors.length > 0) {
-        // Optional: You can throw a custom error here
-        throw {
-          message: response.errors[0].message || "Oops something went wrong!",
-          graphqlErrors: response.errors,
-          query: this.query,
-          variables: this.variables,
-        };
-      }
-  
-      return {
-        data: response.data,
-        errors: response.errors,
-      };
+      return response;
     } catch (error: unknown) {
       this.handleError(error);
-      throw error; // Rethrow to be handled in the hook
+      return null;
     }
   }
-  
-  
 
   async request<T = any, V extends Variables = Variables>(
     document: string,
@@ -113,25 +94,20 @@ export class GraphqlRequestClient {
   }
 
   private handleError(error: unknown): void {
-    console.log(error ,"errorr");
-    
     if (error && typeof error === "object" && "response" in error) {
       const graphqlError = error as { response?: { errors?: GraphQLError[] } };
       const errors = graphqlError.response?.errors;
-  
+
       if (errors) {
-        errors.forEach((err:any) => {
-          const code =
-            err.extensions?.exception?.code ??
-            err.extensions?.errorCode ?? // <-- ADD THIS LINE
-            -1;
-  
-          pubsubClient.Publish(createErrorEventName(code));
+        errors.forEach((err) => {
+          const code = err.extensions?.exception?.code;
+          if (code !== undefined) {
+            pubsubClient.Publish(createErrorEventName(code));
+          }
         });
       }
     }
   }
-  
 }
 
 // Factory function to create GraphqlRequestClient

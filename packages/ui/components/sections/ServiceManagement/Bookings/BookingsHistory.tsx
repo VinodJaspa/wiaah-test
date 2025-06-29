@@ -25,7 +25,7 @@ import {
   SectionHeader,
   EyeIcon,
   CashPaymentIcon,
-  useGetMyBookingsHistoryQuery,
+
   usePaginationControls,
   Badge,
   GetMyBookingsQuery,
@@ -38,8 +38,8 @@ import {
   CalanderPage,
   Divider,
   QrcodeDisplay,
-  useGetAppointmentDetailsQuery,
-  usePaybackServiceInsuranceMutation,
+
+
   ArrowLeftAlt1Icon,
   InputRightElement,
   CloseIcon,
@@ -67,7 +67,7 @@ import { startCase } from "lodash";
 import { useRouting } from "@UI/../routing";
 import { useDateManipulation } from "@UI/../hooks";
 import { getRandomImage } from "placeholder";
-
+import {useGetAppointmentDetailsQuery, useGetMyBookingHistoryQuery, usePaybackServiceInsuranceMutation} from "../../../features/Services"
 const BookingHistoryAtom = atom<{
   paybackId?: {
     id: string;
@@ -94,9 +94,10 @@ const { t } = useTranslation();
   const months = getAllMonthsOfYear(date.getFullYear());
 
   const { pagination, controls } = usePaginationControls();
+console.log(useGetMyBookingHistoryQuery ,useGetAppointmentDetailsQuery,"useGetMyBookingsHistoryQuery");
 
   const { form, inputProps } = useForm<
-    Parameters<typeof useGetMyBookingsHistoryQuery>[0]
+    Parameters<typeof useGetMyBookingHistoryQuery>[0]
   >(
     {
       status: Filter,
@@ -109,7 +110,7 @@ const { t } = useTranslation();
     }
   );
 
-  const { refetch } = useGetMyBookingsHistoryQuery(form);
+  const { refetch } = useGetMyBookingHistoryQuery(form);
   const { data: account } = useGetMyAccountQuery();
 
   const yearsDiff = isDate(account?.createdAt)

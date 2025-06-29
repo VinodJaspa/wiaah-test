@@ -44,9 +44,9 @@ export const Tabs: React.FC<TabsProps> = React.memo(
       TrackableComponent[]
     >([]);
 
-    React.useEffect(() => {
-      setCurrentTab(currentTabIdx);
-    }, [currentTabIdx]);
+    // React.useEffect(() => {
+    //   setCurrentTab(currentTabIdx);
+    // }, [currentTabIdx]);
 
     React.useEffect(() => {
       if (onTabChange) {

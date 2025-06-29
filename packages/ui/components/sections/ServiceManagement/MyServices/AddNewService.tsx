@@ -213,6 +213,7 @@ export const NewServiceStepper = React.forwardRef(
 
     const nextStep = () => {
       if (step > stepsLength) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         onFinish && onFinish(form);
       } else {
         setStep((v) => (v >= stepsLength ? v : v + 1));

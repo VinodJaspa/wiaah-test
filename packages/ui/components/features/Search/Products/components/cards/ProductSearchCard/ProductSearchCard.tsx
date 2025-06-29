@@ -89,7 +89,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
         </div>
       </AspectRatio>
       <div className="py-3 bg-white flex flex-col gap-2">
-        <div className="flex gap-1 justify-between">
+        {/* <div className="flex gap-1 justify-between">
           <div className="flex flex-col gap-1">
             <p className="text-sm text-black font-bold">{title}</p>
             <div className="flex gap-1 items-center">
@@ -103,7 +103,7 @@ export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
             {discount}% {t("off")}
           </p>
 
-        </div>
+        </div> */}
         <div className="flex gap-[0.875rem] flex-wrap">
           {mapArray(colors, (color, i) => (
             <div

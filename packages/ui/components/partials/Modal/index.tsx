@@ -54,10 +54,12 @@ export const Modal: React.FC<ModalProps> = ({
     React.useContext(ModalExtendedContext);
   React.useEffect(() => {
     if (ExtendedIsOpen() && !isOpen) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       onOpen && onOpen();
     }
   }, [ExtendedIsOpen]);
   function handleClose() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onClose && onClose();
     ExtendedOnClose();
   }
@@ -66,9 +68,9 @@ export const Modal: React.FC<ModalProps> = ({
       {...props}
       value={{ isOpen, onClose: handleClose, onOpen, isLazy: !!isLazy, z }}
     >
-      {/* <div className={`fixed w-full h-full pointer-events-none`}>
+      <div className={`fixed w-full h-full pointer-events-none`}>
         <div {...props} className={`relative w-full h-full isolate`} />
-      </div> */}
+      </div>
       {children}
     </ModalContext.Provider>
   );
@@ -216,10 +218,14 @@ export const ModalButton: React.FC<ModalButtonProps> = ({
       onCloseAll();
     }
     if (close) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       CloseModal && CloseModal();
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       key && onClose(key);
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       OpenModal && OpenModal();
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       key && onOpen(key);
     }
   }

@@ -34,11 +34,12 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({ }) => {
   const router = useRouter();
   const { section } = router.query;
   const route = Array.isArray(section) ? section.join("/") : section;
-
+console.log(baseRoute,"baseRoute")
 const { t } = useTranslation();
 
   function handleSectionChange(url: string) {
-    router.replace(`/${baseRoute}/${url}`);
+    router.push(`${baseRoute}/${url.replace(/^\/+/, "")}`);
+
   }
 
   return (
@@ -58,31 +59,31 @@ const sections: SettingsSectionType[] = [
   {
     panelName: "Product Management",
     panelIcon: MdOutlineShoppingBasket({}),
-    panelUrl: "/product-management",
+    panelUrl: "product-management", // ✅ fixed
     panelComponent: <ProductManagementSection />,
   },
   {
     panelName: "Downloadables Management",
     panelIcon: HiOutlineDocumentDownload({}),
-    panelUrl: "/donwloadables-management",
+    panelUrl: "downloadables-management", // ✅ fixed typo too
     panelComponent: <DownloadableManagement />,
   },
   {
     panelName: "Orders",
     panelIcon: BsBoxArrowInUp({}),
-    panelUrl: "/orders",
+    panelUrl: "orders", // ✅
     panelComponent: <OrdersSection shopping={false} />,
   },
   {
     panelName: "Sales Statistics",
     panelIcon: BsBoxArrowInUp({}),
-    panelUrl: "/sales-stats",
+    panelUrl: "sales-stats", // ✅
     panelComponent: <MySalesStatistics />,
   },
   {
     panelName: "Affiliation System",
     panelIcon: AffiliationIcon({}),
-    panelUrl: "affiliation_system",
+    panelUrl: "affiliation_system", // ✅ already fine
     panelComponent: null,
     subSections: [
       {
@@ -92,13 +93,13 @@ const sections: SettingsSectionType[] = [
             panelComponent: <AffiliationManagementSection />,
             panelIcon: FcSettings({}),
             panelName: "Affiliation Management",
-            panelUrl: "/affiliation-management",
+            panelUrl: "affiliation-management", // ✅
           },
           {
             panelComponent: <AffiliationHistorySection />,
             panelIcon: FaHistory({}),
             panelName: "Affiliation History",
-            panelUrl: "/affiliation-history",
+            panelUrl: "affiliation-history", // ✅
           },
         ],
       },
@@ -107,19 +108,20 @@ const sections: SettingsSectionType[] = [
   {
     panelName: "Returned Orders",
     panelIcon: BsBoxArrowInUp({}),
-    panelUrl: "/returned-orders",
+    panelUrl: "returned-orders", // ✅
     panelComponent: <ReturnedOrders />,
   },
   {
     panelName: "Shipping Settings",
     panelIcon: MdOutlineLocalShipping({}),
-    panelUrl: "/shipping-settings",
+    panelUrl: "shipping-settings", // ✅
     panelComponent: <ShippingSettingsSection />,
   },
   {
     panelName: "Reviews",
     panelIcon: MdOutlineComment({}),
-    panelUrl: "/reviews",
+    panelUrl: "reviews", // ✅
     panelComponent: <ReviewsSection />,
   },
 ];
+

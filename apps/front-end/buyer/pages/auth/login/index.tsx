@@ -5,7 +5,9 @@ import { SellerSigninView } from "ui";
 const Signin: NextPage = () => {
   return (
     <div className="h-screen">
-      <SellerSigninView />
+      <SellerSigninView onNavigate={function (): void {
+        throw new Error("Function not implemented.");
+      } } />
     </div>
   );
 };
