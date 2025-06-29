@@ -201,21 +201,21 @@ console.log(accountType ,"typeeeee");
   const { data: _stories } = useGetRecentStories({
     pagination: storiesPagination,
   });
-  let storedNav = true;
-  if (typeof window !== "undefined") {
-     storedNav = JSON.parse(localStorage.getItem("navigation") || "true");
+  // let storedNav = true;
+  // // if (typeof window !== "undefined") {
+  // //    storedNav = JSON.parse(localStorage.getItem("navigation") || "true");
    
-  }
+  // // }
 
-  React.useEffect(() => {
-    console.log(storedNav, "navvv");
+  // React.useEffect(() => {
+  //   console.log(storedNav, "navvv");
 
-    if (storedNav === true) {
-      setSidebar(true);
-    } else {
-      setSidebar(false);
-    }
-  }, [storedNav]);
+  //   if (storedNav === true) {
+  //     setSidebar(true);
+  //   } else {
+  //     setSidebar(false);
+  //   }
+  // }, [storedNav]);
   const stories = FAKE_STORIES;
 
 

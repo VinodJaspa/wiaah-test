@@ -31,7 +31,7 @@ import {
 import { getRouting, useRouting } from "@UI/../routing";
 import { useResponsive } from "hooks";
 import link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation';
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiLogOut, BiWallet } from "react-icons/bi";
@@ -348,6 +348,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
   let links = accountType === "buyer" ? BuyerNavLinks : SellerNavLinks;
 const handleNavigate =(path:any)=>{
   window.location = path;
+  // router.replace(path);
 }
   
   return (

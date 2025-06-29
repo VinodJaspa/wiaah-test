@@ -52,6 +52,7 @@ import { TransactionStatus } from "@features/API";
 import { useUserData } from "@UI";
 import { useDisclouser, useResponsive } from "hooks";
 import { Form, Formik } from "formik";
+import { TransactionsTable } from "./transactiontable";
 
 export interface TransactionsHistorySectionProps {}
 
@@ -195,9 +196,13 @@ const { t } = useTranslation();
           }}
         />
       </div>
-      <span className="text-2xl font-bold">{t("Transaction History")}</span>
+     
+      <h2 className="text-3xl font-semibold text-gray-900">{t("Transaction History")}</h2>
+      <p className="text-gray-500 mt-1">View your recent transactions and account activity.</p>
+
       <TableContainer>
-        <Table
+        <TransactionsTable/>
+        {/* <Table
           TdProps={{
             className:
               "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
@@ -287,7 +292,7 @@ const { t } = useTranslation();
               </Tr>
             ) : null}
           </TBody>
-        </Table>
+        </Table> */}
       </TableContainer>
       <Pagination controls={controls} />
       <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>

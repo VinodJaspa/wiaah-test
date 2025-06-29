@@ -217,7 +217,7 @@ const { t } = useTranslation();
                 <Button
                   colorScheme="gray"
                   disabled={isPrivateForUser}
-                  onClick={handleFollowProfile}
+                  onClick={()=> router.replace("/editprofile")}
                   className=" whitespace-nowrap col-span-1 w-full md:w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center justify-center"
                 >
                   {t("Edit Profile")}

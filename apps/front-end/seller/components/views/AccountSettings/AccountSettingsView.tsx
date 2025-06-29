@@ -49,7 +49,7 @@ export const AccountSettingsView: React.FC = () => {
       console.log("Redirecting to", targetUrl);
       router.push(targetUrl);
     }
-  }, [router, route, isMobile, baseRoute, sections]);
+  }, []);
   
 
 

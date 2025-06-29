@@ -19,6 +19,7 @@ export const useFileUploadModal = () => {
           uploadImage();
         }
         if (props.uploadType === "vid") {
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           uploadVideo;
         }
       }

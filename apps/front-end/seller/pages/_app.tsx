@@ -20,7 +20,7 @@ import { AccountType } from "types";
 const handleAutoRedirect = (route: string, router: NextRouter) => {
   const currRoute = router.route;
   if (currRoute !== route && currRoute !== "/404") {
-    // router.push(`/${route}`);
+    router.push(`/${route}`);
   }
 };
 

@@ -166,9 +166,13 @@ export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
   children: TabTitleChildrenType;
 }
 export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
-  const { addTitle, currentTabIdx } = React.useContext(TabsContext);
+  const { addTitle } = React.useContext(TabsContext);
+  const hasMounted = React.useRef(false);
 
   React.useEffect(() => {
+    if (hasMounted.current) return;
+    hasMounted.current = true;
+
     addTitle({
       id: `${TabKey}`,
       component:
@@ -178,10 +182,11 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
           <>{children}</>
         ),
     });
-  }, [addTitle, currentTabIdx, TabKey]);
+  }, [addTitle, TabKey]); // ✅ removed `currentTabIdx` and `children`
 
   return null;
 };
+
 
 export interface TabListProps extends HtmlDivProps {}
 
@@ -221,20 +226,26 @@ export const TabItem: React.FC<TabItemProps> = ({
   key = randomNum(24643786),
 }) => {
   const { addTab } = React.useContext(TabsContext);
+  const hasMounted = React.useRef(false);
+
   React.useEffect(() => {
+    if (hasMounted.current) return;
+    hasMounted.current = true;
+
     addTab({
       id: `${key}`,
-
       component:
         typeof children === "function" ? (
-          children({ currentTabIdx: key! as number })
+          children({ currentTabIdx: key as number })
         ) : (
           <>{children}</>
         ),
     });
-  }, [key, children, addTab]);
+  }, [addTab, key]); // ✅ removed `children` from dependencies
+
   return null;
 };
+
 
 export const useTabsContext = () => {
   const context = React.useContext(TabsContext);

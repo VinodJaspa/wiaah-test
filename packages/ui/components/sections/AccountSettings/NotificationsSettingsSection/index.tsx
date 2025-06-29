@@ -24,402 +24,96 @@ export interface NotificationsSettingsSectionProps {
 export const NotificationsSettingsSection: React.FC<
   NotificationsSettingsSectionProps
 > = ({ accountId }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
-
-  // use this graphql endpoint if the server is ready if not use Placeholder data
-  // const { data: notificationSettings } = useGetUserNotificationsSettingsQuery(
-  //   { userId: accountId },
-  //   { enabled: !!accountId }
-  // );
   const { mutate } = useUpdateUserNotificationSettingsMutation();
-  const { radioInputProps } = useForm<Parameters<typeof mutate>[0]>({
-    mentions: UserNotificationSettingsPlaceholder[0].mentions,
-    commentLike: UserNotificationSettingsPlaceholder[0].commentLike,
-    postComment: UserNotificationSettingsPlaceholder[0].postComment,
-    postReaction: UserNotificationSettingsPlaceholder[0].postReaction,
-  });
-  console.log("RadioInputProps" + radioInputProps);
 
-  return isMobile ? (
-    <div className="flex flex-col gap-4 p-2">
-      <SectionHeader sectionTitle={t("Notifications")} />
-      <Stack col divider={<Divider className="my-4" />}>
-        {mapArray(notificationsOptions, (opt, i) => (
-          <div className="flex flex-col gap-3">
-            <TranslationText
-              translationObject={opt.label}
-              className="text-lg font-semibold border-b border-b-primary w-fit"
-            />
-            <div className="flex flex-col gap-4 w-full">
-              {mapArray(opt.opts, (option, i) => (
-                <HStack key={i} className="justify-between">
-                  <TranslationText
-                    className="text-[0.937rem]"
-                    translationObject={option.name}
+  // const { radioInputProps } = useForm<Parameters<typeof mutate>[0]>({
+  //   mentions: UserNotificationSettingsPlaceholder[0].mentions,
+  //   commentLike: UserNotificationSettingsPlaceholder[0].commentLike,
+  //   postComment: UserNotificationSettingsPlaceholder[0].postComment,
+  //   postReaction: UserNotificationSettingsPlaceholder[0].postReaction,
+  // });
+
+  const notificationSections = [
+    {
+      heading: "Push Notifications",
+      options: [
+        { title: "Pause All", description: "Allow notifications from Connect" },
+        { title: "Likes", description: "When someone likes or comments on your photos or videos" },
+        { title: "Followers", description: "When someone starts following you" },
+        { title: "Mentions", description: "When someone mentions you in a comment or caption" },
+        { title: "Comments", description: "When someone comments your content" },
+        { title: "Shares", description: "When someone shares a post with you" },
+        { title: "Messages", description: "When someone sends you a message" },
+        { title: "Video Updates", description: "When someone you follow posts a new video" },
+        { title: "Story Updates", description: "When someone you follow posts a new story" },
+        { title: "Action Updates", description: "When someone you follow posts a new action" },
+        { title: "Product update", description: "When you have an update for your orders." },
+        { title: "Booking update", description: "When you have an update for your booking." },
+      ],
+    },
+    {
+      heading: "Email Notifications",
+      options: [
+        { title: "Account Activity", description: "Receive emails about your account activity" },
+        { title: "Product Updates", description: "Receive emails about new features and updates" },
+      ],
+    },
+    {
+      heading: "SMS Notifications",
+      options: [
+        { title: "Account Activity", description: "Receive SMS notifications about your account activity" },
+        { title: "Product Updates", description: "Receive SMS notifications about new features and updates" },
+      ],
+    },
+    {
+      heading: "In-App Notifications",
+      options: [
+        { title: "Account Activity", description: "Receive in-app notifications about your account activity" },
+        { title: "Product Updates", description: "Receive in-app notifications about new features and updates" },
+      ],
+    },
+  ];
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6">{t("Notifications")}</h2>
+      {notificationSections.map((section) => (
+        <div key={section.heading} className="mb-8">
+          <h3 className="text-lg sm:text-xl font-semibold mb-4">{t(section.heading)}</h3>
+          <div className="space-y-4">
+            {section.options.map((option) => (
+              <div
+                key={option.title}
+                className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
+              >
+                <div className="flex-1">
+                  <p className="font-medium text-base sm:text-lg">{t(option.title)}</p>
+                  {option.description && (
+                    <p className="text-sm text-gray-500">{t(option.description)}</p>
+                  )}
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" />
+                  {/* Background track */}
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-gray-800 transition-colors duration-300" />
+
+                  {/* Toggle knob */}
+                  <div
+                    className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full border border-gray-300
+               transition-all duration-300 shadow-md
+               peer-checked:translate-x-5 peer-checked:bg-black peer-checked:border-white"
                   />
-                  <Radio
-                    {...radioInputProps}
-                    name={opt.name}
-                    value={option.value}
-                    id="33"
-                    colorScheme="primary"
-                  />
-                </HStack>
-              ))}
-            </div>
-          </div>
-        ))}
-      </Stack>
-    </div>
-  ) : (
-    <div className="w-full gap-8 flex flex-col">
-      <SectionHeader sectionTitle={t("notifications", "Notifications")} />
-      <Formik
-        initialValues={{
-          likes: "iFollow",
-        }}
-        onSubmit={() => {}}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form className="w-full">
-              <div className="w-full flex flex-col gap-8">
-                {notificationsOptions.map(({ label, opts, name }, i) => (
-                  <FormikRadio
-                    defaultChecked
-                    onChange={(v) => setFieldValue(name, v)}
-                    name={name}
-                    label={label}
-                    options={opts}
-                  />
-                ))}
+                </label>
+
+
+
               </div>
-            </Form>
-          );
-        }}
-      </Formik>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
-
-const fromPeopleIFollow: TranslationTextType = {
-  translationKey: "from_people_i_follow",
-  fallbackText: "From Peolple I Follow",
-};
-const fromPeopleIFollowValue = "iFollow";
-
-const Off: TranslationTextType = "OFF";
-const OffValue = "off";
-
-const On: TranslationTextType = "On";
-const OnValue = "on";
-
-const fromEveryone: TranslationTextType = "From Everyone";
-const fromEveryoneValue = "everyone";
-
-const everyone: TranslationTextType = "Everyone";
-const everyoneValue = "everyone";
-
-const peopleYouFollow: TranslationTextType = "People You Follow";
-const peopleYouFollowValue = "youFollow";
-
-const noOne: TranslationTextType = "No One";
-const noOneValue = "noOne";
-
-const LikesNotificationsOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromPeopleIFollow,
-    value: fromPeopleIFollowValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-
-const CommentsNotificationsOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromPeopleIFollow,
-    value: fromPeopleIFollowValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-
-const CommentLikesNotificationOpts: FormOptionType[] = [
-  {
-    name: On,
-    value: OnValue,
-  },
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromPeopleIFollow,
-    value: fromPeopleIFollowValue,
-  },
-];
-
-const LikesAndCommentsOnPhotosOfYouNotificationOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromPeopleIFollow,
-    value: fromPeopleIFollowValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-
-const allowMentionsFromOpts: FormOptionType[] = [
-  {
-    name: everyone,
-    value: everyoneValue,
-  },
-  {
-    name: peopleYouFollow,
-    value: peopleYouFollowValue,
-  },
-  {
-    name: noOne,
-    value: noOneValue,
-  },
-];
-const allowTagsFrom: FormOptionType[] = [
-  {
-    name: everyone,
-    value: everyoneValue,
-  },
-  {
-    name: peopleYouFollow,
-    value: peopleYouFollowValue,
-  },
-  {
-    name: noOne,
-    value: noOneValue,
-  },
-];
-
-const firstPostsAndStoriesOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromPeopleIFollow,
-    value: fromPeopleIFollowValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-
-const videoViewCountsOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-const supportRequestsOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: On,
-    value: OnValue,
-  },
-];
-
-const liveVideosOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: On,
-    value: OnValue,
-  },
-];
-
-const acceptedFollowRequests: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-const instagramDirectRequests: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-const instagramDirect: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-const RemindersOpts: FormOptionType[] = [
-  {
-    name: Off,
-    value: OffValue,
-  },
-  {
-    name: fromEveryone,
-    value: fromEveryoneValue,
-  },
-];
-
-const notificationsOptions: {
-  label: TranslationTextType;
-
-  opts: FormOptionType[];
-  name: string;
-}[] = [
-  {
-    name: "likesNotifications",
-    label: {
-      translationKey: "likes",
-      fallbackText: "Likes",
-    },
-    opts: LikesNotificationsOpts,
-  },
-  {
-    name: "comments",
-    label: {
-      translationKey: "comments",
-      fallbackText: "Comments",
-    },
-    opts: CommentsNotificationsOpts,
-  },
-  {
-    name: "commentsLikesNotifiactions",
-    label: {
-      translationKey: "comment_likes",
-      fallbackText: "Comment Likes",
-    },
-    opts: CommentLikesNotificationOpts,
-  },
-  {
-    name: "LikesAndCommentsOnPhotosOfYou",
-    label: {
-      translationKey: "likes_and_comments_on_photos_of_you",
-      fallbackText: "Likes and Comments on Photos of You",
-    },
-    opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
-  },
-  {
-    name: "allowMentionsFrom",
-    label: {
-      translationKey: "allow_@mentions_from",
-      fallbackText: "Allow @Mentions From",
-    },
-    opts: allowMentionsFromOpts,
-  },
-  {
-    name: "allowTagsFrom",
-    label: {
-      translationKey: "allow_tags_from",
-      fallbackText: "Allow Tags From",
-    },
-    opts: allowTagsFrom,
-  },
-  {
-    name: "firstPostsAndStories",
-    label: {
-      translationKey: "first_posts_and_stories",
-      fallbackText: "First Posts and Stories",
-    },
-    opts: firstPostsAndStoriesOpts,
-  },
-  {
-    name: "videoViewCounts",
-    label: {
-      translationKey: "video_view_counts",
-      fallbackText: "Video View Counts",
-    },
-    opts: videoViewCountsOpts,
-  },
-  {
-    name: "supportRequests",
-    label: {
-      translationKey: "support_requests",
-      fallbackText: "Support Requests",
-    },
-    opts: supportRequestsOpts,
-  },
-  {
-    name: "acceptedFollowRequests",
-    label: {
-      translationKey: "accepted_follow_requests",
-      fallbackText: "Accepted Follow Requests",
-    },
-    opts: acceptedFollowRequests,
-  },
-  {
-    name: "wiaahDirectRequests",
-    label: {
-      translationKey: "wiaah_direct_requests",
-      fallbackText: "Wiaah Direct Requests",
-    },
-    opts: instagramDirectRequests,
-  },
-  {
-    name: "wiaahDirect",
-    label: {
-      translationKey: "wiaah_direct",
-      fallbackText: "Wiaah Direct",
-    },
-    opts: instagramDirect,
-  },
-  {
-    name: "reminders",
-    label: {
-      translationKey: "reminders",
-      fallbackText: "Reminders",
-    },
-    opts: RemindersOpts,
-  },
-  {
-    name: "liveVideos",
-    label: {
-      translationKey: "live_videos",
-      fallbackText: "Live Videos",
-    },
-    opts: liveVideosOpts,
-  },
-];
