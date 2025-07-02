@@ -27,6 +27,7 @@ export const ProductManagementSection: React.FC<
     },
     { pagination },
   );
+console.log(product ,"product");
 
   return typeof product === "undefined" ? (
     <>

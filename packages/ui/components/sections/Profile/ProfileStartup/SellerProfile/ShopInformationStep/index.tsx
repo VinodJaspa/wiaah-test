@@ -17,7 +17,7 @@ import {
   Button,
   PlusIcon,
   MediaUploadModal,
-  useGetServiceCategoriesQuery,
+
   useCreateShopMutation,
   useResponsive,
   UploadIcon,
@@ -30,7 +30,7 @@ import {
   StoreType,
 } from "@features/API";
 import { cities, useForm } from "utils";
-
+import{  useGetServiceCategoriesQuery} from "ui/components/features/Services/Services/queries"
 const countriesArray = Country.getAllCountries().map((element) => ({
   value: element.isoCode,
   label: element.name,

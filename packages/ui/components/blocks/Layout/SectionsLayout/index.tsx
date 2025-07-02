@@ -43,15 +43,20 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
   name,
+  ...props
 }) => {
   const [opened, setOpen] = React.useState<boolean>(true);
 const { t } = useTranslation();
   const { visit } = useRouting();
   const flatedSections = flatenSections(sections);
 
+  const normalize = (s: string) => s.replace(/^\/+|\/+$/g, "");
+
   const mainSection = flatedSections.find(
-    (panel) => panel.panelUrl === `/${section}`
+    (panel) => normalize(panel.panelUrl) === normalize(section || "")
   );
+  console.log("route section:", section  );
+  console.log("available panels:", flatedSections.map(p => p.panelUrl));  
 
   const { isMobile, isTablet } = useResponsive();
 
@@ -62,7 +67,8 @@ const { t } = useTranslation();
   const CurrentSection = (): React.ReactElement => {
     if (mainSection) {
       return mainSection.panelComponent;
-    } else {
+    } 
+    else {
       if (isMobile)
         return (
           <div className="flex flex-col p-2 gap-4">

@@ -26,19 +26,22 @@ import {
 import { getRouting } from "routing";
 import { FcSettings } from "react-icons/fc";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
+import ProductTable from "components/ProductCatalog/    ProductTable";
 
 export interface ShopManagementViewProps { }
 
 export const ShopManagementView: React.FC<ShopManagementViewProps> = ({ }) => {
   const baseRoute = getRouting((r) => r.visitShopManagement());
+  
   const router = useRouter();
-  const { section } = router.query;
-  const route = Array.isArray(section) ? section.join("/") : section;
-console.log(baseRoute,"baseRoute")
+  const { sections : section } = router.query;
+
+  const route = Array.isArray(section) ? section[0] : section;
+console.log(router.query,"section")
 const { t } = useTranslation();
 
   function handleSectionChange(url: string) {
-    router.push(`${baseRoute}/${url.replace(/^\/+/, "")}`);
+    router.replace(`/${baseRoute}/${url}`);
 
   }
 
@@ -60,7 +63,7 @@ const sections: SettingsSectionType[] = [
     panelName: "Product Management",
     panelIcon: MdOutlineShoppingBasket({}),
     panelUrl: "product-management", // ✅ fixed
-    panelComponent: <ProductManagementSection />,
+    panelComponent: <ProductTable/>,
   },
   {
     panelName: "Downloadables Management",

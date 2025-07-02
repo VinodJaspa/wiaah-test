@@ -64,6 +64,8 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
 
 
   const requestNextStep = async () => {
+    setCurrentStep(currentStep +1);
+    return
     const submitFn = submitRequests[currentStep];
     if (typeof submitFn === "function") {
       setFormSubmitting(true);

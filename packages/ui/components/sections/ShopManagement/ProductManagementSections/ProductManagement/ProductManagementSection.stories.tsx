@@ -1,5 +1,6 @@
-import { storybookSectionsTitle, ProductManagementSection } from "@UI";
+import { ProductManagementSection } from "../ProductManagement";
 import { Meta } from "@storybook/react";
+import React from "react";
 
 export default {
   title: "UI / sections / ProductManagementSection",
