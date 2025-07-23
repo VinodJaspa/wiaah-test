@@ -70,7 +70,7 @@ const sections: SettingsSectionType[] = [
   {
     panelName: "Payment Meothds",
     panelIcon: MdPayment,
-    panelUrl: "/payment-motheds",
+    panelUrl: "/payment-methods",
     panelComponent: <PaymentMethodsSection />,
   },
   {

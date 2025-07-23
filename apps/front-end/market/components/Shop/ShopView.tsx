@@ -2,6 +2,7 @@ import React from "react";
 import {
   Container,
   Padding,
+  Reviews,
   ShopFilter,
   Spacer,
   SpinnerFallback,
@@ -11,7 +12,7 @@ import {
   useSearchFilters,
 } from "ui";
 import { GridContainerPager } from "ui";
-import { Reviews } from "ui";
+
 import { ShopProductFilter } from "ui";
 import { ProductCard } from "ui";
 import { ProductDetails } from "types";

@@ -5,7 +5,9 @@ import React, { useState } from "react";
 import ProductRow from "./ProductRow";
 import FilterBar from "./    FilterBar";
 import AddNewProductButton from "./    AddNewProductButton";
-import SearchInput from "components/SearchBox";
+
+import { useRouter } from "next/router";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
 
 const PRODUCTS_PER_PAGE = 5;
 
@@ -109,6 +111,7 @@ export default function ProductTable() {
     (page - 1) * PRODUCTS_PER_PAGE,
     page * PRODUCTS_PER_PAGE
   );
+  const router = useRouter()
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -126,9 +129,9 @@ export default function ProductTable() {
             Manage your product listings, update details, and track inventory.
           </p>
         </div>
-        <AddNewProductButton />
+        <AddNewProductButton handleClick ={()=>router.push("/add-product") } />
       </div>
-    <SearchInput/>
+    <SearchBoxInner/>
       {/* Filters */}
       <FilterBar />
 

@@ -19,4 +19,14 @@ export * from "./components/shadcnPopOver";
 export * from "./components/shadcnInput";
 export * from "./components/shadcnLabel";
 export * from "./components/shadcnTable";
+export * from "./SearchBox";
+export * from "./Buttons";
+export * from "./Fields";
+export * from "./IconBox";
+export * from "./ImageBox";
+export * from "./Pagination";
+export * from "./logos";
+export * from "./Title";
+
+
              

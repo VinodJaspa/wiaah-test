@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps<
 const shopManagement: NextPage = () => {
   const router = useRouter();
   const { section } = router.query;
+  
 
   return (
     <>

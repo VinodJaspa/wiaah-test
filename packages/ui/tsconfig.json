@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/react-library.json",
-  "include": ["."],
+  "include": [".", "../../apps/front-end/seller/components/Order", "../../apps/front-end/seller/components/QRCodeVerification", "../../apps/front-end/seller/components/Reviews"],
 
   "exclude": [
     "dist",

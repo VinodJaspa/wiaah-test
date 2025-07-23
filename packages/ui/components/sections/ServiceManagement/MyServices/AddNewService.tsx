@@ -78,6 +78,7 @@ const { t } = useTranslation();
   const { user } = useUserData();
   const [selected, setSelected] = React.useState<number>(0);
 
+  const [step, setStep] = React.useState<number>(0);
   return (
     <div className="flex gap-4 flex-col">
       <SectionHeader
@@ -109,6 +110,8 @@ const { t } = useTranslation();
           onFinish={(data) => mutate(data)}
           isEdit={isEdit || false}
           // TODO
+          setStep={setStep}
+          step={step}
           data={NewServiceStepper.defaultProps?.data}
           lang={lang}
         />
@@ -127,7 +130,7 @@ const { t } = useTranslation();
               {t("Back")}
             </Button>
             {/* TODO */}
-            <Button className="w-fit self-end" onClick={() => { }}>
+            <Button className="w-fit self-end" onClick={() => setStep(step+1) }>
               {t("Next")}
             </Button>
           </HStack>
@@ -151,12 +154,18 @@ export const NewServiceStepper = React.forwardRef(
       sellerId,
       onFinish,
       lang,
+      setStep,
+      step,
     }: {
       isEdit: boolean;
       data?: CreateServiceInput;
       onFinish?: (data: CreateServiceInput) => any;
       sellerId: string;
       lang: WiaahLangId;
+      step:any;
+      setStep:any
+    
+
     },
     ref
   ) => {
@@ -197,7 +206,6 @@ export const NewServiceStepper = React.forwardRef(
       { addLabel: true, addPlaceholder: true }
     );
 
-    const [step, setStep] = React.useState<number>(0);
 
     const [value, setValue] = React.useState<any>([]);
 
@@ -231,7 +239,9 @@ export const NewServiceStepper = React.forwardRef(
       };
     });
 
-    const serviceType = shop?.type || ServiceType.Hotel;
+    const serviceType = shop?.type || ServiceType.Restaurant;
+    
+console.log(serviceType,"serviceType");
 
     const showOn = (types: ServiceType[]) => types.includes(serviceType);
 

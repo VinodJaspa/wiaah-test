@@ -3,24 +3,28 @@ import React from "react";
 import { MdList } from "react-icons/md";
 import { SettingsSectionType } from "types";
 import {
-  AddressBookSection,
-  BookingsHistory,
-  MyReturnsSection,
-  MyShoppingStats,
-  MyWishListSection,
-  PaymentMethodsSection,
-  SectionsLayout,
-  useGetMyAccountQuery,
-} from "ui";
-import { OrdersSection } from "@UI/components/sections/ShoppingManagement/Orders/OrdersSection";
 
-import { MdPayment } from "react-icons/md";
+  MyReturnsSection,
+  SectionsLayout,
+  useGetMyAccountQuery
+} from "ui";
+
 import { BsBoxArrowInUp } from "react-icons/bs";
-import { IoReturnUpBackSharp } from "react-icons/io5";
+import { FcStatistics } from "react-icons/fc";
 import { GiPostStamp } from "react-icons/gi";
+import { IoReturnUpBackSharp } from "react-icons/io5";
+import { MdPayment } from "react-icons/md";
 import { RiBookLine } from "react-icons/ri";
 import { getRouting } from "routing";
-import { FcStatistics } from "react-icons/fc";
+
+import EarningsDashboard from "@sections/ShoppingManagement/ShoppingStats/EarningsDashboard";
+import BookingsPage from "components/Bookings/BookingsPage";
+import DigitalProductsPage from "components/DigitalProduct/DigitalProductsSection";
+import OrdersPage from "components/Order/OrdersPage";
+import MyWishlistPage from "components/ShopManagement/wishlist/wishlistSection";
+import { BiDownload } from "react-icons/bi";
+import PaymentMethodsSection from "components/Payment/PaymentMethods";
+import AddressBookSection from "@sections/ShoppingManagement/AddressBook/AddressBookSection";
 
 export const ShoppingManagementView: React.FC = () => {
   const { data } = useGetMyAccountQuery();
@@ -29,25 +33,31 @@ export const ShoppingManagementView: React.FC = () => {
       panelName: "My Wishlist",
       panelIcon: MdList({}),
       panelUrl: "/my-wishlist",
-      panelComponent: <MyWishListSection />,
+      panelComponent: <MyWishlistPage />,
     },
     {
-      panelName: "Shopping Statistics",
+      panelName: "My Shopping Statistics",
       panelIcon: <FcStatistics />,
       panelUrl: "/shopping-stats",
-      panelComponent: <MyShoppingStats />,
+      panelComponent: <EarningsDashboard />,
     },
     {
-      panelName: "Orders",
+      panelName: "My Orders",
       panelIcon: BsBoxArrowInUp({}),
       panelUrl: "/orders",
-      panelComponent: <OrdersSection shopping />,
+      panelComponent: <OrdersPage />,
     },
     {
       panelName: "Bookings",
       panelIcon: RiBookLine({}),
       panelUrl: "/bookings",
-      panelComponent: <BookingsHistory shopping />,
+      panelComponent: <BookingsPage />,
+    },
+    {
+      panelName: "My Digital Products",
+      panelIcon: BiDownload({}),
+      panelUrl: "/digital-products",
+      panelComponent: <DigitalProductsPage />,
     },
     {
       panelName: "My Returns",
@@ -56,17 +66,23 @@ export const ShoppingManagementView: React.FC = () => {
       panelComponent: <MyReturnsSection />,
     },
     {
-      panelName: "Payment Meothds",
+      panelName: "My Payment Method",
       panelIcon: MdPayment({}),
-      panelUrl: "/payment-motheds",
+      panelUrl: "/payment-methods",
       panelComponent: <PaymentMethodsSection />,
     },
     {
-      panelName: "Address Book",
+      panelName: "My Address Book",
       panelIcon: GiPostStamp({}),
       panelUrl: "/address-book",
-      panelComponent: <AddressBookSection accountId={data?.id} />,
+      panelComponent: <AddressBookSection  />,
     },
+    // {
+    //   panelName: "My Shop & Book Earning",
+    //   panelIcon: GiPostStamp({}),
+    //   panelUrl: "/address-book",
+    //   panelComponent: <AddressBookSection accountId={data?.id} />,
+    // },
   ];
 
   const baseRoute = getRouting((r) => r.visitShoppingManagement());

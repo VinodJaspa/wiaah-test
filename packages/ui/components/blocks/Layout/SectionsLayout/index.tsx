@@ -55,8 +55,7 @@ const { t } = useTranslation();
   const mainSection = flatedSections.find(
     (panel) => normalize(panel.panelUrl) === normalize(section || "")
   );
-  console.log("route section:", section  );
-  console.log("available panels:", flatedSections.map(p => p.panelUrl));  
+ 
 
   const { isMobile, isTablet } = useResponsive();
 
@@ -111,13 +110,13 @@ const { t } = useTranslation();
               className={`${opened ? "md:w-[15rem] xl:w-[20rem] sm:w-40" : ""
                 } gap-4 w-full h-full flex flex-col px-2`}
             >
-              <div
+              {/* <div
                 onClick={() => visit((r) => r.management())}
                 className="px-6 cursor-pointer w-fit text-xl py-2 my-2 flex gap-4 items-center"
               >
                 <IoMdReturnLeft />
                 {opened ? <p>{t("Return")}</p> : null}
-              </div>
+              </div> */}
               <HStack>
                 {opened ? (
                   <p className="text-xl px-4 font-bold">
@@ -174,8 +173,10 @@ export const NestedSettingsSectionsSidebar: React.FC<
   const flatedSections = flatenSections(sections);
 
   const section = flatedSections.find(
-    (panel) => panel.panelUrl === `/${activePanel}`
+    (panel) => panel.panelUrl ===activePanel
   );
+  console.log(activePanel ,"section");
+  
 
   return (
     <>
