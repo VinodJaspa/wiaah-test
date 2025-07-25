@@ -31,7 +31,7 @@ export const ShoppingManagementView: React.FC = () => {
       currentSectionName={route}
       name={{
         translationKey: "shopping_management",
-        fallbackText: "Shopping Management",
+        fallbackText: "Orders & Perks",
       }}
       handleRetrun={() => {
         router.replace(`/${baseRoute}`);

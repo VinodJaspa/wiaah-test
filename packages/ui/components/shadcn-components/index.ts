@@ -27,6 +27,7 @@ export * from "./ImageBox";
 export * from "./Pagination";
 export * from "./logos";
 export * from "./Title";
+export * from "./QrCode";
 
 
              

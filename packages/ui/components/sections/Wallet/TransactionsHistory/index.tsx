@@ -1,433 +1,135 @@
+
+import { useResponsive } from "hooks"; // your custom hook
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { BsFilePdfFill } from "react-icons/bs";
-import {
-  Button,
-  Table,
-  Tr,
-  Td,
-  Th,
-  TBody,
-  THead,
-  TableContainer,
-  Status,
-  HStack,
-  Pagination,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  CloseIcon,
-  Select,
-  SelectOption,
-  Link,
-  ModalOverlay,
-  PriceDisplay,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  ModalFooter,
-  ArrowLeftAlt1Icon,
-  Avatar,
-  VerifiedIcon,
-  PayCheckIcon,
-  PlusIcon,
-  MinusIcon,
-} from "@partials";
+import { HiChevronLeft } from "react-icons/hi";
+import TransactionTable from "./transactiontable";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
+import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
 
-import { FinancialCard } from "@blocks/Cards";
-
-import { SectionHeader } from "@sections";
-
-import { getDateLabel, mapArray } from "utils";
-
-import {
-  useGetMyBalanceQuery,
-  useGetMyFinancialAccountsQuery,
-  useGetMyTransactionHistoryQuery,
-  useGetWithdrawCurrneicesQuery,
-} from "@UI";
-import { usePaginationControls } from "@blocks";
-import { TransactionStatus } from "@features/API";
-import { useUserData } from "@UI";
-import { useDisclouser, useResponsive } from "hooks";
-import { Form, Formik } from "formik";
-import { TransactionsTable } from "./transactiontable";
-
-export interface TransactionsHistorySectionProps {}
-
-export const TransactionsHistorySection: React.FC<
-  TransactionsHistorySectionProps
-> = () => {
+import WithdrawDialog from "./withdrawModal";
+import WithdrawalDetailsPage from "../Withdrawal/WithdrawalSection/withdrawlDeatilPage";
+export default function TransactionSection() {
   const { isMobile } = useResponsive();
-  const { user } = useUserData();
-  const { handleClose, handleOpen, isOpen } = useDisclouser();
-
-  const { pagination, controls } = usePaginationControls();
-  const { data: transactions } = useGetMyTransactionHistoryQuery({
-    pagination,
-  });
-
-  const { data: currencies } = useGetWithdrawCurrneicesQuery();
-  const { data: accounts } = useGetMyFinancialAccountsQuery();
-
-  const { data: balance } = useGetMyBalanceQuery();
-
-const { t } = useTranslation();
-  return isMobile ? (
-    <div className="flex flex-col gap-4 p-2">
-      <HStack className="justify-center relative p-4">
-        <p className="text-lg font-semibold">{t("Transactions")}</p>
-        <ArrowLeftAlt1Icon className="left-0 top-1/2 absolute -translate-y-1/2" />
-      </HStack>
-      <div className="flex flex-col gap-6">
-        <HStack className="p-6 rounded-xl bg-primary text-black">
-          <div className="flex flex-col gap-4">
-            <p className="font-medium">{t("Current Balance")}</p>
-            <PriceDisplay className="text-2xl font-bold">
-              {(balance?.pendingBalance || 0) +
-                (balance?.withdrawableBalance || 0)}
-            </PriceDisplay>
-          </div>
-        </HStack>
-
-        <HStack className="p-6 justify-between rounded-xl bg-primary text-black">
-          <div className="flex flex-col gap-4">
-            <p className="font-medium">{t("Current Balance")}</p>
-            <PriceDisplay className="text-2xl font-bold">
-              {balance?.withdrawableBalance}
-            </PriceDisplay>
-          </div>
-          <Button className="text-sm font-semibold" colorScheme="darkbrown">
-            {t("Withdraw")}
-          </Button>
-        </HStack>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        {mapArray(transactions, (v, i) => {
-          const dateLabel = getDateLabel(
-            new Date(v.createdAt).toUTCString(),
-            new Date(transactions?.at(i - 1)?.createdAt).toUTCString()
-          );
-          return (
-            <>
-              {dateLabel ? (
-                <p className=" text-xs text-grayText">{t(`${dateLabel}`)}</p>
-              ) : null}
-              <HStack className="justify-between">
-                <HStack onClick={() => {}} className="cursor-pointer p-2">
-                  <Avatar
-                    className="min-w-[2.375rem]"
-                    src={
-                      v.amount > 0
-                        ? v.fromUser.profile?.photo
-                        : v.toUser.profile?.photo
-                    }
-                  />
-                  <div className="flex flex-col gap-1">
-                    <HStack className="gap-1">
-                      <p className="font-semibold">
-                        {v.fromUser.profile?.username}
-                      </p>
-                      <VerifiedIcon className="text-xs text-secondaryBlue" />
-                    </HStack>
-                    <p className="text-xs font-medium text-grayText">
-                      {new Date(v.createdAt).toLocaleDateString("en-us", {
-                        month: "long",
-                        day: "2-digit",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </HStack>
-
-                <HStack>
-                  <PayCheckIcon
-                    className={`${
-                      v.amount > 0 ? "text-primary" : "text-secondaryRed"
-                    } text-xs`}
-                  />
-                  <p className="text-xs font-medium">{v.paymentType}</p>
-                </HStack>
-                <HStack className="text-lg gap-1 font-semibold">
-                  <p
-                    className={`${
-                      v.amount > 0 ? "text-primary" : "text-secondaryRed"
-                    } text-xs `}
-                  >
-                    {v.amount > 0 ? <PlusIcon /> : <MinusIcon />}
-                  </p>
-                  <PriceDisplay price={v.amount} />
-                </HStack>
-              </HStack>
-            </>
-          );
-        })}
-      </div>
-    </div>
-  ) : (
-    <div className="flex flex-col gap-8">
-      <SectionHeader sectionTitle={t("Your Finances")}>
-        <Button className="flex gap-2 items-center">
-          <BsFilePdfFill />
-          {t("PDF")}
-        </Button>
-      </SectionHeader>
-      <div className="flex flex-wrap sm:flex-nowrap gap-8 items-center">
-        <FinancialCard
-          className="w-full"
-          title={t("Your Current Balance")}
-          amount={{
-            amount: balance?.withdrawableBalance || 0,
-            currency: balance?.balanceCurrency,
-          }}
-        >
-          <Button className="bg-primary-500" onClick={handleOpen}>
-            {t("Get Paid Now")}
-          </Button>
-        </FinancialCard>
-        <FinancialCard
-          className="w-full"
-          title={t("Your Earnings to Date")}
-          amount={{
-            amount: balance?.allTimeEarnings || 0,
-            currency: balance?.balanceCurrency,
-          }}
+  const [isDetailPage, setDetailPage] = React.useState(false);
+  const [openWithdraw, setOpenWithdraw] = React.useState(false);
+  const transactions = [
+    {
+      merchant: "Starbucks",
+      date: "12/12/2023",
+      method: "Bank Card",
+      amount: -200,
+      icon: "/icons/mastercard.png",
+    },
+    {
+      merchant: "Best Buy",
+      date: "12/12/2023",
+      method: "Apple Pay",
+      amount: 400,
+      icon: "/icons/visa.png",
+    },
+    {
+      merchant: "Amazon",
+      date: "12/12/2023",
+      method: "Wiaah Coin",
+      amount: -250,
+      icon: "/icons/amazon.png",
+    },
+  ];
+  if (isDetailPage) {
+    return (
+      <div className="p-4">
+        <WithdrawalDetailsPage setDetailPage={setDetailPage}
         />
       </div>
-     
-      <h2 className="text-3xl font-semibold text-gray-900">{t("Transaction History")}</h2>
-      <p className="text-gray-500 mt-1">View your recent transactions and account activity.</p>
+    );
+  }
 
-      <TableContainer>
-        <TransactionsTable/>
-        {/* <Table
-          TdProps={{
-            className:
-              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-          }}
-          ThProps={{
-            className:
-              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-          }}
-          className="border-collapse w-full"
-          TrProps={{ className: "border-collapse" }}
-        >
-          <THead>
-            <Tr>
-              <Th>{t("Date")}</Th>
-              <Th>{t("Status and ID")}</Th>
-              <Th>{t("Transaction type")}</Th>
-              <Th>{t("Recipient")}</Th>
-              <Th>{t("Amount")}</Th>
-              <Th>{t("Currency")}</Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {mapArray(
-              transactions,
-              (
-                {
-                  amount,
-                  createdAt,
-                  id,
-                  status,
-                  userId,
-                  fromUser,
-                  toUser,
-                  currency,
-                  paymentType,
-                },
-                idx
-              ) => {
-                const recipient =
-                  userId === user?.id
-                    ? toUser.profile?.username || ""
-                    : fromUser.profile?.username || "";
-                return (
-                  <Tr key={idx}>
-                    <Td>
-                      {new Date(createdAt).toLocaleDateString("en-us", {
-                        dateStyle: "medium",
-                      })}
-                    </Td>
-                    <Td>
-                      <HStack>
-                        <Status
-                          status={
-                            status === TransactionStatus.Success
-                              ? "completed"
-                              : status === TransactionStatus.Failed
-                              ? "failed"
-                              : "pending"
-                          }
-                        />
-                        {id}
-                      </HStack>
-                    </Td>
-                    <Td>{paymentType}</Td>
-                    <Td>
-                      {recipient.slice(0, 4)}...
-                      {recipient.slice(recipient.length - 4, recipient.length)}
-                    </Td>
-                    <Td>
-                      <span
-                        className={`${
-                          userId === user?.id ? "text-primary" : "text-red-500"
-                        }`}
-                      >
-                        {userId === user?.id ? "+" : "-"}
-                        {amount}
-                      </span>
-                    </Td>
-                    <Td>{currency}</Td>
-                  </Tr>
-                );
-              }
-            )}
-            {!transactions || transactions.length < 1 ? (
-              <Tr>
-                <Td colSpan={6}>{t("No Records Found")}</Td>
-              </Tr>
-            ) : null}
-          </TBody>
-        </Table> */}
-      </TableContainer>
-      <Pagination controls={controls} />
-      <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader className="border-b p-2 font-bold" title={t("Withdraw")}>
-            <ModalCloseButton>
-              <CloseIcon />
-            </ModalCloseButton>
-          </ModalHeader>
-          <Formik
-            initialValues={{
-              methodId: "",
-              amount: 0,
-              currency: balance?.balanceCurrency || "USD",
-            }}
-            onSubmit={() => {}}
-          >
-            {({ values, setFieldValue }) => (
-              <Form>
-                <Table
-                  TdProps={{
-                    className:
-                      "first:align-top whitespace-nowrap first:text-right odd:font-bold even:font-semibold",
-                  }}
-                  className="w-full"
-                  TrProps={{ className: "border-b" }}
-                >
-                  <Tr>
-                    <Td>{t("Transfer to")}:</Td>
-                    <Td>
-                      <Select
-                        onOptionSelect={(v) => setFieldValue("methodId", v)}
-                        value={values.methodId}
-                        placeholder={t("Select financial account")}
-                      >
-                        {mapArray(accounts, ({ id, label }) => (
-                          <SelectOption value={id}>{label}</SelectOption>
-                        ))}
-                      </Select>
-                      <Link href={(r) => ""}>
-                        {t("Add a financial account")}
-                      </Link>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>{t("Available to withdraw")}:</Td>
-                    <Td>
-                      <PriceDisplay price={balance?.withdrawableBalance} />
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>{t("Amount to withdraw")}:</Td>
-                    <Td>
-                      <InputGroup>
-                        <InputLeftElement>
-                          <Select
-                            className="border-none"
-                            value={values.currency}
-                            onOptionSelect={(v) => {
-                              setFieldValue("currency", v);
-                            }}
-                          >
-                            {mapArray(currencies, (v) => (
-                              <SelectOption value={v.code}>
-                                {v.currency.name}
-                              </SelectOption>
-                            ))}
-                          </Select>
-                        </InputLeftElement>
+  return (
+    <div className="p-4">
 
-                        <Input
-                          placeholder={t("Withdraw amount")}
-                          value={values.amount}
-                          onChange={(v) =>
-                            setFieldValue("amount", v.target.value)
-                          }
-                        />
-                      </InputGroup>
+      <WithdrawDialog  isOpen={openWithdraw} onClose={() => setOpenWithdraw(false)} />
+      <TransactionHeader setOpenWithdraw={setOpenWithdraw} />
 
-                      <Table
-                        ThProps={{ className: "whitespace-nowrap" }}
-                        className="text-xs"
-                      >
-                        <THead>
-                          <Tr>
-                            <Th>{t("Currency")}</Th>
-                            <Th>{t("Balance")}</Th>
-                            <Th>{t("Exchange Rate")}</Th>
-                            <Th>{t("US Dollar Equivalent")}</Th>
-                          </Tr>
-                        </THead>
-                        <TBody>
-                          <Tr>
-                            <Td>{values.currency}</Td>
-                            <Td>{Number(values.amount)}</Td>
-                            <Td>
-                              {
-                                currencies?.find(
-                                  (v) => v.code === values.currency
-                                )?.currency.exchangeRate
-                              }
-                            </Td>
-                            <Td>{Number(values.amount)}</Td>
-                          </Tr>
-                        </TBody>
-                      </Table>
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>{t("Fees")}:</Td>
-                    <Td>
-                      <PriceDisplay />
-                    </Td>
-                  </Tr>
-                  <Tr>
-                    <Td>{t("Transfer to Account")}:</Td>
-                    <Td>
-                      <PriceDisplay
-                        priceObject={{
-                          amount: Number(values.amount),
-                          currency: values.currency,
-                        }}
-                      />
-                    </Td>
-                  </Tr>
-                </Table>
-                <ModalFooter className="pt-4">
-                  <Button>{t("Submit")}</Button>
-                </ModalFooter>
-              </Form>
-            )}
-          </Formik>
-        </ModalContent>
-      </Modal>
+      {/* Transaction History */}
+      <div>
+        <h2 className="text-base font-semibold mb-2">Transaction History</h2>
+        <div className="mb-4">
+          <SearchBoxInner placeholder="Search transactions" />
+
+        </div>
+
+        {/* Mobile View */}
+        {isMobile ? (
+          <div className="space-y-4">
+            {transactions.map((txn, i) => (
+              <div key={i} className="flex items-center justify-between p-3 bg-white rounded-md shadow-sm border">
+                <div className="flex items-center gap-3">
+                  <img src={txn.icon} alt="icon" className="w-8 h-8" />
+                  <div>
+                    <p className="text-sm font-semibold">{txn.merchant}</p>
+                    <p className="text-xs text-gray-500">{txn.date}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className={`text-sm ${txn.amount > 0 ? "text-green-600" : "text-red-600"}`}>
+                    {txn.amount > 0 ? "+" : ""}
+                    ${txn.amount}
+                  </p>
+                  <p className="text-xs text-gray-500">{txn.method}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <>
+            <TransactionTable setDetailPage={setDetailPage} />
+            {/* <div className="mt-4">
+              <Pagination />
+            </div> */}
+          </>
+        )}
+        <Pagination total={5} />
+      </div>
     </div>
   );
-};
+}
+function TransactionHeader({ setOpenWithdraw }) {
+
+  return (
+    <div className="">
+
+      {/* Left Title */}
+      <SectionTitle title="Transaction" className="mb-4" />
+      {/* <h1 className="text-2xl font-bold text-gray-900"></h1> */}
+
+      {/* Right Section */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 w-full sm:w-auto">
+        {/* Cards */}
+        <div className="flex flex-col sm:flex-row gap-4 flex-1">
+          <div className="bg-gray-100 rounded-md px-6 py-4 flex-1">
+            <p className="text-sm text-gray-500">Current Balance</p>
+            <p className="text-xl font-bold text-gray-900">$400</p>
+          </div>
+          <div className="bg-gray-100 rounded-md px-6 py-4 flex-1">
+            <p className="text-sm text-gray-500">Available Earnings</p>
+            <p className="text-xl font-bold text-gray-900">$600</p>
+          </div>
+        </div>
+      </div>
+      {/* Button */}
+      <div className="pt-2 sm:pt-2 mt-3">
+        <div className="flex justify-end">
+          <PrimaryButton onClick={() => setOpenWithdraw(true)}>
+            Withdraw Now
+          </PrimaryButton>
+        </div>
+      </div>
+
+
+    </div>
+  );
+}
+

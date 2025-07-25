@@ -48,7 +48,7 @@ export const ProfileOptionsDrawer = () => {
       link: {
         name: {
           translationKey: "shopping_management",
-          fallbackText: "Shopping Management",
+          fallbackText: "Orders & Perks",
         },
         href: "/shopping-management",
       },
@@ -131,7 +131,7 @@ export const ProfileOptionsDrawer = () => {
       link: {
         name: {
           translationKey: "shopping_management",
-          fallbackText: "Shopping Management",
+          fallbackText: "Orders & Perks",
         },
         href: getRouting((r) => r.visitShoppingManagement()),
       },

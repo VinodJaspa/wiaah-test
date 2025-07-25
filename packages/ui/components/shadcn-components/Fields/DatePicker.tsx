@@ -99,7 +99,7 @@ export default function DatePickerField({ name, label = "Shipping Time" }: DateP
                 row: "flex justify-between",
                 cell: "w-8 h-8 text-sm text-center text-gray-700 hover:bg-gray-100 rounded-full cursor-pointer",
                 day_selected: "bg-black text-white font-medium rounded-full",
-                day_today: "text-blue-600 font-semibold border-b border-blue-600",
+                day_today: "font-semibold border-b bg-black  text-white rounded-full",
               }}
             />
           </div>

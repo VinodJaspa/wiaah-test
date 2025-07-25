@@ -4,12 +4,12 @@ import { SettingsSectionType } from "types";
 import {
   PayoutSection,
   SectionsLayout,
-  TransactionsHistorySection,
-  VouchersSection,
 } from "ui";
 import { FaPercent } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { GiPayMoney } from "react-icons/gi";
+import TransactionSection from "@sections/Wallet/TransactionsHistory";
+import VouchersSectionMain from "@sections/ShoppingManagement/Vouchers/VouchersSection";
 
 export const WalletView: React.FC = () => {
   const baseRoute = "wallet";
@@ -38,13 +38,13 @@ const sections: SettingsSectionType[] = [
     panelName: "Transactions",
     panelIcon: AiOutlineTransaction,
     panelUrl: "/transactions",
-    panelComponent: <TransactionsHistorySection />,
+    panelComponent: <TransactionSection />,
   },
   {
     panelName: "Vouchers",
     panelIcon: FaPercent,
     panelUrl: "/vouchers",
-    panelComponent: <VouchersSection />,
+    panelComponent: <VouchersSectionMain />,
   },
   {
     panelName: "payout",

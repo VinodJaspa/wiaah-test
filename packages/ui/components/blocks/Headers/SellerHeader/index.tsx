@@ -223,7 +223,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       link: {
         name: {
           translationKey: "shopping_management",
-          fallbackText: "Shopping Management",
+          fallbackText: "Orders & Perks",
         },
         href: "/shopping-management",
       },
@@ -307,7 +307,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       link: {
         name: {
           translationKey: "shopping_management",
-          fallbackText: "Shopping Management",
+          fallbackText: "Orders & Perks",
         },
         href: "/management/shopping-management/my-wishlist",
       },

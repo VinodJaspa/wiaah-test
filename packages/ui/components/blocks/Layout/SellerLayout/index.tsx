@@ -367,7 +367,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
     link: {
       name: {
         translationKey: "shopping_management",
-        fallbackText: "Shopping Management",
+        fallbackText: "Orders & Perks",
       },
       href: "/shopping-management",
     },
@@ -451,7 +451,7 @@ const SellerNavLinks: HeaderNavLink[] = [
     link: {
       name: {
         translationKey: "shopping_management",
-        fallbackText: "Shopping Management",
+        fallbackText: "Orders & Perks",
       },
       href: getRouting((r) => r.visitShoppingManagement()),
     },

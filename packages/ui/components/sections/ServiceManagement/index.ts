@@ -3,3 +3,6 @@ export * from "./Bookings";
 export * from "./PendingAppointments";
 export * from "./MyServices";
 export * from "./TimeManagement";
+export * from "./Reservation";
+export * from "./PendingReservation";
+export * from "./ServiceCatalog"
