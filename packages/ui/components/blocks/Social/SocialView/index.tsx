@@ -146,16 +146,16 @@ const { t } = useTranslation();
         <SpinnerFallback isLoading={false} isError={isError}>
           <Container className="flex-grow flex-col">
             <div className="w-full flex overflow-hidden items-center justify-center md:max-h-[26rem] h-fit relative ">
-              <SocialProfile
+              {/* <SocialProfile
                 storeType={
                   FAKE_PROFILE_INFO.user?.shop.storeType || StoreType.Product
                 }
                 isFollowed={true}
                 isPublic={FAKE_PROFILE_INFO.visibility}
                 profileInfo={FAKE_PROFILE_INFO}
-              />
-              <SocialPostsCommentsDrawer />
-              <ShareWithModal />``
+              /> */}
+              {/* <SocialPostsCommentsDrawer /> */}
+              {/* <ShareWithModal /> */}
             </div>
             {profileInfo && (
               <>

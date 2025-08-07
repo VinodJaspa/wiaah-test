@@ -177,7 +177,7 @@ const { t } = useTranslation();
           </div>
         )}
       </div>
-      {isMobile ? null : (
+      {/* {isMobile ? null : (
         <div className="absolute pb-11 bottom-0 bg-primary flex justify-center flex-col px-6 left-0 w-full">
           <Divider className="my-10" />
           <Button
@@ -188,7 +188,7 @@ const { t } = useTranslation();
             <p className="font-bold text-black text-base">{t("Logout")}</p>
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

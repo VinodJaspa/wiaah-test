@@ -148,7 +148,7 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
-  accountType?:String;
+  accountType?:string;
   showMobileHeader?: boolean;
 }
 

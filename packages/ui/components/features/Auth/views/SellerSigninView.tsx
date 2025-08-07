@@ -14,8 +14,9 @@ import { useSigninMutation } from "../services";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import Recaptcha from "react-google-recaptcha";
-
+import { useSetRecoilState } from 'recoil';
 import { useRouter } from "next/router";
+import { isUserLoggedIn } from "state";
 type SellerSigninViewProps = {
   onNavigate: () => void;
 };
@@ -23,6 +24,7 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
   const { t } = useTranslation();
   const { getUrl } = useRouting();
   const router = useRouter();
+  const setUserLoggedIn = useSetRecoilState(isUserLoggedIn); 
   const { mutate: signin, isLoading } = useSigninMutation();
 
   const { form, inputProps } = useForm<Parameters<typeof signin>[0]>(
@@ -85,6 +87,7 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
               if (res.success) {
                 const token = res?.accessToken;
                 if (token) {
+                  setUserLoggedIn(true);
                   successToast(res?.message || "Sign in successful!");
                   router.push("/");
                 } else {

@@ -28,7 +28,8 @@ const MyProfile: NextPage = () => {
         <title>Wiaah | MyProfile</title>
       </Head>
       <SellerLayout>
-        <SocialView />
+        
+        <SocialView  />
       </SellerLayout>
     </>
   );

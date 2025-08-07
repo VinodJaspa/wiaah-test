@@ -18,28 +18,24 @@ import { BiWallet } from "react-icons/bi";
 import { getRouting, useRouting } from "@UI/../routing";
 import { mapArray, runIfFn } from "@UI/../utils/src";
 import { FaThList } from "react-icons/fa";
+import { useLogoutMutation } from "@features/Accounts/services/useLogout";
 
 export const ProfileOptionsDrawer = () => {
   const { visit } = useRouting();
   const { value, closeMyProfileNav } = useSocialControls("showMyProfileNav");
+  const { user } = useUserData();
 
   const BuyerNavLinks: HeaderNavLink[] = [
     {
       link: {
-        name: {
-          translationKey: "profile",
-          fallbackText: "Profile",
-        },
+        name: { translationKey: "profile", fallbackText: "Profile" },
         href: "/myprofile",
       },
       icon: <HiOutlineUserCircle />,
     },
     {
       link: {
-        name: {
-          translationKey: "settings",
-          fallbackText: "Settings",
-        },
+        name: { translationKey: "settings", fallbackText: "Settings" },
         href: "/settings",
       },
       icon: <IoSettingsOutline />,
@@ -56,21 +52,15 @@ export const ProfileOptionsDrawer = () => {
     },
     {
       link: {
-        name: {
-          translationKey: "wallet",
-          fallbackText: "Wallet",
-        },
+        name: { translationKey: "wallet", fallbackText: "Wallet" },
         href: "/wallet",
       },
       icon: <BiWallet />,
     },
     {
       link: {
-        name: {
-          translationKey: "log_out",
-          fallbackText: "Log out",
-        },
-        href: "logout",
+        name: { translationKey: "log_out", fallbackText: "Log out" },
+        href: "/logout",
       },
       icon: null,
     },
@@ -79,10 +69,7 @@ export const ProfileOptionsDrawer = () => {
   const SellerNavLinks: HeaderNavLink[] = [
     {
       link: {
-        name: {
-          translationKey: "profile",
-          fallbackText: "Profile",
-        },
+        name: { translationKey: "profile", fallbackText: "Profile" },
         href: "/myprofile",
       },
       icon: <HiOutlineUserCircle />,
@@ -98,14 +85,11 @@ export const ProfileOptionsDrawer = () => {
       icon: <IoSettingsOutline />,
     },
     {
-      icon: <StarOutlineIcon />,
       link: {
+        name: { translationKey: "Saved", fallbackText: "Saved" },
         href: "/saved",
-        name: {
-          translationKey: "Saved",
-          fallbackText: "Saved",
-        },
       },
+      icon: <StarOutlineIcon />,
     },
     {
       link: {
@@ -139,50 +123,55 @@ export const ProfileOptionsDrawer = () => {
     },
     {
       link: {
-        name: {
-          translationKey: "wallet",
-          fallbackText: "Wallet",
-        },
+        name: { translationKey: "wallet", fallbackText: "Wallet" },
         href: "/wallet",
       },
       icon: <BiWallet />,
     },
     {
       link: {
-        name: {
-          translationKey: "log_out",
-          fallbackText: "Log out",
-        },
+        name: { translationKey: "log_out", fallbackText: "Log out" },
         href: "/logout",
       },
       icon: null,
     },
   ];
-  const { user } = useUserData();
 
   const links = user?.accountType === "buyer" ? BuyerNavLinks : SellerNavLinks;
+  const { mutate: logout, isLoading } = useLogoutMutation();
+  const handleClick = (href: string) => {
+    if (href === "/logout") {
+  
+      logout(undefined, {
+        onSuccess: () => {
+          // You may still want to manually clear client-side localStorage/cookies if needed
+          // window.location.href = "/";
+        },
+        onError: (err) => {
+          console.error("Logout failed", err);
+        },
+      });
+    } else {
+      visit((r) => r.addPath(href), false);
+    }
+    closeMyProfileNav();
+  };
+
   return (
-    <Drawer
-      position="bottom"
-      isOpen={!!value}
-      onClose={closeMyProfileNav}
-      draggable
-    >
+    <Drawer position="bottom" isOpen={!!value} onClose={closeMyProfileNav} draggable>
       <DrawerOverlay />
       <DrawerContent style={{ overflow: "visible" }} className="p-4">
         <Stack col divider={<Divider className="my-4" />}>
-          {/* {mapArray(links, ({ icon, link }) => (
-            // <HStack
-            //   onClick={() => {
-            //     visit((r) => r.addPath(link.href), false);
-            //     // closeMyProfileNav`();
-            //   }}
-            //   className="font-medium cursor-pointer"
-            // >
-            //   {runIfFn(icon)}
-            //   <TranslationText translationObject={link.name} />
-            // </HStack>
-          ))} */}
+          {mapArray(links, ({ icon, link }) => (
+            <HStack
+              key={link.href}
+              onClick={() => handleClick(link.href)}
+              className="font-medium cursor-pointer gap-3"
+            >
+              {runIfFn(icon)}
+              <TranslationText translationObject={link.name} />
+            </HStack>
+          ))}
         </Stack>
       </DrawerContent>
     </Drawer>

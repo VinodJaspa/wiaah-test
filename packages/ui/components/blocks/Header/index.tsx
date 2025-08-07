@@ -13,7 +13,7 @@ import {
   MultiStepDrawer,
 } from "@UI";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
 import {
@@ -28,33 +28,46 @@ import { ServiceType } from "@features/API";
 import { useMediaQuery } from "react-responsive";
 import { useLogoutMutation } from "@features/Accounts/services/useLogout";
 
-
+import { useSetRecoilState } from 'recoil';
+import { useRouter } from "next/router";
+import { isUserLoggedIn } from "state";
 export interface HeaderProps {
   token?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({ token }) => {
 
-  const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
+
+
   const { mutate: logout, isLoading } = useLogoutMutation();
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useMediaQuery({ maxWidth: 767 });
+
   const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
   const onLogOut = () => {
+
     logout(undefined, {
       onSuccess: () => {
         // You may still want to manually clear client-side localStorage/cookies if needed
-        setSignedIn(false);
-        window.location.href = "/";
+        setLoginState(false);
+        // window.location.href = "/";
       },
       onError: (err) => {
         console.error("Logout failed", err);
       },
     });
   };
+  const [loggedIn, setLoginState] = useRecoilState(isUserLoggedIn);
+
+  // ✅ Update Recoil state if token is passed
+  React.useEffect(() => {
+    if (!loggedIn) {
+      setLoginState(false); // only set if not already true
+    }
+  }, [token, loggedIn, setLoginState]);
 
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
@@ -192,7 +205,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
               onClick={onLogOut}
               className="flex sm:text-sm items-center gap-2"
             >
-              {signedIn ? t("Logout") : t("Sign in")}
+              {loggedIn ? t("Logout") : t("Sign in")}
               <PersonOutlineIcon className="text-xl sm:text-lg text-white fill-white stroke-white" />
             </Button>
             <button onClick={() => visit((r) => r.visitMarketSavedItems())}>
