@@ -380,16 +380,22 @@ export class AuthService {
   }
 
   async getAccountMetaDataByEmail(email: string) {
-    return await KafkaMessageHandler<
+
+  
+    const response = await KafkaMessageHandler<
       any,
       GetAccountMetaDataByEmailMessage,
       GetAccountMetaDataByEmailMessageReply
     >(
       this.eventsClient,
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
-      new GetAccountMetaDataByEmailMessage({ email }),
+      new GetAccountMetaDataByEmailMessage({ email })
+
     );
+
+    return response;
   }
+  
 
   async getAll(): Promise<Registeration[]> {
     const registartions = await this.prisma.registeration.findMany();

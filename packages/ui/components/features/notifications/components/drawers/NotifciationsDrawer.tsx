@@ -1,5 +1,11 @@
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { getDateLabel, isToday, mapArray } from "@UI/../utils/src";
-import { NotifiactionCard, SpinnerFallback, useSocialControls } from "@blocks";
+import {
+  NotifiactionCard,
+  SpinnerFallback,
+  useSocialControls,
+} from "@blocks";
 import { useGetMyNotificationsQuery } from "@features/notifications/useGetMyNotificationsQuery";
 import {
   ArrowLeftAlt1Icon,
@@ -7,13 +13,19 @@ import {
   DrawerCloseButton,
   DrawerContent,
 } from "@partials";
-import React from "react";
-import { useTranslation } from "react-i18next";
 
 export const NotifciationsDrawer: React.FC = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { closeNotifications, value } = useSocialControls("viewNotifications");
+
   const { data, isLoading, isError } = useGetMyNotificationsQuery();
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    if (data?.data) {
+      setNotifications(data.data);
+    }
+  }, [data]);
 
   return (
     <Drawer
@@ -24,6 +36,7 @@ const { t } = useTranslation();
       onClose={closeNotifications}
     >
       <DrawerContent>
+        {/* Header */}
         <div className="p-4 relative flex justify-center items-center">
           <div className="absolute top-1/2 left-4 -translate-y-1/2">
             <DrawerCloseButton>
@@ -34,29 +47,36 @@ const { t } = useTranslation();
             {t("Notifications")}
           </p>
         </div>
+
+        {/* Content */}
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           <div className="px-2 flex flex-col gap-5">
-            {mapArray(data?.data, (v, i) => {
+            {mapArray(notifications, (v, i) => {
+              const currentDate = new Date(v.createdAt);
+              const previousDate = notifications[i - 1]
+                ? new Date(notifications[i - 1].createdAt)
+                : null;
+
               const label = getDateLabel(
-                new Date(v.createdAt).toUTCString(),
-                new Date(data?.data.at(i - 1)?.createdAt).toUTCString()
+                currentDate.toUTCString(),
+                previousDate?.toUTCString()
               );
+
               return (
-                <div>
-                  {label ? (
+                <div key={v.id ?? i}>
+                  {label && (
                     <div className="mb-2 text-[0.813rem] text-[#7E7E7E]">
                       <p>{label}</p>
                     </div>
-                  ) : null}
+                  )}
                   <NotifiactionCard
                     username={v.author?.profile?.username}
                     createdAt={v.createdAt}
-                    // TODO: bind order id from notification
-                    orderId={"132456"}
+                    orderId={"132456"} // Replace with actual `v.orderId` if available
                     type={v.type}
                     count={1}
                     thumbnail={v.author?.profile?.photo}
-                    seen={!isToday(new Date(v.createdAt))}
+                    seen={!isToday(currentDate)}
                   />
                 </div>
               );

@@ -25,10 +25,7 @@ import { client } from './main';
           };
         },
 
-        formatError(error:any) {
-          // console.log(error ,"rrrrrr");
-          
-      
+        formatError(error: any) {
           const isSchemaValidationError =
             error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ||
             error.extensions.code === 'BAD_USER_INPUT';
@@ -39,23 +36,31 @@ import { client } from './main';
             errorCodesValues.length
           );
           const isKnownError = knownCodes.includes(error?.extensions?.errorCode);
-
         
           console.log({ isSchemaValidationError, isKnownError }, error);
         
+          // ✅ Allow known errors or schema validation errors to pass through
           if (isKnownError || isSchemaValidationError) {
             return {
               message: error.message,
-              
+              extensions: error.extensions, // Pass through full error details
             };
           }
         
-          // Fallback for unknown errors
+          // ✅ If error has custom extensions, pass them along
+          if (error?.extensions) {
+            return {
+              message: error.message,
+              extensions: error.extensions,
+            };
+          }
+        
+          // ❌ Unknown internal error fallback
           return {
             message: 'Something went wrong.',
-           
           };
         }
+        
         
       },
       gateway: {

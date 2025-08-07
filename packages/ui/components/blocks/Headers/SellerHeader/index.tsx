@@ -33,7 +33,7 @@ import {
 
 import { useRouting } from "@UI/../routing";
 import { useResponsive } from "hooks";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/router';
 import { useTranslation } from "react-i18next";
 import { BiLogOut, BiWallet } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
@@ -51,7 +51,7 @@ import { isUserLoggedIn } from "state";
 
 export interface HeaderNavLink {
   link: {
-    name: TranslationTextType;
+   name: TranslationTextType;
     href: string;
     props?: HtmlDivProps;
   };
@@ -214,14 +214,16 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       logout(undefined, {
         onSuccess: () => {
           setLoginState(false);
-
-          router.push("/");
+          window.location.href = "/";
+          router.push("/"); // Uncomment if you want to use Next.js routing instead of window.location.href    
         },
         onError: (err) => {
+
           console.error("Logout failed", err);
         },
       });
     } else {
+      window.location.href = path;
       router.push(path);
     }
   };

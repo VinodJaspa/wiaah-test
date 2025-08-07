@@ -1,10 +1,16 @@
 import { AccountType } from "../../Auth";
 import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
-export class GetAccountMetaDataByEmailMessage extends KafkaMessage<{
+export class GetAccountMetaDataByEmailMessage {
   email: string;
-  type?: AccountType;
-}> { }
+
+  constructor(data: { email: string }) {
+    this.email = data.email;
+  }
+}
+
+
+
 
 export class GetAccountMetaDataByEmailMessageReply extends KafkaMessageReply<{
   username?: string;

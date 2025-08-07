@@ -61,12 +61,14 @@ export class AuthResolver implements OnModuleInit {
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
-  changePassword(
+  async changePassword(
     @Args('changePasswordInput') input: ChangePasswordInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    this.commandBus.execute(new ChangePasswordCommand(input, user));
+  ): Promise<boolean> {
+    // console.log('Inside mutation with input:', input);
+    return await this.commandBus.execute(new ChangePasswordCommand(input, user));
   }
+  
 
   @Mutation(() => LoginResponse)
   async login(
