@@ -36,6 +36,8 @@ import {
 import { ImBlocked, ImProfile } from "react-icons/im";
 import { useResponsive } from "hooks";
 import VerifyIdentityStart from "components/verify-IdentitySteps/VerifyIdentity";
+import AccountSection from "@UI/components/Account/AccountSection";
+import AccountSectionMainPage from "@UI/components/Account/AccountSectionMain";
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "management/account-settings";
@@ -111,11 +113,12 @@ export const MyVatSection = () => {
 
 export const MyNewsletterSettingsSection = () => {
   // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
-  // const { data } = useGetMyProfileQuery();
+  const { data } = useGetMyProfileQuery();
 
-  const data = {
-    ownerId: "33",
-  };
+  // const data = {
+  //   ownerId: "33",
+  // };
+
 
   return data ? (
     <AccountNewsLetterSettingsSection userId={data.ownerId} />
@@ -128,7 +131,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: FiSettings,
     panelUrl: "/account",
 
-    panelComponent: <MyAccountSettingsSection />,
+    panelComponent: <AccountSectionMainPage />,
   },
   {
     panelName: "Password",
@@ -158,13 +161,13 @@ const sections: SettingsSectionType[] = [
 
     panelComponent: <MyProfileStatistics />,
   },
-  {
-    panelName: "Newsletter",
-    panelIcon: IoNewspaperOutline,
-    panelUrl: "/newsletter",
+  // {
+  //   panelName: "Newsletter",
+  //   panelIcon: IoNewspaperOutline,
+  //   panelUrl: "/newsletter",
 
-    panelComponent: <MyNewsletterSettingsSection />,
-  },
+  //   panelComponent: <MyNewsletterSettingsSection />,
+  // },
   {
     panelName: "Share Your Wiaah Qr",
     panelIcon: <ShareIcon />,
@@ -189,12 +192,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
-  {
-    panelName: "Privacy",
-    panelIcon: BiLock,
-    panelUrl: "/privacy",
-    panelComponent: <PrivacySection />,
-  },
+  // {
+  //   panelName: "Privacy",
+  //   panelIcon: BiLock,
+  //   panelUrl: "/privacy",
+  //   panelComponent: <PrivacySection />,
+  // },
   {
     panelName: "Account Deletion",
     panelIcon: IoTrash,
@@ -207,10 +210,10 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,
   },
-  {
-    panelName: "Vat settings",
-    panelIcon: VatIcon,
-    panelUrl: "/vat",
-    panelComponent: <MyVatSection />,
-  },
+  // {
+  //   panelName: "Vat settings",
+  //   panelIcon: VatIcon,
+  //   panelUrl: "/vat",
+  //   panelComponent: <MyVatSection />,
+  // },
 ];

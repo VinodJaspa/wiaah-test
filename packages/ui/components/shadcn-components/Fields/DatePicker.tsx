@@ -34,28 +34,7 @@ export default function DatePickerField({ name, label = "Shipping Time" }: DateP
           <p className="text-sm text-red-600">{meta.error}</p>
         )}
 
-      {/* <div className="rounded-md border border-gray-200 shadow-sm p-4">
-        <DayPicker
-          mode="single"
-          selected={field.value ? new Date(field.value) : undefined}
-          onSelect={(date) => setFieldValue(name, date?.toISOString())}
-          classNames={{
-            caption: "flex justify-between items-center font-semibold text-sm text-black mb-4",
-            nav: "flex items-center justify-between w-full",
-            nav_button: "text-black hover:text-gray-600 text-lg",
-            nav_button_previous: "text-xl px-2",
-            nav_button_next: "text-xl px-2",
-            month: "space-y-2 w-full",
-            table: "w-full border-collapse",
-            head_row: "flex w-full justify-between",
-            head_cell: "text-xs text-gray-500 font-medium w-8 text-center",
-            row: "flex w-full justify-between",
-            cell: "text-sm w-8 h-8 text-center hover:bg-gray-100 rounded-full cursor-pointer",
-            day_selected: "bg-black text-white rounded-full",
-            day_today: "font-semibold text-black",
-          }}
-        />
-      </div> */}
+     
       <div className="w-full border border-gray-200 rounded-md mt-2 p-4">
         <div className="space-y-4">
           <div className="">

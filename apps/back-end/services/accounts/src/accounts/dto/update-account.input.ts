@@ -22,8 +22,10 @@ export class UpdateAccountInput extends PartialType(
 
   @Field(() => String, { nullable: true })
   country?: string;
-  @Field(() => GraphQLUpload, { nullable: true }) 
-    photo?:string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  photo?: string;
+  @Field(() => Date, { nullable: true })
+  birthDate?: string;
 }
 
 @InputType()

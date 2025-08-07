@@ -15,35 +15,52 @@ registerEnumType(AccountStatus, { name: 'AccountStatus' });
 @Directive('@key(fields:"membershipId")')
 @Directive('@key(fields:"membershipId, id")')
 export class Account {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
   @Field(() => String, { nullable: true })
-  stripeId: string;
+  stripeId?: string;
 
   @Field(() => ID, { nullable: true })
-  membershipId: string;
+  membershipId?: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   firstName: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   lastName: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   email: string;
 
-  @Field((type) => Date)
-  createdAt: Date;
+  @Field(() => Boolean)
+  emailVerified: boolean;
 
-  @Field((type) => Date)
-  updatedAt: Date;
+  @Field(() => Boolean)
+  phoneVerified: boolean;
 
-  @Field((type) => AccountType)
-  accountType: AccountType;
 
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
+  idVerified: boolean;
+
+  @Field(() => Boolean)
   verified: boolean;
+
+  @Field(() => Boolean)
+  online: boolean;
+
+  @Field(() => String)
+  gender: string;
+
+  @Field(() => String, { nullable: true })
+  country?: string;
+  
+
+  @Field(() => Number)
+  sales: number;
+
+  @Field(() => AccountType)
+  accountType: AccountType;
 
   @Field(() => AccountStatus)
   status: AccountStatus;
@@ -60,12 +77,32 @@ export class Account {
   @Field(() => [String])
   ips: string[];
 
-  @Field(() => String)
+  @Field(() => Date)
   lastActiveAt: Date;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => Date)
+  birthDate: Date;
 
   @Field(() => String)
   lang: string;
 
   @Field(() => String)
   currency: string;
+  @Field()
+  shareAdPartners: boolean;
+
+  @Field()
+  shareAnalyticsTools: boolean;
+
+  @Field()
+  shareSocialNetworks: boolean;
+
+  @Field()
+  sharePaymentProcessors: boolean;
 }

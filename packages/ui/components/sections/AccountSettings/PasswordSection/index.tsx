@@ -15,6 +15,7 @@ import {
 import { useForm } from "@UI/../utils/src";
 import { useRouting } from "@UI/../routing";
 import * as yup from "yup";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 
 export interface PasswordSectionProps { }
 export interface PasswordSectionDTO {
@@ -24,7 +25,7 @@ export interface PasswordSectionDTO {
 }
 
 export const PasswordSection: React.FC<PasswordSectionProps> = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { mutate, isLoading } = useChangePasswordMutation();
@@ -68,11 +69,11 @@ const { t } = useTranslation();
         placeholder={t("Type password") + "..."}
         isPassword
       ></Input>
-      <HStack className="justify-end">
+      {/* <HStack className="justify-end">
         <button onClick={() => { }}>
           <p className="text-sm text-primary">{t("Forgot Password?")}</p>
         </button>
-      </HStack>
+      </HStack> */}
       <div className="flex flex-col gap-4">
         <Input
           {...inputProps("newPassword")}
@@ -85,19 +86,19 @@ const { t } = useTranslation();
           isPassword
         ></Input>
       </div>
-      <Button
-        loading={isLoading}
-        onClick={() => mutate(form)}
-        className="w-full mt-3"
-        colorScheme="darkbrown"
+
+      <PrimaryButton onClick={() => {
+        mutate(form);
+      }}
+        type="submit"
       >
-        {t("Change Password")}
-      </Button>
+        {t("Update Password")}
+      </PrimaryButton>
     </div>
   ) : (
     <React.Fragment>
-      <div className="flex flex-col gap-4">
-        <SectionHeader sectionTitle={t("password", "Password")} />
+      <div className="flex flex-col gap-4 ml-10 mr-10">
+        <SectionHeader sectionTitle={t("password", "Change Password")} />
         <Formik<PasswordSectionDTO>
           initialValues={{
             confirmPassword: "",
@@ -107,21 +108,24 @@ const { t } = useTranslation();
           onSubmit={(data) => { }}
         >
           <React.Fragment>
-            <FormikInput
+            <Input
+              isPassword
               label={t("Current Password")}
               {...inputProps("currentPassword")}
               {...setTestid("current_password")}
               name="currentPassword"
               placeholder="current password"
             />
-            <FormikInput
+            <Input
+              isPassword
               label={t("New Password")}
               {...inputProps("newPassword")}
               {...setTestid("new_password")}
               name="newPassword"
               placeholder="new password"
             />
-            <FormikInput
+            <Input
+              isPassword
               label={t("Confirm Password")}
               {...inputProps("confirmNewPassword")}
               {...setTestid("confirm_password")}
@@ -130,24 +134,22 @@ const { t } = useTranslation();
             />
           </React.Fragment>
         </Formik>
-      </div>
-      <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
-        <span
-          {...setTestid("forgot_password")}
-          className="text-primary cursor-pointer"
-        >
-          {t("forgot_password", "Forgot Password")}
-        </span>
-        <Button
-          {...setTestid("submit")}
+        <div className="flex justify-end">
+        <PrimaryButton
           onClick={() => {
             mutate(form);
           }}
           type="submit"
         >
-          {t("Change Password")}
-        </Button>
+          {t("Update Password")}
+        </PrimaryButton>
       </div>
+      </div>
+
+
+     
+
+
     </React.Fragment>
   );
 };

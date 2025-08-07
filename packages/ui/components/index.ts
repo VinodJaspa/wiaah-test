@@ -4,6 +4,6 @@ export * from "./sections";
 export * from "./helpers";
 //@ts-ignore
 export * from "./features";
-export * from "./shadcn-components"
+
 export * from "./shadcn-components/Buttons";
-export * from "./shadcn-components/Fields"
+export * from "./Account";

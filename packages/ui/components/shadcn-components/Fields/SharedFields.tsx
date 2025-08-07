@@ -4,11 +4,28 @@ import { useField } from "formik";
 import { Plus, Minus } from "lucide-react";
 
 // Replace missing components with basic versions
-const Label = ({ htmlFor, children }: any) => (
-  <label htmlFor={htmlFor} className="text-sm font-medium block mb-1">
+export const SectionLabel = ({ htmlFor, children }: any) => (
+  <label htmlFor={htmlFor} className="text-sm  block mb-1 font-semibold">
     {children}
   </label>
 );
+
+
+interface InfoTextProps {
+  text: string;
+  className?: string;
+}
+
+ export const InfoText: React.FC<InfoTextProps> = ({ text, className }) => {
+  return (
+    <p className={` text-gray-800 text-xs ${className}`}>
+      {text}
+    </p>
+  );
+};
+
+
+
 
 const Input = ({ id, placeholder, ...props }: any) => (
   <input
@@ -70,7 +87,7 @@ export const Field = ({ label, name, textarea = false, placeholder = "" }: any) 
 
   return (
     <div className="space-y-1">
-      <Label htmlFor={name}>{label}</Label>
+      <SectionLabel htmlFor={name}>{label}</SectionLabel>
       {textarea ? (
         <Textarea id={name} {...field} placeholder={placeholder} />
       ) : (
@@ -86,7 +103,7 @@ export const Counter = ({ label, name }: any) => {
   const [field, , helpers] = useField(name);
   return (
     <div className="flex items-center justify-between">
-      <Label>{label}</Label>
+      <SectionLabel>{label}</SectionLabel>
       <div className="flex items-center gap-2">
         <Button type="button" size="sm" onClick={() => helpers.setValue(Math.max(0, field.value - 1))}><Minus /></Button>
         <span className="w-6 text-center">{field.value}</span>
@@ -97,12 +114,12 @@ export const Counter = ({ label, name }: any) => {
 };
 
 // 3. ToggleGroup
-export const SharedPrivateToggle = ({ name }: { name: string }) => {
+export const SharedPrivateToggle = ({ name ,label }: { name: string, label :string}) => {
   const [field, , helpers] = useField(name);
 
   return (
     <div className="space-y-1">
-      <Label>Room Type</Label>
+      <SectionLabel>Room Type</SectionLabel>
       <ToggleGroup value={field.value} onValueChange={(val: string) => helpers.setValue(val)}>
         <ToggleGroupItem value="shared">Shared</ToggleGroupItem>
         <ToggleGroupItem value="private">Private</ToggleGroupItem>
@@ -115,7 +132,7 @@ export const SharedPrivateToggle = ({ name }: { name: string }) => {
 export const UploadPhotos = ({ images }: { images: string[] }) => {
   return (
     <div>
-      <Label>Photos</Label>
+      
       <div className="grid grid-cols-3 gap-2 mt-2">
         {images.map((img, idx) => (
           <img key={idx} src={img} className="rounded-lg object-cover w-full h-24" alt="Uploaded" />
@@ -129,7 +146,7 @@ export const UploadPhotos = ({ images }: { images: string[] }) => {
 export const UploadVideo = ({ url }: { url: string }) => {
   return (
     <div className="space-y-1">
-      <Label>Video</Label>
+      <SectionLabel>Video</SectionLabel>
       <video src={url} className="w-full rounded-lg" controls />
     </div>
   );

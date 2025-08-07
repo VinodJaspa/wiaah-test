@@ -12,40 +12,48 @@ import {
   useGetMyProfileQuery,
 } from "@UI";
 import { useRouting } from "routing";
-export interface ShareYourWiaahQrProps {}
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
+export interface ShareYourWiaahQrProps { }
 
-export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({}) => {
-const { t } = useTranslation();
+export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({ }) => {
+  const { t } = useTranslation();
   const { open } = useShareModal();
   const { getUrl } = useRouting();
   const { data: user } = useGetMyProfileQuery();
 
   return (
     <div className="flex flex-col w-full h-[max(100%,50rem)] gap-4 p-2">
-      <SectionHeader sectionTitle={t("Share your Wiaah QR")} />
-      <div className="flex flex-col-reverse lg:flex-row w-full h-full rounded-l-2xl lg:bg-primary-100 justify-center items-center">
-        <div className="w-full justify-center items-center flex h-full p-8">
-          <p className="xl:text-6xl text-center leading-normal font-semibold">
-            {t("Share your Wiaah QR with your friends to keep in Touch") + "."}
-          </p>
-        </div>
-        <div className="lg:bg-primary-800 h-full  rounded-r-2xl flex justify-center items-center p-8 w-full">
+      <SectionTitle title={t("Share your Wiaah QR")} />
+      <div className="w-full flex justify-center items-center">
+        <Subtitle className="text-center">
+          {t("Your Wiaah QR") + "."}
+        </Subtitle>
+      </div>
+
+      <div className="flex flex-col-reverse lg:flex-row w-full h-full rounded-l-2xl justify-center items-center">
+
+        <div className="h-full  rounded-r-2xl flex justify-center items-center p-8 w-full">
           <div className="w-[min(100%,25rem)] flex flex-col gap-8">
-            <QrcodeDisplay
-              transparentBg
-              color="#000"
-              value={
-                user ? getUrl((r) => r.visitSocialProfile(user.ownerId)) : ""
-              }
-            />
+            <div className="flex justify-center">
+              <QrcodeDisplay
+                transparentBg
+                size={300}
+                color="#000"
+                value={
+                  user ? getUrl((r) => r.visitSocialProfile(user.ownerId)) : ""
+                }
+              />
+            </div>
+
             <div className="flex gap-8">
-              <Button className="w-full text-white text-xl flex items-center justify-center gap-4 fill-white">
+              <Button className="w-full text-white text-sm flex items-center justify-center gap-4 fill-white">
                 <DownloadIcon />
                 {t("JPG")}
               </Button>
               <Button
                 colorScheme="darkbrown"
-                className="w-full text-white text-xl flex items-center justify-center gap-4 fill-white"
+                className="w-full text-white text-sm flex items-center justify-center gap-4 fill-white"
               >
                 <DownloadIcon />
                 {t("PDF")}
@@ -58,9 +66,12 @@ const { t } = useTranslation();
                 }
                 colorScheme="info"
               >
-                <ShareIcon className="text-xl text-white" />
+                <ShareIcon className="text-sm text-white" />
               </Button>
             </div>
+            <p className="text-sm text-center">
+              {t("Share your Wiaah QR with your friends to keep in Touch") + "."}
+            </p>
           </div>
         </div>
       </div>

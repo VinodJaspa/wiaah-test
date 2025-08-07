@@ -10,8 +10,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { Field, Form, Formik } from "formik";
 import { mapArray } from "@UI/../utils/src";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 
-export interface FindYourFriendsStepProps {}
+export interface FindYourFriendsStepProps { }
 
 const MAIL_SERVICES: { name: string; image: string }[] = [
   {
@@ -33,95 +35,61 @@ const MAIL_SERVICES: { name: string; image: string }[] = [
 ];
 
 export const FindYourFriendsStep = React.forwardRef(
-  ({}: { onSuccess: () => any }, ref) => {
-  const { t } = useTranslation();
-    const { isMobile } = useResponsive();
+  ({ }: { onSuccess: () => any }, ref) => {
+    const { t } = useTranslation();
     const [mailService, setMailService] = React.useState(0);
 
     React.useImperativeHandle(ref, () => ({
-      onSubmit: () => {},
+      onSubmit: () => { },
     }));
 
-    return isMobile ? (
-      <div className="flex flex-col gap-4">
-        <SectionHeader sectionTitle={t("Find friends on Wiaah")} />
+    return (
+      <div className="bg-white p-4 space-y-4">
+        <div className="text-left md:text-center space-y-2">
+          <Subtitle>
+            {t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
+          </Subtitle>
+          <p className="text-gray-500 text-sm hidden md:block">
+            {t("This_information_will_help", "This information will help you find friends on Wiaah")}
+          </p>
+        </div>
 
-        {mapArray(MAIL_SERVICES, (v, i) => (
-          <div className="flex flex-col gap-6 p-4">
-            <div className="flex flex-col gap-4">
-              <HStack>
-                <Image className="h-6 w-8 object-cover" src={v.image} />
-                <p>{v.name}</p>
-              </HStack>
-              <Input placeholder={t("Email")} />
-            </div>
-            <Button className="self-end" colorScheme="darkbrown">
-              {t("Find Friends")}
-            </Button>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="w-full flex flex-col gap-2">
-        <SectionHeader
-          sectionTitle={t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
-        />
-        <p className="pb-6 text-gray-400 md:pb-0">
-          {t(
-            "This_information_will_help",
-            "This information will help you find friends on Wiaah"
-          )}
-        </p>
-        <div className="flex flex-col gap-4 md:p-12">
-          <Formik initialValues={{}} onSubmit={() => {}}>
-            {() => (
-              <Form>
-                <div className="flex flex-col gap-4">
-                  {MAIL_SERVICES.map((service, i) => (
-                    <div className="flex flex-col gap-4">
-                      <div className="flex justify-between">
-                        <div className="flex items-center">
-                          <div className="inline-block w-16">
-                            <img
-                              className="h-8 w-12 object-cover"
-                              src={service.image}
-                              alt={`${service.name} logo`}
-                            />
-                          </div>
-                          <span className="text-lg font-bold">
-                            {service.name}
-                          </span>
-                        </div>
-                        <div
-                          className="green-text cursor-pointer font-bold"
-                          onClick={() => {
-                            setMailService(i);
-                          }}
-                        >
-                          {t("Find_Friends", "Find Friends")}
-                        </div>
-                      </div>
-                      {mailService == i && (
-                        <>
-                          <Field
-                            as={Input}
-                            name={"email"}
-                            type="email"
-                            placeholder={t("Email", "Email")}
-                          />
-                          <Button className="w-fit">
-                            {t("Find_Friends", "Find Friends")}
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  ))}
+        <div className="space-y-3">
+          {MAIL_SERVICES.map((service, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-2 md:px-4 md:py-2 rounded-xl"
+            >
+              <div className="flex items-center gap-3 truncate">
+                <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow">
+                  <img
+                    src={service.image}
+                    alt={service.name}
+                    className="h-6 w-6 object-contain"
+                  />
                 </div>
-              </Form>
-            )}
-          </Formik>
+                <span className="text-sm font-medium truncate capitalize">
+                  {service.name}
+                </span>
+              </div>
+
+              <PrimaryButton
+                onClick={() => setMailService(index)}
+                className="text-sm font-medium rounded-full bg-[#aeb2b5b9] px-4 py-2 md:bg-gray-300 md:rounded-lg md:px-4 md:py-1"
+              >
+                {t("Find_Friends", "Find Friends")}
+              </PrimaryButton>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center md:justify-end mt-6 md:mt-10">
+          <PrimaryButton className="w-full md:w-[480px] h-10 bg-[#828485] text-black font-semibold rounded-xl">
+            {t("Find_Friends", "Find Friends")}
+          </PrimaryButton>
         </div>
       </div>
     );
   }
 );
+

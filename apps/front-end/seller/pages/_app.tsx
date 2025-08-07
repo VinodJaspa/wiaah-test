@@ -17,6 +17,8 @@ import { ClearNextJSQuery } from "utils";
 import { useGraphqlRequestErrorCode } from "api";
 import { AccountType } from "types";
 
+
+
 const handleAutoRedirect = (route: string, router: NextRouter) => {
   const currRoute = router.route;
   if (currRoute !== route && currRoute !== "/404") {
@@ -38,45 +40,48 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <RoutingProvider
-          back={() => router.back()}
-          getBaseUrl={() => router.basePath}
-          getQuery={() => ClearNextJSQuery(router.query, router.route)}
-          getCurrentPath={() => {
-            return router.asPath;
-          }}
-          visit={(url) => (router ? router.push(url) : null)}
-          getParam={(paramName) => {
-            const params = router.query[paramName];
-            const param =
-              Array.isArray(params) && params.length > 0 ? params[0] : params;
 
-            return typeof param === "string" ? param : null;
-          }}
-        >
-          <ToastContainer />
-          <CookiesProvider>
-            <AuthLayout>
-              <ReactPubsubProvider
-                keys={ReactPubsubKeys}
-                client={new ReactPubsubClient()}
-              >
-                <ReactSeoProvider TagWrapper={NextHead}>
-                  <RecoilRoot>
-                    <DataInitializationWrapper
-                      accountType={AccountType.Seller}
-                    >
-                      <Component suppressHydrationWarning {...pageProps} />
-                    </DataInitializationWrapper>
-                  </RecoilRoot>
-                </ReactSeoProvider>
-              </ReactPubsubProvider>
-            </AuthLayout>
-          </CookiesProvider>
+        <Hydrate state={pageProps.dehydratedState}>
+          <RoutingProvider
+            back={() => router.back()}
+            getBaseUrl={() => router.basePath}
+            getQuery={() => ClearNextJSQuery(router.query, router.route)}
+            getCurrentPath={() => {
+              return router.asPath;
+            }}
+            visit={(url) => (router ? router.push(url) : null)}
+            getParam={(paramName) => {
+              const params = router.query[paramName];
+              const param =
+                Array.isArray(params) && params.length > 0 ? params[0] : params;
 
-        </RoutingProvider>
-      </Hydrate>
+              return typeof param === "string" ? param : null;
+            }}
+          >
+            <ToastContainer />
+            <CookiesProvider>
+              <AuthLayout>
+                <ReactPubsubProvider
+                  keys={ReactPubsubKeys}
+                  client={new ReactPubsubClient()}
+                >
+                  <ReactSeoProvider TagWrapper={NextHead}>
+                    <RecoilRoot>
+                      <DataInitializationWrapper
+                        accountType={AccountType.Seller}
+                      >
+                        <Component suppressHydrationWarning {...pageProps} />
+                      </DataInitializationWrapper>
+                    </RecoilRoot>
+                  </ReactSeoProvider>
+                </ReactPubsubProvider>
+              </AuthLayout>
+            </CookiesProvider>
+
+          </RoutingProvider>
+        </Hydrate>
+
+
     </QueryClientProvider>
   );
 }

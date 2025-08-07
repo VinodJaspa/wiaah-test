@@ -37,6 +37,7 @@ import { AuthController } from './auth.controller';
       envFilePath: ['.env'],
     }),
   ],
+  
   providers: [AuthAdminResolver, AuthService, PrismaService],
   controllers: [AuthController],
 })

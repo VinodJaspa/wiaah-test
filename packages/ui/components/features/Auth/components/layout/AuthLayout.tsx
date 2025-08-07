@@ -1,30 +1,31 @@
-import { useRouting } from "@UI/../routing";
-import { useGetMyAccountQuery } from "@features/Accounts";
-import React from "react";
+import { useRouting } from '@UI/../routing';
+import { useGetMyAccountQuery } from '@features/Accounts';
+import React, { useEffect } from 'react';
 
-const loginPath = "/auth/login";
+const loginPath = '/auth/login';
 
-export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { push, getCurrentPath, getQuery, getParam } = useRouting();
+export const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { push, getCurrentPath, getParam } = useRouting();
   const path = getCurrentPath();
-  // const { data, isLoading, isError } = useGetMyAccountQuery();
 
-  // // TODO
-  //   React.useEffect(() => {
-  //     console.log({ data });
-  //     if (!isError && typeof data?.id === "string") {
-  //       const redirect = getQuery();
-  //       const redirectParam = getParam("redirect");
-  //       console.log({ redirect, redirectParam });
-  //     } else {
-  //       console.log("pushing", { data, isError, path, loginPath });
-  //       if (path !== loginPath) {
-  //         push(`/auth/login?redirect=${path}`);
-  //       }
+  const { data: account, isLoading, isError } = useGetMyAccountQuery();
+
+  // useEffect(() => {
+  //   if (isLoading) return;
+
+  //   const isLoggedIn = account && typeof account.id === 'string';
+
+  //   if (!isLoggedIn) {
+  //     if (path !== loginPath) {
+  //       push(loginPath);
   //     }
-  //   }, [data]);
+  //   } else {
+  //     const redirectParam = getParam('redirect');
+  //     if (redirectParam) {
+  //       push(redirectParam);
+  //     }
+  //   }
+  // }, [account, isLoading, path, push, getParam]);
 
   return <>{children}</>;
 };

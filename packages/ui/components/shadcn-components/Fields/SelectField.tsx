@@ -1,35 +1,62 @@
-import { useField, FieldHookConfig } from 'formik';
-import React, { SelectHTMLAttributes } from 'react';
+import { useField, useFormikContext } from "formik";
+import React from "react";
+import Select, { Props as ReactSelectProps, StylesConfig } from "react-select";
 
 interface Option {
   label: string;
   value: string;
 }
 
-interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectFieldProps extends Omit<ReactSelectProps, "options" | "onChange" | "name"> {
   label: string;
   name: string;
   options: Option[];
 }
 
-export default function SelectField({ label, options, ...props }: SelectFieldProps) {
-  const [field, meta] = useField(props);
+export default function SelectField({ label, name, options, ...props }: SelectFieldProps) {
+  const [field, meta] = useField(name);
+  const { setFieldValue } = useFormikContext<any>();
+
+  const selectedOption = options.find((opt) => opt.value === field.value);
+
+  const customStyles: StylesConfig<Option> = {
+    option: (base, state) => ({
+      ...base,
+      fontSize: "0.875rem", // text-sm
+      color: state.isSelected ? "black" : base.color,
+      backgroundColor: state.isSelected ? "#e5e7eb" : base.backgroundColor, // Tailwind's gray-200
+      paddingTop: "6px",
+      paddingBottom: "6px",
+    }),
+    control: (base) => ({
+      ...base,
+      fontSize: "0.875rem", // text-sm
+      borderColor: "#d1d5db", // gray-300
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: "black",
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 20, // to ensure dropdown overlaps properly
+    }),
+  };
 
   return (
     <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-800">{label}</label>
-      <select
-        {...field}
+      <label className="block text-sm font-medium text-gray-800 mt-2 pt-2">{label}</label>
+      <Select
         {...props}
-        className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm bg-white"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-      {meta.touched && meta.error && (
+        name={name}
+        value={selectedOption}
+        onChange={(option) => setFieldValue(name, (option as Option)?.value)}
+        options={options}
+        styles={customStyles}
+        className="bg-transparent border"
+        classNamePrefix="react-select"
+      />
+      {meta.error && (
         <p className="text-sm text-red-600">{meta.error}</p>
       )}
     </div>

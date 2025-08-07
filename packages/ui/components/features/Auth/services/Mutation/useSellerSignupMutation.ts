@@ -12,51 +12,36 @@ type SellerSignupMutation = {
   register: string;
 };
 
-type GraphQLResponse<T> = {
-  data?: T;
-  errors?: readonly {
-    message: string;
-    extensions?: { [key: string]: any };
-  }[];
-};
-
 export const useSignupMutation = () => {
-  const client = createGraphqlRequestClient();
-
-  client.setQuery(`
-    mutation SellerRegister($args: CreateAccountInput!) {
-      register(RegisterInput: $args)
-    }
-  `);
-
-  return useMutation<string, unknown, SellerSignupMutationVariables["args"]>({
+  return useMutation<string, unknown, CreateAccountInput>({
     mutationKey: "seller-signup",
-    mutationFn: async (args) => {
+    mutationFn: async (formData: CreateAccountInput) => {
+      const client = createGraphqlRequestClient();
+      client.setQuery(`
+        mutation SellerRegister($args: CreateAccountInput!) {
+          register(RegisterInput: $args)
+        }
+      `);
+
+      client.setVariables({ args: formData });
       try {
-        const res:any = await client
-          .setVariables<SellerSignupMutationVariables>({ args })
-          .send<SellerSignupMutation>();
-
-        if (res.errors?.length) {
-          const graphQLError = res.errors[0];
-          throw new Error(graphQLError.message || "Signup failed");
+        const response = await client.send<{ register: string }>();
+        if (response?.data?.register) {
+          // toast.success("Signup successful");
+          return response.data.register;
         }
+        // If no `register` field returned, show error
+        throw new Error("Signup failed");
+      } 
+      catch (err: any) {
+        const graphQLErrors = err?.response?.errors;
 
-        if (!res.data?.register) {
-          throw new Error("Signup failed: No response data.");
-        }
-
-        return res.data.register;
-      } catch (err: any) {
-        console.error("Signup Error:", err);
-        throw err;
-      }
-    },
-    onError: (error: unknown) => {
-      if (error instanceof Error) {
-        toast.error(error.message || "Something went wrong.");
-      } else {
-        toast.error("Unknown error occurred.");
+        const message =
+          graphQLErrors?.[0]?.message ||
+          err?.message ||
+          "Unknown signup error";
+        console.error("Signup error full response:", err);
+        throw new Error(message);
       }
     },
   });

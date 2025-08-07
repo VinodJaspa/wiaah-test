@@ -40,6 +40,8 @@ import { AccountCreationFailedException } from './exceptions/accountCreationFail
 import { StripeAccountCreationException } from './exceptions/stripeAccountCreation.exception';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
 import { Readable } from 'stream';
+import { UpdateDataSharingInput } from './dto/update-data-sharing.input';
+import { SuspendAccountInput } from './dto/suspend-account.input';
 @Resolver(() => Account)
 export class AccountsResolver {
   constructor(
@@ -124,7 +126,14 @@ export class AccountsResolver {
 
     return true;
   }
-
+  @Mutation(() => Account)
+  async updateDataSharingPreferences(
+    @Args('input') input: UpdateDataSharingInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<Account> {
+    return this.accountsService.updateDataSharing(user.id, input);
+  }
+  
   @Mutation(() => Boolean)
   async requestAccountDeletion(
     @Args('args') args: DeleteAccountRequestInput,
@@ -141,6 +150,15 @@ export class AccountsResolver {
 
     return true;
   }
+  @Mutation(() => Boolean)
+  async suspendAccount(
+    @Args('args') args: SuspendAccountInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+  this.accountsService.suspendAccount(args.accountId);
+  return true;
+  }
+
 
   @Query(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -208,3 +226,4 @@ export class AccountsResolver {
     if (!valid) throw new NoReadPremissionPublicError();
   }
 }
+

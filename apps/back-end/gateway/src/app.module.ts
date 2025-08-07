@@ -26,7 +26,7 @@ import { client } from './main';
         },
 
         formatError(error:any) {
-          console.log(error ,"rrrrrr");
+          // console.log(error ,"rrrrrr");
           
       
           const isSchemaValidationError =

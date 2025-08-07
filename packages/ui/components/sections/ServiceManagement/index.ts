@@ -6,3 +6,4 @@ export * from "./TimeManagement";
 export * from "./Reservation";
 export * from "./PendingReservation";
 export * from "./ServiceCatalog"
+export * from "./ServicePresentaion";

@@ -44,6 +44,15 @@ model Account {
   birthDate                  DateTime
   AccountDeletionRequest     AccountDeletionRequest[]
   contacts                   UserContact?
+   // ✅ New fields for third-party sharing
+  shareAdPartners            Boolean                  @default(false)
+  shareAnalyticsTools        Boolean                  @default(false)
+  shareSocialNetworks        Boolean                  @default(false)
+  sharePaymentProcessors     Boolean                  @default(false)
+    // ✅ Newly added country field
+country String @default("IN")
+ suspended                  Boolean                  @default(false)
+
 }
 
 enum AccountGenderEnum {

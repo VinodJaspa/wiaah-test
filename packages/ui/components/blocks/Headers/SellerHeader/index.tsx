@@ -329,7 +329,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
           translationKey: "log_out",
           fallbackText: "Log out",
         },
-        href: "/logout",
+        href: "/",
       },
       icon: <BiLogOut />,
     },

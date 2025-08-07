@@ -29,7 +29,7 @@ import { HiOutlineChartBar, HiOutlineClipboardList, HiOutlineDocumentDownload } 
 import ProductTable from "components/ProductCatalog/    ProductTable";
 import { FiUsers } from "react-icons/fi";
 import { IoReturnDownBackOutline } from "react-icons/io5";
-import ShippingSettingSection from "components/  Shipping/ShippingPage";
+import ShippingSettingSection from "components/Shipping/ShippingPage";
 import ProductReviewSection from "components/Reviews/ProductReviewSection";
 import ReturnOrdersSection from "components/ReturnOrders/ReturnOrders";
 import OrdersPage from "components/Order/OrdersPage";

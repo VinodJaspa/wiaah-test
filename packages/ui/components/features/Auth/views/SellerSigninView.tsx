@@ -1,6 +1,6 @@
 'use client';
 import { useRouting } from "@UI/../routing";
-import { setTestid, useForm } from "@UI/../utils/src";
+import { errorToast, setTestid, successToast, useForm } from "@UI/../utils/src";
 import {
   Button,
   Checkbox,
@@ -14,7 +14,7 @@ import { useSigninMutation } from "../services";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import Recaptcha from "react-google-recaptcha";
-import { toast } from "react-toastify";
+
 import { useRouter } from "next/router";
 type SellerSigninViewProps = {
   onNavigate: () => void;
@@ -85,13 +85,13 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
               if (res.success) {
                 const token = res?.accessToken;
                 if (token) {
-                  toast.success(res?.message || "Sign in successful!");
-                  // router.push("/"); 
+                  successToast(res?.message || "Sign in successful!");
+                  router.push("/");
                 } else {
-                  toast.error("Login succeeded but no token received.");
+                  errorToast("Login succeeded but no token received.");
                 }
               } else {
-                toast.error(res?.message || "Sign in successful!");
+                errorToast(res?.message || "Sign in successful!");
 
               }
 
@@ -101,7 +101,7 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
                 err?.response?.data?.message ||
                 err?.message ||
                 "Sign in failed. Please try again.";
-              toast.error(message);
+              errorToast(message);
             },
           })
         }

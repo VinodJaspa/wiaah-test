@@ -5,29 +5,29 @@ import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 
-export type ResendEmailVerificationCodeMutationVariables = Exact<{
-  [key: string]: never;
-}>;
-
 export type ResendEmailVerificationCodeMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "resendRegisterationCode">;
 
+export type ResendEmailVerificationCodeMutationVariables = Exact<{
+  email: string;
+}>;
 export const useResendRegisterationCodeMutation = () => {
   return useMutation(
     ["resend-email-verification-code"],
-    async () => {
+    async ({ email }: { email: string }) => {
       const client = createGraphqlRequestClient();
-      const res = await client
-        .setQuery(
-          `mutation resendEmailVerificationCode {
-            resendRegisterationCode
-          }`
-        )
-        .setVariables<ResendEmailVerificationCodeMutationVariables>({})
-        .send<ResendEmailVerificationCodeMutation>();
 
-      return res.data.resendRegisterationCode;
+      const res = await client
+        .setQuery(`
+          mutation resendEmailVerificationCode($email: String!) {
+            resendRegisterationCode(input: { email: $email })
+          }
+        `)
+        .setVariables({ email }) // 👈 still sending email as variable
+        .send();
+
+      return (res.data as ResendEmailVerificationCodeMutation).resendRegisterationCode;
     },
     {
       onSuccess: () => {
@@ -39,3 +39,6 @@ export const useResendRegisterationCodeMutation = () => {
     }
   );
 };
+
+
+

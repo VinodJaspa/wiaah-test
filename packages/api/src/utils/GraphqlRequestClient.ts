@@ -2,13 +2,14 @@ import { gql, GraphQLClient, Variables } from "graphql-request";
 import { ReactPubsubClient } from "react-pubsub";
 
 // Enum for known error codes
-enum KnownErrorCodes {
+export enum KnownErrorCodes {
   Unauthorized = 0,
   DeniedPermission = 1,
 }
 
 // Type for GraphQL error
 type GraphQLError = {
+  message?: string;
   extensions?: {
     exception?: {
       code?: string | number;
@@ -19,21 +20,21 @@ type GraphQLError = {
 // PubSub client
 const pubsubClient = new ReactPubsubClient();
 
-// Helper function to create error event name
+// Helper to create event name
 const createErrorEventName = (code: string | number) =>
   `graphql-request-error-${code}`;
 
-// Hook for subscribing to GraphQL request errors
+// Hook to listen to known error code events
 export const useGraphqlRequestErrorCode = (
   getCode: (codes: typeof KnownErrorCodes) => KnownErrorCodes,
-  callback: () => void,
+  callback: () => void
 ) => {
   const errorCode =
     typeof getCode === "function" ? getCode(KnownErrorCodes) : "";
   pubsubClient.Subscribe(createErrorEventName(errorCode), callback);
 };
 
-// GraphqlRequestClient class
+// ✅ The improved GraphQL client class
 export class GraphqlRequestClient {
   private client: GraphQLClient;
   private query: string | null = null;
@@ -41,7 +42,7 @@ export class GraphqlRequestClient {
 
   constructor(
     url: string,
-    options?: ConstructorParameters<typeof GraphQLClient>[1],
+    options?: ConstructorParameters<typeof GraphQLClient>[1]
   ) {
     this.client = new GraphQLClient(url, options);
   }
@@ -52,9 +53,7 @@ export class GraphqlRequestClient {
   }
 
   setQuery(query: string): this {
-    this.query = gql`
-      ${query}
-    `;
+    this.query = gql`${query}`;
     return this;
   }
 
@@ -63,26 +62,27 @@ export class GraphqlRequestClient {
     return this;
   }
 
-  async send<TResponse>(): Promise<{ data: TResponse } | null> {
-    try {
-      if (!this.query) {
-        throw new Error("No query set");
-      }
+  // ✅ Returns response or throws error
+  async send<TResponse>(): Promise<{ data: TResponse }> {
+    if (!this.query) {
+      throw new Error("No query set");
+    }
 
+    try {
       const response = await this.client.rawRequest<TResponse>(
         this.query,
-        this.variables,
+        this.variables
       );
       return response;
     } catch (error: unknown) {
       this.handleError(error);
-      return null;
+      throw error; // 🔁 Let the caller handle the actual error
     }
   }
 
   async request<T = any, V extends Variables = Variables>(
     document: string,
-    variables?: V,
+    variables?: V
   ): Promise<T> {
     try {
       const response = await this.client.request<T>(document, variables);
@@ -93,6 +93,7 @@ export class GraphqlRequestClient {
     }
   }
 
+  // 🔔 Publish error codes
   private handleError(error: unknown): void {
     if (error && typeof error === "object" && "response" in error) {
       const graphqlError = error as { response?: { errors?: GraphQLError[] } };
@@ -110,9 +111,9 @@ export class GraphqlRequestClient {
   }
 }
 
-// Factory function to create GraphqlRequestClient
+// ✅ Create instance of the client
 export function createGraphqlRequestClient(
-  useCredentials: boolean = true,
+  useCredentials: boolean = true
 ): GraphqlRequestClient {
   return new GraphqlRequestClient("http://localhost:3003/graphql", {
     credentials: useCredentials ? "include" : undefined,

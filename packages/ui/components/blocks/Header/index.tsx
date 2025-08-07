@@ -26,31 +26,36 @@ import { setTestid } from "utils";
 import nookies, { deleteCookie } from "cookies-next";
 import { ServiceType } from "@features/API";
 import { useMediaQuery } from "react-responsive";
+import { useLogoutMutation } from "@features/Accounts/services/useLogout";
+
 
 export interface HeaderProps {
   token?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({ token }) => {
-  const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
 
+  const [signedIn, setSignedIn] = React.useState<boolean>(!!token);
+  const { mutate: logout, isLoading } = useLogoutMutation();
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
   const { visit } = useRouting();
-
   const onLogOut = () => {
-    console.log("destroy cookies");
-    deleteCookie("jwt");
-    deleteCookie("user");
-    deleteCookie("userId");
-    deleteCookie("userType");
-    deleteCookie("userName");
-    deleteCookie("userEmail");
-    setSignedIn(false);
+    logout(undefined, {
+      onSuccess: () => {
+        // You may still want to manually clear client-side localStorage/cookies if needed
+        setSignedIn(false);
+        window.location.href = "/";
+      },
+      onError: (err) => {
+        console.error("Logout failed", err);
+      },
+    });
   };
+
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
 

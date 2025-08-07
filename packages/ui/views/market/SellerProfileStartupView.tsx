@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
@@ -28,7 +28,9 @@ import {
   StepperContent,
   StepperFormController,
   StepperFormHandler,
+  PaymentMethodsSection,
 } from "@UI";
+// @ts-ignore
 
 import { StepperStepType } from "types";
 import { Button } from "@UI";
@@ -39,16 +41,26 @@ import { useSubscribeToMembershipMutation } from "@features/Membership";
 import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 
 import 'react-circular-progressbar/dist/styles.css';
-import { toast } from "react-toastify";
+
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import { AccountInforamtion } from "@features/Auth/views/Steps/AuthFormStepThree";
+import ServicePresentaionForm from "@features/Auth/views/Steps/AuthFromStepFour";
+import ChooseMembership from "@UI/components/Membership";
+import { FormWrapper } from "@UI/components/shadcn-components/FormWrapper/InnerFormWrapper";
+import IdentityVerification from "@features/Auth/views/Steps/verify-IdentitySteps/VerifyIdentity";
+import AddPaymentPage from "@UI/components/PaymentPage/AddPayment";
+import { AccountSignEmailVerificationStep } from "@features/Auth/views/Steps/AuthFormStepTwo";
+import FormSubmitLoader from "@features/Auth/components/Spinner";
 interface StepperProps {
   setFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   isFormSubmitting: boolean;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  stepsName: any
 }
 
 
-export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep, isFormSubmitting, setFormSubmitting }) => {
+export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep, isFormSubmitting, setFormSubmitting, stepsName }) => {
 
 
   const { t } = useTranslation();
@@ -63,27 +75,29 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
     setSubmitRequests((v) => ({ ...v, [key]: fn }));
 
 
+
   const requestNextStep = async () => {
-    setCurrentStep(currentStep +1);
-    return
     const submitFn = submitRequests[currentStep];
-    if (typeof submitFn === "function") {
+    if (submitFn) {
       setFormSubmitting(true);
-      try {
-        await submitFn();
-      } finally {
+      const isSuccess = await submitFn();
+      if (isSuccess) {
+        setCurrentStep((prev) => prev + 1);
+        setFormSubmitting(false);
+      }
+      else {
         setFormSubmitting(false);
       }
     }
   };
-  React.useEffect(() => {
-    console.log(isFormSubmitting, "isFormSubmitting")
-  }, [isFormSubmitting])
+
+
 
 
   const requestPrevStep = () => {
     setCurrentStep((prev) => prev - 1);
   };
+
 
   const steps: StepperStepType[] = React.useMemo(
     () => [
@@ -91,210 +105,220 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
         stepName: t("Signup") as string,
         key: 0,
         stepComponent: (
-          <AccountSignup
-            onSuccess={handleNextStep}
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(0, v.submit);
-              }
-            }}
-          />
+          <FormWrapper>
+            {isFormSubmitting && (
+              <FormSubmitLoader />
+            )}
+            <AccountSignup
+              onSuccess={requestNextStep}
+
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(0, v.submit);
+                }
+              }}
+            />
+          </FormWrapper>
         ),
       },
       {
         stepName: t("Email Verification") as string,
         key: 1,
         stepComponent: (
-          <AccountSignEmailVerificationStep
-            onSuccess={handleNextStep}
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(1, v.submit);
-              }
-            }}
-          />
+          <FormWrapper>
+            {isFormSubmitting && (
+              <FormSubmitLoader />
+            )}
+            <AccountSignEmailVerificationStep
+              onSuccess={handleNextStep}
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(1, v.submit);
+                }
+              }}
+            />
+          </FormWrapper>
         ),
-      },
-      {
-        key: 2,
-        stepComponent: (
-          <BillingAccount
-            onSuccess={handleNextStep}
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(2, v.submit);
-              }
-            }}
-          />
-        ),
-        stepName: t("Payout"),
       },
       {
         stepName: t("Shop information"),
-        stepComponent: (
-          <ShopInformationStep
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(3, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
         key: 3,
+        stepComponent:
+          (
+           
+            <>
+              {isFormSubmitting && (
+                <FormSubmitLoader />
+              )}
+              <AccountInforamtion
+                onSuccess={handleNextStep}
+                ref={(v: { submit: () => any }) => {
+                  if (v && typeof v.submit === "function") {
+                    addSubmitRequest(1, v.submit);
+                  }
+                }}
+              /> 
+            </>
+     
+          ),
       },
-      {
-        stepName: t("Verify Your Identity"),
-        key: 4,
-        stepComponent: (
-          <SignupAccountVerificationStep
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(4, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-      },
-      {
-        stepName: t("Select a plan"),
-        stepComponent: (
-          <SellerSignupPlansStep
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(5, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-        key: 5,
-      },
-      {
-        key: 6,
-        stepName: t("Listing"),
-        stepComponent: (
-          <SellerListingForm
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(6, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-      },
-      {
-        stepName: t("Add Payment Method"),
-        stepComponent: (
-          <PaymentMethodForm
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(7, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-        key: 7,
-      },
-      {
-        stepName: t("Shipping Settings"),
-        stepComponent: (
-          <NewShippingSettings
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(8, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-        key: 8,
-      },
-      {
-        stepName: t("Find your freinds"),
-        stepComponent: (
-          <FindYourFriendsStep
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(9, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-        key: 9,
-      },
+      // {
+      //   stepName: t("Service Presentation"),
+      //   key: 4,
+      //   stepComponent: (
+      //     <FormWrapper>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+      //       )}
+      //       <ServicePresentaionForm />
+      //     </FormWrapper>
+      //   ),
+      // },
+      // {
+      //   stepName: t("Verify Your Identity"),
+      //   key: 4,
+      //   stepComponent: (
+      //     <FormWrapper>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+      //       )}
+      //       <IdentityVerification />
+      //     </FormWrapper>
+      //   ),
+      // },
+      // {
+      //   stepName: t("Select a plan"),
+      //   stepComponent: (
+      //     <FormWrapper>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+      //       )}
+      //       <ChooseMembership />
+      //     </FormWrapper>
+      //   ),
+      //   key: 5,
+      // },
+      // {
+      //   stepName: t("Payment Setting "),
+      //   stepComponent: (
+      //     <FormWrapper>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+      //       )}
+      //       <AddPaymentPage />
+      //     </FormWrapper>
+      //   ),
+      //   key: 6,
+      // },
+      // {
+      //   key: 7,
+      //   stepName: t("Listing"),
+      //   stepComponent: (
+      //     <>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+      //       )}
+      //       <SellerListingForm
+      //         ref={(v: { submit: () => any }) => {
+      //           if (v && typeof v.submit === "function") {
+      //             addSubmitRequest(7, v.submit);
+      //           }
+      //         }}
+      //         onSuccess={handleNextStep}
+      //       />
+      //     </>
+
+      //   ),
+      // },
+      // {
+      //   stepName: t("Shipping Settings"),
+      //   stepComponent: (
+      //     <>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+
+      //       )}
+      //       <NewShippingSettings
+      //         ref={(v: { submit: () => any }) => {
+      //           if (v && typeof v.submit === "function") {
+      //             addSubmitRequest(8, v.submit);
+      //           }
+      //         }}
+      //         onSuccess={handleNextStep}
+      //       />
+      //     </>
+
+      //   ),
+      //   key: 8,
+      // },
+      // {
+      //   stepName: t("Find your friends"),
+      //   stepComponent: (
+      //     <FormWrapper>
+      //       {isFormSubmitting && (
+      //         <FormSubmitLoader />
+
+      //       )}
+      //       <FindYourFriendsStep
+      //         ref={(v: { submit: () => any }) => {
+      //           if (v && typeof v.submit === "function") {
+      //             addSubmitRequest(9, v.submit);
+      //           }
+      //         }}
+      //         onSuccess={handleNextStep}
+      //       />
+      //     </FormWrapper>
+
+      //   ),
+      //   key: 9,
+      // },
     ],
     []
   );
+
+
   const currentStepComp = steps.at(currentStep) || null;
   const nextStep = steps.at(currentStep + 1) || null;
   const percentage = ((currentStep + 1) / steps.length) * 100;
-  if (isFormSubmitting) {
+
+
+
+  type StepperProps = {
+    currentStep: number;
+    totalSteps: number;
+    stepName: string;
+  };
+
+  const StepperHeaderMobile = ({ currentStep, totalSteps, stepName }: StepperProps) => {
+    const progress = (currentStep / totalSteps) * 100;
+
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="rounded-full h-20 w-20 bg-violet-800 animate-ping"></div>
+      <div className="w-full space-y-2 px-4">
+        <p className="text-sm font-medium text-black">{stepName}</p>
+
+        {/* Progress bar */}
+        <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+          <div
+            className="bg-black h-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        <p className="text-xs text-gray-500">{`Step ${currentStep} of ${totalSteps}`}</p>
       </div>
     );
-  }
-  
+  };
+
 
   return isMobile ? (
     <div className="flex flex-col gap-2 w-full h-full p-2">
 
-      <HStack className="p-2">
-        <div className="relative flex justify-center items-center">
-          <svg
-            className="absolute text-darkerGray text-5xl"
-            width="1em"
-            height="1em"
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="48.5"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-          </svg>
+      <StepperHeaderMobile
+        currentStep={2}
+        totalSteps={10}
+        stepName={stepsName[currentStep]}
+      />
 
-          <svg
-            className="absolute -rotate-90 text-primary text-5xl"
-            width="1em"
-            strokeDasharray={300 + ((currentStep + 1) / steps.length) * 300}
-            strokeDashoffset={300}
-            height="1em"
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="48.5"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-          </svg>
-          <div className="bg-primary rounded-full w-10 h-10 text-2xl flex justify-center items-center">
-            {currentStep + 1}
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <p className="text-lg font-semibold">
-            {currentStepComp?.stepName.toString()}
-          </p>
-          <p className="text-xs text-primary bg-primary">
-            {t("Next") as string} : {nextStep?.stepName.toString()}
-          </p>
-        </div>
-      </HStack>
 
       <div className="h-full px-4 overflow-y-scroll">
         {/* @ts-ignore */}
@@ -309,8 +333,8 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
           </HStack>
         </Button>
 
-        <Button
-          className="m-4 text-sm font-normal bg-primary"
+        <PrimaryButton
+          className="m-4 text-sm font-normal bg-black"
           onClick={() => requestNextStep()}
 
         >
@@ -318,7 +342,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
             <p >{t("Next")}</p>
             <ArrowRightAltIcon />
           </HStack>
-        </Button>
+        </PrimaryButton>
       </HStack>
     </div>
   ) : (
@@ -343,23 +367,24 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
               </button>
 
               <div>
-
-                <button
-                  className="rounded-md py-2 px-4"
-                  disabled={currentStep === 0 || currentStep == 1}
-                  onClick={() => {
-                    requestSkipStep();
-                  }}
-                >
-                  {t("Skip")}
-                </button>
-                <Button
+                {/* {currentStep !== 0 &&
+                  <button
+                    className="rounded-md py-2 px-4"
+                    disabled={currentStep === 0 || currentStep == 1}
+                    onClick={() => {
+                      requestSkipStep();
+                    }}
+                  >
+                    {t("Skip")}
+                  </button>
+                } */}
+                <PrimaryButton
                   onClick={() => {
                     requestNextStep();
                   }}
                 >
                   {t("Next")}
-                </Button>
+                </PrimaryButton>
               </div>
             </Container>
 
@@ -444,146 +469,7 @@ const SellerListingForm = React.forwardRef(
   }
 );
 
-export const AccountSignEmailVerificationStep = React.forwardRef(
-  (
-    {
-      onSuccess,
-    }: {
-      onSuccess: () => any;
-    },
-    ref
-  ) => {
-    const { t } = useTranslation();
-    const { data: user } = useGetMyAccountQuery();
 
-    const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
-      code: "",
-
-    });
-    const { mutate } = useVerifyEmailMutation();
-    const { mutate: resendCode } = useResendRegisterationCodeMutation();
-    const [cooldown, setCooldown] = React.useState(0);
-
-    React.useEffect(() => {
-      if (cooldown > 0) {
-        const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
-        return () => clearTimeout(timer);
-      }
-
-      // Always return something (even if it's just undefined)
-      return undefined;
-    }, [cooldown]);
-
-    const handleResend = () => {
-      resendCode();
-      setCooldown(8);
-    }
-    React.useImperativeHandle(ref, () => ({
-      submit: () => {
-        mutate(form, { onSuccess });
-      },
-    }));
-    const { isMobile } = useResponsive();
-
-    return isMobile ? (
-      <div className="h-full w-full flex flex-col justify-center items-center gap-10">
-        <p className="text-xl font-sm text-center">
-          {t("An verification code has been sent to your email")}. (
-          {user?.email})
-        </p>
-
-        <label>
-          <Input
-            className="absolute opacity-0 pointer-events-none"
-            {...inputProps("code")}
-          />
-          <div className="flex items-center gap-4">
-            {[...Array(6)].map((v, i) => (
-              <div
-                className={`w-12 h-12 rounded-lg ${typeof form.code.at(i) === "string"
-                  ? "bg-primary border-primary text-white"
-                  : "bg-white border-black text-black"
-                  } text-sm border flex justify-center items-center`}
-              >
-                <p>{form.code.at(i)}</p>
-              </div>
-            ))}
-          </div>
-        </label>
-
-        <div className="flex flex-col gap-2">
-          <p>{t("Didn’t receive code?")}</p>
-          <button
-            onClick={() => handleResend()}
-            className="text-primary font-sm"
-          >
-            {t("RESEND")}
-          </button>
-        </div>
-
-        <Button className="w-full bg-primary" onClick={() => {
-          if (!form.code || form.code.length < 6) {
-            toast.error("Please enter the 6-digit code.");
-            return;
-          }
-
-          mutate(form, {
-            onSuccess,
-            onError: (err) => {
-              console.error("OTP verification failed", err);
-              toast.error("Invalid or expired code. Please try again.");
-            }
-          });
-        }}>
-          {t("Verify")}
-        </Button>
-
-      </div>
-    ) : (
-      <div className="w-full h-full flex flex-col justify-center  gap-4 items-center">
-        <p className="text-xl font-sm">
-          {t("An verification code has been sent to your email")}. (
-          {user?.email})
-        </p>
-        <div className="p-16 rounded-xl shadow border border-gray-100 ">
-          <EmailArrowDownIcon className="text-7xl" />
-        </div>
-        <Input
-          {...inputProps("code")}
-          placeholder="123456"
-          label="Verification code"
-        />
-
-        <div className="flex flex-col gap-2">
-          <p>{t("Didn’t receive code?")}</p>
-          <button
-            onClick={() => handleResend()}
-            className="text-primary font-sm"
-          >
-            {t("RESEND")}
-          </button>
-          <Button className="w-full bg-primary" onClick={() => {
-            if (!form.code || form.code.length < 6) {
-              toast.error("Please enter the 6-digit code.");
-              return;
-            }
-
-            mutate(form, {
-              onSuccess,
-              onError: (err) => {
-                console.error("OTP verification failed", err);
-                toast.error("Invalid or expired code. Please try again.");
-              }
-            });
-          }}>
-            {t("Verify")}
-          </Button>
-        </div>
-      </div>
-
-    );
-  }
-);
 
 export const SignupAccountVerificationStep = React.forwardRef(
   ({ onSuccess }: { onSuccess: () => any }, ref) => {

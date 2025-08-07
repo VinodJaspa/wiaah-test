@@ -6184,6 +6184,7 @@ export enum ServiceType {
   Hotel = "hotel",
   Restaurant = "restaurant",
   Vehicle = "vehicle",
+  Shop ="shop"
 }
 
 export enum ServiceTypeOfSeller {

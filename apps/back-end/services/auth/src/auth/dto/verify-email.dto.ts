@@ -1,9 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsNumberString, IsString } from 'class-validator';
-
 @InputType()
 export class VerifyEmailDto {
-  @Field((type) => String)
-  @IsString()
+  @Field()
   verificationCode: string;
+
+  @Field()
+  email: string;
 }

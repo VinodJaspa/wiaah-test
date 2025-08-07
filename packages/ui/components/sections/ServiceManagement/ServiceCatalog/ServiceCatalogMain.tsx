@@ -7,6 +7,7 @@ import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBox
 import { FilterDropdown } from "@UI/components/shadcn-components/DropDownMenu";
 import { useResponsive } from "hooks";
 import { Avatar } from "@UI/components/shadcn-components/table";
+import AddRoomForm from "./AddRoomForm";
 
 const services = [
     {
@@ -64,14 +65,21 @@ const services = [
 
 export default function ServiceCatalogSectionMain() {
     const { isMobile } = useResponsive();
+    const [isAddNewRoom, setAddNewRoom] = React.useState(false);
     const handleSelect = (label: string, value: string) => {
         console.log(`${label} selected:`, value);
     };
+    if(isAddNewRoom){
+        return (
+            <AddRoomForm setAddNewRoom={setAddNewRoom}/>
+
+        )
+    }
     return (
         <div className="p-6 bg-white min-h-screen">
             <div className="flex justify-between items-center mb-6">
                 <SectionTitle title="Service Catalog" />
-                <PrimaryButton >+ Add New service</PrimaryButton>
+                <PrimaryButton onClick={()=> setAddNewRoom(true)} >+ Add New service</PrimaryButton>
             </div>
 
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4 mb-4">

@@ -58,7 +58,7 @@ export class AccountsController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
   @EventPattern('find.account')
   async handleFindAccount(@Payload() data: { email: string }) {
     // Perform a search for the account in the database
@@ -106,7 +106,7 @@ export class AccountsController implements OnModuleInit {
         success: true,
         data: { hasAccount: typeof account.stripeId === 'string' },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists)
@@ -237,6 +237,17 @@ export class AccountsController implements OnModuleInit {
       return false;
     }
   }
+
+  
+  @MessagePattern('unsuspend-account')
+  async handleSuspension(
+    @Payload() data: { input: { accountId: string; suspended: boolean } },
+  ): Promise<{ success: boolean }> {
+    console.log('Received suspension request:', data.input);
+    await this.accountService.updateSuspensionStatus(data.input.accountId, data.input.suspended);
+    return { success: true };
+  }
+
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail)
   async getAdminAccountAccount(
@@ -369,7 +380,7 @@ export class AccountsController implements OnModuleInit {
 
   async onModuleInit() {
     await this.eventsClient.connect();
-
+    this.eventsClient.subscribeToResponseOf('update.account.suspension');
     this.eventsClient.subscribeToResponseOf('add.product.to.account');
   }
 }

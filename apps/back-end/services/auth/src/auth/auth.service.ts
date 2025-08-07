@@ -36,6 +36,7 @@ import {
 } from 'nest-dto';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -51,19 +52,19 @@ export class AuthService {
   // Register function
   async register(input: RegisterDto) {
     const { email, password, firstName, lastName, accountType } = input;
-  
+
     // Check if email already exists
     const emailExists = await this.emailExists(email);
     if (emailExists) {
       throw new BadRequestException('Email already registered');
     }
-  
+
     // Hash the password
     const hashedPassword = await this.hashPassword(password);
-  
+
     // Set a default accountType if it's not provided
     const finalAccountType = accountType || 'seller';  // Default to 'user' if not provided
-  
+
     // Create registration record
     const newRegisteration = await this.prisma.registeration.create({
       data: {
@@ -78,7 +79,7 @@ export class AuthService {
         }),
       },
     });
-  
+
     // Emit the AccountRegisteredEvent
     this.eventsClient.emit<AccountRegisteredEvent>(
       KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
@@ -86,16 +87,16 @@ export class AuthService {
         email,
         firstName,
         lastName,
-        verificationCode:newRegisteration.verificationCode,
+        verificationCode: newRegisteration.verificationCode,
         accountType: finalAccountType,  // Include accountType in the event
       }),
     );
-  
+
     return { message: 'Registration successful. Please check your email for verification.' };
   }
-  
+
   // Account Registered Event
-  async emitAccountRegisteredEvent(email: string, firstName: string, lastName: string , accountType:any ,verificationCode:string) {
+  async emitAccountRegisteredEvent(email: string, firstName: string, lastName: string, accountType: any, verificationCode: string) {
     this.eventsClient.emit<AccountRegisteredEvent>(
       KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
       new AccountRegisteredEvent({
@@ -111,20 +112,19 @@ export class AuthService {
   async simpleLogin(input: { email: string; password: string }) {
     try {
       const { email, password } = input;
-
       // Find the user by email
-     
       const invokedAccount: any = await new Promise((resolve, reject) => {
         this.eventsClient
           .send('get.account.by.email', {
-            value: { value: { input: { email: input.email } } },
+            value: { value: { input: { email: email } } },
           })
           .subscribe({
             next: (account) => resolve(account),
             error: (err) => reject(err),
           });
       });
-      console.log("invokedAccount:", JSON.stringify(invokedAccount, null, 2));
+      console.log('Received account:', JSON.stringify(invokedAccount, null, 2));
+      // console.log("invokedAccount:", JSON.stringify(invokedAccount, null, 2));
       if (!invokedAccount.results?.data?.password) {
         throw new BadRequestException('User not found or invalid response');
       }
@@ -135,7 +135,17 @@ export class AuthService {
       if (!isPasswordValid) {
         throw new BadRequestException('Invalid password');
       }
-
+      const userData = invokedAccount?.results?.data;
+      if (userData.suspended === true) {
+        await firstValueFrom(
+          this.eventsClient.send('unsuspend-account', {
+            input: {
+              accountId: userData.id,
+              suspended: false,
+            },
+          })
+        );
+      }
       // Generate JWT token
       const payload = {
         ...invokedAccount,
@@ -157,38 +167,40 @@ export class AuthService {
 
   async verifyEmail(input: { code: string; email: string }) {
     const { email, code } = input;
-  
+    console.log(email, "email");
+
+
     let registeration;
     try {
-      registeration = await this.prisma.registeration.findUnique({
+      registeration = await this.prisma.verificationCode.findUnique({
         where: { email },
       });
       if (!registeration) {
         throw new BadRequestException('invalid email');
       }
-      
+
     } catch {
       throw new BadRequestException('invalid email');
     }
-  
+
     if (registeration.verificationCode !== code) {
       throw new BadRequestException('invalid verification code');
     }
-  
+
     if (registeration.expiresAt < new Date()) {
       throw new GoneException('token expired');
     }
-  
+
     await this.removeRegisterationsByEmail(email);
-  
+
     this.eventsClient.emit<any, AccountVerifiedEvent>(
       KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
       new AccountVerifiedEvent({ email }),
     );
-  
+
     return true;
   }
-  
+
 
   async resendRegisterationToken(email: string) {
     const verificationCode = `${generateVerificationToken()}`;
@@ -305,7 +317,7 @@ export class AuthService {
       where: {
         email,
       },
-       // @ts-ignore
+      // @ts-ignore
       rejectOnNotFound(error) {
         throw new NotFoundException(
           'there is no password change request for this email, consider asking for a password change first',
@@ -398,7 +410,7 @@ export class AuthService {
   }
 
   private async removeRegisterationsByEmail(email: string) {
-    return this.prisma.registeration.deleteMany({
+    return this.prisma.verificationCode.deleteMany({
       where: {
         email,
       },

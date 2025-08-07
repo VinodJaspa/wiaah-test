@@ -15,6 +15,7 @@ import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
 import { UploadService } from '@wiaah/upload';
+import { UpdateDataSharingInput } from './dto/update-data-sharing.input';
 
 @Injectable()
 export class AccountsService {
@@ -213,10 +214,10 @@ export class AccountsService {
   async update(input: UpdateAccountInput, userId: string): Promise<Partial<Account>> {
     try {
       // 2. Build the Prisma update object excluding `photo` field if not needed
-      const { photo, ...rest } = input;
+      const { photo, id, ...rest } = input;
+
       const updateData = {
         ...rest,
-
       };
 
       // 3. Call Prisma updatez
@@ -316,5 +317,52 @@ export class AccountsService {
         id,
       },
     });
+  }
+
+  async updateDataSharing(accountId: string, input: UpdateDataSharingInput): Promise<Account> {
+    return this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        shareAdPartners: input.shareAdPartners,
+        shareAnalyticsTools: input.shareAnalyticsTools,
+        shareSocialNetworks: input.shareSocialNetworks,
+        sharePaymentProcessors: input.sharePaymentProcessors,
+      },
+    });
+  }
+  async suspendAccount(accountId: string, reason?: string) {
+    return await this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        suspended: true,
+
+      },
+    });
+  }
+  async updateSuspensionStatus(
+    accountId: string,
+    suspended: boolean,
+    reason?: string,
+  ) {
+    const account = await this.prisma.account.findUnique({
+      where: {
+        id: accountId,
+      },
+    });
+
+    if (!account) {
+      throw new NotFoundException('Account not found');
+    }
+
+    account.suspended = suspended;
+    if (reason) account.rejectReason = reason;
+    await this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        suspended: account.suspended,
+        rejectReason: account.rejectReason,
+      },
+    });
+    console.log(`✅ Account ${accountId} suspension updated`);
   }
 }

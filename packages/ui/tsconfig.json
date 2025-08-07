@@ -40,7 +40,8 @@
       "@UI": ["."],
       "@UI/*": ["./*"],
       "placeholder": ["../placeholder/*"],
-      "utils": ["../utils"]
+      "utils": ["../utils"],
+      "ui":["../ui"]
     }
   }
 }

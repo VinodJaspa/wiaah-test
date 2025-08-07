@@ -13,7 +13,11 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: KAFKA_BROKERS,
+        clientId: 'accounts-service',
+        brokers: ['localhost:9092'],
+      },
+      consumer: {
+        groupId: 'accounts-consumer-group', // must be unique per microservice
       },
     },
   });

@@ -218,7 +218,6 @@ export function useForm<TForm>(
     formErrors: errors,
     inputProps,
     selectProps,
-    selectProps,
     dateInputProps,
     switchInputProps,
     setValue: (v: TForm) => setData({ ...v, constents }),
