@@ -105,7 +105,7 @@ type Query {
 
 type Mutation {
   updateMyNotification(updateNotificationsArgs: UpdateNotificationSettingInput!): UserNotificationSettings!
-  disableNotificationFromContent: UserNotificationSettings!
+  disableNotificationFromContent(input: DisableNotificationFromContentInput!): UserNotificationSettings!
 }
 
 input UpdateNotificationSettingInput {
@@ -113,6 +113,10 @@ input UpdateNotificationSettingInput {
   postComment: NotificationSettingsEnum
   commentLike: NotificationSettingsEnum
   mentions: NotificationSettingsEnum
+}
+
+input DisableNotificationFromContentInput {
+  contentId: ID!
 }
 
 scalar link__Import

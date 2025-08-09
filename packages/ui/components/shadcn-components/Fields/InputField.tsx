@@ -6,10 +6,14 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string; // explicitly required
 }
 
-export default function InputField({ label, ...props }: InputFieldProps) {
-  const [field, meta] = useField(props);
+export default function InputField({ label, ...props  }: InputFieldProps) {
+  const [field, meta , helpers] = useField(props);
 
-  
+
+  React.useEffect(() => {
+    // For example, clear error on mount:
+    helpers.setError('');
+  }, [helpers]); 
 
   return (
     <div className="space-y-1">

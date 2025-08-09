@@ -14,10 +14,16 @@ export class PrivacyController {
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   handleAccountCreated(
-    @Payload() { value }: { value: NewAccountCreatedEvent },
-  ) {
+    @Payload() payload: any)
+   {
+    const eventData = payload?.value ?? payload;
+  
+    if (!eventData || !eventData.input) {
+      console.error('Invalid event data for NewAccountCreatedEvent:', eventData);
+      return;
+    }
     this.commandBus.execute<CreateUserPrivacySettingsCommand>(
-      new CreateUserPrivacySettingsCommand(value.input.id),
+      new CreateUserPrivacySettingsCommand(eventData.input.id),
     );
   }
 

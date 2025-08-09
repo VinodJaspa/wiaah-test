@@ -427,6 +427,8 @@ input CreateIdentityVerificationInput {
   dateOfBirth: String!
   id_front: String!
   id_back: String!
+  VVCPicture: String
+  VVC: String
 }
 
 scalar link__Import

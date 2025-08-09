@@ -4,7 +4,7 @@ import {
   MenuButton,
   MenuList,
   SpinnerFallback,
-  useGetMyNotificationsQuery,
+
 } from "@UI";
 import { CalendarArrowUp, Heart, MessageCircle, X } from "lucide-react";
 import React, { useState } from "react";
@@ -52,7 +52,7 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   children,
 }) => {
   const [selectedTab, setSelectedTab] = useState<number>(1);
-  const { data, isLoading, isError } = useGetMyNotificationsQuery();
+  // const { data, isLoading, isError } = useGetMyNotificationsQuery();
 const { t } = useTranslation();
 
   return (
@@ -63,7 +63,7 @@ const { t } = useTranslation();
           origin="top right"
           className="h-[40rem] px-4 w-[min(100vw,31.25rem)] thinScroll overflow-x-hidden overflow-y-scroll relative"
         >
-          <SpinnerFallback isLoading={isLoading} isError={isError}>
+          <SpinnerFallback>
             <div className="flex flex-col gap-y-4">
               <div className="flex items-center justify-between">
                 <p className="font-bold text-lg">{t("Notifications")}</p>

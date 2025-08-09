@@ -11,16 +11,22 @@ export class AuthController {
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   async handleAccountCreated(
-    @Payload() { value }: { value: NewAccountCreatedEvent },
-  ) {
-    console.log('registeration event auth', value);
+    @Payload() payload: any)
+   {
+    const eventData = payload?.value ?? payload;
+  
+    if (!eventData || !eventData.input) {
+      console.error('Invalid event data for NewAccountCreatedEvent:', eventData);
+      return;
+    }
+    console.log('registeration event auth', eventData);
     await this.authService.register({
-      accountType: value.input.accountType as RegisterAccountType,
-      email: value.input.email,
-      firstName: value.input.firstName,
-      lastName: value.input.lastName,
-      birthDate: value.input.birthDate as any,
-      password: value.input.password,
+      accountType: eventData.input.accountType as RegisterAccountType,
+      email: eventData.input.email,
+      firstName: eventData.input.firstName,
+      lastName: eventData.input.lastName,
+      birthDate: eventData.input.birthDate as any,
+      password: eventData.input.password,
     });
   }
 }

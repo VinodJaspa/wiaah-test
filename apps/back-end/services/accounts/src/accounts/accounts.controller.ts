@@ -140,7 +140,7 @@ export class AccountsController implements OnModuleInit {
   ): Promise<GetAccountMetaDataByEmailMessageReply> {
     const email = payload?.input?.email;
     try {
-      // console.log('[getAccountMetaDataByEmail] email value:', payload);
+      console.log('[getAccountMetaDataByEmail] email value:', email);
       
 
       
@@ -323,12 +323,12 @@ export class AccountsController implements OnModuleInit {
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountVerified)
   handleAccountVerified(
-    @Payload()
-    { value }: KafkaPayload<AccountVerifiedEvent>,
-  ) {
-    const {
-      input: { email },
-    } = value;
+    @Payload() payload :any)
+   
+   {
+
+    
+    const { email } = payload.input;
     this.accountService.handleVerifyAccount(email);
   }
 

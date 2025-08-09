@@ -5,6 +5,7 @@ import { SellerProfileStartupView, Container, useResponsive } from "ui";
 import { useTranslation } from "react-i18next";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import FormSubmitLoader from "@features/Auth/components/Spinner";
 
 const SignUpFinalisation: NextPage = () => {
   const [currentStep, setCurrentStep] = React.useState<number>(0);
@@ -29,7 +30,7 @@ const SignUpFinalisation: NextPage = () => {
         <title>Wiaah | Signup Finalisation</title>
       </Head>
       <main className="block w-full grow h-screen">
-
+{isFormSubmitting && <FormSubmitLoader/>}
       
 
         <div className="sm:p-0 md:p-4 lg:p-8 xl:p-10">

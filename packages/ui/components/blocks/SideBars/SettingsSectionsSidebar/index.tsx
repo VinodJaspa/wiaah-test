@@ -33,7 +33,7 @@ export const SettingsSectionsSidebar: React.FC<
   iconOnly = false,
 }) => {
     const { isMobile } = useResponsive();
-    console.log(currentActive,"currentActive");
+
     
     return isMobile ? (
       <Stack

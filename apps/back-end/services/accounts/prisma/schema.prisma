@@ -91,12 +91,12 @@ model UserIdenityVerificationRequest {
   firstName        String
   lastName         String
   fullAddress      String
-  addressProofBill String
+  addressProofBill String?
   dateOfBirth      DateTime
   id_front         String
   id_back          String
   VVCPicture       String?
-  VVC              String
+  VVC              String?
 }
 
 model UserAccountVerificationRequest {

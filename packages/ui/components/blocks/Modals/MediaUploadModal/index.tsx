@@ -1,243 +1,254 @@
 "use client";
-import { PostsViewModalsHeader } from "../../../blocks/Headers";
-import { Input, ModalContent, ModalOverlay, Modal } from "../../../partials";
-import { useFileUploadModal } from "../../../../src/Hooks";
-import React from "react";
+
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState, useEffect } from "react";
+import { HiCamera, HiFolderAdd, HiVideoCamera, HiX } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
-import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { getFileSrcData, FileRes } from "utils";
-import { RecordVideoModal } from "../RecordVideoModal";
 import { TakePictureModal } from "../TakePictureModal";
+import { RecordVideoModal } from "../RecordVideoModal";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 
 export type MediaUploadType = "image" | "video";
 
-type MediaUploadModalControls = {
-  uploadType: MediaUploadType | undefined;
+interface MediaUploadModalProps {
+  uploadType?: MediaUploadType;
   cancelUpload: () => void;
-};
-
-type useMediaUploadControlsReturn = {
-  uploadVideo: () => void;
-  uploadImage: () => void;
-  controls: MediaUploadModalControls;
-};
-
-export const useMediaUploadControls = (): useMediaUploadControlsReturn => {
-  const [uploadType, setUploadType] = React.useState<MediaUploadType>();
-
-  function uploadImage() {
-    setUploadType("image");
-  }
-
-  function uploadVideo() {
-    setUploadType("video");
-  }
-
-  function cancelUpload() {
-    setUploadType(undefined);
-  }
-
-  return {
-    uploadImage,
-    uploadVideo,
-    controls: {
-      uploadType,
-      cancelUpload,
-    },
-  };
-};
-
-export interface MediaUploadModalProps {
-  onImgUpload?: (
-    converted: FileRes,
-    raw?: File,
-    getBlob?: () => Blob | undefined,
-  ) => any;
-  onVidUpload?: (
-    converted: string,
-    raw?: File,
-    getBlob?: () => Blob | undefined,
-  ) => any;
-  controls?: MediaUploadModalControls;
+  onImgUpload?: (converted: FileRes, raw?: File, getBlob?: () => Blob | undefined) => any;
+  onVidUpload?: (converted: string, raw?: File, getBlob?: () => Blob | undefined) => any;
   multiple?: boolean;
-  onImgServerUploaded?: (url: string) => any;
-  onVidServerUploaded?: (url: string) => any;
 }
 
 export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
+  uploadType,
+  cancelUpload,
   onImgUpload,
   onVidUpload,
-  multiple,
-  controls,
+  multiple
 }) => {
-  const { cancelUpload: _cancelUpload, uploadType: _uploadType } =
-    useFileUploadModal();
+  const { t } = useTranslation();
+  const [takePicture, setTakePicture] = useState(false);
+  const [recordVideo, setRecordVideo] = useState(false);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [videoFiles, setVideoFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [videoPreviews, setVideoPreviews] = useState<string[]>([]);
 
-  const cancelUpload = controls ? controls.cancelUpload : _cancelUpload;
-  const uploadType = controls ? controls.uploadType : _uploadType;
+  const uploadImg = uploadType === "image";
+  const uploadVid = uploadType === "video";
 
-const { t } = useTranslation();
-  const [takePicture, setTakePicture] = React.useState<boolean>(false);
-  const [recordVideo, setRecordVideo] = React.useState<boolean>(false);
-  const [imageFiles, setImageFiles] = React.useState<File[]>([]);
-
-  const [videoFiles, setVideoFiles] = React.useState<File[]>([]);
-
-  React.useEffect(() => {
-    try {
-      if (imageFiles && imageFiles.length > 0) {
-        imageFiles.map((img, idx) => {
-          getFileSrcData(img, (res) => {
-            SendImage(res, idx);
-          });
-        });
-        setImageFiles([]);
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  useEffect(() => {
+    setImagePreviews(imageFiles.map((file) => URL.createObjectURL(file)));
   }, [imageFiles]);
 
-  React.useEffect(() => {
-    try {
-      if (videoFiles.length > 0 && URL && URL.createObjectURL) {
-        const vidArr = Array.from(videoFiles);
-        vidArr.map((vid, idx) => {
-          const vidSrc = URL.createObjectURL(vid);
-          sendVideo(vidSrc, idx);
-        });
-
-        setVideoFiles([]);
-      }
-    } catch (err) {
-      console.error("video Convertion", err);
-    }
+  useEffect(() => {
+    setVideoPreviews(videoFiles.map((file) => URL.createObjectURL(file)));
   }, [videoFiles]);
-
-  const uploadImg = uploadType === "picture";
-  //   uploadType === "picture";
-  const uploadVid = uploadType === "video";
 
   function addImageFiles(imgs: FileList | null) {
     if (!imgs) return;
-    const fileArr = Array.from(imgs);
-    setImageFiles((state) => [...state, ...fileArr]);
+    setImageFiles((state) => [...state, ...Array.from(imgs)]);
   }
 
-  function sendVideo(vidSrc: string, idx: number) {
-    if (!vidSrc) return;
+  function addVideoFiles(vids: FileList | null) {
+    if (!vids) return;
+    setVideoFiles((state) => [...state, ...Array.from(vids)]);
+  }
 
-    const raw = videoFiles ? videoFiles[idx] : null;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onVidUpload &&
-      onVidUpload(vidSrc, raw ? raw : (undefined as any), () =>
-        raw ? new Blob([raw], { type: raw.type }) : undefined,
-      );
+  function removeImage(index: number) {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+  }
 
+  function removeVideo(index: number) {
+    setVideoFiles((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function confirmUpload() {
+    if (uploadImg && imageFiles.length > 0) {
+      imageFiles.forEach((img) => {
+        getFileSrcData(img, (res) => {
+          onImgUpload?.(res, img, () => new Blob([img], { type: img.type }));
+        });
+      });
+    }
+    if (uploadVid && videoFiles.length > 0) {
+      videoFiles.forEach((vid) => {
+        const vidSrc = URL.createObjectURL(vid);
+        onVidUpload?.(vidSrc, vid, () => new Blob([vid], { type: vid.type }));
+      });
+    }
     cancelUpload();
   }
 
-  function SendImage(img: FileRes, idx: number) {
-    if (!img) return;
-    const raw = imageFiles[idx];
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onImgUpload &&
-      onImgUpload(img, raw, () => new Blob([raw], { type: raw.type }));
-  }
-  function handleOpen() { }
+  const UploadTile = ({
+    icon,
+    inputId,
+    accept,
+    onChange,
+    onClick
+  }: any) => (
+    <>
+      <label htmlFor={inputId}>
+        <div className="cursor-pointer flex justify-center items-center h-36 w-36 rounded-xl shadow-md border-2 border-primary bg-gradient-to-br from-blue-50 to-purple-50 hover:scale-105 hover:shadow-xl transition-all duration-300">
+          {icon}
+        </div>
+        <input
+          className="hidden"
+          id={inputId}
+          type="file"
+          multiple={multiple}
+          onChange={onChange}
+          accept={accept}
+        />
+      </label>
+      {onClick && (
+        <div
+          onClick={onClick}
+          className="h-36 w-36 rounded-xl shadow-md border-2 border-primary bg-gradient-to-br from-pink-50 to-orange-50 flex justify-center items-center cursor-pointer hover:scale-105 hover:shadow-xl transition-all duration-300"
+        >
+          {icon}
+        </div>
+      )}
+    </>
+  );
 
   return (
-    <Modal
-      isLazy
-      onOpen={() => { }}
-      isOpen={!!uploadType}
-      onClose={cancelUpload}
-    >
-      <ModalOverlay />
-      <ModalContent className="w-[min(100%, 40rem)] rounded-xl py-4 px-8 flex flex-col gap-4">
-        <PostsViewModalsHeader onBackClick={cancelUpload}>
-          <p className="">
-            {uploadImg
-              ? t("upload_a_picture", "Upload a Picture")
-              : uploadVid
-                ? t("upload_a_video", "Upload a Video")
-                : null}
-          </p>
-        </PostsViewModalsHeader>
-        <div className="gap-8 justify-center flex flex-col sm:flex-row">
-          {uploadImg ? (
-            <>
-              <TakePictureModal
-                onOpen={() => setTakePicture(true)}
-                isOpen={takePicture}
-                onClose={() => setTakePicture(false)}
-                onImgCapture={(src, raw) => {
-                  setTakePicture(false);
-                  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                  onImgUpload && onImgUpload(src, raw);
-                }}
-              />
-              <label htmlFor="AddImageInput">
-                <div className="cursor-pointer flex justify-center items-center h-32 w-32 rounded-xl border-2 border-primary">
-                  <HiFolderAdd className="text-4xl cursor-pointer text-primary" />
+    <Transition appear show={!!uploadType} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={cancelUpload}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100"
+          leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black/30" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300" enterFrom="opacity-0 scale-95" enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200" leaveFrom="opacity-100 scale-100" leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="max-w-[50rem] w-full rounded-xl bg-white p-6 shadow-xl">
+                <Dialog.Title className="text-lg font-medium">
+                  {uploadImg
+                    ? t("upload_a_picture", "Upload a Picture")
+                    : uploadVid
+                      ? t("upload_a_video", "Upload a Video")
+                      : ""}
+                </Dialog.Title>
+
+                <div className="flex flex-wrap gap-6 mt-6 justify-center">
+                  {/* Image Previews */}
+                  {uploadImg && imagePreviews.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">
+                      {imagePreviews.map((src, idx) => (
+                        <div key={idx} className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                          <img src={src} alt="preview" className="w-full h-40 object-cover" />
+                          <button
+                            onClick={() => removeImage(idx)}
+                            className="absolute top-1 right-1 bg-black/50 rounded-full p-1 hover:bg-black/70"
+                          >
+                            <HiX className="text-white" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Video Previews */}
+                  {uploadVid && videoPreviews.length > 0 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                      {videoPreviews.map((src, idx) => (
+                        <div key={idx} className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+                          <video src={src} controls className="w-full rounded-lg" />
+                          <button
+                            onClick={() => removeVideo(idx)}
+                            className="absolute top-1 right-1 bg-black/50 rounded-full p-1 hover:bg-black/70"
+                          >
+                            <HiX className="text-white" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Upload Buttons */}
+                  {uploadImg && (
+                    <>
+                      <TakePictureModal
+                        onOpen={() => setTakePicture(true)}
+                        isOpen={takePicture}
+                        onClose={() => setTakePicture(false)}
+                        onImgCapture={(src, raw) => {
+                          setTakePicture(false);
+                          if (raw) setImageFiles((prev) => [...prev, raw]);
+                        }}
+                      />
+                      <UploadTile
+                        icon={<HiFolderAdd className="text-4xl text-primary" />}
+                        inputId="AddImageInput"
+                        accept="image/*"
+                        onChange={(e: any) => addImageFiles(e.target.files)}
+                      />
+                      <div
+                        onClick={() => setTakePicture(true)}
+                        className="h-36 w-36 rounded-xl shadow-md border-2 border-primary bg-gradient-to-br from-green-50 to-teal-50 flex justify-center items-center cursor-pointer hover:scale-105 hover:shadow-xl transition-all duration-300"
+                      >
+                        <HiCamera className="text-primary text-4xl" />
+                      </div>
+                    </>
+                  )}
+
+                  {uploadVid && (
+                    <>
+                      <RecordVideoModal
+                        onOpen={() => setRecordVideo(true)}
+                        isOpen={recordVideo}
+                        onVideoRecored={(vid) => {
+                          setVideoFiles([new File([vid], `record.mp4`, { type: "video/mp4" })]);
+                        }}
+                        onClose={() => setRecordVideo(false)}
+                      />
+                      <UploadTile
+                        icon={<HiFolderAdd className="text-4xl text-primary" />}
+                        inputId="AddVideoInput"
+                        accept="video/*"
+                        onChange={(e: any) => addVideoFiles(e.target.files)}
+                      />
+                      <div
+                        onClick={() => setRecordVideo(true)}
+                        className="h-36 w-36 rounded-xl shadow-md border-2 border-primary bg-gradient-to-br from-yellow-50 to-red-50 flex justify-center items-center cursor-pointer hover:scale-105 hover:shadow-xl transition-all duration-300"
+                      >
+                        <HiVideoCamera className="text-primary text-4xl" />
+                      </div>
+                    </>
+                  )}
                 </div>
-                <Input
-                  className="hidden"
-                  id="AddImageInput"
-                  type={"file"}
-                  multiple={multiple}
-                  onChange={(e) => addImageFiles(e.target.files)}
-                  accept="image/*"
-                />
-              </label>
-              <label htmlFor="TakePicture">
-                <div
-                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                  onClick={() => setTakePicture(true)}
-                >
-                  <HiCamera className="text-primary text-4xl cursor-pointer" />
-                </div>
-              </label>
-            </>
-          ) : uploadVid ? (
-            <>
-              <RecordVideoModal
-                onOpen={() => setRecordVideo(true)}
-                isOpen={recordVideo}
-                onVideoRecored={(vid) => {
-                  setVideoFiles([new File([vid], `record`)]);
-                }}
-                onClose={() => setRecordVideo(false)}
-              />
-              <label htmlFor="AddVideoInput">
-                <div
-                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                  onClick={() => setTakePicture(true)}
-                >
-                  <HiFolderAdd className="text-primary text-4xl cursor-pointer" />
-                </div>
-                <Input
-                  className="hidden"
-                  id="AddVideoInput"
-                  type={"file"}
-                  multiple={multiple}
-                  //@ts-ignore
-                  onChange={(e) => setVideoFiles(e.target.files || null)}
-                  accept="video/*"
-                />
-              </label>
-              <label htmlFor="RecordVdeo">
-                <div
-                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                  onClick={() => setRecordVideo(true)}
-                >
-                  <HiVideoCamera className="text-primary text-4xl cursor-pointer" />
-                </div>
-              </label>
-            </>
-          ) : null}
+
+                {(imagePreviews.length > 0 || videoPreviews.length > 0) && (
+                  <div className="flex justify-end gap-3 mt-6 border-t pt-4">
+                    <PrimaryButton
+                      onClick={cancelUpload}
+                      className="bg-gray-200 hover:bg-red-500 px-4 py-2 rounded-md transition-all duration-200 text-gray-800"
+                    >
+                      {t("cancel", "Cancel")}
+                    </PrimaryButton>
+
+                    <PrimaryButton
+                      onClick={confirmUpload}
+
+                    >
+                      {t("continue", "Continue")}
+                    </PrimaryButton>
+                  </div>
+                )}
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
         </div>
-      </ModalContent>
-    </Modal>
+      </Dialog>
+    </Transition>
   );
 };

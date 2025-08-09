@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Subtitle from "../Title/Subtitle";
 import { useFormikContext } from "formik";
-import { log } from "console";
+
 
 const months = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -18,8 +18,12 @@ const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
 export default function DateOfBirthSelector({
   defaultValue,
+  name,
+  onChange
 }: {
   defaultValue?: { month: string; day: number; year: number };
+  onChange?,
+  name
 }) {
   const [selectedMonth, setSelectedMonth] = useState(defaultValue?.month || "Mar");
   const [selectedDay, setSelectedDay] = useState(defaultValue?.day || 15);
@@ -36,11 +40,19 @@ export default function DateOfBirthSelector({
     setFieldValue("birthYear", year.toString());
     setFieldValue("birthMonth", formattedMonth);
     setFieldValue("birthDay", formattedDay);
+
   };
 
 
   useEffect(() => {
     updateBirthDate(selectedMonth, selectedDay, selectedYear);
+    const formattedMonth = monthToNumber(selectedMonth); // "03"
+    const formattedDay = String(selectedDay).padStart(2, "0"); // "15"
+    const birthDate = `${selectedYear}-${formattedMonth}-${formattedDay}`;
+    if(onChange){
+      onChange(birthDate)
+
+    }
   }, [selectedMonth, selectedDay, selectedYear]);
 
   const handleSelect = (type: "month" | "day" | "year", value: string | number) => {

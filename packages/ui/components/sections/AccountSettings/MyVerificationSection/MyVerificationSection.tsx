@@ -11,7 +11,7 @@ import {
   SectionHeader,
   useVerifyVerificationCode,
   useRequestAccountVerification,
-  useMediaUploadControls,
+
   Image,
   useGetMyVerificationRequest,
   Input,

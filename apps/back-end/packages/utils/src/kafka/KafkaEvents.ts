@@ -254,7 +254,7 @@ export const KAFKA_MESSAGES = {
     addProductToAccount: "add.product.to.account",
     hasStripeId: "user.has.stripe.id",
     getAdminAccountByEmail: "account.admin.getby.email",
-    unsupendUserAccountById:"unsuspend-account"
+    unsupendUserAccountById: "unsuspend-account"
   },
   PRODUCTS_MESSAGES: {
     productReviewable: "is.product.reviewable",

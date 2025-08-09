@@ -24,7 +24,7 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
   const { t } = useTranslation();
   const { getUrl } = useRouting();
   const router = useRouter();
-  const setUserLoggedIn = useSetRecoilState(isUserLoggedIn); 
+  const setUserLoggedIn = useSetRecoilState(isUserLoggedIn);
   const { mutate: signin, isLoading } = useSigninMutation();
 
   const { form, inputProps } = useForm<Parameters<typeof signin>[0]>(
@@ -94,7 +94,11 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
                   errorToast("Login succeeded but no token received.");
                 }
               } else {
-                errorToast(res?.message || "Sign in successful!");
+                errorToast(res?.message[0]);
+                const errorMessage =
+                  res?.response?.errors?.[0]?.message ||
+                  res?.message ||
+                  'Unknown error';
 
               }
 

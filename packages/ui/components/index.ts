@@ -7,3 +7,4 @@ export * from "./features";
 
 export * from "./shadcn-components/Buttons";
 export * from "./Account";
+export * from "./NavigationHeader";

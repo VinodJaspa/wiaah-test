@@ -47,7 +47,7 @@ export class AccountsService {
 
       //Emit Kafka event
       this.eventsClient.emit<string, NewAccountCreatedEvent>(
-        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated,
+        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated(createdUser.accountType),
         new NewAccountCreatedEvent({
           email: createdUser.email,
           id: createdUser.id,

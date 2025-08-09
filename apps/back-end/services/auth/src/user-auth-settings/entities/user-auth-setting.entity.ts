@@ -5,6 +5,8 @@ export class UserAuthSetting {
   @Field(() => ID)
   id: string;
 
+  @Field(() => String)
+  accountId: string;
   @Field(() => Boolean)
   twoFactoryAuth: boolean;
 

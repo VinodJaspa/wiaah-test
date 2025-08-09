@@ -116,7 +116,7 @@ export class AuthService {
       const invokedAccount: any = await new Promise((resolve, reject) => {
         this.eventsClient
           .send('get.account.by.email', {
-            value: { value: { input: { email: email } } },
+            input: { email },
           })
           .subscribe({
             next: (account) => resolve(account),

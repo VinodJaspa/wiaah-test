@@ -47,6 +47,8 @@ export class PrismaModule {}
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
+      
+      
     }),
     AccountsModule,
     IdentityVerificationModule,

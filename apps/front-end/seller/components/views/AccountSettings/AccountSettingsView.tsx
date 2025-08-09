@@ -78,52 +78,8 @@ export const AccountSettingsView: React.FC = () => {
   );
 };
 
-// export const NotFoundSection = () => {
-//   return <div>not found</div>;
-// };
-
-export const MyAccountNotificationSettings = () => {
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? <NotificationsSettingsSection accountId={"33"} /> : null;
-};
-
-export const MyAccountSettingsSection = () => {
-  // this graphql query endpoint is not ready yet so use placeholders instead till the server get ready
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? <AccountSettingsSection accountId={data.ownerId} /> : null;
-};
-
-export const MyVatSection = () => {
-  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? <VatSection accountId={data.ownerId} /> : null;
-};
-
-export const MyNewsletterSettingsSection = () => {
-  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
-  const { data } = useGetMyProfileQuery();
-
-  // const data = {
-  //   ownerId: "33",
-  // };
 
 
-  return data ? (
-    <AccountNewsLetterSettingsSection userId={data.ownerId} />
-  ) : null;
-};
 
 const sections: SettingsSectionType[] = [
   {
@@ -152,7 +108,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
-    panelComponent: <MyAccountNotificationSettings />,
+    panelComponent: <NotificationsSettingsSection accountId={'688fd1e19b391da536b71229'} />,
   },
   {
     panelName: "My Profile Statistics",

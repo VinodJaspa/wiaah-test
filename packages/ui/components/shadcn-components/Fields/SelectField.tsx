@@ -14,8 +14,16 @@ interface SelectFieldProps extends Omit<ReactSelectProps, "options" | "onChange"
 }
 
 export default function SelectField({ label, name, options, ...props }: SelectFieldProps) {
-  const [field, meta] = useField(name);
+  const [field, meta,helpers] = useField(name);
   const { setFieldValue } = useFormikContext<any>();
+  React.useEffect(() => {
+    // For example, clear error on mount:
+    helpers.setError('');
+  }, [helpers]); 
+  console.log(helpers ,"helpers");
+  
+
+  
 
   const selectedOption = options.find((opt) => opt.value === field.value);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxIdCard } from "react-icons/rx";
 import { FiShoppingBag, FiVideo, FiSettings } from "react-icons/fi";
 import StepProgressBar from "./stepper";
@@ -9,33 +9,73 @@ import demoidentity from "./identity.svg"
 import { Form, Formik } from "formik";
 import InputField from "@UI/components/shadcn-components/Fields/InputField";
 import * as Yup from "yup";
+
+import IDUploadModal from "@blocks/Modals/IdUploadModal";
+import { PreviewModal, TakePictureModal } from "@blocks";
+
+import NavigationHeader from "@UI/components/NavigationHeader";
+import Tesseract from "tesseract.js";
+import AutoFillFromOCR from "./AutoFillValues";
+import { useRequestAccountVerification } from "@UI";
+import IDInformationReview from "./IdVerfication";
+
 export default function IdentityVerification() {
   const [step, setStep] = useState(1);
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [previewFile, setPreviewFile] = React.useState<File | null>(null);
+  const [formData, setFormData] = useState({
+    id_front: null,
+    id_back: null,
+    VVCPicture: null,
+    verificationCode: null,
+  });
+
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 6));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
-  console.log(demoidentity.src, "demoidentity");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [activeField, setActiveField] = useState(null);
+  const openModalFor = (field) => {
+    setActiveField(field);
+    setIsModalOpen(true);
+  }; const handleCapture = (imgSrc, file, field) => {
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: imgSrc ? file : null,
+      }));
+    }
+  };
+
 
   return (
-    <main className="flex bg-white min-h-screen">
+    <main className="flex bg-white mb-32 md:mb-0">
       {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r px-6 py-8 space-y-6">
+      {/* <aside className="hidden md:flex flex-col w-64 bg-white border-r px-6 py-8 space-y-6">
         <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 rounded-full text-black font-medium w-fit mb-8">
           <RxIdCard />
           <span>Verify Your Identity</span>
         </div>
-      </aside>
+      </aside> */}
 
       {/* Main Content */}
-      <div className="flex-1 px-6 md:px-12 pt-20 md:pt-20">
-        <SectionTitle title="Identity verification" />
-        <StepDots currentStep={step} totalSteps={6} />
+      <div className="flex-1 px-2  pt-5 md:pt-5 sm:md-12">
+        <div className="text-center sm:text-left space-y-2 py-4">
+          <NavigationHeader title="Identity verification" onBack={() => setStep(pre => pre - 1)} />
 
+          <StepDots currentStep={step} totalSteps={6} />
+        </div>
 
+        <PreviewModal
+          isOpen={previewOpen}
+          imageFile={previewFile}
+          onClose={() => setPreviewOpen(false)}
+        />
 
         {/* Step 1 */}
         {step === 1 && (
-          <div className="space-y-6">
+          <div className=" py-4">
             <Subtitle>
               Verify your identity
             </Subtitle>
@@ -70,58 +110,91 @@ export default function IdentityVerification() {
         )}
 
         {/* Step 2 */}
+
         {step === 2 && (
-          <div className="space-y-6">
+          <div className=" py-4">
             <Subtitle>Upload your ID</Subtitle>
 
             <p className="text-sm text-gray-600">
               Take a photo of your government-issued ID. Make sure it's clear.
             </p>
-
             <div className="border-2 border-dashed border-gray-200 p-6 rounded-lg text-center text-sm">
               <p className="font-semibold text-sm">Upload front of ID</p>
-              <p className="text-gray-600 text-xs">Drag and drop or browse files</p>
-              <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs">Upload</button>
+              {formData?.id_front && (
+                <FilePreview
+                  file={formData.id_front}
+                  onView={(file) => {
+                    setPreviewFile(formData.id_front);
+                    setPreviewOpen(true);
+                  }}
+                />
+              )}
+
+              <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs" onClick={() => openModalFor("id_front")}>Upload</button>
             </div>
 
             <div className="border-2 border-dashed border-gray-200 p-6 rounded-lg text-center text-sm">
               <p className="font-semibold text-sm">Upload back of ID</p>
-              <p className="text-gray-600 text-xs">Drag and drop or browse files</p>
-              <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs">Upload</button>
+              {formData?.id_back && (
+                <FilePreview
+                  file={formData?.id_back}
+                  onView={(file) => {
+                    setPreviewFile(formData?.id_back);
+                    setPreviewOpen(true);
+                  }}
+                />
+              )}
+              <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs" onClick={() => openModalFor("id_back")}>Upload</button>
             </div>
 
-            <div className="border-2 border-dashed border-gray-200 p-6 rounded-lg text-center text-sm">
-              <p className="font-semibold text-sm">
-                Take a selfie while holding your ID next to your face
-              </p>
-              <p className="text-gray-600 text-xs">Drag and drop or browse files</p>
-              <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs">Upload</button>
-            </div>
+            <SelfieWithIdUpload onCapture={(imgSrc, file) => handleCapture(imgSrc, file, "VVCPicture")} formData={formData} setPreviewFile={setPreviewFile} setPreviewOpen={setPreviewOpen} />
+            <IDUploadModal
+              isOpen={isModalOpen}
+              formData={formData}
+              fieldName={activeField}
+              setFormData={setFormData}
+              onClose={() => setIsModalOpen(false)}
 
-            <div className="flex justify-between">
-              <button onClick={prevStep} className="text-black border border-gray-400 px-6 py-2 rounded-full font-medium hover:bg-gray-100">Back</button>
-              <button onClick={nextStep} className="bg-black text-white px-6 py-2 rounded-full font-medium hover:bg-gray-900">Continue</button>
+
+            />
+            <div className="flex justify-between pt-4">
+              <button
+                onClick={prevStep}
+                className="text-black border border-gray-400 px-6 py-2 rounded-full font-medium hover:bg-gray-100"
+              >
+                Back
+              </button>
+              <button
+                onClick={nextStep}
+                className="bg-black text-white px-6 py-2 rounded-full font-medium hover:bg-gray-900"
+              >
+                Continue
+              </button>
             </div>
           </div>
         )}
 
+
+
+
+
         {/* Steps 3-6 remain unchanged */}
         {step === 3 && (
-          <div className="space-y-6 text-center">
+          <div className=" text-center py-4">
             <Subtitle>Preview your ID</Subtitle>
 
-            <DocumentPreview prevStep={prevStep} nextStep={nextStep} />
+            <DocumentPreview formData={formData} prevStep={prevStep} nextStep={nextStep} />
           </div>
         )}
 
         {step === 4 && (
-          <div className="space-y-4 max-w-md">
-            <IDInformationReview prevStep={prevStep} nextStep={nextStep} />
+          <div className="py-2">
+            <IDInformationReview  setFormData={setFormData}formData={formData} prevStep={prevStep} nextStep={nextStep} />
           </div>
         )}
 
         {step === 5 && (
-          <div className="space-y-6">
+          <div className="text-center py-4">
             <h2 className="text-2xl font-bold">Verification Status</h2>
             <p className="text-gray-600">We are currently reviewing your information.</p>
             <ul className="list-disc ml-6 text-sm text-gray-600">
@@ -137,7 +210,7 @@ export default function IdentityVerification() {
         )}
 
         {step === 6 && (
-          <div className="space-y-6 text-center">
+          <div className=" text-center">
             <h2 className="text-2xl font-bold">Identity Verified</h2>
             <p className="text-gray-600">Your identity has been successfully verified. Thank you!</p>
             <button onClick={() => setStep(1)} className="bg-black text-white px-6 py-2 rounded-full font-medium hover:bg-gray-900">Back to Dashboard</button>
@@ -147,9 +220,149 @@ export default function IdentityVerification() {
     </main>
   );
 }
+function SelfieWithIdUpload({ onCapture, formData, setPreviewOpen, setPreviewFile }) {
+  const [isOpen, setOpen] = useState(false);
+  // handlers
+
+  return (
+    <div className="border-2 border-dashed border-gray-200 p-6 rounded-lg text-center text-sm">
+      <p className="font-semibold text-sm">
+        Take a selfie while holding your ID next to your face
+      </p>
+      <button className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs" onClick={() => setOpen(true)}>Open Camera</button>
+      {formData.VVCPicture && (
+        <FilePreview
+          file={formData?.VVCPicture}
+          onView={(file) => {
+            setPreviewFile(file);
+            setPreviewOpen(true);
+          }}
+        />
+      )}
+      <TakePictureModal onClose={() => setOpen(false)} isOpen={isOpen} onImgCapture={onCapture} />
+    </div>
+  );
+}
 
 
-const DocumentPreview = ({ prevStep, nextStep }) => {
+
+interface FilePreviewProps {
+  file: File;
+  onView: (file: File) => void;
+  maxLength?: number;
+}
+
+const FilePreview: React.FC<FilePreviewProps> = ({ file, onView, maxLength = 20 }) => {
+  const trimmedName =
+    file.name.length > maxLength ? file.name.slice(0, maxLength) + "..." : file.name;
+
+  return (
+    <div className="flex items-center gap-2 pt-2 pb-2 text-sm">
+      <p className="font-normal truncate max-w-xs" title={file.name}>
+        {trimmedName}
+      </p>
+      <button
+        onClick={() => onView(file)}
+        className="text-blue-600 underline text-xs hover:text-blue-800"
+        type="button"
+      >
+        View
+      </button>
+    </div>
+  );
+};
+
+/* --- DropZone Component --- */
+type DropZoneProps = {
+  title: string;
+  description: string;
+  file: File | null;
+  setFile: (file: File) => void;
+  openImageModal: () => void;
+};
+
+function DropZone({ title, description, file, setFile, openImageModal }: DropZoneProps) {
+  const [dragActive, setDragActive] = React.useState(false);
+
+  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  }
+
+  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(true);
+  }
+
+  function handleDragLeave(e: React.DragEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  }
+
+  return (
+    <div
+      className={`border-2 border-dashed p-6 rounded-lg text-center text-sm transition-all ${dragActive ? "border-blue-500 bg-blue-50" : "border-gray-200"
+        }`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <p className="font-semibold text-sm">{title}</p>
+      <p className="text-gray-600 text-xs">{description}</p>
+
+      {/* File preview */}
+      {file && (
+        <div className="mt-4">
+          {file.type.startsWith("image/") ? (
+            <img
+              src={URL.createObjectURL(file)}
+              alt="Preview"
+              className="max-h-32 mx-auto rounded"
+            />
+          ) : (
+            <video
+              src={URL.createObjectURL(file)}
+              controls
+              className="max-h-32 mx-auto rounded"
+            />
+          )}
+        </div>
+      )}
+
+      {/* Upload Button */}
+      <button
+        className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs"
+        onClick={openImageModal}
+      >
+        Upload
+      </button>
+    </div>
+  );
+}
+
+const DocumentPreview = ({ prevStep, nextStep, formData }) => {
+  const [idFrontURL, setIdFrontURL] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (formData.id_front) {
+      const url = URL.createObjectURL(formData.id_front);
+      setIdFrontURL(url);
+      return () => URL.revokeObjectURL(url);
+    } else {
+      setIdFrontURL(null);
+    }
+    return () => {
+      if (idFrontURL) {
+        URL.revokeObjectURL(idFrontURL);
+      }
+    }
+  }, [formData.id_front]);
   return (
     <div className="max-w-2xl mx-auto px-4 py-10 space-y-6 text-center">
       {/* Heading */}
@@ -172,7 +385,7 @@ const DocumentPreview = ({ prevStep, nextStep }) => {
       {/* Image */}
       <div className="rounded-xl overflow-hidden shadow-lg w-full bg-gray-50 border border-gray-200">
         <img
-          src={demoidentity.src}
+          src={idFrontURL ?? demoidentity.src}
           alt="ID Preview"
           className="w-full object-cover"
         />
@@ -184,7 +397,7 @@ const DocumentPreview = ({ prevStep, nextStep }) => {
       </p>
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 space-x-3 pt-4">
         <button className="bg-gray-100 hover:bg-gray-200 text-black px-6 py-2 rounded-full font-medium transition" onClick={prevStep}>
           Upload new image
         </button>
@@ -199,80 +412,13 @@ const DocumentPreview = ({ prevStep, nextStep }) => {
 
 
 
-const IDInformationReview = ({ prevStep, nextStep }) => {
-  const initialValues = {
-    firstName: "",
-    lastName: "",
-    dob: "",
-    address: "",
-    city: "",
-    zip: "",
-    state: "",
-    country: "",
-    idNumber: "",
-    idExpiry: "",
-  };
 
-  const validationSchema = Yup.object({
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    dob: Yup.string().required("Required"),
-    address: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    zip: Yup.string().required("Required"),
-    state: Yup.string().required("Required"),
-    country: Yup.string().required("Required"),
-    idNumber: Yup.string(),
-    idExpiry: Yup.string().required("Required"),
-  });
 
-  const handleSubmit = (values: typeof initialValues) => {
-    console.log("Submitted values:", values);
-    // Handle form submission logic here
-  };
 
-  return (
-    <div className="max-w-xl mx-auto px-4 py-10">
-      {/* Subtitle */}
-      <Subtitle>
-        ID Information Review
-      </Subtitle>
 
-      <p className="text-sm text-gray-500 mb-6">
-        Please review the information extracted from the document and make any necessary edits to ensure accuracy.
-      </p>
 
-      {/* Formik Form */}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        <Form className="space-y-4">
-          <InputField name="firstName" label="First Name" />
-          <InputField name="lastName" label="Last Name" />
-          <InputField name="dob" label="Date of Birth" />
-          <InputField name="address" label="Address" />
-          <InputField name="city" label="City" />
-          <InputField name="zip" label="Zip Code" />
-          <InputField name="state" label="State" />
-          <InputField name="country" label="Country" />
-          <InputField name="idNumber" label="ID Number (if applicable)" />
-          <InputField name="idExpiry" label="ID Expiration Date" />
 
-          <div className="flex justify-end pt-4">
-            <button
 
-              type="submit"
-              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-900 transition"
-            >
-              Submit
-            </button>
-          </div>
-        </Form>
-      </Formik>
-    </div>
-  );
-};
+
 
 

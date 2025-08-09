@@ -22,4 +22,12 @@ export class CreateIdentityVerificationInput {
 
   @Field(() => String)
   id_back: string;
+
+  // Add these if needed:
+  @Field(() => String, { nullable: true })
+  VVCPicture?: string;
+
+  @Field(() => String, { nullable: true })
+  VVC?: string;
 }
+

@@ -8,10 +8,13 @@ export class UserAuthSettingsRepository {
   create(accountId: string) {
     return this.prisma.userAuthSettings.create({
       data: {
-        id: accountId,
+        accountId,
+        twoFactoryAuth: false,
       },
     });
   }
+  
+  
 
   getOne(accountId: string) {
     return this.prisma.userAuthSettings.findUnique({

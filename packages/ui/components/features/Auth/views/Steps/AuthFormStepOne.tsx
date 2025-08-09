@@ -61,7 +61,9 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
             };
         },
         validate: async () => {
-            if (!formikRef.current) return {};
+            if (!formikRef.current) return {
+                
+            };
             const errors = await formikRef.current.validateForm();
             return errors;
         },
@@ -72,7 +74,10 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
         lastName: Yup.string().required('Last name is required'),
         gender: Yup.string().oneOf(['MALE', 'FEMALE', 'OTHER'], 'Select a valid gender').required('Gender is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
-        password: Yup.string().matches(/^\d{6}$/, 'Password must be exactly 6 digits').required('Password is required'),
+        password: Yup.string()
+        .matches(/^\d{6,10}$/, 'Password must be between 6 and 10 digits')
+        .required('Password is required'),
+      
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password')], 'Passwords must match')
             .required('Please confirm your password'),
@@ -82,7 +87,7 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
         <Formik
             innerRef={formikRef}
             initialValues={initialValues}
-           
+            validateOnMount={false}
             validationSchema={validationSchema}
             onSubmit={(values) => {
                 const {
@@ -170,7 +175,7 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
                     </div>
 
                     <div className="mb-4">
-                        <DateOfBirthSelector  />
+                        <DateOfBirthSelector name="birthDate" />
                         
                     </div>
 

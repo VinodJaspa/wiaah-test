@@ -39,13 +39,13 @@ export const AccountSignup = forwardRef<AccountSignupRef, Props>(
             errorToast(res.error);
             return false;
           }
-            successToast("Sign up success!");
+            // successToast("Sign up success!");
             sendCode({email:form?.email}) ;   
             return true;
   
         } catch (err: any) {
 
-          console.error("Signup flow error:", err);
+          // console.error("Signup flow error:", err);
           errorToast(err?.message || "Something went wrong");
           return false;
         }

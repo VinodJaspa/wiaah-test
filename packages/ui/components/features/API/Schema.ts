@@ -7291,6 +7291,28 @@ export type UserNotificationSettings = {
   postComment: UserNotificationEnum;
   postReaction: UserNotificationEnum;
 };
+export type UpdateNotificationSettingsInput = {
+  pauseAll: boolean
+  likes: boolean
+  followers: boolean
+  mentions: boolean
+  comments: boolean
+  shares: boolean
+  followRequest: boolean
+  followRequestResponse: boolean
+  messages: boolean
+  postsUpdates: boolean
+  storyUpdates: boolean
+  remix: boolean
+  ordersAndPerksUpdates: boolean
+  emailAccountActivities: boolean
+  emailProductUpdates: boolean
+  emailReservationUpdates: boolean
+  emailBusinessTips: boolean
+  emailNews: boolean
+  emailReminder: boolean
+  emailSupport: boolean
+}
 
 export type UpdateBeautyCenterAdminInput = {
   beauty_center_typeId?: InputMaybe<Scalars["ID"]["input"]>;
