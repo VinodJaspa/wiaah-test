@@ -1,7 +1,7 @@
 export default function DimensionInput({ label }) {
     return (
       <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <label className="text-xs font-medium text-gray-700">{label}</label>
         <div className="flex gap-2">
           <input
             placeholder="Length"

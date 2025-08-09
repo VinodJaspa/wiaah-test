@@ -737,6 +737,8 @@ export type CreateProductInput = {
   type: ProductType;
   vat: Scalars['Float'];
   visibility: VisibilityEnum;
+  colors: string[];  // or Array<string>
+  sizes: string[];   // or Array<string>
 };
 
 export type CreateProductReviewInput = {
@@ -4627,6 +4629,7 @@ export enum VoucherStatus {
   Active = 'active',
   InActive = 'inActive'
 }
+
 
 export type WeekdaysWorkingHours = {
   __typename?: 'WeekdaysWorkingHours';

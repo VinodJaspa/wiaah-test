@@ -130,12 +130,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/shareyourqr",
     panelComponent: <ShareYourWiaahQr />,
   },
-  {
-    panelName: "Invite Friends",
-    panelIcon: HiUserGroup,
-    panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
-  },
+  // {
+  //   panelName: "Invite Friends",
+  //   panelIcon: HiUserGroup,
+  //   panelUrl: "/invitefriends",
+  //   panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
+  // },
   {
     panelName: "Your Membership",
     panelIcon: MdCardMembership,

@@ -753,11 +753,11 @@ input CreateProductInput {
   title: StringTranslationField!
   description: StringTranslationField!
   categoryId: ID!
-  attributesIds: [ProductAttributeInput!]!
+  attributesIds: [ProductAttributeInput!]
   stock: Int!
-  discount: DiscountInput!
-  cashbackId: String!
-  presentations: [Upload!]!
+  discount: DiscountInput
+  cashbackId: String
+  presentations: [ProductPresentationInput!]!
   thumbnail: String!
   price: Float!
   brand: String!
@@ -783,8 +783,10 @@ input DiscountInput {
   amount: Int!
 }
 
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
+input ProductPresentationInput {
+  type: PresentationType!
+  src: String!
+}
 
 input UpdateProductInput {
   external_url: String
@@ -796,7 +798,7 @@ input UpdateProductInput {
   stock: Int
   discount: DiscountInput
   cashbackId: String
-  presentations: [Upload!]
+  presentations: [ProductPresentationInput!]
   thumbnail: String
   price: Float
   brand: String
@@ -807,11 +809,6 @@ input UpdateProductInput {
   colors: [String!]
   id: ID!
   oldPresentations: [ProductPresentationInput!]!
-}
-
-input ProductPresentationInput {
-  type: PresentationType!
-  src: String!
 }
 
 input CreateCategoryInput {

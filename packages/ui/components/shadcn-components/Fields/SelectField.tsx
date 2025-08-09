@@ -5,7 +5,9 @@ import Select, { Props as ReactSelectProps, StylesConfig } from "react-select";
 interface Option {
   label: string;
   value: string;
+  id?:string;
 }
+
 
 interface SelectFieldProps extends Omit<ReactSelectProps, "options" | "onChange" | "name"> {
   label: string;
@@ -16,11 +18,11 @@ interface SelectFieldProps extends Omit<ReactSelectProps, "options" | "onChange"
 export default function SelectField({ label, name, options, ...props }: SelectFieldProps) {
   const [field, meta,helpers] = useField(name);
   const { setFieldValue } = useFormikContext<any>();
-  React.useEffect(() => {
-    // For example, clear error on mount:
-    helpers.setError('');
-  }, [helpers]); 
-  console.log(helpers ,"helpers");
+  // React.useEffect(() => {
+  //   // For example, clear error on mount:
+  //   helpers.setError('');
+  // }, [helpers]); 
+  // console.log(helpers ,"helpers");
   
 
   
@@ -61,11 +63,19 @@ export default function SelectField({ label, name, options, ...props }: SelectFi
         onChange={(option) => setFieldValue(name, (option as Option)?.value)}
         options={options}
         styles={customStyles}
-        className="bg-transparent border"
+        className={`bg-transparent border
+          ${
+            meta.error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-gray-300"
+          }
+        `}
+        
+   
         classNamePrefix="react-select"
       />
       {meta.error && (
-        <p className="text-sm text-red-600">{meta.error}</p>
+        <p className="text-xs text-red-600">{meta.error}</p>
       )}
     </div>
   );

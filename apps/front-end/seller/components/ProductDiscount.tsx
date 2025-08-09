@@ -1,9 +1,13 @@
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import { AiOutlinePlus } from "react-icons/ai";
 
 export default function SpecialDiscount({handleOpenModal}) {
   return (
     <div className="space-y-4">
-      <h2 className="text-sm font-medium text-gray-900">Special Discount (%)</h2>
+      <Subtitle>
+      Special Discount (%)
+      </Subtitle>
+     
 
       <div className="flex justify-between items-start">
         <div>

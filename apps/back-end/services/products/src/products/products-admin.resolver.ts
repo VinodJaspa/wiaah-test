@@ -106,27 +106,66 @@ export class ProductsAdminResolver {
   }
 
   @Mutation(() => Boolean)
+  // async updateProductAdmin(@Args('args') args: UpdateProductInput) {
+  //   const { id, ...rest } = args;
+  //   const res = await this.uploadService.uploadFiles(
+  //     rest.presentations.map((v) => ({
+  //       file: {
+  //         stream: v.file.createReadStream(),
+  //         meta: {
+  //           mimetype: v.file.mimetype,
+  //           name: v.file.filename,
+  //         },
+  //       },
+  //       options: {
+  //         allowedMimtypes: [
+  //           ...this.uploadService.mimetypes.image.all,
+  //           ...this.uploadService.mimetypes.videos.all,
+  //         ],
+  //         maxSecDuration: 60 * 10 * 1000,
+  //       },
+  //     })),
+  //   );
+
+  //   const prod = await this.prisma.product.update({
+  //     where: {
+  //       id,
+  //     },
+  //     // @ts-ignore
+  //     data: {
+  //       ...rest,
+  //       presentations: rest.oldPresentations
+  //         .concat(
+  //           res.map((v) => {
+  //             const type = this.uploadService.getFileTypeFromMimetype(
+  //               v.mimetype,
+  //             );
+
+  //             if (type !== FileTypeEnum.image && type === FileTypeEnum.video)
+  //               return null;
+
+  //             return {
+  //               src: v.src,
+  //               type:
+  //                 type === FileTypeEnum.image
+  //                   ? PresentationType.image
+  //                   : PresentationType.video,
+  //             };
+  //           }),
+  //         )
+  //         .filter((v) => !!v) as unknown as any[],
+  //       discount: rest.discount
+  //         ? {
+  //             update: rest.discount,
+  //           }
+  //         : undefined,
+  //     },
+  //   });
+  //   return true;
+  // }
   async updateProductAdmin(@Args('args') args: UpdateProductInput) {
     const { id, ...rest } = args;
-    const res = await this.uploadService.uploadFiles(
-      rest.presentations.map((v) => ({
-        file: {
-          stream: v.file.createReadStream(),
-          meta: {
-            mimetype: v.file.mimetype,
-            name: v.file.filename,
-          },
-        },
-        options: {
-          allowedMimtypes: [
-            ...this.uploadService.mimetypes.image.all,
-            ...this.uploadService.mimetypes.videos.all,
-          ],
-          maxSecDuration: 60 * 10 * 1000,
-        },
-      })),
-    );
-
+  
     const prod = await this.prisma.product.update({
       where: {
         id,
@@ -134,26 +173,8 @@ export class ProductsAdminResolver {
       // @ts-ignore
       data: {
         ...rest,
-        presentations: rest.oldPresentations
-          .concat(
-            res.map((v) => {
-              const type = this.uploadService.getFileTypeFromMimetype(
-                v.mimetype,
-              );
-
-              if (type !== FileTypeEnum.image && type === FileTypeEnum.video)
-                return null;
-
-              return {
-                src: v.src,
-                type:
-                  type === FileTypeEnum.image
-                    ? PresentationType.image
-                    : PresentationType.video,
-              };
-            }),
-          )
-          .filter((v) => !!v) as unknown as any[],
+        // Use presentations directly from input (no upload)
+        presentations: rest.presentations,
         discount: rest.discount
           ? {
               update: rest.discount,
@@ -161,8 +182,10 @@ export class ProductsAdminResolver {
           : undefined,
       },
     });
+  
     return true;
   }
+  
 
   @Query(() => [Product])
   async adminGetAccountProducts(

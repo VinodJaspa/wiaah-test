@@ -68,7 +68,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
 
   const { isMobile } = useResponsive();
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -95,7 +95,7 @@ const { t } = useTranslation();
                 <Th>{t("Action")}</Th>
               </Tr>
               <Tr>
-                <Formik<typeof input> initialValues={{}} onSubmit={() => {}}>
+                <Formik<typeof input> initialValues={{}} onSubmit={() => { }}>
                   {({ values, setFieldValue }) => {
                     setInput(values);
                     return (
@@ -165,7 +165,7 @@ const { t } = useTranslation();
                       />
                       <TrashIcon
                         onClick={() => {
-                          onDelete && onDelete(product.id);
+                         onDelete(product.id);
                         }}
                         className="text-red-700 text-xl cursor-pointer"
                       />

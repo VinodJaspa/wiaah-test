@@ -26,9 +26,9 @@ export function getUserFromRequest<T = AuthorizationDecodedUser>(
     console.error('Failed to parse user header:', err);
   }
 
-  if (mock && !user) {
-    return (_mockedUser as T) || ({ ...mockedUser, id: new ObjectId().toHexString() } as T);
-  }
+  // if (mock && !user) {
+  //   return (_mockedUser as T) || ({ ...mockedUser, id: new ObjectId().toHexString() } as T);
+  // }
 
   return user;
 }
