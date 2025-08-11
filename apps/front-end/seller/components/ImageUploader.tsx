@@ -33,28 +33,31 @@ export default function ImageVidoeUploader({ name, type = "image", maxCount }: I
         ? "image/png,image/jpeg,image/jpg,image/bmp,image/tiff"
         : "image/*,video/*";
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-
-    const remainingSlots = maxCount - currentItems.length;
-    if (remainingSlots <= 0) {
-      errorToast(`You have reached the maximum of ${maxCount} ${type} files.`);
-      e.target.value = "";
-      return;
-    }
-
-    const filesToAdd = Array.from(files).slice(0, remainingSlots);
-
-    const newItems: FilePreview[] = filesToAdd.map((file) => {
-      const url = URL.createObjectURL(file);
-      const fileType = file.type.startsWith("video") ? "video" : "image";
-      return { url, type: fileType, id: url };
-    });
-
-    setFieldValue(name, [...currentItems, ...newItems]);
-    e.target.value = "";
-  };
+        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const files = e.target.files;
+          if (!files) return;
+        
+          const remainingSlots = maxCount - currentItems.length;
+          if (remainingSlots <= 0) {
+            errorToast(`You have reached the maximum of ${maxCount} ${type} files.`);
+            e.target.value = "";
+            return;
+          }
+        
+          const filesToAdd = Array.from(files).slice(0, remainingSlots);
+        
+          const newItems: FilePreview[] = filesToAdd.map((file) => {
+            const url = URL.createObjectURL(file);
+            const fileType = file.type.startsWith("video") ? "video" : "image";
+            return { url, type: fileType, id: url, file }; // keep file object
+          });
+        
+          // Store both file and preview in form
+          setFieldValue(name, [...currentItems, ...newItems]);
+        
+          e.target.value = "";
+        };
+        
 
   const handleRemove = (id: string) => {
     const updated = currentItems.filter((item) => item.id !== id);

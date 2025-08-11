@@ -10,7 +10,7 @@ import { useCreateNewProductMutation } from "@UI";
 import { CreateProductInput, CashBackInput, ProductType, ProductCondition, VisibilityEnum } from "@features/API";
 import FormSubmitLoader from "@features/Auth/components/Spinner";
 import ProductAttributes from "components/ ProductAttributes";
-import { uploadImageToCloudinary } from "api";
+import { uploadFileToCloudinary } from "api";
 import { productValidationSchema } from "./add-prodect-validation";
 interface FilePreview {
   url: string;
@@ -47,50 +47,75 @@ const initialValues: ExtendedProductInput = {
 };
 export default function ProductFormLayout() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const formRef = useRef<HTMLFormElement>(null);
-  const { isLoading, mutate: submitNewProduct } = useCreateNewProductMutation();
+
+  const createProductMutation = useCreateNewProductMutation();
 
   const handleSubmit = async (
     values: ExtendedProductInput,
     formikHelpers: FormikHelpers<ExtendedProductInput>
   ) => {
     formikHelpers.setSubmitting(true);
-console.log(values,"values");
+
 
     try {
-      // Upload images to Cloudinary
-      const uploadedImages = await Promise.all(
-        values.images.map(async ({ file, type }) => {
-          const uploadedUrl = await uploadImageToCloudinary(file);
-          return { type, src: uploadedUrl };
-        })
-      );
 
-      // Upload videos to Cloudinary
-      const uploadedVideos = await Promise.all(
-        values.videos.map(async ({ file, type }) => {
-          const uploadedUrl = await uploadImageToCloudinary(file);
-          return { type, src: uploadedUrl };
-        })
-      );
 
-      const presentations = [...uploadedImages, ...uploadedVideos];
+    // Upload images to Cloudinary
+    const uploadedImages = await Promise.all(
+      values.images.map(async ({ file, type }) => {
+        const { secure_url, asset_id } = await uploadFileToCloudinary(file);
+        return { type, src: secure_url, id: asset_id };
+      })
+    );
 
-      const payload: CreateProductInput = {
-        ...values,
-        presentations,
-      };
+    // Upload videos to Cloudinary
+    const uploadedVideos = await Promise.all(
+      values.videos.map(async ({ file, type }) => {
+        const { secure_url, asset_id } = await uploadFileToCloudinary(file);
+        return { type, src: secure_url, id: asset_id };
+      })
+    );
+    const presentations = [...uploadedImages, ...uploadedVideos];
+
+    const payload: CreateProductInput = {
+      attributes: values?.attributes,
+      brand: values?.brand,
+      cashback: values?.cashback,
+      categoryId: values?.categoryId,
+      colors: values?.colors,
+      condition: values.condition,
+      description: values?.description,
+      discount: values?.discount,
+      external_link: values?.external_link,
+      presentations,
+      price: values?.price,
+      sizes: values?.sizes,
+      stock: values?.stock,
+      thumbnail: values?.thumbnail,
+      title: values?.title,
+      type: values?.type,
+      vat: values?.vat,
+      visibility: values?.visibility,
+    };
+      
+
+  
 
       console.log("Submitting payload:", payload);
+      const result = await createProductMutation.mutateAsync(payload);
 
-      // TODO: call your mutation/API with payload
+      if (result) {
+
+      } else {
+
+      }
+
+
 
     } catch (err) {
-      alert("okknt")
-      console.error("Upload or submit failed", err);
-      // handle error, show feedback to user
+
     } finally {
-      alert("okk")
+
       formikHelpers.setSubmitting(false);
     }
   };
@@ -98,11 +123,12 @@ console.log(values,"values");
 
   return (
     <Formik initialValues={initialValues} validationSchema={productValidationSchema} onSubmit={handleSubmit}>
-      {({ values, setFieldValue, handleSubmit }) => {
+      {({ values, setFieldValue, handleSubmit , isSubmitting }) => {
 
         return (
           <>
-            {isLoading && <FormSubmitLoader />}
+            {( isSubmitting) && <FormSubmitLoader />}
+
             <AddDiscountModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             <Form onSubmit={handleSubmit} className="w-full py-4 space-y-6">
               <SectionTitle title="Add a new product" />

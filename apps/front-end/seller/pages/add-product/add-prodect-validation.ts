@@ -87,9 +87,25 @@ export const productValidationSchema = Yup.object({
     shippingSettings: Yup.string().nullable(),
     subcategoryId: Yup.string().nullable(),
     images: Yup.array()
-    .of(filePreviewSchema)
-    .max(4, "You can upload up to 4 images"),
-  videos: Yup.array()
-    .of(filePreviewSchema)
+    .of(
+      Yup.object({
+        url: Yup.string().required(),
+        type: Yup.string().oneOf(["image", "video"]).required(),
+        id: Yup.string().required(),
+      })
+    )
+    .min(1, "At least one image is required"),
+    videos: Yup.array()
+    .of(
+      Yup.object({
+        url: Yup.string().required("URL is required"),
+        type: Yup.string()
+          .oneOf(["image", "video"], "Type must be 'image' or 'video'")
+          .required("Type is required"),
+        id: Yup.string().required("ID is required"),
+      })
+    )
+    .min(1, "At least one video is required")
     .max(2, "You can upload up to 2 videos"),
+  
   });

@@ -308,6 +308,7 @@ enum VisibilityEnum {
 }
 
 type ProductPresentation {
+  asset_id String
   type PresentationType
   src  String
 }

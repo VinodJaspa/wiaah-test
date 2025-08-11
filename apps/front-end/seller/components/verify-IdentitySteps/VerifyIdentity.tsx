@@ -62,7 +62,7 @@ export default function IdentityVerification() {
       {/* Main Content */}
       <div className="flex-1 px-2  pt-5 md:pt-5 sm:md-12">
         <div className="text-center sm:text-left space-y-2 py-4">
-          <NavigationHeader title="Identity verification" onBack={() => setStep(pre => pre - 1)} />
+          <NavigationHeader title="" onBack={() => setStep(pre => pre - 1)} />
 
           <StepDots currentStep={step} totalSteps={6} />
         </div>
@@ -281,70 +281,7 @@ type DropZoneProps = {
   openImageModal: () => void;
 };
 
-function DropZone({ title, description, file, setFile, openImageModal }: DropZoneProps) {
-  const [dragActive, setDragActive] = React.useState(false);
 
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFile(e.dataTransfer.files[0]);
-    }
-  }
-
-  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(true);
-  }
-
-  function handleDragLeave(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-  }
-
-  return (
-    <div
-      className={`border-2 border-dashed p-6 rounded-lg text-center text-sm transition-all ${dragActive ? "border-blue-500 bg-blue-50" : "border-gray-200"
-        }`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
-      <p className="font-semibold text-sm">{title}</p>
-      <p className="text-gray-600 text-xs">{description}</p>
-
-      {/* File preview */}
-      {file && (
-        <div className="mt-4">
-          {file.type.startsWith("image/") ? (
-            <img
-              src={URL.createObjectURL(file)}
-              alt="Preview"
-              className="max-h-32 mx-auto rounded"
-            />
-          ) : (
-            <video
-              src={URL.createObjectURL(file)}
-              controls
-              className="max-h-32 mx-auto rounded"
-            />
-          )}
-        </div>
-      )}
-
-      {/* Upload Button */}
-      <button
-        className="mt-2 px-4 py-2 bg-gray-100 rounded-full text-xs"
-        onClick={openImageModal}
-      >
-        Upload
-      </button>
-    </div>
-  );
-}
 
 const DocumentPreview = ({ prevStep, nextStep, formData }) => {
   const [idFrontURL, setIdFrontURL] = React.useState<string | null>(null);

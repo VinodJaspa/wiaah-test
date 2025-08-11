@@ -27,8 +27,7 @@ export default function TitleDescriptionSection() {
  function handleChange(field: "title" | "description", text: string) {
    setFieldValue(field, [{ langId: "en", value: text }]);
  }
-  console.log("errors:", errors);
-  console.log("touched:", touched);
+
   return (
     <div className="space-y-2">
       <div>

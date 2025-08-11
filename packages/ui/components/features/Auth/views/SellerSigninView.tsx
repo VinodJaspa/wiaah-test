@@ -90,17 +90,18 @@ export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }
                   setUserLoggedIn(true);
                   successToast(res?.message || "Sign in successful!");
                   router.push("/");
-                } else {
-                  errorToast("Login succeeded but no token received.");
-                }
+                } 
               } else {
-                errorToast(res?.message[0]);
+                console.log(res,"response");
+                
                 const errorMessage =
                   res?.response?.errors?.[0]?.message ||
                   res?.message ||
                   'Unknown error';
+                  errorToast(errorMessage)
 
               }
+
 
             },
             onError: (err: any) => {

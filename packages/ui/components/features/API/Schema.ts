@@ -1269,7 +1269,7 @@ export type CreateProductInput = {
   description: Array<StringTranslationField>;
   discount: DiscountInput;
   external_link?: InputMaybe<Scalars["String"]["input"]>;
-  presentations: Array<Scalars["Upload"]["input"]>;
+  presentations: Array<ProductPresentationInput>;
   price: Scalars["Float"]["input"];
   sizes: Array<ProductSize>;
   stock: Scalars["Int"]["input"];
@@ -3941,7 +3941,7 @@ export type Product = {
   colors: Array<Scalars["String"]["output"]>;
   condition: ProductCondition;
   createdAt: Scalars["String"]["output"];
-  description: Scalars["String"]["output"];
+  description: [StringTranslationField];
   discount: Discount;
   discountId?: Maybe<Scalars["String"]["output"]>;
   earnings: Scalars["Float"]["output"];
@@ -3967,7 +3967,7 @@ export type Product = {
   status: ProductStatus;
   stock: Scalars["Int"]["output"];
   thumbnail: Scalars["String"]["output"];
-  title: Scalars["String"]["output"];
+  title: [StringTranslationField];
   todayProductClickId?: Maybe<Scalars["String"]["output"]>;
   totalDiscounted: Scalars["Int"]["output"];
   totalDiscountedAmount: Scalars["Int"]["output"];
@@ -3999,6 +3999,11 @@ export type ProductAttributeInput = {
   values: Array<Scalars["ID"]["input"]>;
 };
 
+export type ProductPresentationInput = {
+  type: string;
+  src: string;
+  id: string;
+};
 export enum ProductAttributeSelectionType {
   Multiple = "multiple",
   Single = "single",
@@ -4078,10 +4083,7 @@ export type ProductPresentation = {
   type: PresentationType;
 };
 
-export type ProductPresentationInput = {
-  src: Scalars["String"]["input"];
-  type: PresentationType;
-};
+
 
 export type ProductRawAttribute = {
   __typename?: "ProductRawAttribute";
