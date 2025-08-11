@@ -1260,9 +1260,12 @@ export type CreateProductAttributeInput = {
 };
 
 export type CreateProductInput = {
-  attributes: Array<ProductAttributeInput>;
+  attributes: string;
+  attributesIds?: InputMaybe<Array<ProductAttributeInput>>;
   brand: Scalars["String"]["input"];
   cashback: CashBackInput;
+  cashbackId?:string;
+  external_url?:string;
   categoryId: Scalars["ID"]["input"];
   colors: Array<Scalars["String"]["input"]>;
   condition: ProductCondition;

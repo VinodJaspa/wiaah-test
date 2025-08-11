@@ -10,10 +10,6 @@ export const useCreateNewProductMutation = () => {
     mutation create($input: CreateProductInput!) {
       createNewProduct(createNewProductInput: $input) {
         id
-        title {
-          value
-          langId
-        }
         price
         stock
       }

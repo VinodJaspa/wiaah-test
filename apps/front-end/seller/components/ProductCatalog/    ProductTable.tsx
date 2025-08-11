@@ -125,7 +125,7 @@ export default function ProductTable() {
 
   return (
     <div className="px-6 py-6 space-y-6">
-      {isAddProduct ? <ProductFormLayout /> :
+      {isAddProduct ? <ProductFormLayout setAddProduct={setAddProduct} /> :
 
         <>
           <div className="flex items-center justify-between">

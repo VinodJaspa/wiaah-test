@@ -151,14 +151,23 @@ export class ProductsService {
   //   });
   //   return createdProduct;
   // }
+  // async getCloudinaryThumbnailUrl(originalUrl, width = 150, height = 150) {
+  //   return originalUrl.replace(
+  //     '/upload/',
+  //     `/upload/w_${width},h_${height},c_thumb/`
+  //   );
+  // }
+  async getCloudinaryThumbnailUrl(originalUrl, width = 150, height = 150) {
+    return Promise.resolve(
+      originalUrl.replace('/upload/', `/upload/w_${width},h_${height},c_thumb/`)
+    );
+  }
+  
   async createNewProduct(
     createProductInput: CreateProductInput,
     user: AuthorizationDecodedUser,
   ) {
     try {
-      console.log('[createNewProduct] Start:', { userId: user.id, input: createProductInput });
-  console.log(user ,"user");
-  
       // Check account existence
       const checkIfAccountExists: any = await new Promise((resolve, reject) => {
         this.eventClient
@@ -184,10 +193,12 @@ export class ProductsService {
   
       // No upload, presentations expected to have type and src already
       console.log('[createNewProduct] Using presentations from input:', createProductInput.presentations);
-  
+      const previewImage = createProductInput.presentations[0].src;
+      const thumbnailUrl = await this.getCloudinaryThumbnailUrl(previewImage);
       const createdProduct = await this.prisma.product.create({
         data: {
           ...createProductInput,
+          thumbnail:thumbnailUrl,
           title: Array.isArray(createProductInput.title)
             ? createProductInput.title.map((translation) => ({
                 langId: translation.langId as never,
@@ -207,6 +218,7 @@ export class ProductsService {
           presentations: createProductInput.presentations.map((p) => ({
             src: p.src,
             type: p.type,
+            asset_id:p.asset_id
           })),
         },
       });
@@ -376,9 +388,12 @@ export class ProductsService {
                 }))
               : [],
           },
-          presentations: rest.oldPresentations
-            .concat(rest.presentations || [])
-            .filter((v) => !!v), // make sure no null/undefined
+          presentations: input.presentations.map((p) => ({
+            src: p.src,
+            type: p.type,
+            asset_id:p.asset_id
+          })),
+          
   
           discount: {
             update: rest.discount,

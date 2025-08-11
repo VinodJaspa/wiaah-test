@@ -25,7 +25,7 @@ export default function TitleDescriptionSection() {
 
  // On change handler updates array with new value at index 0
  function handleChange(field: "title" | "description", text: string) {
-   setFieldValue(field, [{ langId: "en", value: text }]);
+   setFieldValue(field, { langId: "en", value: text });
  }
 
   return (

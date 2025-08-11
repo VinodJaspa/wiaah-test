@@ -174,7 +174,7 @@ export class ProductsAdminResolver {
       data: {
         ...rest,
         // Use presentations directly from input (no upload)
-        presentations: rest.presentations,
+        // presentations: rest.presentations,
         discount: rest.discount
           ? {
               update: rest.discount,

@@ -19,6 +19,8 @@ export default function TextInput({ label, error,...props }: TextInputProps) {
         {...field} // name, value, onChange, onBlur from Formik
         {...props} // additional props like placeholder, type, etc.
         id={props.name}
+        max={50}
+        min={3}
         className={`w-full border rounded-lg px-4 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 ${
         error
             ? "border-red-500 focus:ring-red-500"

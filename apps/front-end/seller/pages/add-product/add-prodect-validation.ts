@@ -12,14 +12,8 @@ const translationSchema = Yup.object({
 export const productValidationSchema = Yup.object({
     type: Yup.string().required("Product type is required"),
     
-    title: Yup.array()
-    .of(translationSchema)
-    .min(1, "At least one title is required")
-    .required("Title is required"),
-    description: Yup.array()
-    .of(translationSchema)
-    .min(1, "At least one title is required")
-    .required("Description is required"),
+    title: translationSchema.required("Title is required"),
+    description: translationSchema.required("Description is required"),
   
     price: Yup.number()
       .typeError("Price must be a number")

@@ -15,6 +15,7 @@ import {
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
@@ -26,10 +27,16 @@ registerEnumType(ProductSize, { name: 'ProductSize' });
 @InputType()
 export class ProductPresentationInput {
   @Field(() => PresentationType)
-  type: PresentationType;
+  type?: PresentationType;
 
   @Field(() => String)
-  src: string;
+  src?: string;
+  @Field(() => String)
+  asset_id?: string;
+ // Use Upload scalar for file uploads
+ @Field(() => GraphQLUpload, { nullable: true })
+ file?: Promise<FileUpload>;
+
 }
 
 @InputType()
@@ -72,7 +79,7 @@ export class ProductAttributeValueInput {
 }
 
 @InputType()
-export class StringTranslationField extends CreateInputGqlTranslationInputField(String) {}
+export class StringTranslationField extends CreateInputGqlTranslationInputField(String) { }
 
 @InputType()
 export class CreateProductInput {
