@@ -1,287 +1,176 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
-import { HtmlDivProps } from "types";
-import { isDate, mapArray } from "utils";
-import { useResponsive } from "../../../../src/Hooks";
-import {
-  ChatUserActiveStatusIndicator,
-  ChatUserCard,
-} from "../../../blocks/DataDisplay";
-import { ChatSearchInput } from "../../../blocks/DataInput";
-import { useSocialControls } from "../../../blocks/Layout";
-import { usePaginationControls } from "../../../blocks/Navigating";
-import { ActiveStatus } from "../../../features/API";
-import { useUserProfile } from "../../../features/Auth";
-import { useGetMyChatRoomsQuery } from "../../../features/Chat";
-import { useGetRecentStories } from "../../../features/Social";
-import {
-  ArrowLeftAlt1Icon,
-  ArrowLeftIcon,
-  Avatar,
-  Button,
-  CheckmarkCircleFillIcon,
-  Divider,
-  EditAltIcon,
-  EditIcon,
-  HStack,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  PlusIcon,
-  ScrollPaginationWrapper,
-  SearchIcon,
-} from "../../../partials";
 
-export interface ChatMessagesSideBarProps {
-  props: HtmlDivProps;
-  onCardClick?: (cardId: string) => any;
+import SearchBoxInner from '@UI/components/shadcn-components/SearchBox/SearchBoxInner';
+import React from 'react';
+
+// Main App component
+export default function ChatMessagesSection() {
+  // Mock data for the message list
+  const messages = [
+    {
+      id: 1,
+      name: "z.beatz",
+      lastMessage: "z.beatz a envoyé une pièce jointe...",
+      time: "1h",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=Z",
+    },
+    {
+      id: 2,
+      name: "Liam Carter",
+      lastMessage: "Vous: See you tomorrow!",
+      time: "1h",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=L",
+    },
+    {
+      id: 3,
+      name: "Olivia Davis",
+      lastMessage: "Vous: Thanks for the recommendation!",
+      time: "2h",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=O",
+    },
+    {
+      id: 4,
+      name: "Noah Evans",
+      lastMessage: "Vous: Happy Birthday!",
+      time: "1h",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=N",
+    },
+    {
+      id: 5,
+      name: "Ava Foster",
+      lastMessage: "Vous: Let's catch up soon.",
+      time: "2 min.",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
+    },
+    {
+      id: 6,
+      name: "Ava Foster",
+      lastMessage: "Vous: Let's catch up soon.",
+      time: "2 min.",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
+    },
+    {
+      id: 7,
+      name: "Ava Foster",
+      lastMessage: "Vous: Let's catch up soon.",
+      time: "2 min.",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
+    },
+    {
+      id: 8,
+      name: "Ava Foster",
+      lastMessage: "Vous: Let's catch up soon.",
+      time: "2 min.",
+      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
+    },
+  ];
+
+  const [activeMessageId, setActiveMessageId] = React.useState(null);
+
+  // A mock component to replace the external SearchBoxInner import
+ 
+
+  return (
+    // The main layout is a two-column flex container on screens larger than 'md', full-width column on mobile
+    <div className="flex flex-col md:flex-row h-screen font-[Inter] bg-white">
+      {/* Left Sidebar for message list. It is a full-width column on mobile */}
+      <div className="flex-none w-full md:w-[350px] border-r border-gray-200 bg-white flex flex-col">
+        {/* Header with title and icon */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h1 className="text-2xl font-bold">Messages</h1>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gray-500 cursor-pointer"
+          >
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+          </svg>
+        </div>
+
+
+        <SearchBoxInner className='p-6' placeholder='Search People'/>
+
+        {/* Message list container with a scrollable area */}
+        <div className="flex-1 overflow-y-auto">
+          {messages.map((message) => (
+            <MessageItem
+              key={message.id}
+              message={message}
+              isActive={activeMessageId === message.id}
+              onClick={() => setActiveMessageId(message.id)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Right Main Content area. This is hidden on small screens until a message is clicked. */}
+      {/* On desktop, it takes up the remaining space */}
+      <div className={`flex-1 ${activeMessageId === null ? 'flex' : 'hidden md:flex'} flex-col items-center justify-center bg-gray-50`}>
+        <MainChatView />
+      </div>
+    </div>
+  );
 }
 
-export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
-  props: { className, ...rest },
-  onCardClick,
-}) => {
-const { t } = useTranslation();
-  const { visit, back } = useRouting();
-  const { chatWith, msgNewUser, viewUserStory, createAction } =
-    useSocialControls();
-  const { isMobile } = useResponsive();
-
-  const { data } = useUserProfile();
-
-  function handleSendHome() {
-    visit((r) => r.addPath("/"));
-  }
-
-  const { controls, pagination } = usePaginationControls();
-  const { data: stories } = useGetRecentStories({ pagination });
-
-  const { data: rooms } = useGetMyChatRoomsQuery();
-
-  const { data: profile } = useUserProfile();
-
-  return isMobile ? (
-    <div className="flex flex-col gap-4 p-4">
-      <HStack className="justify-between">
-        <HStack>
-          <ArrowLeftAlt1Icon onClick={() => back()} className="m-2" />
-          <p className="text-[1.375rem] font-semibold">
-            {data?.username || t("My Chat")}
-          </p>
-        </HStack>
-        <EditAltIcon className="text-primary text-2xl" />
-      </HStack>
-      <InputGroup className="border-0  bg-[#F6F6F6] rounded-lg">
-        <InputLeftElement>
-          <SearchIcon />
-        </InputLeftElement>
-        <Input className="bg-[#F6F6F6]" />
-      </InputGroup>
-
-      <div className="flex flex-col gap-3">
-        <p className="text-lg font-semibold">{t("Friends stories")}</p>
-        <ScrollPaginationWrapper axis="x" controls={controls}>
-          <div className="flex items-start gap-2 w-full overflow-x-scroll noScroll">
-            <ChatStory
-              onClick={() => createAction({})}
-              userId={profile?.ownerId || ""}
-              name={profile?.username || t("Me")}
-              newStory={true}
-              photo={profile?.photo || ""}
-              isLive={false}
-            />
-            {mapArray(stories, (v, i) => (
-              <ChatStory
-                onClick={() => viewUserStory(v.userId)}
-                userId={v.userId}
-                isLive={false}
-                key={i}
-                name={v?.user?.profile?.username || ""}
-                newStory={v?.newStory}
-                photo={v?.user?.profile?.photo || ""}
-              />
-            ))}
-          </div>
-        </ScrollPaginationWrapper>
-      </div>
-      <div className="flex flex-col gap-3">
-        <p className="text-lg font-semibold">{t("Messages")}</p>
-        <ScrollPaginationWrapper controls={controls}>
-          <div className="flex flex-col gap-4">
-            {mapArray(rooms, (v, i) => {
-              const member = v.members
-                .filter((v) => v.profile?.ownerId !== profile?.ownerId)
-                ?.at(0);
-
-              const lastMsg = v.messages.at(0);
-              const memberSeen = lastMsg?.seenBy.find(
-                (v) => v.userId === member?.profile?.ownerId,
-              );
-
-              const date: string =
-                v.unSeenMessages > 0
-                  ? lastMsg?.createdAt
-                  : memberSeen
-                    ? memberSeen.seenAt
-                    : lastMsg?.createdAt || "";
-
-              const displayDate: boolean = isDate(date);
-
-              return (
-                <HStack
-                  onClick={() => chatWith(v.id)}
-                  key={i}
-                  className="justify-between hover:bg-gray-100 bg-white cursor-pointer gap-4"
-                >
-                  <HStack className="gap-4">
-                    <Avatar
-                      className="min-w-[3.25rem] overflow-visible"
-                      src={member?.profile?.photo}
-                    >
-                      <div className="absolute bottom-[0.125rem] border-2 border-white rounded-full right-[0.125rem] ">
-                        <ChatUserActiveStatusIndicator
-                          status={
-                            member?.profile?.activeStatus ||
-                            ActiveStatus.InActive
-                          }
-                        />
-                      </div>
-                    </Avatar>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-[1.063rem] font-semibold">
-                        {member?.profile?.username}
-                      </p>
-                      <HStack
-                        className={`text-[0.813rem] ${
-                          v.unSeenMessages > 0 ? "font-bold" : ""
-                        }`}
-                      >
-                        <p>
-                          {v.unSeenMessages > 0
-                            ? `${v.unSeenMessages} ${t("Unread messages")}`
-                            : memberSeen
-                              ? `${t("Message seen")}`
-                              : lastMsg?.userId === profile?.ownerId
-                                ? t("Message sent")
-                                : null}
-                        </p>
-                        {displayDate ? (
-                          <HStack className="gap-1">
-                            <div className="h-2 w-2 rounded-full bg-black" />
-                            <p>
-                              {new Date(date).toLocaleTimeString("en-us", {
-                                hour: "numeric",
-                                hour12: true,
-                                minute: "2-digit",
-                              })}
-                            </p>
-                          </HStack>
-                        ) : null}
-                      </HStack>
-                    </div>
-                  </HStack>
-                  {memberSeen ? (
-                    <Avatar
-                      className="min-w-[0.875rem]"
-                      src={member?.profile?.photo}
-                      name={member?.profile?.username}
-                      alt={member?.profile?.username}
-                    />
-                  ) : (
-                    <CheckmarkCircleFillIcon className="text-black" />
-                  )}
-                </HStack>
-              );
-            })}
-          </div>
-        </ScrollPaginationWrapper>
-      </div>
-    </div>
-  ) : (
-    <div className={`${className} flex flex-col gap-4 shadow w-full`} {...rest}>
-      <div className="flex items-center gap-2 font-bold text-3xl w-full justify-between px-2">
-        <div className="flex items-center gap-2">
-          <ArrowLeftIcon
-            className="cursor-pointer text-3xl text-black"
-            onClick={handleSendHome}
-          />
-          <p>{t("Messages")}</p>
-        </div>
-        <Button aria-label={t("new message")} onClick={() => msgNewUser()}>
-          <EditIcon className="text-[0.8em] text-white " />
-        </Button>
-      </div>
-      <ChatSearchInput className="px-2" />
-      <div className="noScroll flex flex-col overflow-scroll">
-        {mapArray(rooms, (v, i) => {
-          const member = v.members.at(0);
-          return (
-            <>
-              <ChatUserCard
-                onClick={() => onCardClick && onCardClick(v.id)}
-                id={v.id}
-                name={member?.profile?.username || ""}
-                profilePhoto={member?.profile?.photo || ""}
-                status={
-                  member?.profile?.activeStatus === ActiveStatus.Active
-                    ? "online"
-                    : member?.profile?.activeStatus === ActiveStatus.Idle
-                      ? "idle"
-                      : "offline"
-                }
-                unSeenMsgs={v.unSeenMessages}
-                lastMsg={v.messages.at(0)?.content}
-                key={v.id + i}
-              />
-              {i !== rooms?.length || (0 - 1 && <Divider />)}
-            </>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-export const ChatStory: React.FC<{
-  name: string;
-  userId: string;
-  photo: string;
-  newStory: boolean;
-  isLive: boolean;
-  onClick: () => any;
-}> = ({ name, newStory, photo, isLive, userId, onClick }) => {
-  const { data } = useUserProfile();
-const { t } = useTranslation();
+// Component for a single message item in the list
+function MessageItem({ message, isActive, onClick }) {
+  const { avatar, name, lastMessage, time } = message;
   return (
     <div
-      onClick={() => onClick && onClick()}
-      className="flex flex-col cursor-pointer w-[3.875rem] justify-center items-center gap-1"
+      onClick={onClick}
+      className={`flex items-center px-6 py-4 cursor-pointer transition-colors ${
+        isActive ? "bg-gray-100" : "hover:bg-gray-50"
+      }`}
     >
-      <div
-        className={`relative w-[3.375rem] h-[3.5rem] rounded-[1.375rem] ${
-          newStory ? "bg-primary" : "bg-[#E7E7E7]"
-        }`}
-      >
-        <div className="h-[3.25rem] w-[3.175rem] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem]" />
-        <Image
-          className="h-[3.125rem] object-cover w-12 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem]"
-          src={photo}
-          alt={name}
-        />
-
-        {data?.ownerId === userId ? (
-          <div className="object-cover absolute bottom-0 left-1/2 -translate-x-1/2 text-[0.375rem] translate-y-1/2 text-white bg-black h-4 w-4 flex justify-center items-center border-2 border-white rounded-md">
-            <PlusIcon />
-          </div>
-        ) : isLive ? (
-          <div className="object-cover absolute bottom-0 left-1/2 -translate-x-1/2 px-1 translate-y-1/2 text-white bg-red-500 text-[0.5rem] border-2 border-white rounded-md">
-            {t("LIVE")}
-          </div>
-        ) : null}
+      <img
+        src={avatar}
+        alt={`${name}'s avatar`}
+        className="w-10 h-10 rounded-full mr-4"
+      />
+      <div className="flex-1 overflow-hidden">
+        <div className="text-sm font-semibold truncate">{name}</div>
+        <div className="text-xs text-gray-500 truncate">{lastMessage}</div>
       </div>
-      <p className="text-[0.813rem] text-center font-medium">{name || ""}</p>
+      <div className="flex-none text-xs text-gray-400 self-start mt-1 ml-2">
+        {time}
+      </div>
     </div>
   );
-};
+}
+
+// Component for the main chat view (placeholder for now)
+function MainChatView() {
+  return (
+    <div className="flex flex-col items-center justify-center p-4 text-center">
+      <div className="text-gray-300 mb-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100"
+          height="100"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <path d="M8 10h.01" />
+          <path d="M12 10h.01" />
+          <path d="M16 10h.01" />
+        </svg>
+      </div>
+      <h2 className="text-xs font-bold mb-2 text-gray-800 md:text-2xl">Your messages</h2>
+      <p className="text-gray-500 mb-6 max-w-sm">Don’t miss a minute to talk to your contacts</p>
+      <button className="bg-black text-white text-xs px-4 py-2 rounded-full font-semibold shadow-md transition-colors hover:bg-gray-800 md:text-sm md:px-6 md:py-3">
+        Send a Message
+      </button>
+    </div>
+  );
+}

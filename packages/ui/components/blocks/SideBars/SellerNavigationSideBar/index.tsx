@@ -163,7 +163,7 @@ const { t } = useTranslation();
             />
           ) : null}
         </div>
-        {!isMobile && (
+        {/* {!isMobile && (
           <div className="flex flex-col h-full justify-between w-full px-6">
             <div>
               <Divider className="my-10" />
@@ -175,7 +175,7 @@ const { t } = useTranslation();
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
       {/* {isMobile ? null : (
         <div className="absolute pb-11 bottom-0 bg-primary flex justify-center flex-col px-6 left-0 w-full">
