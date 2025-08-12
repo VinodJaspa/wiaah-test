@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import SpecialDiscount from "./ProductDiscount";
+import SpecialDiscount from "../../../../apps/front-end/seller/components/ProductDiscount";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import SelectField from "@UI/components/shadcn-components/Fields/SelectField";
 import InputField from "@UI/components/shadcn-components/Fields/InputField";

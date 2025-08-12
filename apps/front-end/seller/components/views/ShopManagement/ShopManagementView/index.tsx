@@ -11,7 +11,7 @@ import { FaHistory, FaRegStar } from "react-icons/fa";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import {
   AffiliationIcon,
-  ProductManagementSection,
+ 
   AffiliationHistorySection,
   ReviewsSection,
 
@@ -26,13 +26,15 @@ import {
 import { getRouting } from "routing";
 import { FcSettings } from "react-icons/fc";
 import { HiOutlineChartBar, HiOutlineClipboardList, HiOutlineDocumentDownload } from "react-icons/hi";
-import ProductTable from "components/ProductCatalog/    ProductTable";
+
 import { FiUsers } from "react-icons/fi";
 import { IoReturnDownBackOutline } from "react-icons/io5";
 import ShippingSettingSection from "components/Shipping/ShippingPage";
 import ProductReviewSection from "components/Reviews/ProductReviewSection";
 import ReturnOrdersSection from "components/ReturnOrders/ReturnOrders";
 import OrdersPage from "components/Order/OrdersPage";
+import ProductTable from "@sections/ShopManagement/ProductManagementSections/ProductManagement";
+import SalesSection from "@sections/SalesSection/SalesStatisticsSummary";
 
 
 export interface ShopManagementViewProps { }
@@ -153,7 +155,7 @@ const sections: SettingsSectionType[] = [
     panelName: "Sales Statistics",
     panelIcon: <HiOutlineChartBar />,
     panelUrl: "sales-statistics",
-    panelComponent: <MySalesStatistics />,
+    panelComponent: <SalesSection />,
   },
   {
     panelName: "Affiliation System",

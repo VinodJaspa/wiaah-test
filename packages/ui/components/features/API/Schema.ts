@@ -2172,7 +2172,7 @@ export type GetSalesDurningPeriodInput = {
 
 export type GetSellerProductsInput = {
   idCursor?: InputMaybe<Scalars["String"]["input"]>;
-  sellerId: Scalars["ID"]["input"];
+  sellerId?: Scalars["ID"]["input"];
   take: Scalars["Int"]["input"];
 };
 

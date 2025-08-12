@@ -1,18 +1,20 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form, FormikHelpers } from "formik";
-import AddDiscountModal from "components/modals/AddDiscountModal";
-import TitleDescriptionSection from "components/TitleDescriptionSection";
-import ImageVidoeUploader from "components/ImageUploader";
+
 
 import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import { useCreateNewProductMutation } from "@UI";
 import { CreateProductInput, CashBackInput, ProductType, ProductCondition, VisibilityEnum } from "@features/API";
 import FormSubmitLoader from "@features/Auth/components/Spinner";
-import ProductAttributes from "components/ ProductAttributes";
+
 import { uploadFileToCloudinary } from "api";
 import { productValidationSchema } from "./add-prodect-validation";
 import BackButton from "@UI/components/shadcn-components/Buttons/backtoListButton";
+import AddDiscountModal from "@UI/components/Modal/AddDiscountModal";
+import TitleDescriptionSection from "@UI/components/TitleDescription/TitleDescriptionSection";
+import ImageVidoeUploader from "@UI/components/ImageUploader/ImageUploader";
+import ProductAttributes from "@UI/components/ProductAttributes/ ProductAttributes";
 
 interface FilePreview {
   url: string;
@@ -126,7 +128,7 @@ export default function ProductFormLayout({ setAddProduct }) {
 
                 <BackButton label="Back to list" onClick={() => setAddProduct(false)} />
               </div>
-              <SectionTitle title="Add a new product" />
+             
               <TitleDescriptionSection />
 
               <div>

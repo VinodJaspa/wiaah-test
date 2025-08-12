@@ -1,7 +1,7 @@
 import React from "react";
 import { getIn, useFormikContext } from "formik";
-import TextInput from "./TextInput";
-import TextArea from "./TextArea";
+import TextInput from "../../../../apps/front-end/seller/components/TextInput";
+import TextArea from "../../../../apps/front-end/seller/components/TextArea";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import { CreateProductInput } from "@features/API";
 

@@ -151,7 +151,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                       alt={product.title}
                     />
                   </Td>
-                  <Td align="center">{product.title}</Td>
+                  <Td align="center">{product.title.value}</Td>
                   <Td align="center">
                     <PriceDisplay price={product.price} />
                   </Td>

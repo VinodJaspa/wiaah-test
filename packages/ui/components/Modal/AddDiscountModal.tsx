@@ -1,8 +1,9 @@
 import { Dialog } from "@headlessui/react";
 import { AiOutlineClose, AiOutlineDollar, AiOutlinePercentage } from "react-icons/ai";
-import TwoMonthRangePicker from "components/TwoMonthRangePicker";
+
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";
+import TwoMonthRangePicker from "../shadcn-components/Fields/TwoMonthsDatePicker";
 
 export default function AddDiscountModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);

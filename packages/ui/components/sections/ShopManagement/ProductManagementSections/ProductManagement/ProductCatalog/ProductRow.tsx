@@ -1,5 +1,5 @@
 
-import ProductStatusBadge from "./   ProductStatusBadge";
+import ProductStatusBadge from "./ProductStatusBadge";
 import ProductActions from "./ProductActions";
 
 export default function ProductRow({ product }) {
