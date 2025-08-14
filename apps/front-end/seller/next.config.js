@@ -49,23 +49,23 @@ const nextConfig = {
       chunks: "all",
     };
 
-    // config.module.rules.push({
-    //   test: /\.tsx?$/,
-    //   loader: "esbuild-loader",
-    //   exclude: /node_modules/,
-    //   options: {
-    //     loader: "tsx",
-    //     target: "esnext",
-    //   },
-    // });
+    config.module.rules.push({
+      test: /\.tsx?$/,
+      loader: "esbuild-loader",
+      exclude: /node_modules/,
+      options: {
+        loader: "tsx",
+        target: "esnext",
+      },
+    });
 
-    // config.plugins.push(
-    //   new WebpackBar({
-    //     name: "Building…",
-    //     color: "green",
-    //     reporters: ["fancy"],
-    //   })
-    // );
+    config.plugins.push(
+      new WebpackBar({
+        name: "Building…",
+        color: "green",
+        reporters: ["fancy"],
+      })
+    );
 
     return config;
   },

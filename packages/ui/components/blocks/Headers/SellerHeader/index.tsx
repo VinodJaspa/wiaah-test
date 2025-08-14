@@ -31,7 +31,7 @@ import {
   WavingHand,
 } from "@UI";
 
-import { useRouting } from "@UI/../routing";
+
 import { useResponsive } from "hooks";
 import { useRouter } from 'next/router';
 import { useTranslation } from "react-i18next";
@@ -43,10 +43,11 @@ import { IoIosStarOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TiThListOutline } from "react-icons/ti";
 import { HtmlDivProps, TranslationTextType } from "types";
-import { runIfFn, setTestid } from "utils";
+import { errorToast, runIfFn, setTestid, successToast } from "utils";
 import { useLogoutMutation } from "@features/Accounts/services/useLogout";
 import { useRecoilState } from "recoil";
 import { isUserLoggedIn } from "state";
+import { useRouting } from "routing";
 
 
 export interface HeaderNavLink {
@@ -73,7 +74,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { SearchForLocations } = useMasterLocationMapModal();
   const { data: user } = useGetMyAccountQuery();
   const { openModal: openSearchBox } = useGeneralSearchModal();
-  const { visit } = useRouting();
+const router = useRouting();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
   const [loggedIn] = useRecoilState(isUserLoggedIn);
@@ -138,7 +139,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
 
           <div
             className="relative"
-            onClick={() => visit((r) => r.addPath("/inbox"))}
+            onClick={() => router.push("/inbox")}
           >
             <span className="h-4 w-4 text-[0.5rem] border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
               4
@@ -159,7 +160,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
               <Button
                 {...setTestid("sign-in-btn")}
                 className="whitespace-nowrap"
-                onClick={() => visit((r) => r.visitSignin())}
+                onClick={() => router.push("auth/login")}
               >
                 {t("Sign In")}
               </Button>
@@ -215,11 +216,13 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         onSuccess: () => {
           setLoginState(false);
           window.location.href = "/";
-          router.push("/"); // Uncomment if you want to use Next.js routing instead of window.location.href    
+          router.push("/"); 
+          successToast("You have been ssucefully logeed out!")
+          // Uncomment if you want to use Next.js routing instead of window.location.href    
         },
         onError: (err) => {
-
-          console.error("Logout failed", err);
+        errorToast("Logout failed!");
+          // console.error("Logout failed", err);
         },
       });
     } else {

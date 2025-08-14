@@ -22,14 +22,14 @@ export default function InputField({ label, ...props }: InputFieldProps) {
         {...field}
         {...props}
         className={`w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 mb-2 text-gray-900
-          ${meta.error
+          ${meta.error && meta.touched 
             ? "border-red-500 focus:ring-red-500"
             : "border-gray-300 focus:ring-gray-300"
           }
         `}
 
       />
-      {meta.error && (
+      {meta.error && meta.touched && (
         <p className="text-xs text-red-600">{meta.error}</p>
       )}
     </div>

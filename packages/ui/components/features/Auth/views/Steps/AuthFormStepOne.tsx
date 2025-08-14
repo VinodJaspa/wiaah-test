@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import { Formik, Form, FormikProps } from 'formik';
+import { Formik, Form, FormikProps, FormikTouched } from 'formik';
 import * as Yup from 'yup';
 import InputField from '@UI/components/shadcn-components/Fields/InputField';
 import DateOfBirthSelector from '@UI/components/shadcn-components/DateOfBirthSelector/DateOfBirthSelector';
@@ -12,9 +12,13 @@ export type AuthFormStepOneRef = {
     submit: () => Promise<void>;
     getValues: () => any;
     validate: () => Promise<Record<string, string>>;
+    setTouched: (touched: FormikTouched<any>) => void;
 };
-
-export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
+type AuthFormStepOneProps = {
+    accountType?: string;
+  } & React.ComponentPropsWithoutRef<"form">;
+export const AuthFormStepOne = forwardRef<AuthFormStepOneRef, AuthFormStepOneProps>(
+    ({ accountType }, ref) => {
     const [account, setAccount] = useRecoilState(accountFormState);
     const [, setStep] = useRecoilState(formStepState);
 
@@ -29,7 +33,7 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
         birthDay: '',
         birthYear: '',
         birthDate: '',
-        accountType: 'seller',
+        accountType:accountType,
     };
 
     const formikRef = useRef<FormikProps<typeof initialValues>>(null);
@@ -57,7 +61,7 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
                 gender: values.gender.toLowerCase(), 
                 confirmPassword: values.confirmPassword,
                 birthDate,
-                accountType: "seller", 
+                accountType: accountType, 
             };
         },
         validate: async () => {
@@ -67,6 +71,7 @@ export const AuthFormStepOne = forwardRef<AuthFormStepOneRef>((_, ref) => {
             const errors = await formikRef.current.validateForm();
             return errors;
         },
+        setTouched: (touched) => formikRef.current.setTouched(touched),
     }));
 
     const validationSchema = Yup.object({

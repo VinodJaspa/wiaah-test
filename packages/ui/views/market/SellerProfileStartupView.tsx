@@ -105,39 +105,34 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
         stepName: t("Signup") as string,
         key: 0,
         stepComponent: (
-          <FormWrapper>
-            {isFormSubmitting && (
-              <FormSubmitLoader />
-            )}
-            <AccountSignup
-              onSuccess={requestNextStep}
 
-              ref={(v: { submit: () => any }) => {
-                if (v && typeof v.submit === "function") {
-                  addSubmitRequest(0, v.submit);
-                }
-              }}
-            />
-          </FormWrapper>
+          <AccountSignup
+            accountType={"seller"}
+            onSuccess={requestNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(0, v.submit);
+              }
+            }}
+          />
+
         ),
       },
       {
         stepName: t("Email Verification") as string,
         key: 1,
         stepComponent: (
-          <FormWrapper>
-            {isFormSubmitting && (
-              <FormSubmitLoader />
-            )}
-            <AccountSignEmailVerificationStep
-              onSuccess={handleNextStep}
-              ref={(v: { submit: () => any }) => {
-                if (v && typeof v.submit === "function") {
-                  addSubmitRequest(1, v.submit);
-                }
-              }}
-            />
-          </FormWrapper>
+
+
+          <AccountSignEmailVerificationStep
+            onSuccess={handleNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(1, v.submit);
+              }
+            }}
+          />
+
         ),
       },
       {
@@ -145,11 +140,9 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
         key: 3,
         stepComponent:
           (
-           
+
             <>
-              {isFormSubmitting && (
-                <FormSubmitLoader />
-              )}
+
               <AccountInforamtion
                 onSuccess={handleNextStep}
                 ref={(v: { submit: () => any }) => {
@@ -157,129 +150,112 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
                     addSubmitRequest(1, v.submit);
                   }
                 }}
-              /> 
+              />
             </>
-     
+
           ),
       },
-      // {
-      //   stepName: t("Service Presentation"),
-      //   key: 4,
-      //   stepComponent: (
-      //     <FormWrapper>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
-      //       )}
-      //       <ServicePresentaionForm />
-      //     </FormWrapper>
-      //   ),
-      // },
-      // {
-      //   stepName: t("Verify Your Identity"),
-      //   key: 4,
-      //   stepComponent: (
-      //     <FormWrapper>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
-      //       )}
-      //       <IdentityVerification />
-      //     </FormWrapper>
-      //   ),
-      // },
-      // {
-      //   stepName: t("Select a plan"),
-      //   stepComponent: (
-      //     <FormWrapper>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
-      //       )}
-      //       <ChooseMembership />
-      //     </FormWrapper>
-      //   ),
-      //   key: 5,
-      // },
-      // {
-      //   stepName: t("Payment Setting "),
-      //   stepComponent: (
-      //     <FormWrapper>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
-      //       )}
-      //       <AddPaymentPage />
-      //     </FormWrapper>
-      //   ),
-      //   key: 6,
-      // },
-      // {
-      //   key: 7,
-      //   stepName: t("Listing"),
-      //   stepComponent: (
-      //     <>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
-      //       )}
-      //       <SellerListingForm
-      //         ref={(v: { submit: () => any }) => {
-      //           if (v && typeof v.submit === "function") {
-      //             addSubmitRequest(7, v.submit);
-      //           }
-      //         }}
-      //         onSuccess={handleNextStep}
-      //       />
-      //     </>
+      {
+        stepName: t("Service Presentation"),
+        key: 4,
+        stepComponent: (
 
-      //   ),
-      // },
-      // {
-      //   stepName: t("Shipping Settings"),
-      //   stepComponent: (
-      //     <>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
 
-      //       )}
-      //       <NewShippingSettings
-      //         ref={(v: { submit: () => any }) => {
-      //           if (v && typeof v.submit === "function") {
-      //             addSubmitRequest(8, v.submit);
-      //           }
-      //         }}
-      //         onSuccess={handleNextStep}
-      //       />
-      //     </>
+          <ServicePresentaionForm />
 
-      //   ),
-      //   key: 8,
-      // },
-      // {
-      //   stepName: t("Find your friends"),
-      //   stepComponent: (
-      //     <FormWrapper>
-      //       {isFormSubmitting && (
-      //         <FormSubmitLoader />
+        ),
+      },
+      {
+        stepName: t("Verify Your Identity"),
+        key: 4,
+        stepComponent: (
 
-      //       )}
-      //       <FindYourFriendsStep
-      //         ref={(v: { submit: () => any }) => {
-      //           if (v && typeof v.submit === "function") {
-      //             addSubmitRequest(9, v.submit);
-      //           }
-      //         }}
-      //         onSuccess={handleNextStep}
-      //       />
-      //     </FormWrapper>
 
-      //   ),
-      //   key: 9,
-      // },
+          <IdentityVerification />
+
+        ),
+      },
+      {
+        stepName: t("Select a plan"),
+        stepComponent: (
+
+
+          <ChooseMembership />
+
+        ),
+        key: 5,
+      },
+      {
+        stepName: t("Payment Setting "),
+        stepComponent: (
+
+
+          <AddPaymentPage />
+
+        ),
+        key: 6,
+      },
+      {
+        key: 7,
+        stepName: t("Listing"),
+        stepComponent: (
+          <>
+
+            <SellerListingForm
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(7, v.submit);
+                }
+              }}
+              onSuccess={handleNextStep}
+            />
+          </>
+
+        ),
+      },
+      {
+        stepName: t("Shipping Settings"),
+        stepComponent: (
+          <>
+
+            <NewShippingSettings
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(8, v.submit);
+                }
+              }}
+              onSuccess={handleNextStep}
+            />
+          </>
+
+        ),
+        key: 8,
+      },
+      {
+        stepName: t("Find your friends"),
+        stepComponent: (
+
+
+          <FindYourFriendsStep
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(9, v.submit);
+              }
+            }}
+            onSuccess={handleNextStep}
+          />
+
+
+        ),
+        key: 9,
+      },
     ],
     []
   );
 
 
   const currentStepComp = steps.at(currentStep) || null;
-  const nextStep = steps.at(currentStep + 1) || null;
-  const percentage = ((currentStep + 1) / steps.length) * 100;
+
 
 
 
@@ -304,7 +280,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
           />
         </div>
 
-        <p className="text-xs text-gray-500">{`Step ${currentStep} of ${totalSteps}`}</p>
+        <p className="text-xs text-gray-500">{`Step ${currentStep +1} of ${totalSteps}`}</p>
       </div>
     );
   };
@@ -314,8 +290,8 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
     <div className="flex flex-col gap-2 w-full h-full p-2">
 
       <StepperHeaderMobile
-        currentStep={2}
-        totalSteps={10}
+        currentStep={currentStep}
+        totalSteps={steps.length}
         stepName={stepsName[currentStep]}
       />
 
@@ -349,25 +325,26 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
     <>
       <div>
         <div className="mt-8 p-1">
-          <div>
-            {runIfFn(currentStepComp?.stepComponent)}
-          </div>
-          {/* Navigation Buttons */}
-          <div className="flex p-2 mt-4">
-            <Container className="flex w-full justify-between">
-              <button
-                className="flex items-center rounded-md py-2 pl-0 pr-8"
-                disabled={currentStep === 0}
-                onClick={() => {
-                  requestPrevStep();
-                }}
-              >
-                <MdArrowBackIosNew className="mr-1 inline" />
-                {t("Back")}
-              </button>
+          <FormWrapper>
+            <div>
+              {runIfFn(currentStepComp?.stepComponent)}
+            </div>
+            {/* Navigation Buttons */}
+            <div className="flex p-2 mt-4">
+              <Container className="flex w-full justify-between">
+                <button
+                  className="flex items-center rounded-md py-2 pl-0 pr-8"
+                  disabled={currentStep === 0}
+                  onClick={() => {
+                    requestPrevStep();
+                  }}
+                >
+                  <MdArrowBackIosNew className="mr-1 inline" />
+                  {t("Back")}
+                </button>
 
-              <div>
-                {/* {currentStep !== 0 &&
+                <div>
+                  {/* {currentStep !== 0 &&
                   <button
                     className="rounded-md py-2 px-4"
                     disabled={currentStep === 0 || currentStep == 1}
@@ -378,17 +355,18 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
                     {t("Skip")}
                   </button>
                 } */}
-                <PrimaryButton
-                  onClick={() => {
-                    requestNextStep();
-                  }}
-                >
-                  {t("Next")}
-                </PrimaryButton>
-              </div>
-            </Container>
+                  <PrimaryButton
+                    onClick={() => {
+                      requestNextStep();
+                    }}
+                  >
+                    {t("Next")}
+                  </PrimaryButton>
+                </div>
+              </Container>
 
-          </div>
+            </div>
+          </FormWrapper>
         </div>
       </div>
     </>

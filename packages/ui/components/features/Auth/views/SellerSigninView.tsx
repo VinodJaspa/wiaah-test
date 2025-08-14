@@ -20,7 +20,7 @@ import { isUserLoggedIn } from "state";
 type SellerSigninViewProps = {
   onNavigate: () => void;
 };
-export const SellerSigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }) => {
+export const SigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }) => {
   const { t } = useTranslation();
   const { getUrl } = useRouting();
   const router = useRouter();

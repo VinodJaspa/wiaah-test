@@ -1,177 +1,193 @@
 import React from "react";
-import { MdArrowBackIosNew } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { MdArrowBackIosNew } from "react-icons/md";
+
 import {
-  MultiStepFrom,
-  PersonalInformationStep,
-  FindYourFriendsStep,
-  Container,
-  Button,
-  AccountSignEmailVerificationStep,
-  useResponsive,
-} from "@UI";
-import { StepperStepType } from "types";
-import {
+  AccountVerifciationForm,
+  AccountVerificationFormData,
   ArrowLeftAlt1Icon,
   ArrowRightAltIcon,
+  Container,
+  Divider,
   HStack,
-  MultiStepFromHandle,
-  PaymentMethodForm,
-} from "../../components";
+  useRequestAccountVerification,
+  useResponsive
+} from "@UI";
+// @ts-ignore
+
+import { Button } from "@UI";
 import { AccountSignup } from "@features/Auth/views";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { StepperStepType } from "types";
+import { runIfFn } from "utils";
+import Image from "next/image";
 
-import { runIfFn } from "@UI/../utils/src";
 
-export const BuyerProfileStartUpView: React.FC = ({}) => {
-const { t } = useTranslation();
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import { FormWrapper } from "@UI/components/shadcn-components/FormWrapper/InnerFormWrapper";
+import FormSubmitLoader from "@features/Auth/components/Spinner";
+import { AccountInforamtion } from "@features/Auth/views/Steps/AuthFormStepThree";
+import { AccountSignEmailVerificationStep } from "@features/Auth/views/Steps/AuthFormStepTwo";
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import { accountType } from "nest-utils";
+interface StepperProps {
+  setFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
+  isFormSubmitting: boolean;
+  currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  stepsName: any
+}
+
+
+export const BuyerProfileStartupView: React.FC<StepperProps> = ({ currentStep, setCurrentStep, isFormSubmitting, setFormSubmitting, stepsName }) => {
+
+
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
 
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
-
   const handleNextStep = () => setCurrentStep((v) => v + 1);
-
   const requestSkipStep = () => setCurrentStep((v) => v + 1);
-
   const addSubmitRequest = (key: string | number, fn: () => any) =>
     setSubmitRequests((v) => ({ ...v, [key]: fn }));
 
-  const requestNextStep = () => {
-    const submitFn = submitRequests[currentStep];
 
-    if (typeof submitFn === "function") {
-      submitFn();
+
+  const requestNextStep = async () => {
+    const submitFn = submitRequests[currentStep];
+    if (submitFn) {
+      setFormSubmitting(true);
+      const isSuccess = await submitFn();
+      if (isSuccess) {
+        setCurrentStep((prev) => prev + 1);
+        setFormSubmitting(false);
+      }
+      else {
+        setFormSubmitting(false);
+      }
     }
   };
 
-  const requestPrevStep = () => {};
+  const requestPrevStep = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
 
   const steps: StepperStepType[] = React.useMemo(
     () => [
       {
-        stepName: t("Signup"),
+        stepName: t("Signup") as string,
+        key: 0,
         stepComponent: (
-          <AccountSignup
-            onSuccess={handleNextStep}
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(0, v.submit);
-              }
-            }}
-          />
+          <>
+
+
+            <AccountSignup
+              onSuccess={requestNextStep}
+              accountType={"buyer"}
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(0, v.submit);
+                }
+              }}
+            />
+          </>
+
         ),
-        key: "3",
       },
       {
-        stepName: t("Email Verification"),
+        stepName: t("Email Verification") as string,
         key: 1,
         stepComponent: (
-          <AccountSignEmailVerificationStep
-            onSuccess={handleNextStep}
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(1, v.submit);
-              }
-            }}
-          />
-        ),
-      },
-      {
-        stepName: t("Personal information"),
-        stepComponent: PersonalInformationStep,
-        key: "1",
-      },
-      {
-        stepName: t("Add Payment Method"),
-        stepComponent: (
-          <PaymentMethodForm
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(2, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
-        ),
-        key: 7,
-      },
-      {
-        stepName: t("Find your freinds"),
+          <>
 
-        stepComponent: (
-          <FindYourFriendsStep
-            ref={(v: { submit: () => any }) => {
-              if (v && typeof v.submit === "function") {
-                addSubmitRequest(3, v.submit);
-              }
-            }}
-            onSuccess={handleNextStep}
-          />
+            <AccountSignEmailVerificationStep
+              onSuccess={handleNextStep}
+              ref={(v: { submit: () => any }) => {
+                if (v && typeof v.submit === "function") {
+                  addSubmitRequest(1, v.submit);
+                }
+              }}
+            />
+          </>
+
         ),
-        key: "2",
       },
+      {
+        stepName: t("Profile Picture"),
+        key: 2,
+        stepComponent:
+          (
+
+            <>
+              {isFormSubmitting && (
+                <FormSubmitLoader />
+              )}
+
+              <ProfilePictureStep
+                onSuccess={handleNextStep}
+                ref={(v: { submit: () => any }) => {
+                  if (v && typeof v.submit === "function") {
+                    addSubmitRequest(1, v.submit);
+                  }
+                }}
+              />
+            </>
+
+          ),
+      },
+
+
+
+
     ],
     []
   );
 
-  const currentStepComp = steps.at(currentStep) || null;
-  const nextStep = steps.at(currentStep + 1) || null;
-  const percentage = ((currentStep + 1) / steps.length) * 100;
-  return isMobile ? (
-    <div className="flex flex-col gap-2 w-full h-full p-2">
-      <HStack className="p-2">
-        <div className="relative flex justify-center items-center">
-          <svg
-            className="absolute text-darkerGray text-5xl"
-            width="1em"
-            height="1em"
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="48.5"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-          </svg>
 
-          <svg
-            className="absolute -rotate-90 text-primary text-5xl"
-            width="1em"
-            strokeDasharray={300 + ((currentStep + 1) / steps.length) * 300}
-            strokeDashoffset={300}
-            height="1em"
-            viewBox="0 0 100 100"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="48.5"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-          </svg>
-          <div className="bg-primary rounded-full w-10 h-10 text-2xl flex justify-center items-center">
-            {currentStep + 1}
-          </div>
+
+  const currentStepComp = steps.at(currentStep) || null;
+
+
+
+
+  type StepperProps = {
+    currentStep: number;
+    totalSteps: number;
+    stepName: string;
+  };
+
+  const StepperHeaderMobile = ({ currentStep, totalSteps, stepName }: StepperProps) => {
+    const progress = (currentStep / totalSteps) * 100;
+
+    return (
+      <div className="w-full space-y-2 px-4">
+        <p className="text-sm font-medium text-black">{stepName}</p>
+
+        {/* Progress bar */}
+        <div className="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+          <div
+            className="bg-black h-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
         </div>
-        <div className="flex flex-col">
-          <p className="text-lg font-semibold">
-            {currentStepComp?.stepName.toString()}
-          </p>
-          <p className="text-xs text-primary">
-            {t("Next").toString()} : {nextStep?.stepName.toString()}
-          </p>
-        </div>
-      </HStack>
+
+        <p className="text-xs text-gray-500">{`Step ${currentStep+1} of ${totalSteps}`}</p>
+      </div>
+    );
+  };
+
+
+  return isMobile ? (
+
+    <div className="flex flex-col gap-2 w-full h-full p-2">
+
+      <StepperHeaderMobile
+        currentStep={currentStep}
+        totalSteps={steps.length}
+        stepName={stepsName[currentStep]}
+      />
+
 
       <div className="h-full px-4 overflow-y-scroll">
         {/* @ts-ignore */}
@@ -186,100 +202,157 @@ const { t } = useTranslation();
           </HStack>
         </Button>
 
-        <Button
-          className="m-4 text-sm font-normal"
+        <PrimaryButton
+          className="m-4 text-sm font-normal bg-black"
           onClick={() => requestNextStep()}
-          colorScheme="darkbrown"
+
         >
           <HStack>
-            <p>{t("Next")}</p>
+            <p >{t("Next")}</p>
             <ArrowRightAltIcon />
           </HStack>
-        </Button>
+        </PrimaryButton>
       </HStack>
     </div>
   ) : (
     <>
-      <div className="py-28 lg:py-20 h-full">
-        <div className="fixed top-0 left-0 z-10 w-full">
-          <Container className="">
-            <div className="flex items-center justify-between bg-white p-4 lg:hidden">
-            <CircularProgressbar
-          value={percentage}
-          text={`${currentStep + 1} of ${steps.length}`}
-          styles={buildStyles({
-            pathColor: "#4CAF50", 
-            textColor: "#000",
-            trailColor: "#e5e7eb", 
-            textSize: "16px", 
-           
-          })}
-        />
-              <div className="flex flex-col items-end">
-                <div className="mb-2 text-lg font-bold">
-                  {steps[currentStep].stepName.toString()}
-                </div>
-                <div className="text-xs text-gray-400">
-                  {steps[currentStep + 1]
-                    ? t("Next") + ": " + steps[currentStep + 1].stepName
-                    : t("Finalisation")}
-                </div>
-              </div>
-            </div>
-            <div className="hidden items-stretch justify-start bg-gray-200 lg:flex">
-              {steps.map((item, key) => {
-                return (
-                  <div
-                    key={key}
-                    className={`${
-                      currentStep == key ? "bg-primary text-white" : ""
-                    } flex w-4/12 flex-col justify-center px-6 py-4`}
-                  >
-                    <div className="text-lg font-bold">
-                      {t("Step")} {key + 1}
-                    </div>
-                    <div>{item.stepName.toString()}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </Container>
-        </div>
-        <div className="overflow-scroll thinScroll h-full p-4 py-4 md:pl-8 md:py-8">
-          {runIfFn(currentStepComp?.stepComponent)}
-        </div>
 
-        <div className="fixed bottom-0 left-0 z-10 flex w-full justify-between bg-white p-4 pt-10 lg:px-8">
-          <Container className="flex w-full justify-between">
-            <button
-              className="flex items-center rounded-md py-2 pl-0 pr-8"
-              onClick={() => {
-                requestPrevStep();
-              }}
-            >
-              <MdArrowBackIosNew className="mr-1 inline" />
-              {t("Back")}
-            </button>
-            <div>
+      <div className="mt-8 p-1">
+        <FormWrapper>
+          <div>
+            {runIfFn(currentStepComp?.stepComponent)}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex p-2 mt-4">
+            <Container className="flex w-full justify-between">
               <button
-                className="rounded-md py-2 px-4"
-                onClick={() => {
-                  requestSkipStep();
-                }}
+                className="flex items-center rounded-md py-2 pl-0 pr-8"
+                disabled={currentStep === 0}
+                onClick={requestPrevStep}
               >
-                {t("Skip")}
+                <MdArrowBackIosNew className="mr-1 inline" />
+                {t("Back")}
               </button>
-              <Button
-                onClick={() => {
-                  requestNextStep();
-                }}
-              >
+
+              <PrimaryButton onClick={requestNextStep}>
                 {t("Next")}
-              </Button>
-            </div>
-          </Container>
-        </div>
+              </PrimaryButton>
+            </Container>
+          </div>
+        </FormWrapper>
       </div>
+
     </>
   );
+
 };
+
+
+
+
+
+
+
+
+
+export const SignupAccountVerificationStep = React.forwardRef(
+  ({ onSuccess }: { onSuccess: () => any }, ref) => {
+    const [data, setData] = React.useState<AccountVerificationFormData>();
+    const { mutate } = useRequestAccountVerification();
+
+    React.useImperativeHandle(ref, () => ({
+      submit: () => {
+        if (data) {
+          mutate(data, { onSuccess });
+        }
+      },
+    }));
+
+    return (
+      <AccountVerifciationForm
+        onChange={(data) => setData(data)}
+        value={data}
+      />
+    );
+  }
+);
+
+
+
+
+
+type ProfilePictureStepProps = {
+  onSuccess: () => void;
+};
+
+export type ProfilePictureStepHandle = {
+  submit: () => void;
+};
+
+export const ProfilePictureStep = React.forwardRef<ProfilePictureStepHandle, ProfilePictureStepProps>(
+  ({ onSuccess }, ref) => {
+    const [image, setImage] = React.useState<string | null>(null);
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => setImage(reader.result as string);
+        reader.readAsDataURL(file);
+      }
+    };
+
+    // Expose submit function to parent
+    React.useImperativeHandle(ref, () => ({
+      submit: () => {
+        if (image) {
+          onSuccess();
+        } else {
+          alert("Please upload a profile picture first.");
+        }
+      },
+    }));
+
+    return (
+      <div className="flex flex-col items-center justify-center py-8">
+        {/* Heading */}
+        <Subtitle className="mb-4">Add a profile picture</Subtitle>
+        <Divider />
+
+        {/* Image Preview */}
+        {image && (
+          <div className="w-full max-w-md min-h-[200px] rounded-2xl overflow-hidden shadow bg-white">
+            <img
+              src={image}
+              alt="Profile preview"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        )}
+
+
+
+        {/* Hidden File Input */}
+        <input
+          type="file"
+          id="profileUpload"
+          className="hidden"
+          accept="image/*"
+          onChange={handleImageUpload}
+        />
+
+        {/* Upload Button */}
+        <label
+          htmlFor="profileUpload"
+          className="inline-block mt-8 px-4 py-2 bg-gray-200 text-gray-700 rounded cursor-pointer hover:bg-gray-300 transition"
+        >
+          {!image ? "Choose Photo" : "Change Photo"}
+        </label>
+
+      </div>
+
+    );
+  }
+);
+ProfilePictureStep.displayName = "ProfilePictureStep";

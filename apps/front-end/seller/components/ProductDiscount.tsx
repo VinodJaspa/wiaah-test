@@ -1,3 +1,4 @@
+import React from 'react';
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import { AiOutlinePlus } from "react-icons/ai";
 

@@ -29,31 +29,34 @@ const SignUpFinalisation: NextPage = () => {
       <Head>
         <title>Wiaah | Signup Finalisation</title>
       </Head>
-      <main className="block w-full grow h-screen">
-{isFormSubmitting && <FormSubmitLoader/>}
-      
 
-        <div className="sm:p-0 md:p-4 lg:p-8 xl:p-10">
-          <div className="sm:p-0 md:p-6 lg:p-8 xl:p-10">
-            {!isMobile &&
-              <div className="flex items-center mb-24">
+      {/* Page Container */}
+      <main className="w-full h-screen bg-gray-50">
+        {/* Loader Overlay */}
+        {isFormSubmitting && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/70">
+            <FormSubmitLoader />
+          </div>
+        )}
+
+        <div className="flex flex-col h-full">
+          {/* Stepper Header */}
+          {!isMobile && (
+            <header className="sticky top-0 z-20 bg-white shadow-md px-6 py-4">
+              <div className="flex items-center justify-center">
                 {steps.map((label, index) => (
                   <React.Fragment key={index}>
-                    <div className="flex items-center relative">
-
-                      <div className="absolute top-0 -ml-10  pr-4 text-center mt-16 w-32 text-xs font-medium uppercase text-black whitespace-normal break-words">
-                        {t(label)}
-                      </div>
+                    {/* Step Circle + Label */}
+                    <div className="flex flex-col items-center relative">
                       <div
-                        className={`rounded-full h-12 w-12 flex items-center justify-center text-lg font-sm transition duration-500 ease-in-out ${index < currentStep
-                          ? "bg-black text-white"
-                          : index === currentStep
+                        className={`flex items-center justify-center rounded-full h-12 w-12 text-lg font-medium transition duration-300 ease-in-out ${
+                          index < currentStep
+                            ? "bg-black text-white"
+                            : index === currentStep
                             ? "border-2 border-black text-black"
-                            : "border-2 border-gray-400 text-gray-400"
-                          }`}
+                            : "border-2 border-gray-300 text-gray-400"
+                        }`}
                       >
-
-
                         {index < currentStep ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -73,23 +76,39 @@ const SignUpFinalisation: NextPage = () => {
                           index + 1
                         )}
                       </div>
+
+                      <span className="mt-2 w-24 text-center text-xs font-medium uppercase text-gray-700">
+                        {t(label)}
+                      </span>
                     </div>
 
-                    {/* Line between steps */}
+                    {/* Connector Line */}
                     {index < steps.length - 1 && (
                       <div
-                        className={`flex-auto border-t-2 transition duration-500 ease-in-out ${index < currentStep - 1 ? "border-black" : "border-gray-300"
-                          }`}
+                        className={`flex-auto border-t-2 pb-8 transition duration-300 ease-in-out ${
+                          index < currentStep - 1
+                            ? "border-black"
+                            : "border-gray-300"
+                        }`}
                       />
                     )}
                   </React.Fragment>
                 ))}
               </div>
-            }
-            <SellerProfileStartupView currentStep={currentStep} setCurrentStep={setCurrentStep} isFormSubmitting={isFormSubmitting} setFormSubmitting={setFormSubmitting} stepsName={steps} />
-          </div>
-        </div>
+            </header>
+          )}
 
+          {/* Scrollable Content */}
+          <section className="flex-1 overflow-y-auto px-4 py-6">
+            <SellerProfileStartupView
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+              isFormSubmitting={isFormSubmitting}
+              setFormSubmitting={setFormSubmitting}
+              stepsName={steps}
+            />
+          </section>
+        </div>
       </main>
     </>
   );

@@ -118,6 +118,8 @@ export const MainRoutes: MainRouterInterface = {
     return this.addPath("auth").addPath("logout");
   },
   visitSignin() {
+    console.log(this.addPath ,"path");
+    
     return this.addPath("auth").addPath("login");
   },
   visitSignup() {

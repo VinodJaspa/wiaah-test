@@ -65,7 +65,7 @@ export default function SelectField({ label, name, options, ...props }: SelectFi
         styles={customStyles}
         className={`bg-transparent border
           ${
-            meta.error
+            meta.error && meta.touched 
               ? "border-red-500 focus:ring-red-500"
               : "border-gray-300 focus:ring-gray-300"
           }
@@ -74,7 +74,7 @@ export default function SelectField({ label, name, options, ...props }: SelectFi
    
         classNamePrefix="react-select"
       />
-      {meta.error && (
+      {meta.error && meta.touched &&(
         <p className="text-xs text-red-600">{meta.error}</p>
       )}
     </div>
