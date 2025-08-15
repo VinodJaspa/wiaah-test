@@ -1,0 +1,35 @@
+/* HeroBanner.css */
+
+.slick-dots {
+	display: flex !important;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	bottom: 1rem; /* adjust as needed */
+	width: 100%;
+	list-style-type: none;
+}
+  
+.slick-dots li {
+	margin: 0 0.5rem; /* spacing between dots */
+}
+
+.slick-dots li button {
+	display: block;
+	width: 1rem;      /* default width */
+	height: 1rem;     /* default height */
+	padding: 0;
+
+	border: none;
+	border-radius: 100%; /* circular by default */
+	background-color: white;
+	text-indent: -9999px; /* hide default text */
+	transition: all 0.3s ease; /* smooth width change */
+}
+  
+.slick-dots li.slick-active button {
+	background-color: #20ECA7;
+	width: 2rem;        /* stretched width */
+	border-radius: 0.5rem; /* slightly rounded rectangle */
+}

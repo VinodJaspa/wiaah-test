@@ -58,7 +58,7 @@ const { t } = useTranslation();
         <>{children}</>
       </main>
 
-      {!social && (
+      {/* {!social && (
         <div className="container mx-auto block w-full space-y-6 py-6">
           <div className="flex w-full justify-center">
             <p className="text-2xl font-bold uppercase">{t("Our Partners")}</p>
@@ -73,7 +73,7 @@ const { t } = useTranslation();
             ))}
           </div>
         </div>
-      )}
+      )} */}
       {/* Footer */}
       {!social && (
         <>

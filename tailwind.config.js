@@ -27,6 +27,7 @@ module.exports = {
       },
       colors: {
         iconGray: "#999999",
+        emeraldCustom: '#20ECA7',
         primary: {
           DEFAULT: "#3AD398",
           hover: "#1d9266",

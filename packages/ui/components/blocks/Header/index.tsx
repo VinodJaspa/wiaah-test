@@ -220,7 +220,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
         </div>
       </Container>
 
-      <div className="flex w-full bg-white p-4 text-black">
+      {/* <div className="flex w-full bg-white p-4 text-black">
         <Container className="flex">
           <ul className="no-scrollBar flex w-full justify-between text-[18px] items-center  overflow-x-scroll">
             <li
@@ -244,7 +244,8 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
                   className="hover:text-primary text-black hover:underline cursor-pointer"
                   key={i}
                 >
-                  <p>{t(cate.name)}</p>
+        <p>{t(cate.name).charAt(0).toUpperCase() + t(cate.name).slice(1)}</p>
+
                 </li>
               ))}
           </ul>
@@ -254,7 +255,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             </div>
           )}
         </Container>
-      </div>
+      </div> */}
       <MultiStepDrawer
         isOpen={isopen}
         onClose={() => setIsopen(false)}
