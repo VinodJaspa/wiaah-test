@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             <Information />
             <SocialMediaLinks />
           </div>
-          <CountryLanguageCurrencySwitch />
+          {/* <CountryLanguageCurrencySwitch /> */}
         </div>
       </footer>
     </>
