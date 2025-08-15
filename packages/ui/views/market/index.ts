@@ -1,7 +1,7 @@
 export * from "./HomeView";
 export * from "./SearchView";
 export * from "./SellerProfileStartupView";
-export * from "./BuyerProfileStartupView";
+
 export * from "./AboutWiaahView";
 export * from "./PrivacyPolicyView";
 export * from "./TermsAndConditionsView";

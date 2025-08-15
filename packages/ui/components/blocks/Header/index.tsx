@@ -31,6 +31,7 @@ import { useLogoutMutation } from "@features/Accounts/services/useLogout";
 import { useSetRecoilState } from 'recoil';
 import { useRouter } from "next/router";
 import { isUserLoggedIn } from "state";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
 export interface HeaderProps {
   token?: string;
 }
@@ -194,7 +195,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
           {isMobile ? null : (
             <div className="hidden md:flex gap-2 items-center">
-              <SearchInput />
+              <SearchBoxInner placeholder="Search products.." />
             </div>
           )}
 
@@ -249,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
           </ul>
           {!isMobile ? null : (
             <div className="hidden md:flex gap-2 items-center">
-              <SearchInput />
+              <SearchBoxInner placeholder="Search products.." />
             </div>
           )}
         </Container>
