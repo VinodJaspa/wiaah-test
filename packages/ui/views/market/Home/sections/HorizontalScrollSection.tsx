@@ -6,7 +6,7 @@ interface HorizontalScrollSectionProps {
   buttonLabel: string;
   onButtonClick: () => void;
   isVideo?: boolean;
-  items: any;
+  items: any[];
 }
 
 export const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = ({
@@ -17,23 +17,30 @@ export const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = (
   items,
 }) => {
   return (
-    <div className="mb-12 mt-12">
-      {/* Title centered with spacing below */}
-      <h2 className="text-lg md:text-xl font-bold text-center mb-4">{title}</h2>
+    <div className="space-y-4">
+      {/* Section title */}
+      <h2 className="text-lg md:text-xl font-bold">{title}</h2>
 
+      {/* Horizontal scroll container */}
       <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
         {items.map((item, idx) => (
           <div
             key={idx}
-            className="min-w-[220px] bg-white rounded-lg shadow-sm border overflow-hidden"
+            className="flex-shrink-0 w-52 md:w-56 bg-white rounded-lg shadow-sm border overflow-hidden flex flex-col"
           >
-            <div className="relative">
-              <img
-                src={item.thumbnail || item.image}
-                alt={item.title}
-                className="w-full h-40 object-cover"
-              />
-              {isVideo && (
+            {/* Image or placeholder */}
+            <div className="relative w-full h-40 md:h-48 bg-gray-50 flex items-center justify-center">
+              {item.thumbnail ? (
+                <img
+                  src={item.thumbnail}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="text-gray-400 text-sm">No Image</div>
+              )}
+
+              {isVideo && item.thumbnail && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="bg-white/70 p-2 rounded-full">
                     <svg
@@ -48,21 +55,28 @@ export const HorizontalScrollSection: React.FC<HorizontalScrollSectionProps> = (
                 </div>
               )}
             </div>
-            <div className="p-3 space-y-1">
+
+            {/* Content */}
+            <div className="p-3 flex flex-col flex-1">
               <h3 className="font-semibold text-sm truncate">{item.title}</h3>
-              <div className="flex items-center text-xs text-yellow-500 gap-1">
+
+              <div className="flex items-center text-xs text-yellow-500 gap-1 mt-1">
                 <Star size={14} fill="currentColor" />
                 {item.rating}
                 {item.reviews && (
-                  <span className="text-gray-400">({item.reviews} Reviews)</span>
+                  <span className="text-gray-400 truncate">({item.reviews} Reviews)</span>
                 )}
               </div>
-              <button
-                onClick={onButtonClick}
-                className="w-full mt-2 bg-black text-white py-1.5 rounded hover:bg-gray-800 text-sm"
-              >
-                {buttonLabel}
-              </button>
+
+              {/* Add to cart button pinned at bottom */}
+              <div className="mt-auto">
+                <button
+                  onClick={onButtonClick}
+                  className="w-full mt-2 bg-black text-white py-1.5 rounded hover:bg-gray-800 text-sm"
+                >
+                  {buttonLabel}
+                </button>
+              </div>
             </div>
           </div>
         ))}

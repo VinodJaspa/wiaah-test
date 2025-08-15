@@ -8,7 +8,7 @@ export const CustomerService: FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="block w-full space-y-4 ml-4">
+    <div className="block w-full space-y-4 md:ml-4">
       {/* Heading */}
       <p className="text-white font-semibold text-lg">
         {t("Customer service")}
