@@ -15,7 +15,7 @@ export const AuthFooter: React.FC = () => {
           )}
         </p>
         <div>
-          <Link href="/seller-signup">
+          <Link href="/auth/seller-signup">
             <button className="mx-auto flex w-44 items-center border rounded-md bg-white px-3 py-2 text-sm uppercase text-gray-700">
               <FaUserAlt className="mr-2 h-4 w-4" />
               {t("Open_a_shop", "Open a shop")}
@@ -23,7 +23,7 @@ export const AuthFooter: React.FC = () => {
           </Link>
         </div>
         <div>
-          <Link href="/login">
+          <Link href="/auth/login">
             <button className="mx-auto flex w-44 items-center border rounded-md bg-black px-3 py-2 text-sm uppercase">
               <div className="flex text-primary">
                 <FaUserAlt className="mr-2 h-4 w-4" />

@@ -19,8 +19,8 @@ export const Signup: React.FC<LoginViewProps> = ({
   return (
     <>
       <div
-        className={`login-view-container xl:py-34
-       flex flex-col items-start bg-[#00B081] p-4 lg:flex-row lg:p-24 xl:px-36`}
+        className={`login-view-container 
+       flex flex-col items-start bg-[#00B081] p-4 lg:flex-row`}
       >
         <div className="container mx-auto flex flex-col gap-16 rounded-lg bg-black bg-opacity-20 filter lg:flex-row">
           <div className="w-full p-2 text-white lg:w-7/12">

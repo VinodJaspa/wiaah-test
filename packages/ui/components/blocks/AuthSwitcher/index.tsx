@@ -112,7 +112,9 @@ const { t } = useTranslation();
           <Formik
             initialValues={{}}
             onSubmit={(data) => {
-              onSubmit && onSubmit(data, "email-verify");
+            if(onSubmit){
+              onSubmit(data, "email-verify");
+            } 
             }}
           >
             {() => {

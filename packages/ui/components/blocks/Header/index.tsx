@@ -32,6 +32,7 @@ import { useSetRecoilState } from 'recoil';
 import { useRouter } from "next/router";
 import { isUserLoggedIn } from "state";
 import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
+import { Router } from "express";
 export interface HeaderProps {
   token?: string;
 }
@@ -43,23 +44,29 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const { mutate: logout, isLoading } = useLogoutMutation();
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useMediaQuery({ maxWidth: 767 });
-
+  const { visit, getCurrentPath } = useRouting();
   const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
-  const { visit } = useRouting();
-  const onLogOut = () => {
+  const router = useRouter();
+  const handleOpertion = () => {
 
-    logout(undefined, {
-      onSuccess: () => {
-        // You may still want to manually clear client-side localStorage/cookies if needed
-        setLoginState(false);
-        // window.location.href = "/";
-      },
-      onError: (err) => {
-        console.error("Logout failed", err);
-      },
-    });
+    if (loggedIn) {
+      logout(undefined, {
+        onSuccess: () => {
+          // You may still want to manually clear client-side localStorage/cookies if needed
+          setLoginState(false);
+          // window.location.href = "/";
+        },
+        onError: (err) => {
+          console.error("Logout failed", err);
+        },
+      });
+    }
+    else {
+      router.push("auth/login")
+    }
+
   };
   const [loggedIn, setLoginState] = useRecoilState(isUserLoggedIn);
 
@@ -203,7 +210,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             <Button
               {...setTestid("auth-btn")}
               colorScheme={isMobile ? "white" : "darkbrown"}
-              onClick={onLogOut}
+              onClick={handleOpertion}
               className="flex sm:text-sm items-center gap-2"
             >
               {loggedIn ? t("Logout") : t("Sign in")}
@@ -219,48 +226,99 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
           </HStack>
         </div>
       </Container>
+     
 
-      {/* <div className="flex w-full bg-white p-4 text-black">
-        <Container className="flex">
-          <ul className="no-scrollBar flex w-full justify-between text-[18px] items-center  overflow-x-scroll">
-            <li
-              id="burger-menu-toggle"
-              className="flex cursor-pointer items-center space-x-2 hover:text-primary"
-              onClick={() => {
-                setIsopen(true);
-              }}
-            >
-              <FaAlignJustify className="h-4 w-4" />
-              <span className="inline-flex mt-1">{t("All")}</span>
-            </li>
-            {!isMobile &&
-              Array.isArray(categories) &&
-              categories.length > 0 &&
-              categories.map((cate, i) => (
-                <li
-                  onClick={() =>
-                    visit((routes) => routes.visitServiceSearch(cate))
-                  }
-                  className="hover:text-primary text-black hover:underline cursor-pointer"
-                  key={i}
-                >
-        <p>{t(cate.name).charAt(0).toUpperCase() + t(cate.name).slice(1)}</p>
 
-                </li>
-              ))}
-          </ul>
-          {!isMobile ? null : (
-            <div className="hidden md:flex gap-2 items-center">
-              <SearchBoxInner placeholder="Search products.." />
-            </div>
-          )}
-        </Container>
-      </div> */}
+      <CategoryTabs categories={categories} isMobile={isMobile}  setIsopen={setIsopen}/>
       <MultiStepDrawer
         isOpen={isopen}
         onClose={() => setIsopen(false)}
         steps={steps}
       />
     </nav>
+  );
+};
+
+
+interface Category {
+  name: string;
+}
+
+interface CategoryTabsProps {
+  categories: Category[];
+  isMobile: boolean;
+  setIsopen:any;
+
+}
+
+export const CategoryTabs: React.FC<CategoryTabsProps> = ({
+  categories,
+  isMobile,
+  setIsopen
+
+}) => {
+  const [activeIndex, setActiveIndex] = React.useState<number>(0);
+  const { visit, getCurrentPath } = useRouting();
+
+  const { t } = useTranslation();
+  const handleClick = (index: number, cate?: Category) => {
+    setActiveIndex(index);
+    if (cate) {
+      visit((routes) => routes.visitServiceSearch(cate));
+    }
+  };
+
+  return (
+    <div className="w-full bg-white py-2 text-black border-b border-gray-200">
+      <Container className="flex w-full items-center">
+        <ul className="flex w-auto space-x-2 sm:space-x-4 overflow-x-auto scrollbar-hide relative">
+          {/* "All" tab */}
+          <li
+            className="relative"
+            onClick={() => setIsopen(true)}
+          >
+            <button
+              className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base font-medium rounded-full transition-colors ${activeIndex === 0 ? "text-primary" : "text-gray-700 hover:text-primary"
+                }`}
+            >
+              <div className="flex items-center gap-1">
+                <FaAlignJustify className="h-4 w-4" />
+                <span>{t("All")}</span>
+              </div>
+            </button>
+            {/* Animated underline */}
+            {activeIndex === 0 && (
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full transition-all"></span>
+            )}
+          </li>
+
+          {/* Category tabs */}
+          {Array.isArray(categories) &&
+            categories.length > 0 &&
+            categories.map((cate, i) => (
+              <li key={i + 1} className="relative" onClick={() => handleClick(i + 1, cate)}>
+                <button
+                  className={`px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base font-medium rounded-full transition-colors ${activeIndex === i + 1
+                    ? "text-primary"
+                    : "text-gray-700 hover:text-primary"
+                    }`}
+                >
+                  {t(cate.name).charAt(0).toUpperCase() + t(cate.name).slice(1)}
+                </button>
+                {activeIndex === i + 1 && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full transition-all"></span>
+                )}
+              </li>
+            ))}
+        </ul>
+
+        {/* Search box for mobile */}
+        {isMobile && (
+          <div className="ml-auto flex gap-2 items-center">
+            <SearchBoxInner placeholder="Search products.." />
+          </div>
+        )}
+      </Container>
+    </div>
   );
 };

@@ -248,14 +248,6 @@ export const BuyerProfileStartupView: React.FC<StepperProps> = ({ currentStep, s
 
 };
 
-
-
-
-
-
-
-
-
 export const SignupAccountVerificationStep = React.forwardRef(
   ({ onSuccess }: { onSuccess: () => any }, ref) => {
     const [data, setData] = React.useState<AccountVerificationFormData>();

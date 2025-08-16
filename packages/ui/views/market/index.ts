@@ -11,3 +11,4 @@ export * from "./SellerSignupView";
 export * from "./BuyerSignupView";
 export * from "./LoginView";
 export * from "./Signup";
+export {BuyerProfileStartupView} from  "./BuyerProfileStartupView";
