@@ -1,12 +1,22 @@
-import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
-import React, { useState } from "react";
-import demoidentity from "./identity.svg";
+import React, { useEffect, useState } from "react";
+import { RxIdCard } from "react-icons/rx";
+import { FiShoppingBag, FiVideo, FiSettings } from "react-icons/fi";
+import StepProgressBar from "./stepper";
 import StepDots from "./StepDots";
+import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import demoidentity from "./identity.svg"
+import { Form, Formik } from "formik";
+import InputField from "@UI/components/shadcn-components/Fields/InputField";
+import * as Yup from "yup";
 
-import { PreviewModal, TakePictureModal } from "@blocks";
 import IDUploadModal from "@blocks/Modals/IdUploadModal";
+import { PreviewModal, TakePictureModal } from "@blocks";
 
 import NavigationHeader from "@UI/components/NavigationHeader";
+import Tesseract from "tesseract.js";
+import AutoFillFromOCR from "./AutoFillValues";
+import { useRequestAccountVerification } from "@UI";
 import IDInformationReview from "./IdVerfication";
 
 export default function IdentityVerification() {

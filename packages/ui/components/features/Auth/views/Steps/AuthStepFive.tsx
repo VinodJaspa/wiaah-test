@@ -1,15 +1,11 @@
-import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
-import React, { useState } from "react";
-import demoidentity from "./identity.svg";
-import StepDots from "./StepDots";
-
 import { PreviewModal, TakePictureModal } from "@blocks";
-import IDUploadModal from "@blocks/Modals/IdUploadModal";
-
 import NavigationHeader from "@UI/components/NavigationHeader";
-import IDInformationReview from "./IdVerfication";
-
-export default function IdentityVerification() {
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import React ,{useState}from "react";
+import StepDots from "./verify-IdentitySteps/StepDots";
+import IDInformationReview from "@UI/components/verify-IdentitySteps/IdVerfication";
+import IDUploadModal from "@blocks/Modals/IdUploadModal";
+function IdentityVerification() {
   const [step, setStep] = useState(1);
   const [previewOpen, setPreviewOpen] = React.useState(false);
   const [previewFile, setPreviewFile] = React.useState<File | null>(null);
@@ -262,15 +258,6 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onView, maxLength = 20 
   );
 };
 
-/* --- DropZone Component --- */
-type DropZoneProps = {
-  title: string;
-  description: string;
-  file: File | null;
-  setFile: (file: File) => void;
-  openImageModal: () => void;
-};
-
 
 
 const DocumentPreview = ({ prevStep, nextStep, formData }) => {
@@ -312,7 +299,7 @@ const DocumentPreview = ({ prevStep, nextStep, formData }) => {
       {/* Image */}
       <div className="rounded-xl overflow-hidden shadow-lg w-full bg-gray-50 border border-gray-200">
         <img
-          src={idFrontURL ?? demoidentity.src}
+          src={idFrontURL ?? ""}
           alt="ID Preview"
           className="w-full object-cover"
         />
@@ -336,16 +323,4 @@ const DocumentPreview = ({ prevStep, nextStep, formData }) => {
   );
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
