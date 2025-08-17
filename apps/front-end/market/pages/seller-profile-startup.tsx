@@ -2,6 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { SellerProfileStartupView, Container } from "ui";
+import FormSubmitLoader from "@features/Auth/components/Spinner";
 
 const SignUpFinalisation: NextPage = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -24,9 +25,10 @@ const SignUpFinalisation: NextPage = () => {
         <title>Wiaah | Signup Finalisation</title>
       </Head>
       <main className="block w-full grow h-screen">
+        {isFormSubmitting && <FormSubmitLoader/>}
         <Container>
           <SellerProfileStartupView
-          stepsName={steps}
+            stepsName={steps}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             isFormSubmitting={isFormSubmitting}

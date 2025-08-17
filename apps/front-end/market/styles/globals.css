@@ -288,3 +288,16 @@ button.image-gallery-icon {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  /* border: grey; */
+  /* outline: none; */
+  height: 44px;
+  /* border: none; */
+}
+.PhoneInputInput {
+  flex: 1;
+  border: none;
+  min-width: 0;
+}

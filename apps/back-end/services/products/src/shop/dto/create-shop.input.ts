@@ -1,6 +1,8 @@
-import { InputType, Field, Float, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Float, PartialType, registerEnumType, ID } from '@nestjs/graphql';
 import {
   BusinessType,
+  CollaborationType,
+  MemberType,
   ServiceType,
   ShopPaymentMethods,
   ShopStatus,
@@ -13,7 +15,7 @@ import { CreateInputGqlTranslationInputField, FieldRequired } from 'nest-utils';
 @InputType()
 export class TranslationTextInput extends CreateInputGqlTranslationInputField(
   String,
-) {}
+) { }
 
 @InputType()
 export class LocationInput {
@@ -32,7 +34,7 @@ export class LocationInput {
   @Field((type) => String)
   countryCode: string;
 
-  @Field((typpe) => String)
+  @Field((type) => String)
   city: string;
 
   @Field((type) => String)
@@ -40,6 +42,62 @@ export class LocationInput {
 
   @Field(() => String)
   postalCode: string;
+}
+
+registerEnumType(BusinessType, {
+  name: 'BusinessType',
+});
+registerEnumType(CollaborationType, {
+  name: 'CollaborationType',
+});
+registerEnumType(MemberType, {
+  name: 'MemberType',
+});
+
+
+@InputType()
+export class MemberInput {
+  @Field(() => ID, { nullable: true })
+  id?: string;
+
+  @Field(() => [MemberType])
+  memberType: MemberType[];
+
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String, { nullable: true })
+  birthDate?: string; // you can use Date scalar if you prefer
+
+  @Field(() => String, { nullable: true })
+  idNumber?: string;
+
+  @Field(() => String, { nullable: true })
+  idExpiration?: string;
+
+  @Field(() => String, { nullable: true })
+  phone?: string;
+
+  @Field(() => String, { nullable: true })
+  address?: string;
+
+  @Field(() => String, { nullable: true })
+  city?: string;
+
+  @Field(() => String, { nullable: true })
+  state?: string;
+
+  @Field(() => String, { nullable: true })
+  postalCode?: string;
+
+  @Field(() => String)
+  country: string;
 }
 
 @InputType()
@@ -52,7 +110,7 @@ export class VatSettingsInput {
 }
 
 @InputType()
-export class VatSettingsPartialInput extends PartialType(VatSettingsInput) {}
+export class VatSettingsPartialInput extends PartialType(VatSettingsInput) { }
 
 @InputType()
 export class CreateShopInput {
@@ -61,6 +119,8 @@ export class CreateShopInput {
 
   @Field(() => [TranslationTextInput])
   description: TranslationTextInput[];
+  @Field(() => [TranslationTextInput])
+  companyName: TranslationTextInput[];
 
   @FieldRequired('storeType', StoreType.product)
   @Field(() => String, { nullable: true })
@@ -87,6 +147,12 @@ export class CreateShopInput {
   @Field((type) => BusinessType)
   businessType: BusinessType;
 
+  @Field((type) => CollaborationType)
+  collaborationType: CollaborationType;
+
+  @Field(() => [MemberInput], { nullable: true })
+  members?: MemberInput[];
+
   @Field(() => [StoreFor])
   storeFor: StoreFor[];
 
@@ -106,12 +172,23 @@ export class CreateShopInput {
   @Field(() => ServiceType, { nullable: true })
   type: ServiceType;
 
-  @Field(() => [String])
-  vidoes: string[];
+  @Field(() => [MediaInput], { nullable: true })
+  images?: MediaInput[];
+
+  @Field(() => [MediaInput], { nullable: true })
+  videos?: MediaInput[];
 
   @Field(() => [String])
-  images: string[];
+  hashtags?: string[];
+}
+@InputType()
+export class MediaInput {
+  @Field()
+  src: string;
 
-  @Field(() => [String])
-  hashtags: string[];
+  @Field()
+  type: string;
+
+  @Field()
+  asset_id: string;
 }

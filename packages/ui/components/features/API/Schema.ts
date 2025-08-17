@@ -767,6 +767,10 @@ export type BookingCostService = {
 };
 
 export enum BusinessType {
+  Shop = "shop",
+  Services = "services",
+}
+export enum CollaborationType {
   Company = "company",
   Individual = "individual",
 }
@@ -1424,15 +1428,18 @@ export type CreateShippingTypeRuleInput = {
 export type CreateShopInput = {
   banner: Scalars["String"]["input"];
   businessType: BusinessType;
+  collaborationType: CollaborationType,
   description: Array<TranslationTextInput>;
   email: Scalars["String"]["input"];
   hashtags: Array<Scalars["String"]["input"]>;
   images: Array<Scalars["String"]["input"]>;
   location: LocationInput;
   name: Array<TranslationTextInput>;
+  companyName:Array<TranslationTextInput>;
   payment_methods: Array<ShopPaymentMethod>;
   phone: Scalars["String"]["input"];
   status: ShopStatus;
+  members: MemberInput[];
   storeCategoryId?: InputMaybe<Scalars["String"]["input"]>;
   storeFor: Array<StoreFor>;
   storeType: StoreType;
@@ -1440,7 +1447,7 @@ export type CreateShopInput = {
   thumbnail: Scalars["String"]["input"];
   type?: InputMaybe<ServiceType>;
   vat?: InputMaybe<VatSettingsPartialInput>;
-  vidoes: Array<Scalars["String"]["input"]>;
+  videos: Array<Scalars["String"]["input"]>;
 };
 
 export type CreateSiteInformationInput = {
@@ -6355,6 +6362,21 @@ export enum ShopPaymentMethod {
   Mastercard = "mastercard",
   Visa = "visa",
 }
+export type MemberInput = {
+  memberType: string[];
+  firstName: string;
+  lastName: string;
+  email: string;
+  birthDate: string;
+  idNumber: string;
+  idExpiration: string;
+  phone: string;
+  address: string;
+  city: string;
+  country: string;
+  state: string;
+  postalCode: string;
+}[]
 
 export type ShopSpecialDayWorkingHours = {
   __typename?: "ShopSpecialDayWorkingHours";
@@ -7069,14 +7091,18 @@ export type UpdateUserLocationInput = {
   lat: Scalars["Float"]["input"];
   lon: Scalars["Float"]["input"];
 };
-
+export type AsssestsInput = {
+  type: string;
+  src: string;
+  asset_id: string;
+};
 export type UpdateUserShopInput = {
   banner?: InputMaybe<Scalars["String"]["input"]>;
   businessType?: InputMaybe<BusinessType>;
   description?: InputMaybe<Array<TranslationTextInput>>;
   email?: InputMaybe<Scalars["String"]["input"]>;
   hashtags?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  images?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  images?: Array<AsssestsInput>;
   location?: InputMaybe<LocationInput>;
   name?: InputMaybe<Array<TranslationTextInput>>;
   payment_methods?: InputMaybe<Array<ShopPaymentMethod>>;
@@ -7088,9 +7114,9 @@ export type UpdateUserShopInput = {
   targetGenders?: InputMaybe<Array<TargetGenders>>;
   thumbnail?: InputMaybe<Scalars["String"]["input"]>;
   type?: InputMaybe<ServiceType>;
-  userId: Scalars["String"]["input"];
+  ownerId?: Scalars["String"]["input"];
   vat?: InputMaybe<VatSettingsPartialInput>;
-  vidoes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  videos?: Array<AsssestsInput>;
 };
 
 export type UpdateWeekdaysWorkingHoursInput = {

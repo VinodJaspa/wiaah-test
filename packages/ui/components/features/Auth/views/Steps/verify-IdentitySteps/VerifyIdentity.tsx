@@ -15,7 +15,7 @@ export default function IdentityVerification() {
 
   const nextStep = () => setStep((s) => Math.min(s + 1, 6));
   const prevStep = () => setStep((s) => Math.max(s - 1, 1));
-  console.log(demoidentity.src, "demoidentity");
+
 
   return (
     <main className="flex bg-white min-h-screen">

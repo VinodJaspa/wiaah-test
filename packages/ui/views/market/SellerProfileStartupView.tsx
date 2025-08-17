@@ -1,56 +1,42 @@
-import React, { useEffect, useRef } from "react";
-import { MdArrowBackIosNew } from "react-icons/md";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { MdArrowBackIosNew } from "react-icons/md";
 
 import {
-  ShopInformationStep,
-  SelectPackageStep,
-  NewShippingSettings,
-  FindYourFriendsStep,
-  Container,
-  BillingAccount,
-  NewServiceStepper,
-  useGetMyShopType,
-  Input,
-  EmailArrowDownIcon,
   AccountVerifciationForm,
-  PaymentMethodForm,
-  useVerifyEmailMutation,
-  useResponsive,
-  HStack,
+  AccountVerificationFormData,
   ArrowLeftAlt1Icon,
   ArrowRightAltIcon,
-  useGetMyAccountQuery,
+  Container,
+  FindYourFriendsStep,
+  HStack,
+  NewServiceStepper,
+  NewShippingSettings,
+  SelectPackageStep,
+  useGetMyShopType,
   useRequestAccountVerification,
-  AccountVerificationFormData,
-  useResendRegisterationCodeMutation,
-  Stepper,
-  StepperContent,
-  StepperFormController,
-  StepperFormHandler,
-  PaymentMethodsSection,
+  useResponsive
 } from "@UI";
 // @ts-ignore
 
-import { StepperStepType } from "types";
 import { Button } from "@UI";
-import { runIfFn, useForm, WiaahLangId } from "utils";
-import { useCreateServiceMutation } from "@features/Services/Services/mutation";
+import { DoctorSpeakingLanguage, StoreType } from "@features/API";
 import { AccountSignup } from "@features/Auth/views";
 import { useSubscribeToMembershipMutation } from "@features/Membership";
-import { DoctorSpeakingLanguage, StoreType } from "@features/API";
+import { useCreateServiceMutation } from "@features/Services/Services/mutation";
+import { StepperStepType } from "types";
+import { runIfFn, WiaahLangId } from "utils";
 
 import 'react-circular-progressbar/dist/styles.css';
 
-import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
-import { AccountInforamtion } from "@features/Auth/views/Steps/AuthFormStepThree";
-import ServicePresentaionForm from "@features/Auth/views/Steps/AuthFromStepFour";
 import ChooseMembership from "@UI/components/Membership";
-import { FormWrapper } from "@UI/components/shadcn-components/FormWrapper/InnerFormWrapper";
-import IdentityVerification from "@features/Auth/views/Steps/verify-IdentitySteps/VerifyIdentity";
 import AddPaymentPage from "@UI/components/PaymentPage/AddPayment";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import { FormWrapper } from "@UI/components/shadcn-components/FormWrapper/InnerFormWrapper";
+import { AccountInforamtion } from "@features/Auth/views/Steps/AuthFormStepThree";
 import { AccountSignEmailVerificationStep } from "@features/Auth/views/Steps/AuthFormStepTwo";
-import FormSubmitLoader from "@features/Auth/components/Spinner";
+import ServicePresentaionForm from "@features/Auth/views/Steps/AuthFromStepFour";
+import IdentityVerification from "@features/Auth/views/Steps/verify-IdentitySteps/VerifyIdentity";
 interface StepperProps {
   setFormSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
   isFormSubmitting: boolean;
@@ -78,6 +64,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
 
   const requestNextStep = async () => {
     const submitFn = submitRequests[currentStep];
+
     if (submitFn) {
       setFormSubmitting(true);
       const isSuccess = await submitFn();
@@ -125,7 +112,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
 
 
           <AccountSignEmailVerificationStep
-            onSuccess={handleNextStep}
+            onSuccess={requestNextStep}
             ref={(v: { submit: () => any }) => {
               if (v && typeof v.submit === "function") {
                 addSubmitRequest(1, v.submit);
@@ -137,17 +124,17 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
       },
       {
         stepName: t("Shop information"),
-        key: 3,
+        key: 2,
         stepComponent:
           (
 
             <>
 
               <AccountInforamtion
-                onSuccess={handleNextStep}
+                onSuccess={requestNextStep}
                 ref={(v: { submit: () => any }) => {
                   if (v && typeof v.submit === "function") {
-                    addSubmitRequest(1, v.submit);
+                    addSubmitRequest(2, v.submit);
                   }
                 }}
               />
@@ -157,11 +144,18 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
       },
       {
         stepName: t("Service Presentation"),
-        key: 4,
+        key: 3,
         stepComponent: (
 
 
-          <ServicePresentaionForm />
+          <ServicePresentaionForm
+            onSuccess={requestNextStep}
+            ref={(v: { submit: () => any }) => {
+              if (v && typeof v.submit === "function") {
+                addSubmitRequest(3, v.submit);
+              }
+            }}
+          />
 
         ),
       },
@@ -280,7 +274,7 @@ export const SellerProfileStartupView: React.FC<StepperProps> = ({ currentStep, 
           />
         </div>
 
-        <p className="text-xs text-gray-500">{`Step ${currentStep +1} of ${totalSteps}`}</p>
+        <p className="text-xs text-gray-500">{`Step ${currentStep + 1} of ${totalSteps}`}</p>
       </div>
     );
   };

@@ -16,7 +16,12 @@ export const client = new MongoClient(uri, {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(graphqlUploadExpress());
+ app.use(
+    graphqlUploadExpress({
+      maxFileSize: 50_000_000, // 50 MB
+      maxFiles: 5,             // Max files per request
+    }),
+  );
   app.enableCors({
     origin: [
       'http://localhost:3000',
@@ -32,7 +37,7 @@ async function bootstrap() {
   
       if (user) {
         req.user = user;
-        console.log('✅ User added to req:', user);
+        // console.log('✅ User added to req:', user);
       } else {
         console.warn('❌ No user found in token');
       }

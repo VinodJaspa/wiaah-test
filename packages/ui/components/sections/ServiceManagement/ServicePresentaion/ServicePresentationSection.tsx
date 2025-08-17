@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import InputField from "@UI/components/shadcn-components/Fields/InputField";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import TextareaField from "@UI/components/shadcn-components/Fields/TextAreaField";
+import ImageVidoeUploader from "@UI/components/ImageUploader/ImageUploader";
 
 
 interface ServicePresentationSectionProps {
@@ -90,39 +91,17 @@ export const ServicePresentationSection: React.FC<ServicePresentationSectionProp
                         </div>
 
                         {/* Video Upload */}
-                        <div className="space-y-2">
-                            <Subtitle>
-                                Video
-                            </Subtitle>
+                        <ImageVidoeUploader
+                            name="images"
+                            type="image"
+                            maxCount={3}
+                        />
+                         <ImageVidoeUploader
+                            name="videos"
+                            type="video"
+                            maxCount={1}
+                        />
 
-                            {video && (
-                                <video className="w-full rounded-lg" controls>
-                                    <source src={video} />
-                                </video>
-                            )}
-                            <p className="text-sm text-gray-500">Upload a video to showcase your service</p>
-                            <input type="file" accept="video/*" onChange={handleVideoUpload} />
-                        </div>
-
-                        {/* Photos Upload */}
-                        <div className="space-y-2">
-                            <Subtitle>
-                                Photos
-                            </Subtitle>
-
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                {photos.map((photo, i) => (
-                                    <img
-                                        key={i}
-                                        src={photo}
-                                        alt={`Preview ${i}`}
-                                        className="rounded-lg object-cover w-full h-40"
-                                    />
-                                ))}
-                            </div>
-                            <p className="text-sm text-gray-500">Upload at least 3 photos to showcase your service</p>
-                            <input type="file" multiple accept="image/*" onChange={handlePhotoUpload} />
-                        </div>
 
 
                     </Form>

@@ -15,33 +15,25 @@ interface SelectFieldProps extends Omit<ReactSelectProps, "options" | "onChange"
   options: Option[];
 }
 
-export default function SelectField({ label, name, options, ...props }: SelectFieldProps) {
-  const [field, meta,helpers] = useField(name);
+export default function SelectField({ label, name, options, onChange, ...props }: SelectFieldProps & { onChange?: (value: string) => void }) {
+  const [field, meta, helpers] = useField(name);
   const { setFieldValue } = useFormikContext<any>();
-  // React.useEffect(() => {
-  //   // For example, clear error on mount:
-  //   helpers.setError('');
-  // }, [helpers]); 
-  // console.log(helpers ,"helpers");
-  
-
-  
 
   const selectedOption = options.find((opt) => opt.value === field.value);
 
   const customStyles: StylesConfig<Option> = {
     option: (base, state) => ({
       ...base,
-      fontSize: "0.875rem", // text-sm
+      fontSize: "0.875rem",
       color: state.isSelected ? "black" : base.color,
-      backgroundColor: state.isSelected ? "#e5e7eb" : base.backgroundColor, // Tailwind's gray-200
+      backgroundColor: state.isSelected ? "#e5e7eb" : base.backgroundColor,
       paddingTop: "6px",
       paddingBottom: "6px",
     }),
     control: (base) => ({
       ...base,
-      fontSize: "0.875rem", // text-sm
-      borderColor: "#d1d5db", // gray-300
+      fontSize: "0.875rem",
+      borderColor: "#d1d5db",
     }),
     singleValue: (base) => ({
       ...base,
@@ -49,8 +41,14 @@ export default function SelectField({ label, name, options, ...props }: SelectFi
     }),
     menu: (base) => ({
       ...base,
-      zIndex: 20, // to ensure dropdown overlaps properly
+      zIndex: 20,
     }),
+  };
+
+  const handleChange = (option: Option | null) => {
+    const value = option?.value || "";
+    setFieldValue(name, value);
+    if (onChange) onChange(value); // call custom onChange
   };
 
   return (
@@ -60,23 +58,15 @@ export default function SelectField({ label, name, options, ...props }: SelectFi
         {...props}
         name={name}
         value={selectedOption}
-        onChange={(option) => setFieldValue(name, (option as Option)?.value)}
+        onChange={handleChange}
         options={options}
         styles={customStyles}
-        className={`bg-transparent border
-          ${
-            meta.error && meta.touched 
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-gray-300"
-          }
-        `}
-        
-   
+        className={`bg-transparent border ${
+          meta.error && meta.touched ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-gray-300"
+        }`}
         classNamePrefix="react-select"
       />
-      {meta.error && meta.touched &&(
-        <p className="text-xs text-red-600">{meta.error}</p>
-      )}
+      {meta.error && meta.touched && <p className="text-xs text-red-600">{meta.error}</p>}
     </div>
   );
 }

@@ -199,8 +199,8 @@ export class ShopResolver implements OnModuleInit {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ) {
-    await this.validateShopEditPremissions(user, input.userId);
-    return this.shopService.updateShopData(input, input.userId, lang);
+    await this.validateShopEditPremissions(user, input.ownerId);
+    return this.shopService.updateShopData(input, input.ownerId, lang);
   }
 
   async validateShopPremissions(

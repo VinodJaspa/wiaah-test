@@ -97,8 +97,8 @@ enum StoreType {
 }
 
 enum BusinessType {
-  company
-  individual
+  shop
+  services
 }
 
 enum TargetGenders {
@@ -684,6 +684,7 @@ input SpecialDayWorkingHoursInput {
 input CreateShopInput {
   name: [TranslationTextInput!]!
   description: [TranslationTextInput!]!
+  companyName: [TranslationTextInput!]!
   storeCategoryId: String
   banner: String!
   phone: String!
@@ -692,14 +693,16 @@ input CreateShopInput {
   location: LocationInput!
   storeType: StoreType!
   businessType: BusinessType!
+  collaborationType: CollaborationType!
+  members: [MemberInput!]
   storeFor: [StoreFor!]!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
   status: ShopStatus!
   payment_methods: [ShopPaymentMethod!]!
   type: ServiceType
-  vidoes: [String!]!
-  images: [String!]!
+  images: [MediaInput!]
+  videos: [MediaInput!]
   hashtags: [String!]!
 }
 
@@ -719,14 +722,50 @@ input LocationInput {
   postalCode: String!
 }
 
+enum CollaborationType {
+  company
+  individual
+}
+
+input MemberInput {
+  id: ID
+  memberType: [MemberType!]!
+  firstName: String!
+  lastName: String!
+  email: String!
+  birthDate: String
+  idNumber: String
+  idExpiration: String
+  phone: String
+  address: String
+  city: String
+  state: String
+  postalCode: String
+  country: String!
+}
+
+enum MemberType {
+  Owner
+  Executive
+  Representative
+  Director
+}
+
 input VatSettingsPartialInput {
   VatID: String
   location: LocationInput
 }
 
+input MediaInput {
+  src: String!
+  type: String!
+  asset_id: String!
+}
+
 input UpdateUserShopInput {
   name: [TranslationTextInput!]
   description: [TranslationTextInput!]
+  companyName: [TranslationTextInput!]
   storeCategoryId: String
   banner: String
   phone: String
@@ -735,16 +774,18 @@ input UpdateUserShopInput {
   location: LocationInput
   storeType: StoreType
   businessType: BusinessType
+  collaborationType: CollaborationType
+  members: [MemberInput!]
   storeFor: [StoreFor!]
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput
   status: ShopStatus
   payment_methods: [ShopPaymentMethod!]
   type: ServiceType
-  vidoes: [String!]
-  images: [String!]
+  images: [MediaInput!]
+  videos: [MediaInput!]
   hashtags: [String!]
-  userId: String!
+  ownerId: String!
 }
 
 input CreateProductInput {

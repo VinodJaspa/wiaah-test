@@ -1,10 +1,9 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
-import { useSignupMutation, useResendRegisterationCodeMutation } from "../services";
 import { useSigninMutation } from "api";
-import { errorToast, successToast } from "utils";
+import { errorToast } from "utils";
+import { useResendRegisterationCodeMutation, useSignupMutation } from "../services";
 import { AuthFormStepOne, AuthFormStepOneRef } from "./Steps/AuthFormStepOne";
-import FormSubmitLoader from "../components/Spinner";
 
 export type AccountSignupRef = {
   submit: () => Promise<boolean>;
@@ -26,11 +25,7 @@ export const AccountSignup = forwardRef<AccountSignupRef, Props>(
     useImperativeHandle(ref, () => ({
       submit: async () => {
         if (!formRef.current) return false;
-
         const errors = await formRef.current.validate();
-
-
-        
         const isValid = Object.keys(errors).length === 0;
         if (!isValid) {
           // Mark all fields as touched

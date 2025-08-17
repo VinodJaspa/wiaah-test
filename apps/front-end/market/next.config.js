@@ -6,7 +6,49 @@ const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
   skipWaiting: true,
+  disable: process.env.NODE_ENV === "development", // disable PWA in dev
+  buildExcludes: [/middleware-manifest\.json$/],
+  cacheId: "my-app-v1", // bump this on every breaking deployment
+  runtimeCaching: [
+    {
+      urlPattern: /^https:\/\/fonts\.(?:gstatic|googleapis)\.com\/.*/i,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "google-fonts",
+        expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 },
+      },
+    },
+    {
+      urlPattern: /^https:\/\/cdn\.jsdelivr\.net\/.*/i,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "jsdelivr",
+        expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
+      },
+    },
+    {
+      urlPattern: /^\/_next\/image\?url=.+$/i,
+      handler: "CacheFirst",
+      options: {
+        cacheName: "next-images",
+        expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+      },
+    },
+    {
+      urlPattern: /^\/_next\/.*/i,
+      handler: "NetworkOnly",
+    }, // ✅ fixed comma
+    {
+      urlPattern: /.*/i,
+      handler: "NetworkFirst", // fallback for all routes
+      options: {
+        cacheName: "http-calls",
+        networkTimeoutSeconds: 10,
+      },
+    },
+  ],
 });
+
 const WebpackBar = require("webpackbar");
 const withTM = require("next-transpile-modules")(
   [
@@ -28,7 +70,6 @@ const withTM = require("next-transpile-modules")(
   { symlink: false }
 );
 
-// Compose plugins: withTM → withPWA → withBundleAnalyzer
 const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
@@ -69,4 +110,5 @@ const nextConfig = {
   },
 };
 
+// ✅ Only one export
 module.exports = withBundleAnalyzer(withPWA(withTM(nextConfig)));

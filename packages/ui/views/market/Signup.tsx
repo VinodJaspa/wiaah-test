@@ -8,10 +8,12 @@ import { AuthSwitcher, FormContainer } from "../../components/blocks";
 export interface LoginViewProps {
   loginType: LoginType;
   onSubmit?: (data: any, type: LoginType) => any;
+  handleRoute:(route :string)=> void;
 }
 
 export const Signup: React.FC<LoginViewProps> = ({
   loginType = "login",
+  handleRoute,
   onSubmit,
 }) => {
   const router = useRouter();
@@ -19,10 +21,10 @@ export const Signup: React.FC<LoginViewProps> = ({
   return (
     <>
       <div
-        className={`login-view-container 
-       flex flex-col items-start bg-[#00B081] p-4 lg:flex-row`}
+        className={`login-view-container xl:py-34 min-h-screen
+       flex flex-col items-start bg-[#00B081] p-4 lg:flex-row lg:p-24 xl:px-36`}
       >
-        <div className="container mx-auto flex flex-col gap-16 rounded-lg bg-black bg-opacity-20 filter lg:flex-row">
+        <div className="container mx-auto my-auto flex flex-col gap-16 rounded-lg bg-black bg-opacity-20 filter lg:flex-row">
           <div className="w-full p-2 text-white lg:w-7/12">
             <h1 className="text-3xl text-white lg:text-5xl">
               {t(
@@ -52,7 +54,7 @@ export const Signup: React.FC<LoginViewProps> = ({
             <AuthSwitcher
               loginType={loginType}
               link={true}
-              onViewChange={(view) => router.push(view)}
+              onViewChange={(view) => handleRoute(view)}
             />
           </FormContainer>
         </div>

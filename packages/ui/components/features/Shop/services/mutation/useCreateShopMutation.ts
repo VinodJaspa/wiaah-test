@@ -3,7 +3,7 @@ import { CreateShopInput, Exact, Shop } from "@features/API";
 import { useMutation } from "react-query";
 
 export type CreateShopMutationVariables = Exact<{
-  args: CreateShopInput & { crn: number; language: string; currency: string };
+  args: CreateShopInput;
 }>;
 
 export type CreateShopMutation = { __typename?: "Mutation" } & {

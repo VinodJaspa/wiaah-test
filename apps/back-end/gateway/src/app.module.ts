@@ -80,10 +80,13 @@ import { client } from './main';
               const user = context?.user;
               if (user && user.id) {
                 const safeUser = {
+                  ...user,
                   id: user.id,
                   email: user.email,
                   role: user.role,
                 };
+                console.log(safeUser ,"userr");
+                
                 const serializedUser = JSON.stringify(safeUser);
                 request.http.headers.set('user', serializedUser);
             

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
 import { LoginType } from "types";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useRouter } from "next/router";
@@ -30,15 +30,19 @@ const { t } = useTranslation();
   const [view, setView] = React.useState<LoginType>(loginType);
   const router = useRouter();
 
-  const handleChangeView = (view: LoginType) => {
-    if (onViewChange) {
-      onViewChange(view);
-    }
-    if (!link) {
-      // it wont redirect change view state
-      setView(view);
-    }
-  };
+  const handleChangeView = useCallback(
+    (newView: LoginType) => {
+      if (onViewChange) onViewChange(newView);
+      if (!link) setView(newView);
+      router.push(`/auth/${newView}`);
+      // ❌ remove router.replace (no query params, no navigation)
+      console.log(newView, "viewww (inside handleChangeView)");
+    },
+    [link, onViewChange , view]
+  );
+  
+ 
+  
 
   function handleActivateTabChange(activeKey: string) {
     if (activeKey === "login") {

@@ -6,9 +6,8 @@
   "scripts": {
     "build": "nx run-many --target=build",
     "dev": "nx run-many --target=dev --parallel=4 --exclude=nest-dto",
-  
-    "admin:build": "nx run admin:build", 
-     "start:all": "concurrently \"pnpm --filter auth start:dev\" \"pnpm --filter accounts start:dev\" \"pnpm --filter products start:dev\" \"pnpm --filter reviews start:dev\" \"pnpm --filter search start:dev\" \"pnpm --filter services start:dev\" \"pnpm --filter chat start:dev\" \"pnpm --filter mailing start:dev\" \"pnpm --filter moderation start:dev\" \"pnpm --filter membership start:dev\" \"pnpm --filter billing start:dev\" \"pnpm --filter shopping-cart start:dev\" \"pnpm --filter affiliation start:dev\" \"pnpm --filter social start:dev\" \"pnpm --filter orders start:dev\" \"pnpm --filter hashtag start:dev\" \"pnpm --filter currency-conversion start:dev\"  \"pnpm --filter wishlist start:dev\" \"pnpm --filter notification start:dev\"",
+    "admin:build": "nx run admin:build",
+    "start:all": "concurrently \"pnpm --filter auth start:dev\" \"pnpm --filter accounts start:dev\" \"pnpm --filter products start:dev\" \"pnpm --filter reviews start:dev\" \"pnpm --filter search start:dev\" \"pnpm --filter services start:dev\" \"pnpm --filter chat start:dev\" \"pnpm --filter mailing start:dev\" \"pnpm --filter moderation start:dev\" \"pnpm --filter membership start:dev\" \"pnpm --filter billing start:dev\" \"pnpm --filter shopping-cart start:dev\" \"pnpm --filter affiliation start:dev\" \"pnpm --filter social start:dev\" \"pnpm --filter orders start:dev\" \"pnpm --filter hashtag start:dev\" \"pnpm --filter currency-conversion start:dev\"  \"pnpm --filter wishlist start:dev\" \"pnpm --filter notification start:dev\"",
     "admin:dev": "nx run admin:serve",
     "seller:build": "nx run seller:build",
     "seller:dev": "nx run seller:serve",
@@ -259,6 +258,7 @@
     "react-i18next": "^12.3.1",
     "react-image-gallery": "^1.4.0",
     "react-phone-input-2": "^2.15.1",
+    "react-phone-number-input": "^3.4.12",
     "react-query": "^3.39.3",
     "react-radial-progress-indicator": "^1.4.1",
     "react-rating": "^2.0.5",

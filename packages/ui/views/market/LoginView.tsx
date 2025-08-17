@@ -10,6 +10,9 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useSigninMutation } from "@features/Auth";
+import { errorToast, successToast } from "utils";
+import { useSetRecoilState } from "recoil";
+import { isUserLoggedIn } from "state";
 
 
 type loginInput = {
@@ -32,15 +35,15 @@ export const LoginView: FC<{
 }> = ({ setAuthView, onSubmit }) => {
   const router = useRouter();
   const { CloseLoginPopup } = useLoginPopup();
-const { t } = useTranslation();
-
+  const { t } = useTranslation();
+ const setUserLoggedIn = useSetRecoilState(isUserLoggedIn);
   const [formInput, setFormInput] = useState<LoginInputsType>({
     email: "",
     password: "",
     remember_me: false,
   });
 
-  const { mutate: SignIn } = useSigninMutation();
+  const { mutate: signin, isLoading } = useSigninMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,18 +60,34 @@ const { t } = useTranslation();
         validationSchema={loginValidationSchema}
         initialValues={{ email: "", password: "", remember_me: false }}
         onSubmit={(data) => {
-          SignIn(
-            { email: data.email, password: data.password },
-            {
-              onSuccess: (response) => {
-                console.log("signed in");
-              },
-              onError: (err) => {
-                console.error("Signup error:", err);
-              },
-            }
-          );
+          const payload = {
+            email: data.email,
+            password: data.password,
+          };
+        
+          signin(payload, {
+            onSuccess: (res: any) => {
+              if (res.success) {
+                const token = res.accessToken;
+                if (token) {
+                  setUserLoggedIn(true);
+                  successToast(res.message || "Sign in successful!");
+                  router.push("/");
+                }
+              } else {
+                console.log(res, "response");
+                const errorMessage =
+                  res.response?.errors?.[0]?.message || res.message || "Unknown error";
+                errorToast(errorMessage);
+              }
+            },
+            onError: (err: any) => {
+              const message = err.response?.data?.message || err.message || "Sign in failed. Please try again.";
+              errorToast(message);
+            },
+          });
         }}
+        
       >
         {({ isSubmitting }) => (
           <Form className="flex flex-col">
@@ -113,8 +132,8 @@ const { t } = useTranslation();
               </Link>
             </div>
             <Spacer />
-            <Button type="submit" disabled={isSubmitting}>
-              {t("log_in", "log in")}
+            <Button type="submit" disabled={isLoading}>
+            {isLoading ? t("Signing in...") : t("Sign in")}
             </Button>
             <Spacer />
           </Form>
@@ -123,11 +142,11 @@ const { t } = useTranslation();
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
       <div className="align flex w-full flex-col">
         <Button
-          onClick={() => setAuthView("buyer-signup")}
+          onClick={() => setAuthView("seller-signup")}
           id="CreateNewAccountBtn"
           outline
         >
-          {t("create_your_wiaah_account", "create your Wiaah Account now")}
+          {t("create_your_wiaah_account", "Create your wiaah account now")}
         </Button>
       </div>
     </section>

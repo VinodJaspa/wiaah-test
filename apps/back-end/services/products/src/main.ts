@@ -19,7 +19,12 @@ async function bootstrap() {
     }),
   });
   app.use(mw());
-  app.use(graphqlUploadExpress());
+ app.use(
+    graphqlUploadExpress({
+      maxFileSize: 50_000_000, // 50 MB
+      maxFiles: 5,             // Max files per request
+    }),
+  );
   await app.startAllMicroservices();
 
   await app.listen(process.env.PORT || 3006, () =>

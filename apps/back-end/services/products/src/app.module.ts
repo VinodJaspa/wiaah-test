@@ -60,7 +60,7 @@ export class PrismaGlobalModule {}
         const userIp =
           req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        // console.log({ req, userIp });
+        // console.log( req,"user");
         return { req, res, user: { ...user, ip: userIp } };
       },
     }),
