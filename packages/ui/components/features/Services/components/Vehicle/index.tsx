@@ -5,7 +5,7 @@ import VehicleServiceGrid from "./VehicleServiceGrid";
 import { useState } from "react";
 
 
-export default function ServicesPage() {
+export default function VehiclePage() {
     const [total, setTotal] = useState(1);
     const [current, setCurrent] = useState(1);
     const handleNext = () => {

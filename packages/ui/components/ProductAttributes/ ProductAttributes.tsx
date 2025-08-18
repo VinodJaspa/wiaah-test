@@ -1,14 +1,12 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import SpecialDiscount from "../../../../apps/front-end/seller/components/ProductDiscount";
+
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import SelectField from "@UI/components/shadcn-components/Fields/SelectField";
 import InputField from "@UI/components/shadcn-components/Fields/InputField";
 import { CreateProductInput } from "@features/API/gql/generated";
-
-
-
+import SpecialDiscount from "@features/Services/components/ProductDiscount";
 const colors = [
   { value: "red", colorCode: "#ff0000" },
   { value: "green", colorCode: "#00ff00" },

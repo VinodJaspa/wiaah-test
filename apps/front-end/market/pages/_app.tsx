@@ -28,66 +28,64 @@ const handleAutoRedirect = (route: string, router: NextRouter) => {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
-
   const router = useRouter();
 
+  // ensure router is ready before anything uses it
+  if (!router.isReady) return null;
+
+  // redirect in effect, not during render
   useGraphqlRequestErrorCode(
     (v) => v.Unauthorized,
     () => {
-      handleAutoRedirect("login", router);
+      setTimeout(() => {
+        if (router.route !== "/login" && router.route !== "/404") {
+          router.push("/login");
+        }
+      }, 0);
     },
   );
+
   const HeadWrapper: FC<{ children?: ReactNode }> = ({ children }) => (
     <NextHead>{children}</NextHead>
   );
 
   return (
     <QueryClientProvider client={queryClient}>
-
-        <Hydrate state={pageProps.dehydratedState}>
-          <RoutingProvider
-            back={() => router.back()}
-            getBaseUrl={() => router.basePath}
-            getQuery={() => ClearNextJSQuery(router.query, router.route)}
-            getCurrentPath={() => {
-              return router.asPath;
-            }}
-            visit={(url) => (router ? router.push(url) : null)}
-            getParam={(paramName) => {
-              const params = router.query[paramName];
-              const param =
-                Array.isArray(params) && params.length > 0 ? params[0] : params;
-
-              return typeof param === "string" ? param : null;
-            }}
-          >
-            <ToastContainer />
-            <CookiesProvider>
-              <AuthLayout>
-                <ReactPubsubProvider
-                  keys={ReactPubsubKeys}
-                  client={new ReactPubsubClient()}
-                >
-                  <ReactSeoProvider TagWrapper={HeadWrapper}>
-                    <RecoilRoot>
-                      <DataInitializationWrapper
-                        accountType={AccountType.Seller}
-                      >
-                        <Component suppressHydrationWarning {...pageProps} />
-                      </DataInitializationWrapper>
-                    </RecoilRoot>
-                  </ReactSeoProvider>
-                </ReactPubsubProvider>
-              </AuthLayout>
-            </CookiesProvider>
-
-          </RoutingProvider>
-        </Hydrate>
-
-
+      <Hydrate state={pageProps.dehydratedState}>
+        <RoutingProvider
+          back={() => router.back()}
+          getBaseUrl={() => router.basePath}
+          getQuery={() => ClearNextJSQuery(router.query, router.route)}
+          getCurrentPath={() => router.asPath}
+          visit={(url) => router.push(url)}
+          getParam={(paramName) => {
+            const params = router.query[paramName];
+            return typeof params === "string" ? params : null;
+          }}
+        >
+          <ToastContainer />
+          <CookiesProvider>
+            <AuthLayout>
+              <ReactPubsubProvider
+                keys={ReactPubsubKeys}
+                client={new ReactPubsubClient()}
+              >
+                <ReactSeoProvider TagWrapper={HeadWrapper}>
+                  <RecoilRoot>
+                    <DataInitializationWrapper accountType={AccountType.Seller}>
+                      <Component {...pageProps} />
+                    </DataInitializationWrapper>
+                  </RecoilRoot>
+                </ReactSeoProvider>
+              </ReactPubsubProvider>
+            </AuthLayout>
+          </CookiesProvider>
+        </RoutingProvider>
+      </Hydrate>
     </QueryClientProvider>
   );
 }
+
 
 export default MyApp;
 

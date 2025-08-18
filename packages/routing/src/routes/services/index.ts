@@ -85,6 +85,8 @@ export const ServicesRoutes: RoutesType = {
   visitServiceSearch(props) {
     const serviceSlug = props["slug"];
     if (!serviceSlug) return this;
+    console.log(this.search().services().serviceType(serviceSlug) ,"sdsddd");
+    
     return this.search().services().serviceType(serviceSlug);
   },
   visitPlace(props) {

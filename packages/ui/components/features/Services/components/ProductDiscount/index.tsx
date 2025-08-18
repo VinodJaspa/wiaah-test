@@ -1,8 +1,9 @@
+import Subtitle from '@UI/components/shadcn-components/Title/Subtitle';
 import React from 'react';
-import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+
 import { AiOutlinePlus } from "react-icons/ai";
 
-export default function SpecialDiscount({handleOpenModal}) {
+const  SpecialDiscount=({handleOpenModal})=> {
   return (
     <div className="space-y-4">
       <Subtitle>
@@ -28,3 +29,4 @@ export default function SpecialDiscount({handleOpenModal}) {
     </div>
   );
 }
+export default SpecialDiscount;
