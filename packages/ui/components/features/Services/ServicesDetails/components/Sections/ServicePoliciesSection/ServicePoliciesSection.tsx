@@ -9,25 +9,31 @@ export interface ServicePoliciesSectionProps {
 
 export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   policies,
-  // deposit,
   title,
 }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const policiesRef = usePublishRef((keys) => keys.policies);
 
   return (
-    <div ref={policiesRef} className="flex flex-col gap-4">
-      <p className="font-bold text-3xl text-black text-opacity-80">{title}</p>
+    <div ref={policiesRef} className="flex flex-col gap-3">
+      {/* Smaller section title */}
+      <p className="font-semibold text-xl text-black text-opacity-80">
+        {title}
+      </p>
+
       {Array.isArray(policies)
         ? policies.map((policy, i) => (
-            <div key={i} className="flex flex-col gap-2">
-              <p className="font-bold">{t(policy.policyTitle)}</p>
+            <div key={i} className="flex flex-col gap-1.5">
+              {/* Smaller policy title */}
+              <p className="font-semibold text-sm text-black">
+                {t(policy.policyTitle)}
+              </p>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-1">
                 {Array.isArray(policy.terms)
                   ? policy.terms.map((term, i) => (
                       <p
-                        className="font-normal text-lg text-black text-opacity-50"
+                        className="font-normal text-xs text-gray-600"
                         key={i}
                       >
                         {term}

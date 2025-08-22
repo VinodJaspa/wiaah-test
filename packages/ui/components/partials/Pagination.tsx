@@ -49,40 +49,40 @@ export const Pagination: React.FC<PaginationProps> = ({
         className={`${htmlProps?.className || ""} flex w-full justify-center`}
       >
         <ul className="inline-flex items-center space-x-4 p-2 text-white">
-          <li
+          {/* <li
             onClick={() => handlePrevPage(true)}
             id="FirstPageBtn"
             className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleDoubleLeft className="h-5 w-5" />
-          </li>
+          </li> */}
           <li
             onClick={() => handlePrevPage()}
             id="PrevPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full text-black p-3"
           >
-            <FaAngleLeft className="h-5 w-5" />
+            <FaAngleLeft className="h-3 w-3" />
           </li>
           <li
             id="CurrentPage"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary p-3"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-black p-3"
           >
             {currentPage}
           </li>
           <li
             onClick={() => handleNextPage()}
             id="NextPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full text-black p-3"
           >
-            <FaAngleRight className="h-5 w-5" />
+            <FaAngleRight className="h-3 w-3" />
           </li>
-          <li
+          {/* <li
             onClick={() => handleNextPage(true)}
             id="LastPageBtn"
             className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleDoubleRight className="h-5 w-5" />
-          </li>
+          </li> */}
         </ul>
       </div>
     </>

@@ -41,7 +41,7 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
   date,
 }) => {
     const router = useRouter();
-  const { t } = useTranslation(); // Translation hook for localization
+    const { t } = useTranslation(); // Translation hook for localization
 
     // State to manage whether the rental is saved
     const [isSaved, setIsSaved] = React.useState(saved);
@@ -56,7 +56,7 @@ export const MarketHolidayRentalsServiceSearchCardAlt: React.FC<
         {/* Image with aspect ratio and save toggle button */}
         <div className="relative">
           <MarketServiceSearchHoverOverlay
-            onButtonClick={() => router.push(`/service/holiday_rentals/${id}`)}
+            onButtonClick={() => window.location.href =(`/service/holiday_rentals/${id}`)}
           >
             <AspectRatioImage
               ratio={1.04}

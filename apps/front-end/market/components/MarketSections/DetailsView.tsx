@@ -1,19 +1,12 @@
+"use client";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "@UI/../hooks";
-import {
-  SearchServiceQuery,
-  ServicePaymentMethods,
-  useGetFilteredServicesQuery,
-} from "../Services";
-import {
-  DisplayFoundServices,
-  ServicesSearchGrid,
-  ServicesSearchResultsFiltersSidebar,
-} from "../components";
+
 import {
   Button,
   Drawer,
+  FilterIcon,
   HStack,
   Input,
   ModalContent,
@@ -36,36 +29,34 @@ import {
   ServiceType,
 } from "@features/API";
 import { getRandomName, mapArray, randomNum, useForm } from "@UI/../utils/src";
-import { HotelDetailedSearchCard } from "../hotels";
-import {
-  ResturantFindTableFilterStepper,
-  ResturantSearchList,
-} from "../resturant";
-import { HealthCenterServiceSearchResultsList } from "../HealthCenter";
-import { RecommendedBeautyCenterSearchList } from "../beautyCenter";
-import { getRandomServiceImage } from "@UI/placeholder";
-import { VehicleSearchCard } from "../Vehicle";
-import { SectionHeader } from "@sections/ShoppingManagement";
-import { FilterIcon } from "@UI/components/partials/icons/FilterIcon";
-import { useGetServiceCategoryFiltersQuery } from "../Services/queries/getServiceCategoryFilters.fetcher";
+
+
 import {
   ServicePaymentMethod,
   ServiceStatus,
 } from "@features/API/gql/generated";
-import {
-  MarketBeautyCenterSearchCardAlt,
-  MarketHolidayRentalsServiceSearchCardAlt,
-  MarketHotelServiceSearchCardAlt,
-  MarketRestaurantServiceSearchCardAlt,
-  MarketVehicleServiceSearchCardAlt,
-} from "./MarketSearviceSearchItems";
-import { MarketHealthCenterServiceCardAlt } from "./MarketSearviceSearchItems/MarketHealthCenterServiceCardAlt";
+import { MarketBeautyCenterSearchCardAlt, MarketHealthCenterServiceCardAlt, MarketHolidayRentalsServiceSearchCardAlt, MarketHotelServiceSearchCardAlt, MarketRestaurantServiceSearchCardAlt, MarketVehicleServiceSearchCardAlt } from "@features/Services/MarketSections/MarketSearviceSearchItems";
+import { DisplayFoundServices, HealthCenterServiceSearchResultsList, HotelDetailedSearchCard, RecommendedBeautyCenterSearchList, ResturantFindTableFilterStepper, ResturantSearchList, SearchServiceQuery, ServicesSearchGrid, ServicesSearchResultsFiltersSidebar, VehicleSearchCard } from "@features/Services";
+import { ServicePaymentMethods } from "api";
 
-export const MarketServiceSearchResaultsView: React.FC<{
+import {useGetFilteredServicesQuery,useGetServiceCategoryFiltersQuery} from "@features/Services/Services/queries"
+import { getRandomServiceImage ,SectionHeader } from "@UI";
+
+export const MarketDeatilsView: React.FC<{
+
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
-const { t } = useTranslation();
+  console.log(MarketBeautyCenterSearchCardAlt,
+    MarketHealthCenterServiceCardAlt,
+    MarketHolidayRentalsServiceSearchCardAlt,
+    MarketHotelServiceSearchCardAlt,
+    MarketRestaurantServiceSearchCardAlt,
+    MarketVehicleServiceSearchCardAlt, "sdsddsss");
+
+
+
+  const { t } = useTranslation();
   const { isTablet, isMobile } = useResponsive();
   const { showServiceSearchResultsFilter } = useSocialControls();
   const { controls, pagination } = usePaginationControls();
@@ -75,6 +66,8 @@ const { t } = useTranslation();
     pagination,
     filters: [],
   });
+
+
   const {
     data: services,
     isLoading,
@@ -107,65 +100,65 @@ const { t } = useTranslation();
       />
     </div>
   ) : (
-    <div
-      className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
-        } relative flex  py-4`}
-    >
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
-            <Input
-              label={t("Destination") + "/" + t("property name") + ":"}
-              name="search_query"
-            />
-            <DateFormInput
-              className={"bg-white h-12"}
-              menuProps={{
-                menuListProps: {
-                  className: "translate-x-full origin-top-left",
-                },
-              }}
-              placeholder={t("Check-in") + " " + t("date")}
-              label={t("Check-in") + " " + t("date") + ":"}
-            />
-            <DateFormInput
-              menuProps={{
-                menuListProps: {
-                  className: "translate-x-full origin-top-left",
-                },
-              }}
-              placeholder={t("Check-out") + " " + t("date")}
-              className={"bg-white h-12 "}
-              label={t("Check-out") + " " + t("date") + ":"}
-            />
-            <Select>
-              <SelectOption value={"1"}>test</SelectOption>
-            </Select>
-            <Button>{t("Search")}</Button>
-          </div>
-        ) : null}
-
-        {showOn([
-          ServiceType.Restaurant,
-          ServiceType.HealthCenter,
-          ServiceType.BeautyCenter,
-        ]) ? (
-          <ResturantFindTableFilterStepper />
-        ) : null}
-
-        <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
-      </ServicesSearchResultsFiltersSidebar>
-      <ServicesCardsSwitcherView
-        serviceType={serviceType}
-        services={services}
-        showOn={showOn}
-        searchQuery={searchQuery}
-      />
-    </div>
+  <div
+       className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
+         } relative flex  py-4`}
+     >
+       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+         {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+           <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
+             <Input
+               label={t("Destination") + "/" + t("property name") + ":"}
+               name="search_query"
+             />
+             <DateFormInput
+               className={"bg-white h-12"}
+               menuProps={{
+                 menuListProps: {
+                   className: "translate-x-full origin-top-left",
+                 },
+               }}
+               placeholder={t("Check-in") + " " + t("date")}
+               label={t("Check-in") + " " + t("date") + ":"}
+             />
+             <DateFormInput
+               menuProps={{
+                 menuListProps: {
+                   className: "translate-x-full origin-top-left",
+                 },
+               }}
+               placeholder={t("Check-out") + " " + t("date")}
+               className={"bg-white h-12 "}
+               label={t("Check-out") + " " + t("date") + ":"}
+             />
+             <Select>
+               <SelectOption value={"1"}>test</SelectOption>
+             </Select>
+             <Button>{t("Search")}</Button>
+           </div>
+         ) : null}
+ 
+         {showOn([
+           ServiceType.Restaurant,
+           ServiceType.HealthCenter,
+           ServiceType.BeautyCenter,
+         ]) ? (
+           <ResturantFindTableFilterStepper />
+         ) : null}
+ 
+         <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
+       </ServicesSearchResultsFiltersSidebar>
+       <ServicesCardsSwitcherView
+         serviceType={serviceType}
+         services={services}
+         showOn={showOn}
+         searchQuery={searchQuery}
+       />
+     </div>
   );
 };
 
-export const MarketServiceSearchResultsFiltersModal: React.FC<{
+const MarketServiceSearchResultsFiltersModal: React.FC<{
   onApply: (
     filters: {
       id: string;
@@ -175,7 +168,7 @@ export const MarketServiceSearchResultsFiltersModal: React.FC<{
 }> = ({ onApply }) => {
   const { hideServiceSearchResultsFilter, value: serviceType } =
     useSocialControls("marketServiceSearchResultsFilters");
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const isOpen = Object.values(ServiceType).includes(
     serviceType as ServiceType,
   );
@@ -296,7 +289,7 @@ interface MobileServicesCardsSwitcherViewProps {
   serviceType: ServiceType;
 }
 
-export const MobileServicesCardsSwitcherView: React.FC<
+const MobileServicesCardsSwitcherView: React.FC<
   MobileServicesCardsSwitcherViewProps
 > = ({ services, serviceType }) => {
   const placeholderData = Array.from({ length: 4 }).map((_, idx) => ({
@@ -483,12 +476,12 @@ interface ServicesCardsSwitcherViewProps {
   searchQuery: string;
 }
 
-export const ServicesCardsSwitcherView: React.FC<
+const ServicesCardsSwitcherView: React.FC<
   ServicesCardsSwitcherViewProps
 > = ({ services, serviceType, showOn, searchQuery }) => {
   const { isTablet, isMobile } = useResponsive();
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full gap-4 ">
       {serviceType === ServiceType.Hotel ? (

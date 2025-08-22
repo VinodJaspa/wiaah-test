@@ -33,5 +33,7 @@ export * from "./SiteSettings";
 export * from "./Hashtag";
 export * from "./Places";
 export * from "./Moderation";
-export * from "../features/Services";
+export * from "../features"
+export * from "./Services/ServicesDetails"
+
 

@@ -6,7 +6,12 @@ import {
   isSameDay,
   mapArray,
 } from "@UI/../utils/src";
-import { ArrowLeftIcon, ArrowRightIcon, AspectRatio, HStack } from "@partials";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  AspectRatio,
+  HStack,
+} from "@partials";
 import React from "react";
 
 type date = number | string | Date;
@@ -27,45 +32,58 @@ export const ServiceRangeBookingCalander: React.FC<
   const { allDates, weekdays } = getMonthCalenderDays(new Date(currentDate));
 
   function nextMonth() {
-    setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
+    setCurrentDate(
+      new Date(currentDate.setMonth(currentDate.getMonth() + 1)),
+    );
   }
 
   function prevMonth() {
-    setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
+    setCurrentDate(
+      new Date(currentDate.setMonth(currentDate.getMonth() - 1)),
+    );
   }
 
   return (
-    <div className="select-none w-full">
-      <HStack className="text-3xl justify-between mx-[0.5em]">
-        <ArrowLeftIcon onClick={() => prevMonth()} />
-        <p className="font-bold text-lg text-center flex items-center gap-2">
+    <div className="select-none w-full bg-white  p-2  border">
+      {/* Calendar header */}
+      <HStack className="text-3xl justify-between mb-4">
+        <ArrowLeftIcon
+          onClick={() => prevMonth()}
+          className="cursor-pointer hover:text-gray-700"
+        />
+        <p className="font-semibold text-lg text-center flex items-center gap-2">
           <span>
-            {currentDate.toLocaleDateString("en-us", {
-              month: "short",
-            })}
+            {currentDate.toLocaleDateString("en-us", { month: "long" })}
           </span>
           <span>
-            {currentDate.toLocaleDateString("en-us", {
-              year: "numeric",
-            })}
+            {currentDate.toLocaleDateString("en-us", { year: "numeric" })}
           </span>
         </p>
-        <ArrowRightIcon onClick={() => nextMonth()} />
+        <ArrowRightIcon
+          onClick={() => nextMonth()}
+          className="cursor-pointer hover:text-gray-700"
+        />
       </HStack>
 
-      <div className="grid grid-cols-7">
+      {/* Weekdays */}
+      <div className="grid grid-cols-7 text-center text-sm font-medium text-gray-500 mb-2">
         {mapArray(weekdays, (v, i) => (
-          <div className="px-2 py-1 font-bold  text-center" key={i}>
+          <div className="py-1" key={i}>
             {v}
           </div>
         ))}
+      </div>
+
+      {/* Dates */}
+      <div className="grid grid-cols-7 gap-1">
         {mapArray(allDates, (v, i) => (
           <DayComp
+            key={i}
             currentMonth={v.currentMonth}
             currentDate={v.date}
             {...rest}
             date={date}
-          ></DayComp>
+          />
         ))}
       </div>
     </div>
@@ -93,24 +111,8 @@ const DayComp: React.FC<
   const isBooked = !!bookedDates.find((e) => {
     if (!e) return false;
     const date = new Date(e);
-    const baseDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0,
-    );
-
-    const endDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() + 1,
-      0,
-      0,
-      0,
-    );
-
+    const baseDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     const targetDate = new Date(currentDate);
     return baseDate <= targetDate && endDate > targetDate;
   });
@@ -127,20 +129,9 @@ const DayComp: React.FC<
   const isSelected = !!value.find((e) => {
     if (!e) return false;
     const date = new Date(e);
-    const baseDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-    );
-
-    const endDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() + 1,
-    );
-
+    const baseDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
     const targetDate = new Date(currentDate);
-
     return baseDate <= targetDate && endDate > targetDate;
   });
 
@@ -158,8 +149,8 @@ const DayComp: React.FC<
   return (
     <AspectRatio ratio={1}>
       <p
-        onMouseOver={() => setHover(true)}
         ref={ref}
+        onMouseOver={() => setHover(true)}
         onClick={() => {
           if (!currentMonth || isBooked || notAllowed) return;
           const from = value[0];
@@ -171,19 +162,13 @@ const DayComp: React.FC<
             if (from && isSameDay(new Date(from), new Date(currentDate))) {
               return onChange([undefined, to]);
             }
-
             if (to && isSameDay(new Date(to), new Date(currentDate))) {
               return onChange([from, undefined]);
             }
           }
 
           if (!from) {
-            if (
-              !!to &&
-              isDate(to) &&
-              isDate(currentDate) &&
-              new Date(currentDate) > new Date(to)
-            ) {
+            if (to && new Date(currentDate) > new Date(to)) {
               return onChange([to, currentDate]);
             }
             return onChange([currentDate, to]);
@@ -193,24 +178,26 @@ const DayComp: React.FC<
 
           onChange([from!, currentDate]);
         }}
-        className={`${
-          isBooked || (notAllowed && currentMonth)
-            ? "text-gray-400 cursor-not-allowed line-through"
-            : isSelected
-              ? "bg-black text-white cursor-pointer"
+        className={`w-full h-full flex justify-center items-center  font-medium text-sm transition-all
+          ${
+            isBooked || (notAllowed && currentMonth)
+              ? "text-gray-400 cursor-not-allowed line-through"
+              : isSelected
+              ? "bg-primary text-white cursor-pointer shadow"
               : !currentMonth
-                ? "cursor-not-allowed text-gray-400"
-                : "text-black cursor-pointer"
-        } w-full h-full flex justify-center items-center rounded-full font-bold text-center`}
+              ? "cursor-not-allowed text-gray-300"
+              : "text-gray-900 cursor-pointer hover:bg-gray-100"
+          }
+        `}
       >
         {currentMonth ? (
           isSelected && hover && !single ? (
-            "X"
+            "×"
           ) : (
             new Date(currentDate).getDate()
           )
         ) : (
-          <span className="font-bold text-2xl leading-3">-</span>
+          ""
         )}
       </p>
     </AspectRatio>

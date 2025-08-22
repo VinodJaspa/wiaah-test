@@ -82,13 +82,21 @@ export const ServicesRoutes: RoutesType = {
     return this.search().services().serviceType(serviceType).location(location);
   },
 
-  visitServiceSearch(props) {
-    const serviceSlug = props["slug"];
-    if (!serviceSlug) return this;
-    console.log(this.search().services().serviceType(serviceSlug) ,"sdsddd");
+  // visitServiceSearch(props) {
+  //   const serviceSlug = props["slug"];
+  //   if (!serviceSlug) return this;
+  //   console.log(this.search().services().serviceType(serviceSlug) ,"sdsddd");
     
+  //   return this.search().services().serviceType(serviceSlug);
+  // // },
+  visitServiceSearch(props: { slug: string }) {
+    const serviceSlug = props.slug;
+    if (!serviceSlug) return this;
+  
+    // Return a single route object — do not chain more than needed
     return this.search().services().serviceType(serviceSlug);
   },
+  
   visitPlace(props) {
     const place = props["location"];
     return this.places().addQuery({ tag: place });

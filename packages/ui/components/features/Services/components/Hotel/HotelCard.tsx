@@ -1,8 +1,10 @@
 "use client";
 
 import { Star } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function HotelCard({
+  id,
   image,
   name,
   location,
@@ -12,6 +14,7 @@ export default function HotelCard({
   dateRange,
   onMapClick,
 }: {
+  id: string; // ✅ Add ID
   image: string;
   name: string;
   location: string;
@@ -21,19 +24,31 @@ export default function HotelCard({
   dateRange: string;
   onMapClick?: () => void;
 }) {
+  const router = useRouter();
+
   return (
-    <div className="rounded-2xl shadow-md overflow-hidden bg-white max-w-sm">
+    <div className="group rounded-2xl shadow-md overflow-hidden bg-white max-w-sm relative">
       {/* Image + Price Badge */}
       <div className="relative">
         <img
           src={image}
           alt={name}
-          className="w-full h-52 object-cover"
+          className="w-full h-52 object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
         <span className="absolute top-2 left-2 bg-white/80 text-black font-medium text-sm px-3 py-1 rounded-md">
           From {price}
         </span>
+
+        {/* Hover Overlay + Details Button */}
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            onClick={() => router.push(`/service/hotel/${id}`)} // ✅ Navigate to details page with ID
+            className="bg-white text-black font-semibold px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+          >
+            View Details
+          </button>
+        </div>
       </div>
 
       {/* Card Body */}
@@ -51,7 +66,7 @@ export default function HotelCard({
 
         {/* Show on Map */}
         <button
-          onClick={onMapClick}
+          onClick={() => router.push(`/service/hotel/${id}`)}
           className="text-red-600 text-sm font-medium hover:underline mt-1"
         >
           Show on Map
