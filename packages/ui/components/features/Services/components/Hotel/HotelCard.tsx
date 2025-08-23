@@ -1,5 +1,6 @@
 "use client";
 
+import ImageTopbadge from "@UI/components/shadcn-components/components/imageTopbadge";
 import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -36,10 +37,8 @@ export default function HotelCard({
           className="w-full h-52 object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        <span className="absolute top-2 left-2 bg-white/80 text-black font-medium text-sm px-3 py-1 rounded-md">
-          From {price}
-        </span>
-
+        <ImageTopbadge text={"From " + price}/>
+   
         {/* Hover Overlay + Details Button */}
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button

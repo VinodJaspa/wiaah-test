@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { FiMapPin, FiSearch } from "react-icons/fi";
 
-export default function SearchBarRestaurant({
+export default function SearchBarByLocationAndArea({
   placeholder1 = "Location",
   placeholder2 = "Cuisine, restaurant name...",
 }: {
@@ -13,22 +14,35 @@ export default function SearchBarRestaurant({
   const [query, setQuery] = useState("");
 
   return (
-    <div className="flex gap-3 bg-white rounded-xl p-3 shadow-md">
-      <input
-        type="text"
-        placeholder={placeholder1}
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-        className="flex-1 border rounded px-3 py-2"
-      />
-      <input
-        type="text"
-        placeholder={placeholder2}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="flex-1 border rounded px-3 py-2"
-      />
-      <button className="bg-red-600 text-white px-4 rounded">Search</button>
+    <div className="flex justify-center w-full px-4 pb-4">
+      <div className="flex w-full max-w-2xl rounded-md border border-gray-300 overflow-hidden">
+        {/* Location Input */}
+        <div className="flex items-center px-4 flex-1 bg-white">
+          <FiMapPin className="text-gray-400 mr-2" size={18} />
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder={placeholder1}
+            className="w-full py-3 text-sm text-gray-500 placeholder-gray-400 bg-white focus:outline-none border-transparent outline-none"
+          />
+        </div>
+
+        {/* Divider */}
+        <div className="w-px bg-gray-300"></div>
+
+        {/* Search Input */}
+        <div className="flex items-center px-4 flex-1 bg-white">
+          <FiSearch className="text-gray-400 mr-2" size={18} />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={placeholder2}
+            className="w-full py-3 text-sm text-gray-500 placeholder-gray-400 bg-white focus:outline-none border-transparent outline-none"
+          />
+        </div>
+      </div>
     </div>
   );
 }

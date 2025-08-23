@@ -142,7 +142,7 @@ export const LoginView: FC<{
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
       <div className="align flex w-full flex-col">
         <Button
-          onClick={() => setAuthView("seller-signup")}
+          onClick={() => setAuthView("buyer-signup")}
           id="CreateNewAccountBtn"
           outline
         >

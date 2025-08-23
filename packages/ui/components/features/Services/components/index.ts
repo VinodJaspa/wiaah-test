@@ -14,3 +14,4 @@ export * from "./Vehicle";
 
 export * from "./HealthCenter";
 export * from "./ProductDiscount";
+export * from "./BeautyCenter";

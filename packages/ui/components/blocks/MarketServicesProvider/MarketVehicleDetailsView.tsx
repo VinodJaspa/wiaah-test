@@ -12,20 +12,21 @@ import {
   Reviews,
   SectionTabType,
   ServicePresentationCarosuel,
-  StaticSideBarWrapper,
+ 
   SectionsScrollTabList,
-  useGetVehicleProviderDetailsQuery,
-  DateAndTimeInput,
-  VehiclesSelectableList,
   GetVehicleQuery,
+
 } from "ui";
+import { StaticSideBarWrapper } from "@blocks";
 import { random } from "lodash";
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
+import { VehiclesSelectableList } from "@features/Services/Vehicle/components/Lists/VehiclesSelectableList";
+import { DateAndTimeInput } from "@features/Services/Vehicle/components/Inputs";
 import { ServicePaymentMethod, ServicePresentationType } from "@features/API";
 import { WorkingSchedule } from "api";
-
+import {useGetVehicleProviderDetailsQuery} from "@features/Services/Vehicle/services";
 export const MarketVehicleServiceDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
   const {

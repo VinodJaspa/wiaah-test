@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   SpinnerFallback,
@@ -12,7 +13,7 @@ import {
   StaticSideBarWrapper,
   SectionsScrollTabList,
   Accordion,
-  useGetHealthCenterDetailsQuery,
+
   ServicesProviderHeader,
   WorkingDaysCalender,
   HealthCenterDoctorsList,
@@ -29,6 +30,7 @@ import {
   ServiceWeekdaysWorkingHours,
   WeekdaysWorkingHours,
 } from "@features/API";
+import { useGetHealthCenterDetailsQuery } from "@features/Services/HealthCenter/services";
 const convertMapScheduleToDates = (
   schedule: WeekdaysWorkingHours,
   capitalizeWeekdays: boolean = true,
@@ -40,10 +42,10 @@ const convertMapScheduleToDates = (
       ? key.charAt(0).toUpperCase() + key.slice(1) // Capitalize weekday (e.g., "Mo")
       : key;
 
-    if (value && typeof value === "object" && value.periods.length > 0) {
+    if (value && typeof value === "object" && value?.periods?.length > 0) {
       return {
         date,
-        workingHoursRanges: value.periods.map((period: string) => {
+        workingHoursRanges: value?.periods?.map((period: string) => {
           const [from, to] = period.split("-");
           return { from, to };
         }),

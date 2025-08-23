@@ -3,6 +3,7 @@ import HotelGrid from "./HotelGrid";
 import SearchBarHotel from "./SearchBarHotel";
 import React ,{useState} from "react";
 import Pagination from "../../../../../components/shadcn-components/Pagination/Pagination";
+import { Divider } from "@partials";
 export default function HotelsPageMarket() {
     const [total, setTotal] = React.useState(5);
     const [current, setCurrent] = useState(1)
@@ -94,9 +95,10 @@ export default function HotelsPageMarket() {
     
 
   return (
-    <main className="p-6">
+    <main className="pr-6 pl-6 mb-12">
       <SearchBarHotel />
-      <div className="mt-6">
+      <Divider/>
+      <div className="mt-6 ">
         <HotelGrid hotels={hotels} />
         <Pagination total={total} current={current} onPageChange={handlePageChage}/>
       </div>

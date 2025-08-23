@@ -1,7 +1,10 @@
 "use client";
 
+import { useRouter } from "next/router";
+
 export default function RestaurantCard({
   image,
+  id,
   name,
   cuisine,
   priceRange,
@@ -11,6 +14,7 @@ export default function RestaurantCard({
   reviews,
   onMapClick,
 }: {
+  id: string; // ✅ Add ID
   image: string;
   name: string;
   cuisine: string;
@@ -21,15 +25,27 @@ export default function RestaurantCard({
   reviews: number;
   onMapClick?: () => void;
 }) {
+  const router = useRouter();
   return (
     <div className="rounded-2xl shadow-md overflow-hidden bg-white">
       <div className="relative">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-40 object-cover"
-          loading="lazy"
-        />
+        <div className="relative group">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-40 object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              onClick={() => router.push(`/service/restaurant/${id}`)}
+              className="bg-white text-black font-semibold px-4 py-2 rounded-lg shadow hover:bg-gray-100"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+
       </div>
 
       <div className="p-3">
@@ -51,7 +67,7 @@ export default function RestaurantCard({
         </div>
 
         <button
-          onClick={onMapClick}
+          onClick={() => router.push(`/service/restaurant/${id}`)}
           className="mt-2 text-red-600 text-sm hover:underline"
         >
           Show on Map

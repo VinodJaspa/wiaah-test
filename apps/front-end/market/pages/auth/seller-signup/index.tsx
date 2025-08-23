@@ -8,7 +8,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import FormSubmitLoader from "@features/Auth/components/Spinner";
 
 const SignUpFinalisation: NextPage = () => {
-  const [currentStep, setCurrentStep] = React.useState<number>(3);
+  const [currentStep, setCurrentStep] = React.useState<number>(0);
   const [isFormSubmitting, setFormSubmitting] = React.useState(false);
   const { isMobile } = useResponsive();
   const { t } = useTranslation();

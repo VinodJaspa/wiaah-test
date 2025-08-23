@@ -3,6 +3,7 @@ import VehicleServiceCard from "./VehicleServiceCard";
 
 const services = [
   {
+    id: "1",
     image: "https://picsum.photos/400/300?random=1",
     price: "$250",
     priceType: "Hour",
@@ -13,6 +14,7 @@ const services = [
     rating: 4.7,
   },
   {
+    id: "2",
     image: "https://picsum.photos/400/300?random=2",
     price: "$250",
     priceType: "Week",
@@ -23,6 +25,7 @@ const services = [
     rating: 4.8,
   },
   {
+    id: "3",
     image: "https://picsum.photos/400/300?random=3",
     price: "$250",
     priceType: "Day",
@@ -33,6 +36,7 @@ const services = [
     rating: 4.6,
   },
   {
+    id: "4",
     image: "https://picsum.photos/400/300?random=4",
     price: "$250",
     priceType: "Month",
@@ -43,6 +47,7 @@ const services = [
     rating: 4.9,
   },
   {
+    id: "5",
     image: "https://picsum.photos/400/300?random=5",
     price: "$150",
     priceType: "Hour",
@@ -53,6 +58,7 @@ const services = [
     rating: 4.5,
   },
   {
+    id: "6",
     image: "https://picsum.photos/400/300?random=6",
     price: "$500",
     priceType: "Day",
@@ -63,6 +69,7 @@ const services = [
     rating: 4.9,
   },
   {
+    id: "7",
     image: "https://picsum.photos/400/300?random=7",
     price: "$300",
     priceType: "Week",
@@ -73,6 +80,7 @@ const services = [
     rating: 4.7,
   },
   {
+    id: "8",
     image: "https://picsum.photos/400/300?random=8",
     price: "$200",
     priceType: "Day",
@@ -83,6 +91,7 @@ const services = [
     rating: 4.6,
   },
   {
+    id: "9",
     image: "https://picsum.photos/400/300?random=9",
     price: "$1200",
     priceType: "Month",
@@ -93,6 +102,7 @@ const services = [
     rating: 4.4,
   },
   {
+    id: "10",
     image: "https://picsum.photos/400/300?random=10",
     price: "$80",
     priceType: "Hour",
@@ -103,6 +113,7 @@ const services = [
     rating: 4.3,
   },
   {
+    id: "11",
     image: "https://picsum.photos/400/300?random=11",
     price: "$350",
     priceType: "Week",
@@ -113,6 +124,7 @@ const services = [
     rating: 4.8,
   },
   {
+    id: "12",
     image: "https://picsum.photos/400/300?random=12",
     price: "$600",
     priceType: "Day",
@@ -127,8 +139,8 @@ const services = [
 export default function VehicleServiceGrid() {
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      {services.map((service, i) => (
-        <VehicleServiceCard key={i} {...service} />
+      {services.map((service) => (
+        <VehicleServiceCard key={service.id} {...service} />
       ))}
     </div>
   );

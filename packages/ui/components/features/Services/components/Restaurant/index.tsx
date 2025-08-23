@@ -1,7 +1,8 @@
 import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
-import RestaurantGrid from "./RestaurantGrid";
-import SearchBarRestaurant from "./SearchBarRestaurant";
 import { useState } from "react";
+import RestaurantGrid from "./RestaurantGrid";
+import SearchBarByLocationAndArea from "./SearchBarRestaurant";
+import { Divider } from "@partials";
 
 
 export default function RestaurantsPage() {
@@ -103,12 +104,13 @@ export default function RestaurantsPage() {
     
 
   return (
-    <main className="p-6">
-      <SearchBarRestaurant
+    <main className="pr-6 pl-6">
+      <SearchBarByLocationAndArea
         placeholder1="Location"
         placeholder2="Cuisine, restaurant name..."
       />
-      <div className="mt-6">
+         <Divider/>
+      <div className="sm:mt-6 pb-12">
         <RestaurantGrid restaurants={restaurants} />
         <Pagination total={total} current={current} onPageChange={handleNext}/>
       </div>

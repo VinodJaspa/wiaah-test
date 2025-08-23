@@ -2,11 +2,13 @@ const path = require("path");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
-const withPWA = require("next-pwa")({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-});
+const isDev = process.env.NODE_ENV === "development";
+// const withPWA = require("next-pwa")({
+//   dest: "public",
+//       register: true,
+//       skipWaiting: true,
+//       disable: isDev, // fully disable SW in dev
+// });
 const WebpackBar = require("webpackbar");
 const withTM = require("next-transpile-modules")(
   [
@@ -69,4 +71,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(withPWA(withTM(nextConfig)));
+module.exports = withBundleAnalyzer((withTM(nextConfig)));

@@ -26,6 +26,7 @@ import { setTestid } from "utils";
 import nookies, { deleteCookie } from "cookies-next";
 import { ServiceType } from "@features/API";
 import { useMediaQuery } from "react-responsive";
+import { useRouter } from "next/router";
 
 export interface HeaderProps {
   token?: string;
@@ -39,9 +40,14 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const [isopen, setIsopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
-  const { visit } = useRouting();
+  const { visit, getQuery } = useRouting();
+  const router = useRouter();
 
-  const onLogOut = () => {
+  const handleAuth = () => {
+    if(!signedIn){
+      router.push('/auth/login');
+      return;
+    }
     console.log("destroy cookies");
     deleteCookie("jwt");
     deleteCookie("user");
@@ -53,6 +59,23 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   };
 
   const { data: categories } = useGetServicesCategoriesQuery({ page, take });
+  const currentSlug = getQuery()?.slug ?? null;
+  const [activeSlug, setActiveSlug] = React.useState<string | null>(() => {
+    // Initialize from localStorage if available, else fallback to currentSlug
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("activeSlug") || currentSlug || null;
+    }
+    return currentSlug || null;
+  });
+  
+  // Update localStorage whenever activeSlug changes
+  React.useEffect(() => {
+    if (router.pathname === "/") {
+      localStorage.setItem("activeSlug", "All");
+    } else if (activeSlug) {
+      localStorage.setItem("activeSlug", activeSlug);
+    }
+  }, [activeSlug, router.pathname]);
 
   const steps = [
     {
@@ -184,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
             <Button
               {...setTestid("auth-btn")}
               colorScheme={isMobile ? "white" : "darkbrown"}
-              onClick={onLogOut}
+              onClick={handleAuth}
               className="flex sm:text-sm items-center gap-2"
             >
               {signedIn ? t("Logout") : t("Sign in")}
@@ -203,34 +226,39 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
 
       <div className="flex w-full bg-white p-4 text-black">
         <Container className="flex">
-        <ul className="no-scrollBar flex w-full justify-between text-[18px] items-center overflow-x-scroll">
-  <li
-    id="burger-menu-toggle"
-    className="flex cursor-pointer items-center space-x-2 hover:text-primary"
-    onClick={() => setIsopen(true)}
-  >
-    <FaAlignJustify className="h-4 w-4" />
-    <span className="inline-flex mt-1">{t("All")}</span>
-  </li>
+          <ul className="no-scrollBar flex w-full justify-between text-[18px] items-center overflow-x-scroll">
+            <li
+              id="burger-menu-toggle"
+              className="flex cursor-pointer items-center space-x-2 hover:text-primary"
+              onClick={() => setIsopen(true)}
+            >
+              <FaAlignJustify className="h-4 w-4" />
+              <span className="inline-flex mt-1">{t("All")}</span>
+            </li>
 
-  {!isMobile &&
-    Array.isArray(categories) &&
-    categories.length > 0 &&
-    categories.map((cate, i) => {
-      const slug = cate?.slug; // get the slug safely
-      if (!slug) return null;
+            {!isMobile &&
+              Array.isArray(categories) &&
+              categories.map((cate, i) => {
+                const slug = cate?.slug;
+                if (!slug) return null;
 
-      return (
-        <li
-          key={i}
-          className="hover:text-primary text-black hover:underline cursor-pointer"
-          onClick={() => visit((routes) => routes.visitServiceSearch({ slug }))}
-        >
-          <p>{t(cate.name)}</p>
-        </li>
-      );
-    })}
-</ul>
+                const isActive = slug === activeSlug;
+
+                return (
+                  <li
+                    key={i}
+                    className={`cursor-pointer hover:text-primary ${isActive ? "text-primary font-normal underline" : "text-black"
+                      }`}
+                    onClick={() => {
+                      setActiveSlug(slug); // set local active state
+                      visit((routes) => routes.visitServiceSearch({ slug }));
+                    }}
+                  >
+                    <p>{t(cate.name)}</p>
+                  </li>
+                );
+              })}
+          </ul>
 
           {!isMobile ? null : (
             <div className="hidden md:flex gap-2 items-center">

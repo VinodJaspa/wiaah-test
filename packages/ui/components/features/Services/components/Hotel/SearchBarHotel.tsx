@@ -1,90 +1,169 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Calendar, Users, X } from "lucide-react";
+import { Search, Calendar, Users, X, ChevronDown } from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Autocomplete from "react-autocomplete";
+import { format } from "date-fns";
+
+const locations = ["Geneva", "Paris", "London", "New York", "Tokyo", "Dubai", "Sydney"];
 
 export default function SearchBarHotel() {
-  const [location, setLocation] = useState("Geneva");
-  const [date, setDate] = useState("Aug 12 - Aug 14");
-  const [guests, setGuests] = useState("2 Adults, 2 Children");
-
-  const [editingLocation, setEditingLocation] = useState(false);
-  const [editingDate, setEditingDate] = useState(false);
+  const [location, setLocation] = useState("");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(2);
   const [editingGuests, setEditingGuests] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  return (
-    <div className="w-full flex justify-center gap-4 bg-white rounded-xl p-4 shadow-md">
+  const [filteredLocations, setFilteredLocations] = useState(locations);
+
+  const GuestSelector = () => (
+    <div className="absolute z-50 mt-2 bg-white shadow-lg rounded-lg p-4 w-full">
+      <div className="flex justify-between items-center mb-2">
+        <span className="font-medium">Adults</span>
+        <div className="flex items-center gap-2">
+          <button className="px-2 py-1 bg-gray-200 rounded" onClick={() => setAdults(Math.max(1, adults - 1))}>-</button>
+          <span>{adults}</span>
+          <button className="px-2 py-1 bg-gray-200 rounded" onClick={() => setAdults(adults + 1)}>+</button>
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <span className="font-medium">Children</span>
+        <div className="flex items-center gap-2">
+          <button className="px-2 py-1 bg-gray-200 rounded" onClick={() => setChildren(Math.max(0, children - 1))}>-</button>
+          <span>{children}</span>
+          <button className="px-2 py-1 bg-gray-200 rounded" onClick={() => setChildren(children + 1)}>+</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const formatDateRange = (range: [Date | null, Date | null]) => {
+    if (!range[0] && !range[1]) return "";
+    if (range[0] && !range[1]) return format(range[0], "MMM d");
+    if (range[0] && range[1]) return `${format(range[0], "MMM d")} to ${format(range[1], "MMM d")}`;
+    return "";
+  };
+
+  const SearchInputs = () => (
+    <div className="flex flex-col md:flex-row gap-4 ">
       {/* Location */}
-      <div
-        className="flex items-center gap-2 bg-gray-100 px-5 py-3 rounded-lg min-w-[200px] cursor-pointer"
-        onClick={() => setEditingLocation(true)}
-      >
-        <Search size={18} className="text-gray-500" />
-        {editingLocation ? (
-          <input
-            autoFocus
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            onBlur={() => setEditingLocation(false)}
-            className="bg-transparent outline-none text-sm font-medium w-full"
-          />
-        ) : (
-          <span className="text-gray-800 text-sm font-medium">{location}</span>
-        )}
+      <div className="flex-1 relative z-50">
+        <Autocomplete
+          getItemValue={(item) => item}
+          items={filteredLocations}
+          renderItem={(item, isHighlighted) => (
+            <div
+              key={item}
+              style={{
+                background: isHighlighted ? "#eee" : "white",
+                padding: "8px 12px",
+                cursor: "pointer",
+                zIndex: 9999,
+              }}
+            >
+              {item}
+            </div>
+          )}
+          value={location}
+          onChange={(e) => {
+            const val = e.target.value;
+            setLocation(val);
+            setFilteredLocations(
+              locations.filter((l) => l.toLowerCase().includes(val.toLowerCase()))
+            );
+          }}
+          onSelect={(val) => setLocation(val)}
+          inputProps={{
+            placeholder: "Location",
+            className:
+              "bg-gray-100 rounded-lg pl-12 pr-10 py-3 w-full text-sm font-medium outline-none",
+          }}
+        />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
         {location && (
           <X
             size={16}
-            className="ml-auto text-gray-400 cursor-pointer hover:text-gray-600"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLocation("");
-            }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600"
+            onClick={() => setLocation("")}
           />
         )}
       </div>
 
       {/* Dates */}
-      <div
-        className="flex items-center gap-2 bg-gray-100 px-5 py-3 rounded-lg min-w-[200px] cursor-pointer"
-        onClick={() => setEditingDate(true)}
-      >
-        <Calendar size={18} className="text-gray-500" />
-        {editingDate ? (
-          <input
-            autoFocus
-            type="text"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            onBlur={() => setEditingDate(false)}
-            placeholder="Select date range"
-            className="bg-transparent outline-none text-sm font-medium w-full"
-          />
-        ) : (
-          <span className="text-gray-800 text-sm font-medium">{date}</span>
-        )}
+      <div className="flex-1 relative w-full">
+        <DatePicker
+          selected={dateRange[0]}
+          onChange={(dates: [Date | null, Date | null]) => setDateRange(dates)}
+          startDate={dateRange[0]}
+          endDate={dateRange[1]}
+          selectsRange
+          placeholderText="Check-in - Check-out"
+          className="bg-gray-100 rounded-lg pl-12 py-3 w-full text-sm font-medium cursor-pointer"
+          value={formatDateRange(dateRange)}
+        />
+        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
       </div>
 
       {/* Guests */}
-      <div
-        className="flex items-center gap-2 bg-gray-100 px-5 py-3 rounded-lg min-w-[200px] cursor-pointer"
-        onClick={() => setEditingGuests(true)}
-      >
-        <Users size={18} className="text-gray-500" />
-        {editingGuests ? (
-          <input
-            autoFocus
-            type="text"
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-            onBlur={() => setEditingGuests(false)}
-            placeholder="2 Adults, 2 Children"
-            className="bg-transparent outline-none text-sm font-medium w-full"
-          />
-        ) : (
-          <span className="text-gray-800 text-sm font-medium">{guests}</span>
-        )}
+      <div className="flex-1 relative">
+        <div
+          className="flex items-center justify-between gap-2 bg-gray-100 px-4 py-3 rounded-lg cursor-pointer"
+          onClick={() => setEditingGuests(!editingGuests)}
+        >
+          <Users size={18} className="text-gray-500" />
+          <span className="text-gray-800 text-sm font-medium">
+            {adults} Adults, {children} Children
+          </span>
+          <ChevronDown size={16} className="text-gray-500" />
+        </div>
+        {editingGuests && <GuestSelector />}
       </div>
+    </div>
+  );
+
+  return (
+    <div className="w-full relative">
+      {/* Mobile search icon */}
+      <div className="md:hidden flex justify-center p-4">
+        <button
+          className="flex items-center gap-2 bg-white shadow-md rounded-full px-6 py-3 w-58 justify-center"
+          onClick={() => setMobileOpen(true)}
+        >
+          <Search size={18} />
+          Search
+        </button>
+      </div>
+
+      {/* Desktop */}
+      <div className="hidden md:flex w-full justify-center p-6 mb-6">
+        <SearchInputs />
+      </div>
+
+      {/* Mobile Modal */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex justify-center items-start pt-24 px-4">
+          <div className="bg-white w-full rounded-xl p-6 space-y-4 relative">
+            <button
+              className="absolute top-4 right-4"
+              onClick={() => setMobileOpen(false)}
+            >
+              <X size={24} />
+            </button>
+
+            <SearchInputs />
+
+            <button
+              className="w-full bg-primary text-white py-3 rounded-lg mt-4 font-medium"
+              onClick={() => setMobileOpen(false)}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

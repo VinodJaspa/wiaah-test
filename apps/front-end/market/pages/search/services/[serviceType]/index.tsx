@@ -31,7 +31,7 @@ const { t } = useTranslation();
           scrollable: false,
         }}
       >
-        <Container className="px-4 py-8">
+        <Container className="px-4 md:px-0" >
           <MarketServiceSearchViewSections serviceType={serviceType as ServiceType} />
         </Container>
       </MasterLayout>
