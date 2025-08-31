@@ -21,7 +21,7 @@ export const ShopMapSearchCard: React.FC<ShopMapSearchCardProps> = ({
   const { address, city, country, postalCode, state } = location;
 const { t } = useTranslation();
   return (
-    <div className="flex gap-3 justify-between p-2 h-fit border border-2 broder-gray-500 rounded-xl w-full">
+    <div className="flex gap-3 justify-between p-2 h-fit border-2 broder-gray-500 rounded-xl w-full">
       <img src={thumbnail} className="w-36 h-36 rounded-md" alt={name} />
       <div className=" flex flex-col gap-2 w-fit">
         <p className="text-primary underline">{address}</p>

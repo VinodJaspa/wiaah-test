@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FlagIcon, getRandomName, GetShopDetailsQuery, Rate } from "ui";
+
 import {
   Spacer,
   Button,
@@ -12,7 +12,11 @@ import {
   useSearchFilters,
   SpinnerFallback,
   QrcodeDisplay,
+  Rate,
+  GetShopDetailsQuery,
+  FlagIcon,
 } from "ui";
+import { getRandomName } from "utils";
 
 export interface ShopProfileProps {
   shopId: string;
@@ -150,7 +154,7 @@ const resMock: GetShopDetailsQuery["getUserShop"] = {
   type: ServiceType.BeautyCenter,
   ownerId: "",
   banner: "",
-  businessType: BusinessType.Individual,
+  businessType: BusinessType.Services,
   createdAt: new Date().toUTCString(),
   description:
     "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",

@@ -10,3 +10,5 @@ export * from "./shadcn-components"
 export * from "./Account";
 export * from "./NavigationHeader";
 export * from "./verify-IdentitySteps";
+export * from "./Payment";
+export * from "./InfiniteScrollWrapper";

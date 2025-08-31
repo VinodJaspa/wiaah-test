@@ -23,7 +23,7 @@ export function ServicesSearchGrid<TData, TProps>({
           ? gridRule
           : `repeat(auto-fill,minmax(13rem, calc(${100 / cols}% - 1rem)))`,
       }}
-      className="w-full justify-center gap-y-8 gap-x-4 grid"
+      className="w-full justify-center gap-y-8 gap-x-4 grid grid-cols-1 md:grid-cols-2 gap-6"
     >
       {Array.isArray(data)
         ? data.map((d, i) => (

@@ -43,11 +43,13 @@ import { IoIosStarOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { TiThListOutline } from "react-icons/ti";
 import { HtmlDivProps, TranslationTextType } from "types";
-import { errorToast, runIfFn, setTestid, successToast } from "utils";
+import { errorToast, isDev, runIfFn, setTestid, successToast } from "utils";
 import { useLogoutMutation } from "@features/Accounts/services/useLogout";
 import { useRecoilState } from "recoil";
 import { isUserLoggedIn } from "state";
 import { useRouting } from "routing";
+import { sidebarState } from "@src/state/Recoil/sidebarState";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 
 
 export interface HeaderNavLink {
@@ -64,7 +66,6 @@ export interface SellerHeaderProps {
   props?: HtmlDivProps;
   headerNavLinks: HeaderNavLink[];
 }
-
 export const SellerHeader: React.FC<SellerHeaderProps> = ({
   onSearchSubmit,
   props,
@@ -74,7 +75,8 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { SearchForLocations } = useMasterLocationMapModal();
   const { data: user } = useGetMyAccountQuery();
   const { openModal: openSearchBox } = useGeneralSearchModal();
-const router = useRouting();
+  const [, setSidebar] = useRecoilState(sidebarState);
+  const router = useRouting();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
   const [loggedIn] = useRecoilState(isUserLoggedIn);
@@ -85,6 +87,7 @@ const router = useRouting();
         {...props}
         className="flex justify-between items-center bg-white w-full h-[3.75rem]"
       >
+        {/* Left side logo / greeting */}
         <div className="flex items-center gap-2 h-full">
           {isMobile ? (
             <Image src="/wiaah_logo.png" className="w-24 h-10 object-cover" />
@@ -101,6 +104,7 @@ const router = useRouting();
           )}
         </div>
 
+        {/* Search bar / search icon */}
         {isMobile ? (
           <SearchIcon />
         ) : (
@@ -112,58 +116,65 @@ const router = useRouting();
               colorScheme="lightGray"
               outline
               iconProps={{ className: "fill-transparent" }}
-              onClick={() =>
-                SearchForLocations([{ id: "default", searchType: "service" }])
-              }
+              onClick={() => {
+                setSidebar(false); // persist hidden state
+                SearchForLocations([{ id: "default", searchType: "service" }]);
+              }}
               className="text-icon fill-transparent text-lightBlack"
             />
           </div>
         )}
 
+        {/* Right side controls */}
         <div className="flex items-center gap-8 p-2 cursor-pointer">
-          <SquarePlusOutlineIcon
-            className="text-icon text-lightBlack"
-            onClick={showNewPublish}
-          />
+          {loggedIn  || isDev ? (
+            <>
+              {/* New Publish */}
+              <SquarePlusOutlineIcon
+                className="text-icon text-lightBlack"
+                onClick={showNewPublish}
+              />
 
-          {isMobile ? (
-            <BellOutlineIcon
-              onClick={openNotifications}
-              className="cursor-pointer text-icon text-lightBlack"
-            />
+              {/* Notifications */}
+              {isMobile ? (
+                <BellOutlineIcon
+                  onClick={openNotifications}
+                  className="cursor-pointer text-icon text-lightBlack"
+                />
+              ) : (
+                <NotifiactionsMenu>
+                  <BellOutlineIcon className="text-icon text-lightBlack" />
+                </NotifiactionsMenu>
+              )}
+
+              {/* Inbox */}
+              <div className="relative" onClick={() => router.push("/inbox")}>
+                <span className="h-4 w-4 text-[0.5rem] border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
+                  4
+                </span>
+                <MessageOutlineIcon className="text-lightBlack text-icon" />
+              </div>
+
+              {/* Cart */}
+              <div className="text-lightBlack">
+                <ShoppingCart>
+                  <ShoppingCartOutlineIcon className="text-icon h-6 w-6" />
+                </ShoppingCart>
+              </div>
+
+              {/* Profile options (desktop only) */}
+              {!isMobile && user && <AccountsProfileOptions />}
+            </>
           ) : (
-            <NotifiactionsMenu>
-              <BellOutlineIcon className="text-icon text-lightBlack" />
-            </NotifiactionsMenu>
-          )}
-
-          <div
-            className="relative"
-            onClick={() => router.push("/inbox")}
-          >
-            <span className="h-4 w-4 text-[0.5rem] border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
-              4
-            </span>
-            <MessageOutlineIcon className="text-lightBlack text-icon" />
-          </div>
-
-          <div className="text-lightBlack">
-            <ShoppingCart>
-              <ShoppingCartOutlineIcon className="text-icon h-6 w-6" />
-            </ShoppingCart>
-          </div>
-
-          {!isMobile && (
-            loggedIn && user ? (
-              <AccountsProfileOptions />
-            ) : (
-              <Button
-                {...setTestid("sign-in-btn")}
+            // If NOT logged in → show Sign In
+            !isMobile && (
+              <PrimaryButton
+            
                 className="whitespace-nowrap"
                 onClick={() => router.push("auth/login")}
               >
                 {t("Sign In")}
-              </Button>
+              </PrimaryButton>
             )
           )}
         </div>
@@ -173,6 +184,7 @@ const router = useRouting();
     </>
   );
 };
+
 
 interface AccountsProfileOptionsProps {
   children?: React.ReactNode;

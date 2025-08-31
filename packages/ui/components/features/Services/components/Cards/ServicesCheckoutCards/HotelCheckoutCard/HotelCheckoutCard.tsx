@@ -73,300 +73,182 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
   treatments,
 }) => {
   const [mounted, setMounted] = React.useState(false);
+  const { t } = useTranslation();
 
-const { t } = useTranslation();
+  React.useEffect(() => setMounted(true), []);
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  if (!mounted) return null;
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("en-US", {
+  const formatDate = (date: Date) =>
+    date.toLocaleDateString("en-US", {
       weekday: "short",
       day: "numeric",
       month: "short",
       year: "numeric",
     });
-  };
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString("en-US", {
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
     });
-  };
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
-    <React.Fragment>
-      <div className="flex font-inter flex-col gap-4 w-full pb-2">
-        <div className="flex gap-3 relative overflow-hidden">
-          <span className="absolute top-0 left-0 font-semibold bg-red-500 px-3 py-2 rounded-tl-[0.625rem] rounded-br-[0.625rem] text-white">
-            5% CASHBACK
-          </span>
-          <Image
-            src={thumbnail}
-            className="rounded-[0.625rem] h-[10.375rem] object-cover w-[13.75rem]"
-          />
-          <div className="flex flex-col gap-2">
-            <p className="font-bold text-2xl">
-              {showOn([
-                ServiceType.Hotel,
-                ServiceType.BeautyCenter,
-                ServiceType.Restaurant,
-                ServiceType.HolidayRentals,
-                ServiceType.HealthCenter,
-              ])
-                ? shopName
-                : null}
-              {showOn([ServiceType.Vehicle]) ? name : null}
-            </p>
-            <HStack className="flex text-xl gap-1">
-              <LocationOnPointIcon />
-              <p className="text-[#525252] text-xs">{fullAddress}</p>
-            </HStack>
-            <div className="flex flex-wrap text-2xl gap-4">
-              {mapArray(amenities, (v, i) => (
-                <HStack className="flex-wrap">
-                  <ServicePropertiesSwticher key={i} slug={v?.slug} />
-                  <p className="text-lg font-medium">{v.label}</p>
-                </HStack>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full gap-2">
-          <p className="text-[1.375rem] font-semibold">
-            {t("Cancelation Policy")}
+    <div className="flex flex-col gap-4 w-full font-sans text-sm">
+      {/* Thumbnail & Title */}
+      <div className="flex gap-3 relative overflow-hidden">
+        <span className="absolute top-0 left-0 bg-red-500 px-2 py-1 rounded-tl-md rounded-br-md text-white text-xs font-semibold">
+          5% CASHBACK
+        </span>
+        <Image
+          src={thumbnail}
+          className="rounded-md h-40 w-56 object-cover"
+        />
+        <div className="flex flex-col gap-1">
+          <p className="font-semibold text-lg">
+            {showOn([
+              ServiceType.Hotel,
+              ServiceType.BeautyCenter,
+              ServiceType.Restaurant,
+              ServiceType.HolidayRentals,
+              ServiceType.HealthCenter,
+            ])
+              ? shopName
+              : name}
           </p>
-
-          <ServiceRefundableTypeDescription
-            bookedDate={checkin}
-            cost={cancelationPolicy?.cost}
-            duration={cancelationPolicy?.duration}
-            displayCost
-          />
-        </div>
-
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("Extras")}:</p>
-            {mapArray(extras, (v, i) => (
-              <HStack className="justify-between">
-                <p className="font-medium">{v?.name}</p>
-                <span className="font-bold text-xl">
-                  <PriceDisplay price={v?.cost} />
-                </span>
+          <HStack className="flex items-center gap-1">
+            <LocationOnPointIcon className="w-4 h-4" />
+            <p className="text-gray-500 text-xs">{fullAddress}</p>
+          </HStack>
+          <div className="flex flex-wrap gap-3 mt-1">
+            {mapArray(amenities, (v, i) => (
+              <HStack key={i} className="flex items-center gap-1 flex-wrap">
+                <ServicePropertiesSwticher slug={v?.slug} />
+                <p className="text-xs font-medium">{v.label}</p>
               </HStack>
             ))}
           </div>
-        ) : null}
-
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("Guests")}:</p>
-            <HStack className="font-medium">
-              <p>
-                {guests?.adults || 0} {t("Adults")}
-              </p>
-              <p>
-                {guests?.childrens || 0} {t("Childrens")}
-              </p>
-            </HStack>
-          </div>
-        ) : null}
-
-        {showOn([
-          ServiceType.Hotel,
-          ServiceType.HolidayRentals,
-          ServiceType.BeautyCenter,
-          ServiceType.HealthCenter,
-          ServiceType.Restaurant,
-        ]) ? (
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-[22px] font-semibold">{t("You are booking")}:</p>
-            {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-              <p>{name}</p>
-            ) : null}
-
-            {showOn([ServiceType.BeautyCenter]) ? (
-              <TreatmentsCheckoutList
-                treatments={treatments || []}
-              ></TreatmentsCheckoutList>
-            ) : null}
-
-            {showOn([ServiceType.HealthCenter]) ? (
-              <div className="flex flex-col gap-2 mt-2">
-                <p className="font-medium">{t("Dcotors")}</p>
-                {mapArray(doctors, (v, i) => (
-                  <div className="flex justify-between gap-8">
-                    <div className="flex gap-4">
-                      <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
-                      <div className="font-semibold text-lg flex flex-col gap-2">
-                        <p>{v.name}</p>
-                        <p>{v.speciality}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center text-xl font-semibold">
-                      <PriceDisplay price={v.price}></PriceDisplay>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : null}
-
-            {showOn([ServiceType.Restaurant]) ? (
-              <RestaurantDishsCheckoutList menus={menus || []} />
-            ) : null}
-          </div>
-        ) : null}
-        <div className="pt-2 flex flex-col w-full gap-4">
-          <p className="text-[22px] font-semibold">{t("Booking details")}:</p>
-
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-4">
-              <p className="font-semibold text-[19px] border-b-2 border-black w-fit pb-2">
-                {showOn([
-                  ServiceType.Hotel,
-                  ServiceType.HolidayRentals,
-                  ServiceType.BeautyCenter,
-                  ServiceType.Restaurant,
-                ])
-                  ? t("Check in")
-                  : null}
-                {showOn([ServiceType.Vehicle]) ? t("Rental starts") : null}
-                {showOn([ServiceType.HealthCenter])
-                  ? t("Consultation starts")
-                  : null}
-              </p>
-              <p className="font-medium">{formatDate(new Date(checkin))}</p>
-              <p>
-                {t("From")}{" "}
-                <span className="font-bold">
-                  {formatTime(new Date(checkin))}
-                </span>
-              </p>
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {t("Guests")}:{" "}
-                  <span className="">
-                    {Object.values(guests).reduce((acc, curr) => {
-                      return acc + curr;
-                    }, 0)}
-                  </span>
-                </p>
-              ) : null}
-            </div>
-            <div className="flex flex-col gap-4">
-              <p className="font-semibold text-[19px] border-b-2 w-fit border-black pb-2">
-                {showOn([ServiceType.Hotel, ServiceType.HolidayRentals])
-                  ? t("Check out")
-                  : null}
-                {showOn([ServiceType.Vehicle]) ? t("Rental ends") : null}
-              </p>
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {new Date(checkout).toLocaleDateString("en-us", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-              ) : null}
-              {showOn([ServiceType.Vehicle]) ? (
-                <p className="font-medium">
-                  {new Date(checkout).toLocaleDateString("en-us", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-              ) : null}
-
-              {showOn([ServiceType.Vehicle]) ? (
-                <p className="">
-                  {t("Until")}{" "}
-                  <span className="font-bold">
-                    {new Date(checkout).toLocaleTimeString("en-us", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })}
-                  </span>
-                </p>
-              ) : null}
-
-              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-                <p className="font-medium">
-                  {t("Nights")}:{" "}
-                  <span className="font-bold">
-                    {new Date(checkout).getDate() - new Date(checkin).getDate()}
-                  </span>
-                </p>
-              ) : null}
-            </div>
-          </div>
         </div>
-        <div className="flex flex-col justify-between w-full">
-          <HStack className="justify-end text-[1.75rem] font-bold">
-            <PriceDisplay price={total} />
+      </div>
+
+      {/* Cancelation Policy */}
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-sm">{t("Cancelation Policy")}</p>
+        <ServiceRefundableTypeDescription
+          bookedDate={checkin}
+          cost={cancelationPolicy?.cost}
+          duration={cancelationPolicy?.duration}
+          displayCost
+        />
+      </div>
+
+      {/* Extras */}
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && extras.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <p className="font-semibold text-sm">{t("Extras")}</p>
+          {mapArray(extras, (v, i) => (
+            <HStack key={i} className="justify-between text-sm">
+              <p>{v.name}</p>
+              <PriceDisplay price={v.cost} />
+            </HStack>
+          ))}
+        </div>
+      )}
+
+      {/* Guests */}
+      {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && (
+        <div className="flex flex-col gap-1">
+          <p className="font-semibold text-sm">{t("Guests")}</p>
+          <HStack className="gap-2 text-sm">
+            <p>{guests.adults} {t("Adults")}</p>
+            <p>{guests.childrens} {t("Children")}</p>
           </HStack>
-          <div className="flex justify-end gap-4 w-full items-center">
-            <Button className="h-[3.25rem] w-fit" colorScheme="darkbrown">
-              <Link href={`/service/details/${serviceType}/${id}?tabIndex=4`}>
-                <HStack className="text-lg whitespace-nowrap font-semibold">
-                  <EditNoteIcon />
-                  {t("Modify Booking")}
+        </div>
+      )}
+
+      {/* Booking Info */}
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-sm">{t("You are booking")}:</p>
+        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) && <p className="text-sm">{name}</p>}
+        {showOn([ServiceType.BeautyCenter]) && <TreatmentsCheckoutList treatments={treatments || []} />}
+        {showOn([ServiceType.HealthCenter]) && doctors && (
+          <div className="flex flex-col gap-1">
+            <p className="font-medium text-sm">{t("Doctors")}</p>
+            {mapArray(doctors, (v, i) => (
+              <HStack key={i} className="justify-between gap-4">
+                <HStack className="gap-2">
+                  <Image src={v.thumbnail} className="w-14 h-14 rounded-md" />
+                  <div className="flex flex-col text-sm gap-0.5 font-medium">
+                    <p>{v.name}</p>
+                    <p className="text-gray-500 text-xs">{v.speciality}</p>
+                  </div>
                 </HStack>
-              </Link>
-            </Button>
-            <Button
-              colorScheme="danger"
-              center
-              className="px-5 text-2xl py-[0.875rem]"
-            >
-              <TrashIcon />
-            </Button>
+                <PriceDisplay price={v.price} />
+              </HStack>
+            ))}
+          </div>
+        )}
+        {showOn([ServiceType.Restaurant]) && menus && <RestaurantDishsCheckoutList menus={menus} />}
+      </div>
+
+      {/* Booking Details */}
+      <div className="flex flex-col gap-2 mt-2">
+        <p className="font-semibold text-sm">{t("Booking details")}:</p>
+        <div className="flex justify-between text-xs">
+          <div className="flex flex-col gap-1">
+            <p className="font-medium">{showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? t("Check in") : t("Start")}</p>
+            <p>{formatDate(checkin)}</p>
+            <p>{t("From")} <span className="font-semibold">{formatTime(checkin)}</span></p>
+          </div>
+          <div className="flex flex-col gap-1 text-right">
+            <p className="font-medium">{showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? t("Check out") : t("End")}</p>
+            <p>{formatDate(checkout)}</p>
+            <p>{t("Until")} <span className="font-semibold">{formatTime(checkout)}</span></p>
           </div>
         </div>
       </div>
-      <Divider className="border-black my-3" />
-    </React.Fragment>
+
+      {/* Total & Actions */}
+      <div className="flex justify-between items-center mt-2">
+        <PriceDisplay price={total} className="text-lg font-semibold" />
+        <div className="flex gap-2">
+          <Button colorScheme="darkbrown" className="px-3 py-1 text-xs font-semibold">
+            <Link href={`/service/details/${serviceType}/${id}?tabIndex=4`}>
+              <HStack className="gap-1">
+                <EditNoteIcon className="w-4 h-4" /> {t("Modify Booking")}
+              </HStack>
+            </Link>
+          </Button>
+          <Button colorScheme="danger" className="px-3 py-1 text-xs font-semibold">
+            <TrashIcon className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+
+      <Divider className="border-gray-300 my-2" />
+    </div>
   );
 };
 
+// Child components
 export const TreatmentsCheckoutList: React.FC<{
-  treatments: {
-    thumbnail: string;
-    price: number;
-    name: string;
-    qty: number;
-  }[];
+  treatments: { thumbnail: string; price: number; name: string; qty: number }[];
 }> = ({ treatments }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-2 mt-2">
+    <div className="flex flex-col gap-1 mt-1 text-sm">
       <p className="font-medium">{t("Treatments")}</p>
       {mapArray(treatments, (v, i) => (
-        <div className="flex justify-between gap-8">
-          <div className="flex gap-4">
-            <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
-            <p className="font-semibold text-lg">{v.name}</p>
-          </div>
-          <div className="flex whitespace-nowrap gap-1 items-center text-xl font-semibold">
-            <PriceDisplay price={v.price}></PriceDisplay>
-            <p className="flex items-center"> x {v.qty}</p>
-          </div>
-        </div>
+        <HStack key={i} className="justify-between gap-2">
+          <HStack className="gap-2">
+            <Image src={v.thumbnail} className="w-14 h-14 rounded-md" />
+            <p className="font-medium">{v.name}</p>
+          </HStack>
+          <p className="font-semibold">{v.qty} x <PriceDisplay price={v.price} /></p>
+        </HStack>
       ))}
     </div>
   );
@@ -375,36 +257,26 @@ const { t } = useTranslation();
 export const RestaurantDishsCheckoutList: React.FC<{
   menus: {
     name: string;
-    dishs: {
-      thumbnail: string;
-      name: string;
-      ingredints: string[];
-      price: number;
-      qty: number;
-    }[];
+    dishs: { thumbnail: string; name: string; ingredints: string[]; price: number; qty: number }[];
   }[];
 }> = ({ menus }) => {
   return (
-    <div className="flex flex-col gap-6 mt-2">
-      {mapArray(menus, (v, i) => (
-        <div className="flex flex-col gap-4 w-full">
-          <p className="font-semibold text-lg">{v.name}</p>
-          {mapArray(v.dishs, (v, i) => (
-            <div key={i} className="flex justify-between items-center gap-8">
-              <div className="flex gap-4">
-                <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
-                <div className="font-semibold text-lg flex flex-col">
-                  <p>{v.name}</p>
-                  <p className="font-medium text-sm text-[#868686]">
-                    {v.ingredints.join(", ")}
-                  </p>
+    <div className="flex flex-col gap-2 mt-1 text-sm">
+      {mapArray(menus, (menu, i) => (
+        <div key={i} className="flex flex-col gap-1">
+          <p className="font-medium">{menu.name}</p>
+          {mapArray(menu.dishs, (dish, j) => (
+            <HStack key={j} className="justify-between gap-2">
+              <HStack className="gap-2">
+                <Image src={dish.thumbnail} className="w-14 h-14 rounded-md" />
+                <div className="flex flex-col text-xs text-gray-600">
+                  <p>{dish.name}</p>
+                  <p>{dish.ingredints.join(", ")}</p>
                 </div>
-              </div>
-              <p className="font-semibold text-xl">X{v.qty}</p>
-              <div className="flex items-center text-xl font-semibold">
-                <PriceDisplay price={v.price}></PriceDisplay>
-              </div>
-            </div>
+              </HStack>
+              <p className="font-semibold">x{dish.qty}</p>
+              <PriceDisplay price={dish.price} />
+            </HStack>
           ))}
         </div>
       ))}

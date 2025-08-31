@@ -1,5 +1,7 @@
 'use client';
 import { SellerDrawerOpenState } from "@src/state";
+import { sidebarState } from "@src/state/Recoil/sidebarState";
+
 import {
   Container,
   DiscoverHeader,
@@ -29,7 +31,7 @@ import { FaThList } from "react-icons/fa";
 import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getRouting, useRouting } from "routing";
 import { HtmlDivProps, NavigationLinkType } from "types";
 
@@ -148,7 +150,7 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
-  accountType?:string;
+  accountType?: string;
   showMobileHeader?: boolean;
 }
 
@@ -158,12 +160,13 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   containerProps,
   sideBar,
   showMobileHeader = false,
-  accountType ,
+  accountType,
   noContainer = false,
 }) => {
   console.log(sideBar, "sideBar", typeof window);
 
   const { isMobile } = useResponsive();
+  // const [isSidebar, setSidebar] = React.useState(true);
   const { getCurrentPath } = useRouting();
   // const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
@@ -174,48 +177,41 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     router && typeof router.pathname === "string"
       ? router.pathname.split("/")[1]
       : "";
-      const handleLinkClick = (link: NavigationLinkType) => {
-        const path = link.url;
-      
+  const handleLinkClick = (link: NavigationLinkType) => {
+    const path = link.url;
 
-          // Full reload if absolutely needed (usually not recommended in SPA)
-          window.location.href = path;
-       
-        setDrawerOpen(false);
-      };
-      
 
-console.log(accountType ,"typeeeee");
-//Set the header type
+    // Full reload if absolutely needed (usually not recommended in SPA)
+    window.location.href = path;
+
+    setDrawerOpen(false);
+  };
+
+  const [isSidebar, setSidebar] = useRecoilState(sidebarState);
+  console.log(isSidebar, "isSidebar");
+  //Set the header type
   //Set header
+  let stored: string | null = null;
   React.useEffect(() => {
     if (typeof window !== "undefined" && accountType) {
       localStorage.setItem("header", accountType.toString());
     }
   }, [accountType]);
+  React.useEffect(() => {
 
-  const [isSidebar, setSidebar] = React.useState(true);
+
+     
+
+  }, [isSidebar]);
+
+
   const { pagination: storiesPagination } = usePaginationControls();
 
   // Graphql is not ready yet
   const { data: _stories } = useGetRecentStories({
     pagination: storiesPagination,
   });
-  // let storedNav = true;
-  // // if (typeof window !== "undefined") {
-  // //    storedNav = JSON.parse(localStorage.getItem("navigation") || "true");
-   
-  // // }
 
-  // React.useEffect(() => {
-  //   console.log(storedNav, "navvv");
-
-  //   if (storedNav === true) {
-  //     setSidebar(true);
-  //   } else {
-  //     setSidebar(false);
-  //   }
-  // }, [storedNav]);
   const stories = FAKE_STORIES;
 
 
@@ -330,8 +326,8 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
   links = [],
 }) => {
-  console.log(links,"links");
-  
+  console.log(links, "links");
+
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;

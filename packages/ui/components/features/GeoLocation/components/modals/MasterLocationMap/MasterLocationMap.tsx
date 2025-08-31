@@ -1,3 +1,5 @@
+
+import { sidebarState } from "@src/state/Recoil/sidebarState";
 import {
   CloseIcon,
   LocationSearchInput,
@@ -17,7 +19,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ServicesType } from "types";
 import { mapArray } from "utils";
 
@@ -27,6 +29,7 @@ export type MasterLocationData = {
   additionalFilters?: Record<string, any>;
 };
 
+
 export const useMasterLocationMapModal = (props?: {
   subToChanges?: boolean;
 }) => {
@@ -35,7 +38,7 @@ export const useMasterLocationMapModal = (props?: {
   const { Listen, emit, removeListner } = useReactPubsub(
     () => "MasterLocationMapSearch",
   );
-
+  const [, setSidebar] = useRecoilState(sidebarState);
   function SearchForLocation(data: MasterLocationData) {
     emit([data]);
   }
@@ -43,8 +46,9 @@ export const useMasterLocationMapModal = (props?: {
     emit(data);
   }
   function CloseMap() {
+    
     emit();
-    localStorage.setItem("navigation","true");
+    setSidebar(true);
   }
 
   if (subToChanges) {

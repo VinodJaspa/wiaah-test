@@ -1,3 +1,4 @@
+import React from "react"
 import { ServicesSearchView } from "@components";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";

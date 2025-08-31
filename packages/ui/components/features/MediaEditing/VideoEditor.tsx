@@ -1,27 +1,25 @@
-import { MediaUploadModal, useMediaUploadControls } from "@blocks";
 import {
   AspectRatio,
   Button,
   HStack,
   Image,
-  PlusIcon,
-  Spinner,
+  Spinner
 } from "@partials";
+import { throttle } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
+  BiChevronLeft,
+  BiChevronRight,
   BiPause,
   BiPlay,
-  BiSkipPrevious,
   BiSkipNext,
+  BiSkipPrevious,
   BiVolumeFull,
   BiVolumeMute,
-  BiChevronRight,
-  BiChevronLeft,
 } from "react-icons/bi";
-import { throttle } from "lodash";
-import { useFFmpeg } from "./ffmpeg";
 import { mapArray } from "utils";
+import { useFFmpeg } from "./ffmpeg";
 
 export const VideoEditor: React.FC<{
   maxDuration: number;
@@ -41,7 +39,9 @@ const { t } = useTranslation();
 
     const data = await cropVideo(video, startTime, endTime);
 
-    onFinish && data && onFinish(data);
+    if (data) {
+      onFinish(data);
+    }
   };
 
   React.useEffect(() => {

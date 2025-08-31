@@ -37,8 +37,8 @@ export default function HotelCard({
           className="w-full h-52 object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
         />
-        <ImageTopbadge text={"From " + price}/>
-   
+        <ImageTopbadge text={"From " + price} />
+
         {/* Hover Overlay + Details Button */}
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button
@@ -65,11 +65,15 @@ export default function HotelCard({
 
         {/* Show on Map */}
         <button
-          onClick={() => router.push(`/service/hotel/${id}`)}
+          onClick={() =>
+            router.push(`/search/services/hotels/${encodeURIComponent(location)}/onmap?id=${id}`)
+          }
           className="text-red-600 text-sm font-medium hover:underline mt-1"
         >
           Show on Map
         </button>
+
+
       </div>
     </div>
   );

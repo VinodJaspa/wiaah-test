@@ -13,6 +13,7 @@ export default function RestaurantCard({
   rating,
   reviews,
   onMapClick,
+  isShowOnMap = true,
 }: {
   id: string; // ✅ Add ID
   image: string;
@@ -24,6 +25,7 @@ export default function RestaurantCard({
   rating: number;
   reviews: number;
   onMapClick?: () => void;
+  isShowOnMap?: boolean;
 }) {
   const router = useRouter();
   return (
@@ -65,13 +67,16 @@ export default function RestaurantCard({
         <div className="flex items-center mt-2 text-sm">
           ⭐ {rating} ({reviews} reviews)
         </div>
-
-        <button
-          onClick={() => router.push(`/service/restaurant/${id}`)}
-          className="mt-2 text-red-600 text-sm hover:underline"
-        >
-          Show on Map
-        </button>
+        {isShowOnMap &&
+          <button
+            onClick={() =>
+              router.push(`/search/services/restaurant/${encodeURIComponent(address)}/onmap?id=${id}`)
+            }
+            className="text-red-600 text-sm font-medium hover:underline mt-1"
+          >
+            Show on Map
+          </button>
+        }
       </div>
     </div>
   );

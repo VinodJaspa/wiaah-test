@@ -7,6 +7,8 @@ import {
   InputGroupProps,
   SearchIcon,
 } from "@UI";
+import { useRecoilState } from "recoil";
+import { sidebarState } from "@src/state/Recoil/sidebarState";
 
 export interface SearchInputProps {
   innerProps?: InputGroupProps;
@@ -21,17 +23,21 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   value,
   placeholder,
 }) => {
+
   function handleSearchInputChange(value: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onValueChange && onValueChange(value);
+
+    if (onValueChange) {
+      onValueChange(value)
+    
+
+    }
   }
-const { t } = useTranslation();
+  const { t } = useTranslation();
   return (
     <InputGroup
       {...innerProps}
-      className={`${
-        innerProps?.className || ""
-      } rounded-xl border-[0px] bg-lightGray p-0 w-[min(20rem,100%)]`}
+      className={`${innerProps?.className || ""
+        } rounded-xl border-[0px] bg-lightGray p-0 w-[min(20rem,100%)]`}
     >
       <InputRightElement className="w-10 flex h-full justify-center items-center">
         <SearchIcon className="text-lightBlack text-icon" />
@@ -39,8 +45,8 @@ const { t } = useTranslation();
       <Input
         value={value}
         onChange={(e) => handleSearchInputChange(e.target.value)}
-        className="rounded-xl bg-transparent py-0 w-full"
-        placeholder={placeholder || t("Type to search") + "..."}
+        className="rounded-xl bg-transparent py-0 px-20 w-full"
+        placeholder={placeholder || t("`Type to search`") + "..."}
       />
     </InputGroup>
   );

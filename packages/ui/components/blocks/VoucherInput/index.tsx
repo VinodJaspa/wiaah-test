@@ -1,15 +1,16 @@
 import React from "react";
 import { IoTicket } from "react-icons/io5";
-import yup, { object, string } from "yup";
+import { object, string } from "yup";
 import {
   BoxShadow,
   Input,
   Button,
   InputGroup,
   InputLeftElement,
-  DiscountTicketIcon,
+
 } from "ui";
 import { useTranslation } from "react-i18next";
+import { MdDiscount } from "react-icons/md";
 
 const VoucherSchema = object().shape({
   code: string().required("Enter a voucher code"),
@@ -18,63 +19,64 @@ const VoucherSchema = object().shape({
 export interface VoucherInputProps {
   onSuccess?: (code: string) => Promise<boolean>;
 }
+
 export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
-const { t } = useTranslation();
-  const [value, setValue] = React.useState<{ code: string }>();
-  const [errMsg, setErrorMsg] = React.useState<{
-    error: boolean;
-    msg: string;
-  }>();
+  const { t } = useTranslation();
+  const [value, setValue] = React.useState<{ code: string }>({ code: "" });
+  const [errMsg, setErrorMsg] = React.useState<{ error: boolean; msg: string }>();
 
   async function validate(): Promise<false | string> {
-    return VoucherSchema.validate(value).then(
-      (res) => {
+    return VoucherSchema.validate(value)
+      .then((res) => {
         setErrorMsg(undefined);
         return res.code;
-      },
-      (rej) => {
+      })
+      .catch((rej) => {
         setErrorMsg({ error: true, msg: rej.message });
         return false;
-      },
-    );
+      });
   }
 
   async function handleSubmit() {
     const valid = await validate();
     if (onSuccess && valid) {
-      const Valid: boolean = await onSuccess(valid);
-      if (Valid) {
-        setErrorMsg({
-          error: false,
-          msg: "Successfully added voucher code",
-        });
+      const success: boolean = await onSuccess(valid);
+      if (success) {
+        setErrorMsg({ error: false, msg: "Successfully added voucher code" });
       } else {
-        setErrorMsg({
-          error: true,
-          msg: "Invalid voucher code",
-        });
+        setErrorMsg({ error: true, msg: "Invalid voucher code" });
       }
     }
   }
+
   return (
-    <div className="bg-white p-6 rounded-3xl">
-      <div className="flex flex-col gap-6 items-end">
-        <div className="w-full">
-          <p className="font-semibold text-2xl">{t("Voucher")}</p>
-        </div>
-        <div className="flex flex-col gap-8 w-full">
-          <InputGroup className="w-full rounded-xl">
-            <InputLeftElement className="text-2xl pr-[0px]">
-              <DiscountTicketIcon />
-            </InputLeftElement>
-            <Input
-              placeholder={t("Voucher")}
-              className="w-full h-12 pl-[0.25rem] placeholder-[#B2B2B2] placeholder-"
-              id="VoucherInput"
+    <BoxShadow className="bg-white p-4 rounded-xl">
+      <div className="flex flex-col gap-3 w-full">
+        <p className="font-semibold text-base">{t("Voucher")}</p>
+        <div className="relative">
+          <div className="flex flex-col gap-8 w-full">
+            <MdDiscount className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search..."
+              onChange={(e) => setValue({ ...value, code: e.target.value })}
+              className="w-full pl-10 pr-3 py-2 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black"
             />
-          </InputGroup>
+          </div>
+
+        </div>
+        {errMsg && (
+          <p
+            className={`text-sm ${errMsg.error ? "text-red-500" : "text-green-600"
+              }`}
+          >
+            {errMsg.msg}
+          </p>
+        )}
+
+        <div className="flex justify-end">
           <Button
-            className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+            className="text-sm font-semibold px-4 py-1.5"
             colorScheme="darkbrown"
             id="ApplyVoucherButton"
             onClick={handleSubmit}
@@ -83,6 +85,6 @@ const { t } = useTranslation();
           </Button>
         </div>
       </div>
-    </div>
+    </BoxShadow>
   );
 };

@@ -1,24 +1,20 @@
 'use client';
 import React from "react";
 import { NextPage } from "next";
-
-import { Signup } from "@UI";
+import {  LoginViewComman } from "@UI";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Signin: NextPage = () => {
   const router = useRouter();
-  console.log(router)
-  const handleRoute = (view) => {
 
+  const handleRoute = (view: string) => {
+    router.replace(`/auth/${view}`);
+  };
 
-    window.location.href = `/auth/${view}`
-    router.replace(`/auth/${view}`)
-  }
-
-  
   return (
-    <div className="h-screen">
-      <Signup loginType="login" handleRoute ={(view)=>handleRoute(view)} />
+    <div className="relative min-h-screen flex flex-col justify-center items-center px-4">
+      <LoginViewComman loginType="buyer-signup" handleRoute={(view) => handleRoute(view)} />
     </div>
   );
 };

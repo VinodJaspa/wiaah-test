@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Modal,
@@ -26,12 +26,18 @@ import {
   useSocialControls,
   StepperFormController,
   StepperFormHandler,
+
 } from "@UI";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { useUserData } from "hooks";
 import { mapArray, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
 import { ActionType, CommentsVisibility } from "@features/API";
+
+import { NewPostSwitch, SettingsList, shareIcons, toggleOptions } from "./addNewPostModal";
+import { Trash2 } from "lucide-react";
 
 const MAX_UPLOAD_LIMIT = 5;
 const MAX_ACTION_SIZE = 2 * 1024 * 1024 * 1024;
@@ -77,16 +83,18 @@ export const AddNewPostModal: React.FC = () => {
   }, [value]);
 
   React.useEffect(() => {
-    const first = media?.item(0);
-    if (first) {
-      const type = first.type;
-      setMediaType(
-        vidMimetypes.includes(type)
-          ? "video"
-          : imgMimetypes.includes(type)
-            ? "photo"
-            : undefined,
-      );
+    if (media && media.length > 0) {
+      const first = media?.item(0);
+      if (first) {
+        const type = first.type;
+        setMediaType(
+          vidMimetypes.includes(type)
+            ? "video"
+            : imgMimetypes.includes(type)
+              ? "photo"
+              : undefined,
+        );
+      }
     }
   }, [media]);
 
@@ -99,17 +107,12 @@ export const AddNewPostModal: React.FC = () => {
   };
 
   const renderPhotoContent = () => (
-    <div className="flex h-[616px] bg-white flex-col gap-4">
-      <div className="w-full flex text-2xl font-bold justify-center">
+    <div className="p-6  flex flex-col items-center justify-center">
+      <div className="w-full pb-4 flex text-2xl font-bold justify-center items-center border-b border-gray-200 ">
         {t("Create a post")}
       </div>
-      <div className="w-full flex pt-2 items-center gap-4">
-        <PhotoPreview
-          media={media}
-          imageIdx={imageIdx}
-          setImageIdx={setImageIdx}
-        />
-        <PostDetailsForm />
+      <div className="">
+        <PostDetailsForm media={media} setMedia={setMedia} />
       </div>
     </div>
   );
@@ -117,7 +120,7 @@ export const AddNewPostModal: React.FC = () => {
   const renderVideoContent: React.FC<{ onSubmit: (data: any) => void }> = ({
     onSubmit,
   }) => (
-    <div className="flex h-[616px] bg-white w-full flex-col gap-4 relative">
+    <div className=" bg-white  gap-4 relative w-[380px] flex flex-col items-center justify-center">
       <div className="w-full h-full flex text-2xl font-bold justify-center">
         {step === 0 ? t("Video Editing") : t("Video Details")}
       </div>
@@ -125,7 +128,7 @@ export const AddNewPostModal: React.FC = () => {
         <StepperFormController
           lock={false}
           onFormComplete={(data) => {
-            onSubmit && onSubmit(data);
+            onSubmit(data);
           }}
           stepsNum={2}
         >
@@ -134,7 +137,8 @@ export const AddNewPostModal: React.FC = () => {
               <CheckMarkStepper
                 className="h-full"
                 onStepChange={goToStep}
-                stepHeaderClassName="w-[24rem] mx-auto"
+                stepHeaderClassName="w-[300px] max-w-3xl mx-auto"
+
                 currentStepIdx={currentStepIdx}
                 steps={[
                   {
@@ -143,9 +147,17 @@ export const AddNewPostModal: React.FC = () => {
                     stepComponent: (
                       <StepperFormHandler handlerKey="edite">
                         <VideoEditorStep
+                          setMedia={setMedia}
                           media={media}
                           setActionVidBlob={setActionVidBlob}
-                          handleChange={()=> handleChange("srcUploadId", URL.createObjectURL(actionVidBlob!))}
+                          handleChange={() => {
+                            alert("okk")
+                            nextStep();
+                            handleChange("srcUploadId", URL.createObjectURL(actionVidBlob!))
+                          }}
+
+                        // handleChange={(key, value) =>
+
                         />
                       </StepperFormHandler>
                     ),
@@ -155,20 +167,23 @@ export const AddNewPostModal: React.FC = () => {
                     stepName: t("Details"),
                     stepComponent: (
                       <StepperFormHandler handlerKey="details">
+
                         <VideoDetailsStep
                           form={form}
                           coversRef={coversRef}
                           setCoversRef={setCoversRef}
+                          setMedia={setMedia}
+
                         />
                       </StepperFormHandler>
                     ),
                   },
                 ]}
               />
-              <ModalFooter className="justify-between absolute bottom-1 w-full ">
+              {/* <ModalFooter className="justify-between absolute bottom-1 w-full ">
                 <Button onClick={hideNewPublish}>{t("Cancel")}</Button>
                 <Button onClick={() => nextStep()}>{t("Next")}</Button>
-              </ModalFooter>
+              </ModalFooter> */}
             </React.Fragment>
           )}
         </StepperFormController>
@@ -192,7 +207,7 @@ export const AddNewPostModal: React.FC = () => {
     >
       <div className="flex flex-col gap-1 items-center">
         <ImageGreenIcon className="text-7xl" />
-        <p className="text-2xl font-bold text-primary-800">
+        <p className="text-sm font-bold text-primary-800">
           {t("Drop your media here, or")}{" "}
           <label>
             <input
@@ -207,7 +222,7 @@ export const AddNewPostModal: React.FC = () => {
             </span>
           </label>
         </p>
-        <p className="text-lg uppercase text-primary-700">
+        <p className="text-sm uppercase text-primary-700">
           {t("Supports")}: {imgTypes.concat(vidTypes).join(", ")}
         </p>
       </div>
@@ -219,122 +234,182 @@ export const AddNewPostModal: React.FC = () => {
   return (
     <Modal isOpen={!!value} onClose={hideNewPublish}>
       <ModalOverlay />
-      <ModalContent className="min-w-[995px]">
+      <ModalContent className="max-w-[960px]  overflow-y-auto h-[616px] p-4">
         {mediaType === "photo"
           ? renderPhotoContent()
           : mediaType === "video" && media?.item(0)
             ? renderVideoContent({ onSubmit: (data) => console.log(...data) })
             : renderDropZone()}
-        {media && (
-          <ModalFooter className="justify-between">
-            {mediaType === "photo" && (
-              <Button onClick={hideNewPublish}> {t("Cancel")}</Button>
-            )}
-            {mediaType === "photo" && <Button> {t("Share")}</Button>}
-          </ModalFooter>
-        )}
+
       </ModalContent>
     </Modal>
   );
 };
 
-const PhotoPreview: React.FC<{
-  media: FileList | undefined;
-  imageIdx: number;
-  setImageIdx: (idx: number) => void;
-}> = ({ media, imageIdx, setImageIdx }) => (
-  <div className="w-1/2 flex flex-col gap-4">
-    <AspectRatio className="overflow-hidden" ratio={9 / 14}>
-      <Slider
-        gap={8}
-        itemsCount={1}
-        currentItemIdx={imageIdx}
-        onSliderChange={(v) => setImageIdx(v)}
+
+
+const PostDetailsForm: React.FC<{ media?: FileList, setMedia }> = ({ media, setMedia }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="h-full justify-center items-center w-full justify-self-center">
+
+      <Formik
+        initialValues={{
+          text: "",
+          media: [] as File[],
+          location: "",
+          mentions: "",
+          visibility: "Everyone",
+          allowComments: false,
+          allowDuet: false,
+          allowStitch: false,
+          allowHQ: false,
+          shareTo: [] as string[],
+          autoShare: [] as string[],
+        }}
+        validationSchema={Yup.object().shape({
+          text: Yup.string().max(4000, "Max 4000 characters"),
+        })}
+        onSubmit={(values, { resetForm }) => {
+          // onSubmit(values);
+          resetForm();
+          // onClose();
+        }}
       >
-        {media &&
-          Array.from(media).map((v) => (
-            <div
-              className="relative w-full h-full"
-              key={URL.createObjectURL(v)}
-            >
-              <Image
-                className="w-full h-full object-cover"
-                src={URL.createObjectURL(v)}
-              />
-              <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
-                <HStack>
-                  <Button colorScheme="danger" center className="p-2">
-                    <TrashIcon />
-                  </Button>
-                </HStack>
+        {({ setFieldValue, values }) => (
+          <Form className="">
+            <div className="space-y-2">
+              {/* Media */}
+              {media.length > 0 && (
+                <div className="relative ">
+                  {/* <button
+                    type="button"
+                    onClick={() => setMedia([])}
+                    className="absolute top-2 right-2 z-10 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                  >
+                    <Trash2 size={16} />
+                  </button> */}
+                  {media[0].type.startsWith("image") ? (
+                    <img
+                      src={URL.createObjectURL(media[0])}
+                      alt="preview"
+                      className="w-full  object-contain rounded-xl"
+                    />
+                  ) : (
+                    <video
+                      src={URL.createObjectURL(media[0])}
+                      controls
+                      className="w-full aspect-video object-cover rounded-xl"
+                    />
+                  )}
+                </div>
+              )}
+
+              {/* Text */}
+              <div>
+                <Field
+                  as="textarea"
+                  name="text"
+                  placeholder="Share your thoughts within 4000 characters"
+                  className="w-full border h-24 rounded-xl p-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+                <ErrorMessage name="text" component="p" className="text-red-500 text-xs mt-1" />
+              </div>
+
+              {/* Chips */}
+              <div className="flex gap-2 flex-wrap text-xs">
+                {["#Hashtags", "@Mention", "🎥 Video", "🎵 Audio"].map((chip) => (
+                  <span key={chip} className="px-2 py-1 bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200">
+                    {chip}
+                  </span>
+                ))}
+              </div>
+
+              {/* Sharing Options */}
+              <div>
+                <p className="font-semibold text-sm mb-1">Sharing Options</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  {Object.keys(shareIcons).map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`px-2 py-1 rounded-lg border flex items-center justify-center gap-1 text-xs ${values.shareTo.includes(opt) ? "bg-black text-white" : "bg-white text-gray-700"
+                        }`}
+                      onClick={() =>
+                        setFieldValue(
+                          "shareTo",
+                          values.shareTo.includes(opt) ? values.shareTo.filter((s) => s !== opt) : [...values.shareTo, opt]
+                        )
+                      }
+                    >
+                      {shareIcons[opt]}
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Post Settings */}
+              <div className="space-y-2">
+                <p className="text-sm mb-1">Post Settings</p>
+                <SettingsList setFieldValue={setFieldValue} values={values} />
+
+                {/* Toggles */}
+                {Object.entries(toggleOptions).map(([key, { icon, label }]) => (
+                  <div
+                    key={key}
+                    className="flex items-center justify-between py-2 px-2 cursor-pointer hover:bg-gray-50 rounded-xl"
+                  >
+                    <div className="flex items-center gap-2 text-sm ">
+                      <span className="p-2">{icon}</span>
+                      <span>{label}</span>
+                    </div>
+                    <NewPostSwitch
+                      checked={values[key as keyof typeof values] as boolean}
+                      onChange={(val) => setFieldValue(key, val)}
+                    />
+                  </div>
+                ))}
+
+              </div>
+
+              {/* Auto-Sharing */}
+              <div>
+                <p className="font-semibold text-sm mb-4">Auto-Sharing</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  {Object.keys(shareIcons).map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`px-2 py-1 rounded-lg border flex items-center justify-center gap-1 ${values.autoShare.includes(opt) ? "bg-black text-white" : "bg-white text-gray-700"
+                        }`}
+                      onClick={() =>
+                        setFieldValue(
+                          "autoShare",
+                          values.autoShare.includes(opt) ? values.autoShare.filter((s) => s !== opt) : [...values.autoShare, opt]
+                        )
+                      }
+                    >
+                      {shareIcons[opt]}
+                      {opt}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-          ))}
-      </Slider>
-    </AspectRatio>
-    <div className="flex gap-4 justify-center w-full">
-      {media &&
-        mapArray(Array.from(media), (v, i) => (
-          <Radio
-            key={i}
-            className="cursor-pointer scale-125"
-            checked={imageIdx === i}
-            onChange={(v) => (v.target.checked ? setImageIdx(i) : null)}
-          />
-        ))}
-    </div>
-  </div>
-);
 
-const PostDetailsForm: React.FC = () => {
-const { t } = useTranslation();
-  return (
-    <div className="h-full justify-center items-center w-full justify-self-center flex gap-6">
-      <div className="w-full flex flex-col gap-2">
-        <FormField
-          label={t("Legend")}
-          component={<Textarea className="h-28" />}
-        />
-        <FormField
-          label={t("Tag")}
-          component={
-            <InputGroup>
-              <Input />
-              <InputRightElement className="px-4">
-                <HashtagIcon />
-              </InputRightElement>
-            </InputGroup>
-          }
-        />
-        <FormField
-          label={t("User")}
-          component={
-            <InputGroup>
-              <Input />
-              <InputRightElement className="px-4">
-                <FiAtSign />
-              </InputRightElement>
-            </InputGroup>
-          }
-        />
-        <FormField
-          label={t("Place")}
-          component={
-            <InputGroup>
-              <Input />
-              <InputRightElement className="px-4">
-                <GrLocationPin />
-              </InputRightElement>
-            </InputGroup>
-          }
-        />
-        <FormField
-          label={t("Link")}
-          component={
-            <Input placeholder={t("You can add a wiaah product link only")} />
-          }
-        />
-      </div>
+            {/* Footer */}
+            <div className="mt-4">
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-black py-2 text-white font-semibold hover:bg-gray-800 text-sm"
+              >
+                Publish
+              </button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
@@ -351,10 +426,11 @@ const FormField: React.FC<{ label: string; component: React.ReactNode }> = ({
 
 const VideoEditorStep: React.FC<{
   media: FileList | undefined;
+  setMedia: React.Dispatch<React.SetStateAction<FileList | undefined>>;
   setActionVidBlob: (blob: Blob) => void;
   handleChange: (key: string, value: any) => void;
-}> = ({ media, setActionVidBlob, handleChange }) => (
-  <div className="mx-auto w-[20.5rem]">
+}> = ({ media, setMedia, setActionVidBlob, handleChange }) => (
+  <div className="w-full max-w-3xl mx-auto">
     <VideoEditor
       video={media?.item(0)!}
       maxDuration={180}
@@ -365,18 +441,20 @@ const VideoEditorStep: React.FC<{
       }}
     />
   </div>
-);
 
+);
 const VideoDetailsStep: React.FC<{
   form: any;
   coversRef: React.MutableRefObject<Record<number, HTMLVideoElement>>;
   setCoversRef: (idx: number, node: HTMLVideoElement) => void;
-}> = ({ form, coversRef, setCoversRef }) => {
-const { t } = useTranslation();
+  setMedia: React.Dispatch<React.SetStateAction<FileList | undefined>>;
+}> = ({ form, coversRef, setCoversRef, setMedia }) => {
+
+  const { t } = useTranslation();
   return (
-    <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
-      <div className="w-96 mx-auto">
-        <PostDetailsForm />
+    <div className="w-full flex-col px-2 h-[calc(100%-6rem)]">
+      <div className="mx-auto">
+        {/* <PostDetailsForm setMedia={setMedia} /> */}
         <p>{t("Allow user to")}:</p>
         <Checkbox>{t("Duet")}</Checkbox>
         <Checkbox>{t("Stitch")}</Checkbox>
@@ -403,7 +481,9 @@ const { t } = useTranslation();
                     <video
                       muted
                       loop
+                      playsInline
                       data-idx={idx}
+                      className="w-full h-full object-cover rounded-lg"
                       ref={(node) => {
                         if (node) {
                           setCoversRef(idx, node);
@@ -412,6 +492,7 @@ const { t } = useTranslation();
                       }}
                       src={URL.createObjectURL(blob)}
                     />
+
                   </div>
                 )}
                 videoSrc={form.srcUploadId}
@@ -425,3 +506,6 @@ const { t } = useTranslation();
 };
 
 export default AddNewPostModal;
+
+
+
