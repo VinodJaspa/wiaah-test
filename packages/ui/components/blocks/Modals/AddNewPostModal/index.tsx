@@ -318,7 +318,7 @@ const PostDetailsForm: React.FC<{ media?: FileList, setMedia }> = ({ media, setM
 
               {/* Chips */}
               <div className="flex gap-2 flex-wrap text-xs">
-                {["#Hashtags", "@Mention", "🎥 Video", "🎵 Audio"].map((chip) => (
+                {["#Hashtags", "@Mention", "@Video", "@Audio"].map((chip) => (
                   <span key={chip} className="px-2 py-1 bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200">
                     {chip}
                   </span>
