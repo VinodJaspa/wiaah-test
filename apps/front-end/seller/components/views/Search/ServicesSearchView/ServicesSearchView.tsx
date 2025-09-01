@@ -1,13 +1,18 @@
-import { getMockServices, InfiniteScrollWrapper } from "@UI";
-import {
-  SearchServiceCard,
-  SearchServiceCardProps,
-} from "@UI/components/features/Search/Services/components/Cards/SearchServiceCard/SearchServiceCard";
+import { getMockServices, InfiniteScrollWrapper, SearchServiceCardProps } from "@UI";
+// Dynamic import with SSR disabled
+const SearchServiceCard = dynamic<SearchServiceCardProps>(
+  () =>
+    import(
+      "@UI/components/features/Search/Services/components/Cards/SearchServiceCard/SearchServiceCard"
+    ).then((mod) => mod.SearchServiceCard),
+  { ssr: false }
+);
 import { ServicesSearchBadgeList } from "@UI/components/features/Services/components/DataDisplay/ServicesSearchBadgeList/index";
 import { Form, Formik } from "formik";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowUp } from "lucide-react"; // icon
+import dynamic from "next/dynamic";
 
 export const ServicesSearchView: React.FC = () => {
   const { t } = useTranslation();
@@ -44,7 +49,7 @@ export const ServicesSearchView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-10 px-4 md:px-8 lg:px-12">
-      <Formik initialValues={{ serviceType: "hotel" } as any} onSubmit={() => {}}>
+      <Formik initialValues={{ serviceType: "hotel" } as any} onSubmit={() => { }}>
         {({ values, setFieldValue }) => (
           <Form className="flex flex-col gap-7">
             {/* Service Type Tabs */}

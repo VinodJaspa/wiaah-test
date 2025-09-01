@@ -1,4 +1,5 @@
 import { useResponsive } from "hooks";
+import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
@@ -34,7 +35,6 @@ export interface SellerSideBarProps extends HtmlDivProps {
 
 export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   onLinkClick,
-  activeLink,
   headerElement,
   children,
   className,
@@ -44,9 +44,16 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { user } = useUserData();
+  const router = useRouter();
 
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick?.(link);
+
+    router.push(link.url);
+    // if(link.url ==="/service"){
+    //   window.location.href =link.url;
+    // }
+    
   }
 
   const links: NavigationLinkType[] = [
@@ -118,32 +125,35 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
           )}
 
           {links.map((link, i) => {
-            const active = link.url === activeLink;
+            const active = router.pathname === link.url; // use current route
+
             return (
               <div
-                className={`flex gap-3 items-center cursor-pointer relative p-2 rounded-md hover:bg-gray-100 ${
-                  isMobile ? "" : "px-4"
-                }`}
-                data-testid="NavigationSideBarLink"
-                onClick={() => handleLinkClick(link)}
+                className={`flex gap-3 items-center cursor-pointer relative p-2 rounded-md transition-all duration-200
+                  ${isMobile ? "" : "px-4"}
+                  ${active ? "bg-primary/10 text-primary shadow-sm" : "hover:bg-gray-100"}
+                `}
                 key={i}
+                onClick={() => handleLinkClick(link)}
               >
                 <span
-                  className={`${
-                    active ? "text-primary" : "text-black"
+                  className={`transition-all duration-200 ${
+                    active ? "text-primary scale-110" : "text-black"
                   } text-icon`}
                 >
                   {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}
                 </span>
                 {!isMobile && (
                   <p
-                    className={`${
-                      active ? "text-primary" : "text-black"
-                    } capitalize font-medium text-sm`}
-                    data-testid="NavigationSideBarLinkLabel"
+                    className={`transition-all duration-200 capitalize font-medium text-sm ${
+                      active ? "text-primary font-semibold" : "text-black"
+                    }`}
                   >
                     {link.name}
                   </p>
+                )}
+                {!isMobile && active && (
+                  <span className="absolute left-0 top-0 h-full w-1 bg-primary rounded-r-full" />
                 )}
               </div>
             );

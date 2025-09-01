@@ -38,6 +38,7 @@ import { ActionType, CommentsVisibility } from "@features/API";
 
 import { NewPostSwitch, SettingsList, shareIcons, toggleOptions } from "./addNewPostModal";
 import { Trash2 } from "lucide-react";
+import SmartTextarea from "@UI/components/shadcn-components/Fields/smartTextArea";
 
 const MAX_UPLOAD_LIMIT = 5;
 const MAX_ACTION_SIZE = 2 * 1024 * 1024 * 1024;
@@ -251,7 +252,7 @@ export const AddNewPostModal: React.FC = () => {
 const PostDetailsForm: React.FC<{ media?: FileList, setMedia }> = ({ media, setMedia }) => {
   const { t } = useTranslation();
   return (
-    <div className="h-full justify-center items-center w-full justify-self-center">
+    <div className="justify-center items-center w-full justify-self-center">
 
       <Formik
         initialValues={{
@@ -283,47 +284,54 @@ const PostDetailsForm: React.FC<{ media?: FileList, setMedia }> = ({ media, setM
               {media.length > 0 && (
                 <div className="relative ">
                   {/* <button
-                    type="button"
-                    onClick={() => setMedia([])}
-                    className="absolute top-2 right-2 z-10 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
-                  >
-                    <Trash2 size={16} />
-                  </button> */}
+      type="button"
+      onClick={() => setMedia([])}
+      className="absolute top-2 right-2 z-10 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+    >
+      <Trash2 size={16} />
+    </button> */}
                   {media[0].type.startsWith("image") ? (
-                    <img
-                      src={URL.createObjectURL(media[0])}
-                      alt="preview"
-                      className="w-full  object-contain rounded-xl"
-                    />
+                    <div className="w-full h-96 overflow-hidden rounded-xl space-x-3 p-4">
+                      <img
+                        src={URL.createObjectURL(media[0])}
+                        alt="preview"
+                        className="w-full h-full object-contain rounded-xl"
+                      />
+                    </div>
+
                   ) : (
-                    <video
-                      src={URL.createObjectURL(media[0])}
-                      controls
-                      className="w-full aspect-video object-cover rounded-xl"
-                    />
+                    <div className="w-full aspect-video overflow-hidden rounded-xl">
+                      <video
+                        src={URL.createObjectURL(media[0])}
+                        controls
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                    </div>
                   )}
                 </div>
               )}
 
               {/* Text */}
-              <div>
-                <Field
-                  as="textarea"
-                  name="text"
-                  placeholder="Share your thoughts within 4000 characters"
-                  className="w-full border h-24 rounded-xl p-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-                <ErrorMessage name="text" component="p" className="text-red-500 text-xs mt-1" />
+              <div className="relative">
+                <Field name="text">
+                  {({ field, form }: any) => (
+                    <SmartTextarea
+                      value={field.value}
+                      onChange={(val) => form.setFieldValue(field.name, val)}
+                    />
+                  )}
+                </Field>
+
               </div>
 
               {/* Chips */}
-              <div className="flex gap-2 flex-wrap text-xs">
+              {/* <div className="flex gap-2 flex-wrap text-xs">
                 {["#Hashtags", "@Mention", "@Video", "@Audio"].map((chip) => (
                   <span key={chip} className="px-2 py-1 bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200">
                     {chip}
                   </span>
                 ))}
-              </div>
+              </div> */}
 
               {/* Sharing Options */}
               <div>
@@ -506,6 +514,7 @@ const VideoDetailsStep: React.FC<{
 };
 
 export default AddNewPostModal;
+
 
 
 

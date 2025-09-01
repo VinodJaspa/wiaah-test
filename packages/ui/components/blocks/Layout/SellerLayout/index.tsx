@@ -182,7 +182,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
 
     // Full reload if absolutely needed (usually not recommended in SPA)
-    window.location.href = path;
+    // window.location.href = path;
+    // router.push
 
     setDrawerOpen(false);
   };
@@ -249,7 +250,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 }
               />
               {stories && stories.length > 0 ? <Divider /> : null}
-              <div className="text-white flex flex-col gap-4">
+              <div className="text-white flex flex-col gap-4 ">
                 <ScrollableContainer
                   containerProps={{ className: "gap-4" }}
                   autoShowAll

@@ -89,7 +89,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
   );
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
 
-  
+
   const data = newsfeedPosts;
   // console.log(data,"data___");
 
@@ -117,9 +117,9 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
       numberOfShares: action.shares,
       location: action.location
         ? {
-            city: action.location.city,
-            country: action.location.country,
-          }
+          city: action.location.city,
+          country: action.location.country,
+        }
         : undefined,
       musicId: action.musicId,
       effect: action.effect?.name,
@@ -158,7 +158,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
           </div>
         </div>
       )}
-      
+
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">

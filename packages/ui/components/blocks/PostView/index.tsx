@@ -74,8 +74,7 @@ const { t } = useTranslation();
   // } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
 
   const post = data;
-  console.log(data.profileInfo
-    ,"data----");
+ 
   
   const router = useRouter();
   const handleGenerateLink = () => {
@@ -217,7 +216,7 @@ const { t } = useTranslation();
           }}
           postOwnerUsername={postOwnerUsername}
         />
-      </div>
+      </div>   
     </div>
   );
 }

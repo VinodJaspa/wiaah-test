@@ -61,7 +61,7 @@ const { t } = useTranslation();
         src={postInfo?.service.thumbnail}
         alt={postInfo.service.title}
       />
-      {cashback ? (
+      {/* {cashback ? (
         <div className="absolute group-hover:opacity-0 md:text-base text-xs transition-opacity bottom-1 left-1 md:bottom-4 md:left-4">
           <CashbackBadge amount={cashback} type={"cash"} />
         </div>
@@ -70,7 +70,7 @@ const { t } = useTranslation();
         <div className="absolute group-hover:opacity-0 bg-opacity-70 md:text-base text-xs transition-opacity bg-gray-400 text-white rounded-lg px-4 py-1 flex justify-center items-center origin-center md:top-4 md:right-4 top-1 right-1">
           {postInfo.service.title}
         </div>
-      ) : null}
+      ) : null} */}
       <div
         onClick={handleOpne}
         className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-4 py-3 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between"

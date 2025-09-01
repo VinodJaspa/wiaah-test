@@ -100,7 +100,7 @@ const { t } = useTranslation();
 
       component: (
         <div className="flex flex-col gap-4 w-full h-full">
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             <div
               onClick={() => {
                 setFilterOpen(true);
@@ -110,8 +110,8 @@ const { t } = useTranslation();
               <samp>{t("Filter", "Filter")}</samp>
               <FaChevronDown className="ml-2" />
             </div>
-          </div>
-          <FilterModal />
+          </div> */}
+          {/* <FilterModal /> */}
           <ServiceCardsListWrapper
             cols={cols}
             items={SocialServicePostCardPlaceholder}
@@ -146,16 +146,16 @@ const { t } = useTranslation();
         <SpinnerFallback isLoading={false} isError={isError}>
           <Container className="flex-grow flex-col">
             <div className="w-full flex overflow-hidden items-center justify-center md:max-h-[26rem] h-fit relative ">
-              {/* <SocialProfile
+              <SocialProfile
                 storeType={
                   FAKE_PROFILE_INFO.user?.shop.storeType || StoreType.Product
                 }
                 isFollowed={true}
                 isPublic={FAKE_PROFILE_INFO.visibility}
                 profileInfo={FAKE_PROFILE_INFO}
-              /> */}
-              {/* <SocialPostsCommentsDrawer /> */}
-              {/* <ShareWithModal /> */}
+              />
+              {/* <SocialPostsCommentsDrawer />
+              <ShareWithModal /> */}
             </div>
             {profileInfo && (
               <>

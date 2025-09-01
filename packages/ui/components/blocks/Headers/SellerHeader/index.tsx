@@ -85,7 +85,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
     <>
       <div
         {...props}
-        className="flex justify-between items-center bg-white w-full h-[3.75rem]"
+        className="flex justify-between items-center bg-white w-full h-[3.75rem] mt-4"
       >
         {/* Left side logo / greeting */}
         <div className="flex items-center gap-2 h-full">
@@ -148,7 +148,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
               )}
 
               {/* Inbox */}
-              <div className="relative" onClick={() => router.push("/inbox")}>
+              <div className="relative" onClick={() => window.location.href ="/inbox"}>
                 <span className="h-4 w-4 text-[0.5rem] border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
                   4
                 </span>
@@ -227,7 +227,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       logout(undefined, {
         onSuccess: () => {
           setLoginState(false);
-          window.location.href = "/";
+          // window.location.href = "/";
           router.push("/"); 
           successToast("You have been ssucefully logeed out!")
           // Uncomment if you want to use Next.js routing instead of window.location.href    
@@ -238,7 +238,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         },
       });
     } else {
-      window.location.href = path;
+      // window.location.href = path;
       router.push(path);
     }
   };

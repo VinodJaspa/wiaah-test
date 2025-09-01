@@ -295,7 +295,7 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
     <>
-      <AddNewPostModal  />
+      <AddNewPostModal />
       <AuthenticationModal />
       <SocialShareCotentModal />
       {/*<SocialStoryDrawer /> */}

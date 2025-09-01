@@ -42,6 +42,7 @@ import { useRouting } from "routing";
 import { TabsTabType, TabType } from "types";
 import { useRouter } from "next/router";
 import { TbEdit } from "react-icons/tb";
+import ChatInputBox from "@UI/components/shadcn-components/Fields/chatbox";
 
 export interface SocialProfileProps {
   profileInfo: Pick<
@@ -89,33 +90,55 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 }) => {
   const router = useRouter();
   const myprofile = router.route === "/myprofile";
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
   const { visit } = useRouting();
 
-  const { mutate: unFollowProfile } = useUnFollowProfileMutation();
-  const { mutate: followProfile } = useUnFollowProfileMutation();
+  const { mutate: unFollowProfile } = useUnFollowProfileMutation(); 
+  const { mutate: followProfile } = useUnFollowProfileMutation(); 
   const { mutate: sendFollowReq } = useSendFollowRequestMutation();
-
+  const [showChat, setShowChat] = React.useState(false);
+  const [localIsFollowed, setLocalIsFollowed] = React.useState(isFollowed); // local state
   const isProfilePublic = isPublic;
 
   const { user } = useUserData();
-
   const ownProfile = user?.id === profileInfo?.ownerId;
 
+  const handleMessageClick = () => {
+    setShowChat(true);
+  };
+
+  const handleCloseChat = () => {
+    setShowChat(false);
+  };
+
   function handleFollowProfile() {
-    if (isFollowed) {
-      unFollowProfile({ profileId: profileInfo.id });
-      return;
-    }
-    if (isProfilePublic) {
-      followProfile({
-        profileId: profileInfo.id,
-      });
+    if (localIsFollowed) {
+      // Optimistically update UI
+      setLocalIsFollowed(false);
+      unFollowProfile(
+        { profileId: profileInfo.id },
+        {
+          // onError: () => setLocalIsFollowed(true), // rollback if error
+        }
+      );
       return;
     }
 
+    if (isProfilePublic) {
+      setLocalIsFollowed(true);
+      followProfile(
+        { profileId: profileInfo.id },
+        {
+          // onError: () => setLocalIsFollowed(false), // rollback if error
+        }
+      );
+      return;
+    }
+
+    // Private profile: send follow request
     sendFollowReq(profileInfo.id);
+    alert("Follow request sent");
   }
 
   const isProductShop = storeType === StoreType.Product;
@@ -188,7 +211,7 @@ const { t } = useTranslation();
           <p className="text-[22px] font-bold ">{profileInfo.username}</p>
           <>
             {profileInfo.verified ? (
-              <VerifiedIcon className="text-base text-primary" />
+              <VerifiedIcon className="text-base text-black" />
             ) : null}
           </>
         </div>
@@ -197,8 +220,8 @@ const { t } = useTranslation();
         >
           <div
             className={`flex  items-center w-full ${myprofile
-                ? "md:justify-between  justify-center"
-                : "md:gap-12 gap-0"
+              ? "md:justify-between  justify-center"
+              : "md:gap-12 gap-0"
               }`}
           >
             {/* USERNAME */}
@@ -217,7 +240,7 @@ const { t } = useTranslation();
                 <Button
                   colorScheme="gray"
                   disabled={isPrivateForUser}
-                  onClick={()=> router.replace("/editprofile")}
+                  onClick={() => router.replace("/editprofile")}
                   className=" whitespace-nowrap col-span-1 w-full md:w-fit gap-2 text-black font-semibold text-sm rounded-lg h-8 flex items-center justify-center"
                 >
                   {t("Edit Profile")}
@@ -232,36 +255,32 @@ const { t } = useTranslation();
               </div>)
             ) : (
               // Follow Buttons
-              (<div className="gap-3 md:flex w-full grid grid-cols-2 ">
+              (
+                <div className="gap-3 md:flex w-full flex-row">
                 <Button
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
-                  className="whitespace-nowrap col-span-1 w-full capitalize text-sm font-semibold rounded-lg h-8"
+                  className="whitespace-nowrap flex-1 min-w-[100px] capitalize text-sm font-semibold rounded-lg h-8"
                 >
-                  {isFollowed
+                  {localIsFollowed
                     ? t("Unfollow")
                     : isProfilePublic
                       ? t("Follow")
                       : t("Ask To Follow")}
                 </Button>
+              
                 <Button
                   colorScheme="gray"
-                  disabled={isPrivateForUser}
-                  onClick={handleFollowProfile}
-                  className="whitespace-nowrap w-full col-span-1 text-black font-semibold text-sm rounded-lg h-8"
+                  onClick={handleMessageClick}
+                  className="whitespace-nowrap flex-1 min-w-[100px] text-sm font-semibold rounded-lg h-8"
                 >
-                  {t("Message")}
+                  Message
                 </Button>
-                <Button
-                  colorScheme="darkbrown"
-                  onClick={handleFollowProfile}
-                  className="h-8 gap-2 rounded-lg font-semibold col-span-2 flex text-sm items-center justify-center"
-                >
-                  <SlCalender className="mb-1" />
-                  <p className="inline  md:hidden">Booking</p>
-                </Button>
+              
                 <MoreOptionsPopup className="md:flex hidden text-3xl " />
-              </div>)
+              </div>
+              
+              )
             )}
           </div>
         </div>
@@ -363,6 +382,22 @@ const { t } = useTranslation();
               </p>
             </div>
           </>
+        )}
+        {/* Floating Chat Box */}
+        {showChat && (
+          <div className="fixed right-5 bottom-5 w-auto h-96 bg-white border rounded-xl shadow-lg z-50 flex flex-col">
+            <div className="flex justify-between items-center p-3 border-b">
+              <p className="font-semibold">{profileInfo.username}</p>
+              <button onClick={handleCloseChat} className="text-gray-500 hover:text-gray-800">
+                ✕
+              </button>
+            </div>
+            <div className="flex-1 p-3 overflow-y-auto">
+              {/* Messages will go here */}
+              <p className="text-gray-400 text-sm">No messages yet</p>
+            </div>
+      <ChatInputBox onSend={(msg) => console.log("Message sent:", msg)} />
+          </div>
         )}
       </Container>
       {/*</div> */}

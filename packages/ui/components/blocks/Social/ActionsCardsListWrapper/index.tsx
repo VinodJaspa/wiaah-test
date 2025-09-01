@@ -27,7 +27,7 @@ export const ActionsCardListWrapper: React.FC<ActionsCardListWrapperProps> = ({
     : useMediaQuery({ minWidth: 768, maxWidth: 1023 })
     ? 2
     : useMediaQuery({ minWidth: 1024 })
-    ? 3
+    ? 4
     : 1;
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 

@@ -1,138 +1,140 @@
+import { useSocialControls } from "@blocks/Layout";
+import ChatInputBox from "@UI/components/shadcn-components/Fields/chatbox";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
+import React from "react";
 
-import SearchBoxInner from '@UI/components/shadcn-components/SearchBox/SearchBoxInner';
-import React from 'react';
+// Mock sidebar message list
+const messages = [
+  {
+    id: 1,
+    name: "z.beatz",
+    lastMessage: "z.beatz a envoyé une pièce jointe...",
+    time: "1h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=Z",
+  },
+  {
+    id: 2,
+    name: "Liam Carter",
+    lastMessage: "Vous: See you tomorrow!",
+    time: "1h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=L",
+  },
+  {
+    id: 3,
+    name: "Olivia Davis",
+    lastMessage: "Vous: Thanks for the recommendation!",
+    time: "2h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=O",
+  },
+];
 
-// Main App component
+// Mock conversation threads
+const mockConversations: Record<number, { from: string; text: string }[]> = {
+  1: [
+    { from: "z.beatz", text: "Hey, check this out 🔥" },
+    { from: "Me", text: "Looks great!" },
+    { from: "z.beatz", text: "Sent you the file 🚀" },
+  ],
+  2: [
+    { from: "Me", text: "See you tomorrow!" },
+    { from: "Liam Carter", text: "Sure thing 👌" },
+  ],
+  3: [
+    { from: "Olivia Davis", text: "Thanks for the recommendation!" },
+    { from: "Me", text: "Anytime 🙂" },
+  ],
+};
+
 export default function ChatMessagesSection() {
-  // Mock data for the message list
-  const messages = [
-    {
-      id: 1,
-      name: "z.beatz",
-      lastMessage: "z.beatz a envoyé une pièce jointe...",
-      time: "1h",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=Z",
-    },
-    {
-      id: 2,
-      name: "Liam Carter",
-      lastMessage: "Vous: See you tomorrow!",
-      time: "1h",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=L",
-    },
-    {
-      id: 3,
-      name: "Olivia Davis",
-      lastMessage: "Vous: Thanks for the recommendation!",
-      time: "2h",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=O",
-    },
-    {
-      id: 4,
-      name: "Noah Evans",
-      lastMessage: "Vous: Happy Birthday!",
-      time: "1h",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=N",
-    },
-    {
-      id: 5,
-      name: "Ava Foster",
-      lastMessage: "Vous: Let's catch up soon.",
-      time: "2 min.",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
-    },
-    {
-      id: 6,
-      name: "Ava Foster",
-      lastMessage: "Vous: Let's catch up soon.",
-      time: "2 min.",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
-    },
-    {
-      id: 7,
-      name: "Ava Foster",
-      lastMessage: "Vous: Let's catch up soon.",
-      time: "2 min.",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
-    },
-    {
-      id: 8,
-      name: "Ava Foster",
-      lastMessage: "Vous: Let's catch up soon.",
-      time: "2 min.",
-      avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=A",
-    },
-  ];
+  const [activeMessageId, setActiveMessageId] = React.useState<number | null>(null);
+  const [messagesList, setMessagesList] = React.useState(messages); // sidebar messages
+  const [conversations, setConversations] = React.useState(mockConversations);
 
-  const [activeMessageId, setActiveMessageId] = React.useState(null);
+  const { value: chatRoomId } = useSocialControls("chatRoomId"); // 👈 listen to chatRoomId
 
-  // A mock component to replace the external SearchBoxInner import
- 
+  // When chatWith is called → set active chat
+  React.useEffect(() => {
+    if (!chatRoomId) return;
+
+    const existingChat = messagesList.find((m) => m.id === Number(chatRoomId));
+
+    // If chat doesn’t exist yet → add a new one
+    if (!existingChat) {
+      const newChat = {
+        id: Number(chatRoomId),
+        name: `User ${chatRoomId}`, // replace with real user data if available
+        lastMessage: "Start a new conversation...",
+        time: "now",
+        avatar: `https://placehold.co/40x40/f1f5f9/64748b?text=U${chatRoomId}`,
+      };
+
+      setMessagesList((prev) => [...prev, newChat]);
+      setConversations((prev) => ({
+        ...prev,
+        [chatRoomId]: [],
+      }));
+    }
+
+    setActiveMessageId(Number(chatRoomId));
+  }, [chatRoomId, messagesList]);
+
 
   return (
-    // The main layout is a two-column flex container on screens larger than 'md', full-width column on mobile
     <div className="flex flex-col md:flex-row h-screen font-[Inter] bg-white">
-      {/* Left Sidebar for message list. It is a full-width column on mobile */}
+      {/* Sidebar */}
       <div className="flex-none w-full md:w-[350px] border-r border-gray-200 bg-white flex flex-col">
-        {/* Header with title and icon */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h1 className="text-2xl font-bold">Messages</h1>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-gray-500 cursor-pointer"
-          >
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-          </svg>
         </div>
 
+        <SearchBoxInner
+          className="p-6 bg-white shadow-lg rounded-md"
+          placeholder="Search People"
+        />
 
-        <SearchBoxInner className='p-6' placeholder='Search People'/>
-
-        {/* Message list container with a scrollable area */}
         <div className="flex-1 overflow-y-auto">
-          {messages.map((message) => (
-            <MessageItem
-              key={message.id}
-              message={message}
-              isActive={activeMessageId === message.id}
-              onClick={() => setActiveMessageId(message.id)}
-            />
-          ))}
+          <div className="flex-1 overflow-y-auto">
+            {messagesList.map((message) => (
+              <MessageItem
+                key={message.id}
+                message={message}
+                isActive={activeMessageId === message.id}
+                onClick={() => setActiveMessageId(message.id)}
+              />
+            ))}
+          </div>
+
         </div>
       </div>
 
-      {/* Right Main Content area. This is hidden on small screens until a message is clicked. */}
-      {/* On desktop, it takes up the remaining space */}
-      <div className={`flex-1 ${activeMessageId === null ? 'flex' : 'hidden md:flex'} flex-col items-center justify-center bg-gray-50`}>
-        <MainChatView />
+      {/* Chat window */}
+      <div className="flex-1 flex flex-col bg-gray-50">
+        {activeMessageId ? (
+          <ChatRoom
+            chat={conversations[activeMessageId] || []} // ✅ only this chat’s messages
+            name={messagesList.find((m) => m.id === activeMessageId)?.name || "Unknown"}
+            avatar={messagesList.find((m) => m.id === activeMessageId)?.avatar || ""}
+          // onSendMessage={handleSendMessage}
+          />
+        ) : (
+          <MainChatView />
+        )}
+
       </div>
     </div>
   );
 }
 
-// Component for a single message item in the list
+// Sidebar item
 function MessageItem({ message, isActive, onClick }) {
   const { avatar, name, lastMessage, time } = message;
   return (
     <div
       onClick={onClick}
-      className={`flex items-center px-6 py-4 cursor-pointer transition-colors ${
-        isActive ? "bg-gray-100" : "hover:bg-gray-50"
-      }`}
+      className={`flex items-center px-6 py-4 cursor-pointer transition-colors ${isActive ? "bg-gray-100" : "hover:bg-gray-50"
+        }`}
     >
-      <img
-        src={avatar}
-        alt={`${name}'s avatar`}
-        className="w-10 h-10 rounded-full mr-4"
-      />
+      <img src={avatar} className="w-10 h-10 rounded-full mr-4" />
       <div className="flex-1 overflow-hidden">
         <div className="text-sm font-semibold truncate">{name}</div>
         <div className="text-xs text-gray-500 truncate">{lastMessage}</div>
@@ -144,33 +146,100 @@ function MessageItem({ message, isActive, onClick }) {
   );
 }
 
-// Component for the main chat view (placeholder for now)
+// Placeholder view
 function MainChatView() {
+  const { msgNewUser } = useSocialControls("msgNewUser");
+
   return (
-    <div className="flex flex-col items-center justify-center p-4 text-center">
-      <div className="text-gray-300 mb-6">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100"
-          height="100"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+    <div className="flex h-full w-full items-center justify-center bg-gray-50">
+      <div className="flex flex-col items-center justify-center text-center px-6 py-12 rounded-2xl shadow-sm bg-white max-w-md">
+
+        {/* Icon Container */}
+        <div className="flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gray-100">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="50"
+            height="50"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gray-500"
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <path d="M8 10h.01" />
+            <path d="M12 10h.01" />
+            <path d="M16 10h.01" />
+          </svg>
+        </div>
+
+        {/* Heading */}
+        <h2 className="text-lg md:text-2xl font-semibold text-gray-900 mb-2">
+          Your Messages
+        </h2>
+
+        {/* Subtext */}
+        <p className="text-gray-500 text-sm md:text-base mb-6 leading-relaxed">
+          Stay connected and never miss a conversation. Select a person to
+          start chatting now.
+        </p>
+
+        {/* CTA Button */}
+        <button
+          onClick={msgNewUser}
+          className="bg-black text-white text-sm md:text-base px-6 py-3 rounded-full font-medium shadow-md transition-colors hover:bg-gray-800"
         >
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          <path d="M8 10h.01" />
-          <path d="M12 10h.01" />
-          <path d="M16 10h.01" />
-        </svg>
+          Select Person
+        </button>
       </div>
-      <h2 className="text-xs font-bold mb-2 text-gray-800 md:text-2xl">Your messages</h2>
-      <p className="text-gray-500 mb-6 max-w-sm">Don’t miss a minute to talk to your contacts</p>
-      <button className="bg-black text-white text-xs px-4 py-2 rounded-full font-semibold shadow-md transition-colors hover:bg-gray-800 md:text-sm md:px-6 md:py-3">
-        Send a Message
-      </button>
+    </div>
+  );
+}
+
+
+
+// Chat Room
+function ChatRoom({ chat, name, avatar }) {
+  const bottomRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]); // whenever chat changes, scroll to bottom
+
+  return (
+    <div className="flex-1 flex flex-col">
+      {/* Header */}
+      <div className="flex items-center mb-6 pr-2 pl-2  border-gray-200 bg-white">
+        <img src={avatar} className="w-10 h-10 rounded-full mr-3" />
+        <h2 className="font-semibold text-lg">{name}</h2>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 p-4 space-y-3 overflow-y-auto">
+        {chat.map((msg, i) => (
+          <div
+            key={i}
+            className={`flex ${msg.from === "Me" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`px-4 py-2 rounded-2xl max-w-xs ${msg.from === "Me"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+                }`}
+            >
+              {msg.text}
+            </div>
+          </div>
+        ))}
+        {/* bottom anchor */}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <ChatInputBox onSend={(msg) => console.log("Message sent:", msg)} />
+
     </div>
   );
 }
