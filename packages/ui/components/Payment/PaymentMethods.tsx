@@ -4,13 +4,14 @@ import { CreditCard, Plus } from "lucide-react"; // Adjust these icons as needed
 import Image from "next/image";
 import PayCard from "./PayCard";
 
-import AddPaymentDialog from "components/modals/AddPaymentMethodModal";
+
 import React from "react";
 import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
 import VisaLogo from "@UI/components/shadcn-components/logos/VisaLogo";
 import MasterCardLogo from "@UI/components/shadcn-components/logos/MasterCardLogo";
 import EditButton from "@UI/components/shadcn-components/Buttons/editButton";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import AddPaymentDialog from "./AddPaymentDialog";
 
 export default function PaymentMethodsSection() {
     const [isOpen, setIsOpen] = React.useState(false);

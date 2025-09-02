@@ -163,7 +163,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   accountType,
   noContainer = false,
 }) => {
-  console.log(sideBar, "sideBar", typeof window);
+  console.log(accountType, "accountType", );
 
   const { isMobile } = useResponsive();
   // const [isSidebar, setSidebar] = React.useState(true);
@@ -189,21 +189,16 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   };
 
   const [isSidebar, setSidebar] = useRecoilState(sidebarState);
-  console.log(isSidebar, "isSidebar");
+  // console.log(isSidebar, "isSidebar");
   //Set the header type
   //Set header
   let stored: string | null = null;
   React.useEffect(() => {
     if (typeof window !== "undefined" && accountType) {
-      localStorage.setItem("header", accountType.toString());
+      localStorage.setItem("userType", accountType.toString());
     }
   }, [accountType]);
-  React.useEffect(() => {
 
-
-     
-
-  }, [isSidebar]);
 
 
   const { pagination: storiesPagination } = usePaginationControls();
@@ -293,7 +288,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
               ref={headerRef}
             >
               <HeaderSwitcher
-                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+                links={accountType == "buyer" ? BuyerNavLinks : SellerNavLinks}
                 headerType={header}
               />
             </div>

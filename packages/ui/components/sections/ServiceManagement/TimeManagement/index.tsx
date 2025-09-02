@@ -171,7 +171,7 @@ export const TimeManagementSection: React.FC<
           <TabTitle TabKey="0">
             {({ currentTabIdx ,currentActive }) => (
               <p
-                className={`pb-2 ${currentActive === 0
+                className={`pb-2 ${currentTabIdx === 0
                     ? "border-b-2 border-b-primary text-primary font-medium"
                     : "border-b-2 border-transparent text-gray-500"
                   }`}

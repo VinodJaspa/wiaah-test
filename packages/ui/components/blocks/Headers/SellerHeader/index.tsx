@@ -195,12 +195,20 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
 }) => {
   const { user } = useUserData();
   const router = useRouter();
-
   const [_, setLoginState] = useRecoilState(isUserLoggedIn);
   const { mutate: logout } = useLogoutMutation();
-
+  const [accountType, setAccountType] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedType = localStorage.getItem("userType");
+      if (savedType) {
+        setAccountType(savedType);
+      }
+    }
+  }, []);
   const links: HeaderNavLink[] = useMemo(() => {
-    if (!user || user.accountType === "buyer") {
+    // Todo-make this dynamic check accrding to user profile
+    if (accountType ==="buyer") {
       return [
         { link: { name: { translationKey: "profile", fallbackText: "Profile" }, href: "/myprofile" }, icon: <HiOutlineUserCircle /> },
         { link: { name: { translationKey: "settings", fallbackText: "Settings" }, href: "/settings" }, icon: <IoSettingsOutline /> },
@@ -220,7 +228,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         { link: { name: { translationKey: "log_out", fallbackText: "Log out" }, href: "/logout" }, icon: <BiLogOut /> },
       ];
     }
-  }, [user]);
+  }, []);
 
   const handleNavigate = (path: string) => {
     if (path === "/logout") {
