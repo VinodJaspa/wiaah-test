@@ -1,3 +1,4 @@
+import React from "react";
 interface OrderCardProps {
     id: string;
     total: string;

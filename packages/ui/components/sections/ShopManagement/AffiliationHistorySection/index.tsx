@@ -1,29 +1,32 @@
+import { useGetMyAffiliationHistoryQuery } from "@features/Affiliation/services/queries/useGetMyAffiliationHistory";
+import {
+  Divider,
+  HStack,
+  Image,
+  PriceDisplay,
+  SectionHeader,
+  ShadcnTable,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  usePaginationControls,
+  useResponsive
+} from "@UI";
+import { mapArray } from "@UI/../utils/src";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsFilePdfFill } from "react-icons/bs";
 import { PriceType } from "types";
-import {
-  Button,
-  ItemsPagination,
-  Table,
-  Tr,
-  Td,
-  TBody,
-  Th,
-  THead,
-  TableContainer,
-  SectionHeader,
-  usePaginationControls,
-  Image,
-  PriceDisplay,
-  useResponsive,
-  Divider,
-  HStack,
-} from "@UI";
-import { useGetMyAffiliationHistoryQuery } from "@features/Affiliation/services/queries/useGetMyAffiliationHistory";
-import { mapArray } from "@UI/../utils/src";
 
-export interface AffiliationHistorySection {}
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
+import { Avatar } from "@UI/components/shadcn-components/table";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+export interface AffiliationHistorySection { }
 
 type AffiliationHistoryCardData = {
   productName: string;
@@ -39,17 +42,49 @@ export const AffiliationHistorySection: React.FC<
   AffiliationHistorySection
 > = () => {
   const { changeTotalItems, controls, pagination } = usePaginationControls();
-
+  const [total, setTotal] = React.useState(5);
+  const [currrentItem, setCurrrentItem] = React.useState(1);
   const { isMobile } = useResponsive();
 
   const { data } = useGetMyAffiliationHistoryQuery({
     pagination,
   });
 
-const { t } = useTranslation();
-  React.useEffect(() => {
-    changeTotalItems(AffiliationHistoryCards.length);
-  }, []);
+  const { t } = useTranslation();
+  const handleNextList = () => {
+
+  }
+  // PDF download function
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text(String(t("Affiliation History")), 14, 15);
+
+    autoTable(doc, {
+      startY: 25,
+      head: [[
+        String(t("Product Name")),
+        String(t("Product Price")),
+        String(t("Affiliator")),
+        String(t("Purchaser")),
+        String(t("Commission")),
+        String(t("Commission Amount")),
+      ]],
+      body: (data || [])
+        .map((item) => [
+          item.product?.title || "",
+          `${item.product?.price || 0}`,
+          item.affiliator?.profile?.username || "",
+          item.purchaser?.profile?.username || "",
+          `${item.paidCommissionPercent || 0}%`,
+          `${item.paidCommissionAmount || 0}`,
+        ])
+        .map((row) => row.map((cell) => String(cell))),
+      theme: "striped",
+    });
+
+    doc.save("affiliation-history.pdf");
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <SectionHeader
@@ -57,9 +92,9 @@ const { t } = useTranslation();
       >
         {isMobile ? null : (
           // {/* TODO: donwload affiliation history list as a pdf  */}
-          (<Button className="flex py-1 items-center gap-2">
+          (<PrimaryButton onClick={handleDownloadPDF} className="flex py-1 items-center gap-2">
             <BsFilePdfFill /> {t("pdf")}
-          </Button>)
+          </PrimaryButton>)
         )}
       </SectionHeader>
       {isMobile ? (
@@ -100,7 +135,7 @@ const { t } = useTranslation();
                     className="w-36 h-24 object-cover rounded-md"
                   />
                   <div className="flex flex-col gap-2 justify-between">
-                    <p className="text-lg font-semibold">{title}</p>
+                    <p className="text-lg font-semibold">{String(title ?? "")}</p>
                     <div className="text-sm flex flex-col gap-2">
                       <HStack>
                         <p>
@@ -125,79 +160,79 @@ const { t } = useTranslation();
         </div>
       ) : (
         <>
-          <TableContainer className="w-full">
-            <Table
-              className="w-full"
-              ThProps={{
-                className: "border-[1px] border-gray-300",
-              }}
-              TdProps={{
-                className: "border-[1px] border-gray-300",
-              }}
-              TrProps={{
-                className: "border-collapse",
-              }}
-            >
-              <THead>
-                <Tr>
-                  <Th>{t("Product Image")}</Th>
-                  <Th>{t("Product Name")}</Th>
-                  <Th>{t("Product Price")}</Th>
-                  <Th>{t("Affilator")}</Th>
-                  <Th>{t("Purchaser")}</Th>
-                  <Th>{t("Commission")}</Th>
-                  <Th>{t("Commission Amount")}</Th>
-                </Tr>
-              </THead>
-              <TBody>
-                {Array.isArray(data)
-                  ? data.map((card, i) => (
-                      <Tr key={i}>
-                        <Td className="w-fit">
-                          <Image
-                            className="w-32 h-auto"
-                            src={card.product?.thumbnail}
-                          />
-                        </Td>
-                        <Td>{card.product?.title}</Td>
-                        <Td>
-                          <PriceDisplay price={card.product?.price} />
-                        </Td>
-                        <Td>{card.affiliator?.profile?.username}</Td>
-                        <Td>{card.purchaser.profile?.username}</Td>
-                        <Td>{card.paidCommissionPercent}%</Td>
-                        <Td>
-                          <PriceDisplay price={card.paidCommissionAmount} />
-                        </Td>
-                      </Tr>
-                    ))
-                  : null}
-                <Tr>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td className="border-[1px] border-gray-300">
-                    {t("total_money", "Total Money")}:
-                  </Td>
-                  <Td className="border-[1px] border-gray-300">
-                    <PriceDisplay
-                      price={data?.reduce((acc, card) => {
-                        return (acc += card.paidCommissionAmount);
-                      }, 0)}
-                    />
-                  </Td>
-                </Tr>
-              </TBody>
-            </Table>
-          </TableContainer>
-          <ItemsPagination controls={controls} />
+          <TableList data={data} />
+          <Pagination total={total} current={currrentItem} onPageChange={() => handleNextList()} />
         </>
       )}
     </div>
   );
 };
+
+export function TableList({ data }) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="w-full overflow-x-auto border rounded-lg shadow-sm">
+      <ShadcnTable>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{t("Product Image")}</TableHead>
+            <TableHead>{t("Product Name")}</TableHead>
+            <TableHead>{t("Product Price")}</TableHead>
+            <TableHead>{t("Affiliator")}</TableHead>
+            <TableHead>{t("Purchaser")}</TableHead>
+            <TableHead>{t("Commission")}</TableHead>
+            <TableHead>{t("Commission Amount")}</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {Array.isArray(data) &&
+            data.map((card, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <Avatar className="w-fit justify-center mx-auto" src={card.product?.thumbnail}
+                    alt={card.product?.title || "Product"} />
+
+                </TableCell>
+                <TableCell>{card.product?.title}</TableCell>
+                <TableCell>
+                  <PriceDisplay price={card.product?.price} />
+                </TableCell>
+                <TableCell>{card.affiliator?.profile?.username}</TableCell>
+                <TableCell>{card.purchaser?.profile?.username}</TableCell>
+                <TableCell>{card.paidCommissionPercent}%</TableCell>
+                <TableCell>
+                  <PriceDisplay price={card.paidCommissionAmount} />
+                </TableCell>
+              </TableRow>
+            ))}
+
+          <TableRow className="font-medium bg-muted/40">
+            <TableCell colSpan={5}></TableCell>
+            <TableCell className="border-t">
+              {t("total_money", "Total Money")}:
+            </TableCell>
+            <TableCell className="border-t">
+              <PriceDisplay
+                price={data?.reduce((acc, card) => acc + card.paidCommissionAmount, 0)}
+              />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={7} className="text-right text-muted-foreground">
+              {t("Commission summary")}
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </ShadcnTable>
+    </div>
+  )
+}
+
 
 const AffiliationHistoryCards: AffiliationHistoryCardData[] = [...Array(3)].map(
   (_, i) => ({

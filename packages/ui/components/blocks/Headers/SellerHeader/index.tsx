@@ -227,7 +227,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
       logout(undefined, {
         onSuccess: () => {
           setLoginState(false);
-          // window.location.href = "/";
+          window.location.href = "/";
           router.push("/"); 
           successToast("You have been ssucefully logeed out!")
           // Uncomment if you want to use Next.js routing instead of window.location.href    
@@ -238,7 +238,7 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
         },
       });
     } else {
-      // window.location.href = path;
+      window.location.href = path;
       router.push(path);
     }
   };

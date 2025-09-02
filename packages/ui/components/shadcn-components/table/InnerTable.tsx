@@ -67,7 +67,7 @@ const InnerTable: React.FC<InnerTableProps> = ({
             </div>
         );
     }
-    const {isMobile} = useResponsive();
+    const { isMobile } = useResponsive();
     if (isMobile) {
         return (
             <MobileAppointmentList />

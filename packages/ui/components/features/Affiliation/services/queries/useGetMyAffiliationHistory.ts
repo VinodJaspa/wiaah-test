@@ -112,9 +112,8 @@ export const useGetMyAffiliationHistoryQuery = (
   });
 
   return useQuery(["get-my-affiliation-history"], async () => {
-    const mockRes: GetMyAffiliatiomHistoryQuery["getMyProductsAffiliationHistory"] =
-      [...Array(5)].map((v, i) => ({
-        _typename: "AffiliationPurchase",
+    const mockRes = [...Array(5)].map((v, i) => ({
+        __typename: "AffiliationPurchase",
         id: "1",
         itemId: "101",
         purchaserId: "user123",
@@ -125,8 +124,8 @@ export const useGetMyAffiliationHistoryQuery = (
         product: {
           __typename: "Product",
           id: "101",
-          thumbnail: "url/to/thumbnail.jpg",
-          title: "Sample Product",
+          thumbnail: `https://picsum.photos/seed/${i}/200/150`,
+          title: `Sample Product ${i + 1}`,
           price: 99.99,
         },
         affiliator: {
@@ -150,7 +149,7 @@ export const useGetMyAffiliationHistoryQuery = (
             username: "purchaser_user",
           },
         },
-      }));
+      })) as unknown as GetMyAffiliatiomHistoryQuery["getMyProductsAffiliationHistory"];
 
     return mockRes;
     const res = await client.send<GetMyAffiliatiomHistoryQuery>();

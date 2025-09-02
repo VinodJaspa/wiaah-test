@@ -1,4 +1,4 @@
-
+import React from "react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";

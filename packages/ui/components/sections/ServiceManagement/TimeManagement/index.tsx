@@ -30,6 +30,7 @@ import { useRouting } from "@UI/../routing";
 export interface TimeManagementSectionProps { }
 import { useGetMyWorkingHoursQuery } from "ui/components/features/Services/Services/queries"
 import { useUpdateWeekWorkingHoursMutation } from "ui/components/features/Services/Services/mutation";
+import AvailabilityPicker from "./weekdayAavailbility";
 export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
 > = ({ }) => {
@@ -40,7 +41,7 @@ export const TimeManagementSection: React.FC<
   const { data: profile } = useGetMyProfileQuery();
   const months = getAllMonthsOfYear(2023);
   const { back } = useRouting();
-
+  const [availability, setAvailability] = React.useState({});
   const { data } = useGetMyWorkingHoursQuery();
 
   const { mutate } = useUpdateWeekWorkingHoursMutation();
@@ -59,12 +60,12 @@ export const TimeManagementSection: React.FC<
           <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
         </button>
       </HStack>
-      <HStack className="self-center text-3xl">
+      <HStack className="self-center text-sm">
         <ArrowLeftIcon
           onClick={() => setTab(0)}
           className={`${tab === 0 ? "text-grayText" : "text-primary"} `}
         />
-        <p className="text-base font-medium">
+        <p className="text-sm font-medium">
           {tab === 0 ? t("Schedule for the week") : t("Special days schedule")}
         </p>
         <ArrowRightIcon
@@ -168,35 +169,42 @@ export const TimeManagementSection: React.FC<
       <Tabs>
         <TabsHeader>
           <TabTitle TabKey="0">
-            {({ currentTabIdx }) => (
+            {({ currentTabIdx ,currentActive }) => (
               <p
-                className={`${currentTabIdx === 0 ? "border-b-2" : ""
-                  }  border-b-primary pb-2`}
+                className={`pb-2 ${currentActive === 0
+                    ? "border-b-2 border-b-primary text-primary font-medium"
+                    : "border-b-2 border-transparent text-gray-500"
+                  }`}
               >
                 {t("Schedule for the week")}
               </p>
             )}
           </TabTitle>
-          <TabTitle TabKey={"1"}>
+
+          <TabTitle TabKey="1">
             {({ currentTabIdx }) => (
               <p
-                className={`${currentTabIdx === 1 ? "border-b-2" : ""
-                  }  border-b-primary pb-2`}
+                className={`pb-2 ${currentTabIdx === 1
+                    ? "border-b-2 border-b-primary text-primary font-medium"
+                    : "border-b-2 border-transparent text-gray-500"
+                  }`}
               >
                 {t("Special days schedule")}
               </p>
             )}
           </TabTitle>
         </TabsHeader>
+
         <TabList>
           <TabItem>
-            <WeekdaysSchedule />
+            <AvailabilityPicker />
           </TabItem>
           <TabItem>
             <SpecialSchedule />
           </TabItem>
         </TabList>
       </Tabs>
+
     </SectionWrapper>
   );
 };

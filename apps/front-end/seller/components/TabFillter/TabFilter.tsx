@@ -1,3 +1,4 @@
+import React from "react"
 const tabs = ["All", "To Ship", "Shipped", "Delivered"];
 
 export default function TabFilter({ activeTab, setActiveTab }) {
