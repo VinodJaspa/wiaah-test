@@ -1,3 +1,4 @@
+import React from "react";
 import SavedCollections from "@features/Saved/components/sections/SavedPostsSection/SavedPostsSection";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
@@ -29,7 +30,7 @@ const { t } = useTranslation();
         <title>{t("Saved ")}</title>
       </Head>
       <SellerLayout header={"main"}>
-        <SavedCollections />
+        <SavedCollections/>
       </SellerLayout>
     </>
   );

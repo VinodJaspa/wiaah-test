@@ -30,6 +30,8 @@ import {
 } from "@partials";
 import { UserProfileDisplay } from "@blocks/DataDisplay";
 import { useShareWithModal } from "@blocks/Modals";
+import { handleSavePostClick } from "./services";
+import AddToCollectionDialog from "@UI/components/shadcn-components/Dialog/collectionDialog";
 
 export interface PostCardProps {
   post: PostCardInfo;
@@ -50,10 +52,11 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
   const { open: openPostMentions } = useSocialPostMentionsModal();
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { mutate } = useLikeContent();
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
   const { OpenModal: OpenShareWithModal } = useShareWithModal();
+  const [isCreateCollectionDialogOpen, setCreateCollectionDialogOpen] = React.useState(false);
 
   function handleLike() {
     if (!post.profileInfo) return;
@@ -73,14 +76,20 @@ const { t } = useTranslation();
   const date = getSince();
 
   // if (!postInfo || !profileInfo) return null;
+  //Handle crete new collection dialog
+  const handleNewCollectionCreate = () => {
+    setCreateCollectionDialogOpen(true);
+  }
 
   return (
     <div
       {...setTestid("social-newsfeed-post")}
       className="w-full h-full relative group rounded md:rounded-[1.25rem] overflow-hidden aspect-[8/3]"
     >
+      {isCreateCollectionDialogOpen && <AddToCollectionDialog isOpen={isCreateCollectionDialogOpen} onClose={() => setCreateCollectionDialogOpen(false)} />}
       {post.postInfo?.attachments[0]?.type === "image" && (
         <Image
+        onClick={openPopup}
           className="w-full h-full object-cover"
           src={post.postInfo?.thumbnail}
           alt={post.postInfo.content}
@@ -95,7 +104,7 @@ const { t } = useTranslation();
       )}
 
       <div
-        onClick={openPopup}
+ 
         className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full h-full justify-between z-10"
       >
         <div className="flex flex-col w-full h-full">
@@ -184,8 +193,8 @@ const { t } = useTranslation();
               <p className="font-bold text-base">
                 {NumberShortner(
                   post.postInfo.numberOfComments +
-                    post.postInfo.numberOfLikes +
-                    post.postInfo.numberOfShares,
+                  post.postInfo.numberOfLikes +
+                  post.postInfo.numberOfShares,
                 )}
               </p>
             </div>
@@ -239,7 +248,7 @@ const { t } = useTranslation();
             </div>
             <div className="flex gap-2 flex-col items-center">
               <span className="w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
-                <SaveFlagFIllIcon className="text-primary fill-primary" />
+                <SaveFlagFIllIcon onClick={() => handleNewCollectionCreate()} className="text-primary fill-primary" />
               </span>
             </div>
           </div>

@@ -1,139 +1,96 @@
-import { mapArray } from "utils";
+"use client";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import {
-  SectionWrapper,
-  SectionHeader,
-  useGetUserSavedCollections,
-  useGetMyAccountQuery,
-  GetUserSavesCollectionsQuery,
-  AspectRatio,
-  Image,
-  ListWrapper,
-  ProductCard,
-  ProductCardProps,
-} from "ui";
-import { getRandomImage } from "@UI/../placeholder";
+import Image from "next/image";
+import { useGetUserSavedCollections } from "@features/Social"; // your GraphQL hook
+import { useGetMyAccountQuery } from "@features/Accounts";
+import { Link } from "@partials";
+import HeaderTextWithNavigationOnSmallScreen from "@UI/components/shadcn-components/NavigationSectionHeader";
 
-// Placeholder data
+// import { useGetUserSavedCollections } from "../mock"; // if mocking for dev
 
-export const SavedPostsSection: React.FC = () => {
-const { t } = useTranslation();
+export default function SavedCollections() {
+  const account = useGetMyAccountQuery()
+  // Todo - call api to get real collectios
+  // const { data: collections, isLoading } = useGetUserSavedCollections(User.id);
 
-  // WARNING: this GraphQL query is not working right now so it has been replaced with placeholder
-  // const { data: _account } = useGetMyAccountQuery();
-  // const { data: _data } = useGetUserSavedCollections(
-  //   { userId: _account?.id! },
-  //   { enabled: !!_account?.id },
-  // );
+  // if (isLoading) {
+  //   return <p className="text-center py-10">Loading...</p>;
+  // }
 
-  const handleAddToCart = (item) => {
-    console.log(`Added to cart: ${item.id}`);
-  };
 
-  const DeleteItem = (id) => {
-    console.log(`Deleted item with id: ${id}`);
-  };
+
 
   return (
-    <div className="flex flex-col gap-8  w-9/12 ">
-      <h2 className="w-full text-center font-semibold text-2xl">Saved</h2>
-      <ListWrapper cols={4}>
-        {productCardPlaceholders.map((item, i) => (
-          <ProductCard
-            key={item.id || i} // Use `id` or fallback to `i` for unique key
-            onButtonClick={() => handleAddToCart(item)}
-            onDelete={(id) => DeleteItem(id)}
-            position="delete"
-            forceHover={true}
-            buttonText={item.price > 50 ? "Add to Cart" : "Book now"}
-            id={item.id}
-            cashback={item.cashback}
-            discount={item.discount}
-            price={item.price}
-            rate={item.rate}
-            thumbnail={item.thumbnail}
-            liked={item.liked}
-            name={item.name}
-            full={true}
-          />
-        ))}
-      </ListWrapper>
+    <div className="p-2">
+      {/* Header */}
+      <HeaderTextWithNavigationOnSmallScreen title="Saved" />
+      {/* Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {mockCollections?.map((collection) => {
+          const thumbnail =
+            collection.recentSaves?.[0]?.post?.thumbnail || "/placeholder.png";
+
+          return (
+            <Link key={collection.id} href={`/saved/${collection.id}`}>
+              <div className="flex flex-col cursor-pointer">
+                {/* Image wrapper full width on mobile */}
+                <div className="w-full aspect-square rounded-lg overflow-hidden shadow">
+                  <Image
+                    src={thumbnail}
+                    alt={collection.name}
+                    width={400}
+                    height={400}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <p className="mt-2 text-sm font-medium text-center">
+                  {collection.name}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+
+      {/* Pagination placeholder */}
+      <div className="flex justify-center items-center mt-8 gap-2 text-sm text-gray-500">
+        <button className="px-2">&lt;</button>
+        <span className="px-2 py-1 rounded bg-gray-200">1</span>
+        <button className="px-2">&gt;</button>
+      </div>
     </div>
   );
-};
-
-const productCardPlaceholders: ProductCardProps[] = [
+}
+export const mockCollections = [
   {
-    buttonText: "Add to Cart",
-    forceHover: false,
-    position: "save",
-    full: false,
-    liked: false,
-    onLike: (id: string) => console.log(`Liked product with id: ${id}`),
-    onButtonClick: (id: string) =>
-      console.log(`Button clicked for product with id: ${id}`),
-    onDelete: (id: string) => console.log(`Deleted product with id: ${id}`),
-    id: "prod-123",
-    price: 29.99,
-    thumbnail: "/shop.jpeg",
-    cashback: 5.0,
-    discount: 10.0,
-    rate: 4.5,
-    name: "Sample Product 1",
+    id: "1",
+    name: "Hotels",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/1018/400/300" } }],
   },
   {
-    buttonText: "Buy Now",
-    forceHover: true,
-    position: "delete",
-    full: true,
-    liked: true,
-    onLike: (id: string) => console.log(`Liked product with id: ${id}`),
-    onButtonClick: (id: string) =>
-      console.log(`Button clicked for product with id: ${id}`),
-    onDelete: (id: string) => console.log(`Deleted product with id: ${id}`),
-    id: "prod-124",
-    price: 49.99,
-    thumbnail: "/shop.jpeg",
-    cashback: 7.5,
-    discount: 15.0,
-    rate: 4.8,
-    name: "Sample Product 2",
+    id: "2",
+    name: "Restaurants",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/292/400/300" } }],
   },
   {
-    buttonText: "Save for Later",
-    forceHover: false,
-    position: "save",
-    full: false,
-    liked: false,
-    onLike: (id: string) => console.log(`Liked product with id: ${id}`),
-    onButtonClick: (id: string) =>
-      console.log(`Button clicked for product with id: ${id}`),
-    onDelete: (id: string) => console.log(`Deleted product with id: ${id}`),
-    id: "prod-125",
-    price: 19.99,
-    thumbnail: "/shop.jpeg",
-    cashback: 3.0,
-    discount: 5.0,
-    rate: 4.2,
-    name: "Sample Product 3",
+    id: "3",
+    name: "Villas",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/1043/400/300" } }],
   },
   {
-    buttonText: "Checkout",
-    forceHover: true,
-    position: "delete",
-    full: true,
-    liked: true,
-    onLike: (id: string) => console.log(`Liked product with id: ${id}`),
-    onButtonClick: (id: string) =>
-      console.log(`Button clicked for product with id: ${id}`),
-    onDelete: (id: string) => console.log(`Deleted product with id: ${id}`),
-    id: "prod-126",
-    price: 59.99,
-    thumbnail: "/shop.jpeg",
-    cashback: 10.0,
-    discount: 20.0,
-    rate: 4.9,
-    name: "Sample Product 4",
+    id: "4",
+    name: "Vehicles",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/111/400/300" } }],
+  },
+  {
+    id: "5",
+    name: "Clothing",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/237/400/300" } }],
+  },
+  {
+    id: "6",
+    name: "Memes",
+    recentSaves: [{ post: { thumbnail: "https://picsum.photos/id/1025/400/300" } }],
   },
 ];

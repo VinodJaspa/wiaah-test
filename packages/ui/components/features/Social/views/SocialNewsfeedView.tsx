@@ -148,6 +148,8 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
     newsfeedPosts,
     normalizedPersonalizedActions,
   );
+  console.log(data ,"data44");
+  
 
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
@@ -177,7 +179,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
                   city: "geneve",
                   country: "switzerland",
                 },
-                saved: true,
+                saved: false,
                 shares: v.postInfo.numberOfShares,
                 username: v.profileInfo?.name || "",
                 userPhoto: v.profileInfo?.photo || "",
