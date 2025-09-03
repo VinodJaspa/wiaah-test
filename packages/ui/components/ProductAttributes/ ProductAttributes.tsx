@@ -20,6 +20,12 @@ const genders = [
   { label: "Female", id: "550e8400-e29b-41d4-a716-446655440001", value: "female" },
   { label: "Unisex", id: "550e8400-e29b-41d4-a716-446655440002", value: "unisex" },
 ];
+const material = [
+  { label: "ll", id: "550e8400-e29b-41d4-a716-446655440000", value: "ll" },
+  { label: "lether", id: "550e8400-e29b-41d4-a716-446655440001", value: "Leather" },
+  { label: "PU", id: "550e8400-e29b-41d4-a716-446655440002", value: "PU" },
+];
+
 
 const subcategories = [
   { label: "Wallets", id: "550e8400-e29b-41d4-a716-446655440010", value: "wallets" },
@@ -146,9 +152,15 @@ export default function ProductAttributes({ handleOpenModal }: { handleOpenModal
     <p className="text-red-600 text-sm mt-1">{errors.sizes}</p>
   )}
 </div>
+<SelectField
+          label="Material"
+          name="material"
+          placeholder="Enter product material"
+          options={material}
+    
+        />
 
-
-        <InputField name="material" label="Material" placeholder="Enter product material" />
+        {/* <InputField name="material" label="Material" placeholder="Enter product material" /> */}
 
         <SelectField
           label="Department (Gender)"

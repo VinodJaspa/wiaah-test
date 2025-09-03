@@ -66,7 +66,7 @@ export const SocialPostMentionsModal: React.FC = () => {
                         </div>
                       </div>
                       <div>
-                        <PrimaryButton className="h-5 ">{t("Follow")}</PrimaryButton>
+                        <PrimaryButton className="h-auto ">{t("Follow")}</PrimaryButton>
                       </div>
                     </div>
                   )

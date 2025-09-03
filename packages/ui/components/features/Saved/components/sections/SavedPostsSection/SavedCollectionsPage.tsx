@@ -24,7 +24,7 @@ export default function CollectionDetailPage() {
     const collection = mockCollections.find((col) => col.id === collectionId);
     const name = collection?.name ?? "Unknown";
     const router = useRouter();
-    const isMobile = useResponsive();
+    const {isMobile} = useResponsive();
     return (
         <div className="">
             <div className="flex items-center justify-between mb-6">
