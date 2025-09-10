@@ -7,6 +7,7 @@ interface Product {
   rating: number;
   reviews?: number;
   image: string;
+  id:string;
 }
 
 interface RecommendedSectionProps {
@@ -19,9 +20,9 @@ export const RecommendedSection: React.FC<RecommendedSectionProps> = ({
   products,
 }) => {
   return (
-    <div className="space-y-6 px-4 sm:px-6 lg:px-8">
+    <div className="">
       {/* Title */}
-      <h2 className="text-base sm:text-lg md:text-xl font-bold text-center">
+      <h2 className="text-base sm:text-lg md:text-xl font-bold text-start mb-4">
         {title}
       </h2>
 
@@ -36,6 +37,7 @@ export const RecommendedSection: React.FC<RecommendedSectionProps> = ({
             rating={p.rating}
             reviews={p.reviews}
             image={p.image}
+            id={p?.id}
           />
         ))}
       </div>

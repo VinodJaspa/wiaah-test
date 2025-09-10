@@ -29,11 +29,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
     value: React.ReactNode;
     icon: React.ReactNode;
   }[] = [
-    {
-      label: t("Address"),
-      icon: <LocationIcon className="fill-primary" />,
-      value: <LocationAddress location={location} />,
-    },
+   
     {
       label: t("Phone"),
       icon: <TelephoneFillIcon className="fill-primary" />,
@@ -43,6 +39,11 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
       label: t("E-mail"),
       icon: <EmailIcon className="fill-primary" />,
       value: email,
+    },
+    {
+      label: t("Address"),
+      icon: <LocationIcon className="fill-primary" />,
+      value: <LocationAddress location={location} />,
     },
   ];
 

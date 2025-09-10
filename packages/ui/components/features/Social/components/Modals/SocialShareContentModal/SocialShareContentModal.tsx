@@ -120,10 +120,10 @@ const { t } = useTranslation();
     <Modal z={10000000} isOpen={!!value} onClose={cancelShareLink} isLazy>
       <ModalOverlay />
       <ModalContent>
-        <div className="flex p-4 h-full gap-8 flex-col w-full">
+        <div className="flex p-4 h-full gap-8 flex-col w-full mb-10">
           <div className="flex justify-between items-center">
             <span></span>
-            <p className="text-2xl font-bold">
+            <p className="text-lg font-semibold">
               {t("Share on your favorite platform")}
             </p>
 
@@ -136,11 +136,11 @@ const { t } = useTranslation();
             {mapArray(sharablePlatforms, ({ icon, label, onClick }, i) => (
               <div
                 key={i}
-                className="text-7xl flex items-center flex-col gap-2"
+                className="text-7xl flex items-center flex-col gap-2 cursor-pointer"
                 onClick={() => onClick()}
               >
                 {runIfFn(icon)}
-                <p className="font-semibold whitespace-nowrap text-base">
+                <p className="font-medium whitespace-nowrap text-base">
                   {label}
                 </p>
               </div>

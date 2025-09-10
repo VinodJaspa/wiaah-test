@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 
 import {
   Spacer,
@@ -15,6 +16,7 @@ import {
   Rate,
   GetShopDetailsQuery,
   FlagIcon,
+  ServicesRequestKeys,
 } from "ui";
 import { getRandomName } from "utils";
 
@@ -33,11 +35,13 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     isError: _isError,
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(shopId);
+  console.log(_res,"resssss");
+  
   const res = resMock;
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const isError = false;
-
+  const { visit } = useRouting();
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
       <div
@@ -76,7 +80,14 @@ const { t } = useTranslation();
                       {res.name}
                       {res.verified && <Verified className="text-primary" />}
                     </div>
-                    <p className="font-semibold cursor-pointer text-primary">
+                    <p className="font-semibold cursor-pointer text-primary"
+                      onClick={(e) => {
+                        // alert("okk")
+                           e.stopPropagation();
+                           visit((routes) =>
+                             routes.visitServiceOnMap(res.location, ServicesRequestKeys.hotels)
+                           );
+                         }}>
                       {t("Show on map")}
                     </p>
                     <a href="#reviews" className="cursor-pointer">
@@ -132,7 +143,7 @@ const { t } = useTranslation();
                 <>
                   <p>{res.name}</p>
 
-                  <QrcodeDisplay className="w-12" value={res.id} />
+                  <QrcodeDisplay className="w-10" size={30} value={res.id} />
                 </>
               ) : null}
             </SpinnerFallback>

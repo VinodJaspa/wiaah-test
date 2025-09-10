@@ -4,3 +4,4 @@ export * from "./SelectField";
 export * from "./SharedFields";
 export * from "./smartTextArea";
 export * from "./chatbox";
+export * from "./WriteReview";

@@ -1,6 +1,8 @@
 import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
 import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useRouting } from "routing";
 
 
 export const shopsData = [
@@ -56,6 +58,11 @@ export const shopsData = [
 // Fixed ShopCard component
 // ShopCard component
 const ShopCard = ({ shop, className = "" }) => {
+const route = useRouter();
+  const handleViewDetails = () => {
+    // alert("okk")
+window.location.href =(`/shop/${shop.id}`)
+  };
   return (
     <div className={`relative rounded-xl overflow-hidden bg-white border-2 h-full ${className}`}>
       {/* Image container */}
@@ -97,7 +104,7 @@ const ShopCard = ({ shop, className = "" }) => {
         <div className="absolute top-4 left-4 right-4">
           <span className="text-gray-700 text-xs sm:text-sm font-medium block mb-1">{shop.category}</span>
           <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">{shop.title}</h3>
-          <button className="bg-[#20ECA7] text-white text-xs sm:text-sm font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-[#1dd1a1] transition-colors">
+          <button className="bg-[#20ECA7] text-white text-xs sm:text-sm font-semibold px-3 py-1 sm:px-4 sm:py-2 rounded-md hover:bg-[#1dd1a1] transition-colors" onClick={handleViewDetails}>
             {shop.buttonText}
           </button>
         </div>
@@ -112,9 +119,9 @@ export default function BestShopsSection() {
     <div className="w-full px-4 py-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <SectionTitle title='Best shops'/>
-   
-      
+        <SectionTitle title='Best shops' />
+
+
 
         <div className="flex gap-2">
           <button className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 text-gray-500 hover:bg-gray-100 transition-colors">

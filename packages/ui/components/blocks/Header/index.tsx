@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { FaAlignJustify } from "react-icons/fa";
 import {
@@ -44,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
   const router = useRouter();
 
   const handleAuth = () => {
-    if(!signedIn){
+    if (!signedIn) {
       router.push('/auth/login');
       return;
     }
@@ -67,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
     }
     return currentSlug || null;
   });
-  
+
   // Update localStorage whenever activeSlug changes
   React.useEffect(() => {
     if (router.pathname === "/") {
@@ -251,7 +252,10 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
                       }`}
                     onClick={() => {
                       setActiveSlug(slug); // set local active state
-                      visit((routes) => routes.visitServiceSearch({ slug }));
+                      router.push(`/search/services/${slug}`, undefined, { scroll: false });
+
+
+                      // visit((routes) => routes.visitServiceSearch({ slug }));
                     }}
                   >
                     <p>{t(cate.name)}</p>
@@ -274,4 +278,4 @@ export const Header: React.FC<HeaderProps> = ({ token }) => {
       />
     </nav>
   );
-};
+}

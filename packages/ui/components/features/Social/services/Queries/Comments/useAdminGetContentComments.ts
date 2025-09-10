@@ -31,17 +31,17 @@ export type AdminGetCommentsQuery = { __typename?: "Query" } & {
       | "createdAt"
       | "updatedAt"
     > & {
-        attachment: { __typename?: "Attachment" } & Pick<
-          Attachment,
-          "src" | "type"
-        >;
-        author?: Maybe<
-          { __typename?: "Profile" } & Pick<
-            Profile,
-            "photo" | "username" | "verified"
-          >
-        >;
-      }
+      attachment: { __typename?: "Attachment" } & Pick<
+        Attachment,
+        "src" | "type"
+      >;
+      author?: Maybe<
+        { __typename?: "Profile" } & Pick<
+          Profile,
+          "photo" | "username" | "verified"
+        >
+      >;
+    }
   >;
 };
 type args = AdminGetCommentsQueryVariables["args"];

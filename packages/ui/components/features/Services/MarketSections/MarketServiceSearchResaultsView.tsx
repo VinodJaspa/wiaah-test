@@ -655,7 +655,7 @@ export const ServicesCardsSwitcherView: React.FC<
           </div>
         ))
 
-        ) : null}
+      ) : null}
 
       {showOn([ServiceType.HealthCenter]) ? (
         <div className="flex flex-col">

@@ -114,7 +114,7 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
     : "";
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="flex gap-4 px-2 w-full">
       <div className="text-center font-bold text-lg mb-4">
         {currentMonthYear}
       </div>

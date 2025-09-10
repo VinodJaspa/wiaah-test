@@ -85,16 +85,7 @@ const { t } = useTranslation();
                   name="speicality_types"
                 />
 
-                <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose Speaking languages")}
-                  as={MultiChooseInput}
-                  label={t("Speaking Languages")}
-                  labelProps={{ className: "text-lg" }}
-                  onChange={(v) => setFieldValue("speaking_languages", v)}
-                  value={values["speaking_languages"]}
-                  suggestions={["Arabian", "English", "French"]}
-                  name="speaking_languages"
-                />
+                
               </Stack>
 
               <ChooseWithInput

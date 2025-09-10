@@ -154,8 +154,8 @@ const { t } = useTranslation();
                 isPublic={FAKE_PROFILE_INFO.visibility}
                 profileInfo={FAKE_PROFILE_INFO}
               />
-              {/* <SocialPostsCommentsDrawer />
-              <ShareWithModal /> */}
+              <SocialPostsCommentsDrawer />
+               <ShareWithModal />
             </div>
             {profileInfo && (
               <>

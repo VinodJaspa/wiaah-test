@@ -197,7 +197,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
             grid={true}
             onPostClick={(post) => {
               // TODO: Handle post click
-              // openSocialPostModal(post.postInfo.id);
+              openSocialNewPostModal();
             }}
             onProfileClick={(username) =>
               visit((r) => r.visitSocialProfile(username))

@@ -31,7 +31,7 @@ export const InfiniteScrollWrapper: React.FC<InfiniteScrollWrapperProps> = ({
       hasMore={hasMore}
       loader={
         <div className="w-full flex justify-center py-6">
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 w-full">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 w-full">
             {Array.from({ length: skeletonCount }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
@@ -47,9 +47,10 @@ export const InfiniteScrollWrapper: React.FC<InfiniteScrollWrapperProps> = ({
       }
     >
       {/* grid only for items */}
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
         {children}
       </div>
+
     </InfiniteScroll>
   );
 };

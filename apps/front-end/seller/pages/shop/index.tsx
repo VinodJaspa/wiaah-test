@@ -8,6 +8,7 @@ interface SellerShopProps {}
 const SellerShop: React.FC<SellerShopProps> = () => {
   const products = [...Array(12)].map((_, i) => ({
     productInfo: {
+      id:"123",
       cashback: 5,
       colors: ["#4272EE", "#3CD399", "#F93030", "#000000", "#FFC700", "#fff"],
       price: 50 + i * 5,

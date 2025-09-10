@@ -7,6 +7,7 @@ import { useState } from "react";
 import { MapPin, Search } from "lucide-react";
 import SearchBarByLocationAndArea from "../Restaurant/SearchBarRestaurant";
 import { Divider } from "@partials";
+import { HealthCenterSearchBox } from "@features/Services/HealthCenter";
 
 const doctors = [
   {
@@ -78,9 +79,8 @@ export default function DoctorsPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-2 mb-4">
       {/* 🔍 Search Bar */}
-      <SearchBarByLocationAndArea
-        placeholder1="Location"
-        placeholder2="Health center, specialty, specialist..."
+      <HealthCenterSearchBox
+       
       />
 
       <Divider />

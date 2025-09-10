@@ -4,14 +4,17 @@ import {
   PriceDisplay,
   UnDiscountedPriceDisplay,
   Rate,
+
 } from "@UI";
 import ImageTopbadge from "@UI/components/shadcn-components/components/imageTopbadge";
+import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
 
 export interface ProductCardProps {
   productInfo: {
+    id: string;
     title: string;
     price: number;
     originalPrice: number;
@@ -26,7 +29,7 @@ export interface ProductCardProps {
 }
 
 export const ProductSearchCard: React.FC<ProductCardProps> = ({ productInfo }) => {
-  const { cashback, discount, rating, reviewsCount, title, colors, thumbnail, price, originalPrice, sizes } =
+  const {id, cashback, discount, rating, reviewsCount, title, colors, thumbnail, price, originalPrice, sizes } =
     productInfo;
 
   const { t } = useTranslation();
@@ -35,6 +38,7 @@ export const ProductSearchCard: React.FC<ProductCardProps> = ({ productInfo }) =
     <div className="flex flex-col w-52">
       {/* Image with cashback + heart */}
       <AspectRatio ratio={3 / 4}>
+      <Link href={`/shop/product/${encodeURIComponent(id)}`}>
         <div className="w-full h-full rounded-xl overflow-hidden relative">
           <img
             className="w-full h-full object-cover"
@@ -52,7 +56,9 @@ export const ProductSearchCard: React.FC<ProductCardProps> = ({ productInfo }) =
             <HeartIcon className="text-black text-sm" />
           </div>
         </div>
+        </Link>
       </AspectRatio>
+   
 
       {/* Content */}
       <div className="py-3 bg-white flex flex-col gap-2">

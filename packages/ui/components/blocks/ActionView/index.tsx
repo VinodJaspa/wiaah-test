@@ -2,7 +2,7 @@ import EllipsisText from "@blocks/EllipsisText";
 import { useSocialControls } from "@blocks/Layout";
 import { ContentHostType } from "@features/API";
 import { LocationAddress } from "@features/Services/components/DataDisplay/LocationAddress/LocationAddress";
-import { useLikeContent } from "@features/Social";
+import { useAdminGetContentCommentsQuery, useLikeContent } from "@features/Social";
 import {
   Avatar,
   Button,
@@ -42,10 +42,13 @@ import { toast } from "react-toastify";
 import { useRouting } from "routing";
 import { mapArray, NumberShortner } from "utils";
 import { IoVolumeMuteSharp } from "react-icons/io5";
+import { PostCommentCard } from "@blocks/Social";
+import { CommentsModal, useSocialContentCommentsModal } from "@blocks/Modals/ActionCommentsModal";
 export
   const ActionsView: React.FC = () => {
     const { t } = useTranslation();
     const { shareLink, showContentComments } = useSocialControls();
+    const { open } = useSocialContentCommentsModal();
     const { mutate } = useLikeContent();
     const { getUrl } = useRouting();
     const { createRemixAction, showContentTaggedProfiles, openMusicDetails } =
@@ -63,7 +66,19 @@ export
     // Toggle the saved state
     const toggleSave = () => setIsSaved(!isSaved);
     const [isLiked, setIsLiked] = useState(false);
-
+    const { data: comments, isLoading } = useAdminGetContentCommentsQuery(
+      {
+        contentId: "some-content-id",
+        contentType: ContentHostType.PostNewsfeed, // or whatever enum you use
+        pagination: {
+       page:1,
+          take: 4,
+        },
+      },
+      true
+    );
+    
+    
     // Toggle the liked state and update count accordingly
     const toggleLike = () => {
       setIsLiked(!isLiked);
@@ -71,7 +86,7 @@ export
 
     const [data] = useState(PersonalizeActions);
     const actions = data;
-    console.log(data, "data_______")
+
     const hasProduct = true;
     const product = useMemo(() => {
       if (hasProduct) {
@@ -90,7 +105,7 @@ export
     const [playingIndex, setPlayingIndex] = useState<number | null>(null);
     const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
     const videoContainersRef = useRef<(HTMLDivElement | null)[]>([]); // Ref for video containers
-
+  const [isOpen, setIsOpen] = useState(false);
     const handlePlayPause = (index: number) => {
       const currentVideo = videoRefs.current[index];
       if (currentVideo) {
@@ -170,7 +185,7 @@ export
         handlePlayPause(nextIndex);
       };
     }, [actions.length, handlePlayPause, playingIndex]);
-console.log(actions ,"actions");
+
 
     React.useEffect(() => {
       const handleScroll = debouncedScrollHandler();
@@ -200,6 +215,7 @@ console.log(actions ,"actions");
     // };
     return (
       <div suppressHydrationWarning={true} className="h-screen w-fit ">
+        <CommentsModal />
         {/* actions View */}
         <Slider variant="vertical">
           {mapArray(actions, (v, i) => (
@@ -367,7 +383,7 @@ console.log(actions ,"actions");
                 </button>
                 <button
                   onClick={() =>
-                    showContentComments(ContentHostType.Action, v.id)
+                    open(ContentHostType.Action, v.id)
                   }
                 >
                   <VStack>
@@ -425,6 +441,7 @@ console.log(actions ,"actions");
                     </MenuList>
                   </Menu>
                 </div>
+                  
               </div>
             </div>
           ))}

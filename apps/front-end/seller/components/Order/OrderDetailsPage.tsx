@@ -1,10 +1,14 @@
+import ReviewFormModal from "@UI/components/shadcn-components/Fields/WriteReview";
+import ReviewForm from "@UI/components/shadcn-components/Fields/WriteReview";
 import ReturnFormModal from "components/modals/ReturnFormModal";
 import React from "react";
 export default function OrderDetailsPage({ setorderDetails }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [showReview, setShowReview] = React.useState(false);
     return (
         <main className="max-w-3xl mx-auto px-4 py-10 space-y-10 text-sm">
             <ReturnFormModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ReviewFormModal isOpen={showReview} onClose={() => setShowReview(false)} />
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Order Details</h1>
                 <button className="text-sm text-blue-600 hover:underline" onClick={() => setorderDetails(false)}>← Back to Orders</button>
@@ -99,6 +103,12 @@ export default function OrderDetailsPage({ setorderDetails }) {
                 <button className="bg-red-600 text-white px-4 py-2 rounded-md" onClick={() => setIsOpen(true)}>Ask for Return</button>
                 <button className="bg-black text-white px-4 py-2 rounded-md">Download PDF</button>
                 <button className="border px-4 py-2 rounded-md">Contact Shop</button>
+                <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                    onClick={() => setShowReview(true)} // opens your modal/component
+                >
+                    Write a Review
+                </button>
             </section>
         </main>
     );

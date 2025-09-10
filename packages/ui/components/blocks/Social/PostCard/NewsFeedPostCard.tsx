@@ -29,7 +29,7 @@ import {
   StarIcon,
 } from "@partials";
 import { UserProfileDisplay } from "@blocks/DataDisplay";
-import { useShareWithModal } from "@blocks/Modals";
+import { ShareWithModal, useShareWithModal } from "@blocks/Modals";
 import { handleSavePostClick } from "./services";
 import AddToCollectionDialog from "@UI/components/shadcn-components/Dialog/collectionDialog";
 
@@ -55,7 +55,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { t } = useTranslation();
   const { mutate } = useLikeContent();
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
-  const { OpenModal: OpenShareWithModal } = useShareWithModal();
+  const { openShareModal } = useShareWithModal();
   const [isCreateCollectionDialogOpen, setCreateCollectionDialogOpen] = React.useState(false);
 
   function handleLike() {
@@ -86,10 +86,11 @@ export const PostCard: React.FC<PostCardProps> = ({
       {...setTestid("social-newsfeed-post")}
       className="w-full h-full relative group rounded md:rounded-[1.25rem] overflow-hidden aspect-[8/3]"
     >
+       <ShareWithModal />
       {isCreateCollectionDialogOpen && <AddToCollectionDialog isOpen={isCreateCollectionDialogOpen} onClose={() => setCreateCollectionDialogOpen(false)} />}
       {post.postInfo?.attachments[0]?.type === "image" && (
         <Image
-        onClick={openPopup}
+          onClick={openPopup}
           className="w-full h-full object-cover"
           src={post.postInfo?.thumbnail}
           alt={post.postInfo.content}
@@ -104,7 +105,7 @@ export const PostCard: React.FC<PostCardProps> = ({
       )}
 
       <div
- 
+
         className="cursor-pointer absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 md:px-4 md:py-6 py-2 px-1 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full h-full justify-between z-10"
       >
         <div className="flex flex-col w-full h-full">
@@ -216,15 +217,18 @@ export const PostCard: React.FC<PostCardProps> = ({
                 {NumberShortner(post.postInfo.numberOfComments)}
               </p>
             </div>
-            <div className="flex flex-col gap-2 items-center">
+            <div className="flex flex-col gap-2 items-center cursor-pointer">
               <span
                 onClick={(e) => {
                   e.stopPropagation();
-                  OpenShareWithModal(post.postInfo.id);
+                  // alert("okk")
+                  openShareModal(post.postInfo.id);
                 }}
                 className="cursor-pointer w-7 h-7 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
-                <ShareIcon />
+                <ShareIcon
+                  
+                />
               </span>
               <p className="font-bold text-base">
                 {NumberShortner(post.postInfo.numberOfShares)}

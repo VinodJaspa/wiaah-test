@@ -3,6 +3,9 @@ import { useState } from "react";
 import RestaurantGrid from "./RestaurantGrid";
 import SearchBarByLocationAndArea from "./SearchBarRestaurant";
 import { Divider } from "@partials";
+import { useRouting } from "routing";
+import { RestaurantSearchInput } from "@blocks";
+import { ServicesRequestKeys } from "@features/Services/constants";
 
 
 export default function RestaurantsPage() {
@@ -101,14 +104,20 @@ export default function RestaurantsPage() {
         reviews: 420,
       },
     ];
-    
+      const { visit } = useRouting();
 
   return (
     <main className="pr-6 pl-6">
-      <SearchBarByLocationAndArea
-        placeholder1="Location"
-        placeholder2="Cuisine, restaurant name..."
-      />
+           <RestaurantSearchInput
+                onSubmit={() =>
+                  visit((routes) =>
+                    routes.visitServiceLocationSearchResults(
+                      ServicesRequestKeys.restaurant,
+                      "location"
+                    )
+                  )
+                }
+              />
          <Divider/>
       <div className="sm:mt-6 pb-12">
         <RestaurantGrid restaurants={restaurants} />

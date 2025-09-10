@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CategoryTabs } from "./components/CategoryTabs";
-import { ProductCard } from "@blocks";
-import { HorizontalScrollSection } from "./sections/HorizontalScrollSection";
 import { ProductCardMarket } from "./components/ProductCard";
+import { HorizontalScrollSection } from "./sections/HorizontalScrollSection";
 import { RecommendedSection } from "./sections/RecommendedSection";
 import HeroBanner from "./sections/heroBanner";
-import { IoFilterOutline } from "react-icons/io5";
 
-import {
-  products,
-  bestPlayers,
-  placesNearYou,
-  mostViewedVideos,
-  recommendedProducts,
-} from "./facker";
 import { CustomFilter } from "./components/Filter";
+import {
+  mostViewedVideos,
+  placesNearYou,
+  products,
+  recommendedProducts
+} from "./facker";
 import BestShopsSection from "./sections/BestShopsSection";
 
 // Sample Data
@@ -35,7 +32,7 @@ const categories = [
 
 export default function HomePageMarket() {
   const [activeCategory, setActiveCategory] = useState("All");
-  console.log(products, "ducts");
+
   const statusOptions = [
     { value: "", label: "Status" },
     { value: "online", label: "Online" },

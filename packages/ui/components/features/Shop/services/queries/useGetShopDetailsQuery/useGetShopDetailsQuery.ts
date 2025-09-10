@@ -120,7 +120,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
       type: ServiceType.Vehicle,
       ownerId: "",
       banner: "",
-      businessType: BusinessType.Individual,
+      businessType: BusinessType.Shop,
       createdAt: new Date().toUTCString(),
       description:
         "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",

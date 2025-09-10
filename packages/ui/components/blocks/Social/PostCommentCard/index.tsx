@@ -1,403 +1,218 @@
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { AiOutlineMessage } from "react-icons/ai";
-import { BiMinus } from "react-icons/bi";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { MdOutlineReply } from "react-icons/md";
-import { useRouting } from "routing";
 import {
-  Button,
-  EllipsisText,
   HeartFillIcon,
   HeartOutlineIcon,
+  Verified,
+  SaveFlagFIllIcon,
+  SaveFlagOutlineIcon,
+  ShareIcon,
   HStack,
+  PostAttachment,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  PostAttachment,
-  SaveFlagFIllIcon,
-  SaveFlagOutlineIcon,
-  ShareIcon,
-  useCommentOnContent,
-  useCommentReportModal,
-  useDateDiff,
   useOutsideClick,
-  useSocialControls,
-  Verified,
+  useDateDiff,
 } from "ui";
-import { NumberShortner } from "utils";
-import { Attachment, Comment, Profile } from "../../../features/API";
-import { PostReplyCard } from "../PostReplyCard";
+import { MdOutlineReply } from "react-icons/md";
+import { HiDotsHorizontal } from "react-icons/hi";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { NumberShortner } from "utils";
+import { PostReplyCard } from "../PostReplyCard";
+
+import type { Comment, Attachment, Profile } from "../../../features/API";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import CommentInputBox from "@UI/components/shadcn-components/Fields/commentBox";
+import CommentText from "@UI/components/shadcn-components/Fields/commentText";
 
 export interface PostCommentCardProps {
-  onReply?: (message: string) => void;
-  onLike?: () => void;
-  main?: boolean;
   index?: number;
   comment: { __typename?: "Comment" } & Pick<
     Comment,
-    | "id"
-    | "content"
-    | "commentedAt"
-    | "likes"
-    | "userId"
-    | "hostId"
-    | "hostType"
-    | "updatedAt"
-    | "replies"
+    "id" | "content" | "commentedAt" | "likes" | "replies"
   > & {
-    attachment?: { __typename?: "Attachment" } & Pick<
-      Attachment,
-      "src" | "type"
-    >;
-    author?: { __typename?: "Profile" } & Pick<
-      Profile,
-      "username" | "photo" | "verified" | "id"
-    >;
+    attachment?: Pick<Attachment, "src" | "type">;
+    author?: Pick<Profile, "username" | "photo" | "verified" | "id">;
   };
-  shouldCommentBoxFocused?: boolean;
-  setShouldCommentBoxFocused?: (shouldCommentBoxFocused: boolean) => void;
-  setPostOwnerUsername?: (username: string) => void;
+  setShowReplyUser?: (profile: Pick<Profile, "username" | "photo" | "verified" | "id">) => void; // 👈 accept full profile
 }
 
-export const PostCommentCard: React.FC<PostCommentCardProps> = ({
-  comment,
-  main,
-  index,
-  setShouldCommentBoxFocused,
-  setPostOwnerUsername,
-}) => {
-  const { openModalWithId } = useCommentReportModal();
+export const PostCommentCard: React.FC<PostCommentCardProps> = ({ comment, index, setShowReplyUser }) => {
   const { t } = useTranslation();
-  // const { mutate } = useLikeContent();
-  const { mutate: createComment } = useCommentOnContent();
-  const { shareLink, showContentComments } = useSocialControls();
-  const { getUrl } = useRouting();
   const router = useRouter();
-
-  const [reply, setReply] = React.useState<boolean>(false);
-  const [isFollowing, setIsFollowing] = React.useState<boolean>(false);
-  const [isLiked, setIsLiked] = React.useState<boolean>(false);
-  const [likeVal, setLikeVal] = React.useState<number>(comment.likes);
-  const [booked, setBooked] = React.useState<boolean>(false);
-  const [bookedVal, setBookedVal] = React.useState<number>(15);
-  const [shareVal, setShareVal] = React.useState<number>(15);
-
-  const [shouldCommentRepliesOpen, setShouldCommentRepliesOpen] =
-    React.useState<{ state: boolean; count: number }>({
-      state: false,
-      count: comment.replies,
-    });
-
-  const ref = React.useRef<HTMLDivElement>(null);
-
-  const toggleBooked = () => {
-    setBooked((prevState) => !prevState);
-    setBookedVal((prev) => (!booked ? prev + 1 : prev - 1));
-  };
-
-  useOutsideClick(ref, () => {
-    setReply(false);
-  });
-
-  // function handleLikeComment() {
-  //   mutate({
-  //     args: {
-  //       contentId: comment.id,
-  //       contentType: ContentHostType.Comment,
-  //     },
-  //   });
-  // }
-
   const profile = comment.author;
 
-  const TimeDiff = (createdAt: string) => {
-    const { timeUnit, value } = useDateDiff({
-      from: new Date(),
-      to: new Date(createdAt),
-    }).getSince();
-    return `${value} ${timeUnit} `;
-  };
+  // state
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(comment.likes);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
 
-  const TimeDiffNarrow = (createdAt: string) => {
-    const { timeUnitNarrow, value } = useDateDiff({
-      from: new Date(),
-      to: new Date(createdAt),
-    }).getSince();
-    return `${value}${timeUnitNarrow} `;
-  };
 
-  const handleFollow = (profileId: string) => {
-    setIsFollowing(true);
-  };
+  const ref = useRef<HTMLDivElement>(null);
+  useOutsideClick(ref, () => setShowReplies(false));
 
-  const handleUnfollow = (profileId: string) => {
-    setIsFollowing(false);
-  };
+  const { value, timeUnit } = useDateDiff({
+    from: new Date(),
+    to: new Date(comment.commentedAt),
+  }).getSince();
 
-  const handleLikeDislike = () => {
+  // handlers
+  const toggleLike = () => {
     setIsLiked(!isLiked);
-    setLikeVal((prev) => (!isLiked ? prev + 1 : prev - 1));
+    setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
   };
 
-  console.log(comment, "comment");
+  const toggleBookmark = () => setBookmarked((prev) => !prev);
+
+  const copyProfileLink = () => {
+    const url = `${window.location.origin}/profile/${profile?.username}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied to clipboard!");
+  };
 
   return (
-    <div ref={ref} className="flex bg-white w-full gap-2 px-3">
+    <div ref={ref} className="flex bg-white w-full gap-3 px-3 py-2 rounded-lg">
+      {/* Avatar */}
       <Link
-        href={`/profile/${profile.username}`}
+        href={`/profile/${profile?.username}`}
         className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0"
       >
-        <img
-          src={profile?.photo}
-          alt="avatar"
-          className="w-full h-full object-cover"
-        />
+        <img src={profile?.photo} alt="avatar" className="w-full h-full object-cover" />
       </Link>
-      <div className="w-full flex flex-col">
-        <div
-          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${main ? "bg-white" : "bg-primary-light"
-            }`}
-        >
-          <div className="flex items-center mt-2 gap-2 justify-between">
-            <HStack>
-              <div className="flex items-center gap-1  ">
-                <Link
-                  href={`/profile/${profile.username}`}
-                  className="text-xl font-semibold"
-                >
-                  {profile?.username}
-                </Link>
-                {profile?.verified && (
-                  <Verified className="text-[#0084FF] w-5 h-5" />
-                )}
-              </div>
 
-              <p className="text-[#8E8E8E] text-xs">
-                {TimeDiff(comment.commentedAt)} ago
-              </p>
+      {/* Main */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <HStack>
+            <Link href={`/profile/${profile?.username}`} className="font-semibold text-sm">
+              {profile?.username}
+            </Link>
+            {profile?.verified && <Verified className="text-[#0084FF] w-4 h-4" />}
+            <span className="text-xs text-gray-500">{`${value} ${timeUnit} ago`}</span>
+          </HStack>
+          {index === 0 && (
+            <PrimaryButton
+              onClick={() => setIsFollowing((prev) => !prev)}
+              className="text-xs"
+            >
+              {isFollowing ? t("Unfollow") : t("Follow")}
+            </PrimaryButton>
+          )}
+        </div>
 
-            </HStack>
-            {index === 0 && !isFollowing && (
-              <Button
-                className="w-[89.23px]"
-                outline
-                onClick={() => handleFollow(profile.id)}
-              >
-                Follow
-              </Button>
-            )}
-            {index === 0 && isFollowing && (
-              <Button outline onClick={() => handleUnfollow(profile.id)}>
-                Unfollow
-              </Button>
-            )}
-          </div>
-          <div className="py-2">
-            <EllipsisText
-              showMoreColor={main ? "white" : undefined}
-              content={comment.content}
-              maxLines={3}
-              index={index}
+        {/* Content */}
+        <div className="mt-1">
+          <CommentText
+            content={comment.content}
+            onMentionClick={(mention) => console.log("Clicked mention:", mention)}
+            onHashtagClick={(hashtag) => console.log("Clicked hashtag:", hashtag)}
+          />
+        </div>
+
+        {index === 0 && comment.attachment && (
+          <div className="mt-2 w-1/2">
+            <PostAttachment
+              src={comment.attachment.src}
+              type={comment.attachment.type}
+              alt={profile?.username}
             />
           </div>
+        )}
 
-          {index === 0 && comment.attachment && (
-            <div className="w-1/2">
-              <PostAttachment
-                src={comment.attachment.src}
-                type={comment.attachment.type}
-                alt={profile?.username}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex px-2 w-full items-center justify-between">
-          {!main && (
-            <HStack>
-              <p className="text-primary">{t("Like")}</p>
-              <p onClick={() => setReply(true)}>{t("Reply")}</p>
-              <div className="flex whitespace-nowrap gap-1 h-full items-end">
-                <MdOutlineReply className="text-lg fill-primary" />
-                <p className="text-gray-500">
-                  {comment.content} {t("Replies")}
-                </p>
-              </div>
-
-            </HStack>
-          )}
-          <div className="whitespace-nowrap gap-4 font-[15px] flex  text-gray-500 justify-between w-full">
-            <div className="flex gap-4 items-center text-[#8E8E8E] font-semibold">
-              <div className="flex gap-2 items-center">
-
-                <button onClick={handleLikeDislike}>
-                  {isLiked ? (
-                    <HeartFillIcon className="w-4 h-4 mt-1" />
-                  ) : (
-                    <HeartOutlineIcon className="w-4 h-4 mt-1" />
-                  )}
-                </button>
-                <div className="flex gap-1 items-center">
-                  <p>{likeVal}</p>
-                </div>
-              </div>
-
-              {index === 0 && (
-                <div className="flex gap-2 items-center">
-                  <AiOutlineMessage
-                    onClick={() => setShouldCommentBoxFocused(true)}
-                    className="w-4 h-4 cursor-pointer mt-0.5"
-                  />
-                  <div className="flex gap-1 items-center">
-                    <p>{comment.replies}</p>
-                  </div>
-                </div>
-              )}
-
-              {index !== 0 && (
-                <button
-                  onClick={() => setShouldCommentBoxFocused(true)}
-                  className="cursor-pointer"
-                >
-                  Reply
-                </button>
-              )}
-
-              {index === 0 && (
-                <button
-                  onClick={() =>
-                    shareLink(
-                      getUrl((routes) => routes.visitSocialPost(comment.id)),
-                    )
-                  }
-                  className="flex gap-2 items-center"
-                >
-                  <ShareIcon />
-                  <p className="text-xs font-medium">
-                    {NumberShortner(shareVal)}
-                  </p>
-                </button>
-              )}
-            </div>
-
-            {index === 0 && (
-              <div className="flex gap-1 items-center text-[#8E8E8E] font-semibold">
-                {booked ? (
-                  <>
-                    <SaveFlagFIllIcon
-                      className="w-4 h-4 cursor-pointer mt-1"
-                      onClick={toggleBooked}
-                    />
-                    <div className="flex gap-1 items-center">
-                      <p>{bookedVal}</p>
-                    </div>
-                  </>
+        {/* Actions */}
+        <div className="flex justify-between items-center text-sm text-gray-600 mt-2">
+          <div className="flex flex-col gap-1">
+            {/* Like + Reply Row */}
+            <div className="flex gap-4 items-center">
+              {/* Like */}
+              <button onClick={toggleLike} className="flex gap-1 items-center">
+                {isLiked ? (
+                  <HeartFillIcon className="w-4 h-4" />
                 ) : (
-                  <>
-                    <SaveFlagOutlineIcon
-                      className="w-4 h-4 cursor-pointer mt-1"
-                      onClick={toggleBooked}
-                    />
-                    <div className="flex gap-1 items-center">
-                      <p>{bookedVal}</p>
-                    </div>
-                  </>
+                  <HeartOutlineIcon className="w-4 h-4" />
                 )}
-              </div>
+                <span>{likes}</span>
+              </button>
+
+              {/* Reply */}
+              <button
+                className="flex gap-1 items-center"
+                onClick={() => profile && setShowReplyUser?.(profile)}
+              >
+                <MdOutlineReply className="w-4 h-4 text-primary" />
+                <span>{t("Reply")}</span>
+              </button>
+            </div>
+
+            {/* Replies count (underneath row) */}
+            {comment.replies > 0 && (
+              <button
+                onClick={() => setShowReplies((prev) => !prev)}
+                className="text-gray-500 text-sm text-left ml-16"
+              >
+                {showReplies ? t("Hide replies") : `- View ${comment.replies} replies`}
+              </button>
             )}
           </div>
-        </div>
-        {index !== 0 && shouldCommentRepliesOpen.count > 0 && (
-          <div className="ml-10 mt-2 relative">
-            <button
-              onClick={() =>
-                setShouldCommentRepliesOpen({
-                  ...shouldCommentRepliesOpen,
-                  state: !shouldCommentRepliesOpen.state,
-                })
-              }
-              className="text-gray-500 font-medium flex gap-1 items-center"
-            >
-              {/* <BiMinus className="mt-1" /> */}
-              {!shouldCommentRepliesOpen.state ? (
-                <span>View {shouldCommentRepliesOpen.count} replies</span>
-              ) : (
-                <span>Hide</span>
-              )}
-            </button>
-            {shouldCommentRepliesOpen.state && (
-              <div className="mt-2">
-                {Array.from(
-                  { length: shouldCommentRepliesOpen.count },
-                  (_, index) => (
-                    <PostReplyCard
-                      key={index + comment.id}
-                      comment={comment}
-                      setShouldCommentBoxFocused={setShouldCommentBoxFocused}
-                      setPostOwnerUsername={setPostOwnerUsername}
-                    />
-                  ),
-                )}
-              </div>
+
+
+          {/* Right side: Share + Bookmark */}
+          <div className="flex gap-3 items-center">
+            {index === 0 && (
+              <button className="flex gap-1 items-center">
+                <ShareIcon className="w-4 h-4" />
+                <span>{NumberShortner(15)}</span>
+              </button>
             )}
+            <button onClick={toggleBookmark}>
+              {bookmarked ? <SaveFlagFIllIcon className="w-4 h-4" /> : <SaveFlagOutlineIcon className="w-4 h-4" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Replies */}
+        {showReplies && (
+          <div className="ml-10 mt-2 space-y-2">
+            {Array.from({ length: comment.replies }).map((_, i) => (
+              <PostReplyCard key={i} comment={comment} setShowReplyUser={setShowReplyUser} />
+            ))}
           </div>
         )}
-        {/* {reply ? (
-          <CommentInput
-            onCommentSubmit={(v) => {
-              createComment({
-                authorProfileId: comment.author!.id,
-                authorUserId: comment.author!.id,
-                content: v,
-                contentId: comment.id,
-                contentType: ContentHostType.Comment,
-                mentions: [],
-              });
-            }}
-          />
-        ) : null} */}
+
+        {/* Reply Box (now INSIDE flex-col, under actions/replies) */}
+        {/* {showReplyBox && (
+          <div className="ml-10 mt-2">
+            <CommentInputBox
+              onSend={(msg) => {
+                console.log("New reply:", msg, "for comment:", comment.id);
+                setShowReplyBox(false);
+              }}
+            />
+          </div>
+        )} */}
       </div>
-      <div className="h-full">
-        <Menu>
-          <MenuButton>
-            <HiDotsHorizontal className="cursor-pointer text-2xl fill-black" />
-          </MenuButton>
-          <MenuList>
-            <MenuItem>
-              {/* <p>{t("hide", "Hide")}</p> */}
-            </MenuItem>
-            <MenuItem
-            onClick={() => {
-              if (profile?.username) {
-                router.push(`/profile/${profile.username}`);
-              }
-            }}
-            >
-              
-              <p>{t("go_to_post", "Go to post")}</p>
-            </MenuItem>
-            <MenuItem>
-              <p onClick={() => openModalWithId(profile?.id || "")}>
-                {t("report_user", "Report user")}
-              </p>
-            </MenuItem>
-            <MenuItem>
-              <p onClick={() => {
-                const postUrl = `${window.location.origin}/profle/${profile?.username}`
-                navigator.clipboard.writeText(postUrl);
-                toast.success("Link copied to clipboard!");
-              }}>{t("copy_link", "Copy link")}</p>
-            </MenuItem>
-            <MenuItem>
-              {/* <p>{t("cancel", "Cancel")}</p> */}
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </div>
+
+      {/* Menu */}
+      <Menu>
+        <MenuButton>
+          <HiDotsHorizontal className="cursor-pointer text-xl text-gray-600" />
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => router.push(`/profile/${profile?.username}`)}>
+            {t("go_to_post", "Go to post")}
+          </MenuItem>
+          <MenuItem onClick={copyProfileLink}>
+            {t("copy_link", "Copy link")}
+          </MenuItem>
+        </MenuList>
+      </Menu>
     </div>
   );
 };

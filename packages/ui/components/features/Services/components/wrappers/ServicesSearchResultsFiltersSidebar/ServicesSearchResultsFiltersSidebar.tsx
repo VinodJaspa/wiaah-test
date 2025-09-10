@@ -18,6 +18,7 @@ import {
   useMutateSearchFilters,
   useSearchFilters,
 } from "@UI";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
 
 export interface ServicesSearchResultsFiltersSidebarProps {
   onShowOnMap: () => any;
@@ -72,20 +73,14 @@ const { t } = useTranslation();
               onClick={handleOnMapClick}
             />
             <div className="flex flex-col ">
-              <p className="font-bold text-lg">
-                {t("Search by property name")}
+              <p className="font-bold text-sm mb-2">
+                {t("Search by  name")}
               </p>
-              <InputGroup>
-                <InputLeftElement>
-                  <SearchIcon />
-                </InputLeftElement>
-                <Input
-                  onChange={(e) =>
-                    addFilter((keys) => [keys.propertyName, e.target.value])
+              <SearchBoxInner   onChange={(e) =>
+                    addFilter((keys) => [keys.propertyName, e])
                   }
-                  placeholder="e.g. Best Western"
-                />
-              </InputGroup>
+                  placeholder="e.g. Best Western"/>
+             
             </div>
             <>{children}</>
           </div>

@@ -1,32 +1,27 @@
-import React, { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
-import {
-  Divider,
-  ShopProductFilter,
-  ProductCard,
-  Collaboration,
-  useGetProductsQuery,
-  usePaginationControls,
-  Pagination,
-  useGetProductCategories,
-  ProductOutput,
-} from "@UI";
-import { BreadCrumb } from "@UI";
-import { BsArrowLeft } from "react-icons/bs";
-import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
-import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
-import { useDimensions, useResponsive } from "hooks";
 import {
   Category,
-  ProductCategoryStatus,
-  ProductCondition,
-  ProductType,
+  ProductCategoryStatus
 } from "@features/API";
-import { product } from "@blocks/Modals/ProductViewModal/ProductViewModal.stories";
+import {
+  BreadCrumb,
+  Divider,
+  ProductOutput,
+  ProductSearchViewCard,
+  ShopProductFilter,
+  useGetProductCategories,
+  usePaginationControls
+} from "@UI";
+import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
+import { useDimensions, useResponsive } from "hooks";
+import { useRouter } from "next/router";
+import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { BsArrowLeft } from "react-icons/bs";
+import { FaChevronDown } from "react-icons/fa";
+import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 
 export const SearchView: React.FC = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const [isGrid, setGrid] = useState(false);
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();
@@ -42,6 +37,13 @@ const { t } = useTranslation();
       url: `/${cate}`,
     })),
   );
+  // These are the sorting options available in the dropdown.
+  const sortOptions = [
+    { label: "Price: Low to High", value: "price-asc" },
+    { label: "Price: High to Low", value: "price-desc" },
+    { label: "Newest Arrivals", value: "date-desc" },
+  ];
+
   const [filters, setFilters] = React.useState<Record<string, any>>({});
   const { controls, pagination } = usePaginationControls();
   // const {
@@ -60,11 +62,24 @@ const { t } = useTranslation();
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 
   const { width } = useDimensions(leftPanelRef);
-
+  // State to manage the open/closed state of the sort dropdown.
+  const [isSortDropdownOpen, setSortDropdownOpen] = useState(false);
+  // State to hold the currently selected sort option.
+  const [selectedSort, setSelectedSort] = useState("date-desc");
   const leftPanelwidth = width || null;
-
+  // const sortedProducts = useMemo(() => {
+  //   let sortedRes = [...res];
+  //   if (selectedSort === "price-asc") {
+  //     sortedRes.sort((a, b) => a.price - b.price);
+  //   } else if (selectedSort === "price-desc") {
+  //     sortedRes.sort((a, b) => b.price - a.price);
+  //   } else if (selectedSort === "date-desc") {
+  //     sortedRes.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+  //   }
+  //   return sortedRes;
+  // }, [res, selectedSort]);
   return (
-    <div className=" w-full py-4 relative h-full">
+    <div className=" w-full  relative h-full ">
       <div className="flex justify-end">
         <div
           onClick={() => {
@@ -93,8 +108,8 @@ const { t } = useTranslation();
       <div className="flex h-full items-start justify-center">
         <div
           className={`${!filterVisibleOnMobile
-              ? "hidden"
-              : "fixed h-screen overflow-y-scroll pb-4 pl-3"
+            ? "hidden"
+            : "fixed h-screen overflow-y-scroll pb-4 pl-3"
             } filter-section inset-0 z-50  w-full bg-white pr-3 `}
         >
           <div className="flex h-20 w-full items-center justify-start md:hidden">
@@ -121,10 +136,13 @@ const { t } = useTranslation();
             <div className="h-full ml-12" ref={leftPanelRef}>
               {!isMobile && (
                 <div className="flex flex-col gap-2 w-[300px] ">
-                  <div className="px-4">
-                    <BreadCrumb links={breadCrumbLinks} />
-                  </div>
+                  {/* Breadcrumb section from image is already here */}
 
+                  <div className="pb-4">
+                    <button className="clear-filters-button w-full py-2 bg-gray-100 rounded-md">
+                      Clear Filters
+                    </button>
+                  </div>
                   <ShopProductFilter
                     open={true}
                     priceRange={{ max: 1000, min: 10 }}
@@ -149,11 +167,49 @@ const { t } = useTranslation();
               }}
               className={`h-full flex flex-col justiry-between`}
             >
+              <div className="px-4 space-y-10">
+                <BreadCrumb links={breadCrumbLinks} />
+              </div>
+              <div className="px-4 flex justify-between items-center mb-4 pt-4">
+
+                <div className="flex flex-col">
+                  <h1 className="text-medium font-bold">Search Results</h1>
+                  <span className="text-sm text-gray-600 pt-4">
+                    Showing 1-24 of 120 results
+                  </span>
+                </div>
+                <div className="relative">
+                  <button
+                    className="px-4 py-2 bg-gray-100 rounded-md text-sm flex items-center"
+                    onClick={() => setSortDropdownOpen(!isSortDropdownOpen)}
+                  >
+                    {sortOptions.find((opt) => opt.value === selectedSort)?.label}
+                    <FaChevronDown className={`ml-2 transition-transform duration-300 ${isSortDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {isSortDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50 ">
+                      {sortOptions.map((option) => (
+                        <div
+                          key={option.value}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                          onClick={() => {
+                            setSelectedSort(option.value);
+                            setSortDropdownOpen(false);
+                          }}
+                        >
+                          {option.label}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
               {/* shop items */}
               <div className="h-full w-fit grid  grid-cols-2 md:grid-cols-4 md:gap-4 gap-2">
                 {res
                   ? res.map((product, i) => (
-                    <ProductCard
+
+                    <ProductSearchViewCard
                       cashback={
                         product.cashback ? product.cashback.amount : undefined
                       }
@@ -171,13 +227,13 @@ const { t } = useTranslation();
                   ))
                   : ["", ""]}
               </div>
-              <Pagination controls={controls} />
+              <Pagination />
             </div>
           </div>
         </div>
       </div>
       <Divider />
-      <Collaboration />
+      {/* <Collaboration /> */}
     </div>
   );
 };
@@ -251,264 +307,259 @@ const FAKE_PRODUCTS: ProductOutput[] = [
     id: "product-006",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1015/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1015/600/600",
         type: "video",
       },
     ],
     price: 49.99,
     rate: 4.2,
     reviews: 34,
-    title: "Product A",
+    title: "Vintage Leather Satchel",
     vat: 10.0,
   },
-
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["Black", "Silver"],
       },
       {
-        name: "Size",
-        values: ["Small", "Medium", "Large"],
+        name: "Material",
+        values: ["Metal", "Plastic"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand B",
     cashback: {
-      amount: 10,
+      amount: 5,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-002",
+    description: "A sleek, minimalist electronic gadget.",
     discount: {
-      amount: 5.0,
+      amount: 25.0,
       units: "USD",
     },
     id: "product-005",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1016/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1016/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
-    vat: 10.0,
+    price: 199.99,
+    rate: 4.8,
+    reviews: 87,
+    title: "Urban Smartwatch",
+    vat: 15.0,
   },
-
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["White", "Yellow", "Blue"],
       },
       {
         name: "Size",
-        values: ["Small", "Medium", "Large"],
+        values: ["One Size"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand C",
     cashback: {
-      amount: 10,
+      amount: 0,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-003",
+    description: "A comfortable and lightweight travel pillow.",
     discount: {
-      amount: 5.0,
+      amount: 0,
       units: "USD",
     },
     id: "product-008",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1025/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1025/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
-    vat: 10.0,
+    price: 29.50,
+    rate: 3.9,
+    reviews: 12,
+    title: "Ergonomic Travel Pillow",
+    vat: 8.0,
   },
-
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["Brown", "Beige", "Black"],
       },
       {
-        name: "Size",
-        values: ["Small", "Medium", "Large"],
+        name: "Material",
+        values: ["Wood", "Plastic"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand D",
     cashback: {
-      amount: 10,
+      amount: 15,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-004",
+    description: "A beautifully crafted wooden home decor item.",
     discount: {
-      amount: 5.0,
+      amount: 10.0,
       units: "USD",
     },
     id: "product-009",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1031/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1031/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
-    vat: 10.0,
+    price: 85.0,
+    rate: 4.5,
+    reviews: 45,
+    title: "Hand-Carved Wooden Bowl",
+    vat: 12.0,
   },
-
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["Green", "Gray"],
       },
       {
         name: "Size",
-        values: ["Small", "Medium", "Large"],
+        values: ["Small", "Medium"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand E",
     cashback: {
-      amount: 10,
+      amount: 20,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-005",
+    description: "A small, potted indoor plant.",
     discount: {
-      amount: 5.0,
+      amount: 2.0,
       units: "USD",
     },
     id: "product-0011",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1035/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1035/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
-    vat: 10.0,
+    price: 15.0,
+    rate: 4.1,
+    reviews: 23,
+    title: "Miniature Cactus Garden",
+    vat: 5.0,
   },
-
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["Red", "Orange", "Blue"],
       },
       {
         name: "Size",
-        values: ["Small", "Medium", "Large"],
+        values: ["One Size"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand F",
     cashback: {
-      amount: 10,
+      amount: 0,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-006",
+    description: "A vibrant and fun toy for children.",
     discount: {
-      amount: 5.0,
+      amount: 0,
       units: "USD",
     },
     id: "product-001",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1038/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1038/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
+    price: 12.99,
+    rate: 5.0,
+    reviews: 98,
+    title: "Colorful Building Blocks",
     vat: 10.0,
   },
   {
     attributes: [
       {
         name: "Color",
-        values: ["Red", "Blue", "Green"],
+        values: ["Black", "White", "Red"],
       },
       {
         name: "Size",
         values: ["Small", "Medium", "Large"],
       },
     ],
-    brand: "Brand A",
+    brand: "Brand G",
     cashback: {
-      amount: 10,
+      amount: 8,
       type: "percent",
       units: "USD",
     },
-    categoryId: "category-001",
-    description: "A high-quality product with multiple size and color options.",
+    categoryId: "category-007",
+    description: "Classic headphones with modern technology.",
     discount: {
-      amount: 5.0,
+      amount: 15.0,
       units: "USD",
     },
     id: "product-0012",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1041/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1041/600/600",
         type: "video",
       },
     ],
-    price: 49.99,
-    rate: 4.2,
-    reviews: 34,
-    title: "Product A",
-    vat: 10.0,
+    price: 79.99,
+    rate: 4.6,
+    reviews: 67,
+    title: "Over-Ear Wireless Headphones",
+    vat: 18.0,
   },
   {
     attributes: [
@@ -536,18 +587,18 @@ const FAKE_PRODUCTS: ProductOutput[] = [
     id: "product-002",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1054/600/600",
         type: "image",
       },
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1054/600/600",
         type: "video",
       },
     ],
     price: 120.0,
     rate: 4.8,
     reviews: 56,
-    title: "Product B",
+    title: "Elegant Leather Loafers",
     vat: 15.0,
   },
   {
@@ -573,14 +624,14 @@ const FAKE_PRODUCTS: ProductOutput[] = [
     id: "product-003",
     presentations: [
       {
-        src: "/shop.jpeg",
+        src: "https://picsum.photos/id/1059/600/600",
         type: "image",
       },
     ],
     price: 19.99,
     rate: 3.9,
     reviews: 15,
-    title: "Product C",
+    title: "Foldable Picnic Blanket",
     vat: 5.0,
   },
 ];

@@ -1,90 +1,64 @@
 import React from "react";
 import {
-  FaAngleDoubleLeft,
   FaAngleLeft,
   FaAngleRight,
-  FaAngleDoubleRight,
 } from "react-icons/fa";
-import { HtmlDivProps } from "types";
-import { usePaginationControls } from "..";
 
 export interface PaginationProps {
   maxPages?: number;
   onPageChange?: (pageNum: number) => void;
-  morePages?: boolean;
-  htmlProps?: HtmlDivProps;
-  controls?: usePaginationControls;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
-  morePages,
+  maxPages = 5,
   onPageChange,
-  maxPages = 100000,
-  htmlProps,
-  controls,
 }) => {
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
-  React.useEffect(() => {
-    if (onPageChange) {
-      onPageChange(currentPage);
-    }
-  }, [currentPage]);
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > maxPages) return;
+    setCurrentPage(page);
+    onPageChange?.(page);
+  };
 
-  function handleNextPage(last?: boolean) {
-    if (controls) {
-      controls.next();
-    }
-  }
-
-  function handlePrevPage(last?: boolean) {
-    if (controls) {
-      controls.previous();
-    }
-  }
   return (
-    <>
-      <div
-        {...htmlProps}
-        className={`${htmlProps?.className || ""} flex w-full justify-center`}
-      >
-        <ul className="inline-flex items-center space-x-4 p-2 text-white">
-          {/* <li
-            onClick={() => handlePrevPage(true)}
-            id="FirstPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
-          >
-            <FaAngleDoubleLeft className="h-5 w-5" />
-          </li> */}
+    <div className="flex justify-center mt-4">
+      <ul className="inline-flex items-center space-x-2">
+        {/* Previous */}
+        <li
+          onClick={() => handlePageChange(currentPage - 1)}
+          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-100 ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <FaAngleLeft className="h-3 w-3" />
+        </li>
+
+        {/* Page Numbers */}
+        {Array.from({ length: maxPages }, (_, i) => i + 1).map((num) => (
           <li
-            onClick={() => handlePrevPage()}
-            id="PrevPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full text-black p-3"
+            key={num}
+            onClick={() => handlePageChange(num)}
+            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border ${
+              currentPage === num
+                ? "bg-gray-300 text-black"
+                : "border-gray-300 text-gray-600 hover:bg-black hover:text-white"
+            }`}
           >
-            <FaAngleLeft className="h-3 w-3" />
+            {num}
           </li>
-          <li
-            id="CurrentPage"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-black p-3"
-          >
-            {currentPage}
-          </li>
-          <li
-            onClick={() => handleNextPage()}
-            id="NextPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full text-black p-3"
-          >
-            <FaAngleRight className="h-3 w-3" />
-          </li>
-          {/* <li
-            onClick={() => handleNextPage(true)}
-            id="LastPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
-          >
-            <FaAngleDoubleRight className="h-5 w-5" />
-          </li> */}
-        </ul>
-      </div>
-    </>
+        ))}
+
+        {/* Next */}
+        <li
+          onClick={() => handlePageChange(currentPage + 1)}
+          className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-100 ${
+            currentPage === maxPages ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <FaAngleRight className="h-3 w-3" />
+        </li>
+      </ul>
+    </div>
   );
 };

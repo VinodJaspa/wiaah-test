@@ -1,6 +1,7 @@
 import {
   AddNewPostModal,
   AddNewStoryModal,
+  AdminCommentsModal,
   AuthenticationModal,
   CommentReportModal,
   NewMessageModal,
@@ -348,6 +349,7 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
 
       <AddNewStoryModal />
       <CommentReportModal />
+      <AdminCommentsModal/>
       <>{children}</>
     </>
   );

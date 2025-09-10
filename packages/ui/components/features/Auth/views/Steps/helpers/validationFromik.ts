@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const shopPresentationSchema = Yup.object().shape({
- name: Yup.string().required("Service name is required"),
+ name: Yup.string().required("Shop name is required"),
  description: Yup.string().required("Description is required"),
 
   images: Yup.array()

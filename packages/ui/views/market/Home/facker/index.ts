@@ -2,15 +2,21 @@ import { faker } from '@faker-js/faker';
 
 // Helper to generate a random product
 function createRandomProduct() {
+  const price = Number(faker.commerce.price(10, 1000, 2));
+  const off = faker.number.int({ min: 5, max: 50 }); // discount %
+  const oldPrice = Number((price * (100 + off)) / 100).toFixed(2);
+
   return {
+    id: faker.string.uuid(),
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: `$${faker.commerce.price(10, 1000, 2)}`,
+    price: `$${price.toFixed(2)}`,
+    oldPrice: `$${oldPrice}`,
+    off,
+    cashBack: `${faker.number.int({ min: 1, max: 15 })}%`,
     rating: Number((Math.random() * 5).toFixed(1)),
     reviews: faker.number.int({ min: 0, max: 5000 }),
-
     image: faker.image.urlPicsumPhotos(),
-
     category: faker.helpers.arrayElement([
       "Headphones",
       "Electronics",
@@ -18,6 +24,7 @@ function createRandomProduct() {
       "Gadgets",
       "Home and Kitchen",
     ]),
+    type: "product",
   };
 }
 

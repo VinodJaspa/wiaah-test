@@ -1,7 +1,10 @@
 import { useSocialControls } from "@blocks/Layout";
+import { Menu } from "@headlessui/react";
 import ChatInputBox from "@UI/components/shadcn-components/Fields/chatbox";
+import ReportDialog from "@UI/components/shadcn-components/ReportDialog";
 import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
-import React from "react";
+import { Ban, BellOff, Flag, MoreVertical } from "lucide-react";
+import React, { useState } from "react";
 
 // Mock sidebar message list
 const messages = [
@@ -128,20 +131,74 @@ export default function ChatMessagesSection() {
 // Sidebar item
 function MessageItem({ message, isActive, onClick }) {
   const { avatar, name, lastMessage, time } = message;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleItemClick = (item: { id: string; title: string }) => {
+    console.log("Selected:", item.id, item.title);
+    // 🔥 Do something, like call API
+  };
+  const reportItems = [
+    {
+      id: "report",
+      icon: <Flag className="w-5 h-5" />,
+      title: "Report",
+      description: "Report this conversation",
+    },
+    {
+      id: "mute",
+      icon: <BellOff className="w-5 h-5" />,
+      title: "Mute Conversation",
+      description: "Stop receiving messages from this conversation",
+    },
+    {
+      id: "block",
+      icon: <Ban className="w-5 h-5" />,
+      title: "Block",
+      description: "This person will no longer be able to contact you",
+    },
+  ];
   return (
     <div
       onClick={onClick}
-      className={`flex items-center px-6 py-4 cursor-pointer transition-colors ${isActive ? "bg-gray-100" : "hover:bg-gray-50"
+      className={`group relative flex items-center px-6 py-4 cursor-pointer transition-colors ${isActive ? "bg-gray-100" : "hover:bg-gray-50"
         }`}
     >
+      {/* Avatar */}
       <img src={avatar} className="w-10 h-10 rounded-full mr-4" />
+
+      {/* Text content */}
       <div className="flex-1 overflow-hidden">
         <div className="text-sm font-semibold truncate">{name}</div>
         <div className="text-xs text-gray-500 truncate">{lastMessage}</div>
       </div>
+
+      {/* Time */}
       <div className="flex-none text-xs text-gray-400 self-start mt-1 ml-2">
         {time}
       </div>
+
+      {/* Dropdown Menu (hidden until hover) */}
+      <Menu as="div" className="absolute top-1 right-1">
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+          <Menu.Button
+            onClick={(e) => {
+              e.stopPropagation()
+              setDialogOpen(true)
+            }} // prevent triggering onClick
+            className="p-1 rounded-full hover:bg-black/10 focus:outline-none"
+          >
+            <MoreVertical className="w-4 h-4 text-gray-500" />
+          </Menu.Button>
+        </div>
+
+      </Menu>
+      {/* Report / Block / Mute Dialog */}
+      <ReportDialog
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+        title="Message options"
+        items={reportItems}
+        onItemClick={handleItemClick}
+      />
     </div>
   );
 }
@@ -208,6 +265,11 @@ function ChatRoom({ chat, name, avatar }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]); // whenever chat changes, scroll to bottom
 
+
+  const handleItemClick = (item: { id: string; title: string }) => {
+    console.log("Selected:", item.id, item.title);
+    // 🔥 Do something, like call API
+  };
   return (
     <div className="flex-1 flex flex-col">
       {/* Header */}
@@ -216,7 +278,6 @@ function ChatRoom({ chat, name, avatar }) {
         <h2 className="font-semibold text-lg">{name}</h2>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 p-4 space-y-3 overflow-y-auto">
         {chat.map((msg, i) => (
           <div
@@ -224,18 +285,67 @@ function ChatRoom({ chat, name, avatar }) {
             className={`flex ${msg.from === "Me" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`px-4 py-2 rounded-2xl max-w-xs ${msg.from === "Me"
+              className={`group relative px-4 py-2 rounded-2xl max-w-xs ${msg.from === "Me"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-gray-800"
                 }`}
             >
               {msg.text}
+
+              {/* Dropdown Menu */}
+              <Menu as="div" className="absolute top-1 right-1 text-left">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Menu.Button className="p-1 rounded-full hover:bg-black/10 focus:outline-none">
+                    <MoreVertical className="w-4 h-4" />
+                  </Menu.Button>
+                </div>
+
+                <Menu.Items className="absolute right-0 mt-1 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/10 focus:outline-none z-10">
+                  <div className="py-1">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          className={`${active ? "bg-gray-100" : ""
+                            } w-full text-left px-4 py-2 text-sm text-gray-700`}
+                          onClick={() => console.log("Reply to:", msg.id)}
+                        >
+                          Reply
+                        </button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          className={`${active ? "bg-gray-100" : ""
+                            } w-full text-left px-4 py-2 text-sm text-gray-700`}
+                          onClick={() => console.log("Report:", msg.id)}
+                        >
+                          Report
+                        </button>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          className={`${active ? "bg-gray-100" : ""
+                            } w-full text-left px-4 py-2 text-sm text-red-600`}
+                          onClick={() => console.log("Delete:", msg.id)}
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Menu>
             </div>
           </div>
         ))}
+
         {/* bottom anchor */}
         <div ref={bottomRef} />
       </div>
+
 
       {/* Input */}
       <ChatInputBox onSend={(msg) => console.log("Message sent:", msg)} />

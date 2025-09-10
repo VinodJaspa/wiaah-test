@@ -36,23 +36,19 @@ import {
   ServiceStatus,
 } from "@features/API/gql/generated";
 import { MarketBeautyCenterSearchCardAlt, MarketHealthCenterServiceCardAlt, MarketHolidayRentalsServiceSearchCardAlt, MarketHotelServiceSearchCardAlt, MarketRestaurantServiceSearchCardAlt, MarketVehicleServiceSearchCardAlt } from "@features/Services/MarketSections/MarketSearviceSearchItems";
-import { DisplayFoundServices, HealthCenterServiceSearchResultsList, HotelDetailedSearchCard, RecommendedBeautyCenterSearchList, ResturantFindTableFilterStepper, ResturantSearchList, SearchServiceQuery, ServicesSearchGrid, ServicesSearchResultsFiltersSidebar, VehicleSearchCard } from "@features/Services";
+import { DisplayFoundServices, HealthCenterFindTableSteper, HealthCenterServiceSearchResultsList, HotelDetailedSearchCard, RecommendedBeautyCenterSearchList, ResturantFindTableFilterStepper, ResturantSearchList, SearchServiceQuery, ServicesSearchGrid, ServicesSearchResultsFiltersSidebar, VehicleSearchCard } from "@features/Services";
 import { ServicePaymentMethods } from "api";
 
-import {useGetFilteredServicesQuery,useGetServiceCategoryFiltersQuery} from "@features/Services/Services/queries"
-import { getRandomServiceImage ,SectionHeader } from "@UI";
+import { useGetFilteredServicesQuery, useGetServiceCategoryFiltersQuery } from "@features/Services/Services/queries"
+import { getRandomServiceImage, SectionHeader } from "@UI";
 
 export const MarketDeatilsView: React.FC<{
 
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
-  console.log(MarketBeautyCenterSearchCardAlt,
-    MarketHealthCenterServiceCardAlt,
-    MarketHolidayRentalsServiceSearchCardAlt,
-    MarketHotelServiceSearchCardAlt,
-    MarketRestaurantServiceSearchCardAlt,
-    MarketVehicleServiceSearchCardAlt, "sdsddsss");
+
+
 
 
 
@@ -100,61 +96,67 @@ export const MarketDeatilsView: React.FC<{
       />
     </div>
   ) : (
-  <div
-       className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
-         } relative flex  py-4`}
-     >
-       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
-         {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-           <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
-             <Input
-               label={t("Destination") + "/" + t("property name") + ":"}
-               name="search_query"
-             />
-             <DateFormInput
-               className={"bg-white h-12"}
-               menuProps={{
-                 menuListProps: {
-                   className: "translate-x-full origin-top-left",
-                 },
-               }}
-               placeholder={t("Check-in") + " " + t("date")}
-               label={t("Check-in") + " " + t("date") + ":"}
-             />
-             <DateFormInput
-               menuProps={{
-                 menuListProps: {
-                   className: "translate-x-full origin-top-left",
-                 },
-               }}
-               placeholder={t("Check-out") + " " + t("date")}
-               className={"bg-white h-12 "}
-               label={t("Check-out") + " " + t("date") + ":"}
-             />
-             <Select>
-               <SelectOption value={"1"}>test</SelectOption>
-             </Select>
-             <Button>{t("Search")}</Button>
-           </div>
-         ) : null}
- 
-         {showOn([
-           ServiceType.Restaurant,
-           ServiceType.HealthCenter,
-           ServiceType.BeautyCenter,
-         ]) ? (
-           <ResturantFindTableFilterStepper />
-         ) : null}
- 
-         <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
-       </ServicesSearchResultsFiltersSidebar>
-       <ServicesCardsSwitcherView
-         serviceType={serviceType}
-         services={services}
-         showOn={showOn}
-         searchQuery={searchQuery}
-       />
-     </div>
+    <div
+      className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
+        } relative flex  py-4`}
+    >
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+          <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
+            <Input
+              label={t("Destination") + "/" + t("property name") + ":"}
+              name="search_query"
+            />
+            <DateFormInput
+              className={"bg-white h-12"}
+              menuProps={{
+                menuListProps: {
+                  className: "translate-x-full origin-top-left",
+                },
+              }}
+              placeholder={t("Check-in") + " " + t("date")}
+              label={t("Check-in") + " " + t("date") + ":"}
+            />
+            <DateFormInput
+              menuProps={{
+                menuListProps: {
+                  className: "translate-x-full origin-top-left",
+                },
+              }}
+              placeholder={t("Check-out") + " " + t("date")}
+              className={"bg-white h-12 "}
+              label={t("Check-out") + " " + t("date") + ":"}
+            />
+            <Select>
+              <SelectOption value={"1"}>test</SelectOption>
+            </Select>
+            <Button>{t("Search")}</Button>
+          </div>
+        ) : null}
+
+        {showOn([
+          ServiceType.Restaurant,
+          //  ServiceType.HealthCenter,
+          ServiceType.BeautyCenter,
+        ]) ? (
+          <ResturantFindTableFilterStepper />
+        ) : null}
+        {showOn([
+
+          ServiceType.HealthCenter,
+
+        ]) ? (
+          <HealthCenterFindTableSteper />
+        ) : null}
+        <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
+      </ServicesSearchResultsFiltersSidebar>
+      <ServicesCardsSwitcherView
+        serviceType={serviceType}
+        services={services}
+        showOn={showOn}
+        searchQuery={searchQuery}
+      />
+    </div>
   );
 };
 
@@ -650,7 +652,7 @@ const ServicesCardsSwitcherView: React.FC<
               },
               specialityId: "speciality123",
               name: "Dr. John Doe",
-              thumbnail: "/shop-2.jpeg",
+              thumbnail: "/assets/ladies-doc.png",
               price: 100,
               description:
                 "Experienced doctor specializing in internal medicine.",

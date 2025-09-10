@@ -50,9 +50,9 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     onLinkClick?.(link);
 
     router.push(link.url);
-    // if(link.url ==="/service"){
-    //   window.location.href =link.url;
-    // }
+    if(link.url ==="/service"){
+      window.location.href =link.url;
+    }
     
   }
 
