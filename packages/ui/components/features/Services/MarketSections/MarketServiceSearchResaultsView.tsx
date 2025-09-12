@@ -62,12 +62,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
   searchQuery: string;
   serviceType: ServiceType;
 }> = ({ searchQuery, serviceType }) => {
-  console.log(MarketBeautyCenterSearchCardAlt,
-    MarketHealthCenterServiceCardAlt,
-    MarketHolidayRentalsServiceSearchCardAlt,
-    MarketHotelServiceSearchCardAlt,
-    MarketRestaurantServiceSearchCardAlt,
-    MarketVehicleServiceSearchCardAlt, "sdsdd");
+
 
 
 
@@ -78,6 +73,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
   const { form, handleChange } = useForm<
     Parameters<typeof useGetFilteredServicesQuery>[0]
   >({
+    serviceType:serviceType,
     pagination,
     filters: [],
   });
@@ -90,6 +86,7 @@ export const MarketServiceSearchResaultsView: React.FC<{
   } = useGetFilteredServicesQuery(form);
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
+
 
   return isMobile ? (
     <div className="flex flex-col gap-4">
@@ -396,6 +393,7 @@ const restaurants = [
   },
 ];
 
+
 export const MobileServicesCardsSwitcherView: React.FC<
   MobileServicesCardsSwitcherViewProps
 > = ({ services, serviceType }) => {
@@ -587,6 +585,7 @@ export const ServicesCardsSwitcherView: React.FC<
   ServicesCardsSwitcherViewProps
 > = ({ services, serviceType, showOn, searchQuery }) => {
   const { isTablet, isMobile } = useResponsive();
+console.log(serviceType,"serviceTypeserviceType");
 
   const { t } = useTranslation();
   return (
@@ -604,7 +603,7 @@ export const ServicesCardsSwitcherView: React.FC<
                 {mapArray(services?.data, (service, i) => (
                   <HotelDetailedSearchCard
                     name={service.name || "Fake Name"}
-                    price={service.price || 0}
+                    price={service.price || "0"}
                     rate={service.rating || 0}
                     reviews={service.reviews || 0}
                     sellerName={

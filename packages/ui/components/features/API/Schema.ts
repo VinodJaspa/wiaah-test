@@ -5680,6 +5680,7 @@ export type SearchServicesFilterInput = {
 
 export type SearchServicesInput = {
   filters: Array<SearchServicesFilterInput>;
+  serviceType:string;
   locationQuery?: InputMaybe<Scalars["String"]["input"]>;
   pagination: GqlPaginationInput;
   q?: InputMaybe<Scalars["String"]["input"]>;

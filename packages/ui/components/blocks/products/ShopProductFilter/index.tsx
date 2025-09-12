@@ -116,14 +116,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
           <Spacer />
         </DropdownPanel>
       )}
-      {shipping && (
-        <DropdownPanel open={open} name={t("Shipping", "Shipping")}>
-          {shipping.map((shipping, i) => (
-            <FilterInput key={i} variant="box" label={shipping} />
-          ))}
-          <Spacer />
-        </DropdownPanel>
-      )}
+      
       {brands && (
         <DropdownPanel open={open} name={t("Brands", "Brands")}>
           {brands.map((brand, i) => (
@@ -168,6 +161,14 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
         <DropdownPanel open={open} name={t("Size", "Size")}>
           {size.map((size, i) => (
             <FilterInput key={i} variant="box" label={size} />
+          ))}
+          <Spacer />
+        </DropdownPanel>
+      )}
+      {shipping && (
+        <DropdownPanel open={open} name={t("Shipping", "Shipping")}>
+          {shipping.map((shipping, i) => (
+            <FilterInput key={i} variant="box" label={shipping} />
           ))}
           <Spacer />
         </DropdownPanel>

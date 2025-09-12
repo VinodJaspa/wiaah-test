@@ -27,9 +27,11 @@ interface OnMapViewProps {
 
 export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
   const router = useRouter();
+    const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
   const { controls, pagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetFilteredServicesQuery>[0]>({
     pagination,
+    serviceType,
     filters: [],
   });
   const {
@@ -37,10 +39,10 @@ export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
     isLoading,
     isError,
   } = useGetFilteredServicesQuery(form);
-  const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
+
   const { isTablet } = useResponsive();
 console.log(services, "services on map");
-console.log(serviceType, "serviceType on map");
+console.log(serviceType, "serviceType");
 
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);

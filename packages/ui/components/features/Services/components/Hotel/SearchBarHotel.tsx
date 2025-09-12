@@ -1,22 +1,24 @@
 "use client";
 
+import { LocationSearchInput } from "@blocks";
+import { ServicesRequestKeys } from "@features/Services/constants";
+import { format } from "date-fns";
+import { Calendar, ChevronDown, Search, Users, X } from "lucide-react";
 import { useState } from "react";
-import { Search, Calendar, Users, X, ChevronDown } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Autocomplete from "react-autocomplete";
-import { format } from "date-fns";
+import { useRouting } from "routing";
 
 const locations = ["Geneva", "Paris", "London", "New York", "Tokyo", "Dubai", "Sydney"];
 
 export default function SearchBarHotel() {
-  const [location, setLocation] = useState("");
+
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(2);
   const [editingGuests, setEditingGuests] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const { visit } = useRouting();
   const [filteredLocations, setFilteredLocations] = useState(locations);
 
   const GuestSelector = () => (
@@ -50,46 +52,16 @@ export default function SearchBarHotel() {
   const SearchInputs = () => (
     <div className="flex flex-col md:flex-row gap-4 ">
       {/* Location */}
-      <div className="flex-1 relative z-50">
-        <Autocomplete
-          getItemValue={(item) => item}
-          items={filteredLocations}
-          renderItem={(item, isHighlighted) => (
-            <div
-              key={item}
-              style={{
-                background: isHighlighted ? "#eee" : "white",
-                padding: "8px 12px",
-                cursor: "pointer",
-                zIndex: 9999,
-              }}
-            >
-              {item}
-            </div>
-          )}
-          value={location}
-          onChange={(e) => {
-            const val = e.target.value;
-            setLocation(val);
-            setFilteredLocations(
-              locations.filter((l) => l.toLowerCase().includes(val.toLowerCase()))
-            );
-          }}
-          onSelect={(val) => setLocation(val)}
-          inputProps={{
-            placeholder: "Location",
-            className:
-              "bg-gray-100 rounded-lg pl-12 pr-10 py-3 w-full text-sm font-medium outline-none",
-          }}
-        />
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-        {location && (
-          <X
-            size={16}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600"
-            onClick={() => setLocation("")}
-          />
-        )}
+      <div className="flex-1 relative w-full">
+
+        <LocationSearchInput onLocationSelect={(location) => {
+          visit((routes) =>
+            routes.visitServiceLocationSearchResults(
+              ServicesRequestKeys.hotels,
+              location,
+            ),
+          );
+        }} />
       </div>
 
       {/* Dates */}

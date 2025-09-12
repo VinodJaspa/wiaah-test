@@ -7,6 +7,7 @@ import { Divider } from "@partials";
 import { useState } from "react";
 import SearchBarByLocationAndArea from "../Restaurant/SearchBarRestaurant";
 import BeautityCenterCard from "./beautyCenterCard";
+import SearchBarHotel from "../Hotel/SearchBarHotel";
 
 
 
@@ -138,6 +139,7 @@ export default function BeautyCenterPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-2 mb-4">
       {/* 🔍 Search Bar */}
+
       <SearchBarByLocationAndArea
         placeholder1="Location"
         placeholder2="Health center, specialty, specialist..."
@@ -145,16 +147,16 @@ export default function BeautyCenterPage() {
 
       <Divider />
       {/* 👨‍⚕️ Doctors Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-4">
+      {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-4">
         {data.map((doc, i) => (
           <BeautityCenterCard key={i} {...doc} />
         ))}
-      </div>
+      </div> */}
 
       {/* 📄 Pagination (centered) */}
-      <div className="flex justify-center mt-10">
+      {/* <div className="flex justify-center mt-10">
         <Pagination total={total} current={current} onPageChange={handleNext} />
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -91,7 +91,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
     case "range":
       return (
         <div className="flex w-full flex-col  gap-2 ">
-          <span className="font-bold">{label && runIfFn(label, {})}</span>
+          <span className="font-normal">{label && runIfFn(label, {})}</span>
           <div className="relative mt-2">
             <span
               style={trackStyles}

@@ -41,6 +41,10 @@ import { ServicePaymentMethods } from "api";
 
 import { useGetFilteredServicesQuery, useGetServiceCategoryFiltersQuery } from "@features/Services/Services/queries"
 import { getRandomServiceImage, SectionHeader } from "@UI";
+import HotelCard from "@features/Services/components/Hotel/HotelCard";
+import RestaurantCard from "@features/Services/components/Restaurant/RestaurantCard";
+import VehicleServiceCard from "@features/Services/components/Vehicle/VehicleServiceCard";
+import BeautityCenterCard from "@features/Services/components/BeautyCenter/beautyCenterCard";
 
 export const MarketDeatilsView: React.FC<{
 
@@ -59,6 +63,7 @@ export const MarketDeatilsView: React.FC<{
   const { form, handleChange } = useForm<
     Parameters<typeof useGetFilteredServicesQuery>[0]
   >({
+    serviceType,
     pagination,
     filters: [],
   });
@@ -69,6 +74,7 @@ export const MarketDeatilsView: React.FC<{
     isLoading,
     isError,
   } = useGetFilteredServicesQuery(form);
+  console.log(services, "serrrr");
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
@@ -97,66 +103,68 @@ export const MarketDeatilsView: React.FC<{
     </div>
   ) : (
     <div
-      className={`${isTablet ? "flex-col gap-4" : "flex-row gap-12"
-        } relative flex  py-4`}
+      className={`relative flex py-4 ${isTablet ? "flex-col gap-4" : "flex-row gap-12"
+        } ]`} // ✅ full viewport height minus header/footer
     >
-      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
-        {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
-          <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
-            <Input
-              label={t("Destination") + "/" + t("property name") + ":"}
-              name="search_query"
-            />
-            <DateFormInput
-              className={"bg-white h-12"}
-              menuProps={{
-                menuListProps: {
-                  className: "translate-x-full origin-top-left",
-                },
-              }}
-              placeholder={t("Check-in") + " " + t("date")}
-              label={t("Check-in") + " " + t("date") + ":"}
-            />
-            <DateFormInput
-              menuProps={{
-                menuListProps: {
-                  className: "translate-x-full origin-top-left",
-                },
-              }}
-              placeholder={t("Check-out") + " " + t("date")}
-              className={"bg-white h-12 "}
-              label={t("Check-out") + " " + t("date") + ":"}
-            />
-            <Select>
-              <SelectOption value={"1"}>test</SelectOption>
-            </Select>
-            <Button>{t("Search")}</Button>
-          </div>
-        ) : null}
+      {/* Filters */}
+      <div className="flex-1 max-w-sm ">
+        <ServicesSearchResultsFiltersSidebar onShowOnMap={() => { }}>
+          {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
+            <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
+              <Input
+                label={t("Destination") + "/" + t("property name") + ":"}
+                name="search_query"
+              />
+              <DateFormInput
+                className={"bg-white h-12"}
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-in") + " " + t("date")}
+                label={t("Check-in") + " " + t("date") + ":"}
+              />
+              <DateFormInput
+                menuProps={{
+                  menuListProps: {
+                    className: "translate-x-full origin-top-left",
+                  },
+                }}
+                placeholder={t("Check-out") + " " + t("date")}
+                className={"bg-white h-12 "}
+                label={t("Check-out") + " " + t("date") + ":"}
+              />
+              <Select>
+                <SelectOption value={"1"}>test</SelectOption>
+              </Select>
+              <Button>{t("Search")}</Button>
+            </div>
+          ) : null}
 
-        {showOn([
-          ServiceType.Restaurant,
-          //  ServiceType.HealthCenter,
-          ServiceType.BeautyCenter,
-        ]) ? (
-          <ResturantFindTableFilterStepper />
-        ) : null}
-        {showOn([
+          {showOn([ServiceType.Restaurant, ServiceType.BeautyCenter]) ? (
+            <ResturantFindTableFilterStepper />
+          ) : null}
 
-          ServiceType.HealthCenter,
+          {showOn([ServiceType.HealthCenter]) ? (
+            <HealthCenterFindTableSteper />
+          ) : null}
 
-        ]) ? (
-          <HealthCenterFindTableSteper />
-        ) : null}
-        <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
-      </ServicesSearchResultsFiltersSidebar>
-      <ServicesCardsSwitcherView
-        serviceType={serviceType}
-        services={services}
-        showOn={showOn}
-        searchQuery={searchQuery}
-      />
+          <ServiceSearchFilter serviceType={serviceType} onChange={{}} />
+        </ServicesSearchResultsFiltersSidebar>
+      </div>
+
+      {/* Results */}
+      <div className="flex-[3] bg-white rounded-lg shadow-sm overflow-y-auto p-4">
+        <ServicesCardsSwitcherView
+          serviceType={serviceType}
+          services={services}
+          showOn={showOn}
+          searchQuery={searchQuery}
+        />
+      </div>
     </div>
+
   );
 };
 
@@ -483,6 +491,7 @@ const ServicesCardsSwitcherView: React.FC<
 > = ({ services, serviceType, showOn, searchQuery }) => {
   const { isTablet, isMobile } = useResponsive();
 
+
   const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full gap-4 ">
@@ -491,60 +500,48 @@ const ServicesCardsSwitcherView: React.FC<
           <div className="w-full flex flex-col gap-4 justify-center">
             <DisplayFoundServices location={searchQuery} servicesNum={30} />
             {(services?.data?.length || 0) < 1 ? (
-              <div className="w-fit h-48 flex just-center items-center text-2xl">
+              <div className="w-fit h-48 flex justify-center items-center text-2xl">
                 <span>{t("no services found")}</span>
               </div>
             ) : (
-              <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 overflow-y-auto p-2">
                 {mapArray(services?.data, (service, i) => (
-                  <HotelDetailedSearchCard
-                    name={service.name || "Fake Name"}
-                    price={service.price || 0}
-                    rate={service.rating || 0}
-                    reviews={service.reviews || 0}
-                    sellerName={
-                      service?.shop?.sellerProfile?.username || "Unknown Seller"
-                    }
-                    description={
-                      service.description || "No description available"
-                    }
+                  <HotelCard
+                    key={service.id || i}
                     id={service.id || "unknown-id"}
-                    location={{
-                      ...service.shop?.location,
-                      cords: {
-                        lat: service.shop?.location?.lat || 0,
-                        lng: service.shop?.location?.long || 0,
-                      },
-                    }}
-                    taxesAndFeesIncluded
-                    thumbnail={service.thumbnail || "/shop.jpeg"}
-                    vertical={isTablet}
-                    key={i}
+                    image={service.thumbnail || "/shop.jpeg"}
+                    name={service.name || "Fake Name"}
+                    location={`${service.shop?.location?.address || ""}, ${service.shop?.location?.city || ""}`}
+                    price={service.price || "0"}
+                    rating={service.rating || 0}
+                    reviews={service.reviews || 0}
+                    dateRange="Available Now"
                   />
                 ))}
-              </>
+              </div>
             )}
           </div>
         </div>
       ) : null}
 
+
       {serviceType === ServiceType.Restaurant ? (
-        <ResturantSearchList
-          restaurants={[...Array(20)].map(() => ({
-            hashtags: [],
-            location: {
-              address: "address",
-              city: "city",
-              country: "country",
-            },
-            price: randomNum(150),
-            rating: randomNum(5),
-            reviews: randomNum(200),
-            thumbnail:
-              "https://media-cdn.tripadvisor.com/media/photo-s/1a/8e/55/e6/variety-of-choices.jpg",
-            title: "Dish name",
-          }))}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 overflow-y-auto p-2">
+          {mapArray(services?.data, (service, i) => (
+            <RestaurantCard
+              key={service.id || i}
+              id={service.id || "unknown-id"}
+              image={service.thumbnail || "/shop.jpeg"}
+              name={service.name || "Fake Name"}
+              address={`${service.shop?.location?.address || ""}, ${service.shop?.location?.city || ""}`}
+              priceRange={service.price || "0"}
+              rating={service.rating || 0}
+              reviews={service.reviews || 0}
+              cuisine={service.name}
+            />
+          ))}
+        </div>
+
       ) : null}
 
       {showOn([ServiceType.HealthCenter]) ? (
@@ -663,55 +660,47 @@ const ServicesCardsSwitcherView: React.FC<
       ) : null}
 
       {showOn([ServiceType.BeautyCenter]) ? (
-        <RecommendedBeautyCenterSearchList
-          treatments={[...Array(24)].map(() => ({
-            id: "",
-            category: "Facial",
-            duration: 40,
-            price: randomNum(150),
-            rate: 4,
-            reviews: randomNum(1500),
-            thumbnail: getRandomServiceImage(ServiceType.BeautyCenter),
-            title: "Treatment name",
-          }))}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 overflow-y-auto p-2">
+          {mapArray(services?.data, (service, i) => (
+            <BeautityCenterCard
+              key={service.id || i}
+              id={service.id || "unknown-id"}
+              role="Facial"
+              address={`${service.shop?.location?.address || ""}, ${service.shop?.location?.city || ""}`}
+              price={service.price || "0"}
+              rating={4}
+
+              image={getRandomServiceImage(ServiceType.BeautyCenter)}
+              name={service.name}
+              duration="10"
+              reviews={service.reviews}
+            />
+
+          ))}
+        </div>
+
       ) : null}
 
       {showOn([ServiceType.Vehicle]) ? (
-        <ServicesSearchGrid
-          data={[...Array(24)].map(() => ({
-            id: "",
-            title: "Vehicle Name",
-            brand: "",
-            model: "",
-            price: randomNum(150),
-            cancelationPolicies: [],
-            presentations: [
-              {
-                src: getRandomServiceImage(ServiceType.Vehicle),
-                type: ServicePresentationType.Img,
-              },
-            ],
-            thumbnail:
-              "https://d.newsweek.com/en/full/2203419/2023-ford-expedition.jpg?w=1600&h=1600&q=88&f=1f6dd5c5cc318e1239e31777f34a50d2",
-            properties: {
-              airCondition: true,
-              gpsAvailable: true,
-              lugaggeCapacity: 4,
-              maxSpeedInKm: 150,
-              seats: 4,
-              windows: 4,
-            },
-          }))}
-          component={VehicleSearchCard}
-          handlePassData={(props) => ({
-            ...props,
-            showTotal: false,
-            presentations: [
-              { src: props.thumbnail, type: ServicePresentationType.Img },
-            ],
-          })}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 overflow-y-auto p-2">
+          {mapArray(services?.data, (service, i) => (
+            <VehicleServiceCard
+              key={service.id || i}
+              id={service.id || "unknown-id"}
+              image={service.thumbnail || "/shop.jpeg"}
+              provider={service.description}
+              name={service.name || "Fake Name"}
+              address={`${service.shop?.location?.address || ""}, ${service.shop?.location?.city || ""}`}
+              price={service.price || "0"}
+              priceType="Day"
+              rating={service.rating || 0}
+              reviews={service.reviews || 0}
+
+            />
+          ))}
+        </div>
+
+
       ) : null}
 
       <Pagination />

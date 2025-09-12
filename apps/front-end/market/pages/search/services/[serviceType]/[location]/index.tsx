@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { MasterLayout } from "@components";
 import { ServiceType } from "@features/API";
@@ -16,6 +17,14 @@ const { t } = useTranslation();
   const { getParam, getCurrentPath } = useRouting();
   const serviceType = getParam("serviceType");
   const searchLocation = getParam("location");
+console.log(serviceType,"serviceType");
+React.useEffect(() => {
+  
+
+  return () => {
+   
+  }
+}, [serviceType])
 
   return (
     <>

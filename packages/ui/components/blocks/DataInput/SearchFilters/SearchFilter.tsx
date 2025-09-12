@@ -1,5 +1,5 @@
 import { SearchFilterType } from "api";
-import { debounce, throttle } from "lodash";
+import { debounce } from "lodash";
 import React from "react";
 import { FilterAndAddToArray } from "utils";
 import {
@@ -14,57 +14,53 @@ import {
 
 export interface SearchFilterProps {
   filters: SearchFilterType[];
-  onRangeChange?: (
-    filterSlug: string,
-    range: { min: number; max: number }
-  ) => any;
-  onOptionSelect?: (filterSlug: string, optionSlug: string) => any;
-  onOptionsSelect?: (filterSlug: string, optionsSlugs: string[]) => any;
+  onRangeChange?: (filterSlug: string, range: { min: number; max: number }) => void;
+  onOptionSelect?: (filterSlug: string, optionSlug: string) => void;
+  onOptionsSelect?: (filterSlug: string, optionsSlugs: string[]) => void;
   defaultOpen?: boolean;
   collapse?: boolean;
   boldTitle?: boolean;
+  fallbackProps?: SpinnerFallbackProps;
 }
 
-export const SearchFilter: React.FC<
-  SearchFilterProps & { fallbackProps?: SpinnerFallbackProps }
-> = ({
+export const SearchFilter: React.FC<SearchFilterProps> = ({
   filters,
   onRangeChange,
   onOptionSelect,
   onOptionsSelect,
   defaultOpen = false,
   collapse,
-  fallbackProps,
   boldTitle,
+  fallbackProps,
 }) => {
   return (
     <SpinnerFallback {...fallbackProps}>
-      {filters.map((filter, i) => {
-        const [checkBoxs, setCheckBoxs] = React.useState<[string, string[]]>([
+      {filters.map((filter) => {
+        const [checkedOptions, setCheckedOptions] = React.useState<[string, string[]]>([
           filter.filterSlug,
           [],
         ]);
 
         React.useEffect(() => {
           if (onOptionsSelect && filter.filterType === "check") {
-            onOptionsSelect(checkBoxs[0], checkBoxs[1]);
+            onOptionsSelect(checkedOptions[0], checkedOptions[1]);
           }
-        }, [checkBoxs]);
+        }, [checkedOptions]);
 
         const handleRangeChange = debounce(
-          (args) => onRangeChange && onRangeChange(filter.filterSlug, args),
+          (range: { min: number; max: number }) => onRangeChange?.(filter.filterSlug, range),
           1000
+        );
+
+        const renderLabel = (label: React.ReactNode) => (
+          !collapse && <span className={`${boldTitle ? "font-bold" : "font-semibold"} text-sm py-1`}>{label}</span>
         );
 
         switch (filter.filterType) {
           case "range":
-            const input = (
-              <div className="flex flex-col gap-2">
-                {!collapse ? (
-                  <span className="py-1 font-semibold">
-                    {filter.filterTitle}
-                  </span>
-                ) : null}
+            const rangeInput = (
+              <div className="flex flex-col gap-1 text-sm">
+                {renderLabel(filter.filterTitle)}
                 <FilterInput
                   variant="range"
                   min={filter.minRange}
@@ -74,139 +70,84 @@ export const SearchFilter: React.FC<
               </div>
             );
             return collapse ? (
-              <DropdownPanel
-                className="min-w-[15rem]"
-                open={defaultOpen}
-                name={filter.filterTitle}
-                children={input}
-              />
+              <DropdownPanel className="min-w-[15rem]" open={defaultOpen} name={filter.filterTitle}>
+                {rangeInput}
+              </DropdownPanel>
             ) : (
-              input
+              rangeInput
             );
 
           case "select":
             const select = (
               <Select
                 placeholder={!collapse ? filter.filterTitle : undefined}
-                onOptionSelect={(opt) =>
-                  onOptionSelect && onOptionSelect(filter.filterSlug, opt)
-                }
+                onOptionSelect={(opt) => onOptionSelect?.(filter.filterSlug, opt)}
               >
-                {Array.isArray(filter.filterOptions)
-                  ? filter.filterOptions.map(({ optName, optSlug }, i) => (
-                      <SelectOption value={optSlug}>
-                        <FilterDisplaySwitcher
-                          type={filter.filterDisplay}
-                          value={optSlug}
-                          label={optName}
-                        />
-                      </SelectOption>
-                    ))
-                  : null}
+                {filter.filterOptions?.map(({ optName, optSlug }) => (
+                  <SelectOption key={optSlug} value={optSlug}>
+                    <FilterDisplaySwitcher type={filter.filterDisplay} value={optSlug} label={optName} />
+                  </SelectOption>
+                ))}
               </Select>
             );
             return collapse ? (
-              <DropdownPanel
-                open={defaultOpen}
-                name={filter.filterTitle}
-                children={select}
-              />
+              <DropdownPanel open={defaultOpen} name={filter.filterTitle}>{select}</DropdownPanel>
             ) : (
               select
             );
 
           case "radio":
-            const radio = (
-              <div className="flex flex-col gap-2">
-                {!collapse ? (
-                  <span
-                    className={`${
-                      boldTitle ? "font-bold" : "font-semibold"
-                    } py-1`}
-                  >
-                    {filter.filterTitle}
-                  </span>
-                ) : null}
-                {Array.isArray(filter.filterOptions)
-                  ? filter.filterOptions.map(({ optName, optSlug }, i) => (
-                      <FilterInput
-                        onChange={(e) => console.log(e.target.checked, optSlug)}
-                        name={filter.filterSlug}
-                        label={
-                          <FilterDisplaySwitcher
-                            type={filter.filterDisplay}
-                            value={optSlug}
-                            label={optName}
-                          />
-                        }
-                        variant="radio"
-                      />
-                    ))
-                  : null}
+            const radioInputs = (
+              <div className="flex flex-col gap-1 text-sm">
+                {renderLabel(filter.filterTitle)}
+                {filter.filterOptions?.map(({ optName, optSlug }) => (
+                  <FilterInput
+                    key={optSlug}
+                    variant="radio"
+                    name={filter.filterSlug}
+                    onChange={(e) => console.log(e.target.checked, optSlug)}
+                    label={<FilterDisplaySwitcher type={filter.filterDisplay} value={optSlug} label={optName} />}
+                  />
+                ))}
               </div>
             );
             return collapse ? (
-              <DropdownPanel
-                open={defaultOpen}
-                name={filter.filterTitle}
-                children={radio}
-              />
+              <DropdownPanel open={defaultOpen} name={filter.filterTitle}>{radioInputs}</DropdownPanel>
             ) : (
-              radio
+              radioInputs
             );
 
           case "check":
-            const check = (
-              <div className="flex flex-col gap-2">
-                {!collapse ? (
-                  <span className="py-1 font-semibold">
-                    {filter.filterTitle}
-                  </span>
-                ) : null}
-                {Array.isArray(filter.filterOptions)
-                  ? filter.filterOptions.map(({ optName, optSlug }, i) => {
-                      return (
-                        <FilterInput
-                          onChange={(e) =>
-                            e.target.checked
-                              ? setCheckBoxs((state) => {
-                                  const values = FilterAndAddToArray<string>(
-                                    state[1],
-                                    optSlug,
-                                    "exclude"
-                                  );
-                                  console.log("filtered and added", values);
-                                  return [filter.filterSlug, values];
-                                })
-                              : setCheckBoxs((state) => [
-                                  filter.filterSlug,
-                                  state[1].filter((f) => f !== optSlug),
-                                ])
-                          }
-                          name={filter.filterSlug}
-                          label={
-                            <FilterDisplaySwitcher
-                              type={filter.filterDisplay}
-                              value={optSlug}
-                              label={optName}
-                            />
-                          }
-                          variant="box"
-                        />
-                      );
-                    })
-                  : null}
+            const checkboxes = (
+              <div className="flex flex-col gap-1 text-sm">
+                {renderLabel(filter.filterTitle)}
+                {filter.filterOptions?.map(({ optName, optSlug }) => (
+                  <FilterInput
+                    key={optSlug}
+                    variant="box"
+                    name={filter.filterSlug}
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setCheckedOptions((state) => [
+                            filter.filterSlug,
+                            FilterAndAddToArray(state[1], optSlug, "exclude"),
+                          ])
+                        : setCheckedOptions((state) => [
+                            filter.filterSlug,
+                            state[1].filter((f) => f !== optSlug),
+                          ])
+                    }
+                    label={<FilterDisplaySwitcher type={filter.filterDisplay} value={optSlug} label={optName} />}
+                  />
+                ))}
               </div>
             );
             return collapse ? (
-              <DropdownPanel
-                open={defaultOpen}
-                name={filter.filterTitle}
-                children={check}
-              />
+              <DropdownPanel open={defaultOpen} name={filter.filterTitle}>{checkboxes}</DropdownPanel>
             ) : (
-              check
+              checkboxes
             );
+
           default:
             return null;
         }

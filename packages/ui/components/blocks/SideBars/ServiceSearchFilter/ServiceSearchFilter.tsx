@@ -4,6 +4,7 @@ import {
   SpinnerFallback,
   SearchFilter,
   SearchFilterProps,
+  Divider,
  
 } from "@UI";
 import { ServiceType ,} from "../../../features/API";
@@ -56,8 +57,9 @@ useEffect(() => {
   //     })
   //   ) || [];
   return (
-    <div className="flex flex-col w-full shadow pt-4 py-2 px-1">
-      <p className="px-4">{t("Filter")}</p>
+    <div className="flex flex-col w-full  pt-4 py-2 px-1">
+      <p className="px-4 font-semibold ">{t("Filter")}</p>
+      <Divider/>
       {/* <SpinnerFallback isLoading={isLoading} isError={isError}> */}
         {Array.isArray(filters) ? (
           <SearchFilter {...onChange} defaultOpen collapse filters={filters} />
