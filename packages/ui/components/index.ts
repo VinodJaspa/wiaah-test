@@ -12,3 +12,4 @@ export * from "./NavigationHeader";
 export * from "./verify-IdentitySteps";
 export * from "./Payment";
 export * from "./InfiniteScrollWrapper";
+export * from "./Modal";

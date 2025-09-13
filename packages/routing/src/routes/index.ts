@@ -127,7 +127,7 @@ export const MainRoutes: MainRouterInterface = {
   },
   visitMarketSavedItems() {
     // TODO
-    return this;
+    return this.addPath("saved")
   },
   visitContactUs() {
     return this.addPath("contact-us");

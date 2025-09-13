@@ -1,8 +1,9 @@
 import { BusinessType, ServiceType, StoreType } from "@features/API";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useRouting } from "routing";
 
 import {
@@ -17,6 +18,8 @@ import {
   GetShopDetailsQuery,
   FlagIcon,
   ServicesRequestKeys,
+  LoginPopupState,
+  LoginModal,
 } from "ui";
 import { getRandomName } from "utils";
 
@@ -24,7 +27,7 @@ export interface ShopProfileProps {
   shopId: string;
   fullWidth?: boolean;
 }
-
+import { isUserLoggedIn } from "state";
 export const ShopProfile: React.FC<ShopProfileProps> = ({
   fullWidth,
   shopId,
@@ -35,15 +38,23 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     isError: _isError,
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(shopId);
-  console.log(_res,"resssss");
-  
+  const userLoggedIn = useRecoilValue(isUserLoggedIn);
+  console.log(isUserLoggedIn, "isUserLoggedIn");
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const res = resMock;
   const { t } = useTranslation();
   const router = useRouter();
   const isError = false;
   const { visit } = useRouting();
+  const [isOpen, setIsOpen] = useRecoilState(LoginPopupState);
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
+      {/* <LoginModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        handleRoute={(route) => console.log("Redirect to:", route)}
+      /> */}
       <div
         style={{ width: fullWidth ? "100%" : "" }}
         className="flex flex-col gap-4 px-8 md:flex-row"
@@ -83,11 +94,11 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
                     <p className="font-semibold cursor-pointer text-primary"
                       onClick={(e) => {
                         // alert("okk")
-                           e.stopPropagation();
-                           visit((routes) =>
-                             routes.visitServiceOnMap(res.location, ServicesRequestKeys.hotels)
-                           );
-                         }}>
+                        e.stopPropagation();
+                        visit((routes) =>
+                          routes.visitServiceOnMap(res.location, ServicesRequestKeys.hotels)
+                        );
+                      }}>
                       {t("Show on map")}
                     </p>
                     <a href="#reviews" className="cursor-pointer">
@@ -111,11 +122,23 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               {/* buttons */}
               <div>
                 {/* message button */}
-                <Button>{t("Message", "Message")}</Button>
+                <Button onClick={() => {
+                  if (!userLoggedIn) {
+                    setIsOpen(true)
+                  }
+                  else {
+                    router.push("/message");
+                  }
+                }}>{t("Message", "Message")}</Button>
               </div>
               <div>
                 {/* follow button */}
-                <Button>{t("Follow", "Follow")}</Button>
+                <Button
+                  onClick={() => setIsFollowing((prev) => !prev)}
+                >
+                  {isFollowing ? t("UnFollow", "Unfollow") : t("Follow", "Follow")}
+                </Button>
+                
               </div>
             </div>
             <Spacer />

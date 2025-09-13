@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { AuthSwitcher } from "@UI";
+import { AuthSwitcher, LoginModal } from "@UI";
 import { useLoginPopup } from "@UI";
 import { FormContainer, Modal, ModalContent, ModalOverlay } from "@UI";
 
@@ -32,15 +32,8 @@ export const AuthPopup: FC<AuthPopupProp> = ({ onClose }) => {
   }, [popupOpen]);
 
   return (
-    <>
-      <Modal onClose={CloseLoginPopup} isOpen={popupOpen} onOpen={handleOpen}>
-        <ModalOverlay />
-        <ModalContent>
-          <FormContainer>
-            <AuthSwitcher loginType="login" />
-          </FormContainer>
-        </ModalContent>
-      </Modal>
-    </>
+     <LoginModal isOpen={popupOpen} onClose={handleClose} handleRoute={()=> console.log("okk")
+        }/>
+
   );
 };

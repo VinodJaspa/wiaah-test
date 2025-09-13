@@ -42,6 +42,9 @@ const nextConfig = {
     esmExternals: "loose",
   },
   productionBrowserSourceMaps: false,
+  images: {
+    domains: ["picsum.photos"],
+  },
   webpack: (config) => {
     config.stats = "verbose";
 
