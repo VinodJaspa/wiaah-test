@@ -6,6 +6,8 @@ import {
   Button,
 
   ChatRoom,
+  Container,
+  Divider,
   Drawer,
   DrawerContent,
   DrawerOverlay,
@@ -33,10 +35,11 @@ export const ChatView: React.FC = () => {
   const { user } = useUserData();
 
   return (
-    <div className="">
+    <Container className="py-10">
+
       {/* messages sidebar  */}
       <ChatMessagesSection/>
       <NewMessageModal />
-    </div>
+    </Container>
   );
 };

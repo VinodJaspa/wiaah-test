@@ -48,160 +48,118 @@ const mockConversations: Record<number, { from: string; text: string }[]> = {
   ],
 };
 
-export default function ChatMessagesSection() {
-  const [activeMessageId, setActiveMessageId] = React.useState<number | null>(null);
-  const [messagesList, setMessagesList] = React.useState(messages); // sidebar messages
-  const [conversations, setConversations] = React.useState(mockConversations);
 
-  const { value: chatRoomId } = useSocialControls("chatRoomId"); // 👈 listen to chatRoomId
-
-  // When chatWith is called → set active chat
-  React.useEffect(() => {
-    if (!chatRoomId) return;
-
-    const existingChat = messagesList.find((m) => m.id === Number(chatRoomId));
-
-    // If chat doesn’t exist yet → add a new one
-    if (!existingChat) {
-      const newChat = {
-        id: Number(chatRoomId),
-        name: `User ${chatRoomId}`, // replace with real user data if available
-        lastMessage: "Start a new conversation...",
-        time: "now",
-        avatar: `https://placehold.co/40x40/f1f5f9/64748b?text=U${chatRoomId}`,
-      };
-
-      setMessagesList((prev) => [...prev, newChat]);
-      setConversations((prev) => ({
-        ...prev,
-        [chatRoomId]: [],
-      }));
-    }
-
-    setActiveMessageId(Number(chatRoomId));
-  }, [chatRoomId, messagesList]);
-
-
-  return (
-    <div className="flex flex-col md:flex-row h-screen font-[Inter] bg-white">
-      {/* Sidebar */}
-      <div className="flex-none w-full md:w-[350px] border-r border-gray-200 bg-white flex flex-col">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h1 className="text-2xl font-bold">Messages</h1>
-        </div>
-
-        <SearchBoxInner
-          className="p-6 bg-white shadow-lg rounded-md"
-          placeholder="Search People"
-        />
-
-        <div className="flex-1 overflow-y-auto">
-          <div className="flex-1 overflow-y-auto">
-            {messagesList.map((message) => (
-              <MessageItem
-                key={message.id}
-                message={message}
-                isActive={activeMessageId === message.id}
-                onClick={() => setActiveMessageId(message.id)}
-              />
-            ))}
-          </div>
-
-        </div>
-      </div>
-
-      {/* Chat window */}
-      <div className="flex-1 flex flex-col bg-gray-50">
-        {activeMessageId ? (
-          <ChatRoom
-            chat={conversations[activeMessageId] || []} // ✅ only this chat’s messages
-            name={messagesList.find((m) => m.id === activeMessageId)?.name || "Unknown"}
-            avatar={messagesList.find((m) => m.id === activeMessageId)?.avatar || ""}
-          // onSendMessage={handleSendMessage}
-          />
-        ) : (
-          <MainChatView />
-        )}
-
-      </div>
-    </div>
-  );
-}
 
 // Sidebar item
+import { Pencil } from "lucide-react";
+
+// --- Sidebar Item ---
 function MessageItem({ message, isActive, onClick }) {
-  const { avatar, name, lastMessage, time } = message;
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const handleItemClick = (item: { id: string; title: string }) => {
-    console.log("Selected:", item.id, item.title);
-    // 🔥 Do something, like call API
-  };
-  const reportItems = [
-    {
-      id: "report",
-      icon: <Flag className="w-5 h-5" />,
-      title: "Report",
-      description: "Report this conversation",
-    },
-    {
-      id: "mute",
-      icon: <BellOff className="w-5 h-5" />,
-      title: "Mute Conversation",
-      description: "Stop receiving messages from this conversation",
-    },
-    {
-      id: "block",
-      icon: <Ban className="w-5 h-5" />,
-      title: "Block",
-      description: "This person will no longer be able to contact you",
-    },
-  ];
+  const { avatar, name, lastMessage, time, unread = 0 } = message;
+
   return (
     <div
       onClick={onClick}
-      className={`group relative flex items-center px-6 py-4 cursor-pointer transition-colors ${isActive ? "bg-gray-100" : "hover:bg-gray-50"
-        }`}
+      className={`group relative flex items-center px-4 py-3 cursor-pointer transition-colors ${
+        isActive ? "bg-gray-100" : "hover:bg-gray-50"
+      }`}
     >
       {/* Avatar */}
-      <img src={avatar} className="w-10 h-10 rounded-full mr-4" />
+      <img src={avatar} className="w-10 h-10 rounded-full mr-3" />
 
-      {/* Text content */}
+      {/* Name + Last message */}
       <div className="flex-1 overflow-hidden">
         <div className="text-sm font-semibold truncate">{name}</div>
         <div className="text-xs text-gray-500 truncate">{lastMessage}</div>
       </div>
 
-      {/* Time */}
-      <div className="flex-none text-xs text-gray-400 self-start mt-1 ml-2">
-        {time}
+      {/* Time + unread */}
+      <div className="flex flex-col items-end ml-2">
+        <span className="text-xs text-gray-400">{time}</span>
+        {unread > 0 && (
+          <span className="mt-1 bg-blue-500 text-white text-xs rounded-full px-2 py-0.5">
+            {unread}
+          </span>
+        )}
       </div>
-
-      {/* Dropdown Menu (hidden until hover) */}
-      <Menu as="div" className="absolute top-1 right-1">
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-          <Menu.Button
-            onClick={(e) => {
-              e.stopPropagation()
-              setDialogOpen(true)
-            }} // prevent triggering onClick
-            className="p-1 rounded-full hover:bg-black/10 focus:outline-none"
-          >
-            <MoreVertical className="w-4 h-4 text-gray-500" />
-          </Menu.Button>
-        </div>
-
-      </Menu>
-      {/* Report / Block / Mute Dialog */}
-      <ReportDialog
-        open={dialogOpen}
-        setOpen={setDialogOpen}
-        title="Message options"
-        items={reportItems}
-        onItemClick={handleItemClick}
-      />
     </div>
   );
 }
+
+// --- Sidebar with Title & Pencil ---
+export default function ChatMessagesSection() {
+  const [activeMessageId, setActiveMessageId] = React.useState<number | null>(null);
+  const [messagesList, setMessagesList] = React.useState([
+    {
+      id: 1,
+      name: "z.beatz",
+      lastMessage: "z.beatz a envoyé une pièce jointe...",
+      time: "1h",
+      avatar: "https://picsum.photos/seed/1/40/40",
+      unread: 2,
+    },
+    {
+      id: 2,
+      name: "Liam Carter",
+      lastMessage: "Vous: See you tomorrow!",
+      time: "1h",
+      avatar: "https://picsum.photos/seed/2/40/40",
+      unread: 0,
+    },
+    {
+      id: 3,
+      name: "Olivia Davis",
+      lastMessage: "Vous: Thanks for the recommendation!",
+      time: "2h",
+      avatar: "https://picsum.photos/seed/3/40/40",
+      unread: 1,
+    },
+  ]);
+
+  return (
+    <div className="flex h-screen font-[Inter] bg-white">
+      {/* Sidebar */}
+      <div className="w-full md:w-[320px] border-r border-gray-200 flex flex-col">
+        {/* Title + Pencil */}
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <h1 className="text-lg font-bold">Messages</h1>
+          <button className="p-1 rounded-full hover:bg-gray-100">
+            <Pencil className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+
+        {/* Search */}
+        <SearchBoxInner className="m-3" placeholder="Search reservation" />
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto">
+          {messagesList.map((message) => (
+            <MessageItem
+              key={message.id}
+              message={message}
+              isActive={activeMessageId === message.id}
+              onClick={() => setActiveMessageId(message.id)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Chat Window */}
+      <div className="flex-1 flex flex-col bg-gray-50">
+        {activeMessageId ? (
+          <ChatRoom
+            chat={[]} // just placeholder for now
+            name={messagesList.find((m) => m.id === activeMessageId)?.name || "Unknown"}
+            avatar={messagesList.find((m) => m.id === activeMessageId)?.avatar || ""}
+          />
+        ) : (
+          <MainChatView />
+        )}
+      </div>
+    </div>
+  );
+}
+
 
 // Placeholder view
 function MainChatView() {

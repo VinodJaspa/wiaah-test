@@ -1,39 +1,3 @@
-import { useMediaQuery } from "react-responsive";
-import React from "react";
-import {
-  Container,
-  PostCardsListWrapper,
-  SocialProfile,
-  AffiliationOffersCardListWrapper,
-  SocialPostsCommentsDrawer,
-  ShareWithModal,
-  SpinnerFallback,
-  newsfeedPosts,
-  Divider,
-  SocialProfileProps,
-  SocialNewsfeedPostsState,
-  TabsViewer,
-  SocialProfileShopPostsList,
-  ShopCardsListWrapper,
-  SocialShopsPostCardPlaceholder,
-  FilterModal,
-  SocialShopPostcardProps,
-  VideoThumbnail,
-  ListWrapper,
-  NewsFeedIcon,
-  NewsFeedOutlineIcon,
-  ServicesOutlineIcon,
-  ServicesIcon,
-  ServiceCardsListWrapper,
-  SocialServicePostCardPlaceholder,
-  MoreOptionsPopup,
-} from "ui";
-import { HiDotsVertical } from "react-icons/hi";
-import { useGetSocialProfile } from "ui";
-import { getRandomImage, socialAffiliationCardPlaceholders } from "placeholder";
-import { CashbackType, PresentationType, TabType } from "types";
-import { useRecoilValue } from "recoil";
-import { useTranslation } from "react-i18next";
 import {
   AccountType,
   ActiveStatus,
@@ -41,17 +5,40 @@ import {
   ServiceType,
   StoreType,
 } from "@features/API";
-import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
-import { FaChevronDown } from "react-icons/fa";
-import {
-  ShoppingCartOutlineIcon,
-  ShoppingCartIcon,
-  AffiliationIconOutline,
-  AffiliationIcon,
-} from "ui";
 import { useResponsive } from "hooks";
-import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
+import { getRandomImage } from "placeholder";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md";
+import { useMediaQuery } from "react-responsive";
+import { useRecoilValue } from "recoil";
+import { TabType } from "types";
+import {
+  AffiliationIcon,
+  AffiliationIconOutline,
+  Container,
+  Divider,
+  MoreOptionsPopup,
+  NewsFeedIcon,
+  NewsFeedOutlineIcon,
+  PostCardsListWrapper,
+  ServiceCardsListWrapper,
+  ServicesIcon,
+  ServicesOutlineIcon,
+  ShopCardsListWrapper,
+  ShoppingCartIcon,
+  ShoppingCartOutlineIcon,
+  SocialNewsfeedPostsState,
+  SocialProfileProps,
+  SocialServicePostCardPlaceholder,
+  SocialShopsPostCardPlaceholder,
+  SpinnerFallback,
+  TabsViewer,
+  newsfeedPosts,
+  useGetSocialProfile
+} from "ui";
 import { ActionsCardListWrapper } from "../ActionsCardsListWrapper";
+import { AffiliationCardsListWrapper } from "../AffiliationPostListWrapper";
 
 export interface SocialViewProps {
   profileId?: string;
@@ -67,7 +54,7 @@ const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const isXL = useMediaQuery({ minWidth: 1280 });
-  const cols = isXL ? 5 : 3;
+  const cols = isXL ? 3 : 2;
  
   const image = React.useMemo(() => getRandomImage(), []);
 
@@ -146,16 +133,16 @@ const { t } = useTranslation();
         <SpinnerFallback isLoading={false} isError={isError}>
           <Container className="flex-grow flex-col">
             <div className="w-full flex overflow-hidden items-center justify-center md:max-h-[26rem] h-fit relative ">
-              <SocialProfile
+              {/* <SocialProfile
                 storeType={
                   FAKE_PROFILE_INFO.user?.shop.storeType || StoreType.Product
                 }
                 isFollowed={true}
                 isPublic={FAKE_PROFILE_INFO.visibility}
                 profileInfo={FAKE_PROFILE_INFO}
-              />
-              <SocialPostsCommentsDrawer />
-               <ShareWithModal />
+              /> */}
+              {/* <SocialPostsCommentsDrawer /> */}
+               {/* <ShareWithModal /> */}
             </div>
             {profileInfo && (
               <>

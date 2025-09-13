@@ -18,3 +18,4 @@ export * from "./Modals";
 export * from "./Settings";
 export * from "./Utils";
 export * from "./DataStore";
+export * from "./useLoginGuard";

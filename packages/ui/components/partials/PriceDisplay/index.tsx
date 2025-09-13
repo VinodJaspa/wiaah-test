@@ -6,7 +6,7 @@ import { cn } from "utils";
 
 export interface PriceDisplayProps extends HtmlDivProps {
   priceObject?: PriceType;
-  price?: string;
+  price?: any;
   oldPrice?: number; // Added oldPrice prop
   symbol?: boolean;
   decimel?: boolean;
