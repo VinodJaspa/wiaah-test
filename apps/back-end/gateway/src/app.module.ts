@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
+import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import {
   parseCookies,
   PublicErrorCodes,
@@ -17,25 +17,51 @@ import { client } from './main';
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       server: {
-        context: async (ctx) => {
-          const _user = VerifyAndGetUserFromContext(ctx);
-          const userId = _user?.id;
-          const user = userId
-            ? await client
-                .db()
-                .collection('Account')
-                .findOne({ _id: new ObjectId(userId) })
-            : {};
-
-          console.log('context', { user, userId });
+        context: ({ req, res }) => {
           return {
-            ...ctx,
-            user: {
-              ...user,
-              id: user ? (user['_id'] as ObjectId)?.toHexString() : null,
-            },
+            req,
+            res,
+            user: req.user
           };
         },
+
+        formatError(error: any) {
+          const isSchemaValidationError =
+            error?.extensions?.code === 'GRAPHQL_VALIDATION_FAILED' ||
+            error.extensions.code === 'BAD_USER_INPUT';
+        
+          const errorCodesValues = Object.values(PublicErrorCodes);
+          const knownCodes = errorCodesValues.slice(
+            errorCodesValues.length / 2,
+            errorCodesValues.length
+          );
+          const isKnownError = knownCodes.includes(error?.extensions?.errorCode);
+        
+          console.log({ isSchemaValidationError, isKnownError }, error);
+        
+          // ✅ Allow known errors or schema validation errors to pass through
+          if (isKnownError || isSchemaValidationError) {
+            return {
+              message: error.message,
+              extensions: error.extensions, // Pass through full error details
+            };
+          }
+        
+          // ✅ If error has custom extensions, pass them along
+          if (error?.extensions) {
+            return {
+              message: error.message,
+              extensions: error.extensions,
+            };
+          }
+        
+          // ❌ Unknown internal error fallback
+          return {
+            message: 'Something went wrong.',
+          };
+        }
+        
+        
       },
       gateway: {
         buildService({ url }) {
@@ -43,40 +69,45 @@ import { client } from './main';
             url,
             willSendRequest({ context, request }) {
               try {
-                const contentType = (context as any)?.req?.headers[
-                  'content-type'
-                ];
-                if (
-                  contentType &&
-                  contentType.startsWith('multipart/form-data')
-                ) {
+                const contentType = context?.req?.headers['content-type'];
+                if (contentType?.startsWith('multipart/form-data')) {
                   request.http.headers.set('content-type', contentType);
                 }
               } catch (error) {
-                console.error('will send request error', { error });
+                console.error('Error setting content-type:', error);
               }
-              const user = context['user'];
-
-              request.http.headers.set(
-                'user',
-                typeof user === 'object'
-                  ? JSON.stringify(context['user'])
-                  : null,
-              );
+              console.log('🚀 willSendRequest context.user:', context.user)
+              const user = context?.user;
+              if (user && user.id) {
+                const safeUser = {
+                  ...user,
+                  id: user.id,
+                  email: user.email,
+                  role: user.role,
+                };
+                console.log(safeUser ,"userr");
+                
+                const serializedUser = JSON.stringify(safeUser);
+                request.http.headers.set('user', serializedUser);
+            
+                // ✅ Add log here
+                console.log('>>> Setting user header for subgraph:', serializedUser);
+              } else {
+                console.warn('>>> No user found in context, not setting user header.');
+              }
             },
+            
             didReceiveResponse({ context, response }) {
-              if (response.http.headers.get('set-cookie')) {
-                const rawCookies = response.http.headers.get('set-cookie');
-                if (rawCookies) {
-                  const cookies = parseCookies(rawCookies);
-                  cookies.forEach(({ cookieName, cookieValue, options }) => {
-                    if (context.req && context.req.res) {
-                      context.req.res.cookie(cookieName, cookieValue, {
-                        ...options,
-                      });
-                    }
-                  });
-                }
+              const rawCookies = response.http.headers.get('set-cookie');
+              if (rawCookies) {
+                const cookies = parseCookies(rawCookies);
+                cookies.forEach(({ cookieName, cookieValue, options }) => {
+                  if (context?.req?.res) {
+                    context.req.res.cookie(cookieName, cookieValue, {
+                      ...options,
+                    });
+                  }
+                });
               }
               return response;
             },
@@ -84,11 +115,9 @@ import { client } from './main';
         },
         serviceHealthCheck: true,
         pollIntervalInMs: 10000,
-        supergraphSdl: new IntrospectAndCompose({
-          subgraphs,
-        }),
+        supergraphSdl: new IntrospectAndCompose({ subgraphs }),
       },
     }),
   ],
 })
-export class AppModule {}
+export class AppModule { }

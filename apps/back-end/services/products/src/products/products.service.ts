@@ -54,104 +54,295 @@ export class ProductsService {
 
   private readonly maxRate: number = 5;
 
+  // async createNewProduct(
+  //   createProductInput: CreateProductInput,
+  //   user: AuthorizationDecodedUser,
+  // ) {
+  //   // const isExternalSeller = await this.isExternalSeller(user.id);
+  //   //
+  //   // if (
+  //   //   isExternalSeller &&
+  //   //   typeof createProductInput.external_link !== 'string'
+  //   // )
+  //   //   throw new BadRequestException('external link is required');
+  //   //
+  //   // const { shopId } = user;
+  //   //
+
+  //   // Check account existence
+  //   const checkIfAccountExists: any = await new Promise((resolve, reject) => {
+  //     this.eventClient
+  //       .send(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById, {
+  //         value: { value: { accountId: user.id } },
+  //       })
+  //       .subscribe({
+  //         next: (account) => resolve(account),
+  //         error: (err) => reject(err),
+  //       });
+  //   });
+  //   if (!checkIfAccountExists) {
+  //     throw new Error('User not found');
+  //   }
+  //   const res = await this.uploadService.uploadFiles(
+  //     createProductInput.presentations.map((v) => ({
+  //       file: {
+  //         stream: v.file.createReadStream(),
+  //         meta: {
+  //           mimetype: v.file.mimetype,
+  //           name: v.file.filename,
+  //         },
+  //       },
+  //       options: {
+  //         allowedMimtypes: [
+  //           ...this.uploadService.mimetypes.image.all,
+  //           ...this.uploadService.mimetypes.videos.all,
+  //         ],
+  //         maxSecDuration: 60 * 10 * 1000,
+  //       },
+  //     })),
+  //   );
+
+  //   const createdProduct = await this.prisma.product.create({
+  //     data: {
+  //       ...createProductInput,
+  //       title: Array.isArray(createProductInput.title)
+  //         ? createProductInput.title.map((translation) => ({
+  //             langId: translation.langId as never, // Ensure compatibility with expected type
+  //             value: translation.value,
+  //           }))
+  //         : [],
+  //       discount: {
+  //         create: createProductInput.discount,
+  //       },
+  //       sellerId: user.id,
+  //       description: Array.isArray(createProductInput.description)
+  //         ? createProductInput.description.map((translation) => ({
+  //             langId: translation.langId as never, // Ensure compatibility with expected type
+  //             value: translation.value,
+  //           }))
+  //         : [],
+  //       presentations: res.map((v) => {
+  //         const type = this.uploadService.getFileTypeFromMimetype(v.mimetype);
+
+  //         if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
+  //           return null;
+
+  //         return {
+  //           src: v.src,
+  //           type:
+  //             type === FileTypeEnum.image
+  //               ? PresentationType.image
+  //               : PresentationType.video,
+  //         };
+  //       }),
+  //     },
+  //   });
+
+  //   // Add ProductId to Account
+  //   await new Promise((resolve, reject) => {
+  //     this.eventClient
+  //       .send('add.product.to.account', {
+  //         value: { value: { productId: createdProduct.id, sellerId: user.id } },
+  //       })
+  //       .subscribe({
+  //         next: (account) => resolve(account),
+  //         error: (err) => reject(err),
+  //       });
+  //   });
+  //   return createdProduct;
+  // }
+  // async getCloudinaryThumbnailUrl(originalUrl, width = 150, height = 150) {
+  //   return originalUrl.replace(
+  //     '/upload/',
+  //     `/upload/w_${width},h_${height},c_thumb/`
+  //   );
+  // }
+  async getCloudinaryThumbnailUrl(originalUrl, width = 150, height = 150) {
+    return Promise.resolve(
+      originalUrl.replace('/upload/', `/upload/w_${width},h_${height},c_thumb/`)
+    );
+  }
+  
   async createNewProduct(
     createProductInput: CreateProductInput,
     user: AuthorizationDecodedUser,
   ) {
-    // const isExternalSeller = await this.isExternalSeller(user.id);
-    //
-    // if (
-    //   isExternalSeller &&
-    //   typeof createProductInput.external_link !== 'string'
-    // )
-    //   throw new BadRequestException('external link is required');
-    //
-    // const { shopId } = user;
-    //
-
-    // Check account existence
-    const checkIfAccountExists: any = await new Promise((resolve, reject) => {
-      this.eventClient
-        .send(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById, {
-          value: { value: { accountId: user.id } },
-        })
-        .subscribe({
-          next: (account) => resolve(account),
-          error: (err) => reject(err),
-        });
-    });
-    if (!checkIfAccountExists) {
-      throw new Error('User not found');
-    }
-    const res = await this.uploadService.uploadFiles(
-      createProductInput.presentations.map((v) => ({
-        file: {
-          stream: v.file.createReadStream(),
-          meta: {
-            mimetype: v.file.mimetype,
-            name: v.file.filename,
+    try {
+      // Check account existence
+      const checkIfAccountExists: any = await new Promise((resolve, reject) => {
+        this.eventClient
+          .send(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById, {
+            value: { value: { accountId: user.id } },
+          })
+          .subscribe({
+            next: (account) => {
+              console.log('[createNewProduct] Account found:', account);
+              resolve(account);
+            },
+            error: (err) => {
+              console.error('[createNewProduct] Error fetching account:', err);
+              reject(err);
+            },
+          });
+      });
+  
+      if (!checkIfAccountExists) {
+        console.error('[createNewProduct] User not found');
+        throw new Error('User not found');
+      }
+  
+      // No upload, presentations expected to have type and src already
+      console.log('[createNewProduct] Using presentations from input:', createProductInput.presentations);
+      const previewImage = createProductInput.presentations[0].src;
+      const thumbnailUrl = await this.getCloudinaryThumbnailUrl(previewImage);
+      const createdProduct = await this.prisma.product.create({
+        data: {
+          ...createProductInput,
+          thumbnail:thumbnailUrl,
+          title: Array.isArray(createProductInput.title)
+            ? createProductInput.title.map((translation) => ({
+                langId: translation.langId as never,
+                value: translation.value,
+              }))
+            : [],
+          discount: {
+            create: createProductInput.discount,
           },
+          sellerId: user.id,
+          description: Array.isArray(createProductInput.description)
+            ? createProductInput.description.map((translation) => ({
+                langId: translation.langId as never,
+                value: translation.value,
+              }))
+            : [],
+          presentations: createProductInput.presentations.map((p) => ({
+            src: p.src,
+            type: p.type,
+            asset_id:p.asset_id
+          })),
         },
-        options: {
-          allowedMimtypes: [
-            ...this.uploadService.mimetypes.image.all,
-            ...this.uploadService.mimetypes.videos.all,
-          ],
-          maxSecDuration: 60 * 10 * 1000,
-        },
-      })),
-    );
-
-    const createdProduct = await this.prisma.product.create({
-      data: {
-        ...createProductInput,
-        title: Array.isArray(createProductInput.title)
-          ? createProductInput.title.map((translation) => ({
-              langId: translation.langId as never, // Ensure compatibility with expected type
-              value: translation.value,
-            }))
-          : [],
-        discount: {
-          create: createProductInput.discount,
-        },
-        sellerId: user.id,
-        description: Array.isArray(createProductInput.description)
-          ? createProductInput.description.map((translation) => ({
-              langId: translation.langId as never, // Ensure compatibility with expected type
-              value: translation.value,
-            }))
-          : [],
-        presentations: res.map((v) => {
-          const type = this.uploadService.getFileTypeFromMimetype(v.mimetype);
-
-          if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
-            return null;
-
-          return {
-            src: v.src,
-            type:
-              type === FileTypeEnum.image
-                ? PresentationType.image
-                : PresentationType.video,
-          };
-        }),
-      },
-    });
-
-    // Add ProductId to Account
-    await new Promise((resolve, reject) => {
-      this.eventClient
-        .send('add.product.to.account', {
-          value: { value: { productId: createdProduct.id, sellerId: user.id } },
-        })
-        .subscribe({
-          next: (account) => resolve(account),
-          error: (err) => reject(err),
-        });
-    });
-    return createdProduct;
+      });
+  
+      console.log('[createNewProduct] Product created:', createdProduct);
+  
+      // Add ProductId to Account
+      await new Promise((resolve, reject) => {
+        this.eventClient
+          .send('add.product.to.account', {
+            value: { value: { productId: createdProduct.id, sellerId: user.id } },
+          })
+          .subscribe({
+            next: (account) => {
+              console.log('[createNewProduct] Added product to account:', account);
+              resolve(account);
+            },
+            error: (err) => {
+              console.error('[createNewProduct] Error adding product to account:', err);
+              reject(err);
+            },
+          });
+      });
+  
+      console.log('[createNewProduct] Finished successfully');
+      return createdProduct;
+    } catch (error) {
+      console.error('[createNewProduct] Caught error:', error);
+      throw error;
+    }
   }
+  
+  
+  // async updateProduct(
+  //   userId: string,
+  //   input: UpdateProductInput,
+  //   lang: UserPreferedLang = 'en',
+  // ): Promise<Product> {
+  //   const { id, ...rest } = input;
+  //   const product = await this.prisma.product.findUnique({
+  //     where: {
+  //       id,
+  //     },
+  //   });
 
+  //   if (!product)
+  //     throw new NotFoundException('no product with the given id was found');
+
+  //   const isOwner = product.sellerId === userId;
+
+  //   if (!isOwner)
+  //     throw new UnauthorizedException(
+  //       'you can only update products in your shop',
+  //     );
+
+  //   try {
+  //     // const res = await this.uploadService.uploadFiles(
+  //     //   rest.presentations.map((v) => ({
+  //     //     file: {
+  //     //       stream: v.file.createReadStream(),
+  //     //       meta: {
+  //     //         mimetype: v.file.mimetype,
+  //     //         name: v.file.filename,
+  //     //       },
+  //     //     },
+  //     //     options: {
+  //     //       allowedMimtypes: [
+  //     //         ...this.uploadService.mimetypes.image.all,
+  //     //         ...this.uploadService.mimetypes.videos.all,
+  //     //       ],
+  //     //       maxSecDuration: 60 * 10 * 1000,
+  //     //     },
+  //     //   })),
+  //     // );
+
+  //     const prod = await this.prisma.product.update({
+  //       where: {
+  //         id,
+  //       },
+  //       data: {
+  //         ...rest,
+  //         title: {
+  //           set: Array.isArray(rest.title) ? rest.title.map((translation) => ({
+  //             langId: translation.langId,
+  //             value: translation.value,
+  //           })) : [],
+  //         },
+  //         description: {
+  //           set: Array.isArray(rest.description) ? rest.description.map((translation) => ({
+  //             langId: translation.langId,
+  //             value: translation.value,
+  //           })) : [],
+  //         },
+  //         presentations: rest.oldPresentations
+  //           .concat(
+  //             res.map((v) => {
+  //               const type = this.uploadService.getFileTypeFromMimetype(
+  //                 v.mimetype,
+  //               );
+
+  //               if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
+  //                 return null;
+
+  //               return {
+  //                 src: v.src,
+  //                 type:
+  //                   type === FileTypeEnum.image
+  //                     ? PresentationType.image
+  //                     : PresentationType.video,
+  //               };
+  //             }),
+  //           )
+  //           .filter((v) => !!v),
+  //         discount: {
+  //           update: rest.discount,
+  //         },
+  //       },
+  //     });
+
+  //     return this.formatProduct(prod, lang);
+  //   } catch (error: any) {
+  //     throw new Error(error);
+  //   }
+  // }
   async updateProduct(
     userId: string,
     input: UpdateProductInput,
@@ -163,37 +354,18 @@ export class ProductsService {
         id,
       },
     });
-
+  
     if (!product)
       throw new NotFoundException('no product with the given id was found');
-
+  
     const isOwner = product.sellerId === userId;
-
+  
     if (!isOwner)
-      throw new UnauthorizedException(
-        'you can only update products in your shop',
-      );
-
+      throw new UnauthorizedException('you can only update products in your shop');
+  
     try {
-      const res = await this.uploadService.uploadFiles(
-        rest.presentations.map((v) => ({
-          file: {
-            stream: v.file.createReadStream(),
-            meta: {
-              mimetype: v.file.mimetype,
-              name: v.file.filename,
-            },
-          },
-          options: {
-            allowedMimtypes: [
-              ...this.uploadService.mimetypes.image.all,
-              ...this.uploadService.mimetypes.videos.all,
-            ],
-            maxSecDuration: 60 * 10 * 1000,
-          },
-        })),
-      );
-
+      // No upload logic here
+  
       const prod = await this.prisma.product.update({
         where: {
           id,
@@ -201,48 +373,40 @@ export class ProductsService {
         data: {
           ...rest,
           title: {
-            set: Array.isArray(rest.title) ? rest.title.map((translation) => ({
-              langId: translation.langId,
-              value: translation.value,
-            })) : [],
+            set: Array.isArray(rest.title)
+              ? rest.title.map((translation) => ({
+                  langId: translation.langId,
+                  value: translation.value,
+                }))
+              : [],
           },
           description: {
-            set: Array.isArray(rest.description) ? rest.description.map((translation) => ({
-              langId: translation.langId,
-              value: translation.value,
-            })) : [],
+            set: Array.isArray(rest.description)
+              ? rest.description.map((translation) => ({
+                  langId: translation.langId,
+                  value: translation.value,
+                }))
+              : [],
           },
-          presentations: rest.oldPresentations
-            .concat(
-              res.map((v) => {
-                const type = this.uploadService.getFileTypeFromMimetype(
-                  v.mimetype,
-                );
-
-                if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
-                  return null;
-
-                return {
-                  src: v.src,
-                  type:
-                    type === FileTypeEnum.image
-                      ? PresentationType.image
-                      : PresentationType.video,
-                };
-              }),
-            )
-            .filter((v) => !!v),
+          presentations: input.presentations.map((p) => ({
+            src: p.src,
+            type: p.type,
+            asset_id:p.asset_id
+          })),
+          
+  
           discount: {
             update: rest.discount,
           },
         },
       });
-
+  
       return this.formatProduct(prod, lang);
     } catch (error: any) {
       throw new Error(error);
     }
   }
+  
 
   async removeProduct(
     productId: string,

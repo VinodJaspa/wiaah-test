@@ -3,49 +3,53 @@ import { AuthorizationDecodedUser } from "./types";
 import { ObjectId } from "mongodb";
 import {  parseCookiesToRecord } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
+import * as cookie from 'cookie';
 
 
 export function getUserFromRequest<T = AuthorizationDecodedUser>(
   req: any,
   mock: boolean = false,
   _mockedUser?: AuthorizationDecodedUser
-): T {
-  const user = req?.headers?.user ? JSON.parse(req.headers.user) : null;
+): T | null {
+  let user: T | null = null;
 
-  if (mock && !user)
-    return _mockedUser
-      ? (_mockedUser as T)
-      : ({ ...mockedUser, id: new ObjectId().toHexString() } as any);
+  try {
+    const userHeader = req?.headers?.user;
+
+    if (typeof userHeader === 'string') {
+      user = JSON.parse(userHeader);
+    } else if (typeof userHeader === 'object' && userHeader !== null) {
+      // Already parsed by some middleware or proxy (like in dev mode)
+      user = userHeader as T;
+    }
+  } catch (err) {
+    console.error('Failed to parse user header:', err);
+  }
+
+  // if (mock && !user) {
+  //   return (_mockedUser as T) || ({ ...mockedUser, id: new ObjectId().toHexString() } as T);
+  // }
+
   return user;
 }
 
-export function VerifyAndGetUserFromContext(
-  ctx: any
-): (AuthorizationDecodedUser & { token: string }) | null {
-  if (typeof ctx["req"] !== "undefined") {
-    if (ctx?.req?.headers && ctx?.req?.headers["cookie"]) {
-      const rawCookies = ctx.req.headers["cookie"];
-      const parsedCookies = parseCookiesToRecord(rawCookies ?? "");
-      const cookiesKey = process.env.COOKIES_KEY || "jwt";
-      const jwtSecret = process.env.JWT_SERCERT || "secret";
-      if (typeof cookiesKey === "string") {
-        const authToken = parsedCookies[cookiesKey];
-        if (authToken) {
-          try {
-            const user = jwt.verify(authToken, jwtSecret);
-            if (typeof user === "object") {
-              return {
-                ...user,
-                token: authToken,
-              } as AuthorizationDecodedUser & { token: string };
-            }
-          } catch (error) {
-            console.log(error);
-            return null;
-          }
-        }
-      }
-    }
+
+export async function VerifyAndGetUserFromContext(ctx: any) {
+  const cookies = ctx.req?.headers?.cookie || '';
+  const match = cookies.match(/auth_token=([^;]+)/);
+  const token = match?.[1];
+
+  if (!token) return { user: null };
+
+  try {
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET); // Ensure this secret matches your signer
+    const user = decoded?.results?.data;
+    return { user };
+  } catch (err) {
+    console.error('JWT verification failed:', err);
+    return { user: null };
   }
-  return null;
 }
+
+
+

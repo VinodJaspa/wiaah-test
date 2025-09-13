@@ -21,7 +21,7 @@ export const Rate: React.FC<RateProps> = ({
   return (
     <div
       {...props}
-      className={cn("flex text-primary items-center gap-2", className)}
+      className={cn("flex text-black items-center gap-2", className)}
     >
       {[...Array(outOf)].map((_, i) => {
         if (i < Math.floor(rating)) {

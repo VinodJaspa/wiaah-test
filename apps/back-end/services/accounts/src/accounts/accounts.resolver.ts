@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { BadGatewayException, Inject, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   ResolveReference,
@@ -8,6 +8,7 @@ import {
   Parent,
   Query,
 } from '@nestjs/graphql';
+
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -19,6 +20,7 @@ import {
   SERVICES,
   StripeService,
   accountType,
+
 } from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
@@ -36,7 +38,10 @@ import {
 } from './exceptions';
 import { AccountCreationFailedException } from './exceptions/accountCreationFailed.exception';
 import { StripeAccountCreationException } from './exceptions/stripeAccountCreation.exception';
-
+import { FileTypeEnum, UploadService } from '@wiaah/upload';
+import { Readable } from 'stream';
+import { UpdateDataSharingInput } from './dto/update-data-sharing.input';
+import { SuspendAccountInput } from './dto/suspend-account.input';
 @Resolver(() => Account)
 export class AccountsResolver {
   constructor(
@@ -45,8 +50,9 @@ export class AccountsResolver {
     private readonly eventsClient: ClientKafka,
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
+    private readonly uploadService: UploadService,
     private readonly stripe: StripeService,
-  ) {}
+  ) { }
 
   @Mutation(() => String)
   async register(
@@ -59,6 +65,10 @@ export class AccountsResolver {
       password,
       birthDate,
       confirmPassword,
+      gender,
+      phone,
+      photo
+
     }: CreateAccountInput,
   ) {
     // Check if the email already exists in the system
@@ -69,6 +79,8 @@ export class AccountsResolver {
     });
 
     if (emailExists) {
+      console.log("is it ikkkk`");
+      
       throw new EmailAlreadyExistsException(); // Custom exception
     }
 
@@ -86,9 +98,9 @@ export class AccountsResolver {
       Sacc = await this.stripe.createConnectedAccount(); // Create Stripe connected account
       Cacc = await this.stripe.createCustomerAccount(); // Create Stripe customer account
     } catch (error) {
-      throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
+      console.error("Stripe error:", error);
+      // throw new StripeAccountCreationException(); // Custom exception to handle Stripe errors
     }
-
     // Create the account record in the database
     const createdAccount = await this.accountsService.createAccountRecord({
       email,
@@ -97,23 +109,31 @@ export class AccountsResolver {
       password: hashedPassword,
       birthDate: new Date(birthDate),
       accountType,
-      // gender,
-      // phone,
-      // stripeCustomerId: Cacc.id,
-      // stripeId: Sacc.id,
+      gender,
+      phone,
+      stripeCustomerId: Cacc?.id,
+      stripeId: Sacc?.id,
+      photo
     });
+    
 
     if (!createdAccount) {
       throw new AccountCreationFailedException(); // Handle possible failure during account creation
     }
 
-    // Optionally emit an event for account creation
-    // The event should not carry sensitive data like password or confirmPassword
-    // (This is already handled in createAccountRecord)
+ 
+    
 
     return true;
   }
-
+  @Mutation(() => Account)
+  async updateDataSharingPreferences(
+    @Args('input') input: UpdateDataSharingInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<Account> {
+    return this.accountsService.updateDataSharing(user.id, input);
+  }
+  
   @Mutation(() => Boolean)
   async requestAccountDeletion(
     @Args('args') args: DeleteAccountRequestInput,
@@ -130,6 +150,15 @@ export class AccountsResolver {
 
     return true;
   }
+  @Mutation(() => Boolean)
+  async suspendAccount(
+    @Args('args') args: SuspendAccountInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+  this.accountsService.suspendAccount(args.accountId);
+  return true;
+  }
+
 
   @Query(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -197,3 +226,4 @@ export class AccountsResolver {
     if (!valid) throw new NoReadPremissionPublicError();
   }
 }
+

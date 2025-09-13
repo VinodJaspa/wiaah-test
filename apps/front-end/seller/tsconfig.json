@@ -5,7 +5,7 @@
     "**/*.ts",
     "**/*.tsx",
     "../../../packages/ui/components/features/Social/views/SocialProfileView.tsx"
-  ],
+, "../../../packages/ui/components/ImageUploader/ImageUploader.tsx", "../../../packages/ui/components/TitleDescription/TitleDescriptionSection.tsx", "../../../packages/ui/components/ProductAttributes/ ProductAttributes.tsx"  ],
   "exclude": [
     "node_modules"
   ],

@@ -1,119 +1,140 @@
-import { HealthCenterPractitioner, HealthCenterSpecialty } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  InputGroup,
-  Input,
-  InputLeftElement,
-  InputRightElement,
-  InputSuggestions,
-  SearchIcon,
-  Button,
-  LocationOutlineIcon,
-  SpinnerFallback,
-  ServicesRequestKeys,
-} from "@UI";
-import { useGetHealthCenterSearchSuggestionsQuery } from "@UI";
-import { SearchHealthSpecialtiesCardsList } from "@UI";
-import { SearchHealthPractitionersCardsList } from "@UI";
+import { SpinnerFallback } from "ui";
+import { HealthCenterPractitioner, HealthCenterSpecialty } from "api";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid } from "utils";
+import { MapPinIcon, SearchIcon } from "lucide-react";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import { ServicesRequestKeys } from "@features/Services/constants";
+import {
+  useGetHealthCenterSearchSuggestionsQuery,
+  SearchHealthSpecialtiesCardsList,
+  SearchHealthPractitionersCardsList,
+} from "@features/Services/HealthCenter";
+console.log(ServicesRequestKeys,);
 
-export interface HealthCenterSearchBoxProps {}
-
-export const HealthCenterSearchBox: React.FC<
-  HealthCenterSearchBoxProps
-> = () => {
+export const HealthCenterSearchBox: React.FC = () => {
+  const { t } = useTranslation();
   const { visit } = useRouting();
   const { page, take } = usePagination();
-  const [search, setSearch] = React.useState<{
-    q: string;
-    location: string;
-  }>({
-    location: "",
-    q: "",
-  });
-  const [specialites, setSepcialties] = React.useState<HealthCenterSpecialty[]>(
-    [],
-  );
-  const [practitioners, setPractitioners] = React.useState<
-    HealthCenterPractitioner[]
-  >([]);
 
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetHealthCenterSearchSuggestionsQuery({ page, take }, search);
+  const [search, setSearch] = React.useState({ q: "", location: "" });
+  const [specialties, setSpecialties] = React.useState<HealthCenterSpecialty[]>([]);
+  const [practitioners, setPractitioners] = React.useState<HealthCenterPractitioner[]>([]);
+  const [isFocused, setIsFocused] = React.useState(false);
+
+  // ✅ FIX: Pass `search` inside query params
+  const { data: res, isLoading, isError } =
+  useGetHealthCenterSearchSuggestionsQuery(
+    { page, take },          // ✅ pagination
+    search                   // ✅ filters (your { q, location })
+  );
+
 
   React.useEffect(() => {
-    if (res)
+    if (res) {
       try {
         const { practitioners, specialties } = res.data;
-        if (Array.isArray(specialites)) setSepcialties(specialties);
+        if (Array.isArray(specialties)) setSpecialties(specialties);
         if (Array.isArray(practitioners)) setPractitioners(practitioners);
-      } catch {}
+      } catch {
+        // ignore malformed data
+      }
+    }
   }, [res]);
 
-const { t } = useTranslation();
+  const handleSearch = () => {
+    const result = visit((routes) =>
+      routes
+        .visitServiceLocationSearchResults(
+          ServicesRequestKeys.healthCenter,
+          search.location || "milano"
+        )
+        .addQuery(search)
+    );
+    console.log("Visit result:", result);
+    
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   return (
-    <InputGroup className="w-full">
-      <InputLeftElement>
-        <SearchIcon className="text-primary" />
-      </InputLeftElement>
-      <Input
-        {...setTestid("SearchQueryInput")}
-        placeholder={t("health center")}
-        onChange={(e) =>
-          setSearch((state) => ({ ...state, q: e.target.value }))
+    <div
+      className="w-full flex flex-col gap-3"
+      tabIndex={-1}
+      onFocus={() => setIsFocused(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          setIsFocused(false);
         }
-      />
-      <InputRightElement className="w-full">
-        <InputGroup className="border-y-0 border-r-0">
-          <InputLeftElement className="flex justify-center items-center">
-            <LocationOutlineIcon />
-          </InputLeftElement>
-          <Input
+      }}
+    >
+      {/* Search Row */}
+      <div className="flex w-auto border border-gray-300 rounded-lg mb-2 overflow-hidden focus-within:ring-1 focus-within:ring-blue-500">
+        {/* Location Input */}
+        <div className="relative flex-1">
+          <MapPinIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
             {...setTestid("SearchLocationInput")}
-            onChange={(e) =>
-              setSearch((state) => ({ ...state, location: e.target.value }))
-            }
-            placeholder={t("where") + "?"}
+            type="text"
+            placeholder={t("search.where", "Location")}
+            value={search.location}
+            onChange={(e) => setSearch((s) => ({ ...s, location: e.target.value }))}
+            onKeyDown={handleKeyDown}
+            className="w-full h-12 pl-10 pr-3 border-none focus:outline-none placeholder-gray-400"
           />
-          <InputRightElement>
-            <Button
-              onClick={() =>
-                visit((routes) =>
-                  routes
-                    .visitServiceLocationSearchResults(
-                      ServicesRequestKeys.healthCenter,
-                      "milano",
-                    )
-                    .addQuery(search),
-                )
-              }
-              className="uppercase rounded-none px-12"
-            >
-              {t("find")}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </InputRightElement>
-      <InputSuggestions className="overflow-x-hidden">
-        <div className="flex bg-white rounded mt-2">
-          <SpinnerFallback isLoading={isLoading} isError={isError}>
-            <SearchHealthSpecialtiesCardsList
-              searchQuery={search.q || ""}
-              specialites={specialites}
-            />
-            <SearchHealthPractitionersCardsList
-              practitioners={practitioners}
-              searchQuery={search.q || ""}
-            />
-          </SpinnerFallback>
         </div>
-      </InputSuggestions>
-    </InputGroup>
+
+        {/* Query Input */}
+        <div className="relative flex-1 border-l border-gray-300">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            {...setTestid("SearchQueryInput")}
+            type="text"
+            placeholder={t(
+              "search.healthCenterPlaceholder",
+              "Health center, specialty, specialist"
+            )}
+            value={search.q}
+            onChange={(e) => setSearch((s) => ({ ...s, q: e.target.value }))}
+            onKeyDown={handleKeyDown}
+            className="w-full h-12 pl-10 pr-3 border-none focus:outline-none placeholder-gray-400"
+          />
+        </div>
+
+        {/* Find Button */}
+        <PrimaryButton
+          onClick={handleSearch}
+          className="uppercase px-6 h-12 rounded-none"
+        >
+          {t("search.find", "Find")}
+        </PrimaryButton>
+      </div>
+
+      {/* Suggestions */}
+      {isFocused && (search.q || search.location) && (
+        <div className="relative">
+          <div className="flex bg-white rounded mt-2 shadow-md max-h-96 overflow-y-auto border border-gray-200">
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              <SearchHealthSpecialtiesCardsList
+                searchQuery={search.q}
+                specialites={specialties}
+              />
+              <SearchHealthPractitionersCardsList
+                practitioners={practitioners}
+                searchQuery={search.q}
+              />
+            </SpinnerFallback>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

@@ -15,6 +15,7 @@ import {
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
+  AccountType,
 } from 'nest-utils';
 import { LoginDto, RegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -35,6 +36,7 @@ import {
 } from 'nest-dto';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -47,22 +49,85 @@ export class AuthService {
   ) {
     this.registerationVerificationTokenValidDurationInMin = 30;
   }
+  // Register function
+  async register(input: RegisterDto) {
+    const { email, password, firstName, lastName, accountType } = input;
+
+    // Check if email already exists
+    const emailExists = await this.emailExists(email);
+    if (emailExists) {
+      throw new BadRequestException('Email already registered');
+    }
+
+    // Hash the password
+    const hashedPassword = await this.hashPassword(password);
+
+    // Set a default accountType if it's not provided
+    const finalAccountType = accountType || 'seller';  // Default to 'user' if not provided
+
+    // Create registration record
+    const newRegisteration = await this.prisma.registeration.create({
+      data: {
+        email,
+        password: hashedPassword,
+        firstName,
+        lastName,
+        accountType: finalAccountType,  // Pass the accountType here
+        verificationCode: generateVerificationToken(),
+        expiresAt: AddToDate(new Date(), {
+          minutes: this.registerationVerificationTokenValidDurationInMin,
+        }),
+      },
+    });
+
+    // Emit the AccountRegisteredEvent
+    this.eventsClient.emit<AccountRegisteredEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
+      new AccountRegisteredEvent({
+        email,
+        firstName,
+        lastName,
+        verificationCode: newRegisteration.verificationCode,
+        accountType: finalAccountType,  // Include accountType in the event
+      }),
+    );
+
+    return { message: 'Registration successful. Please check your email for verification.' };
+  }
+
+  // Account Registered Event
+  async emitAccountRegisteredEvent(email: string, firstName: string, lastName: string, accountType: any, verificationCode: string) {
+    this.eventsClient.emit<AccountRegisteredEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
+      new AccountRegisteredEvent({
+        email,
+        firstName,
+        lastName,
+        accountType,
+        verificationCode,
+      }),
+    );
+  }
 
   async simpleLogin(input: { email: string; password: string }) {
     try {
       const { email, password } = input;
-
       // Find the user by email
       const invokedAccount: any = await new Promise((resolve, reject) => {
         this.eventsClient
           .send('get.account.by.email', {
-            value: { value: { input: { email: input.email } } },
+            input: { email },
           })
           .subscribe({
             next: (account) => resolve(account),
             error: (err) => reject(err),
           });
       });
+      console.log('Received account:', JSON.stringify(invokedAccount, null, 2));
+      // console.log("invokedAccount:", JSON.stringify(invokedAccount, null, 2));
+      if (!invokedAccount.results?.data?.password) {
+        throw new BadRequestException('User not found or invalid response');
+      }
       const isPasswordValid = await bcrypt.compare(
         password,
         invokedAccount.results.data.password,
@@ -70,13 +135,22 @@ export class AuthService {
       if (!isPasswordValid) {
         throw new BadRequestException('Invalid password');
       }
-
+      const userData = invokedAccount?.results?.data;
+      if (userData.suspended === true) {
+        await firstValueFrom(
+          this.eventsClient.send('unsuspend-account', {
+            input: {
+              accountId: userData.id,
+              suspended: false,
+            },
+          })
+        );
+      }
       // Generate JWT token
       const payload = {
         ...invokedAccount,
       };
       const token = this.JWTService.sign(payload);
-
       // Return the token and user data
       return {
         accessToken: token,
@@ -92,35 +166,41 @@ export class AuthService {
   }
 
   async verifyEmail(input: { code: string; email: string }) {
+    const { email, code } = input;
+    console.log(email, "email");
+
+
+    let registeration;
     try {
-      const { email, code } = input;
-
-      const registeration = await this.prisma.registeration.findUnique({
-        where: {
-          email,
-        },
-        rejectOnNotFound(error) {
-          throw new BadRequestException('invalid email');
-        },
+      registeration = await this.prisma.verificationCode.findUnique({
+        where: { email },
       });
+      if (!registeration) {
+        throw new BadRequestException('invalid email');
+      }
 
-      if (registeration.verificationCode !== code)
-        throw new BadRequestException('invalid verification code');
-      if (registeration.expiresAt < new Date())
-        throw new GoneException('token expired');
-
-      await this.removeRegisterationsByEmail(email);
-
-      this.eventsClient.emit<any, AccountVerifiedEvent>(
-        KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
-        new AccountVerifiedEvent({ email }),
-      );
-
-      return true;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch {
+      throw new BadRequestException('invalid email');
     }
+
+    if (registeration.verificationCode !== code) {
+      throw new BadRequestException('invalid verification code');
+    }
+
+    if (registeration.expiresAt < new Date()) {
+      throw new GoneException('token expired');
+    }
+
+    await this.removeRegisterationsByEmail(email);
+
+    this.eventsClient.emit<any, AccountVerifiedEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
+      new AccountVerifiedEvent({ email }),
+    );
+
+    return true;
   }
+
 
   async resendRegisterationToken(email: string) {
     const verificationCode = `${generateVerificationToken()}`;
@@ -237,6 +317,7 @@ export class AuthService {
       where: {
         email,
       },
+      // @ts-ignore
       rejectOnNotFound(error) {
         throw new NotFoundException(
           'there is no password change request for this email, consider asking for a password change first',
@@ -299,16 +380,22 @@ export class AuthService {
   }
 
   async getAccountMetaDataByEmail(email: string) {
-    return await KafkaMessageHandler<
+
+  
+    const response = await KafkaMessageHandler<
       any,
       GetAccountMetaDataByEmailMessage,
       GetAccountMetaDataByEmailMessageReply
     >(
       this.eventsClient,
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
-      new GetAccountMetaDataByEmailMessage({ email }),
+      new GetAccountMetaDataByEmailMessage({ email })
+
     );
+
+    return response;
   }
+  
 
   async getAll(): Promise<Registeration[]> {
     const registartions = await this.prisma.registeration.findMany();
@@ -329,7 +416,7 @@ export class AuthService {
   }
 
   private async removeRegisterationsByEmail(email: string) {
-    return this.prisma.registeration.deleteMany({
+    return this.prisma.verificationCode.deleteMany({
       where: {
         email,
       },

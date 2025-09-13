@@ -10,11 +10,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
 import { useUnBlockUserMutation } from "@features/Social/services/Mutations/Block";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
+import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
 
-export interface BlocklistSectionProps {}
+export interface BlocklistSectionProps { }
 
-export const BlocklistSection: React.FC<BlocklistSectionProps> = ({}) => {
-const { t } = useTranslation();
+export const BlocklistSection: React.FC<BlocklistSectionProps> = ({ }) => {
+  const { t } = useTranslation();
   const { mutate: unblockUser } = useUnBlockUserMutation();
   const [unblockedUsersIds, setUnBlockedUsersIds] = React.useState<string[]>(
     []
@@ -27,10 +29,7 @@ const { t } = useTranslation();
       <SectionHeader sectionTitle={t("block_list", "Block List")} />
       <div className="h-full flex flex-col gap-4 justify-between">
         <div className="flex gap-4 flex-col">
-          <div className="font-bold w-full justify-between hidden lg:flex">
-            <span>{t("name", "Name")}</span>
-            <span>{t("status", "Status")}</span>
-          </div>
+          <SearchBoxInner placeholder="Search" />
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {mapArray(data, ({ blockedProfile: user }, i) => (
               <div
@@ -38,28 +37,33 @@ const { t } = useTranslation();
                 key={i}
                 className="flex items-center gap-2 justify-between"
               >
-                <div className="flex items-center gap-2">
-                  <Avatar name={user?.username} src={user?.photo} />
-                  <p className="text-lg font-semibold">{user?.username}</p>
-                  {user?.verified ? (
-                    <VerifiedIcon className="text-xs text-secondaryBlue" />
-                  ) : null}
-                </div>
-                <Button
-                  data-testid={"UnFollowBtn"}
+               
+                <div className="flex items-center gap-4">
+              <img
+                src={user?.photo}
+                alt={user.username}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+              <div>
+                <p className="font-medium">{user.username}</p>
+                <p className="text-xs  text-gray-500">@{user.username}</p>
+              </div>
+            </div>
+                <button
                   onClick={() => {
                     if (user?.id) {
                       unblockUser({ userId: user.id });
                     }
                   }}
-                  className="w-24"
-                  colorScheme={"darkbrown"}
+                  className="px-4 py-1 text-sm font-medium rounded-full bg-gray-100 hover:bg-gray-200"
                 >
-                  {t("Unblock")}
-                </Button>
+                  Unblock
+                </button>
+
               </div>
             ))}
           </SpinnerFallback>
+          <Pagination total={5} current={1} onPageChange={()=>{}}/>
         </div>
       </div>
     </div>

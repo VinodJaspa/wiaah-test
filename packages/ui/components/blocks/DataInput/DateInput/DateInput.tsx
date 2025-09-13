@@ -159,14 +159,17 @@ export const DateInput: React.FC<DateInputProps> = ({
     if (activeDates && activeDates.length > 0) {
       if (range) {
         if (activeDates.length < 2) return;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         onRangeSelect &&
           onRangeSelect({
             from: new Date(activeDates[0]).toUTCString(),
             to: new Date(activeDates[1]).toUTCString(),
           });
       } else if (multi) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         onMultiChange && onMultiChange(activeDates);
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         onDaySelect && onDaySelect(new Date(activeDates[0]).toUTCString());
       }
     }
@@ -253,32 +256,32 @@ export const DateInput: React.FC<DateInputProps> = ({
   return (
     <section {...rest} className={`${className || ""} h-fit w-full bg-white`}>
       {/* calander */}
-      <div className="flex items-center justify-between px-1">
-        <div onClick={handlePrevMonth} className="cursor-pointer text-3xl">
+      <div className="flex items-center justify-between px-1 text-sm">
+        <div onClick={handlePrevMonth} className="cursor-pointer text-sm">
           <MdArrowLeft />
         </div>
 
-        <div className="flex gap-2 font-bold">
+        <div className="flex gap-2 font-sm">
           {/* month and year */}
           <span>{month.name}</span>
           <span>{month.year}</span>
         </div>
 
-        <div onClick={handleNextMonth} className="cursor-pointer text-3xl">
+        <div onClick={handleNextMonth} className="cursor-pointer text-sm">
           <MdArrowRight />
         </div>
       </div>
 
       <div>
         {/* calander grid */}
-        <table className="w-full">
+        <table className="w-full font-sm text-sm">
           {/* <thead> */}
-          <thead>
-            <tr className="flex items-center justify-between">
+          <thead >
+            <tr className="flex items-center justify-between text-sm">
               {weekDays.map((day, weekIndex) => (
                 <th
                   key={weekIndex}
-                  className="flex w-full items-center justify-center"
+                  className="flex w-full items-center justify-center text-sm"
                 >
                   {day}
                 </th>
@@ -289,11 +292,11 @@ export const DateInput: React.FC<DateInputProps> = ({
             {DividedWeeks.map((week, weekIndex) => (
               <tr
                 key={weekIndex}
-                className="flex items-center justify-between w-full"
+                className="flex items-center justify-between w-full font-sm"
               >
                 {week.map(({ currentMonth, dayNum, date }, dayIndex) => (
                   <td
-                    className="w-full"
+                    className="w-full font-sm"
                     key={dayIndex}
                     onClick={() => {
                       if (!currentMonth) return;

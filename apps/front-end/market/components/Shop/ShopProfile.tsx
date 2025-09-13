@@ -1,9 +1,11 @@
 import { BusinessType, ServiceType, StoreType } from "@features/API";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlagIcon, getRandomName, GetShopDetailsQuery, Rate } from "ui";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useRouting } from "routing";
+
 import {
   Spacer,
   Button,
@@ -12,13 +14,20 @@ import {
   useSearchFilters,
   SpinnerFallback,
   QrcodeDisplay,
+  Rate,
+  GetShopDetailsQuery,
+  FlagIcon,
+  ServicesRequestKeys,
+  LoginPopupState,
+  LoginModal,
 } from "ui";
+import { getRandomName } from "utils";
 
 export interface ShopProfileProps {
   shopId: string;
   fullWidth?: boolean;
 }
-
+import { isUserLoggedIn } from "state";
 export const ShopProfile: React.FC<ShopProfileProps> = ({
   fullWidth,
   shopId,
@@ -29,13 +38,23 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     isError: _isError,
     isLoading: _isLoading,
   } = useGetShopDetailsQuery(shopId);
+  const userLoggedIn = useRecoilValue(isUserLoggedIn);
+  console.log(isUserLoggedIn, "isUserLoggedIn");
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const res = resMock;
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const isError = false;
-
+  const { visit } = useRouting();
+  const [isOpen, setIsOpen] = useRecoilState(LoginPopupState);
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
+      {/* <LoginModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        handleRoute={(route) => console.log("Redirect to:", route)}
+      /> */}
       <div
         style={{ width: fullWidth ? "100%" : "" }}
         className="flex flex-col gap-4 px-8 md:flex-row"
@@ -72,7 +91,14 @@ const { t } = useTranslation();
                       {res.name}
                       {res.verified && <Verified className="text-primary" />}
                     </div>
-                    <p className="font-semibold cursor-pointer text-primary">
+                    <p className="font-semibold cursor-pointer text-primary"
+                      onClick={(e) => {
+                        // alert("okk")
+                        e.stopPropagation();
+                        visit((routes) =>
+                          routes.visitServiceOnMap(res.location, ServicesRequestKeys.hotels)
+                        );
+                      }}>
                       {t("Show on map")}
                     </p>
                     <a href="#reviews" className="cursor-pointer">
@@ -96,11 +122,23 @@ const { t } = useTranslation();
               {/* buttons */}
               <div>
                 {/* message button */}
-                <Button>{t("Message", "Message")}</Button>
+                <Button onClick={() => {
+                  if (!userLoggedIn) {
+                    setIsOpen(true)
+                  }
+                  else {
+                    router.push("/message");
+                  }
+                }}>{t("Message", "Message")}</Button>
               </div>
               <div>
                 {/* follow button */}
-                <Button>{t("Follow", "Follow")}</Button>
+                <Button
+                  onClick={() => setIsFollowing((prev) => !prev)}
+                >
+                  {isFollowing ? t("UnFollow", "Unfollow") : t("Follow", "Follow")}
+                </Button>
+                
               </div>
             </div>
             <Spacer />
@@ -128,7 +166,7 @@ const { t } = useTranslation();
                 <>
                   <p>{res.name}</p>
 
-                  <QrcodeDisplay className="w-12" value={res.id} />
+                  <QrcodeDisplay className="w-10" size={30} value={res.id} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -150,7 +188,7 @@ const resMock: GetShopDetailsQuery["getUserShop"] = {
   type: ServiceType.BeautyCenter,
   ownerId: "",
   banner: "",
-  businessType: BusinessType.Individual,
+  businessType: BusinessType.Services,
   createdAt: new Date().toUTCString(),
   description:
     "Welcome to our stunning hotel room, where luxury and natural beauty blend seamlessly together. As you step into the room, you're immediately struck by the breathtaking sunset views visible through the floor-to-ceiling windows.",

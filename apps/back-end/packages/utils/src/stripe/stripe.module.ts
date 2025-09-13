@@ -21,7 +21,7 @@ export class StripeModule {
         {
           provide: STRIPE_INJECT_TOKEN,
           useValue: new Stripe(options.apiKey, {
-            apiVersion: "2020-08-27",
+            apiVersion: null,
             typescript: true,
           }),
         },

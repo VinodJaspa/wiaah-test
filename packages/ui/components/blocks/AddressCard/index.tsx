@@ -33,7 +33,7 @@ const { t } = useTranslation();
   return (
     <div
       className={`${
-        active ? "border-2 border-primary" : "border-2 border-transparent"
+        active ? "border-2 border-grey-600" : "border-2 border-transparent"
       } p-4 rounded h-full w-full`}
     >
       <div className="flex items-center gap-2">

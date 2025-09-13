@@ -1,109 +1,90 @@
 import {
   AspectRatio,
-  Avatar,
   HeartIcon,
   PriceDisplay,
-  Rate,
   UnDiscountedPriceDisplay,
-  VerifiedIcon,
+  Rate,
+
 } from "@UI";
+import ImageTopbadge from "@UI/components/shadcn-components/components/imageTopbadge";
+import Link from "next/link";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";
 
-export interface ProductSearchCardProps {
-  sellerInfo: {
-    name: string;
-    thumbnail: string;
-    profession: string;
-    verified: boolean;
-  };
+export interface ProductCardProps {
   productInfo: {
+    id: string;
     title: string;
     price: number;
+    originalPrice: number;
     discount: number;
     rating: number;
     reviewsCount: number;
     cashback: number;
     thumbnail: string;
     colors: string[];
+    sizes: string[];
   };
 }
 
-export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
-  productInfo,
-  sellerInfo,
-}) => {
-  const { cashback, discount, rating, reviewsCount, title, colors, thumbnail } =
+export const ProductSearchCard: React.FC<ProductCardProps> = ({ productInfo }) => {
+  const {id, cashback, discount, rating, reviewsCount, title, colors, thumbnail, price, originalPrice, sizes } =
     productInfo;
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
+
   return (
-    <div className="flex flex-col w-full">
-      <AspectRatio ratio={1}>
-        <div className="w-full h-full rounded-xl overflow-hidden">
+    <div className="flex flex-col w-52">
+      {/* Image with cashback + heart */}
+      <AspectRatio ratio={3 / 4}>
+      <Link href={`/shop/product/${encodeURIComponent(id)}`}>
+        <div className="w-full h-full rounded-xl overflow-hidden relative">
           <img
             className="w-full h-full object-cover"
             src={thumbnail}
             alt={title}
           />
-          <div className="px-4 text-primary bg-white rounded-lg absolute top-3 left-4 py-2 flex gap-1 text-xs font-bold">
-            <PriceDisplay price={cashback} />
-            <p>{t("Cashback")}</p>
-          </div>
-          <div
-            style={{ backdropFilter: "blur(5px)" }}
-            className="absolute top-3 right-4 w-7 h-7 bg-white flex justify-center items-center bg-opacity-10"
-          >
-            <HeartIcon className="text-white fill-white text-sm" />
-          </div>
-          <div
-            style={{ backdropFilter: "blur(5px)" }}
-            className="absolute rounded-b-2xl text-white flex px-4 items-center justify-between bottom-0 left-0 h-[18%] z-10 w-full bg-black bg-opacity-10"
-          >
-            <div className="flex gap-2 items-center">
-              <Avatar
-                src={sellerInfo.thumbnail}
-                className="rounded-full inset-0 border-2 border-white w-8 h-8"
-              />
-              <div className="flex items-center gap-1">
-                <p className="font-bold text-xs">{sellerInfo.name}</p>
-                {sellerInfo.verified ? (
-                  <VerifiedIcon className="text-[0.563rem] inline-block" />
-                ) : null}
-              </div>
-            </div>
 
-            <div className="flex items-center gap-1">
-              <PriceDisplay
-                className="text-sm font-extrabold"
-                price={productInfo.price}
-              />
-              <UnDiscountedPriceDisplay
-                className="text-xs font-normal"
-                amount={productInfo.price}
-                discount={productInfo.discount}
-              />
-            </div>
+          {/* Cashback badge */}
+          <ImageTopbadge text={`${cashback}% ${t("Cashback")}`} />
+
+          {/* Heart icon */}
+          <div
+            className="absolute top-3 right-3 w-7 h-7 bg-white flex justify-center items-center rounded-full shadow"
+          >
+            <HeartIcon className="text-black text-sm" />
           </div>
         </div>
+        </Link>
       </AspectRatio>
+   
+
+      {/* Content */}
       <div className="py-3 bg-white flex flex-col gap-2">
-        <div className="flex gap-1 justify-between">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-black font-bold">{title}</p>
-            <div className="flex gap-1 items-center">
-              <Rate rating={rating} />
-              <p className="text-[0.5rem] text-lightBlack font-semibold">{`(${reviewsCount} ${t(
-                "Reviews",
-              )})`}</p>
-            </div>
-          </div>
-          <p className="font-semibold text-xs px-5 py-[0.625rem] h-fit w-fit bg-primary-50 rounded-full">
-            {discount}% {t("off")}
+        {/* Title */}
+        <p className="text-sm text-black font-bold">{title}</p>
+
+        {/* Price + discount */}
+        <div className="flex items-center gap-2 text-sm">
+          <PriceDisplay className="font-bold" price={price} />
+          <UnDiscountedPriceDisplay
+            className="line-through text-gray-400 text-xs"
+            amount={originalPrice}
+            discount={discount}
+          />
+          <p className="text-red-500 font-semibold text-xs">
+            Save {discount}%
           </p>
         </div>
-        <div className="flex gap-[0.875rem] flex-wrap">
+
+        {/* Sizes */}
+        <p className="text-xs text-gray-500">
+          Sizes: {sizes.join(", ")}
+        </p>
+
+        {/* Colors */}
+        <div className="flex gap-2">
           {mapArray(colors, (color, i) => (
             <div
               key={i}
@@ -115,6 +96,11 @@ const { t } = useTranslation();
             />
           ))}
         </div>
+
+        {/* Rating */}
+        <p className="text-xs text-gray-500">
+          <Rate rating={rating} /> {rating} ({reviewsCount} {t("reviews")})
+        </p>
       </div>
     </div>
   );

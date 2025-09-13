@@ -1,0 +1,12 @@
+{
+  "name": "auth",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm start:dev",
+        "cwd": "apps/back-end/services/auth"
+      }
+    }
+  }
+}

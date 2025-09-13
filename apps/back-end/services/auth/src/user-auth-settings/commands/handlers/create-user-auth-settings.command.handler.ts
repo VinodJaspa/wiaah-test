@@ -12,6 +12,7 @@ export class CreateUserAuthSettingsCommandHandler
   async execute({
     accountId,
   }: CreateUserAuthSettingsCommand): Promise<UserAuthSetting> {
+    
     const res = await this.repo.create(accountId);
     return res;
   }

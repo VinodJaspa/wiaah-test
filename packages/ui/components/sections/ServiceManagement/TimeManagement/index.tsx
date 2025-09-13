@@ -8,8 +8,7 @@ import {
   TabTitle,
   SectionWrapper,
   SectionHeader,
-  useGetMyWorkingHoursQuery,
-  useUpdateWeekWorkingHoursMutation,
+
   useResponsive,
   HStack,
   ArrowLeftAlt1Icon,
@@ -28,23 +27,31 @@ import { Calender, SpecialSchedule } from "./SpecialSchedule";
 import { WeekdaysSchedule } from "./WeekdaysSchedule";
 import { getAllMonthsOfYear, mapArray, weekDayLong } from "@UI/../utils/src";
 import { useRouting } from "@UI/../routing";
-export interface TimeManagementSectionProps {}
-
+export interface TimeManagementSectionProps { }
+import { useGetMyWorkingHoursQuery } from "ui/components/features/Services/Services/queries"
+import { useUpdateWeekWorkingHoursMutation } from "ui/components/features/Services/Services/mutation";
+import AvailabilityPicker from "./weekdayAavailbility";
 export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
-> = ({}) => {
-const { t } = useTranslation();
+> = ({ }) => {
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const [tab, setTab] = React.useState(0);
 
   const { data: profile } = useGetMyProfileQuery();
   const months = getAllMonthsOfYear(2023);
   const { back } = useRouting();
-
+  const [availability, setAvailability] = React.useState({});
   const { data } = useGetMyWorkingHoursQuery();
 
   const { mutate } = useUpdateWeekWorkingHoursMutation();
+  const createdYear = new Date(profile?.createdAt || "").getFullYear();
+  const currentYear = new Date().getFullYear();
 
+  const yearOptions =
+    !isNaN(createdYear) && createdYear <= currentYear
+      ? [...Array(currentYear - createdYear + 1)].map((_, i) => createdYear + i)
+      : [];
   return isMobile ? (
     <div className="flex flex-col gap-2 w-full p-2">
       <HStack className="justify-center relative">
@@ -53,12 +60,12 @@ const { t } = useTranslation();
           <ArrowLeftAlt1Icon className="absolute left-0 top-1/2 -translate-y-1/2" />
         </button>
       </HStack>
-      <HStack className="self-center text-3xl">
+      <HStack className="self-center text-sm">
         <ArrowLeftIcon
           onClick={() => setTab(0)}
           className={`${tab === 0 ? "text-grayText" : "text-primary"} `}
         />
-        <p className="text-base font-medium">
+        <p className="text-sm font-medium">
           {tab === 0 ? t("Schedule for the week") : t("Special days schedule")}
         </p>
         <ArrowRightIcon
@@ -83,13 +90,13 @@ const { t } = useTranslation();
                     <TimeInput
                       label={t("Open")}
                       date={new Date()}
-                      onChange={() => {}}
+                      onChange={() => { }}
                     />
                     <ArrowRefreshIcon className="text-xl mb-4" />
                     <TimeInput
                       label={t("Close")}
                       date={new Date()}
-                      onChange={() => {}}
+                      onChange={() => { }}
                     />
                   </div>
                   <Divider className="my-0" />
@@ -99,9 +106,9 @@ const { t } = useTranslation();
                     </p>
                   </div>
                   <div className="text-base flex items-center self-center gap-6">
-                    <TimeInput date={new Date()} onChange={() => {}} p="p-2" />
+                    <TimeInput date={new Date()} onChange={() => { }} p="p-2" />
                     <p className="text-lg font-medium">{t("to")}</p>
-                    <TimeInput date={new Date()} onChange={() => {}} p="p-2" />
+                    <TimeInput date={new Date()} onChange={() => { }} p="p-2" />
                   </div>
                 </div>
               </div>
@@ -109,7 +116,7 @@ const { t } = useTranslation();
           </div>
 
           <div className="flex flex-col w-full gap-2">
-            <Select className="">
+            {/* <Select className="">
               {[
                 ...Array(
                   new Date().getFullYear() -
@@ -126,7 +133,15 @@ const { t } = useTranslation();
                   </SelectOption>
                 );
               })}
+            </Select> */}
+            <Select className="">
+              {yearOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
             </Select>
+
 
             <div className="flex flex-col gap-4">
               {months.map((month, i) => (
@@ -154,37 +169,42 @@ const { t } = useTranslation();
       <Tabs>
         <TabsHeader>
           <TabTitle TabKey="0">
-            {({ currentTabIdx }) => (
+            {({ currentTabIdx ,currentActive }) => (
               <p
-                className={`${
-                  currentTabIdx === 0 ? "border-b-2" : ""
-                }  border-b-primary pb-2`}
+                className={`pb-2 ${currentTabIdx === 0
+                    ? "border-b-2 border-b-primary text-primary font-medium"
+                    : "border-b-2 border-transparent text-gray-500"
+                  }`}
               >
                 {t("Schedule for the week")}
               </p>
             )}
           </TabTitle>
-          <TabTitle TabKey={"1"}>
+
+          <TabTitle TabKey="1">
             {({ currentTabIdx }) => (
               <p
-                className={`${
-                  currentTabIdx === 1 ? "border-b-2" : ""
-                }  border-b-primary pb-2`}
+                className={`pb-2 ${currentTabIdx === 1
+                    ? "border-b-2 border-b-primary text-primary font-medium"
+                    : "border-b-2 border-transparent text-gray-500"
+                  }`}
               >
                 {t("Special days schedule")}
               </p>
             )}
           </TabTitle>
         </TabsHeader>
+
         <TabList>
           <TabItem>
-            <WeekdaysSchedule />
+            <AvailabilityPicker />
           </TabItem>
           <TabItem>
             <SpecialSchedule />
           </TabItem>
         </TabList>
       </Tabs>
+
     </SectionWrapper>
   );
 };

@@ -262,7 +262,7 @@ const { t } = useTranslation();
           </div>
         ) : null}
 
-        <div className="flex flex-col gap-4 w-full">
+        {/* <div className="flex flex-col gap-4 w-full">
           <HStack className="justify-end text-[1.75rem] font-bold">
             <PriceDisplay price={total} />
           </HStack>
@@ -310,7 +310,7 @@ const { t } = useTranslation();
               <TrashIcon />
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
       <Divider className="border-black my-3" />
     </React.Fragment>

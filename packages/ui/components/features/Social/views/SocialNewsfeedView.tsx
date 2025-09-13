@@ -88,7 +88,10 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
     { pagination: postsPagination },
   );
   const { data: _data } = useGetMyNewsfeedPostsQuery(form);
+
+
   const data = newsfeedPosts;
+  // console.log(data,"data___");
 
   const normalizedPersonalizedActions = PersonalizeActions.map((action) => ({
     profileInfo: {
@@ -114,9 +117,9 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
       numberOfShares: action.shares,
       location: action.location
         ? {
-            city: action.location.city,
-            country: action.location.country,
-          }
+          city: action.location.city,
+          country: action.location.country,
+        }
         : undefined,
       musicId: action.musicId,
       effect: action.effect?.name,
@@ -145,6 +148,8 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
     newsfeedPosts,
     normalizedPersonalizedActions,
   );
+  console.log(data ,"data44");
+  
 
   return (
     <div className="flex flex-col items-center w-full gap-8  px-2 md:px-8">
@@ -155,11 +160,11 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
           </div>
         </div>
       )}
-      
+
       <div className="w-full">
         {/* Mobile view */}
         <div className="flex flex-col gap-8 lg:hidden">
-          {data.map((v, i) => (
+          {data?.map((v, i) => (
             <SocialNewsfeedPostMobileCard
               key={i}
               post={{
@@ -174,7 +179,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
                   city: "geneve",
                   country: "switzerland",
                 },
-                saved: true,
+                saved: false,
                 shares: v.postInfo.numberOfShares,
                 username: v.profileInfo?.name || "",
                 userPhoto: v.profileInfo?.photo || "",
@@ -192,7 +197,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
             grid={true}
             onPostClick={(post) => {
               // TODO: Handle post click
-              // openSocialPostModal(post.postInfo.id);
+              openSocialNewPostModal();
             }}
             onProfileClick={(username) =>
               visit((r) => r.visitSocialProfile(username))

@@ -12,7 +12,8 @@ datasource db {
 }
 
 model UserAuthSettings {
-  id             String  @id @map("_id")
+ id             String  @id @default(uuid()) @map("_id")
+  accountId      String  @unique
   twoFactoryAuth Boolean @default(false)
 
   createdAt DateTime @default(now())

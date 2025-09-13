@@ -1,10 +1,11 @@
 
+import NotificationsList from "@blocks/Cards/NotificationCard/NotificationsList";
 import {
   Menu,
   MenuButton,
   MenuList,
   SpinnerFallback,
-  useGetMyNotificationsQuery,
+
 } from "@UI";
 import { CalendarArrowUp, Heart, MessageCircle, X } from "lucide-react";
 import React, { useState } from "react";
@@ -52,7 +53,7 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   children,
 }) => {
   const [selectedTab, setSelectedTab] = useState<number>(1);
-  const { data, isLoading, isError } = useGetMyNotificationsQuery();
+  // const { data, isLoading, isError } = useGetMyNotificationsQuery();
 const { t } = useTranslation();
 
   return (
@@ -63,82 +64,7 @@ const { t } = useTranslation();
           origin="top right"
           className="h-[40rem] px-4 w-[min(100vw,31.25rem)] thinScroll overflow-x-hidden overflow-y-scroll relative"
         >
-          <SpinnerFallback isLoading={isLoading} isError={isError}>
-            <div className="flex flex-col gap-y-4">
-              <div className="flex items-center justify-between">
-                <p className="font-bold text-lg">{t("Notifications")}</p>
-                <X size={16} />
-              </div>
-              {/* Tabs */}
-              <div className="relative grid grid-cols-4 text-center bg-gray-100 rounded-md font-medium h-10 p-1">
-                {tabs.map((tab) => (
-                  <button
-                    onClick={() => setSelectedTab(tab.id)}
-                    className="relative z-[2]"
-                    key={tab.id}
-                  >
-                    <span>{tab.label}</span>
-                  </button>
-                ))}
-                <div
-                  className="absolute left-1 top-1 h-8 bg-white rounded transition-transform duration-300 z-[1]"
-                  style={{
-                    width: `calc((100% - 8px) / ${tabs.length})`,
-                    transform: `translateX(${(selectedTab - 1) * 100}%)`,
-                  }}
-                />
-              </div>
-              {/* Tab Content */}
-              <div className="flex flex-col gap-y-2">
-                {/* All */}
-                {selectedTab === 1 &&
-                  notifications.map((notification) => (
-                    <NotificationCard
-                      key={notification.id}
-                      notification={notification}
-                    />
-                  ))}
-                {/* Mentions */}
-                {selectedTab === 2 &&
-                  notifications
-                    .filter((n) => n.tab === 2)
-                    .map((notification) => (
-                      <NotificationCard
-                        key={notification.id}
-                        notification={notification}
-                      />
-                    ))}
-                {/* Likes */}
-                {selectedTab === 3 &&
-                  notifications
-                    .filter((n) => n.tab === 3)
-                    .map((notification) => (
-                      <NotificationCard
-                        key={notification.id}
-                        notification={notification}
-                      />
-                    ))}
-                {/* Orders */}
-                {selectedTab === 4 &&
-                  notifications
-                    .filter((n) => n.tab === 4)
-                    .map((notification) => (
-                      <NotificationCard
-                        key={notification.id}
-                        notification={notification}
-                      />
-                    ))}
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-4">
-              <div className="h-px bg-muted my-4" />
-
-                {/* Mark All As Read */}
-                <button className="block border rounded-md p-2 text-center font-medium hover:bg-gray-100 w-full">
-                  Mark All as Read
-                </button>
-              </div>
-            </div>
-          </SpinnerFallback>
+          <NotificationsList/>
         </MenuList>
       </Menu>
     </div>

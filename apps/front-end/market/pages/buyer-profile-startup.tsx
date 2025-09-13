@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { BuyerProfileStartUpView } from "ui/views";
-import { Container } from "ui";
+
+import { BuyerProfileStartupView, Container } from "ui";
 
 const SignUpFinalisation: NextPage = () => {
+  // local state for StepperProps
+  const [isFormSubmitting, setFormSubmitting] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  // example steps
+  const stepsName = ["Account", "Details", "Confirmation"];
+
   return (
     <>
       <Head>
@@ -12,7 +19,13 @@ const SignUpFinalisation: NextPage = () => {
       </Head>
       <main className="block w-full min-h-screen">
         <Container>
-          <BuyerProfileStartUpView />
+          <BuyerProfileStartupView
+            isFormSubmitting={isFormSubmitting}
+            setFormSubmitting={setFormSubmitting}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            stepsName={stepsName}
+          />
         </Container>
       </main>
     </>

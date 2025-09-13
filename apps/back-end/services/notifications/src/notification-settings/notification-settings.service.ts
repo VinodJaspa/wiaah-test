@@ -8,7 +8,7 @@ import { DisableNotificationFromContentInput } from '../dto';
 import { ContentNotificationAlreadyDisabledException } from '../exceptions';
 
 @Injectable()
-export class NotificationSettingsService {
+export class NotificationSettingsService  {
   constructor(private readonly prisma: PrismaService) {}
 
   async getOneByUserId(id: string) {

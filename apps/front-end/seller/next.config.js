@@ -40,6 +40,12 @@ const nextConfig = {
     esmExternals: "loose",
   },
   productionBrowserSourceMaps: false,
+
+  // ✅ Allow external image domains (picsum.photos, etc.)
+  images: {
+    domains: ["picsum.photos"],
+  },
+
   webpack: (config) => {
     config.stats = "verbose";
 
@@ -54,6 +60,7 @@ const nextConfig = {
       options: {
         loader: "tsx",
         target: "esnext",
+        jsx: "automatic",
       },
     });
 

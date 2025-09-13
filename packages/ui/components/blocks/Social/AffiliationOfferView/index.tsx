@@ -29,10 +29,15 @@ const { t } = useTranslation();
             <PostView
               postId="4"
               queryName="newFeedPost"
-              data={affiliationPost[0]}
+              //@ts-ignore
+              data={{
+                ...affiliationPost[0],
+                profileInfo: () => affiliationPost[0].profileInfo, // wrap it in a function
+              }}
               idParam="newsfeedpostid"
-              renderChild={(props: PostCardInfo) => {
-                const images = [affiliationPost[0].postInfo.thumbnail];
+        //@ts-ignore
+              renderChild={(props) => {
+                const images = [props.postInfo.thumbnail];
                 return (
                   <Carousel componentsPerView={1} controls={false}>
                     {images.map((image, index) => (

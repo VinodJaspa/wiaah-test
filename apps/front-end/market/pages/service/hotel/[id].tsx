@@ -1,8 +1,8 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { MasterLayout, MetaTags } from "@components";
-import { MarketHotelDetailsView } from "ui";
-import { Container, GetServiceDetailsQueryKey } from "ui";
+
+import { Container, GetServiceDetailsQueryKey, MarketHotelDetailsView } from "ui";
 import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";

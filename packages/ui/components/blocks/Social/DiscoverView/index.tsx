@@ -35,7 +35,7 @@ const { t } = useTranslation();
       name: t("Users"),
       component: (
         <div className="w-full mx-2">
-          <UserMobileView users={FAKE_USERS} />
+          {/* <UserMobileView users={FAKE_USERS} /> */}
           <UsersView users={FAKE_USERS} />
         </div>
       ),
@@ -155,68 +155,69 @@ const FAKE_PLACES = [
 const FAKE_USERS = [
   {
     id: 1,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=1",
     name: "Alice Elizabeth",
     isFollowed: true,
     location: "New York",
   },
   {
     id: 2,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=2",
     name: "Bob Simpson",
     isFollowed: false,
     location: "Los Angeles",
   },
   {
     id: 3,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=3",
     name: "Charlie Cramer",
     isFollowed: true,
     location: "Chicago",
   },
   {
     id: 4,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=4",
     name: "Diana",
     isFollowed: false,
     location: "San Francisco",
   },
   {
     id: 5,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=5",
     name: "Edward",
     isFollowed: true,
     location: "Miami",
   },
   {
     id: 6,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=6",
     name: "Alice",
     isFollowed: true,
     location: "Boston",
   },
   {
     id: 7,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=7",
     name: "Bob",
     isFollowed: false,
     location: "Houston",
   },
   {
     id: 8,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=8",
     name: "Charlie",
     isFollowed: true,
     location: "Seattle",
   },
   {
     id: 9,
-    image: AvatarImage,
+    image: "https://i.pravatar.cc/150?img=9",
     name: "Diana",
     isFollowed: false,
     location: "Atlanta",
   },
 ];
+
 
 const FAKE_STORIES = [
   {

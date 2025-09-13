@@ -7,16 +7,17 @@ import { SectionsScrollTabList, SectionTabType } from "../../blocks/Navigating";
 import { StaticSideBarWrapper } from "@blocks/Wrappers";
 import { WorkingDaysCalender } from "@blocks/DataDisplay";
 import {
-  useGetBeautyCenterDetailsQuery,
+
   ServicesProviderHeader,
   ServicePresentationCarosuel,
   ServicesProviderDescriptionSection,
-  BeautyCenterTreatmentsList,
+
   ServiceReachOutSection,
   ServiceWorkingHoursSection,
   ServicePoliciesSection,
   ServiceOnMapLocalizationSection,
   GetBeautyQuery,
+
 } from "@features";
 import { Reviews } from "@blocks/Reviews";
 import {
@@ -25,7 +26,8 @@ import {
   ServiceStatus,
   ServiceTypeOfSeller,
 } from "@features/API";
-
+import { useGetBeautyCenterDetailsQuery } from "@features/Services";
+import { BeautyCenterTreatmentsList } from "@features/Services/beautyCenter/components/lists";
 export const MarketBeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
   id,
 }) => {

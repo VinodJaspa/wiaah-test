@@ -14,6 +14,8 @@ import * as bcrypt from 'bcrypt';
 import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
+import { UploadService } from '@wiaah/upload';
+import { UpdateDataSharingInput } from './dto/update-data-sharing.input';
 
 @Injectable()
 export class AccountsService {
@@ -21,7 +23,8 @@ export class AccountsService {
     private prisma: PrismaService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
-  ) {}
+    private readonly uploadService: UploadService,
+  ) { }
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {
@@ -44,7 +47,7 @@ export class AccountsService {
 
       //Emit Kafka event
       this.eventsClient.emit<string, NewAccountCreatedEvent>(
-        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated,
+        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated(createdUser.accountType),
         new NewAccountCreatedEvent({
           email: createdUser.email,
           id: createdUser.id,
@@ -206,23 +209,31 @@ export class AccountsService {
     return this.update(input, userId);
   }
 
-  async update(
-    input: UpdateAccountInput,
-    userId: string,
-  ): Promise<Partial<Account>> {
+
+
+  async update(input: UpdateAccountInput, userId: string): Promise<Partial<Account>> {
     try {
+      // 2. Build the Prisma update object excluding `photo` field if not needed
+      const { photo, id, ...rest } = input;
+
+      const updateData = {
+        ...rest,
+      };
+
+      // 3. Call Prisma updatez
       const { password, ...res } = await this.prisma.account.update({
-        where: {
-          id: userId,
-        },
-        data: input,
+        where: { id: userId },
+        data: updateData,
       });
 
       return res;
+
     } catch (err) {
-      throw new BadRequestException('account was not found');
+      console.error(err);
+      throw new BadRequestException('account was not found or update failed');
     }
   }
+
 
   async updatePassword(password: string, userId: string) {
     await this.prisma.account.update({
@@ -306,5 +317,52 @@ export class AccountsService {
         id,
       },
     });
+  }
+
+  async updateDataSharing(accountId: string, input: UpdateDataSharingInput): Promise<Account> {
+    return this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        shareAdPartners: input.shareAdPartners,
+        shareAnalyticsTools: input.shareAnalyticsTools,
+        shareSocialNetworks: input.shareSocialNetworks,
+        sharePaymentProcessors: input.sharePaymentProcessors,
+      },
+    });
+  }
+  async suspendAccount(accountId: string, reason?: string) {
+    return await this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        suspended: true,
+
+      },
+    });
+  }
+  async updateSuspensionStatus(
+    accountId: string,
+    suspended: boolean,
+    reason?: string,
+  ) {
+    const account = await this.prisma.account.findUnique({
+      where: {
+        id: accountId,
+      },
+    });
+
+    if (!account) {
+      throw new NotFoundException('Account not found');
+    }
+
+    account.suspended = suspended;
+    if (reason) account.rejectReason = reason;
+    await this.prisma.account.update({
+      where: { id: accountId },
+      data: {
+        suspended: account.suspended,
+        rejectReason: account.rejectReason,
+      },
+    });
+    console.log(`✅ Account ${accountId} suspension updated`);
   }
 }

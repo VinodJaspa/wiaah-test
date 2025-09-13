@@ -29,24 +29,31 @@ type Account {
   firstName: String!
   lastName: String!
   email: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  accountType: AccountType!
+  emailVerified: Boolean!
+  phoneVerified: Boolean!
+  idVerified: Boolean!
   verified: Boolean!
+  online: Boolean!
+  gender: String!
+  country: String
+  sales: Float!
+  accountType: AccountType!
   status: AccountStatus!
   companyRegisterationNumber: String
   photo: String
   phone: String
   ips: [String!]!
-  lastActiveAt: String!
+  lastActiveAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  birthDate: DateTime!
   lang: String!
   currency: String!
+  shareAdPartners: Boolean!
+  shareAnalyticsTools: Boolean!
+  shareSocialNetworks: Boolean!
+  sharePaymentProcessors: Boolean!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 enum AccountType {
   admin
@@ -62,6 +69,11 @@ enum AccountStatus {
   suspended
   refused
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type AccountDeletionRequest {
   id: ID!
@@ -255,7 +267,9 @@ type Mutation {
   adminCreateStaffAccount(args: AdminCreateAdminAccountInput!): Boolean!
   adminUpdateStaffAccount(args: AdminUpdateAdminAccountInput!): Boolean!
   register(RegisterInput: CreateAccountInput!): String!
+  updateDataSharingPreferences(input: UpdateDataSharingInput!): Account!
   requestAccountDeletion(args: DeleteAccountRequestInput!): Boolean!
+  suspendAccount(args: SuspendAccountInput!): Boolean!
   editAccount(editAccountInput: UpdateAccountInput!): Account!
   requestIdVerification(requestInput: CreateIdentityVerificationInput!): String!
   provideVVCPicture(pic: String!): Boolean!
@@ -310,6 +324,7 @@ input UpdateSellerAccountAdminInput {
   birthDate: String
   gender: AccountGenderEnum
   phone: String
+  photo: Upload
   id: ID!
 }
 
@@ -322,6 +337,9 @@ enum AccountGenderEnum {
   male
   female
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input DeclineSellerAccountRequest {
   id: ID!
@@ -368,6 +386,14 @@ input CreateAccountInput {
   birthDate: String!
   gender: AccountGenderEnum!
   phone: String
+  photo: Upload
+}
+
+input UpdateDataSharingInput {
+  shareAdPartners: Boolean
+  shareAnalyticsTools: Boolean
+  shareSocialNetworks: Boolean
+  sharePaymentProcessors: Boolean
 }
 
 input DeleteAccountRequestInput {
@@ -376,12 +402,17 @@ input DeleteAccountRequestInput {
   sendData: Boolean
 }
 
+input SuspendAccountInput {
+  accountId: String!
+}
+
 input UpdateAccountInput {
   firstName: String
   lastName: String
-  birthDate: String
+  birthDate: DateTime
   gender: AccountGenderEnum
   phone: String
+  photo: Upload
   id: ID!
   lang: String
   currency: String
@@ -396,6 +427,8 @@ input CreateIdentityVerificationInput {
   dateOfBirth: String!
   id_front: String!
   id_back: String!
+  VVCPicture: String
+  VVC: String
 }
 
 scalar link__Import

@@ -57,4 +57,11 @@ export class RegisterDto {
 
   @Field((type) => String)
   password: string;
+  
+}
+@InputType()
+export class ResendRegisterationCodeInput {
+  @Field()
+  @IsEmail()
+  email: string;
 }

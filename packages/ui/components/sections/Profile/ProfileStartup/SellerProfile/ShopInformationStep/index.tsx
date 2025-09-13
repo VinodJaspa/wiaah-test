@@ -17,7 +17,7 @@ import {
   Button,
   PlusIcon,
   MediaUploadModal,
-  useGetServiceCategoriesQuery,
+
   useCreateShopMutation,
   useResponsive,
   UploadIcon,
@@ -25,12 +25,13 @@ import {
 import { useTypedReactPubsub } from "@libs";
 import {
   BusinessType,
+  CollaborationType,
   ServiceType,
   ShopStatus,
   StoreType,
 } from "@features/API";
 import { cities, useForm } from "utils";
-
+import{  useGetServiceCategoriesQuery} from "ui/components/features/Services/Services/queries"
 const countriesArray = Country.getAllCountries().map((element) => ({
   value: element.isoCode,
   label: element.name,
@@ -65,7 +66,7 @@ export const ShopInformationStep = React.forwardRef(
     >(
       {
         banner: "",
-        businessType: BusinessType.Individual,
+        businessType: BusinessType.Shop,
         description: [],
         email: "",
         hashtags: [],
@@ -78,12 +79,15 @@ export const ShopInformationStep = React.forwardRef(
         storeType: StoreType.Product,
         targetGenders: [],
         thumbnail: "",
-        vidoes: [],
+        videos: [],
         storeFor: [],
         type: ServiceType.Hotel,
-        crn: 544325,
-        language: "English",
-        currency: "USD",
+        collaborationType: CollaborationType.Individual ,// Replace with a valid value from CollaborationType
+        companyName: [{ langId: "en", value: "AASS" }], // Add default value for companyName
+        members: [], // Add default value for members
+        // crn: 544325,
+        // language: "English",
+        // currency: "USD",P
       },
       { location },
     );
@@ -170,54 +174,8 @@ export const ShopInformationStep = React.forwardRef(
               {/* <MediaUploadModal /> */}
             </div>
 
-            <Input
-              className="rounded-md"
-              {...inputProps("crn")}
-              placeholder={t("Company Registered Number (CRN)")}
-              label={t("Company Registered Number (CRN)")}
-            />
-            <Select
-              {...selectProps("currency")}
-              label={t("Select Currency")}
-              placeholder={t("Select Currency")}
-              className=" w-full "
-            >
-              {/* TODO: get available currencies */}
-              <SelectOption value="USD">USD</SelectOption>
-              <SelectOption value="EUR">EUR</SelectOption>
-            </Select>
-            <Select
-              {...selectProps("language")}
-              placeholder={t("Select Language")}
-              label={t("Select Language")}
-              className=" w-full "
-            >
-              {/* TODO: get available languages */}
-              <SelectOption value="english">
-                <TranslationText
-                  translationObject={{
-                    translationKey: "english",
-                    fallbackText: "English",
-                  }}
-                />
-              </SelectOption>
-              <SelectOption value="french">
-                <TranslationText
-                  translationObject={{
-                    translationKey: "french",
-                    fallbackText: "French",
-                  }}
-                />
-              </SelectOption>
-              <SelectOption value="germen">
-                <TranslationText
-                  translationObject={{
-                    translationKey: "germen",
-                    fallbackText: "Germen",
-                  }}
-                />
-              </SelectOption>
-            </Select>
+          
+       
             <Select
               placeholder={t("Shop Type")}
               {...selectProps("storeType")}

@@ -13,6 +13,7 @@ import {
 import { Category as ProductCategory } from "../../../features/API";
 import { Country, City } from "country-state-city";
 import { useTranslation } from "react-i18next";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 
 export interface ShopProductFilterProps {
   priceRange?: { min: number; max: number };
@@ -29,15 +30,7 @@ export interface ShopProductFilterProps {
   open?: boolean;
 }
 
-
-const countriesOptions = [];
 const countries = Country.getAllCountries();
-countries.forEach((element) => {
-  countriesOptions.push({
-    value: element.isoCode,
-    label: element.name,
-  });
-});
 
 export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   priceRange,
@@ -53,12 +46,18 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   brands,
   open,
 }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const [countryCode, setCountryCode] = useState("");
   const [cities, setCities] = useState<any | []>();
-  function handleCountryChange(value: any) {
-    setCountryCode(value);
-    setCities(City.getCitiesOfCountry(value));
+
+  function handleCountryChange(selectedOption: any) {
+    if (selectedOption) {
+      setCountryCode(selectedOption.value);
+      setCities(City.getCitiesOfCountry(selectedOption.value));
+    } else {
+      setCountryCode("");
+      setCities([]);
+    }
   }
 
   const _categories = FormatCategoryFilters(categories || []);
@@ -68,8 +67,8 @@ const { t } = useTranslation();
     if (haveNestedCategories) {
       return (
         <DropdownPanel subPanel={true} name={name}>
-          {subCategories.map((cate) => (
-            <>{renderNested(cate)}</>
+          {subCategories.map((cate, i) => (
+            <React.Fragment key={i}>{renderNested(cate)}</React.Fragment>
           ))}
         </DropdownPanel>
       );
@@ -77,26 +76,32 @@ const { t } = useTranslation();
       return <FilterInput variant="box" label={name} />;
     }
   }
+
+  const countryOptions = React.useMemo(() => {
+    return countries.map((item) => ({
+      value: item.isoCode,
+      label: item.name,
+    }));
+  }, []);
+
   const cityOptions = React.useMemo(() => {
     return cities?.map((item: any) => ({
       value: item.name,
       label: item.name,
     }));
-  }, [cities]); 
-  const countryOptions = React.useMemo(() => {
-      return countries.map((item: any) => item.name);
-    }, [countries]);
-  
+  }, [cities]);
 
   return (
-    <div className="flex flex-col gap-2 bg-white">
+    <div className="flex flex-col gap-2 bg-white text-sm">
       {categories && (
         <DropdownPanel
           // contained={true}
           open={open}
           name={t("Category", "Category")}
         >
-          {_categories?.map((cate, i) => <>{renderNested(cate)}</>)}
+          {_categories?.map((cate, i) => (
+            <React.Fragment key={i}>{renderNested(cate)}</React.Fragment>
+          ))}
           <Spacer />
         </DropdownPanel>
       )}
@@ -111,14 +116,7 @@ const { t } = useTranslation();
           <Spacer />
         </DropdownPanel>
       )}
-      {shipping && (
-        <DropdownPanel open={open} name={t("Shipping", "Shipping")}>
-          {shipping.map((shipping, i) => (
-            <FilterInput variant="box" label={shipping} />
-          ))}
-          <Spacer />
-        </DropdownPanel>
-      )}
+      
       {brands && (
         <DropdownPanel open={open} name={t("Brands", "Brands")}>
           {brands.map((brand, i) => (
@@ -130,15 +128,15 @@ const { t } = useTranslation();
       {rating && (
         <DropdownPanel open={open} name={t("Rating", "Rating")}>
           {[...Array(5)].map((_, i) => (
-            <HStack key={i}>
+            <HStack key={i} className="py-1">
               <FilterInput variant="box" />
               <ReactStars
-                count={5} 
-                value={5 - i} 
-                edit={false} 
-                size={24} 
-                activeColor="#ffd700" 
-                className="text-sm" 
+                count={5}
+                value={5 - i}
+                edit={false}
+                size={18} // Made stars smaller
+                activeColor="#ffd700"
+                className="text-sm"
               />
             </HStack>
           ))}
@@ -148,7 +146,7 @@ const { t } = useTranslation();
       {colors && (
         <DropdownPanel open={open} name={t("Color", "Color")}>
           {colors.map((color, i) => (
-            <HStack key={i}>
+            <HStack key={i} className="py-1">
               <FilterInput variant="box" />
               <span
                 style={{ backgroundColor: color }}
@@ -167,9 +165,17 @@ const { t } = useTranslation();
           <Spacer />
         </DropdownPanel>
       )}
+      {shipping && (
+        <DropdownPanel open={open} name={t("Shipping", "Shipping")}>
+          {shipping.map((shipping, i) => (
+            <FilterInput key={i} variant="box" label={shipping} />
+          ))}
+          <Spacer />
+        </DropdownPanel>
+      )}
       {stockStatus && (
         <DropdownPanel open={open} name={t("Stock_Status", "Stock Status")}>
-          <FilterInput variant="radio" label={t("Available", "Available")} />
+          <FilterInput variant="radio" label={t("New", "Old")} />
           <FilterInput
             name="stock_status"
             variant="radio"
@@ -187,52 +193,31 @@ const { t } = useTranslation();
         </DropdownPanel>
       )}
       {countryFilter && (
-        <div className="country-selector">
-          <div className=" w-full">
+        <div className="country-selector w-full py-2">
           <Select
-            id="countryselect"
-            className="react-select-container w-full"
+            id="country-select"
+            className="react-select-container"
             placeholder={t("Countries", "Countries")}
             onChange={handleCountryChange}
-            value={countryCode}
-            options={countryOptions?.map((name) => name)}
+            options={countryOptions}
             classNamePrefix="react-select"
           />
-  
-            
-          </div>
         </div>
       )}
       {cityFilter && (
-        <div className="city-selector">
-          <div className="mb-2 w-full">
+        <div className="city-selector w-full py-2">
           <Select
-        id="cityselect"
-        className="react-select-container w-full"
-        placeholder={t("Cities", "Cities")}
-        options={cityOptions}
-        isSearchable 
-        classNamePrefix="react-select"
-      />
-            {/* <Select
-              showSearch
-              size="large"
-              id="cityselect"
-              className="react-select-container w-full"
-              placeholder={t("Cities", "Cities")}
-            >
-              {cities?.map((item: any, key: number) => {
-                return (
-                  <Option key={key} value={item.name}>
-                    {item.name}
-                  </Option>
-                );
-              })}
-            </Select> */}
-          </div>
+            id="city-select"
+            className="react-select-container"
+            placeholder={t("Cities", "Cities")}
+            options={cityOptions}
+            isSearchable
+            classNamePrefix="react-select"
+            isDisabled={!countryCode} // Disable if no country is selected
+          />
         </div>
       )}
-      <Button>{t("clear", "Clear")}</Button>
+      <PrimaryButton>{t("clear", "Clear")}</PrimaryButton>
     </div>
   );
 };

@@ -9,12 +9,9 @@ import {
   ModalExtendedWrapper,
   ModalFooter,
   Textarea,
-  ServiceCheckoutCardSwitcher,
-  useGetMyBookingsHistoryQuery,
+
   usePaginationControls,
   ScrollPaginationWrapper,
-  useAcceptPendingAppointmentMutation,
-  useDeclinePendingAppointmentMutation,
   useResponsive,
   HStack,
   ArrowLeftAlt1Icon,
@@ -25,13 +22,15 @@ import { DeclinePendingAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { BookedServiceStatus, ServiceType } from "@features/API";
+import {useAcceptPendingAppointmentMutation,useDeclinePendingAppointmentMutation} from "ui/components/features/Services/Services/mutation"
 import { mapArray } from "@UI/../utils/src";
+import {ServiceCheckoutCardSwitcher} from "ui/components/features/Services/components/Switchers"
 import {
   ServiceBookingCardVariant,
   ServicePendingAppointmentCard,
 } from "@features/Services/components/Cards/ServicePendingAppointmentCard";
 import { useRouting } from "@UI/../routing";
-
+import {useGetMyBookingHistoryQuery} from "../../../features/Services";
 export interface PendingAppointmentsSectionProps {}
 
 export const PendingAppointmentsSection: React.FC<
@@ -42,7 +41,7 @@ const { t } = useTranslation();
   const { back } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
-  const { data } = useGetMyBookingsHistoryQuery({
+  const { data } = useGetMyBookingHistoryQuery({
     status: BookedServiceStatus.Pending,
     pagination,
     q: "",

@@ -1,175 +1,113 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useResponsive } from "hooks";
-import {
-  SelectPackageStep,
-  SectionHeader,
-  Divider,
-  Table,
-  Tr,
-  Td,
-  Th,
-  TableContainer,
-  Tabs,
-  TabTitle,
-  TabsHeader,
-  TabList,
-  SubscriptionPlanCard,
-  HStack,
-  ArrowLeftIcon,
-} from "@UI";
-import {
-  useGetMembershipsQuery,
-  useGetMyMembershipQuery,
-} from "@features/Membership";
-import { mapArray } from "utils";
-import { CommissionOn, MembershipTurnoverRuleType } from "@features/API";
-import { startCase } from "lodash";
-import { useRouting } from "@UI/../routing";
+import { useGetMembershipsQuery, useGetMyMembershipQuery } from "@features/Membership";
+import { Button } from "@UI/components";
+import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
+import Subtitle from "@UI/components/shadcn-components/Title/Subtitle";
+import CancelMembershipDialog from "./Dialog/CancelMembershipDialog";
+import CancellationSuccessDialog from "./Dialog/CancellationSuccessDialog";
 
-function getObjectByAmount<
-  TObj extends Record<string, any>,
-  Tkey extends keyof TObj,
->(arr: TObj[], currentAmount: number, key: Tkey) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (currentAmount >= arr[i][key] && currentAmount < arr[i + 1][key]) {
-      return arr[i];
-    }
-  }
+export const MembershipCard = ({ title, price, description, features, isRecommended }: {
+  title: string;
+  price: string;
+  description?: string;
+  features: string[];
+  isRecommended?: boolean;
+}) => {
+  return (
+    <div className="border rounded-lg p-6 w-full max-w-sm shadow-sm flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <Subtitle>
+          {title}
+        </Subtitle>
 
-  // If current amount is higher than the highest amount in the array, return the last object
-  return arr[arr.length - 1];
-}
-
-export interface MembershipSectionProps {}
-
-type FormatedMembershipExpense = {
-  name: string;
-  usage: number;
-  usageType: string;
-  price: number;
-  key: string;
+        {isRecommended && (
+          <span className="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">Recommended</span>
+        )}
+      </div>
+      <div className="text-3xl font-bold">{price} <span className="text-sm font-normal">/month</span></div>
+      <button className="bg-gray-100 text-black rounded-md py-2">Select</button>
+      <ul className="text-sm text-gray-700 space-y-1">
+        {features.map((f, idx) => (
+          <li key={idx} className="flex items-start gap-2">✓ {f}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
-export const MembershipSection: React.FC<MembershipSectionProps> = () => {
-const { t } = useTranslation();
-  const { isMobile } = useResponsive();
-  const { back } = useRouting();
-  const { data } = useGetMembershipsQuery();
+export const MembershipSection: React.FC = () => {
+  const { t } = useTranslation();
   const { data: myMembership } = useGetMyMembershipQuery();
+  const [isCancelMemberShipDialog, setCancelMemberShipDialog] = React.useState(false);
+  const [showSuccess, setShowSuccess] = React.useState(true);
+  return (
+    <div className="w-full p-6 flex flex-col gap-8">
+      <SectionTitle title={t("Membership")} />
+      <CancelMembershipDialog
+        isOpen={isCancelMemberShipDialog}
+        onClose={() => setCancelMemberShipDialog(false)}
+        onCancelMembership={() => {
+          // your cancel logic
+          setCancelMemberShipDialog(false);
+          setShowSuccess(true);
+        }}
+      />
+      <CancellationSuccessDialog
+        isOpen={showSuccess}
+        onClose={() => setShowSuccess(false)}
+        onRejoin={() => console.log("Rejoin clicked")}
+        onReturnToAccount={() => {
+          setShowSuccess(false);
+          // Navigate to account page
+        }}
+      />
 
-  const formatedExpenses = myMembership?.membership.turnover_rules.reduce(
-    (acc, curr, i) => {
-      const filtered = acc.filter(
-        (v) => v.key !== curr.key,
-      ) as FormatedMembershipExpense[];
-      const target = acc.find(
-        (v) => v.key === curr.key,
-      ) as FormatedMembershipExpense;
+      <div>
+        <h2 className="text-lg font-semibold mb-2">{t("Current Plan")}</h2>
+        <div className="flex items-center gap-4 bg-gray-100 px-4 py-2 w-fit rounded-lg">
+          <div className="text-sm font-medium">Premium</div>
+          <div className="text-xs text-gray-500">Expires on 12/31/2024</div>
+        </div>
+      </div>
 
-      const currentTier = getObjectByAmount(
-        myMembership.membership.turnover_rules
-          .filter((v) => v.key === curr.key)
-          .sort((a, b) => a.usage! - b.usage!),
-        myMembership.usage,
-        "usage",
-      );
+      <div>
+        <Subtitle>
+          {t("Available Plans")}
+        </Subtitle>
 
-      return filtered.concat(
-        target
-          ? [
-              {
-                ...target,
-                price: currentTier.commission,
-              } as FormatedMembershipExpense,
-            ]
-          : [
-              {
-                name: myMembership.membership.name,
-                key: curr.key,
-                price: curr.commission,
-                usage:
-                  curr.type === MembershipTurnoverRuleType.Flat
-                    ? 1
-                    : myMembership.usage,
-                usageType: startCase(curr.commission.toString()),
-              },
-            ],
-      );
-    },
-    [] as FormatedMembershipExpense[],
-  );
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <MembershipCard
+            title="Basic"
+            price="Free"
+            features={["Limited listings", "Basic analytics"]}
+          />
 
-  return isMobile ? (
-    <div className="flex flex-col gap-4 p-2">
-      <HStack className="relative justify-center">
-        <p className="text-lg font-semibold">{t("Your Membership")}</p>
-        <button
-          className="absolute top-1/2 -translate-y-1/2 left-1"
-          onClick={() => back()}
-        >
-          <ArrowLeftIcon className="text-lg" />
+          <MembershipCard
+            title="Standard"
+            price="$19.99"
+            features={["Unlimited listings", "Advanced analytics", "Priority support"]}
+            isRecommended
+          />
+
+          <MembershipCard
+            title="Premium"
+            price="$49.99"
+            features={["Unlimited listings", "Advanced analytics", "24/7 support", "Exclusive features"]}
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row justify-end mt-6 gap-2 sm:gap-4">
+        <button onClick={() => setCancelMemberShipDialog(true)} className="text-sm text-blue-600 hover:underline w-full sm:w-auto text-center">
+          {t("Cancel Membership")}
         </button>
-      </HStack>
+        <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg w-full sm:w-auto">
+          {t("Upgrade to Premium")}
+        </button>
 
-      <Table
-        TdProps={{ align: "center" }}
-        ThProps={{ className: "font-semibold text-sm" }}
-      >
-        <Tr>
-          <Th>{t("Package Name")}</Th>
-          <Th>{t("End Date")}</Th>
-          <Th>{t("Price")}</Th>
-        </Tr>
-        {mapArray(formatedExpenses, (v:any, i) => (
-          <Tr>
-            <Td className="text-primary">{v.name}</Td>
-            <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
-            <Td>{v?.price}</Td>
-          </Tr>
-        ))}
-      </Table>
-
-      <div className="flex flex-col gap-4">
-        <p className="text-lg font-medium">{t("Select a plan")}</p>
-        <SelectPackageStep shopType={""} onChange={() => {}} value="" />
       </div>
-    </div>
-  ) : (
-    <div className="w-full flex flex-col">
-      <SectionHeader sectionTitle={t("Your Membership")} />
-      <div className="border-[1px] border-black border-opacity-10 shadow-md flex flex-col py-4">
-        <TableContainer>
-          <Table
-            ThProps={{
-              className: "whitespace-nowrap",
-            }}
-            TdProps={{
-              className: "first:text-primary text-gray-700",
-            }}
-          >
-            <Tr>
-              <Th>{t("Package Name")}</Th>
-              <Th>{t("Usage")}</Th>
-              <Th>{t("Commission on")}</Th>
-              <Th>{t("Price")}</Th>
-              <Th>{t("End Date")}</Th>
-            </Tr>
-            {mapArray(formatedExpenses, (v:any, i) => (
-              <Tr>
-                <Td>{v?.name}</Td>
-                <Td>{v?.usage}</Td>
-                <Td>{v?.usageType}</Td>
-                <Td>{v?.price}</Td>
-                <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
-              </Tr>
-            ))}
-          </Table>
-        </TableContainer>
-      </div>
-      <Divider className="my-2" />
 
-      <SelectPackageStep shopType={""} onChange={() => {}} value="" />
     </div>
   );
 };

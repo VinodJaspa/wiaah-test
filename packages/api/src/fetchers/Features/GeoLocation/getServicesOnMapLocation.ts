@@ -154,7 +154,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
           price: [50, 500],
           rating: 4.8,
           thumbnail:
-            "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/Tacha+Beauty+Center-desktop.jpg",
+            "https://i.pinimg.com/564x/39/4c/70/394c70694d5cbce7bef4b724b822cce3.jpg",
           title: "Beauty Haven",
         },
         serviceType: "beauty_center",
@@ -185,7 +185,7 @@ const servicesPH: InferType<typeof ServiceOnMapLocationDataValidationSchema>[] =
           price: [50, 500],
           rating: 4.8,
           thumbnail:
-            "https://www.iosrelocations.com/img/service-2/car-rental-services.jpg",
+            "https://thedesignawards.co.uk/wp-content/uploads/2022/05/SpaSpa-Hotel_Blended-Wellness-Spa_-Bishop-Design_1-2.jpg",
           title: "Beauty Haven",
         },
         serviceType: "vehicle",

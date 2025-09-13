@@ -4,6 +4,9 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   ignorePatterns: ["prisma/**", "dist/", "node_modules/", "nx/", "turbo/"],
+  env: {
+    node: true,
+  },
   rules: {
     "react/react-in-jsx-scope": "off",
     "no-console": "off", 

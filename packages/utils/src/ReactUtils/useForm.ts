@@ -47,7 +47,12 @@ export function useForm<TForm>(
       }
     }
   }
-
+  function triggerValidation(): boolean {
+    const [isValid, validationErrors] = validate();
+    setErrors(validationErrors);
+    return isValid;
+  }
+  
   function handleChange<Tkey extends keyof TForm, Tvalue extends TForm[Tkey]>(
     key: Tkey,
     v: Tvalue
@@ -60,6 +65,7 @@ export function useForm<TForm>(
         setErrors(errors);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       options?.onChange && options.onChange(newV);
       return newV;
     });
@@ -209,6 +215,7 @@ export function useForm<TForm>(
   return {
     form: data,
     handleChange,
+    formErrors: errors,
     inputProps,
     selectProps,
     dateInputProps,
@@ -218,6 +225,7 @@ export function useForm<TForm>(
     isValid: () => validate()[0],
     radioInputProps,
     reset: () => setData(initial),
+    triggerValidation,
     setInitialData,
   };
 }

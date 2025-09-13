@@ -177,6 +177,7 @@ model Shop {
   ownerId         String               @unique
   name            TranslationText[]
   description     TranslationText[]
+  companyName TranslationText[]
   banner          String
   verified        Boolean
   createdAt       DateTime             @default(now())
@@ -189,6 +190,8 @@ model Shop {
   storeType       StoreType
   storeCategoryId String?              @db.ObjectId
   businessType    BusinessType
+  collaborationType    CollaborationType
+    members   Member[]
   storeFor        StoreFor[]
   targetGenders   TargetGenders[]
   vat             VatSettings?
@@ -308,6 +311,7 @@ enum VisibilityEnum {
 }
 
 type ProductPresentation {
+  asset_id String
   type PresentationType
   src  String
 }
@@ -333,10 +337,17 @@ enum StoreType {
 }
 
 enum BusinessType {
+  shop
+  services
+}
+enum AccountType {
   company
   individual
 }
-
+enum CollaborationType {
+ company
+  individual
+}
 enum TargetGenders {
   male
   female
@@ -418,4 +429,29 @@ enum StoreFor {
   women
   children
   babies
+}
+model Member {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  shopId      String   @db.ObjectId
+  shop        Shop     @relation(fields: [shopId], references: [id])
+
+  memberType  MemberType[]
+  firstName   String
+  lastName    String
+  email       String
+  birthDate   DateTime?
+  idNumber    String?
+  idExpiration DateTime?
+  phone       String?
+  address     String?
+  city        String?
+  state       String?
+  postalCode  String?
+  country     String
+}
+enum MemberType {
+ Owner
+  Executive
+  Representative
+  Director
 }

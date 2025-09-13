@@ -1,7 +1,8 @@
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  useGetMyServicesQuery,
+
   MyServicesCtx,
   Button,
   useCursorScrollPagination,
@@ -19,7 +20,7 @@ import {
   ModalContent,
   ModalFooter,
   HStack,
-  useDeleteServiceMutation,
+
   useUserData,
   Th,
   TBody,
@@ -27,7 +28,8 @@ import {
 import { ServiceType } from "@features/API";
 import { setTestid } from "utils";
 export interface MyServicesListProps { }
-
+import{useDeleteServiceMutation} from "ui/components/features/Services/Services/mutation"
+import {  useGetMyServicesQuery} from "ui/components/features/Services/settings/services/queries"
 export const UserServicesList: React.FC<{ accountId: string }> = () => {
   const [deleteId, setDeleteId] = React.useState<string>();
 

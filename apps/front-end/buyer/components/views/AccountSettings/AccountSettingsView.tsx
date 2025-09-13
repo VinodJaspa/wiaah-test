@@ -33,7 +33,7 @@ export const AccountSettingsView: React.FC = () => {
 
   React.useEffect(() => {
     if (!route) {
-      // router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+      router.push(`/${baseRoute}/${sections[0].panelUrl}`);
     }
   }, [router, route]);
 

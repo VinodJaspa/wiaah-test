@@ -13,3 +13,5 @@ export * from "./Localizations";
 export * from "./Search";
 export * from "./TypeOfAccount";
 export * from "./payment";
+export * from "./allServicesMckData";
+export * from "./getShopMckData";

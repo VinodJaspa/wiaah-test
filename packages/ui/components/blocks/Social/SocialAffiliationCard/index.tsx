@@ -167,9 +167,9 @@ const { t } = useTranslation();
             </MenuButton>
             <MenuList className="text-black">
               <MenuItem>
-                <p>{t("hide", "Hide")}</p>
+                {/* <p>{t("hide", "Hide")}</p> */}
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={()=> alert("okk")}>
                 <p>{t("go_to_post", "Go to post")}</p>
               </MenuItem>
               <MenuItem>
@@ -181,7 +181,7 @@ const { t } = useTranslation();
                 <p>{t("copy_link", "Copy link")}</p>
               </MenuItem>
               <MenuItem>
-                <p>{t("cancel", "Cancel")}</p>
+                {/* <p>{t("cancel", "Cancel")}</p> */}
               </MenuItem>
             </MenuList>
           </Menu>

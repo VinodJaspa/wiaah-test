@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatio, Rate, Button, HStack } from "@UI";
+import { AspectRatio, Rate, HStack, Button } from "@UI";
 import { DateDetails } from "utils";
-import { ServiceOwnerAccount } from "api";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 
 export interface MarketServicesProviderHeaderProps {
   name: string;
@@ -11,31 +11,50 @@ export interface MarketServicesProviderHeaderProps {
   thumbnail: string;
   travelPeriod?: string[];
 }
+
 export const MarketServicesProviderHeader: React.FC<
   MarketServicesProviderHeaderProps
 > = ({ name, rating, reviewsCount, thumbnail, travelPeriod }) => {
   const departure = travelPeriod ? DateDetails(travelPeriod[0]) : null;
   const arrival = travelPeriod ? DateDetails(travelPeriod[1]) : null;
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
+const handleShowOnMap =()=>{
+
+}
   return (
     <div className="flex w-full justify-between gap-4">
-      <div className="flex flex-col sm:flex-row items-center sm:w-auto sm:items-start w-full gap-4">
-        <div className="w-28">
+      <div className="flex flex-col sm:flex-row items-center sm:w-auto sm:items-start w-full gap-3">
+        {/* Thumbnail with Follow overlay */}
+        <div className="relative w-24">
           <AspectRatio ratio={3 / 4}>
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-lg"
               src={thumbnail}
               alt={name}
             />
           </AspectRatio>
+          {/* Follow text over image */}
+
         </div>
-        <div className="flex flex-col gap-1">
-          <div className="flex flex-col h-full gap-4 md:gap-0 justify-between">
-            <div className="flex flex-col sm:flex-row gap-2">
-              <div className="flex flex-col">
-                <p className="font-bold text-lg">{name}</p>
+
+        {/* Details */}
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col h-full gap-3 md:gap-2 justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex flex-col gap-1">
                 <div className="flex gap-2">
+                <p className="font-semibold text-base">{name}</p>
+                <p
+                  onClick={() => { }}
+                  className="bg-white/80 px-2 py-1 rounded text-xs text-primary font-medium cursor-pointer"
+                >
+                  {t("Follow")}
+                </p>
+                </div>
+              
+             
+                <div className="flex gap-2 items-center text-sm text-gray-600">
                   <p>
                     {rating}/{t("5")}
                   </p>
@@ -44,23 +63,27 @@ const { t } = useTranslation();
                     {reviewsCount} {t("reviews")}
                   </p>
                 </div>
+               <p
+                      onClick={handleShowOnMap}
+                      className="whitespace-nowrap  text-primary mt-4"
+                    >
+                      {t("Show on map")}
+                    </p>
               </div>
-              <Button className="">{t("Contact host")}</Button>
+              <PrimaryButton className="ml-12">
+                {t("Contact host")}
+              </PrimaryButton>
+             
             </div>
-            <HStack className="justify-center sm:justify-start">
-              <p
-                onClick={() => {}}
-                className="text-primary flex cursor-pointer justify-center items-center w-fit "
-              >
-                {t("Follow")}
-              </p>
-
+           
+            {/* Travel period info */}
+            <HStack className="justify-center sm:justify-start gap-3 text-sm">
               {travelPeriod && arrival && departure ? (
-                <div className="flex gap-2">
+                <div className="flex gap-2 text-gray-600">
                   <p>
                     {`${arrival.hour}:${arrival.twoDigitMinute}`} {t("Arrival")}
                   </p>
-                  <p>-</p>
+                  <span>-</span>
                   <p>
                     {`${departure.hour}:${departure.twoDigitMinute}`}{" "}
                     {t("Departure")}

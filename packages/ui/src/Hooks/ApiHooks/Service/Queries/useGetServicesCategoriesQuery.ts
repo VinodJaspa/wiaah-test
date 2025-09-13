@@ -1,6 +1,10 @@
 import { ServiceType } from "@features/API";
-import { getServicesCategoriesFetcher, QueryPaginationInputs } from "api";
+import { QueryPaginationInputs } from "api";
 import { useQuery } from "react-query";
+
+// Helper to capitalize words
+const capitalizeWords = (str: string) =>
+  str.replace(/\b\w/g, (char) => char.toUpperCase());
 
 export const useGetServicesCategoriesQuery = (
   pagination: QueryPaginationInputs
@@ -10,20 +14,16 @@ export const useGetServicesCategoriesQuery = (
       { name: "holidays rentals", slug: ServiceType.HolidayRentals },
       { name: "hotels", slug: ServiceType.Hotel },
       { name: "resturants", slug: ServiceType.Restaurant },
-      {
-        name: "health center",
-        slug: ServiceType.HealthCenter,
-      },
-      {
-        name: "vehicle",
-        slug: ServiceType.Vehicle,
-      },
-      {
-        name: "beauty center",
-        slug: ServiceType.BeautyCenter,
-      },
+      { name: "health center", slug: ServiceType.HealthCenter },
+      { name: "vehicle", slug: ServiceType.Vehicle },
+      { name: "beauty center", slug: ServiceType.BeautyCenter },
+      // { name: "shop", slug: ServiceType.Shop },
     ];
 
-    return res;
+    // Capitalize category names
+    return res.map((item) => ({
+      ...item,
+      name: capitalizeWords(item.name),
+    }));
   });
 };

@@ -1,1 +1,1 @@
-export * from "./ProductManagement";
+export * from "./ProductManagement/index";

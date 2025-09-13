@@ -1,4 +1,4 @@
-import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "@UI";
+import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "ui";
 import { Meta } from "@storybook/react";
 import { NotificationType } from "@features/API";
 

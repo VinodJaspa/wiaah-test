@@ -11,7 +11,7 @@ import {
   SaveIcon,
   Select,
   SelectOption,
-  useMediaUploadControls,
+
 } from "ui";
 import React from "react";
 import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
@@ -84,3 +84,7 @@ const AddPartner = () => {
 };
 
 export default AddPartner;
+function useMediaUploadControls(): { controls: any; uploadImage: any; uploadVideo: any; } {
+  throw new Error("Function not implemented.");
+}
+

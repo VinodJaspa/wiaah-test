@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import {
   SpinnerFallback,
-  useGetServicesProviderQuery,
+
   Divider,
   SectionsScrollTabList,
   Accordion,
@@ -22,6 +23,8 @@ import {
   GetShopDetailsQuery,
   ServiceReservastionForm,
   GetServiceDetailsQuery,
+
+
 } from "ui";
 import { getRandomImage, reviews } from "placeholder";
 import { useResponsive } from "hooks";
@@ -71,7 +74,7 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
 
   const res = FAKE_SHOP_DETAILS;
-  const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
+  // const { data: _data } = useGetServicesProviderQuery(res?.ownerId || "");
   const {
     data: _res,
     isError,
@@ -80,7 +83,7 @@ export const MarketHotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const data = FAKE_DATA;
 const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-8 px-2 py-8">
+    <div className="flex flex-col gap-8 px-4 sm:px-6 lg:px-12 py-8 m-10">
       {res ? (
         <MarketServicesProviderHeader
           name={res.sellerProfile.username}
@@ -288,7 +291,7 @@ const FAKE_DATA: GetServiceDetailsQuery["getServiceDetails"] = {
 export const FAKE_SHOP_DETAILS: GetShopDetailsQuery["getUserShop"] = {
   __typename: "Shop",
   banner: "/shop.jpeg",
-  businessType: BusinessType.Company,
+  businessType: BusinessType.Shop,
   images: ["/shop.jpeg", "/shop.jpeg"],
   videos: ["https://placeholder.com/video1.mp4"],
   createdAt: new Date().toISOString(),

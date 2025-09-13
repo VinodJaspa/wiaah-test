@@ -4,7 +4,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 import { ReviewSeeder } from './seeders/reviews.seeder';
 
 export const client = new MongoClient(
-  'mongodb+srv://kerlos:1234@cluster0.4voto.mongodb.net/?retryWrites=true&w=majority',
+  "mongodb+srv://havilahgroup:Xfgamxu5leyStP8H@cluster0.w8ye9mk.mongodb.net/retryWrites=true&w=majority&appName=Cluster0",
   {
     serverApi: {
       version: ServerApiVersion.v1,

@@ -5,20 +5,30 @@ import { useRouting } from "routing";
 
 export const CustomerService: FC = () => {
   const { getUrl } = useRouting();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+
   return (
-    <div className="block w-full space-y-4">
-      <span className="font-bold text-white uppercase">
-        {t("Customer Service")}
-      </span>
+    <div className="block w-full space-y-4 md:ml-4">
+      {/* Heading */}
+      <p className="text-white font-semibold text-lg">
+        {t("Customer service")}
+      </p>
+
+      {/* Links */}
       <ul className="block space-y-4 text-sm text-gray-400">
         <li>
-          <Link href={getUrl((r) => r.visitContactUs())}>
-            {t("Contact Us")}
+          <Link
+            href={getUrl((r) => r.visitContactUs())}
+            className="hover:text-gray-300 transition-colors"
+          >
+            {t("Contact us")}
           </Link>
         </li>
         <li>
-          <Link href={getUrl((r) => r.visitHelpAndFaqs())}>
+          <Link
+            href={getUrl((r) => r.visitHelpAndFaqs())}
+            className="hover:text-gray-300 transition-colors"
+          >
             {t("Help and FAQs")}
           </Link>
         </li>

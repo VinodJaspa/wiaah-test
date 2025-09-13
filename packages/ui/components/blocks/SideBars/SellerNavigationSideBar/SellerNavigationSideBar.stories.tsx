@@ -7,7 +7,7 @@ import {
   DiscoverIcon,
   ShoppingCartIcon,
   ServicesIcon,
-} from "@UI";
+} from "ui";
 import { CgPlayButtonR } from "react-icons/cg";
 export default {
   title: "UI/blocks/SideBars/SellerNavigationSideBar",
@@ -56,7 +56,7 @@ export const Default = {
       {
         name: "service",
         icon: ServicesIcon,
-        url: "services",
+        url: "service",
       },
       {
         name: "affiliation",

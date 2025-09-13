@@ -1,36 +1,33 @@
-import React from "react";
+"use client";
+import { Dialog, DialogBackdrop, DialogPanel, Transition } from "@headlessui/react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { HiSearch } from "react-icons/hi";
 import { useReactPubsub } from "react-pubsub";
 import {
-  useGetShareWithFriends,
-  SpinnerFallback,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalHeader,
-  Checkbox,
-  ModalCloseButton,
-  CloseIcon,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  HStack,
   Button,
+  SpinnerFallback,
 } from "@UI";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
+import {
+  X,
+  MessageSquare,
+  Smartphone,
+  Instagram,
+  Facebook,
+  Mail,
+  Link,
+  QrCode,
+  Repeat,
+} from "lucide-react";
 
-export interface ShareWithModalProps { }
-
-interface Events {
-  sharePostWithModal: () => void;
-}
+export interface ShareWithModalProps {}
 
 export const useShareWithModal = () => {
   const { Listen, emit, removeListner } = useReactPubsub(
     (e) => "OpenShareWithModal",
   );
 
-  function OpenModal(id: string) {
+  function openShareModal(id: string) {
     emit({ id });
   }
 
@@ -42,128 +39,156 @@ export const useShareWithModal = () => {
     emit,
     Listen,
     removeListner,
-    OpenModal,
+    openShareModal,
     CloseModal,
   };
 };
 
+// Generate some random avatar images (using Unsplash)
+const FAKE_DATA = Array.from({ length: 8 }).map((_, i) => ({
+  id: `${i + 1}`,
+  name: ["Ava", "Ella", "Kai", "Nora", "Liam", "Mia", "Noah", "Sophia", "Lucas", "Isabella", "Ethan", "Olivia"][i % 12],
+  username: `@user${i + 1}`,
+  photo: `https://picsum.photos/seed/user${i + 1}/100/100`,
+}));
+
 export const ShareWithModal: React.FC = () => {
   const { Listen } = useShareWithModal();
-  const [postId, setPostId] = React.useState<string | undefined>();
-const { t } = useTranslation();
-  const [messageValue, setMessageValue] = React.useState("");
-  const [search, setSearch] = React.useState("");
+  const { t } = useTranslation();
 
-  // Fetch data with the search key
-  const { data: _data, isLoading, isError } = useGetShareWithFriends(search);
-  const data = FAKE_DATA;
-
-  // State to store the filtered results
-  const [filtered, setFiltered] = React.useState<typeof data>([]);
-
-  const [shareWith, setShareWith] = React.useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [postId, setPostId] = useState<string>();
+  const [search, setSearch] = useState("");
+  const [filtered, setFiltered] = useState<typeof FAKE_DATA>([]);
+  const [shareWith, setShareWith] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Listen for modal opening with a post ID
-  React.useEffect(() => {
+  useEffect(() => {
     Listen((props) => {
       if ("id" in props && typeof props.id === "string") {
         setPostId(props.id);
+        setIsOpen(true);
       }
     });
   }, [Listen]);
 
-  // Update `filtered` whenever `data` or `search` changes
-  React.useEffect(() => {
-    if (data) {
-      setFiltered(
-        data.filter(({ name }) =>
-          name.toLowerCase().includes(search.toLowerCase()),
-        ),
-      );
-    }
-  }, [data, search]);
+  // Filter contacts
+  useEffect(() => {
+    setFiltered(
+      FAKE_DATA.filter((u) =>
+        u.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search]);
 
-  // Functions to add/remove users from share list
   function handleAddToShareList(userId: string) {
     setShareWith((state) => [...state, userId]);
   }
   function handleRemoveFromShareList(userId: string) {
     setShareWith((state) => state.filter((user) => user !== userId));
   }
+  const toggleUser = (id: string) => {
+    // shareWith.includes(id)
+    //   ? handleRemoveFromShareList(id)
+    //   : handleAddToShareList(id);
+  };
+
+  const shareOptions = [
+    { label: "SMS", icon: <Smartphone className="h-4 w-4 mr-2" /> },
+    { label: "WhatsApp Contact", icon: <MessageSquare className="h-4 w-4 mr-2 text-green-600" /> },
+    { label: "Instagram", icon: <Instagram className="h-4 w-4 mr-2 text-pink-500" /> },
+    { label: "Facebook", icon: <Facebook className="h-4 w-4 mr-2 text-blue-600" /> },
+    { label: "Direct Message", icon: <MessageSquare className="h-4 w-4 mr-2 text-purple-600" /> },
+    { label: "Email", icon: <Mail className="h-4 w-4 mr-2 text-red-500" /> },
+    { label: "Copy Link", icon: <Link className="h-4 w-4 mr-2" /> },
+    { label: "QR Code", icon: <QrCode className="h-4 w-4 mr-2" /> },
+    { label: "Repost", icon: <Repeat className="h-4 w-4 mr-2" /> },
+  ];
 
   return (
-    <Modal isOpen={!!postId} onClose={() => setPostId(undefined)}>
-      <ModalOverlay />
-      <ModalContent>
-        <p className="text-xl font-semibold">{t("share_with", "Share with")}</p>
-        <div className="w-[400px]">
-          <div className="flex flex-col gap-4">
-            <Input
-              flushed
-              value={messageValue}
-              onChange={(e) => setMessageValue(e.target.value)}
-              placeholder={`${t("write_a_message", "Write a message")}...`}
-            />
-            <InputGroup>
-              <InputLeftElement>
-                <HiSearch />
-              </InputLeftElement>
-              <Input
-                flushed
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={t("search", "Search")}
-              />
-            </InputGroup>
-            <div className="thinScroll flex max-h-[20rem] overflow-scroll flex-col gap-4">
-              <SpinnerFallback isLoading={isLoading} isError={isError}>
-                {filtered && filtered.length > 0 ? (
-                  filtered.map((user) => (
-                    <HStack key={user.id}>
-                      <Checkbox
-                        onChange={(e) =>
-                          e.target.checked
-                            ? handleAddToShareList(user.id)
-                            : handleRemoveFromShareList(user.id)
-                        }
-                        className="border-black"
-                      />
-                      <div className="w-12 h-12">
+    <Transition show={isOpen}>
+      <Dialog onClose={() => setIsOpen(false)} className="relative z-50">
+        {/* Overlay */}
+        <DialogBackdrop className="fixed inset-0 bg-black/30" />
+
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <DialogPanel className="bg-white w-full max-w-3xl rounded-2xl shadow-lg p-4 md:p-6 overflow-y-auto max-h-[90vh]">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b pb-3">
+              <Dialog.Title className="text-lg font-semibold">
+                {t("share_with", "Share with")}
+              </Dialog.Title>
+              <button onClick={() => setIsOpen(false)}>
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+
+            {/* Search */}
+            <div className="mt-4 relative">
+              <SearchBoxInner placeholder="Search contacts" onChange={(e: any) => setSearch(e.target.value)} />
+            </div>
+
+            {/* Contacts */}
+            <div className="mt-6">
+              <SpinnerFallback isLoading={isLoading}>
+                {filtered.length > 0 ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                    {filtered.map((user) => (
+                      <div
+                        key={user.id}
+                        onClick={() => toggleUser(user.id)}
+                        className={`flex flex-col items-center cursor-pointer p-2 rounded-lg transition ${
+                          shareWith.includes(user.id)
+                            ? "ring-2 ring-black"
+                            : "hover:bg-gray-50"
+                        }`}
+                      >
                         <img
-                          className="bg-black object-contain w-full h-full rounded-lg"
                           src={user.photo}
                           alt={user.name}
+                          className="w-16 h-16 rounded-full object-cover"
                         />
+                        <p className="mt-2 text-sm font-medium">{user.name}</p>
+                        <p className="text-xs text-gray-500">{user.username}</p>
                       </div>
-                      <p>{user.name}</p>
-                    </HStack>
-                  ))
+                    ))}
+                  </div>
                 ) : (
-                  <p>{t("no_results", "No results found")}</p>
+                  <p className="text-gray-500 text-sm mt-6">
+                    {t("no_results", "No results found")}
+                  </p>
                 )}
               </SpinnerFallback>
             </div>
-          </div>
+
+            {/* Share via */}
+            <div className="mt-8">
+              <p className="text-sm font-semibold text-gray-700 mb-3">
+                {t("share_via", "Share via")}
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {shareOptions.map((option) => (
+                  <button
+                    key={option.label}
+                    className="flex items-center justify-start border rounded-lg py-2 px-3 text-sm font-medium hover:bg-gray-50"
+                  >
+                    {option.icon}
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-end mt-6">
+              <Button onClick={() => console.log("Share", shareWith)}>
+                {t("share", "Share")}
+              </Button>
+            </div>
+          </DialogPanel>
         </div>
-        <div className="flex gap-2 justify-end">
-          <Button
-            onClick={() => {
-              /* handle share logic */
-            }}
-          >
-            {t("share", "Share")}
-          </Button>
-        </div>
-      </ModalContent>
-    </Modal>
+      </Dialog>
+    </Transition>
   );
 };
-
-const FAKE_DATA = [
-  { id: "1", name: "wiaah", photo: "/wiaah_logo.png" },
-  { id: "2", name: "seller", photo: "/shop.jpeg" },
-  { id: "3", name: "buyer", photo: "/shop-2.jpeg" },
-  { id: "4", name: "wiaah", photo: "/wiaah_logo.png" },
-  { id: "5", name: "seller", photo: "/shop.jpeg" },
-  { id: "6", name: "buyer", photo: "/shop-2.jpeg" },
-];

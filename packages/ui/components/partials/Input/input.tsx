@@ -48,7 +48,7 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div className="w-full">
-      {label ? <p className="font-medium">{label}</p> : null}
+      {label ? <p className="font-sm pt-2 pb-2 ">{label}</p> : null}
       <div className="relative">
         <input
           type={
@@ -59,15 +59,18 @@ export const Input: React.FC<InputProps> = ({
               : props.type || undefined
           }
           onFocus={(e) => {
-            props.onFocus && props.onFocus(e);
-            setFocused && setFocused(true);
+            if (props.onFocus) {
+              props.onFocus(e);
+              setFocused(true);
+            }
+
           }}
           {...props}
           className={`${className || ""} ${isInputGroup
-              ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
-              : flushed
-                ? "border-b-2 border-t-0 border-l-0 border-r-0"
-                : "border-2"
+            ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
+            : flushed
+              ? "border-b-2 border-t-0 border-l-0 border-r-0"
+              : "border-2"
             }
         focus:border-primary-200 border-[#EDEDED] rounded-lg px-3 w-full h-10`}
         />
@@ -90,9 +93,13 @@ export const Input: React.FC<InputProps> = ({
         ) : null}
       </div>
       {description ? <p>{description}</p> : null}
-      {error ? (
-        <p className="font-semibold text-red-500 text-lg pt-1">{error}</p>
-      ) : null}
+      <p
+        className={`font-sm text-sm pt-0 min-h-[20px] transition-all ${error ? "text-red-500 visible" : "invisible"
+          }`}
+      >
+        {error || "‎" /* invisible empty char to reserve height */}
+      </p>
+
     </div>
   );
 };

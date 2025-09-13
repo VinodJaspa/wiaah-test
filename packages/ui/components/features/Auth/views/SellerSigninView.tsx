@@ -1,5 +1,6 @@
+'use client';
 import { useRouting } from "@UI/../routing";
-import { setTestid, useForm } from "@UI/../utils/src";
+import { errorToast, setTestid, successToast, useForm } from "@UI/../utils/src";
 import {
   Button,
   Checkbox,
@@ -13,12 +14,19 @@ import { useSigninMutation } from "../services";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import Recaptcha from "react-google-recaptcha";
-
-export const SellerSigninView: React.FC = () => {
-const { t } = useTranslation();
+import { useSetRecoilState } from 'recoil';
+import { useRouter } from "next/router";
+import { isUserLoggedIn } from "state";
+type SellerSigninViewProps = {
+  onNavigate: () => void;
+};
+export const SigninView: React.FC<SellerSigninViewProps> = ({ onNavigate }) => {
+  const { t } = useTranslation();
   const { getUrl } = useRouting();
+  const router = useRouter();
+  const setUserLoggedIn = useSetRecoilState(isUserLoggedIn);
+  const { mutate: signin, isLoading } = useSigninMutation();
 
-  const { mutate: signin } = useSigninMutation();
   const { form, inputProps } = useForm<Parameters<typeof signin>[0]>(
     {
       email: "",
@@ -70,23 +78,58 @@ const { t } = useTranslation();
           </Link>
         </HStack>
       </div>
-      <Recaptcha sitekey={"6Le6C70nAAAAAJTH4JRbMgmYx1LMRvbFMrxbkpxg"} />
+      <Recaptcha sitekey={"6LfEeDQrAAAAAIfYlrUyUSyxdbrRNTEcSDuz18Yg"} />
       <Button
         {...setTestid("login-form-submit-btn")}
-        onClick={() => signin(form)}
-        className="font-medium w-full"
+        onClick={() =>
+          signin(form, {
+            onSuccess: (res: any) => {
+              if (res.success) {
+                const token = res?.accessToken;
+                if (token) {
+                  setUserLoggedIn(true);
+                  successToast(res?.message || "Sign in successful!");
+                  router.push("/");
+                } 
+              } else {
+                console.log(res,"response");
+                
+                const errorMessage =
+                  res?.response?.errors?.[0]?.message ||
+                  res?.message ||
+                  'Unknown error';
+                  errorToast(errorMessage)
+
+              }
+
+
+            },
+            onError: (err: any) => {
+              const message =
+                err?.response?.data?.message ||
+                err?.message ||
+                "Sign in failed. Please try again.";
+              errorToast(message);
+            },
+          })
+        }
+        disabled={isLoading}
+        className={`font-medium w-full ${isLoading ? "opacity-60 cursor-not-allowed" : ""
+          }`}
         colorScheme="darkbrown"
       >
-        {t("Sign in")}
+        {isLoading ? t("Signing in...") : t("Sign in")}
       </Button>
+
 
       <p>
         {t("Don't have an account?")}
         <span>
-          <Link href={getUrl((r) => r.visitRegister())}>
-            <button className="text-primary">{t("Register")}</button>
-          </Link>
+          <button className="text-primary" onClick={onNavigate}>
+            {t("Register")}
+          </button>
         </span>
+
       </p>
     </div>
   );

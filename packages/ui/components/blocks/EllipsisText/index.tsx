@@ -94,7 +94,7 @@ const { t } = useTranslation();
 
   React.useEffect(() => {
     const characterLimit = isActionView ? 65 : 150;
-    if (index === 0 && content?.length > characterLimit && showMore) {
+    if (content?.length && showMore) {
       setModifiedContent(content?.substring(0, characterLimit));
     } else {
       setModifiedContent(content);
@@ -154,17 +154,17 @@ const { t } = useTranslation();
       ></p>
       <div className="relative">
         <ShadcnText
-          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines}`}
+          className={`${wordBreak ? "break-all" : "break-words"} text-start line-clamp-${MaxLines} text-white`}
           ref={postTextRef}
         >
           <>
             {children}
-            {index !== 0 && content && renderMentions(content)}
-            {index === 0 && (
+            {/* {index !== 0 && content && renderMentions(content)} */}
+            {index > -1 && (
               <>
                 {renderProcessedContent()}
                 {content?.length > (isActionView ? 65 : 150) &&
-                  showMore &&
+                
                   content
                     .split(" ")
                     .filter((word) => word.startsWith("#"))
@@ -178,7 +178,7 @@ const { t } = useTranslation();
                       </Link>
                     ))
                     .slice(0, 3)}
-                {index === 0 &&
+                {index > -1 &&
                   content?.length > (isActionView ? 65 : 150) &&
                   showMore &&
                   " ..."}

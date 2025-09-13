@@ -1,226 +1,123 @@
-import { Form, Formik } from "formik";
+
+import VoucherCard from "./VoucherCard";
+
+import VoucherTable from "./VoucherTable";
+import Pagination from "@UI/components/shadcn-components/Pagination/Pagination";
+import SectionTitle from "@UI/components/shadcn-components/Title/SectionTitle";
+import { useResponsive } from "hooks";
+
 import React from "react";
-import { useTranslation } from "react-i18next";
-import {
-  SectionHeader,
-  FormikInput,
-  Button,
-  Select,
-  SelectProps,
-  SelectOption,
-  Table,
-  TBody,
-  THead,
-  Tr,
-  Td,
-  Th,
-  TableContainer,
-  ItemsPagination,
-  usePaginationControls,
-  useGetMyBalanceQuery,
-  useResponsive,
-  HStack,
-  ArrowLeftAlt1Icon,
-  PriceDisplay,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Divider,
-} from "@UI"; // Update this path to the correct relative path of the UI module
-import { mapArray, useForm } from "utils";
-import {
-  useCreateVoucherMutation,
-  useGetMyVouchersQuery,
-} from "@features/Vouchers";
-import { VoucherStatus } from "@features/API/gql/generated";
 
-export const VouchersSection: React.FC = () => {
-const { t } = useTranslation();
-  const { isMobile } = useResponsive();
-  const {
-    changeTotalItems,
-    controls,
-    pagination: { page, take },
-  } = usePaginationControls();
 
-  const { data } = useGetMyVouchersQuery();
+const VouchersSectionMain: React.FC = () => {
+    const vouchers = [
+        {
+            code: "1234567890",
+            date: "2023-08-15",
+            amount: 100,
+            status: "Active",
+            icon: "💵",
+            bg: "bg-green-100",
+        },
+        {
+            code: "9876543210",
+            date: "2023-07-20",
+            amount: 50,
+            status: "Used",
+            icon: "🎟️",
+            bg: "bg-gray-100",
+        },
+        {
+            code: "4567890123",
+            date: "2023-06-10",
+            amount: 200,
+            status: "Expired",
+            icon: "🧾",
+            bg: "bg-orange-100",
+        },
+    ];
+    const { isMobile } = useResponsive();
+    if (isMobile) {
+        return (
+            <VoucherScreenMobile vouchers={vouchers} />
+        )
+    }
+    return (
+        <>
+            <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+                <div className="flex-1 min-w-0">
+                    <SectionTitle title="Vouchers" />
+                </div>
 
-  const { data: balance } = useGetMyBalanceQuery();
+            </div>
+            <VoucherCard />
+            <VoucherTable vouchers={vouchers} />
+            <div className="mt-6 flex justify-center">
+                <Pagination total={5} current={1} onPageChange={() => { }} />
+            </div>
+        </>
 
-  const { form, inputProps, selectProps } = useForm<
-    Parameters<typeof mutate>[0]
-  >({ amount: 0, currency: "", code: "" });
 
-  const { mutate } = useCreateVoucherMutation();
+    );
+};
+export default VouchersSectionMain;
 
-  return isMobile ? (
-    <div className="flex flex-col gap-6 p-2">
-      <HStack className="relative justify-center">
-        <p>{t("Vouchers")}</p>
-        <ArrowLeftAlt1Icon className="absolute top-1/2 left-0" />
-      </HStack>
 
-      <div className="bg-primary px-6 h-[4.75rem] flex items-center justify-between rounded-xl">
-        <p className="font-medium">{t("Available Balance")}:</p>
 
-        <PriceDisplay
-          className="text-lg font-bold"
-          price={balance?.withdrawableBalance}
-        />
-      </div>
+function VoucherScreenMobile({ vouchers }) {
 
-      <div>
-        <p>{t("Amount to convert")}</p>
-        <InputGroup>
-          <InputLeftElement>
-            <Select {...selectProps("currency")} className="border-0">
-              <SelectOption value={"usd"}>USD</SelectOption>
-              <SelectOption value={"eur"}>EUR</SelectOption>
-            </Select>
-          </InputLeftElement>
-          <Input {...inputProps("amount")} />
-        </InputGroup>
-      </div>
 
-      <div className="fex flex-col gap-2">
-        <HStack className="justify-between">
-          <p>{t("Currency")}</p>
-          <p className="text-sm font-semibold uppercase">{form.currency}</p>
-        </HStack>
-        <HStack className="justify-between">
-          <p>{t("Fees")}</p>
-          <PriceDisplay className="text-sm font-semibold" price={form.amount} />
-        </HStack>
-        <Divider />
-        <HStack className="justify-between">
-          <p>{t("Converted Amount")}</p>
-          <PriceDisplay className="text-lg font-bold" price={form.amount} />
-        </HStack>
-      </div>
-
-      <Button onClick={() => mutate(form)} colorScheme="darkbrown">
-        {t("Convert into voucher")}
-      </Button>
-
-      <div className="flex flex-col">
-        <p>{t("Vouchers")}</p>
-
-        {mapArray(data, ({ amount, code, createdAt, currency, status }) => (
-          <HStack className="justify-between shadow-sm p-2">
-            <div className="flex flex-col gap-2">
-              <p className="font-medium">{code}</p>
-              <p className="text-xs text-grayText">
-                {new Date(createdAt).toLocaleDateString("en-us", {
-                  year: "numeric",
-                  month: "long",
-                  weekday: "short",
-                  day: "2-digit",
-                })}
-              </p>
+    return (
+        <div className="max-w-md mx-auto px-4 py-6 text-black bg-white h-screen overflow-y-auto">
+            <div className="flex items-center space-x-4 mb-6">
+                <button className="text-xl">←</button>
+                <h1 className="text-lg font-semibold">Voucher</h1>
             </div>
 
-            <HStack className="font-semibold">
-              {amount} {currency}
-            </HStack>
+            <div className="mb-6">
+                <h2 className="text-sm font-medium">Available Amount</h2>
+                <div className="flex justify-between items-center text-lg font-semibold mt-1">
+                    <span>1000</span>
+                    <span className="text-gray-500">USD</span>
+                </div>
+            </div>
 
-            <p
-              className={`${
-                status === VoucherStatus.Active
-                  ? "text-primary"
-                  : "text-secondaryRed"
-              } text-xs font-medium`}
-            >
-              {status === VoucherStatus.Active ? t("Active") : t("Inactive")}
-            </p>
-          </HStack>
-        ))}
-      </div>
-    </div>
-  ) : (
-    <div className="flex flex-col gap-8">
-      <SectionHeader sectionTitle={t("Vouchers")} />
-      <div className="w-full grid grid-cols-2">
-        <span>
-          <span className="font-bold">{t("Available Amount")}</span>:{" "}
-          {balance?.cashbackBalance}
-        </span>
-        <span>
-          <span className="font-bold">{t("Converted Amount")}: </span>
-          {balance?.convertedCashbackBalance}
-        </span>
-      </div>
-      <Formik
-        initialValues={{
-          amount: "",
-          currency: "",
-        }}
-        onSubmit={(data, { resetForm }) => {
-          resetForm();
-        }}
-      >
-        {({ setFieldValue, values }) => {
-          return (
-            <Form className="grid grid-cols-3 gap-4">
-              <FormikInput
-                flushed
-                name="amount"
-                placeholder={t("enter_amount", "Enter Amount") as string}
-              />
-              <FormikInput<SelectProps>
-                as={Select}
-                flushed
-                name="currency"
-                onOptionSelect={(opt) => setFieldValue("currency", opt)}
-                value={values.currency}
-                placeholder={t("select_currency", "Select Currency") as string}
-              >
-                {currencys.map((currency, i) => (
-                  <SelectOption key={i} value={currency}>
-                    {currency}
-                  </SelectOption>
+            <div className="mb-6">
+                <h2 className="text-sm font-medium">Converted Amount</h2>
+                <div className="flex justify-between items-center mt-2 bg-gray-100 rounded-lg px-4 py-2 text-sm">
+                    <span>0</span>
+                    <span className="text-gray-500">USD</span>
+                </div>
+            </div>
+
+            <button className="w-full bg-black text-white text-sm py-3 rounded-full mb-8">
+                Convert Into Voucher
+            </button>
+
+            <h3 className="text-base font-semibold mb-4">Voucher History</h3>
+            <div className="space-y-4">
+                {vouchers.map((v) => (
+                    <div
+                        key={v.code}
+                        className="flex justify-between items-center p-4 rounded-lg border"
+                    >
+                        <div>
+                            <p className="font-medium">
+                                Voucher Code: <span className="font-semibold">{v.code}</span>
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Date: {v.date} | Amount: {v.amount} USD | Status: {v.status}
+                            </p>
+                        </div>
+                        <div
+                            className={`w-12 h-12 flex items-center justify-center rounded-md text-2xl ${v.bg}`}
+                        >
+                            {v.icon}
+                        </div>
+                    </div>
                 ))}
-              </FormikInput>
-              <Button type="submit" className="w-fit ml-auto">
-                {t("Convert Into Voucher")}
-              </Button>
-            </Form>
-          );
-        }}
-      </Formik>
-      <TableContainer>
-        <Table
-          className="shadow border-collapse w-full"
-          TrProps={{ className: "border-collapse" }}
-          ThProps={{
-            className: "text-left border-[1px] border-b-gray-400",
-          }}
-          TdProps={{ className: "border-[1px] border-gray-300" }}
-        >
-          <THead>
-            <Tr>
-              <Th>{t("Voucher Code")}</Th>
-              <Th>{t("Date")}</Th>
-              <Th>{t("Amount")}</Th>
-              <Th>{t("Currency")}</Th>
-              <Th>{t("Status")}</Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {mapArray(data, (voucher:any, i) => (
-              <Tr key={i}>
-                <Td>{voucher.code}</Td>
-                <Td>{new Date(voucher.createdAt).toDateString()}</Td>
-                <Td>{voucher.amount}</Td>
-                <Td>{voucher.currency}</Td>
-                <Td>{voucher.status}</Td>
-              </Tr>
-            ))}
-          </TBody>
-        </Table>
-      </TableContainer>
-      <ItemsPagination controls={controls} />
-    </div>
-  );
-};
+            </div>
+        </div>
+    );
+}
 
-const currencys: string[] = ["USD", "EGP", "CHF"];

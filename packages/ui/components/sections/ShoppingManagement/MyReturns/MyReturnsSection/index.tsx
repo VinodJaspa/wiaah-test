@@ -215,7 +215,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
       <div className="w-full text-3xl items-center flex justify-between">
         <ArrowLeftIcon onClick={onBack ? onBack : onReturn} />
-        <p className="text-lg font-semibold">{sectionTitle}</p>
+        <p className="text-sm font-semibold">{sectionTitle}</p>
         <span className="text-base">{children}</span>
       </div>
       <Divider className="my-0" />
@@ -223,7 +223,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   ) : (
     <div {...props} className={`${className || ""} flex flex-col gap-3`}>
       <div className="w-full flex justify-between items-center">
-        <span className="text-4xl font-semibold">{sectionTitle}</span>
+        <span className="text-sm font-semibold">{sectionTitle}</span>
         {children}
       </div>
       <Divider className="border-primary" />

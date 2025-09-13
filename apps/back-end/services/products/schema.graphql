@@ -97,8 +97,8 @@ enum StoreType {
 }
 
 enum BusinessType {
-  company
-  individual
+  shop
+  services
 }
 
 enum TargetGenders {
@@ -198,6 +198,11 @@ type ShopWorkingSchedule {
   isOpen: Boolean!
   openFrom: String!
   openTo: String!
+}
+
+type Service {
+  sellerId: ID!
+  shop: Shop!
 }
 
 type ShippingDeliveryTimeRange {
@@ -679,6 +684,7 @@ input SpecialDayWorkingHoursInput {
 input CreateShopInput {
   name: [TranslationTextInput!]!
   description: [TranslationTextInput!]!
+  companyName: [TranslationTextInput!]!
   storeCategoryId: String
   banner: String!
   phone: String!
@@ -687,14 +693,16 @@ input CreateShopInput {
   location: LocationInput!
   storeType: StoreType!
   businessType: BusinessType!
+  collaborationType: CollaborationType!
+  members: [MemberInput!]
   storeFor: [StoreFor!]!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
   status: ShopStatus!
   payment_methods: [ShopPaymentMethod!]!
   type: ServiceType
-  vidoes: [String!]!
-  images: [String!]!
+  images: [MediaInput!]
+  videos: [MediaInput!]
   hashtags: [String!]!
 }
 
@@ -714,14 +722,50 @@ input LocationInput {
   postalCode: String!
 }
 
+enum CollaborationType {
+  company
+  individual
+}
+
+input MemberInput {
+  id: ID
+  memberType: [MemberType!]!
+  firstName: String!
+  lastName: String!
+  email: String!
+  birthDate: String
+  idNumber: String
+  idExpiration: String
+  phone: String
+  address: String
+  city: String
+  state: String
+  postalCode: String
+  country: String!
+}
+
+enum MemberType {
+  Owner
+  Executive
+  Representative
+  Director
+}
+
 input VatSettingsPartialInput {
   VatID: String
   location: LocationInput
 }
 
+input MediaInput {
+  src: String!
+  type: String!
+  asset_id: String!
+}
+
 input UpdateUserShopInput {
   name: [TranslationTextInput!]
   description: [TranslationTextInput!]
+  companyName: [TranslationTextInput!]
   storeCategoryId: String
   banner: String
   phone: String
@@ -730,16 +774,18 @@ input UpdateUserShopInput {
   location: LocationInput
   storeType: StoreType
   businessType: BusinessType
+  collaborationType: CollaborationType
+  members: [MemberInput!]
   storeFor: [StoreFor!]
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput
   status: ShopStatus
   payment_methods: [ShopPaymentMethod!]
   type: ServiceType
-  vidoes: [String!]
-  images: [String!]
+  images: [MediaInput!]
+  videos: [MediaInput!]
   hashtags: [String!]
-  userId: String!
+  ownerId: String!
 }
 
 input CreateProductInput {
@@ -748,11 +794,11 @@ input CreateProductInput {
   title: StringTranslationField!
   description: StringTranslationField!
   categoryId: ID!
-  attributesIds: [ProductAttributeInput!]!
+  attributesIds: [ProductAttributeInput!]
   stock: Int!
-  discount: DiscountInput!
-  cashbackId: String!
-  presentations: [Upload!]!
+  discount: DiscountInput
+  cashbackId: String
+  presentations: [ProductPresentationInput!]!
   thumbnail: String!
   price: Float!
   brand: String!
@@ -778,6 +824,13 @@ input DiscountInput {
   amount: Int!
 }
 
+input ProductPresentationInput {
+  type: PresentationType!
+  src: String!
+  asset_id: String!
+  file: Upload
+}
+
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
 
@@ -791,7 +844,7 @@ input UpdateProductInput {
   stock: Int
   discount: DiscountInput
   cashbackId: String
-  presentations: [Upload!]
+  presentations: [ProductPresentationInput!]
   thumbnail: String
   price: Float
   brand: String
@@ -802,11 +855,6 @@ input UpdateProductInput {
   colors: [String!]
   id: ID!
   oldPresentations: [ProductPresentationInput!]!
-}
-
-input ProductPresentationInput {
-  type: PresentationType!
-  src: String!
 }
 
 input CreateCategoryInput {

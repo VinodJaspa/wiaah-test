@@ -10,8 +10,8 @@ const Seller: NextPage = () => {
       <Head>
         <title>Wiaah | Buyer</title>
       </Head>
-      <SellerLayout header="main">
-        <SocialNewsfeedView />
+      <SellerLayout header="main" accountType="buyer">
+        <SocialNewsfeedView isHome/>
       </SellerLayout>
     </>
   );

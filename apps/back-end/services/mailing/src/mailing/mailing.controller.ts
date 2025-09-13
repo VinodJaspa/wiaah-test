@@ -51,13 +51,49 @@ export class MailingController extends BaseController {
     );
   }
 
+  // @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.newRegisterationTokenRequest)
+  // async handleResendRegisterationCode(
+  //   @Payload() { value }: { value: NewRegisterationTokenRequestedEvent },
+  // ) {
+  //   console.log('>>> Received newRegisterationTokenRequest event with payload:', value);
+
+  //   const { email, token } = value.input;
+
+  //   try {
+  //     const result = await this.mailingService.sendVerificationMail(email, 'User', token);
+  //     console.log('>>> Verification email sent successfully:', { email, token });
+  //     return result;
+  //   } catch (error) {
+  //     console.error('>>> Error sending verification email:', error, { email, token });
+  //     throw error; // rethrow if you want the error to bubble up for KafkaJS retries
+  //   }
+  // }
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.newRegisterationTokenRequest)
-  handleResendRegisterationCode(
-    @Payload() { value }: { value: NewRegisterationTokenRequestedEvent },
-  ) {
-    const { email, token } = value.input;
+  async handleResendRegisterationCode(@Payload() payload: any) {
+    console.log('>>> Full Kafka payload:', payload);
+
+    // If payload.value is a Buffer, convert to string and parse JSON
+    let eventValue;
+    try {
+      if (payload?.value) {
+        // If value is a Buffer, convert to string first
+        const rawValue = payload.value instanceof Buffer ? payload.value.toString() : payload.value;
+        eventValue = typeof rawValue === 'string' ? JSON.parse(rawValue) : rawValue;
+      } else {
+        eventValue = payload;
+      }
+    } catch (err) {
+      console.error('>>> Error parsing Kafka message value:', err);
+      throw err;
+    }
+
+    console.log('>>> Parsed event value:', eventValue);
+
+    const { email, token } = eventValue.input;
     return this.mailingService.sendVerificationMail(email, 'User', token);
   }
+
+
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.passwordChangeRequest)
   sendPasswordChangeMail(
@@ -80,7 +116,7 @@ export class MailingController extends BaseController {
   }
 
   @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderCreated('*', true))
-  handleOrderCreatedMail(@Payload() { value }: { value: OrderCreatedEvent }) {}
+  handleOrderCreatedMail(@Payload() { value }: { value: OrderCreatedEvent }) { }
 
   @EventPattern(KAFKA_EVENTS.SHIPPING_EVENTS.orderShippingStarted('*', true))
   handleOrderShippingStartMail(

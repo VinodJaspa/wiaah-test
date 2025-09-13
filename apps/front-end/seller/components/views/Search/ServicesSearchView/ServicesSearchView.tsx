@@ -1,254 +1,88 @@
-import {
-  SearchServiceCard,
-  SearchServiceCardProps,
-} from "@UI/components/features/Search/Services/components/Cards/SearchServiceCard/SearchServiceCard";
+import { getMockServices, InfiniteScrollWrapper, SearchServiceCardProps } from "@UI";
+// Dynamic import with SSR disabled
+const SearchServiceCard = dynamic<SearchServiceCardProps>(
+  () =>
+    import(
+      "@UI/components/features/Search/Services/components/Cards/SearchServiceCard/SearchServiceCard"
+    ).then((mod) => mod.SearchServiceCard),
+  { ssr: false }
+);
 import { ServicesSearchBadgeList } from "@UI/components/features/Services/components/DataDisplay/ServicesSearchBadgeList/index";
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ServicesType } from "types";
+import { ArrowUp } from "lucide-react"; // icon
+import dynamic from "next/dynamic";
 
 export const ServicesSearchView: React.FC = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
+
+  const [items, setItems] = useState<SearchServiceCardProps[]>(getMockServices(1, 6));
+  const [hasMore, setHasMore] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const fetchMore = () => {
+    if (items.length >= 2000) {
+      setHasMore(false);
+      return;
+    }
+
+    // simulate API delay
+    setTimeout(() => {
+      const newItems = getMockServices(items.length + 1, 6);
+      setItems((prev) => [...prev, ...newItems]);
+    }, 1200);
+  };
+
+  // handle scroll to show/hide button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300); // show button after 300px
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <div className="flex flex-col gap-10">
-      <Formik
-        initialValues={{ serviceType: "hotel" } as any}
-        onSubmit={() => {}}
-      >
-        {({ values, setFieldValue }) => {
-          return (
-            <Form className="flex flex-col gap-7">
-              <ServicesSearchBadgeList
-                activeKey={values["serviceType"]}
-                onClick={(serviceType) => {
-                  setFieldValue("serviceType", serviceType);
-                }}
-              />
-              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {servicesPH
-                  .filter((v) => {
-                    const currentService = values[
-                      "serviceType"
-                    ] as ServicesType;
-                    return v.serviceType === currentService;
-                  })
-                  .map((service, i) => (
-                    <SearchServiceCard key={i} {...service} />
-                  ))}
-              </div>
-            </Form>
-          );
-        }}
+    <div className="flex flex-col gap-10 px-4 md:px-8 lg:px-12">
+      <Formik initialValues={{ serviceType: "hotel" } as any} onSubmit={() => { }}>
+        {({ values, setFieldValue }) => (
+          <Form className="flex flex-col gap-7">
+            {/* Service Type Tabs */}
+            <ServicesSearchBadgeList
+              activeKey={values["serviceType"]}
+              onClick={(serviceType) => setFieldValue("serviceType", serviceType)}
+            />
+
+            {/* Infinite Scroll Grid */}
+            <InfiniteScrollWrapper
+              dataLength={items.length}
+              hasMore={hasMore}
+              next={fetchMore}
+            >
+              {items
+                .filter((v) => v.serviceType === values["serviceType"])
+                .map((service, i) => (
+                  <SearchServiceCard key={i} {...service} />
+                ))}
+            </InfiniteScrollWrapper>
+          </Form>
+        )}
       </Formik>
+
+      {/* Scroll To Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black text-white shadow-lg hover:bg-primary/90 transition"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 };
-
-const servicesPH: SearchServiceCardProps[] = [...Array(12)].reduce(
-  (acc, curr) => {
-    return [
-      ...acc,
-      {
-        serviceData: {
-          reviews: 500,
-          discount: 30,
-          id: "123",
-          label: "Hotel",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: 350,
-          rating: 4.8,
-          thumbnail:
-            "https://www.europahotelbelfast.com/wp-content/uploads/2021/12/Shannon-Suite-5.jpg",
-          title: "Well Furnished Apartment",
-        },
-        serviceType: "hotel",
-        sellerInfo: {
-          id: "1",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (1).jfif",
-          verified: true,
-        },
-      },
-      {
-        serviceData: {
-          reviews: 500,
-          discount: 30,
-          id: "123",
-          label: "Holiday Rentals",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: 350,
-          rating: 4.8,
-          thumbnail:
-            "https://www.europahotelbelfast.com/wp-content/uploads/2021/12/Shannon-Suite-5.jpg",
-          title: "Well Furnished Apartment",
-        },
-        serviceType: "holiday_rentals",
-        sellerInfo: {
-          id: "2",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (1).jfif",
-          verified: true,
-        },
-      },
-      {
-        serviceData: {
-          reviews: 500,
-          discount: 30,
-          id: "123",
-          label: "Restaurant",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: [50, 2500],
-          rating: 4.8,
-          thumbnail:
-            "https://media-cdn.tripadvisor.com/media/photo-s/17/75/3f/d1/restaurant-in-valkenswaard.jpg",
-          title: "The Harbor House Restaurant.",
-        },
-        serviceType: "restaurant",
-        sellerInfo: {
-          id: "3",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (2).jfif",
-          verified: true,
-        },
-      },
-      {
-        serviceData: {
-          reviews: 500,
-          discount: 30,
-          id: "123",
-          label: "Health Center",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: [50, 5000],
-          rating: 4.8,
-          thumbnail:
-            "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
-          title: "The Minute Medical",
-        },
-        serviceType: "health_center",
-        sellerInfo: {
-          id: "4",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (3).jfif",
-          verified: true,
-        },
-      },
-      {
-        serviceData: {
-          reviews: 150,
-          discount: 26,
-          id: "123",
-          label: "Beauty Center",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: [50, 500],
-          rating: 4.8,
-          thumbnail:
-            "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
-          title: "Beauty Haven",
-        },
-        serviceType: "beauty_center",
-        sellerInfo: {
-          id: "5",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (4).jfif",
-          verified: true,
-        },
-      },
-      {
-        serviceData: {
-          reviews: 150,
-          discount: 26,
-          id: "123",
-          label: "Vehicle",
-          location: {
-            country: "USA",
-            countryCode: "CH",
-            state: "LA",
-            address: "Smart Street",
-            postalCode: 8,
-            cords: {
-              lat: 56,
-              lng: 24,
-            },
-            city: "LA",
-          },
-          price: [50, 500],
-          rating: 4.8,
-          thumbnail:
-            "https://www.astate.edu/a/student-health-center/images/student-health-750px.jpg",
-          title: "Beauty Haven",
-        },
-        serviceType: "vehicle",
-        sellerInfo: {
-          id: "6",
-          name: "Seller name",
-          profession: "Profession",
-          thumbnail: "/profile (4).jfif",
-          verified: true,
-        },
-      },
-    ] as SearchServiceCardProps[];
-  },
-  [],
-);

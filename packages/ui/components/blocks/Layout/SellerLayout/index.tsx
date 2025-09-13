@@ -1,4 +1,7 @@
+'use client';
 import { SellerDrawerOpenState } from "@src/state";
+import { sidebarState } from "@src/state/Recoil/sidebarState";
+
 import {
   Container,
   DiscoverHeader,
@@ -28,7 +31,7 @@ import { FaThList } from "react-icons/fa";
 import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
 import { IoIosStarOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getRouting, useRouting } from "routing";
 import { HtmlDivProps, NavigationLinkType } from "types";
 
@@ -147,6 +150,7 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
+  accountType?: string;
   showMobileHeader?: boolean;
 }
 
@@ -154,13 +158,17 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   children,
   header = "main",
   containerProps,
-  sideBar = true,
+  sideBar,
   showMobileHeader = false,
+  accountType,
   noContainer = false,
 }) => {
+  console.log(accountType, "accountType", );
+
   const { isMobile } = useResponsive();
+  // const [isSidebar, setSidebar] = React.useState(true);
   const { getCurrentPath } = useRouting();
-  const { accountType } = useAccountType();
+  // const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
@@ -169,12 +177,29 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     router && typeof router.pathname === "string"
       ? router.pathname.split("/")[1]
       : "";
-
   const handleLinkClick = (link: NavigationLinkType) => {
-    const Link = link.url.length < 1 ? "/" : link.url;
-    router.replace(Link);
+    const path = link.url;
+
+
+    // Full reload if absolutely needed (usually not recommended in SPA)
+    // window.location.href = path;
+    // router.push
+
     setDrawerOpen(false);
   };
+
+  const [isSidebar, setSidebar] = useRecoilState(sidebarState);
+  // console.log(isSidebar, "isSidebar");
+  //Set the header type
+  //Set header
+  let stored: string | null = null;
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && accountType) {
+      localStorage.setItem("userType", accountType.toString());
+    }
+  }, [accountType]);
+
+
 
   const { pagination: storiesPagination } = usePaginationControls();
 
@@ -185,17 +210,21 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   const stories = FAKE_STORIES;
 
+
+
+
   const { pagination: hashtagPagi } = usePaginationControls();
   const { data: hashtags } = useGetDiscoverHashtags({
     pagination: hashtagPagi,
   });
 
   const showHeader = !isMobile || getCurrentPath() === "/";
+  //Todo -:
 
   return (
     <Root>
       <SocialLayout>
-        {sideBar && (
+        {isSidebar && (
           <SellerNavigationSideBar
             headerElement={
               <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
@@ -216,7 +245,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 }
               />
               {stories && stories.length > 0 ? <Divider /> : null}
-              <div className="text-white flex flex-col gap-4">
+              <div className="text-white flex flex-col gap-4 ">
                 <ScrollableContainer
                   containerProps={{ className: "gap-4" }}
                   autoShowAll
@@ -249,19 +278,17 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         )}
         <Container
           noContainer={true}
-          className={`${
-            isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"
-          } h-full w-full`}
+          className={`${isMobile ? "" : isSidebar ? "pl-56 pr-4" : "px-8"
+            } h-full w-full`}
         >
           {header && header !== null && (showMobileHeader || showHeader) ? (
             <div
-              className={`bg-white fixed z-[35] w-full top-0 left-0 ${
-                isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
-              }`}
+              className={`bg-white fixed z-[35] w-full top-0 left-0 ${isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+                }`}
               ref={headerRef}
             >
               <HeaderSwitcher
-                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+                links={accountType == "buyer" ? BuyerNavLinks : SellerNavLinks}
                 headerType={header}
               />
             </div>
@@ -273,9 +300,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                   ? `calc(${headerHeight || 0}px + 2rem)`
                   : undefined,
               }}
-              className={`${
-                containerProps?.className || ""
-              } overflow-hidden h-[max(fit,100%)] flex justify-center `}
+              className={`${containerProps?.className || ""
+                } overflow-hidden h-[max(fit,100%)] flex justify-center `}
               {...containerProps}
             >
               {children}
@@ -296,6 +322,8 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
   links = [],
 }) => {
+  console.log(links, "links");
+
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;
@@ -331,7 +359,7 @@ const BuyerNavLinks: HeaderNavLink[] = [
     link: {
       name: {
         translationKey: "shopping_management",
-        fallbackText: "Shopping Management",
+        fallbackText: "Orders & Perks",
       },
       href: "/shopping-management",
     },
@@ -415,7 +443,7 @@ const SellerNavLinks: HeaderNavLink[] = [
     link: {
       name: {
         translationKey: "shopping_management",
-        fallbackText: "Shopping Management",
+        fallbackText: "Orders & Perks",
       },
       href: getRouting((r) => r.visitShoppingManagement()),
     },

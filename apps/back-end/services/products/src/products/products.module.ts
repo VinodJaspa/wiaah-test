@@ -21,6 +21,7 @@ import { ProductAttributeService } from 'src/product-attribute/product-attribute
       secretKey: 'secret',
       serviceKey: 'servicekey',
       provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: undefined
     }),
     ClientsModule.register([
       {

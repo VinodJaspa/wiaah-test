@@ -17,7 +17,9 @@ export type GetSuggestedActionsQuery = {
     id: string;
     audioId?: string | null;
     musicId?: string | null;
-    audio?: { __typename?: "Audio"; src?: string | null; name: string } | null;
+    audio?: {
+      url: string; __typename?: "Audio"; src?: string | null; name: string 
+} | null;
     tags: Array<{ __typename?: "PostTag"; userId: string }>;
     effect?: { __typename?: "Effect"; name: string } | null;
     location: {

@@ -1,6 +1,5 @@
-import { FormatedSearchableFilter } from "../../../../types/index";
-import { SERVICESTYPE_INDEXKEY, ServiceType } from "ui";
-import { ServicesType } from "types";
+import { ServiceType } from "@features/API";
+
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";
 
@@ -207,6 +206,19 @@ const filters: SearchFilterType[] = [
     filterOptions: [],
   },
   {
+    filterTitle: "Special Offer",        // fixed spelling
+    filterSlug: "special_offer",
+    filterDisplay: "text",
+    filterType: "radio",
+    filterOptions: [
+      { optName: "None", optSlug: "none" },
+      { optName: "Discount", optSlug: "discount" },
+      { optName: "Buy 1 Get 1", optSlug: "b1g1" },
+      { optName: "Free Trial", optSlug: "free_trial" },
+      { optName: "Limited Time Offer", optSlug: "limited_time" },
+    ],
+  },
+  {
     filterTitle: "Cancellation option",
     filterSlug: "cancellation_option",
     filterDisplay: "text",
@@ -249,26 +261,26 @@ const HealthCenterFilters: SearchFilterType[] = [
       },
     ],
   },
-  {
-    filterTitle: "Speaking language",
-    filterSlug: "speaking_language",
-    filterDisplay: "text",
-    filterType: "radio",
-    filterOptions: [
-      {
-        optName: "Arabian",
-        optSlug: "arabian",
-      },
-      {
-        optName: "English",
-        optSlug: "english",
-      },
-      {
-        optName: "French",
-        optSlug: "french",
-      },
-    ],
-  },
+  // {
+  //   filterTitle: "Speaking language",
+  //   filterSlug: "speaking_language",
+  //   filterDisplay: "text",
+  //   filterType: "radio",
+  //   filterOptions: [
+  //     {
+  //       optName: "Arabian",
+  //       optSlug: "arabian",
+  //     },
+  //     {
+  //       optName: "English",
+  //       optSlug: "english",
+  //     },
+  //     {
+  //       optName: "French",
+  //       optSlug: "french",
+  //     },
+  //   ],
+  // },
   {
     filterTitle: "Rating",
     filterSlug: "rating",
@@ -536,6 +548,19 @@ const VehicleFilters: SearchFilterType[] = [
     ],
   },
   {
+    filterTitle: "Special Offer",        // fixed spelling
+    filterSlug: "special_offer",
+    filterDisplay: "text",
+    filterType: "radio",
+    filterOptions: [
+      { optName: "None", optSlug: "none" },
+      { optName: "Discount", optSlug: "discount" },
+      { optName: "Buy 1 Get 1", optSlug: "b1g1" },
+      { optName: "Free Trial", optSlug: "free_trial" },
+      { optName: "Limited Time Offer", optSlug: "limited_time" },
+    ],
+  },
+  {
     filterTitle: "Cancellation option",
     filterSlug: "cancellation_option",
     filterDisplay: "text",
@@ -602,30 +627,30 @@ const BeautyCenterFilters: SearchFilterType[] = [
       },
     ],
   },
-  {
-    filterTitle: "Beauty salon",
-    filterSlug: "Beauty_salon",
-    filterType: "check",
-    filterDisplay: "text",
-    filterOptions: [
-      {
-        optName: "Facial care & Makeup",
-        optSlug: "facial_care_and_makeup",
-      },
-      {
-        optName: "Skin care",
-        optSlug: "skin_care",
-      },
-      {
-        optName: "Tattoo shop",
-        optSlug: "tattoo_shop",
-      },
-      {
-        optName: "Aesthetic medicine",
-        optSlug: "aesthetic_medicine",
-      },
-    ],
-  },
+  // {
+  //   filterTitle: "Beauty salon",
+  //   filterSlug: "Beauty_salon",
+  //   filterType: "check",
+  //   filterDisplay: "text",
+  //   filterOptions: [
+  //     {
+  //       optName: "Facial care & Makeup",
+  //       optSlug: "facial_care_and_makeup",
+  //     },
+  //     {
+  //       optName: "Skin care",
+  //       optSlug: "skin_care",
+  //     },
+  //     {
+  //       optName: "Tattoo shop",
+  //       optSlug: "tattoo_shop",
+  //     },
+  //     {
+  //       optName: "Aesthetic medicine",
+  //       optSlug: "aesthetic_medicine",
+  //     },
+  //   ],
+  // },
   {
     filterTitle: "Treatment type",
     filterSlug: "treatment_type",
@@ -674,12 +699,19 @@ const BeautyCenterFilters: SearchFilterType[] = [
     maxRange: 10000,
   },
   {
-    filterTitle: "Sepcial offer",
+    filterTitle: "Special Offer",        // fixed spelling
     filterSlug: "special_offer",
     filterDisplay: "text",
     filterType: "radio",
-    filterOptions: [],
+    filterOptions: [
+      { optName: "None", optSlug: "none" },
+      { optName: "Discount", optSlug: "discount" },
+      { optName: "Buy 1 Get 1", optSlug: "b1g1" },
+      { optName: "Free Trial", optSlug: "free_trial" },
+      { optName: "Limited Time Offer", optSlug: "limited_time" },
+    ],
   },
+  
   {
     filterTitle: "Rating",
     filterSlug: "rating",
@@ -711,29 +743,29 @@ const BeautyCenterFilters: SearchFilterType[] = [
 ];
 
 const RestaurantFilters: SearchFilterType[] = [
-  {
-    filterTitle: "Price range",
-    filterSlug: "price_range",
-    filterType: "range",
-    maxRange: 10000,
-    minRange: 10,
-  },
-  {
-    filterTitle: "Setting and ambience",
-    filterSlug: "type_of_seller",
-    filterType: "check",
-    filterDisplay: "text",
-    filterOptions: [
-      {
-        optName: "Family",
-        optSlug: "",
-      },
-      {
-        optName: "Romantice",
-        optSlug: "",
-      },
-    ],
-  },
+  // {
+  //   filterTitle: "Price range",
+  //   filterSlug: "price_range",
+  //   filterType: "range",
+  //   maxRange: 10000,
+  //   minRange: 10,
+  // },
+  // {
+  //   filterTitle: "Setting and ambience",
+  //   filterSlug: "type_of_seller",
+  //   filterType: "check",
+  //   filterDisplay: "text",
+  //   filterOptions: [
+  //     {
+  //       optName: "Family",
+  //       optSlug: "",
+  //     },
+  //     {
+  //       optName: "Romantice",
+  //       optSlug: "",
+  //     },
+  //   ],
+  // },
   {
     filterTitle: "Cusinie type",
     filterSlug: "type_of_seller",
@@ -838,12 +870,19 @@ const RestaurantFilters: SearchFilterType[] = [
     ],
   },
   {
-    filterTitle: "Sepcial offer",
+    filterTitle: "Special Offer",        // fixed spelling
     filterSlug: "special_offer",
     filterDisplay: "text",
     filterType: "radio",
-    filterOptions: [],
-  },
+    filterOptions: [
+      { optName: "None", optSlug: "none" },
+      { optName: "Discount", optSlug: "discount" },
+      { optName: "Buy 1 Get 1", optSlug: "b1g1" },
+      { optName: "Free Trial", optSlug: "free_trial" },
+      { optName: "Limited Time Offer", optSlug: "limited_time" },
+    ],
+  }
+  
 ];
 
 export const getServiceSearchFiltersFetcher = async (

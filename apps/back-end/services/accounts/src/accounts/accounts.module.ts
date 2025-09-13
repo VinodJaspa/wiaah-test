@@ -10,6 +10,7 @@ import { accountCommandHandlers } from './commands';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AccountEventHandlers } from './events';
 import { AccountsAdminResolver } from './accounts-admin.resolver';
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 
 @Module({
   imports: [
@@ -29,6 +30,12 @@ import { AccountsAdminResolver } from './accounts-admin.resolver';
         },
       },
     ]),
+    UploadModule.forRoot({
+      secretKey: 'secret',
+      serviceKey: 'servicekey',
+      provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: undefined
+    }),
   ],
   providers: [
     AccountsAdminResolver,
@@ -41,4 +48,4 @@ import { AccountsAdminResolver } from './accounts-admin.resolver';
   ],
   controllers: [AccountsController],
 })
-export class AccountsModule {}
+export class AccountsModule { }

@@ -4,33 +4,33 @@ import { ChangePasswordInput, Mutation } from "@features/API";
 import { useMutation } from "react-query";
 
 export type ChangePasswordMutationVariables = Exact<{
-  args: ChangePasswordInput;
+  changePasswordInput: ChangePasswordInput;
 }>;
 
-export type ChangePasswordMutation = { __typename?: "Mutation" } & Pick<
-  Mutation,
-  "changePassword"
->;
+export type ChangePasswordMutation = {
+  __typename?: "Mutation";
+  changePassword: boolean;
+};
 
 export const useChangePasswordMutation = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
     mutation changePassword(
-        $args:ChangePasswordInput!
-    ){
-        changePassword(
-            changePasswordInput:$args
-        )
+      $changePasswordInput: ChangePasswordInput!
+    ) {
+      changePassword(
+        changePasswordInput: $changePasswordInput
+      )
     }
-    `);
+  `);
 
   return useMutation<boolean, unknown, ChangePasswordInput>(
     ["change-password"],
     async (data) => {
       const res = await client
         .setVariables<ChangePasswordMutationVariables>({
-          args: data,
+          changePasswordInput: data,
         })
         .send<ChangePasswordMutation>();
 

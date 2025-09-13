@@ -16,6 +16,11 @@ import { UserContactsModule } from './user-contacts/user-contacts.module';
 
 import * as path from 'path';
 
+
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
+import { APP_FILTER } from '@nestjs/core';
+import { KnownErrorFilter } from './comman/filters/known-error.filter';
+
 // Assuming 'src' is the root directory of your application
 const absoluteSchemaPath = path.join(__dirname, '..', 'src', 'schema.graphql');
 
@@ -25,6 +30,7 @@ const absoluteSchemaPath = path.join(__dirname, '..', 'src', 'schema.graphql');
   exports: [PrismaService],
   imports: [RequiredActionsModule, UserContactsModule],
 })
+
 export class PrismaModule {}
 
 @Module({
@@ -33,14 +39,16 @@ export class PrismaModule {}
     AccountVerificationModule,
     CookiesSettingsModule,
     UserLocationModule,
+   
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: absoluteSchemaPath, // Specify absolute path here
       context({ req, res }) {
         const user = getUserFromRequest(req);
-        console.log({ user });
         return { req, res, user };
       },
+      
+      
     }),
     AccountsModule,
     IdentityVerificationModule,
@@ -49,8 +57,19 @@ export class PrismaModule {}
       application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
       webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     }),
+    UploadModule.forRoot({
+      provider: UploadServiceProviders.CLOUDINARY,  
+      serviceKey: process.env.CLOUDINARY_API_KEY,
+      secretKey: process.env.CLOUDINARY_API_SECRET,
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    }),
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: KnownErrorFilter,
+    },
+  ],
 })
 export class AppModule {}

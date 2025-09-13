@@ -64,6 +64,7 @@ export class AccountsAdminResolver {
       where: {
         id: input.id,
       },
+      // @ts-ignore
       data: { ...rest, password: hashedPassword },
     });
 

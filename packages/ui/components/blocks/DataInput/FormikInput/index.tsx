@@ -39,14 +39,14 @@ export function FormikInput<T = InputProps>({
         {label && typeof label === "string" ? (
           <p
             {...labelProps}
-            className={`${labelProps?.className || ""} font-semibold`}
+            className={`${labelProps?.className || ""} font-semibold text-sm`}
           >
             {label}
           </p>
         ) : label ? (
           <TranslationText
             {...labelProps}
-            className={labelProps?.className || "font-semibold"}
+            className={labelProps?.className || "font-semibold text-sm"}
             translationObject={label}
           />
         ) : null}

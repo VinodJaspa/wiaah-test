@@ -6,19 +6,23 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // app.connectMicroservice<MicroserviceOptions>({
-  //   transport: Transport.KAFKA,
-  //   options: {
-  //     client: {
-  //       brokers: KAFKA_BROKERS,
-  //     },
-  //   },
-  // });
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        brokers: KAFKA_BROKERS,
+        clientId:SERVICES.NOTIFICATIONS.clientId
+      },
+      consumer:{
+        groupId:SERVICES.NOTIFICATIONS.groupId
+      }
+    },
+  });
 
   await app.startAllMicroservices();
 
   await app.listen(process.env.PORT || 3025, () =>
-    console.log(`🚀 notifications is ready at localhost:${305}${''}`),
+    console.log(`🚀 notifications is ready at localhost:${3025}${''}`),
   );
 }
 bootstrap();

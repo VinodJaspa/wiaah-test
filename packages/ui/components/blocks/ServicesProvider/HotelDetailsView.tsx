@@ -4,7 +4,7 @@ import { ServiceOnMapLocalizationSection } from "@UI/components/features/Service
 import { ServicePoliciesSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicePoliciesSection";
 import { ServiceReachOutSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServiceReachOutSection";
 import { ServicesProviderDescriptionSection } from "@UI/components/features/Services/ServicesDetails/components/Sections/ServicesProviderDescriptionSection";
-import { GetServiceDetailsQuery } from "@UI/components/features/Services/ServicesDetails/services/queries/useGetServicesProviderQuery";
+import { GetServiceDetailsQuery } from "@features/Services/ServicesDetails/services/queries/useGetServicesProviderQuery/useGetServicesProviderQuery";
 import { ServiceRangeBookingCalander } from "@UI/components/features/Services/components/Inputs/ServiceBookingCalander";
 import { SellerServiceWorkingHoursSection } from "@UI/components/features/Services/components/Sections/SellerServiceWorkingHoursSection";
 import { ServiceDetailsReviewsSection } from "@UI/components/features/Services/components/Sections/ServiceDetailsReviewsSection";

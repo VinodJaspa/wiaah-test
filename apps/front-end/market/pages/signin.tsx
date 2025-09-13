@@ -1,5 +1,5 @@
 import { MasterLayout } from "@components";
-import { Signup, useSigninMutation } from "ui";
+import { Signup, useSigninMutation } from "@UI";
 import Head from "next/head";
 import React from "react";
 import { useTranslation } from "react-i18next";

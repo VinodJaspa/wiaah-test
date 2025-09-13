@@ -1,6 +1,9 @@
 import { ServiceType } from "@features/API";
+import AddAddressDialog from "@sections/ShoppingManagement/AddressBook/AddAddressDialog";
 import { CheckoutProductsState, VoucherState } from "@src/state";
 import { ServiceCheckoutCardSwitcher } from "@UI/components/features/Services/components/Switchers/ServiceCheckoutCardSwitcher";
+import PaymentMethodsSection from "@UI/components/Payment/PaymentMethods";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 import { ServiceCheckoutDataType } from "api";
 import { useDateDiff } from "hooks";
 import { getRandomImage } from "placeholder";
@@ -23,6 +26,7 @@ import {
   ModalContent,
   ModalOverlay,
   PaymentGateway,
+
   Spacer,
   SpinnerFallback,
   TotalCost,
@@ -56,20 +60,14 @@ const FAKE_ADDRESS_DATA: AddressCardDetails[] = [
 export const CheckoutView: React.FC<CheckoutViewProps> = ({
   isSellerOrBuyer,
 }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { visit } = useRouting();
-  const { filters } = useSearchFilters();
-  // const { data: _res, isLoading, isError } = useGetCheckoutDataQuery(filters);
-  const res = FAKE_CHECKOUT_DATA;
-
-  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
-  const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
-  const [edit, setEdit] = React.useState<boolean>(false);
-  const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
-    useUserAddresses();
+  const { addresses, AddAddress, DeleteAddress, UpdateAddress } = useUserAddresses();
   const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
   const [activeAddress, setActiveAddress] = React.useState<number>(0);
+  const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+  const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -79,138 +77,103 @@ const { t } = useTranslation();
     }
   }, [addresses, AddAddress]);
 
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
-  const handleDelete = (id: string) => {
-    DeleteAddress(id);
-  };
-
+  const handleDelete = (id: string) => DeleteAddress(id);
   const handleAddress = (address?: AddressCardDetails) => {
     setEditAddress(address);
     setIsEditModalOpen(true);
   };
-
   const handleCancelEdit = () => {
     setIsEditModalOpen(false);
     setEditAddress(undefined);
   };
-
   const handleSaveAddress = (input: AddressDetails) => {
-    if (editAddress) {
-      UpdateAddress(editAddress.id, input);
-    } else {
-      AddAddress({
-        id: String(Math.random()),
-        ...input,
-      });
-    }
+    if (editAddress) UpdateAddress(editAddress.id, input);
+    else AddAddress({ id: String(Math.random()), ...input });
     handleCancelEdit();
   };
 
-  async function handleVoucherValidation(code: string) {
+  const handleVoucherValidation = async (code: string) => {
     const voucherName = "50OFF";
     const ok = code === voucherName;
-    if (ok) {
-      setVoucher({
-        voucherName,
-        value: 50,
-        unit: "%",
-      });
-    }
+    if (ok) setVoucher({ voucherName, value: 50, unit: "%" });
     return ok;
-  }
+  };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full py-2 border-t">
-      <div className="flex flex-col w-full gap-4">
+    <div className="flex flex-col md:flex-row gap-4 w-full py-2 border-t h-[calc(100vh-100px)]">
+      {/* LEFT SIDE */}
+      <div className="flex flex-col w-full md:w-2/3 gap-4 overflow-y-auto pr-2">
         <BoxShadow>
-          <div className="bg-white flex flex-col gap-4 p-4 py-8">
-            <div className="flex w-full justify-center text-3xl">
-              <p className="font-bold">{t("Checkout")}</p>
+          <div className="bg-white flex flex-col gap-3 p-4 py-6 text-sm">
+            <p className="font-bold text-xl text-center">{t("Checkout")}</p>
+            <p className="font-semibold text-base">Address</p>
+            <div className="flex flex-col gap-2">
+              {addresses.map((address, i) => (
+                <div
+                  key={i}
+                  className="cursor-pointer"
+                  onClick={() => setActiveAddress(i)}
+                >
+                  <AddressCard
+                    borderColor="#000"
+                    onDelete={handleDelete}
+                    onEdit={handleAddress}
+                    addressDetails={address}
+                    active={activeAddress === i}
+                  />
+                  <Divider />
+                </div>
+              ))}
             </div>
-            <p className="text-3xl">{"Address"}</p>
-            <div className="w-full flex flex-col gap-4">
-              {addresses.length > 0 &&
-                addresses.map((address, i) => (
-                  <div
-                    className="cursor-pointer"
-                    key={i}
-                    onClick={() => setActiveAddress(i)}
-                  >
-                    <AddressCard
-                      borderColor="#000"
-                      onDelete={(id) => handleDelete(id)}
-                      onEdit={(address) => handleAddress(address)}
-                      addressDetails={address}
-                      active={activeAddress === i}
-                    />
-                    <Divider />
-                  </div>
-                ))}
-            </div>
-            <Spacer />
-            <div className="w-full flex justify-end">
-              <Button
-                className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
-                colorScheme="darkbrown"
+            <div className="flex justify-end mt-2">
+              <PrimaryButton
+            
                 onClick={() => handleAddress()}
               >
                 {t("add_new_address", "Add New Address")}
-              </Button>
+              </PrimaryButton>
             </div>
-            <Modal isOpen={isEditModalOpen} onClose={handleCancelEdit}>
-              <ModalOverlay />
-              <ModalContent className="w-[min(50rem,100%)] p-4">
-                <AddressInputs
-                  initialInputs={editAddress}
-                  onCancel={handleCancelEdit}
-                  onSuccess={handleSaveAddress}
-                />
-              </ModalContent>
-            </Modal>
+           <AddAddressDialog isOpen={isEditModalOpen} onClose={handleCancelEdit}/>
           </div>
         </BoxShadow>
+
         <VoucherInput onSuccess={handleVoucherValidation} />
+        {/* <PaymentMethodsSection/> */}
         <PaymentGateway onSuccess={() => {}} isSellerOrBuyer />
       </div>
-      <BoxShadow fitHeight fitWidth>
-        <div className="bg-white">
-          <div className="flex flex-col p-4 gap-2">
-            <div className="w-full flex justify-between items-center">
-              <p className="text-3xl font-bold">
-                {products.length} {t("items", "items")}
-              </p>
-              <p
-                className="text-lg cursor-pointer"
-                onClick={() => visit((routes) => routes.visitCarySummary())}
-              >
-                Change
-              </p>
-            </div>
-            <Divider />
-            <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
-              <SpinnerFallback>
-                {res &&
-                  res.data.bookedServices.map((service, i) => (
-                    <ServiceCheckoutCardSwitcher key={i} service={service} />
-                  ))}
-              </SpinnerFallback>
-            </div>
-            <SpinnerFallback>
-              {res && (
-                <TotalCost
-                  subTotal={res.data.bookedServices.reduce((acc, curr) => {
-                    return acc + (curr?.data?.price || 0);
-                  }, 0)}
-                  vat={res.data.vat}
-                  saved={res.data.saved}
-                  voucherRemoveable
-                />
-              )}
-            </SpinnerFallback>
+
+      {/* RIGHT SIDE */}
+      <BoxShadow fitHeight fitWidth className="md:w-1/3 max-h-[calc(100vh-100px)] overflow-y-auto">
+        <div className="bg-white flex flex-col p-3 gap-2 text-sm">
+          <div className="flex justify-between items-center mb-2">
+            <p className="font-bold text-lg">
+              {products.length} {t("items", "items")}
+            </p>
+            <p
+              className="text-sm cursor-pointer text-primary underline"
+              onClick={() => visit((routes) => routes.visitCarySummary())}
+            >
+              Change
+            </p>
           </div>
+          <Divider />
+          <div className="flex flex-col gap-2">
+            {FAKE_CHECKOUT_DATA.data.bookedServices.map((service, i) => (
+              <ServiceCheckoutCardSwitcher key={i} service={service} />
+            ))}
+          </div>
+          <Divider className="my-2" />
+          <TotalCost
+            subTotal={FAKE_CHECKOUT_DATA.data.bookedServices.reduce(
+              (acc, curr) => acc + (curr?.data?.price || 0),
+              0
+            )}
+            vat={FAKE_CHECKOUT_DATA.data.vat}
+            saved={FAKE_CHECKOUT_DATA.data.saved}
+            voucherRemoveable
+          />
         </div>
       </BoxShadow>
     </div>

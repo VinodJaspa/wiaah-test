@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  SubscribersPopup,
+ 
   Avatar,
   SocialStoryModal,
   QrcodeDisplay,
@@ -15,6 +15,7 @@ import {
   SocialProfileInfo,
   Account,
   getRandomImage,
+  SubscribersPopup,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";
 import { useReactPubsub } from "react-pubsub";
@@ -59,7 +60,7 @@ const { t } = useTranslation();
       {/*
       {shopInfo && <SocialStoryModal profileId={shopInfo.id} />}
       */}
-      <SubscribersPopup
+      {/* <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
         onClose={handleClose}
@@ -68,7 +69,7 @@ const { t } = useTranslation();
         title={t("subscriptions", "subscriptions")}
         isOpen={subscriptionsIsOpen}
         onClose={subscriptionsOnClose}
-      />
+      /> */}
       <div
         style={{
           boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.08)",

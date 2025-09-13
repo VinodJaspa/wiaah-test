@@ -7,7 +7,12 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
-  app.use(graphqlUploadExpress());
+ app.use(
+    graphqlUploadExpress({
+      maxFileSize: 50_000_000, // 50 MB
+      maxFiles: 5,             // Max files per request
+    }),
+  );
   app.useGlobalPipes(new ValidationPipe());
   app.connectMicroservice<MicroserviceOptions>({
     strategy: new KafkaCustomTransport({

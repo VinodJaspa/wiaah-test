@@ -51,11 +51,12 @@ export const getUserProductsQueryFetcher = async (args: args) => {
     console.log("fetching user prods in dev", args);
     const mockRes: GetUserProductsQuery["getSellerProducts"] = {
       cursor: args.idCursor!,
+      // @ts-ignore
       data: [...Array(5)].map(() => ({
         description: `watch features a unique "Eclipse" design, with a black mimics`,
         id: "",
         presentations: [
-          { src: getRandomImage(), type: PresentationType.Image },
+          { src: getRandomImage(), type: PresentationType.Image , asset_id:'' },
         ],
         price: randomNum(150),
         title: "Regaltime Grandeur",
@@ -75,7 +76,7 @@ export const getUserProductsQueryFetcher = async (args: args) => {
 query getUserProducts($args:GetSellerProductsInput!){
   getSellerProducts(args:$args){
     data {
-			id
+      id
       price
       presentations{
         src
@@ -83,6 +84,10 @@ query getUserProducts($args:GetSellerProductsInput!){
       }
       title
       description
+      categoryId  # add this if available
+      stock     # add this if available
+      status    # add this if available
+      updatedAt # add this if available
     }
     cursor
     hasMore

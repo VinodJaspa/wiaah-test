@@ -1,9 +1,16 @@
-import { ServicesSearchView } from "@components";
+import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { dehydrate, QueryClient } from "react-query";
 import { ServerSideQueryClientProps } from "types";
 import { SellerLayout } from "ui";
+import dynamic from "next/dynamic";
+import { ServicesSearchView } from "@components";
+// Dynamic import with SSR disabled
+// const ServicesSearchView = dynamic(
+//   () => import("@components/ui"),
+//   { ssr: false }
+// );
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps

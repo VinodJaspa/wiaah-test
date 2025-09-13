@@ -20,7 +20,7 @@ export interface HotelDetailedSearchCardProps {
   reviews: number;
   name: string;
   thumbnail: string;
-  price: number;
+  price: string;
   location: {
     address: string;
     city: string;

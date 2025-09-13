@@ -33,6 +33,8 @@ export const SettingsSectionsSidebar: React.FC<
   iconOnly = false,
 }) => {
     const { isMobile } = useResponsive();
+
+    
     return isMobile ? (
       <Stack
         divider={<Divider className="my-0" />}
@@ -69,12 +71,14 @@ export const SettingsSectionsSidebar: React.FC<
                           setOpen((v) => !v);
                         }
                       } else {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                         onPanelClick && onPanelClick(panelUrl, panelName);
                       }
                     }}
-                    className={`${currentActive === panelUrl ? "bg-primary-50" : ""
-                      } hover:bg-primary-light flex justify-between gap-2 ${iconOnly ? "px-2" : ""
-                      } py-4 items-center`}
+                    className={`flex items-center justify-between gap-2 w-full rounded-md transition-all
+                      ${iconOnly ? "px-2" : "px-4"} py-2
+                      ${currentActive === panelUrl ? "bg-gray-100 text-black font-semibold rounded-md" : "text-gray-700 hover:bg-gray-50"}`}
+                    
                   >
                     <div className="flex gap-2 items-center">
                       {PassPropsToFnOrElem(Icon, { className: "" })}
@@ -82,7 +86,7 @@ export const SettingsSectionsSidebar: React.FC<
                       {iconOnly ? null : (
                         <div className="flex flex-col">
                           <TranslationText
-                            className="font-medium"
+                     className="text-sm font-medium"
                             translationObject={panelName}
                           />
                         </div>
@@ -147,12 +151,14 @@ export const SettingsSectionsSidebar: React.FC<
                           setOpen((v) => !v);
                         }
                       } else {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                         onPanelClick && onPanelClick(panelUrl, panelName);
                       }
                     }}
-                    className={`${currentActive === panelUrl ? "bg-primary-50" : ""
-                      } hover:bg-primary-light flex justify-between gap-2 ${iconOnly ? "px-2" : "px-8"
-                      } py-4 px-8 items-center`}
+                    className={`flex items-center justify-between gap-2 w-full rounded-md transition-all
+                      ${iconOnly ? "px-2" : "px-4"} py-2
+                      ${currentActive === panelUrl ? "bg-gray-100 text-black font-semibold rounded-md" : "text-gray-700 hover:bg-gray-50"}`}
+                    
                   >
                     <div className="flex gap-2 items-center">
                       {PassPropsToFnOrElem(Icon, { className: "" })}
@@ -160,7 +166,7 @@ export const SettingsSectionsSidebar: React.FC<
                       {iconOnly ? null : (
                         <div className="flex flex-col">
                           <TranslationText
-                            className="font-bold"
+                            className="text-sm font-medium"
                             translationObject={panelName}
                           />
                         </div>

@@ -1,10 +1,10 @@
+import SavedCollections from "@features/Saved/components/sections/SavedPostsSection/SavedPostsSection";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
-import { SavedPostsSection, SavedView, SellerLayout } from "ui";
 import { ServerSideQueryClientProps } from "types";
+import { SellerLayout } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -29,7 +29,7 @@ const { t } = useTranslation();
         <title>{t("Saved ")}</title>
       </Head>
       <SellerLayout header={"main"}>
-        <SavedPostsSection />
+        <SavedCollections />
       </SellerLayout>
     </>
   );

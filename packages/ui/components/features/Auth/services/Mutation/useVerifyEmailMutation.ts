@@ -3,7 +3,10 @@ import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
 export type VerifyMutationVariables = Exact<{
-  code: Scalars["String"]["input"];
+  input: {
+    verificationCode: Scalars["String"]["input"];
+    email: Scalars["String"]["input"];
+  };
 }>;
 
 export type VerifyMutation = { __typename?: "Mutation" } & Pick<
@@ -14,30 +17,24 @@ export type VerifyMutation = { __typename?: "Mutation" } & Pick<
 export const useVerifyEmailMutation = () => {
   const client = createGraphqlRequestClient();
 
-  client.setQuery(
-    `
-    mutation verify(
-        $code:String!
-    ){
-        verifyEmail(
-            EmailVerificationInput:{
-                verificationCode:$code
-            }
-        )
+  client.setQuery(`
+    mutation verify($input: VerifyEmailDto!) {
+      verifyEmail(EmailVerificationInput: $input)
     }
-    `
-  );
+  `);
 
   return useMutation<
-    VerifyMutation["verifyEmail"],
-    unknown,
+    boolean, // response type
+    unknown, // error type
     {
       code: string;
+      email: string;
     }
-  >("verify-email", async (input) => {
+  >("verify-email", async ({ code, email }) => {
     const res = await client
-      .setVariables<VerifyMutationVariables>(input)
+      .setVariables({ input: { verificationCode: code, email } })
       .send<VerifyMutation>();
+
     return res.data.verifyEmail;
   });
 };

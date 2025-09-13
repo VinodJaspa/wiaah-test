@@ -1,20 +1,17 @@
-import React from "react";
 import {
-  Modal,
-  ModalCloseButton,
-  CloseIcon,
-  ModalContent,
-  ModalOverlay,
-  useGetPostMentionsQuery,
-  usePaginationControls,
-  SpinnerFallback,
-  Avatar,
-  Button,
   Divider,
+  SpinnerFallback,
+  useGetPostMentionsQuery,
+  usePaginationControls
 } from "@UI";
-import { useReactPubsubModal } from "react-pubsub";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
+import { Avatar } from "@UI/components/shadcn-components/table";
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
 import { useTranslation } from "react-i18next";
+import { useReactPubsubModal } from "react-pubsub";
 import { mapArray } from "utils";
+
 
 export const useSocialPostMentionsModal = (sub?: boolean) =>
   useReactPubsubModal<{ postId: string; postType: string }>(
@@ -25,7 +22,7 @@ export const useSocialPostMentionsModal = (sub?: boolean) =>
 export const SocialPostMentionsModal: React.FC = () => {
   const { close, isOpen, value } = useSocialPostMentionsModal(true);
   const { pagination } = usePaginationControls();
-const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const { data, isLoading, isError } = useGetPostMentionsQuery(
     value as { postId: string; postType: string },
@@ -36,43 +33,50 @@ const { t } = useTranslation();
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={close}>
-      <ModalOverlay />
-      <ModalContent className="h-[90%]">
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
-          <div className="flex justify-between items-center gap-4">
-            <span></span>
-            <p className="font-semibold text-xl">{t("Mentioned Pepole")}</p>
-            <ModalCloseButton>
-              <CloseIcon className="text-xl" />
-            </ModalCloseButton>
-          </div>
-          <Divider />
-          <div className="flex flex-col h-[calc(100%-2rem)] px-2 overflow-scroll thinScroll gap-4">
-            {mapArray(
-              data?.data,
-              ({ note, profielId, thumbnail, userId, username }, i) => (
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-4">
-                    <Avatar
-                      className="w-[4rem]"
-                      src={thumbnail}
-                      alt={username}
-                    />
-                    <div className="flex flex-col 1">
-                      <p className="font-bold text-lg">{username}</p>
-                      <p className="text-grayText">{note}</p>
+    <Transition appear show={isOpen} as={Fragment as React.ElementType}>
+      <Dialog as="div" className="relative z-50" onClose={close}>
+        <div className="fixed inset-0 bg-black bg-opacity-25" />
+        <div className="fixed inset-0 flex items-center justify-center">
+          <Dialog.Panel className="w-full max-w-md transform overflow-y-scroll h-[100vh] rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all">
+            <div className="flex justify-between items-center mb-4">
+              <Dialog.Title as="h3" className="text-xl font-semibold">
+                <p className="font-semibold text-base">{t("Mentioned Pepole")}</p>
+              </Dialog.Title>
+
+            </div>
+
+
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+
+              <Divider />
+              <div className="flex flex-col  px-2 overflow-scroll thinScroll gap-4">
+                {mapArray(
+                  data?.data,
+                  ({ note, profielId, thumbnail, userId, username }, i) => (
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-4">
+                        <Avatar
+
+                          src={thumbnail}
+                          alt={username}
+                        />
+                        <div className="flex flex-col 1">
+                          <p className="font-medium text-base">{username}</p>
+                          <p className="text-grayText">{note}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <PrimaryButton className="h-auto ">{t("Follow")}</PrimaryButton>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <Button>{t("Follow")}</Button>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        </SpinnerFallback>
-      </ModalContent>
-    </Modal>
+                  )
+                )}
+              </div>
+            </SpinnerFallback>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </Transition>
+
   );
 };

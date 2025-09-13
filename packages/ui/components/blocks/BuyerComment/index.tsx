@@ -1,15 +1,12 @@
 import React from "react";
-import { Divider, Rate } from "@UI";
+import { Rate } from "@UI";
+
 export interface BuyerCommentProps {
   name: string;
   date: Date;
   rating: number;
   comment: string;
-  product?: {
-    name: string;
-    description: string;
-    thumbnailUrl: string;
-  };
+  product?: any;
 }
 
 export const BuyerComment: React.FC<BuyerCommentProps> = ({
@@ -20,34 +17,31 @@ export const BuyerComment: React.FC<BuyerCommentProps> = ({
   product,
 }) => {
   return (
-    <div className="w-full flex flex-col gap-2 bg-white">
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
-          <span className="font-semibold">{name}</span>
-          <span className="text-gray-500">
-            {new Date(date).toLocaleDateString("en", {
-              weekday: "long",
+    <div className="w-full flex flex-col gap-2 bg-white py-2">
+      {/* Reviewer info */}
+      <div className="flex items-center gap-3">
+        <img
+          src={product.thumbnailUrl || "https://via.placeholder.com/40"}
+          alt={name}
+          className="h-10 w-10 rounded-full object-cover"
+        />
+        <div className="flex flex-col">
+          <span className="font-medium text-sm text-gray-900">{name}</span>
+          <span className="text-xs text-gray-500">
+            {new Date(date).toLocaleDateString("en-US", {
               month: "long",
-              year: "numeric",
               day: "numeric",
-            })}
+            })}{" "}
+            ago
           </span>
         </div>
-        <Rate allowHalf outOf={5} rating={rating} />
       </div>
-      <div className="">{comment}</div>
-      {product && (
-        <>
-          <div className="flex flex-col gap-4">
-            <img
-              className="h-16 w-28 object-cover"
-              src={product.thumbnailUrl}
-              alt={product.description}
-            />
-          </div>
-        </>
-      )}
-      <Divider />
+
+      {/* Rating */}
+      <Rate allowHalf outOf={5} rating={rating} className="mt-1" />
+
+      {/* Comment */}
+      <p className="text-sm text-gray-700 leading-snug">{comment}</p>
     </div>
   );
 };

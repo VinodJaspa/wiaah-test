@@ -7,6 +7,8 @@ import {
   OnModuleInit,
   UseGuards,
 } from '@nestjs/common';
+import { Res } from '@nestjs/common';
+import { Response } from 'express';
 import { ClientKafka } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
@@ -27,6 +29,7 @@ import {
   LoginDto,
   LoginWithOtpInput,
   RegisterDto,
+  ResendRegisterationCodeInput,
   VerifyEmailDto,
 } from './dto';
 import { AuthService } from './auth.service';
@@ -53,17 +56,19 @@ export class AuthResolver implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
     private readonly commandBus: CommandBus,
-  ) {}
+  ) { }
   cookiesKey = this.config.get('COOKIES_KEY');
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
-  changePassword(
+  async changePassword(
     @Args('changePasswordInput') input: ChangePasswordInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    this.commandBus.execute(new ChangePasswordCommand(input, user));
+  ): Promise<boolean> {
+    // console.log('Inside mutation with input:', input);
+    return await this.commandBus.execute(new ChangePasswordCommand(input, user));
   }
+  
 
   @Mutation(() => LoginResponse)
   async login(
@@ -78,9 +83,8 @@ export class AuthResolver implements OnModuleInit {
 
       // Set the JWT in an HttpOnly, Secure cookie
       ctx.res.cookie('auth_token', data.accessToken, {
-        secure: false, // Only secure in production
-        httpOnly: true, // Prevent client-side JavaScript from accessing the token
-        sameSite: 'None', // Adjust based on cross-origin requirements
+        secure: false,
+        httpOnly: true,
         path: '/',
       });
 
@@ -91,6 +95,8 @@ export class AuthResolver implements OnModuleInit {
         accessToken: data.accessToken as string,
       };
     } catch (error: any) {
+      console.log(error, "error");
+
       return {
         success: false,
         code: ResponseCodes.InternalServiceError,
@@ -135,22 +141,32 @@ export class AuthResolver implements OnModuleInit {
       code: ResponseCodes.TokenInjected,
     };
   }
-
   @Mutation(() => Boolean)
-  @UseGuards(new GqlAuthorizationGuard([]))
   verifyEmail(
-    @Args('EmailVerificationInput') { verificationCode }: VerifyEmailDto,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('EmailVerificationInput') { verificationCode, email }: VerifyEmailDto
   ) {
     return this.authService.verifyEmail({
       code: verificationCode,
-      email: user.email,
+      email: email,
     });
   }
 
   @Mutation(() => Boolean)
-  resendRegisterationCode(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    return this.authService.resendRegisterationToken(user.email);
+  async logout(@Context() context: any): Promise<boolean> {
+    context.res.clearCookie('auth_token');
+    console.log(context ,"contet");
+    
+    return true;
+  }
+
+
+
+
+  @Mutation(() => Boolean)
+  resendRegisterationCode(
+    @Args('input') input: ResendRegisterationCodeInput
+  ) {
+    return this.authService.resendRegisterationToken(input.email);
   }
 
   @Mutation((type) => Boolean)
@@ -227,15 +243,20 @@ export class AuthResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.eventsClient.subscribeToResponseOf(
+    const topics = [
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
-    );
-    this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
-    );
-    this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail,
-    );
+      "unsuspend-account",
+    ];
+  
+    for (const topic of topics) {
+      this.eventsClient.subscribeToResponseOf(topic);
+      console.log(`[Kafka] Subscribed to response of topic: ${topic}`);
+    }
+  
     await this.eventsClient.connect();
+    console.log('[Kafka] Kafka client connected');
   }
+  
 }

@@ -8,12 +8,12 @@ import {
   Pagination,
   useResturantsDataState,
   useSetResturantsDataState,
-  ServicesSearchGrid,
+
   usePaginationControls,
   Restaurant,
   ResturantRecommendedCardProps,
 } from "@UI";
-
+import { ServicesSearchGrid } from "@features/Services/components/wrappers/ServicesSearchGrid";
 export interface ResturantSearchListProps {
   restaurants: ResturantRecommendedCardProps[];
 }
@@ -23,7 +23,7 @@ export const ResturantSearchList: React.FC<ResturantSearchListProps> = ({
 }) => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
   const { controls, pagination } = usePaginationControls();
-
+  console.log(ServicesSearchGrid, "restaurants in resturant search list");
   return (
     <div className="flex flex-col gap-4 w-full">
       <ServicesSearchGrid
@@ -55,6 +55,7 @@ export const ResturantHorizontalList: React.FC = () => {
         {res
           ? res.map((restaurant, i) => (
             <ResturantRecommendedCard
+              id={restaurant.id}
               price={restaurant.lowest_price}
               thumbnail={restaurant.presentations[0].src}
               title={restaurant.serviceMetaInfo.title}

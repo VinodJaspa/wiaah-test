@@ -52,13 +52,15 @@ export class PrismaGlobalModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
-      buildSchemaOptions: {},
+      buildSchemaOptions: {
+        orphanedTypes: [Service],
+      },
       context({ req, res }) {
         const user = getUserFromRequest(req);
         const userIp =
           req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-        // console.log({ req, userIp });
+        // console.log( req,"user");
         return { req, res, user: { ...user, ip: userIp } };
       },
     }),

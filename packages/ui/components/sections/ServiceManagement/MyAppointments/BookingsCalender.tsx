@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   SectionHeader,
   HStack,
-  useGetMyAppointmentsQuery,
+
   Modal,
   ModalOverlay,
   ModalContent,
@@ -13,12 +13,17 @@ import {
   Th,
   TBody,
   Td,
-  WeekSwitcher,
+
   useResponsive,
   ArrowLeftIcon,
   AspectRatio,
   DotIcon,
-} from "@UI";
+
+
+
+} from "ui";
+import { useGetMyAppointmentsQuery } from "@UI/components/features/Services/Services/queries";
+import {WeekSwitcher} from"@UI/components/features/Services/components/DataDisplay"
 import { ServiceType } from "@features/API";
 import {
   getMonthCalenderDays,
@@ -30,7 +35,7 @@ import {
   useForm,
   weekDayLong,
 } from "utils";
-import { BookDetailsSection, BookingsSectionCtx } from ".";
+import { BookDetailsSection } from "./BookDetails";
 import { ArrElement } from "@UI/../types/src";
 import { BiCalendar } from "react-icons/bi";
 import { FaClock } from "react-icons/fa";
@@ -93,6 +98,7 @@ const { t } = useTranslation();
       }
     },
     onSuccess(data) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       data.pageParams;
     },
   });
@@ -379,6 +385,7 @@ const { t } = useTranslation();
           })}
         </div>
       </div>
+      <h1>hello</h1>
     </div>
   );
 };

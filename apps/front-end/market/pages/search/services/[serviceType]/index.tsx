@@ -1,14 +1,15 @@
-import { NextPage } from "next";
-import React from "react";
-import { Container, MarketServiceSearchView, useMutateSearchFilters } from "ui";
-import Head from "next/head";
-import { useTranslation } from "react-i18next";
 import { MasterLayout } from "@components";
-import { useRouter } from "next/router";
-import { ExtractServiceTypeFromQuery } from "utils";
 import { ServicesViewsList } from "@data";
-import { SERVICESTYPE_INDEXKEY } from "ui";
 import { ServiceType } from "@features/API";
+import { MarketServiceSearchViewSections } from "components/MarketSections";
+import { NextPage } from "next";
+import Head from "next/head";
+import React from "react";
+
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { Container, MarketServiceSearchView, SERVICESTYPE_INDEXKEY, useMutateSearchFilters } from "ui";
+import { ExtractServiceTypeFromQuery } from "utils";
 
 const ServiceCategory: NextPage = () => {
 const { t } = useTranslation();
@@ -18,6 +19,8 @@ const { t } = useTranslation();
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
     addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
   }
+  console.log("MarketServiceSearchView:", MarketServiceSearchView);
+
   return (
     <>
       <Head>
@@ -28,8 +31,8 @@ const { t } = useTranslation();
           scrollable: false,
         }}
       >
-        <Container className="px-4 py-8">
-          <MarketServiceSearchView serviceType={serviceType as ServiceType} />
+        <Container className="px-4 md:px-0" >
+          <MarketServiceSearchViewSections serviceType={serviceType as ServiceType} />
         </Container>
       </MasterLayout>
     </>

@@ -56,7 +56,10 @@ const { t } = useTranslation();
   const { shareLink } = useSocialControls();
   const { mutate: savePost } = useSavePostMutation();
   const { visit, getUrl } = useRouting();
+const handleSavePost =(postId :string)=>{
+  
 
+}
   const interactions: {
     value: string;
     icon: React.ReactNode;

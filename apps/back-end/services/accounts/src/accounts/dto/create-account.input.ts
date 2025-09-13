@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { StaffAccountType } from './admin-get-staff-accounts.input';
 import { AccountGenderEnum } from '@prisma-client';
+import { FileUpload, GraphQLUpload, Upload } from 'graphql-upload-ts';
 
 enum RegisterAccountType {
   seller = 'seller',
@@ -44,6 +45,9 @@ export class CreateAccountInput {
 
   @Field(() => String, { nullable: true })
   phone?: string;
+  
+  @Field(() => GraphQLUpload, { nullable: true }) 
+  photo?: string ;
 }
 
 @InputType()
@@ -85,4 +89,4 @@ export class AdminUpdateAdminAccountInput extends PartialType(
 }
 
 @InputType()
-export class CreateSellerAccountInput extends CreateAccountInput {}
+export class CreateSellerAccountInput extends CreateAccountInput { }

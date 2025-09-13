@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { VerifiedIcon } from "ui";
-import { FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
 
 interface UsersViewProps {
@@ -9,13 +8,16 @@ interface UsersViewProps {
 
 export const UsersView: React.FC<UsersViewProps> = ({ users }) => {
   return (
-    <div className="w-full hidden space-y-5 md:flex flex-col items-center md:mx-0 mx-3">
+    <div className="w-full flex flex-col divide-y">
       {users.map((user: UserCardProps) => (
         <UserCard
+          key={user.id}
           id={user.id}
           image={user.image}
           name={user.name}
+          handle={user.handle}
           isFollowed={user.isFollowed}
+          verified={user.verified}
         />
       ))}
     </div>
@@ -26,6 +28,8 @@ interface UserCardProps {
   id: number;
   image: string;
   name: string;
+  handle?: string;
+  verified?: boolean;
   isFollowed: boolean;
 }
 
@@ -33,33 +37,41 @@ export const UserCard: React.FC<UserCardProps> = ({
   id,
   image,
   name,
+  handle,
+  verified,
   isFollowed,
 }) => {
   const [isFollowing, setIsFollowing] = useState<boolean>(isFollowed);
 
   return (
-    <div className=" md:w-1/2 w-full   flex justify-between items-center">
-      <Link href={`/profile/${id}`} className="flex gap-4 items-center">
-        <div className="relative">
-          <img src={image} className="rounded-full w-[68px] h-[68px]" />
-          <VerifiedIcon className="absolute bottom-0 right-0" />
+    <div className="flex justify-between items-center py-3 px-2 hover:bg-gray-50 transition">
+      {/* Left: Avatar + Name */}
+      <Link href={`/profile/${id}`} className="flex gap-3 items-center">
+        <img
+          src={image}
+          className="rounded-full w-12 h-12 object-cover border"
+          alt={name}
+        />
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1">
+            <p className="font-semibold text-sm">{name}</p>
+            {verified && <VerifiedIcon className="w-4 h-4 text-primary" />}
+          </div>
+          <p className="text-gray-500 text-xs">@{name}</p>
         </div>
-
-        <p className=" font-semibold">{name}</p>
       </Link>
-      <div className="flex gap-1 text-[#656565] text-xs">
-        <button
-          onClick={() => setIsFollowing((prev) => !prev)}
-          className={`${
-            isFollowing
-              ? "bg-[#3CD399] text-white"
-              : "bg-white text-[#3CD399] border border-[#3CD399]"
-          } font-semibold w-[140px] rounded-full h-[50px] flex gap-1 items-center justify-center`}
-        >
-          <p>{isFollowing ? "Follow" : "Unfollow"}</p>
-          {isFollowing && <FaUserPlus />}
-        </button>
-      </div>
+
+      {/* Right: Follow Button */}
+      <button
+        onClick={() => setIsFollowing((prev) => !prev)}
+        className={`px-4 py-1 text-xs font-semibold rounded-full transition ${
+          isFollowing
+            ? "bg-black text-white hover:bg-gray-800"
+            : "bg-gray-100 text-black hover:bg-gray-200"
+        }`}
+      >
+        {isFollowing ? "Followed" : "Follow"}
+      </button>
     </div>
   );
 };

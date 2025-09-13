@@ -15,6 +15,7 @@ export class MailingService {
     try {
       if (!email || !verificationCode) throw new Error('invalid inputs');
       console.log({ email, name, verificationCode });
+      
       const res = await this.mailingservice.send({
         to: [{ Email: email, Name: name }],
         subject: 'wiaah account verification',
@@ -23,6 +24,8 @@ export class MailingService {
           verificationCode,
         text: 'thanks for using wiaah, use the code below to continue the registeration proccess',
       });
+      console.log(res ,"res");
+      
     } catch (error) {
       this.logger.error(error);
     }

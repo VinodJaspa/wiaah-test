@@ -1,16 +1,17 @@
-import { ServiceCancelationPolicy } from '@entities';
+import { ServiceCancelationPolicyInput, ServiceLocationInput, ServiceMetaInfoTranslationInput, ServicePolicyTranslatedInput } from '@dto';
+import { ServiceContact, ServiceMetaInfo, ServiceMetaInfoTranslation } from '@entities';
+import { ServiceContactInput } from '@hotel/dto';
 import { InputType, Field, Float, ID, Int } from '@nestjs/graphql';
-import {} from '@restaurant/entities';
+import { RestaurantMenu } from '@restaurant/entities';
 import {
   ServiceStatus,
   ServicePresentationType,
   ServiceTranslationPolicies,
   ServiceMetaTranslationInfo,
   ServicePaymentMethods,
-  ServiceContact,
-  RestaurantMenu,
   Location,
 } from 'prismaClient';
+import { RestaurantMenuInput } from './create-restaurant-menu.input';
 @InputType()
 export class CreateRestaurantInput {
   @Field(() => ID)
@@ -28,25 +29,25 @@ export class CreateRestaurantInput {
   })
   status?: ServiceStatus;
 
-  @Field(() => [])
+  @Field(() => [ServicePresentationType])
   presentations: ServicePresentationType[];
 
-  @Field(() => [])
+  @Field(() => [ServicePolicyTranslatedInput])
   policies: ServiceTranslationPolicies[];
 
-  @Field(() => [])
+  @Field(() => [ServiceMetaInfoTranslationInput])
   serviceMetaInfo: ServiceMetaTranslationInfo[];
 
   @Field(() => [ServicePaymentMethods])
   payment_methods: ServicePaymentMethods[];
 
-  @Field(() => [])
-  cancelationPolicies: ServiceCancelationPolicy[];
+  @Field(() => [ServiceCancelationPolicyInput])
+  cancelationPolicies: ServiceCancelationPolicyInput[];
 
-  @Field()
+  @Field(() => [ServiceContactInput])
   contact: ServiceContact;
 
-  @Field(() => Location)
+  @Field(() => ServiceLocationInput)
   location: Location;
 
   @Field(() => Float, { defaultValue: 0 })
@@ -55,7 +56,7 @@ export class CreateRestaurantInput {
   @Field(() => Float, { defaultValue: 0 })
   highest_price: number;
 
-  @Field(() => [])
+  @Field(() => [RestaurantMenuInput])
   menus: RestaurantMenu[];
 
   @Field(() => ID)

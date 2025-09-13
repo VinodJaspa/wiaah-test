@@ -16,117 +16,62 @@ import {
   Spinner,
 } from "../../../partials";
 import { ShadCnButton } from "@UI/components/shadcn-components";
+import SearchBoxInner from "@UI/components/shadcn-components/SearchBox/SearchBoxInner";
 
-const suggestedUsersPH: ChatNewMessageUserInfo[] = [
+const messages = [
   {
-    id: "1",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop.jpeg",
-    username: "john_doe",
+    id: 1,
+    name: "z.beatz",
+    lastMessage: "z.beatz a envoyé une pièce jointe...",
+    time: "1h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=Z",
   },
   {
-    id: "2",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-2.jpeg",
-    username: "jane_smith",
+    id: 2,
+    name: "Liam Carter",
+    lastMessage: "Vous: See you tomorrow!",
+    time: "1h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=L",
   },
   {
-    id: "3",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-3.jpeg",
-    username: "alex_morgan",
-  },
-  {
-    id: "4",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop.jpeg",
-    username: "tumpa.rahman",
-  },
-  {
-    id: "5",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-2.jpeg",
-    username: "jenny_park",
-  },
-  {
-    id: "6",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-3.jpeg",
-    username: "rita_ora",
-  },
-  {
-    id: "7",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-3.jpeg",
-    username: "rita_ora",
-  },
-  {
-    id: "8",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-3.jpeg",
-    username: "rita_ora",
-  },
-  {
-    id: "9",
-    name: {
-      first: "first",
-      last: "last",
-    },
-    userPhoto: "/shop-3.jpeg",
-    username: "rita_ora",
+    id: 3,
+    name: "Olivia Davis",
+    lastMessage: "Vous: Thanks for the recommendation!",
+    time: "2h",
+    avatar: "https://placehold.co/40x40/f1f5f9/64748b?text=O",
   },
 ];
 
-async function getSuggestedUsers({
-  queryKey,
-}: any): Promise<ChatNewMessageUserInfo[]> {
-  return suggestedUsersPH;
-}
+
+
 
 export const NewMessageModal: React.FC = () => {
   const { user } = useUserData();
-  const { value: isOpen, cancelMsgNewUser } = useSocialControls("msgNewUser");
-const { t } = useTranslation();
+  const { value: isOpen, cancelMsgNewUser, chatWith } = useSocialControls("msgNewUser");
+  const { t } = useTranslation();
+  const [isLoading, setLoading] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState<any | null>(null);
+
   const [suggestedUserSelect, setSuggestedUserSelect] =
     React.useState<string>("");
-  const {
-    data: suggestedUsers,
-    isLoading,
-    isError,
-  } = useQuery(
-    ["NewMessageSuggestedUsers", { userId: user?.id }],
-    getSuggestedUsers,
-    {
-      enabled: !!user,
-    },
-  );
+  // const {
+  //   data: suggestedUsers,
+  //   isLoading,
+  //   isError,
+  // } = useQuery(
+  //   ["NewMessageSuggestedUsers", { userId: user?.id }],
+  //   getSuggestedUsers,
+  //   {
+  //     enabled: !!user,
+  //   },
+  // );
 
   if (!user) return null;
-
+  const handleStartChat = () => {
+    if (!selectedUser) return;
+    chatWith(selectedUser.id); // 👈 start chat with selected user
+    cancelMsgNewUser(); // close modal
+  };
   return (
     <Modal isOpen={!!isOpen} onClose={cancelMsgNewUser}>
       <ModalOverlay />
@@ -141,25 +86,30 @@ const { t } = useTranslation();
             aria-label={t("close_new_message_modal", "close new message modal")}
           />
         </div>
-        <ChatSearchInput />
+        <SearchBoxInner placeholder="Search person" />
         <div className="thinScroll h-full overflow-y-scroll max-h-80">
           <div className="flex gap-4 flex-col">
             <div className="flex gap-4 flex-col">
               {isLoading ? (
                 <Spinner />
               ) : (
-                suggestedUsers &&
-                suggestedUsers.map((user, i) => (
+                messages &&
+                messages.map((user, i) => (
                   <HStack className="w-full justify-between cursor-pointer">
-                    <HStack>
+                    <HStack
+                      key={user.id}
+                      className={`w-full cursor-pointer p-2 rounded-lg transition ${selectedUser?.id === user.id ? "bg-gray-100" : "hover:bg-gray-50"
+                        }`}
+                      onClick={() => setSelectedUser(user)} // 👈 select user
+                    >
                       <Avatar
-                        name={user.username}
-                        src={user.userPhoto}
+                        name={user.name}
+                        src={user.avatar}
                         key={i}
                       />
                       <div className="flex flex-col gap-0">
-                        <p className="text-lg font-semibold">{user.username}</p>
-                        <p>message preview</p>
+                        <p className="text-lg font-semibold">{user.name}</p>
+                        {/* <p>message preview</p> */}
                       </div>
                     </HStack>
                   </HStack>
@@ -172,8 +122,10 @@ const { t } = useTranslation();
           <ShadCnButton onClick={() => cancelMsgNewUser()} variant="outline">
             Cancel
           </ShadCnButton>
-          <ShadCnButton className="bg-grey-800 text-white border-0 hover:bg-gray-700 focus:ring-primary focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800" >
-    
+          <ShadCnButton
+            disabled={!selectedUser}
+            onClick={handleStartChat}
+          >
             Start Chat
           </ShadCnButton>
         </div>

@@ -28,8 +28,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             ? toggleCheckBox(value)
             : null
         }
-        color="green"
-        className={`${className} ring-0 checked:bg-primary cursor-pointer   checked:hover:bg-primary checked:focus:bg-primary focus:ring-0  active:ring-0`}
+        color="black"
+        className={`${className} ring-0 checked:bg-primary cursor-pointer   checked:hover:bg-black checked:focus:bg-black focus:ring-0  active:ring-0`}
         type={"checkbox"}
         {...props}
       />

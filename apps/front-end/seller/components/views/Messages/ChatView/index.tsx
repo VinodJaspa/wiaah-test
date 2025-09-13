@@ -1,9 +1,10 @@
+import ChatMessagesSection from "@blocks/SideBars/ChatMessagesSidebar";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
   Button,
-  ChatMessagesSideBar,
+
   ChatRoom,
   Drawer,
   DrawerContent,
@@ -32,14 +33,14 @@ const { t } = useTranslation();
   const { user } = useUserData();
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 mx-auto sm:w-4/5 pb-4 h-full">
+    <div className="">
       {/* messages sidebar  */}
-      <ChatMessagesSideBar
-        onCardClick={handleRouteChatRoom}
-        props={{ className: "max-w-[30rem]" }}
+      <ChatMessagesSection
+        // onCardClick={handleRouteChatRoom}
+        // props={{ className: "max-w-[30rem]" }}
       />
       {/* chatroom  */}
-      {isMobile ? (
+      {/* {isMobile ? (
         <>
           <Drawer
             spaceBottom="2.5rem"
@@ -72,7 +73,7 @@ const { t } = useTranslation();
             <Button>{t("Send Message")}</Button>
           </VStack>
         </div>
-      )}
+      )} */}
 
       <NewMessageModal />
     </div>

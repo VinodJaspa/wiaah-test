@@ -1,3 +1,4 @@
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts';
 import { CreateSellerAccountInput } from './create-account.input';
 import { Field, ID, InputType, PartialType, OmitType } from '@nestjs/graphql';
 
@@ -21,6 +22,10 @@ export class UpdateAccountInput extends PartialType(
 
   @Field(() => String, { nullable: true })
   country?: string;
+  @Field(() => GraphQLUpload, { nullable: true })
+  photo?: string;
+  @Field(() => Date, { nullable: true })
+  birthDate?: string;
 }
 
 @InputType()

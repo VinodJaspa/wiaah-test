@@ -23,7 +23,7 @@ import { ServiceCashbackModule } from './service-cashback/service-cashback.modul
 import { BookServiceModule } from '@book-service/book-service.module';
 import { ServiceFiltersModule } from './service-filters/service-filters.module';
 import { RestaurantModule } from '@restaurant';
-
+import { ServiceCashback } from '@entities';
 @Global()
 @Module({
   imports: [
@@ -47,12 +47,14 @@ class GlobalElasticsearchModule {}
   exports: [PrismaService],
 })
 export class GlobalPrismaService {}
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
+      buildSchemaOptions: {
+        orphanedTypes: [ServiceCashback],
+      },
       context: (ctx) => {
         const user = getUserFromRequest(ctx.req);
         return { ...ctx, user, req: ctx.req };

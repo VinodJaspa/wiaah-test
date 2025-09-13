@@ -38,7 +38,7 @@ import { AuthAdminModule } from './auth-admin.module';
     ]),
 
     JwtModule.register({
-      secret: 'secret',
+      secret: process.env.JWT_SECRET || 'secret',  
       signOptions: {
         expiresIn: '1d',
       },

@@ -13,6 +13,7 @@ import {
 import { PrismaService } from 'prismaService';
 import { UnauthorizedException } from '@nestjs/common';
 
+
 @Resolver(() => UserNotificationSettings)
 export class NotificationSettingsResolver {
   constructor(
@@ -25,12 +26,13 @@ export class NotificationSettingsResolver {
     @Args('userId') userId: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    await this.validateReadPremission(userId, user);
-    return this.prisma.userNotificationSettings.findUnique({
-      where: {
-        userId,
-      },
-    });
+    console.log(userId , user ,"okkkkk");
+    
+    // await this.validateReadPremission(userId, user);
+    return this.notificationSettingsService.getOneByUserId(
+      userId,
+  
+     );
   }
 
   @Mutation(() => UserNotificationSettings)
@@ -43,17 +45,17 @@ export class NotificationSettingsResolver {
       user.id,
     );
   }
+@Mutation(() => UserNotificationSettings)
+disableNotificationFromContent(
+  @Args('input') input: DisableNotificationFromContentInput,
+  @GqlCurrentUser() user: AuthorizationDecodedUser,
+) {
+  return this.notificationSettingsService.disableNotificationOfContent(
+    input,
+    user.id,
+  );
+}
 
-  @Mutation(() => UserNotificationSettings)
-  disableNotificationFromContent(
-    input: DisableNotificationFromContentInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.notificationSettingsService.disableNotificationOfContent(
-      input,
-      user.id,
-    );
-  }
 
   async validateReadPremission(userId: string, user: AuthorizationDecodedUser) {
     if (userId !== user.id && user.accountType !== accountType.ADMIN)

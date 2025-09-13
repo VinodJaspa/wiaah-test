@@ -34,7 +34,7 @@ export type GetMyProfileQuery = { __typename?: "Query" } & {
 
 export const useGetMyProfileQuery = () => {
   const client = createGraphqlRequestClient();
-
+console.log("useGetMyProfileQuery called");
   client.setQuery(`
         query getMyProfile {
             myProfile {
@@ -51,7 +51,6 @@ export const useGetMyProfileQuery = () => {
                 publications
                 updatedAt
                 username
-                visibility
                 verified
             }
         }
@@ -79,6 +78,7 @@ export const useGetMyProfileQuery = () => {
     }
 
     const res = await client.send<GetMyProfileQuery>();
+    console.log("resdatat", res);
 
     return res.data.myProfile;
   });

@@ -8,3 +8,10 @@ export * from "./Inputs";
 export * from "./DataDisplay";
 export * from "./Sections";
 export * from "./Drawers";
+export * from "./Hotel"
+export * from "./Restaurant";
+export * from "./Vehicle";
+
+export * from "./HealthCenter";
+export * from "./ProductDiscount";
+export * from "./BeautyCenter";

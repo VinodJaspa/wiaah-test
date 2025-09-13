@@ -1,6 +1,7 @@
 import {
   AddNewPostModal,
   AddNewStoryModal,
+  AdminCommentsModal,
   AuthenticationModal,
   CommentReportModal,
   NewMessageModal,
@@ -125,12 +126,12 @@ const socialLayoutSelector = selectorFamily({
   key: "socialLayoutSelector",
   get:
     (key: keyof SocialAtomValue | undefined = "unknown") =>
-    ({ get }) => {
-      const state = get(socialAtom);
+      ({ get }) => {
+        const state = get(socialAtom);
 
-      const value = state[key];
-      return value;
-    },
+        const value = state[key];
+        return value;
+      },
 });
 
 export function useSocialControls<TKey extends keyof SocialAtomValue>(
@@ -292,6 +293,7 @@ interface SocialLayoutProps {
 }
 export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
   const { isMobile } = useResponsive();
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <>
       <AddNewPostModal />
@@ -344,9 +346,10 @@ export const SocialLayout: React.FC<SocialLayoutProps> = ({ children }) => {
       /> */}
       <NewMessageModal />
       <SocialStoryModal />
-      <AddNewPostModal />
+
       <AddNewStoryModal />
       <CommentReportModal />
+      <AdminCommentsModal/>
       <>{children}</>
     </>
   );

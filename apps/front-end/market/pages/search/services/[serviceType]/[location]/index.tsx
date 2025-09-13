@@ -1,22 +1,30 @@
-import { NextPage } from "next";
+"use client"
 import React from "react";
-import Head from "next/head";
 import { MasterLayout } from "@components";
-import { useTranslation } from "react-i18next";
-import {
-  Container,
-  BreadCrumb,
-  MarketServiceSearchResaultsView,
-  MarketServiceSearchView,
-} from "ui";
 import { ServiceType } from "@features/API";
+import { MarketDeatilsView } from "components/MarketSections/DetailsView";
+import { NextPage } from "next";
+import Head from "next/head";
+import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import {
+  BreadCrumb,
+  Container
+} from "ui";
 
 const Filtered: NextPage = () => {
 const { t } = useTranslation();
   const { getParam, getCurrentPath } = useRouting();
   const serviceType = getParam("serviceType");
   const searchLocation = getParam("location");
+console.log(serviceType,"serviceType");
+React.useEffect(() => {
+  
+
+  return () => {
+   
+  }
+}, [serviceType])
 
   return (
     <>
@@ -33,7 +41,7 @@ const { t } = useTranslation();
               .filter((link) => link.length > 0)
               .map((link) => ({ text: link, url: link }))}
           />
-          <MarketServiceSearchResaultsView
+          <MarketDeatilsView
             searchQuery={searchLocation}
             serviceType={serviceType as ServiceType}
           />

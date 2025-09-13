@@ -8,7 +8,7 @@ const { t } = useTranslation();
   return (
     <>
       {typeof location === "string" ? (
-        <p className="text-2xl font-bold">
+        <p className="text-sm font-bold mb-4">
           {t("We found for you in")} {location} {servicesNum || 0}{" "}
           {t(
             "booking services that are available just for you. Do not hesitate to book."

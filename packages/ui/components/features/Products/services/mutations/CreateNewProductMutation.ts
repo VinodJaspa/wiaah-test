@@ -1,32 +1,42 @@
-import { CreateProductInput, Exact, Product } from "@features/API";
+import { CreateProductInput, Product } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
-
-export type CreateProductMutationVariables = Exact<{
-  args: CreateProductInput;
-}>;
-
-export type CreateProductMutation = { __typename?: "Mutation" } & {
-  createNewProduct: { __typename?: "Product" } & Pick<Product, "id">;
-};
+import { errorToast, successToast } from "utils";
 
 export const useCreateNewProductMutation = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-  mutation create(
-    $input:$CreateProductInput
-    ){
-        createNewProduct(
-            createNewProductInput:$input
-        ){
-            id
-        }
+    mutation create($input: CreateProductInput!) {
+      createNewProduct(createNewProductInput: $input) {
+        id
+        price
+        stock
+      }
     }
-`);
+  `);
 
-  return useMutation<{ data: Product }, unknown, CreateProductInput, any>(
-    "create-product",
-    (data) => client.setVariables(data).send<Product>()
+  return useMutation<boolean, unknown, CreateProductInput>(
+    async (input) => {
+      try {
+        const res = await client
+          .setVariables({ input })
+          .send<{ createNewProduct: Product }>();
+
+        if (res?.data?.createNewProduct?.id) {
+          successToast("✅ Product created successfully!");
+          return true;
+        } else {
+          throw new Error("No product ID returned from server");
+        }
+      } catch (err: any) {
+        const message =
+          err?.response?.[0]?.message ??
+          err?.message ??
+          "Unknown error";
+        errorToast(`❌ Failed to create product: ${message}`);
+        return false;
+      }
+    }
   );
 };

@@ -14,14 +14,12 @@ export const useUpdateMyShopMutation = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-mutation updateMyShop($args:UpdateShopInput!) {
-  updateMyShop(
-    updateMyShopInput:$args
-  ){
-    id
-  }
-}
-`);
+    mutation updateShop($args: UpdateUserShopInput!) {
+      updateShop(args: $args) {
+        id
+      }
+    }
+  `);
 
   return useMutation<
     UpdateMyShopMutation["updateShop"],
@@ -29,11 +27,10 @@ mutation updateMyShop($args:UpdateShopInput!) {
     UpdateMyShopMutationVariables["args"]
   >(["update-shop"], async (data) => {
     const res = await client
-      .setVariables<UpdateMyShopMutationVariables>({
-        args: data,
-      })
+      .setVariables<UpdateMyShopMutationVariables>({ args: data })
       .send<UpdateMyShopMutation>();
 
     return res.data.updateShop;
   });
 };
+

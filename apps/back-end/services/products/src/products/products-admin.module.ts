@@ -10,6 +10,7 @@ import { ProductsAdminResolver } from './products-admin.resolver';
       secretKey: 'secret',
       serviceKey: 'servicekey',
       provider: UploadServiceProviders.CLOUDFLARE,
+      cloudName: undefined
     }),
   ],
   providers: [ProductsAdminResolver],

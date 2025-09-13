@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+"use client";
+import React, { FC, useCallback } from "react";
 import { LoginType } from "types";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useRouter } from "next/router";
@@ -10,8 +11,13 @@ import {
   Button,
 } from "@UI";
 import { useTranslation } from "react-i18next";
-import { Form, Formik } from "formik";
+
 import { BiKey } from "react-icons/bi";
+import Link from "next/link";
+
+
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 export interface AuthSwitcherProps {
   loginType: LoginType;
@@ -30,15 +36,19 @@ const { t } = useTranslation();
   const [view, setView] = React.useState<LoginType>(loginType);
   const router = useRouter();
 
-  const handleChangeView = (view: LoginType) => {
-    if (onViewChange) {
-      onViewChange(view);
-    }
-    if (!link) {
-      // it wont redirect change view state
-      setView(view);
-    }
-  };
+  const handleChangeView = useCallback(
+    (newView: LoginType) => {
+      if (onViewChange) onViewChange(newView);
+      if (!link) setView(newView);
+      router.push(`/auth/${newView}`);
+      // ❌ remove router.replace (no query params, no navigation)
+      console.log(newView, "viewww (inside handleChangeView)");
+    },
+    [link, onViewChange , view]
+  );
+  
+ 
+  
 
   function handleActivateTabChange(activeKey: string) {
     if (activeKey === "login") {
@@ -53,6 +63,10 @@ const { t } = useTranslation();
   switch (view) {
     case "login":
       return (
+        <>
+
+
+  
         <Tabs.Root
           value="login"
           onValueChange={handleActivateTabChange}
@@ -68,12 +82,14 @@ const { t } = useTranslation();
           </Tabs.List>
 
           <Tabs.Content value="login">
+            
             <LoginView
               onSubmit={(data) => onSubmit?.(data, "login")}
               setAuthView={handleChangeView}
             />
           </Tabs.Content>
         </Tabs.Root>
+        </>
       );
 
     case "buyer-signup":
@@ -112,7 +128,9 @@ const { t } = useTranslation();
           <Formik
             initialValues={{}}
             onSubmit={(data) => {
-              onSubmit && onSubmit(data, "email-verify");
+            if(onSubmit){
+              onSubmit(data, "email-verify");
+            } 
             }}
           >
             {() => {
@@ -139,3 +157,5 @@ const { t } = useTranslation();
       return null;
   }
 };
+
+

@@ -21,7 +21,7 @@ export const DateAndTimeInput: React.FC<DateAndTimeInputProps> = ({
   dateLabel,
   onDateChange,
 }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const [dayDateUtc, setDayDateUtc] = React.useState<string>();
   const [time, setTime] = React.useState<TimeType>({ hour: 10, minutes: 0 });
   const dayDate = new Date(dayDateUtc || Date.now());
@@ -35,11 +35,13 @@ const { t } = useTranslation();
     )
   );
   const dateDetails = DateDetails(date);
+
   React.useEffect(() => {
     if (onDateChange) {
       onDateChange(date);
     }
   }, [date]);
+
   return (
     <div className="flex gap-8 justify-between whitespace-nowrap">
       <Menu>
@@ -47,8 +49,8 @@ const { t } = useTranslation();
           <div className="flex gap-2 items-center">
             <CalenderIcon className="text-[2em] text-primary" />
             <div className="flex flex-col">
-              <p>{dateLabel}</p>
-              <p className="font-bold">
+              <p className="text-sm">{dateLabel}</p>
+              <p className="font-bold text-sm">
                 {dateDetails
                   ? `${dateDetails.month_2digit}.${dateDetails.day}.${dateDetails.year_num}`
                   : null}
@@ -67,13 +69,14 @@ const { t } = useTranslation();
           />
         </MenuList>
       </Menu>
+
       <Menu>
         <MenuButton>
           <div className="flex gap-2 items-center">
             <ClockIcon className="text-[2em] text-primary" />
             <div className="flex flex-col">
-              <p>{t("Time")}</p>
-              <p className="font-bold">
+              <p className="text-sm">{t("Time")}</p>
+              <p className="font-bold text-sm">
                 {dateDetails ? `${dateDetails.am_pm_hour_minute}` : null}
               </p>
             </div>

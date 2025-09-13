@@ -21,7 +21,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   telephone,
   showContact,
 }) => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const contactRef = usePublishRef((keys) => keys.contact);
 
   const contacts: {
@@ -29,11 +29,7 @@ const { t } = useTranslation();
     value: React.ReactNode;
     icon: React.ReactNode;
   }[] = [
-    {
-      label: t("Address"),
-      icon: <LocationIcon className="fill-primary" />,
-      value: <LocationAddress location={location} />,
-    },
+   
     {
       label: t("Phone"),
       icon: <TelephoneFillIcon className="fill-primary" />,
@@ -44,24 +40,32 @@ const { t } = useTranslation();
       icon: <EmailIcon className="fill-primary" />,
       value: email,
     },
+    {
+      label: t("Address"),
+      icon: <LocationIcon className="fill-primary" />,
+      value: <LocationAddress location={location} />,
+    },
   ];
 
   return (
-    <div ref={contactRef} className="flex flex-col gap-[1.875rem] w-full">
-      {showContact ? (
-        <p className="text-3xl text-lightBlack font-bold">{t("Contact")}</p>
-      ) : null}
-      <div className="flex flex-col gap-5 w-full">
+    <div ref={contactRef} className="flex flex-col gap-6 w-full">
+      {showContact && (
+        <p className="text-xl md:text-2xl font-semibold text-lightBlack tracking-tight">
+          {t("Contact")}
+        </p>
+      )}
+      <div className="flex flex-col gap-4 w-full">
         {contacts.map(({ icon, label, value }, i) => (
-          <HStack className="gap-5">
-            <div className="rounded-full fill-primary bg-primary-100 text-primary text-xl lg:text-3xl min-w-[2.5rem] h-10 lg:h-[3.125rem] lg:w-[3.125rem] flex items-center justify-center">
+          <HStack key={i} className="gap-4 items-start">
+            {/* Icon bubble */}
+            <div className="rounded-full bg-primary-100 text-primary text-lg md:text-xl w-10 h-10 flex items-center justify-center shrink-0">
               {runIfFn(icon)}
             </div>
-            <div className="flex flex-col text-lightBlack">
-              <p className="text-xs lg:text-base text-[#646464] font-normal">
-                {label}
-              </p>
-              <p className="lg:text-lg text-sm font-medium text-black lg:font-bold">
+
+            {/* Label & Value */}
+            <div className="flex flex-col leading-snug">
+              <p className="text-xs md:text-sm text-gray-500">{label}</p>
+              <p className="text-sm md:text-base font-medium text-black">
                 {runIfFn(value)}
               </p>
             </div>

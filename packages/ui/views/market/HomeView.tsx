@@ -62,6 +62,8 @@ import { FaHeart, FaRegHeart, FaPlay } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaPause } from "react-icons/fa6";
 import { useRouter } from "next/router";
+import HomePageMarket from "./Home";
+import HeroBanner from "./Home/sections/heroBanner";
 
 export const HomeView: React.FC = () => {
   const [category, setCategory] = useState({
@@ -71,7 +73,9 @@ export const HomeView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <HomeViewDesignsDisplay />
+      <HomePageMarket/>
+      {/* <HomeViewDesignsDisplay /> */}
+      {/* <HeroBanner/>
       <div className="w-5/6 mx-auto flex justify-center ">
         <TopCategoriesHomePageSlider
           onCategorySelect={({ id, name }) => {
@@ -79,13 +83,13 @@ export const HomeView: React.FC = () => {
           }}
           selectedCategoryId={category}
         />
-      </div>
+      </div> */}
 
-      <TopSalesCategoryProducts category={category} />
+      {/* <TopSalesCategoryProducts category={category} />
       <BestShopsHomeSection />
-      <PlacesNearYouHomeSection />
-      <HomeRecommendationSection />
-      <MostViewdVideso />
+      <PlacesNearYouHomeSection /> */}
+      {/* <HomeRecommendationSection /> */}
+      {/* <MostViewdVideso /> */}
     </div>
   );
 };
@@ -361,26 +365,31 @@ const { t } = useTranslation();
   const imageChunks = splitIntoChunks(ShopCards, 5);
 
   const Grid: React.FC<{ shopCards: ShopCard[] }> = ({ shopCards }) => (
-    <div className="grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] gap-4  w-full ">
+    <div className="flex gap-4 overflow-x-auto scrollbar-hide w-full">
       {shopCards.map((shopCard, index) => (
-        <div className={`relative + ${shopCard.imageClassName}`} key={index}>
+        <div
+          key={index}
+          className="relative min-w-[250px] h-[160px] rounded-2xl overflow-hidden flex-shrink-0"
+        >
           <img
             src={shopCard.src}
-            className="object-cover rounded-2xl w-full h-full "
+            className="object-cover w-full h-full"
+            alt={shopCard.name}
           />
-
+  
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black bg-opacity-30 rounded-2xl"></div>
-          {/* Text and Button */}
+          <div className="absolute inset-0 bg-black/30"></div>
+  
+          {/* Text & Button */}
           <div
-            className={`flex flex-col justify-center items-center gap-1 absolute ${shopCard.descriptionClassName}`}
+            className={`absolute ${shopCard.descriptionClassName} flex flex-col gap-1`}
           >
-            <p className="text-[14px] text-white font-medium">Fashion shop</p>
-            <p className="text-[22px] w-full font-semibold text-white drop-shadow-lg">
+            <p className="text-sm text-white font-medium">Fashion shop</p>
+            <p className="text-lg font-semibold text-white drop-shadow-lg">
               {shopCard.name}
             </p>
             <Button
-              className="px-3 w-fit h-fit py-1 bg-[#20ECA7] text-white font-semibold text-lg"
+              className="px-3 py-1 bg-[#20ECA7] text-white font-semibold text-sm rounded-lg"
               onClick={() => handleVisitShop(shopCard.shopId)}
             >
               Visit now
@@ -390,6 +399,7 @@ const { t } = useTranslation();
       ))}
     </div>
   );
+  
   return (
     <div className="flex flex-col gap-4">
       <p className="text-lg sm:text-2xl font-semibold py-4">
@@ -451,7 +461,7 @@ const { t } = useTranslation();
                 />
               </div>
               <div className="flex flex-col  ">
-                <p className="font-medium text-sm sm:text-[18px] font-semibold">
+                <p className="font-medium text-sm sm:text-[18px] ">
                   {place.name}
                 </p>
                 <div className="flex justify-between items-center gap-2">

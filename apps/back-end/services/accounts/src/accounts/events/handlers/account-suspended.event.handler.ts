@@ -7,16 +7,15 @@ import { AccountSuspendedEvent as AccountSuspendedKafkaEvent } from 'nest-dto';
 
 @EventsHandler(AccountSuspendedEvent)
 export class AccountSuspensedEventHandler
-  implements IEventHandler<AccountSuspendedEvent>
-{
+  implements IEventHandler<AccountSuspendedEvent> {
   constructor(
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
-  ) {}
+  ) { }
 
   handle({ account }: AccountSuspendedEvent) {
     this.eventClient.emit(
-      KAFKA_EVENTS.ACCOUNTS_EVENTS.accountSuspended,
+      "update.account.suspension",
       new AccountSuspendedKafkaEvent({
         id: account.id,
         reason: account.rejectReason,

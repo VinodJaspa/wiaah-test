@@ -23,7 +23,7 @@ const links: {
       url: getRouting((r) => r.visitShopManagement()),
     },
     {
-      title: "Shopping Management",
+      title: "Orders & Perks",
       icon: <CgShoppingBag />,
       url: getRouting((r) => r.visitShoppingManagement()),
     },

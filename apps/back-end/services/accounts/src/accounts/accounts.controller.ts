@@ -49,6 +49,7 @@ import { Account } from '@accounts/entities';
 import { PrismaService } from 'prismaService';
 import { AccountDeletionRequestStatus } from '@prisma-client';
 
+
 @Controller()
 export class AccountsController implements OnModuleInit {
   private logger = new Logger(AccountsController.name);
@@ -58,7 +59,7 @@ export class AccountsController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
     private readonly prisma: PrismaService,
-  ) {}
+  ) { }
   @EventPattern('find.account')
   async handleFindAccount(@Payload() data: { email: string }) {
     // Perform a search for the account in the database
@@ -106,7 +107,7 @@ export class AccountsController implements OnModuleInit {
         success: true,
         data: { hasAccount: typeof account.stripeId === 'string' },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists)
@@ -131,27 +132,27 @@ export class AccountsController implements OnModuleInit {
       });
     }
   }
+  
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail)
   async getAccountByEmail(
-    @Payload() payload: KafkaPayload<GetAccountMetaDataByEmailMessage>,
+    @Payload() payload: { input: { email: string }, headers?: any }
   ): Promise<GetAccountMetaDataByEmailMessageReply> {
+    const email = payload?.input?.email;
     try {
-      const {
-        value: {
-          input: { email },
-        },
-      } = payload;
+      console.log('[getAccountMetaDataByEmail] email value:', email);
+      
 
+      
+      // console.log('[getAccountMetaDataByEmail] email value:', email);
       const account = await this.accountService.getByEmail(email);
       return new GetAccountMetaDataByEmailMessageReply({
         success: true,
-        data: {
-          ...account,
-        },
+        data: { ...account },
         error: null,
       });
     } catch (error) {
+      console.error('Error retrieving account:', error);
       return new GetAccountMetaDataByEmailMessageReply({
         success: false,
         data: null,
@@ -159,6 +160,7 @@ export class AccountsController implements OnModuleInit {
       });
     }
   }
+
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById)
   async getAccountById(@Payload() payload: { value: { accountId: string } }) {
@@ -238,6 +240,17 @@ export class AccountsController implements OnModuleInit {
     }
   }
 
+
+  @MessagePattern('unsuspend-account')
+  async handleSuspension(
+    @Payload() data: { input: { accountId: string; suspended: boolean } },
+  ): Promise<{ success: boolean }> {
+    console.log('Received suspension request:', data.input);
+    await this.accountService.updateSuspensionStatus(data.input.accountId, data.input.suspended);
+    return { success: true };
+  }
+
+
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail)
   async getAdminAccountAccount(
     @Payload() payload: { value: GetAdminAccountByEmailMesssage },
@@ -310,27 +323,27 @@ export class AccountsController implements OnModuleInit {
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountVerified)
   handleAccountVerified(
-    @Payload()
-    { value }: KafkaPayload<AccountVerifiedEvent>,
-  ) {
-    const {
-      input: { email },
-    } = value;
+    @Payload() payload :any)
+   
+   {
+
+    
+    const { email } = payload.input;
     this.accountService.handleVerifyAccount(email);
   }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.passwordChanged)
-  changePassword(@Payload() { value }: KafkaPayload<PasswordChangedEvent>) {
+  changePassword(@Payload() payload: any) {
     try {
-      const {
-        input: { newPassword, id },
-      } = value;
+      const { newPassword, id } = payload.input;
       this.accountService.updatePassword(newPassword, id);
+      this.logger.log(`Password updated successfully for user ID: ${id}`);
+      return true;
     } catch (error) {
       this.logger.error(error);
     }
   }
-
+  
   @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.stripeAccountCreated)
   async addStripeId(@Payload() value: StripeAccountCreatedEvent) {
     try {
@@ -369,7 +382,7 @@ export class AccountsController implements OnModuleInit {
 
   async onModuleInit() {
     await this.eventsClient.connect();
-
+    this.eventsClient.subscribeToResponseOf('update.account.suspension');
     this.eventsClient.subscribeToResponseOf('add.product.to.account');
   }
 }

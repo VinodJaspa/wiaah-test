@@ -51,20 +51,20 @@ export class RestaurantResolver {
     return this.restaurantService.getRestaurants();
   }
 
-  @Query(() => RestaurantService)
-  getRestaurant(
-    @Args('getRestaurantArgs') input: GetRestaurantInput,
-    @GetLang() lang: UserPreferedLang,
-  ): Promise<Restaurant> {
-    return this.restaurantService.getRestaurantById(input, lang);
-  }
+  // @Query(() => RestaurantService)
+  // getRestaurant(
+  //   @Args('getRestaurantArgs') args: GetRestaurantInput,
+  //   @GetLang() lang: UserPreferedLang,
+  // ): Promise<Restaurant> {
+  //   return this.restaurantService.getRestaurantById(args, lang);
+  // }
 
   @Mutation(() => Restaurant)
   // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createRestaurantService(
     @Args('createRestaurantArgs') args: CreateRestaurantInput,
     // @GqlCurrentUser() user: AuthorizationDecodedUser,
-    // @GetLang() lang: UserPreferedLang,
+    // @GetLang() lang: UserPreferedLang,`
   ): Promise<Restaurant> {
     return this.restaurantService.createRestaurant(args);
   }

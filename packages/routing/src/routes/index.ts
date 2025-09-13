@@ -30,6 +30,7 @@ export type MainRouterInterface = {
   visitRegister: () => RoutesType;
   visitLogout: () => RoutesType;
   visitSignin: () => RoutesType;
+  visitSignup:() =>RoutesType;
   visitMarketSavedItems: () => RoutesType;
   visitContactUs: () => RoutesType;
   visitHelpAndFaqs: () => RoutesType;
@@ -51,10 +52,12 @@ export const MainRoutes: MainRouterInterface = {
   route: "",
   query: {},
   dataKeys: {},
-  addPath(path: string) {
-    this.route = `${this.route}/${path}`;
-    return this;
-  },
+ addPath(path: string) {
+  const cleanCurrent = this.route.replace(/\/$/, ""); // remove trailing slash
+  const cleanNext = path.replace(/^\/+/, ""); // remove leading slashes
+  this.route = `${cleanCurrent}/${cleanNext}`;
+  return this;
+},
   id(id: string) {
     this.addPath(id);
     return this;
@@ -115,11 +118,16 @@ export const MainRoutes: MainRouterInterface = {
     return this.addPath("auth").addPath("logout");
   },
   visitSignin() {
+    console.log(this.addPath ,"path");
+    
     return this.addPath("auth").addPath("login");
+  },
+  visitSignup() {
+    return this.addPath("auth").addPath("register");
   },
   visitMarketSavedItems() {
     // TODO
-    return this;
+    return this.addPath("saved")
   },
   visitContactUs() {
     return this.addPath("contact-us");

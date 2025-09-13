@@ -5,8 +5,12 @@ import { BiTime } from "react-icons/bi";
 import { HiTicket } from "react-icons/hi";
 import { MdPending } from "react-icons/md";
 import { RiBookLine, RiServiceFill } from "react-icons/ri";
+import { FiClock } from 'react-icons/fi';
 import { getRouting } from "routing";
+import { SlCalender } from "react-icons/sl";
 import { SettingsSectionType } from "types";
+import { CiBookmark } from "react-icons/ci";
+import { CiSettings } from "react-icons/ci";
 import {
   SectionsLayout,
   BookingsSection,
@@ -17,7 +21,13 @@ import {
   ImageIcon,
   EditServicePresentationSection,
   ServicesIcon,
-} from "ui";
+  
+} from "@UI/components";
+import ReseravtionAgendaSectionMainPage from "@sections/ServiceManagement/Reservation/ReservationAgenda/ReservationAgendaSectionMain";
+import ResarvationSectionMainPage from "@sections/ServiceManagement/Reservation/ReservationList/ReservationSection";
+import PendingReservationsSectionMain from "@sections/ServiceManagement/PendingReservation/PendingReservation";
+import ServiceCatalogSectionMain from "@sections/ServiceManagement/ServiceCatalog/ServiceCatalogMain";
+
 
 export const ServiceManagementView = () => {
   const baseRoute = getRouting((r) => r.visitServiceManagement());
@@ -46,38 +56,39 @@ const { t } = useTranslation();
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: "My rendez-vous",
-    panelIcon: HiTicket({}),
-    panelUrl: "/my-rendez-vous",
-    panelComponent: <BookingsSection />,
+    panelName: "Reservation Agenda",
+    panelIcon: SlCalender({}),
+    panelUrl: "/reservation-agenda",
+    panelComponent: <ReseravtionAgendaSectionMainPage />,
     subSections: [],
   },
   {
-    panelName: "Bookings",
-    panelIcon: RiBookLine({}),
-    panelUrl: "/bookings",
-    panelComponent: <BookingsHistory />,
+    panelName: "Reservations",
+    panelIcon: CiBookmark({}),
+    panelUrl: "/reservation-list",
+    panelComponent: <ResarvationSectionMainPage/>,
+    subSections: [],
+  },
+ 
+  {
+    panelName: "Pending Reservations ",
+    panelIcon: FiClock({}),
+    panelUrl: "/pending-reservations",
+    panelComponent: <PendingReservationsSectionMain />,
     subSections: [],
   },
   {
-    panelName: "Pending Appointments",
-    panelIcon: MdPending({}),
-    panelUrl: "/pending-appointments",
-    panelComponent: <PendingAppointmentsSection />,
-    subSections: [],
-  },
-  {
-    panelName: "My Service",
-    panelIcon: RiServiceFill({}),
-    panelUrl: "/my-services",
-    panelComponent: <MyServicesSection />,
+    panelName: "Service Setup",
+    panelIcon: CiSettings({}),
+    panelUrl: "/service-setup",
+    panelComponent: <ServiceCatalogSectionMain />,
     subSections: [
       {
         key: "edit",
         sections: [
           {
             panelIcon: ServicesIcon({}),
-            panelComponent: <MyServicesSection />,
+            panelComponent: <ServiceCatalogSectionMain/>,
             panelName: "Service",
             panelUrl: "/my-service",
           },

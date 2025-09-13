@@ -1,153 +1,176 @@
-import { Form, Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as React from "react";
+import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import {
-  FormikInput,
-  Button,
-  SectionHeader,
-  useChangePasswordMutation,
-  setTestid,
   Input,
+  SectionHeader,
   useResponsive,
+  useChangePasswordMutation,
   HStack,
   ArrowLeftIcon,
+  setTestid,
 } from "@UI";
-import { useForm } from "@UI/../utils/src";
+import PrimaryButton from "@UI/components/shadcn-components/Buttons/primaryButton";
 import { useRouting } from "@UI/../routing";
-import * as yup from "yup";
+import { successToast,errorToast } from "utils";
 
-export interface PasswordSectionProps { }
-export interface PasswordSectionDTO {
-  confirmPassword: string;
+
+export interface PasswordSectionProps {}
+
+interface PasswordSectionDTO {
   currentPassword: string;
   newPassword: string;
+  confirmNewPassword: string;
 }
 
+const validationSchema = yup.object({
+  currentPassword: yup.string().min(6).max(30).required("Current password is required"),
+  newPassword: yup.string().min(6).max(30).required("New password is required"),
+  confirmNewPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .required("Please confirm your new password"),
+});
+
 export const PasswordSection: React.FC<PasswordSectionProps> = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { back } = useRouting();
   const { mutate, isLoading } = useChangePasswordMutation();
-  const { inputProps, form } = useForm<Parameters<typeof mutate>[0]>(
-    {
-      confirmNewPassword: "",
-      currentPassword: "",
-      newPassword: "",
-    },
-    {},
-    {
-      addLabel: true,
-      yupSchema: yup.object({
-        currentPassword: yup.string().min(6).max(30),
-        confirmNewPassword: yup.string().min(6).max(30),
-        newPassword: yup.string().min(6).max(30),
-      }),
-    }
-  );
 
-  return isMobile ? (
-    <div className="flex flex-col gap-6 p-2">
-      <HStack className="justify-center relative">
-        <p className="text-lg font-semibold">{t("Password")}</p>
-        <button
-          className="absolute top-1/2 -translate-y-1/2 left-0"
-          onClick={() => back()}
-        >
-          <ArrowLeftIcon className="text-2xl" />
-        </button>
-        {/* <button
-          className="absolute top-1/2 -translate-y-1/2 right-0"
-          onClick={() => {}}
-        >
-          {t("Finish")}
-        </button> */}
-      </HStack>
+  const initialValues: PasswordSectionDTO = {
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  };
 
-      <Input
-        {...inputProps("currentPassword")}
-        placeholder={t("Type password") + "..."}
-        isPassword
-      ></Input>
-      <HStack className="justify-end">
-        <button onClick={() => { }}>
-          <p className="text-sm text-primary">{t("Forgot Password?")}</p>
-        </button>
-      </HStack>
-      <div className="flex flex-col gap-4">
-        <Input
-          {...inputProps("newPassword")}
-          placeholder={t("Type password") + "..."}
-          isPassword
-        ></Input>
-        <Input
-          {...inputProps("confirmNewPassword")}
-          placeholder={t("Type password") + "..."}
-          isPassword
-        ></Input>
-      </div>
-      <Button
-        loading={isLoading}
-        onClick={() => mutate(form)}
-        className="w-full mt-3"
-        colorScheme="darkbrown"
-      >
-        {t("Change Password")}
-      </Button>
-    </div>
-  ) : (
-    <React.Fragment>
-      <div className="flex flex-col gap-4">
-        <SectionHeader sectionTitle={t("password", "Password")} />
-        <Formik<PasswordSectionDTO>
-          initialValues={{
-            confirmPassword: "",
-            newPassword: "",
-            currentPassword: "",
-          }}
-          onSubmit={(data) => { }}
-        >
-          <React.Fragment>
-            <FormikInput
-              label={t("Current Password")}
-              {...inputProps("currentPassword")}
-              {...setTestid("current_password")}
-              name="currentPassword"
-              placeholder="current password"
-            />
-            <FormikInput
-              label={t("New Password")}
-              {...inputProps("newPassword")}
-              {...setTestid("new_password")}
-              name="newPassword"
-              placeholder="new password"
-            />
-            <FormikInput
-              label={t("Confirm Password")}
-              {...inputProps("confirmNewPassword")}
-              {...setTestid("confirm_password")}
-              name="confirmPassword"
-              placeholder="confirm password"
-            />
-          </React.Fragment>
-        </Formik>
-      </div>
-      <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
-        <span
-          {...setTestid("forgot_password")}
-          className="text-primary cursor-pointer"
-        >
-          {t("forgot_password", "Forgot Password")}
-        </span>
-        <Button
-          {...setTestid("submit")}
-          onClick={() => {
-            mutate(form);
-          }}
-          type="submit"
-        >
-          {t("Change Password")}
-        </Button>
-      </div>
-    </React.Fragment>
+  const handleSubmit = (values: PasswordSectionDTO) => {
+    mutate(
+      {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+        confirmNewPassword: values.confirmNewPassword,
+      },
+      {
+        onSuccess: () => {
+      successToast(t("Password updated successfully"));
+        },
+        onError: (error: any) => {
+          const errorMessage = error?.response?.errors?.[0]?.message;
+          console.log('Error message:', errorMessage);
+          
+          errorToast(errorMessage|| t("Something went wrong"));
+        },
+      }
+    );
+  };
+  
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ handleChange, handleBlur, values, errors, touched }) => (
+        <Form>
+          {isMobile ? (
+            <div className="flex flex-col gap-6 p-2">
+              <HStack className="justify-center relative">
+                <p className="text-lg font-semibold">{t("Password")}</p>
+                <button
+                  type="button"
+                  className="absolute top-1/2 -translate-y-1/2 left-0"
+                  onClick={() => back()}
+                >
+                  <ArrowLeftIcon className="text-2xl" />
+                </button>
+              </HStack>
+
+              <Input
+                name="currentPassword"
+                isPassword
+                placeholder={t("Type password") + "..."}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.currentPassword}
+                error={touched.currentPassword && errors.currentPassword}
+              />
+
+              <Input
+                name="newPassword"
+                isPassword
+                placeholder={t("Type password") + "..."}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.newPassword}
+                error={touched.newPassword && errors.newPassword}
+              />
+
+              <Input
+                name="confirmNewPassword"
+                isPassword
+                placeholder={t("Type password") + "..."}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.confirmNewPassword}
+                error={touched.confirmNewPassword && errors.confirmNewPassword}
+              />
+
+              <PrimaryButton type="submit" disabled={isLoading}>
+                {t("Update Password")}
+              </PrimaryButton>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4 ml-10 mr-10">
+              <SectionHeader sectionTitle={t("password", "Change Password")} />
+
+              <Input
+                label={t("Current Password")}
+                name="currentPassword"
+                placeholder="current password"
+                isPassword
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.currentPassword}
+                error={touched.currentPassword && errors.currentPassword}
+                {...setTestid("current_password")}
+              />
+
+              <Input
+                label={t("New Password")}
+                name="newPassword"
+                placeholder="new password"
+                isPassword
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.newPassword}
+                error={touched.newPassword && errors.newPassword}
+                {...setTestid("new_password")}
+              />
+
+              <Input
+                label={t("Confirm Password")}
+                name="confirmNewPassword"
+                placeholder="confirm password"
+                isPassword
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.confirmNewPassword}
+                error={touched.confirmNewPassword && errors.confirmNewPassword}
+                {...setTestid("confirm_password")}
+              />
+
+              <div className="flex justify-end">
+                <PrimaryButton type="submit" disabled={isLoading}>
+                  {t("Update Password")}
+                </PrimaryButton>
+              </div>
+            </div>
+          )}
+        </Form>
+      )}
+    </Formik>
   );
 };

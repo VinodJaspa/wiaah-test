@@ -5,13 +5,15 @@ import React from "react";
 import { ServiceType } from "@features/API";
 import {
   RenderMap,
-  ScrollingWrapper,
+ 
   LocationSearchInput,
   MarketServiceSearchResaultsView,
-  useGetFilteredServicesQuery,
+ 
   usePaginationControls,
-  ServicesCardsSwitcherView,
+
 } from "ui";
+import { useGetFilteredServicesQuery ,ServicesCardsSwitcherView } from "@features/Services";
+import { ScrollingWrapper } from "ui/components";
 import {
   ExtractServiceTypeFromQuery,
   getServiceView,
@@ -25,9 +27,11 @@ interface OnMapViewProps {
 
 export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
   const router = useRouter();
+    const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
   const { controls, pagination } = usePaginationControls();
   const { form } = useForm<Parameters<typeof useGetFilteredServicesQuery>[0]>({
     pagination,
+    serviceType,
     filters: [],
   });
   const {
@@ -35,8 +39,11 @@ export const OnMapView: React.FC<OnMapViewProps> = ({ searchLocation }) => {
     isLoading,
     isError,
   } = useGetFilteredServicesQuery(form);
-  const serviceType = ExtractServiceTypeFromQuery(router.query) as ServiceType;
+
   const { isTablet } = useResponsive();
+console.log(services, "services on map");
+console.log(serviceType, "serviceType");
+
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
   return (

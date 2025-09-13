@@ -42,7 +42,7 @@ const classPatterns: string[] = [
 const transformPosts = (
   posts: React.ReactNode[],
 ): { post: React.ReactNode; className: string }[] => {
-  return posts.map((post, index) => ({
+  return posts?.map((post, index) => ({
     post,
     className: classPatterns[index % classPatterns.length],
   }));
@@ -50,7 +50,7 @@ const transformPosts = (
 
 const splitIntoChunks = <T,>(array: T[], chunkSize: number): T[][] => {
   const chunks: T[][] = [];
-  for (let i = 0; i < array.length; i += chunkSize) {
+  for (let i = 0; i < array?.length; i += chunkSize) {
     chunks.push(array.slice(i, i + chunkSize));
   }
   return chunks;
@@ -64,7 +64,7 @@ const Grid: React.FC<{
       "grid grid-rows-2 grid-flow-col grid-cols-[repeat(50,_minmax(0,_1fr))] w-full gap-4 aspect-[8/3]",
     )}
   >
-    {posts.map(({ post, className }, index) => (
+    {posts?.map(({ post, className }, index) => (
       <div className={cn(className)} key={index}>
         {post}
       </div>

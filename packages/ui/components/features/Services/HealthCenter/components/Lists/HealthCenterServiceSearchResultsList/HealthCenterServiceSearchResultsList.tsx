@@ -4,9 +4,10 @@ import {
   HealthCenterCard,
   HealthCenterDoctor,
   HealthCenter,
-  convertWorkingScheduleToWorkingHours,
-} from "@UI";
 
+
+} from "@UI";
+import {convertWorkingScheduleToWorkingHours} from "@features/Services/Services/utils"
 export interface HealthCenterServiceSearchResultsListProps {
   doctors: (HealthCenterDoctor & { healthCenter: HealthCenter })[];
 }

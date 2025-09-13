@@ -767,6 +767,10 @@ export type BookingCostService = {
 };
 
 export enum BusinessType {
+  Shop = "shop",
+  Services = "services",
+}
+export enum CollaborationType {
   Company = "company",
   Individual = "individual",
 }
@@ -1260,16 +1264,19 @@ export type CreateProductAttributeInput = {
 };
 
 export type CreateProductInput = {
-  attributes: Array<ProductAttributeInput>;
+  attributes: string;
+  attributesIds?: InputMaybe<Array<ProductAttributeInput>>;
   brand: Scalars["String"]["input"];
   cashback: CashBackInput;
+  cashbackId?:string;
+  external_url?:string;
   categoryId: Scalars["ID"]["input"];
   colors: Array<Scalars["String"]["input"]>;
   condition: ProductCondition;
   description: Array<StringTranslationField>;
   discount: DiscountInput;
   external_link?: InputMaybe<Scalars["String"]["input"]>;
-  presentations: Array<Scalars["Upload"]["input"]>;
+  presentations: Array<ProductPresentationInput>;
   price: Scalars["Float"]["input"];
   sizes: Array<ProductSize>;
   stock: Scalars["Int"]["input"];
@@ -1421,15 +1428,18 @@ export type CreateShippingTypeRuleInput = {
 export type CreateShopInput = {
   banner: Scalars["String"]["input"];
   businessType: BusinessType;
+  collaborationType: CollaborationType,
   description: Array<TranslationTextInput>;
   email: Scalars["String"]["input"];
   hashtags: Array<Scalars["String"]["input"]>;
   images: Array<Scalars["String"]["input"]>;
   location: LocationInput;
   name: Array<TranslationTextInput>;
+  companyName:Array<TranslationTextInput>;
   payment_methods: Array<ShopPaymentMethod>;
   phone: Scalars["String"]["input"];
   status: ShopStatus;
+  members: MemberInput[];
   storeCategoryId?: InputMaybe<Scalars["String"]["input"]>;
   storeFor: Array<StoreFor>;
   storeType: StoreType;
@@ -1437,7 +1447,7 @@ export type CreateShopInput = {
   thumbnail: Scalars["String"]["input"];
   type?: InputMaybe<ServiceType>;
   vat?: InputMaybe<VatSettingsPartialInput>;
-  vidoes: Array<Scalars["String"]["input"]>;
+  videos: Array<Scalars["String"]["input"]>;
 };
 
 export type CreateSiteInformationInput = {
@@ -2169,7 +2179,7 @@ export type GetSalesDurningPeriodInput = {
 
 export type GetSellerProductsInput = {
   idCursor?: InputMaybe<Scalars["String"]["input"]>;
-  sellerId: Scalars["ID"]["input"];
+  sellerId?: Scalars["ID"]["input"];
   take: Scalars["Int"]["input"];
 };
 
@@ -3941,7 +3951,7 @@ export type Product = {
   colors: Array<Scalars["String"]["output"]>;
   condition: ProductCondition;
   createdAt: Scalars["String"]["output"];
-  description: Scalars["String"]["output"];
+  description: [StringTranslationField];
   discount: Discount;
   discountId?: Maybe<Scalars["String"]["output"]>;
   earnings: Scalars["Float"]["output"];
@@ -3967,7 +3977,7 @@ export type Product = {
   status: ProductStatus;
   stock: Scalars["Int"]["output"];
   thumbnail: Scalars["String"]["output"];
-  title: Scalars["String"]["output"];
+  title: [StringTranslationField];
   todayProductClickId?: Maybe<Scalars["String"]["output"]>;
   totalDiscounted: Scalars["Int"]["output"];
   totalDiscountedAmount: Scalars["Int"]["output"];
@@ -3999,6 +4009,11 @@ export type ProductAttributeInput = {
   values: Array<Scalars["ID"]["input"]>;
 };
 
+export type ProductPresentationInput = {
+  type: string;
+  src: string;
+  id: string;
+};
 export enum ProductAttributeSelectionType {
   Multiple = "multiple",
   Single = "single",
@@ -4078,10 +4093,7 @@ export type ProductPresentation = {
   type: PresentationType;
 };
 
-export type ProductPresentationInput = {
-  src: Scalars["String"]["input"];
-  type: PresentationType;
-};
+
 
 export type ProductRawAttribute = {
   __typename?: "ProductRawAttribute";
@@ -5668,6 +5680,7 @@ export type SearchServicesFilterInput = {
 
 export type SearchServicesInput = {
   filters: Array<SearchServicesFilterInput>;
+  serviceType:string;
   locationQuery?: InputMaybe<Scalars["String"]["input"]>;
   pagination: GqlPaginationInput;
   q?: InputMaybe<Scalars["String"]["input"]>;
@@ -6184,6 +6197,7 @@ export enum ServiceType {
   Hotel = "hotel",
   Restaurant = "restaurant",
   Vehicle = "vehicle",
+  // Shop ="shop"
 }
 
 export enum ServiceTypeOfSeller {
@@ -6349,6 +6363,21 @@ export enum ShopPaymentMethod {
   Mastercard = "mastercard",
   Visa = "visa",
 }
+export type MemberInput = {
+  memberType: string[];
+  firstName: string;
+  lastName: string;
+  email: string;
+  birthDate: string;
+  idNumber: string;
+  idExpiration: string;
+  phone: string;
+  address: string;
+  city: string;
+  country: string;
+  state: string;
+  postalCode: string;
+}[]
 
 export type ShopSpecialDayWorkingHours = {
   __typename?: "ShopSpecialDayWorkingHours";
@@ -7063,14 +7092,18 @@ export type UpdateUserLocationInput = {
   lat: Scalars["Float"]["input"];
   lon: Scalars["Float"]["input"];
 };
-
+export type AsssestsInput = {
+  type: string;
+  src: string;
+  asset_id: string;
+};
 export type UpdateUserShopInput = {
   banner?: InputMaybe<Scalars["String"]["input"]>;
   businessType?: InputMaybe<BusinessType>;
   description?: InputMaybe<Array<TranslationTextInput>>;
   email?: InputMaybe<Scalars["String"]["input"]>;
   hashtags?: InputMaybe<Array<Scalars["String"]["input"]>>;
-  images?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  images?: Array<AsssestsInput>;
   location?: InputMaybe<LocationInput>;
   name?: InputMaybe<Array<TranslationTextInput>>;
   payment_methods?: InputMaybe<Array<ShopPaymentMethod>>;
@@ -7082,9 +7115,9 @@ export type UpdateUserShopInput = {
   targetGenders?: InputMaybe<Array<TargetGenders>>;
   thumbnail?: InputMaybe<Scalars["String"]["input"]>;
   type?: InputMaybe<ServiceType>;
-  userId: Scalars["String"]["input"];
+  ownerId?: Scalars["String"]["input"];
   vat?: InputMaybe<VatSettingsPartialInput>;
-  vidoes?: InputMaybe<Array<Scalars["String"]["input"]>>;
+  videos?: Array<AsssestsInput>;
 };
 
 export type UpdateWeekdaysWorkingHoursInput = {
@@ -7290,6 +7323,28 @@ export type UserNotificationSettings = {
   postComment: UserNotificationEnum;
   postReaction: UserNotificationEnum;
 };
+export type UpdateNotificationSettingsInput = {
+  pauseAll: boolean
+  likes: boolean
+  followers: boolean
+  mentions: boolean
+  comments: boolean
+  shares: boolean
+  followRequest: boolean
+  followRequestResponse: boolean
+  messages: boolean
+  postsUpdates: boolean
+  storyUpdates: boolean
+  remix: boolean
+  ordersAndPerksUpdates: boolean
+  emailAccountActivities: boolean
+  emailProductUpdates: boolean
+  emailReservationUpdates: boolean
+  emailBusinessTips: boolean
+  emailNews: boolean
+  emailReminder: boolean
+  emailSupport: boolean
+}
 
 export type UpdateBeautyCenterAdminInput = {
   beauty_center_typeId?: InputMaybe<Scalars["ID"]["input"]>;

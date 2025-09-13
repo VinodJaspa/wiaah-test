@@ -35,6 +35,9 @@ import {
 } from "ui";
 import { ImBlocked, ImProfile } from "react-icons/im";
 import { useResponsive } from "hooks";
+import VerifyIdentityStart from "components/verify-IdentitySteps/VerifyIdentity";
+import AccountSection from "@UI/components/Account/AccountSection";
+import AccountSectionMainPage from "@UI/components/Account/AccountSectionMain";
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "management/account-settings";
@@ -44,10 +47,14 @@ export const AccountSettingsView: React.FC = () => {
   const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
-    if (!route && !isMobile) {
-      router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    if (!route && !isMobile && sections.length > 0) {
+      const targetUrl = `/${baseRoute}/${sections[0].panelUrl}`;
+      console.log("Redirecting to", targetUrl);
+      router.push(targetUrl);
     }
-  }, [router, route]);
+  }, []);
+  
+
 
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
@@ -71,51 +78,8 @@ export const AccountSettingsView: React.FC = () => {
   );
 };
 
-// export const NotFoundSection = () => {
-//   return <div>not found</div>;
-// };
 
-export const MyAccountNotificationSettings = () => {
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
 
-  return data ? <NotificationsSettingsSection accountId={"33"} /> : null;
-};
-
-export const MyAccountSettingsSection = () => {
-  // this graphql query endpoint is not ready yet so use placeholders instead till the server get ready
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? <AccountSettingsSection accountId={data.ownerId} /> : null;
-};
-
-export const MyVatSection = () => {
-  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
-  // const { data } = useGetMyProfileQuery();
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? <VatSection accountId={data.ownerId} /> : null;
-};
-
-export const MyNewsletterSettingsSection = () => {
-  // Warning: this graphql query endpoint is important but it's not ready yet so I use placeholder data onece it's ready replace the placehoder with it
-  // const { data } = useGetMyProfileQuery();
-
-  const data = {
-    ownerId: "33",
-  };
-
-  return data ? (
-    <AccountNewsLetterSettingsSection userId={data.ownerId} />
-  ) : null;
-};
 
 const sections: SettingsSectionType[] = [
   {
@@ -123,7 +87,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: FiSettings,
     panelUrl: "/account",
 
-    panelComponent: <MyAccountSettingsSection />,
+    panelComponent: <AccountSectionMainPage />,
   },
   {
     panelName: "Password",
@@ -137,14 +101,14 @@ const sections: SettingsSectionType[] = [
     panelIcon: <Verified />,
     panelUrl: "/my-verification",
 
-    panelComponent: <MyVerificationSection />,
+    panelComponent: <VerifyIdentityStart />,
   },
   {
     panelName: "Notification",
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
-    panelComponent: <MyAccountNotificationSettings />,
+    panelComponent: <NotificationsSettingsSection accountId={'688fd1e19b391da536b71229'} />,
   },
   {
     panelName: "My Profile Statistics",
@@ -153,25 +117,25 @@ const sections: SettingsSectionType[] = [
 
     panelComponent: <MyProfileStatistics />,
   },
-  {
-    panelName: "Newsletter",
-    panelIcon: IoNewspaperOutline,
-    panelUrl: "/newsletter",
+  // {
+  //   panelName: "Newsletter",
+  //   panelIcon: IoNewspaperOutline,
+  //   panelUrl: "/newsletter",
 
-    panelComponent: <MyNewsletterSettingsSection />,
-  },
+  //   panelComponent: <MyNewsletterSettingsSection />,
+  // },
   {
     panelName: "Share Your Wiaah Qr",
     panelIcon: <ShareIcon />,
     panelUrl: "/shareyourqr",
     panelComponent: <ShareYourWiaahQr />,
   },
-  {
-    panelName: "Invite Friends",
-    panelIcon: HiUserGroup,
-    panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
-  },
+  // {
+  //   panelName: "Invite Friends",
+  //   panelIcon: HiUserGroup,
+  //   panelUrl: "/invitefriends",
+  //   panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
+  // },
   {
     panelName: "Your Membership",
     panelIcon: MdCardMembership,
@@ -184,12 +148,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
-  {
-    panelName: "Privacy",
-    panelIcon: BiLock,
-    panelUrl: "/privacy",
-    panelComponent: <PrivacySection />,
-  },
+  // {
+  //   panelName: "Privacy",
+  //   panelIcon: BiLock,
+  //   panelUrl: "/privacy",
+  //   panelComponent: <PrivacySection />,
+  // },
   {
     panelName: "Account Deletion",
     panelIcon: IoTrash,
@@ -202,10 +166,10 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,
   },
-  {
-    panelName: "Vat settings",
-    panelIcon: VatIcon,
-    panelUrl: "/vat",
-    panelComponent: <MyVatSection />,
-  },
+  // {
+  //   panelName: "Vat settings",
+  //   panelIcon: VatIcon,
+  //   panelUrl: "/vat",
+  //   panelComponent: <MyVatSection />,
+  // },
 ];
