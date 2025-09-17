@@ -139,7 +139,9 @@
     "webpackbar": "^7.0.0"
   },
   "engines": {
-    "node": "20"
+"node": "20.11.1",
+  "pnpm": "10.0.0"
+
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
