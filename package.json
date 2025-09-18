@@ -138,11 +138,11 @@
     "util": "^0.12.5",
     "webpackbar": "^7.0.0"
   },
-  "engines": {
-"node": "20.11.1",
-  "pnpm": "10.0.0"
+"engines": {
+  "node": ">=20.11.1 <21",
+  "pnpm": ">=10.0.0"
+},
 
-  },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
@@ -150,7 +150,7 @@
     "@apollo/client": "^3.13.8",
     "@apollo/gateway": "^2.10.2",
     "@apollo/server": "^4.10.4",
-    "@apollo/subgraph": "2.2.3",
+    "@apollo/subgraph": "2.11.2",
     "@elastic/elasticsearch": "^8.4.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
