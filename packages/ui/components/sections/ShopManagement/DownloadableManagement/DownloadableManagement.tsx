@@ -9,8 +9,8 @@ import { Badge, Button, DownloadIcon, PriceDisplay } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export const DownloadableManagement: React.FC<{}> = ({}) => {
-const { t } = useTranslation();
+export const DownloadableManagement: React.FC<{}> = ({ }) => {
+  const { t } = useTranslation();
 
   const { controls, pagination } = usePaginationControls();
   const { data } = useGetMyProducts({
@@ -45,7 +45,7 @@ const { t } = useTranslation();
             },
             {
               type: AdminTableCellTypeEnum.text,
-              value: v.title,
+              value: v.title?.[0]?.value || "",
             },
             {
               type: AdminTableCellTypeEnum.text,

@@ -118,7 +118,7 @@ export const WishlistView: React.FC = () => {
               const type = Math.random() * 100;
               return (
                 <ProductCard
-                  name={item.name}
+                  title={item.name}
                   key={i}
                   onButtonClick={() => handleAddToCart(item)}
                   onDelete={() => handleLoginPopup()}
@@ -129,7 +129,7 @@ export const WishlistView: React.FC = () => {
                   cashback={parseInt(item.cashback)}
                   discount={item.discount}
                   price={item.price}
-                  rate={item.rating}
+                  rating={item.rating}
                   thumbnail={getRandomImage()}
                   liked
                 />

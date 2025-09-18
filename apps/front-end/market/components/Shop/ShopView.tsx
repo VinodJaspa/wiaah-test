@@ -122,8 +122,8 @@ export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
                           id={product.id}
                           price={product.price}
                           thumbnail={product.presentations[0].src}
-                          name={product.title}
-                          rate={product.rate}
+                          title={product.title[0]}
+                          rating={product.rate}
                           buttonText="Add to Cart"
                           key={i}
                         />

@@ -31,27 +31,27 @@ export type GetShopRecommendedPostsQuery = { __typename?: "Query" } & {
       | "userId"
       | "createdAt"
     > & {
-        location?: Maybe<
-          { __typename?: "PostLocation" } & Pick<
-            PostLocation,
-            "address" | "city" | "country" | "state"
-          >
-        >;
-        product: { __typename?: "Product" } & Pick<
-          Product,
-          "id" | "title" | "discount" | "price" | "thumbnail"
-        >;
-        user?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id"> & {
-              profile?: Maybe<
-                { __typename?: "Profile" } & Pick<
-                  Profile,
-                  "photo" | "username" | "id" | "verified" | "profession"
-                >
-              >;
-            }
-        >;
-      }
+      location?: Maybe<
+        { __typename?: "PostLocation" } & Pick<
+          PostLocation,
+          "address" | "city" | "country" | "state"
+        >
+      >;
+      product: { __typename?: "Product" } & Pick<
+        Product,
+        "id" | "title" | "discount" | "price" | "thumbnail"
+      >;
+      user?: Maybe<
+        { __typename?: "Account" } & Pick<Account, "id"> & {
+          profile?: Maybe<
+            { __typename?: "Profile" } & Pick<
+              Profile,
+              "photo" | "username" | "id" | "verified" | "profession"
+            >
+          >;
+        }
+      >;
+    }
   >;
 };
 
@@ -119,8 +119,10 @@ export const useGetRecommendedShopPostsQuery = (
           product: {
             id: i.toString(),
             price: randomNum(15),
-            title:
-              "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galle",
+            title: [{
+              langId: "en", value:
+                "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galle"
+            }],
             discount: {
               amount: randomNum(54),
               id: i.toString(),

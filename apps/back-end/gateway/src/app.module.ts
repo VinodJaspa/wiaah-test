@@ -37,7 +37,7 @@ import { client } from './main';
           );
           const isKnownError = knownCodes.includes(error?.extensions?.errorCode);
         
-          console.log({ isSchemaValidationError, isKnownError }, error);
+          // console.log({ isSchemaValidationError, isKnownError }, error);
         
           // ✅ Allow known errors or schema validation errors to pass through
           if (isKnownError || isSchemaValidationError) {

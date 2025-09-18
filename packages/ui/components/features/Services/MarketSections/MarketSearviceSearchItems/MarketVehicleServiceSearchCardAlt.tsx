@@ -1,23 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  AirConditionIcon,
-  AspectRatioImage,
-  CarWindowIcon,
-  GPSIcon,
-  HStack,
-  PersonGroupIcon,
-  PriceDisplay,
-  TransportLuggageIcon,
-} from "@UI";
 
 import { useRouter } from "next/router";
-import { MarketServiceSearchHoverOverlay } from "@features/index";
 
 // Define an interface for the component props
 interface MarketVehicleServiceSearchCardAltProps {
   id: string;
-  pricePerDay: number;
+  pricePerDay: string | number;
   title: string;
   thumbnail: string;
   airCondition?: boolean;

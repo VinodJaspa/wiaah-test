@@ -48,7 +48,7 @@ export const ProductSearchView: React.FC<{ searchSlug: string }> = ({
     q: string;
   }>({ q: "" });
 
-const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const products: {
     name: string;
@@ -242,6 +242,7 @@ const { t } = useTranslation();
         {[...Array(12)]
           .map((_, i) => ({
             productInfo: {
+              id: "123", // ✅ add id
               cashback: 5,
               colors: [
                 "#4272EE",
@@ -266,10 +267,25 @@ const { t } = useTranslation();
               verified: true,
             },
           }))
-          .map((prod, i) => (
-            <ProductSearchCard key={i} {...prod} />
+          .map((item, i) => (
+            <ProductSearchCard
+              key={i}
+              productInfo={{
+                id: item.productInfo.id,
+                cashback: item.productInfo.cashback,
+                colors: item.productInfo.colors,
+                price: item.productInfo.price,
+                discount: item.productInfo.discount,
+                rating: item.productInfo.rating,
+                reviewsCount: item.productInfo.reviewsCount,
+                thumbnail: item.productInfo.thumbnail,
+                title: item.productInfo.title,
+              }}
+
+            />
           ))}
       </div>
+
     </div>
   );
 };

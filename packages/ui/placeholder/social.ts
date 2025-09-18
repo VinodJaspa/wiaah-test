@@ -540,7 +540,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           colors: ["Red", "Blue", "Green"],
           condition: ProductCondition.New,
           createdAt: new Date().toISOString(),
-          description: "This is a placeholder description for the product.",
+          description: [{langId:"en", value:"This is a placeholder description for the product."}],
           discount: {
             amount: 33,
             id: "44",
@@ -563,7 +563,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           shippingRulesIds: ["rule1", "rule2"],
           stock: 100,
           thumbnail: getRandomImage(),
-          title: "Placeholder Product Title",
+          title: [{langId:"en" , value:"Placeholder Product Title"}],
           todayProductClickId: "click1",
           totalDiscounted: 10,
           totalDiscountedAmount: 2999,
@@ -610,7 +610,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           colors: ["Red", "Blue", "Green"],
           condition: ProductCondition.New,
           createdAt: new Date().toISOString(),
-          description: "This is a placeholder description for the product.",
+          description: [{langId:"en", value:"This is a placeholder description for the product."}],
           discount: {
             amount: 33,
             id: "44",
@@ -633,7 +633,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           shippingRulesIds: ["rule1", "rule2"],
           stock: 100,
           thumbnail: getRandomImage(),
-          title: "Placeholder Product Title",
+          title:[{langId:"en" ,value:"Placeholder Product Title"}],
           todayProductClickId: "click1",
           totalDiscounted: 10,
           totalDiscountedAmount: 2999,
@@ -680,7 +680,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           colors: ["Red", "Blue", "Green"],
           condition: ProductCondition.New,
           createdAt: new Date().toISOString(),
-          description: "This is a placeholder description for the product.",
+          description: [{langId:"en", value:"This is a placeholder description for the product."}],
           discount: {
             amount: 33,
             id: "44",
@@ -703,7 +703,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           shippingRulesIds: ["rule1", "rule2"],
           stock: 100,
           thumbnail: getRandomImage(),
-          title: "Placeholder Product Title",
+          title: [{langId:"en", value:"Placeholder Product Title"}],
           todayProductClickId: "click1",
           totalDiscounted: 10,
           totalDiscountedAmount: 2999,
@@ -749,7 +749,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           colors: ["Red", "Blue", "Green"],
           condition: ProductCondition.New,
           createdAt: new Date().toISOString(),
-          description: "This is a placeholder description for the product.",
+          description:[{langId:"EN", value:"This is a placeholder description for the product."}] ,
           discount: {
             amount: 33,
             id: "44",
@@ -772,7 +772,7 @@ export const AffiliationPostListPlaceholder: SocialAffiliationCardProps["post"][
           shippingRulesIds: ["rule1", "rule2"],
           stock: 100,
           thumbnail: getRandomImage(),
-          title: "Placeholder Product Title",
+         title:[{langId:"en" ,value:"Awesome Product"}],
           todayProductClickId: "click1",
           totalDiscounted: 10,
           totalDiscountedAmount: 2999,
@@ -820,7 +820,7 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
       colors: ["Red", "Blue", "Green"],
       condition: ProductCondition.New,
       createdAt: new Date().toISOString(),
-      description: "This is a placeholder description for the product.",
+      description: [{langId:"en", value: "This is a placeholder description for the product."}],
       presentations: [{ src: getRandomImage(), type: PresentationType.Image }],
       discount: {
         amount: 33,
@@ -841,7 +841,7 @@ export const AffiliationPostPlaceholder: SocialAffiliationCardProps["post"] = {
       shippingRulesIds: ["rule1", "rule2"],
       stock: 100,
       thumbnail: getRandomImage(),
-      title: "Placeholder Product Title",
+ title:[{langId:"en" ,value:"Placeholder Product Title"}],
       todayProductClickId: "click1",
       totalDiscounted: 10,
       totalDiscountedAmount: 2999,
@@ -1519,7 +1519,8 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+         title:[{langId:"en" ,value:"Awesome Product"}],
+
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1567,7 +1568,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+              title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1615,7 +1616,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+              title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1663,7 +1664,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+                title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1711,7 +1712,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+         title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1759,7 +1760,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+             title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1806,7 +1807,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+             title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1850,7 +1851,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+           title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -1890,7 +1891,7 @@ export const SocialShopsPostCardPlaceholder: SocialShopPostcardProps[] = [
             type: PresentationType.Image,
           },
         ],
-        title: "Awesome Product",
+         title:[{langId:"en" ,value:"Awesome Product"}],
         hashtags: ["#awesome", "#product"],
         price: 99.99,
         cashback: {
@@ -2238,7 +2239,7 @@ const placeholderUserRawShop = {
   id: "shop1",
   storeType: StoreType.Service,
   type: ServiceType.Hotel,
-  businessType: BusinessType.Company,
+  businessType: BusinessType.Services,
   storeFor: [StoreFor.Men],
   phone: "123-456-7890",
   description: [

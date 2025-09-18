@@ -1,12 +1,13 @@
 
+import { ProductCardProps } from "@blocks";
 import { faker } from "@faker-js/faker";
-import { ProductSearchCardProps } from "@features/Search";
+
 // ---------------- MOCK DATA ----------------
 const randomNames = ["John Doe", "Emily Smith", "Michael Johnson", "Sophia Brown", "David Wilson", "Olivia Taylor", "James Miller", "Emma Davis", "Daniel Martinez", "Ava Anderson"];
 const getRandomName = () => randomNames[Math.floor(Math.random() * randomNames.length)];
 const getRandomImage = (id: number) => `https://picsum.photos/seed/${id}/400/300`;
 
-export const getMockProductData = (start: number, count: number): ProductSearchCardProps[] => {
+export const getMockProductData = (start: number, count: number): ProductCardProps[] => {
     return [...Array(count)].flatMap((_, idx) => {
         const id = start + idx;
 
@@ -36,6 +37,6 @@ export const getMockProductData = (start: number, count: number): ProductSearchC
             },
 
 
-        ] as unknown as ProductSearchCardProps[];
+        ] as unknown as ProductCardProps[];
     });
 };

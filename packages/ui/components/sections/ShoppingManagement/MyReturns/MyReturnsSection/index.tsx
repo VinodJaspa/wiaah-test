@@ -58,7 +58,7 @@ const { t } = useTranslation();
                 />
                 <div className="flex flex-col gap-3">
                   <p>
-                    {returnedProduct.product.title} X {returnedProduct.qty}
+                    {returnedProduct.product.title[0].value ?? ''} X {returnedProduct.qty}
                   </p>
                   <p>
                     {t("Return reason")}: <span>{returnedProduct.reason}</span>
@@ -175,10 +175,10 @@ const { t } = useTranslation();
                   {...setTestid("item-thumbnail")}
                   className="w-16 h-auto"
                   src={prod.product.thumbnail}
-                  alt={prod.product.title}
+                  alt={prod.product.title[0].value ??''}
                 />
               </Td>
-              <Td {...setTestid("item-title")}>{prod.product.title}</Td>
+              <Td {...setTestid("item-title")}>{prod.product.title[0].value ??''}</Td>
               <Td>
                 <PriceDisplay
                   {...setTestid("item-price")}

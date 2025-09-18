@@ -25,7 +25,20 @@ import { useRecoilValue } from "recoil";
 import { isUserLoggedIn } from "state";
 
 
-export interface SocialServicesPostCardProps { profileInfo: Pick<Profile, "id" | "username" | "photo" | "profession">; postInfo: Pick< ServicePost, "createdAt" | "id" | "reactionNum" | "shares" | "views" | "comments" > & { service: Pick<Service, "thumbnail" | "title" | "hashtags"> }; discount?: number; price?: number; cashback?: number; onInteraction?: (interaction: Interaction) => any; handleOpne?: () => void; }
+export interface SocialServicesPostCardProps {
+  profileInfo: Pick<Profile, "id" | "username" | "photo" | "profession">;
+  postInfo: Pick<ServicePost, "createdAt" | "id" | "reactionNum" | "shares" | "views" | "comments"> & {
+    service: Pick<Service, "thumbnail" | "title"> & {
+      hashtags?: string[]; // ✅ manually add
+    };
+  };
+  discount?: number;
+  price?: number;
+  cashback?: number;
+  onInteraction?: (interaction: Interaction) => any;
+  handleOpne?: () => void;
+}
+
 
 export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
   cashback,
@@ -57,7 +70,7 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
       callback();
     }
   };
-console.log(postInfo ,"info");
+  console.log(postInfo, "info");
 
   return (
     <div className="relative group md:rounded-[1.25rem] rounded overflow-hidden w-full h-full">
@@ -117,9 +130,11 @@ console.log(postInfo ,"info");
 
           <div className="flex justify-between gap-4">
             <div className="flex noScroll gap-3 font-medium text-white overflow-x-scroll">
-              {postInfo.service.hashtags.map((tag, i) => (
-                <p key={i}>#{tag}</p>
-              ))}
+              {Array.isArray(postInfo.service.hashtags) &&
+                postInfo.service.hashtags.map((tag, i) => (
+                  <p key={i}>#{tag}</p>
+                ))}
+
             </div>
             <div className="flex flex-col gap-2">
               <span

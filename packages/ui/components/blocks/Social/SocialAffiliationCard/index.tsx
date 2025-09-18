@@ -106,28 +106,32 @@ const { t } = useTranslation();
   const since = getSince();
 
   const prod: {
-    presentations: ProductPresentation[] | ServicePresentation[];
-    name: string;
-    price: number;
-  } =
-    post?.affiliation?.itemType === "service"
-      ? {
-          name: post.affiliation.service?.name || "",
-          price: post.affiliation.service?.price || 0,
-          presentations: [
-            {
-              src: post.affiliation.product?.thumbnail || "",
-              type: ServicePresentationType.Img,
-            },
-          ],
-        }
-      : {
-          name: post?.affiliation?.product?.title || "",
-          price: post?.affiliation?.product?.price || 0,
-          presentations:
-            post?.affiliation?.product?.presentations ||
-            ([] as ProductPresentation[]),
-        };
+  presentations: ProductPresentation[] | ServicePresentation[];
+  name: string;
+  price: number;
+} =
+  post?.affiliation?.itemType === "service"
+    ? {
+        name: post.affiliation.service?.name || "",
+        price: post.affiliation.service?.price || 0,
+        presentations: [
+          {
+            src: post.affiliation.product?.thumbnail || "",
+            type: ServicePresentationType.Img,
+          },
+        ],
+      }
+    : {
+        name:
+          typeof post?.affiliation?.product?.title === "string"
+            ? post.affiliation.product.title
+            : post?.affiliation?.product?.title?.[0]?.value || "", // pick first translation
+        price: post?.affiliation?.product?.price || 0,
+        presentations:
+          post?.affiliation?.product?.presentations ||
+          ([] as ProductPresentation[]),
+      };
+
 
   const handleLikeUnlike = () => {
     if (isLiked.status) {

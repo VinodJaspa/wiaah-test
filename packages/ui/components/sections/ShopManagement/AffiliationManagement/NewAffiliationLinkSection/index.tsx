@@ -94,7 +94,7 @@ const { t } = useTranslation();
           <Select {...selectProps("itemId")} label={t("Product")}>
             {mapArray(prods, (v, i) => (
               <SelectOption key={v.id + i} value={v.id}>
-                {v.title}
+                {v.title[0].value ?? ''}
               </SelectOption>
             ))}
           </Select>
@@ -155,7 +155,7 @@ const { t } = useTranslation();
                   {prods &&
                     prods.map((prod, i) => (
                       <SelectOption key={prod.id + i} value={prod.id}>
-                        {prod.title}
+                        {prod.title[0].value ?? ''}
                       </SelectOption>
                     ))}
                 </ScrollPaginationWrapper>

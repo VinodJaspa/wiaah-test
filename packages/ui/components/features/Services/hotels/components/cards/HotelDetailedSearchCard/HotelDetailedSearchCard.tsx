@@ -121,7 +121,7 @@ const { t } = useTranslation();
             </span>
             <div className="flex gap-2">
               <span className="whitespace-nowrap flex gap-1">
-                <PriceDisplay priceObject={{ amount: price }} />/{t("night")}
+                <PriceDisplay priceObject={{ amount: Number(price) }} />/{t("night")}
               </span>
             </div>
             {taxesAndFeesIncluded ? (

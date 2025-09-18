@@ -26,7 +26,7 @@ export const AdminCommentsModal: React.FC<{
         {mapArray(data, (v) => (
           <PostCommentCard comment={v as any} />
         ))}
-        <Pagination controls={controls} />
+        <Pagination  />
       </ModalContent>
     </Modal>
   );

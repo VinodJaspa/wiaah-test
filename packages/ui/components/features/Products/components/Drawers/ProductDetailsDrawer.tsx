@@ -28,7 +28,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const ProductDetailsDrawer = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const [idx, setIdx] = React.useState<number>(0);
 
@@ -143,8 +143,8 @@ const { t } = useTranslation();
                           backgroundColor: v,
                         }}
                         className={`w-[1.875rem] h-[1.875rem] text-xs text-white uppercase rounded-md ${false
-                            ? "border-white border-2"
-                            : "border border-primary"
+                          ? "border-white border-2"
+                          : "border border-primary"
                           }`}
                       ></div>
                     </div>
@@ -201,17 +201,17 @@ const { t } = useTranslation();
                                   <Image
                                     src={e.src}
                                     className="rounded-lg h-full w-full object-cover"
-                                    alt={v.title}
+                                    alt={v.title?.[0]?.value}
                                   />
                                 </AspectRatio>
                               )
                             )}
                           </Slider>
                           <HStack className="justify-between gap-8 text-sm font-semibold">
-                            <p>{v.title}</p>
+                            <p>{v.title?.[0]?.value}</p>
                             <PriceDisplay price={v.price} />
                           </HStack>
-                          <p className="text-[0.688rem]">{v.description}</p>
+                          <p className="text-[0.688rem]">{v.description[0].value}</p>
                         </div>
                       )
                     )}

@@ -172,7 +172,12 @@ query getMyProducts($args:GetFilteredProductsInput!){
           units: 1,
         },
         categoryId: "",
-        description: "",
+        description: [
+          {
+            langId: "en",
+            value: `some random text`,
+          },
+        ],
         discount: { amount: 0, units: 0 },
         earnings: 0,
         id: "test id",
@@ -192,7 +197,12 @@ query getMyProducts($args:GetFilteredProductsInput!){
         status: ProductStatus.Active,
         stock: 0,
         thumbnail: "/place-1.jpg",
-        title: "test",
+        title: [
+          {
+            langId: "en",
+            value: `title`,
+          },
+        ],
         vat: 0,
         vendor_external_link: "",
         visibility: VisibilityEnum.Public,

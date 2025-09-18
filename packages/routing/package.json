@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --ext .ts,.tsx --fix"
+    "lint": "eslint . --fix"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",

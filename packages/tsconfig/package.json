@@ -9,7 +9,7 @@
     "react-library.json"
   ],
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx --fix"
+    "lint": "eslint . --fix"
   },
   "dependencies": {},
   "devDependencies": {}

@@ -24,4 +24,5 @@ export * from "./mocks";
 export * from "./cn";
 export * from "./yupValidation";
 export * from "./toastMessages";
+export * from "./translation";
 export const isDev = true;

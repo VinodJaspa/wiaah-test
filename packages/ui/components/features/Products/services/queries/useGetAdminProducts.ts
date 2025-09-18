@@ -99,7 +99,12 @@ export const useGetAdminProductsQuery = (
       status: ProductStatus.Active,
       stock: 12,
       thumbnail: "/place-1.jpg",
-      title: "title",
+      title: [
+        {
+          langId: "en",
+          value: `title ${i}`,
+        },
+      ],
       totalDiscounted: 15,
       totalDiscountedAmount: 132,
       totalOrdered: 15,

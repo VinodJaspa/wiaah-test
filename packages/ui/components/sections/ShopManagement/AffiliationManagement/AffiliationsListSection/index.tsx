@@ -66,7 +66,7 @@ const { t } = useTranslation();
                   ? v.product?.thumbnail
                   : v.service?.thumbnail;
               const title =
-                type === "product" ? v.product?.title : v.service?.name;
+                type === "product" ? v.product?.title[0].value ?? '' : v.service?.name;
               return (
                 <div
                   key={i}
@@ -78,7 +78,8 @@ const { t } = useTranslation();
                         className="rounded-md w-20 h-16 object-cover"
                         src={thumbnail}
                       />
-                      <p className="font-medium">{title}</p>
+                   <p className="font-medium">{title ?? ""}</p>
+
                     </div>
                     <Button
                       onClick={() =>
@@ -178,11 +179,11 @@ const { t } = useTranslation();
                     <Image
                       className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
                       src={link.product?.thumbnail}
-                      alt={link.product?.title}
+                      alt={link.product?.title[0].value ?? ''}
                     />
                   </Td>
                   <Td>{link.itemId}</Td>
-                  <Td>{link.product?.title}</Td>
+                  <Td>{link.product?.title[0].value ?? ''}</Td>
                   <Td>{link.commision}</Td>
                   <Td>{new Date(link.expireAt).toDateString()}</Td>
                   <Td>

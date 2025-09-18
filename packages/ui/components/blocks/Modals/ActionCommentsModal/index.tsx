@@ -107,7 +107,7 @@ export const CommentsModal: React.FC = () => {
                         ) : (
                             <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto pr-2">
                                 {mapArray(comments, (v, i) => (
-                                    <PostCommentCard key={i} comment={v as any} setShowReplyUser={(user) => setReplyUser(user)} />
+                                    <PostCommentCard key={i} comment={v as any}   setShowReplyUser={(user) => setReplyUser(user as Profile)} />
                                 ))}
                             </div>
                         )}

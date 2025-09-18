@@ -148,7 +148,7 @@ query getAdminRefundRequest($id:String!){
         },
         product: {
           brand: "Product Model",
-          title: "mock product title",
+          title: [{langId:"en", value:"mock product title"}],
         },
       },
     };

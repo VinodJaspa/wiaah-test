@@ -22,20 +22,20 @@ export type AdminGetRefundRequestsQuery = { __typename?: "Query" } & {
       Refund,
       "id" | "amount" | "createdAt" | "reason" | "status" | "updatedAt"
     > & {
-        orderItem?: Maybe<
-          { __typename?: "OrderItem" } & Pick<OrderItem, "id"> & {
-              seller: { __typename?: "Account" } & Pick<
-                Account,
-                "firstName" | "lastName"
-              >;
-              buyer: { __typename?: "Account" } & Pick<
-                Account,
-                "firstName" | "lastName"
-              >;
-            }
-        >;
-        product: { __typename?: "Product" } & Pick<Product, "title">;
-      }
+      orderItem?: Maybe<
+        { __typename?: "OrderItem" } & Pick<OrderItem, "id"> & {
+          seller: { __typename?: "Account" } & Pick<
+            Account,
+            "firstName" | "lastName"
+          >;
+          buyer: { __typename?: "Account" } & Pick<
+            Account,
+            "firstName" | "lastName"
+          >;
+        }
+      >;
+      product: { __typename?: "Product" } & Pick<Product, "title">;
+    }
   >;
 };
 
@@ -58,13 +58,13 @@ export const getAdminFilteredRefundRequestsQueryFetcher = async (
       createdAt: new Date().toString(),
       id: "id" + i,
       product: {
-        title: "prod" + i,
+        title: [{ langId: "en", value: "prod" + i }],
       },
       reason:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took",
       status:
         Object.values(RefundStatusType)[
-          i % Object.values(RefundStatusType).length
+        i % Object.values(RefundStatusType).length
         ],
       updatedAt: new Date().toString(),
       orderItem: {

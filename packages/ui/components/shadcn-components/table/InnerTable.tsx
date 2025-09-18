@@ -47,8 +47,8 @@ const InnerTable: React.FC<InnerTableProps> = ({
                     >
                         <div className="flex items-start space-x-4">
                             <img
-                                src={appt.avatar}
-                                alt={appt.name}
+                                src={String(appt.avatar)}   // cast to string
+    alt={String(appt.name)}
                                 className="w-12 h-12 rounded-full object-cover"
                             />
                             <div className="text-sm">
@@ -60,7 +60,7 @@ const InnerTable: React.FC<InnerTableProps> = ({
                             </div>
                         </div>
                         <div>
-                            <StatusBadge status={appt.status} />
+                            <StatusBadge status={String(appt.avatar)} />
                         </div>
                     </div>
                 ))}

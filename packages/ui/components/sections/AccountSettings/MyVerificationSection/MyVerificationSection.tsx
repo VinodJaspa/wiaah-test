@@ -18,7 +18,7 @@ import {
   useResponsive,
   UploadIcon,
 } from "@UI";
-import { useForm } from "@UI/../utils/src";
+import { useForm, useMediaUploadControls } from "@UI/../utils/src";
 
 export interface MyVerificationSectionProps {}
 

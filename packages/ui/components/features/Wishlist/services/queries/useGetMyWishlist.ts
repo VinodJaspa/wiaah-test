@@ -85,7 +85,7 @@ query getMyWishList {
           price: 45,
           stock: 0,
           thumbnail: getRandomImage(),
-          title: "product title",
+          title:[{langId:"en" , value:"product title"}],
           isExternalShopping: false,
           vendor_external_link: "http://",
         },
