@@ -1,6 +1,8 @@
 import {
   LocationSearchInput,
-  ResturantSearchInput,
+
+  RestaurantSearchInput,
+
   usePaginationControls,
 } from "@blocks";
 import { ServiceAdaptation, ServiceType, ShopStatus } from "@features/API";
@@ -37,6 +39,7 @@ export const MarketServiceSearchView: React.FC<{
   const { controls, pagination } = usePaginationControls();
   const { data: _services } = useGetFilteredServicesQuery({
     pagination,
+    serviceType:serviceType,
     filters: [],
   });
   const services = FAKE_FILTERED_SERVICES;
@@ -214,7 +217,7 @@ const { t } = useTranslation();
       {
         types: [ServiceType.Restaurant],
         component: (
-          <ResturantSearchInput
+          <RestaurantSearchInput
             onSubmit={() =>
               visit((routes) =>
                 routes.visitServiceLocationSearchResults(

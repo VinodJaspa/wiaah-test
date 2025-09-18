@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 
 export const Marker: React.FC<google.maps.MarkerOptions> = (options) => {

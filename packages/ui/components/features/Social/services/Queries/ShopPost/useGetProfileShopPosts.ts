@@ -146,7 +146,7 @@ export const useGetProfileShopPosts = (args: GetUserProductPostsInput) => {
         ],
         thumbnail: getRandomImage(),
         price: random(150),
-        title: "test title",
+        title: [{langId:"en", value:"test title"}],
       },
       reactionNum: random(1500),
       shares: random(162),

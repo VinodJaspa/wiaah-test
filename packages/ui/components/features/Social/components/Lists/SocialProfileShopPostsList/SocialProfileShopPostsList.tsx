@@ -266,7 +266,7 @@ const FAKE_ITEMS: GetProfileShopPostsQuery["getUserProductPosts"] = [
       ],
 
       hashtags: ["#example", "#test"],
-      title: "Sample Product 1",
+      title: [{langId:"en" , value:"Sample Product 1"}],
       cashback: {
         __typename: "Cashback",
         amount: 10,

@@ -7,6 +7,7 @@ import {
   Product,
   Service,
   ServiceType,
+  StringTranslationField,
 } from "@features/API";
 import { GetMyAffiliationsInput } from "@features/API/gql/generated";
 import { random } from "lodash";
@@ -46,34 +47,41 @@ export type GetAffiliationsQuery = { __typename?: "Query" } & {
     }
   >;
 };
-
+const toTranslation = (str: string): StringTranslationField[] => [
+  { langId: "en", value: str },
+];
 export const useGetUserAffiliationQuery = (input: GetMyAffiliationsInput) => {
   return useQuery(["my-affiliations"], async () => {
     if (isDev) {
-      const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [
-        ...Array(10),
-      ].map((v, i) => ({
-        commision: random(5, 4),
-        createdAt: new Date().toString(),
-        expireAt: new Date().toString(),
-        id: "test",
-        itemId: "test",
+      const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [...Array(10)].map((v, i) => ({
+        __typename: "Affiliation",
+        commision: random(4, 5),
+        createdAt: new Date().toISOString(),
+        expireAt: new Date().toISOString(),
+        id: `test-${i}`,
+        itemId: `item-${i}`,
         itemType: "Product",
-        sellerId: "test",
+        sellerId: `seller-${i}`,
         status: AffiliationStatus.Active,
-        updatedAt: new Date().toString(),
+        updatedAt: new Date().toISOString(),
         product: {
-          id: "test",
+          __typename: "Product",
+          id: `prod-${i}`,
           thumbnail: getRandomImage(),
-          title: "product name",
+          title: [{
+            langId: "en",      // ✅ required
+            value: "Product name",
+          }],
         },
         service: {
-          id: "test",
-          name: "Body treatment - back pain treatment",
+          __typename: "Service",
+          id: `service-${i}`,
           type: ServiceType.Hotel,
           thumbnail: getRandomImage(),
+          name: "Service name",
         },
       }));
+
 
       return mockRes;
     }

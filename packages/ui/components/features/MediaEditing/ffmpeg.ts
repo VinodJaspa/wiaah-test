@@ -49,7 +49,11 @@ export const useFFmpeg = () => {
     const outputFilePath = "output.mp4";
     await ffmpeg.run(...args, outputFilePath);
     const data = ffmpeg.FS("readFile", outputFilePath);
-    const blob = new Blob([new Uint8Array(data.buffer)], { type: "video/mp4" }); 
+
+    // Slice the correct portion and assert as ArrayBuffer
+    const buffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
+
+    const blob = new Blob([buffer], { type: "video/mp4" });
 
     // Return the blob
     return blob;

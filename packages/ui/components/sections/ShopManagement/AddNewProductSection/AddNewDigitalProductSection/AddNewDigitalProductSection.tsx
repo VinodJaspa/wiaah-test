@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import {
   EditIcon,
   MediaUploadModal,
-  useMediaUploadControls,
+
   Select,
   SelectOption,
 } from "@UI";
+import { useMediaUploadControls } from "utils";
 
 export interface AddNewDigitalProductSectionProps {
   onChange?: (data: Record<string, any>) => any;

@@ -1,8 +1,9 @@
+import SavedCollections from "@features/Saved/components/sections/SavedPostsSection/SavedPostsSection";
 import { useResponsive } from "hooks";
 import { useRouter } from "next/router";
 import React from "react";
 import { SettingsSectionType } from "types";
-import { ImageIcon, SavedPostsSection, SectionsLayout } from "ui";
+import { ImageIcon, SectionsLayout } from "ui";
 
 export const SavedView: React.FC = () => {
   const baseRoute = "saved";
@@ -25,7 +26,7 @@ export const SavedView: React.FC = () => {
       panelName: "Posts",
       panelIcon: <ImageIcon />,
       panelUrl: "/posts",
-      panelComponent: <SavedPostsSection />,
+      panelComponent: <SavedCollections />,
     },
   ];
   return (

@@ -13,10 +13,13 @@ export type MediaUploadType = "image" | "video";
 
 interface MediaUploadModalProps {
   uploadType?: MediaUploadType;
-  cancelUpload: () => void;
+  cancelUpload?: () => void;
   onImgUpload?: (converted: FileRes, raw?: File, getBlob?: () => Blob | undefined) => any;
   onVidUpload?: (converted: string, raw?: File, getBlob?: () => Blob | undefined) => any;
   multiple?: boolean;
+  controls?: any;
+  onVidServerUploaded?: (v: string) => void;
+ onImgServerUploaded?: (v: string) => void; // ✅ accept an argument
 }
 
 export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({

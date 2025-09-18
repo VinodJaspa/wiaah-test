@@ -68,10 +68,9 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   const { form: ProfileForm } = useForm<
     Parameters<typeof mutate>[0]["profileArgs"]
   >({ userId: accountId, ...data?.getProfileDetails });
-  const { form: shopForm } = useForm<Parameters<typeof mutate>[0]["shopArgs"]>({
-    userId: accountId,
-    ...data?.getUserRawShop,
-  });
+const { form: shopForm } = useForm<Parameters<typeof mutate>[0]["shopArgs"]>({
+  ...data?.getUserRawShop,
+});
 
   const isBuyer = variant === "buyer";
   const isSeller = variant === "seller";

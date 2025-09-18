@@ -100,11 +100,21 @@ export const useGetMyReviewsQuery = (input: GetMyReviewsInput) => {
         id: "test",
         message: "Great Product",
         product: {
-          description: "prod desc",
+          description: [
+            {
+              langId: "en",
+              value: `DESCRIPTION`,
+            },
+          ],
           id: "test",
           price: 65,
           thumbnail: getRandomImage(),
-          title: "prod title",
+          title: [
+            {
+              langId: "en",
+              value: `title ${i}`,
+            },
+          ],
         },
         productId: "test",
         rate: 4,

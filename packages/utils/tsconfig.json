@@ -12,7 +12,7 @@
     "jsx": "react-jsx",
     "strict": false,
     "baseUrl": ".",
-    "types": ["jest"],
+   "types": ["jest", "google.maps"],
     "paths": {
       "@partials": ["../ui/components/partials"],
       "@blocks": ["../ui/components/blocks"],
@@ -27,6 +27,7 @@
       "@UI": ["../ui"],
       "@UI/*": ["../ui/*"],
       "placeholder": ["../placeholder"]
-    }
+    },
+   
   }
 }

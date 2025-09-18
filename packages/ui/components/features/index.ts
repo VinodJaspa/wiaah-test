@@ -35,5 +35,5 @@ export * from "./Places";
 export * from "./Moderation";
 export * from "../features"
 export * from "./Services/ServicesDetails"
-
+export * from "./Search/Products/components"
 

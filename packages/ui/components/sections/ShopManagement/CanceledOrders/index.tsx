@@ -98,7 +98,7 @@ const { t } = useTranslation();
                         src={card.product.thumbnail}
                       />
                     </Td>
-                    <Td>{card.product.title}</Td>
+                    <Td>{card.product.title[0].value ?? ''}</Td>
                     <Td>{card.qty}</Td>
                     <Td>
                       <PriceDisplay

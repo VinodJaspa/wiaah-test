@@ -1,10 +1,9 @@
 import React from "react";
 import { useRouting } from "routing";
 import {
-  ResturantSearchInput,
+  RestaurantSearchInput,
   ResturantSearchList,
-  ServicesRequestKeys,
-  getRandomImage,
+  ServicesRequestKeys
 } from "ui";
 import { randomNum } from "utils";
 
@@ -13,7 +12,7 @@ export const ResturantSearchView: React.FC = () => {
   return (
     <div className="flex flex-col gap-8">
       <div className="md:w-3/4 w-full mx-auto">
-        <ResturantSearchInput
+        <RestaurantSearchInput
           onSubmit={() =>
             visit((routes) =>
               routes.visitServiceLocationSearchResults(
@@ -26,8 +25,9 @@ export const ResturantSearchView: React.FC = () => {
       </div>
 
       <ResturantSearchList
-        restaurants={[...Array(20)].map(() => ({
+        restaurants={[...Array(20)].map((i ,idex) => ({
           hashtags: [],
+          id: idex + 1, 
           location: {
             address: "address",
             city: "city",

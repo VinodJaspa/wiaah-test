@@ -6,6 +6,7 @@ import {
 
 export interface PaginationProps {
   maxPages?: number;
+  controls?:any;
   onPageChange?: (pageNum: number) => void;
 }
 

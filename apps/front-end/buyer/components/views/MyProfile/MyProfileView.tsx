@@ -136,6 +136,7 @@ const { t } = useTranslation();
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <>
               <MediaUploadModal
+              cancelUpload={()=>{}}
                 onImgUpload={(src) => {
                   console.log("upload");
                   mutate({

@@ -31,7 +31,7 @@ export const useGetUserShopType = (
     async () => {
       if (isDev) {
         const mockRes: GetUserShopTypeQuery["getUserShop"] = {
-          businessType: BusinessType.Individual,
+          businessType: BusinessType.Services,
           createdAt: new Date(),
           id: "",
           storeType: StoreType.Product,

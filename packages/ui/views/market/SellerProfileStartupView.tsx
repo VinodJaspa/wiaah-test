@@ -429,6 +429,7 @@ const SellerListingForm = React.forwardRef(
     return (
       <div className="flex flex-col gap-4 h-full justify-between">
         {/* {shop ? ( */}
+        {/* @ts-ignore */}
         <NewServiceStepper
           ref={stepperRef}
           isEdit={false}

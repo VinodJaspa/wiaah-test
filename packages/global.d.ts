@@ -5,3 +5,10 @@ declare module "react-i18next" {
     t: (key: string, ...args: any[]) => string;
   }
 }
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
+
+export {};

@@ -213,6 +213,7 @@ const { t } = useTranslation();
                 </div>
               </div>
               <MediaUploadModal
+              cancelUpload ={()=>{}}
                 multiple
                 onVidUpload={(res) => {
                   setVideos((state) => [...state, res]);

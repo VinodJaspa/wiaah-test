@@ -25,7 +25,7 @@
     "jsx": "react-jsx",
     "strict": false,
     "baseUrl": ".",
-    "types": ["jest"],
+      "types": ["jest", "google.maps"],
     "paths": {
       "@partials": ["./components/partials"],
       "@blocks": ["./components/blocks"],

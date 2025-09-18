@@ -6,10 +6,11 @@ import {
   useSavedItems,
   getRandomImage,
   useCartSummary,
+  ProductCard,
 } from "ui";
 import { TipTextContainer } from "ui/components/blocks/TipTextContainer";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
-import { ProductCard } from "ui/components/blocks/ProductCard";
+
 import WishlistEmpty from "./WishlistEmpty";
 import { WishlistItem } from "@features/API";
 import { useTranslation } from "react-i18next";
@@ -48,10 +49,10 @@ const { t } = useTranslation();
           const type = Math.random() * 100;
           return (
             <ProductCard
-              name={"fake name"}
+              title={"fake name"}
               key={i}
               onButtonClick={() => handleAddToCart(item)}
-              onDelete={(id) => DeleteItem(id)}
+              // onDelete={(id) => DeleteItem(id)}
               position="delete"
               forceHover={true}
               buttonText={type > 50 ? "Add to Cart" : "Book now"}
@@ -59,7 +60,7 @@ const { t } = useTranslation();
               cashback={15}
               discount={10}
               price={150}
-              rate={4.8}
+              rating={4.8}
               thumbnail={getRandomImage()}
               liked
             />

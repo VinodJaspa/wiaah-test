@@ -17,14 +17,14 @@ export interface ProductCardProps {
     id: string;
     title: string;
     price: number;
-    originalPrice: number;
-    discount: number;
-    rating: number;
-    reviewsCount: number;
-    cashback: number;
+    originalPrice?: number;
+    discount?: number;
+    rating?: number;
+    reviewsCount?: number;
+    cashback?: number;
     thumbnail: string;
-    colors: string[];
-    sizes: string[];
+    colors?: string[];
+    sizes?: string[];
   };
 }
 

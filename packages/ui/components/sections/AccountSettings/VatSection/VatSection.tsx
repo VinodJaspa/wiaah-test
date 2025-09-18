@@ -21,10 +21,12 @@ import { ServiceTypeOfSeller } from "@features/API";
 
 export const VatSection: React.FC<{ accountId: string }> = ({ accountId }) => {
 const { t } = useTranslation();
-  const { form, inputProps } = useForm<UpdateMyShopMutationVariables["args"]>(
-    { userId: accountId },
-    { userId: accountId }
-  );
+const { form, inputProps } = useForm<UpdateMyShopMutationVariables["args"]>(
+  {
+  // use only the fields that actually exist
+  }
+);
+
 
   const { isMobile } = useResponsive();
   const { back } = useRouting();

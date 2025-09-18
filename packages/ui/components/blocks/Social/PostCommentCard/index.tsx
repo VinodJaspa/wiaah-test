@@ -30,16 +30,37 @@ import CommentInputBox from "@UI/components/shadcn-components/Fields/commentBox"
 import CommentText from "@UI/components/shadcn-components/Fields/commentText";
 
 export interface PostCommentCardProps {
+  main?: boolean;
+  shouldCommentBoxFocused?: any;
+  setShouldCommentBoxFocused?: any;
+  setPostOwnerUsername?: any;
   index?: number;
-  comment: { __typename?: "Comment" } & Pick<
+  comment: {
+    __typename?: "Comment";
+  } & Pick<
     Comment,
-    "id" | "content" | "commentedAt" | "likes" | "replies"
+    | "id"
+    | "content"
+    | "commentedAt"
+    | "likes"
+    | "replies"
+    | "updatedAt"
+    | "userId"
+    | "hostId"
+    | "hostType"
   > & {
-    attachment?: Pick<Attachment, "src" | "type">;
-    author?: Pick<Profile, "username" | "photo" | "verified" | "id">;
+    attachment?: {
+      __typename?: "Attachment";
+    } & Pick<Attachment, "src" | "type">;
+    author?: {
+      __typename?: "Profile";
+    } & Pick<Profile, "id" | "username" | "photo" | "verified">;
   };
-  setShowReplyUser?: (profile: Pick<Profile, "username" | "photo" | "verified" | "id">) => void; // 👈 accept full profile
+  setShowReplyUser?: (
+    profile: Pick<Profile, "username" | "photo" | "verified" | "id">
+  ) => void;
 }
+
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({ comment, index, setShowReplyUser }) => {
   const { t } = useTranslation();

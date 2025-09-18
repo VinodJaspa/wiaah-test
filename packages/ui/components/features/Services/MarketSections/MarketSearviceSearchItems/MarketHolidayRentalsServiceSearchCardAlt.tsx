@@ -17,7 +17,7 @@ interface MarketHolidayRentalsProps {
   id: string;
   title: string;
   thumbnail: string;
-  monthlyPrice: number;
+  monthlyPrice: string | number;
   description: string;
   saved: boolean;
   seller: SellerInfo;

@@ -128,8 +128,8 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
         {showCommentInput && (
           <CommentInput
             className="bg-black text-white rounded-full border-0"
-            inputClassName="bg-black placeholder-white border-2 border-white  placeholder-white"
-            sendIconClassName="text-white"
+            // inputClassName="bg-black placeholder-white border-2 border-white  placeholder-white"
+            // sendIconClassName="text-white"
           />
         )}
       </div>

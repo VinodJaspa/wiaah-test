@@ -30,7 +30,7 @@ interface MarketRestaurantServiceSearchCardAltProps {
   rating: number;
   reviews: number;
   location: Location;
-  price: number;
+  price: string | number;
   id: string;
 }
 

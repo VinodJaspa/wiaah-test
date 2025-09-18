@@ -71,7 +71,7 @@ const ReservationAgenda: React.FC<ReservationAgendaProps> = ({
                 >
                     {() => (
                         <Form>
-                            <DatePickerField name="reservationDate" onChange={() => set} />
+                            <DatePickerField name="reservationDate"  />
                         </Form>
                     )}
                 </Formik>

@@ -24,13 +24,13 @@ import {
 import { CartSummaryTotalPriceState } from "@src/state";
 import { CartSummaryFilled } from "./CartSummaryFilled";
 import { EmptyCartSummary } from "./EmptyCartSummary";
-import { mapArray } from "@UI/../utils/src";
+import { getStringValue, mapArray } from "@UI/../utils/src";
 import { CartItem, ServiceType, ShoppingCartItemType } from "@features/API";
 
 export interface CartSummaryViewProps { }
 
 export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
-const { t } = useTranslation();
+  const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { cartSummaryItems } = useCartSummary();
@@ -52,7 +52,7 @@ const { t } = useTranslation();
           // TODO: bind props
           (<ShoppingCartMobileItem
             thumbnail={item.product?.thumbnail || ""}
-            title={item.product?.title || ""}
+            title={getStringValue(item.product?.title)}
             checkin={new Date(item.checkin!)}
             serviceType={item.service?.type}
             type={item.itemType}

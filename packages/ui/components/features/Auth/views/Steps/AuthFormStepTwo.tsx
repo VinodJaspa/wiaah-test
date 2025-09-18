@@ -37,12 +37,15 @@ export const AccountSignEmailVerificationStep = React.forwardRef<
   const [cooldown, setCooldown] = useState(0);
   const formRef = useRef<FormikProps<FormValues>>(null);
 
-  React.useEffect(() => {
-    if (cooldown > 0) {
-      const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [cooldown]);
+React.useEffect(() => {
+  if (cooldown > 0) {
+    const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }
+  return undefined; // also valid
+}, [cooldown]);
+
+
 
   const handleResend = () => {
     if (!email) {

@@ -124,7 +124,7 @@ export const useGetAffiliationPostQuery = (args: GetAffiliationPostInput) => {
                 type: PresentationType.Image,
               },
             ],
-            title: "product title",
+            title: [{langId:"en",value:"product title"}],
             price: randomNum(51),
           },
 

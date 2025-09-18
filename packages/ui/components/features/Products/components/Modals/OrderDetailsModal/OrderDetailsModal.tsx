@@ -156,7 +156,7 @@ const { t } = useTranslation();
                               <div className="relative w-40">
                                 <AspectRatioImage
                                   src={thumbnail}
-                                  alt={title}
+                                  alt={title[0].value}
                                   ratio={6 / 4}
                                 />
                               </div>
@@ -165,10 +165,10 @@ const { t } = useTranslation();
                               <div className="flex  justify-between">
                                 <div className="flex flex-col">
                                   <span id="ProductName" className="font-bold">
-                                    {title}
+                               {title[0].value}
                                   </span>
                                   <EllipsisText maxLines={1}>
-                                    {description}
+                                    {description[0].value}
                                   </EllipsisText>
                                   <div>
                                     {colors[0] && (

@@ -94,7 +94,7 @@ const { t } = useTranslation();
                 : item.service?.thumbnail;
             const title =
               item.itemType === WishlistItemType.Product
-                ? item.product?.title
+                ? item.product?.title[0].value
                 : item.service?.name;
 
             const price =
@@ -113,11 +113,11 @@ const { t } = useTranslation();
                 <AspectRatioImage
                   src={thumbnail || ""}
                   ratio={0.9}
-                  alt={title || ""}
+                  alt={title ?? ""}
                 />
                 <div className="flex flex-col w-full justify-between">
                   <div className="flex flex-col gap-4">
-                    <p className="text-lg font-medium">{title}</p>
+                    <p className="text-lg font-medium">{title ?? ''}</p>
                     {item.itemType === WishlistItemType.Product ? (
                       <HStack>
                         <p className="text-sm">{t("Stock")}:</p>
@@ -175,14 +175,14 @@ const { t } = useTranslation();
                           }
                           alt={
                             item.itemType === WishlistItemType.Product
-                              ? item.product?.title
+                              ? item.product?.title[0].value
                               : item.service?.name
                           }
                         />
                       </Td>
                       <Td {...setTestid("item-title")}>
                         {item.itemType === WishlistItemType.Product
-                          ? item.product?.title
+                          ? item.product?.title[0].value
                           : item.service?.name}
                       </Td>
                       <Td {...setTestid("item-stock")}>
