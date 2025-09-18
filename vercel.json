@@ -1,7 +1,10 @@
 {
   "build": {
     "env": {
-      "PNPM_VERSION": "10.0.0"
+      "NODE_VERSION": "20.11.1",
+      "PNPM_HOME": "/vercel/.pnpm"
     }
-  }
+  },
+  "installCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build"
 }
