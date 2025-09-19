@@ -306,7 +306,8 @@
       "@nestjs/config": "4.0.2",
       "next": "14.2.26",
       "lodash": "4.17.21",
-      "@hapi/joi": "npm:joi"
+      "@hapi/joi": "npm:joi",
+        "@apollo/subgraph": "^2.9.3"
     },
     "onlyBuiltDependencies": [
       "@apollo/protobufjs",
