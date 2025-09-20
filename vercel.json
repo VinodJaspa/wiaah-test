@@ -5,6 +5,7 @@
       "PNPM_HOME": "/vercel/.pnpm"
     }
   },
-  "installCommand": "pnpm install",
+  "installCommand": "pnpm install --legacy-peer-deps",
   "buildCommand": "pnpm build"
+  
 }
