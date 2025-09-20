@@ -23,7 +23,7 @@ import {
 } from "@UI";
 import { useAccountType, useResponsive } from "hooks";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { BiWallet } from "react-icons/bi";
 import { BsShop } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
@@ -150,8 +150,9 @@ export interface SellerLayoutProps {
   containerProps?: HtmlDivProps;
   noContainer?: boolean;
   children: React.ReactNode;
-  accountType?: string;
+  accountType?: "buyer" | "seller";
   showMobileHeader?: boolean;
+  type?: string;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({
@@ -160,15 +161,17 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   containerProps,
   sideBar,
   showMobileHeader = false,
-  accountType,
+
   noContainer = false,
+  type,
 }) => {
-  console.log(accountType, "accountType", );
+  const { accountType } = useAccountType();
+  console.log(accountType, "accountType");
 
   const { isMobile } = useResponsive();
   // const [isSidebar, setSidebar] = React.useState(true);
   const { getCurrentPath } = useRouting();
-  // const { accountType } = useAccountType();
+
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
@@ -193,11 +196,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   //Set the header type
   //Set header
   let stored: string | null = null;
-  React.useEffect(() => {
-    if (typeof window !== "undefined" && accountType) {
-      localStorage.setItem("userType", accountType.toString());
-    }
-  }, [accountType]);
+
 
 
 
@@ -226,6 +225,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       <SocialLayout>
         {isSidebar && (
           <SellerNavigationSideBar
+
             headerElement={
               <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
             }
@@ -288,7 +288,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
               ref={headerRef}
             >
               <HeaderSwitcher
-                links={accountType == "buyer" ? BuyerNavLinks : SellerNavLinks}
                 headerType={header}
               />
             </div>
@@ -315,14 +314,13 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
 export interface HeaderSwitcherProps {
   headerType: HeadersTypes;
-  links: HeaderNavLink[];
 }
 
 export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
-  links = [],
+
 }) => {
-  console.log(links, "links");
+  // console.log(links, "links");
 
   switch (headerType) {
     case "discover":
@@ -330,146 +328,9 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
     case "minimal":
       return <MinimalHeader />;
     default:
-      return <SellerHeader headerNavLinks={links} />;
+      return <SellerHeader />;
   }
 };
-
-const BuyerNavLinks: HeaderNavLink[] = [
-  {
-    link: {
-      name: {
-        translationKey: "profile",
-        fallbackText: "Profile",
-      },
-      href: "/myprofile",
-    },
-    icon: <HiOutlineUserCircle />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "settings",
-        fallbackText: "Settings",
-      },
-      href: "/settings",
-    },
-    icon: <IoSettingsOutline />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "shopping_management",
-        fallbackText: "Orders & Perks",
-      },
-      href: "/shopping-management",
-    },
-    icon: <CgShoppingBag />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "wallet",
-        fallbackText: "Wallet",
-      },
-      href: "/wallet",
-    },
-    icon: <BiWallet />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "log_out",
-        fallbackText: "Log out",
-      },
-      href: "logout",
-    },
-    icon: null,
-  },
-];
-
-const SellerNavLinks: HeaderNavLink[] = [
-  {
-    link: {
-      name: {
-        translationKey: "profile",
-        fallbackText: "Profile",
-      },
-      href: "/myprofile",
-    },
-    icon: <HiOutlineUserCircle />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "account_settings",
-        fallbackText: "Account Settings",
-      },
-      href: getRouting((r) => r.visitAccountSettings()),
-    },
-    icon: <IoSettingsOutline />,
-  },
-  {
-    icon: <IoIosStarOutline />,
-
-    link: {
-      href: "/saved",
-      name: {
-        translationKey: "Saved",
-        fallbackText: "Saved",
-      },
-    },
-  },
-  {
-    link: {
-      name: {
-        translationKey: "shop_management",
-        fallbackText: "Shop Management",
-      },
-      href: getRouting((r) => r.visitShopManagement()),
-    },
-    icon: <BsShop />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "service_management",
-        fallbackText: "Service Management",
-      },
-      href: getRouting((r) => r.visitServiceManagement()),
-    },
-    icon: <FaThList />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "shopping_management",
-        fallbackText: "Orders & Perks",
-      },
-      href: getRouting((r) => r.visitShoppingManagement()),
-    },
-    icon: <CgShoppingBag />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "wallet",
-        fallbackText: "Wallet",
-      },
-      href: "/wallet",
-    },
-    icon: <BiWallet />,
-  },
-  {
-    link: {
-      name: {
-        translationKey: "log_out",
-        fallbackText: "Log out",
-      },
-      href: "/logout",
-    },
-    icon: null,
-  },
-];
 
 const FAKE_STORIES = [
   {

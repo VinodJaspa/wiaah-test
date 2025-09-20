@@ -31,6 +31,7 @@ export interface SellerSideBarProps extends HtmlDivProps {
   onLinkClick?: (link: NavigationLinkType) => any;
   activeLink?: string;
   headerElement?: React.ReactElement;
+  
 }
 
 export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
@@ -119,6 +120,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
         >
           {!isMobile && (
             <Image
+            onClick={()=> router.push("/")}
               src="/wiaah_logo.png"
               className="cursor-pointer w-32 mx-auto mb-8"
             />

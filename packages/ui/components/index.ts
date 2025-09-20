@@ -13,3 +13,4 @@ export * from "./verify-IdentitySteps";
 export * from "./Payment";
 export * from "./InfiniteScrollWrapper";
 export * from "./Modal";
+export * from "./verify-IdentitySteps"

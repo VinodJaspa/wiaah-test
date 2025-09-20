@@ -2,14 +2,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import { SettingsSectionType } from "types";
 import {
-  WithdrawalSection,
+  PayoutSection,
   SectionsLayout,
-  
 } from "ui";
-import { FaMoneyBill, FaPercent } from "react-icons/fa";
+import { FaPercent } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
-import VouchersSectionMain from "@sections/ShoppingManagement/Vouchers/VouchersSection";
+import { GiPayMoney } from "react-icons/gi";
 import TransactionSection from "@sections/Wallet/TransactionsHistory";
+import VouchersSectionMain from "@sections/ShoppingManagement/Vouchers/VouchersSection";
 
 export const WalletView: React.FC = () => {
   const baseRoute = "wallet";
@@ -31,16 +31,9 @@ export const WalletView: React.FC = () => {
       handleSectionChange={(url) => router.replace(`/${baseRoute}/${url}`)}
     />
   );
-  // return <>"wallet"</>;
 };
 
 const sections: SettingsSectionType[] = [
-  {
-    panelName: "Withdrawal",
-    panelIcon: FaMoneyBill,
-    panelUrl: "/withdrwal",
-    panelComponent: <WithdrawalSection />,
-  },
   {
     panelName: "Transactions",
     panelIcon: AiOutlineTransaction,
@@ -52,5 +45,11 @@ const sections: SettingsSectionType[] = [
     panelIcon: FaPercent,
     panelUrl: "/vouchers",
     panelComponent: <VouchersSectionMain />,
+  },
+  {
+    panelName: "payout",
+    panelIcon: GiPayMoney,
+    panelUrl: "/payout",
+    panelComponent: <PayoutSection />,
   },
 ];

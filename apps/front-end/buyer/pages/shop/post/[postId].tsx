@@ -1,17 +1,15 @@
-import React from "react";
-import { NextPage, GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { dehydrate, QueryClient } from "react-query";
+import { ShopCardInfo } from "types";
+import { NewsFeedPostView, SellerLayout } from "ui";
 import {
   shopCardInfoPlaceholder,
   ShopCardsInfoPlaceholder,
 } from "ui/placeholder";
-import { dehydrate, QueryClient } from "react-query";
-import { ShopCardInfo } from "types";
-import Head from "next/head";
-import { SellerLayout, ShopCardsView } from "ui";
-import { useRouting } from "routing";
-import { useRouter } from "next/router";
 
-interface ShopPostProps { }
+interface ShopPostProps {}
 
 async function getShopPosts(): Promise<ShopCardInfo[]> {
   return ShopCardsInfoPlaceholder;
@@ -43,10 +41,10 @@ const ShopPost: NextPage<ShopPostProps> = () => {
   return (
     <>
       <Head>
-        <title>Buyer | Shop Post</title>
+        <title>Seller | shop post</title>
       </Head>
       <SellerLayout>
-        <ShopCardsView postId={postId} />
+        <NewsFeedPostView postId={postId} />
       </SellerLayout>
     </>
   );

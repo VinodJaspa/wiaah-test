@@ -16,7 +16,7 @@ const BuyerServices: React.FC<BuyerServicesProps> = () => {
       </Head>
       <SellerLayout>
         <div className="flex justify-center w-full h-fit">
-          <div className="md:w-8/12 w-11/12">
+          <div className="p-4">
             <ShopCardsListWrapper
               cols={3}
               items={SocialShopsPostCardPlaceholder}
