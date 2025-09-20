@@ -2,7 +2,8 @@
   "name": "wiaah-mono",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@10.0.0",
+ "packageManager": "pnpm@10.22.0",
+
   "scripts": {
     "build": "nx run-many --target=build",
     "dev": "nx run-many --target=dev --parallel=4 --exclude=nest-dto",
