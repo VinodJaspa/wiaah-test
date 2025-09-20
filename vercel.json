@@ -1,4 +1,10 @@
 {
   "installCommand": "corepack prepare pnpm@10.22.0 --activate && pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build"
+  "buildCommand": "pnpm build",
+  "build": {
+    "env": {
+      "NODE_VERSION": "20.11.1",
+      "PNPM_HOME": "/vercel/.pnpm"
+    }
+  }
 }
