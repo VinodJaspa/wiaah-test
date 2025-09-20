@@ -1,71 +1,75 @@
 
-import { useRouter } from "next/router";
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiOutlineShop } from "react-icons/ai";
 import { useQuery } from "react-query";
-import { useMediaQuery } from "react-responsive";
-import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
+import { useRouting } from "routing";
+import {
+  PlaceCardProps,
+  PlaceCard,
+  ShowMapButton,
+  HStack,
+  Image,
+  Button,
+  Divider,
+  ShadcnIcon,
+} from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
-  const isBase = useMediaQuery({ maxWidth: 767 });
-  const isMd = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const isLg = useMediaQuery({ minWidth: 1024 })
-  const cols = isBase ? 1 : isMd ? 2 : isLg ? 3 : 1;
-  const isMobile = useMediaQuery({ maxWidth: 767 });
- 
+  const { isMobile } = useResponsive();
 const { t } = useTranslation();
+  
 
+  const { getParam } = useRouting();
 
-  const router = useRouter();
-  const { tag } = router.query;
+  const place = getParam("place");
+
   const { data: places, isLoading } = useQuery<PlaceCardProps[]>(
     "places",
     async () => placesPH,
     {
-      enabled: !!tag,
-    }
+      enabled: !!place,
+    },
   );
 
   return (
-    <div className="flex flex-col my-8 w-full">
-      <div className="flex px-4 justify-between w-full">
+    <div className="flex flex-col my-8">
+      <HStack className="px-4 justify-between w-full">
         {!isMobile && (
-          <button className="invisible capitalize">
-            {t("follow", "follow")}
-          </button>
-        )}
-        <div className="flex items-center gap-4">
-          <img
-            alt="thumbnail"
-            src="/place-1.jpg"
-            className="h-12 w-auto rounded-xl object-cover"
-          />
-          <AiOutlineShop className="text-3xl" />
-          <div className="flex flex-col items-center">
-            <p className="font-bold text-xl">{tag}</p>
-            <p className="font-bold text-lg">5.5m</p>
+          <div className="w-40">
+            <ShowMapButton onClick={() => { }} />
           </div>
-        </div>
-        <button className="capitalize">{t("follow", "follow")}</button>
+        )}
+        <HStack>
+          <Image
+            className="rounded-xl h-12 w-auto object-cover"
+            src="/place-1.jpg"
+            alt="place"
+          />
+<ShadcnIcon as={AiOutlineShop} className="text-4xl" />
+
+          <div className="flex flex-col items-center">
+            <p className="font-bold text-xl">{place}</p>
+            <p className="text-lg font-bold">5.5m</p>
+          </div>
+        </HStack>
+        <Button className="capitalize">{t("follow", "follow")}</Button>
+      </HStack>
+      <Divider />
+      {/* {isLoading ? (
+        <Center>
+          <Spinner colorScheme={"primary"} />
+        </Center>
+      ) : ( */}
+      <div className="grid grid-cols-4 gap-4">
+        {placesPH &&
+          placesPH.map((place, i) => (
+            <PlaceCard fixedHeight="17rem" key={i} {...place} />
+          ))}
       </div>
-
-      <div className="border-t border-black my-4"></div>
-
-      {isLoading ? (
-        <div className="flex justify-center items-center">
-          <div className="animate-spin border-4 border-primary rounded-full w-8 h-8"></div>
-        </div>
-      ) : (
-        <div className={`grid grid-cols-${cols} gap-4`}>
-          {placesPH &&
-            placesPH.map((place, i) => (
-              <PlaceCard fixedHeight="17rem" key={i} {...place} />
-            ))}
-        </div>
-      )}
+      {/* )} */}
     </div>
-
   );
 };

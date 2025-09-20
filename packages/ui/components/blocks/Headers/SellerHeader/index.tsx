@@ -32,7 +32,7 @@ import {
 } from "@UI";
 
 
-import { useResponsive } from "hooks";
+import { useAccountType, useResponsive } from "hooks";
 import { useRouter } from 'next/router';
 import { useTranslation } from "react-i18next";
 import { BiLogOut, BiWallet } from "react-icons/bi";
@@ -64,12 +64,11 @@ export interface HeaderNavLink {
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
   props?: HtmlDivProps;
-  headerNavLinks: HeaderNavLink[];
 }
 export const SellerHeader: React.FC<SellerHeaderProps> = ({
   onSearchSubmit,
   props,
-  headerNavLinks = [],
+
 }) => {
   const { showNewPublish, openNotifications } = useSocialControls();
   const { SearchForLocations } = useMasterLocationMapModal();
@@ -197,15 +196,8 @@ export const AccountsProfileOptions: React.FC<AccountsProfileOptionsProps> = ({
   const router = useRouter();
   const [_, setLoginState] = useRecoilState(isUserLoggedIn);
   const { mutate: logout } = useLogoutMutation();
-  const [accountType, setAccountType] = React.useState<string | null>(null);
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedType = localStorage.getItem("userType");
-      if (savedType) {
-        setAccountType(savedType);
-      }
-    }
-  }, []);
+  // const [accountType, setAccountType] = React.useState<string | null>(null);
+  const { accountType } = useAccountType();
   const links: HeaderNavLink[] = useMemo(() => {
     // Todo-make this dynamic check accrding to user profile
     if (accountType ==="buyer") {

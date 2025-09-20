@@ -229,7 +229,7 @@ function ChatRoom({ chat, name, avatar }) {
     // 🔥 Do something, like call API
   };
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col px-4 pb-4">
       {/* Header */}
       <div className="flex items-center mb-6 pr-2 pl-2  border-gray-200 bg-white">
         <img src={avatar} className="w-10 h-10 rounded-full mr-3" />

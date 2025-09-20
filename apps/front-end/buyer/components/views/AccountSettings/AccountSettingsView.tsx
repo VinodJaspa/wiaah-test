@@ -8,6 +8,7 @@ import {
   IoTrash,
 } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
+import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
 import { BiData } from "react-icons/bi";
 import { SettingsSectionType } from "types";
@@ -15,6 +16,7 @@ import {
   AccountSettingsSection,
   BlocklistSection,
   FindYourFriendsStep,
+  MembershipSection,
   AccountNewsLetterSettingsSection,
   NotificationsSettingsSection,
   PasswordSection,
@@ -22,24 +24,42 @@ import {
   SectionsLayout,
   AccountDeletionSection,
   PersonalizationAndDataSection,
+  Verified,
+  ShareIcon,
+  MyVerificationSection,
+  ShareYourWiaahQr,
+  VatIcon,
+  VatSection,
+  MyProfileStatistics,
+  useGetMyProfileQuery,
 } from "ui";
-import { ImBlocked } from "react-icons/im";
+import { ImBlocked, ImProfile } from "react-icons/im";
+import { useResponsive } from "hooks";
+import VerifyIdentityStart from "components/verify-IdentitySteps/VerifyIdentity";
+import AccountSection from "@UI/components/Account/AccountSection";
+import AccountSectionMainPage from "@UI/components/Account/AccountSectionMain";
 
 export const AccountSettingsView: React.FC = () => {
-  const baseRoute = "settings";
+  const baseRoute = "management/account-settings";
   const router = useRouter();
   const { section } = router.query;
+  const { isMobile } = useResponsive();
   const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
-    if (!route) {
-      router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    if (!route && !isMobile && sections.length > 0) {
+      const targetUrl = `/${baseRoute}/${sections[0].panelUrl}`;
+      console.log("Redirecting to", targetUrl);
+      router.push(targetUrl);
     }
-  }, [router, route]);
+  }, []);
+  
+
 
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
   }
+
   return (
     <>
       <SectionsLayout
@@ -53,14 +73,13 @@ export const AccountSettingsView: React.FC = () => {
         currentSectionName={route}
         sections={sections}
         handleSectionChange={handleSectionChange}
-      ></SectionsLayout>
+      />
     </>
   );
 };
 
-export const NotFoundSection = () => {
-  return <div>not found</div>;
-};
+
+
 
 const sections: SettingsSectionType[] = [
   {
@@ -68,7 +87,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: FiSettings,
     panelUrl: "/account",
 
-    panelComponent: <AccountSettingsSection accountId="2" />,
+    panelComponent: <AccountSectionMainPage />,
   },
   {
     panelName: "Password",
@@ -78,24 +97,50 @@ const sections: SettingsSectionType[] = [
     panelComponent: <PasswordSection />,
   },
   {
+    panelName: "My Verification",
+    panelIcon: <Verified />,
+    panelUrl: "/my-verification",
+
+    panelComponent: <VerifyIdentityStart />,
+  },
+  {
     panelName: "Notification",
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
-    panelComponent: <NotificationsSettingsSection accountId="2" />,
+    panelComponent: <NotificationsSettingsSection accountId={'688fd1e19b391da536b71229'} />,
   },
   {
-    panelName: "Newsletter",
-    panelIcon: IoNewspaperOutline,
-    panelUrl: "/newsletter",
+    panelName: "My Profile Statistics",
+    panelIcon: ImProfile,
+    panelUrl: "/my-profile-statistics",
 
-    panelComponent: <AccountNewsLetterSettingsSection userId="2" />,
+    panelComponent: <MyProfileStatistics />,
   },
+  // {
+  //   panelName: "Newsletter",
+  //   panelIcon: IoNewspaperOutline,
+  //   panelUrl: "/newsletter",
+
+  //   panelComponent: <MyNewsletterSettingsSection />,
+  // },
   {
-    panelName: "Invite Friends",
-    panelIcon: HiUserGroup,
-    panelUrl: "/invitefriends",
-    panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
+    panelName: "Share Your Wiaah Qr",
+    panelIcon: <ShareIcon />,
+    panelUrl: "/shareyourqr",
+    panelComponent: <ShareYourWiaahQr />,
+  },
+  // {
+  //   panelName: "Invite Friends",
+  //   panelIcon: HiUserGroup,
+  //   panelUrl: "/invitefriends",
+  //   panelComponent: <FindYourFriendsStep onSuccess={() => { }} />,
+  // },
+  {
+    panelName: "Your Membership",
+    panelIcon: MdCardMembership,
+    panelUrl: "/membership",
+    panelComponent: <MembershipSection />,
   },
   {
     panelName: "Blocklist",
@@ -103,28 +148,28 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
-  {
-    panelName: "Privacy",
-    panelIcon: BiLock,
-    panelUrl: "/privacy",
-    panelComponent: <PrivacySection />,
-  },
+  // {
+  //   panelName: "Privacy",
+  //   panelIcon: BiLock,
+  //   panelUrl: "/privacy",
+  //   panelComponent: <PrivacySection />,
+  // },
   {
     panelName: "Account Deletion",
     panelIcon: IoTrash,
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
-  // {
-  //   panelName: "Account Verification",
-  //   panelIcon: MdVerified,
-  //   panelUrl: "/account_verification",
-  //   panelComponent: <AccountVerification />,
-  // },
   {
     panelName: "Personalization and data",
     panelIcon: BiData,
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,
   },
+  // {
+  //   panelName: "Vat settings",
+  //   panelIcon: VatIcon,
+  //   panelUrl: "/vat",
+  //   panelComponent: <MyVatSection />,
+  // },
 ];

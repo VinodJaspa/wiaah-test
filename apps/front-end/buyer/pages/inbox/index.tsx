@@ -14,7 +14,7 @@ const Messages: React.FC<MessagesPageProps> = () => {
       <Head>
         <title>Wiaah | Messages</title>
       </Head>
-      <SellerLayout header={isMobile ? null : "main"} sideBar={true}>
+      <SellerLayout header={isMobile ? null : "main"}>
         <ChatView />
       </SellerLayout>
     </>

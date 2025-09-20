@@ -33,7 +33,7 @@ const { t } = useTranslation();
   const { user } = useUserData();
 
   return (
-    <div className="">
+    <div className="w-full">
       {/* messages sidebar  */}
       <ChatMessagesSection
         // onCardClick={handleRouteChatRoom}

@@ -10,20 +10,94 @@ import {
   TipTextContainer,
   useGetWishlistItemsData,
   SpinnerFallback,
+  getRandomImage,
 } from "ui";
 import WishlistEmpty from "../WishlistEmpty";
-import { getRandomImage } from "placeholder";
+
+const FAKE_WISHLIST_ITEMS = [
+  {
+    id: "placeholder-id",
+    name: "Placeholder Item",
+    price: 300,
+    imgUrl: "https://via.placeholder.com/150",
+    currency: "USD",
+    currencySymbol: "$",
+    colors: ["red", "blue", "green"],
+    liked: false,
+    cashback: "10",
+    discount: 5,
+    oldPrice: 400,
+    rating: 3.6,
+  },
+
+  {
+    id: "placeholder-id2",
+    name: "Placeholder Item",
+    price: 400,
+    imgUrl: "https://via.placeholder.com/150",
+    currency: "USD",
+    currencySymbol: "$",
+    colors: ["red", "blue", "green"],
+    liked: false,
+    cashback: "20",
+    discount: 20,
+    oldPrice: 450,
+    rating: 5,
+  },
+  {
+    id: "placeholder-id3",
+    name: "Placeholder Item",
+    price: 100,
+    imgUrl: "https://via.placeholder.com/150",
+    currency: "USD",
+    currencySymbol: "$",
+    colors: ["red", "blue", "green"],
+    liked: false,
+    cashback: "15",
+    discount: 10,
+    oldPrice: 200,
+    rating: 4.2,
+  },
+  {
+    id: "placeholder-id3",
+    name: "Placeholder Item",
+    price: 100,
+    imgUrl: "https://via.placeholder.com/150",
+    currency: "USD",
+    currencySymbol: "$",
+    colors: ["red", "blue", "green"],
+    liked: false,
+    cashback: "15",
+    discount: 10,
+    oldPrice: 200,
+    rating: 4.2,
+  },
+  {
+    id: "placeholder-id3",
+    name: "Placeholder Item",
+    price: 100,
+    imgUrl: "https://via.placeholder.com/150",
+    currency: "USD",
+    currencySymbol: "$",
+    colors: ["red", "blue", "green"],
+    liked: false,
+    cashback: "15",
+    discount: 10,
+    oldPrice: 200,
+    rating: 4.2,
+  },
+];
 
 export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();
 
-  // const {
-  //   data: _savedItems,
-  //   isLoading: _isLoading,
-  //   isError: _isError,
-  // } = useGetWishlistItemsData();
-
-  const savedItems = FAKE_WISHLIST_DATA;
+  // WARNING: graphql is not ready yet so I has been replaced with placeholder
+  const {
+    data: _savedItems,
+    isLoading: _isLoading,
+    isError: _isError,
+  } = useGetWishlistItemsData();
+  const savedItems = React.useMemo(() => FAKE_WISHLIST_ITEMS, []);
 
   function handleAddToCart(item: WishlistItem) {
     handleLoginPopup();
@@ -46,17 +120,18 @@ export const WishlistView: React.FC = () => {
                 <ProductCard
                   title={item.name}
                   key={i}
-                  id={item.id}
-                  price={item.price}
-                  discount={item.discount}
                   onButtonClick={() => handleAddToCart(item)}
                   onDelete={() => handleLoginPopup()}
                   position="delete"
                   forceHover={true}
                   buttonText={type > 50 ? "Add to Cart" : "Book now"}
+                  id=""
                   cashback={parseInt(item.cashback)}
-                  thumbnail={item.imgUrl}
+                  discount={item.discount}
+                  price={item.price}
                   rating={item.rating}
+                  thumbnail={getRandomImage()}
+                  liked
                 />
               );
             })}
@@ -66,85 +141,3 @@ export const WishlistView: React.FC = () => {
     </div>
   );
 };
-
-const FAKE_WISHLIST_DATA: WishlistItem[] = [
-  {
-    id: "placeholder-id-5",
-    name: "Placeholder Name",
-    price: 80,
-    imgUrl: getRandomImage(),
-    type: "product",
-    currency: "USD",
-    currencySymbol: "$",
-    colors: ["#000000", "#FFFFFF"],
-    liked: false,
-    cashback: "0%",
-    discount: 0,
-    oldPrice: 100,
-    rating: 0,
-  },
-
-  {
-    id: "placeholder-id-4",
-    name: "Placeholder Name",
-    price: 30,
-    imgUrl: getRandomImage(),
-    type: "product",
-    currency: "USD",
-    currencySymbol: "$",
-    colors: ["#000000", "#FFFFFF"],
-    liked: false,
-    cashback: "20%",
-    discount: 10,
-    oldPrice: 50,
-    rating: 3,
-  },
-
-  {
-    id: "placeholder-id-3",
-    name: "Placeholder Name",
-    price: 40,
-    imgUrl: getRandomImage(),
-    type: "product",
-    currency: "USD",
-    currencySymbol: "$",
-    colors: ["#000000", "#FFFFFF"],
-    liked: false,
-    cashback: "0%",
-    discount: 0,
-    oldPrice: 50,
-    rating: 0,
-  },
-
-  {
-    id: "placeholder-id-2",
-    name: "Placeholder Name",
-    price: 0,
-    imgUrl: getRandomImage(),
-    type: "product",
-    currency: "USD",
-    currencySymbol: "$",
-    colors: ["#000000", "#FFFFFF"],
-    liked: false,
-    cashback: "0%",
-    discount: 0,
-    oldPrice: 0,
-    rating: 5,
-  },
-
-  {
-    id: "placeholder-id-1",
-    name: "Placeholder Name",
-    price: 80,
-    imgUrl: getRandomImage(),
-    type: "product",
-    currency: "USD",
-    currencySymbol: "$",
-    colors: ["#000000", "#FFFFFF"],
-    liked: false,
-    cashback: "0%",
-    discount: 0,
-    oldPrice: 100,
-    rating: 0,
-  },
-];
