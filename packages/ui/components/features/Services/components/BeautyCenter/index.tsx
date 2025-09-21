@@ -147,16 +147,16 @@ export default function BeautyCenterPage() {
 
       <Divider />
       {/* 👨‍⚕️ Doctors Grid */}
-      {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 mt-4">
         {data.map((doc, i) => (
           <BeautityCenterCard key={i} {...doc} />
         ))}
-      </div> */}
+      </div>
 
       {/* 📄 Pagination (centered) */}
-      {/* <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10">
         <Pagination total={total} current={current} onPageChange={handleNext} />
-      </div> */}
+      </div>
     </div>
   );
 }

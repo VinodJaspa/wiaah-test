@@ -19,7 +19,7 @@ const { t } = useTranslation();
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
     addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
   }
-  console.log("MarketServiceSearchView:", MarketServiceSearchView);
+  // console.log("MarketServiceSearchView:", MarketServiceSearchView);
 
   return (
     <>

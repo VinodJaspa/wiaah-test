@@ -6,7 +6,7 @@ import ImageTopbadge from "@UI/components/shadcn-components/components/imageTopb
 
 interface BeautiyCenterCardProps {
     image: string;
-    id: string;
+    id: any;
     price: string;
     name: string;
     role: string;
