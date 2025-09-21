@@ -4,8 +4,8 @@ import Head from "next/head";
 import React from "react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
-import { SellerLayout, SpinnerFallback, CartSummaryItemsState } from "ui";
-import { CartSummaryView } from "../components";
+import { SellerLayout, SpinnerFallback, CartSummaryItemsState, CartSummaryView } from "ui";
+
 
 interface CartSummaryPageProps { }
 
