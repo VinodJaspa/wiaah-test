@@ -167,7 +167,7 @@ importers:
         version: 3.13.0(encoding@0.1.13)(graphql@16.11.0)
       apollo-server-express:
         specifier: ^3.13.0
-        version: 3.13.0(encoding@0.1.13)(express@4.21.2)(graphql@16.11.0)
+        version: 3.13.0(encoding@0.1.13)(express@5.1.0)(graphql@16.11.0)
       blob-util:
         specifier: ^2.0.2
         version: 2.0.2
@@ -901,7 +901,7 @@ importers:
         version: 29.4.3(@babel/core@7.28.4)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.28.4))(esbuild@0.25.10)(jest-util@29.7.0)(jest@29.7.0(@types/node@22.18.6)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(@types/node@22.18.6)(typescript@5.9.2)))(typescript@5.9.2)
       ts-loader:
         specifier: '*'
-        version: 9.5.4(typescript@5.9.2)(webpack@5.100.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.10))
+        version: 9.5.4(typescript@5.9.2)(webpack@5.101.3(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.10))
       ts-node:
         specifier: ^10.0.0
         version: 10.9.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(@types/node@22.18.6)(typescript@5.9.2)
@@ -3326,7 +3326,7 @@ importers:
         version: 17.13.3
       joi-extract-type:
         specifier: ^15.0.8
-        version: 15.0.8(joi@18.0.1)
+        version: 15.0.8(@hapi/joi@15.1.1)
       nest-dto:
         specifier: workspace:*
         version: link:../../packages/dto
@@ -7507,9 +7507,17 @@ packages:
     resolution: {integrity: sha512-kjotm7XJrJ6v+7knhPaRgaT6q8F8K2jiafwYdNHLzmV0uGLuZY43FK6smNSHUPrhq5kX2slCUy+RGG/xGqmIKA==}
     engines: {node: '>=10.13.0'}
 
+  '@hapi/address@2.1.4':
+    resolution: {integrity: sha512-QD1PhQk+s31P1ixsX0H0Suoupp3VMXzIVMSwobR3F3MSUO2YCV0B7xqLcUw/Bh8yuvd3LhpyqLQWTNcRmp6IdQ==}
+    deprecated: Moved to 'npm install @sideway/address'
+
   '@hapi/address@5.1.1':
     resolution: {integrity: sha512-A+po2d/dVoY7cYajycYI43ZbYMXukuopIsqCjh5QzsBCipDtdofHntljDlpccMjIfTy6UOkg+5KPriwYch2bXA==}
     engines: {node: '>=14.0.0'}
+
+  '@hapi/bourne@1.3.2':
+    resolution: {integrity: sha512-1dVNHT76Uu5N3eJNTYcvxee+jzX4Z9lfciqRRHCU27ihbUcYi+iSc2iml5Ke1LXe1SyJCLA0+14Jh4tXJgOppA==}
+    deprecated: This version has been deprecated and is no longer supported or maintained
 
   '@hapi/formula@3.0.2':
     resolution: {integrity: sha512-hY5YPNXzw1He7s0iqkRQi+uMGh383CGdyyIGYtB+W5N3KHPXoqychklvHhKCC9M3Xtv0OCs/IHw+r4dcHtBYWw==}
@@ -7517,8 +7525,16 @@ packages:
   '@hapi/hoek@11.0.7':
     resolution: {integrity: sha512-HV5undWkKzcB4RZUusqOpcgxOaq6VOAH7zhhIr2g3G8NF/MlFO75SjOr2NfuSx0Mh40+1FqCkagKLJRykUWoFQ==}
 
+  '@hapi/hoek@8.5.1':
+    resolution: {integrity: sha512-yN7kbciD87WzLGc5539Tn0sApjyiGHAJgKvG9W8C7O+6c7qmoQMfVs0W4bX17eqz6C78QJqqFrtgdK5EWf6Qow==}
+    deprecated: This version has been deprecated and is no longer supported or maintained
+
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
+
+  '@hapi/joi@15.1.1':
+    resolution: {integrity: sha512-entf8ZMOK8sc+8YfeOlM8pCfg3b5+WZIKBfUaaJT8UsjAAPjartzxIYm3TIbjvA4u+u++KbcXD38k682nVHDAQ==}
+    deprecated: Switch to 'npm install joi'
 
   '@hapi/pinpoint@2.0.1':
     resolution: {integrity: sha512-EKQmr16tM8s16vTT3cA5L0kZZcTMU5DUOZTuvpnY738m+jyP3JIUj+Mm1xc1rsLkGBQ/gVnfKYPwOmPg1tUR4Q==}
@@ -7526,6 +7542,10 @@ packages:
   '@hapi/tlds@1.1.3':
     resolution: {integrity: sha512-QIvUMB5VZ8HMLZF9A2oWr3AFM430QC8oGd0L35y2jHpuW6bIIca6x/xL7zUf4J7L9WJ3qjz+iJII8ncaeMbpSg==}
     engines: {node: '>=14.0.0'}
+
+  '@hapi/topo@3.1.6':
+    resolution: {integrity: sha512-tAag0jEcjwH+P2quUfipd7liWCNX2F8NvYjQp2wtInsZxnMlypdw0FtAOLxtvvkO+GSRRbmNi8m/5y42PQJYCQ==}
+    deprecated: This version has been deprecated and is no longer supported or maintained
 
   '@hapi/topo@5.1.0':
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
@@ -14706,7 +14726,7 @@ packages:
   joi-extract-type@15.0.8:
     resolution: {integrity: sha512-Or97aW6QN6YJq0B+x/vYs65+nmcPvYDE7xhlwRl7yHzY+7Z8pVaj0zxjdJlXmIA9zRcbbYQKCGvW+I4g0kUHgA==}
     peerDependencies:
-      '@hapi/joi': npm:joi
+      '@hapi/joi': ~15
 
   joi@17.13.3:
     resolution: {integrity: sha512-otDA4ldcIx+ZXsKHWmp0YizCweVRZG96J10b0FevjfuncLO1oX59THoAmHkNubYJ+9gWsYsp5k8v4ib6oDv1fA==}
@@ -22157,19 +22177,36 @@ snapshots:
     dependencies:
       is-negated-glob: 1.0.0
 
+  '@hapi/address@2.1.4': {}
+
   '@hapi/address@5.1.1':
     dependencies:
       '@hapi/hoek': 11.0.7
+
+  '@hapi/bourne@1.3.2': {}
 
   '@hapi/formula@3.0.2': {}
 
   '@hapi/hoek@11.0.7': {}
 
+  '@hapi/hoek@8.5.1': {}
+
   '@hapi/hoek@9.3.0': {}
+
+  '@hapi/joi@15.1.1':
+    dependencies:
+      '@hapi/address': 2.1.4
+      '@hapi/bourne': 1.3.2
+      '@hapi/hoek': 8.5.1
+      '@hapi/topo': 3.1.6
 
   '@hapi/pinpoint@2.0.1': {}
 
   '@hapi/tlds@1.1.3': {}
+
+  '@hapi/topo@3.1.6':
+    dependencies:
+      '@hapi/hoek': 8.5.1
 
   '@hapi/topo@5.1.0':
     dependencies:
@@ -31734,6 +31771,11 @@ snapshots:
 
   jiti@2.5.1: {}
 
+  joi-extract-type@15.0.8(@hapi/joi@15.1.1):
+    dependencies:
+      '@hapi/joi': 15.1.1
+      '@types/hapi__joi': 15.0.4
+
   joi-extract-type@15.0.8(joi@18.0.1):
     dependencies:
       '@hapi/joi': joi@18.0.1
@@ -35898,16 +35940,6 @@ snapshots:
       babel-jest: 29.7.0(@babel/core@7.28.4)
       esbuild: 0.25.10
       jest-util: 29.7.0
-
-  ts-loader@9.5.4(typescript@5.9.2)(webpack@5.100.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.10)):
-    dependencies:
-      chalk: 4.1.2
-      enhanced-resolve: 5.18.3
-      micromatch: 4.0.8
-      semver: 7.7.2
-      source-map: 0.7.6
-      typescript: 5.9.2
-      webpack: 5.100.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.10)
 
   ts-loader@9.5.4(typescript@5.9.2)(webpack@5.101.3(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.10)):
     dependencies:
