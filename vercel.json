@@ -1,5 +1,5 @@
 {
-  "installCommand": "corepack prepare pnpm@10.22.0 --activate && pnpm install --frozen-lockfile",
+  "installCommand": "corepack prepare pnpm@10.17.0 --activate && pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build",
   "build": {
     "env": {
