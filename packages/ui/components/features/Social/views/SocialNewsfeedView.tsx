@@ -148,7 +148,7 @@ const SocialNewsfeedView: React.FC<SocialNewsfeedViewProps> = ({
     newsfeedPosts,
     normalizedPersonalizedActions,
   );
-  console.log(data ,"data44");
+  // console.log(data ,"data44");
   
 
   return (

@@ -9,6 +9,7 @@ export const useLoginGuard = () => {
     const userLoggedIn = useRecoilValue(isUserLoggedIn);
     const { OpenLoginPopup } = useLoginPopup();
     const router = useRouter();
+console.log(userLoggedIn,"isUserLoggedIn");
 
     const withLoginCheck = (action?: () => void) => {
         return (e?: React.MouseEvent) => {

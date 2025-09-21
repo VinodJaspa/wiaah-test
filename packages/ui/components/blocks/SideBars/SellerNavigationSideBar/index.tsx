@@ -31,7 +31,7 @@ export interface SellerSideBarProps extends HtmlDivProps {
   onLinkClick?: (link: NavigationLinkType) => any;
   activeLink?: string;
   headerElement?: React.ReactElement;
-  
+
 }
 
 export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
@@ -51,10 +51,10 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     onLinkClick?.(link);
 
     router.push(link.url);
-    if(link.url ==="/service"){
-      window.location.href =link.url;
+    if (link.url === "/service") {
+      window.location.href = link.url;
     }
-    
+
   }
 
   const links: NavigationLinkType[] = [
@@ -86,41 +86,39 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     isMobile
       ? []
       : [
-          {
-            name: "service",
-            icon: <ServicesOutlineIcon />,
-            activeIcon: <ServicesIcon />,
-            url: "/service",
-          },
-          {
-            name: "affiliation",
-            icon: <AffiliationIconOutline />,
-            activeIcon: <AffiliationIcon />,
-            url: "/affiliation",
-          },
-        ]
+        {
+          name: "service",
+          icon: <ServicesOutlineIcon />,
+          activeIcon: <ServicesIcon />,
+          url: "/service",
+        },
+        {
+          name: "affiliation",
+          icon: <AffiliationIconOutline />,
+          activeIcon: <AffiliationIcon />,
+          url: "/affiliation",
+        },
+      ]
   );
 
   return (
     <div
-      className={`${className} flex fixed z-[36] ${
-        isMobile
+      className={`${className} flex fixed z-[36] ${isMobile
           ? "flex-row left-0 bottom-0 w-full bg-white border-t border-gray-200"
           : "flex-col left-0 top-0 w-56 h-screen bg-white shadow-md"
-      } items-center p-4`}
+        } items-center p-4`}
       {...props}
     >
       <div className="overflow-y-auto w-full">
         <div
-          className={`w-full flex flex-wrap ${
-            isMobile
+          className={`w-full flex flex-wrap ${isMobile
               ? "justify-around flex-row gap-4 text-2xl"
               : "flex-col gap-8"
-          }`}
+            }`}
         >
           {!isMobile && (
             <Image
-            onClick={()=> router.push("/")}
+              onClick={() => router.push("/")}
               src="/wiaah_logo.png"
               className="cursor-pointer w-32 mx-auto mb-8"
             />
@@ -139,17 +137,15 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
                 onClick={() => handleLinkClick(link)}
               >
                 <span
-                  className={`transition-all duration-200 ${
-                    active ? "text-primary scale-110" : "text-black"
-                  } text-icon`}
+                  className={`transition-all duration-200 ${active ? "text-primary scale-110" : "text-black"
+                    } text-icon`}
                 >
                   {active ? runIfFn(link.activeIcon) : runIfFn(link.icon)}
                 </span>
                 {!isMobile && (
                   <p
-                    className={`transition-all duration-200 capitalize font-medium text-sm ${
-                      active ? "text-primary font-semibold" : "text-black"
-                    }`}
+                    className={`transition-all duration-200 capitalize font-medium text-sm ${active ? "text-primary font-semibold" : "text-black"
+                      }`}
                   >
                     {link.name}
                   </p>

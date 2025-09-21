@@ -40,6 +40,6 @@ const storageEffect =
 export const sidebarState = atom<boolean>({
   
   key: "sidebarState",
-  default: process.env.NODE_ENV === "development" ? true : false,
+  default: true,
   effects_UNSTABLE: [storageEffect("sidebarState", "session")],
 });

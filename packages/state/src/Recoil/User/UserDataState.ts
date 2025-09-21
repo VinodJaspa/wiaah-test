@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import { CurrentUserDataType } from "types";
+import { isDev } from "utils";
 
 export const UserDataState = atom<CurrentUserDataType | undefined>({
   default: undefined,
@@ -22,6 +23,6 @@ const localStorageEffect = (key: string) => ({ setSelf, onSet }: any) => {
 
 export const isUserLoggedIn = atom<boolean>({
   key: "isUserLoggedIn",
-  default: false,
+  default: true ,
   effects: [localStorageEffect("isUserLoggedIn")],
 });

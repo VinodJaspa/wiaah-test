@@ -196,10 +196,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   //Set the header type
   //Set header
   let stored: string | null = null;
-
-
-
-
   const { pagination: storiesPagination } = usePaginationControls();
 
   // Graphql is not ready yet
@@ -208,10 +204,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   });
 
   const stories = FAKE_STORIES;
-
-
-
-
   const { pagination: hashtagPagi } = usePaginationControls();
   const { data: hashtags } = useGetDiscoverHashtags({
     pagination: hashtagPagi,

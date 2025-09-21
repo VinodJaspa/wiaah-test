@@ -124,7 +124,18 @@ export const PostCard: React.FC<PostCardProps> = ({
               {/* Left side */}
               <div className="flex gap-2 items-center">
                 <div className="min-w-[2.5rem] ">
-                  {/* user profile component here */}
+                      <UserProfileDisplay
+                    seen={true}
+                    storyUserData={{
+                      name: post.profileInfo?.name || "",
+                      userPhotoSrc: post.profileInfo?.thumbnail || "",
+                      id: post.profileInfo?.id || "",
+                    }}
+                    onProfileClick={(e) => {
+                      // e.stopPropagation;
+                      onProfileClick();
+                    }}
+                  />
                 </div>
                 <div className="flex flex-col">
                   <p className="font-bold">{post.profileInfo?.name}</p>
