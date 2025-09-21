@@ -1,0 +1,11 @@
+[build.environment]
+  # Make sure Netlify uses correct Node + pnpm
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--version" # disables npm install
+  NPM_CONFIG_PRODUCTION = "false"
+  NODE_ENV = "development"
+  NX_VERBOSE_LOGGING = "true"
+
+# Add Netlify's Next.js plugin (works for any Next.js app in your monorepo)
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
